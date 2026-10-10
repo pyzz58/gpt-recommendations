@@ -1,5 +1,7 @@
 # v0.3 物理连续性与动作可执行性审查
 
+**修订优先参考成熟 GitHub 项目，而非自造轮子**：先阅读 [GitHub 复用调研与决策清单](GITHUB_REUSE_POLICY.md)，借鉴 CineCrew 的 FilmDSL 资产结构，比较 transitions/jsonschema/Pydantic 等工具的适配成本。仓库调研完成不代表已经安装或集成。
+
 本功能只用本地 Python 标准库；不读取 API Key、不触发 DeepSeek、不生成付费视频，也不修改 Codex 的全局配置。
 
 ## 立即检查已有的镜头计划
