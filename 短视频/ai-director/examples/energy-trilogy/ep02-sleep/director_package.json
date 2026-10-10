@@ -3,7 +3,7 @@
   "series": "不要浪费精力",
   "episode": "中",
   "title": "每天睡六小时够了？大脑可能并不这么想",
-  "duration_s": 91,
+  "duration_s": 76,
   "aspect_ratio": "9:16",
   "platform": "douyin",
   "targetEmotion": "自信误判→数据惊讶→温和修复",
@@ -387,98 +387,49 @@
     {
       "id": "ep02-sleep-S09",
       "start_s": 71,
-      "duration_s": 10,
-      "end_s": 81,
+      "duration_s": 5,
+      "end_s": 76,
       "phase": "sources",
-      "narration": "研究出处第一组：睡眠限制试验、咖啡因荟萃分析和作息规律观察研究。",
+      "narration": "",
       "visual_type": "source_card",
-      "scene_action": "出处卡一：Van Dongen 2003（Sleep）；Gardiner 2023（Sleep Medicine Reviews）；Phillips 2017（Scientific Reports）",
-      "camera_direction": "3条出处分层排版，强调实验/荟萃/观察的区别；避开抖音底部控件",
-      "art_audio": "静态2D面板，镜头不动；配乐压低至可阅读",
-      "on_screen_text": "研究来源 · 1/2",
+      "scene_action": "一张5秒静态研究来源图：\n1. Van Dongen 等 (2003) · Sleep · 睡眠限制实验\n2. Gardiner 等 (2023) · Sleep Med Rev · 荟萃分析\n3. Chang 等 (2015) · PNAS · 睡前阅读实验\n页脚：完整来源/DOI见视频简介；仅代表所引用研究，不等于所有观点已证实。",
+      "camera_direction": "9:16 static bibliography card, 3 lines; no zoom/pan",
+      "art_audio": "no voiceover, final music fade out",
+      "on_screen_text": "主要研究来源 | 完整DOI见简介",
       "source_ids": [
         "S05",
         "S06",
-        "S07"
+        "S08"
       ],
-      "director_intent": "建立可信可核对出处，限制适用范围",
+      "director_intent": "单张五秒来源卡，建立可信可追溯性而不破坏完播节奏",
       "in_shot_beats": [
         {
           "from_s": 0,
-          "to_s": 4,
-          "visible_action": "建立当前镜头：出处卡一：Van Dongen 2003（Sleep）；Gardiner 2023（Sleep Medicine Reviews）；Phillips 2017（Scientific Reports）",
-          "camera": "3条出处分层排版，强调实验/荟萃/观察的区别",
-          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+          "to_s": 0.2,
+          "visible_action": "完整来源图淡入或硬切",
+          "camera": "fixed",
+          "sound": "no voiceover; BGM duck"
         },
         {
-          "from_s": 4,
-          "to_s": 10,
-          "visible_action": "画面信息转折：研究来源 · 1/2；结束态准备切镜",
-          "camera": "避开抖音底部控件",
-          "sound": "声音轻缓并留出阅读空白"
+          "from_s": 0.2,
+          "to_s": 5,
+          "visible_action": "3条来源保持在同一位置供阅读，5秒结束",
+          "camera": "fixed",
+          "sound": "BGM fade-out"
         }
       ],
       "generation_route": "source_card_compositing",
-      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：出处卡一：Van Dongen 2003（Sleep）；Gardiner 2023（Sleep Medicine Reviews）；Phillips 2017（Scientific Reports）。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；3条出处分层排版，强调实验/荟萃/观察的区别；避开抖音底部控件。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "generation_prompt": "使用后期图文渲染器输出一张9:16静态图片，并将其加入剪辑末尾5秒。一张5秒静态研究来源图：\n1. Van Dongen 等 (2003) · Sleep · 睡眠限制实验\n2. Gardiner 等 (2023) · Sleep Med Rev · 荟萃分析\n3. Chang 等 (2015) · PNAS · 睡前阅读实验\n页脚：完整来源/DOI见视频简介；仅代表所引用研究，不等于所有观点已证实。",
       "continuity": {
         "character_id": "",
         "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
         "blocked_text_in_footage": true
       },
       "qa": [
-        "字幕准确且未被底栏遮挡",
-        "场景/镜头活动可在镜头时长完成",
-        "定量信息有研究对象及限制说明",
-        "片尾每条出处显示作者、年份、期刊、研究类型",
-        "完整 DOI 见视频说明"
-      ]
-    },
-    {
-      "id": "ep02-sleep-S10",
-      "start_s": 81,
-      "duration_s": 10,
-      "end_s": 91,
-      "phase": "sources",
-      "narration": "第二组包括发光阅读器实验和午睡时长试验。记住，研究环境未必等于每个人的日常。",
-      "visual_type": "source_card",
-      "scene_action": "出处卡二：Chang 2015（PNAS）；Brooks 2006（Sleep）；限制说明：受试人群与真实生活有差别",
-      "camera_direction": "页脚『完整 DOI 见简介』，字体不小于常规正文字号的70%",
-      "art_audio": "最后2秒安静供观众读；避开字幕遮挡",
-      "on_screen_text": "研究来源 · 2/2",
-      "source_ids": [
-        "S08",
-        "S09"
-      ],
-      "director_intent": "建立可信可核对出处，限制适用范围",
-      "in_shot_beats": [
-        {
-          "from_s": 0,
-          "to_s": 4,
-          "visible_action": "建立当前镜头：出处卡二：Chang 2015（PNAS）；Brooks 2006（Sleep）；限制说明：受试人群与真实生活有差别",
-          "camera": "页脚『完整 DOI 见简介』，字体不小于常规正文字号的70%",
-          "sound": "旁白主导，音乐-20dB左右预留语音空间"
-        },
-        {
-          "from_s": 4,
-          "to_s": 10,
-          "visible_action": "画面信息转折：研究来源 · 2/2；结束态准备切镜",
-          "camera": "页脚『完整 DOI 见简介』，字体不小于常规正文字号的70%",
-          "sound": "声音轻缓并留出阅读空白"
-        }
-      ],
-      "generation_route": "source_card_compositing",
-      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：出处卡二：Chang 2015（PNAS）；Brooks 2006（Sleep）；限制说明：受试人群与真实生活有差别。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；页脚『完整 DOI 见简介』，字体不小于常规正文字号的70%。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
-      "continuity": {
-        "character_id": "",
-        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
-        "blocked_text_in_footage": true
-      },
-      "qa": [
-        "字幕准确且未被底栏遮挡",
-        "场景/镜头活动可在镜头时长完成",
-        "定量信息有研究对象及限制说明",
-        "片尾每条出处显示作者、年份、期刊、研究类型",
-        "完整 DOI 见视频说明"
+        "单张静态来源图片，时长5秒",
+        "仅显示三项核心研究，其他全部放视频简介",
+        "确保三行大字和竖屏安全区域",
+        "禁止AI视频模型伪造论文截图或可读字幕"
       ]
     }
   ],
@@ -539,6 +490,18 @@
       "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
     }
   ],
-  "source_credits_duration_s": 20,
-  "video_generated": false
+  "source_credits_duration_s": 5,
+  "video_generated": false,
+  "source_credit_policy": {
+    "duration_s": 5,
+    "mode": "single_static_image",
+    "displayed_ids": [
+      "S05",
+      "S06",
+      "S08"
+    ],
+    "full_bibliography_in_description": true,
+    "voiceover": false,
+    "requires_review": true
+  }
 }
