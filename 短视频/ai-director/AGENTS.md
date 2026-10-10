@@ -1,3 +1,11 @@
+## 完整物理连续性契约（新增；旧剧本保持兼容）
+
+- Codex 在修订既有分镜前必须阅读 [skills/06-continuity-repair.md](skills/06-continuity-repair.md) 和 [CONTINUITY_QA.md](CONTINUITY_QA.md)，并使用已审查的 GitHub 技术选型清单。
+- 首选为全部主要道具与人物建立唯一ID、连续镜头 before/after 位置、顺序明确的 pickup/place/walk 事件。JSON Schema 在 schemas/continuity_contract.schema.json；本地按 continuity_contract.py 逐镜头回放。被声明 coverage=complete 的合同必须遍历每一镜（没出镜的道具也不能失踪）；验证失败阻断进入后续付费导演层。
+- 不能只写结构化数据不改画面：visual、action、continuity 与状态迁移必须相互支持；只有 JSON 通过不等于实际 AI 画面可信。
+- 生成修订先写 plan.proposed.json（不是原文件）；保留原计划、人物设定、已有费用账本、审核记录。未获新的明确资金批准，不允许付费修稿。
+- 不要安装全局依赖：jsonschema 可在隔离环境作为可选 Schema 验证；transitions 仅评估，没有成为运行时依赖，CineCrew 是数据建模参考而不是整包接入。
+
 ## 开发优先级：GitHub 成熟方案优先（2026-10-11 起，适用于所有修复与新增功能）
 
 本项目每次遇到缺陷、质量不足、功能扩展、模型兼容、安全/性能/预演/连续性问题，**在编写新实现前优先研究 GitHub 已有成熟项目**，不是先造轮子。遵循下面的实际执行顺序：
