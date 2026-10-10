@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1",
+  "shot_prompts": [
+    {
+      "shot_id": "S01",
+      "duration": 5,
+      "models": {
+        "wan": "Realistic vertical 9:16 video, 5 seconds. Shared look: documentary explainer plus precise 2D infographics; muted cool-blue -> warm sun at ending. Character continuity: CHAR01: Chinese adult man, about 35, short black hair, natural face, dark gray top, same reference face for opening and closing. Scene: minimal apartment living room near a window, dawn, door to outside. Opening state: 男子在窗边坐着，拿着未点燃香烟. Primary action: 把香烟举到嘴边后放下. Micro-action: 拇指轻触打火机却不点火. Reaction: 低头看烟片刻，轻轻呼气. Ending state: 香烟留在桌上. Camera: medium close-up, eye level, 50mm, slow push-in, central safe content with subtitle margin. Lighting: natural morning light. Color: muted cool grey and blue. Set and props: same cigarette and apartment. Physically plausible motion and gestures; consistent face and wardrobe. Do not generate words, numbers, subtitles, logos or watermarks within the footage; overlay later in editing. Single continuous shot; prefer image-to-video with approved character reference frame when available.",
+        "seedance": "Realistic vertical 9:16 video, 5 seconds. Shared look: documentary explainer plus precise 2D infographics; muted cool-blue -> warm sun at ending. Character continuity: CHAR01: Chinese adult man, about 35, short black hair, natural face, dark gray top, same reference face for opening and closing. Scene: minimal apartment living room near a window, dawn, door to outside. Opening state: 男子在窗边坐着，拿着未点燃香烟. Primary action: 把香烟举到嘴边后放下. Micro-action: 拇指轻触打火机却不点火. Reaction: 低头看烟片刻，轻轻呼气. Ending state: 香烟留在桌上. Camera: medium close-up, eye level, 50mm, slow push-in, central safe content with subtitle margin. Lighting: natural morning light. Color: muted cool grey and blue. Set and props: same cigarette and apartment. Physically plausible motion and gestures; consistent face and wardrobe. Do not generate words, numbers, subtitles, logos or watermarks within the footage; overlay later in editing. Clearly follow beginning-action-reaction-ending chronology and preserve stable subject continuity."
+      },
+      "requires_reference_images": true,
+      "text_overlay_after_generation": "越早戒，越划算"
+    },
+    {
+      "shot_id": "S08",
+      "duration": 6,
+      "models": {
+        "wan": "Realistic vertical 9:16 video, 6 seconds. Shared look: documentary explainer plus precise 2D infographics; muted cool-blue -> warm sun at ending. Character continuity: CHAR01: Chinese adult man, about 35, short black hair, natural face, dark gray top, same reference face for opening and closing. Scene: minimal apartment living room near a window, dawn, door to outside. Opening state: 男子坐在室内靠近门口. Primary action: 起身朝门口走. Micro-action: 手掌扶住门把. Reaction: 推门时眯眼迎接晨光. Ending state: 走向户外. Camera: medium close-up, eye level, 50mm, slow push-in, central safe content with subtitle margin. Lighting: natural morning light. Color: warm gold. Set and props: same cigarette and apartment. Physically plausible motion and gestures; consistent face and wardrobe. Do not generate words, numbers, subtitles, logos or watermarks within the footage; overlay later in editing. Single continuous shot; prefer image-to-video with approved character reference frame when available.",
+        "seedance": "Realistic vertical 9:16 video, 6 seconds. Shared look: documentary explainer plus precise 2D infographics; muted cool-blue -> warm sun at ending. Character continuity: CHAR01: Chinese adult man, about 35, short black hair, natural face, dark gray top, same reference face for opening and closing. Scene: minimal apartment living room near a window, dawn, door to outside. Opening state: 男子坐在室内靠近门口. Primary action: 起身朝门口走. Micro-action: 手掌扶住门把. Reaction: 推门时眯眼迎接晨光. Ending state: 走向户外. Camera: medium close-up, eye level, 50mm, slow push-in, central safe content with subtitle margin. Lighting: natural morning light. Color: warm gold. Set and props: same cigarette and apartment. Physically plausible motion and gestures; consistent face and wardrobe. Do not generate words, numbers, subtitles, logos or watermarks within the footage; overlay later in editing. Clearly follow beginning-action-reaction-ending chronology and preserve stable subject continuity."
+      },
+      "requires_reference_images": true,
+      "text_overlay_after_generation": "现在开始"
+    }
+  ]
+}
