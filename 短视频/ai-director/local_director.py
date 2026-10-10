@@ -22,6 +22,7 @@ import zipfile
 
 import director
 import director_v2 as v2
+from llm_budget import BudgetSession, BudgetError, RetryableLLMError, peak_rates
 
 ROOT = Path(__file__).resolve().parent
 SKILLS = ROOT / "skills"
@@ -184,7 +185,7 @@ def check_reference_card(plan):
     # Publishing remains blocked until original methods and figures are checked.
 
 
-def llm_json(*, system, user, model, url, key, timeout=160):
+def llm_json(*, system, user, model, url, key, timeout=160, max_tokens=16384, usage_hook=None):
     """Single explicit, potentially billable OpenAI-compatible chat request."""
     if not key:
         raise DirectorError("缺少 AI_API_KEY；不用API时请使用 prepare + Codex 模式")
@@ -193,7 +194,7 @@ def llm_json(*, system, user, model, url, key, timeout=160):
     endpoint = url.rstrip("/") + "/chat/completions"
     payload = json.dumps({"model": model, "messages": [
         {"role": "system", "content": system + "\n必须返回 JSON 对象，不要Markdown或多余说明。"},
-        {"role": "user", "content": user}], "temperature": 0.3, "max_tokens": 16384,
+        {"role": "user", "content": user}], "temperature": 0.3, "max_tokens": max_tokens,
         "response_format": {"type": "json_object"}}).encode("utf-8")
     request = urllib.request.Request(endpoint, data=payload,
         headers={"Content-Type": "application/json", "Authorization": "Bearer " + key}, method="POST")
@@ -201,23 +202,30 @@ def llm_json(*, system, user, model, url, key, timeout=160):
         with urllib.request.urlopen(request, timeout=timeout) as response:
             data = json.load(response)
     except urllib.error.HTTPError as exc:
-        raise DirectorError(f"LLM HTTP {exc.code}，请检查 API Key、模型ID及配额") from exc
+        if exc.code == 429:
+            raise RetryableLLMError("LLM HTTP 429：请求频率限制，当前调用已计入预算保护；如开启了有限重试，将额外占用一次额度") from exc
+        raise DirectorError(f"LLM HTTP {exc.code}，请检查 API Key、模型ID及配额；本次请求可能产生费用，不自动重试") from exc
     except (urllib.error.URLError, TimeoutError) as exc:
         raise DirectorError("无法连接选定模型服务。已有本地成果不丢失；可稍后 --resume") from exc
     try:
+        if usage_hook is not None and isinstance(data.get("usage"), dict):
+            usage_hook(data["usage"])
         item = data["choices"][0]
         if item.get("finish_reason") == "length":
             raise DirectorError("模型输出被截断，未保存为有效导演方案")
         content = item["message"]["content"]
         if not content:
-            raise DirectorError("LLM 返回空输出。没有自动重试，以免发生意外费用")
+            raise RetryableLLMError("LLM JSON模式返回空内容；仅在预算足够且显式设置 --max-retries 时重试")
         content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content.strip())
-        parsed = json.loads(content)
+        try:
+            parsed = json.loads(content)
+        except json.JSONDecodeError as exc:
+            raise RetryableLLMError("模型返回非法JSON；每次重新尝试均会另计预算") from exc
         if not isinstance(parsed, dict):
-            raise DirectorError("模型必须返回JSON对象")
+            raise RetryableLLMError("模型没有返回JSON对象；仅可进行有预算的有限重试")
         return parsed
-    except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
-        raise DirectorError("模型输出无法解析为JSON，不会自动付费重试") from exc
+    except (KeyError, IndexError, TypeError) as exc:
+        raise RetryableLLMError("模型响应结构异常；仅可进行有预算的有限重试") from exc
 
 
 def create_prepare(input_path, output_dir):
@@ -297,62 +305,123 @@ def run_job(args):
     job = Path(args.out)
     if job.exists() and any(job.iterdir()) and not args.resume:
         raise DirectorError("已有工作目录。如需在原工作上续跑请用 --resume，避免覆盖成果")
+    # Guard the *entire* API lifecycle with explicit CNY cap, model/price lock,
+    # request count cap, and a persisted reservation ledger.
+    max_cost=getattr(args,'max_cost_cny',None)
+    if max_cost is None:
+        raise DirectorError("真实API模式还需 --max-cost-cny 金额（人民币）；仅 --approve-model-cost 不够")
+    rates=peak_rates(args.model,args.base_url)
+    input_rate=getattr(args,'input_cny_per_million',None)
+    output_rate=getattr(args,'output_cny_per_million',None)
+    if input_rate is None and rates: input_rate=rates[0]
+    if output_rate is None and rates: output_rate=rates[1]
+    if input_rate is None or output_rate is None:
+        raise DirectorError("未知服务商或模型必须明确指定 --input-cny-per-million 和 --output-cny-per-million 单价")
     job.mkdir(parents=True,exist_ok=True)
-    source_path=job/"source.md"
-    if source_path.exists():
-        source=textfile(source_path)
-        if Path(args.input).read_text(encoding="utf-8") != source:
-            raise DirectorError("续跑时提供的原文与原项目不同；不能混用")
-    else:
-        source=Path(args.input).read_text(encoding="utf-8")
-        if not source.strip(): raise DirectorError("文案为空")
-        source_path.write_text(source, encoding="utf-8")
-    if len(source)>45000:
-        raise DirectorError("本版单次输入限45000字符，过长请先拆分或交Codex处理")
-    series_path=job/"series.json"
-    if series_path.exists():
-        series=check_series(load(series_path))
-    else:
-        system,user=series_prompt(source)
-        series=check_series(llm_json(system=system,user=user,model=args.model,url=args.base_url,key=key))
-        save(series_path, series)
-    create_once(job/"character_bible.json", {"characters":series["characters"],"visual_bible":series["visual_bible"],"reference_images_status":"not_created", "approved":False})
-    series = series_with_bible(series, load(job/"character_bible.json"))
-    create_once(job/"status.json", {"started":stamp(),"model":args.model,"series_count":len(series["episodes"]),"phase":"planned","cost_approved_by_cli":True,"video_generation":False})
-    for index,ep in enumerate(series["episodes"]):
-        folder=job/"episodes"/f"ep{index+1:02d}"
-        folder.mkdir(parents=True,exist_ok=True)
-        base_path=folder/"plan.json"
-        if base_path.exists():
-            base=load(base_path)
+    budget=BudgetSession(job=job,model=args.model,base_url=args.base_url,cap_cny=max_cost,
+        input_cny_m=input_rate,output_cny_m=output_rate,
+        max_calls=getattr(args,'max_calls',7),
+        max_retries=getattr(args,'max_retries',0),
+        max_output_tokens=getattr(args,'max_output_tokens',16384))
+    try:
+        def guarded(stage, system, user):
+            return budget.invoke(stage=stage,system=system,user=user,caller=lambda hook: llm_json(
+                system=system,user=user,model=args.model,url=args.base_url,key=key,
+                max_tokens=budget.max_output_tokens,usage_hook=hook))
+        def semantic_fix(stage, candidate, system, original_user, check):
+            """Repair model-owned new drafts only; each retry is a fresh budgeted call.
+
+            Never silently patch or overwrite existing human-authored project files.
+            """
+            for iteration in range(budget.max_retries+1):
+                errors=check(candidate)
+                if not errors:return candidate
+                if iteration>=budget.max_retries:
+                    raise DirectorError(f'{stage} 结构校验不通过：'+'; '.join(errors[:8]))
+                short_errors=json.dumps(errors[:16],ensure_ascii=False)
+                repair_user=(original_user+'\n\n上次模型输出以下JSON，但结构校验失败。'
+                     '仅修复列出的字段/人物一致性/时间线错误，不要增加新研究事实或虚构URL。'
+                     '返回完整有效JSON对象，不能删减经过验证的其他内容。\n'
+                     '具体错误：'+short_errors+'\n上一版JSON：\n'+json.dumps(candidate,ensure_ascii=False))
+                candidate=guarded(stage+'.repair',system,repair_user)
+            raise DirectorError(f'{stage} 自动修复耗尽预算，须人工审核')
+
+        source_path=job/"source.md"
+        if source_path.exists():
+            source=textfile(source_path)
+            if Path(args.input).read_text(encoding="utf-8") != source:
+                raise DirectorError("续跑时提供的原文与原项目不同；不能混用")
         else:
-            system,user=episode_prompt(source,series,index)
-            base=warn_publishing(llm_json(system=system,user=user,model=args.model,url=args.base_url,key=key))
-            errs,_=check_episode_against_series(base,series)
-            if errs:
-                save(folder/"draft_invalid.json",base)
-                raise DirectorError(f"ep{index+1:02d} 基础计划未通过校验："+"; ".join(errs[:8])+"。已保存草稿供Codex修订")
+            source=Path(args.input).read_text(encoding="utf-8")
+            if not source.strip(): raise DirectorError("文案为空")
+            source_path.write_text(source, encoding="utf-8")
+        if len(source)>45000:
+            raise DirectorError("本版单次输入限45000字符，过长请先拆分或交Codex处理")
+        series_path=job/"series.json"
+        if series_path.exists():
+            series=check_series(load(series_path))
+        else:
+            system,user=series_prompt(source)
+            def _check_series_candidate(candidate):
+                try:check_series(candidate);return []
+                except DirectorError as exc:return [str(exc)]
+            first=guarded("series",system,user)
+            try:
+                series=semantic_fix('series',first,system,user,_check_series_candidate)
+            except (DirectorError,BudgetError,RetryableLLMError):
+                save(job/'series_invalid.json',first)
+                raise
+            save(series_path, series)
+        create_once(job/"character_bible.json", {"characters":series["characters"],"visual_bible":series["visual_bible"],"reference_images_status":"not_created", "approved":False})
+        series = series_with_bible(series, load(job/"character_bible.json"))
+        create_once(job/"status.json", {"started":stamp(),"model":args.model,"series_count":len(series["episodes"]),"phase":"planned","cost_approved_by_cli":True,"video_generation":False})
+        for index,ep in enumerate(series["episodes"]):
+            folder=job/"episodes"/f"ep{index+1:02d}"
+            folder.mkdir(parents=True,exist_ok=True)
+            base_path=folder/"plan.json"
+            if base_path.exists():
+                base=load(base_path)
+            else:
+                system,user=episode_prompt(source,series,index)
+                first=warn_publishing(guarded(f"ep{index+1:02d}.plan",system,user))
+                def _check_plan_candidate(candidate):
+                    warn_publishing(candidate)
+                    errs,_=check_episode_against_series(candidate,series)
+                    if not errs:
+                        try:check_reference_card(candidate)
+                        except DirectorError as exc:errs.append(str(exc))
+                    return errs
+                try:
+                    base=semantic_fix(f"ep{index+1:02d}.plan",first,system,user,_check_plan_candidate)
+                except (DirectorError,BudgetError,RetryableLLMError):
+                    save(folder/"draft_invalid.json",first)
+                    raise
+                save(base_path,base)
+            errors,_=check_episode_against_series(base,series)
+            if errors:raise DirectorError("现有基础计划需要修复："+"; ".join(errors[:8]))
             check_reference_card(base)
-            save(base_path,base)
-        errors,_=check_episode_against_series(base,series)
-        if errors:raise DirectorError("现有基础计划需要修复："+"; ".join(errors[:8]))
-        check_reference_card(base)
-        direction_path=folder/"direction_v02.json"
-        if not direction_path.exists():
-            system,user=direction_prompt(base,series)
-            direction=llm_json(system=system,user=user,model=args.model,url=args.base_url,key=key)
+            direction_path=folder/"direction_v02.json"
+            if not direction_path.exists():
+                system,user=direction_prompt(base,series)
+                first=guarded(f"ep{index+1:02d}.direction",system,user)
+                def _check_direction_candidate(candidate):
+                    errs,_=v2.validate(base,candidate)
+                    return errs
+                try:
+                    direction=semantic_fix(f"ep{index+1:02d}.direction",first,system,user,_check_direction_candidate)
+                except (DirectorError,BudgetError,RetryableLLMError):
+                    save(folder/"direction_invalid.json",first)
+                    raise
+                save(direction_path,direction)
+            else:
+                direction=load(direction_path)
             errors,_=v2.validate(base,direction)
-            if errors:
-                save(folder/"direction_invalid.json",direction)
-                raise DirectorError(f"ep{index+1:02d} 专业导演稿未通过校验："+"; ".join(errors[:8])+"。已保存草稿供Codex修订")
-            save(direction_path,direction)
-        else:
-            direction=load(direction_path)
-        errors,_=v2.validate(base,direction)
-        if errors:raise DirectorError("方向稿验证失败："+"; ".join(errors[:8]))
-        print(f"已生成 ep{index+1:02d}：{len(base['shots'])} 镜、{base['duration']}秒")
-    review_job(job)
-    return job
+            if errors:raise DirectorError("方向稿验证失败："+"; ".join(errors[:8]))
+            print(f"已生成 ep{index+1:02d}：{len(base['shots'])} 镜、{base['duration']}秒")
+        review_job(job)
+        return job
+    finally:
+        budget.close()
 
 
 def review_job(job):
@@ -402,7 +471,7 @@ def backup(project, archive):
             if not p.is_file():continue
             rel=p.relative_to(project)
             if any(item in {"__pycache__",".git",".venv","node_modules"} for item in rel.parts):continue
-            if rel.name in {".env",".env.local",".DS_Store"} or rel.suffix==".pyc":continue
+            if rel.name in {".env",".env.local",".DS_Store",".api_usage.lock"} or rel.suffix==".pyc":continue
             z.write(p,arcname=str(rel));count+=1
     digest=hashlib.sha256(destination.read_bytes()).hexdigest()
     return count,digest
@@ -418,11 +487,19 @@ def main(argv=None):
     run.add_argument("--model",default=os.environ.get("AI_MODEL", DEFAULT_MODEL))
     run.add_argument("--base-url",default=os.environ.get("AI_API_BASE_URL", DEFAULT_URL))
     run.add_argument("--approve-model-cost",action="store_true")
+    run.add_argument("--max-cost-cny",type=float,help="必须明确的本地估算预留预算上限，人民币；不是供应商账单承诺")
+    run.add_argument("--input-cny-per-million",type=float,help="输入token每百万的保守人民币最高单价；DeepSeek官方模型默认高峰单价")
+    run.add_argument("--output-cny-per-million",type=float,help="输出token每百万的保守人民币最高单价")
+    run.add_argument("--max-calls",type=int,default=7,help="本任务最多发送几次LLM请求，默认7")
+    run.add_argument("--max-retries",type=int,default=0,help="只有429和明确空/非法JSON才允许额外尝试0-2次；默认0")
+    run.add_argument("--max-output-tokens",type=int,default=16384,help="每次响应最多的输出token")
     run.add_argument("--resume",action="store_true",help="reuse checkpoints; never overwrite finished phase")
     rev=sub.add_parser("review",help="validate and render offline HTML, no LLM call")
     rev.add_argument("--job",required=True)
     z=sub.add_parser("backup",help="export a portable ZIP; omits .env keys")
     z.add_argument("--project",default=str(ROOT));z.add_argument("--out",required=True)
+    cs=sub.add_parser("cost-status",help="read local conservative budget ledger, offline")
+    cs.add_argument("--job",required=True)
     sub.add_parser("doctor",help="explain local runtime state")
     args=parser.parse_args(argv)
     try:
@@ -438,13 +515,19 @@ def main(argv=None):
         elif args.command=="backup":
             count,digest=backup(args.project,args.out)
             print(f"已备份 {count} 个文件；SHA256 {digest}")
+        elif args.command=="cost-status":
+            ledger=load(Path(args.job)/"api_usage.generated.json")
+            reserved=sum(float(a['reserved_cny']) for a in ledger.get('attempts',[]))
+            print(f"模型: {ledger['model']} / 已发送请求: {len(ledger['attempts'])} 次")
+            print(f"本地最坏情况费用预留估算: ¥{reserved:.4f} / 自设上限 ¥{ledger['cap_cny']:.4f}")
+            print("这是本地保守估算，不是 DeepSeek 官方结算单；超时/失败也继续占预算。")
         elif args.command=="doctor":
             print("Python:",sys.version.split()[0]," / 本地项目:",ROOT)
             print("ChatGPT/GitHub运行依赖：无；创意阶段需要现有Codex+模型，或兼容的LLM API")
             print("AI_API_KEY:","已提供(不会显示)" if os.environ.get("AI_API_KEY") else "未提供；可用prepare离线准备")
             print("Web预演、校验与备份都能在无网络时运行；LLM云端生成需要模型可连接")
         return 0
-    except (DirectorError, ValueError, OSError, json.JSONDecodeError, KeyError) as exc:
+    except (DirectorError, BudgetError, RetryableLLMError, ValueError, OSError, json.JSONDecodeError, KeyError) as exc:
         print("ERROR:",exc,file=sys.stderr)
         return 2
 
