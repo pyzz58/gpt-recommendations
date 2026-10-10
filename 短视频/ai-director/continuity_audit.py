@@ -50,9 +50,9 @@ def audit_plan(plan):
     # A shot's start position is inconsistent with a scene's fixed prop layout.
     for sh in shots:
         sid = sh.get('id', '?')
-        shot_text = str(sh.get('visual', '')) + '；' + _piece(sh)
+        shot_text = str(sh.get('visual', '')) + '；' + str((sh.get('action') or {}).get('start',''))
         scene = scenes.get(sh.get('scene_id'), '')
-        if '书' in shot_text and '手' in shot_text and _pickup(shot_text, '书'):
+        if re.search(r'手(?:里|中).{0,6}(?:拿着|握着|持着).{0,4}(?:一?本)?书.{0,16}(?:从玄关|从门口|进客厅|走进客厅)', shot_text):
             if re.search(r'茶几上.{0,8}(?:书|书本)', scene):
                 add('SCENE_PROP_DOUBLE_BOOK', 'review', [sid],
                     '场景预设书在茶几，镜头却从别处手持同一本书进入；需交代拿书前的物理位置。',
@@ -105,10 +105,10 @@ def audit_plan(plan):
     state = {}  # name -> (location, shot_id)
     for sh in shots:
         sid = sh.get('id', '?')
-        action = _piece(sh)
+        action = str((sh.get('action') or {}).get('action', ''))
         visual = str(sh.get('visual', ''))
         for name in PROPS:
-            dest = _placed(action, name) or _placed(visual, name)
+            dest = _placed(action, name) if action.strip() else _placed(visual, name)
             if dest:
                 previous = state.get(name)
                 if previous and previous[0] not in (dest, 'hand') and not _pickup(action, name):
@@ -155,7 +155,8 @@ def audit_plan(plan):
     # Editorial repetition: 3 consecutive shots entirely about the same activity.
     for triple in zip(shots, shots[1:], shots[2:]):
         if all(any(word in str(s.get('visual','')) for word in ('手机','滑动','上滑','打字','消息'))
-               and s.get('purpose') == 'development' for s in triple):
+               and s.get('purpose') == 'development'
+               and (s.get('camera') or {}).get('shot_size') in ('特写','近景','中近景') for s in triple):
             add('REPETITIVE_PHONE_BEATS', 'review', [s.get('id', '?') for s in triple],
                 '连续三个推进镜头围绕同一手机动作，容易视觉重复。',
                 '增加时间跳跃、环境或景别变化，不用三个相似脸部特写。')
@@ -166,6 +167,9 @@ def audit_plan(plan):
             add('LICENSE_EVIDENCE_MISSING_' + key.upper(), 'review', [],
                 f'{kind}授权检查标记为 true，但没有对应的核验依据；仅有计划不等于已经取得授权。',
                 '核对实际素材授权后添加证据；此前应设为 false/待核实。')
+
+    from continuity_contract import audit_contract
+    issues.extend(audit_contract(plan))
 
     return {'version': 1, 'shot_count': len(shots),
             'blockers': sum(x['severity'] == 'blocker' for x in issues),
