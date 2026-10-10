@@ -7,3 +7,9 @@
 - 可在视频中途显示极少的数字说明或来源标记，但不要把每个具体文献都变成片尾滚动长名单。
 - 若缺少2项可追溯文献，跳过来源卡并在发布审查中说明，绝不虚构。
 - 医学、财经、法律、心理等高影响内容必须人工审查实际研究结论后发布。
+## v0.3 P0 · 引用可追溯性硬性门槛
+
+- `plan.references` 一项绑定一个 `claim_id`；卡片中的所有 `claim_ids` 必须同时存在于 `claims` 与 `references` 中，不得重复。
+- 每项要求 `author`、`year`（整数）、`journal`、`study_type`、`url`（HTTPS）与 `status=needs_review`。URL 与对应 claim.evidence_url（若非空）必须一致。
+- 公开论文题录与 DOI 只能表明可追溯来源，**不代表 DOI 对应的论文支持所述结论**。尚未阅读/核对方法、样本与具体结果前，`needs_review` 保留，发布门禁保持锁定。
+- 生成的 `description.generated.md` 为自动草稿；`description.md` 属人工可修改区。再次执行审片不得覆盖人工修改；新内容只放生成区。
