@@ -183,4 +183,12 @@ def format_report(result):
         lines.extend([f'## {i}. {f["code"]} [{f["severity"]}]',
                       f'镜头：{", ".join(f["shot_ids"]) or "全局"}',
                       '问题：' + f['reason'], '建议：' + f['suggestion'], ''])
+    lines.extend(['## 给 Codex 的安全修订任务', '',
+                  '读取同目录 plan.json 与上述问题；先创建 plan.proposed.json，绝不覆盖原件。',
+                  '消除所有 blocker，并逐项判断 review 是否合理；不要把误报直接变成新的虚构动作。',
+                  '修复道具和人物转场时，同步修改 visual、action.start/action/end、continuity、set_props 和 continuity_state。',
+                  '控制每镜动作数量与秒数，重新计算所有镜头 start，保持总 duration 与末镜结束时间一致。',
+                  '不更改已经固定的角色面貌/服装/系列视觉设定，不添加未经验证的研究与素材授权。',
+                  '候选稿必须再次通过 director.validate 与本审查器；保留人工审核状态。',
+                  '整个修订过程不允许额外调用付费 API，不增加模型调用次数。', ''])
     return '\n'.join(lines)
