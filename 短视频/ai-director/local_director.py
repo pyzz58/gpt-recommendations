@@ -22,6 +22,7 @@ import zipfile
 
 import director
 import director_v2 as v2
+import continuity_audit as continuity
 from llm_budget import BudgetSession, BudgetError, RetryableLLMError, peak_rates
 
 ROOT = Path(__file__).resolve().parent
@@ -278,6 +279,7 @@ def episode_prompt(source, series, index):
     spec = series["episodes"][index]
     guidance = director.SYSTEM_GUIDANCE + "\n" + textfile(SKILLS / "02-episode.md")
     guidance += "\n必须沿用系列给定的人物ID、外形、衣服、visual_bible；没有角色不要强行造真人。"
+    guidance += "\n物理连续性：书、手机及其他道具不得瞬移；每镜明确人物与关键道具起始位置、拿起/移动/放下动作、结束位置。严禁在短镜头中挤入过多动作。新增可选 continuity_state:{props_before:{},prop_moves:[{prop,from,to}],props_after:{}} 以进行机器验证。授权事实未经核查时不能把检查标志设为 true。"
     user = ("完成系列第"+str(index+1)+"集的 v0.1 plan.json。必须完全满足 director.py 的结构。"
             "首尾5秒研究卡仅当有2-3项真实可追溯研究时生成；purpose=sources, text_card, duration=5, narration为空, 使用claim_ids。"
             "所有其余引用留在claims，医疗心理财经类一律 needs_review。"
@@ -410,6 +412,14 @@ def run_job(args):
             errors,_=check_episode_against_series(base,series)
             if errors:raise DirectorError("现有基础计划需要修复："+"; ".join(errors[:8]))
             check_reference_card(base)
+            continuity_result=continuity.audit_plan(base)
+            save(folder/"continuity_audit.generated.json",continuity_result)
+            (folder/"continuity_repair.generated.md").write_text(
+                continuity.format_report(continuity_result),encoding="utf-8")
+            if continuity_result["blockers"]:
+                raise DirectorError(
+                    f"本集物理连续性存在{continuity_result['blockers']}项阻断；"
+                    f"已生成 {folder/'continuity_repair.generated.md'}；先修正plan.json再继续，未调用下一阶段模型")
             direction_path=folder/"direction_v02.json"
             if not direction_path.exists():
                 system,user=direction_prompt(base,series)
@@ -450,6 +460,12 @@ def review_job(job):
         errors,warnings=check_episode_against_series(base,series)
         if errors:raise DirectorError(f"第{i}集基础数据错误："+"; ".join(errors[:8]))
         check_reference_card(base)
+        continuity_result=continuity.audit_plan(base)
+        save(folder/"continuity_audit.generated.json",continuity_result)
+        (folder/"continuity_repair.generated.md").write_text(
+            continuity.format_report(continuity_result),encoding="utf-8")
+        if continuity_result["blockers"]:
+            raise DirectorError(f"第{i}集物理连续性存在阻断，请先查看 continuity_repair.generated.md")
         errors,warnings_v2=v2.validate(base,direction)
         if errors:raise DirectorError(f"第{i}集导演数据错误："+"; ".join(errors[:8]))
         v2.render_compare(base,direction,folder/"preview.html")
@@ -504,6 +520,8 @@ def main(argv=None):
     run.add_argument("--max-retries",type=int,default=0,help="只有429和明确空/非法JSON才允许额外尝试0-2次；默认0")
     run.add_argument("--max-output-tokens",type=int,default=16384,help="每次响应最多的输出token")
     run.add_argument("--resume",action="store_true",help="reuse checkpoints; never overwrite finished phase")
+    aud=sub.add_parser("audit",help="offline continuity audit of an existing plan; NO API calls")
+    aud.add_argument("--plan",required=True)
     rev=sub.add_parser("review",help="validate and render offline HTML, no LLM call")
     rev.add_argument("--job",required=True)
     z=sub.add_parser("backup",help="export a portable ZIP; omits .env keys")
@@ -520,6 +538,17 @@ def main(argv=None):
         elif args.command=="run":
             result=run_job(args)
             print("导演预演：",result/"index.html")
+        elif args.command=="audit":
+            plan_path=Path(args.plan)
+            result=continuity.audit_plan(load(plan_path))
+            output=plan_path.parent
+            save(output/"continuity_audit.generated.json",result)
+            (output/"continuity_repair.generated.md").write_text(
+                continuity.format_report(result),encoding="utf-8")
+            print(f"物理连续性审查：{result['shot_count']}镜 / {result['blockers']}项阻断 / {result['reviews']}项待核查")
+            print("报告：",output/"continuity_repair.generated.md")
+            if result["blockers"]:
+                print("提示：存在阻断项，不应继续付费生成导演方向稿。")
         elif args.command=="review":
             print("导演预演：",review_job(args.job))
         elif args.command=="backup":
