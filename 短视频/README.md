@@ -1,5 +1,11 @@
 # 短视频
 
+## v0.3 · 本地优先导演平台
+
+新增[AI Director v0.3 本地工作流说明](./ai-director/README_V03.md)、[中文文案本地输入网页](./ai-director/local_ui.py)和[5份专业导演 Skills](./ai-director/skills/)；现在可保存成独立文件夹在 Mac 上离线执行校验/审片/备份。使用 Codex+DeepSeek 或用户明确授权的 DeepSeek 兼容API完成创作。网络断开时已有项目不受影响，**但没有可用LLM时不能自动产生新的导演创意**。后续视频制作接口保持国产模型可替换。
+
+---
+
 ### 片尾来源卡规则：5秒单图
 
 根据最新审片反馈，《不要浪费精力》三集已更新为**每集末尾1张静态来源卡，最多5秒，展示2–3项研究**。完整 DOI、研究方法、其余引用保留在每集 `description.md`。查看[更新的三集预演](./ai-director/examples/energy-trilogy/README.md)。导演验证器已加入硬性约束。
