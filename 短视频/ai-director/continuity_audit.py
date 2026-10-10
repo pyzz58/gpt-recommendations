@@ -107,12 +107,16 @@ def audit_plan(plan):
             dest = _placed(action, name) or _placed(visual, name)
             if dest:
                 previous = state.get(name)
-                if previous and previous[0] != dest and not _pickup(action, name):
+                if previous and previous[0] not in (dest, 'hand') and not _pickup(action, name):
                     add('PROP_TRANSFER_MISSING_' + PROPS[name].upper(), 'blocker',
                         [previous[1], sid],
                         f'{name}在{previous[1]}放于{previous[0]}，{sid}直接被放到{dest}，中间没有明确取回或搬运动作。',
                         f'在中间镜头明确拍到从{previous[0]}拿起{name}，再移至{dest}，并记录镜头结束位置。')
                 state[name] = (dest, sid)
+            elif _pickup(action, name):
+                # An explicit pickup carries the object in the person's hand
+                # into the next shot, so a later placement is not teleportation.
+                state[name] = ('hand', sid)
             # Arrival as a prop on a new scene does not by itself prove a move.
             elif name == '书' and '同一本书' in str(sh.get('art', {}).get('set_props', '')):
                 prev = state.get(name)
