@@ -22,16 +22,21 @@ def _pickup(text, name):
 
 
 def _placed(text, name):
-    # Deliberately narrow: a placement needs the object + action + destination
-    # in the *same clause*; scenery/set_props alone do not prove movement.
-    for clause in re.split('[；，。]', text):
-        if name not in clause or not re.search(r'(放|扣|搁|摆)', clause):
+    # A placement needs an identifiable verb and destination. A limited
+    # two-clause drawer case handles “拉开抽屉，把手机放进去”. Never infer moves
+    # from an action.start state or from scenery inventory.
+    clauses = re.split('[；，。]', text)
+    for i, clause in enumerate(clauses):
+        if name not in clause or not re.search(r'(放|扣|搁|摆|塞)', clause):
             continue
         for key, loc in LOCATIONS.items():
-            if key in clause and re.search(rf'{name}.{{0,12}}(?:放|扣|搁|摆).{{0,12}}{key}', clause):
+            if key in clause and re.search(rf'{name}.{{0,12}}(?:放|扣|搁|摆|塞).{{0,12}}{key}', clause):
                 return loc
+        if (i > 0 and '抽屉' in clauses[i - 1]
+                and re.search(r'(拉开|打开|抽出)', clauses[i - 1])
+                and re.search(rf'{name}.{{0,8}}(?:放进去|塞进去|放入)', clause)):
+            return 'drawer'
     return None
-
 
 def audit_plan(plan):
     """Return deterministic findings. 'blocker' prevents further *paid* stages.
@@ -108,7 +113,11 @@ def audit_plan(plan):
         action = str((sh.get('action') or {}).get('action', ''))
         visual = str(sh.get('visual', ''))
         for name in PROPS:
-            dest = _placed(action, name) if action.strip() else _placed(visual, name)
+            # A scripted pickup takes precedence over visual descriptions of
+            # the shot's opening state (which can mention the old resting spot).
+            dest = _placed(action, name)
+            if dest is None and not _pickup(action, name):
+                dest = _placed(visual, name)
             if dest:
                 previous = state.get(name)
                 if previous and previous[0] not in (dest, 'hand') and not _pickup(action, name):
