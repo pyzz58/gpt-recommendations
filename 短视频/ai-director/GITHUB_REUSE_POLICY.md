@@ -1,0 +1,52 @@
+# GitHub 优先复用决策清单（2026-10-11）
+
+**固定规则：每次修改、补足功能或修复缺陷前，先检索 GitHub 上的相关成熟仓库，核对代码、许可证、维护状况、测试和运行成本，再决定直接复用、借鉴结构还是自行实现。参见 AGENTS.md。**
+
+状态：仅完成上游仓库的第一轮公开资料调查；没有安装依赖、下载模型权重、执行付费 API、修改用户 Mac 配置或合并第三方代码。实际使用前仍需测试许可证兼容、版本和依赖。
+
+## 2026-10-11 对标仓库和选择
+
+| 改进方向 | GitHub 项目 | 已核实的能力 | 限制与决策 |
+|---|---|---|---|
+| 角色/道具/场景/镜头的全局约束 | [Ironieser/CineCrew](https://github.com/Ironieser/CineCrew) — Apache-2.0 | FilmDSL 将元数据、资产、镜头和导演约束统一为结构化规范；有角色、场景、道具稳定 ID 与检查/修订阶段 | 2026-09 才公开的研究型项目，不是长期验证的稳定工具。**P0 借鉴数据结构，不整仓引入** |
+| 道具与人物合法状态转移 | [pytransitions/transitions](https://github.com/pytransitions/transitions) — MIT | 成熟 Python 有限状态机，明确允许和禁止的状态转移 | 不会理解中文自然语言，必须先把拿起/携带/放下结构化。**P0 小范围评估，保留零依赖基线** |
+| 结构化 JSON 与连续性状态校验 | [python-jsonschema/jsonschema](https://github.com/python-jsonschema/jsonschema) — MIT | JSON Schema、多错误汇总，Python >=3.10 | 不负责故事语义理解。**P0 最先评估可选 Schema 检验** |
+| 人物/道具/镜头对象强类型 | [pydantic/pydantic](https://github.com/pydantic/pydantic) — MIT | 数据模型、验证和生成 JSON Schema | 与 jsonschema 功能存在重合。**P1 不要同时为相同任务引入两套框架** |
+| 多阶段工作流、恢复和审批节点 | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph) — MIT | 持久状态与条件流程图 | 当前 local_director 已有流程和费用账本。**P2 借鉴，不迁移** |
+| 参考图、人物/场景资产与前后帧衔接 | [billpar/ai-cinematic-pipeline](https://github.com/billpar/ai-cinematic-pipeline) — MIT；CineCrew | 角色/场景/道具资产模板，关键帧接续的工作方法 | 前者主要是生产指南，不是成熟可用的自动一致性引擎。**P1 学其资产管理方法** |
+| 本地图片/视频模型工作流 | [Comfy-Org/ComfyUI](https://github.com/Comfy-Org/ComfyUI) — GPL-3.0 | 可视化节点图、JSON 工作流、当地执行与部分模型集成 | 体量、算力、许可证边界不同。**P2 独立可选，不直接复制 GPL 源码** |
+| 字幕/剪辑/音视频合成 | [Zulko/moviepy](https://github.com/Zulko/moviepy) — MIT；[remotion-dev/remotion](https://github.com/remotion-dev/remotion) — 特殊许可证 | MoviePy 程序化剪辑；Remotion 更适合复杂程序化图形/动画 | Remotion 对部分营利组织有授权要求。**P2 首选考察 MoviePy，不为前期导演稿安装** |
+| 成片之后的镜头节奏分析 | [Breakthrough/PySceneDetect](https://github.com/Breakthrough/PySceneDetect) — BSD-3-Clause | 识别已有视频镜头切换 | 不能检查文字故事的物理连续性；没视频就没用。**P3** |
+| 模型返回非法 JSON | [dottxt-ai/outlines](https://github.com/dottxt-ai/outlines)、[BoundaryML/baml](https://github.com/BoundaryML/baml) — Apache-2.0 | 结构化生成与校验相关工具 | 不保证与当前 DeepSeek 托管接口即插即用，也不能绕过费用门禁。**P1 先离线验证** |
+
+备选调研：[zetagao/frameline](https://github.com/zetagao/frameline) 有分镜表、演员走位示意图、EDL/FCPXML 输出，但公开历史只有约 3 次提交，Node + OpenRouter，部分关键提示词没有公开：暂作为 UI/数据结构参考，**不列为成熟产品**。
+
+## 直接对应本轮真实样本的 8 项缺陷
+
+1. SCENE_PROP_DOUBLE_BOOK：采用 CineCrew 风格的唯一道具 prop_id、固定道具初始场景与位置，不允许“场景已有书，镜头又从别处拿来同一本”。
+2. PROP_TRANSFER_MISSING_PHONE：为道具构建状态轨迹 sofa_arm → hand → drawer；中间缺拾取事件则阻断。
+3. PROP_APPEARANCE_UNEXPLAINED_BOOK：追踪书的 coffee_table → hand → desk，不靠两个镜头随意声明“同一本书”。
+4. ACTOR_TRANSFER_UNEXPLAINED：定义角色 start/end 空间位置，允许明确标注的跳切/时间省略，但不得让关键物品瞬移。
+5. ACTION_OVERLOAD：为短镜头建立动作数量与节奏提示；时间阈值属创作经验，不假装科学测量。
+6. REPETITIVE_PHONE_BEATS：检测连续镜头的叙事功能与画面变化；这属于创意质量，不可仅靠简单规则“一键修好”。
+7. LICENSE_EVIDENCE_MISSING_MUSIC_LICENSE_CHECK：音乐真正选定之后再登记授权来源、证明与状态；计划不等于授权。
+8. LICENSE_EVIDENCE_MISSING_ASSET_LICENSE_CHECK：同样为每一件实际素材保留授权证据；不能把未核验字段改成已核验。
+
+## 推荐落地顺序（保持现有用户工作不受损）
+
+第一阶段（不用模型费用）：定义统一的状态 Schema，支持各镜头描述道具与人物在镜头前后的确定位置；对同一道具的移动事件逐帧回放，生成错误报告。既有 continuity_audit.py 保留为无依赖后备实现。对真实 13 镜头只生成 plan.proposed.json 候选，不覆盖 plan.json；运行 director.validate + audit 后人工验收。
+
+第二阶段（离线测试）：在独立环境比较 jsonschema 与 Pydantic 的结构校验增益，衡量依赖体积、维护成本、误报和漏报；必要时用 transitions 建立严格迁移约束。**没有测试证据就不要“为了开源而接入开源”**。
+
+第三阶段（视频制作以后）：再评估 ComfyUI、MoviePy、PySceneDetect、角色图像锁定与视频后期质量检测，不要现在付费生成素材，也不要下载大权重到 Mac。
+
+## 每次修复的记录模板
+
+- 问题：现象、复现、影响；期望验收标准。
+- GitHub 调研：至少 2 个具体候选及链接；活跃度/最近维护信息、许可证、发行版、测试、Mac/Python 与离线可行性。
+- 选择：采用现成库／借鉴成熟架构／有限自写／暂缓；记录选择理由。
+- 风险：授权、依赖、性能、隐私、费用与回滚；不可覆盖用户已确认的版本。
+- 证据：无付费离线实验的输入、结果、漏报误报与最终验收。
+- 进度：**已查到 ≠ 已集成 ≠ 已验证**。三者必须单独标记。
+
+以上为 2026-10-11 公开仓库初筛结论，许可证和维护活跃度日后须重新核查。
