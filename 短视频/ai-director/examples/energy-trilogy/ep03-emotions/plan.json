@@ -1,0 +1,637 @@
+{
+  "schema_version": "0.1",
+  "title": "《不要浪费精力》下集：最消耗你的，可能不是工作，而是脑子停不下来",
+  "platform": "douyin",
+  "aspect_ratio": "9:16",
+  "duration": 89,
+  "risk_domain": "medical",
+  "core_message": "最消耗你的，可能不是工作，而是脑子停不下来",
+  "audience": "希望减少工作、睡眠或情绪中无效消耗的成年观众",
+  "editorial": {
+    "hook": "有时候让你累的，不是做了多少事，而是脑子一直在和别人较劲。",
+    "narration_script": "有时候让你累的，不是做了多少事，而是脑子一直在和别人较劲。\n看同龄人升职、旅行、晒成就，你可能越刷越累。这里有研究，但不能说所有社交平台都会造成同样后果。\n一项随机试验让一部分人停用 Facebook 四周：主观幸福感略有提高，但他们了解时事的程度也下降。\n另一个三周实验里，一百四十三名大学生把三个平台各限到每天十分钟，孤独与抑郁报告有所改善。\n有时我们还高估别人有多在意自己。心理学把这类现象叫『聚光灯效应』。\n而反复回想一件糟心事，往往让负面想法越来越牢。这叫反刍思维。\n还有一点：愤怒时靠砸东西或者剧烈发泄，整体并不比让身体平静下来更有效。\n今天就做三件事：少刷攀比内容，察觉自己在反复想，生气时先让身体慢下来。\n这一集依据社交平台使用实验、聚光灯效应研究，以及反刍思维综述。\n还有反刍思维的综述和一份一百五十四项研究的愤怒管理汇总。具体论文链接都放在简介。",
+    "omissions": [
+      {
+        "text": "原文其他未纳入的条款",
+        "reason": "系列叙事分组与单集可读性限制；不应将所有25条粗暴塞入三集"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "S10",
+      "source_quote": "用户原文列有 Allcott 等 (2020) 的研究；对应主张详见该集 一项随机试验让一部分人停用 Facebook 四周：主观幸福感略有提高，但他们了解时事的程度也下降。",
+      "video_wording": "一项随机试验让一部分人停用 Facebook 四周：主观幸福感略有提高，但他们了解时事的程度也下降。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1257/aer.20190658",
+      "caution": "小幅幸福感改善，同时减少时事知识；不等于所有平台通用"
+    },
+    {
+      "id": "S11",
+      "source_quote": "用户原文列有 Hunt 等 (2018) 的研究；对应主张详见该集 另一个三周实验里，一百四十三名大学生把三个平台各限到每天十分钟，孤独与抑郁报告有所改善。",
+      "video_wording": "另一个三周实验里，一百四十三名大学生把三个平台各限到每天十分钟，孤独与抑郁报告有所改善。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1521/jscp.2018.37.10.751",
+      "caution": "FB/Instagram/Snapchat实验，不能直接套用抖音"
+    },
+    {
+      "id": "S12",
+      "source_quote": "用户原文列有 Gilovich 等 (2000) 的研究；对应主张详见该集 有时我们还高估别人有多在意自己。心理学把这类现象叫『聚光灯效应』。",
+      "video_wording": "有时我们还高估别人有多在意自己。心理学把这类现象叫『聚光灯效应』。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1037/0022-3514.78.2.211",
+      "caution": "衣着与社交场景实验，不是所有现实评价的统一折扣系数"
+    },
+    {
+      "id": "S13",
+      "source_quote": "用户原文列有 Nolen-Hoeksema 等 (2008) 的研究；对应主张详见该集 而反复回想一件糟心事，往往让负面想法越来越牢。这叫反刍思维。",
+      "video_wording": "而反复回想一件糟心事，往往让负面想法越来越牢。这叫反刍思维。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1111/j.1745-6924.2008.00088.x",
+      "caution": "动手做事是实践建议，不能称为经过该综述直接验证的特效疗法"
+    },
+    {
+      "id": "S14",
+      "source_quote": "用户原文列有 Kjærvik & Bushman (2024) 的研究；对应主张详见该集 还有一点：愤怒时靠砸东西或者剧烈发泄，整体并不比让身体平静下来更有效。",
+      "video_wording": "还有一点：愤怒时靠砸东西或者剧烈发泄，整体并不比让身体平静下来更有效。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1016/j.cpr.2024.102414",
+      "caution": "结论针对即时愤怒管理，不代表跑步不利于长期心理健康"
+    }
+  ],
+  "visual_bible": {
+    "style": "documentary explainer, restrained character acting, precisely composited research infographics",
+    "palette": "coherent muted blue/gray moving toward warm light",
+    "lighting": "one practical consistent main light per scene",
+    "typography": "Chinese clean sans-serif, legible Douyin title/subtitle safe area",
+    "avoid": "fabricated charts, exact text generated inside model footage, false study implications"
+  },
+  "characters": [
+    {
+      "id": "CH_MAIN",
+      "description": "same ordinary Chinese office worker if visible, not a real person likeness",
+      "wardrobe": "深灰外套、浅色衬衣，三集身份不变",
+      "identity_anchor": "先制作完整面部及全身参考图，未制作前不得称已经锁脸"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "LOC_WORK",
+      "description": "开放办公室，一张有电脑和手机的桌面，主角工作和注意力打断"
+    },
+    {
+      "id": "LOC_BED",
+      "description": "小型卧室和窗台，床头灯、纸书、手机、咖啡杯"
+    },
+    {
+      "id": "LOC_CITY",
+      "description": "公交站、雨夜街道、公寓窗边与桌面"
+    },
+    {
+      "id": "LOC_GRAPHICS",
+      "description": "后期专用干净2D动态图形画板；禁止生成模型直接生成可读数据"
+    },
+    {
+      "id": "LOC_SOURCE",
+      "description": "片尾来源设计卡；清晰大字号；实际DOI在说明区"
+    }
+  ],
+  "shots": [
+    {
+      "id": "S01",
+      "start": 0,
+      "duration": 6,
+      "purpose": "hook",
+      "narration": "有时候让你累的，不是做了多少事，而是脑子一直在和别人较劲。",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_CITY",
+      "visual": "主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿",
+      "action": {
+        "start": "镜头开场：主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿",
+        "action": "在6秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "中近景，手机屏幕后期叠加模糊动态；雨中反光，背景行人虚化",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "脑子一直没下班",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "低饱和紫灰；城市远噪、鞋底雨声",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "脑子一直没下班",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S02",
+      "start": 6,
+      "duration": 9,
+      "purpose": "evidence",
+      "narration": "看同龄人升职、旅行、晒成就，你可能越刷越累。这里有研究，但不能说所有社交平台都会造成同样后果。",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_CITY",
+      "visual": "手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来",
+      "action": {
+        "start": "镜头开场：手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来",
+        "action": "在9秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "35mm眼平，拇指近景转面部轻微眉间动作；不出现真实品牌商标",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "比较，是一种精力开销",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "暖色屏幕光撞上冷色街道，音乐节奏紧促",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "比较，是一种精力开销",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S03",
+      "start": 15,
+      "duration": 10,
+      "purpose": "evidence",
+      "narration": "一项随机试验让一部分人停用 Facebook 四周：主观幸福感略有提高，但他们了解时事的程度也下降。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "S10"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "同屏两把秤：幸福感轻微提高、时事知识降低；没有捏造同量纲百分比",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "卡片上注明「美国Facebook用户，四周随机试验」；小箭头上/下非数量化",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "同屏两把秤：幸福感轻微提高、时事知识降低；没有捏造同量纲百分比"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "有收益，也有代价",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "克制数据信息设计，保护来源可读",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "有收益，也有代价",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S04",
+      "start": 25,
+      "duration": 10,
+      "purpose": "evidence",
+      "narration": "另一个三周实验里，一百四十三名大学生把三个平台各限到每天十分钟，孤独与抑郁报告有所改善。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "S11"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "研究流程图：143名学生→限时组/通常组→3周；终点孤独抑郁量表趋势",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "干净信息动画，以研究人群与3周时长为主，严禁显示不存在的治愈百分比",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "研究流程图：143名学生→限时组/通常组→3周；终点孤独抑郁量表趋势"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "143名学生 · 三周",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "灰白学术底色，轻点音",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "143名学生 · 三周",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S05",
+      "start": 35,
+      "duration": 9,
+      "purpose": "evidence",
+      "narration": "有时我们还高估别人有多在意自己。心理学把这类现象叫『聚光灯效应』。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "S12"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "主角走入公共空间，想象中的巨大聚光灯逐渐缩小为普通室内光",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "夸张灯光只用明确的示意动画层，不伪装为真实监控",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "主角走入公共空间，想象中的巨大聚光灯逐渐缩小为普通室内光"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "你以为所有人在看你",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "音乐停止半拍，聚光灯瞬间缩小",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "你以为所有人在看你",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S06",
+      "start": 44,
+      "duration": 9,
+      "purpose": "evidence",
+      "narration": "而反复回想一件糟心事，往往让负面想法越来越牢。这叫反刍思维。",
+      "visual_type": "ai_video",
+      "claim_ids": [
+        "S13"
+      ],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_CITY",
+      "visual": "主角回家后一再翻看同一张空白便签，停住后把便签翻面放下",
+      "action": {
+        "start": "镜头开场：主角回家后一再翻看同一张空白便签，停住后把便签翻面放下",
+        "action": "在9秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "俯拍桌面中近景；微表情仅靠呼吸和手部停顿，不用哭戏",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "主角回家后一再翻看同一张空白便签，停住后把便签翻面放下"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "反复想，不等于解决",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "暖灯下静物微纹理，钟摆声放慢",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "反复想，不等于解决",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S07",
+      "start": 53,
+      "duration": 9,
+      "purpose": "evidence",
+      "narration": "还有一点：愤怒时靠砸东西或者剧烈发泄，整体并不比让身体平静下来更有效。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "S14"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "左右分屏，打沙袋图标与慢呼吸示意；明确研究测量的是愤怒和攻击性",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "采用154项研究汇总可读数字，淡化无必要的效应量g，不用真人拳击煽动",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "左右分屏，打沙袋图标与慢呼吸示意；明确研究测量的是愤怒和攻击性"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "154项研究：先降唤醒",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "节拍由快慢慢降低；不是万能治疗宣称",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "154项研究：先降唤醒",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S08",
+      "start": 62,
+      "duration": 7,
+      "purpose": "payoff",
+      "narration": "今天就做三件事：少刷攀比内容，察觉自己在反复想，生气时先让身体慢下来。",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_CITY",
+      "visual": "主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓",
+      "action": {
+        "start": "镜头开场：主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓",
+        "action": "在7秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "从桌面侧拍至面部近景，最后定格于稳定视线；角色连贯",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "少比较 / 停反刍 / 先平静",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "金色环境光缓缓出现；音乐回归低速",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "少比较 / 停反刍 / 先平静",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S09",
+      "start": 69,
+      "duration": 10,
+      "purpose": "sources",
+      "narration": "这一集依据社交平台使用实验、聚光灯效应研究，以及反刍思维综述。",
+      "visual_type": "text_card",
+      "claim_ids": [
+        "S10",
+        "S11",
+        "S12"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_SOURCE",
+      "visual": "出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "按发表年份与研究方法三行，屏幕文字限制为短标签",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）"
+      },
+      "graphics": {
+        "type": "bibliography_credit",
+        "text": "研究来源 · 1/2",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "静态，字清楚且保留阅读停顿",
+        "sfx": "page-turn",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "研究来源 · 1/2",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "hard_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S10",
+      "start": 79,
+      "duration": 10,
+      "purpose": "sources",
+      "narration": "还有反刍思维的综述和一份一百五十四项研究的愤怒管理汇总。具体论文链接都放在简介。",
+      "visual_type": "text_card",
+      "claim_ids": [
+        "S13",
+        "S14"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_SOURCE",
+      "visual": "出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "重点标注『研究是群体平均，不替代个人帮助』",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议"
+      },
+      "graphics": {
+        "type": "bibliography_credit",
+        "text": "研究来源 · 2/2",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "最后两秒安静，音乐自然淡出",
+        "sfx": "page-turn",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "研究来源 · 2/2",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "hard_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    }
+  ],
+  "production": {
+    "voice": "calm Chinese narration",
+    "music_license_check": false,
+    "asset_license_check": false,
+    "publishing_status": "review_required",
+    "review_requirements": [
+      "source author/year/venue checked, but detailed results need final journal text review",
+      "AI-generation imagery and 2D graphics are illustrative",
+      "human review before publication"
+    ]
+  }
+}
