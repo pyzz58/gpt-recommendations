@@ -1,5 +1,35 @@
 # AI 短视频导演 · MVP v0.1
 
+## v0.2 专业导演增强版（2026-10-11）
+
+原有 v0.1 保持不变，现已加入 **Director Intelligence + Shot Feasibility / Continuity + Wan/Seedance Prompt Compiler**。这一版不是“把更多形容词塞进视频提示词”，而是将导演意图、逐秒动作、人物走位、摄影启动时机、美术、配音与音效、后期图表、参考素材和成片验收，全部写成可以独立审核的镜头合同。
+
+**不会调用收费 API、不会自动渲染 MP4、不会自动发布。** 专业内容仍由你已有的 Codex + DeepSeek 创作；程序负责提供导演规则、检查冲突并编译候选提示词。
+
+👉 **技术小白先看 [v0.2 一步步操作指南](V02_GUIDE.md)**
+
+[旧版预演](examples/quit-smoking/preview.html)｜[专业导演新旧对比](examples/quit-smoking/preview_v02.html)｜[逐秒导演稿](examples/quit-smoking/direction_v02.json)｜[Wan/Seedance及图形制作单](examples/quit-smoking/prompts_v02.json)
+
+```bash
+cd ~/GitHub/gpt-recommendations/短视频/ai-director
+python3 director_v2.py validate --base examples/quit-smoking/plan.json --direction examples/quit-smoking/direction_v02.json
+python3 director_v2.py preview --base examples/quit-smoking/plan.json --direction examples/quit-smoking/direction_v02.json --out examples/quit-smoking/preview_v02.html
+open examples/quit-smoking/preview_v02.html
+```
+
+目前戒烟样例：53 秒 / 8 镜头（2 个真人 AI 画面，6 个后期数据和医学动画镜头）；**医学事实未经过原始文献复核，禁止直接发布**。本地 v0.1 + v0.2 共 20 项测试通过，但尚未实际调用 Wan 或 Seedance 校验生成效果。
+
+专业提示词规则参考：
+- [sd2prompt](https://github.com/growgami/sd2prompt)：导演意图、跨段连续性、Prompt 修复、回拍
+- [visual-skills](https://github.com/smixs/visual-skills)：表演、阻力、空间、物理细节和剪辑动机
+- [AI Cinematic Pipeline](https://github.com/billpar/ai-cinematic-pipeline)：角色/场景素材参考、镜头连续性
+- [video-prompt-skill](https://github.com/liqi21cn/video-prompt-skill)：多模型提示词结构；所有模型兼容性须后续实测
+
+**实现方式：参考设计方法、独立编写程序；未拷贝第三方项目代码。**
+
+---
+
+
 **定位：中文文案 → 结构化制作计划 → AI 视频 Prompt + 审核用 HTML 分镜预演。**
 
 这是**可运行的前期导演系统**，不是完整视频生成器。当前不会生成真实视频、配音或自动发布抖音；也不会默默消费模型 API 费用。
