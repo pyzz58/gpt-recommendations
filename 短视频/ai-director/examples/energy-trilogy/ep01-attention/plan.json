@@ -583,5 +583,51 @@
       "no_narration": true,
       "claims_status": "needs_review"
     }
-  }
+  },
+  "references": [
+    {
+      "claim_id": "S01",
+      "author": "Stothart 等",
+      "year": 2015,
+      "journal": "J Exp Psychol HPP",
+      "study_type": "实验室注意力任务",
+      "url": "https://doi.org/10.1037/xhp0000100",
+      "status": "needs_review",
+      "limitation": "通知干扰的是实验任务表现，不能外推成每天固定损失多少分钟",
+      "verified_in_full": false
+    },
+    {
+      "claim_id": "S02",
+      "author": "Ward 等",
+      "year": 2017,
+      "journal": "J Assoc Consumer Research",
+      "study_type": "两项手机位置实验",
+      "url": "https://doi.org/10.1086/691462",
+      "status": "needs_review",
+      "limitation": "测的是工作记忆等认知任务，不是长期生产率",
+      "verified_in_full": false
+    },
+    {
+      "claim_id": "S03",
+      "author": "Altmann 等",
+      "year": 2014,
+      "journal": "J Exp Psychol General",
+      "study_type": "步骤任务中的短时打断实验",
+      "url": "https://doi.org/10.1037/a0030986",
+      "status": "needs_review",
+      "limitation": "2.8秒打断的错误率翻倍只适用于该顺序操作任务",
+      "verified_in_full": false
+    },
+    {
+      "claim_id": "S04",
+      "author": "Kushlev & Dunn",
+      "year": 2015,
+      "journal": "Computers in Human Behavior",
+      "study_type": "124名成年人，两周交叉比较",
+      "url": "https://doi.org/10.1016/j.chb.2014.11.005",
+      "status": "needs_review",
+      "limitation": "结果是日常压力更低，未证明工作效率提高",
+      "verified_in_full": false
+    }
+  ]
 }
