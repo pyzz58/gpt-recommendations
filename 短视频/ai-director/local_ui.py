@@ -15,7 +15,9 @@ import webbrowser
 from local_director import ROOT, DirectorError, create_prepare
 
 JOBS = ROOT / "jobs"
-MAX_BODY = 130_000
+MAX_BODY = 1_000_000  # x-www-form-urlencoded UTF-8 Chinese can take 9 bytes/char
+MAX_SOURCE_CHARS = 45_000
+MAX_SOURCE_BYTES = 250_000
 
 BASE_CSS = """body{background:#101721;color:#eaf0fb;font:16px/1.65 system-ui,-apple-system,'PingFang SC',sans-serif;max-width:830px;padding:30px;margin:auto}h1{font-size:27px}textarea,input{box-sizing:border-box;width:100%;padding:12px;border-radius:8px;border:1px solid #516074;background:#222f41;color:#f7fcff;font:inherit}textarea{min-height:350px}button{padding:12px 22px;background:#7abef0;color:#06233c;border:0;border-radius:9px;cursor:pointer;font-weight:700}code,pre{background:#26354a;padding:4px;border-radius:5px}pre{padding:12px;overflow-x:auto}a{color:#93d1ff}.notice{padding:14px;background:#313c4c;border-radius:9px}.alert{background:#473333;padding:14px;border-radius:9px}small{color:#b1c0d1}"""
 
@@ -69,14 +71,14 @@ class App(BaseHTTPRequestHandler):
         try:
             length=int(self.headers.get('Content-Length','0'))
             if length<=0 or length>MAX_BODY:
-                raise DirectorError("输入过长或为空，单次不超过约50,000中文字")
+                raise DirectorError("提交数据过大，最多45,000字符，请缩短文章")
             if self.headers.get('Content-Type','').split(';')[0] != 'application/x-www-form-urlencoded':
                 raise DirectorError("只接收网页表单")
-            fields=parse_qs(self.rfile.read(length).decode('utf-8'),keep_blank_values=True)
+            fields=parse_qs(self.rfile.read(length).decode('utf-8'),keep_blank_values=True, max_num_fields=20)
             slug=safe_job(fields.get('slug',[''])[0])
-            article=fields.get('article',[''])[0].strip()
-            if not article or len(article)>45000:
-                raise DirectorError("请粘贴 1–45000 字的正文")
+            article=fields.get('article',[''])[0]  # Preserve leading/trailing whitespace in original document
+            if not article.strip() or len(article)>MAX_SOURCE_CHARS or len(article.encode("utf-8"))>MAX_SOURCE_BYTES:
+                raise DirectorError("请粘贴1–45000字符且UTF-8不超过250KB的正文")
             project=JOBS/slug
             if project.exists():
                 slug += '-'+datetime.now().strftime('%Y%m%d-%H%M%S')
