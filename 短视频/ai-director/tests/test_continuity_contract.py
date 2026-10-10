@@ -52,3 +52,21 @@ class ContinuityContractTests(TestCase):
     def test_reject_duplicate_move_order(self):
         p=scenario();p['shots'][1]['continuity_state']['prop_moves'][0]['order']=3
         self.assertIn('EVENT_ORDER_DUPLICATED',[x['code'] for x in cc.audit_contract(p)])
+
+    def test_full_contract_blocks_via_main_auditor(self):
+        import continuity_audit
+        p=scenario()
+        p['shots'][1]['continuity_state']['prop_moves'][0]['to']='LOC03:drawer'
+        result=continuity_audit.audit_plan(p)
+        self.assertGreater(result['blockers'],0)
+        self.assertTrue(any(f['code']=='ILLEGAL_PROP_TRANSITION' for f in result['findings']))
+
+    def test_schema_is_valid_json_and_optionally_passes_jsonschema(self):
+        import json
+        import importlib.util
+        schema=json.loads((ROOT/'schemas/continuity_contract.schema.json').read_text(encoding='utf-8'))
+        self.assertEqual(schema['$schema'],'https://json-schema.org/draft/2020-12/schema')
+        if importlib.util.find_spec('jsonschema') is not None:
+            import jsonschema
+            jsonschema.Draft202012Validator.check_schema(schema)
+            jsonschema.Draft202012Validator(schema).validate(scenario())
