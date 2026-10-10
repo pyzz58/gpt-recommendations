@@ -150,6 +150,26 @@ def validate(base, directions):
         if direction.get("review_status") != "reviewed":
             warnings.append(f"{prefix}: directing not yet marked reviewed")
         accepted.append(sid)
+    # source_credit_policy_v03: compact, auditable bibliography end-card.
+    # A bibliography credit is optional, but if provided must remain readable
+    # and must not displace the end of a short-form video.
+    credits = [(index, shot) for index, shot in enumerate(base["shots"])
+               if shot.get("purpose") == "sources"]
+    if credits:
+        if len(credits) != 1:
+            errors.append("source credits must use exactly one end-card")
+        for index, card in credits:
+            if index != len(base["shots"]) - 1:
+                errors.append(f"{card['id']}: source credits must be final shot")
+            if card.get("duration") != 5:
+                errors.append(f"{card['id']}: source credit card must be 5 seconds")
+            if card.get("visual_type") != "text_card":
+                errors.append(f"{card['id']}: source card must be post-production text_card")
+            ids = card.get("claim_ids", [])
+            if not isinstance(ids, list) or not 2 <= len(set(ids)) <= 3:
+                errors.append(f"{card['id']}: show 2-3 primary research references")
+            if str(card.get("narration", "")).strip():
+                errors.append(f"{card['id']}: 5-second reference card must not have voiceover")
     if set(accepted)!=set(expected): errors.append("missing/extra directed shot IDs")
     if accepted != list(expected): warnings.append("shot order differs from base; compiler will follow base order")
     if base.get("risk_domain") != "none" and any(x.get("status")!="verified" for x in base.get("claims",[])):
