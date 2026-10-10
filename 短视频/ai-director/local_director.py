@@ -185,7 +185,7 @@ def check_reference_card(plan):
     # Publishing remains blocked until original methods and figures are checked.
 
 
-def llm_json(*, system, user, model, url, key, timeout=160, max_tokens=16384, usage_hook=None):
+def llm_json(*, system, user, model, url, key, timeout=160, max_tokens=16384, usage_hook=None, invalid_response_path=None):
     """Single explicit, potentially billable OpenAI-compatible chat request."""
     if not key:
         raise DirectorError("缺少 AI_API_KEY；不用API时请使用 prepare + Codex 模式")
@@ -220,7 +220,15 @@ def llm_json(*, system, user, model, url, key, timeout=160, max_tokens=16384, us
         try:
             parsed = json.loads(content)
         except json.JSONDecodeError as exc:
-            raise RetryableLLMError("模型返回非法JSON；每次重新尝试均会另计预算") from exc
+            # Diagnostic of a billable model response. Keep the ORIGINAL bytes
+            # under the current local job; never print the response or API key.
+            # Create-only prevents an automatic retry from destroying evidence.
+            if invalid_response_path is not None:
+                create_once(invalid_response_path, content)
+            raise RetryableLLMError(
+                f"模型返回非法JSON（第{exc.lineno}行第{exc.colno}列：{exc.msg}；"
+                f"响应长度{len(content)}字符）。已保留本地诊断文件（如果设置了诊断路径）；"
+                "不会自动额外收费重试") from exc
         if not isinstance(parsed, dict):
             raise RetryableLLMError("模型没有返回JSON对象；仅可进行有预算的有限重试")
         return parsed
@@ -327,7 +335,8 @@ def run_job(args):
         def guarded(stage, system, user):
             return budget.invoke(stage=stage,system=system,user=user,caller=lambda hook: llm_json(
                 system=system,user=user,model=args.model,url=args.base_url,key=key,
-                max_tokens=budget.max_output_tokens,usage_hook=hook))
+                max_tokens=budget.max_output_tokens,usage_hook=hook,
+                invalid_response_path=job/"diagnostics"/(stage.replace(".","_")+".invalid-response.txt")))
         def semantic_fix(stage, candidate, system, original_user, check):
             """Repair model-owned new drafts only; each retry is a fresh budgeted call.
 
