@@ -42,3 +42,5 @@ python3 local_director.py audit --plan jobs/<job>/episodes/<ep>/plan.proposed.js
 ## 回滚、安全
 
 如果修订无法自洽，保留 `plan.proposed.json` 作为未完成草稿，并在 `repair_review.generated.md` 说明仍需决定的冲突；不要覆写原稿，也不要要求额外模型调用。
+
+**审查记录保护**：执行针对 `plan.proposed.json` 的 audit 时，输出 `plan.proposed.continuity_audit.generated.json` 和 `plan.proposed.continuity_repair.generated.md`，不得覆盖正式原稿已有的审查报告。
