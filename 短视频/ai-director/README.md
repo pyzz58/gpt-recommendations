@@ -1,5 +1,15 @@
 # AI 短视频导演 · MVP v0.1
 
+## v0.3 深度自动测试与付费保护（2026-10-11）
+
+新增 [llm_budget.py](llm_budget.py)、[本地模拟测试](tests/test_llm_budget.py)、每次请求费用预留账本及针对模型新稿的有限 JSON/结构错误修复。**54项本地测试通过**；包含本机HTTP模拟 Chat Completions；没有真实 DeepSeek API 付费测试。
+
+实际API模式现在必须同时提供 `--approve-model-cost` 与 `--max-cost-cny` 用户明确批准的人民币最高预算，可额外设置 `--max-calls`、`--max-retries`、`--max-output-tokens`。每次尝试先计入预估费用；网络超时、HTTP 5xx或可能重复扣费时不自动重试。每集只修复模型刚生成的错误草稿，不覆盖任何用户编辑文件。详情参见 [v0.3说明](README_V03.md)。
+
+**限制**：本地按高峰价的费用预留是预算防线，不等同供应商官方账单，也不能保证视频创意质量；真实端到端仍须逐步验收。
+
+---
+
 ## v0.3 本地优先的自动导演工作流（2026-10-11）
 
 **[适合技术小白的 v0.3 使用说明](README_V03.md)** · [本地导演编排程序](local_director.py) · [本地中文文案输入网页](local_ui.py) · [专业导演 Skills](skills/)
