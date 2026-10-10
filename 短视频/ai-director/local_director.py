@@ -44,6 +44,37 @@ def save(path, data):
     tmp.replace(p)
 
 
+def create_once(path, data):
+    """Create a default without overwriting user-edited files on resume/review."""
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with target.open('x', encoding='utf-8') as handle:
+            if isinstance(data, str):
+                handle.write(data)
+            else:
+                json.dump(data, handle, ensure_ascii=False, indent=2)
+                handle.write('\n')
+        return True
+    except FileExistsError:
+        return False
+
+
+def series_with_bible(series, bible):
+    """Use local user-approved or edited character bible as truth for QA.
+
+    The model-produced series JSON is a draft, not authorization to overwrite
+    user-edited character attributes.  Do not reconcile silently; a mismatch
+    must fail with an actionable error.
+    """
+    if not isinstance(bible, dict) or not isinstance(bible.get('characters'), list) or not isinstance(bible.get('visual_bible'), dict):
+        raise DirectorError('人物设定文件格式不完整；不会自动覆盖，请人工修复 character_bible.json')
+    active = dict(series)
+    active['characters'] = bible['characters']
+    active['visual_bible'] = bible['visual_bible']
+    return check_series(active)
+
+
 def textfile(path):
     return Path(path).read_text(encoding="utf-8")
 
@@ -96,8 +127,14 @@ def check_episode_against_series(plan, series):
             errors.append(f"出现系列角色库之外的新人物ID: {c.get('id')}")
     for c in series["characters"]:
         p = next((x for x in plan.get("characters", []) if x.get("id") == c["id"]), None)
-        if p and p.get("description") != c.get("description"):
-            errors.append(f"跨集角色 {c['id']} 外形描述发生变化；请修正而非自动变脸")
+        if p:
+            for key, label in (("description", "外形描述"), ("wardrobe", "服装"), ("identity_anchor", "人物身份锚点")):
+                if p.get(key) != c.get(key):
+                    errors.append(f"跨集角色 {c['id']} {label}发生变化；请核对角色设定而非自动变脸")
+    # Stories may evolve lighting per shot, but global visual bible is locked.
+    for key, value in series.get("visual_bible", {}).items():
+        if plan.get("visual_bible", {}).get(key) != value:
+            errors.append(f"整片视觉规范 visual_bible.{key} 与系列设定冲突；请明确改版")
     if not ids and any(s.get("character_ids") for s in plan.get("shots", [])):
         errors.append("系列角色库为空，但镜头引用了人物")
     return errors, warnings
@@ -113,10 +150,38 @@ def check_reference_card(plan):
     if card.get("duration") != 5 or card.get("narration", ""):
         raise DirectorError("研究出处卡固定5秒、无额外旁白")
     ids = card.get("claim_ids", [])
-    if not isinstance(ids, list) or not 2 <= len(set(ids)) <= 3:
-        raise DirectorError("研究出处卡请选择2-3项最重要、可追溯的研究")
+    if not isinstance(ids, list) or len(ids) != len(set(ids)) or not 2 <= len(ids) <= 3:
+        raise DirectorError("研究出处卡请选择2-3项不重复的研究")
     if card.get("visual_type") != "text_card":
         raise DirectorError("研究出处卡必须由后期叠加文字，不让视频模型直接画字")
+    claims = {c.get("id"): c for c in plan.get("claims", []) if isinstance(c, dict)}
+    references = plan.get("references")
+    if not isinstance(references, list):
+        raise DirectorError("研究卡缺少 references 文献账本（含作者、年份、期刊、研究类型和链接）")
+    ref_map = {}
+    for ref in references:
+        if not isinstance(ref, dict) or not isinstance(ref.get("claim_id"), str) or ref["claim_id"] in ref_map:
+            raise DirectorError("references 文献账本有非法或重复 claim_id")
+        ref_map[ref["claim_id"]] = ref
+    for cid in ids:
+        if cid not in claims or cid not in ref_map:
+            raise DirectorError(f"片尾引用 {cid} 没有同时出现在 claims 与 references 中")
+        claim, ref = claims[cid], ref_map[cid]
+        if claim.get("status") == "rejected" or ref.get("status") == "rejected":
+            raise DirectorError(f"片尾引用 {cid} 已被拒绝，不可继续展示")
+        for field in ("author", "year", "journal", "study_type", "url"):
+            if not ref.get(field) or isinstance(ref[field], (list, dict)):
+                raise DirectorError(f"片尾引用 {cid} 缺少书目信息 {field}")
+        if not isinstance(ref["year"], int) or not 1800 <= ref["year"] <= dt.datetime.now().year:
+            raise DirectorError(f"片尾引用 {cid} 年份错误")
+        if not isinstance(ref["url"], str) or not ref["url"].startswith("https://"):
+            raise DirectorError(f"片尾引用 {cid} 需要 HTTPS 可追踪来源链接")
+        if ref.get("status") != "needs_review":
+            raise DirectorError(f"片尾引用 {cid} 必须保持 needs_review，直至独立完成来源验证")
+        if claim.get("evidence_url") and claim["evidence_url"] != ref["url"]:
+            raise DirectorError(f"片尾引用 {cid} 与主张的文献链接不一致")
+    # Bibliographic metadata and a DOI link do NOT establish actual evidence.
+    # Publishing remains blocked until original methods and figures are checked.
 
 
 def llm_json(*, system, user, model, url, key, timeout=160):
@@ -199,6 +264,8 @@ def episode_prompt(source, series, index):
     user = ("完成系列第"+str(index+1)+"集的 v0.1 plan.json。必须完全满足 director.py 的结构。"
             "首尾5秒研究卡仅当有2-3项真实可追溯研究时生成；purpose=sources, text_card, duration=5, narration为空, 使用claim_ids。"
             "所有其余引用留在claims，医疗心理财经类一律 needs_review。"
+            "如有片尾来源卡，还必须输出 references 列表，每项按claim_id绑定，包含author/year(整数)/journal/study_type/url/status=needs_review。"
+            "只有实际提供的来源才允许引用，找不到原始研究时不生成片尾卡；即便有DOI也不能宣称事实已经核实。"
             "旁白自然可读，时长与全镜头一致。最多3集但这次只写一集。\n"
             "本集要点："+json.dumps(spec, ensure_ascii=False)+"\n"
             "系列已固定人物和风格（必须逐字沿用人物 description）："+json.dumps({"characters":series["characters"],"visual_bible":series["visual_bible"]},ensure_ascii=False)+"\n"
@@ -249,8 +316,9 @@ def run_job(args):
         system,user=series_prompt(source)
         series=check_series(llm_json(system=system,user=user,model=args.model,url=args.base_url,key=key))
         save(series_path, series)
-    save(job/"character_bible.json", {"characters":series["characters"],"visual_bible":series["visual_bible"],"reference_images_status":"not_created", "approved":False})
-    save(job/"status.json", {"started":stamp(),"model":args.model,"series_count":len(series["episodes"]),"phase":"planned","cost_approved_by_cli":True,"video_generation":False})
+    create_once(job/"character_bible.json", {"characters":series["characters"],"visual_bible":series["visual_bible"],"reference_images_status":"not_created", "approved":False})
+    series = series_with_bible(series, load(job/"character_bible.json"))
+    create_once(job/"status.json", {"started":stamp(),"model":args.model,"series_count":len(series["episodes"]),"phase":"planned","cost_approved_by_cli":True,"video_generation":False})
     for index,ep in enumerate(series["episodes"]):
         folder=job/"episodes"/f"ep{index+1:02d}"
         folder.mkdir(parents=True,exist_ok=True)
@@ -290,6 +358,8 @@ def run_job(args):
 def review_job(job):
     job=Path(job)
     series=check_series(load(job/"series.json"))
+    if (job/"character_bible.json").exists():
+        series=series_with_bible(series, load(job/"character_bible.json"))
     episodes=job/"episodes"
     rows=[]
     if not episodes.exists():
@@ -305,14 +375,18 @@ def review_job(job):
         if errors:raise DirectorError(f"第{i}集导演数据错误："+"; ".join(errors[:8]))
         v2.render_compare(base,direction,folder/"preview.html")
         compiled=v2.compile_package(base,direction)
-        save(folder/"prompts.json",compiled)
+        save(folder/"prompts.generated.json",compiled)
+        create_once(folder/"prompts.json",compiled)
         citations=[f"- {c['id']}：原文：{c.get('source_quote','')}\n  表述：{c.get('video_wording','')}\n  研究URL：{c.get('evidence_url','') or '待补充'}\n  状态：{c.get('status','needs_review')}\n  限制：{c.get('caution','')}" for c in base["claims"]]
-        (folder/"description.md").write_text("# "+base["title"]+"\n\n## 研究来源与局限\n\n"+("\n\n".join(citations) if citations else "没有可核实的研究引用；不得凭空加入来源。")+"\n",encoding="utf-8")
+        autogenerated = "# "+base["title"]+"\n\n## 研究来源与局限\n\n"+("\n\n".join(citations) if citations else "没有可核实的研究引用；不得凭空加入来源。")+"\n"
+        (folder/"description.generated.md").write_text(autogenerated, encoding="utf-8")
+        create_once(folder/"description.md",autogenerated)
         rows.append({"label":f"第{i}集：{base['title']}","link":f"episodes/ep{i:02d}/preview.html","seconds":base["duration"],"warnings":warnings+warnings_v2})
     cards=''.join(f'<article><h2>{html.escape(r["label"])}</h2><p>{r["seconds"]}秒</p><a href="{html.escape(r["link"],quote=True)}">查看逐镜头导演预演 →</a></article>' for r in rows)
     page='''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI导演本地审片</title><style>body{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;background:#141923;color:#edf0f8;padding:32px;max-width:900px;margin:auto}article{background:#273449;padding:20px;border-radius:12px;margin:14px 0}a{color:#91d2ff}.banner{background:#3b352c;padding:15px;border-radius:9px}</style></head><body><h1>AI 导演 · 本地审片</h1><p class="banner">不依赖GitHub、ChatGPT联网；这仅是分镜与Prompt预演，不是真实MP4。视频、配音、人物参考图片未生成。所有事实/来源仍须人工核对。</p>'''+cards+'</body></html>'
     (job/"index.html").write_text(page,encoding="utf-8")
-    save(job/"review_status.json", {"time":stamp(),"episodes":rows,"publishing_allowed":False,"video_generated":False})
+    save(job/"review_status.generated.json", {"time":stamp(),"episodes":rows,"publishing_allowed":False,"video_generated":False})
+    create_once(job/"review_status.json", {"time":stamp(),"episodes":rows,"publishing_allowed":False,"video_generated":False})
     return job/"index.html"
 
 
