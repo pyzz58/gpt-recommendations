@@ -26,6 +26,51 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 目前仅对“书”和“手机”实现了有限中文自然语言动作追踪。**它不是语义通用 AI 检测器。** 对杯子、钥匙等其他道具，需要在镜头中显式补充 `continuity_state`；没有发现问题不等于已经通过人审。
 
+## V2 · 完整演员/道具轨迹（2026-10-11 已实现）
+
+如果只填每镜的旧版 props_before/prop_moves/props_after，程序只能发现部分明确矛盾；**它不能保证某个道具从未在中间镜头消失**。
+
+新增可选完整模式（不需要安装第三方库）：
+
+```json
+{
+  "continuity_contract": {
+    "version": 1,
+    "coverage": "complete",
+    "props": {
+      "PROP_PHONE": {"initial": "LOC02:sofa_arm", "label": "手机"},
+      "PROP_BOOK": {"initial": "LOC02:coffee_table", "label": "同一本书"}
+    },
+    "actors": {"CH_MAIN": {"initial": "LOC01:entry"}}
+  }
+}
+```
+
+此外每镜（包括无人/道具不入画的镜头）都必须完整附上：
+
+```json
+{
+  "continuity_state": {
+    "props_before": {"PROP_PHONE": "LOC02:sofa_arm", "PROP_BOOK": "LOC02:coffee_table"},
+    "actors_before": {"CH_MAIN": "LOC02:sofa"},
+    "prop_moves": [
+      {"order": 1, "prop": "PROP_PHONE", "from": "LOC02:sofa_arm", "to": "CH_MAIN:hand", "kind": "pickup", "visible": true}
+    ],
+    "actor_moves": [],
+    "props_after": {"PROP_PHONE": "CH_MAIN:hand", "PROP_BOOK": "LOC02:coffee_table"},
+    "actors_after": {"CH_MAIN": "LOC02:sofa"}
+  }
+}
+```
+
+允许的道具状态转换：桌面或抽屉→人物手（pickup）；人物手→摆放位置（place）；不同人物手之间交接（handoff）；同一场景内推动（slide）。跨房间时必须先手持、再通过 actor_moves 走动，到目的地才能放下。所有事件共享 order 顺序，校验人物是否在操作发生的场景；未呈现的剪辑跳跃需 visible=false + note，并保留人工审核标记。
+
+- **机器合同校验**：`continuity_contract.py`，纯 Python，现已接入 `local_director.py audit` 与收费导演方向稿的阻断门禁。
+- **标准定义**：`schemas/continuity_contract.schema.json`，JSON Schema Draft 2020-12，已使用 Python `jsonschema` 库（本地隔离环境）校验；用户 Mac 不要求安装它，Schema 只校验形式，Python 的逐状态回放校验实际轨迹。
+- **完整模式仅在能真的覆盖全部资产和镜头时声明**；默认不强迫旧文件迁移。未声明完整模式时仍只是低可靠度的自然语言启发式检查。
+- **修稿入口**：[skills/06-continuity-repair.md](skills/06-continuity-repair.md)：按已有报告创建 plan.proposed.json，不修改正式 plan.json。
+- 用户提供的真实 13 镜头只用于私有隔离测试，**不提交私人原稿或修订全文到公开仓库**；测试中的完整候选不是正式已批准内容。
+
 ## 推荐的可机器验证状态规范
 
 镜头可选择包含以下额外字段（不得用它们替代原有的视觉和动作描述）：
