@@ -114,9 +114,151 @@ class LocalDirectorV03Tests(TestCase):
             'id':'S09','purpose':'sources','duration':5,'narration':'',
             'visual_type':'text_card','claim_ids':['C01','C02']
         })
+        p['references'] = [
+            {'claim_id': cid, 'author': 'Fixture Author', 'year': 2020, 'journal': 'Test Journal',
+             'study_type': 'test study', 'url': f'https://example.org/{cid}', 'status':'needs_review'}
+            for cid in ('C01','C02')
+        ]
         local.check_reference_card(p)
         p['shots'][-1]['duration']=10
         with self.assertRaises(local.DirectorError):local.check_reference_card(p)
+
+
+    def test_source_card_rejects_missing_metadata_and_unverified_citation(self):
+        p=copy.deepcopy(self.base)
+        p['shots'].append({'id':'S09','purpose':'sources','duration':5,'narration':'',
+                          'visual_type':'text_card','claim_ids':['C01','C02']})
+        with self.assertRaisesRegex(local.DirectorError, 'references'):
+            local.check_reference_card(p)
+        p['references']=[{'claim_id':c,'author':'Researcher','year':2020,'journal':'Journal',
+                          'study_type':'randomized trial','url':'https://example.org/'+c,
+                          'status':'needs_review'} for c in ('C01','C02')]
+        local.check_reference_card(p)
+        p['references'][0]['status']='verified'
+        with self.assertRaisesRegex(local.DirectorError, 'needs_review'):
+            local.check_reference_card(p)
+        p['references'][0]['status']='needs_review'
+        p['references'][1]['url']='http://example.org/paper'
+        with self.assertRaisesRegex(local.DirectorError, 'HTTPS'):
+            local.check_reference_card(p)
+
+    def test_source_card_rejects_duplicate_and_missing_claim(self):
+        p=copy.deepcopy(self.base)
+        p['shots'].append({'id':'S09','purpose':'sources','duration':5,'narration':'',
+                          'visual_type':'text_card','claim_ids':['C01','C01']})
+        with self.assertRaisesRegex(local.DirectorError, '不重复'):
+            local.check_reference_card(p)
+        p['shots'][-1]['claim_ids']=['C01','DNE']
+        p['references']=[{'claim_id':c,'author':'Researcher','year':2020,'journal':'Journal',
+                          'study_type':'trial','url':'https://example.org/'+c,'status':'needs_review'}
+                         for c in ('C01','DNE')]
+        with self.assertRaisesRegex(local.DirectorError, '没有同时出现在'):
+            local.check_reference_card(p)
+
+    def test_scene_wardrobe_identity_and_global_style_cannot_drift(self):
+        for char_key in ('wardrobe','identity_anchor'):
+            p=copy.deepcopy(self.base)
+            p['characters'][0][char_key]='Changed / wrong'
+            errors,_=local.check_episode_against_series(p,self.series)
+            self.assertTrue(any('跨集角色' in msg for msg in errors),char_key)
+        p=copy.deepcopy(self.base)
+        p['visual_bible']['palette']='Neon green'
+        errors,_=local.check_episode_against_series(p,self.series)
+        self.assertTrue(any('visual_bible.palette' in msg for msg in errors))
+
+    def test_review_does_not_destroy_human_metadata_or_prompts(self):
+        with tempfile.TemporaryDirectory() as t:
+            job=Path(t)/'job';ep=job/'episodes'/'ep01';ep.mkdir(parents=True)
+            local.save(job/'series.json',copy.deepcopy(self.series))
+            local.save(ep/'plan.json',copy.deepcopy(self.base))
+            local.save(ep/'direction_v02.json',copy.deepcopy(self.direction))
+            local.review_job(job)
+            protected='## My verified notes from primary paper - do not erase\n'
+            (ep/'description.md').write_text(protected,encoding='utf8')
+            (ep/'prompts.json').write_text('MY CUSTOM PROMPTS',encoding='utf8')
+            status=local.load(job/'review_status.json');status['manual_notes']='Approved by editor';local.save(job/'review_status.json',status)
+            local.review_job(job)
+            self.assertEqual((ep/'description.md').read_text(encoding='utf8'),protected)
+            self.assertEqual((ep/'prompts.json').read_text(encoding='utf8'),'MY CUSTOM PROMPTS')
+            self.assertEqual(local.load(job/'review_status.json')['manual_notes'],'Approved by editor')
+            self.assertTrue((ep/'description.generated.md').exists())
+            self.assertTrue((ep/'prompts.generated.json').exists())
+            self.assertTrue((job/'review_status.generated.json').exists())
+
+    def test_resume_preserves_approved_character_bible_and_manual_status(self):
+        with tempfile.TemporaryDirectory() as t:
+            source=Path(t)/'source.md';source.write_text('health information',encoding='utf8')
+            job=Path(t)/'job'
+            args=SimpleNamespace(input=str(source),out=str(job),approve_model_cost=True,
+                model='fixture-model',base_url='https://api.deepseek.com/v1',resume=False)
+            with patch.dict(os.environ,{'AI_API_KEY':'TEST-KEY'}):
+                with patch.object(local,'llm_json',side_effect=[copy.deepcopy(self.series),copy.deepcopy(self.base),copy.deepcopy(self.direction)]):
+                    local.run_job(args)
+            bible=local.load(job/'character_bible.json')
+            bible['approved']=True;bible['custom_notes']='User selected this face'
+            local.save(job/'character_bible.json',bible)
+            status=local.load(job/'status.json');status['phase']='manually_reviewed';status['custom_notes']='Never overwrite this approval'
+            local.save(job/'status.json',status)
+            args.resume=True
+            with patch.dict(os.environ,{'AI_API_KEY':'TEST-KEY'}):
+                with patch.object(local,'llm_json') as llm:
+                    local.run_job(args)
+                    llm.assert_not_called()
+            self.assertTrue(local.load(job/'character_bible.json')['approved'])
+            self.assertEqual(local.load(job/'character_bible.json')['custom_notes'],'User selected this face')
+            self.assertEqual(local.load(job/'status.json')['phase'],'manually_reviewed')
+            self.assertEqual(local.load(job/'status.json')['custom_notes'],'Never overwrite this approval')
+            bible['characters'][0]['wardrobe']='New user-approved white outfit'
+            local.save(job/'character_bible.json',bible)
+            with patch.dict(os.environ,{'AI_API_KEY':'TEST-KEY'}):
+                with patch.object(local,'llm_json') as llm:
+                    with self.assertRaisesRegex(local.DirectorError,'服装'):
+                        local.run_job(args)
+                    llm.assert_not_called()
+            self.assertEqual(local.load(job/'character_bible.json')['characters'][0]['wardrobe'],'New user-approved white outfit')
+
+    def test_malformed_generated_episode_does_not_count_as_success_and_resume(self):
+        with tempfile.TemporaryDirectory() as t:
+            source=Path(t)/'source.md';source.write_text('healthy sleeping habits',encoding='utf8')
+            job=Path(t)/'job';args=SimpleNamespace(input=str(source),out=str(job),approve_model_cost=True,
+                model='fixture-model',base_url='https://api.deepseek.com/v1',resume=False)
+            with patch.dict(os.environ,{'AI_API_KEY':'TEST-KEY'}):
+                with patch.object(local,'llm_json',side_effect=[copy.deepcopy(self.series), {'garbled':'broken'}]):
+                    with self.assertRaises(local.DirectorError):local.run_job(args)
+            self.assertTrue((job/'series.json').exists())
+            self.assertTrue((job/'episodes/ep01/draft_invalid.json').exists())
+            self.assertFalse((job/'episodes/ep01/plan.json').exists())
+            args.resume=True
+            with patch.dict(os.environ,{'AI_API_KEY':'TEST-KEY'}):
+                with patch.object(local,'llm_json',side_effect=[copy.deepcopy(self.base),copy.deepcopy(self.direction)]) as fn:
+                    local.run_job(args)
+                    self.assertEqual(fn.call_count,2)
+            self.assertTrue((job/'index.html').exists())
+
+    def test_real_length_chinese_article_browser_post_no_http_400(self):
+        import threading
+        from http.server import ThreadingHTTPServer
+        from urllib.parse import urlencode
+        from urllib.request import urlopen, Request
+        import local_ui
+        with tempfile.TemporaryDirectory() as t:
+            sample='# 不要浪费精力\n'+('研究、注意力与睡眠：每天都要合理安排。\n'*1100)
+            self.assertGreater(len(urlencode({'slug':'energy2026','article':sample}).encode()),130000)
+            with patch.object(local_ui,'JOBS',Path(t)):
+                server=ThreadingHTTPServer(('127.0.0.1',0),local_ui.App)
+                server.daemon_threads=True
+                server.log_message=lambda *args,**kwargs:None
+                th=threading.Thread(target=server.serve_forever,daemon=True);th.start()
+                try:
+                    port=server.server_port
+                    data=urlencode({'slug':'energy2026','article':sample}).encode('utf8')
+                    req=Request(f'http://127.0.0.1:{port}/prepare',data=data,
+                                headers={'Content-Type':'application/x-www-form-urlencoded','Origin':f'http://127.0.0.1:{port}'})
+                    with urlopen(req,timeout=8) as response:
+                        self.assertEqual(response.status,200)
+                    self.assertEqual((Path(t)/'energy2026'/'source.md').read_text(encoding='utf8'),sample)
+                finally:
+                    server.shutdown();server.server_close();th.join(timeout=3)
 
 if __name__=='__main__':
     import unittest
