@@ -66,6 +66,10 @@ def audit_plan(plan):
         contract = sh.get('continuity_state')
         if contract is None:
             continue
+        if not isinstance(contract, dict):
+            add('CONTINUITY_MANIFEST_INVALID', 'blocker', [sid],
+                'continuity_state 必须是对象。', '填入 props_before、prop_moves、props_after。')
+            continue
         before = contract.get('props_before', {})
         moves = contract.get('prop_moves', [])
         after = contract.get('props_after', {})
