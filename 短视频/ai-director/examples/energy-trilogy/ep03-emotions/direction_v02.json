@@ -820,202 +820,103 @@
       "shot_id": "S09",
       "review_status": "reviewed",
       "objective": {
-        "emotion": "比较焦虑→自我觉察→平静掌控",
-        "observable_turn": "出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
-        "visual_focus": "研究来源 · 1/2"
+        "emotion": "可信、简洁、不打断结尾",
+        "observable_turn": "主题收束后切换至一张静态来源卡，展示3项核心研究，再结束",
+        "visual_focus": "3条作者年份+期刊缩写+研究类型，页脚提示完整论文在简介"
       },
       "staging": {
-        "blocking": "使用2D后期图形/来源卡表现，不依赖演员",
-        "gaze": "优先保证数值与来源卡可阅读",
+        "blocking": "静态2D排版，禁止视频模型生成文字",
+        "gaze": "视线从顶部『主要研究来源』按顺序阅读三个条目",
         "props": [],
         "spatial_constraints": [
-          "竖屏安全区内全要素可见",
-          "不同镜头采用同系列统一视觉语法"
+          "垂直9:16中央安全区，字体需足够大",
+          "来源卡无文字滚动，不应过度装饰"
         ]
       },
       "performance": {
-        "motivation": "建立可信可核对出处，限制适用范围",
-        "facial_microaction": "无真人表演；用图形运动表现注意力与节奏",
-        "body_microaction": "无真人身体动作；以易读动画安排替代",
-        "ending_pose": "数据卡保持最终结果至少1秒"
+        "motivation": "让观众知道有可追溯证据，但不挤占主要内容",
+        "facial_microaction": "本镜头无演员；采用清晰文字层",
+        "body_microaction": "本镜头无演员；采用静态构图",
+        "ending_pose": "静止卡片在5秒结束后直接结束"
       },
       "beats": [
         {
           "from_s": 0,
-          "to_s": 4,
-          "visible_change": "建立当前镜头：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
-          "performance": "无演员，数字/卡片按时间出现",
-          "camera": "按发表年份与研究方法三行，屏幕文字限制为短标签",
-          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+          "to_s": 0.2,
+          "visible_change": "一张完整引用卡直接切入，不逐条闪现以免阅读负担",
+          "performance": "无真人",
+          "camera": "fixed static card",
+          "sound": "音乐由片尾自然延续，减小至不抢阅读"
         },
         {
-          "from_s": 4,
-          "to_s": 10,
-          "visible_change": "画面信息转折：研究来源 · 1/2；结束态准备切镜",
-          "performance": "无演员，数字/卡片按时间出现",
-          "camera": "按发表年份与研究方法三行，屏幕文字限制为短标签",
-          "sound": "声音轻缓并留出阅读空白"
+          "from_s": 0.2,
+          "to_s": 5,
+          "visible_change": "三条核心出处始终完整可读，页脚『完整论文见视频简介』固定",
+          "performance": "无真人",
+          "camera": "fixed static card; no pan and zoom",
+          "sound": "无旁白，BGM逐渐淡出"
         }
       ],
       "camera": {
-        "start_frame": "开场构图：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
-        "movement": "按发表年份与研究方法三行，屏幕文字限制为短标签",
-        "move_trigger_s": 4,
-        "end_frame": "结尾镜头锁定重要信息：研究来源 · 1/2",
-        "lens_feel": "无透视的高清2D动效",
-        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
+        "start_frame": "完整单张来源卡，一屏三条",
+        "movement": "static, absolutely no motion",
+        "move_trigger_s": 0,
+        "end_frame": "5秒完整停留，最后直接结束",
+        "lens_feel": "flat 2D vector compositing",
+        "reason": "来源是信息展示，不要以运镜削弱阅读"
       },
       "art": {
-        "environment": "导演画面：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
-        "light_source": "平面清晰高对比色背景",
+        "environment": "独立统一品牌风格研究来源片尾卡",
+        "light_source": "2D静态背景无光源变化",
         "color_path": "coherent muted blue/gray moving toward warm light",
-        "texture": "矢量线条、清晰文本、平滑简洁动画"
+        "texture": "清晰矢量文字、高对比背景、不使用复杂纹理"
       },
       "sound": {
-        "ambient": "自然场景氛围，资料卡近乎静音",
-        "music": "静态，字清楚且保留阅读停顿",
-        "effects": [
-          "轻微动作拟音；来源卡减小音量"
-        ],
-        "voiceover_note": "旁白原句：这一集依据社交平台使用实验、聚光灯效应研究，以及反刍思维综述。"
+        "ambient": "none",
+        "music": "承接上一镜，5秒内自然淡出",
+        "effects": [],
+        "voiceover_note": "无旁白，只显示静态文字"
       },
       "continuity": {
-        "start_state": "镜头开头：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
-        "end_state": "字幕所述信息完成表达：研究来源 · 1/2",
+        "start_state": "承接上一镜的结尾构图，硬切来源卡",
+        "end_state": "5秒结束后结束本集，下一集不是直接拼接同画面",
         "locked_entities": [],
         "reference_assets": []
       },
       "graphics": {
-        "treatment": "出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
+        "treatment": "一张5秒静态研究来源图：\n1. Allcott 等 (2020) · American Econ Rev · 随机试验\n2. Hunt 等 (2018) · J Soc Clin Psychol · 随机试验\n3. Kjærvik & Bushman (2024) · Clin Psychol Rev · 荟萃分析\n页脚：完整来源/DOI见视频简介；仅代表所引用研究，不等于所有观点已证实。",
         "claims_used": [
           "S10",
           "S11",
-          "S12"
-        ],
-        "labels": [
-          "研究来源 · 1/2"
-        ],
-        "motion": "按发表年份与研究方法三行，屏幕文字限制为短标签",
-        "context_note": "证据与口径：小幅幸福感改善，同时减少时事知识；不等于所有平台通用；FB/Instagram/Snapchat实验，不能直接套用抖音；衣着与社交场景实验，不是所有现实评价的统一折扣系数"
-      },
-      "generation": {
-        "route": "post_production",
-        "clip_type": "not_a_video_model_job",
-        "negative_constraints": [
-          "无虚构数字、无小字与伪研究截图"
-        ],
-        "reference_roles": [],
-        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
-      },
-      "qa": {
-        "acceptance_tests": [
-          "字幕准确且未被底栏遮挡",
-          "场景/镜头活动可在镜头时长完成",
-          "定量信息有研究对象及限制说明",
-          "片尾每条出处显示作者、年份、期刊、研究类型",
-          "完整 DOI 见视频说明"
-        ],
-        "issues": [],
-        "human_approved": false
-      }
-    },
-    {
-      "shot_id": "S10",
-      "review_status": "reviewed",
-      "objective": {
-        "emotion": "比较焦虑→自我觉察→平静掌控",
-        "observable_turn": "出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
-        "visual_focus": "研究来源 · 2/2"
-      },
-      "staging": {
-        "blocking": "使用2D后期图形/来源卡表现，不依赖演员",
-        "gaze": "优先保证数值与来源卡可阅读",
-        "props": [],
-        "spatial_constraints": [
-          "竖屏安全区内全要素可见",
-          "不同镜头采用同系列统一视觉语法"
-        ]
-      },
-      "performance": {
-        "motivation": "建立可信可核对出处，限制适用范围",
-        "facial_microaction": "无真人表演；用图形运动表现注意力与节奏",
-        "body_microaction": "无真人身体动作；以易读动画安排替代",
-        "ending_pose": "数据卡保持最终结果至少1秒"
-      },
-      "beats": [
-        {
-          "from_s": 0,
-          "to_s": 4,
-          "visible_change": "建立当前镜头：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
-          "performance": "无演员，数字/卡片按时间出现",
-          "camera": "重点标注『研究是群体平均，不替代个人帮助』",
-          "sound": "旁白主导，音乐-20dB左右预留语音空间"
-        },
-        {
-          "from_s": 4,
-          "to_s": 10,
-          "visible_change": "画面信息转折：研究来源 · 2/2；结束态准备切镜",
-          "performance": "无演员，数字/卡片按时间出现",
-          "camera": "重点标注『研究是群体平均，不替代个人帮助』",
-          "sound": "声音轻缓并留出阅读空白"
-        }
-      ],
-      "camera": {
-        "start_frame": "开场构图：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
-        "movement": "重点标注『研究是群体平均，不替代个人帮助』",
-        "move_trigger_s": 4,
-        "end_frame": "结尾镜头锁定重要信息：研究来源 · 2/2",
-        "lens_feel": "无透视的高清2D动效",
-        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
-      },
-      "art": {
-        "environment": "导演画面：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
-        "light_source": "平面清晰高对比色背景",
-        "color_path": "coherent muted blue/gray moving toward warm light",
-        "texture": "矢量线条、清晰文本、平滑简洁动画"
-      },
-      "sound": {
-        "ambient": "自然场景氛围，资料卡近乎静音",
-        "music": "最后两秒安静，音乐自然淡出",
-        "effects": [
-          "轻微动作拟音；来源卡减小音量"
-        ],
-        "voiceover_note": "旁白原句：还有反刍思维的综述和一份一百五十四项研究的愤怒管理汇总。具体论文链接都放在简介。"
-      },
-      "continuity": {
-        "start_state": "镜头开头：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
-        "end_state": "字幕所述信息完成表达：研究来源 · 2/2",
-        "locked_entities": [],
-        "reference_assets": []
-      },
-      "graphics": {
-        "treatment": "出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
-        "claims_used": [
-          "S13",
           "S14"
         ],
         "labels": [
-          "研究来源 · 2/2"
+          "Allcott 等 2020 · American Econ Rev · 随机试验",
+          "Hunt 等 2018 · J Soc Clin Psychol · 随机试验",
+          "Kjærvik & Bushman 2024 · Clin Psychol Rev · 荟萃分析"
         ],
-        "motion": "重点标注『研究是群体平均，不替代个人帮助』",
-        "context_note": "证据与口径：动手做事是实践建议，不能称为经过该综述直接验证的特效疗法；结论针对即时愤怒管理，不代表跑步不利于长期心理健康"
+        "motion": "静态，无滚动、不自动切换",
+        "context_note": "只代表所选研究；所有引用的DOI、适用限制和其余研究都保存在本集description.md。未核对全文细节不得标记verified。"
       },
       "generation": {
         "route": "post_production",
         "clip_type": "not_a_video_model_job",
         "negative_constraints": [
-          "无虚构数字、无小字与伪研究截图"
+          "不用AI视频模型生成汉字/数字",
+          "不可用精细小字放满屏幕",
+          "不可用权威图标或假研究截图"
         ],
         "reference_roles": [],
-        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
+        "limits": "图片卡+后期静态叠加，最长5秒；视频模型不参与此镜"
       },
       "qa": {
         "acceptance_tests": [
-          "字幕准确且未被底栏遮挡",
-          "场景/镜头活动可在镜头时长完成",
-          "定量信息有研究对象及限制说明",
-          "片尾每条出处显示作者、年份、期刊、研究类型",
-          "完整 DOI 见视频说明"
+          "总时长5秒，单张来源图",
+          "有且只有2–3条来源",
+          "姓名+年份+期刊缩写+研究类型清晰可读",
+          "完整引用保存在视频简介",
+          "无旁白",
+          "没有虚构文献或暗示所有数据已验证"
         ],
         "issues": [],
         "human_approved": false
