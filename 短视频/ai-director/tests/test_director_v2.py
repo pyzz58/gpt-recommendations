@@ -103,5 +103,44 @@ class ProfessionalDirectorTests(unittest.TestCase):
         self.assertIn('不要更改模型',task)
         self.assertIn('不触发付费',task) if '不触发付费' in task else self.assertIn('不调用付费',task)
 
+
+    def test_long_script_compact_credit_examples(self):
+        for episode in ("ep01-attention","ep02-sleep","ep03-emotions"):
+            folder=ROOT/"examples"/"energy-trilogy"/episode
+            base=v2.read_json(folder/"plan.json")
+            directions=v2.read_json(folder/"direction_v02.json")
+            errors,warnings=v2.validate(base,directions)
+            self.assertEqual(errors, [], f"{episode}: {errors}")
+            card=base["shots"][-1]
+            self.assertEqual(card["purpose"],"sources")
+            self.assertEqual(card["visual_type"],"text_card")
+            self.assertEqual(card["duration"],5)
+            self.assertEqual(card["narration"],"")
+            self.assertGreaterEqual(len(card["claim_ids"]),2)
+            self.assertLessEqual(len(card["claim_ids"]),3)
+            self.assertEqual(len(base["shots"]),9)
+            self.assertTrue(any("PUBLISH BLOCKED" in w for w in warnings))
+            self.assertFalse(v2.compile_package(base,directions)["publishing_allowed"])
+
+    def test_credits_reject_six_seconds_even_with_matching_timeline(self):
+        folder=ROOT/"examples"/"energy-trilogy"/"ep01-attention"
+        base=v2.read_json(folder/"plan.json")
+        directions=v2.read_json(folder/"direction_v02.json")
+        base["shots"][-1]["duration"]=6
+        base["duration"]+=1
+        directions["shots"][-1]["beats"][-1]["to_s"]=6
+        errors,_=v2.validate(base,directions)
+        self.assertTrue(any("source credit card must be 5 seconds" in e for e in errors))
+
+    def test_credits_reject_more_than_three_sources(self):
+        folder=ROOT/"examples"/"energy-trilogy"/"ep01-attention"
+        base=v2.read_json(folder/"plan.json")
+        directions=v2.read_json(folder/"direction_v02.json")
+        extra="S02"
+        base["shots"][-1]["claim_ids"].append(extra)
+        directions["shots"][-1]["graphics"]["claims_used"].append(extra)
+        errors,_=v2.validate(base,directions)
+        self.assertTrue(any("show 2-3 primary research" in e for e in errors))
+
 if __name__=='__main__':
     unittest.main()
