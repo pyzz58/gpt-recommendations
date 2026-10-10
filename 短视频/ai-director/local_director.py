@@ -193,7 +193,7 @@ def llm_json(*, system, user, model, url, key, timeout=160, max_tokens=16384, us
         raise DirectorError("模型地址必须为HTTPS，或明确的本机 localhost 服务")
     endpoint = url.rstrip("/") + "/chat/completions"
     payload = json.dumps({"model": model, "messages": [
-        {"role": "system", "content": system + "\n必须返回 JSON 对象，不要Markdown或多余说明。"},
+        {"role": "system", "content": system + "\n请只返回一个语法正确的JSON对象。字段名和字符串使用双引号，不要尾逗号、注释、Markdown代码围栏或任何解释文字。JSON示例：{\"ok\":true}。"},
         {"role": "user", "content": user}], "temperature": 0.3, "max_tokens": max_tokens,
         "response_format": {"type": "json_object"}}).encode("utf-8")
     request = urllib.request.Request(endpoint, data=payload,
@@ -216,6 +216,7 @@ def llm_json(*, system, user, model, url, key, timeout=160, max_tokens=16384, us
         content = item["message"]["content"]
         if not content:
             raise RetryableLLMError("LLM JSON模式返回空内容；仅在预算足够且显式设置 --max-retries 时重试")
+        original_content = content
         content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content.strip())
         try:
             parsed = json.loads(content)
@@ -224,7 +225,7 @@ def llm_json(*, system, user, model, url, key, timeout=160, max_tokens=16384, us
             # under the current local job; never print the response or API key.
             # Create-only prevents an automatic retry from destroying evidence.
             if invalid_response_path is not None:
-                create_once(invalid_response_path, content)
+                create_once(invalid_response_path, original_content)
             raise RetryableLLMError(
                 f"模型返回非法JSON（第{exc.lineno}行第{exc.colno}列：{exc.msg}；"
                 f"响应长度{len(content)}字符）。已保留本地诊断文件（如果设置了诊断路径）；"
