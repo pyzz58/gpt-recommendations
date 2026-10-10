@@ -3,3 +3,4 @@ __pycache__/
 jobs/
 .env
 .DS_Store
+.api_usage.lock
