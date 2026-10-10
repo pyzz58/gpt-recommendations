@@ -1,5 +1,23 @@
 # 短视频
 
+## v0.2：专业导演提示词增强
+
+- [完整指南：专业导演 v0.2](./ai-director/V02_GUIDE.md) — 适合没有编程经验的用户
+- [53秒戒烟视频 · 新旧导演分镜对比](./ai-director/examples/quit-smoking/preview_v02.html)
+- [逐秒导演合同 JSON](./ai-director/examples/quit-smoking/direction_v02.json)
+- [Wan / Seedance 视频镜头 Prompt 与后期图形制作单](./ai-director/examples/quit-smoking/prompts_v02.json)
+
+v0.2 强化：镜头目的、人物走位、微表情与动作、摄影开始与停止时刻、灯光色调、音效、连续性、视频模型差异与可审查验收标准。尚未生成真实视频；健康研究数字仍待来源核验。
+
+**专业提示词参考项目**：
+[sd2prompt](https://github.com/growgami/sd2prompt) ·
+[visual-skills](https://github.com/smixs/visual-skills) ·
+[AI Cinematic Pipeline](https://github.com/billpar/ai-cinematic-pipeline) ·
+[video-prompt-skill](https://github.com/liqi21cn/video-prompt-skill)。
+
+---
+
+
 ## 已启动的实现项目：AI 短视频导演 v0.1
 
 - **[AI Director 源代码与运行说明](./ai-director/README.md)**：可运行的中文文案 → 导演制作计划 → Wan/Seedance Prompt → HTML 分镜预演。
