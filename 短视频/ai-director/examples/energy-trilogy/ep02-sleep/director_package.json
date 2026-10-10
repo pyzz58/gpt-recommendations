@@ -1,0 +1,544 @@
+{
+  "project": "AI Short Video Director v0.2 long-script 3-part experiment",
+  "series": "不要浪费精力",
+  "episode": "中",
+  "title": "每天睡六小时够了？大脑可能并不这么想",
+  "duration_s": 91,
+  "aspect_ratio": "9:16",
+  "platform": "douyin",
+  "targetEmotion": "自信误判→数据惊讶→温和修复",
+  "original_items": [
+    2,
+    3,
+    4,
+    8,
+    11
+  ],
+  "claims_policy": {
+    "risk_domain": "health_and_psychology",
+    "evidence_review_required": true,
+    "publication_approved": false,
+    "numeric_methodology": "observational correlation vs randomized effect must be distinguished"
+  },
+  "visual_bible": {
+    "camera": "restrained documentary, emotion-motivated motion",
+    "color": "coherent muted blue/gray moving toward warm light",
+    "subject": "same ordinary Chinese office worker if visible, not a real person likeness",
+    "graphics": "remotion 2D; all exact writing postproduction",
+    "sound": "mandarin narration center, restrained underscore, sourced music only"
+  },
+  "shots": [
+    {
+      "id": "ep02-sleep-S01",
+      "start_s": 0,
+      "duration_s": 6,
+      "end_s": 6,
+      "phase": "hook",
+      "narration": "很多人最危险的一句自我安慰，是：我每天睡六小时就够了。",
+      "visual_type": "ai_video",
+      "scene_action": "主角夜里坐在电脑前，咖啡杯已空；墙钟凌晨，但数字由后期叠加",
+      "camera_direction": "MCU左侧三分位，眼皮微重，右手还握着鼠标，动作刻意放慢",
+      "art_audio": "蓝色桌灯与暗房；低频鼓点，按键回声",
+      "on_screen_text": "「六小时，够了？」",
+      "source_ids": [],
+      "director_intent": "制造可共鸣的疑问",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 3,
+          "visible_action": "建立当前镜头：主角夜里坐在电脑前，咖啡杯已空；墙钟凌晨，但数字由后期叠加",
+          "camera": "MCU左侧三分位，眼皮微重，右手还握着鼠标，动作刻意放慢",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 3,
+          "to_s": 6,
+          "visible_action": "画面信息转折：「六小时，够了？」；结束态准备切镜",
+          "camera": "MCU左侧三分位，眼皮微重，右手还握着鼠标，动作刻意放慢",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头6秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：主角夜里坐在电脑前，咖啡杯已空；墙钟凌晨，但数字由后期叠加。导演目标：很多人最危险的一句自我安慰，是：我每天睡六小时就够了。。摄影：MCU左侧三分位，眼皮微重，右手还握着鼠标，动作刻意放慢。美术与声音交接：蓝色桌灯与暗房；低频鼓点，按键回声。3秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep02-sleep-S02",
+      "start_s": 6,
+      "duration_s": 11,
+      "end_s": 17,
+      "phase": "evidence",
+      "narration": "一项实验让成年人连续十四天，每晚在床六小时。结果是，注意力任务表现不断下滑。",
+      "visual_type": "data_graphic",
+      "scene_action": "十四格日历逐一被涂暗；同屏折线仅显示趋势，不捏造每日实际分值",
+      "camera_direction": "上半屏14天日历，下半屏任务表现向下的示意线，注「趋势示意」",
+      "art_audio": "干净米白学术图表转暗蓝；木质时钟声",
+      "on_screen_text": "14天×每晚在床6小时",
+      "source_ids": [
+        "S05"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 5,
+          "visible_action": "建立当前镜头：十四格日历逐一被涂暗；同屏折线仅显示趋势，不捏造每日实际分值",
+          "camera": "上半屏14天日历，下半屏任务表现向下的示意线，注「趋势示意」",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 5,
+          "to_s": 11,
+          "visible_action": "画面信息转折：14天×每晚在床6小时；结束态准备切镜",
+          "camera": "上半屏14天日历，下半屏任务表现向下的示意线，注「趋势示意」",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：十四格日历逐一被涂暗；同屏折线仅显示趋势，不捏造每日实际分值。时间11秒，前5秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；上半屏14天日历，下半屏任务表现向下的示意线，注「趋势示意」。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep02-sleep-S03",
+      "start_s": 17,
+      "duration_s": 8,
+      "end_s": 25,
+      "phase": "evidence",
+      "narration": "麻烦的是，他们主观觉得困的程度，并没有跟着表现一直恶化。",
+      "visual_type": "ai_video",
+      "scene_action": "同一个人在清晨拿起杯子，自觉精神尚可，却在简单表格里反复找不到要点",
+      "camera_direction": "先面部平静的特写，再移到两只手在桌面停顿，避免演成疾病",
+      "art_audio": "晨光明亮但略失焦；短暂静音凸显『感觉不到』",
+      "on_screen_text": "感觉不困 ≠ 表现没下降",
+      "source_ids": [
+        "S05"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 3,
+          "visible_action": "建立当前镜头：同一个人在清晨拿起杯子，自觉精神尚可，却在简单表格里反复找不到要点",
+          "camera": "先面部平静的特写，再移到两只手在桌面停顿，避免演成疾病",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 3,
+          "to_s": 8,
+          "visible_action": "画面信息转折：感觉不困 ≠ 表现没下降；结束态准备切镜",
+          "camera": "先面部平静的特写，再移到两只手在桌面停顿，避免演成疾病",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头8秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：同一个人在清晨拿起杯子，自觉精神尚可，却在简单表格里反复找不到要点。导演目标：麻烦的是，他们主观觉得困的程度，并没有跟着表现一直恶化。。摄影：先面部平静的特写，再移到两只手在桌面停顿，避免演成疾病。美术与声音交接：晨光明亮但略失焦；短暂静音凸显『感觉不到』。3秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep02-sleep-S04",
+      "start_s": 25,
+      "duration_s": 11,
+      "end_s": 36,
+      "phase": "evidence",
+      "narration": "咖啡也不能随便喝。二十四项研究的汇总发现，咖啡因平均与总睡眠时间减少四十五分钟有关。",
+      "visual_type": "data_graphic",
+      "scene_action": "24项研究→合并结果→45分钟，标出荟萃分析的平均效应，拒绝“一杯就少睡45分钟”",
+      "camera_direction": "大数字从0滚至45，单位分钟；下方出现「不同剂量与时间，影响不同」",
+      "art_audio": "铜绿色咖啡杯图标，数值点亮同时伴随轻瓷杯声",
+      "on_screen_text": "24项研究 · 平均少睡45分钟",
+      "source_ids": [
+        "S06"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 5,
+          "visible_action": "建立当前镜头：24项研究→合并结果→45分钟，标出荟萃分析的平均效应，拒绝“一杯就少睡45分钟”",
+          "camera": "大数字从0滚至45，单位分钟",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 5,
+          "to_s": 11,
+          "visible_action": "画面信息转折：24项研究 · 平均少睡45分钟；结束态准备切镜",
+          "camera": "下方出现「不同剂量与时间，影响不同」",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：24项研究→合并结果→45分钟，标出荟萃分析的平均效应，拒绝“一杯就少睡45分钟”。时间11秒，前5秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；大数字从0滚至45，单位分钟；下方出现「不同剂量与时间，影响不同」。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep02-sleep-S05",
+      "start_s": 36,
+      "duration_s": 10,
+      "end_s": 46,
+      "phase": "evidence",
+      "narration": "作息也重要。一项对六十一名大学生的跟踪发现，时间越不规律，生物钟就越晚。",
+      "visual_type": "motion_graphic",
+      "scene_action": "两条入睡/起床作息带，一条稳定一条错动；切研究的61人/30天说明卡",
+      "camera_direction": "时间带左右滑动体现规律与不规律，避免说研究证明因果",
+      "art_audio": "渐变深蓝到紫；轻柔节拍不让人焦虑",
+      "on_screen_text": "61名大学生 · 30天观察",
+      "source_ids": [
+        "S07"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：两条入睡/起床作息带，一条稳定一条错动；切研究的61人/30天说明卡",
+          "camera": "时间带左右滑动体现规律与不规律，避免说研究证明因果",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_action": "画面信息转折：61名大学生 · 30天观察；结束态准备切镜",
+          "camera": "时间带左右滑动体现规律与不规律，避免说研究证明因果",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：两条入睡/起床作息带，一条稳定一条错动；切研究的61人/30天说明卡。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；时间带左右滑动体现规律与不规律，避免说研究证明因果。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep02-sleep-S06",
+      "start_s": 46,
+      "duration_s": 9,
+      "end_s": 55,
+      "phase": "evidence",
+      "narration": "睡前发光屏幕的研究还发现：与读纸书比，使用发光阅读器更容易推迟入睡和生物钟。",
+      "visual_type": "ai_video",
+      "scene_action": "同一个人准备睡觉，先把发光阅读器调暗放在床头，再拿起纸书",
+      "camera_direction": "固定机位，手完整可见；不能出现不可能的两个同一人",
+      "art_audio": "床头暖灯，读书翻页声；屏幕蓝光渐弱，但效果不夸大",
+      "on_screen_text": "发光阅读器 ≠ 纸书",
+      "source_ids": [
+        "S08"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：同一个人准备睡觉，先把发光阅读器调暗放在床头，再拿起纸书",
+          "camera": "固定机位，手完整可见",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_action": "画面信息转折：发光阅读器 ≠ 纸书；结束态准备切镜",
+          "camera": "不能出现不可能的两个同一人",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头9秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：同一个人准备睡觉，先把发光阅读器调暗放在床头，再拿起纸书。导演目标：睡前发光屏幕的研究还发现：与读纸书比，使用发光阅读器更容易推迟入睡和生物钟。。摄影：固定机位，手完整可见；不能出现不可能的两个同一人。美术与声音交接：床头暖灯，读书翻页声；屏幕蓝光渐弱，但效果不夸大。4秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep02-sleep-S07",
+      "start_s": 55,
+      "duration_s": 8,
+      "end_s": 63,
+      "phase": "evidence",
+      "narration": "下午困时，有一个小试验支持十分钟短睡。但它不是万能方法。",
+      "visual_type": "data_graphic",
+      "scene_action": "24名年轻人午睡实验：5/10/20/30分钟条件，突出10分钟后部分测试改善",
+      "camera_direction": "四段胶囊时间条；没有夸张万能能量条；标注睡眠受限样本",
+      "art_audio": "软灰背景淡黄提示；一声温和闹钟",
+      "on_screen_text": "24人实验 · 短睡10分钟",
+      "source_ids": [
+        "S09"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 3,
+          "visible_action": "建立当前镜头：24名年轻人午睡实验：5/10/20/30分钟条件，突出10分钟后部分测试改善",
+          "camera": "四段胶囊时间条",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 3,
+          "to_s": 8,
+          "visible_action": "画面信息转折：24人实验 · 短睡10分钟；结束态准备切镜",
+          "camera": "标注睡眠受限样本",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：24名年轻人午睡实验：5/10/20/30分钟条件，突出10分钟后部分测试改善。时间8秒，前3秒建立比较对象及研究类型，后5秒将重点信息从弱对比升级为高对比但不过分夸张；四段胶囊时间条；没有夸张万能能量条；标注睡眠受限样本。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep02-sleep-S08",
+      "start_s": 63,
+      "duration_s": 8,
+      "end_s": 71,
+      "phase": "payoff",
+      "narration": "比补救更重要的是今晚：早一点睡，起床尽量规律，睡前给屏幕留个距离。",
+      "visual_type": "ai_video",
+      "scene_action": "卧室主角放下手机，调暗床头灯；窗边晨光的下一帧呼应上一集",
+      "camera_direction": "静态侧拍，中景；缓慢合上书，手指离开灯，动作有明显终点",
+      "art_audio": "暖黄转低照度；BGM减弱，保留真实室内安静",
+      "on_screen_text": "从今晚开始",
+      "source_ids": [],
+      "director_intent": "给出行动闭环",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 3,
+          "visible_action": "建立当前镜头：卧室主角放下手机，调暗床头灯；窗边晨光的下一帧呼应上一集",
+          "camera": "静态侧拍，中景",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 3,
+          "to_s": 8,
+          "visible_action": "画面信息转折：从今晚开始；结束态准备切镜",
+          "camera": "缓慢合上书，手指离开灯，动作有明显终点",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头8秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：卧室主角放下手机，调暗床头灯；窗边晨光的下一帧呼应上一集。导演目标：比补救更重要的是今晚：早一点睡，起床尽量规律，睡前给屏幕留个距离。。摄影：静态侧拍，中景；缓慢合上书，手指离开灯，动作有明显终点。美术与声音交接：暖黄转低照度；BGM减弱，保留真实室内安静。3秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep02-sleep-S09",
+      "start_s": 71,
+      "duration_s": 10,
+      "end_s": 81,
+      "phase": "sources",
+      "narration": "研究出处第一组：睡眠限制试验、咖啡因荟萃分析和作息规律观察研究。",
+      "visual_type": "source_card",
+      "scene_action": "出处卡一：Van Dongen 2003（Sleep）；Gardiner 2023（Sleep Medicine Reviews）；Phillips 2017（Scientific Reports）",
+      "camera_direction": "3条出处分层排版，强调实验/荟萃/观察的区别；避开抖音底部控件",
+      "art_audio": "静态2D面板，镜头不动；配乐压低至可阅读",
+      "on_screen_text": "研究来源 · 1/2",
+      "source_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "director_intent": "建立可信可核对出处，限制适用范围",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：出处卡一：Van Dongen 2003（Sleep）；Gardiner 2023（Sleep Medicine Reviews）；Phillips 2017（Scientific Reports）",
+          "camera": "3条出处分层排版，强调实验/荟萃/观察的区别",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_action": "画面信息转折：研究来源 · 1/2；结束态准备切镜",
+          "camera": "避开抖音底部控件",
+          "sound": "声音轻缓并留出阅读空白"
+        }
+      ],
+      "generation_route": "source_card_compositing",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：出处卡一：Van Dongen 2003（Sleep）；Gardiner 2023（Sleep Medicine Reviews）；Phillips 2017（Scientific Reports）。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；3条出处分层排版，强调实验/荟萃/观察的区别；避开抖音底部控件。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明",
+        "片尾每条出处显示作者、年份、期刊、研究类型",
+        "完整 DOI 见视频说明"
+      ]
+    },
+    {
+      "id": "ep02-sleep-S10",
+      "start_s": 81,
+      "duration_s": 10,
+      "end_s": 91,
+      "phase": "sources",
+      "narration": "第二组包括发光阅读器实验和午睡时长试验。记住，研究环境未必等于每个人的日常。",
+      "visual_type": "source_card",
+      "scene_action": "出处卡二：Chang 2015（PNAS）；Brooks 2006（Sleep）；限制说明：受试人群与真实生活有差别",
+      "camera_direction": "页脚『完整 DOI 见简介』，字体不小于常规正文字号的70%",
+      "art_audio": "最后2秒安静供观众读；避开字幕遮挡",
+      "on_screen_text": "研究来源 · 2/2",
+      "source_ids": [
+        "S08",
+        "S09"
+      ],
+      "director_intent": "建立可信可核对出处，限制适用范围",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：出处卡二：Chang 2015（PNAS）；Brooks 2006（Sleep）；限制说明：受试人群与真实生活有差别",
+          "camera": "页脚『完整 DOI 见简介』，字体不小于常规正文字号的70%",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_action": "画面信息转折：研究来源 · 2/2；结束态准备切镜",
+          "camera": "页脚『完整 DOI 见简介』，字体不小于常规正文字号的70%",
+          "sound": "声音轻缓并留出阅读空白"
+        }
+      ],
+      "generation_route": "source_card_compositing",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：出处卡二：Chang 2015（PNAS）；Brooks 2006（Sleep）；限制说明：受试人群与真实生活有差别。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；页脚『完整 DOI 见简介』，字体不小于常规正文字号的70%。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明",
+        "片尾每条出处显示作者、年份、期刊、研究类型",
+        "完整 DOI 见视频说明"
+      ]
+    }
+  ],
+  "source_cards": [
+    {
+      "a": "Van Dongen 等",
+      "y": 2003,
+      "j": "Sleep",
+      "design": "48名健康成年人，14天睡眠限制试验",
+      "doi": "10.1093/sleep/26.2.117",
+      "scope": "6小时是每晚在床时间；实验中的注意力表现不代表每个人",
+      "id": "S05",
+      "url": "https://doi.org/10.1093/sleep/26.2.117",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    },
+    {
+      "a": "Gardiner 等",
+      "y": 2023,
+      "j": "Sleep Medicine Reviews",
+      "design": "24项研究的系统综述/荟萃",
+      "doi": "10.1016/j.smrv.2023.101764",
+      "scope": "平均少睡45分钟，不意味着喝一杯咖啡就少睡45分钟",
+      "id": "S06",
+      "url": "https://doi.org/10.1016/j.smrv.2023.101764",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    },
+    {
+      "a": "Phillips 等",
+      "y": 2017,
+      "j": "Scientific Reports",
+      "design": "61名大学生30天观察",
+      "doi": "10.1038/s41598-017-03171-4",
+      "scope": "关联研究，不能证明固定起床必然改善学业",
+      "id": "S07",
+      "url": "https://doi.org/10.1038/s41598-017-03171-4",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    },
+    {
+      "a": "Chang 等",
+      "y": 2015,
+      "j": "PNAS",
+      "design": "受控发光阅读器交叉实验",
+      "doi": "10.1073/pnas.1418490112",
+      "scope": "实验中的电子阅读器和光照设置，不等于任何手机使用场景",
+      "id": "S08",
+      "url": "https://doi.org/10.1073/pnas.1418490112",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    },
+    {
+      "a": "Brooks & Lack",
+      "y": 2006,
+      "j": "Sleep",
+      "design": "24名健康年轻人午睡时长实验",
+      "doi": "10.1093/sleep/29.6.831",
+      "scope": "受试者事先睡眠受限，10分钟实际睡眠不同于闭眼休息",
+      "id": "S09",
+      "url": "https://doi.org/10.1093/sleep/29.6.831",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    }
+  ],
+  "source_credits_duration_s": 20,
+  "video_generated": false
+}
