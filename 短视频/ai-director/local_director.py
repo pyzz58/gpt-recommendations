@@ -279,7 +279,7 @@ def episode_prompt(source, series, index):
     spec = series["episodes"][index]
     guidance = director.SYSTEM_GUIDANCE + "\n" + textfile(SKILLS / "02-episode.md")
     guidance += "\n必须沿用系列给定的人物ID、外形、衣服、visual_bible；没有角色不要强行造真人。"
-    guidance += "\n物理连续性：书、手机及其他道具不得瞬移；每镜明确人物与关键道具起始位置、拿起/移动/放下动作、结束位置。严禁在短镜头中挤入过多动作。新增可选 continuity_state:{props_before:{},prop_moves:[{prop,from,to}],props_after:{}} 以进行机器验证。授权事实未经核查时不能把检查标志设为 true。"
+    guidance += "\n物理连续性：书、手机及其他道具不得瞬移；每镜明确人物与关键道具起始位置、拿起/移动/放下动作、结束位置。严禁在短镜头中挤入过多动作。如需要机器可验证的完整连续性契约，请依据 CONTINUITY_QA.md 使用 continuity_contract(version=1, coverage=complete) 与每镜 props_before/after、actors_before/after、按order排序的 prop_moves/actor_moves；只有追踪全镜头和所有关键资产时才能声明 complete，否则保持普通动作描述交由人工复审，不要造假状态。授权事实未经核查时不能把检查标志设为 true。"
     user = ("完成系列第"+str(index+1)+"集的 v0.1 plan.json。必须完全满足 director.py 的结构。"
             "首尾5秒研究卡仅当有2-3项真实可追溯研究时生成；purpose=sources, text_card, duration=5, narration为空, 使用claim_ids。"
             "所有其余引用留在claims，医疗心理财经类一律 needs_review。"
