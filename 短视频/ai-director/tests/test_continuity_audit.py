@@ -32,6 +32,17 @@ class ContinuityAuditTests(TestCase):
         report=ca.audit_plan(self.simple(True))
         self.assertEqual(report['blockers'],0)
 
+    def test_explicit_pickup_in_prior_shot_carries_prop(self):
+        p=self.simple()
+        p['shots'].insert(1, {'id':'S01b','scene_id':'LOC01',
+                              'action':{'action':'他从沙发扶手拿起手机'}})
+        self.assertEqual(ca.audit_plan(p)['blockers'],0)
+
+    def test_malformed_manifest_is_reported_not_crashed(self):
+        p={'shots':[{'id':'S1','continuity_state':'bad'}],'scenes':[]}
+        r=ca.audit_plan(p)
+        self.assertEqual(r['blockers'],1)
+
     def test_explicit_manifest_any_prop_detects_transfer(self):
         p={'shots':[
             {'id':'S1','continuity_state':{'props_before':{'杯子':'桌面'},'prop_moves':[],'props_after':{'杯子':'桌面'}}},
