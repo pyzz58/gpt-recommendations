@@ -32,6 +32,13 @@
 7. LICENSE_EVIDENCE_MISSING_MUSIC_LICENSE_CHECK：音乐真正选定之后再登记授权来源、证明与状态；计划不等于授权。
 8. LICENSE_EVIDENCE_MISSING_ASSET_LICENSE_CHECK：同样为每一件实际素材保留授权证据；不能把未核验字段改成已核验。
 
+## 首轮实际采纳决定（2026-10-11）
+
+- **直接采用成熟开放标准**：JSON Schema Draft 2020-12。项目已在 `schemas/continuity_contract.schema.json` 保存正式合同结构。开发隔离环境使用成熟库 `python-jsonschema/jsonschema` 校验 Schema 与合成测试，用户 Mac 运行时仍然零安装依赖。
+- **有限借鉴而非引入**：`pytransitions/transitions` 的“显式状态+允许转移”思路和 CineCrew 的稳定资产 ID / 视觉 Bible。为保持项目可携带，最终运行时选用经过离线测试的轻量状态回放器 `continuity_contract.py`；没有声称集成第三方库源码。
+- **已接入流程**：新增合同严格时，`local_director.py audit` 对逐镜头状态回放；在付费下一阶段开始前，如存在 blocker 则阻断。合法场外移动仅转人工 review。
+- **验证边界**：本地回归测试和真实样本的私有离线验证已运行，但 Mac/真实视频阶段必须再验；规则通过不等于心理刻画、演员实际动作、镜头可生成性已验证。
+
 ## 推荐落地顺序（保持现有用户工作不受损）
 
 第一阶段（不用模型费用）：定义统一的状态 Schema，支持各镜头描述道具与人物在镜头前后的确定位置；对同一道具的移动事件逐帧回放，生成错误报告。既有 continuity_audit.py 保留为无依赖后备实现。对真实 13 镜头只生成 plan.proposed.json 候选，不覆盖 plan.json；运行 director.validate + audit 后人工验收。
