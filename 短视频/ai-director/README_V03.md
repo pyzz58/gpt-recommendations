@@ -94,3 +94,15 @@ python3 local_ui.py
 - 未获得用户明确的人民币最高测试金额和实际授权前，不进行任何收费调用；不打包、不下载、不发布。
 
 官方参考：[模型与价格](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/) · [JSON 输出](https://api-docs.deepseek.com/zh-cn/guides/json_mode/) · [错误码](https://api-docs.deepseek.com/zh-cn/quick_start/error_codes/)。
+
+## v0.3 物理连续性离线审查（新增）
+
+已生成的 plan.json 可以免费执行：
+
+```bash
+python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.json
+```
+
+程序在同一集目录写入 `continuity_audit.generated.json` 与 `continuity_repair.generated.md`，不会修改原始 plan。对确认的道具跳跃作阻断、对可能有意的剪辑只提出待核查警告；`run --resume` 在方向稿的付费请求之前检查阻断项。详见 [CONTINUITY_QA.md](CONTINUITY_QA.md)。
+
+**尚未实现**：自动修复所有镜头、真正的视频渲染、人体动作物理模拟以及通用语言语义理解。修订稿应先输出为新的 `plan.proposed.json`，审核后才可替换正式计划；不自动增加付费请求。
