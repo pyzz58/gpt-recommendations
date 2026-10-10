@@ -593,5 +593,62 @@
       "no_narration": true,
       "claims_status": "needs_review"
     }
-  }
+  },
+  "references": [
+    {
+      "claim_id": "S10",
+      "author": "Allcott 等",
+      "year": 2020,
+      "journal": "American Economic Review",
+      "study_type": "Facebook停用四周随机试验",
+      "url": "https://doi.org/10.1257/aer.20190658",
+      "status": "needs_review",
+      "limitation": "小幅幸福感改善，同时减少时事知识；不等于所有平台通用",
+      "verified_in_full": false
+    },
+    {
+      "claim_id": "S11",
+      "author": "Hunt 等",
+      "year": 2018,
+      "journal": "J Social and Clinical Psychology",
+      "study_type": "143名大学生三周随机对照",
+      "url": "https://doi.org/10.1521/jscp.2018.37.10.751",
+      "status": "needs_review",
+      "limitation": "FB/Instagram/Snapchat实验，不能直接套用抖音",
+      "verified_in_full": false
+    },
+    {
+      "claim_id": "S12",
+      "author": "Gilovich 等",
+      "year": 2000,
+      "journal": "J Personality Soc Psychology",
+      "study_type": "聚光灯效应实验研究",
+      "url": "https://doi.org/10.1037/0022-3514.78.2.211",
+      "status": "needs_review",
+      "limitation": "衣着与社交场景实验，不是所有现实评价的统一折扣系数",
+      "verified_in_full": false
+    },
+    {
+      "claim_id": "S13",
+      "author": "Nolen-Hoeksema 等",
+      "year": 2008,
+      "journal": "Perspectives Psych Sci",
+      "study_type": "反刍思维的叙述性综述",
+      "url": "https://doi.org/10.1111/j.1745-6924.2008.00088.x",
+      "status": "needs_review",
+      "limitation": "动手做事是实践建议，不能称为经过该综述直接验证的特效疗法",
+      "verified_in_full": false
+    },
+    {
+      "claim_id": "S14",
+      "author": "Kjærvik & Bushman",
+      "year": 2024,
+      "journal": "Clinical Psychology Review",
+      "study_type": "154项研究荟萃分析",
+      "url": "https://doi.org/10.1016/j.cpr.2024.102414",
+      "status": "needs_review",
+      "limitation": "结论针对即时愤怒管理，不代表跑步不利于长期心理健康",
+      "verified_in_full": false
+    }
+  ]
 }
