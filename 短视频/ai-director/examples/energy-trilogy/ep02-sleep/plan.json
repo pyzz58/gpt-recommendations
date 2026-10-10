@@ -595,5 +595,62 @@
       "no_narration": true,
       "claims_status": "needs_review"
     }
-  }
+  },
+  "references": [
+    {
+      "claim_id": "S05",
+      "author": "Van Dongen 等",
+      "year": 2003,
+      "journal": "Sleep",
+      "study_type": "48名健康成年人，14天睡眠限制试验",
+      "url": "https://doi.org/10.1093/sleep/26.2.117",
+      "status": "needs_review",
+      "limitation": "6小时是每晚在床时间；实验中的注意力表现不代表每个人",
+      "verified_in_full": false
+    },
+    {
+      "claim_id": "S06",
+      "author": "Gardiner 等",
+      "year": 2023,
+      "journal": "Sleep Medicine Reviews",
+      "study_type": "24项研究的系统综述/荟萃",
+      "url": "https://doi.org/10.1016/j.smrv.2023.101764",
+      "status": "needs_review",
+      "limitation": "平均少睡45分钟，不意味着喝一杯咖啡就少睡45分钟",
+      "verified_in_full": false
+    },
+    {
+      "claim_id": "S07",
+      "author": "Phillips 等",
+      "year": 2017,
+      "journal": "Scientific Reports",
+      "study_type": "61名大学生30天观察",
+      "url": "https://doi.org/10.1038/s41598-017-03171-4",
+      "status": "needs_review",
+      "limitation": "关联研究，不能证明固定起床必然改善学业",
+      "verified_in_full": false
+    },
+    {
+      "claim_id": "S08",
+      "author": "Chang 等",
+      "year": 2015,
+      "journal": "PNAS",
+      "study_type": "受控发光阅读器交叉实验",
+      "url": "https://doi.org/10.1073/pnas.1418490112",
+      "status": "needs_review",
+      "limitation": "实验中的电子阅读器和光照设置，不等于任何手机使用场景",
+      "verified_in_full": false
+    },
+    {
+      "claim_id": "S09",
+      "author": "Brooks & Lack",
+      "year": 2006,
+      "journal": "Sleep",
+      "study_type": "24名健康年轻人午睡时长实验",
+      "url": "https://doi.org/10.1093/sleep/29.6.831",
+      "status": "needs_review",
+      "limitation": "受试者事先睡眠受限，10分钟实际睡眠不同于闭眼休息",
+      "verified_in_full": false
+    }
+  ]
 }
