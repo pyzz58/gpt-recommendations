@@ -28,3 +28,12 @@ jobs:
           python director_v2.py validate --base examples/quit-smoking/plan.json --direction examples/quit-smoking/direction_v02.json
           python director_v2.py compile --base examples/quit-smoking/plan.json --direction examples/quit-smoking/direction_v02.json --out /tmp/ai-director-v02-prompts.json
           python director_v2.py preview --base examples/quit-smoking/plan.json --direction examples/quit-smoking/direction_v02.json --out /tmp/ai-director-v02-preview.html
+          # Three-part long-script scenario: validate source-linked credit cards and professional beats
+          for episode in ep01-attention ep02-sleep ep03-emotions; do
+            base="examples/energy-trilogy/$episode/plan.json"
+            direction="examples/energy-trilogy/$episode/direction_v02.json"
+            python director_v2.py validate --base "$base" --direction "$direction"
+            python director_v2.py compile --base "$base" --direction "$direction" --out "/tmp/$episode-prompts.json"
+            python director_v2.py preview --base "$base" --direction "$direction" --out "/tmp/$episode-preview.html"
+          done
+
