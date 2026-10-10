@@ -71,3 +71,12 @@ python3 local_ui.py
 会在Mac浏览器打开 `http://127.0.0.1:8765`：粘贴文章、填英文项目名、点击“保存并生成Codex任务”。文章只在当前Mac保存到 `jobs/<名字>/`，不会上传互联网。之后让本机已连DeepSeek的Codex读取 `CODEX_TASK.md` 并创作，结束执行 `python3 local_director.py review --job jobs/<名字>`。
 
 此网页目前只是本地输入界面，**不是点按钮就全自动做AI导演**。真正自动的分阶段AI处理，需要前述 `run --approve-model-cost` 和可用的API凭据。本机访问页面时不会向外部发起网络请求。
+## v0.3 P0 可靠性修复（2026-10-11）
+
+- **长文输入**：表单接收限额扩大，正文最多45,000字符、UTF-8最多250KB；超限显示错误，不改变原文的首尾空白。用用户真实的27,099字符长文作本地HTTP回归，HTTP 200且文件逐字一致。
+- **二次审片保护**：程序更新 `description.generated.md`、`prompts.generated.json`、`review_status.generated.json`；`description.md`、`prompts.json`、`review_status.json` 若已存在，**不覆盖人工内容**。
+- **续跑保护**：保留 `character_bible.json`、`status.json`；已手动批准的角色或服装与镜头冲突时报告错误，而不是恢复LLM旧稿。请不要手动改 `series.json` 而忽略角色Bible。
+- **文献账本**：来源卡必须有 `plan.references`，每条具备作者、年份、期刊、研究类型、可追溯URL和 `needs_review` 标记；代码并**不能**自动证明论文真实或数字准确。无可靠来源时省略研究卡。
+- **测试**：在原29项基础上增加8项离线回归，37项通过；覆盖三集模拟续跑、研究元数据、服装和色调漂移、手动编辑保护与长文输入。**真实收费LLM和国产视频生成仍未实测。**
+
+本轮仅更新代码、规则和测试，没有制作 ZIP / 下载交付，也不接入收费模型。源文件仍由 GitHub 记录修订。
