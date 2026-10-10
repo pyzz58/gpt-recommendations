@@ -105,3 +105,7 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 - 没有上传用户的真实 `plan.json`、原始文案或任何密钥到公共 GitHub。测试使用合成的情境和原本公开的示例。
 - 已在本地基线运行离线单元测试；需要用户 Mac 上的 `git pull --ff-only` 和 `python3 -m unittest discover -s tests -q` 再确认最新完整版本。
 - 不等于实际视频成功生成、完成导演验收或已经获得素材版权许可。
+
+### 候选稿审查报告不会覆盖原报告
+
+执行 `python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.proposed.json` 时，会写入 `plan.proposed.continuity_audit.generated.json` 和 `plan.proposed.continuity_repair.generated.md`。正式 `plan.json` 的 `continuity_audit.generated.json`、`continuity_repair.generated.md` 不受影响。因此能追溯从首次审查到候选稿的质量变化。
