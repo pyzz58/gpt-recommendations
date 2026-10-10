@@ -1,5 +1,16 @@
 # 短视频
 
+## 已启动的实现项目：AI 短视频导演 v0.1
+
+- **[AI Director 源代码与运行说明](./ai-director/README.md)**：可运行的中文文案 → 导演制作计划 → Wan/Seedance Prompt → HTML 分镜预演。
+- **[Codex 工作规则](./ai-director/AGENTS.md)**：使用当前 Codex + DeepSeek 做创意导演；不需要重新配置模型。
+- **[戒烟测试样例](./ai-director/examples/quit-smoking/plan.json)**：53 秒、8 镜头；保留研究断言与待核验阻断。
+- **[文字分镜预演](./ai-director/examples/quit-smoking/preview.html)**：可下载后用浏览器打开；这不是已经生成的视频。
+
+当前进度：**导演数据结构、样例、模型 Prompt 和验证器已实现；真实视频生成、声音与 Remotion 合成尚未接入。**
+
+---
+
 这个目录专门收集和研究 **AI 短视频生产** 相关的 GitHub 项目，重点不是单纯“文生视频”，而是解决下面这条链路：
 
 ```text
