@@ -3,13 +3,13 @@
   "title": "《不要浪费精力》下集：最消耗你的，可能不是工作，而是脑子停不下来",
   "platform": "douyin",
   "aspect_ratio": "9:16",
-  "duration": 89,
+  "duration": 74,
   "risk_domain": "medical",
   "core_message": "最消耗你的，可能不是工作，而是脑子停不下来",
   "audience": "希望减少工作、睡眠或情绪中无效消耗的成年观众",
   "editorial": {
     "hook": "有时候让你累的，不是做了多少事，而是脑子一直在和别人较劲。",
-    "narration_script": "有时候让你累的，不是做了多少事，而是脑子一直在和别人较劲。\n看同龄人升职、旅行、晒成就，你可能越刷越累。这里有研究，但不能说所有社交平台都会造成同样后果。\n一项随机试验让一部分人停用 Facebook 四周：主观幸福感略有提高，但他们了解时事的程度也下降。\n另一个三周实验里，一百四十三名大学生把三个平台各限到每天十分钟，孤独与抑郁报告有所改善。\n有时我们还高估别人有多在意自己。心理学把这类现象叫『聚光灯效应』。\n而反复回想一件糟心事，往往让负面想法越来越牢。这叫反刍思维。\n还有一点：愤怒时靠砸东西或者剧烈发泄，整体并不比让身体平静下来更有效。\n今天就做三件事：少刷攀比内容，察觉自己在反复想，生气时先让身体慢下来。\n这一集依据社交平台使用实验、聚光灯效应研究，以及反刍思维综述。\n还有反刍思维的综述和一份一百五十四项研究的愤怒管理汇总。具体论文链接都放在简介。",
+    "narration_script": "有时候让你累的，不是做了多少事，而是脑子一直在和别人较劲。\n看同龄人升职、旅行、晒成就，你可能越刷越累。这里有研究，但不能说所有社交平台都会造成同样后果。\n一项随机试验让一部分人停用 Facebook 四周：主观幸福感略有提高，但他们了解时事的程度也下降。\n另一个三周实验里，一百四十三名大学生把三个平台各限到每天十分钟，孤独与抑郁报告有所改善。\n有时我们还高估别人有多在意自己。心理学把这类现象叫『聚光灯效应』。\n而反复回想一件糟心事，往往让负面想法越来越牢。这叫反刍思维。\n还有一点：愤怒时靠砸东西或者剧烈发泄，整体并不比让身体平静下来更有效。\n今天就做三件事：少刷攀比内容，察觉自己在反复想，生气时先让身体慢下来。",
     "omissions": [
       {
         "text": "原文其他未纳入的条款",
@@ -518,71 +518,18 @@
     {
       "id": "S09",
       "start": 69,
-      "duration": 10,
+      "duration": 5,
       "purpose": "sources",
-      "narration": "这一集依据社交平台使用实验、聚光灯效应研究，以及反刍思维综述。",
+      "narration": "",
       "visual_type": "text_card",
       "claim_ids": [
         "S10",
         "S11",
-        "S12"
-      ],
-      "character_ids": [],
-      "scene_id": "LOC_SOURCE",
-      "visual": "出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
-      "action": {
-        "start": "",
-        "action": "",
-        "micro_action": "",
-        "reaction": "",
-        "end": ""
-      },
-      "camera": {
-        "shot_size": "flat 2D",
-        "angle": "eye level",
-        "lens": "vector animation",
-        "movement": "按发表年份与研究方法三行，屏幕文字限制为短标签",
-        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
-      },
-      "art": {
-        "lighting": "high-contrast accessible typography",
-        "palette": "coherent muted blue/gray moving toward warm light",
-        "set_props": "出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）"
-      },
-      "graphics": {
-        "type": "bibliography_credit",
-        "text": "研究来源 · 1/2",
-        "animation": "constrained infographic; readable citations",
-        "placement": "top-to-middle safe zone"
-      },
-      "audio": {
-        "music": "静态，字清楚且保留阅读停顿",
-        "sfx": "page-turn",
-        "voice": "neutral Mandarin",
-        "pause_before": 0
-      },
-      "subtitles": {
-        "text": "研究来源 · 1/2",
-        "style": "clear sans-serif; research labels accurate",
-        "placement": "central-lower safe zone"
-      },
-      "transition": "hard_cut",
-      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
-    },
-    {
-      "id": "S10",
-      "start": 79,
-      "duration": 10,
-      "purpose": "sources",
-      "narration": "还有反刍思维的综述和一份一百五十四项研究的愤怒管理汇总。具体论文链接都放在简介。",
-      "visual_type": "text_card",
-      "claim_ids": [
-        "S13",
         "S14"
       ],
       "character_ids": [],
       "scene_id": "LOC_SOURCE",
-      "visual": "出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
+      "visual": "一张5秒静态研究来源图：\n1. Allcott 等 (2020) · American Econ Rev · 随机试验\n2. Hunt 等 (2018) · J Soc Clin Psychol · 随机试验\n3. Kjærvik & Bushman (2024) · Clin Psychol Rev · 荟萃分析\n页脚：完整来源/DOI见视频简介；仅代表所引用研究，不等于所有观点已证实。",
       "action": {
         "start": "",
         "action": "",
@@ -591,36 +538,36 @@
         "end": ""
       },
       "camera": {
-        "shot_size": "flat 2D",
-        "angle": "eye level",
-        "lens": "vector animation",
-        "movement": "重点标注『研究是群体平均，不替代个人帮助』",
-        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+        "shot_size": "flat 2D static",
+        "angle": "frontal",
+        "lens": "none",
+        "movement": "fixed frame, no movement",
+        "composition": "vertical 9:16 central-safe 3-line reference text"
       },
       "art": {
-        "lighting": "high-contrast accessible typography",
+        "lighting": "static card, high typographic contrast",
         "palette": "coherent muted blue/gray moving toward warm light",
-        "set_props": "出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议"
+        "set_props": "无真人；精确文字由后期排版"
       },
       "graphics": {
         "type": "bibliography_credit",
-        "text": "研究来源 · 2/2",
-        "animation": "constrained infographic; readable citations",
-        "placement": "top-to-middle safe zone"
+        "text": "主要研究来源 · 详见视频简介",
+        "animation": "静态图片，0.2秒直接出现；保持静止4.8秒，切掉",
+        "placement": "中上部竖屏安全区；三行字体足够大"
       },
       "audio": {
-        "music": "最后两秒安静，音乐自然淡出",
-        "sfx": "page-turn",
-        "voice": "neutral Mandarin",
+        "music": "延续片尾BGM并降低音量，5秒结束时淡出",
+        "sfx": "none",
+        "voice": "none",
         "pause_before": 0
       },
       "subtitles": {
-        "text": "研究来源 · 2/2",
-        "style": "clear sans-serif; research labels accurate",
-        "placement": "central-lower safe zone"
+        "text": "完整文献见视频简介",
+        "style": "大号无衬线，2–3条简短来源",
+        "placement": "lower safe zone"
       },
-      "transition": "hard_cut",
-      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+      "transition": "hard_cut_to_static_credit",
+      "continuity": "单张静态研究来源卡，不可用AI视频生成汉字或数字；不暗示所有来源已完成全文核实"
     }
   ],
   "production": {
@@ -632,6 +579,19 @@
       "source author/year/venue checked, but detailed results need final journal text review",
       "AI-generation imagery and 2D graphics are illustrative",
       "human review before publication"
-    ]
+    ],
+    "credit_policy": {
+      "max_duration_s": 5,
+      "layout": "single_static_image",
+      "max_sources": 3,
+      "selected_source_ids": [
+        "S10",
+        "S11",
+        "S14"
+      ],
+      "full_bibliography": "description.md",
+      "no_narration": true,
+      "claims_status": "needs_review"
+    }
   }
 }
