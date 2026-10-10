@@ -1,0 +1,528 @@
+{
+  "schema_version": "0.1",
+  "title": "戒烟，越早越好",
+  "platform": "douyin",
+  "aspect_ratio": "9:16",
+  "duration": 53,
+  "risk_domain": "medical",
+  "core_message": "越早戒烟，越能减少长期健康损失，也能省钱。",
+  "audience": "想戒烟的成年人",
+  "editorial": {
+    "hook": "戒烟这件事，越早开始，越划算。",
+    "narration_script": "戒烟这件事，越早开始，越划算。 一天一包，按二十到三十元算，钱每天都在烧。 戒掉以后，一年能留下七千多到一万多元。 更大的收益是健康。研究发现，持续吸烟与寿命缩短十年以上相关。 四十岁前戒烟，可能避免继续吸烟造成的大约九成超额死亡风险。 骨折以后继续抽烟，也可能增加骨头不愈合的风险。 一项小型试验中，戒烟干预组术后并发症是百分之二十，对照组是百分之三十八。 别等身体提醒你。戒烟越早，值得争取的健康时间越多。",
+    "omissions": [
+      {
+        "text": "城乡男性RR 1.65/1.22",
+        "reason": "时长受限，研究口径不同，不堆砌数字"
+      },
+      {
+        "text": "按年龄戒烟可获得的寿命年",
+        "reason": "与核心信息重复，可留给第二集"
+      },
+      {
+        "text": "术前4–8周、并发症降低58%",
+        "reason": "需要单独核实数据来源，不与小型试验直接混用"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "C01",
+      "source_quote": "一天一包烟约 20–30 元",
+      "video_wording": "按20至30元/天估算，可节省费用",
+      "caution": "估算因品牌与地区而异",
+      "status": "needs_review",
+      "evidence_url": ""
+    },
+    {
+      "id": "C02",
+      "source_quote": "现在还吸烟的人，比从不吸烟的人预期寿命短 10 年以上",
+      "video_wording": "观察研究报告持续吸烟与预期寿命减少超过十年相关",
+      "caution": "相关性研究，不能声称每位吸烟者必少活十年",
+      "status": "needs_review",
+      "evidence_url": ""
+    },
+    {
+      "id": "C03",
+      "source_quote": "40 岁前戒掉，可以消除继续吸烟所带来死亡风险的约 90%",
+      "video_wording": "40岁前戒烟可能避免继续吸烟相关的约九成超额死亡风险",
+      "caution": "不是总体死亡风险降低90%，需要核对原始文献",
+      "status": "needs_review",
+      "evidence_url": ""
+    },
+    {
+      "id": "C04",
+      "source_quote": "OR 2.32，95% CI 1.76–3.06",
+      "video_wording": "吸烟与骨折不愈合有关联，研究汇总 OR 2.32",
+      "caution": "OR是优势比，不是风险比或发生概率比",
+      "status": "needs_review",
+      "evidence_url": ""
+    },
+    {
+      "id": "C05",
+      "source_quote": "参加戒烟项目的50人有20%出现术后并发症，未参加的55人为38%",
+      "video_wording": "小型随机试验报告：20%对38%",
+      "caution": "特定手术与小样本，不可推广到所有手术",
+      "status": "needs_review",
+      "evidence_url": ""
+    }
+  ],
+  "visual_bible": {
+    "style": "documentary explainer plus precise 2D infographics",
+    "palette": "muted cool-blue -> warm sun at ending",
+    "lighting": "natural diffused light",
+    "typography": "Chinese clean sans-serif, subtitle-safe",
+    "avoid": "fake statistics; generated Chinese letters inside AI footage"
+  },
+  "characters": [
+    {
+      "id": "CHAR01",
+      "description": "Chinese adult man, about 35, short black hair, natural face",
+      "wardrobe": "dark gray top",
+      "identity_anchor": "same reference face for opening and closing"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "LOC01",
+      "description": "minimal apartment living room near a window, dawn, door to outside"
+    },
+    {
+      "id": "LOC02",
+      "description": "two-dimensional infographic backdrop"
+    },
+    {
+      "id": "LOC03",
+      "description": "simplified tibia healing anatomy diagram"
+    }
+  ],
+  "shots": [
+    {
+      "id": "S01",
+      "start": 0,
+      "duration": 5,
+      "purpose": "hook",
+      "narration": "戒烟这件事，越早开始，越划算。",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01"
+      ],
+      "scene_id": "LOC01",
+      "visual": "清晨窗边，男子把未点燃的香烟放回桌面。",
+      "action": {
+        "start": "男子在窗边坐着，拿着未点燃香烟",
+        "action": "把香烟举到嘴边后放下",
+        "micro_action": "拇指轻触打火机却不点火",
+        "reaction": "低头看烟片刻，轻轻呼气",
+        "end": "香烟留在桌上"
+      },
+      "camera": {
+        "shot_size": "medium close-up",
+        "angle": "eye level",
+        "lens": "50mm",
+        "movement": "slow push-in",
+        "composition": "central safe content with subtitle margin"
+      },
+      "art": {
+        "lighting": "natural morning light",
+        "palette": "muted cool grey and blue",
+        "set_props": "same cigarette and apartment"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "safe center-upper area"
+      },
+      "audio": {
+        "music": "restrained piano and subtle pulse",
+        "sfx": "lighter click",
+        "voice": "neutral Mandarin narrator",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "越早戒，越划算",
+        "style": "large readable sans-serif, emphasize only essential numbers",
+        "placement": "lower middle but outside Douyin controls"
+      },
+      "transition": "hard_cut",
+      "continuity": "same CHAR01 identity, clothes and LOC01 reference"
+    },
+    {
+      "id": "S02",
+      "start": 5,
+      "duration": 6,
+      "purpose": "cost",
+      "narration": "一天一包，按二十到三十元算，钱每天都在烧。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "C01"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC02",
+      "visual": "香烟图标旁，日均开销数字逐步浮现。",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "front vector",
+        "angle": "eye level",
+        "lens": "2D",
+        "movement": "restrained pan",
+        "composition": "central safe content with subtitle margin"
+      },
+      "art": {
+        "lighting": "flat illustration light",
+        "palette": "muted cool grey and blue",
+        "set_props": "simple legible graphics"
+      },
+      "graphics": {
+        "type": "numeric_comparison",
+        "text": "20–30元/天",
+        "animation": "ease-out, moderate pace",
+        "placement": "safe center-upper area"
+      },
+      "audio": {
+        "music": "restrained piano and subtle pulse",
+        "sfx": "subtle transition",
+        "voice": "neutral Mandarin narrator",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "20–30元/天",
+        "style": "large readable sans-serif, emphasize only essential numbers",
+        "placement": "lower middle but outside Douyin controls"
+      },
+      "transition": "hard_cut",
+      "continuity": "number semantics must match claims"
+    },
+    {
+      "id": "S03",
+      "start": 11,
+      "duration": 6,
+      "purpose": "savings",
+      "narration": "戒掉以后，一年能留下七千多到一万多元。",
+      "visual_type": "data_graphic",
+      "claim_ids": [
+        "C01"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC02",
+      "visual": "日历翻页，显示365天累计费用。",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "front vector",
+        "angle": "eye level",
+        "lens": "2D",
+        "movement": "restrained pan",
+        "composition": "central safe content with subtitle margin"
+      },
+      "art": {
+        "lighting": "flat illustration light",
+        "palette": "muted cool grey and blue",
+        "set_props": "simple legible graphics"
+      },
+      "graphics": {
+        "type": "numeric_comparison",
+        "text": "按365天估算：7300–10950元",
+        "animation": "ease-out, moderate pace",
+        "placement": "safe center-upper area"
+      },
+      "audio": {
+        "music": "restrained piano and subtle pulse",
+        "sfx": "subtle transition",
+        "voice": "neutral Mandarin narrator",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "按365天估算：7300–10950元",
+        "style": "large readable sans-serif, emphasize only essential numbers",
+        "placement": "lower middle but outside Douyin controls"
+      },
+      "transition": "hard_cut",
+      "continuity": "number semantics must match claims"
+    },
+    {
+      "id": "S04",
+      "start": 17,
+      "duration": 7,
+      "purpose": "longevity",
+      "narration": "更大的收益是健康。研究发现，持续吸烟与寿命缩短十年以上相关。",
+      "visual_type": "data_graphic",
+      "claim_ids": [
+        "C02"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC02",
+      "visual": "两条抽象生命时间轴对照，不设虚构的个人寿命终点。",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "front vector",
+        "angle": "eye level",
+        "lens": "2D",
+        "movement": "restrained pan",
+        "composition": "central safe content with subtitle margin"
+      },
+      "art": {
+        "lighting": "flat illustration light",
+        "palette": "muted cool grey and blue",
+        "set_props": "simple legible graphics"
+      },
+      "graphics": {
+        "type": "numeric_comparison",
+        "text": "观察研究：10年以上寿命差异",
+        "animation": "ease-out, moderate pace",
+        "placement": "safe center-upper area"
+      },
+      "audio": {
+        "music": "restrained piano and subtle pulse",
+        "sfx": "subtle transition",
+        "voice": "neutral Mandarin narrator",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "观察研究：10年以上寿命差异",
+        "style": "large readable sans-serif, emphasize only essential numbers",
+        "placement": "lower middle but outside Douyin controls"
+      },
+      "transition": "hard_cut",
+      "continuity": "number semantics must match claims"
+    },
+    {
+      "id": "S05",
+      "start": 24,
+      "duration": 7,
+      "purpose": "quit_early",
+      "narration": "四十岁前戒烟，可能避免继续吸烟造成的大约九成超额死亡风险。",
+      "visual_type": "data_graphic",
+      "claim_ids": [
+        "C03"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC02",
+      "visual": "标明比较对象的超额风险条形动画。",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "front vector",
+        "angle": "eye level",
+        "lens": "2D",
+        "movement": "restrained pan",
+        "composition": "central safe content with subtitle margin"
+      },
+      "art": {
+        "lighting": "flat illustration light",
+        "palette": "muted cool grey and blue",
+        "set_props": "simple legible graphics"
+      },
+      "graphics": {
+        "type": "numeric_comparison",
+        "text": "避免约90%吸烟相关超额死亡风险*",
+        "animation": "ease-out, moderate pace",
+        "placement": "safe center-upper area"
+      },
+      "audio": {
+        "music": "restrained piano and subtle pulse",
+        "sfx": "subtle transition",
+        "voice": "neutral Mandarin narrator",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "避免约90%吸烟相关超额死亡风险*",
+        "style": "large readable sans-serif, emphasize only essential numbers",
+        "placement": "lower middle but outside Douyin controls"
+      },
+      "transition": "hard_cut",
+      "continuity": "number semantics must match claims"
+    },
+    {
+      "id": "S06",
+      "start": 31,
+      "duration": 7,
+      "purpose": "fracture",
+      "narration": "骨折以后继续抽烟，也可能增加骨头不愈合的风险。",
+      "visual_type": "medical_animation",
+      "claim_ids": [
+        "C04"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC03",
+      "visual": "二维医学骨骼示意画面，重点说明骨折愈合过程。",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "front vector",
+        "angle": "eye level",
+        "lens": "2D",
+        "movement": "restrained pan",
+        "composition": "central safe content with subtitle margin"
+      },
+      "art": {
+        "lighting": "flat illustration light",
+        "palette": "muted cool grey and blue",
+        "set_props": "simple legible graphics"
+      },
+      "graphics": {
+        "type": "medical_schematic",
+        "text": "观察研究：OR 2.32（优势比）",
+        "animation": "ease-out, moderate pace",
+        "placement": "safe center-upper area"
+      },
+      "audio": {
+        "music": "restrained piano and subtle pulse",
+        "sfx": "subtle transition",
+        "voice": "neutral Mandarin narrator",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "观察研究：OR 2.32（优势比）",
+        "style": "large readable sans-serif, emphasize only essential numbers",
+        "placement": "lower middle but outside Douyin controls"
+      },
+      "transition": "hard_cut",
+      "continuity": "number semantics must match claims"
+    },
+    {
+      "id": "S07",
+      "start": 38,
+      "duration": 9,
+      "purpose": "surgery",
+      "narration": "一项小型试验中，戒烟干预组术后并发症是百分之二十，对照组是百分之三十八。",
+      "visual_type": "data_graphic",
+      "claim_ids": [
+        "C05"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC02",
+      "visual": "两组研究数字卡片和条形图，标注小型随机试验。",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "front vector",
+        "angle": "eye level",
+        "lens": "2D",
+        "movement": "restrained pan",
+        "composition": "central safe content with subtitle margin"
+      },
+      "art": {
+        "lighting": "flat illustration light",
+        "palette": "muted cool grey and blue",
+        "set_props": "simple legible graphics"
+      },
+      "graphics": {
+        "type": "numeric_comparison",
+        "text": "干预组20% / 对照组38%",
+        "animation": "ease-out, moderate pace",
+        "placement": "safe center-upper area"
+      },
+      "audio": {
+        "music": "restrained piano and subtle pulse",
+        "sfx": "subtle transition",
+        "voice": "neutral Mandarin narrator",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "干预组20% / 对照组38%",
+        "style": "large readable sans-serif, emphasize only essential numbers",
+        "placement": "lower middle but outside Douyin controls"
+      },
+      "transition": "hard_cut",
+      "continuity": "number semantics must match claims"
+    },
+    {
+      "id": "S08",
+      "start": 47,
+      "duration": 6,
+      "purpose": "ending",
+      "narration": "别等身体提醒你。戒烟越早，值得争取的健康时间越多。",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01"
+      ],
+      "scene_id": "LOC01",
+      "visual": "同一男子走出室内，站在自然晨光下呼吸。",
+      "action": {
+        "start": "男子坐在室内靠近门口",
+        "action": "起身朝门口走",
+        "micro_action": "手掌扶住门把",
+        "reaction": "推门时眯眼迎接晨光",
+        "end": "走向户外"
+      },
+      "camera": {
+        "shot_size": "medium close-up",
+        "angle": "eye level",
+        "lens": "50mm",
+        "movement": "slow push-in",
+        "composition": "central safe content with subtitle margin"
+      },
+      "art": {
+        "lighting": "natural morning light",
+        "palette": "warm gold",
+        "set_props": "same cigarette and apartment"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "safe center-upper area"
+      },
+      "audio": {
+        "music": "warm piano resolution",
+        "sfx": "steps",
+        "voice": "neutral Mandarin narrator",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "现在开始",
+        "style": "large readable sans-serif, emphasize only essential numbers",
+        "placement": "lower middle but outside Douyin controls"
+      },
+      "transition": "fade_out",
+      "continuity": "same CHAR01 identity, clothes and LOC01 reference"
+    }
+  ],
+  "production": {
+    "voice": "calm Mandarin neutral",
+    "music_license_check": true,
+    "asset_license_check": true,
+    "publishing_status": "review_required",
+    "review_requirements": [
+      "Medical claims not verified against original sources",
+      "OR 2.32 is odds ratio and must not be called probability/risk multiple",
+      "The 90% comparison concerns smoking-related excess mortality, not all mortality"
+    ]
+  }
+}
