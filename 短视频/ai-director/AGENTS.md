@@ -63,3 +63,10 @@
 - `--resume` 不能重建已存在且由用户确认的 `character_bible.json` / `status.json`。跨集人物对照包括 `description`、`wardrobe`、`identity_anchor` 以及 `visual_bible` 各个系列字段。
 - 有研究卡的单集必须生成 `plan.references` 书目数组并绑定每个卡片 claim ID。参考 `skills/05-source-credits.md`；不能用模型捏造 DOI。
 - 现阶段真实 DeepSeek API 运行尚未经用户明确费用审批；不得发起任何付费调用，也不要声称已端到端确认。保持 GitHub 为源码和测试仓库，用户明确要求不打包下载至最终验收。
+
+## v0.3 费用与自动修复门禁
+
+- 独立DeepSeek API调用必须同时具备用户明确授权的 `--approve-model-cost` 与 `--max-cost-cny`；未授权具体人民币最高金额，不得联网调用。Codex现有连接不得擅自更换或重新收费。
+- 每次请求（含JSON重试和结构修复）都进入 `api_usage.generated.json` 账本，金额保守预留；默认不重试；网络超时、HTTP 5xx、未知扣费状态绝不自动重发。
+- 只有模型**新生成的草稿**可以被结构校验后自动修复，绝不能重写用户已手工修改的 plan、人物Bible、字幕和研究说明；失败或金额超限时保留草稿供人工恢复。
+- `cost-status` 仅读取本地预留估计；不代表官方账单。不得上传 API Key、原文或用户项目到公开仓库。
