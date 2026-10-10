@@ -1,0 +1,527 @@
+{
+  "project": "AI Short Video Director v0.2 long-script 3-part experiment",
+  "series": "不要浪费精力",
+  "episode": "上",
+  "title": "你不是不够努力，是注意力被偷走了",
+  "duration_s": 84,
+  "aspect_ratio": "9:16",
+  "platform": "douyin",
+  "targetEmotion": "慌乱→识破机制→重新掌控",
+  "original_items": [
+    1,
+    5,
+    6,
+    7
+  ],
+  "claims_policy": {
+    "risk_domain": "health_and_psychology",
+    "evidence_review_required": true,
+    "publication_approved": false,
+    "numeric_methodology": "observational correlation vs randomized effect must be distinguished"
+  },
+  "visual_bible": {
+    "camera": "restrained documentary, emotion-motivated motion",
+    "color": "coherent muted blue/gray moving toward warm light",
+    "subject": "same ordinary Chinese office worker if visible, not a real person likeness",
+    "graphics": "remotion 2D; all exact writing postproduction",
+    "sound": "mandarin narration center, restrained underscore, sourced music only"
+  },
+  "shots": [
+    {
+      "id": "ep01-attention-S01",
+      "start_s": 0,
+      "duration_s": 5,
+      "end_s": 5,
+      "phase": "hook",
+      "narration": "你可能不是不努力，而是一天里，注意力被偷走了太多次。",
+      "visual_type": "ai_video",
+      "scene_action": "深夜办公室，主角面对电脑却迟迟没写下一行字",
+      "camera_direction": "MCU固定，镜头低于视线一点；眼神在空白文件和手机之间反复游移",
+      "art_audio": "冷灰蓝窗光，键盘轻响与灯管底噪",
+      "on_screen_text": "不是不努力",
+      "source_ids": [],
+      "director_intent": "制造可共鸣的疑问",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 2,
+          "visible_action": "建立当前镜头：深夜办公室，主角面对电脑却迟迟没写下一行字",
+          "camera": "MCU固定，镜头低于视线一点",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 2,
+          "to_s": 5,
+          "visible_action": "画面信息转折：不是不努力；结束态准备切镜",
+          "camera": "眼神在空白文件和手机之间反复游移",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头5秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：深夜办公室，主角面对电脑却迟迟没写下一行字。导演目标：你可能不是不努力，而是一天里，注意力被偷走了太多次。。摄影：MCU固定，镜头低于视线一点；眼神在空白文件和手机之间反复游移。美术与声音交接：冷灰蓝窗光，键盘轻响与灯管底噪。2秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep01-attention-S02",
+      "start_s": 5,
+      "duration_s": 9,
+      "end_s": 14,
+      "phase": "evidence",
+      "narration": "手机哪怕只响一下，你没拿起来，实验里也能看到注意力表现受干扰。",
+      "visual_type": "ai_video",
+      "scene_action": "电脑旁手机闪亮一次，主角停住手指，目光仍努力留在屏幕",
+      "camera_direction": "先锁手与键盘的近景；2.8秒时切眼睛特写，手悬空，视线未转手机",
+      "art_audio": "白色通知亮点由后期叠加；短信内容不交给生成模型",
+      "on_screen_text": "没看消息，也可能被打断",
+      "source_ids": [
+        "S01"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：电脑旁手机闪亮一次，主角停住手指，目光仍努力留在屏幕",
+          "camera": "先锁手与键盘的近景",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_action": "画面信息转折：没看消息，也可能被打断；结束态准备切镜",
+          "camera": "2.8秒时切眼睛特写，手悬空，视线未转手机",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头9秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：电脑旁手机闪亮一次，主角停住手指，目光仍努力留在屏幕。导演目标：手机哪怕只响一下，你没拿起来，实验里也能看到注意力表现受干扰。。摄影：先锁手与键盘的近景；2.8秒时切眼睛特写，手悬空，视线未转手机。美术与声音交接：白色通知亮点由后期叠加；短信内容不交给生成模型。4秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep01-attention-S03",
+      "start_s": 14,
+      "duration_s": 9,
+      "end_s": 23,
+      "phase": "evidence",
+      "narration": "甚至仅仅把手机放在桌面，有实验发现，部分认知测试的表现就会下降。",
+      "visual_type": "data_graphic",
+      "scene_action": "实验条件三栏：手机放桌面/包里/另一个房间，强调测试结果方向而非伪造精确百分比",
+      "camera_direction": "2D俯视构图；手机依次从桌面移动到包、再到远处房间",
+      "art_audio": "淡青色三栏，柔和落地声，旁白平稳",
+      "on_screen_text": "手机位置，也可能影响测试表现",
+      "source_ids": [
+        "S02"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：实验条件三栏：手机放桌面/包里/另一个房间，强调测试结果方向而非伪造精确百分比",
+          "camera": "2D俯视构图",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_action": "画面信息转折：手机位置，也可能影响测试表现；结束态准备切镜",
+          "camera": "手机依次从桌面移动到包、再到远处房间",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：实验条件三栏：手机放桌面/包里/另一个房间，强调测试结果方向而非伪造精确百分比。时间9秒，前4秒建立比较对象及研究类型，后5秒将重点信息从弱对比升级为高对比但不过分夸张；2D俯视构图；手机依次从桌面移动到包、再到远处房间。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep01-attention-S04",
+      "start_s": 23,
+      "duration_s": 9,
+      "end_s": 32,
+      "phase": "evidence",
+      "narration": "更夸张的是，一个平均两点八秒的打断，让顺序任务的步骤出错率约翻倍。",
+      "visual_type": "data_graphic",
+      "scene_action": "非通用生产率图：顺序任务错误率相对基线，1倍与约2倍对照",
+      "camera_direction": "坐标原点0；条形动画0.9秒增长到1x/2x；底栏固定显示「特定实验任务」",
+      "art_audio": "深蓝背景橙色强调2.8秒；短促停止声，不用恐怖轰鸣",
+      "on_screen_text": "2.8秒打断 → 约2倍步骤错误率*",
+      "source_ids": [
+        "S03"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：非通用生产率图：顺序任务错误率相对基线，1倍与约2倍对照",
+          "camera": "坐标原点0",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_action": "画面信息转折：2.8秒打断 → 约2倍步骤错误率*；结束态准备切镜",
+          "camera": "底栏固定显示「特定实验任务」",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：非通用生产率图：顺序任务错误率相对基线，1倍与约2倍对照。时间9秒，前4秒建立比较对象及研究类型，后5秒将重点信息从弱对比升级为高对比但不过分夸张；坐标原点0；条形动画0.9秒增长到1x/2x；底栏固定显示「特定实验任务」。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep01-attention-S05",
+      "start_s": 32,
+      "duration_s": 9,
+      "end_s": 41,
+      "phase": "evidence",
+      "narration": "你刚找回思路，又点开另一件事；不是脑子不行，是工作不断切换。",
+      "visual_type": "ai_video",
+      "scene_action": "主角打开新标签后停住，缓慢关掉无关窗口，重新把双手放回键盘",
+      "camera_direction": "桌面侧拍35mm固定；鼠标向右移动→点击→停顿→返回文档；只有一次切换",
+      "art_audio": "窗外傍晚雨声，第二次点击声被弱化",
+      "on_screen_text": "来回切换，不是同时高效",
+      "source_ids": [],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：主角打开新标签后停住，缓慢关掉无关窗口，重新把双手放回键盘",
+          "camera": "桌面侧拍35mm固定",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_action": "画面信息转折：来回切换，不是同时高效；结束态准备切镜",
+          "camera": "只有一次切换",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头9秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：主角打开新标签后停住，缓慢关掉无关窗口，重新把双手放回键盘。导演目标：你刚找回思路，又点开另一件事；不是脑子不行，是工作不断切换。。摄影：桌面侧拍35mm固定；鼠标向右移动→点击→停顿→返回文档；只有一次切换。美术与声音交接：窗外傍晚雨声，第二次点击声被弱化。4秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep01-attention-S06",
+      "start_s": 41,
+      "duration_s": 11,
+      "end_s": 52,
+      "phase": "evidence",
+      "narration": "还有个两周实验：一百二十四名成年人，把查邮件限制成每天三次，报告的压力更低。",
+      "visual_type": "data_graphic",
+      "scene_action": "竖屏左右对照：不限次数/每日三次；标注比较的是「日常压力」不是效率",
+      "camera_direction": "顶部日期翻页14天，右列三次邮件卡片依次出现，压力示意向下不标无依据具体数值",
+      "art_audio": "数据画面留出引用角标；温和节奏逐渐稳定",
+      "on_screen_text": "124人 · 两周 · 每天查3次",
+      "source_ids": [
+        "S04"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 5,
+          "visible_action": "建立当前镜头：竖屏左右对照：不限次数/每日三次；标注比较的是「日常压力」不是效率",
+          "camera": "顶部日期翻页14天，右列三次邮件卡片依次出现，压力示意向下不标无依据具体数值",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 5,
+          "to_s": 11,
+          "visible_action": "画面信息转折：124人 · 两周 · 每天查3次；结束态准备切镜",
+          "camera": "顶部日期翻页14天，右列三次邮件卡片依次出现，压力示意向下不标无依据具体数值",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：竖屏左右对照：不限次数/每日三次；标注比较的是「日常压力」不是效率。时间11秒，前5秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；顶部日期翻页14天，右列三次邮件卡片依次出现，压力示意向下不标无依据具体数值。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep01-attention-S07",
+      "start_s": 52,
+      "duration_s": 10,
+      "end_s": 62,
+      "phase": "evidence",
+      "narration": "所以今天就做三件事：关掉非必要通知，手机放远点，固定时间集中回消息。",
+      "visual_type": "motion_graphic",
+      "scene_action": "三张真实可操作的行动卡依次上屏；系统设置用示意UI，不伪造App截图",
+      "camera_direction": "每张卡出现2.6秒；关推送、手机入抽屉、日程固定窗口",
+      "art_audio": "配乐从断续鼓点切换为规律轻敲；出现机械开关声",
+      "on_screen_text": "关通知 / 手机放远 / 批量回复",
+      "source_ids": [],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：三张真实可操作的行动卡依次上屏；系统设置用示意UI，不伪造App截图",
+          "camera": "每张卡出现2.6秒",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_action": "画面信息转折：关通知 / 手机放远 / 批量回复；结束态准备切镜",
+          "camera": "关推送、手机入抽屉、日程固定窗口",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：三张真实可操作的行动卡依次上屏；系统设置用示意UI，不伪造App截图。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；每张卡出现2.6秒；关推送、手机入抽屉、日程固定窗口。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep01-attention-S08",
+      "start_s": 62,
+      "duration_s": 6,
+      "end_s": 68,
+      "phase": "payoff",
+      "narration": "把注意力还给自己。下一集，聊聊为什么睡不够，努力也很难有效。",
+      "visual_type": "ai_video",
+      "scene_action": "主角清理桌面，把手机放进抽屉，重新坐正专心敲下一行字",
+      "camera_direction": "从MS缓慢推近，动作稳而不夸张，屏幕具体文字由后期加入",
+      "art_audio": "夜色稍转暖；音乐停顿0.4秒后有明确收束",
+      "on_screen_text": "先保住注意力",
+      "source_ids": [],
+      "director_intent": "给出行动闭环",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 3,
+          "visible_action": "建立当前镜头：主角清理桌面，把手机放进抽屉，重新坐正专心敲下一行字",
+          "camera": "从MS缓慢推近，动作稳而不夸张，屏幕具体文字由后期加入",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 3,
+          "to_s": 6,
+          "visible_action": "画面信息转折：先保住注意力；结束态准备切镜",
+          "camera": "从MS缓慢推近，动作稳而不夸张，屏幕具体文字由后期加入",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头6秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：主角清理桌面，把手机放进抽屉，重新坐正专心敲下一行字。导演目标：把注意力还给自己。下一集，聊聊为什么睡不够，努力也很难有效。。摄影：从MS缓慢推近，动作稳而不夸张，屏幕具体文字由后期加入。美术与声音交接：夜色稍转暖；音乐停顿0.4秒后有明确收束。3秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep01-attention-S09",
+      "start_s": 68,
+      "duration_s": 8,
+      "end_s": 76,
+      "phase": "sources",
+      "narration": "本集依据四项研究。这里先列两项：手机通知和手机存在本身的实验。",
+      "visual_type": "source_card",
+      "scene_action": "出处卡一：Stothart 2015（通知实验）；Ward 2017（手机位置实验）。",
+      "camera_direction": "固定竖屏卡片，作者年份期刊和研究类型字号大于最小可读阈值",
+      "art_audio": "音乐音量降低；轻微翻页音；来源不是营销背书",
+      "on_screen_text": "研究来源 · 1/2",
+      "source_ids": [
+        "S01",
+        "S02"
+      ],
+      "director_intent": "建立可信可核对出处，限制适用范围",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 3,
+          "visible_action": "建立当前镜头：出处卡一：Stothart 2015（通知实验）；Ward 2017（手机位置实验）。",
+          "camera": "固定竖屏卡片，作者年份期刊和研究类型字号大于最小可读阈值",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 3,
+          "to_s": 8,
+          "visible_action": "画面信息转折：研究来源 · 1/2；结束态准备切镜",
+          "camera": "固定竖屏卡片，作者年份期刊和研究类型字号大于最小可读阈值",
+          "sound": "声音轻缓并留出阅读空白"
+        }
+      ],
+      "generation_route": "source_card_compositing",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：出处卡一：Stothart 2015（通知实验）；Ward 2017（手机位置实验）。。时间8秒，前3秒建立比较对象及研究类型，后5秒将重点信息从弱对比升级为高对比但不过分夸张；固定竖屏卡片，作者年份期刊和研究类型字号大于最小可读阈值。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明",
+        "片尾每条出处显示作者、年份、期刊、研究类型",
+        "完整 DOI 见视频说明"
+      ]
+    },
+    {
+      "id": "ep01-attention-S10",
+      "start_s": 76,
+      "duration_s": 8,
+      "end_s": 84,
+      "phase": "sources",
+      "narration": "另两项研究分别观察了短暂打断的错误率，以及减少查邮件频率的压力变化。",
+      "visual_type": "source_card",
+      "scene_action": "出处卡二：Altmann 2014（步骤错误）；Kushlev 2015（124人邮件实验）。",
+      "camera_direction": "作者年份+期刊两行卡；结尾出现『完整DOI见视频简介』",
+      "art_audio": "留1秒无旁白供阅读，最后轻落幕",
+      "on_screen_text": "研究来源 · 2/2",
+      "source_ids": [
+        "S03",
+        "S04"
+      ],
+      "director_intent": "建立可信可核对出处，限制适用范围",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 3,
+          "visible_action": "建立当前镜头：出处卡二：Altmann 2014（步骤错误）；Kushlev 2015（124人邮件实验）。",
+          "camera": "作者年份+期刊两行卡",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 3,
+          "to_s": 8,
+          "visible_action": "画面信息转折：研究来源 · 2/2；结束态准备切镜",
+          "camera": "结尾出现『完整DOI见视频简介』",
+          "sound": "声音轻缓并留出阅读空白"
+        }
+      ],
+      "generation_route": "source_card_compositing",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：出处卡二：Altmann 2014（步骤错误）；Kushlev 2015（124人邮件实验）。。时间8秒，前3秒建立比较对象及研究类型，后5秒将重点信息从弱对比升级为高对比但不过分夸张；作者年份+期刊两行卡；结尾出现『完整DOI见视频简介』。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明",
+        "片尾每条出处显示作者、年份、期刊、研究类型",
+        "完整 DOI 见视频说明"
+      ]
+    }
+  ],
+  "source_cards": [
+    {
+      "a": "Stothart 等",
+      "y": 2015,
+      "j": "J Exp Psychol HPP",
+      "design": "实验室注意力任务",
+      "doi": "10.1037/xhp0000100",
+      "scope": "通知干扰的是实验任务表现，不能外推成每天固定损失多少分钟",
+      "id": "S01",
+      "url": "https://doi.org/10.1037/xhp0000100",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    },
+    {
+      "a": "Ward 等",
+      "y": 2017,
+      "j": "J Assoc Consumer Research",
+      "design": "两项手机位置实验",
+      "doi": "10.1086/691462",
+      "scope": "测的是工作记忆等认知任务，不是长期生产率",
+      "id": "S02",
+      "url": "https://doi.org/10.1086/691462",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    },
+    {
+      "a": "Altmann 等",
+      "y": 2014,
+      "j": "J Exp Psychol General",
+      "design": "步骤任务中的短时打断实验",
+      "doi": "10.1037/a0030986",
+      "scope": "2.8秒打断的错误率翻倍只适用于该顺序操作任务",
+      "id": "S03",
+      "url": "https://doi.org/10.1037/a0030986",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    },
+    {
+      "a": "Kushlev & Dunn",
+      "y": 2015,
+      "j": "Computers in Human Behavior",
+      "design": "124名成年人，两周交叉比较",
+      "doi": "10.1016/j.chb.2014.11.005",
+      "scope": "结果是日常压力更低，未证明工作效率提高",
+      "id": "S04",
+      "url": "https://doi.org/10.1016/j.chb.2014.11.005",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    }
+  ],
+  "source_credits_duration_s": 16,
+  "video_generated": false
+}
