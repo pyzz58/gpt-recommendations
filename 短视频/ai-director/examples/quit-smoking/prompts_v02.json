@@ -1,0 +1,1260 @@
+{
+  "schema_version": "0.2",
+  "title": "戒烟，越早越好",
+  "aspect_ratio": "9:16",
+  "shots": [
+    {
+      "shot_id": "S01",
+      "duration": 5,
+      "visual_type": "ai_video",
+      "human_review_required": true,
+      "direction": {
+        "shot_id": "S01",
+        "review_status": "reviewed",
+        "objective": {
+          "emotion": "想戒与习惯之间短暂停顿的内心冲突",
+          "observable_turn": "从机械举烟到主动放下，转折可见",
+          "visual_focus": "拇指、未点燃烟头和放下的手"
+        },
+        "staging": {
+          "blocking": "CHAR01坐在画面右1/3，侧向窗，右手握烟位于胸前，左手打火机置桌面中偏左；桌缘提供前后关系",
+          "gaze": "视线烟头→窗外亮处→桌面；不要对镜头说话",
+          "spatial_constraints": [
+            "桌面仅一支未点燃烟",
+            "左手始终靠近打火机",
+            "窗在左后方"
+          ],
+          "props": [
+            "桌面仅一支未点燃烟",
+            "左手始终靠近打火机",
+            "窗在左后方"
+          ]
+        },
+        "performance": {
+          "motivation": "不是恐惧而是意识到自己可以停止这个习惯",
+          "facial_microaction": "嘴唇轻闭，眉间短暂收紧，眼睛跟随烟的下降",
+          "body_microaction": "举烟前腕部紧绷，松手时肩膀轻缓下沉",
+          "ending_pose": "烟平放桌面，手离开烟，目光重新落向窗外"
+        },
+        "beats": [
+          {
+            "from_s": 0,
+            "to_s": 1.2,
+            "visible_change": "前景桌面和未点燃香烟入画；主人公右手停在胸口",
+            "performance": "半前倾保持静止，手指夹住烟",
+            "camera": "固定中近景，光线保持稳定",
+            "sound": "窗外微弱交通底噪，音乐只给低音垫"
+          },
+          {
+            "from_s": 1.2,
+            "to_s": 2.8,
+            "visible_change": "烟向嘴边抬高约十厘米，距唇仍有空隙",
+            "performance": "腕部转动、目光随烟移动，不能点火",
+            "camera": "镜头不动，焦点保持脸和香烟的同一景深范围",
+            "sound": "衣袖轻擦声，环境底噪不变"
+          },
+          {
+            "from_s": 2.8,
+            "to_s": 5,
+            "visible_change": "举烟停止，烟又被缓慢放回桌上",
+            "performance": "指节放松，视线从烟移到窗外，肩膀降下",
+            "camera": "3.1秒开始极慢推进，以手停在桌边作为结束画面",
+            "sound": "环境声略清晰，音乐不给强转折音效"
+          }
+        ],
+        "camera": {
+          "start_frame": "眼平50mm感觉的中近景，头顶保留余量，人物右三分线、桌面落在下中部",
+          "movement": "3.1秒后柔和推进不足一个头部宽度，禁止横移和突然变焦",
+          "move_trigger_s": 3.1,
+          "end_frame": "桌上未点燃的烟和放松的手清晰，人物面部仍在景深内",
+          "lens_feel": "50mm自然人像感，真实皮肤纹理",
+          "reason": "只有人物决定放下香烟，镜头才向前靠近以提示内心转折"
+        },
+        "art": {
+          "environment": "普通公寓清晨，少量生活痕迹，干净木桌、窗帘不随意飘动",
+          "light_source": "左后方清晨窗光为主光，室内弱填充；不能在动作中突然改变太阳位置",
+          "color_path": "冷灰低饱和，结尾皮肤允许轻微暖意但不瞬间跳色",
+          "texture": "轻微自然颗粒感和真实细节，避免磨皮与油亮塑料皮肤"
+        },
+        "sound": {
+          "ambient": "低电器噪声与远处城市声音",
+          "music": "极弱钢琴单音垫，不在动作点做煽情升调",
+          "effects": [
+            {
+              "time_s": 1.7,
+              "cue": "细小衣袖摩擦"
+            },
+            {
+              "time_s": 4.0,
+              "cue": "手掌靠近桌面的接触声"
+            }
+          ],
+          "voiceover_note": "旁白留在前景，人物不张口对嘴型"
+        },
+        "continuity": {
+          "start_state": "同一男子，灰上衣，窗左、桌右，烟未点燃，打火机在桌面",
+          "end_state": "香烟落桌且没有燃烧、烟雾或打火机火焰",
+          "locked_entities": [
+            "CHAR01面部/短发/灰衣",
+            "未点燃烟始终一支",
+            "窗和桌位置固定"
+          ],
+          "reference_assets": [
+            "需要制作CHAR01人物参考图：正脸+3/4侧脸",
+            "需要制作LOC01窗边公寓参考图"
+          ]
+        },
+        "graphics": {
+          "treatment": "镜头中不生成文字",
+          "claims_used": [],
+          "labels": [],
+          "motion": "无数据动画；视频结束后才叠加标题",
+          "context_note": "镜内绝不生成“戒烟”等文字"
+        },
+        "generation": {
+          "route": "ai_video",
+          "clip_type": "single_continuous_take",
+          "negative_constraints": [
+            "no smoke, no flames, no extra fingers, no duplicate cigarette, no jump cut, no AI-generated typography"
+          ],
+          "reference_roles": [
+            "人物三分之四角度参考图",
+            "公寓窗边场景参考图"
+          ],
+          "limits": "以人物动作与运镜连贯为先；如果模型不能严格按秒执行，以结束状态为验收准则"
+        },
+        "qa": {
+          "acceptance_tests": [
+            "始终只有一支未点燃香烟",
+            "右手举起再放下符合连续动作",
+            "窗光方向不变",
+            "动作结束后手已离开香烟"
+          ],
+          "issues": [
+            "尚未用真实视频模型生成验证；镜头时长和物理细节可能需要多次试验"
+          ],
+          "human_approved": false
+        }
+      },
+      "reference_roles": [
+        "人物三分之四角度参考图",
+        "公寓窗边场景参考图"
+      ],
+      "prompts": {
+        "wan": "Create ONE coherent 5s vertical 9:16 visual clip; preserve shot identity and physical realism.\nNarrative task: 从机械举烟到主动放下，转折可见. Audience feeling: 想戒与习惯之间短暂停顿的内心冲突.\nFraming and space: 眼平50mm感觉的中近景，头顶保留余量，人物右三分线、桌面落在下中部. Lens feel: 50mm自然人像感，真实皮肤纹理. Blocking: CHAR01坐在画面右1/3，侧向窗，右手握烟位于胸前，左手打火机置桌面中偏左；桌缘提供前后关系. Gaze direction: 视线烟头→窗外亮处→桌面；不要对镜头说话.\nWhat actually happens:\n0–1.2s: Visible 前景桌面和未点燃香烟入画；主人公右手停在胸口; performer 半前倾保持静止，手指夹住烟; camera 固定中近景，光线保持稳定; sound 窗外微弱交通底噪，音乐只给低音垫\n1.2–2.8s: Visible 烟向嘴边抬高约十厘米，距唇仍有空隙; performer 腕部转动、目光随烟移动，不能点火; camera 镜头不动，焦点保持脸和香烟的同一景深范围; sound 衣袖轻擦声，环境底噪不变\n2.8–5s: Visible 举烟停止，烟又被缓慢放回桌上; performer 指节放松，视线从烟移到窗外，肩膀降下; camera 3.1秒开始极慢推进，以手停在桌边作为结束画面; sound 环境声略清晰，音乐不给强转折音效\nCamera path: 3.1秒后柔和推进不足一个头部宽度，禁止横移和突然变焦; trigger at 3.1s, finish 桌上未点燃的烟和放松的手清晰，人物面部仍在景深内. Reason for movement: 只有人物决定放下香烟，镜头才向前靠近以提示内心转折.\nLighting: 左后方清晨窗光为主光，室内弱填充；不能在动作中突然改变太阳位置. Palette evolution: 冷灰低饱和，结尾皮肤允许轻微暖意但不瞬间跳色. Environment: 普通公寓清晨，少量生活痕迹，干净木桌、窗帘不随意飘动. Texture: 轻微自然颗粒感和真实细节，避免磨皮与油亮塑料皮肤.\nLocked identities/objects: CHAR01面部/短发/灰衣; 未点燃烟始终一支; 窗和桌位置固定. Beginning continuity: 同一男子，灰上衣，窗左、桌右，烟未点燃，打火机在桌面. Final state: 香烟落桌且没有燃烧、烟雾或打火机火焰.\nDo not include: no smoke, no flames, no extra fingers, no duplicate cigarette, no jump cut, no AI-generated typography. Do not render any title, text, numbers, subtitles, logo or watermark in the generated footage. Voiceover, sound effects, music and exact charts are handled in post-production.\nPrefer a vetted reference image for consistent face and wardrobe when available; do not assert nonexistent references were supplied.",
+        "seedance": "Single continuous 5s shot, portrait 9:16. One clear evolving visual intention; keep subject and prop continuity stable.\nNarrative task: 从机械举烟到主动放下，转折可见. Audience feeling: 想戒与习惯之间短暂停顿的内心冲突.\nFraming and space: 眼平50mm感觉的中近景，头顶保留余量，人物右三分线、桌面落在下中部. Lens feel: 50mm自然人像感，真实皮肤纹理. Blocking: CHAR01坐在画面右1/3，侧向窗，右手握烟位于胸前，左手打火机置桌面中偏左；桌缘提供前后关系. Gaze direction: 视线烟头→窗外亮处→桌面；不要对镜头说话.\nWhat actually happens:\n0–1.2s: Visible 前景桌面和未点燃香烟入画；主人公右手停在胸口; performer 半前倾保持静止，手指夹住烟; camera 固定中近景，光线保持稳定; sound 窗外微弱交通底噪，音乐只给低音垫\n1.2–2.8s: Visible 烟向嘴边抬高约十厘米，距唇仍有空隙; performer 腕部转动、目光随烟移动，不能点火; camera 镜头不动，焦点保持脸和香烟的同一景深范围; sound 衣袖轻擦声，环境底噪不变\n2.8–5s: Visible 举烟停止，烟又被缓慢放回桌上; performer 指节放松，视线从烟移到窗外，肩膀降下; camera 3.1秒开始极慢推进，以手停在桌边作为结束画面; sound 环境声略清晰，音乐不给强转折音效\nCamera path: 3.1秒后柔和推进不足一个头部宽度，禁止横移和突然变焦; trigger at 3.1s, finish 桌上未点燃的烟和放松的手清晰，人物面部仍在景深内. Reason for movement: 只有人物决定放下香烟，镜头才向前靠近以提示内心转折.\nLighting: 左后方清晨窗光为主光，室内弱填充；不能在动作中突然改变太阳位置. Palette evolution: 冷灰低饱和，结尾皮肤允许轻微暖意但不瞬间跳色. Environment: 普通公寓清晨，少量生活痕迹，干净木桌、窗帘不随意飘动. Texture: 轻微自然颗粒感和真实细节，避免磨皮与油亮塑料皮肤.\nLocked identities/objects: CHAR01面部/短发/灰衣; 未点燃烟始终一支; 窗和桌位置固定. Beginning continuity: 同一男子，灰上衣，窗左、桌右，烟未点燃，打火机在桌面. Final state: 香烟落桌且没有燃烧、烟雾或打火机火焰.\nDo not include: no smoke, no flames, no extra fingers, no duplicate cigarette, no jump cut, no AI-generated typography. Do not render any title, text, numbers, subtitles, logo or watermark in the generated footage. Voiceover, sound effects, music and exact charts are handled in post-production.\nDo not force multiple cuts into one generation. Preserve observed end frame for continuation planning."
+      },
+      "postproduction_job": {
+        "voiceover": "戒烟这件事，越早开始，越划算。",
+        "ambience": "低电器噪声与远处城市声音",
+        "music": "极弱钢琴单音垫，不在动作点做煽情升调",
+        "effects": [
+          {
+            "time_s": 1.7,
+            "cue": "细小衣袖摩擦"
+          },
+          {
+            "time_s": 4.0,
+            "cue": "手掌靠近桌面的接触声"
+          }
+        ],
+        "overlay_text": "越早戒，越划算"
+      }
+    },
+    {
+      "shot_id": "S02",
+      "duration": 6,
+      "visual_type": "motion_graphic",
+      "human_review_required": true,
+      "direction": {
+        "shot_id": "S02",
+        "review_status": "reviewed",
+        "objective": {
+          "emotion": "用身边的小钱把抽象戒烟变成可理解的成本",
+          "observable_turn": "从一天的烟钱扩展到每天反复发生",
+          "visual_focus": "20到30元是每日估算，而非固定售价"
+        },
+        "staging": {
+          "blocking": "二维画面左上是简单灰色烟盒符号，右侧固定标示每一天的费用，下方保留字幕区域",
+          "gaze": "观众阅读路径：烟盒→人民币区间→重复的日历格",
+          "spatial_constraints": [
+            "不出现真实香烟品牌",
+            "灰色图标不能误当医学照片"
+          ],
+          "props": [
+            "不出现真实香烟品牌",
+            "灰色图标不能误当医学照片"
+          ]
+        },
+        "performance": {
+          "motivation": "无真人表演；图形承担信息动作",
+          "facial_microaction": "无人物面部动作",
+          "body_microaction": "三次重复的小金额移动，保持克制",
+          "ending_pose": "定格20–30元/天文字"
+        },
+        "beats": [
+          {
+            "from_s": 0,
+            "to_s": 2,
+            "visible_change": "烟盒符号出现在左侧，右侧清晰呈现“20–30元/天”",
+            "performance": "矢量图形淡入，不模拟真人",
+            "camera": "固定2D画布，数字从后期图层显示",
+            "sound": "音量轻的纸张摩擦感"
+          },
+          {
+            "from_s": 2,
+            "to_s": 4,
+            "visible_change": "三枚日历方格按节奏依次出现，每格对应一次花费",
+            "performance": "同一图标轻度重复，不能高速闪烁",
+            "camera": "图层水平平移，不使用3D镜头",
+            "sound": "三个非常轻的节拍提示"
+          },
+          {
+            "from_s": 4,
+            "to_s": 6,
+            "visible_change": "费用区间高亮，背景元素衰减",
+            "performance": "停留1秒便于读清文字",
+            "camera": "静态结尾，切换给年度累计场景",
+            "sound": "音乐平稳承接"
+          }
+        ],
+        "camera": {
+          "start_frame": "9:16正投影平面图形，左右两栏",
+          "movement": "只做图层位移和透明度变化",
+          "move_trigger_s": 0,
+          "end_frame": "最终停在20–30元/天和三个重复日历格",
+          "lens_feel": "不模拟真实摄影镜头",
+          "reason": "让观众在两秒内读清数字，而非追求花哨运动"
+        },
+        "art": {
+          "environment": "雾灰底色，单一主色强调金额",
+          "light_source": "扁平无方向照明",
+          "color_path": "冷灰背景，暖黄色只强调消费数字",
+          "texture": "清晰矢量边缘，轻阴影，不使用金光效果"
+        },
+        "sound": {
+          "ambient": "无环境录音，保持干净",
+          "music": "节奏轻而稳定的低能量铺垫",
+          "effects": [
+            {
+              "time_s": 2.1,
+              "cue": "轻点一下"
+            },
+            {
+              "time_s": 3.0,
+              "cue": "轻点一下"
+            }
+          ],
+          "voiceover_note": "旁白“二十到三十元”应与数字首次出现位置对齐"
+        },
+        "continuity": {
+          "start_state": "由真人镜头硬切到图形世界",
+          "end_state": "同一香烟图标在S03被复用",
+          "locked_entities": [
+            "金额20–30元/天为给定估算口径"
+          ],
+          "reference_assets": []
+        },
+        "graphics": {
+          "treatment": "日消费循环示意",
+          "claims_used": [
+            "C01"
+          ],
+          "labels": [
+            "20–30元/天",
+            "按每天一包估算"
+          ],
+          "motion": "烟盒出现→日历重复→金额定格",
+          "context_note": "不是全国统一零售价，应在详情说明估算前提"
+        },
+        "generation": {
+          "route": "post_production",
+          "clip_type": "not_a_video_model_job",
+          "negative_constraints": [],
+          "reference_roles": [],
+          "limits": "用SVG/Remotion等后期绘制准确中文数字，不送Wan/Seedance"
+        },
+        "qa": {
+          "acceptance_tests": [
+            "数字20–30准确",
+            "未暗示人人一天消费固定相同",
+            "保留安全区域"
+          ],
+          "issues": [
+            "尚未用真实视频模型生成验证；镜头时长和物理细节可能需要多次试验"
+          ],
+          "human_approved": false
+        }
+      },
+      "reference_roles": [],
+      "postproduction_job": {
+        "visual": "烟盒图标变成逐日流出的人民币数字。",
+        "graphics": {
+          "treatment": "日消费循环示意",
+          "claims_used": [
+            "C01"
+          ],
+          "labels": [
+            "20–30元/天",
+            "按每天一包估算"
+          ],
+          "motion": "烟盒出现→日历重复→金额定格",
+          "context_note": "不是全国统一零售价，应在详情说明估算前提"
+        },
+        "sound": {
+          "ambient": "无环境录音，保持干净",
+          "music": "节奏轻而稳定的低能量铺垫",
+          "effects": [
+            {
+              "time_s": 2.1,
+              "cue": "轻点一下"
+            },
+            {
+              "time_s": 3.0,
+              "cue": "轻点一下"
+            }
+          ],
+          "voiceover_note": "旁白“二十到三十元”应与数字首次出现位置对齐"
+        },
+        "editorial_claims": [
+          "C01"
+        ],
+        "overlay_text": "20–30元 / 天"
+      },
+      "prompts": {}
+    },
+    {
+      "shot_id": "S03",
+      "duration": 6,
+      "visual_type": "data_graphic",
+      "human_review_required": true,
+      "direction": {
+        "shot_id": "S03",
+        "review_status": "reviewed",
+        "objective": {
+          "emotion": "建立一个直觉性的年累计收益",
+          "observable_turn": "日消费累积变成年金额，强调简单算术",
+          "visual_focus": "365天的假定必须可见"
+        },
+        "staging": {
+          "blocking": "上方简洁日历，中间乘式，下方年度总额；所有数字可读",
+          "gaze": "从365天→乘号→年度范围",
+          "spatial_constraints": [
+            "不得自动四舍五入成固定一万"
+          ],
+          "props": [
+            "不得自动四舍五入成固定一万"
+          ]
+        },
+        "performance": {
+          "motivation": "没有人物；日历翻页制造时间推移",
+          "facial_microaction": "无",
+          "body_microaction": "日历小格依次填充，金额累加",
+          "ending_pose": "最终年度金额与注释同时清晰停留"
+        },
+        "beats": [
+          {
+            "from_s": 0,
+            "to_s": 2,
+            "visible_change": "365个日子的图形由若干代表格体现，不逐格渲染365张",
+            "performance": "月标逐步过渡",
+            "camera": "固定正投影",
+            "sound": "轻翻页拟音"
+          },
+          {
+            "from_s": 2,
+            "to_s": 4,
+            "visible_change": "20×365与30×365各自落在两行",
+            "performance": "两行数字同时出现，不互相覆盖",
+            "camera": "左对齐数字列表",
+            "sound": "极弱滴答声"
+          },
+          {
+            "from_s": 4,
+            "to_s": 6,
+            "visible_change": "最终7300–10950元/年高亮并停住",
+            "performance": "数值保持屏幕至少1.5秒",
+            "camera": "画面静止作为数据阅读停顿",
+            "sound": "音乐下降2dB以便听清结论"
+          }
+        ],
+        "camera": {
+          "start_frame": "平面图形中景，所有数据居中",
+          "movement": "仅元素淡入与轻弹性缓动",
+          "move_trigger_s": 0,
+          "end_frame": "7,300–10,950元/年清晰占中心",
+          "lens_feel": "2D infographic",
+          "reason": "读数据比炫技优先"
+        },
+        "art": {
+          "environment": "与S02同色背景",
+          "light_source": "无实体光源",
+          "color_path": "主色冷灰，金额暖黄",
+          "texture": "数学表达清晰，排版对齐"
+        },
+        "sound": {
+          "ambient": "静音图形底",
+          "music": "轻钢琴垫",
+          "effects": [
+            {
+              "time_s": 1,
+              "cue": "极轻翻页声"
+            }
+          ],
+          "voiceover_note": "年度金额读出时字幕同步停留"
+        },
+        "continuity": {
+          "start_state": "继承S02的日消费金额与符号",
+          "end_state": "转场时保持同一金额色彩",
+          "locked_entities": [
+            "20–30元/天",
+            "365天估算"
+          ],
+          "reference_assets": []
+        },
+        "graphics": {
+          "treatment": "算式动画",
+          "claims_used": [
+            "C01"
+          ],
+          "labels": [
+            "20×365=7,300",
+            "30×365=10,950",
+            "一年约7,300–10,950元"
+          ],
+          "motion": "逐步出现单位换算和上下限",
+          "context_note": "需要明确假设每日一包、365天且价格不变"
+        },
+        "generation": {
+          "route": "post_production",
+          "clip_type": "not_a_video_model_job",
+          "negative_constraints": [],
+          "reference_roles": [],
+          "limits": "必须后期程序绘制数字"
+        },
+        "qa": {
+          "acceptance_tests": [
+            "金额与365天乘算正确",
+            "全片分镜不让视频模型画数字",
+            "单位为元/年"
+          ],
+          "issues": [
+            "尚未用真实视频模型生成验证；镜头时长和物理细节可能需要多次试验"
+          ],
+          "human_approved": false
+        }
+      },
+      "reference_roles": [],
+      "postproduction_job": {
+        "visual": "年度日历翻页，数字按365天乘算逐步增长。",
+        "graphics": {
+          "treatment": "算式动画",
+          "claims_used": [
+            "C01"
+          ],
+          "labels": [
+            "20×365=7,300",
+            "30×365=10,950",
+            "一年约7,300–10,950元"
+          ],
+          "motion": "逐步出现单位换算和上下限",
+          "context_note": "需要明确假设每日一包、365天且价格不变"
+        },
+        "sound": {
+          "ambient": "静音图形底",
+          "music": "轻钢琴垫",
+          "effects": [
+            {
+              "time_s": 1,
+              "cue": "极轻翻页声"
+            }
+          ],
+          "voiceover_note": "年度金额读出时字幕同步停留"
+        },
+        "editorial_claims": [
+          "C01"
+        ],
+        "overlay_text": "按365天估算：7300–10950元"
+      },
+      "prompts": {}
+    },
+    {
+      "shot_id": "S04",
+      "duration": 7,
+      "visual_type": "data_graphic",
+      "human_review_required": true,
+      "direction": {
+        "shot_id": "S04",
+        "review_status": "reviewed",
+        "objective": {
+          "emotion": "将注意力从钱引向健康损失",
+          "observable_turn": "观众发现最大成本不是烟钱而是与寿命相关的长期风险",
+          "visual_focus": "“10年以上”只作为群体观察研究结论"
+        },
+        "staging": {
+          "blocking": "两条长度不同的抽象生命时间轴，不能画具体人物死亡年龄",
+          "gaze": "观看顺序先是“健康”字卡，再是对照时间轴",
+          "spatial_constraints": [
+            "不标个人寿命终点为60或80岁"
+          ],
+          "props": [
+            "不标个人寿命终点为60或80岁"
+          ]
+        },
+        "performance": {
+          "motivation": "无演员；两条时间轴的距离承载对比",
+          "facial_microaction": "无",
+          "body_microaction": "两个线条以相同速度增长，其中一条提前停止",
+          "ending_pose": "用“研究观察”说明口径"
+        },
+        "beats": [
+          {
+            "from_s": 0,
+            "to_s": 2,
+            "visible_change": "钱的图形轻淡出，“更大的是健康”居上部",
+            "performance": "字卡静态显示",
+            "camera": "画面不旋转",
+            "sound": "音乐降低存在感"
+          },
+          {
+            "from_s": 2,
+            "to_s": 5,
+            "visible_change": "两条抽象横轴自左向右延展，第二条提前停止",
+            "performance": "颜色不同但不暗示每个个体确定死亡日期",
+            "camera": "固定图形景别",
+            "sound": "低频铺底"
+          },
+          {
+            "from_s": 5,
+            "to_s": 7,
+            "visible_change": "“观察研究：预期寿命差异10年以上”后期叠加",
+            "performance": "停顿以便准确阅读",
+            "camera": "不移动镜头",
+            "sound": "淡淡单音收束"
+          }
+        ],
+        "camera": {
+          "start_frame": "画布中央两条并列比较轴",
+          "movement": "只允许条形长度变化",
+          "move_trigger_s": 0,
+          "end_frame": "文字和两条轴同时完整显示",
+          "lens_feel": "二维纪录片图表",
+          "reason": "避免无依据的个人预测"
+        },
+        "art": {
+          "environment": "低纹理图表空间",
+          "light_source": "无实体光源",
+          "color_path": "冷蓝与中性灰线条",
+          "texture": "细线高对比保证小屏幕可见"
+        },
+        "sound": {
+          "ambient": "无实体环境声",
+          "music": "较为克制的低频钢琴",
+          "effects": [],
+          "voiceover_note": "旁白讲“研究发现”时画面出现观察研究角标"
+        },
+        "continuity": {
+          "start_state": "由钱的暖黄提示过渡至健康的冷蓝",
+          "end_state": "下一个镜头沿用健康主题背景",
+          "locked_entities": [
+            "观察研究提示相关，不等同每个个体寿命固定减少"
+          ],
+          "reference_assets": []
+        },
+        "graphics": {
+          "treatment": "观察性寿命差异抽象示意",
+          "claims_used": [
+            "C02"
+          ],
+          "labels": [
+            "观察研究",
+            "持续吸烟与预期寿命减少10年以上相关"
+          ],
+          "motion": "两线分叉示意，绝对避免虚构终点年龄",
+          "context_note": "不能说每个吸烟者必然少活十年；发布前核对文献和人群"
+        },
+        "generation": {
+          "route": "post_production",
+          "clip_type": "not_a_video_model_job",
+          "negative_constraints": [],
+          "reference_roles": [],
+          "limits": "不调用文生视频，后期矢量绘制"
+        },
+        "qa": {
+          "acceptance_tests": [
+            "没有虚构死亡年龄",
+            "明确观察研究",
+            "图表没有不当绝对化语气"
+          ],
+          "issues": [
+            "尚未用真实视频模型生成验证；镜头时长和物理细节可能需要多次试验"
+          ],
+          "human_approved": false
+        }
+      },
+      "reference_roles": [],
+      "postproduction_job": {
+        "visual": "两条抽象生命时间轴并列，但不标出虚构的个人死亡年龄。",
+        "graphics": {
+          "treatment": "观察性寿命差异抽象示意",
+          "claims_used": [
+            "C02"
+          ],
+          "labels": [
+            "观察研究",
+            "持续吸烟与预期寿命减少10年以上相关"
+          ],
+          "motion": "两线分叉示意，绝对避免虚构终点年龄",
+          "context_note": "不能说每个吸烟者必然少活十年；发布前核对文献和人群"
+        },
+        "sound": {
+          "ambient": "无实体环境声",
+          "music": "较为克制的低频钢琴",
+          "effects": [],
+          "voiceover_note": "旁白讲“研究发现”时画面出现观察研究角标"
+        },
+        "editorial_claims": [
+          "C02"
+        ],
+        "overlay_text": "观察研究：预期寿命差异可超过10年"
+      },
+      "prompts": {}
+    },
+    {
+      "shot_id": "S05",
+      "duration": 7,
+      "visual_type": "data_graphic",
+      "human_review_required": true,
+      "direction": {
+        "shot_id": "S05",
+        "review_status": "reviewed",
+        "objective": {
+          "emotion": "强调早戒烟带来的长期收益，同时保持准确分母",
+          "observable_turn": "观众理解比较对象是持续吸烟相关的超额死亡风险",
+          "visual_focus": "绝不把它写成全因死亡风险下降90%"
+        },
+        "staging": {
+          "blocking": "画面分两栏：继续吸烟与40岁前戒烟，中央显示被避免的“相关超额风险”区段",
+          "gaze": "视线先读分组再看相对减少示意",
+          "spatial_constraints": [
+            "两条不是每个人死亡概率条形",
+            "始终显示超额风险字样"
+          ],
+          "props": [
+            "两条不是每个人死亡概率条形",
+            "始终显示超额风险字样"
+          ]
+        },
+        "performance": {
+          "motivation": "没有演员；统计概念由颜色块运动表达",
+          "facial_microaction": "无",
+          "body_microaction": "灰色块分离出大部分浅色区段代表可避免部分",
+          "ending_pose": "保持分母解释"
+        },
+        "beats": [
+          {
+            "from_s": 0,
+            "to_s": 2,
+            "visible_change": "两组对照标签出现在上部",
+            "performance": "文字逐行出现",
+            "camera": "静态正投影",
+            "sound": "BGM克制"
+          },
+          {
+            "from_s": 2,
+            "to_s": 5,
+            "visible_change": "吸烟相关超额风险示意条出现，约90%的区段被淡色标出",
+            "performance": "动效不可误导成全部死亡概率",
+            "camera": "只做条形区域遮罩",
+            "sound": "轻短提示音"
+          },
+          {
+            "from_s": 5,
+            "to_s": 7,
+            "visible_change": "大字“约90%”出现并同时保留“吸烟相关超额风险”限定",
+            "performance": "画面稳定以供阅读",
+            "camera": "最后一秒禁止继续动画",
+            "sound": "配音强调“相关”“约”"
+          }
+        ],
+        "camera": {
+          "start_frame": "9:16比较图表，顶部两组名称，中心条形，底部注释",
+          "movement": "无摄影运镜，仅条形区域变化",
+          "move_trigger_s": 0,
+          "end_frame": "定格完整比较语境",
+          "lens_feel": "2D infographic",
+          "reason": "确保风险口径始终完整"
+        },
+        "art": {
+          "environment": "连续沿用S04冷蓝图形画布",
+          "light_source": "无实体光源",
+          "color_path": "不采用恐惧红色作为吸睛手段",
+          "texture": "统计口径字级不应过小"
+        },
+        "sound": {
+          "ambient": "无真实环境",
+          "music": "音乐下降，给观众读文字",
+          "effects": [
+            {
+              "time_s": 3.4,
+              "cue": "一个极轻提示"
+            }
+          ],
+          "voiceover_note": "对“约九成超额死亡风险”慢一点读"
+        },
+        "continuity": {
+          "start_state": "延续健康数据配色",
+          "end_state": "切换骨折医学图时用干净硬切",
+          "locked_entities": [
+            "同一研究语境",
+            "40岁前戒烟"
+          ],
+          "reference_assets": []
+        },
+        "graphics": {
+          "treatment": "条件限定的数据强调条",
+          "claims_used": [
+            "C03"
+          ],
+          "labels": [
+            "40岁前戒烟",
+            "避免约90%继续吸烟相关超额死亡风险",
+            "与持续吸烟比较"
+          ],
+          "motion": "高亮约90%区段，但永久保留限定语",
+          "context_note": "待查原文；禁止误用“降低所有死亡风险90%”"
+        },
+        "generation": {
+          "route": "post_production",
+          "clip_type": "not_a_video_model_job",
+          "negative_constraints": [],
+          "reference_roles": [],
+          "limits": "精确统计图和中文标签留后期绘制"
+        },
+        "qa": {
+          "acceptance_tests": [
+            "显示与持续吸烟比较",
+            "显示超额死亡风险限定",
+            "没有“所有人死亡风险降90%”"
+          ],
+          "issues": [
+            "尚未用真实视频模型生成验证；镜头时长和物理细节可能需要多次试验"
+          ],
+          "human_approved": false
+        }
+      },
+      "reference_roles": [],
+      "postproduction_job": {
+        "visual": "“与持续吸烟比较”的分组风险示意条变化，而不是全因死亡率从100变10。",
+        "graphics": {
+          "treatment": "条件限定的数据强调条",
+          "claims_used": [
+            "C03"
+          ],
+          "labels": [
+            "40岁前戒烟",
+            "避免约90%继续吸烟相关超额死亡风险",
+            "与持续吸烟比较"
+          ],
+          "motion": "高亮约90%区段，但永久保留限定语",
+          "context_note": "待查原文；禁止误用“降低所有死亡风险90%”"
+        },
+        "sound": {
+          "ambient": "无真实环境",
+          "music": "音乐下降，给观众读文字",
+          "effects": [
+            {
+              "time_s": 3.4,
+              "cue": "一个极轻提示"
+            }
+          ],
+          "voiceover_note": "对“约九成超额死亡风险”慢一点读"
+        },
+        "editorial_claims": [
+          "C03"
+        ],
+        "overlay_text": "40岁前戒烟：避免约90%的吸烟相关超额死亡风险*"
+      },
+      "prompts": {}
+    },
+    {
+      "shot_id": "S06",
+      "duration": 7,
+      "visual_type": "medical_animation",
+      "human_review_required": true,
+      "direction": {
+        "shot_id": "S06",
+        "review_status": "reviewed",
+        "objective": {
+          "emotion": "让抽象骨折风险有可理解的医学对象",
+          "observable_turn": "从总体戒烟收益切到骨折愈合相关风险",
+          "visual_focus": "不把观察研究的优势比当作风险发生概率"
+        },
+        "staging": {
+          "blocking": "画面中央简化胫骨轮廓，中间断裂线；旁边一小块文字解释“优势比”",
+          "gaze": "眼睛先看骨折示意，再看数字解释",
+          "spatial_constraints": [
+            "骨折示意必须标记非真实患者",
+            "不出现骇人血肉"
+          ],
+          "props": [
+            "骨折示意必须标记非真实患者",
+            "不出现骇人血肉"
+          ]
+        },
+        "performance": {
+          "motivation": "没有真人，使用简化医学二维图",
+          "facial_microaction": "无",
+          "body_microaction": "断裂线两侧出现缓慢愈合示意（不展示具体临床预测）",
+          "ending_pose": "结束时骨裂线仍可被识别"
+        },
+        "beats": [
+          {
+            "from_s": 0,
+            "to_s": 2,
+            "visible_change": "简化小腿胫骨轮廓淡入，清晰标示骨折位置",
+            "performance": "只有医学图示运动",
+            "camera": "固定平面视角",
+            "sound": "平静解说"
+          },
+          {
+            "from_s": 2,
+            "to_s": 4.5,
+            "visible_change": "骨裂线两侧出现很慢的愈合进展示意",
+            "performance": "不展示确定的个人结果",
+            "camera": "骨骼示意轻微放大，不转成写实内脏",
+            "sound": "无惊吓音效"
+          },
+          {
+            "from_s": 4.5,
+            "to_s": 7,
+            "visible_change": "OR 2.32 与“优势比、观察研究”逐项出现",
+            "performance": "保留图表不遮挡骨裂位置",
+            "camera": "静态末帧用于字幕停留",
+            "sound": "背景乐保持低音量"
+          }
+        ],
+        "camera": {
+          "start_frame": "正面简化胫骨示意，中景，留右侧注释",
+          "movement": "仅小幅矢量缩放，不做推拉镜头",
+          "move_trigger_s": 2.0,
+          "end_frame": "骨裂位置与OR说明在同一屏",
+          "lens_feel": "flat medical diagram",
+          "reason": "清晰解释研究对象而非制造恐惧"
+        },
+        "art": {
+          "environment": "抽象医学教学背景",
+          "light_source": "均匀扁平照明",
+          "color_path": "淡灰蓝骨骼线条，橙色仅标出断裂处",
+          "texture": "平滑2D、无真实患者隐私"
+        },
+        "sound": {
+          "ambient": "无真实医疗环境噪音",
+          "music": "低音量节奏消退",
+          "effects": [],
+          "voiceover_note": "旁白使用“可能增加…风险”而不声称研究证明因果"
+        },
+        "continuity": {
+          "start_state": "S05硬切到医学示意背景",
+          "end_state": "转回S07数据卡片时保持冷蓝主色",
+          "locked_entities": [
+            "OR 2.32为优势比",
+            "观察研究，不是临床预测"
+          ],
+          "reference_assets": []
+        },
+        "graphics": {
+          "treatment": "二维胫骨愈合教学示意",
+          "claims_used": [
+            "C04"
+          ],
+          "labels": [
+            "观察研究：OR 2.32",
+            "OR=优势比，不等于风险概率倍数"
+          ],
+          "motion": "骨折位置先亮，研究口径后进",
+          "context_note": "发布前核对汇总研究与结局定义；本镜不能说不愈合风险“2.3倍”"
+        },
+        "generation": {
+          "route": "post_production",
+          "clip_type": "not_a_video_model_job",
+          "negative_constraints": [],
+          "reference_roles": [],
+          "limits": "二维医学动画由后期制作，不发给视频生成模型"
+        },
+        "qa": {
+          "acceptance_tests": [
+            "显著标示示意性质",
+            "OR没有写作风险概率倍数",
+            "没有恐怖医学画面"
+          ],
+          "issues": [
+            "尚未用真实视频模型生成验证；镜头时长和物理细节可能需要多次试验"
+          ],
+          "human_approved": false
+        }
+      },
+      "reference_roles": [],
+      "postproduction_job": {
+        "visual": "二维简化胫骨骨折及愈合过程，标注统计来自观察研究，避免真实病例假象。",
+        "graphics": {
+          "treatment": "二维胫骨愈合教学示意",
+          "claims_used": [
+            "C04"
+          ],
+          "labels": [
+            "观察研究：OR 2.32",
+            "OR=优势比，不等于风险概率倍数"
+          ],
+          "motion": "骨折位置先亮，研究口径后进",
+          "context_note": "发布前核对汇总研究与结局定义；本镜不能说不愈合风险“2.3倍”"
+        },
+        "sound": {
+          "ambient": "无真实医疗环境噪音",
+          "music": "低音量节奏消退",
+          "effects": [],
+          "voiceover_note": "旁白使用“可能增加…风险”而不声称研究证明因果"
+        },
+        "editorial_claims": [
+          "C04"
+        ],
+        "overlay_text": "观察研究：骨折不愈合 OR 2.32（优势比）"
+      },
+      "prompts": {}
+    },
+    {
+      "shot_id": "S07",
+      "duration": 9,
+      "visual_type": "data_graphic",
+      "human_review_required": true,
+      "direction": {
+        "shot_id": "S07",
+        "review_status": "reviewed",
+        "objective": {
+          "emotion": "以有限证据提供一个具体可理解的对照",
+          "observable_turn": "20%对38%的差距吸引注意但同时说明样本小",
+          "visual_focus": "突出两组受试人数不同与研究场景限定"
+        },
+        "staging": {
+          "blocking": "左右等宽卡片，各自标注戒烟干预/对照、受试人数和并发症比例",
+          "gaze": "眼睛先读组名→20和38→研究说明",
+          "spatial_constraints": [
+            "比率条宽度与百分数一致",
+            "不把所有手术治疗都概括成此结局"
+          ],
+          "props": [
+            "比率条宽度与百分数一致",
+            "不把所有手术治疗都概括成此结局"
+          ]
+        },
+        "performance": {
+          "motivation": "没有演员；两条并列条形从0伸展",
+          "facial_microaction": "无",
+          "body_microaction": "20%条较短，38%条较长并列",
+          "ending_pose": "末尾保留两组样本量"
+        },
+        "beats": [
+          {
+            "from_s": 0,
+            "to_s": 2,
+            "visible_change": "画面左右各出现等宽卡片标题",
+            "performance": "不移动人物",
+            "camera": "固定正投影",
+            "sound": "低音量铺底"
+          },
+          {
+            "from_s": 2,
+            "to_s": 4.5,
+            "visible_change": "20%和38%数字同步显示；长条按相同标尺增长",
+            "performance": "先完整显示数值再进行高亮",
+            "camera": "中心静态画布",
+            "sound": "轻点提示音"
+          },
+          {
+            "from_s": 4.5,
+            "to_s": 7,
+            "visible_change": "样本量50与55写在相应组名下",
+            "performance": "避免观众误以为绝对人数相同",
+            "camera": "无需摄像机运动",
+            "sound": "音乐继续克制"
+          },
+          {
+            "from_s": 7,
+            "to_s": 9,
+            "visible_change": "“小型随机试验”与“术后并发症”上下同时显示",
+            "performance": "静态停留供读数",
+            "camera": "硬切前保留清晰末帧",
+            "sound": "留白0.2秒以便结束旁白"
+          }
+        ],
+        "camera": {
+          "start_frame": "左右对称数据卡片，适配手机竖屏",
+          "movement": "柱形长度动画但无运镜",
+          "move_trigger_s": 0,
+          "end_frame": "两组信息同屏清晰可读",
+          "lens_feel": "2D clean comparison",
+          "reason": "读数准确高于美术复杂度"
+        },
+        "art": {
+          "environment": "简洁图形舞台",
+          "light_source": "二维均匀照明",
+          "color_path": "两组使用对比清晰但不夸张的蓝灰色",
+          "texture": "无伪3D效果或医院虚构照片"
+        },
+        "sound": {
+          "ambient": "无病房环境声",
+          "music": "非常轻的铺底不盖住旁白",
+          "effects": [
+            {
+              "time_s": 2.6,
+              "cue": "两个轻提示音"
+            }
+          ],
+          "voiceover_note": "旁白讲两组百分比时字幕必须与卡片同步"
+        },
+        "continuity": {
+          "start_state": "延续S06冷蓝视觉",
+          "end_state": "切回真人结尾时音乐逐渐转暖",
+          "locked_entities": [
+            "小型随机试验",
+            "干预组50人、对照组55人",
+            "术后并发症20%和38%"
+          ],
+          "reference_assets": []
+        },
+        "graphics": {
+          "treatment": "等宽对照卡片+同尺度水平条形",
+          "claims_used": [
+            "C05"
+          ],
+          "labels": [
+            "戒烟干预组 n=50：20%",
+            "对照组 n=55：38%",
+            "小型随机试验"
+          ],
+          "motion": "两组从同一基线增长并最终停止在正确比例",
+          "context_note": "特定研究，不得说任何手术都降低至20%；不把绝对百分点差与相对减少混用"
+        },
+        "generation": {
+          "route": "post_production",
+          "clip_type": "not_a_video_model_job",
+          "negative_constraints": [],
+          "reference_roles": [],
+          "limits": "百分比及中文图表必须后期渲染"
+        },
+        "qa": {
+          "acceptance_tests": [
+            "20%和38%严格对齐",
+            "样本量50与55可见",
+            "说明“小型随机试验”",
+            "未推广为普遍临床疗效"
+          ],
+          "issues": [
+            "尚未用真实视频模型生成验证；镜头时长和物理细节可能需要多次试验"
+          ],
+          "human_approved": false
+        }
+      },
+      "reference_roles": [],
+      "postproduction_job": {
+        "visual": "两个等宽分组卡片，20%和38%横向条形对比，角标小型随机试验。",
+        "graphics": {
+          "treatment": "等宽对照卡片+同尺度水平条形",
+          "claims_used": [
+            "C05"
+          ],
+          "labels": [
+            "戒烟干预组 n=50：20%",
+            "对照组 n=55：38%",
+            "小型随机试验"
+          ],
+          "motion": "两组从同一基线增长并最终停止在正确比例",
+          "context_note": "特定研究，不得说任何手术都降低至20%；不把绝对百分点差与相对减少混用"
+        },
+        "sound": {
+          "ambient": "无病房环境声",
+          "music": "非常轻的铺底不盖住旁白",
+          "effects": [
+            {
+              "time_s": 2.6,
+              "cue": "两个轻提示音"
+            }
+          ],
+          "voiceover_note": "旁白讲两组百分比时字幕必须与卡片同步"
+        },
+        "editorial_claims": [
+          "C05"
+        ],
+        "overlay_text": "戒烟干预组20% / 对照组38%（小型试验）"
+      },
+      "prompts": {}
+    },
+    {
+      "shot_id": "S08",
+      "duration": 6,
+      "visual_type": "ai_video",
+      "human_review_required": true,
+      "direction": {
+        "shot_id": "S08",
+        "review_status": "reviewed",
+        "objective": {
+          "emotion": "把信息闭合为观众可以行动的一个决定",
+          "observable_turn": "角色从封闭房间走向自然晨光，但不暗示瞬间康复",
+          "visual_focus": "停留在有行动可能的平静状态"
+        },
+        "staging": {
+          "blocking": "回到同一公寓窗口另一侧的房门。男子原先站在门内偏右，门开启后向阳光区域缓慢迈出两步",
+          "gaze": "视线门把→门外路径→远方，不看镜头",
+          "spatial_constraints": [
+            "同一灰上衣",
+            "门在画面右侧，与窗口几何位置可对齐",
+            "不再拿香烟"
+          ],
+          "props": [
+            "同一灰上衣",
+            "门在画面右侧，与窗口几何位置可对齐",
+            "不再拿香烟"
+          ]
+        },
+        "performance": {
+          "motivation": "决定改变生活不需要夸张胜利动作",
+          "facial_microaction": "眼神放松，嘴角自然，不强行微笑",
+          "body_microaction": "手搭门把，推门后放开，身体重心前移",
+          "ending_pose": "站在门槛外，两脚稳定，目光向前"
+        },
+        "beats": [
+          {
+            "from_s": 0,
+            "to_s": 1.5,
+            "visible_change": "男子背对三分之二镜头站在室内门前，指尖搭上门把",
+            "performance": "身体略后倾，吸气",
+            "camera": "中景固定机位，保留门周围环境",
+            "sound": "门轴与室内低环境声"
+          },
+          {
+            "from_s": 1.5,
+            "to_s": 3.5,
+            "visible_change": "房门朝室外打开，晨光落在肩部和地板",
+            "performance": "手掌推门，眼睛适应外面的亮光",
+            "camera": "缓慢水平跟随不足半步，不穿越门框",
+            "sound": "门轴轻响，晨间鸟鸣稍远"
+          },
+          {
+            "from_s": 3.5,
+            "to_s": 6,
+            "visible_change": "男子平稳踏出门槛并松开手，站稳",
+            "performance": "肩膀放松，无夸张伸懒腰或深吸气表演",
+            "camera": "停机，让人物自己走出画面中心，光源保持方向",
+            "sound": "克制的暖色钢琴音进入但不淹没旁白"
+          }
+        ],
+        "camera": {
+          "start_frame": "35mm环境中景，从客厅门内斜后侧取景，带门框纵深",
+          "movement": "人物开始迈步时轻微横向跟随，3.5秒后保持静止",
+          "move_trigger_s": 1.6,
+          "end_frame": "人物站在门槛外，门框和阳光仍可辨认，画面适合放结尾文字",
+          "lens_feel": "35mm自然纪实广角感，不能突然切换成无人机",
+          "reason": "让“选择走出去”的行动完成整条片子的视觉闭环"
+        },
+        "art": {
+          "environment": "与S01同一普通公寓，外面为清晨居民区步道",
+          "light_source": "日光从左前方向门内照入，阴影方向与前场景一致",
+          "color_path": "由室内冷灰平滑过渡到柔和暖金，不出现强烈过曝",
+          "texture": "真皮肤、衣服纹理正常，避免滤镜式金光"
+        },
+        "sound": {
+          "ambient": "室内风扇声音渐隐，户外鸟鸣和微风进入",
+          "music": "两三个低强度钢琴音从4秒处柔和进来",
+          "effects": [
+            {
+              "time_s": 2,
+              "cue": "轻门轴声"
+            },
+            {
+              "time_s": 3.8,
+              "cue": "脚步声"
+            }
+          ],
+          "voiceover_note": "最后一句话尾有0.3秒音乐留白供观众消化"
+        },
+        "continuity": {
+          "start_state": "承接S01人物脸、衣、发型和房间方向；S01烟仍放在桌上",
+          "end_state": "角色在门外站稳，完成动线，不出现烟盒",
+          "locked_entities": [
+            "CHAR01同一人脸短发和灰衣",
+            "LOC01门和窗的固定空间关系",
+            "无香烟和火焰的新出现"
+          ],
+          "reference_assets": [
+            "需要人物站姿参考（待制作）",
+            "需要同一公寓门口正反打参考（待制作）"
+          ]
+        },
+        "graphics": {
+          "treatment": "结尾旁白对应的字卡叠加在视频上层",
+          "claims_used": [],
+          "labels": [
+            "现在开始"
+          ],
+          "motion": "最后1.5秒文字淡入，放在画面不遮挡人物的安全区",
+          "context_note": "不是医学疗效保证或个人立即康复"
+        },
+        "generation": {
+          "route": "ai_video",
+          "clip_type": "single_continuous_take",
+          "negative_constraints": [
+            "no teleporting outside the door, no clothing change, no extra person, no camera jump, no forced smile, no smoke, no AI-rendered Chinese text"
+          ],
+          "reference_roles": [
+            "CHAR01人物参考",
+            "LOC01室内门口参考"
+          ],
+          "limits": "完成走出门槛的连续动作最重要，不强求精确秒数"
+        },
+        "qa": {
+          "acceptance_tests": [
+            "同一个人物与灰衣",
+            "门的空间方向不突然反转",
+            "主人公平稳走出且脚没有穿模",
+            "结尾无生成汉字"
+          ],
+          "issues": [
+            "尚未用真实视频模型生成验证；镜头时长和物理细节可能需要多次试验"
+          ],
+          "human_approved": false
+        }
+      },
+      "reference_roles": [
+        "CHAR01人物参考",
+        "LOC01室内门口参考"
+      ],
+      "prompts": {
+        "wan": "Create ONE coherent 6s vertical 9:16 visual clip; preserve shot identity and physical realism.\nNarrative task: 角色从封闭房间走向自然晨光，但不暗示瞬间康复. Audience feeling: 把信息闭合为观众可以行动的一个决定.\nFraming and space: 35mm环境中景，从客厅门内斜后侧取景，带门框纵深. Lens feel: 35mm自然纪实广角感，不能突然切换成无人机. Blocking: 回到同一公寓窗口另一侧的房门。男子原先站在门内偏右，门开启后向阳光区域缓慢迈出两步. Gaze direction: 视线门把→门外路径→远方，不看镜头.\nWhat actually happens:\n0–1.5s: Visible 男子背对三分之二镜头站在室内门前，指尖搭上门把; performer 身体略后倾，吸气; camera 中景固定机位，保留门周围环境; sound 门轴与室内低环境声\n1.5–3.5s: Visible 房门朝室外打开，晨光落在肩部和地板; performer 手掌推门，眼睛适应外面的亮光; camera 缓慢水平跟随不足半步，不穿越门框; sound 门轴轻响，晨间鸟鸣稍远\n3.5–6s: Visible 男子平稳踏出门槛并松开手，站稳; performer 肩膀放松，无夸张伸懒腰或深吸气表演; camera 停机，让人物自己走出画面中心，光源保持方向; sound 克制的暖色钢琴音进入但不淹没旁白\nCamera path: 人物开始迈步时轻微横向跟随，3.5秒后保持静止; trigger at 1.6s, finish 人物站在门槛外，门框和阳光仍可辨认，画面适合放结尾文字. Reason for movement: 让“选择走出去”的行动完成整条片子的视觉闭环.\nLighting: 日光从左前方向门内照入，阴影方向与前场景一致. Palette evolution: 由室内冷灰平滑过渡到柔和暖金，不出现强烈过曝. Environment: 与S01同一普通公寓，外面为清晨居民区步道. Texture: 真皮肤、衣服纹理正常，避免滤镜式金光.\nLocked identities/objects: CHAR01同一人脸短发和灰衣; LOC01门和窗的固定空间关系; 无香烟和火焰的新出现. Beginning continuity: 承接S01人物脸、衣、发型和房间方向；S01烟仍放在桌上. Final state: 角色在门外站稳，完成动线，不出现烟盒.\nDo not include: no teleporting outside the door, no clothing change, no extra person, no camera jump, no forced smile, no smoke, no AI-rendered Chinese text. Do not render any title, text, numbers, subtitles, logo or watermark in the generated footage. Voiceover, sound effects, music and exact charts are handled in post-production.\nPrefer a vetted reference image for consistent face and wardrobe when available; do not assert nonexistent references were supplied.",
+        "seedance": "Single continuous 6s shot, portrait 9:16. One clear evolving visual intention; keep subject and prop continuity stable.\nNarrative task: 角色从封闭房间走向自然晨光，但不暗示瞬间康复. Audience feeling: 把信息闭合为观众可以行动的一个决定.\nFraming and space: 35mm环境中景，从客厅门内斜后侧取景，带门框纵深. Lens feel: 35mm自然纪实广角感，不能突然切换成无人机. Blocking: 回到同一公寓窗口另一侧的房门。男子原先站在门内偏右，门开启后向阳光区域缓慢迈出两步. Gaze direction: 视线门把→门外路径→远方，不看镜头.\nWhat actually happens:\n0–1.5s: Visible 男子背对三分之二镜头站在室内门前，指尖搭上门把; performer 身体略后倾，吸气; camera 中景固定机位，保留门周围环境; sound 门轴与室内低环境声\n1.5–3.5s: Visible 房门朝室外打开，晨光落在肩部和地板; performer 手掌推门，眼睛适应外面的亮光; camera 缓慢水平跟随不足半步，不穿越门框; sound 门轴轻响，晨间鸟鸣稍远\n3.5–6s: Visible 男子平稳踏出门槛并松开手，站稳; performer 肩膀放松，无夸张伸懒腰或深吸气表演; camera 停机，让人物自己走出画面中心，光源保持方向; sound 克制的暖色钢琴音进入但不淹没旁白\nCamera path: 人物开始迈步时轻微横向跟随，3.5秒后保持静止; trigger at 1.6s, finish 人物站在门槛外，门框和阳光仍可辨认，画面适合放结尾文字. Reason for movement: 让“选择走出去”的行动完成整条片子的视觉闭环.\nLighting: 日光从左前方向门内照入，阴影方向与前场景一致. Palette evolution: 由室内冷灰平滑过渡到柔和暖金，不出现强烈过曝. Environment: 与S01同一普通公寓，外面为清晨居民区步道. Texture: 真皮肤、衣服纹理正常，避免滤镜式金光.\nLocked identities/objects: CHAR01同一人脸短发和灰衣; LOC01门和窗的固定空间关系; 无香烟和火焰的新出现. Beginning continuity: 承接S01人物脸、衣、发型和房间方向；S01烟仍放在桌上. Final state: 角色在门外站稳，完成动线，不出现烟盒.\nDo not include: no teleporting outside the door, no clothing change, no extra person, no camera jump, no forced smile, no smoke, no AI-rendered Chinese text. Do not render any title, text, numbers, subtitles, logo or watermark in the generated footage. Voiceover, sound effects, music and exact charts are handled in post-production.\nDo not force multiple cuts into one generation. Preserve observed end frame for continuation planning."
+      },
+      "postproduction_job": {
+        "voiceover": "别等身体提醒你。戒烟越早，值得争取的健康时间越多。",
+        "ambience": "室内风扇声音渐隐，户外鸟鸣和微风进入",
+        "music": "两三个低强度钢琴音从4秒处柔和进来",
+        "effects": [
+          {
+            "time_s": 2,
+            "cue": "轻门轴声"
+          },
+          {
+            "time_s": 3.8,
+            "cue": "脚步声"
+          }
+        ],
+        "overlay_text": "现在开始"
+      }
+    }
+  ],
+  "warnings": [
+    "PUBLISH BLOCKED: high-stakes claims require human source review",
+    "PUBLISH BLOCKED: expert video prompting does not verify medical data"
+  ],
+  "not_generated_video": true,
+  "publishing_allowed": false,
+  "prompt_usage": "Prompts are candidates for operator review and actual-model testing; platform capabilities, version and limits must be checked before generation."
+}
