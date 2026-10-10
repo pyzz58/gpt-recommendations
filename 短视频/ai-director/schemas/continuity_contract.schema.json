@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ai-director/continuity-contract-v1.schema.json",
+  "title": "AI Director full coverage physical continuity contract",
+  "type": "object",
+  "properties": {
+    "continuity_contract": {
+      "type": "object",
+      "required": [
+        "version",
+        "coverage",
+        "props",
+        "actors"
+      ],
+      "properties": {
+        "version": {
+          "const": 1
+        },
+        "coverage": {
+          "const": "complete"
+        },
+        "props": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/propAsset"
+          }
+        },
+        "actors": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/actorAsset"
+          }
+        }
+      }
+    },
+    "shots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "continuity_state": {
+            "$ref": "#/$defs/shotState"
+          }
+        }
+      }
+    }
+  },
+  "if": {
+    "required": [
+      "continuity_contract"
+    ]
+  },
+  "then": {
+    "required": [
+      "shots"
+    ],
+    "properties": {
+      "shots": {
+        "items": {
+          "required": [
+            "continuity_state"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "propAsset": {
+      "type": "object",
+      "required": [
+        "initial"
+      ],
+      "properties": {
+        "initial": {
+          "type": "string",
+          "pattern": "^(LOC[A-Za-z0-9_]+:[A-Za-z0-9_]+|CH[A-Za-z0-9_]+:hand)$"
+        },
+        "label": {
+          "type": "string"
+        }
+      }
+    },
+    "actorAsset": {
+      "type": "object",
+      "required": [
+        "initial"
+      ],
+      "properties": {
+        "initial": {
+          "type": "string",
+          "pattern": "^LOC[A-Za-z0-9_]+(:[A-Za-z0-9_]+)?$"
+        }
+      }
+    },
+    "stateMap": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "moveBase": {
+      "type": "object",
+      "required": [
+        "order",
+        "from",
+        "to",
+        "kind",
+        "visible"
+      ],
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "if": {
+        "properties": {
+          "visible": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "note"
+        ],
+        "properties": {
+          "note": {
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "propMove": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/moveBase"
+        },
+        {
+          "required": [
+            "prop"
+          ],
+          "properties": {
+            "prop": {
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "pickup",
+                "place",
+                "handoff",
+                "slide"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "actorMove": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/moveBase"
+        },
+        {
+          "required": [
+            "actor"
+          ],
+          "properties": {
+            "actor": {
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "walk",
+                "cut",
+                "reposition"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "shotState": {
+      "type": "object",
+      "required": [
+        "props_before",
+        "props_after",
+        "actors_before",
+        "actors_after",
+        "prop_moves",
+        "actor_moves"
+      ],
+      "properties": {
+        "props_before": {
+          "$ref": "#/$defs/stateMap"
+        },
+        "props_after": {
+          "$ref": "#/$defs/stateMap"
+        },
+        "actors_before": {
+          "$ref": "#/$defs/stateMap"
+        },
+        "actors_after": {
+          "$ref": "#/$defs/stateMap"
+        },
+        "prop_moves": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/propMove"
+          }
+        },
+        "actor_moves": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/actorMove"
+          }
+        }
+      }
+    }
+  }
+}
