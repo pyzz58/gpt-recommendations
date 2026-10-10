@@ -3,13 +3,13 @@
   "title": "《不要浪费精力》中集：每天睡六小时够了？大脑可能并不这么想",
   "platform": "douyin",
   "aspect_ratio": "9:16",
-  "duration": 91,
+  "duration": 76,
   "risk_domain": "medical",
   "core_message": "每天睡六小时够了？大脑可能并不这么想",
   "audience": "希望减少工作、睡眠或情绪中无效消耗的成年观众",
   "editorial": {
     "hook": "很多人最危险的一句自我安慰，是：我每天睡六小时就够了。",
-    "narration_script": "很多人最危险的一句自我安慰，是：我每天睡六小时就够了。\n一项实验让成年人连续十四天，每晚在床六小时。结果是，注意力任务表现不断下滑。\n麻烦的是，他们主观觉得困的程度，并没有跟着表现一直恶化。\n咖啡也不能随便喝。二十四项研究的汇总发现，咖啡因平均与总睡眠时间减少四十五分钟有关。\n作息也重要。一项对六十一名大学生的跟踪发现，时间越不规律，生物钟就越晚。\n睡前发光屏幕的研究还发现：与读纸书比，使用发光阅读器更容易推迟入睡和生物钟。\n下午困时，有一个小试验支持十分钟短睡。但它不是万能方法。\n比补救更重要的是今晚：早一点睡，起床尽量规律，睡前给屏幕留个距离。\n研究出处第一组：睡眠限制试验、咖啡因荟萃分析和作息规律观察研究。\n第二组包括发光阅读器实验和午睡时长试验。记住，研究环境未必等于每个人的日常。",
+    "narration_script": "很多人最危险的一句自我安慰，是：我每天睡六小时就够了。\n一项实验让成年人连续十四天，每晚在床六小时。结果是，注意力任务表现不断下滑。\n麻烦的是，他们主观觉得困的程度，并没有跟着表现一直恶化。\n咖啡也不能随便喝。二十四项研究的汇总发现，咖啡因平均与总睡眠时间减少四十五分钟有关。\n作息也重要。一项对六十一名大学生的跟踪发现，时间越不规律，生物钟就越晚。\n睡前发光屏幕的研究还发现：与读纸书比，使用发光阅读器更容易推迟入睡和生物钟。\n下午困时，有一个小试验支持十分钟短睡。但它不是万能方法。\n比补救更重要的是今晚：早一点睡，起床尽量规律，睡前给屏幕留个距离。",
     "omissions": [
       {
         "text": "原文其他未纳入的条款",
@@ -520,18 +520,18 @@
     {
       "id": "S09",
       "start": 71,
-      "duration": 10,
+      "duration": 5,
       "purpose": "sources",
-      "narration": "研究出处第一组：睡眠限制试验、咖啡因荟萃分析和作息规律观察研究。",
+      "narration": "",
       "visual_type": "text_card",
       "claim_ids": [
         "S05",
         "S06",
-        "S07"
+        "S08"
       ],
       "character_ids": [],
       "scene_id": "LOC_SOURCE",
-      "visual": "出处卡一：Van Dongen 2003（Sleep）；Gardiner 2023（Sleep Medicine Reviews）；Phillips 2017（Scientific Reports）",
+      "visual": "一张5秒静态研究来源图：\n1. Van Dongen 等 (2003) · Sleep · 睡眠限制实验\n2. Gardiner 等 (2023) · Sleep Med Rev · 荟萃分析\n3. Chang 等 (2015) · PNAS · 睡前阅读实验\n页脚：完整来源/DOI见视频简介；仅代表所引用研究，不等于所有观点已证实。",
       "action": {
         "start": "",
         "action": "",
@@ -540,89 +540,36 @@
         "end": ""
       },
       "camera": {
-        "shot_size": "flat 2D",
-        "angle": "eye level",
-        "lens": "vector animation",
-        "movement": "3条出处分层排版，强调实验/荟萃/观察的区别；避开抖音底部控件",
-        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+        "shot_size": "flat 2D static",
+        "angle": "frontal",
+        "lens": "none",
+        "movement": "fixed frame, no movement",
+        "composition": "vertical 9:16 central-safe 3-line reference text"
       },
       "art": {
-        "lighting": "high-contrast accessible typography",
+        "lighting": "static card, high typographic contrast",
         "palette": "coherent muted blue/gray moving toward warm light",
-        "set_props": "出处卡一：Van Dongen 2003（Sleep）；Gardiner 2023（Sleep Medicine Reviews）；Phillips 2017（Scientific Reports）"
+        "set_props": "无真人；精确文字由后期排版"
       },
       "graphics": {
         "type": "bibliography_credit",
-        "text": "研究来源 · 1/2",
-        "animation": "constrained infographic; readable citations",
-        "placement": "top-to-middle safe zone"
+        "text": "主要研究来源 · 详见视频简介",
+        "animation": "静态图片，0.2秒直接出现；保持静止4.8秒，切掉",
+        "placement": "中上部竖屏安全区；三行字体足够大"
       },
       "audio": {
-        "music": "静态2D面板，镜头不动；配乐压低至可阅读",
-        "sfx": "page-turn",
-        "voice": "neutral Mandarin",
+        "music": "延续片尾BGM并降低音量，5秒结束时淡出",
+        "sfx": "none",
+        "voice": "none",
         "pause_before": 0
       },
       "subtitles": {
-        "text": "研究来源 · 1/2",
-        "style": "clear sans-serif; research labels accurate",
-        "placement": "central-lower safe zone"
+        "text": "完整文献见视频简介",
+        "style": "大号无衬线，2–3条简短来源",
+        "placement": "lower safe zone"
       },
-      "transition": "hard_cut",
-      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
-    },
-    {
-      "id": "S10",
-      "start": 81,
-      "duration": 10,
-      "purpose": "sources",
-      "narration": "第二组包括发光阅读器实验和午睡时长试验。记住，研究环境未必等于每个人的日常。",
-      "visual_type": "text_card",
-      "claim_ids": [
-        "S08",
-        "S09"
-      ],
-      "character_ids": [],
-      "scene_id": "LOC_SOURCE",
-      "visual": "出处卡二：Chang 2015（PNAS）；Brooks 2006（Sleep）；限制说明：受试人群与真实生活有差别",
-      "action": {
-        "start": "",
-        "action": "",
-        "micro_action": "",
-        "reaction": "",
-        "end": ""
-      },
-      "camera": {
-        "shot_size": "flat 2D",
-        "angle": "eye level",
-        "lens": "vector animation",
-        "movement": "页脚『完整 DOI 见简介』，字体不小于常规正文字号的70%",
-        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
-      },
-      "art": {
-        "lighting": "high-contrast accessible typography",
-        "palette": "coherent muted blue/gray moving toward warm light",
-        "set_props": "出处卡二：Chang 2015（PNAS）；Brooks 2006（Sleep）；限制说明：受试人群与真实生活有差别"
-      },
-      "graphics": {
-        "type": "bibliography_credit",
-        "text": "研究来源 · 2/2",
-        "animation": "constrained infographic; readable citations",
-        "placement": "top-to-middle safe zone"
-      },
-      "audio": {
-        "music": "最后2秒安静供观众读；避开字幕遮挡",
-        "sfx": "page-turn",
-        "voice": "neutral Mandarin",
-        "pause_before": 0
-      },
-      "subtitles": {
-        "text": "研究来源 · 2/2",
-        "style": "clear sans-serif; research labels accurate",
-        "placement": "central-lower safe zone"
-      },
-      "transition": "hard_cut",
-      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+      "transition": "hard_cut_to_static_credit",
+      "continuity": "单张静态研究来源卡，不可用AI视频生成汉字或数字；不暗示所有来源已完成全文核实"
     }
   ],
   "production": {
@@ -634,6 +581,19 @@
       "source author/year/venue checked, but detailed results need final journal text review",
       "AI-generation imagery and 2D graphics are illustrative",
       "human review before publication"
-    ]
+    ],
+    "credit_policy": {
+      "max_duration_s": 5,
+      "layout": "single_static_image",
+      "max_sources": 3,
+      "selected_source_ids": [
+        "S05",
+        "S06",
+        "S08"
+      ],
+      "full_bibliography": "description.md",
+      "no_narration": true,
+      "claims_status": "needs_review"
+    }
   }
 }
