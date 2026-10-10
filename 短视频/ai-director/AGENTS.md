@@ -57,3 +57,9 @@
 - 单镜头动作设计至少包含 start/action/micro_action/reaction/end；涉及同一个人物必须使用固定 character ID。
 - 默认不开任何付费 API 和自动发布行为。
 - 先测试，再提交。不要覆盖已有用户工作；不要 force push。
+## P0 修复后约束（先于创意执行）
+
+- 复审不得覆盖 `description.md`、`prompts.json`、人工审批记录；程序另写 `*.generated.*` 文件。
+- `--resume` 不能重建已存在且由用户确认的 `character_bible.json` / `status.json`。跨集人物对照包括 `description`、`wardrobe`、`identity_anchor` 以及 `visual_bible` 各个系列字段。
+- 有研究卡的单集必须生成 `plan.references` 书目数组并绑定每个卡片 claim ID。参考 `skills/05-source-credits.md`；不能用模型捏造 DOI。
+- 现阶段真实 DeepSeek API 运行尚未经用户明确费用审批；不得发起任何付费调用，也不要声称已端到端确认。保持 GitHub 为源码和测试仓库，用户明确要求不打包下载至最终验收。
