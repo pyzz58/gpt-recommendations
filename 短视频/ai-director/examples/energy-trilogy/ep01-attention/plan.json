@@ -1,0 +1,626 @@
+{
+  "schema_version": "0.1",
+  "title": "《不要浪费精力》上集：你不是不够努力，是注意力被偷走了",
+  "platform": "douyin",
+  "aspect_ratio": "9:16",
+  "duration": 84,
+  "risk_domain": "medical",
+  "core_message": "你不是不够努力，是注意力被偷走了",
+  "audience": "希望减少工作、睡眠或情绪中无效消耗的成年观众",
+  "editorial": {
+    "hook": "你可能不是不努力，而是一天里，注意力被偷走了太多次。",
+    "narration_script": "你可能不是不努力，而是一天里，注意力被偷走了太多次。\n手机哪怕只响一下，你没拿起来，实验里也能看到注意力表现受干扰。\n甚至仅仅把手机放在桌面，有实验发现，部分认知测试的表现就会下降。\n更夸张的是，一个平均两点八秒的打断，让顺序任务的步骤出错率约翻倍。\n你刚找回思路，又点开另一件事；不是脑子不行，是工作不断切换。\n还有个两周实验：一百二十四名成年人，把查邮件限制成每天三次，报告的压力更低。\n所以今天就做三件事：关掉非必要通知，手机放远点，固定时间集中回消息。\n把注意力还给自己。下一集，聊聊为什么睡不够，努力也很难有效。\n本集依据四项研究。这里先列两项：手机通知和手机存在本身的实验。\n另两项研究分别观察了短暂打断的错误率，以及减少查邮件频率的压力变化。",
+    "omissions": [
+      {
+        "text": "原文其他未纳入的条款",
+        "reason": "系列叙事分组与单集可读性限制；不应将所有25条粗暴塞入三集"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "S01",
+      "source_quote": "用户原文列有 Stothart 等 (2015) 的研究；对应主张详见该集 手机哪怕只响一下，你没拿起来，实验里也能看到注意力表现受干扰。",
+      "video_wording": "手机哪怕只响一下，你没拿起来，实验里也能看到注意力表现受干扰。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1037/xhp0000100",
+      "caution": "通知干扰的是实验任务表现，不能外推成每天固定损失多少分钟"
+    },
+    {
+      "id": "S02",
+      "source_quote": "用户原文列有 Ward 等 (2017) 的研究；对应主张详见该集 甚至仅仅把手机放在桌面，有实验发现，部分认知测试的表现就会下降。",
+      "video_wording": "甚至仅仅把手机放在桌面，有实验发现，部分认知测试的表现就会下降。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1086/691462",
+      "caution": "测的是工作记忆等认知任务，不是长期生产率"
+    },
+    {
+      "id": "S03",
+      "source_quote": "用户原文列有 Altmann 等 (2014) 的研究；对应主张详见该集 更夸张的是，一个平均两点八秒的打断，让顺序任务的步骤出错率约翻倍。",
+      "video_wording": "更夸张的是，一个平均两点八秒的打断，让顺序任务的步骤出错率约翻倍。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1037/a0030986",
+      "caution": "2.8秒打断的错误率翻倍只适用于该顺序操作任务"
+    },
+    {
+      "id": "S04",
+      "source_quote": "用户原文列有 Kushlev & Dunn (2015) 的研究；对应主张详见该集 还有个两周实验：一百二十四名成年人，把查邮件限制成每天三次，报告的压力更低。",
+      "video_wording": "还有个两周实验：一百二十四名成年人，把查邮件限制成每天三次，报告的压力更低。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1016/j.chb.2014.11.005",
+      "caution": "结果是日常压力更低，未证明工作效率提高"
+    }
+  ],
+  "visual_bible": {
+    "style": "documentary explainer, restrained character acting, precisely composited research infographics",
+    "palette": "coherent muted blue/gray moving toward warm light",
+    "lighting": "one practical consistent main light per scene",
+    "typography": "Chinese clean sans-serif, legible Douyin title/subtitle safe area",
+    "avoid": "fabricated charts, exact text generated inside model footage, false study implications"
+  },
+  "characters": [
+    {
+      "id": "CH_MAIN",
+      "description": "same ordinary Chinese office worker if visible, not a real person likeness",
+      "wardrobe": "深灰外套、浅色衬衣，三集身份不变",
+      "identity_anchor": "先制作完整面部及全身参考图，未制作前不得称已经锁脸"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "LOC_WORK",
+      "description": "开放办公室，一张有电脑和手机的桌面，主角工作和注意力打断"
+    },
+    {
+      "id": "LOC_BED",
+      "description": "小型卧室和窗台，床头灯、纸书、手机、咖啡杯"
+    },
+    {
+      "id": "LOC_CITY",
+      "description": "公交站、雨夜街道、公寓窗边与桌面"
+    },
+    {
+      "id": "LOC_GRAPHICS",
+      "description": "后期专用干净2D动态图形画板；禁止生成模型直接生成可读数据"
+    },
+    {
+      "id": "LOC_SOURCE",
+      "description": "片尾来源设计卡；清晰大字号；实际DOI在说明区"
+    }
+  ],
+  "shots": [
+    {
+      "id": "S01",
+      "start": 0,
+      "duration": 5,
+      "purpose": "hook",
+      "narration": "你可能不是不努力，而是一天里，注意力被偷走了太多次。",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_WORK",
+      "visual": "深夜办公室，主角面对电脑却迟迟没写下一行字",
+      "action": {
+        "start": "镜头开场：深夜办公室，主角面对电脑却迟迟没写下一行字",
+        "action": "在5秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "MCU固定，镜头低于视线一点；眼神在空白文件和手机之间反复游移",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "深夜办公室，主角面对电脑却迟迟没写下一行字"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "不是不努力",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "冷灰蓝窗光，键盘轻响与灯管底噪",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "不是不努力",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S02",
+      "start": 5,
+      "duration": 9,
+      "purpose": "evidence",
+      "narration": "手机哪怕只响一下，你没拿起来，实验里也能看到注意力表现受干扰。",
+      "visual_type": "ai_video",
+      "claim_ids": [
+        "S01"
+      ],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_WORK",
+      "visual": "电脑旁手机闪亮一次，主角停住手指，目光仍努力留在屏幕",
+      "action": {
+        "start": "镜头开场：电脑旁手机闪亮一次，主角停住手指，目光仍努力留在屏幕",
+        "action": "在9秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "先锁手与键盘的近景；2.8秒时切眼睛特写，手悬空，视线未转手机",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "电脑旁手机闪亮一次，主角停住手指，目光仍努力留在屏幕"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "没看消息，也可能被打断",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "白色通知亮点由后期叠加；短信内容不交给生成模型",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "没看消息，也可能被打断",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S03",
+      "start": 14,
+      "duration": 9,
+      "purpose": "evidence",
+      "narration": "甚至仅仅把手机放在桌面，有实验发现，部分认知测试的表现就会下降。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "S02"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "实验条件三栏：手机放桌面/包里/另一个房间，强调测试结果方向而非伪造精确百分比",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "2D俯视构图；手机依次从桌面移动到包、再到远处房间",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "实验条件三栏：手机放桌面/包里/另一个房间，强调测试结果方向而非伪造精确百分比"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "手机位置，也可能影响测试表现",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "淡青色三栏，柔和落地声，旁白平稳",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "手机位置，也可能影响测试表现",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S04",
+      "start": 23,
+      "duration": 9,
+      "purpose": "evidence",
+      "narration": "更夸张的是，一个平均两点八秒的打断，让顺序任务的步骤出错率约翻倍。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "S03"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "非通用生产率图：顺序任务错误率相对基线，1倍与约2倍对照",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "坐标原点0；条形动画0.9秒增长到1x/2x；底栏固定显示「特定实验任务」",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "非通用生产率图：顺序任务错误率相对基线，1倍与约2倍对照"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "2.8秒打断 → 约2倍步骤错误率*",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "深蓝背景橙色强调2.8秒；短促停止声，不用恐怖轰鸣",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "2.8秒打断 → 约2倍步骤错误率*",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S05",
+      "start": 32,
+      "duration": 9,
+      "purpose": "evidence",
+      "narration": "你刚找回思路，又点开另一件事；不是脑子不行，是工作不断切换。",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_WORK",
+      "visual": "主角打开新标签后停住，缓慢关掉无关窗口，重新把双手放回键盘",
+      "action": {
+        "start": "镜头开场：主角打开新标签后停住，缓慢关掉无关窗口，重新把双手放回键盘",
+        "action": "在9秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "桌面侧拍35mm固定；鼠标向右移动→点击→停顿→返回文档；只有一次切换",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "主角打开新标签后停住，缓慢关掉无关窗口，重新把双手放回键盘"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "来回切换，不是同时高效",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "窗外傍晚雨声，第二次点击声被弱化",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "来回切换，不是同时高效",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S06",
+      "start": 41,
+      "duration": 11,
+      "purpose": "evidence",
+      "narration": "还有个两周实验：一百二十四名成年人，把查邮件限制成每天三次，报告的压力更低。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "S04"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "竖屏左右对照：不限次数/每日三次；标注比较的是「日常压力」不是效率",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "顶部日期翻页14天，右列三次邮件卡片依次出现，压力示意向下不标无依据具体数值",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "竖屏左右对照：不限次数/每日三次；标注比较的是「日常压力」不是效率"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "124人 · 两周 · 每天查3次",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "数据画面留出引用角标；温和节奏逐渐稳定",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "124人 · 两周 · 每天查3次",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S07",
+      "start": 52,
+      "duration": 10,
+      "purpose": "evidence",
+      "narration": "所以今天就做三件事：关掉非必要通知，手机放远点，固定时间集中回消息。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "三张真实可操作的行动卡依次上屏；系统设置用示意UI，不伪造App截图",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "每张卡出现2.6秒；关推送、手机入抽屉、日程固定窗口",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "三张真实可操作的行动卡依次上屏；系统设置用示意UI，不伪造App截图"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "关通知 / 手机放远 / 批量回复",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "配乐从断续鼓点切换为规律轻敲；出现机械开关声",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "关通知 / 手机放远 / 批量回复",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S08",
+      "start": 62,
+      "duration": 6,
+      "purpose": "payoff",
+      "narration": "把注意力还给自己。下一集，聊聊为什么睡不够，努力也很难有效。",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_WORK",
+      "visual": "主角清理桌面，把手机放进抽屉，重新坐正专心敲下一行字",
+      "action": {
+        "start": "镜头开场：主角清理桌面，把手机放进抽屉，重新坐正专心敲下一行字",
+        "action": "在6秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "从MS缓慢推近，动作稳而不夸张，屏幕具体文字由后期加入",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "主角清理桌面，把手机放进抽屉，重新坐正专心敲下一行字"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "先保住注意力",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "夜色稍转暖；音乐停顿0.4秒后有明确收束",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "先保住注意力",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S09",
+      "start": 68,
+      "duration": 8,
+      "purpose": "sources",
+      "narration": "本集依据四项研究。这里先列两项：手机通知和手机存在本身的实验。",
+      "visual_type": "text_card",
+      "claim_ids": [
+        "S01",
+        "S02"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_SOURCE",
+      "visual": "出处卡一：Stothart 2015（通知实验）；Ward 2017（手机位置实验）。",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "固定竖屏卡片，作者年份期刊和研究类型字号大于最小可读阈值",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "出处卡一：Stothart 2015（通知实验）；Ward 2017（手机位置实验）。"
+      },
+      "graphics": {
+        "type": "bibliography_credit",
+        "text": "研究来源 · 1/2",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "音乐音量降低；轻微翻页音；来源不是营销背书",
+        "sfx": "page-turn",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "研究来源 · 1/2",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "hard_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S10",
+      "start": 76,
+      "duration": 8,
+      "purpose": "sources",
+      "narration": "另两项研究分别观察了短暂打断的错误率，以及减少查邮件频率的压力变化。",
+      "visual_type": "text_card",
+      "claim_ids": [
+        "S03",
+        "S04"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_SOURCE",
+      "visual": "出处卡二：Altmann 2014（步骤错误）；Kushlev 2015（124人邮件实验）。",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "作者年份+期刊两行卡；结尾出现『完整DOI见视频简介』",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "出处卡二：Altmann 2014（步骤错误）；Kushlev 2015（124人邮件实验）。"
+      },
+      "graphics": {
+        "type": "bibliography_credit",
+        "text": "研究来源 · 2/2",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "留1秒无旁白供阅读，最后轻落幕",
+        "sfx": "page-turn",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "研究来源 · 2/2",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "hard_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    }
+  ],
+  "production": {
+    "voice": "calm Chinese narration",
+    "music_license_check": false,
+    "asset_license_check": false,
+    "publishing_status": "review_required",
+    "review_requirements": [
+      "source author/year/venue checked, but detailed results need final journal text review",
+      "AI-generation imagery and 2D graphics are illustrative",
+      "human review before publication"
+    ]
+  }
+}
