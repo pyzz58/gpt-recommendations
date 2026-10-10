@@ -74,7 +74,7 @@
 - 复审不得覆盖 `description.md`、`prompts.json`、人工审批记录；程序另写 `*.generated.*` 文件。
 - `--resume` 不能重建已存在且由用户确认的 `character_bible.json` / `status.json`。跨集人物对照包括 `description`、`wardrobe`、`identity_anchor` 以及 `visual_bible` 各个系列字段。
 - 有研究卡的单集必须生成 `plan.references` 书目数组并绑定每个卡片 claim ID。参考 `skills/05-source-credits.md`；不能用模型捏造 DOI。
-- 现阶段真实 DeepSeek API 运行尚未经用户明确费用审批；不得发起任何付费调用，也不要声称已端到端确认。保持 GitHub 为源码和测试仓库，用户明确要求不打包下载至最终验收。
+- 2026-10-11 已对一次真实 API 测试明确批准人民币5元本地预留预算，先后成功生成过 series.json 和 plan.json；不等于完成 direction_v02.json 或视频制作验收。**该审批不是未来额外调用的通用授权**；必须逐次核对原任务账本、用户明确的次数和预算。保持 GitHub 为源码和测试仓库，用户明确要求不打包下载至最终验收。
 
 ## v0.3 费用与自动修复门禁
 
