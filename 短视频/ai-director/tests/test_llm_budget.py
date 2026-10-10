@@ -174,6 +174,33 @@ class BudgetSafetyTests(TestCase):
         self.assertEqual(reported[0]['total_tokens'],19)
         self.assertEqual(urlopen.call_args.kwargs['timeout'],160)
 
+    def test_malformed_json_response_saved_offline_without_retry(self):
+        # No real API requests: a malformed model completion must be preserved
+        # for diagnosis, not thrown away and silently billed again.
+        raw='{"series_title":"test", }'
+        payload={'choices':[{'finish_reason':'stop','message':{'content':raw}}],
+                 'usage':{'prompt_tokens':8,'completion_tokens':6,'total_tokens':14}}
+        with tempfile.TemporaryDirectory() as t:
+            target=Path(t)/'job'/'diagnostics'/'series.invalid-response.txt'
+            with patch.object(local.urllib.request,'urlopen',
+                              return_value=io.BytesIO(json.dumps(payload).encode())) as transport:
+                with self.assertRaisesRegex(budget.RetryableLLMError,'模型返回非法JSON'):
+                    local.llm_json(system='输出JSON',user='test',model='deepseek-flash',
+                                   url='https://api.deepseek.com/v1',key='TEST_KEY',
+                                   invalid_response_path=target)
+                self.assertEqual(transport.call_count,1)
+            self.assertEqual(target.read_text(encoding='utf-8'),raw)
+            self.assertNotIn('TEST_KEY',target.read_text(encoding='utf-8'))
+            # Saving a second bad reply to same diagnostic path is create-only.
+            other={'choices':[{'finish_reason':'stop','message':{'content':'{"bad": , }'}}]}
+            with patch.object(local.urllib.request,'urlopen',
+                              return_value=io.BytesIO(json.dumps(other).encode())):
+                with self.assertRaises(budget.RetryableLLMError):
+                    local.llm_json(system='输出JSON',user='test',model='deepseek-flash',
+                                   url='https://api.deepseek.com/v1',key='TEST_KEY',
+                                   invalid_response_path=target)
+            self.assertEqual(target.read_text(encoding='utf-8'),raw)
+
     def test_llm_json_empty_output_retryable_and_5xx_not_retryable(self):
         payload={'choices':[{'finish_reason':'stop','message':{'content':''}}],
                  'usage':{'prompt_tokens':30,'completion_tokens':5}}
