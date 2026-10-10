@@ -3,7 +3,7 @@
   "series": "不要浪费精力",
   "episode": "下",
   "title": "最消耗你的，可能不是工作，而是脑子停不下来",
-  "duration_s": 89,
+  "duration_s": 74,
   "aspect_ratio": "9:16",
   "platform": "douyin",
   "targetEmotion": "比较焦虑→自我觉察→平静掌控",
@@ -384,98 +384,49 @@
     {
       "id": "ep03-emotions-S09",
       "start_s": 69,
-      "duration_s": 10,
-      "end_s": 79,
+      "duration_s": 5,
+      "end_s": 74,
       "phase": "sources",
-      "narration": "这一集依据社交平台使用实验、聚光灯效应研究，以及反刍思维综述。",
+      "narration": "",
       "visual_type": "source_card",
-      "scene_action": "出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
-      "camera_direction": "按发表年份与研究方法三行，屏幕文字限制为短标签",
-      "art_audio": "静态，字清楚且保留阅读停顿",
-      "on_screen_text": "研究来源 · 1/2",
+      "scene_action": "一张5秒静态研究来源图：\n1. Allcott 等 (2020) · American Econ Rev · 随机试验\n2. Hunt 等 (2018) · J Soc Clin Psychol · 随机试验\n3. Kjærvik & Bushman (2024) · Clin Psychol Rev · 荟萃分析\n页脚：完整来源/DOI见视频简介；仅代表所引用研究，不等于所有观点已证实。",
+      "camera_direction": "9:16 static bibliography card, 3 lines; no zoom/pan",
+      "art_audio": "no voiceover, final music fade out",
+      "on_screen_text": "主要研究来源 | 完整DOI见简介",
       "source_ids": [
         "S10",
         "S11",
-        "S12"
-      ],
-      "director_intent": "建立可信可核对出处，限制适用范围",
-      "in_shot_beats": [
-        {
-          "from_s": 0,
-          "to_s": 4,
-          "visible_action": "建立当前镜头：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
-          "camera": "按发表年份与研究方法三行，屏幕文字限制为短标签",
-          "sound": "旁白主导，音乐-20dB左右预留语音空间"
-        },
-        {
-          "from_s": 4,
-          "to_s": 10,
-          "visible_action": "画面信息转折：研究来源 · 1/2；结束态准备切镜",
-          "camera": "按发表年份与研究方法三行，屏幕文字限制为短标签",
-          "sound": "声音轻缓并留出阅读空白"
-        }
-      ],
-      "generation_route": "source_card_compositing",
-      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；按发表年份与研究方法三行，屏幕文字限制为短标签。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
-      "continuity": {
-        "character_id": "",
-        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
-        "blocked_text_in_footage": true
-      },
-      "qa": [
-        "字幕准确且未被底栏遮挡",
-        "场景/镜头活动可在镜头时长完成",
-        "定量信息有研究对象及限制说明",
-        "片尾每条出处显示作者、年份、期刊、研究类型",
-        "完整 DOI 见视频说明"
-      ]
-    },
-    {
-      "id": "ep03-emotions-S10",
-      "start_s": 79,
-      "duration_s": 10,
-      "end_s": 89,
-      "phase": "sources",
-      "narration": "还有反刍思维的综述和一份一百五十四项研究的愤怒管理汇总。具体论文链接都放在简介。",
-      "visual_type": "source_card",
-      "scene_action": "出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
-      "camera_direction": "重点标注『研究是群体平均，不替代个人帮助』",
-      "art_audio": "最后两秒安静，音乐自然淡出",
-      "on_screen_text": "研究来源 · 2/2",
-      "source_ids": [
-        "S13",
         "S14"
       ],
-      "director_intent": "建立可信可核对出处，限制适用范围",
+      "director_intent": "单张五秒来源卡，建立可信可追溯性而不破坏完播节奏",
       "in_shot_beats": [
         {
           "from_s": 0,
-          "to_s": 4,
-          "visible_action": "建立当前镜头：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
-          "camera": "重点标注『研究是群体平均，不替代个人帮助』",
-          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+          "to_s": 0.2,
+          "visible_action": "完整来源图淡入或硬切",
+          "camera": "fixed",
+          "sound": "no voiceover; BGM duck"
         },
         {
-          "from_s": 4,
-          "to_s": 10,
-          "visible_action": "画面信息转折：研究来源 · 2/2；结束态准备切镜",
-          "camera": "重点标注『研究是群体平均，不替代个人帮助』",
-          "sound": "声音轻缓并留出阅读空白"
+          "from_s": 0.2,
+          "to_s": 5,
+          "visible_action": "3条来源保持在同一位置供阅读，5秒结束",
+          "camera": "fixed",
+          "sound": "BGM fade-out"
         }
       ],
       "generation_route": "source_card_compositing",
-      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；重点标注『研究是群体平均，不替代个人帮助』。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "generation_prompt": "使用后期图文渲染器输出一张9:16静态图片，并将其加入剪辑末尾5秒。一张5秒静态研究来源图：\n1. Allcott 等 (2020) · American Econ Rev · 随机试验\n2. Hunt 等 (2018) · J Soc Clin Psychol · 随机试验\n3. Kjærvik & Bushman (2024) · Clin Psychol Rev · 荟萃分析\n页脚：完整来源/DOI见视频简介；仅代表所引用研究，不等于所有观点已证实。",
       "continuity": {
         "character_id": "",
         "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
         "blocked_text_in_footage": true
       },
       "qa": [
-        "字幕准确且未被底栏遮挡",
-        "场景/镜头活动可在镜头时长完成",
-        "定量信息有研究对象及限制说明",
-        "片尾每条出处显示作者、年份、期刊、研究类型",
-        "完整 DOI 见视频说明"
+        "单张静态来源图片，时长5秒",
+        "仅显示三项核心研究，其他全部放视频简介",
+        "确保三行大字和竖屏安全区域",
+        "禁止AI视频模型伪造论文截图或可读字幕"
       ]
     }
   ],
@@ -536,6 +487,18 @@
       "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
     }
   ],
-  "source_credits_duration_s": 20,
-  "video_generated": false
+  "source_credits_duration_s": 5,
+  "video_generated": false,
+  "source_credit_policy": {
+    "duration_s": 5,
+    "mode": "single_static_image",
+    "displayed_ids": [
+      "S10",
+      "S11",
+      "S14"
+    ],
+    "full_bibliography_in_description": true,
+    "voiceover": false,
+    "requires_review": true
+  }
 }
