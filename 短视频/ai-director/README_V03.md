@@ -33,6 +33,18 @@ open jobs/my-video-new/index.html
 - 若中途失败，已成功生成的 `series.json`、`plan.json` 会保留。修订草稿后可 `--resume` 续跑；API生成不保证每次一键直接通过质量校验。拒绝把不合格作品伪装成成功。
 - 使用别的国内服务：需其兼容 Chat Completions + JSON对象输出；显式设置 `AI_API_BASE_URL` 和 `AI_MODEL`，事先检查收费与服务条款。支持 `http://127.0.0.1:端口/v1` 作为未来本地模型接口（未做实际兼容性测试）。
 
+## 新增：离线完整连续性合同和修稿规范
+
+任何已有 `plan.json` 都可以用以下命令免费审查：
+
+```bash
+python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.json
+```
+
+现支持可选 `continuity_contract` 完整模式：记录全局唯一人物和道具、所有镜头初始与结束位置、顺序移动事件；检测从沙发到抽屉的物品瞬移以及人物未到位的物品操作。完整定义参见 `CONTINUITY_QA.md`、`schemas/continuity_contract.schema.json` 和 Codex 的 `skills/06-continuity-repair.md`。
+
+**不要直接修改原片**。按上述 Codex 工作流先生成 `plan.proposed.json`，然后在本地验证并人工审核。没有采纳整个 CineCrew 或 transitions 包；零运行时额外依赖，无视频或 API 费用。
+
 ## 本地自检与备份
 
 ```bash
