@@ -1,0 +1,639 @@
+{
+  "schema_version": "0.1",
+  "title": "《不要浪费精力》中集：每天睡六小时够了？大脑可能并不这么想",
+  "platform": "douyin",
+  "aspect_ratio": "9:16",
+  "duration": 91,
+  "risk_domain": "medical",
+  "core_message": "每天睡六小时够了？大脑可能并不这么想",
+  "audience": "希望减少工作、睡眠或情绪中无效消耗的成年观众",
+  "editorial": {
+    "hook": "很多人最危险的一句自我安慰，是：我每天睡六小时就够了。",
+    "narration_script": "很多人最危险的一句自我安慰，是：我每天睡六小时就够了。\n一项实验让成年人连续十四天，每晚在床六小时。结果是，注意力任务表现不断下滑。\n麻烦的是，他们主观觉得困的程度，并没有跟着表现一直恶化。\n咖啡也不能随便喝。二十四项研究的汇总发现，咖啡因平均与总睡眠时间减少四十五分钟有关。\n作息也重要。一项对六十一名大学生的跟踪发现，时间越不规律，生物钟就越晚。\n睡前发光屏幕的研究还发现：与读纸书比，使用发光阅读器更容易推迟入睡和生物钟。\n下午困时，有一个小试验支持十分钟短睡。但它不是万能方法。\n比补救更重要的是今晚：早一点睡，起床尽量规律，睡前给屏幕留个距离。\n研究出处第一组：睡眠限制试验、咖啡因荟萃分析和作息规律观察研究。\n第二组包括发光阅读器实验和午睡时长试验。记住，研究环境未必等于每个人的日常。",
+    "omissions": [
+      {
+        "text": "原文其他未纳入的条款",
+        "reason": "系列叙事分组与单集可读性限制；不应将所有25条粗暴塞入三集"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "S05",
+      "source_quote": "用户原文列有 Van Dongen 等 (2003) 的研究；对应主张详见该集 一项实验让成年人连续十四天，每晚在床六小时。结果是，注意力任务表现不断下滑。；麻烦的是，他们主观觉得困的程度，并没有跟着表现一直恶化。",
+      "video_wording": "一项实验让成年人连续十四天，每晚在床六小时。结果是，注意力任务表现不断下滑。；麻烦的是，他们主观觉得困的程度，并没有跟着表现一直恶化。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1093/sleep/26.2.117",
+      "caution": "6小时是每晚在床时间；实验中的注意力表现不代表每个人"
+    },
+    {
+      "id": "S06",
+      "source_quote": "用户原文列有 Gardiner 等 (2023) 的研究；对应主张详见该集 咖啡也不能随便喝。二十四项研究的汇总发现，咖啡因平均与总睡眠时间减少四十五分钟有关。",
+      "video_wording": "咖啡也不能随便喝。二十四项研究的汇总发现，咖啡因平均与总睡眠时间减少四十五分钟有关。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1016/j.smrv.2023.101764",
+      "caution": "平均少睡45分钟，不意味着喝一杯咖啡就少睡45分钟"
+    },
+    {
+      "id": "S07",
+      "source_quote": "用户原文列有 Phillips 等 (2017) 的研究；对应主张详见该集 作息也重要。一项对六十一名大学生的跟踪发现，时间越不规律，生物钟就越晚。",
+      "video_wording": "作息也重要。一项对六十一名大学生的跟踪发现，时间越不规律，生物钟就越晚。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1038/s41598-017-03171-4",
+      "caution": "关联研究，不能证明固定起床必然改善学业"
+    },
+    {
+      "id": "S08",
+      "source_quote": "用户原文列有 Chang 等 (2015) 的研究；对应主张详见该集 睡前发光屏幕的研究还发现：与读纸书比，使用发光阅读器更容易推迟入睡和生物钟。",
+      "video_wording": "睡前发光屏幕的研究还发现：与读纸书比，使用发光阅读器更容易推迟入睡和生物钟。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1073/pnas.1418490112",
+      "caution": "实验中的电子阅读器和光照设置，不等于任何手机使用场景"
+    },
+    {
+      "id": "S09",
+      "source_quote": "用户原文列有 Brooks & Lack (2006) 的研究；对应主张详见该集 下午困时，有一个小试验支持十分钟短睡。但它不是万能方法。",
+      "video_wording": "下午困时，有一个小试验支持十分钟短睡。但它不是万能方法。",
+      "status": "needs_review",
+      "evidence_url": "https://doi.org/10.1093/sleep/29.6.831",
+      "caution": "受试者事先睡眠受限，10分钟实际睡眠不同于闭眼休息"
+    }
+  ],
+  "visual_bible": {
+    "style": "documentary explainer, restrained character acting, precisely composited research infographics",
+    "palette": "coherent muted blue/gray moving toward warm light",
+    "lighting": "one practical consistent main light per scene",
+    "typography": "Chinese clean sans-serif, legible Douyin title/subtitle safe area",
+    "avoid": "fabricated charts, exact text generated inside model footage, false study implications"
+  },
+  "characters": [
+    {
+      "id": "CH_MAIN",
+      "description": "same ordinary Chinese office worker if visible, not a real person likeness",
+      "wardrobe": "深灰外套、浅色衬衣，三集身份不变",
+      "identity_anchor": "先制作完整面部及全身参考图，未制作前不得称已经锁脸"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "LOC_WORK",
+      "description": "开放办公室，一张有电脑和手机的桌面，主角工作和注意力打断"
+    },
+    {
+      "id": "LOC_BED",
+      "description": "小型卧室和窗台，床头灯、纸书、手机、咖啡杯"
+    },
+    {
+      "id": "LOC_CITY",
+      "description": "公交站、雨夜街道、公寓窗边与桌面"
+    },
+    {
+      "id": "LOC_GRAPHICS",
+      "description": "后期专用干净2D动态图形画板；禁止生成模型直接生成可读数据"
+    },
+    {
+      "id": "LOC_SOURCE",
+      "description": "片尾来源设计卡；清晰大字号；实际DOI在说明区"
+    }
+  ],
+  "shots": [
+    {
+      "id": "S01",
+      "start": 0,
+      "duration": 6,
+      "purpose": "hook",
+      "narration": "很多人最危险的一句自我安慰，是：我每天睡六小时就够了。",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_BED",
+      "visual": "主角夜里坐在电脑前，咖啡杯已空；墙钟凌晨，但数字由后期叠加",
+      "action": {
+        "start": "镜头开场：主角夜里坐在电脑前，咖啡杯已空；墙钟凌晨，但数字由后期叠加",
+        "action": "在6秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "MCU左侧三分位，眼皮微重，右手还握着鼠标，动作刻意放慢",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "主角夜里坐在电脑前，咖啡杯已空；墙钟凌晨，但数字由后期叠加"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "「六小时，够了？」",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "蓝色桌灯与暗房；低频鼓点，按键回声",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "「六小时，够了？」",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S02",
+      "start": 6,
+      "duration": 11,
+      "purpose": "evidence",
+      "narration": "一项实验让成年人连续十四天，每晚在床六小时。结果是，注意力任务表现不断下滑。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "S05"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "十四格日历逐一被涂暗；同屏折线仅显示趋势，不捏造每日实际分值",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "上半屏14天日历，下半屏任务表现向下的示意线，注「趋势示意」",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "十四格日历逐一被涂暗；同屏折线仅显示趋势，不捏造每日实际分值"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "14天×每晚在床6小时",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "干净米白学术图表转暗蓝；木质时钟声",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "14天×每晚在床6小时",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S03",
+      "start": 17,
+      "duration": 8,
+      "purpose": "evidence",
+      "narration": "麻烦的是，他们主观觉得困的程度，并没有跟着表现一直恶化。",
+      "visual_type": "ai_video",
+      "claim_ids": [
+        "S05"
+      ],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_BED",
+      "visual": "同一个人在清晨拿起杯子，自觉精神尚可，却在简单表格里反复找不到要点",
+      "action": {
+        "start": "镜头开场：同一个人在清晨拿起杯子，自觉精神尚可，却在简单表格里反复找不到要点",
+        "action": "在8秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "先面部平静的特写，再移到两只手在桌面停顿，避免演成疾病",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "同一个人在清晨拿起杯子，自觉精神尚可，却在简单表格里反复找不到要点"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "感觉不困 ≠ 表现没下降",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "晨光明亮但略失焦；短暂静音凸显『感觉不到』",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "感觉不困 ≠ 表现没下降",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S04",
+      "start": 25,
+      "duration": 11,
+      "purpose": "evidence",
+      "narration": "咖啡也不能随便喝。二十四项研究的汇总发现，咖啡因平均与总睡眠时间减少四十五分钟有关。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "S06"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "24项研究→合并结果→45分钟，标出荟萃分析的平均效应，拒绝“一杯就少睡45分钟”",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "大数字从0滚至45，单位分钟；下方出现「不同剂量与时间，影响不同」",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "24项研究→合并结果→45分钟，标出荟萃分析的平均效应，拒绝“一杯就少睡45分钟”"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "24项研究 · 平均少睡45分钟",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "铜绿色咖啡杯图标，数值点亮同时伴随轻瓷杯声",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "24项研究 · 平均少睡45分钟",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S05",
+      "start": 36,
+      "duration": 10,
+      "purpose": "evidence",
+      "narration": "作息也重要。一项对六十一名大学生的跟踪发现，时间越不规律，生物钟就越晚。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "S07"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "两条入睡/起床作息带，一条稳定一条错动；切研究的61人/30天说明卡",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "时间带左右滑动体现规律与不规律，避免说研究证明因果",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "两条入睡/起床作息带，一条稳定一条错动；切研究的61人/30天说明卡"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "61名大学生 · 30天观察",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "渐变深蓝到紫；轻柔节拍不让人焦虑",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "61名大学生 · 30天观察",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S06",
+      "start": 46,
+      "duration": 9,
+      "purpose": "evidence",
+      "narration": "睡前发光屏幕的研究还发现：与读纸书比，使用发光阅读器更容易推迟入睡和生物钟。",
+      "visual_type": "ai_video",
+      "claim_ids": [
+        "S08"
+      ],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_BED",
+      "visual": "同一个人准备睡觉，先把发光阅读器调暗放在床头，再拿起纸书",
+      "action": {
+        "start": "镜头开场：同一个人准备睡觉，先把发光阅读器调暗放在床头，再拿起纸书",
+        "action": "在9秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "固定机位，手完整可见；不能出现不可能的两个同一人",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "同一个人准备睡觉，先把发光阅读器调暗放在床头，再拿起纸书"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "发光阅读器 ≠ 纸书",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "床头暖灯，读书翻页声；屏幕蓝光渐弱，但效果不夸大",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "发光阅读器 ≠ 纸书",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S07",
+      "start": 55,
+      "duration": 8,
+      "purpose": "evidence",
+      "narration": "下午困时，有一个小试验支持十分钟短睡。但它不是万能方法。",
+      "visual_type": "motion_graphic",
+      "claim_ids": [
+        "S09"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_GRAPHICS",
+      "visual": "24名年轻人午睡实验：5/10/20/30分钟条件，突出10分钟后部分测试改善",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "四段胶囊时间条；没有夸张万能能量条；标注睡眠受限样本",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "24名年轻人午睡实验：5/10/20/30分钟条件，突出10分钟后部分测试改善"
+      },
+      "graphics": {
+        "type": "data_visualization",
+        "text": "24人实验 · 短睡10分钟",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "软灰背景淡黄提示；一声温和闹钟",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "24人实验 · 短睡10分钟",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S08",
+      "start": 63,
+      "duration": 8,
+      "purpose": "payoff",
+      "narration": "比补救更重要的是今晚：早一点睡，起床尽量规律，睡前给屏幕留个距离。",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CH_MAIN"
+      ],
+      "scene_id": "LOC_BED",
+      "visual": "卧室主角放下手机，调暗床头灯；窗边晨光的下一帧呼应上一集",
+      "action": {
+        "start": "镜头开场：卧室主角放下手机，调暗床头灯；窗边晨光的下一帧呼应上一集",
+        "action": "在8秒内完成可见动作转折，不超出单镜可执行范围",
+        "micro_action": "眼睛、手指与肩膀产生克制的短暂停顿，动作与主题相符",
+        "reaction": "视线焦点或呼吸节奏发生一次可见改变",
+        "end": "以稳定且能接下一镜的手部/人物姿态结束"
+      },
+      "camera": {
+        "shot_size": "medium close-up / detail",
+        "angle": "eye level",
+        "lens": "35-50mm",
+        "movement": "静态侧拍，中景；缓慢合上书，手指离开灯，动作有明显终点",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "soft motivated practical light",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "卧室主角放下手机，调暗床头灯；窗边晨光的下一帧呼应上一集"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "从今晚开始",
+        "animation": "none",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "暖黄转低照度；BGM减弱，保留真实室内安静",
+        "sfx": "restrained ambient",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "从今晚开始",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "clean_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S09",
+      "start": 71,
+      "duration": 10,
+      "purpose": "sources",
+      "narration": "研究出处第一组：睡眠限制试验、咖啡因荟萃分析和作息规律观察研究。",
+      "visual_type": "text_card",
+      "claim_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_SOURCE",
+      "visual": "出处卡一：Van Dongen 2003（Sleep）；Gardiner 2023（Sleep Medicine Reviews）；Phillips 2017（Scientific Reports）",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "3条出处分层排版，强调实验/荟萃/观察的区别；避开抖音底部控件",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "出处卡一：Van Dongen 2003（Sleep）；Gardiner 2023（Sleep Medicine Reviews）；Phillips 2017（Scientific Reports）"
+      },
+      "graphics": {
+        "type": "bibliography_credit",
+        "text": "研究来源 · 1/2",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "静态2D面板，镜头不动；配乐压低至可阅读",
+        "sfx": "page-turn",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "研究来源 · 1/2",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "hard_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    },
+    {
+      "id": "S10",
+      "start": 81,
+      "duration": 10,
+      "purpose": "sources",
+      "narration": "第二组包括发光阅读器实验和午睡时长试验。记住，研究环境未必等于每个人的日常。",
+      "visual_type": "text_card",
+      "claim_ids": [
+        "S08",
+        "S09"
+      ],
+      "character_ids": [],
+      "scene_id": "LOC_SOURCE",
+      "visual": "出处卡二：Chang 2015（PNAS）；Brooks 2006（Sleep）；限制说明：受试人群与真实生活有差别",
+      "action": {
+        "start": "",
+        "action": "",
+        "micro_action": "",
+        "reaction": "",
+        "end": ""
+      },
+      "camera": {
+        "shot_size": "flat 2D",
+        "angle": "eye level",
+        "lens": "vector animation",
+        "movement": "页脚『完整 DOI 见简介』，字体不小于常规正文字号的70%",
+        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+      },
+      "art": {
+        "lighting": "high-contrast accessible typography",
+        "palette": "coherent muted blue/gray moving toward warm light",
+        "set_props": "出处卡二：Chang 2015（PNAS）；Brooks 2006（Sleep）；限制说明：受试人群与真实生活有差别"
+      },
+      "graphics": {
+        "type": "bibliography_credit",
+        "text": "研究来源 · 2/2",
+        "animation": "constrained infographic; readable citations",
+        "placement": "top-to-middle safe zone"
+      },
+      "audio": {
+        "music": "最后2秒安静供观众读；避开字幕遮挡",
+        "sfx": "page-turn",
+        "voice": "neutral Mandarin",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "研究来源 · 2/2",
+        "style": "clear sans-serif; research labels accurate",
+        "placement": "central-lower safe zone"
+      },
+      "transition": "hard_cut",
+      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+    }
+  ],
+  "production": {
+    "voice": "calm Chinese narration",
+    "music_license_check": false,
+    "asset_license_check": false,
+    "publishing_status": "review_required",
+    "review_requirements": [
+      "source author/year/venue checked, but detailed results need final journal text review",
+      "AI-generation imagery and 2D graphics are illustrative",
+      "human review before publication"
+    ]
+  }
+}
