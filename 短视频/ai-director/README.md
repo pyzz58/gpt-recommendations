@@ -1,5 +1,33 @@
 # AI 短视频导演 · MVP v0.1
 
+## 三集长文案测试：《不要浪费精力》（2026-10-11）
+
+已把用户原文的25项建议按叙事而非顺序拆成连续三集。各集包含 v0.1 `plan.json`、v0.2 `direction_v02.json`、详细镜头制作单、浏览器文字预演和带 DOI 的出处说明；**均不是已生成的真实视频**。来源卡只是文献追溯，片中效果数字仍须发布前复核论文的具体结果表。
+
+| 集数 | 内容 | 时长（含片尾来源卡） | 预演 |
+|---|---|---|---|
+| 上 | 注意力、手机干扰、短暂打断、批量邮件 | 84秒 | [浏览](examples/energy-trilogy/ep01-attention/preview.html) |
+| 中 | 6小时睡眠、咖啡因、作息、发光屏幕、小睡 | 91秒 | [浏览](examples/energy-trilogy/ep02-sleep/preview.html) |
+| 下 | 社交比较、聚光灯效应、反刍、愤怒管理 | 89秒 | [浏览](examples/energy-trilogy/ep03-emotions/preview.html) |
+
+[完整三集说明及删减决策](examples/energy-trilogy/README.md)
+
+Mac 一次打开三集：
+
+```bash
+cd ~/GitHub/gpt-recommendations
+git pull --ff-only
+cd '短视频/ai-director'
+open examples/energy-trilogy/ep01-attention/preview.html
+open examples/energy-trilogy/ep02-sleep/preview.html
+open examples/energy-trilogy/ep03-emotions/preview.html
+```
+
+注意：三集已接入原有校验器输入格式，但 GitHub CI 的远端执行是否成功要以 Actions 页面为准，不能只凭文件存在声称验证通过。
+
+---
+
+
 ## v0.2 专业导演增强版（2026-10-11）
 
 原有 v0.1 保持不变，现已加入 **Director Intelligence + Shot Feasibility / Continuity + Wan/Seedance Prompt Compiler**。这一版不是“把更多形容词塞进视频提示词”，而是将导演意图、逐秒动作、人物走位、摄影启动时机、美术、配音与音效、后期图表、参考素材和成片验收，全部写成可以独立审核的镜头合同。
