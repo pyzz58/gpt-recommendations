@@ -542,11 +542,13 @@ def main(argv=None):
             plan_path=Path(args.plan)
             result=continuity.audit_plan(load(plan_path))
             output=plan_path.parent
-            save(output/"continuity_audit.generated.json",result)
-            (output/"continuity_repair.generated.md").write_text(
-                continuity.format_report(result),encoding="utf-8")
+            prefix = "" if plan_path.name == "plan.json" else plan_path.stem + "."
+            audit_json = output/(prefix + "continuity_audit.generated.json")
+            audit_md = output/(prefix + "continuity_repair.generated.md")
+            save(audit_json,result)
+            audit_md.write_text(continuity.format_report(result),encoding="utf-8")
             print(f"物理连续性审查：{result['shot_count']}镜 / {result['blockers']}项阻断 / {result['reviews']}项待核查")
-            print("报告：",output/"continuity_repair.generated.md")
+            print("报告：",audit_md)
             if result["blockers"]:
                 print("提示：存在阻断项，不应继续付费生成导演方向稿。")
         elif args.command=="review":
