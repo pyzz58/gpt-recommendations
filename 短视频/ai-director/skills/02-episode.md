@@ -9,3 +9,12 @@
 5. 来源足够时末尾只有一张静态、5 秒、无旁白的 `sources` 镜头，`visual_type=text_card`，引用 2–3 个不同的 claim ID；完整来源移至 `description.md`。若没有可靠参考来源，不制造卡片。
 6. 数字动效由后期做；AI_VIDEO 只管可拍摄画面。所有文字和百分比后期叠加。
 7. 确保每镜时间轴连续、总时长准确、每个人物角色ID来自 series.json。
+## v0.3 P0 · 研究卡文献账本必填
+
+如果输出 `purpose=sources` 的5秒静态卡，`plan.json` 除 `claims` 外**必须新增**顶层 `references` 数组，每项按照卡片的 `claim_ids` 逐个建立可追溯书目：
+
+```json
+{"references":[{"claim_id":"C01","author":"首作者","year":2023,"journal":"期刊名","study_type":"RCT / 观察 / 系统综述","url":"https://doi.org/...","status":"needs_review","limitation":"研究局限"}]}
+```
+
+不要编造 DOI、作者、年份或期刊。查不到对应的真实书目时**不要生成片尾来源卡**，而是保留 `needs_review` 的事实审查待办。文献元数据可追踪不等于研究数字正确：发布依然需要原文核验。
