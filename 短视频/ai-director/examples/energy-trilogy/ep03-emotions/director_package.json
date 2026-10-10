@@ -1,0 +1,541 @@
+{
+  "project": "AI Short Video Director v0.2 long-script 3-part experiment",
+  "series": "不要浪费精力",
+  "episode": "下",
+  "title": "最消耗你的，可能不是工作，而是脑子停不下来",
+  "duration_s": 89,
+  "aspect_ratio": "9:16",
+  "platform": "douyin",
+  "targetEmotion": "比较焦虑→自我觉察→平静掌控",
+  "original_items": [
+    14,
+    20,
+    21,
+    23
+  ],
+  "claims_policy": {
+    "risk_domain": "health_and_psychology",
+    "evidence_review_required": true,
+    "publication_approved": false,
+    "numeric_methodology": "observational correlation vs randomized effect must be distinguished"
+  },
+  "visual_bible": {
+    "camera": "restrained documentary, emotion-motivated motion",
+    "color": "coherent muted blue/gray moving toward warm light",
+    "subject": "same ordinary Chinese office worker if visible, not a real person likeness",
+    "graphics": "remotion 2D; all exact writing postproduction",
+    "sound": "mandarin narration center, restrained underscore, sourced music only"
+  },
+  "shots": [
+    {
+      "id": "ep03-emotions-S01",
+      "start_s": 0,
+      "duration_s": 6,
+      "end_s": 6,
+      "phase": "hook",
+      "narration": "有时候让你累的，不是做了多少事，而是脑子一直在和别人较劲。",
+      "visual_type": "ai_video",
+      "scene_action": "主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿",
+      "camera_direction": "中近景，手机屏幕后期叠加模糊动态；雨中反光，背景行人虚化",
+      "art_audio": "低饱和紫灰；城市远噪、鞋底雨声",
+      "on_screen_text": "脑子一直没下班",
+      "source_ids": [],
+      "director_intent": "制造可共鸣的疑问",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 3,
+          "visible_action": "建立当前镜头：主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿",
+          "camera": "中近景，手机屏幕后期叠加模糊动态",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 3,
+          "to_s": 6,
+          "visible_action": "画面信息转折：脑子一直没下班；结束态准备切镜",
+          "camera": "雨中反光，背景行人虚化",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头6秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿。导演目标：有时候让你累的，不是做了多少事，而是脑子一直在和别人较劲。。摄影：中近景，手机屏幕后期叠加模糊动态；雨中反光，背景行人虚化。美术与声音交接：低饱和紫灰；城市远噪、鞋底雨声。3秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep03-emotions-S02",
+      "start_s": 6,
+      "duration_s": 9,
+      "end_s": 15,
+      "phase": "evidence",
+      "narration": "看同龄人升职、旅行、晒成就，你可能越刷越累。这里有研究，但不能说所有社交平台都会造成同样后果。",
+      "visual_type": "ai_video",
+      "scene_action": "手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来",
+      "camera_direction": "35mm眼平，拇指近景转面部轻微眉间动作；不出现真实品牌商标",
+      "art_audio": "暖色屏幕光撞上冷色街道，音乐节奏紧促",
+      "on_screen_text": "比较，是一种精力开销",
+      "source_ids": [],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来",
+          "camera": "35mm眼平，拇指近景转面部轻微眉间动作",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_action": "画面信息转折：比较，是一种精力开销；结束态准备切镜",
+          "camera": "不出现真实品牌商标",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头9秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来。导演目标：看同龄人升职、旅行、晒成就，你可能越刷越累。这里有研究，但不能说所有社交平台都会造成同样后果。。摄影：35mm眼平，拇指近景转面部轻微眉间动作；不出现真实品牌商标。美术与声音交接：暖色屏幕光撞上冷色街道，音乐节奏紧促。4秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep03-emotions-S03",
+      "start_s": 15,
+      "duration_s": 10,
+      "end_s": 25,
+      "phase": "evidence",
+      "narration": "一项随机试验让一部分人停用 Facebook 四周：主观幸福感略有提高，但他们了解时事的程度也下降。",
+      "visual_type": "data_graphic",
+      "scene_action": "同屏两把秤：幸福感轻微提高、时事知识降低；没有捏造同量纲百分比",
+      "camera_direction": "卡片上注明「美国Facebook用户，四周随机试验」；小箭头上/下非数量化",
+      "art_audio": "克制数据信息设计，保护来源可读",
+      "on_screen_text": "有收益，也有代价",
+      "source_ids": [
+        "S10"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：同屏两把秤：幸福感轻微提高、时事知识降低；没有捏造同量纲百分比",
+          "camera": "卡片上注明「美国Facebook用户，四周随机试验」",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_action": "画面信息转折：有收益，也有代价；结束态准备切镜",
+          "camera": "小箭头上/下非数量化",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：同屏两把秤：幸福感轻微提高、时事知识降低；没有捏造同量纲百分比。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；卡片上注明「美国Facebook用户，四周随机试验」；小箭头上/下非数量化。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep03-emotions-S04",
+      "start_s": 25,
+      "duration_s": 10,
+      "end_s": 35,
+      "phase": "evidence",
+      "narration": "另一个三周实验里，一百四十三名大学生把三个平台各限到每天十分钟，孤独与抑郁报告有所改善。",
+      "visual_type": "data_graphic",
+      "scene_action": "研究流程图：143名学生→限时组/通常组→3周；终点孤独抑郁量表趋势",
+      "camera_direction": "干净信息动画，以研究人群与3周时长为主，严禁显示不存在的治愈百分比",
+      "art_audio": "灰白学术底色，轻点音",
+      "on_screen_text": "143名学生 · 三周",
+      "source_ids": [
+        "S11"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：研究流程图：143名学生→限时组/通常组→3周；终点孤独抑郁量表趋势",
+          "camera": "干净信息动画，以研究人群与3周时长为主，严禁显示不存在的治愈百分比",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_action": "画面信息转折：143名学生 · 三周；结束态准备切镜",
+          "camera": "干净信息动画，以研究人群与3周时长为主，严禁显示不存在的治愈百分比",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：研究流程图：143名学生→限时组/通常组→3周；终点孤独抑郁量表趋势。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；干净信息动画，以研究人群与3周时长为主，严禁显示不存在的治愈百分比。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep03-emotions-S05",
+      "start_s": 35,
+      "duration_s": 9,
+      "end_s": 44,
+      "phase": "evidence",
+      "narration": "有时我们还高估别人有多在意自己。心理学把这类现象叫『聚光灯效应』。",
+      "visual_type": "motion_graphic",
+      "scene_action": "主角走入公共空间，想象中的巨大聚光灯逐渐缩小为普通室内光",
+      "camera_direction": "夸张灯光只用明确的示意动画层，不伪装为真实监控",
+      "art_audio": "音乐停止半拍，聚光灯瞬间缩小",
+      "on_screen_text": "你以为所有人在看你",
+      "source_ids": [
+        "S12"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：主角走入公共空间，想象中的巨大聚光灯逐渐缩小为普通室内光",
+          "camera": "夸张灯光只用明确的示意动画层，不伪装为真实监控",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_action": "画面信息转折：你以为所有人在看你；结束态准备切镜",
+          "camera": "夸张灯光只用明确的示意动画层，不伪装为真实监控",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：主角走入公共空间，想象中的巨大聚光灯逐渐缩小为普通室内光。时间9秒，前4秒建立比较对象及研究类型，后5秒将重点信息从弱对比升级为高对比但不过分夸张；夸张灯光只用明确的示意动画层，不伪装为真实监控。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep03-emotions-S06",
+      "start_s": 44,
+      "duration_s": 9,
+      "end_s": 53,
+      "phase": "evidence",
+      "narration": "而反复回想一件糟心事，往往让负面想法越来越牢。这叫反刍思维。",
+      "visual_type": "ai_video",
+      "scene_action": "主角回家后一再翻看同一张空白便签，停住后把便签翻面放下",
+      "camera_direction": "俯拍桌面中近景；微表情仅靠呼吸和手部停顿，不用哭戏",
+      "art_audio": "暖灯下静物微纹理，钟摆声放慢",
+      "on_screen_text": "反复想，不等于解决",
+      "source_ids": [
+        "S13"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：主角回家后一再翻看同一张空白便签，停住后把便签翻面放下",
+          "camera": "俯拍桌面中近景",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_action": "画面信息转折：反复想，不等于解决；结束态准备切镜",
+          "camera": "微表情仅靠呼吸和手部停顿，不用哭戏",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头9秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：主角回家后一再翻看同一张空白便签，停住后把便签翻面放下。导演目标：而反复回想一件糟心事，往往让负面想法越来越牢。这叫反刍思维。。摄影：俯拍桌面中近景；微表情仅靠呼吸和手部停顿，不用哭戏。美术与声音交接：暖灯下静物微纹理，钟摆声放慢。4秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep03-emotions-S07",
+      "start_s": 53,
+      "duration_s": 9,
+      "end_s": 62,
+      "phase": "evidence",
+      "narration": "还有一点：愤怒时靠砸东西或者剧烈发泄，整体并不比让身体平静下来更有效。",
+      "visual_type": "motion_graphic",
+      "scene_action": "左右分屏，打沙袋图标与慢呼吸示意；明确研究测量的是愤怒和攻击性",
+      "camera_direction": "采用154项研究汇总可读数字，淡化无必要的效应量g，不用真人拳击煽动",
+      "art_audio": "节拍由快慢慢降低；不是万能治疗宣称",
+      "on_screen_text": "154项研究：先降唤醒",
+      "source_ids": [
+        "S14"
+      ],
+      "director_intent": "推进论证、避免数字堆砌",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：左右分屏，打沙袋图标与慢呼吸示意；明确研究测量的是愤怒和攻击性",
+          "camera": "采用154项研究汇总可读数字，淡化无必要的效应量g，不用真人拳击煽动",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_action": "画面信息转折：154项研究：先降唤醒；结束态准备切镜",
+          "camera": "采用154项研究汇总可读数字，淡化无必要的效应量g，不用真人拳击煽动",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "postproduction_graphics",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：左右分屏，打沙袋图标与慢呼吸示意；明确研究测量的是愤怒和攻击性。时间9秒，前4秒建立比较对象及研究类型，后5秒将重点信息从弱对比升级为高对比但不过分夸张；采用154项研究汇总可读数字，淡化无必要的效应量g，不用真人拳击煽动。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep03-emotions-S08",
+      "start_s": 62,
+      "duration_s": 7,
+      "end_s": 69,
+      "phase": "payoff",
+      "narration": "今天就做三件事：少刷攀比内容，察觉自己在反复想，生气时先让身体慢下来。",
+      "visual_type": "ai_video",
+      "scene_action": "主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓",
+      "camera_direction": "从桌面侧拍至面部近景，最后定格于稳定视线；角色连贯",
+      "art_audio": "金色环境光缓缓出现；音乐回归低速",
+      "on_screen_text": "少比较 / 停反刍 / 先平静",
+      "source_ids": [],
+      "director_intent": "给出行动闭环",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 3,
+          "visible_action": "建立当前镜头：主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓",
+          "camera": "从桌面侧拍至面部近景，最后定格于稳定视线",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 3,
+          "to_s": 7,
+          "visible_action": "画面信息转折：少比较 / 停反刍 / 先平静；结束态准备切镜",
+          "camera": "角色连贯",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "generation_route": "ai_video",
+      "generation_prompt": "写实纪录片感，竖屏9:16，单一连续镜头7秒，35岁左右中国普通上班族，短黑发、深灰外套（同人物参考图），真实自然肤质。场景：主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓。导演目标：今天就做三件事：少刷攀比内容，察觉自己在反复想，生气时先让身体慢下来。。摄影：从桌面侧拍至面部近景，最后定格于稳定视线；角色连贯。美术与声音交接：金色环境光缓缓出现；音乐回归低速。3秒前人物起始动作和构图稳定，之后按因果顺序完成明确转折，镜头最终状态与下一镜一致。环境符合物理现实，表情克制，道具数量与左右手位置一致。禁止在生成影像中出现文字、准确数字、虚假手机界面、水印和品牌标识；精确文本、统计图表、旁白配乐均交给后期。",
+      "continuity": {
+        "character_id": "CH_MAIN",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明"
+      ]
+    },
+    {
+      "id": "ep03-emotions-S09",
+      "start_s": 69,
+      "duration_s": 10,
+      "end_s": 79,
+      "phase": "sources",
+      "narration": "这一集依据社交平台使用实验、聚光灯效应研究，以及反刍思维综述。",
+      "visual_type": "source_card",
+      "scene_action": "出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
+      "camera_direction": "按发表年份与研究方法三行，屏幕文字限制为短标签",
+      "art_audio": "静态，字清楚且保留阅读停顿",
+      "on_screen_text": "研究来源 · 1/2",
+      "source_ids": [
+        "S10",
+        "S11",
+        "S12"
+      ],
+      "director_intent": "建立可信可核对出处，限制适用范围",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
+          "camera": "按发表年份与研究方法三行，屏幕文字限制为短标签",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_action": "画面信息转折：研究来源 · 1/2；结束态准备切镜",
+          "camera": "按发表年份与研究方法三行，屏幕文字限制为短标签",
+          "sound": "声音轻缓并留出阅读空白"
+        }
+      ],
+      "generation_route": "source_card_compositing",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；按发表年份与研究方法三行，屏幕文字限制为短标签。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明",
+        "片尾每条出处显示作者、年份、期刊、研究类型",
+        "完整 DOI 见视频说明"
+      ]
+    },
+    {
+      "id": "ep03-emotions-S10",
+      "start_s": 79,
+      "duration_s": 10,
+      "end_s": 89,
+      "phase": "sources",
+      "narration": "还有反刍思维的综述和一份一百五十四项研究的愤怒管理汇总。具体论文链接都放在简介。",
+      "visual_type": "source_card",
+      "scene_action": "出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
+      "camera_direction": "重点标注『研究是群体平均，不替代个人帮助』",
+      "art_audio": "最后两秒安静，音乐自然淡出",
+      "on_screen_text": "研究来源 · 2/2",
+      "source_ids": [
+        "S13",
+        "S14"
+      ],
+      "director_intent": "建立可信可核对出处，限制适用范围",
+      "in_shot_beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_action": "建立当前镜头：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
+          "camera": "重点标注『研究是群体平均，不替代个人帮助』",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_action": "画面信息转折：研究来源 · 2/2；结束态准备切镜",
+          "camera": "重点标注『研究是群体平均，不替代个人帮助』",
+          "sound": "声音轻缓并留出阅读空白"
+        }
+      ],
+      "generation_route": "source_card_compositing",
+      "generation_prompt": "Remotion/After Effects 后期指令（非AI视频模型输入）：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议。时间10秒，前4秒建立比较对象及研究类型，后6秒将重点信息从弱对比升级为高对比但不过分夸张；重点标注『研究是群体平均，不替代个人帮助』。统一字体、色彩和安全区；文字必须准确，显示研究对象与限制；无凭空创造的数字。",
+      "continuity": {
+        "character_id": "",
+        "style": "首集蓝灰→中集夜蓝紫→末集雨灰至暖金，同一系列无饱和霓虹和夸张滤镜",
+        "blocked_text_in_footage": true
+      },
+      "qa": [
+        "字幕准确且未被底栏遮挡",
+        "场景/镜头活动可在镜头时长完成",
+        "定量信息有研究对象及限制说明",
+        "片尾每条出处显示作者、年份、期刊、研究类型",
+        "完整 DOI 见视频说明"
+      ]
+    }
+  ],
+  "source_cards": [
+    {
+      "a": "Allcott 等",
+      "y": 2020,
+      "j": "American Economic Review",
+      "design": "Facebook停用四周随机试验",
+      "doi": "10.1257/aer.20190658",
+      "scope": "小幅幸福感改善，同时减少时事知识；不等于所有平台通用",
+      "id": "S10",
+      "url": "https://doi.org/10.1257/aer.20190658",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    },
+    {
+      "a": "Hunt 等",
+      "y": 2018,
+      "j": "J Social and Clinical Psychology",
+      "design": "143名大学生三周随机对照",
+      "doi": "10.1521/jscp.2018.37.10.751",
+      "scope": "FB/Instagram/Snapchat实验，不能直接套用抖音",
+      "id": "S11",
+      "url": "https://doi.org/10.1521/jscp.2018.37.10.751",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    },
+    {
+      "a": "Gilovich 等",
+      "y": 2000,
+      "j": "J Personality Soc Psychology",
+      "design": "聚光灯效应实验研究",
+      "doi": "10.1037/0022-3514.78.2.211",
+      "scope": "衣着与社交场景实验，不是所有现实评价的统一折扣系数",
+      "id": "S12",
+      "url": "https://doi.org/10.1037/0022-3514.78.2.211",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    },
+    {
+      "a": "Nolen-Hoeksema 等",
+      "y": 2008,
+      "j": "Perspectives Psych Sci",
+      "design": "反刍思维的叙述性综述",
+      "doi": "10.1111/j.1745-6924.2008.00088.x",
+      "scope": "动手做事是实践建议，不能称为经过该综述直接验证的特效疗法",
+      "id": "S13",
+      "url": "https://doi.org/10.1111/j.1745-6924.2008.00088.x",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    },
+    {
+      "a": "Kjærvik & Bushman",
+      "y": 2024,
+      "j": "Clinical Psychology Review",
+      "design": "154项研究荟萃分析",
+      "doi": "10.1016/j.cpr.2024.102414",
+      "scope": "结论针对即时愤怒管理，不代表跑步不利于长期心理健康",
+      "id": "S14",
+      "url": "https://doi.org/10.1016/j.cpr.2024.102414",
+      "status": "文献题名/摘要核对过；关键数字仍应在发布前复核正文与具体图表"
+    }
+  ],
+  "source_credits_duration_s": 20,
+  "video_generated": false
+}
