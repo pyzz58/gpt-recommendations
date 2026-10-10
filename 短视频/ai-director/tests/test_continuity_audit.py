@@ -100,3 +100,23 @@ class ContinuityAuditTests(TestCase):
         fixed=copy.deepcopy(p)
         fixed['shots'][1]['action']['action']='从沙发扶手拿起手机'
         self.assertEqual(ca.audit_plan(fixed)['blockers'],0)
+    def test_audit_candidate_reports_do_not_overwrite_baseline_reports(self):
+        import io
+        with tempfile.TemporaryDirectory() as tmp:
+            job=Path(tmp)
+            baseline=job/'plan.json'; candidate=job/'plan.proposed.json'
+            payload=json.dumps(self.simple(),ensure_ascii=False)
+            baseline.write_text(payload,encoding='utf-8')
+            candidate.write_text(payload,encoding='utf-8')
+            with patch('sys.stdout',new_callable=io.StringIO):
+                director.main(['audit','--plan',str(baseline)])
+            a=(job/'continuity_audit.generated.json').read_bytes()
+            b=(job/'continuity_repair.generated.md').read_bytes()
+            with patch('sys.stdout',new_callable=io.StringIO):
+                director.main(['audit','--plan',str(candidate)])
+            self.assertEqual((job/'continuity_audit.generated.json').read_bytes(),a)
+            self.assertEqual((job/'continuity_repair.generated.md').read_bytes(),b)
+            self.assertTrue((job/'plan.proposed.continuity_repair.generated.md').exists())
+            self.assertTrue((job/'plan.proposed.continuity_audit.generated.json').exists())
+            self.assertEqual(baseline.read_text(encoding='utf-8'),payload)
+            self.assertEqual(candidate.read_text(encoding='utf-8'),payload)
