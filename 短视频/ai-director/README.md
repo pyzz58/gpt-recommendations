@@ -1,14 +1,23 @@
 # AI 短视频导演 · MVP v0.1
 
+## 片尾研究资料新标准（2026-10-11）
+
+按用户最新反馈：三集均由此前两张16–20秒来源卡，调整为**单张5秒静态来源图片卡，展示2–3项核心研究，无额外旁白**。其余研究和完整 DOI 保留在各集 `description.md` 中。v0.2 验证器已加入该规范的自动检查。
+
+三集更新后：上集 **73秒/9镜**、中集 **76秒/9镜**、下集 **74秒/9镜**。以前下载的静态预演副本不会自动变更，需要重新获取更新的 GitHub 文件。
+
+---
+
+
 ## 三集长文案测试：《不要浪费精力》（2026-10-11）
 
 已把用户原文的25项建议按叙事而非顺序拆成连续三集。各集包含 v0.1 `plan.json`、v0.2 `direction_v02.json`、详细镜头制作单、浏览器文字预演和带 DOI 的出处说明；**均不是已生成的真实视频**。来源卡只是文献追溯，片中效果数字仍须发布前复核论文的具体结果表。
 
 | 集数 | 内容 | 时长（含片尾来源卡） | 预演 |
 |---|---|---|---|
-| 上 | 注意力、手机干扰、短暂打断、批量邮件 | 84秒 | [浏览](examples/energy-trilogy/ep01-attention/preview.html) |
-| 中 | 6小时睡眠、咖啡因、作息、发光屏幕、小睡 | 91秒 | [浏览](examples/energy-trilogy/ep02-sleep/preview.html) |
-| 下 | 社交比较、聚光灯效应、反刍、愤怒管理 | 89秒 | [浏览](examples/energy-trilogy/ep03-emotions/preview.html) |
+| 上 | 注意力、手机干扰、短暂打断、批量邮件 | 73秒 | [浏览](examples/energy-trilogy/ep01-attention/preview.html) |
+| 中 | 6小时睡眠、咖啡因、作息、发光屏幕、小睡 | 76秒 | [浏览](examples/energy-trilogy/ep02-sleep/preview.html) |
+| 下 | 社交比较、聚光灯效应、反刍、愤怒管理 | 74秒 | [浏览](examples/energy-trilogy/ep03-emotions/preview.html) |
 
 [完整三集说明及删减决策](examples/energy-trilogy/README.md)
 
