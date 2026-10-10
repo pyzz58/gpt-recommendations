@@ -7,6 +7,7 @@ import tempfile
 from types import SimpleNamespace
 from unittest import TestCase
 from unittest.mock import patch
+import llm_budget
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -71,7 +72,7 @@ class LocalDirectorV03Tests(TestCase):
             src=Path(t)/'source.md'
             src.write_text('戒烟，越早越好\n含若干研究证据',encoding='utf-8')
             job=Path(t)/'testproject'
-            args=SimpleNamespace(input=str(src),out=str(job),approve_model_cost=True,
+            args=SimpleNamespace(input=str(src),out=str(job),approve_model_cost=True,max_cost_cny=10.0,
                 model='deepseek-flash',base_url='https://api.deepseek.com/v1',resume=False)
             responses=[copy.deepcopy(self.series),copy.deepcopy(self.base),copy.deepcopy(self.direction)]
             with patch.dict(os.environ,{'AI_API_KEY':'fake-test-key'}):
@@ -189,8 +190,8 @@ class LocalDirectorV03Tests(TestCase):
         with tempfile.TemporaryDirectory() as t:
             source=Path(t)/'source.md';source.write_text('health information',encoding='utf8')
             job=Path(t)/'job'
-            args=SimpleNamespace(input=str(source),out=str(job),approve_model_cost=True,
-                model='fixture-model',base_url='https://api.deepseek.com/v1',resume=False)
+            args=SimpleNamespace(input=str(source),out=str(job),approve_model_cost=True,max_cost_cny=10.0,
+                model='deepseek-flash',base_url='https://api.deepseek.com/v1',resume=False)
             with patch.dict(os.environ,{'AI_API_KEY':'TEST-KEY'}):
                 with patch.object(local,'llm_json',side_effect=[copy.deepcopy(self.series),copy.deepcopy(self.base),copy.deepcopy(self.direction)]):
                     local.run_job(args)
@@ -220,8 +221,8 @@ class LocalDirectorV03Tests(TestCase):
     def test_malformed_generated_episode_does_not_count_as_success_and_resume(self):
         with tempfile.TemporaryDirectory() as t:
             source=Path(t)/'source.md';source.write_text('healthy sleeping habits',encoding='utf8')
-            job=Path(t)/'job';args=SimpleNamespace(input=str(source),out=str(job),approve_model_cost=True,
-                model='fixture-model',base_url='https://api.deepseek.com/v1',resume=False)
+            job=Path(t)/'job';args=SimpleNamespace(input=str(source),out=str(job),approve_model_cost=True,max_cost_cny=10.0,
+                model='deepseek-flash',base_url='https://api.deepseek.com/v1',resume=False)
             with patch.dict(os.environ,{'AI_API_KEY':'TEST-KEY'}):
                 with patch.object(local,'llm_json',side_effect=[copy.deepcopy(self.series), {'garbled':'broken'}]):
                     with self.assertRaises(local.DirectorError):local.run_job(args)
@@ -270,8 +271,8 @@ class LocalDirectorV03Tests(TestCase):
             responses=[series]
             for _ in range(3):
                 responses.extend([copy.deepcopy(self.base),copy.deepcopy(self.direction)])
-            args=SimpleNamespace(input=str(input_file),out=str(job),approve_model_cost=True,
-                model='fixture-model',base_url='https://api.deepseek.com/v1',resume=False)
+            args=SimpleNamespace(input=str(input_file),out=str(job),approve_model_cost=True,max_cost_cny=10.0,
+                model='deepseek-flash',base_url='https://api.deepseek.com/v1',resume=False)
             with patch.dict(os.environ,{'AI_API_KEY':'TEST-KEY'}):
                 with patch.object(local,'llm_json',side_effect=responses) as llm:
                     local.run_job(args)
