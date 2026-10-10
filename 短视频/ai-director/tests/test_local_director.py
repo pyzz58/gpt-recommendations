@@ -260,6 +260,34 @@ class LocalDirectorV03Tests(TestCase):
                 finally:
                     server.shutdown();server.server_close();th.join(timeout=3)
 
+    def test_mocked_three_episode_pipeline_with_resume(self):
+        with tempfile.TemporaryDirectory() as t:
+            input_file=Path(t)/'article.md'
+            input_file.write_text('第一部分：注意力；第二部分：睡眠；第三部分：情绪。'*200,encoding='utf-8')
+            job=Path(t)/'series-job'
+            series=copy.deepcopy(self.series)
+            series['episodes']=[dict(e,title=f'第{i}集') for i,e in enumerate([series['episodes'][0]]*3,1)]
+            responses=[series]
+            for _ in range(3):
+                responses.extend([copy.deepcopy(self.base),copy.deepcopy(self.direction)])
+            args=SimpleNamespace(input=str(input_file),out=str(job),approve_model_cost=True,
+                model='fixture-model',base_url='https://api.deepseek.com/v1',resume=False)
+            with patch.dict(os.environ,{'AI_API_KEY':'TEST-KEY'}):
+                with patch.object(local,'llm_json',side_effect=responses) as llm:
+                    local.run_job(args)
+                    self.assertEqual(llm.call_count,7)
+            self.assertTrue((job/'index.html').exists())
+            self.assertEqual(len(local.load(job/'review_status.generated.json')['episodes']),3)
+            for index in range(1,4):
+                ep=job/'episodes'/f'ep{index:02d}'
+                self.assertTrue((ep/'preview.html').exists())
+                self.assertTrue((ep/'description.md').exists())
+            args.resume=True
+            with patch.dict(os.environ,{'AI_API_KEY':'TEST-KEY'}):
+                with patch.object(local,'llm_json') as llm:
+                    local.run_job(args)
+                    llm.assert_not_called()
+
 if __name__=='__main__':
     import unittest
     unittest.main()
