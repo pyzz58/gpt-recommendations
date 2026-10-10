@@ -1,0 +1,1025 @@
+{
+  "schema_version": "0.2",
+  "title": "《不要浪费精力》下集：最消耗你的，可能不是工作，而是脑子停不下来",
+  "global_direction": {
+    "audience_emotion_arc": "比较焦虑→自我觉察→平静掌控",
+    "visual_grammar": "9:16 cinematic restraint; precise motion graphics; all text added via postproduction",
+    "audio_grammar": "Mandarin voiceover intelligible, subtle underscoring ducked under speech, 1-2s reading hold near credits",
+    "graphic_safety": "reference cards show author-year-journal-study design, not tiny full DOI; full bibliography in caption; overlays must remain in TikTok/Douyin safe zone",
+    "reference_strategy": "same actor references for all human shots; do not claim any references have been generated until human approval",
+    "generation_budget": "offline prompt design only, no paid call or automatic publishing"
+  },
+  "shots": [
+    {
+      "shot_id": "S01",
+      "review_status": "reviewed",
+      "objective": {
+        "emotion": "比较焦虑→自我觉察→平静掌控",
+        "observable_turn": "主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿",
+        "visual_focus": "脑子一直没下班"
+      },
+      "staging": {
+        "blocking": "参考镜头：主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿",
+        "gaze": "由演员动作目标引导视线，不看镜头",
+        "props": [],
+        "spatial_constraints": [
+          "竖屏安全区内全要素可见",
+          "不同镜头采用同系列统一视觉语法"
+        ]
+      },
+      "performance": {
+        "motivation": "制造可共鸣的疑问",
+        "facial_microaction": "控制眼神和眉眼肌肉的微变化；不要做大幅假笑哭戏",
+        "body_microaction": "手、肩和呼吸组成可观察但克制的动作",
+        "ending_pose": "人物动作归于稳定，保留下一镜的运动连续性"
+      },
+      "beats": [
+        {
+          "from_s": 0,
+          "to_s": 3,
+          "visible_change": "建立当前镜头：主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿",
+          "performance": "身体微动作真实、动作顺序清楚",
+          "camera": "中近景，手机屏幕后期叠加模糊动态",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 3,
+          "to_s": 6,
+          "visible_change": "画面信息转折：脑子一直没下班；结束态准备切镜",
+          "performance": "身体微动作真实、动作顺序清楚",
+          "camera": "雨中反光，背景行人虚化",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "camera": {
+        "start_frame": "开场构图：主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿",
+        "movement": "中近景，手机屏幕后期叠加模糊动态；雨中反光，背景行人虚化",
+        "move_trigger_s": 3,
+        "end_frame": "结尾镜头锁定重要信息：脑子一直没下班",
+        "lens_feel": "35–50mm自然透视、非夸张广角",
+        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
+      },
+      "art": {
+        "environment": "导演画面：主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿",
+        "light_source": "环境单侧柔光，保持光照方向连续",
+        "color_path": "coherent muted blue/gray moving toward warm light",
+        "texture": "真实环境颗粒与自然皮肤材质"
+      },
+      "sound": {
+        "ambient": "自然场景氛围，资料卡近乎静音",
+        "music": "低饱和紫灰；城市远噪、鞋底雨声",
+        "effects": [
+          "轻微动作拟音；来源卡减小音量"
+        ],
+        "voiceover_note": "旁白原句：有时候让你累的，不是做了多少事，而是脑子一直在和别人较劲。"
+      },
+      "continuity": {
+        "start_state": "镜头开头：主角傍晚站在公交站旁刷手机，脸上没有戏剧化悲伤，只是不自觉停顿",
+        "end_state": "字幕所述信息完成表达：脑子一直没下班",
+        "locked_entities": [
+          "CH_MAIN 服装、年龄、发型、左右手道具身份一致"
+        ],
+        "reference_assets": []
+      },
+      "graphics": {
+        "treatment": "只在后期加入字幕，影像生成不包含可读汉字",
+        "claims_used": [],
+        "labels": [
+          "脑子一直没下班"
+        ],
+        "motion": "文本静态和强调动效由后期完成",
+        "context_note": "此镜不新增事实断言"
+      },
+      "generation": {
+        "route": "ai_video",
+        "clip_type": "single_continuous_take",
+        "negative_constraints": [
+          "不可生成可读字、百分比和水印",
+          "不使用与主题无关的戏剧化镜头"
+        ],
+        "reference_roles": [
+          "identity reference required before generating"
+        ],
+        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
+      },
+      "qa": {
+        "acceptance_tests": [
+          "字幕准确且未被底栏遮挡",
+          "场景/镜头活动可在镜头时长完成",
+          "定量信息有研究对象及限制说明"
+        ],
+        "issues": [],
+        "human_approved": false
+      }
+    },
+    {
+      "shot_id": "S02",
+      "review_status": "reviewed",
+      "objective": {
+        "emotion": "比较焦虑→自我觉察→平静掌控",
+        "observable_turn": "手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来",
+        "visual_focus": "比较，是一种精力开销"
+      },
+      "staging": {
+        "blocking": "参考镜头：手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来",
+        "gaze": "由演员动作目标引导视线，不看镜头",
+        "props": [],
+        "spatial_constraints": [
+          "竖屏安全区内全要素可见",
+          "不同镜头采用同系列统一视觉语法"
+        ]
+      },
+      "performance": {
+        "motivation": "推进论证、避免数字堆砌",
+        "facial_microaction": "控制眼神和眉眼肌肉的微变化；不要做大幅假笑哭戏",
+        "body_microaction": "手、肩和呼吸组成可观察但克制的动作",
+        "ending_pose": "人物动作归于稳定，保留下一镜的运动连续性"
+      },
+      "beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_change": "建立当前镜头：手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来",
+          "performance": "身体微动作真实、动作顺序清楚",
+          "camera": "35mm眼平，拇指近景转面部轻微眉间动作",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_change": "画面信息转折：比较，是一种精力开销；结束态准备切镜",
+          "performance": "身体微动作真实、动作顺序清楚",
+          "camera": "不出现真实品牌商标",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "camera": {
+        "start_frame": "开场构图：手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来",
+        "movement": "35mm眼平，拇指近景转面部轻微眉间动作；不出现真实品牌商标",
+        "move_trigger_s": 4,
+        "end_frame": "结尾镜头锁定重要信息：比较，是一种精力开销",
+        "lens_feel": "35–50mm自然透视、非夸张广角",
+        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
+      },
+      "art": {
+        "environment": "导演画面：手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来",
+        "light_source": "环境单侧柔光，保持光照方向连续",
+        "color_path": "coherent muted blue/gray moving toward warm light",
+        "texture": "真实环境颗粒与自然皮肤材质"
+      },
+      "sound": {
+        "ambient": "自然场景氛围，资料卡近乎静音",
+        "music": "暖色屏幕光撞上冷色街道，音乐节奏紧促",
+        "effects": [
+          "轻微动作拟音；来源卡减小音量"
+        ],
+        "voiceover_note": "旁白原句：看同龄人升职、旅行、晒成就，你可能越刷越累。这里有研究，但不能说所有社交平台都会造成同样后果。"
+      },
+      "continuity": {
+        "start_state": "镜头开头：手机里快速闪过抽象生活成就卡（仅后期叠加），主角拇指滑动忽然慢下来",
+        "end_state": "字幕所述信息完成表达：比较，是一种精力开销",
+        "locked_entities": [
+          "CH_MAIN 服装、年龄、发型、左右手道具身份一致"
+        ],
+        "reference_assets": []
+      },
+      "graphics": {
+        "treatment": "只在后期加入字幕，影像生成不包含可读汉字",
+        "claims_used": [],
+        "labels": [
+          "比较，是一种精力开销"
+        ],
+        "motion": "文本静态和强调动效由后期完成",
+        "context_note": "此镜不新增事实断言"
+      },
+      "generation": {
+        "route": "ai_video",
+        "clip_type": "single_continuous_take",
+        "negative_constraints": [
+          "不可生成可读字、百分比和水印",
+          "不使用与主题无关的戏剧化镜头"
+        ],
+        "reference_roles": [
+          "identity reference required before generating"
+        ],
+        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
+      },
+      "qa": {
+        "acceptance_tests": [
+          "字幕准确且未被底栏遮挡",
+          "场景/镜头活动可在镜头时长完成",
+          "定量信息有研究对象及限制说明"
+        ],
+        "issues": [],
+        "human_approved": false
+      }
+    },
+    {
+      "shot_id": "S03",
+      "review_status": "reviewed",
+      "objective": {
+        "emotion": "比较焦虑→自我觉察→平静掌控",
+        "observable_turn": "同屏两把秤：幸福感轻微提高、时事知识降低；没有捏造同量纲百分比",
+        "visual_focus": "有收益，也有代价"
+      },
+      "staging": {
+        "blocking": "使用2D后期图形/来源卡表现，不依赖演员",
+        "gaze": "优先保证数值与来源卡可阅读",
+        "props": [],
+        "spatial_constraints": [
+          "竖屏安全区内全要素可见",
+          "不同镜头采用同系列统一视觉语法"
+        ]
+      },
+      "performance": {
+        "motivation": "推进论证、避免数字堆砌",
+        "facial_microaction": "无真人表演；用图形运动表现注意力与节奏",
+        "body_microaction": "无真人身体动作；以易读动画安排替代",
+        "ending_pose": "数据卡保持最终结果至少1秒"
+      },
+      "beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_change": "建立当前镜头：同屏两把秤：幸福感轻微提高、时事知识降低；没有捏造同量纲百分比",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "卡片上注明「美国Facebook用户，四周随机试验」",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_change": "画面信息转折：有收益，也有代价；结束态准备切镜",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "小箭头上/下非数量化",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "camera": {
+        "start_frame": "开场构图：同屏两把秤：幸福感轻微提高、时事知识降低；没有捏造同量纲百分比",
+        "movement": "卡片上注明「美国Facebook用户，四周随机试验」；小箭头上/下非数量化",
+        "move_trigger_s": 4,
+        "end_frame": "结尾镜头锁定重要信息：有收益，也有代价",
+        "lens_feel": "无透视的高清2D动效",
+        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
+      },
+      "art": {
+        "environment": "导演画面：同屏两把秤：幸福感轻微提高、时事知识降低；没有捏造同量纲百分比",
+        "light_source": "平面清晰高对比色背景",
+        "color_path": "coherent muted blue/gray moving toward warm light",
+        "texture": "矢量线条、清晰文本、平滑简洁动画"
+      },
+      "sound": {
+        "ambient": "自然场景氛围，资料卡近乎静音",
+        "music": "克制数据信息设计，保护来源可读",
+        "effects": [
+          "轻微动作拟音；来源卡减小音量"
+        ],
+        "voiceover_note": "旁白原句：一项随机试验让一部分人停用 Facebook 四周：主观幸福感略有提高，但他们了解时事的程度也下降。"
+      },
+      "continuity": {
+        "start_state": "镜头开头：同屏两把秤：幸福感轻微提高、时事知识降低；没有捏造同量纲百分比",
+        "end_state": "字幕所述信息完成表达：有收益，也有代价",
+        "locked_entities": [],
+        "reference_assets": []
+      },
+      "graphics": {
+        "treatment": "同屏两把秤：幸福感轻微提高、时事知识降低；没有捏造同量纲百分比",
+        "claims_used": [
+          "S10"
+        ],
+        "labels": [
+          "有收益，也有代价"
+        ],
+        "motion": "卡片上注明「美国Facebook用户，四周随机试验」；小箭头上/下非数量化",
+        "context_note": "证据与口径：小幅幸福感改善，同时减少时事知识；不等于所有平台通用"
+      },
+      "generation": {
+        "route": "post_production",
+        "clip_type": "not_a_video_model_job",
+        "negative_constraints": [
+          "无虚构数字、无小字与伪研究截图"
+        ],
+        "reference_roles": [],
+        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
+      },
+      "qa": {
+        "acceptance_tests": [
+          "字幕准确且未被底栏遮挡",
+          "场景/镜头活动可在镜头时长完成",
+          "定量信息有研究对象及限制说明"
+        ],
+        "issues": [],
+        "human_approved": false
+      }
+    },
+    {
+      "shot_id": "S04",
+      "review_status": "reviewed",
+      "objective": {
+        "emotion": "比较焦虑→自我觉察→平静掌控",
+        "observable_turn": "研究流程图：143名学生→限时组/通常组→3周；终点孤独抑郁量表趋势",
+        "visual_focus": "143名学生 · 三周"
+      },
+      "staging": {
+        "blocking": "使用2D后期图形/来源卡表现，不依赖演员",
+        "gaze": "优先保证数值与来源卡可阅读",
+        "props": [],
+        "spatial_constraints": [
+          "竖屏安全区内全要素可见",
+          "不同镜头采用同系列统一视觉语法"
+        ]
+      },
+      "performance": {
+        "motivation": "推进论证、避免数字堆砌",
+        "facial_microaction": "无真人表演；用图形运动表现注意力与节奏",
+        "body_microaction": "无真人身体动作；以易读动画安排替代",
+        "ending_pose": "数据卡保持最终结果至少1秒"
+      },
+      "beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_change": "建立当前镜头：研究流程图：143名学生→限时组/通常组→3周；终点孤独抑郁量表趋势",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "干净信息动画，以研究人群与3周时长为主，严禁显示不存在的治愈百分比",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_change": "画面信息转折：143名学生 · 三周；结束态准备切镜",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "干净信息动画，以研究人群与3周时长为主，严禁显示不存在的治愈百分比",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "camera": {
+        "start_frame": "开场构图：研究流程图：143名学生→限时组/通常组→3周；终点孤独抑郁量表趋势",
+        "movement": "干净信息动画，以研究人群与3周时长为主，严禁显示不存在的治愈百分比",
+        "move_trigger_s": 4,
+        "end_frame": "结尾镜头锁定重要信息：143名学生 · 三周",
+        "lens_feel": "无透视的高清2D动效",
+        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
+      },
+      "art": {
+        "environment": "导演画面：研究流程图：143名学生→限时组/通常组→3周；终点孤独抑郁量表趋势",
+        "light_source": "平面清晰高对比色背景",
+        "color_path": "coherent muted blue/gray moving toward warm light",
+        "texture": "矢量线条、清晰文本、平滑简洁动画"
+      },
+      "sound": {
+        "ambient": "自然场景氛围，资料卡近乎静音",
+        "music": "灰白学术底色，轻点音",
+        "effects": [
+          "轻微动作拟音；来源卡减小音量"
+        ],
+        "voiceover_note": "旁白原句：另一个三周实验里，一百四十三名大学生把三个平台各限到每天十分钟，孤独与抑郁报告有所改善。"
+      },
+      "continuity": {
+        "start_state": "镜头开头：研究流程图：143名学生→限时组/通常组→3周；终点孤独抑郁量表趋势",
+        "end_state": "字幕所述信息完成表达：143名学生 · 三周",
+        "locked_entities": [],
+        "reference_assets": []
+      },
+      "graphics": {
+        "treatment": "研究流程图：143名学生→限时组/通常组→3周；终点孤独抑郁量表趋势",
+        "claims_used": [
+          "S11"
+        ],
+        "labels": [
+          "143名学生 · 三周"
+        ],
+        "motion": "干净信息动画，以研究人群与3周时长为主，严禁显示不存在的治愈百分比",
+        "context_note": "证据与口径：FB/Instagram/Snapchat实验，不能直接套用抖音"
+      },
+      "generation": {
+        "route": "post_production",
+        "clip_type": "not_a_video_model_job",
+        "negative_constraints": [
+          "无虚构数字、无小字与伪研究截图"
+        ],
+        "reference_roles": [],
+        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
+      },
+      "qa": {
+        "acceptance_tests": [
+          "字幕准确且未被底栏遮挡",
+          "场景/镜头活动可在镜头时长完成",
+          "定量信息有研究对象及限制说明"
+        ],
+        "issues": [],
+        "human_approved": false
+      }
+    },
+    {
+      "shot_id": "S05",
+      "review_status": "reviewed",
+      "objective": {
+        "emotion": "比较焦虑→自我觉察→平静掌控",
+        "observable_turn": "主角走入公共空间，想象中的巨大聚光灯逐渐缩小为普通室内光",
+        "visual_focus": "你以为所有人在看你"
+      },
+      "staging": {
+        "blocking": "使用2D后期图形/来源卡表现，不依赖演员",
+        "gaze": "优先保证数值与来源卡可阅读",
+        "props": [],
+        "spatial_constraints": [
+          "竖屏安全区内全要素可见",
+          "不同镜头采用同系列统一视觉语法"
+        ]
+      },
+      "performance": {
+        "motivation": "推进论证、避免数字堆砌",
+        "facial_microaction": "无真人表演；用图形运动表现注意力与节奏",
+        "body_microaction": "无真人身体动作；以易读动画安排替代",
+        "ending_pose": "数据卡保持最终结果至少1秒"
+      },
+      "beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_change": "建立当前镜头：主角走入公共空间，想象中的巨大聚光灯逐渐缩小为普通室内光",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "夸张灯光只用明确的示意动画层，不伪装为真实监控",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_change": "画面信息转折：你以为所有人在看你；结束态准备切镜",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "夸张灯光只用明确的示意动画层，不伪装为真实监控",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "camera": {
+        "start_frame": "开场构图：主角走入公共空间，想象中的巨大聚光灯逐渐缩小为普通室内光",
+        "movement": "夸张灯光只用明确的示意动画层，不伪装为真实监控",
+        "move_trigger_s": 4,
+        "end_frame": "结尾镜头锁定重要信息：你以为所有人在看你",
+        "lens_feel": "无透视的高清2D动效",
+        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
+      },
+      "art": {
+        "environment": "导演画面：主角走入公共空间，想象中的巨大聚光灯逐渐缩小为普通室内光",
+        "light_source": "平面清晰高对比色背景",
+        "color_path": "coherent muted blue/gray moving toward warm light",
+        "texture": "矢量线条、清晰文本、平滑简洁动画"
+      },
+      "sound": {
+        "ambient": "自然场景氛围，资料卡近乎静音",
+        "music": "音乐停止半拍，聚光灯瞬间缩小",
+        "effects": [
+          "轻微动作拟音；来源卡减小音量"
+        ],
+        "voiceover_note": "旁白原句：有时我们还高估别人有多在意自己。心理学把这类现象叫『聚光灯效应』。"
+      },
+      "continuity": {
+        "start_state": "镜头开头：主角走入公共空间，想象中的巨大聚光灯逐渐缩小为普通室内光",
+        "end_state": "字幕所述信息完成表达：你以为所有人在看你",
+        "locked_entities": [],
+        "reference_assets": []
+      },
+      "graphics": {
+        "treatment": "主角走入公共空间，想象中的巨大聚光灯逐渐缩小为普通室内光",
+        "claims_used": [
+          "S12"
+        ],
+        "labels": [
+          "你以为所有人在看你"
+        ],
+        "motion": "夸张灯光只用明确的示意动画层，不伪装为真实监控",
+        "context_note": "证据与口径：衣着与社交场景实验，不是所有现实评价的统一折扣系数"
+      },
+      "generation": {
+        "route": "post_production",
+        "clip_type": "not_a_video_model_job",
+        "negative_constraints": [
+          "无虚构数字、无小字与伪研究截图"
+        ],
+        "reference_roles": [],
+        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
+      },
+      "qa": {
+        "acceptance_tests": [
+          "字幕准确且未被底栏遮挡",
+          "场景/镜头活动可在镜头时长完成",
+          "定量信息有研究对象及限制说明"
+        ],
+        "issues": [],
+        "human_approved": false
+      }
+    },
+    {
+      "shot_id": "S06",
+      "review_status": "reviewed",
+      "objective": {
+        "emotion": "比较焦虑→自我觉察→平静掌控",
+        "observable_turn": "主角回家后一再翻看同一张空白便签，停住后把便签翻面放下",
+        "visual_focus": "反复想，不等于解决"
+      },
+      "staging": {
+        "blocking": "参考镜头：主角回家后一再翻看同一张空白便签，停住后把便签翻面放下",
+        "gaze": "由演员动作目标引导视线，不看镜头",
+        "props": [],
+        "spatial_constraints": [
+          "竖屏安全区内全要素可见",
+          "不同镜头采用同系列统一视觉语法"
+        ]
+      },
+      "performance": {
+        "motivation": "推进论证、避免数字堆砌",
+        "facial_microaction": "控制眼神和眉眼肌肉的微变化；不要做大幅假笑哭戏",
+        "body_microaction": "手、肩和呼吸组成可观察但克制的动作",
+        "ending_pose": "人物动作归于稳定，保留下一镜的运动连续性"
+      },
+      "beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_change": "建立当前镜头：主角回家后一再翻看同一张空白便签，停住后把便签翻面放下",
+          "performance": "身体微动作真实、动作顺序清楚",
+          "camera": "俯拍桌面中近景",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_change": "画面信息转折：反复想，不等于解决；结束态准备切镜",
+          "performance": "身体微动作真实、动作顺序清楚",
+          "camera": "微表情仅靠呼吸和手部停顿，不用哭戏",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "camera": {
+        "start_frame": "开场构图：主角回家后一再翻看同一张空白便签，停住后把便签翻面放下",
+        "movement": "俯拍桌面中近景；微表情仅靠呼吸和手部停顿，不用哭戏",
+        "move_trigger_s": 4,
+        "end_frame": "结尾镜头锁定重要信息：反复想，不等于解决",
+        "lens_feel": "35–50mm自然透视、非夸张广角",
+        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
+      },
+      "art": {
+        "environment": "导演画面：主角回家后一再翻看同一张空白便签，停住后把便签翻面放下",
+        "light_source": "环境单侧柔光，保持光照方向连续",
+        "color_path": "coherent muted blue/gray moving toward warm light",
+        "texture": "真实环境颗粒与自然皮肤材质"
+      },
+      "sound": {
+        "ambient": "自然场景氛围，资料卡近乎静音",
+        "music": "暖灯下静物微纹理，钟摆声放慢",
+        "effects": [
+          "轻微动作拟音；来源卡减小音量"
+        ],
+        "voiceover_note": "旁白原句：而反复回想一件糟心事，往往让负面想法越来越牢。这叫反刍思维。"
+      },
+      "continuity": {
+        "start_state": "镜头开头：主角回家后一再翻看同一张空白便签，停住后把便签翻面放下",
+        "end_state": "字幕所述信息完成表达：反复想，不等于解决",
+        "locked_entities": [
+          "CH_MAIN 服装、年龄、发型、左右手道具身份一致"
+        ],
+        "reference_assets": []
+      },
+      "graphics": {
+        "treatment": "只在后期加入字幕，影像生成不包含可读汉字",
+        "claims_used": [
+          "S13"
+        ],
+        "labels": [
+          "反复想，不等于解决"
+        ],
+        "motion": "文本静态和强调动效由后期完成",
+        "context_note": "证据与口径：动手做事是实践建议，不能称为经过该综述直接验证的特效疗法"
+      },
+      "generation": {
+        "route": "ai_video",
+        "clip_type": "single_continuous_take",
+        "negative_constraints": [
+          "不可生成可读字、百分比和水印",
+          "不使用与主题无关的戏剧化镜头"
+        ],
+        "reference_roles": [
+          "identity reference required before generating"
+        ],
+        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
+      },
+      "qa": {
+        "acceptance_tests": [
+          "字幕准确且未被底栏遮挡",
+          "场景/镜头活动可在镜头时长完成",
+          "定量信息有研究对象及限制说明"
+        ],
+        "issues": [],
+        "human_approved": false
+      }
+    },
+    {
+      "shot_id": "S07",
+      "review_status": "reviewed",
+      "objective": {
+        "emotion": "比较焦虑→自我觉察→平静掌控",
+        "observable_turn": "左右分屏，打沙袋图标与慢呼吸示意；明确研究测量的是愤怒和攻击性",
+        "visual_focus": "154项研究：先降唤醒"
+      },
+      "staging": {
+        "blocking": "使用2D后期图形/来源卡表现，不依赖演员",
+        "gaze": "优先保证数值与来源卡可阅读",
+        "props": [],
+        "spatial_constraints": [
+          "竖屏安全区内全要素可见",
+          "不同镜头采用同系列统一视觉语法"
+        ]
+      },
+      "performance": {
+        "motivation": "推进论证、避免数字堆砌",
+        "facial_microaction": "无真人表演；用图形运动表现注意力与节奏",
+        "body_microaction": "无真人身体动作；以易读动画安排替代",
+        "ending_pose": "数据卡保持最终结果至少1秒"
+      },
+      "beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_change": "建立当前镜头：左右分屏，打沙袋图标与慢呼吸示意；明确研究测量的是愤怒和攻击性",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "采用154项研究汇总可读数字，淡化无必要的效应量g，不用真人拳击煽动",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 9,
+          "visible_change": "画面信息转折：154项研究：先降唤醒；结束态准备切镜",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "采用154项研究汇总可读数字，淡化无必要的效应量g，不用真人拳击煽动",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "camera": {
+        "start_frame": "开场构图：左右分屏，打沙袋图标与慢呼吸示意；明确研究测量的是愤怒和攻击性",
+        "movement": "采用154项研究汇总可读数字，淡化无必要的效应量g，不用真人拳击煽动",
+        "move_trigger_s": 4,
+        "end_frame": "结尾镜头锁定重要信息：154项研究：先降唤醒",
+        "lens_feel": "无透视的高清2D动效",
+        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
+      },
+      "art": {
+        "environment": "导演画面：左右分屏，打沙袋图标与慢呼吸示意；明确研究测量的是愤怒和攻击性",
+        "light_source": "平面清晰高对比色背景",
+        "color_path": "coherent muted blue/gray moving toward warm light",
+        "texture": "矢量线条、清晰文本、平滑简洁动画"
+      },
+      "sound": {
+        "ambient": "自然场景氛围，资料卡近乎静音",
+        "music": "节拍由快慢慢降低；不是万能治疗宣称",
+        "effects": [
+          "轻微动作拟音；来源卡减小音量"
+        ],
+        "voiceover_note": "旁白原句：还有一点：愤怒时靠砸东西或者剧烈发泄，整体并不比让身体平静下来更有效。"
+      },
+      "continuity": {
+        "start_state": "镜头开头：左右分屏，打沙袋图标与慢呼吸示意；明确研究测量的是愤怒和攻击性",
+        "end_state": "字幕所述信息完成表达：154项研究：先降唤醒",
+        "locked_entities": [],
+        "reference_assets": []
+      },
+      "graphics": {
+        "treatment": "左右分屏，打沙袋图标与慢呼吸示意；明确研究测量的是愤怒和攻击性",
+        "claims_used": [
+          "S14"
+        ],
+        "labels": [
+          "154项研究：先降唤醒"
+        ],
+        "motion": "采用154项研究汇总可读数字，淡化无必要的效应量g，不用真人拳击煽动",
+        "context_note": "证据与口径：结论针对即时愤怒管理，不代表跑步不利于长期心理健康"
+      },
+      "generation": {
+        "route": "post_production",
+        "clip_type": "not_a_video_model_job",
+        "negative_constraints": [
+          "无虚构数字、无小字与伪研究截图"
+        ],
+        "reference_roles": [],
+        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
+      },
+      "qa": {
+        "acceptance_tests": [
+          "字幕准确且未被底栏遮挡",
+          "场景/镜头活动可在镜头时长完成",
+          "定量信息有研究对象及限制说明"
+        ],
+        "issues": [],
+        "human_approved": false
+      }
+    },
+    {
+      "shot_id": "S08",
+      "review_status": "reviewed",
+      "objective": {
+        "emotion": "比较焦虑→自我觉察→平静掌控",
+        "observable_turn": "主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓",
+        "visual_focus": "少比较 / 停反刍 / 先平静"
+      },
+      "staging": {
+        "blocking": "参考镜头：主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓",
+        "gaze": "由演员动作目标引导视线，不看镜头",
+        "props": [],
+        "spatial_constraints": [
+          "竖屏安全区内全要素可见",
+          "不同镜头采用同系列统一视觉语法"
+        ]
+      },
+      "performance": {
+        "motivation": "给出行动闭环",
+        "facial_microaction": "控制眼神和眉眼肌肉的微变化；不要做大幅假笑哭戏",
+        "body_microaction": "手、肩和呼吸组成可观察但克制的动作",
+        "ending_pose": "人物动作归于稳定，保留下一镜的运动连续性"
+      },
+      "beats": [
+        {
+          "from_s": 0,
+          "to_s": 3,
+          "visible_change": "建立当前镜头：主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓",
+          "performance": "身体微动作真实、动作顺序清楚",
+          "camera": "从桌面侧拍至面部近景，最后定格于稳定视线",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 3,
+          "to_s": 7,
+          "visible_change": "画面信息转折：少比较 / 停反刍 / 先平静；结束态准备切镜",
+          "performance": "身体微动作真实、动作顺序清楚",
+          "camera": "角色连贯",
+          "sound": "对齐信息出现位置及字幕"
+        }
+      ],
+      "camera": {
+        "start_frame": "开场构图：主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓",
+        "movement": "从桌面侧拍至面部近景，最后定格于稳定视线；角色连贯",
+        "move_trigger_s": 3,
+        "end_frame": "结尾镜头锁定重要信息：少比较 / 停反刍 / 先平静",
+        "lens_feel": "35–50mm自然透视、非夸张广角",
+        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
+      },
+      "art": {
+        "environment": "导演画面：主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓",
+        "light_source": "环境单侧柔光，保持光照方向连续",
+        "color_path": "coherent muted blue/gray moving toward warm light",
+        "texture": "真实环境颗粒与自然皮肤材质"
+      },
+      "sound": {
+        "ambient": "自然场景氛围，资料卡近乎静音",
+        "music": "金色环境光缓缓出现；音乐回归低速",
+        "effects": [
+          "轻微动作拟音；来源卡减小音量"
+        ],
+        "voiceover_note": "旁白原句：今天就做三件事：少刷攀比内容，察觉自己在反复想，生气时先让身体慢下来。"
+      },
+      "continuity": {
+        "start_state": "镜头开头：主角把手机屏幕扣下，拿起杯温水，停住后向窗外望去，呼吸放缓",
+        "end_state": "字幕所述信息完成表达：少比较 / 停反刍 / 先平静",
+        "locked_entities": [
+          "CH_MAIN 服装、年龄、发型、左右手道具身份一致"
+        ],
+        "reference_assets": []
+      },
+      "graphics": {
+        "treatment": "只在后期加入字幕，影像生成不包含可读汉字",
+        "claims_used": [],
+        "labels": [
+          "少比较 / 停反刍 / 先平静"
+        ],
+        "motion": "文本静态和强调动效由后期完成",
+        "context_note": "此镜不新增事实断言"
+      },
+      "generation": {
+        "route": "ai_video",
+        "clip_type": "single_continuous_take",
+        "negative_constraints": [
+          "不可生成可读字、百分比和水印",
+          "不使用与主题无关的戏剧化镜头"
+        ],
+        "reference_roles": [
+          "identity reference required before generating"
+        ],
+        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
+      },
+      "qa": {
+        "acceptance_tests": [
+          "字幕准确且未被底栏遮挡",
+          "场景/镜头活动可在镜头时长完成",
+          "定量信息有研究对象及限制说明"
+        ],
+        "issues": [],
+        "human_approved": false
+      }
+    },
+    {
+      "shot_id": "S09",
+      "review_status": "reviewed",
+      "objective": {
+        "emotion": "比较焦虑→自我觉察→平静掌控",
+        "observable_turn": "出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
+        "visual_focus": "研究来源 · 1/2"
+      },
+      "staging": {
+        "blocking": "使用2D后期图形/来源卡表现，不依赖演员",
+        "gaze": "优先保证数值与来源卡可阅读",
+        "props": [],
+        "spatial_constraints": [
+          "竖屏安全区内全要素可见",
+          "不同镜头采用同系列统一视觉语法"
+        ]
+      },
+      "performance": {
+        "motivation": "建立可信可核对出处，限制适用范围",
+        "facial_microaction": "无真人表演；用图形运动表现注意力与节奏",
+        "body_microaction": "无真人身体动作；以易读动画安排替代",
+        "ending_pose": "数据卡保持最终结果至少1秒"
+      },
+      "beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_change": "建立当前镜头：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "按发表年份与研究方法三行，屏幕文字限制为短标签",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_change": "画面信息转折：研究来源 · 1/2；结束态准备切镜",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "按发表年份与研究方法三行，屏幕文字限制为短标签",
+          "sound": "声音轻缓并留出阅读空白"
+        }
+      ],
+      "camera": {
+        "start_frame": "开场构图：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
+        "movement": "按发表年份与研究方法三行，屏幕文字限制为短标签",
+        "move_trigger_s": 4,
+        "end_frame": "结尾镜头锁定重要信息：研究来源 · 1/2",
+        "lens_feel": "无透视的高清2D动效",
+        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
+      },
+      "art": {
+        "environment": "导演画面：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
+        "light_source": "平面清晰高对比色背景",
+        "color_path": "coherent muted blue/gray moving toward warm light",
+        "texture": "矢量线条、清晰文本、平滑简洁动画"
+      },
+      "sound": {
+        "ambient": "自然场景氛围，资料卡近乎静音",
+        "music": "静态，字清楚且保留阅读停顿",
+        "effects": [
+          "轻微动作拟音；来源卡减小音量"
+        ],
+        "voiceover_note": "旁白原句：这一集依据社交平台使用实验、聚光灯效应研究，以及反刍思维综述。"
+      },
+      "continuity": {
+        "start_state": "镜头开头：出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
+        "end_state": "字幕所述信息完成表达：研究来源 · 1/2",
+        "locked_entities": [],
+        "reference_assets": []
+      },
+      "graphics": {
+        "treatment": "出处卡一：Allcott 2020（AER）；Hunt 2018（J Social Clinical Psychology）；Gilovich 2000（J Personality Social Psychology）",
+        "claims_used": [
+          "S10",
+          "S11",
+          "S12"
+        ],
+        "labels": [
+          "研究来源 · 1/2"
+        ],
+        "motion": "按发表年份与研究方法三行，屏幕文字限制为短标签",
+        "context_note": "证据与口径：小幅幸福感改善，同时减少时事知识；不等于所有平台通用；FB/Instagram/Snapchat实验，不能直接套用抖音；衣着与社交场景实验，不是所有现实评价的统一折扣系数"
+      },
+      "generation": {
+        "route": "post_production",
+        "clip_type": "not_a_video_model_job",
+        "negative_constraints": [
+          "无虚构数字、无小字与伪研究截图"
+        ],
+        "reference_roles": [],
+        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
+      },
+      "qa": {
+        "acceptance_tests": [
+          "字幕准确且未被底栏遮挡",
+          "场景/镜头活动可在镜头时长完成",
+          "定量信息有研究对象及限制说明",
+          "片尾每条出处显示作者、年份、期刊、研究类型",
+          "完整 DOI 见视频说明"
+        ],
+        "issues": [],
+        "human_approved": false
+      }
+    },
+    {
+      "shot_id": "S10",
+      "review_status": "reviewed",
+      "objective": {
+        "emotion": "比较焦虑→自我觉察→平静掌控",
+        "observable_turn": "出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
+        "visual_focus": "研究来源 · 2/2"
+      },
+      "staging": {
+        "blocking": "使用2D后期图形/来源卡表现，不依赖演员",
+        "gaze": "优先保证数值与来源卡可阅读",
+        "props": [],
+        "spatial_constraints": [
+          "竖屏安全区内全要素可见",
+          "不同镜头采用同系列统一视觉语法"
+        ]
+      },
+      "performance": {
+        "motivation": "建立可信可核对出处，限制适用范围",
+        "facial_microaction": "无真人表演；用图形运动表现注意力与节奏",
+        "body_microaction": "无真人身体动作；以易读动画安排替代",
+        "ending_pose": "数据卡保持最终结果至少1秒"
+      },
+      "beats": [
+        {
+          "from_s": 0,
+          "to_s": 4,
+          "visible_change": "建立当前镜头：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "重点标注『研究是群体平均，不替代个人帮助』",
+          "sound": "旁白主导，音乐-20dB左右预留语音空间"
+        },
+        {
+          "from_s": 4,
+          "to_s": 10,
+          "visible_change": "画面信息转折：研究来源 · 2/2；结束态准备切镜",
+          "performance": "无演员，数字/卡片按时间出现",
+          "camera": "重点标注『研究是群体平均，不替代个人帮助』",
+          "sound": "声音轻缓并留出阅读空白"
+        }
+      ],
+      "camera": {
+        "start_frame": "开场构图：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
+        "movement": "重点标注『研究是群体平均，不替代个人帮助』",
+        "move_trigger_s": 4,
+        "end_frame": "结尾镜头锁定重要信息：研究来源 · 2/2",
+        "lens_feel": "无透视的高清2D动效",
+        "reason": "运镜只服务叙事变化，资料来源卡不运镜"
+      },
+      "art": {
+        "environment": "导演画面：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
+        "light_source": "平面清晰高对比色背景",
+        "color_path": "coherent muted blue/gray moving toward warm light",
+        "texture": "矢量线条、清晰文本、平滑简洁动画"
+      },
+      "sound": {
+        "ambient": "自然场景氛围，资料卡近乎静音",
+        "music": "最后两秒安静，音乐自然淡出",
+        "effects": [
+          "轻微动作拟音；来源卡减小音量"
+        ],
+        "voiceover_note": "旁白原句：还有反刍思维的综述和一份一百五十四项研究的愤怒管理汇总。具体论文链接都放在简介。"
+      },
+      "continuity": {
+        "start_state": "镜头开头：出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
+        "end_state": "字幕所述信息完成表达：研究来源 · 2/2",
+        "locked_entities": [],
+        "reference_assets": []
+      },
+      "graphics": {
+        "treatment": "出处卡二：Nolen-Hoeksema 2008（Perspectives Psych Sci）；Kjærvik 2024（Clinical Psychology Review）。注意非个人诊疗建议",
+        "claims_used": [
+          "S13",
+          "S14"
+        ],
+        "labels": [
+          "研究来源 · 2/2"
+        ],
+        "motion": "重点标注『研究是群体平均，不替代个人帮助』",
+        "context_note": "证据与口径：动手做事是实践建议，不能称为经过该综述直接验证的特效疗法；结论针对即时愤怒管理，不代表跑步不利于长期心理健康"
+      },
+      "generation": {
+        "route": "post_production",
+        "clip_type": "not_a_video_model_job",
+        "negative_constraints": [
+          "无虚构数字、无小字与伪研究截图"
+        ],
+        "reference_roles": [],
+        "limits": "制作建议，模型逐秒可控性需要实际测试。正文/数据/字幕均后期叠加"
+      },
+      "qa": {
+        "acceptance_tests": [
+          "字幕准确且未被底栏遮挡",
+          "场景/镜头活动可在镜头时长完成",
+          "定量信息有研究对象及限制说明",
+          "片尾每条出处显示作者、年份、期刊、研究类型",
+          "完整 DOI 见视频说明"
+        ],
+        "issues": [],
+        "human_approved": false
+      }
+    }
+  ]
+}
