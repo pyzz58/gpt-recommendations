@@ -70,3 +70,11 @@
 - 每次请求（含JSON重试和结构修复）都进入 `api_usage.generated.json` 账本，金额保守预留；默认不重试；网络超时、HTTP 5xx、未知扣费状态绝不自动重发。
 - 只有模型**新生成的草稿**可以被结构校验后自动修复，绝不能重写用户已手工修改的 plan、人物Bible、字幕和研究说明；失败或金额超限时保留草稿供人工恢复。
 - `cost-status` 仅读取本地预留估计；不代表官方账单。不得上传 API Key、原文或用户项目到公开仓库。
+
+## 连续性审查与修订流程（新增）
+
+- 在生成 direction_v02.json 前，必须先用本地 `python3 local_director.py audit --plan <plan.json>` 审查基础计划，并阅读 `continuity_repair.generated.md`。
+- 审查中 blocker 未解决时不得继续调用新的付费导演方向模型；review 类问题由人审与 Codex 修改稿核对，不可假设自动通过。
+- 修改用户的真实 plan 时，先建立 `plan.proposed.json` 候选；保留原始 JSON、series、原文、手改内容、既有费用账本。不得自行增加 `--max-calls` 或隐式重试。
+- 道具位置必须通过可拍动作过渡：拿起、携带、放下；对复杂道具可使用 `continuity_state` 机器可验证字段。请阅读 `CONTINUITY_QA.md`。
+- 费用与版权检查独立于连续性；不能因为通过代码测试就宣称视频已生成或获得许可。
