@@ -1,5 +1,32 @@
 # AI Director v0.3 · 真实 DeepSeek API 测试协议
 
+## 首次授权测试：总预算人民币5元（单请求试验）
+
+该金额对应用户批准的这一轮试验上限，不代表任何长期API费用授权。此协议不会自动执行，**只有Mac本地按下面步骤执行时才发生模型费用**；目前真实请求次数仍为0。
+
+1. 只使用一段不含私人信息、未发表研究数据的简短测试文案：例如《下班后的一个小时》，讲一个上班族下班后不断刷手机，最后决定把手机放下、写下一页日记的经历。要求自动给出恰当集数、人物外貌和跨镜头一致性锚点。
+2. 运行前请先确认本机代码有 `--max-cost-cny` / `cost-status` 选项；如果没有说明代码过旧，**不要尝试付费执行**。不要用 `git reset --hard` 覆盖旧工作树。
+3. 单次运行命令见下；`--max-calls 1` 只允许 `series.json` 第一阶段，后续请求被硬性次数闸门阻止。返回非零退出码是预期保护行为，不能据此认为第一阶段失败。
+
+```bash
+python3 local_director.py run --input pilot_article.md --out jobs/live-pilot-001 \
+  --model deepseek-flash --base-url https://api.deepseek.com/v1 \
+  --approve-model-cost --max-cost-cny 5 --max-calls 1 --max-retries 0 \
+  --input-cny-per-million 3 --output-cny-per-million 10 \
+  --max-output-tokens 16384
+python3 local_director.py cost-status --job jobs/live-pilot-001
+```
+
+4. 只在用户的Mac临时会话中设置 `AI_API_KEY`，不保存在任何GitHub文件、终端命令历史或聊天记录。不采用 Codex 已有设置自动扣费路径，因为该路径不受上述 ledger 管控。
+5. 预期产物：`series.json`、`character_bible.json`、`api_usage.generated.json`，`index.html` 尚不存在。必须人工审查首轮输出，包括人物设定、集数、故事母题、章节焦点和目标时长。
+6. 如果 `series.json` 没有生成，查看本机错误和用量账本；**不要自行将 `--max-calls` 改大，也不要反复运行以碰运气**。测试结果应先审核，再决定是否用剩余预算继续。
+
+**报价核查**：官方目前美元定价为Flash高峰缓存未命中输入 US$0.30/百万tokens、输出 US$1.20/百万tokens（非高峰可更低）。本试验为额外缓冲，按人民币 ¥3/百万输入、¥10/百万输出预留；汇率、供应商价格及计费规则可能变化，预留并非账单绝对硬限。
+
+**完成判据**：实际API明确返回合规JSON，`series.json` 符合结构、故事有意义；凭 `api_usage.generated.json` 能显示恰好1次尝试和 provider tokens（若有返回）；请求上限拦住第二步，未改变旧项目。
+
+---
+
 **当前状态：只完成离线模拟；真实付费调用尚未执行。** 本文是将来测试的验收合同，不包含任何API Key，也不能当作用户已授权费用。
 
 ## 强制先决条件
