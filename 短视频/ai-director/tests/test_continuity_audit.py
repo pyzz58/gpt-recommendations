@@ -85,3 +85,18 @@ class ContinuityAuditTests(TestCase):
         self.assertIn('SCENE_PROP_DOUBLE_BOOK',codes)
         self.assertIn('PROP_APPEARANCE_UNEXPLAINED_BOOK',codes)
         self.assertIn('PROP_TRANSFER_MISSING_PHONE',codes)
+
+    def test_drawer_pronoun_regression_blocks_original_and_accepts_pickup(self):
+        # Synthetic reproduction: the drawer is mentioned in a prior clause.
+        import copy
+        p={'scenes':[], 'shots':[
+            {'id':'S08','action':{'action':'把手机翻面扣下'},'visual':'他把手机扣在沙发扶手上'},
+            {'id':'S09','action':{'action':'安静地看着书'},'visual':'他仍然坐在沙发上'},
+            {'id':'S10','action':{'action':'拉开抽屉，把手机放进去，推回'},
+             'visual':'他走到书桌旁，拉开抽屉，把手机放进去'}]}
+        result=ca.audit_plan(p)
+        self.assertIn('PROP_TRANSFER_MISSING_PHONE',[f['code'] for f in result['findings']])
+        self.assertEqual(result['blockers'],1)
+        fixed=copy.deepcopy(p)
+        fixed['shots'][1]['action']['action']='从沙发扶手拿起手机'
+        self.assertEqual(ca.audit_plan(fixed)['blockers'],0)
