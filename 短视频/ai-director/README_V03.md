@@ -24,12 +24,12 @@ v0.3 的重点不是更换服务，而是把项目脱离 GitHub/ChatGPT 的实�
 不要把 API Key 写在Markdown或GitHub仓库。Mac终端先用 `export AI_API_KEY='...'`（建议用安全方式临时设置），然后：
 
 ```bash
-python3 local_director.py run --input article.md --out jobs/my-video-new --approve-model-cost
+python3 local_director.py run --input article.md --out jobs/my-video-new --approve-model-cost --max-cost-cny YOUR_APPROVED_CNY_BUDGET
 open jobs/my-video-new/index.html
 ```
 
 - 默认提供 **DeepSeek 官方兼容API** 端点 `https://api.deepseek.com/v1` 与示例模型ID `deepseek-flash`；若供应商日后调整，指定 `--model` 或 `AI_MODEL`。请先检查自己的账号对应实际模型。
-- **会发生模型费用**：按每阶段 1 次调用，1集至少3次（系列策划+每集基础计划+专业导演稿）；3集通常7次，失败不会自动重试。费用由供应商和Token用量决定，程序目前不会显示实时费用或价格上限。谨慎授权。
+- **费用安全现已接入（2026-10-11）**：真实API请求必须同时具备 `--approve-model-cost` 和 `--max-cost-cny` 用户指定人民币预算；默认最多7次请求、0次自动重试、单次最多16,384输出tokens。请求前按官方高峰价格和保守Token估计预留预算，记录在 `api_usage.generated.json`；超过预留金额或次数会阻止调用。空JSON、非法JSON、模型新稿缺结构字段可以在明确设置 `--max-retries 1` 或 `2` 后有限修复；超时、断网和HTTP 5xx不可自动重试。本地预算只是预估保护，**不是供应商账单的绝对上限**。
 - 若中途失败，已成功生成的 `series.json`、`plan.json` 会保留。修订草稿后可 `--resume` 续跑；API生成不保证每次一键直接通过质量校验。拒绝把不合格作品伪装成成功。
 - 使用别的国内服务：需其兼容 Chat Completions + JSON对象输出；显式设置 `AI_API_BASE_URL` 和 `AI_MODEL`，事先检查收费与服务条款。支持 `http://127.0.0.1:端口/v1` 作为未来本地模型接口（未做实际兼容性测试）。
 
@@ -80,3 +80,17 @@ python3 local_ui.py
 - **测试**：在原29项基础上增加8项离线回归，37项通过；覆盖三集模拟续跑、研究元数据、服装和色调漂移、手动编辑保护与长文输入。**真实收费LLM和国产视频生成仍未实测。**
 
 本轮仅更新代码、规则和测试，没有制作 ZIP / 下载交付，也不接入收费模型。源文件仍由 GitHub 记录修订。
+
+
+## 下一阶段：有预算的真实模型测试（尚未得到具体金额授权）
+
+当前本地模拟测试 **54项通过**，包括HTTP本机模拟端点、三集续跑、预算拦截、逐次记账、防并行调用、空/非法JSON定量重试和结构修复；真实DeepSeek API尚未测试。
+
+- 默认 `deepseek-flash`（官方列为 V4.1 Flash）高峰预留单价：输入¥2/百万Token（缓存未命中）、输出¥8/百万Token，价格随服务商变化，测试前重新核对。
+- 其他模型或第三方接口必须指定 `--input-cny-per-million`、`--output-cny-per-million` 的人民币最高单价。
+- 可设置 `--max-calls`、`--max-output-tokens`、`--max-retries`；每次尝试必须重新预留，失败可能仍消耗预算；不重复调用已经完成的阶段。
+- 使用 `python3 local_director.py cost-status --job jobs/项目目录` 可读取已记录的预留费用和服务端实际Token用量（如果供应商返回）。
+- `--max-cost-cny` 是用户明确授权的本地预算防线，而不是DeepSeek结算金额保证。使用前了解网络请求会发送原文给模型服务商。
+- 未获得用户明确的人民币最高测试金额和实际授权前，不进行任何收费调用；不打包、不下载、不发布。
+
+官方参考：[模型与价格](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/) · [JSON 输出](https://api-docs.deepseek.com/zh-cn/guides/json_mode/) · [错误码](https://api-docs.deepseek.com/zh-cn/quick_start/error_codes/)。
