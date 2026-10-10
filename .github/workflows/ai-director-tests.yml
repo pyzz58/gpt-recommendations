@@ -25,3 +25,6 @@ jobs:
           python director.py validate --plan examples/quit-smoking/plan.json
           python director.py compile --plan examples/quit-smoking/plan.json --out /tmp/ai-director-prompts.json
           python director.py preview --plan examples/quit-smoking/plan.json --out /tmp/ai-director-preview.html
+          python director_v2.py validate --base examples/quit-smoking/plan.json --direction examples/quit-smoking/direction_v02.json
+          python director_v2.py compile --base examples/quit-smoking/plan.json --direction examples/quit-smoking/direction_v02.json --out /tmp/ai-director-v02-prompts.json
+          python director_v2.py preview --base examples/quit-smoking/plan.json --direction examples/quit-smoking/direction_v02.json --out /tmp/ai-director-v02-preview.html
