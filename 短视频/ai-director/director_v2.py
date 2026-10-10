@@ -1,0 +1,277 @@
+#!/usr/bin/env python3
+"""AI Director v0.2: offline professional shot contracts & model-aware prompt compiler.
+
+Requires a v0.1 plan and a Codex-authored v0.2 direction file. This program is
+intentionally deterministic: it does NOT pretend to perform creative LLM work or
+verify external evidence, and it cannot generate/publish video.
+"""
+from __future__ import annotations
+
+import argparse
+import copy
+import html
+import json
+from pathlib import Path
+import sys
+
+from director import validate as validate_v1
+
+VERSION = "0.2.0"
+FORBIDDEN_UNSUPPORTED_MODES = {"paid_video_generation", "publish", "auto_upload"}
+REQUIRED_SHOT_FIELDS = ("objective", "staging", "performance", "beats", "camera", "art", "sound", "continuity", "graphics", "generation", "qa")
+REQUIRED_BEAT_FIELDS = ("from_s", "to_s", "visible_change", "performance", "camera", "sound")
+
+
+def read_json(path):
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def write_json(path, value):
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def scaffold(base):
+    """Create clearly unapproved work slots; never fabricate 'professional' direction."""
+    return {
+        "schema_version": "0.2", "title": base["title"],
+        "global_direction": {
+            "audience_emotion_arc": "待导演设计：逐段情绪曲线",
+            "visual_grammar": "待导演设计：贯穿全片的摄影、美术、图形统一规则",
+            "audio_grammar": "待导演设计：配音、BGM、音效与留白的统一规则",
+            "graphic_safety": "所有准确数字与中文字由后期叠加；注明比较组、研究类型与来源；避免平台UI遮挡",
+            "reference_strategy": "待确认：人物/场景/道具参考图只记录角色与要求，不伪造存在的素材文件",
+            "generation_budget": "不允许自动调用付费 API；先审查再生成"
+        },
+        "shots": [{
+            "shot_id": shot["id"], "review_status": "needs_directing",
+            "objective": {"emotion": "待填", "observable_turn": "待填", "visual_focus": "待填"},
+            "staging": {"blocking": "待填", "gaze": "待填", "props": [], "spatial_constraints": ["待填"]},
+            "performance": {"motivation": "待填", "facial_microaction": "待填", "body_microaction": "待填", "ending_pose": "待填"},
+            "beats": [{"from_s": 0, "to_s": shot["duration"], "visible_change": "待导演拆解", "performance": "待填", "camera": "待填", "sound": "待填"}],
+            "camera": {"start_frame": "待填", "movement": "待填", "move_trigger_s": 0, "end_frame": "待填", "lens_feel": "待填", "reason": "待填"},
+            "art": {"environment": "待填", "light_source": "待填", "color_path": "待填", "texture": "待填"},
+            "sound": {"ambient": "待填", "music": "待填", "effects": [], "voiceover_note": "待填"},
+            "continuity": {"start_state": "待填", "end_state": "待填", "locked_entities": [], "reference_assets": []},
+            "graphics": {"treatment": "待填", "claims_used": list(shot.get("claim_ids", [])), "labels": [], "motion": "待填", "context_note": "待填"},
+            "generation": {"route": "ai_video" if shot["visual_type"] == "ai_video" else "post_production", "clip_type": "single_continuous_take" if shot["visual_type"] == "ai_video" else "not_a_video_model_job", "negative_constraints": [], "reference_roles": [], "limits": "不在画面内部生成准确汉字、数字或字幕"},
+            "qa": {"acceptance_tests": ["待导演明确可观察结果"], "issues": [], "human_approved": False}
+        } for shot in base["shots"]]
+    }
+
+
+def validate(base, directions):
+    errors, warnings = validate_v1(base)
+    if not isinstance(directions, dict):
+        return errors + ["v0.2 direction must be an object"], warnings
+    if directions.get("schema_version") != "0.2": errors.append("direction schema_version must be 0.2")
+    global_dir = directions.get("global_direction")
+    for key in ("audience_emotion_arc", "visual_grammar", "audio_grammar", "graphic_safety", "reference_strategy", "generation_budget"):
+        if not isinstance(global_dir, dict) or not str(global_dir.get(key, "")).strip():
+            errors.append(f"missing global_direction.{key}")
+    if "待" in str(global_dir): errors.append("global direction contains unfinished placeholder")
+    raw_shots = directions.get("shots")
+    if not isinstance(raw_shots, list) or len(raw_shots) != len(base.get("shots", [])):
+        return errors+["direction shots do not match base plan length"], warnings
+    expected = {x["id"]: x for x in base["shots"]}
+    seen = set()
+    accepted = []
+    for ix, direction in enumerate(raw_shots):
+        if not isinstance(direction, dict):
+            errors.append(f"direction[{ix}] must be object"); continue
+        sid = direction.get("shot_id", "?")
+        prefix=f"{sid}"
+        if sid in seen: errors.append(f"{prefix}: duplicate shot_id")
+        seen.add(sid)
+        if sid not in expected:
+            errors.append(f"{prefix}: not found in base plan"); continue
+        shot = expected[sid]
+        for key in REQUIRED_SHOT_FIELDS:
+            if key not in direction or not isinstance(direction[key], dict if key not in ("beats",) else list):
+                errors.append(f"{prefix}: missing/invalid {key}")
+        if any(k not in direction for k in REQUIRED_SHOT_FIELDS): continue
+        for name, subkeys in {
+            "objective": ["emotion", "observable_turn", "visual_focus"],
+            "staging": ["blocking", "gaze", "spatial_constraints"],
+            "performance": ["motivation", "facial_microaction", "body_microaction", "ending_pose"],
+            "camera": ["start_frame", "movement", "move_trigger_s", "end_frame", "lens_feel", "reason"],
+            "art": ["environment", "light_source", "color_path", "texture"],
+            "sound": ["ambient", "music", "effects", "voiceover_note"],
+            "continuity": ["start_state", "end_state", "locked_entities", "reference_assets"],
+            "graphics": ["treatment", "claims_used", "labels", "motion", "context_note"],
+            "generation": ["route", "clip_type", "negative_constraints", "reference_roles", "limits"],
+            "qa": ["acceptance_tests", "issues", "human_approved"]
+        }.items():
+            obj=direction[name]
+            for key in subkeys:
+                if key not in obj: errors.append(f"{prefix}: missing {name}.{key}")
+            if any(key not in obj for key in subkeys): continue
+            for key in subkeys:
+                if key not in ("move_trigger_s", "human_approved", "effects", "locked_entities", "reference_assets", "claims_used", "labels", "negative_constraints", "reference_roles", "acceptance_tests", "issues", "spatial_constraints"):
+                    value=obj[key]
+                    if not isinstance(value, str) or not value.strip():
+                        errors.append(f"{prefix}: empty {name}.{key}")
+                    elif "待填" in value or "待导演" in value:
+                        errors.append(f"{prefix}: placeholder in {name}.{key}")
+        beats=direction["beats"]
+        if not isinstance(beats, list) or not beats:
+            errors.append(f"{prefix}: beats must not be empty")
+        else:
+            t=0.0
+            for j,b in enumerate(beats):
+                if not isinstance(b,dict) or any(k not in b for k in REQUIRED_BEAT_FIELDS):
+                    errors.append(f"{prefix}: beat {j} missing required fields");continue
+                a, end=b.get("from_s"), b.get("to_s")
+                if not all(isinstance(x,(float,int)) and not isinstance(x,bool) for x in (a,end)):
+                    errors.append(f"{prefix}: beat {j} invalid time"); continue
+                if abs(a-t)>0.011: errors.append(f"{prefix}: beat {j} gap/overlap; expected {t}")
+                if end<=a: errors.append(f"{prefix}: beat {j} non-positive duration")
+                if end-a<0.30: warnings.append(f"{prefix}: beat {j} may be too short to read")
+                for k in ("visible_change", "performance", "camera", "sound"):
+                    if not isinstance(b.get(k),str) or not b[k].strip() or "待" in b[k]:
+                        errors.append(f"{prefix}: beat {j} missing concrete {k}")
+                t=end
+            if abs(t-shot["duration"])>0.011: errors.append(f"{prefix}: beat timeline {t} != {shot['duration']}")
+        move_time=direction["camera"].get("move_trigger_s",0)
+        if not isinstance(move_time,(int,float)) or move_time<0 or move_time>shot["duration"]:
+            errors.append(f"{prefix}: camera move trigger outside shot")
+        if direction["generation"].get("route") in FORBIDDEN_UNSUPPORTED_MODES:
+            errors.append(f"{prefix}: disallowed execution route")
+        should_be_video=(shot["visual_type"]=="ai_video")
+        if should_be_video != (direction["generation"].get("route")=="ai_video"):
+            errors.append(f"{prefix}: generation route contradicts base visual_type")
+        if should_be_video and not direction["continuity"].get("locked_entities"):
+            errors.append(f"{prefix}: ai_video missing locked identity/prop constraints")
+        if direction["graphics"].get("claims_used") != shot.get("claim_ids",[]):
+            errors.append(f"{prefix}: graphics.claims_used must match base claims without adding new assertions")
+        if direction["qa"].get("human_approved") is True:
+            warnings.append(f"{prefix}: claims of human approval cannot be verified by this tool")
+        if direction.get("review_status") != "reviewed":
+            warnings.append(f"{prefix}: directing not yet marked reviewed")
+        accepted.append(sid)
+    if set(accepted)!=set(expected): errors.append("missing/extra directed shot IDs")
+    if accepted != list(expected): warnings.append("shot order differs from base; compiler will follow base order")
+    if base.get("risk_domain") != "none" and any(x.get("status")!="verified" for x in base.get("claims",[])):
+        warnings.append("PUBLISH BLOCKED: expert video prompting does not verify medical data")
+    return errors, list(dict.fromkeys(warnings))
+
+
+def beat_lines(direction):
+    return "\n".join(
+        f"{b['from_s']:g}–{b['to_s']:g}s: Visible {b['visible_change']}; performer {b['performance']}; camera {b['camera']}; sound {b['sound']}"
+        for b in direction["beats"]
+    )
+
+
+def compile_package(base, directions):
+    errors,warnings=validate(base,directions)
+    if errors: raise ValueError("cannot compile invalid director plan:\n"+"\n".join(errors))
+    shots={x["shot_id"]:x for x in directions["shots"]}
+    jobs=[]
+    for shot in base["shots"]:
+        d=shots[shot["id"]]
+        shared={"shot_id":shot["id"],"duration":shot["duration"],"visual_type":shot["visual_type"],"human_review_required":True,
+                "direction":d, "reference_roles":d["generation"]["reference_roles"]}
+        if shot["visual_type"] != "ai_video":
+            shared["postproduction_job"]={"visual":shot["visual"],"graphics":d["graphics"],"sound":d["sound"],"editorial_claims":shot["claim_ids"],"overlay_text":shot["subtitles"]["text"]}
+            shared["prompts"]={}
+        else:
+            lens=d["camera"]
+            # Visual-only prompts; exact numerals, Chinese titles and subtitles remain post-production assets.
+            shot_direction=(
+                f"Narrative task: {d['objective']['observable_turn']}. Audience feeling: {d['objective']['emotion']}.\n"
+                f"Framing and space: {lens['start_frame']}. Lens feel: {lens['lens_feel']}. "
+                f"Blocking: {d['staging']['blocking']}. Gaze direction: {d['staging']['gaze']}.\n"
+                f"What actually happens:\n{beat_lines(d)}\n"
+                f"Camera path: {lens['movement']}; trigger at {lens['move_trigger_s']:g}s, finish {lens['end_frame']}. "
+                f"Reason for movement: {lens['reason']}.\n"
+                f"Lighting: {d['art']['light_source']}. Palette evolution: {d['art']['color_path']}. "
+                f"Environment: {d['art']['environment']}. Texture: {d['art']['texture']}.\n"
+                f"Locked identities/objects: {'; '.join(d['continuity']['locked_entities'])}. "
+                f"Beginning continuity: {d['continuity']['start_state']}. Final state: {d['continuity']['end_state']}.\n"
+                f"Do not include: {'; '.join(d['generation']['negative_constraints'])}. "
+                "Do not render any title, text, numbers, subtitles, logo or watermark in the generated footage. "
+                "Voiceover, sound effects, music and exact charts are handled in post-production."
+            )
+            shared["prompts"]={
+                "wan":(f"Create ONE coherent {shot['duration']:g}s vertical 9:16 visual clip; preserve shot identity and physical realism.\n"+shot_direction+
+                       "\nPrefer a vetted reference image for consistent face and wardrobe when available; do not assert nonexistent references were supplied."),
+                "seedance":(f"Single continuous {shot['duration']:g}s shot, portrait 9:16. One clear evolving visual intention; keep subject and prop continuity stable.\n"+shot_direction+
+                            "\nDo not force multiple cuts into one generation. Preserve observed end frame for continuation planning.")}
+            shared["postproduction_job"]={"voiceover":shot["narration"],"ambience":d["sound"]["ambient"],"music":d["sound"]["music"],"effects":d["sound"]["effects"],"overlay_text":shot["subtitles"]["text"]}
+        jobs.append(shared)
+    return {"schema_version":"0.2", "title":base["title"], "aspect_ratio":"9:16", "shots":jobs,
+            "warnings":warnings, "not_generated_video":True, "publishing_allowed":False,
+            "prompt_usage":"Prompts are candidates for operator review and actual-model testing; platform capabilities, version and limits must be checked before generation."}
+
+
+def render_compare(base, directions, output):
+    esc=lambda s:html.escape(str(s),quote=True)
+    shot_dirs={d["shot_id"]:d for d in directions["shots"]}
+    cards=[]
+    for s in base["shots"]:
+        d=shot_dirs[s["id"]]
+        beats="".join("<tr><th>"+esc(f"{b['from_s']:g}–{b['to_s']:g}s")+"</th><td>"+esc(b['visible_change'])+"</td><td>"+esc(b['performance'])+"</td><td>"+esc(b['camera'])+"</td><td>"+esc(b['sound'])+"</td></tr>" for b in d["beats"])
+        cards.append(f'''<article><h2>{esc(s['id'])} · {esc(s['duration'])}s · {esc(s['purpose'])}</h2><div class="pair"><div class="old"><b>旧版概略</b><p>{esc(s['visual'])}</p><p>摄影：{esc(s['camera']['movement'])} · {esc(s['camera']['shot_size'])}</p></div><div class="new"><b>专业导演意图</b><p>{esc(d['objective']['observable_turn'])}</p><p><b>构图</b>：{esc(d['camera']['start_frame'])}</p><p><b>运镜</b>：{esc(d['camera']['movement'])}</p><p><b>质感</b>：{esc(d['art']['texture'])}</p></div></div><table><thead><tr><th>时间</th><th>画面变化</th><th>表演</th><th>摄影</th><th>声音</th></tr></thead><tbody>{beats}</tbody></table><p class="dim">画面审查：{esc('、'.join(d['qa']['acceptance_tests']))}</p></article>''')
+    page=f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(base['title'])} v0.2 专业导演审片</title><style>body{{max-width:1350px;padding:26px;margin:auto;background:#101723;color:#eef3fa;font-family:system-ui,"PingFang SC",sans-serif}}article{{background:#1c2635;border:1px solid #334256;border-radius:14px;margin:18px 0;padding:20px}}h1{{margin-bottom:4px}}.notice{{padding:12px 15px;background:#323128;border-radius:8px}}.pair{{display:grid;grid-template-columns:1fr 1fr;gap:12px}}.old,.new{{border-radius:9px;padding:13px;background:#273244}}.old{{opacity:.72}}p{{line-height:1.55}}table{{width:100%;border-collapse:collapse;margin-top:15px;font-size:13px}}td,th{{border-bottom:1px solid #475365;padding:10px;text-align:left;vertical-align:top}}.dim{{color:#bcc7d7;font-size:13px}}@media(max-width:720px){{.pair{{grid-template-columns:1fr}}table{{display:block;overflow-x:auto}}}}</style></head><body><h1>{esc(base['title'])} · 专业导演 v0.2</h1><p>{esc(base['duration'])} 秒 / {len(base['shots'])} 镜头 / 9:16</p><div class="notice">这是用于比较的文字导演计划，不是真正的视频；医学数字未获事实核验，不能直接发布。模型生成也无法保证逐秒精确执行。</div>{''.join(cards)}</body></html>'''
+    path=Path(output);path.parent.mkdir(parents=True,exist_ok=True);path.write_text(page,encoding="utf-8")
+
+
+def build_codex_task(base_path, direction_path):
+    return f'''# AI 短视频导演 v0.2：专业导演深度增强任务
+
+使用当前 Codex 会话已有的 DeepSeek，**不要更改模型或全局配置，不调用付费 API**。
+
+1. 先读取本项目的 AGENTS.md、director_v2.py、参考文件 {base_path}。
+2. 读取导演蓝图 {direction_path}，按原结构完成专业创意修改，绝不丢失已有经过人工修改的内容。
+3. 对每个镜头定义清晰的戏剧任务（观众应看到什么变化）。优先确定人物/物体空间关系、环境物理、动作终点，再制定有动机的摄影移动。
+4. 每个镜头拆解为按相对时间连续的 beats，每个 beat 必须有可见变化、表演、摄影和声音线索，全部时长与 v0.1 相同。不要为堆字数而追加不可能完成的动作。
+5. 设计角色/衣服/道具/场景的固定状态与镜头的起止状态；如果没有真实参考资产，明确标注待制作，**不能杜撰已存在的参考图**。
+6. 对数据图形镜头优先设计图表/字幕/旁白，而不是让生视频模型画中文数字；保留研究类型、对照组、口径的来源提示。
+7. 将全片摄影、美术、声画风格写入 global_direction，单镜头补具体而非空泛的视觉形容词。
+8. 风险领域的内容如果没有权威来源验证，绝不可写 verified，不得改变研究类型或把 OR 写成 RR。必要时降低表述强度并保留待核验标记。
+9. 当镜头需依赖模型能力、参考图片或多段衔接时，在 qa.issues 中写出具体限制。human_approved 一律 false；review_status 可标记 reviewed，意为机器导演稿通过结构审查，绝非用户签字批准。
+10. 运行 `python3 director_v2.py validate --base {base_path} --direction {direction_path}` 通过后再运行 compile 与 preview；原目录已有内容不覆盖，输出命名带 `_v02`。
+11. 报告每个镜头的改进点、依然不可能保证的限制和医学事实阻断。结束时停止，不付费生成视频。
+'''
+
+
+def main(argv=None):
+    parser=argparse.ArgumentParser(description="Professional director layer v0.2; offline only")
+    subs=parser.add_subparsers(dest="command",required=True)
+    for name in ("scaffold","validate","compile","preview","task"):
+        sp=subs.add_parser(name)
+        sp.add_argument("--base",required=True,help="v0.1 plan.json")
+        if name=="scaffold":sp.add_argument("--out",required=True)
+        elif name=="task":
+            sp.add_argument("--direction",required=True)
+            sp.add_argument("--out",required=True)
+        else:
+            sp.add_argument("--direction",required=True)
+            if name!="validate":sp.add_argument("--out",required=True)
+    args=parser.parse_args(argv)
+    try:
+        base=read_json(args.base)
+        errors,_=validate_v1(base)
+        if errors:raise ValueError("invalid base v0.1 plan: "+"; ".join(errors))
+        if args.command=="scaffold":
+            write_json(args.out,scaffold(base));print("Draft direction scaffold:",args.out)
+        elif args.command=="task":
+            target=Path(args.out);target.parent.mkdir(parents=True,exist_ok=True)
+            target.write_text(build_codex_task(args.base,args.direction),encoding="utf-8")
+            print("Codex task:",args.out)
+        else:
+            directions=read_json(args.direction)
+            errors,warnings=validate(base,directions)
+            for w in warnings:print("WARNING:",w)
+            if errors:raise ValueError("; ".join(errors))
+            if args.command=="validate":print(f"Professional direction OK: {len(base['shots'])} shots; does NOT approve publication")
+            elif args.command=="compile":write_json(args.out,compile_package(base,directions));print("Compiled:",args.out)
+            elif args.command=="preview":render_compare(base,directions,args.out);print("Preview:",args.out)
+    except (ValueError, KeyError, TypeError, OSError, json.JSONDecodeError) as ex:
+        print("ERROR:",ex,file=sys.stderr);return 2
+    return 0
+
+if __name__=="__main__":
+    raise SystemExit(main())
