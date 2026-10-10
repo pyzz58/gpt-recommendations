@@ -3,13 +3,13 @@
   "title": "《不要浪费精力》上集：你不是不够努力，是注意力被偷走了",
   "platform": "douyin",
   "aspect_ratio": "9:16",
-  "duration": 84,
+  "duration": 73,
   "risk_domain": "medical",
   "core_message": "你不是不够努力，是注意力被偷走了",
   "audience": "希望减少工作、睡眠或情绪中无效消耗的成年观众",
   "editorial": {
     "hook": "你可能不是不努力，而是一天里，注意力被偷走了太多次。",
-    "narration_script": "你可能不是不努力，而是一天里，注意力被偷走了太多次。\n手机哪怕只响一下，你没拿起来，实验里也能看到注意力表现受干扰。\n甚至仅仅把手机放在桌面，有实验发现，部分认知测试的表现就会下降。\n更夸张的是，一个平均两点八秒的打断，让顺序任务的步骤出错率约翻倍。\n你刚找回思路，又点开另一件事；不是脑子不行，是工作不断切换。\n还有个两周实验：一百二十四名成年人，把查邮件限制成每天三次，报告的压力更低。\n所以今天就做三件事：关掉非必要通知，手机放远点，固定时间集中回消息。\n把注意力还给自己。下一集，聊聊为什么睡不够，努力也很难有效。\n本集依据四项研究。这里先列两项：手机通知和手机存在本身的实验。\n另两项研究分别观察了短暂打断的错误率，以及减少查邮件频率的压力变化。",
+    "narration_script": "你可能不是不努力，而是一天里，注意力被偷走了太多次。\n手机哪怕只响一下，你没拿起来，实验里也能看到注意力表现受干扰。\n甚至仅仅把手机放在桌面，有实验发现，部分认知测试的表现就会下降。\n更夸张的是，一个平均两点八秒的打断，让顺序任务的步骤出错率约翻倍。\n你刚找回思路，又点开另一件事；不是脑子不行，是工作不断切换。\n还有个两周实验：一百二十四名成年人，把查邮件限制成每天三次，报告的压力更低。\n所以今天就做三件事：关掉非必要通知，手机放远点，固定时间集中回消息。\n把注意力还给自己。下一集，聊聊为什么睡不够，努力也很难有效。",
     "omissions": [
       {
         "text": "原文其他未纳入的条款",
@@ -508,70 +508,18 @@
     {
       "id": "S09",
       "start": 68,
-      "duration": 8,
+      "duration": 5,
       "purpose": "sources",
-      "narration": "本集依据四项研究。这里先列两项：手机通知和手机存在本身的实验。",
+      "narration": "",
       "visual_type": "text_card",
       "claim_ids": [
         "S01",
-        "S02"
-      ],
-      "character_ids": [],
-      "scene_id": "LOC_SOURCE",
-      "visual": "出处卡一：Stothart 2015（通知实验）；Ward 2017（手机位置实验）。",
-      "action": {
-        "start": "",
-        "action": "",
-        "micro_action": "",
-        "reaction": "",
-        "end": ""
-      },
-      "camera": {
-        "shot_size": "flat 2D",
-        "angle": "eye level",
-        "lens": "vector animation",
-        "movement": "固定竖屏卡片，作者年份期刊和研究类型字号大于最小可读阈值",
-        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
-      },
-      "art": {
-        "lighting": "high-contrast accessible typography",
-        "palette": "coherent muted blue/gray moving toward warm light",
-        "set_props": "出处卡一：Stothart 2015（通知实验）；Ward 2017（手机位置实验）。"
-      },
-      "graphics": {
-        "type": "bibliography_credit",
-        "text": "研究来源 · 1/2",
-        "animation": "constrained infographic; readable citations",
-        "placement": "top-to-middle safe zone"
-      },
-      "audio": {
-        "music": "音乐音量降低；轻微翻页音；来源不是营销背书",
-        "sfx": "page-turn",
-        "voice": "neutral Mandarin",
-        "pause_before": 0
-      },
-      "subtitles": {
-        "text": "研究来源 · 1/2",
-        "style": "clear sans-serif; research labels accurate",
-        "placement": "central-lower safe zone"
-      },
-      "transition": "hard_cut",
-      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
-    },
-    {
-      "id": "S10",
-      "start": 76,
-      "duration": 8,
-      "purpose": "sources",
-      "narration": "另两项研究分别观察了短暂打断的错误率，以及减少查邮件频率的压力变化。",
-      "visual_type": "text_card",
-      "claim_ids": [
         "S03",
         "S04"
       ],
       "character_ids": [],
       "scene_id": "LOC_SOURCE",
-      "visual": "出处卡二：Altmann 2014（步骤错误）；Kushlev 2015（124人邮件实验）。",
+      "visual": "一张5秒静态研究来源图：\n1. Stothart 等 (2015) · J Exp Psychol · 通知实验\n2. Altmann 等 (2014) · J Exp Psychol · 短时打断实验\n3. Kushlev & Dunn (2015) · Comput Human Behav · 查邮件实验\n页脚：完整来源/DOI见视频简介；仅代表所引用研究，不等于所有观点已证实。",
       "action": {
         "start": "",
         "action": "",
@@ -580,36 +528,36 @@
         "end": ""
       },
       "camera": {
-        "shot_size": "flat 2D",
-        "angle": "eye level",
-        "lens": "vector animation",
-        "movement": "作者年份+期刊两行卡；结尾出现『完整DOI见视频简介』",
-        "composition": "subject within central-safe 9:16 frame, upper title and lower subtitles in safe zones"
+        "shot_size": "flat 2D static",
+        "angle": "frontal",
+        "lens": "none",
+        "movement": "fixed frame, no movement",
+        "composition": "vertical 9:16 central-safe 3-line reference text"
       },
       "art": {
-        "lighting": "high-contrast accessible typography",
+        "lighting": "static card, high typographic contrast",
         "palette": "coherent muted blue/gray moving toward warm light",
-        "set_props": "出处卡二：Altmann 2014（步骤错误）；Kushlev 2015（124人邮件实验）。"
+        "set_props": "无真人；精确文字由后期排版"
       },
       "graphics": {
         "type": "bibliography_credit",
-        "text": "研究来源 · 2/2",
-        "animation": "constrained infographic; readable citations",
-        "placement": "top-to-middle safe zone"
+        "text": "主要研究来源 · 详见视频简介",
+        "animation": "静态图片，0.2秒直接出现；保持静止4.8秒，切掉",
+        "placement": "中上部竖屏安全区；三行字体足够大"
       },
       "audio": {
-        "music": "留1秒无旁白供阅读，最后轻落幕",
-        "sfx": "page-turn",
-        "voice": "neutral Mandarin",
+        "music": "延续片尾BGM并降低音量，5秒结束时淡出",
+        "sfx": "none",
+        "voice": "none",
         "pause_before": 0
       },
       "subtitles": {
-        "text": "研究来源 · 2/2",
-        "style": "clear sans-serif; research labels accurate",
-        "placement": "central-lower safe zone"
+        "text": "完整文献见视频简介",
+        "style": "大号无衬线，2–3条简短来源",
+        "placement": "lower safe zone"
       },
-      "transition": "hard_cut",
-      "continuity": "preserve identity when applicable; source, graphics and model images must be visually distinguishable"
+      "transition": "hard_cut_to_static_credit",
+      "continuity": "单张静态研究来源卡，不可用AI视频生成汉字或数字；不暗示所有来源已完成全文核实"
     }
   ],
   "production": {
@@ -621,6 +569,19 @@
       "source author/year/venue checked, but detailed results need final journal text review",
       "AI-generation imagery and 2D graphics are illustrative",
       "human review before publication"
-    ]
+    ],
+    "credit_policy": {
+      "max_duration_s": 5,
+      "layout": "single_static_image",
+      "max_sources": 3,
+      "selected_source_ids": [
+        "S01",
+        "S03",
+        "S04"
+      ],
+      "full_bibliography": "description.md",
+      "no_narration": true,
+      "claims_status": "needs_review"
+    }
   }
 }
