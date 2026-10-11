@@ -27,6 +27,7 @@ import tempfile
 import agent_team as team
 import agent_role_contracts as roles
 import agent_provider_wire as wire
+import role_schema_guard as schema_guard
 import editorial_storyboard as creative
 
 VERSION = "deepseek-single-task-pilot-v1"
@@ -479,6 +480,13 @@ def run_one_creative_task(intake, state, episode_source, journal,
     envelope = wire.prepare_chat_request(
         req["messages"], model=config["model"],
         max_output_tokens=config["max_output_tokens"])
+    # Validate the EXACT prompt-declared JSON Schema before any billable
+    # request. The extended script_editor storyboard schema is not merely
+    # advisory: it is enforced again on the received reply below.
+    try:
+        schema_guard.preflight_schema(req["output_json_schema"])
+    except ValueError:
+        raise PilotError("PILOT_SCHEMA_PREFLIGHT_REJECTED_BEFORE_SEND") from None
     # Even for a synthetic frame, require an explicit separate one-call
     # consent permit. A missing key is only allowed for offline CI frames.
     if type(client) is DeepSeekHTTPSClient:
@@ -515,6 +523,9 @@ def run_one_creative_task(intake, state, episode_source, journal,
             hit_price_cny_m=config["cache_hit_cny_m"],
             miss_price_cny_m=config["cache_miss_cny_m"],
             output_price_cny_m=config["output_cny_m"])
+        schema_guard.validate_contract(
+            req["output_json_schema"],
+            roles.parse_strict_json(parsed["content"]))
         cost = Decimal(parsed["usage"]["estimated_usage_cost_cny"])
         reserve = Decimal(journal.records["attempts"][record_id-1]["reserved_cny"])
         if cost > reserve:
