@@ -24,6 +24,27 @@
 - [AI Cinematic Pipeline](https://github.com/billpar/ai-cinematic-pipeline)：其公开 shot-list-template 将 action、dialogue、voiceover、audio、镜头运动分别列出；我们的导演输出继续区分配音与出镜对白。
 - [CineCrew](https://github.com/Ironieser/CineCrew)：继承 FilmDSL 中分镜/角色/道具/导演约束分层的设计，但并未集成多模型视频执行器。
 
+## 本轮升级：从「字段写全」到「剪辑可交接」
+
+导演工作单现在提供**两个独立指标**：
+
+- `creative_design_complete`：故事、镜头、剪辑、动画、对白的创意栏目已经填写，且没有检测到硬性冲突。只是一份**创意草案**状态，不代表剪辑工单可直接执行。
+- `editor_handoff_ready`：在前述基础上，旁白 `speech.voiceover.cues[]`、屏幕字幕 `speech.subtitle_cues[]`、必要的动画 `animation.elements[].from_s/to_s`、每镜明确的 `editing.audio_bridge` 方案均已给出；如果缺时间码、使用模糊图形动画指令或存在时间越界就不能置真。此值只代表**设计数据具备可交接性**，不是媒体已生成或经人审。
+
+时间线现在明确区分三个独立层：VO 原文、配音分句时间码和屏幕字幕时间码。配音速度按**实际发声时间窗口**估算，不能拿整镜长度稀释拥挤的配音；超过参考节奏会产生 `VOICEOVER_PACE_REVIEW` 人工提醒。
+
+跨镜头声音采用显式选择：
+
+```json
+{"audio_bridge":{"type":"none","duration_s":0,"track":"none","reason":"剧情转折适合声音同时切断"}}
+```
+
+如选择 J-cut（下一镜声音提前）、L-cut（上一镜声音延后），则指定 `type:j_cut/l_cut`、大于零的 `duration_s`、`track:voiceover/dialogue/ambience/music/sfx`、清楚的 `reason`。程序根据两镜的绝对时间生成交接时段；超出任一镜头长度或片尾强行衔接均报错。`type=none` 也是主动的导演决策，不能靠遗漏代替。
+
+字幕需在 `speech.subtitle_cues[]` 明确起止和 `text`，按顺序拼起来必须等于基础稿 `subtitles.text`（空白差异可以忽略，内容不允许偷偷改）。这与 `voiceover.cues[]` 保持原始 `narration` 字句一致是**两条独立核对**。
+
+**严格模式**现在要求 `editor_handoff_ready=true` 才能将导演交付书判为严格可交接；旧版缺细节的剧本仍可生成清楚标记不足的草稿。
+
 ## 创作与校验的边界
 
 每个镜头都必须是导演亲自作出的**具体视听决定**。代码只是防止：
