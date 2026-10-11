@@ -247,9 +247,11 @@ def _validate_payload(state, task_id, payload):
     if task_id == "quality_review":
         import agent_handoff_audit
         independent = agent_handoff_audit.audit_handoffs(state)
-        if independent["status"] == "blocked":
+        import agent_creative_review
+        creative = agent_creative_review.review_team(state)
+        if independent["status"] == "blocked" or creative["status"] == "blocked":
             _require(value.get("recommendation") != "ready_for_director_review",
-                     "independent department contradictions must be marked for revision")
+                     "independent department/creative blockers must be marked for revision")
         _require(isinstance(value.get("blockers"), list)
                  and isinstance(value.get("findings"), list)
                  and value.get("recommendation") in
@@ -274,8 +276,10 @@ def _validate_payload(state, task_id, payload):
         qa = state["tasks"]["quality_review"]["deliverable"]["qa_report"]
         if decision == "ready_for_user_review":
             import agent_handoff_audit
-            _require(agent_handoff_audit.audit_handoffs(state)["status"] != "blocked",
-                     "independent handoff blockers prevent final director acceptance")
+            import agent_creative_review
+            _require(agent_handoff_audit.audit_handoffs(state)["status"] != "blocked"
+                     and agent_creative_review.review_team(state)["status"] != "blocked",
+                     "independent handoff/creative blockers prevent final director acceptance")
         if qa["blockers"] or qa["recommendation"] != "ready_for_director_review":
             _require(decision == "request_changes",
                      "showrunner cannot override outstanding QA blockers")
@@ -390,11 +394,15 @@ def compile_team_workbook(base, state, *, strict=False):
              "independent handoff blockers prevent workbook: " +
              ", ".join(x["code"] for x in handoffs["issues"] if
                        x["severity"] == "blocker")[:350])
+    creative = agent_creative_review.review_team(state)
+    _require(creative["status"] != "blocked",
+             "independent creative blockers prevent workbook: " +
+             ", ".join(x["code"] for x in creative["findings"]
+                       if x["severity"] == "blocker")[:350])
     draft = assemble_direction(base, state)
     errors, warnings = director_v2.validate(base, draft)
     _require(not errors, "merged direction invalid: " + "; ".join(errors[:8]))
     book = director_workbook.compile_workbook(base, draft)
-    creative = agent_creative_review.review_team(state)
     book["creative_quality_review"] = creative
     book["independent_handoff_audit"] = handoffs
     review_ready = (bool(book["director_review"]["production_blueprint_ready"]) and
