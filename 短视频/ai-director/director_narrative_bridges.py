@@ -6,6 +6,7 @@ Missing/incomplete authored plans are distinguishable from contradictory plans.
 No import of media libraries, no model calls, no downloads, no paid APIs.
 """
 from __future__ import annotations
+from collections import defaultdict
 
 CUT_TYPES = {"cut", "match_action", "match_gaze", "match_shape",
              "contrast", "reveal", "establish", "intentional_jump"}
@@ -32,6 +33,7 @@ def review(base, direction, route_fn):
     shots = base["shots"]
     directives = {item["shot_id"]: item for item in direction["shots"]}
     bridges, findings = [], []
+    repeated_fields = defaultdict(list)
 
     def issue(prev, nxt, code, severity, detail):
         findings.append({"shot_id": prev, "next_shot_id": nxt,
@@ -57,6 +59,7 @@ def review(base, direction, route_fn):
             "design_status": "missing",
             "cut_intention": None, "emotion_pacing": None,
             "visual_handoff": None, "style_handoff": None,
+            "cut_beat_evidence": None,
             "human_visual_review_required": True
         }
         if contract is None:
@@ -74,7 +77,49 @@ def review(base, direction, route_fn):
         emotion = contract.get("emotion_pacing")
         visual = contract.get("visual_handoff")
         style = contract.get("style_handoff")
+        beat_link = contract.get("beat_link")
         valid = True
+        beat_evidence = None
+        if not isinstance(beat_link, dict):
+            issue(left_id, right_id, "CUT_BEAT_LINK_MISSING", "pending",
+                  "link the cut to the outgoing and incoming real action beats")
+            valid = False
+        else:
+            out_index, in_index = (beat_link.get("outgoing_beat_index"),
+                                   beat_link.get("incoming_beat_index"))
+            outgoing_beats, incoming_beats = left.get("beats", []), right.get("beats", [])
+            proper_indices = (isinstance(out_index, int) and not isinstance(out_index, bool)
+                              and isinstance(in_index, int) and not isinstance(in_index, bool)
+                              and isinstance(outgoing_beats, list)
+                              and isinstance(incoming_beats, list)
+                              and 0 <= out_index < len(outgoing_beats)
+                              and 0 <= in_index < len(incoming_beats))
+            if not proper_indices:
+                issue(left_id, right_id, "CUT_BEAT_INDEX_INVALID", "blocker",
+                      "beat indices must point at actual adjacent shot action beats")
+                valid = False
+            else:
+                outgoing, incoming = (outgoing_beats[out_index],
+                                      incoming_beats[in_index])
+                boundary_ok = (out_index == len(outgoing_beats) - 1 and in_index == 0
+                               and abs(outgoing["to_s"] - a["duration"]) <= 0.02
+                               and abs(incoming["from_s"]) <= 0.02)
+                if not boundary_ok:
+                    issue(left_id, right_id, "CUT_BEAT_NOT_AT_BOUNDARY", "blocker",
+                          "cut evidence must use final and initial beats touching cut boundary")
+                    valid = False
+                else:
+                    beat_evidence = {
+                        "outgoing_beat_index": out_index,
+                        "incoming_beat_index": in_index,
+                        "outgoing_action": outgoing["visible_change"],
+                        "incoming_action": incoming["visible_change"],
+                        "cut_at_s": a["start"] + a["duration"]
+                    }
+            if not _text(beat_link.get("cut_on_visible_event")):
+                issue(left_id, right_id, "CUT_TRIGGER_UNSPECIFIED", "pending",
+                      "describe the precise visible event motivating the cut")
+                valid = False
         for key, obj in (("cut_intention", cut), ("emotion_pacing", emotion),
                          ("visual_handoff", visual), ("style_handoff", style)):
             if not isinstance(obj, dict):
@@ -137,8 +182,28 @@ def review(base, direction, route_fn):
                 issue(left_id, right_id, "MIXED_MEDIA_STYLE_REVIEW", "review",
                       "route changes; visually verify grade/layout/texture despite preserve strategy")
 
+        for section_name, section, fields in (
+            ("cut_intention", cut, ("viewer_question", "answer_or_reframe", "why_cut_here")),
+            ("visual_handoff", visual, ("motion_or_prop_link",)),
+            ("style_handoff", style, ("implementation",))
+        ):
+            if isinstance(section, dict):
+                for key in fields:
+                    value = section.get(key)
+                    if _text(value):
+                        repeated_fields[(section_name, key, value.strip().casefold())].append(
+                            (left_id, right_id))
         result.update({"design_status": "authored" if valid else "incomplete",
                        "cut_intention": cut, "emotion_pacing": emotion,
-                       "visual_handoff": visual, "style_handoff": style})
+                       "visual_handoff": visual, "style_handoff": style,
+                       "cut_beat_evidence": beat_evidence})
         bridges.append(result)
+    # Three or more exact repeats of a dramatic justification in one episode
+    # are likely copy/paste. This is a review signal, NOT an aesthetic score.
+    for (section, key, _), pairs in repeated_fields.items():
+        if len(pairs) >= 3:
+            for prev, nxt in pairs:
+                issue(prev, nxt, "BOILERPLATE_DIRECTOR_REASON", "review",
+                      section + "." + key + " reused verbatim at " +
+                      str(len(pairs)) + " different cuts; check against these shots")
     return bridges, findings
