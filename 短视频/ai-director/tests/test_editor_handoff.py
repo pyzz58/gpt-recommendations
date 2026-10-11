@@ -59,6 +59,9 @@ class EditorHandoffTests(unittest.TestCase):
             if shot["narration"]:
                 directed["speech"]["voiceover"]["cues"]=[{
                     "from_s":0,"to_s":shot["duration"],"text":shot["narration"]}]
+            if shot["subtitles"]["text"]:
+                directed["speech"]["subtitle_cues"]=[{
+                    "from_s":0,"to_s":shot["duration"],"text":shot["subtitles"]["text"]}]
         return d
 
     def test_filled_fields_without_timecodes_not_handoff_ready(self):
@@ -155,6 +158,31 @@ class EditorHandoffTests(unittest.TestCase):
         self.assertFalse(book["director_review"]["editor_handoff_ready"])
         self.assertIn("VOICEOVER_CUE_DRIFT",
                       {x["code"] for x in book["director_review"]["findings"]})
+
+    def test_subtitle_timecodes_cannot_silently_change_base_caption(self):
+        d=self.complete_direction()
+        d["shots"][0]["speech"]["subtitle_cues"][0]["text"]="未经审核的新字幕"
+        book=workbook.compile_workbook(self.plan,d)
+        self.assertFalse(book["director_review"]["editor_handoff_ready"])
+        self.assertIn("SUBTITLE_CUE_DRIFT",
+                      {f["code"] for f in book["director_review"]["findings"]})
+
+    def test_missing_subtitle_timing_prevents_editor_handoff(self):
+        d=self.complete_direction()
+        d["shots"][0]["speech"].pop("subtitle_cues")
+        book=workbook.compile_workbook(self.plan,d)
+        self.assertTrue(book["director_review"]["creative_design_complete"])
+        self.assertFalse(book["director_review"]["editor_handoff_ready"])
+        self.assertIn("SUBTITLE_CUE_PENDING",
+                      {f["code"] for f in book["director_review"]["handoff_findings"]})
+
+    def test_subtitle_overlay_absolute_timing(self):
+        d=self.complete_direction()
+        tracks,issues=timeline.assemble(self.plan,d)
+        self.assertFalse(any(f["code"]=="SUBTITLE_CUE_DRIFT" for f in issues))
+        self.assertEqual(tracks[0]["subtitles"]["cue_status"],"timecoded")
+        self.assertEqual(tracks[0]["subtitles"]["timed_cues"][0]["absolute_in_s"],0)
+        self.assertEqual(tracks[0]["subtitles"]["timed_cues"][0]["absolute_out_s"],5)
 
     def test_markdown_exposes_handoff_readiness(self):
         w=workbook.compile_workbook(self.plan,self.base_direction())
