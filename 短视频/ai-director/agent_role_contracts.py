@@ -506,6 +506,10 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             "manifest_digest": report["manifest_digest"],
             "cards": deepcopy(reference_manifest["cards"]),
             "shot_bindings": deepcopy(reference_manifest["shot_bindings"]),
+            "shot_slot_bindings": deepcopy(
+                reference_manifest["shot_slot_bindings"]),
+            "missing_recommended_slots": deepcopy(
+                report["missing_recommended_slots"]),
             "unbound_refs_count": report["missing_bindings_count"],
             "unbound_references": deepcopy(report["missing_bindings"]),
             "reference_switches_needing_review": deepcopy(
