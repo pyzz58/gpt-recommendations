@@ -10,6 +10,18 @@
 
 `agent_creative_review.py` 提供 `review_deliverable` / `review_team` / `review_packet`，对专业交付的具体创作证据作保守检查：镜头缺漏、空泛内容、表演动作可观察性、声音职责、剪辑叙事桥和制作路线。`agent_team.compile_team_workbook()` 现在额外输出 `creative_quality_review`，但**不绕过原有结构审核**，且不自动批准。现阶段为**提示与人工复核**，不是严格创作质量评分；过去的草稿仍可存在并被标记。对应合成单元测试 `tests/test_agent_creative_review.py` 已提交，最新 GitHub CI/整仓测试尚未核实，不能宣称全部通过。
 
+## 跨部门一致性、总导演返工和最终交付门禁（新增）
+
+- 新增 [agent_handoff_audit.py](agent_handoff_audit.py)：零网络、零模型调用，只核对**可证实的部门冲突**：声音部门 `voiceover.text` 与权威旁白不一致，剪辑 `beat_link` 对不上动作部门实际首末节拍，动作/运镜/音效时码越界，技术部门使用不支持的 route，后期动画自相矛盾，以及图表引用未登记论据或修改已锁定的剪辑转场。没有读取原始 `base` 时，只能执行不依赖原文的检查；原文比对在最终编译时再次执行。
+- `agent_team.packet(..., "quality_review")` 会附带独立检测报告；如果检测出明确硬冲突，QA **不能**将建议写成 `ready_for_director_review`。总导演 `director_final` 也不能强行把明确硬冲突判为 `ready_for_user_review`。
+- `agent_team.propose_director_revisions(base, state)` 根据独立硬阻断与 QA 自己登记的 blockers，**只生成**按责任部门和受影响镜头汇总的返工建议；默认不包含主观/弱证据问题，可传 `include_reviews=True` 让导演决定是否处理一般提醒。建议不会改写任何状态、文案或生成费。
+- `request_planned_revision(base, state, proposal, showrunner_approved=True)` 只有对**当前数据重新计算后仍匹配**的建议，才可交给原有 `request_revision` 执行 DAG 失效、邻镜剪辑重审、历史保留。该布尔值只是编排层批准记录，**不能验证真实人物身份**，不是用户的人审或费用授权。
+- `compile_team_workbook(base, state)` 在汇编前重新独立核查原稿、QA 状态与部门硬冲突。有 blocker 会抛出错误，**不会生成最终导演工作单**；没有 blocker 但创作细节不足时，只生成明确标记 `team_delivery_gate.status=draft_needs_review` 的审阅草稿，绝不宣称完整。
+- `compile_team_workbook(..., strict=True)` 还要求既有 `director_review.production_blueprint_ready` 为真、没有开放的启发式创作检查或交接提醒，才标 `ready_for_human_review`。这也只是**文字交付准备就绪**，不代表真人批准、实际拍摄、版权验证或付费许可。
+- [合成离线回归测试](tests/test_agent_handoff_audit.py) 涵盖跨岗冲突、声画时间码、任务包 QA 阻断、合并返工、审批旗标、版本保护及交付拒绝。测试代码已提交 GitHub，**未执行本轮仓库全量 Python 测试**，远端 commit status 也未报告成功的测试检查。
+
+**边界**：当前并未做语义推理。例如不能从中文形容词中证明人物表演是否合情合理，或仅凭文本判定镜头色彩匹配；这些必须由导演真人审片和未来经批准的实际模型试制解决。现有 `assemble_direction` 是中间方向草稿合并功能，不是最终成片或正式工作单发布接口。
+
 ## 本轮真实实现 / 尚未实现
 
 已经在 GitHub 新增 `agent_team.py`：
