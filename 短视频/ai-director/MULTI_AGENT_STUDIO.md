@@ -1,6 +1,12 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 专业岗位可执行创作合同（新增）
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 模型路由与模拟预算预检（新增）
+
+[MODEL_GATEWAY_AND_BUDGET.md](MODEL_GATEWAY_AND_BUDGET.md) 对应 `agent_model_gateway.py`。它让既有 10 个岗位的上下文和 JSON 输出合同通过**声明式模型 Profile 路由**连接：每个岗位选择一个供应商/模型别名、Token 限额、最高预估 CNY 单价，并由 `OfflineBudgetBook` 在模拟回复前检查总预算、总次数。成功的合成回复走 `agent_role_contracts.submit_role_output`，非法 JSON、岗位越权及前后剧本冲突仍不能合入团队账本。
+
+重要：唯一可执行的是预写文本 `OfflineMockTransport`；没有真实网络适配器、真实供应商报价核验、模型调用或成片制作。UTF-8 bytes + 1024 的输入代理不是任何供应商 tokenizer 的精确上限；`actual_billed_cny=0` 只说明本次程序没有外部调用。预算账本仅保存在内存，不能当作未来实际消费的崩溃安全付款系统。
+
+## 专业岗位可执行创作合同（新增）
 
 [PROFESSIONAL_AGENT_CONTRACTS.md](PROFESSIONAL_AGENT_CONTRACTS.md) / `agent_role_contracts.py` 已为总导演开题、剧本编辑、锁定导演圣经、动作表演、摄影美术、声音、剪辑动画、AI 技术导演、QA 与总导演终审这十阶段建立**不同的专业创作提示词**、动态岗位 JSON Schema 与严格验收函数。复用原有 `SPECS`、依赖快照、字段所有权和 source_digest；**只处理内存对象，不提供任何网络/模型/付费调用接口**。
 
