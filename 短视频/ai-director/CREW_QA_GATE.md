@@ -26,7 +26,7 @@
 4. `propose_director_revisions(base,state)` 只读计算跨岗位硬冲突 + QA 已确认 blocker，按责任岗位合并该轮受影响镜头，并附上版本期望，不直接调用模型。
 5. 总导演审核建议后，可明确将其交给 `request_planned_revision(...,showrunner_approved=True)`。该调用检查建议是否仍与当前状态一致，再使用原有 DAG 实施定向重审：修改动作 S02，剪辑需复核 S01–S03，其他无关已交付部门保留；旧版本留在历史中。
 6. 总导演审核通过后的 `compile_team_workbook` **重新从权威 base 比对**，而不是信任之前 QA 的声明。有硬冲突、QA blocker 或核心结构 blocker 时，拒绝生成工作单。
-7. 无硬冲突却有遗漏时，普通模式生成 `team_delivery_gate.status=draft_needs_review` 的草稿；严格模式 `strict=True` 额外要求既有导演制作蓝图就绪且无创作提醒，才允许返回 `ready_for_human_review`。
+7. 无硬冲突却有遗漏时，普通模式生成 `team_delivery_gate.status=draft_needs_review` 的草稿；严格模式 `strict=True` 额外要求**原始文案指纹已绑定**（`source_review_bound=true`）、既有导演制作蓝图就绪且无创作提醒，才允许返回 `ready_for_human_review`。绑定指纹本身不代表已经验证原文语义或逐字忠实。
 8. 工作单的 `human_approved`、`paid_api_authorized`、`actual_video_approved` 仍然必须是 `false`。不因总导演 AI 审核通过而变成最终成片或付款许可。
 
 ## 主要 Python API
