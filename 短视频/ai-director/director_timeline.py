@@ -118,7 +118,16 @@ def assemble(base, direction):
 
         anim = d.get("animation") if isinstance(d.get("animation"), dict) else {}
         animation_events = []
-        for i, item in enumerate(anim.get("elements", [])):
+        elements = anim.get("elements", [])
+        if not isinstance(elements, list):
+            issue(sid, "ANIMATION_ELEMENTS_INVALID", "blocker",
+                  "animation.elements must be a list")
+            elements = []
+        for i, item in enumerate(elements):
+            if not isinstance(item, dict):
+                issue(sid, "ANIMATION_ELEMENT_INVALID", "blocker",
+                      "animation element must be an object")
+                continue
             timing = timed(item, "animation.elements[" + str(i) + "]")
             if timing is None:
                 issue(sid, "ANIMATION_KEYFRAMES_NEED_TIMECODES", "review",
