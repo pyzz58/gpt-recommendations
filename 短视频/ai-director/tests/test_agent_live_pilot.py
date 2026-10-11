@@ -85,7 +85,7 @@ class LivePilotTests(unittest.TestCase):
                 pilot.explicit_pilot_permit(
                     self.config, task_id="director_brief", **kwargs)
         with self.assertRaisesRegex(pilot.PilotError, "ROLE_OUT_OF_SCOPE"):
-            self.permit("camera_art")
+            self.permit("unregistered_department")
 
     def test_one_task_creative_director_and_script_editor_use_original_dag(self):
         with pilot.PilotJournal(self.tmp.name, self.config) as journal:
