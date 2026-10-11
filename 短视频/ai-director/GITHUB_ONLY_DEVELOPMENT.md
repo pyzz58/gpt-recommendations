@@ -10,6 +10,10 @@
 - 不可以：提示用户执行 `git pull`、`pip install`、`brew`、`npm`、`git clone`、下载 ZIP/权重，或者让本地 Codex 执行修稿。禁止自动开机启动、守护进程、登录项、系统级配置、全局环境或其他本机安装操作。
 - 不能调用付费 DeepSeek/视频服务、不能提高或复用历史测试费用授权、不能触发可能付费的 CI 作业、不能发布或上传私人作品及密钥。
 
+## DeepSeek 协议/持久预留离线测试阶段（2026-10-11）
+
+本阶段仅通过 GitHub 提交 `agent_provider_wire.py`、`agent_durable_preflight.py`、合成回归和 [PROVIDER_PROTOCOL_AND_DURABLE_BUDGET.md](PROVIDER_PROTOCOL_AND_DURABLE_BUDGET.md)。虽然使用 DeepSeek 最新官方请求/回应格式，也**没有向 DeepSeek、OpenAI、任何其他服务商发送请求**。持久化日志仅在 GitHub CI 临时测试目录写合成 token 预留/元数据，没有连接、访问、部署到用户 Mac；不提交真人私人素材、提示词、API Key、账单。真正线上对接依然须明确用户授权后单独实施，不能通过配置布尔值启用。
+
 ## 模型配置与预算模拟阶段（2026-10-11）
 
 新增 [MODEL_GATEWAY_AND_BUDGET.md](MODEL_GATEWAY_AND_BUDGET.md) 与 `agent_model_gateway.py`：只在 GitHub 写通用源码和合成单元测试；可为不同专业岗位配置候选模型 Profile、按声明费率预估最高输出成本、模拟预留尝试预算并通过现有专业 JSON 合同入账。不会建立 DeepSeek/其他 API 的网络传输，不接受任意回调执行器，不触达 Mac/私人 jobs；不在 GitHub 上传完整用户文案、真实 API Key、私人提示词或账本。实际供应商费率/通道、Token 计费、私有素材发送及预算需要未来另行明确授权。
