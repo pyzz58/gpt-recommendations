@@ -186,7 +186,12 @@ def compile_workbook(base, directions):
         base, directions, director_v2.production_route)
     narrative_gaps = [f for f in narrative_findings if f["severity"] in ("pending", "blocker")]
     narrative_ready = not narrative_gaps and len(narrative_bridges) == max(len(base["shots"])-1, 0)
-    blueprint_ready = handoff_ready and narrative_ready
+    specificity_findings = [f for f in narrative_findings if
+                            f["code"] == "BOILERPLATE_DIRECTOR_REASON"]
+    # Repeating a dramatic justification across three or more cuts requires
+    # editorial reconsideration before calling the production blueprint ready.
+    # This is an exact-repeat signal, not an automated creativity score.
+    blueprint_ready = handoff_ready and narrative_ready and not specificity_findings
     return {
         "schema_version": "1.0", "kind": "script_to_short_video_director_workbook",
         "overview": {"title": base["title"], "core_message": base["core_message"],
@@ -203,6 +208,8 @@ def compile_workbook(base, directions):
                             "narrative_handoff_ready": narrative_ready,
                             "narrative_handoff_pending": len(narrative_gaps),
                             "narrative_handoff_findings": narrative_findings,
+                            "editorial_specificity_review_required": bool(specificity_findings),
+                            "editorial_specificity_findings": specificity_findings,
                             "production_blueprint_ready": blueprint_ready,
                             "unresolved": len(findings) + len(timeline_blockers),
                             "findings": findings + timeline_blockers,
@@ -229,7 +236,11 @@ def render_markdown(book):
                  book["director_review"]["narrative_handoff_ready"] else
                  "未完成，待补 " + str(book["director_review"]["narrative_handoff_pending"]) + " 项"),
              "导演制作蓝图：" + ("待人工验收（非成片）" if
-                 book["director_review"]["production_blueprint_ready"] else "仍有待设计内容"), ""]
+                 book["director_review"]["production_blueprint_ready"] else "仍有待设计或复核内容"),
+             "重复套话复核：" + ("需要核对 " +
+                  str(len(book["director_review"]["editorial_specificity_findings"])) +
+                  " 条跨镜头理由" if
+                  book["director_review"]["editorial_specificity_review_required"] else "无明显完全重复"), ""]
     timeline_by_id = {t["shot_id"]: t for t in book["editor_decision_list"]}
     bridge_by_id = {b["from_shot_id"]: b for b in book["narrative_bridges"]}
     for shot in book["shots"]:
@@ -294,6 +305,8 @@ def main(argv=None):
                              " timecoded handoff items, " +
                              str(book["director_review"]["narrative_handoff_pending"]) +
                              " narrative/style handoff items, " +
+                             str(len(book["director_review"]["editorial_specificity_findings"])) +
+                             " repeated editorial reasons, " +
                              str(book["director_review"]["unresolved"]) +
                              " creative blockers; no output written")
         targets = [Path(args.out)] + ([Path(args.markdown)] if args.markdown else [])
