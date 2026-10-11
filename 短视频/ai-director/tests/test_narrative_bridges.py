@@ -11,12 +11,17 @@ import director_narrative_bridges as bridge
 import director_workbook as workbook
 
 
-def authored_contract(prev, nxt):
+def authored_contract(prev, nxt, outgoing_beat_index, outgoing_visible_event):
     return {
+        "beat_link": {
+            "outgoing_beat_index": outgoing_beat_index,
+            "incoming_beat_index": 0,
+            "cut_on_visible_event": "Cut after " + outgoing_visible_event
+        },
         "cut_intention": {
-            "viewer_question": "What does this beat make the audience want to know next?",
-            "answer_or_reframe": "The next shot shows the consequence",
-            "why_cut_here": "Visible beat completes; moving to its consequence now",
+            "viewer_question": "After " + prev["visual"] + ", what changes next?",
+            "answer_or_reframe": "Next shows " + nxt["visual"],
+            "why_cut_here": "The outgoing beat finishes with " + outgoing_visible_event,
             "information_change": "From subjective choice to visible result",
             "cut_type": "reveal",
         },
@@ -32,7 +37,8 @@ def authored_contract(prev, nxt):
             "outgoing_frame_anchor": "Person stops their hand motion",
             "incoming_frame_anchor": "Graph symbol appears on the same side",
             "axis_or_gaze_rule": "Keep the viewer's reading axis stable",
-            "motion_or_prop_link": "Hand motion resolves as the following symbol",
+            "motion_or_prop_link": "Link the previous action " + outgoing_visible_event +
+                                   " into the next image " + nxt["visual"],
             "relation": "match_shape"
         },
         "style_handoff": {
@@ -42,7 +48,8 @@ def authored_contract(prev, nxt):
             "composition_rule": "Keep subject in safe central vertical 9:16 area",
             "texture_rule": "Avoid photo-to-graphic over-sharpening and noisy grain",
             "typography_rule": "Use the same title/safe-margin treatment",
-            "implementation": "Use a graded still of the outgoing frame, then same matte"
+            "implementation": "Grade outgoing frame after " + outgoing_visible_event +
+                              ", then enter " + nxt["visual"]
         }
     }
 
@@ -59,8 +66,10 @@ class NarrativeBridgeTests(unittest.TestCase):
     def authored(self):
         base,d=self.copy()
         for i in range(len(base["shots"])-1):
+            outgoing = d["shots"][i]["beats"]
             d["shots"][i]["editing"]={"narrative_bridge":authored_contract(
-                base["shots"][i],base["shots"][i+1])}
+                base["shots"][i],base["shots"][i+1], len(outgoing)-1,
+                outgoing[-1]["visible_change"])}
         return base,d
 
     def test_missing_bridges_are_marked_pending_instead_of_assumed(self):
@@ -124,6 +133,48 @@ class NarrativeBridgeTests(unittest.TestCase):
         _,issues=bridge.review(b,d,v2.production_route)
         self.assertTrue({"CUT_TYPE_INVALID","STYLE_STRATEGY_INVALID","TEMPO_INVALID"}
                         .issubset({f["code"] for f in issues}))
+
+    def test_beat_link_refers_to_actual_adjacent_visible_actions(self):
+        b,d=self.authored()
+        bridges,findings=bridge.review(b,d,v2.production_route)
+        self.assertNotIn("CUT_BEAT_LINK_MISSING",{f["code"] for f in findings})
+        evidence=bridges[0]["cut_beat_evidence"]
+        self.assertEqual(evidence["outgoing_action"],d["shots"][0]["beats"][-1]["visible_change"])
+        self.assertEqual(evidence["incoming_action"],d["shots"][1]["beats"][0]["visible_change"])
+        self.assertEqual(evidence["cut_at_s"],5)
+
+    def test_missing_beat_link_is_pending_and_blocks_narrative_ready(self):
+        b,d=self.authored()
+        d["shots"][0]["editing"]["narrative_bridge"].pop("beat_link")
+        bridges,findings=bridge.review(b,d,v2.production_route)
+        self.assertEqual(bridges[0]["design_status"],"incomplete")
+        self.assertIn("CUT_BEAT_LINK_MISSING",{f["code"] for f in findings})
+        self.assertFalse(workbook.compile_workbook(b,d)["director_review"]["narrative_handoff_ready"])
+
+    def test_invalid_beat_index_fails_closed(self):
+        b,d=self.authored()
+        d["shots"][0]["editing"]["narrative_bridge"]["beat_link"]["outgoing_beat_index"]=99
+        bridges,findings=bridge.review(b,d,v2.production_route)
+        self.assertIn("CUT_BEAT_INDEX_INVALID",{f["code"] for f in findings})
+        self.assertIsNone(bridges[0]["cut_beat_evidence"])
+
+    def test_wrong_boundary_beat_is_a_blocker(self):
+        b,d=self.authored()
+        d["shots"][0]["editing"]["narrative_bridge"]["beat_link"]["outgoing_beat_index"]=0
+        _,findings=bridge.review(b,d,v2.production_route)
+        self.assertIn("CUT_BEAT_NOT_AT_BOUNDARY",{f["code"] for f in findings})
+
+    def test_copy_pasted_cut_reason_gets_editorial_review_not_artistic_score(self):
+        b,d=self.authored()
+        for direction in d["shots"][:-1]:
+            direction["editing"]["narrative_bridge"]["cut_intention"]["why_cut_here"] = (
+                "Cut now because the previous action has finished")
+        bridges,findings=bridge.review(b,d,v2.production_route)
+        self.assertIn("BOILERPLATE_DIRECTOR_REASON",{f["code"] for f in findings})
+        self.assertTrue(all(v["design_status"]=="authored" for v in bridges))
+        book=workbook.compile_workbook(b,d)
+        self.assertTrue(book["director_review"]["editorial_specificity_review_required"])
+        self.assertFalse(book["director_review"]["production_blueprint_ready"])
 
     def test_non_object_contract_is_explicit_blocker(self):
         b,d=self.authored()
