@@ -47,7 +47,10 @@ class DirectorTeamTests(unittest.TestCase):
                     "audio_grammar":"Quiet VO, low ambience",
                     "graphic_safety":"Keep text readable and verified",
                     "reference_strategy":"All assets uncreated; no claims of locks",
-                    "generation_budget":"No model calls or charges"}}
+                    "generation_budget":"No model calls or charges"},
+                    "shot_objectives":{sid:{
+                        "emotion":"Curiosity", "observable_turn":"A visible change in " + sid,
+                        "visual_focus":"Main narrative subject"} for sid in state["shot_ids"]}}
             elif tid=="quality_review":
                 payload={"qa_report":{"blockers":[],"findings":[],
                                        "recommendation":"ready_for_director_review"}}
@@ -318,7 +321,9 @@ class DirectorTeamTests(unittest.TestCase):
         state=self._submit(state,"director_brief")
         state=self._submit(state,"script_edit")
         state=self._submit(state,"director_lock",{
-            "global_direction":copy.deepcopy(direction["global_direction"])})
+            "global_direction":copy.deepcopy(direction["global_direction"]),
+            "shot_objectives":{d["shot_id"]:copy.deepcopy(d["objective"])
+                               for d in direction["shots"]}})
         by_id={x["shot_id"]:x for x in direction["shots"]}
         for tid in ("acting","camera_art","sound","editing_animation","ai_technical"):
             bundle={"shots":{}}
