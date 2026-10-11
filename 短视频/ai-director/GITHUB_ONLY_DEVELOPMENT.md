@@ -10,6 +10,10 @@
 - 不可以：提示用户执行 `git pull`、`pip install`、`brew`、`npm`、`git clone`、下载 ZIP/权重，或者让本地 Codex 执行修稿。禁止自动开机启动、守护进程、登录项、系统级配置、全局环境或其他本机安装操作。
 - 不能调用付费 DeepSeek/视频服务、不能提高或复用历史测试费用授权、不能触发可能付费的 CI 作业、不能发布或上传私人作品及密钥。
 
+## 专业创作指令与输出验收（2026-10-11）
+
+新增 `agent_role_contracts.py` 和合成测试：只在内存中为十种专业角色构建提示词，离线校验外部已提供的 JSON 响应；没有将私密 prompt 序列化、上传或传给 DeepSeek/视频模型，也没有在 Mac 装程序。岗位创作内容和真实用户文案不能保存在公开仓库。未来实际接入模型是**另外一次**需要供应商/费用/私人素材传输授权的阶段，详情见 [PROFESSIONAL_AGENT_CONTRACTS.md](PROFESSIONAL_AGENT_CONTRACTS.md)。
+
 ## 离线多 Agent 执行层检查（2026-10-11）
 
 [AGENT_EXECUTION_LAYER.md](AGENT_EXECUTION_LAYER.md) 和 `agent_executor.py` 已实现有限步的模拟岗位任务流水线，仅能消费明确预写的 JSON fixtures。执行器通过类型检查拒绝一切非 FixtureOnlyAdapter、不会启动进程/网络/模型/后台监控，也不会改动用户 Mac。私有源文案可在未来批准的私有执行环境仅以内存方式用于角色输入验证，**不得上传公开 GitHub 或运行在未获许可的云端模型**。GitHub CI 离线测试成功记录见文档；没有做过私有数据或真实模型测试。
