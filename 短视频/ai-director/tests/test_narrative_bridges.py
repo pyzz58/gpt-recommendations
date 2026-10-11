@@ -153,6 +153,55 @@ class NarrativeBridgeTests(unittest.TestCase):
         w=workbook.compile_workbook(b,d)
         self.assertFalse(w["director_review"]["production_blueprint_ready"])
 
+    def test_full_director_blueprint_requires_story_and_editor_handoff(self):
+        b,d=self.authored()
+        prev=None
+        for shot,dr in zip(b["shots"],d["shots"]):
+            existing=dr["editing"]
+            dr["editing"]={
+                "incoming_transition":prev["transition"] if prev else "start",
+                "outgoing_transition":shot["transition"],
+                "cut_reason":"Cut after the visible narrative event is clear",
+                "rhythm":"Allow the prior image to settle, then reveal the consequence",
+                "assembly_instructions":"Maintain the intended image axis and planned audio handoff",
+                "audio_bridge":{"type":"none","duration_s":0,"track":"none",
+                                "reason":"Do not smear this story beat across the transition"}
+            }
+            if existing.get("narrative_bridge"):
+                dr["editing"]["narrative_bridge"]=existing["narrative_bridge"]
+            use_graphics=shot["graphics"]["type"] not in ("none","None",None)
+            dr["animation"]={
+                "mode":"post" if use_graphics else "none",
+                "timing":"Layer starts at first visible beat",
+                "elements":([{"layer":"graphic","action":"fade-and-hold",
+                              "timing":"first to last frame","from_s":0,
+                              "to_s":shot["duration"]}] if use_graphics else []),
+                "render_in_post":use_graphics,
+                "style":"Consistent restrained motion or natural filmed action"
+            }
+            vo=shot["narration"]
+            subtitle=shot["subtitles"]["text"]
+            dr["speech"]={
+                "voiceover":{"text":vo,"delivery":"Calm Mandarin" if vo else "silent",
+                             "timing":"Aligned with leading visual beat",
+                             "cues":[{"from_s":0,"to_s":shot["duration"],"text":vo}]
+                                    if vo else []},
+                "subtitle_cues":[{"from_s":0,"to_s":shot["duration"],"text":subtitle}]
+                                 if subtitle else [],
+                "dialogue":[],
+                "subtitle_direction":"Inside the central safe area, high contrast",
+                "lip_sync_policy":"Off-screen narration only, no fake lip-sync"
+            }
+            prev=shot
+        book=workbook.compile_workbook(b,d)
+        self.assertTrue(book["director_review"]["creative_design_complete"],book["director_review"]["findings"])
+        self.assertTrue(book["director_review"]["editor_handoff_ready"],book["director_review"]["handoff_findings"])
+        self.assertTrue(book["director_review"]["narrative_handoff_ready"],book["director_review"]["narrative_handoff_findings"])
+        self.assertTrue(book["director_review"]["production_blueprint_ready"])
+        self.assertFalse(book["human_approved"])
+        self.assertFalse(book["is_video"])
+        self.assertFalse(book["paid_api_authorized"])
+
     def test_legacy_directions_retained_without_breaking_compilation(self):
         b,d=self.copy()
         w=workbook.compile_workbook(b,d)
