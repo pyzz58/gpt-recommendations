@@ -23,7 +23,7 @@ jobs:
         run: |
           python -m unittest discover -s tests -v
           python local_director.py doctor
-          python -m py_compile local_director.py local_ui.py llm_budget.py agent_team.py agent_handoff_audit.py agent_creative_review.py agent_executor.py agent_role_contracts.py director_v2.py director_workbook.py
+          python -m py_compile local_director.py local_ui.py llm_budget.py agent_team.py agent_handoff_audit.py agent_creative_review.py agent_executor.py agent_role_contracts.py agent_model_gateway.py director_v2.py director_workbook.py
           python director.py validate --plan examples/quit-smoking/plan.json
           python director.py compile --plan examples/quit-smoking/plan.json --out /tmp/ai-director-prompts.json
           python director.py preview --plan examples/quit-smoking/plan.json --out /tmp/ai-director-preview.html
