@@ -136,12 +136,17 @@ class OfflineBudgetBook:
         self.config_digest = _plan_fingerprint(self.config)
         self.attempts = []
 
+    def _check_integrity(self):
+        if _plan_fingerprint(self.config) != self.config_digest:
+            raise ModelBudgetError("offline model configuration changed after initialization")
+
     @property
     def total_reserved_cny(self):
         return sum((Decimal(x["reserved_cny"]) for x in self.attempts),
                    Decimal("0"))
 
     def quote(self, task_id, messages):
+        self._check_integrity()
         if task_id not in team.SPECS:
             raise ModelBudgetError("unknown task for model quote")
         if not isinstance(messages, list) or not messages or any(
@@ -173,6 +178,7 @@ class OfflineBudgetBook:
 
     def reserve(self, quote, *, revision):
         """Reserve BEFORE mock delivery and count rejected responses as attempts."""
+        self._check_integrity()
         if not isinstance(quote, dict) or quote.get("task_id") not in team.SPECS:
             raise ModelBudgetError("invalid quote")
         _integer(revision, "revision", 1, 1000000)
