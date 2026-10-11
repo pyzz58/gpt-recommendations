@@ -114,6 +114,10 @@
 - 进度：**已查到 ≠ 已集成 ≠ 已验证**。三者必须单独标记。
 
 以上为 2026-10-11 公开仓库初筛结论，许可证和维护活跃度日后须重新核查。
+## 2026-10-11 多 Agent 执行器的复用/自研选择
+
+本轮再次通过 GitHub 仓库元数据核对 3 个参考项目：`crewAIInc/crewAI`（MIT，2026-10-10 有推送）、`langchain-ai/langgraph`（MIT，2026-10-11 有推送）、`Ironieser/CineCrew`（Apache-2.0，2026-09-29 有推送），均未归档。元数据更新时间只说明最近有代码活动，**不能证明维护质量、运行成本或兼容性**。由于现有 `agent_team.py` 已负责有向图调度、版本控制、角色所有权和逐镜失效，当前仅用 Python 标准库编写 `agent_executor.py` 的 fixture-only 流程，用合成测试覆盖关键场景。没有复制第三方代码、安装包、访问模型或承担新的许可证依赖。等真正需要异步真实模型和持久检查点时，才针对供应商接口、许可和成本做更细核验；不能把这个 mock-runner 宣称为现成 CrewAI / LangGraph 系统。
+
 ## 2026-10-11 专业团队 QA 阶段复用记录
 
 本轮复用**仓库内部已有的** `agent_team.py` 版本化 DAG、`director_v2.validate`、`director_workbook.compile_workbook` 和 `director_narrative_bridges.py` 的 `beat_link` 交接结构。继续参考此前审查的 CineCrew / CrewAI / LangGraph 三类成熟工作流模型，但本次没有重新下载、安装或合并第三方源码，**不把已有候选研究冒充本轮实时复核**。选择零外部依赖的 `agent_handoff_audit.py`，是因为当前问题只需确定性跨字段比对、源文案守恒、审片记录、定向返工与失败即阻断；完整多智能体框架会增加依赖、网络/费用复杂度，并不提高中文影视语义判定的真实性。详见 [CREW_QA_GATE.md](CREW_QA_GATE.md)。
