@@ -71,6 +71,8 @@ def inspect_locked_role(snapshot, episode_source, state, task_id):
         "source_digest": locked["source_digest"],
         "plan_digest": locked["plan_digest"],
         "stage_ready": True,
+        "first_director_vision_bound": True,
+        "preproduction_gap_count": snapshot["production_preflight"]["issue_count"],
         "preflight_review": status,
         "actor_camera_audio_work_fully_verified": False,
         "human_identity_verified": False,
@@ -114,8 +116,9 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
     # saying 'ready' must be prevented when known blockers are outstanding.
     base = snapshot["plan"]
     try:
-        prompt = roles.build_role_messages(base, state, task_id,
-                                           source_text=episode_source)
+        prompt = roles.build_role_messages(
+            base, state, task_id, source_text=episode_source,
+            editorial_handoff=snapshot["creative_handoff"])
         envelope = wire.prepare_chat_request(
             prompt["messages"], model=config["model"],
             max_output_tokens=config["max_output_tokens"])
