@@ -16,6 +16,7 @@ import agent_executor as executor
 import agent_creative_review
 import agent_handoff_audit
 import creative_production_handoff as creative_bridge
+import film_continuity as film_tracks
 import role_schema_guard as schema_guard
 
 CONTRACT_VERSION = "1.0"
@@ -391,6 +392,47 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
                         "camera_axis": {"type":"string","minLength":1}},
                 }
                 art["required"].append("scene_geometry")
+    if task_id == "acting" and editorial_handoff is not None:
+        # A deterministic FilmDSL-style continuity section with each shot's
+        # EXACT cast/prop references. Upstream model text cannot invent IDs.
+        shape = schema["properties"]["shots"]["properties"]
+        state_shape = {"type":"object", "required":list(film_tracks.FIELDS),
+                       "properties":{
+                           k:{"type":"string","minLength":1}
+                           for k in film_tracks.FIELDS},
+                       "additionalProperties":False}
+        event_shape = {"type":"object",
+                       "required":["field","from","to","time_s","cause"],
+                       "properties":{
+                           "field":{"type":"string","enum":list(film_tracks.FIELDS)},
+                           "from":{"type":"string","minLength":1},
+                           "to":{"type":"string","minLength":1},
+                           "time_s":{"type":"number","minimum":0},
+                           "cause":{"type":"string","minLength":12}},
+                       "additionalProperties":False}
+        track_shape = {"type":"object", "required":[
+                         "entity_id","start_state","end_state","events",
+                         "cut_break","cut_reason"],
+                       "properties":{
+                           "entity_id":{"type":"string"},
+                           "start_state":state_shape,"end_state":state_shape,
+                           "events":{"type":"array","items":event_shape},
+                           "cut_break":{"type":"string",
+                                        "enum":sorted(film_tracks.BREAK_KINDS)},
+                           "cut_reason":{"type":"string"}},
+                       "additionalProperties":False}
+        for shot in base["shots"]:
+            sid=shot["id"]
+            if sid not in shape:
+                continue
+            allowed=list(shot.get("character_ids",[])+shot.get("prop_ids",[]))
+            section=shape[sid]["properties"]["continuity"]
+            section["properties"].update({
+                "scene_id":{"type":["string","null"]},
+                "entity_tracks":{"type":"array",
+                                 "items":track_shape,"minItems":len(allowed),
+                                 "maxItems":len(allowed)}})
+            section["required"].extend(["scene_id","entity_tracks"])
     return schema
 
 
@@ -434,6 +476,8 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 "planning_only_no_approval" or
                 editorial_handoff.get("human_approved") is not False):
             raise ValueError("CREW_EDITORIAL_HANDOFF_WRONG_SOURCE_OR_AUTHORITY")
+        request["source_bound_asset_inventory"] = film_tracks.inventory(
+            base, source_digest=state["source_digest"])
         request["first_director_editor_vision"] = deepcopy(
             editorial_handoff["creative_concept"])
         request["production_gaps_to_resolve"] = [
@@ -664,6 +708,16 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
             raise ValueError("CREW_VALIDATION_EDITORIAL_SOURCE_MISMATCH")
         if task_id == "camera_art":
             creative_bridge.camera_requirements_for_role(base, payload)
+        if task_id == "acting":
+            # Initial all-shot delivery: model must supply causal asset tracks.
+            # Scoped revisions are checked against final MERGED state below.
+            if state["tasks"]["acting"]["revision_scope"] is None:
+                film_tracks.inspect_tracks(
+                    base,{sid:{
+                        "scene_id":value["continuity"]["scene_id"],
+                        "entity_tracks":value["continuity"]["entity_tracks"]}
+                    for sid,value in payload["shots"].items()},
+                    source_digest=state["source_digest"])
     return deepcopy(payload)
 
 
