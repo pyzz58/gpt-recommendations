@@ -10,6 +10,10 @@
 - 不可以：提示用户执行 `git pull`、`pip install`、`brew`、`npm`、`git clone`、下载 ZIP/权重，或者让本地 Codex 执行修稿。禁止自动开机启动、守护进程、登录项、系统级配置、全局环境或其他本机安装操作。
 - 不能调用付费 DeepSeek/视频服务、不能提高或复用历史测试费用授权、不能触发可能付费的 CI 作业、不能发布或上传私人作品及密钥。
 
+## 真实公共虚构 DeepSeek 结果驱动的离线修复（2026-10-11）
+
+只用 GitHub 修改 `creative_production_handoff.py`、`editorial_review_lock.py`、`agent_role_contracts.py`、`agent_live_crew.py`、`production_delivery.py`；合成测试按 2026-10-11 真实虚构报告中出现的原图卡摄影占位、缺角色 ID/场景、灯光连续性问题设回归约束。真实模型原始输出只从已有 GitHub Actions artifact 阅读，**未拷贝到公开仓库**；新的锁定原始创意只保存于未来私人 planning snapshot，公开 CI 只使用合成虚构稿。当前不调用收费 API、不读取、复用、部署或更改用户 Mac 上的密钥。
+
 ## 端到端导演-剪辑制作包公共模拟样本（2026-10-11）
 
 新增 `offline_vertical_demo.py` / `tests/test_offline_vertical_demo.py` / [END_TO_END_SYNTHETIC_ACCEPTANCE.md](END_TO_END_SYNTHETIC_ACCEPTANCE.md) 和 GitHub Actions artifact（公开虚构信封文案，4 镜：2 AI 视频提示词/2 图卡后期，全部数据无外部实机调用）。流程必须完成 ten role source-locked DAG + 独立 QA + 生产编译器，未完成即失败；用户上传的文章不得进公开 CI/artifact。下载样例可检查具体镜头工单，但不能称为“DeepSeek 已做导演”。
