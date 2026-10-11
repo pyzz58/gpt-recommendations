@@ -202,21 +202,22 @@ def propose_revisions(state, base=None, *, include_reviews=False):
         shots = f.get("shot_ids", [])
         if not isinstance(shots, list) or any(sid not in order for sid in shots):
             continue
-        scope = () if owner in ("script_edit", "director_lock") else tuple(
-            sorted(set(shots), key=order.__getitem__))
-        if not scope and owner not in ("script_edit", "director_lock"):
-            continue  # Needs showrunner triage: no valid shot scope
-        groups[(owner, scope)].append(f)
+        if owner not in ("script_edit", "director_lock") and not shots:
+            continue  # Unsupported/unspecific issue requires director triage
+        groups[owner].append(f)
 
     proposals = []
-    for (owner, scope), items in sorted(groups.items(), key=lambda x:
-                                        (x[0][0], [order[k] for k in x[0][1]])):
+    for owner in sorted(groups):
         entry = state["tasks"].get(owner, {})
         if entry.get("status") != "completed":
             continue
+        items = groups[owner]
+        scope = [] if owner in ("script_edit", "director_lock") else sorted(
+            {sid for issue in items for sid in issue["shot_ids"]},
+            key=order.__getitem__)
         codes = sorted(set(x["code"] for x in items))
         proposals.append({
-            "task_id": owner, "shot_ids": list(scope),
+            "task_id": owner, "shot_ids": scope,
             "base_digest": state.get("base_digest"),
             "expected_task_revision": entry.get("revision"),
             "codes": codes, "reason": "; ".join(
