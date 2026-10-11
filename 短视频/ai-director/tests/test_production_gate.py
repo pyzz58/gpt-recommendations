@@ -78,6 +78,13 @@ class GateTests(unittest.TestCase):
         self.assertIn('REFERENCES_NOT_VERIFIED',[f['code'] for f in gate.evaluate(p)['findings']])
 
 
+    def test_malformed_route_type_reports_blocker_not_exception(self):
+        p=sample()
+        p["shots"][0]["execution_route"]=[]
+        report=gate.evaluate(p)
+        self.assertIn("INVALID_EXECUTION_ROUTE",[f["code"] for f in report["findings"]])
+        self.assertFalse(report["execution_authorized"])
+
     def test_public_example_compiler_attaches_blocked_generation_gate(self):
         import director_v2 as director
         base=director.read_json(ROOT/"examples/quit-smoking/plan.json")
