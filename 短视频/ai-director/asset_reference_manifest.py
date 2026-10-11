@@ -1,0 +1,258 @@
+#!/usr/bin/env python3
+"""Offline private, versioned visual-reference metadata: CineCrew FilmDSL inspired.
+
+Asset-bytes NEVER enter this manifest, logs, prompts, GitHub or CI artifacts.
+Caller supplies bytes only transiently in a trusted private runtime. The code
+verifies their hash, not artistic quality, IP rights, identity, or consent.
+Records are source-bound; immutable versions are linked with SHA-256 digests.
+No network, local file access, provider calls, automatic image synthesis.
+"""
+from __future__ import annotations
+
+from copy import deepcopy
+import hashlib
+import re
+
+import agent_team as team
+import film_continuity as film
+
+VERSION="private-visual-reference-manifest-v1"
+MAX_IMAGE_BYTES=12*1024*1024
+IMAGE_FORMATS=frozenset(("image/png","image/jpeg","image/webp"))
+SLOTS=frozenset(("identity_front","identity_side","wardrobe",
+                 "prop_reference","location_reference"))
+KIND_SLOTS={
+    "character":frozenset(("identity_front","identity_side","wardrobe")),
+    "prop":frozenset(("prop_reference",)),
+    "scene":frozenset(("location_reference",)),
+}
+HEX64=re.compile(r"^[0-9a-f]{64}$")
+ID=re.compile(r"^[A-Za-z][A-Za-z0-9_-]{1,63}$")
+
+
+class AssetReferenceError(ValueError):
+    """Fixed diagnostic codes only, no user content or local paths."""
+
+
+def _require(ok, code):
+    if not ok:
+        raise AssetReferenceError(code)
+
+
+def _sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def _manifest_entities(plan):
+    entries=film.inventory(plan)["entities"]
+    return {eid:(kind[:-1] if kind!="props" else "prop")
+            for kind,group in entries.items() for eid in group}
+
+
+def _shot_targets(plan):
+    return {s["id"]:{
+        entity_id:None for entity_id in (
+            s.get("character_ids",[])+s.get("prop_ids",[])+
+            ([s["scene_id"]] if s.get("scene_id") is not None else []))}
+        for s in plan["shots"]}
+
+
+def create_empty(plan, source_digest):
+    _require(isinstance(source_digest,str) and
+             HEX64.fullmatch(source_digest) is not None,
+             "ASSET_SOURCE_HASH_REQUIRED")
+    return {"version":VERSION,"plan_digest":team.fingerprint(plan),
+            "source_digest":source_digest,"cards":{},
+            "shot_bindings":_shot_targets(plan),
+            "human_approved":False,"media_identity_verified":False,
+            "usage_rights_verified":False,"reference_bytes_persisted":False,
+            "paid_api_authorized":False,
+            "private_metadata_only":True}
+
+
+def _type_check(media_type,data):
+    _require(media_type in IMAGE_FORMATS and
+             type(data) is bytes and 16<=len(data)<=MAX_IMAGE_BYTES,
+             "ASSET_MEDIA_BYTES_INVALID")
+    ok=(media_type=="image/png" and data.startswith(b"\x89PNG\r\n\x1a\n")) or (
+        media_type=="image/jpeg" and data.startswith(b"\xff\xd8\xff")) or (
+        media_type=="image/webp" and data.startswith(b"RIFF") and
+        data[8:12]==b"WEBP")
+    _require(ok,"ASSET_MEDIA_HEADER_MISMATCH")
+
+
+def _card_digest(value):
+    return team.fingerprint(value)
+
+
+def validate(plan, source_digest, manifest):
+    """Validate source/immutable revisions/shot version locks; return metadata.
+
+    Does not accept user-supplied truth flags or external URLs/file paths.
+    A source plan missing cast remains unverified even if a card exists.
+    """
+    expected=create_empty(plan,source_digest)
+    _require(type(manifest) is dict and
+             set(manifest)==set(expected) and
+             all(manifest[k]==expected[k] for k in (
+                 "version","plan_digest","source_digest","human_approved",
+                 "media_identity_verified","usage_rights_verified",
+                 "reference_bytes_persisted","paid_api_authorized",
+                 "private_metadata_only")) and
+             type(manifest.get("cards")) is dict and
+             type(manifest.get("shot_bindings")) is dict,
+             "ASSET_MANIFEST_SOURCE_OR_AUTHORITY_INVALID")
+    entities=_manifest_entities(plan)
+    _require(set(manifest["shot_bindings"])==set(expected["shot_bindings"]),
+             "ASSET_SHOT_BINDING_COVERAGE")
+    cards=manifest["cards"]
+    for key,card in cards.items():
+        _require(type(key) is str and ID.fullmatch(key) is not None and
+                 type(card) is dict and set(card)=={
+                     "asset_id","entity_id","entity_kind","slot","versions"} and
+                 card["asset_id"]==key and
+                 card["entity_id"] in entities and
+                 card["entity_kind"]==entities[card["entity_id"]] and
+                 card["slot"] in KIND_SLOTS[card["entity_kind"]] and
+                 type(card["versions"]) is list and card["versions"],
+                 "ASSET_CARD_INVALID")
+        prev=None
+        for i,rev in enumerate(card["versions"],1):
+            _require(type(rev) is dict and set(rev)=={
+                "version","sha256","size_bytes","media_type",
+                "previous_revision_digest","rights_status","consent_status",
+                "review_status"} and type(rev["version"]) is int and
+                rev["version"]==i and type(rev["sha256"]) is str and
+                HEX64.fullmatch(rev["sha256"]) is not None and
+                type(rev["size_bytes"]) is int and
+                16<=rev["size_bytes"]<=MAX_IMAGE_BYTES and
+                rev["media_type"] in IMAGE_FORMATS and
+                rev["previous_revision_digest"]==prev and
+                rev["rights_status"]=="unverified" and
+                rev["consent_status"]=="unverified" and
+                rev["review_status"]=="pending",
+                "ASSET_REVISION_CHAIN_OR_RIGHTS_INVALID")
+            prev=_card_digest(rev)
+    missing=[]
+    slots_in_use={}
+    for sid,target in expected["shot_bindings"].items():
+        bindings=manifest["shot_bindings"][sid]
+        _require(type(bindings) is dict and
+                 set(bindings)==set(target),
+                 "ASSET_SHOT_ENTITY_BINDINGS_INVALID")
+        for entity_id,link in bindings.items():
+            if link is None:
+                missing.append({"shot_id":sid,"entity_id":entity_id,
+                                "reason":"reference_not_bound"})
+                continue
+            _require(type(link) is dict and set(link)=={
+                "asset_id","version","sha256"} and
+                link["asset_id"] in cards,
+                "ASSET_SHOT_REFERENCE_INVALID")
+            card=cards[link["asset_id"]]
+            version=card["versions"][-1]
+            _require(card["entity_id"]==entity_id and
+                     type(link["version"]) is int and
+                     link["version"]==version["version"] and
+                     link["sha256"]==version["sha256"],
+                     "ASSET_SHOT_STALE_OR_WRONG_ENTITY")
+            seen=slots_in_use.setdefault(entity_id,set())
+            seen.add((card["asset_id"],link["version"]))
+    return {
+        "kind":VERSION,"manifest_digest":team.fingerprint(manifest),
+        "source_digest":source_digest,
+        "plan_digest":expected["plan_digest"],
+        "cards_count":len(cards),
+        "revisions_count":sum(len(x["versions"]) for x in cards.values()),
+        "missing_bindings_count":len(missing),
+        "missing_bindings":missing,
+        "per_entity_references_consistent":True,
+        "bytes_stored_in_manifest":False,
+        "actual_reference_file_exists_verified":False,
+        "media_identity_verified":False,
+        "usage_rights_verified":False,
+        "human_approved":False,
+        "ready_to_generate":False,
+        "actual_provider_calls":0,
+    }
+
+
+def register_image(plan, source_digest, manifest, *, asset_id, entity_id,
+                   slot, image_bytes, media_type):
+    """Register next immutable version via trusted private bytes in memory.
+
+    No bytes, path, URL or recognizable image content are retained in output.
+    Every registration is a PROPOSAL; license/subject consent remain unverified.
+    """
+    validate(plan,source_digest,manifest)
+    entities=_manifest_entities(plan)
+    _require(type(asset_id) is str and ID.fullmatch(asset_id) is not None and
+             entity_id in entities and
+             slot in KIND_SLOTS[entities[entity_id]],
+             "ASSET_ENTITY_OR_SLOT_NOT_AUTHORIZED")
+    _type_check(media_type,image_bytes)
+    out=deepcopy(manifest)
+    cards=out["cards"]
+    if asset_id not in cards:
+        cards[asset_id]={"asset_id":asset_id,"entity_id":entity_id,
+                         "entity_kind":entities[entity_id],
+                         "slot":slot,"versions":[]}
+    card=cards[asset_id]
+    _require(card["entity_id"]==entity_id and card["slot"]==slot,
+             "ASSET_ID_REASSIGNMENT_FORBIDDEN")
+    revisions=card["versions"]
+    newhash=_sha(image_bytes)
+    _require(not revisions or revisions[-1]["sha256"]!=newhash,
+             "ASSET_DUPLICATE_REVISION")
+    revisions.append({
+        "version":len(revisions)+1,"sha256":newhash,
+        "size_bytes":len(image_bytes),"media_type":media_type,
+        "previous_revision_digest":(
+            _card_digest(revisions[-1]) if revisions else None),
+        "rights_status":"unverified","consent_status":"unverified",
+        "review_status":"pending"})
+    # A newer revision MUST invalidate old shots using the same asset; don't
+    # silently upgrade them, because appearance may have changed.
+    return out
+
+
+def bind_shot(plan, source_digest, manifest, *, shot_id, entity_id, asset_id):
+    """Explicitly select the latest asset revision for a single shot."""
+    # Old bindings might intentionally be stale after registration of new
+    # version; allow editing them but still require every other field strict.
+    out=deepcopy(manifest)
+    _require(type(out) is dict and "shot_bindings" in out and
+             shot_id in _shot_targets(plan) and
+             entity_id in _shot_targets(plan)[shot_id] and
+             asset_id in out.get("cards",{}),
+             "ASSET_SHOT_BINDING_TARGET_INVALID")
+    card=out["cards"][asset_id]
+    _require(card["entity_id"]==entity_id and card["versions"],
+             "ASSET_SHOT_BINDING_WRONG_ENTITY")
+    newest=card["versions"][-1]
+    out["shot_bindings"][shot_id][entity_id]={
+        "asset_id":asset_id,"version":newest["version"],
+        "sha256":newest["sha256"]}
+    # Reject all malformed fields other than the already-existing stale
+    # version bindings; do not allow saving this until all shots are rebound.
+    return out
+
+
+def verify_bytes(manifest, asset_id, version, content_bytes):
+    """Private in-memory hash check. This is NOT face/rights/media validation."""
+    _require(type(manifest) is dict and
+             asset_id in manifest.get("cards",{}),
+             "ASSET_VERIFY_UNKNOWN_ASSET")
+    revisions=manifest["cards"][asset_id]["versions"]
+    _require(type(version) is int and 1<=version<=len(revisions),
+             "ASSET_VERIFY_VERSION_INVALID")
+    item=revisions[version-1]
+    _type_check(item["media_type"],content_bytes)
+    _require(len(content_bytes)==item["size_bytes"] and
+             _sha(content_bytes)==item["sha256"],
+             "ASSET_VERIFY_CONTENT_MISMATCH")
+    return {"asset_id":asset_id,"version":version,
+            "sha256_matches":True,"media_header_matches":True,
+            "identity_matches_persona":False,
+            "rights_verified":False,"human_approved":False,
+            "bytes_persisted_by_module":False,"provider_calls":0}
