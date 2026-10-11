@@ -274,6 +274,42 @@
       "test_evidence": "tests/test_asset_reference_manifest.py::test_magic_header_only_must_be_rejected;tests/test_asset_reference_manifest.py::test_truncated_valid_image_must_be_rejected;tests/test_asset_reference_manifest.py::test_oversize_pixel_dimensions_must_be_rejected;tests/test_asset_reference_manifest.py::test_missing_decoder_must_fail_closed;tests/test_asset_reference_manifest.py::test_unsafe_truncated_decoder_configuration_must_fail_closed",
       "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/2",
       "fix_commit": "7bbf40f21eecea7b80650eb19ce1aa11b33cfe31"
+    },
+    {
+      "id": "AUD-023",
+      "priority": "P0",
+      "domain": "reservation_commit_uncertainty",
+      "description": "预留账本在rename前后写盘失败时，只撤销内存而未锁死会话。现统一poison，禁止本会话后续预留；重开后存在的pending继续阻断。故障测试确认预留失败不会调用模型。",
+      "source": "agent_live_pilot.PilotJournal.reserve",
+      "test_evidence": "tests/test_checkpoint_recovery_safety.py::test_reserve_failure_after_replace_preserves_uncertainty_on_restart;tests/test_checkpoint_recovery_safety.py::test_reserve_failure_before_replace_poisoned_until_reopen;tests/test_checkpoint_recovery_safety.py::test_dispatch_never_calls_provider_when_reservation_commit_fails",
+      "status": "fixed_regression_verified",
+      "evidence_type": "confirmed_code",
+      "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/1",
+      "fix_commit": "3f021015079f840b58ebeebde82ad5020d6a54d6"
+    },
+    {
+      "id": "AUD-024",
+      "priority": "P1",
+      "domain": "checkpoint_predecessor_integrity",
+      "description": "旧恢复链逐文件校验却不核对前后状态衔接，人工恢复也未验证前序文件。现逐个以前一份结果验证下一份before摘要，恢复前审查完整前序链，损坏时保持pending；这不是防全库篡改的签名或真人认证。",
+      "source": "private_result_checkpoint.PrivateResultVault._accepted_chain;private_result_checkpoint.PrivateResultVault.reconcile_saved_result",
+      "test_evidence": "tests/test_checkpoint_recovery_safety.py::test_checkpoint_chain_rejects_unlinked_before_digest;tests/test_checkpoint_recovery_safety.py::test_recovery_checks_predecessor_before_accepting_pending_result",
+      "status": "fixed_regression_verified",
+      "evidence_type": "confirmed_code",
+      "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/1",
+      "fix_commit": "3f021015079f840b58ebeebde82ad5020d6a54d6"
+    },
+    {
+      "id": "AUD-025",
+      "priority": "P1",
+      "domain": "checkpoint_usage_reconciliation",
+      "description": "旧人工恢复允许超过预留费用的checkpoint成为accepted，已接受文件用量未与账本比对。现save/load/reconcile统一校验非负有限用量、费用不超预留，accepted用量与账本完全一致。仍不代表服务商账单核验。",
+      "source": "private_result_checkpoint.PrivateResultVault._validate_usage",
+      "test_evidence": "tests/test_checkpoint_recovery_safety.py::test_accepted_checkpoint_usage_must_match_durable_journal;tests/test_checkpoint_recovery_safety.py::test_pending_checkpoint_invalid_or_overrun_usage_cannot_be_recovered",
+      "status": "fixed_regression_verified",
+      "evidence_type": "confirmed_code",
+      "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/1",
+      "fix_commit": "3f021015079f840b58ebeebde82ad5020d6a54d6"
     }
   ]
 }

@@ -1,3 +1,8 @@
+## 私有恢复安全后续约束（AUD-023/024/025）
+
+- 参见 [PRIVATE_RESULT_CHECKPOINT_RECOVERY.md](PRIVATE_RESULT_CHECKPOINT_RECOVERY.md)。`reserve` 与 `finish` 的持久写入异常都必须 poison 当前会话；恢复前必须逐个验证前序状态链接与用量/预留一致性，不能通过重新请求模型恢复。
+- 新增7个合成回归；问题登记现为25项。AUD-002的长期可信私有存储/备份、身份与供应商账单验收仍未完成，Issue #1不关闭。SHA不能当成身份认证。
+
 ## AUD-022 图片完整解码保护（2026-10-11，已获 GitHub CI 证据）
 
 - 已修复文件魔数能伪造图片有效性的 P1 缺陷：`asset_reference_manifest.py` 使用固定 Pillow==12.3.0、私有内存完整 `Image.verify()+Image.load()`；缺少解码器/危险宽松配置/伪造图片/截断/过大像素/多帧图片均不可直接登记。合成素材不含私人图片与 URL。
@@ -7,7 +12,7 @@
 ## 全链路深入审计为后续开发默认流程（2026-10-11，用户明确授权）
 
 - **AUD-002 离线缓解已落地，生产 P0 仍未关闭**：参见 [PRIVATE_RESULT_CHECKPOINT_RECOVERY.md](PRIVATE_RESULT_CHECKPOINT_RECOVERY.md)。真实 DeepSeek HTTP 调用现在必须携带非 Git 工作树的 0700 私有 Vault；先持久保存完整、已验证的 0600 team 创作状态，再将账本标记 accepted。出故障只支持已存储结果的人工**零网络**恢复；长期私人存储/真人身份核验/费用核账尚未部署，公开临时 GitHub runner 不算生产持久。
-- **权威主账**：[DEEP_AUDIT_MASTER.md](DEEP_AUDIT_MASTER.md)（12 条并行审计线、开源复用评估、阻断门禁），[AUDIT_FINDINGS.json](AUDIT_FINDINGS.json)（目前 17 项编号 AUD-xxx、已修/确认/待调查/无媒体无法验证四类状态），[audit_registry.py](audit_registry.py)（每次 GitHub CI 校验，不允许无回归证据标“已解决”）；最高优先级 [GitHub Issue #1](https://github.com/pyzz58/gpt-recommendations/issues/1) 仍是**真实付费模型回复与私人创意结果持久化/崩溃恢复**。
+- **权威主账**：[DEEP_AUDIT_MASTER.md](DEEP_AUDIT_MASTER.md)（12 条并行审计线、开源复用评估、阻断门禁），[AUDIT_FINDINGS.json](AUDIT_FINDINGS.json)（目前 25 项编号 AUD-xxx、已修/确认/待调查/无媒体无法验证四类状态），[audit_registry.py](audit_registry.py)（每次 GitHub CI 校验，不允许无回归证据标“已解决”）；最高优先级 [GitHub Issue #1](https://github.com/pyzz58/gpt-recommendations/issues/1) 仍是**真实付费模型回复与私人创意结果持久化/崩溃恢复**。
 - **开发必须先诊断、后修复**：记录可复现证据、来源版本、owner/影响、回归用例、GitHub 成熟项目/许可证/供应链/引入成本，优先最小融合；验证至少完整合成 CI + 对应故障注入。真实视频/用户稿/费用依旧没有新的授权，不能写“实机验收”。
 - **已融合成熟开源**：GitHub CI 使用 [coveragepy/coveragepy](https://github.com/coveragepy/coveragepy) Apache-2.0 的 `coverage==7.16.1` 测 21 核心模块 statement+branch，发布临时公开报告；首次 494 测试总覆盖 83%，最低几个重要模块需补回归。账本 `PilotJournal.finish` 失败后回滚+锁死继续请求，防止未知扣费重放。没有安装到用户 Mac，也不调用额外 DeepSeek。
 - [GITHUB_REUSE_POLICY.md](GITHUB_REUSE_POLICY.md) 继续优先：CineCrew FilmDSL（研究代码的可复用模型）、LangGraph（持久恢复）、jsonschema（格式验证），但**未实际完整引入**以上大型框架，先验证许可、版本、复杂度和私稿/费用安全。

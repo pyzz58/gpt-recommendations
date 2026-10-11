@@ -1,10 +1,20 @@
+## 2026-10-11 恢复安全复验：AUD-023 / AUD-024 / AUD-025
+
+代码提交 `3f021015079f840b58ebeebde82ad5020d6a54d6`。隔离 Linux/Python 3.12 全量 **571 tests PASS**，新增 7 个故障/恢复测试。GitHub Linux/Python 3.11 CI 同样 **571 tests PASS**，受测模块总覆盖率 **85%**；证据见 [run 38121233769](https://github.com/pyzz58/gpt-recommendations/actions/runs/38121233769)。
+
+- 预留文件 rename 前/后发生异常，都将当前 journal 锁死，重新打开并核对磁盘状态前不能继续；发送入口在预留失败时没有请求模型。
+- 逐份已接受 checkpoint 必须以前一份完整 team 为前态；人工恢复先验证全部前序文件，再接受 pending 结果，不能只核验孤立末份文件。
+- 保存、加载及恢复统一检查费用为有限非负数且不超过该次预留；已接受 checkpoint 的用量必须与持久账本一致。超额记录保留 pending，不能借人工恢复解除门禁。
+
+这是合成故障注入验证，不是实际断电或真实服务商账单验证。完整目录与账本若可被同一攻击者重写，SHA256 不提供身份认证；本轮没有增加签名、长期私有存储或备份部署。AUD-002 / Issue #1 保持 P0 OPEN，仍需可信持久环境、真人授权和实际恢复验收。没有真实模型调用、用户 Mac 操作或私人素材上传。
+
 # AI Director — 全链路深入审计与问题闭环主账（2026-10-11）
 
 > 这是一份**持续审计机制**，不是声称“所有问题已经查完”。每一轮在 GitHub 更新公开可核验的结果，同时保留**不确定、未做真实视频/模型试验**的状态。系统目标始终是：用户文案 → 专业总导演 → 剧本/表演/摄影美术/声音/剪辑动画/技术提示词/独立 QA → 总导演复审 → 真正能交给视频制作的工单。
 
 ## 核心交付在哪里？
 
-- [AUDIT_FINDINGS.json](AUDIT_FINDINGS.json) — 唯一机器可读问题登记（目前 22 项，含私有 checkpoint、参考图片解析的独立验证记录）。每条必须标明 `AUD-xxx`、P0–P3、领域、状态、证据类型、复现/回归用例、GitHub Issue、修复 commit。
+- [AUDIT_FINDINGS.json](AUDIT_FINDINGS.json) — 唯一机器可读问题登记（目前 25 项，含私有 checkpoint、参考图片解析的独立验证记录）。每条必须标明 `AUD-xxx`、P0–P3、领域、状态、证据类型、复现/回归用例、GitHub Issue、修复 commit。
 - [audit_registry.py](audit_registry.py) — CI 阻止：重复编号、没有测试却标为已修复、把没有真实素材的验证冒充已完成、P0 重要 Issue 丢失等。
 - [GitHub Issues #1–4](https://github.com/pyzz58/gpt-recommendations/issues) — 重要待办有独立讨论、证据和验收点，不能只写在聊天中。
 - [GitHub Actions AI Director MVP tests](https://github.com/pyzz58/gpt-recommendations/actions/workflows/ai-director-tests.yml) — 每次相关代码提交执行**离线合成 CI**、成本/隐私边界测试、公开虚构示范、`coverage.py` 多模块分支跟踪与审计登记检查。两个公开 artifact：模块覆盖率和审计状态摘要。没有任何私人稿件、密钥或实际收费 DeepSeek 视频请求。
