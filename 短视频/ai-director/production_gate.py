@@ -51,7 +51,7 @@ def evaluate(package):
             continue
         seen.add(sid)
         route = shot.get("execution_route")
-        if route not in ROUTES:
+        if not isinstance(route, str) or route not in ROUTES:
             issue("INVALID_EXECUTION_ROUTE", sid)
             continue
         if shot.get("human_review_required") is not True:
