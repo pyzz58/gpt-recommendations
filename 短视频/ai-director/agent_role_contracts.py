@@ -354,6 +354,37 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             "author_approved": False,
             "media_generated": False,
             "not_a_production_bible_until_departments_resolve_gaps": True}
+        if task_id == "camera_art":
+            # Use an *actual* JSON Schema instruction, not just descriptive
+            # advice, so the next live model response has a checkable contract.
+            shape = request["output_json_schema"]["properties"]["shots"][
+                "properties"]
+            for source_shot in base["shots"]:
+                if source_shot.get("visual_type") != "ai_video":
+                    continue
+                shot_schema = shape.get(source_shot["id"])
+                if shot_schema is None:
+                    continue  # current scoped revision excludes this shot
+                c = shot_schema["properties"]["camera"]
+                art = shot_schema["properties"]["art"]
+                c["properties"].update({
+                    "shot_size": {"type":"string",
+                                  "enum": sorted(creative_bridge.VIDEO_SHOT_SIZES)},
+                    "focal_length_mm": {"type":"number", "minimum":14, "maximum":135},
+                    "screen_axis": {"type":"string", "minLength":6},
+                })
+                c["required"].extend([
+                    "shot_size", "focal_length_mm", "screen_axis"])
+                art["properties"].update({
+                    "lighting_state": {"type":"string",
+                                       "enum": sorted(creative_bridge.LIGHTING_STATES)},
+                    "practical_sources": {"type":"array", "minItems":1,
+                                          "items":{"type":"string","minLength":1}},
+                    "lighting_change_reason": {"type":"string", "minLength":6},
+                })
+                art["required"].extend([
+                    "lighting_state", "practical_sources",
+                    "lighting_change_reason"])
     serialized = json.dumps(request, ensure_ascii=False, sort_keys=True,
                             separators=(",", ":"), allow_nan=False)
     _check_json_size(serialized, MAX_CONTEXT_CHARS, "private prompt")
@@ -378,7 +409,8 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             "human_approved": False}
 
 
-def validate_role_output(base, state, task_id, raw, *, source_text=None):
+def validate_role_output(base, state, task_id, raw, *, source_text=None,
+                         editorial_handoff=None):
     """Strict provider-agnostic parsing + specialist craft preflight.
 
     Return a new parsed object, never a fixed/normalized one. Refuse invalid
@@ -553,14 +585,24 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None):
                         _required_string(step, "time_window", "CREW_POSTPRODUCTION_STEP")
     # Re-run original ledger's source-aware safety gate for QA/director only.
     executor._enforce_base_audit(state, base, task_id, payload)
+    if editorial_handoff is not None:
+        creative_bridge.inspect_preproduction(base, editorial_handoff)
+        if (editorial_handoff.get("episode_source_digest") !=
+                state.get("source_digest") or
+                editorial_handoff.get("status") != "planning_only_no_approval"):
+            raise ValueError("CREW_VALIDATION_EDITORIAL_SOURCE_MISMATCH")
+        if task_id == "camera_art":
+            creative_bridge.camera_requirements_for_role(base, payload)
     return deepcopy(payload)
 
 
-def submit_role_output(base, state, task_id, raw, *, source_text=None):
+def submit_role_output(base, state, task_id, raw, *, source_text=None,
+                       editorial_handoff=None):
     """Offline transition from a *provided* strict JSON response to a new ledger.
 
     No model invocation; caller must arrange private transport separately.
     """
     payload = validate_role_output(base, state, task_id, raw,
-                                   source_text=source_text)
+                                   source_text=source_text,
+                                   editorial_handoff=editorial_handoff)
     return team.submit(state, team.packet(state, task_id), payload)
