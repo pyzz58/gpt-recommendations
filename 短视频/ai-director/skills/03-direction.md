@@ -13,6 +13,7 @@
 - `sound`：旁白交接、环境音、明确的同期声音、音乐起止与静音；任何字幕图表准确数值只在后期出现。
 - `continuity`：整个系列的角色、服装、道具与房间相对位置；下一镜起始状态要与上一个镜头结尾可接。reference_assets 必须真实存在，不可捏造已制作素材。
 - `graphics`：数字对照要有研究类型、比较对象、适用界限；字在竖屏安全区域内可读。
+- **实际制作路线优先于概念镜头类型**：读取 [PRODUCTION_ROUTING.md](../PRODUCTION_ROUTING.md)。同一个 `base.visual_type=ai_video` 的镜头也可指定 `generation.route=static_post/edit_composite/live_action_insert`；不要给静态图或实拍镜头生成 AI 视频模型 prompts。旧档案的 `production_method` 只支持已列的明确别名；未知值阻断而非猜测。
 - `generation`：AI_VIDEO 镜头生成候选模型提示词；纯数字/来源卡改为后期图文制作任务，不需要视频模型。
 - `qa`：不满足动作连贯、人物一致性、参考图存在条件时不得宣称“已通过真人审核”；一律 human_approved=false，直到真正用户审阅。
 - 单个AI生成镜头重心不超过一项主要动作链和一项主要运镜；模型不支持的复杂要求要拆分镜头。
