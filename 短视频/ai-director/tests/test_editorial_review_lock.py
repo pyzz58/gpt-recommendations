@@ -15,12 +15,12 @@ import editorial_storyboard as creative
 import editorial_review_lock as review
 import agent_team as team
 import director
-from test_editorial_storyboard import EditorialStoryboardTests
+import test_editorial_storyboard as creative_test_fixture
 
 
 class EditorialReviewLockTests(unittest.TestCase):
     def setUp(self):
-        sample = EditorialStoryboardTests(methodName="test_strict_editorial_submit_end_to_end_without_model")
+        sample = creative_test_fixture.EditorialStoryboardTests(methodName="test_strict_editorial_submit_end_to_end_without_model")
         sample.setUp()
         self.source = sample.source
         self.base = sample.base
@@ -191,7 +191,7 @@ class EditorialReviewLockTests(unittest.TestCase):
             review.evaluate_review(self.candidate, self.source, d)
 
     def test_source_change_proposals_must_be_resolved_separately(self):
-        sample = EditorialStoryboardTests(methodName="test_script_edit_unapproved_change_remains_unapplied")
+        sample = creative_test_fixture.EditorialStoryboardTests(methodName="test_script_edit_unapproved_change_remains_unapplied")
         sample.setUp()
         treatment = deepcopy(sample.treatment)
         treatment["story_treatment"]["source_change_proposals"].append({
@@ -215,7 +215,7 @@ class EditorialReviewLockTests(unittest.TestCase):
         self.assertFalse(lock["source_edits_applied"])
 
     def test_proposal_reordering_or_digest_change_rejected(self):
-        sample = EditorialStoryboardTests(methodName="test_script_edit_unapproved_change_remains_unapplied")
+        sample = creative_test_fixture.EditorialStoryboardTests(methodName="test_script_edit_unapproved_change_remains_unapplied")
         sample.setUp()
         treatment = deepcopy(sample.treatment)
         treatment["story_treatment"]["source_change_proposals"].append({
