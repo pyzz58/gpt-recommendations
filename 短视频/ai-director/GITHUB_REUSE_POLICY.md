@@ -35,6 +35,13 @@
 7. LICENSE_EVIDENCE_MISSING_MUSIC_LICENSE_CHECK：音乐真正选定之后再登记授权来源、证明与状态；计划不等于授权。
 8. LICENSE_EVIDENCE_MISSING_ASSET_LICENSE_CHECK：同样为每一件实际素材保留授权证据；不能把未核验字段改成已核验。
 
+## 跨镜头导演叙事与混合媒介风格一致性（2026-10-11）
+
+- 需求：用户给文案，导演必须说明每个镜头相邻交接的叙事因果、观众期待、情绪节奏、摄影/形状/动作联系，以及 AI 视频/静态图/字幕动画/实拍的视觉语言如何统一。
+- 核对 [CineCrew](https://github.com/Ironieser/CineCrew) 公开描述中的跨镜资产/角色/摄影共享约束；[OpenTimelineIO](https://github.com/AcademySoftwareFoundation/OpenTimelineIO) 的专业镜头与轨道分离；[AI Cinematic Pipeline](https://github.com/billpar/ai-cinematic-pipeline) 的 shot-list 多部门分工。
+- 选择：现有导演数据已齐全，无需安装完整 OpenTimelineIO 或多代理视频流水线。新增自有零依赖 `director_narrative_bridges.py` 的**薄创意合同审查**，并接入主要导演交付书。源代码未复制第三方项目，无法宣称已集成外部渲染算法。
+- 质量边界：机器只能检测空缺、枚举、无效时长及跨介质注意项，不能替代判断作品是否打动观众、转场好不好看；`production_blueprint_ready` 只是可交接结构完整标志，不是生成验证。
+
 ## 时间线剪辑工作单：借鉴 OpenTimelineIO 的轨道抽象
 
 调研 [AcademySoftwareFoundation/OpenTimelineIO](https://github.com/AcademySoftwareFoundation/OpenTimelineIO) 公开 README：它是成熟影视时间线交换框架，提供面向影视编辑的 clips/tracks/time ranges 与多种适配器。当前没有真实源媒体、也不需要向特定 NLE 导出，因此不引入其 Python/原生模块；只借鉴“导演决策 → 可定位的绝对时间事件列表”思想。新增零依赖 `director_timeline.py`，使 `director_workbook.py` 输出 `editor_decision_list`，明确旁白、对白、音效、动作、摄影、动画的时间轨道和待人工核验处。详见 [EDITOR_TIMELINE.md](EDITOR_TIMELINE.md)，没有复制其源码，不承诺当前能导出 FCP/剪映/达芬奇工程。
