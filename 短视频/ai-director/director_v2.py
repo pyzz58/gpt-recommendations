@@ -277,7 +277,14 @@ def compile_package(base, directions):
                             "\nDo not force multiple cuts into one generation. Preserve observed end frame for continuation planning.")}
             shared["postproduction_job"]={"voiceover":shot["narration"],"voiceover_source":"base.narration","voiceover_note":d["sound"]["voiceover_note"],"ambience":d["sound"]["ambient"],"music":d["sound"]["music"],"effects":d["sound"]["effects"],"overlay_text":shot["subtitles"]["text"]}
         jobs.append(shared)
+    route_counts = {route:sum(j["execution_route"] == route for j in jobs)
+                    for route in sorted(PRODUCTION_ROUTES)
+                    if any(j["execution_route"] == route for j in jobs)}
     return {"schema_version":"0.2", "title":base["title"], "aspect_ratio":"9:16", "shots":jobs,
+            "production_summary":{"routes":route_counts,
+                                  "ai_video_jobs":route_counts.get("ai_video",0),
+                                  "non_video_jobs":len(jobs)-route_counts.get("ai_video",0),
+                                  "media_created":False},
             "warnings":warnings, "not_generated_video":True, "publishing_allowed":False,
             "prompt_usage":"Prompts are candidates for operator review and actual-model testing; platform capabilities, version and limits must be checked before generation."}
 
