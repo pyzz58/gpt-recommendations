@@ -35,7 +35,10 @@ class FullVerticalDemoTests(unittest.TestCase):
                                 for x in bundle["shots"]))
             md=(output/"SYNTHETIC_DEMO_NOT_REAL_AI.md").read_text("utf-8")
             self.assertIn("AI 视频制作工作单",md)
-            self.assertIn("Wan".lower(),md.lower()) if manifest["video_prompt_jobs"] else None
+            self.assertGreater(manifest["video_prompt_jobs"],0)
+            self.assertGreater(manifest["postproduction_jobs"],0)
+            self.assertIn("wan 视频生成候选提示词",md)
+            self.assertIn("seedance 视频生成候选提示词",md)
             self.assertIn("逐镜生产工单",md)
             self.assertIn("不是已生成的视频",md)
 
