@@ -84,3 +84,12 @@ class ProductionRoutingTests(TestCase):
         job=pkg['shots'][self.index]
         self.assertEqual(job['postproduction_job']['asset_status'],'not_verified')
         self.assertEqual(job['postproduction_job']['voiceover_source'],'base.narration')
+
+    def test_production_summary_counts_effective_route(self):
+        d=self.scenario(method='实拍插入')
+        pkg=v2.compile_package(self.base,d)
+        counts=pkg['production_summary']
+        self.assertFalse(counts['media_created'])
+        self.assertEqual(counts['ai_video_jobs'],1)
+        self.assertEqual(counts['non_video_jobs'],len(self.base['shots'])-1)
+        self.assertEqual(counts['routes']['live_action_insert'],1)
