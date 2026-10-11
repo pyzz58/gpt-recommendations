@@ -1,3 +1,7 @@
+## 本项目后续功能的唯一驱动：真实问题审计
+
+依据 [DEEP_AUDIT_MASTER.md](DEEP_AUDIT_MASTER.md)（12条审计线）、[AUDIT_FINDINGS.json](AUDIT_FINDINGS.json)（逐项证据与状态）、[GITHUB_REUSE_POLICY.md](GITHUB_REUSE_POLICY.md)（先调查成熟 GitHub 开源再选择融合）推进，不再继续添加纸面岗位。摄影美术、动作、声音、剪辑、独立 QA 均需给**逐镜可观察的真实交付与跨镜对比**，不能只凭 JSON 通过写“专业成片完成”。现已有 CI 分支覆盖率报告，但部分代码路径与真实媒体仍未验证；必须保留 human review 与付费 API 的独立授权门禁。真实一次性 Flash 文本小样不能冒充全十岗位真实能力。
+
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
 **专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 原始导演创意必须贯穿十部门，摄影设计需要实体约束
