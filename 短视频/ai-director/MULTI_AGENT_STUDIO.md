@@ -6,6 +6,10 @@
 
 本项目**不是**让八个 AI 随意聊天，也不是制作模型本身。总导演根据同一份权威源稿及导演圣经分配专业任务；专业部门负责各自交付；QA 只评审、不改稿；总导演合并意见决定是否返工；最终成果仍然是 `director_workbook.py`，不是八份互相矛盾的报告。
 
+## 创作交付自动检查（新增）
+
+`agent_creative_review.py` 提供 `review_deliverable` / `review_team` / `review_packet`，对专业交付的具体创作证据作保守检查：镜头缺漏、空泛内容、表演动作可观察性、声音职责、剪辑叙事桥和制作路线。`agent_team.compile_team_workbook()` 现在额外输出 `creative_quality_review`，但**不绕过原有结构审核**，且不自动批准。现阶段为**提示与人工复核**，不是严格创作质量评分；过去的草稿仍可存在并被标记。对应合成单元测试 `tests/test_agent_creative_review.py` 已提交，最新 GitHub CI/整仓测试尚未核实，不能宣称全部通过。
+
 ## 本轮真实实现 / 尚未实现
 
 已经在 GitHub 新增 `agent_team.py`：
