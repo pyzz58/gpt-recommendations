@@ -405,7 +405,8 @@ def compile_team_workbook(base, state, *, strict=False):
     book = director_workbook.compile_workbook(base, draft)
     book["creative_quality_review"] = creative
     book["independent_handoff_audit"] = handoffs
-    review_ready = (bool(book["director_review"]["production_blueprint_ready"]) and
+    review_ready = (bool(state["source_review_bound"]) and
+                    bool(book["director_review"]["production_blueprint_ready"]) and
                     creative["status"] == "structured_evidence_present" and
                     handoffs["status"] == "no_explicit_conflicts")
     if strict:
@@ -415,6 +416,7 @@ def compile_team_workbook(base, state, *, strict=False):
         "status": "ready_for_human_review" if review_ready else "draft_needs_review",
         "hard_conflicts": 0, "creative_review_findings": len(creative["findings"]),
         "blueprint_complete": bool(book["director_review"]["production_blueprint_ready"]),
+        "source_digest_bound": bool(state["source_review_bound"]),
         "automated_evidence_checked": True, "human_approved": False,
         "actual_video_approved": False, "paid_api_authorized": False}
     book["team_handoff"] = {
