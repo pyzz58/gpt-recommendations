@@ -99,13 +99,13 @@
       "id": "AUD-008",
       "priority": "P1",
       "domain": "role_output_schema",
-      "status": "investigate",
+      "status": "fixed_regression_verified",
       "evidence_type": "confirmed_code",
-      "description": "自定义业务约束与 JSON Schema 草稿并存；完整 schema 兼容性、非法类型隔离与规范校验尚未深测",
+      "description": "已解决从专业提示词到实际模型输出验收的 JSON Schema 断层：固定并集成 python-jsonschema v4.25.1，十岗位与扩展 story pitch 共用 Draft2020-12 Schema，付费调用前校验依赖/定义，收到非法嵌套数据/越权字段拒绝且不泄露内容；不代表创意语义质量已验证",
       "source": "agent_role_contracts.output_schema, agent_role_contracts.validate_role_output",
-      "test_evidence": "tests/test_agent_role_contracts.py::test_complete_ten_role_strict_pipeline",
+      "test_evidence": "tests/test_role_schema_guard.py::test_all_ten_schemas_are_valid_2020_12_and_fixtures_submit;tests/test_role_schema_guard.py::test_nested_array_integer_is_not_director_immutable_fact;tests/test_agent_live_pilot.py::test_extended_storyboard_schema_blocks_unowned_model_field",
       "issue_url": "",
-      "fix_commit": ""
+      "fix_commit": "e7e26297899efc6edeadb4c14105993063dea47f"
     },
     {
       "id": "AUD-009",
@@ -113,10 +113,10 @@
       "domain": "source_prompt_security",
       "status": "investigate",
       "evidence_type": "code_review_only",
-      "description": "对抗性原稿中嵌入指令、角色覆盖、多语言注入、巨量输入与危险 URL 尚需全矩阵验证",
+      "description": "不可信原稿中的假冒 system/tool/persona 指令已验证只进入 JSON user 数据字段、不能改变实际消息角色或预算开关；但真实模型语义遵从性/模型心理攻击误报漏报尚未经授权实测，仍未完全解决",
       "source": "agent_role_contracts.build_role_messages, agent_provider_wire.prepare_chat_request",
-      "test_evidence": "tests/test_agent_live_crew.py::test_source_prompt_never_written_to_private_budget_journal",
-      "issue_url": "",
+      "test_evidence": "tests/test_role_schema_guard.py::test_source_embedded_roles_are_json_data_not_system_metadata;tests/test_role_schema_guard.py::test_output_attempts_to_override_authority_rejected",
+      "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/5",
       "fix_commit": ""
     },
     {
