@@ -379,6 +379,15 @@ def assemble_direction(base, state):
     return direction
 
 
+def _save_new(path, obj):
+    """No silent overwrites: a handoff history is an artifact, not cache."""
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with target.open("x", encoding="utf-8") as fp:
+        json.dump(obj, fp, ensure_ascii=False, indent=2)
+        fp.write("\n")
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description="OFFLINE director-team task ledger. No LLM or media.")
     sub = p.add_subparsers(dest="command", required=True)
@@ -387,20 +396,52 @@ def main(argv=None):
     p_new.add_argument("--out", required=True)
     p_show = sub.add_parser("ready")
     p_show.add_argument("--state", required=True)
+    p_packet = sub.add_parser("packet")
+    p_packet.add_argument("--state", required=True)
+    p_packet.add_argument("--task", required=True, choices=list(SPECS))
+    p_packet.add_argument("--out", required=True)
+    p_submit = sub.add_parser("submit")
+    p_submit.add_argument("--state", required=True)
+    p_submit.add_argument("--envelope", required=True)
+    p_submit.add_argument("--deliverable", required=True)
+    p_submit.add_argument("--out", required=True)
+    p_revise = sub.add_parser("revise")
+    p_revise.add_argument("--state", required=True)
+    p_revise.add_argument("--task", required=True, choices=list(SPECS))
+    p_revise.add_argument("--shot", action="append", default=[])
+    p_revise.add_argument("--reason", required=True)
+    p_revise.add_argument("--out", required=True)
+    p_assemble = sub.add_parser("assemble")
+    p_assemble.add_argument("--state", required=True)
+    p_assemble.add_argument("--base", required=True)
+    p_assemble.add_argument("--out", required=True)
     args = p.parse_args(argv)
     try:
+        def load_json(file):
+            return json.loads(Path(file).read_text(encoding="utf-8"))
         if args.command == "plan":
-            base = json.loads(Path(args.base).read_text(encoding="utf-8"))
-            state = start(base)
-            target = Path(args.out)
-            target.parent.mkdir(parents=True, exist_ok=True)
-            with target.open("x", encoding="utf-8") as fp:
-                json.dump(state, fp, ensure_ascii=False, indent=2)
-                fp.write("\n")
+            state = start(load_json(args.base))
+            _save_new(args.out, state)
             print("Offline director team plan created; ready:", ", ".join(ready(state)))
-        else:
-            state = json.loads(Path(args.state).read_text(encoding="utf-8"))
-            print(json.dumps(overview(state), ensure_ascii=False, indent=2))
+        elif args.command == "ready":
+            print(json.dumps(overview(load_json(args.state)), ensure_ascii=False, indent=2))
+        elif args.command == "packet":
+            _save_new(args.out, packet(load_json(args.state), args.task))
+            print("Role-scoped envelope created (no model call):", args.task)
+        elif args.command == "submit":
+            state = submit(load_json(args.state), load_json(args.envelope),
+                           load_json(args.deliverable))
+            _save_new(args.out, state)
+            print("Team ledger revised; next ready:", ", ".join(ready(state)))
+        elif args.command == "revise":
+            state = request_revision(load_json(args.state), args.task,
+                                     args.shot, args.reason)
+            _save_new(args.out, state)
+            print("Scoped director rework requested:", args.task)
+        elif args.command == "assemble":
+            direction = assemble_direction(load_json(args.base), load_json(args.state))
+            _save_new(args.out, direction)
+            print("Draft direction assembled. HUMAN_APPROVED=false; no media created.")
         return 0
     except (OSError, TypeError, ValueError, KeyError) as exc:
         print("ERROR:", exc, file=sys.stderr)
