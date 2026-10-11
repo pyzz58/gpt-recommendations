@@ -239,8 +239,15 @@ class ProviderPreflightTests(unittest.TestCase):
                     durable.PrivateReservationJournal(folder, modified)
 
     def test_spend_limit_and_duplicate_attempt_rejected(self):
-        config = dict(self.config)
-        config["cap_cny"] = "0.00000001"
+        config = durable.policy(
+            model=self.config["model"],
+            source_digest=self.config["source_digest"],
+            base_digest=self.config["base_digest"],
+            cap_cny="0.00000001", max_attempts=self.config["max_attempts"],
+            max_output_tokens=self.config["max_output_tokens"],
+            cache_hit_cny_m=self.config["cache_hit_cny_m"],
+            cache_miss_cny_m=self.config["cache_miss_cny_m"],
+            output_cny_m=self.config["output_cny_m"])
         with tempfile.TemporaryDirectory() as folder:
             with durable.PrivateReservationJournal(folder, config) as journal:
                 with self.assertRaisesRegex(durable.DurablePreflightError, "CAP_PREVENTS"):
