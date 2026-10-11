@@ -38,7 +38,9 @@ def _make(code: str, task: str, shot: str | None, detail: str,
 
 
 def review_deliverable(task_id: str, payload: dict,
-                       expected_shot_ids: list[str] | None = None) -> list[dict]:
+                       expected_shot_ids: list[str] | None = None, *,
+                       shot_context: dict | None = None,
+                       terminal_shot_id: str | None = None) -> list[dict]:
     """Advisory findings; checks evidence, not taste or rendered-media quality.
 
     Can assess a scoped revision. Does not mutate payload. Structural ownership
@@ -64,7 +66,13 @@ def review_deliverable(task_id: str, payload: dict,
         for field in OWNERS[task_id]:
             section = item.get(field)
             if field == "shootability" and section is None:
-                # Legacy plans allow an explicit absent shootability review.
+                # Only AI-video scenes featuring people need this structure.
+                # Without a source plan, stay conservative for draft audits.
+                source = shot_context.get(sid) if isinstance(shot_context, dict) else None
+                if isinstance(source, dict) and not (
+                        source.get("visual_type") == "ai_video"
+                        and source.get("character_ids")):
+                    continue
                 issues.append(_make("SHOOTABILITY_UNDESIGNED", task_id, sid,
                                     "动作可拍性暂未设计，需要制作前补齐"))
                 continue
@@ -87,9 +95,10 @@ def review_deliverable(task_id: str, payload: dict,
                                     "未区分旁白、对白或字幕时码"))
         if task_id == "editing_animation":
             edit = item.get("editing")
-            if isinstance(edit, dict) and "narrative_bridge" not in edit:
+            if (isinstance(edit, dict) and sid != terminal_shot_id
+                    and "narrative_bridge" not in edit):
                 issues.append(_make("EDIT_NO_NARRATIVE_BRIDGE", task_id, sid,
-                                    "未交付跨镜头的剪辑叙事桥；末镜可显式写 none"))
+                                    "此镜到下一镜缺少剪辑叙事桥"))
         if task_id == "ai_technical":
             gen = item.get("generation")
             if isinstance(gen, dict) and "route" not in gen:
@@ -98,11 +107,23 @@ def review_deliverable(task_id: str, payload: dict,
     return issues
 
 
-def review_team(state: dict) -> dict:
-    """Read-only aggregate creative inspection for versioned team ledgers."""
+def review_team(state: dict, base: dict | None = None) -> dict:
+    """Read-only aggregate creative inspection for versioned team ledgers.
+
+    Supplying the authoritative base avoids flagging static/graphic shots as
+    missing human action; the final shot never has an outgoing cut.
+    """
     if not isinstance(state, dict) or not isinstance(state.get("tasks"), dict):
         raise ValueError("invalid team state")
     findings = []
+    base_shots = None
+    if base is not None:
+        if not isinstance(base, dict) or not isinstance(base.get("shots"), list):
+            raise ValueError("base must contain a list of shots")
+        base_shots = {shot["id"]: shot for shot in base["shots"]}
+        if set(base_shots) != set(state.get("shot_ids", [])):
+            raise ValueError("source shot IDs do not match the team ledger")
+    last_shot = state.get("shot_ids", [])[-1] if state.get("shot_ids") else None
     for task_id in OWNERS:
         entry = state["tasks"].get(task_id, {})
         if entry.get("status") != "completed":
@@ -111,7 +132,8 @@ def review_team(state: dict) -> dict:
             continue
         findings.extend(review_deliverable(
             task_id, entry.get("deliverable"),
-            state.get("shot_ids")))
+            state.get("shot_ids"), shot_context=base_shots,
+            terminal_shot_id=last_shot))
     counts = dict(Counter(x["severity"] for x in findings))
     return {"creative_review_version": "0.1",
             "status": ("blocked" if counts.get("blocker", 0)
