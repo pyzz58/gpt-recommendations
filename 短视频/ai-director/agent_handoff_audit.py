@@ -9,6 +9,8 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 import math
 
+import film_continuity as film_tracks
+
 
 PRODUCTION_ROUTES = frozenset({
     "ai_video", "static_post", "edit_composite",
@@ -64,6 +66,25 @@ def audit_handoffs(state, base=None):
         if set(source) != set(ids):
             raise ValueError("source shot IDs differ from team ledger")
     issues = []
+    # Source-bound continuity tracks are optional for older fixture-only
+    # ledgers. When a film team provides typed tracks, QA must independently
+    # inspect them; no role may simply claim continuity in natural language.
+    if base is not None:
+        acting=(state["tasks"].get("acting",{}).get("deliverable") or {})
+        shots=acting.get("shots",{}) if isinstance(acting,dict) else {}
+        if shots and all(isinstance(x,dict) and
+                         isinstance(x.get("continuity"),dict) and
+                         "entity_tracks" in x["continuity"] for x in shots.values()):
+            try:
+                report=film_tracks.inspect_tracks(
+                    base,{sid:{"scene_id":row["continuity"]["scene_id"],
+                               "entity_tracks":row["continuity"]["entity_tracks"]}
+                          for sid,row in shots.items()},
+                    source_digest=state.get("source_digest"))
+                issues.extend(report["issues"])
+            except (film_tracks.ContinuityError,ValueError,KeyError,TypeError):
+                issues.append(_issue("CONTINUITY_MANIFEST_INVALID","acting",ids,
+                                     "有源连续性表结构错误或跨镜状态无法确认"))
     claim_ids = set()
     if base is not None:
         claim_ids = {c.get("id") for c in base.get("claims", [])
