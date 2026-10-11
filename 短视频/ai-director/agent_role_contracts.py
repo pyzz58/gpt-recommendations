@@ -139,7 +139,12 @@ def _check_json_size(text, limit, label):
 
 
 def _finite(value):
-    return type(value) in (float, int) and math.isfinite(value)
+    if type(value) not in (float, int):
+        return False
+    try:
+        return math.isfinite(value)
+    except (ValueError, TypeError, OverflowError):
+        return False
 
 
 def _required_string(obj, key, code):
@@ -438,7 +443,10 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None):
                     raise ValueError("CREW_SOURCE_VOICEOVER_DRIFT")
                 for name in ("delivery", "timing"):
                     _required_string(voice, name, "CREW_VOICEOVER")
-                for entry in _list(voice, "cues", "CREW_VOICEOVER"):
+                cues = _list(voice, "cues", "CREW_VOICEOVER")
+                if source.get("narration", "").strip() and not cues:
+                    raise ValueError("CREW_VOICEOVER_CUES_MISSING")
+                for entry in cues:
                     if not isinstance(entry, dict):
                         raise ValueError("CREW_VOICEOVER_CUE")
                     _time_window(entry, duration, "CREW_VOICEOVER_CUE")
@@ -449,6 +457,9 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None):
                         _time_window(entry, duration, "CREW_SPEECH_CUE")
             elif task_id == "editing_animation":
                 edit = shot["editing"]
+                if "audio_bridge" not in edit or not (
+                        edit["audio_bridge"] is None or isinstance(edit["audio_bridge"], dict)):
+                    raise ValueError("CREW_AUDIO_BRIDGE_UNSPECIFIED")
                 if edit["outgoing_transition"] != source.get("transition"):
                     raise ValueError("CREW_BASE_TRANSITION_DRIFT")
                 expected_in = ("start" if state["shot_ids"].index(sid) == 0 else
@@ -456,6 +467,8 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None):
                 if edit["incoming_transition"] != expected_in:
                     raise ValueError("CREW_INCOMING_TRANSITION_DRIFT")
                 _list(shot["animation"], "elements", "CREW_ANIMATION")
+                if type(shot["animation"].get("render_in_post")) is not bool:
+                    raise ValueError("CREW_ANIMATION_RENDER_MODE")
                 _list(shot["graphics"], "claims_used", "CREW_GRAPHICS")
                 _list(shot["graphics"], "labels", "CREW_GRAPHICS")
                 if sid != state["shot_ids"][-1]:
@@ -484,6 +497,7 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None):
                     raise ValueError("CREW_PRODUCTION_ROUTE_INVALID")
                 _list(generation, "reference_roles", "CREW_GENERATION")
                 _list(generation, "negative_constraints", "CREW_GENERATION")
+                _required_string(generation, "fallback", "CREW_GENERATION")
                 if generation["route"] == "ai_video":
                     candidates = _list(generation, "prompt_candidates", "CREW_GENERATION")
                     if not candidates:
