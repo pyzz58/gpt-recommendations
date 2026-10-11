@@ -129,6 +129,56 @@ class LivePilotTests(unittest.TestCase):
             self.assertEqual(journal.summary()["attempts"][0]["status"],
                              "response_accepted")
 
+    def test_usage_bad_data_does_not_mutate_pending_spend_record(self):
+        with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+            req=wire.prepare_chat_request(
+                [{"role":"system","content":"Fiction test only"},
+                 {"role":"user","content":"Only offline test input"}],
+                model=self.config["model"],
+                max_output_tokens=self.config["max_output_tokens"])
+            journal.reserve("director_brief",1,req)
+            before=deepcopy(journal.summary()["attempts"][0])
+            for bad in ({"total_tokens":100,"estimated_usage_cost_cny":"nan"},
+                        {"total_tokens":-1,"estimated_usage_cost_cny":"0.2"},
+                        {"total_tokens":42,"estimated_usage_cost_cny":"bad"}):
+                with self.subTest(value=bad):
+                    with self.assertRaisesRegex(pilot.PilotError,"USAGE_INVALID"):
+                        journal.finish(1,"response_accepted",bad)
+                    self.assertEqual(journal.summary()["attempts"][0],before)
+                    self.assertEqual(json.loads(journal.journal.read_text(
+                        "utf-8"))["attempts"][0],before)
+
+    def test_finish_durable_write_failure_poisoned_no_bill_replay(self):
+        with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+            req=wire.prepare_chat_request(
+                [{"role":"system","content":"No provider requests"},
+                 {"role":"user","content":"Synthetic role task"}],
+                model=self.config["model"],
+                max_output_tokens=self.config["max_output_tokens"])
+            journal.reserve("director_brief",1,req)
+            original=deepcopy(journal.summary()["attempts"][0])
+            with patch.object(journal,"_save",side_effect=OSError(
+                    "synthetic filesystem failure before durable finish")):
+                with self.assertRaises(OSError):
+                    journal.finish(1,"response_accepted",{
+                        "total_tokens":5,"estimated_usage_cost_cny":"0.0003"})
+            self.assertTrue(journal.poisoned)
+            self.assertEqual(journal.records["attempts"][0],original)
+            self.assertEqual(json.loads(journal.journal.read_text(
+                "utf-8"))["attempts"][0],original)
+            with self.assertRaisesRegex(pilot.PilotError,
+                                        "LEDGER_CLOSED_OR_MODIFIED"):
+                journal.reserve("script_edit",1,req)
+            with self.assertRaisesRegex(pilot.PilotError,
+                                        "LEDGER_CLOSED_OR_MODIFIED"):
+                journal.summary()
+        # After restart the journal still remembers the pending reservation,
+        # blocks any new sends until external reconciliation occurs.
+        with pilot.PilotJournal(self.tmp.name,self.config) as restored:
+            with self.assertRaisesRegex(pilot.PilotError,
+                                        "UNKNOWN_ATTEMPT_BLOCKS_NEXT"):
+                restored.reserve("script_edit",1,req)
+
     def test_https_success_path_is_tested_with_mocked_socket_only(self):
         class FakeResponse:
             status=200
