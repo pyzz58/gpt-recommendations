@@ -103,7 +103,7 @@ def create_pilot_config(*, model, source_digest, base_digest, cap_cny,
 
 
 def explicit_pilot_permit(config, *, task_id, acknowledgement,
-                          privacy_consent, spending_consent):
+                          privacy_consent, spending_consent, revision=1):
     """One-task intent evidence only; NOT identity verification or signature.
 
     Must be created only by a trusted, authenticated private user interface
@@ -113,12 +113,15 @@ def explicit_pilot_permit(config, *, task_id, acknowledgement,
     _check(isinstance(config, dict) and config.get("version") == VERSION,
            "PILOT_CONFIG_REQUIRED")
     _check(task_id in PILOT_TASKS, "PILOT_ROLE_OUT_OF_SCOPE")
+    _check(type(revision) is int and 1 <= revision <= 1000000,
+           "PILOT_PERMIT_REVISION_INVALID")
     _check(acknowledgement == CONSENT_TEXT and
            privacy_consent is True and spending_consent is True,
            "PILOT_EXPLICIT_CONSENT_MISSING")
     return {
         "kind": "per_task_operator_consent", "version": VERSION,
-        "task_id": task_id, "config_digest": _fingerprint(config),
+        "task_id": task_id, "revision": revision,
+        "config_digest": _fingerprint(config),
         "source_digest": config["source_digest"],
         "base_digest": config["base_digest"],
         "model": config["model"], "max_reserved_cny": config["cap_cny"],
@@ -449,6 +452,8 @@ def run_one_creative_task(intake, state, episode_source, journal,
         req = creative.build_director_brief_request(intake, episode_source)
     else:
         req = creative.build_script_editor_request(intake, state, episode_source)
+    _check(permit.get("revision") == req["next_revision"],
+           "PILOT_PERMIT_WRONG_REVISION")
     envelope = wire.prepare_chat_request(
         req["messages"], model=config["model"],
         max_output_tokens=config["max_output_tokens"])
