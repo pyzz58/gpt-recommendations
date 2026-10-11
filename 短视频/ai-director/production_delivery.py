@@ -261,6 +261,8 @@ def build_locked_crew_delivery(snapshot, episode_source, final_team_state):
             "manifest_digest":review["manifest_digest"],
             "cards_count":review["cards_count"],
             "missing_bindings_count":review["missing_bindings_count"],
+            "missing_bindings":review["missing_bindings"],
+            "reference_switches_needing_review":review["reference_switches"],
             "reference_content_hash_matched_in_private_runtime":False,
             "visual_identity_verified":False,
             "rights_verified":False,
