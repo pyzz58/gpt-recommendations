@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## AI 视频制作工单离线导出与专业 DAG 全链路校验（2026-10-11）
+
+- 新增 [PRODUCTION_DELIVERY_PACK.md](PRODUCTION_DELIVERY_PACK.md)、`production_delivery.py` 和 `tests/test_production_delivery.py`。复用 `director_v2.compile_package` 与 `director_workbook.compile_workbook` 将现有专业导演工作单编译成逐镜 Wan/Seedance 视频候选提示词、动作/运镜/灯光/旁白/声音、字幕数据图表后期工单、整片剪辑时间表和跨镜头承接。
+- 非 `ai_video` 路线必须只有后期任务，不能假装视频模型直接生成准确汉字/数字。AI 提示词只能作为候选人工复制；缺参考资产、供应商能力、研究事实核验和人工视频验收，状态固定为 `offline_operator_review_workbook_not_model_ready`；不启用付费模型、下载/同步 Mac 或发布。
+- 开发演示 `build_reference_delivery` 只接受项目已有公开专业 v0.2 示例，**不冒充本轮十岗位真实执行**；`build_locked_crew_delivery` 则要求规划锁定原文和计划 hash、十阶段全部完成、独立 QA、总导演终审后重新验收才能生成工作单，不能从伪造/不完整团队取得「完成」状态。
+- 仅使用仓库既有公开示例 + 虚构专业角色数据进行 GitHub CI 验收。任何输出 Markdown/JSON 都可能包含私密原稿，禁止公开导出真人文案。
+
 ## 逐镜审阅、返工和版本锁定（2026-10-11；仍未真人批准）
 
 - 本轮新增 [EDITORIAL_REVIEW_AND_LOCK.md](EDITORIAL_REVIEW_AND_LOCK.md)、`editorial_review_lock.py`、`tests/test_editorial_review_lock.py`。针对创意导演提案提供全部镜头、原文删减、待核验事实及全部待改稿建议的精确审阅表；每个具体分镜均绑定 SHA-256，遗漏、换版本、换原稿、请求返工或拒绝即不允许锁定。
