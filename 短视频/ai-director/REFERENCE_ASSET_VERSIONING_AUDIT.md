@@ -22,6 +22,44 @@
 
 `shot_bindings[S01][CHAR01] = {asset_id,version,sha256}`；每个镜头对来源中已登记的实体（包括同一房间 LOC ID）有明确槽位，未配置为 `null`，不得填入模型猜测的人物或外部资源链接。改动人物参考图后增加新版本，之前绑定旧版的镜头在校验时被拒绝，必须由操作者逐镜明确重新绑定；不同镜头采用不同人物参考时会返回 `reference_switch_requires_human_review`，不能冒充同一张脸已确立。
 
+## 增量修复：同一角色一镜多参考槽位（AUD-021）
+
+在审查原版 `asset_reference_manifest.py` 后，发现一个确定性缺陷：虽然每张卡支持 `identity_front / identity_side / wardrobe`，但 `shot_bindings[S01][CHAR01]` 只有一个引用，绑定服装会直接替换脸部主参考。原设计因此**无法同时提供面孔、侧视和服装**，不利于视频创作岗位保留同一演员的统一视觉设计。
+
+现在将清单版本提升为 `private-visual-reference-manifest-v2`，在保留原主参考 `shot_bindings[shot][entity]` 的同时，添加：
+
+```json
+{
+  "shot_slot_bindings": {
+    "S01": {
+      "CHAR01": {
+        "identity_front": {"asset_id": "ASSET_FACE", "version": 1, "sha256": "（示意：64位哈希）"},
+        "identity_side": {"asset_id": "ASSET_SIDE", "version": 1, "sha256": "（示意：64位哈希）"},
+        "wardrobe": {"asset_id": "ASSET_COAT", "version": 1, "sha256": "（示意：64位哈希）"}
+      }
+    }
+  }
+}
+```
+
+上方仅说明字段，**不是可直接提交的有效数据**；真实 SHA-256 必须在受信任的私人进程里从对应文件字节计算。
+
+### 新的 fail-closed 规则
+
+- 人物可同时绑定正脸、侧脸、服装；道具和场景分别支持其自身槽位，**绑定另一槽不会覆盖已锁定的脸部主参考**。
+- 每个槽位必须指向**同一个来源人物/道具/场景**登记的正确版本，校验 asset ID、slot、版本号、SHA-256；不能把服装卡塞进正脸槽或凭空增加未在权威计划登记的人。
+- 参考图版本发生变化时，引用旧版的每一个镜头绑定都被识别为过期；只能逐镜明确更新，不可静默批量升级。
+- 同一人物的 **wardrobe** 槽位在相邻镜头切换，即使其正脸未变，也会输出独立的人工审核记录。此为“需要判断是否换装”，不是算法已经证明有问题。
+- 对每镜建议人物至少有 `identity_front` 与 `wardrobe`，对道具建议 `prop_reference`，场景建议 `location_reference`；缺失仅输出 `missing_recommended_slots`，绝不自动捏造图或拒绝合理的无道具纯物镜。
+- 总导演和各岗位的 JSON 上下文现在包含 `shot_slot_bindings`；最终视频工作单也带 `versioned_reference_slot_bindings`，只包含编号、版本和哈希，不携带私人图像或可访问路径。
+- **迁移说明**：v1 清单不会被当作 v2 随意复用；老 v1 快照在 v2 校验时明确失败，必须由可信操作者从合法来源和原版本重新建立 v2 资产映射、逐镜复核；不能自行伪造哈希或身份批准。
+
+### 还没有实现的事
+
+这仍然只是元数据模型，不是图片托管或图片模型。没有持久化的私有原图、没有真实的正面/侧面识别比较，也没有实际 Wan / Seedance 使用这些图片生成并保持同一人物的证据。资产 `rights_status`、`consent_status`、`review_status` 继续保持未验证/待确认。AUD-003/Issue #2 仍 OPEN。
+
+---
+
 ## 代码级隐私与许可边界
 
 - 只接受 `bytes` 作为**私人进程内的输入**，校验 PNG/JPEG/WEBP 文件头、文件大小上限，立即计算 SHA-256。**不会保存图片内容、路径、文件名、任意 URL、EXIF 或图像特征到公开仓库**；不会自动下载、重新上传、生成图片、修改硬盘上的任何媒体。
