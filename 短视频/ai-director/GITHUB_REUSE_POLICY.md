@@ -35,6 +35,14 @@
 7. LICENSE_EVIDENCE_MISSING_MUSIC_LICENSE_CHECK：音乐真正选定之后再登记授权来源、证明与状态；计划不等于授权。
 8. LICENSE_EVIDENCE_MISSING_ASSET_LICENSE_CHECK：同样为每一件实际素材保留授权证据；不能把未核验字段改成已核验。
 
+## 第四阶段：参考资产库复用决定（2026-10-11）
+
+对照 [CineCrew](https://github.com/Ironieser/CineCrew) FilmDSL 的 assets/stable ID 设计，以及 [AI Cinematic Pipeline](https://github.com/billpar/ai-cinematic-pipeline) 的人物多角度参考图、场景与道具表；设计通用、无依赖的资产登记和校验层。借鉴 [python-jsonschema/jsonschema](https://github.com/python-jsonschema/jsonschema) 的 Draft 2020-12 规范，将可移植结构声明放进 `schemas/reference_assets.schema.json`。
+
+**实际采纳**：稳定资产 ID + 每镜引用 + 缺失资产审查 + 人工审核/来源/许可/哈希门禁。**没有实际集成或复制第三方项目源码**，因为 CineCrew 的完整多智能体/生成依赖超出了当前规划工具需求；`jsonschema` 保持可选，不强制用户电脑安装。
+
+**新增代码**：`reference_assets.py`、`tests/test_reference_assets.py`、`schemas/reference_assets.schema.json`、`REFERENCE_ASSETS.md`，并在 `director_v2.py` 中提供可选参考资产目录校验/编译连接。新流程仍是无付费离线规划，尚未生成任何真实参考图，也未对用户本地私有 `jobs/` 完成实机验证。
+
 ## 本轮第三阶段混合制作路由决策（2026-10-11）
 
 - [CineCrew](https://github.com/Ironieser/CineCrew) 的 FilmDSL 明确约束镜头、资产和导演审查；[AI Cinematic Pipeline](https://github.com/billpar/ai-cinematic-pipeline) 明确视频生成与音频后期/剪辑分离。这里只借鉴`结构化镜头`和`后期路线显式表示`的设计，不安装模型、不复制第三方源码。
