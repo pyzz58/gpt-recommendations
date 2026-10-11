@@ -77,6 +77,7 @@ class FilmContinuityTests(unittest.TestCase):
 
     def test_prop_teleportation_across_shots_is_blocked(self):
         self.tracks["S02"]["entity_tracks"][1]["start_state"]["position"]="suddenly in left hand"
+        self.tracks["S02"]["entity_tracks"][1]["end_state"]["position"]="suddenly in left hand"
         r=film.inspect_tracks(self.base,self.tracks)
         self.assertEqual(r["status"],"blocked")
         self.assertEqual(r["issues"][0]["code"],
@@ -85,6 +86,7 @@ class FilmContinuityTests(unittest.TestCase):
 
     def test_costume_changes_without_cut_are_blocked(self):
         self.tracks["S02"]["entity_tracks"][0]["start_state"]["appearance"]="red suit"
+        self.tracks["S02"]["entity_tracks"][0]["end_state"]["appearance"]="red suit"
         r=film.inspect_tracks(self.base,self.tracks)
         self.assertEqual(r["issues"][0]["code"],
                          "CONTINUITY_TELEPORT_OR_COSTUME_DRIFT")
@@ -111,6 +113,9 @@ class FilmContinuityTests(unittest.TestCase):
         e["end_state"]["holder"]="right hand"
         e["cut_break"]="offscreen_transition"
         e["cut_reason"]="The letter is picked up during a deliberate invisible cut"
+        next_env=self.tracks["S03"]["entity_tracks"][1]
+        next_env["start_state"]["holder"]="right hand"
+        next_env["end_state"]["holder"]="right hand"
         r=film.inspect_tracks(self.base,self.tracks)
         self.assertEqual(r["status"],"needs_human_review")
         self.assertEqual(r["issues"][0]["code"],
