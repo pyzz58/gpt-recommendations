@@ -72,6 +72,9 @@ def review_creative(shot, direction, preceding_shot, character_ids):
                 flag("ANIMATION_FIELD_MISSING", "animation." + key)
         if anim.get("mode") == "none" and anim.get("elements"):
             flag("ANIMATION_CONTRADICTION", "mode=none but animation elements exist")
+        if meaningful(anim.get("mode")) and anim["mode"] != "none" and anim.get("elements") == []:
+            flag("ANIMATION_ELEMENTS_REQUIRED",
+                 "an animated shot needs explicit layers and executable actions")
 
     speech = direction.get("speech")
     if not isinstance(speech, dict):
@@ -171,7 +174,8 @@ def compile_workbook(base, directions):
     # Keep "concept complete" separate from "editor handoff ready".
     unfinished_codes = {"VOICEOVER_CUE_PENDING",
                         "ANIMATION_KEYFRAMES_NEED_TIMECODES",
-                        "AUDIO_BRIDGE_DECISION_PENDING"}
+                        "AUDIO_BRIDGE_DECISION_PENDING",
+                        "MOTION_GRAPHIC_DESIGN_REVIEW"}
     handoff_pending = [f for f in timeline_findings if
                        f["severity"] == "blocker" or f["code"] in unfinished_codes]
     concept_complete = len(findings) == 0 and len(timeline_blockers) == 0
