@@ -16,6 +16,7 @@ import sys
 
 from director import validate as validate_v1
 import reference_assets as refassets
+import production_gate
 
 VERSION = "0.2.0"
 FORBIDDEN_UNSUPPORTED_MODES = {"paid_video_generation", "publish", "auto_upload"}
@@ -296,7 +297,7 @@ def compile_package(base, directions, assets=None, asset_root=None):
     route_counts = {route:sum(j["execution_route"] == route for j in jobs)
                     for route in sorted(PRODUCTION_ROUTES)
                     if any(j["execution_route"] == route for j in jobs)}
-    return {"schema_version":"0.2", "title":base["title"], "aspect_ratio":"9:16", "shots":jobs,
+    package = {"schema_version":"0.2", "title":base["title"], "aspect_ratio":"9:16", "shots":jobs,
             "production_summary":{"routes":route_counts,
                                   "ai_video_jobs":route_counts.get("ai_video",0),
                                   "non_video_jobs":len(jobs)-route_counts.get("ai_video",0),
@@ -306,6 +307,8 @@ def compile_package(base, directions, assets=None, asset_root=None):
                  "human_visual_consistency_verified":False, "media_generated":False},
             "warnings":warnings, "not_generated_video":True, "publishing_allowed":False,
             "prompt_usage":"Prompts are candidates for operator review and actual-model testing; platform capabilities, version and limits must be checked before generation."}
+    package["generation_gate"] = production_gate.evaluate(package)
+    return package
 
 
 def render_compare(base, directions, output):
