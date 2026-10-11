@@ -1,6 +1,12 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 十阶段真实模型接口覆盖（仅合成静态响应验收）
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 横向模块之外的纵向验收：读得见的完整镜头工作包
+
+现在 [END_TO_END_SYNTHETIC_ACCEPTANCE.md](END_TO_END_SYNTHETIC_ACCEPTANCE.md) 将过去分开单测的整条流程串起来：从虚构文章、合成导演/剧本编辑、规划版锁定，到十专业岗位逐次模拟回复、独立声画审查，再用现有完整视频工作单编译器导出 4 镜头公共 Markdown/JSON。GitHub Actions 上传 `ai-director-SYNTHETIC-NOT-REAL-AI-operator-pack` 供核查；输出必须同时包含 **2 个 Wan/Seedance AI 视频候选提示词镜头和 2 个非视频后期镜头**。
+
+该演示真正测试了结构性跨部门交接及导出功能，但角色创作回复均为开发者预写，**不是 DeepSeek 实际联网创作结果**，更不能以这种合成样稿评价创意质量、角色连续性或真实模型出片率；还必须在用户授权私人试验与费用后才能做实测。
+
+## 十阶段真实模型接口覆盖（仅合成静态响应验收）
 
 完整 [DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md](DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md) / `agent_live_crew.py` 让**锁定版本**的十阶段专业角色可以逐岗选择并独立发往 DeepSeek，专业岗位约束/来源/后期路径不变。内置单个任务+revision+模型+文章摘要+计划摘要+人民币预算预留的严格闸门。表演、摄影、声音三个阶段都交付后才允许剪辑动画；AI 技术后由独立 QA 检查声画、时间、来源；发生冲突不允许假审批。
 
