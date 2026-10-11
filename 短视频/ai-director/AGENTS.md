@@ -1,3 +1,7 @@
+## 对白样例与正常表演用语（2026-10-12）
+
+[《先吃饭》48秒对白样例](examples/dinner-dialogue-review/director_workbook.md)已补齐VO、画外/出镜对白、字幕与口型交接；均未录音/生成/人审。AUD-026修复“等待”被占位规则误拦，见 [DIRECTOR_DIALOGUE_REVIEW.md](DIRECTOR_DIALOGUE_REVIEW.md)。累计26项，13项回归修复，原生产P0仍开放。不得靠删掉正常中文来让样例过检，也不得将时间线sync_dialogue字段等同所有对白都要口型；按明确声画设计交付。无新增付费授权。
+
 # 当前任务顺序：先完成导演交付，再扩张外围（2026-10-12（新西兰时间））
 
 用户已同意将开发重心拉回“文案 → 完整导演制作方案”。当前执行 [PRODUCT_REVIEW_PLAN.md](PRODUCT_REVIEW_PLAN.md)，先看 [60 秒完整样例](examples/door-letter-review/director_workbook.md)。

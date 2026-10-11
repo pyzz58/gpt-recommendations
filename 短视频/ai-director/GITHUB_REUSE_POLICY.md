@@ -1,3 +1,7 @@
+## 2026-10-12：正常中文表演误判的最小修复
+
+《先吃饭》样例驱动AUD-026修复。核对jsonschema关键字与Pydantic类型模块的公开源码入口，选择直接复用现有占位标记规则，集中小函数替代单字“待”判断，无新库、第三方源码或框架。实际复现、回归和未验证边界见 [DIRECTOR_DIALOGUE_REVIEW.md](DIRECTOR_DIALOGUE_REVIEW.md)。
+
 ## 2026-10-12（新西兰时间）：以完整导演样例检验已有能力
 
 本轮沿用现有 director_v2、director_workbook、continuity_contract，不新增框架、SDK 或第三方源码。此前查看的 CineCrew 共享场景/资产约束与 OpenTimelineIO 时间线分层继续作为结构参考；本轮样例不构成对它们的安装、集成或兼容性验证。成熟开源复用规则继续适用于实际技术改动；作品编写和文档整理无需重复引入技术选型工程。参见 [当前计划](PRODUCT_REVIEW_PLAN.md)。

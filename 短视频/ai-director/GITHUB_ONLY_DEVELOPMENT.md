@@ -1,3 +1,7 @@
+## 2026-10-12：对白交付与AUD-026
+
+完成 [48秒/6镜对白候选](examples/dinner-dialogue-review/director_workbook.md)，附逐句配音、口型责任与计划SRT；修复正常“等待”表演指令误拦。隔离Linux补齐现有固定依赖后全量573测试通过，严格样例编译通过。代码提交 `62dd1046217387516fdc893b7714814fc369b85a`；无真实配音/口型/视频、无新模型请求、无Mac操作。详情见 [说明](DIRECTOR_DIALOGUE_REVIEW.md)。
+
 ## 2026-10-12（新西兰时间）：完整导演样例优先
 
 本轮完成 [60 秒 / 8 镜导演候选](examples/door-letter-review/director_workbook.md) 和 [当前计划](PRODUCT_REVIEW_PLAN.md)，复用已有编译器，无运行代码或第三方依赖变更。基础/专业稿、连续性、严格编译与源文/产物一致性在隔离 Linux 验证通过；仍保留 8 项未审阅提示。本轮零新增 DeepSeek 调用、无媒体生成、无 Mac 部署。历史 P0 继续阻断真实生产，但不阻断公开虚构文字方案开发。

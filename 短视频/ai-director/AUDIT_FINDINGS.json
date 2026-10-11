@@ -310,6 +310,18 @@
       "evidence_type": "confirmed_code",
       "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/1",
       "fix_commit": "3f021015079f840b58ebeebde82ad5020d6a54d6"
+    },
+    {
+      "id": "AUD-026",
+      "priority": "P2",
+      "domain": "director_placeholder_false_positive",
+      "status": "fixed_regression_verified",
+      "evidence_type": "confirmed_code",
+      "description": "全局方向和逐镜节拍原先用单字“待”检测占位，误拦“等待/期待”和实录校准说明。改用明确占位标记，保留脚手架和真正待填内容阻断；不代表自然语言艺术质量验收。",
+      "source": "director_v2._has_unfinished_placeholder;director_v2.validate",
+      "test_evidence": "tests/test_director_v2.py::test_authored_waiting_and_expectation_are_not_placeholders;tests/test_director_v2.py::test_explicit_drafting_markers_remain_rejected",
+      "issue_url": "",
+      "fix_commit": "62dd1046217387516fdc893b7714814fc369b85a"
     }
   ]
 }
