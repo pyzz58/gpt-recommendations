@@ -170,7 +170,9 @@ def assemble(base, direction):
             next_shot = all_shots[shot_index + 1] if shot_index + 1 < len(all_shots) else None
             valid_duration = (isinstance(bridge_duration, (int, float))
                               and not isinstance(bridge_duration, bool))
-            valid = (bridge_type in AUDIO_BRIDGE_TYPES and track in AUDIO_TRACKS
+            valid = (isinstance(bridge_type, str)
+                     and isinstance(track, str)
+                     and bridge_type in AUDIO_BRIDGE_TYPES and track in AUDIO_TRACKS
                      and valid_duration and bridge_duration >= 0)
             if not valid:
                 issue(sid, "AUDIO_BRIDGE_INVALID", "blocker",
