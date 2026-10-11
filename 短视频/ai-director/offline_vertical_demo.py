@@ -63,6 +63,9 @@ def run_synthetic_only(output_dir):
                     fixture.snapshot, fixture.original, state)
                 markdown = delivery.render_operator_markdown(package)
                 counts = package["production_counts"]
+                if not (counts["ai_video_jobs"] > 0 and
+                        counts["non_video_jobs"] > 0):
+                    raise ValueError("DEMO_MUST_COVER_VIDEO_AND_POST_ROUTES")
                 summary = {
                     "kind": "PUBLIC_SYNTHETIC_VERTICAL_DEMO_NOT_REAL_AI",
                     "synthetic_source_id": "SYNTHETIC_ENVELOPE_STORY_ONLY",
