@@ -49,6 +49,12 @@
 
 严禁“自动修复”等于模型自己多跑几遍。对真实收费请求，任何重试都需要新的明确授权，尤其响应已经发生、账单未知的情况。
 
+## 版本化参考资产卡第四轮专项审计（2026-10-11）
+
+- **AUD-020 离线代码完成**：[asset_reference_manifest.py](asset_reference_manifest.py) 对权威 `characters/props/scenes` 建立稳定参考资产 ID、内容 SHA256、不可覆写 version 链、逐镜锁定版号。换图片后旧版镜头必须重新显式绑定，不能自动升级到未确认的外观。
+- **已经接入** `editorial_review_lock` 的私人版本快照、`agent_live_crew` 真实岗位入口的预算之前版本校验、`agent_role_contracts` 的只读元数据 user JSON，以及 `production_delivery` 的最终逐镜工单。反例：更换权威稿、冒充同意授权、混入私人 URL/路径、角色 ID 串换、旧团队引用新版本等，都有离线回归。
+- **AUD-003/Issue #2 继续 OPEN**：我们没有保存真实私有图片、验证照片实际可解码、确认肖像权或素材许可，也没有在 Wan/Seedance 上视觉实测。格式/哈希不等于电影人物外观一致。验收报告见 [REFERENCE_ASSET_VERSIONING_AUDIT.md](REFERENCE_ASSET_VERSIONING_AUDIT.md)，本轮没有新 DeepSeek API 费用。
+
 ## CineCrew 式资产连续性第三轮专项审计（2026-10-11）
 
 - **AUD-019 子模块已完成离线回归**：新 [film_continuity.py](film_continuity.py) 从权威源中建立稳定角色/道具/场景 ID，逐镜有可追踪位置、服装、道具状态和动作事件；跨镜突变阻断，画外时空跳转需要额外人工审核。接入表演岗位 Schema、局部返工、独立 QA、最终工单。
