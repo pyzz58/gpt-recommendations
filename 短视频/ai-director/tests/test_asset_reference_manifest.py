@@ -207,7 +207,7 @@ class AssetReferenceManifestTests(unittest.TestCase):
         # The old role state cannot silently run with another new manifest.
         old=review.stage_locked_team(locked,f.source)["team"]
         with self.assertRaisesRegex(Exception,
-                                    "PILOT_LOCKED_SNAPSHOT_OR_TEAM_INVALID"):
+                                    "PILOT_LOCKED_REFERENCE_VERSION_DRIFT"):
             crew.inspect_locked_role(added,f.source,old,"director_brief")
         wrong=deepcopy(added)
         wrong["asset_reference_manifest"]["human_approved"]=True
