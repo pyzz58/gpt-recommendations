@@ -65,6 +65,11 @@ class LockedCrewPilotTests(unittest.TestCase):
                     continue
                 d=shot["duration"]
                 if task=="acting":
+                    # Synthetic FilmDSL timeline. This fixture has no author-
+                    # declared cast or prop IDs in its fictional plan. Empty
+                    # track list is honest and must surface unresolved gaps.
+                    item["continuity"]["scene_id"]=shot.get("scene_id")
+                    item["continuity"]["entity_tracks"]=[]
                     mid=d/2
                     item["beats"][0]["from_s"]=0
                     item["beats"][0]["to_s"]=mid
