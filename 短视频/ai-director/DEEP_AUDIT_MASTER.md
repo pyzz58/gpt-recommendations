@@ -49,6 +49,12 @@
 
 严禁“自动修复”等于模型自己多跑几遍。对真实收费请求，任何重试都需要新的明确授权，尤其响应已经发生、账单未知的情况。
 
+## AUD-021 同镜头多用途资产参考（2026-10-11）
+
+- **已确认并修复 v1 模型缺陷**：一个人物/镜头原先只有一个 `shot_bindings`，追加服装会覆盖脸部主参考。现使用 `private-visual-reference-manifest-v2` 的 `shot_slot_bindings[shot_id][entity_id][identity_front|identity_side|wardrobe]`；每个槽位独立校验 SHA-256、版本、所属实体和片段，初始主引用保留供兼容。
+- 检验了**跨镜服装切换**需人工复审，新增版本时旧镜头槽位立即失效，伪造槽位/跨角色换图片/把 v1 旧快照当 v2 读取均会拒绝。代码验证不代替真人身份/肖像权/实际视频视觉检验。
+- 相关证据：[REFERENCE_ASSET_VERSIONING_AUDIT.md](REFERENCE_ASSET_VERSIONING_AUDIT.md)、[test_asset_reference_manifest.py](tests/test_asset_reference_manifest.py)、[AUD-003 Issue #2](https://github.com/pyzz58/gpt-recommendations/issues/2)。仍不调用收费模型，仍无私有原图仓储。
+
 ## 版本化参考资产卡第四轮专项审计（2026-10-11）
 
 - **AUD-020 离线代码完成**：[asset_reference_manifest.py](asset_reference_manifest.py) 对权威 `characters/props/scenes` 建立稳定参考资产 ID、内容 SHA256、不可覆写 version 链、逐镜锁定版号。换图片后旧版镜头必须重新显式绑定，不能自动升级到未确认的外观。
