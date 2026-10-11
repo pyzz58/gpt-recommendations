@@ -103,6 +103,15 @@ def scaffold(base):
             "continuity": {"start_state": "待填", "end_state": "待填", "locked_entities": [], "reference_assets": []},
             "graphics": {"treatment": "待填", "claims_used": list(shot.get("claim_ids", [])), "labels": [], "motion": "待填", "context_note": "待填"},
             "generation": {"route": "ai_video" if shot["visual_type"] == "ai_video" else "post_production", "clip_type": "single_continuous_take" if shot["visual_type"] == "ai_video" else "not_a_video_model_job", "negative_constraints": [], "reference_roles": [], "reference_bindings": [], "limits": "不在画面内部生成准确汉字、数字或字幕"},
+            "editing": {"incoming_transition": "待导演设计", "outgoing_transition": shot["transition"],
+                        "cut_reason": "待导演设计", "rhythm": "待导演设计",
+                        "assembly_instructions": "待导演设计"},
+            "animation": {"mode": "待导演设计", "timing": "待导演设计",
+                          "elements": [], "render_in_post": False, "style": "待导演设计"},
+            "speech": {"voiceover": {"text": shot["narration"],
+                                    "delivery": "待导演设计", "timing": "待导演设计"},
+                       "dialogue": [], "subtitle_direction": "待导演设计",
+                       "lip_sync_policy": "待导演设计"},
             "qa": {"acceptance_tests": ["待导演明确可观察结果"], "issues": [], "human_approved": False}
         } for shot in base["shots"]]
     }
