@@ -250,6 +250,44 @@ class ModelGatewayTests(unittest.TestCase):
         self.assertEqual(updated["tasks"]["camera_art"]["revision"], 1)
         self.assertEqual(updated["tasks"]["editing_animation"]["status"], "stale")
 
+    def test_tampered_quote_cannot_underreserve_or_change_model(self):
+        book = self.book()
+        request = gateway.prepare_request(
+            self.base, self.state, "director_brief", book,
+            source_text=self.source)
+        quote = request["quote"]
+        changes = [
+            {"reserved_cny": "0.00000001"},
+            {"model_key": "film"},
+            {"provider": "unapproved_provider"},
+            {"reserved_output_tokens": 1},
+            {"input_proxy_tokens": 1},
+            {"live_calls_authorized": True},
+        ]
+        for change in changes:
+            bad = deepcopy(quote)
+            bad.update(change)
+            with self.assertRaises(gateway.ModelBudgetError):
+                book.reserve(bad, revision=1)
+        self.assertEqual(book.attempts, [])
+        book.reserve(quote, revision=1)
+        self.assertEqual(len(book.attempts), 1)
+
+    def test_invalid_attempt_still_consumes_mock_budget_not_real_money(self):
+        book = self.book(max_attempts=1)
+        malformed = deepcopy(self.responses)
+        malformed["director_brief"]["1"] = "not-json"
+        with self.assertRaises(ValueError):
+            gateway.simulate_one(
+                self.base, self.state, book, self.transport(malformed),
+                source_text=self.source)
+        self.assertEqual(book.safe_summary()["attempts_used"], 1)
+        self.assertEqual(book.safe_summary()["actual_billed_cny"], "0")
+        with self.assertRaisesRegex(gateway.ModelBudgetError, "max model attempts"):
+            gateway.simulate_one(
+                self.base, self.state, book, self.transport(),
+                source_text=self.source)
+
     def test_budget_quote_does_not_auto_verify_actual_provider_prices(self):
         book = self.book()
         quote = gateway.prepare_request(
