@@ -6,6 +6,12 @@
 - **已融合成熟开源**：GitHub CI 使用 [coveragepy/coveragepy](https://github.com/coveragepy/coveragepy) Apache-2.0 的 `coverage==7.16.1` 测 21 核心模块 statement+branch，发布临时公开报告；首次 494 测试总覆盖 83%，最低几个重要模块需补回归。账本 `PilotJournal.finish` 失败后回滚+锁死继续请求，防止未知扣费重放。没有安装到用户 Mac，也不调用额外 DeepSeek。
 - [GITHUB_REUSE_POLICY.md](GITHUB_REUSE_POLICY.md) 继续优先：CineCrew FilmDSL（研究代码的可复用模型）、LangGraph（持久恢复）、jsonschema（格式验证），但**未实际完整引入**以上大型框架，先验证许可、版本、复杂度和私稿/费用安全。
 
+## AUD-008/009 正式 Schema 验收（2026-10-11）
+
+- 完整证据：[RUNTIME_SCHEMA_AND_PROMPT_TRUST_AUDIT.md](RUNTIME_SCHEMA_AND_PROMPT_TRUST_AUDIT.md)；真实模型文本输出不再只“提示应该遵守 Schema”。CI/受信任运行环境需安装 [python-jsonschema/jsonschema](https://github.com/python-jsonschema/jsonschema) MIT 稳定 tag `v4.25.1`，固定于 `requirements-schema.txt`；如缺依赖/Schema 无效，**在 reserve/付费 API 发送前拒绝**。
+- `role_schema_guard.py` 在正文专业校验之外执行模型收到的同一 Draft 2020-12 Schema：固定静态错误号、不输出私人字段值、禁止远程 `$ref`、逐镜扩展 storyboard_pitch 也严格执行。继续保留原文 hash、部门字段所有权、导演/摄影视觉和灯光硬约束。首次完成十角色合成验证，不代表真实模型语义可靠。
+- [AUD-009 Issue #5](https://github.com/pyzz58/gpt-recommendations/issues/5) 保持 OPEN：原文 JSON 封装及假冒 system/tool 消息只证明传输结构没有越权，**不能证明模型完全抵御 Prompt Injection**；新实机攻防须另外授权，不复用此前临时 Key。
+
 # 当前开发模式：仅 GitHub 远程开发（2026-10-11 用户明确决定，最高优先级）
 
 **自本条决定起，项目仅在 GitHub 仓库开发，直到用户明确发出“可以开始本地运行/部署”的新指令。任何较旧的“先在 Mac 执行”“让 Codex 在 Downloads 目录修改”“运行 git pull / 本地测试 / 打包”的建议，当前全部暂停。**
