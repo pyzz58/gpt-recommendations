@@ -10,6 +10,16 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 新主架构：总导演统筹的专业 Agent 影视团队（最高优先级）
+
+- **先阅读 [MULTI_AGENT_STUDIO.md](MULTI_AGENT_STUDIO.md)** 与 `agent_team.py`。产品入口仍为文案，产品输出仍为一份专业导演交付书；团队协作是内部生产方法，不增加用户需要管理的角色数量。
+- **总导演 Showrunner 拥有导演圣经/剧情方案审定与最终整合权**。剧本编辑提出源文案改写建议、动作导演管理 staging/performance/beats/continuity/shootability、摄影美术管理 camera/art、声音导演管理 sound/speech、剪辑动画管理 editing/animation/graphics、AI 技术导演管理 generation，QA 只读审查。负责人不能直接写其他部门的字段或修改原文。
+- 第一版通过十阶段 DAG 发包：`director_brief → script_edit → director_lock → (acting,camera_art,sound) → editing_animation → ai_technical → quality_review → director_final`。动作/摄影/声音部门的整集任务允许并行准备；不要为每个镜头机械地完整调用全体 Agent。
+- 每个专业交付必须带 `base_digest`、上游依赖版本、角色所属字段和受影响镜头范围；独立 QA 提出修改建议，只有总导演发起定向 `request_revision`，对受影响镜头与邻接剪辑重新派单，保留已通过的非相关部门成果及版本历史。
+- **共享的权威原稿、人物和道具事实不可被岗位输出静默覆盖**；源稿修改属于须另行批准的提案。专业团队的完成状态不是用户最终批准。`agent_team.compile_team_workbook` 接入现有 `director_v2.validate` / `director_workbook.compile_workbook`，不得绕过已有的专业制作质量检查。
+- **当前仅完成离线角色合同、任务派发、版本/权限/返工和工作单合并代码，并没有真的运行八个 AI。** 禁止为了自称“多 Agent”而直接发起收费 DeepSeek/视频接口或在 Mac 安装 CrewAI/LangGraph。后续模型适配、费用预算和部署需要用户另外明确授权。
+- 公开 GitHub 只存合成示例和源代码，绝不上传用户文案、私人 jobs、真实素材。旧 `local_director` 保持兼容；只有完成自动协作回归与人审后才考虑替换其单体生成链。
+
 ## 真人动作可拍性与合理拆段（当前导演主线）
 
 - 阅读 [SHOOTABILITY.md](SHOOTABILITY.md)。`director_shootability.py` 根据导演主动写出的 `shootability.action_units` 检查 actor_id、左右手、稳定道具 ID、所选 beat、秒数和可见动作结果；不从自然语言猜测真实模型能力、不自动生成素材。
