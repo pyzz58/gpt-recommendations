@@ -16,7 +16,7 @@ import re
 import agent_team as team
 import film_continuity as film
 
-VERSION="private-visual-reference-manifest-v1"
+VERSION="private-visual-reference-manifest-v2"
 MAX_IMAGE_BYTES=12*1024*1024
 IMAGE_FORMATS=frozenset(("image/png","image/jpeg","image/webp"))
 SLOTS=frozenset(("identity_front","identity_side","wardrobe",
@@ -25,6 +25,11 @@ KIND_SLOTS={
     "character":frozenset(("identity_front","identity_side","wardrobe")),
     "prop":frozenset(("prop_reference",)),
     "scene":frozenset(("location_reference",)),
+}
+RECOMMENDED_SLOTS={
+    "character":("identity_front","wardrobe"),
+    "prop":("prop_reference",),
+    "scene":("location_reference",),
 }
 HEX64=re.compile(r"^[0-9a-f]{64}$")
 ID=re.compile(r"^[A-Za-z][A-Za-z0-9_-]{1,63}$")
@@ -61,9 +66,12 @@ def create_empty(plan, source_digest):
     _require(isinstance(source_digest,str) and
              HEX64.fullmatch(source_digest) is not None,
              "ASSET_SOURCE_HASH_REQUIRED")
+    targets=_shot_targets(plan)
     return {"version":VERSION,"plan_digest":team.fingerprint(plan),
             "source_digest":source_digest,"cards":{},
-            "shot_bindings":_shot_targets(plan),
+            "shot_bindings":targets,
+            "shot_slot_bindings":{
+                sid:{eid:{} for eid in entities} for sid,entities in targets.items()},
             "human_approved":False,"media_identity_verified":False,
             "usage_rights_verified":False,"reference_bytes_persisted":False,
             "paid_api_authorized":False,
@@ -100,10 +108,12 @@ def validate(plan, source_digest, manifest):
                  "reference_bytes_persisted","paid_api_authorized",
                  "private_metadata_only")) and
              type(manifest.get("cards")) is dict and
-             type(manifest.get("shot_bindings")) is dict,
+             type(manifest.get("shot_bindings")) is dict and
+             type(manifest.get("shot_slot_bindings")) is dict,
              "ASSET_MANIFEST_SOURCE_OR_AUTHORITY_INVALID")
     entities=_manifest_entities(plan)
-    _require(set(manifest["shot_bindings"])==set(expected["shot_bindings"]),
+    _require(set(manifest["shot_bindings"])==set(expected["shot_bindings"]) and
+             set(manifest["shot_slot_bindings"])==set(expected["shot_slot_bindings"]),
              "ASSET_SHOT_BINDING_COVERAGE")
     cards=manifest["cards"]
     _require(len(cards)<=250 and len(manifest["shot_bindings"])<=1000,
@@ -140,36 +150,65 @@ def validate(plan, source_digest, manifest):
                 "ASSET_REVISION_CHAIN_OR_RIGHTS_INVALID")
             prev=_card_digest(rev)
     missing=[]
+    missing_required_slots=[]
     switches=[]
-    prev_entity_bindings={}
+    prev_primary={}
+    prev_slot={}
     for sid,target in expected["shot_bindings"].items():
         bindings=manifest["shot_bindings"][sid]
+        slot_entities=manifest["shot_slot_bindings"][sid]
         _require(type(bindings) is dict and
-                 set(bindings)==set(target),
+                 type(slot_entities) is dict and
+                 set(bindings)==set(target) and
+                 set(slot_entities)==set(target),
                  "ASSET_SHOT_ENTITY_BINDINGS_INVALID")
         for entity_id,link in bindings.items():
+            slots=slot_entities[entity_id]
+            _require(type(slots) is dict and
+                     set(slots).issubset(KIND_SLOTS[entities[entity_id]]),
+                     "ASSET_SHOT_SLOT_BINDINGS_INVALID")
+            for slot,ref in slots.items():
+                _require(type(ref) is dict and
+                         set(ref)=={"asset_id","version","sha256"} and
+                         type(ref["asset_id"]) is str and
+                         ref["asset_id"] in cards,
+                         "ASSET_SHOT_REFERENCE_INVALID")
+                card=cards[ref["asset_id"]]
+                latest=card["versions"][-1]
+                _require(card["entity_id"]==entity_id and card["slot"]==slot
+                         and type(ref["version"]) is int
+                         and ref["version"]==latest["version"]
+                         and ref["sha256"]==latest["sha256"],
+                         "ASSET_SHOT_STALE_OR_WRONG_ENTITY")
+                current=(ref["asset_id"],ref["version"],ref["sha256"])
+                key=(entity_id,slot)
+                earlier=prev_slot.get(key)
+                if earlier is not None and earlier!=current:
+                    switches.append({"entity_id":entity_id,"slot":slot,
+                                     "shot_id":sid,
+                                     "reason":"slot_version_switch_requires_human_review"})
+                prev_slot[key]=current
+            for recommended in RECOMMENDED_SLOTS[entities[entity_id]]:
+                if recommended not in slots:
+                    missing_required_slots.append({
+                        "shot_id":sid,"entity_id":entity_id,
+                        "slot":recommended,"reason":"recommended_reference_missing"})
             if link is None:
+                _require(not slots,"ASSET_PRIMARY_MISSING_WITH_SLOTS")
                 missing.append({"shot_id":sid,"entity_id":entity_id,
                                 "reason":"reference_not_bound"})
                 continue
-            _require(type(link) is dict and set(link)=={
-                "asset_id","version","sha256"} and
-                link["asset_id"] in cards,
-                "ASSET_SHOT_REFERENCE_INVALID")
-            card=cards[link["asset_id"]]
-            version=card["versions"][-1]
-            _require(card["entity_id"]==entity_id and
-                     type(link["version"]) is int and
-                     link["version"]==version["version"] and
-                     link["sha256"]==version["sha256"],
-                     "ASSET_SHOT_STALE_OR_WRONG_ENTITY")
-            earlier=prev_entity_bindings.get(entity_id)
-            if earlier is not None and earlier != (
-                    link["asset_id"],link["version"],link["sha256"]):
-                switches.append({"entity_id":entity_id,"shot_id":sid,
+            _require(type(link) is dict and
+                     set(link)=={"asset_id","version","sha256"} and
+                     any(link==r for r in slots.values()),
+                     "ASSET_PRIMARY_NOT_BOUND_TO_SLOT")
+            current=(link["asset_id"],link["version"],link["sha256"])
+            earlier=prev_primary.get(entity_id)
+            if earlier is not None and earlier!=current:
+                switches.append({"entity_id":entity_id,
+                                 "slot":"primary","shot_id":sid,
                                  "reason":"reference_switch_requires_human_review"})
-            prev_entity_bindings[entity_id]=(
-                link["asset_id"],link["version"],link["sha256"])
+            prev_primary[entity_id]=current
     return {
         "kind":VERSION,"manifest_digest":team.fingerprint(manifest),
         "source_digest":source_digest,
@@ -178,6 +217,10 @@ def validate(plan, source_digest, manifest):
         "revisions_count":sum(len(x["versions"]) for x in cards.values()),
         "missing_bindings_count":len(missing),
         "missing_bindings":missing,
+        "missing_recommended_slot_count":len(missing_required_slots),
+        "missing_recommended_slots":missing_required_slots,
+        "slot_binding_count":sum(len(assets) for shot in
+            manifest["shot_slot_bindings"].values() for assets in shot.values()),
         "reference_switches":switches,
         "per_entity_references_consistent":len(switches)==0,
         "bytes_stored_in_manifest":False,
@@ -243,9 +286,17 @@ def bind_shot(plan, source_digest, manifest, *, shot_id, entity_id, asset_id):
     _require(card["entity_id"]==entity_id and card["versions"],
              "ASSET_SHOT_BINDING_WRONG_ENTITY")
     newest=card["versions"][-1]
-    out["shot_bindings"][shot_id][entity_id]={
-        "asset_id":asset_id,"version":newest["version"],
-        "sha256":newest["sha256"]}
+    link={"asset_id":asset_id,"version":newest["version"],
+          "sha256":newest["sha256"]}
+    slots=out["shot_slot_bindings"][shot_id][entity_id]
+    primary=out["shot_bindings"][shot_id][entity_id]
+    # Adding wardrobe or a side view cannot silently replace the primary
+    # face. Rebinding the same primary slot intentionally refreshes its version.
+    if primary is None or (type(primary) is dict and
+                           primary.get("asset_id") in out["cards"] and
+                           out["cards"][primary["asset_id"]]["slot"]==card["slot"]):
+        out["shot_bindings"][shot_id][entity_id]=deepcopy(link)
+    slots[card["slot"]]=link
     # Reject all malformed fields other than the already-existing stale
     # version bindings; do not allow saving this until all shots are rebound.
     return out
