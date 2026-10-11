@@ -205,3 +205,71 @@ def inspect_preproduction(plan, handoff):
         "production_ready": False,
         "human_approved": False,
     }
+
+# Canonical cross-department camera deliverable for a real editor-originated
+# creative candidate. Applies only to source-locked crews with a bound pitch;
+# previous unbridged fixtures/legacy v0.2 packages remain backward compatible.
+VIDEO_SHOT_SIZES = frozenset({
+    "establishing", "wide", "medium", "medium_close", "close_up",
+    "extreme_close_up", "insert", "over_shoulder",
+})
+LIGHTING_STATES = frozenset({
+    "lit", "dim", "near_dark", "blackout", "backlit", "transition",
+})
+
+
+def camera_requirements_for_role(base, payload):
+    """Fail before accepting an AI-video camera role with placeholder specs.
+
+    Values are proposed production designs, not verified camera hardware,
+    floorplans or physical lighting assets. No AI provider calls take place.
+    """
+    _require(isinstance(base, dict) and isinstance(base.get("shots"), list)
+             and isinstance(payload, dict) and
+             isinstance(payload.get("shots"), dict),
+             "HANDOFF_CAMERA_DELIVERY_INVALID")
+    previous_lighting_state = None
+    for base_shot in base["shots"]:
+        sid = base_shot["id"]
+        authored = payload["shots"].get(sid)
+        if authored is None:
+            continue  # scoped revisions are covered by team role contract
+        if base_shot.get("visual_type") != "ai_video":
+            continue
+        _require(isinstance(authored.get("camera"), dict) and
+                 isinstance(authored.get("art"), dict),
+                 "HANDOFF_CAMERA_ART_SECTIONS_REQUIRED")
+        camera, art = authored["camera"], authored["art"]
+        _require(camera.get("shot_size") in VIDEO_SHOT_SIZES,
+                 "HANDOFF_CAMERA_REAL_SHOT_SIZE_REQUIRED")
+        mm = camera.get("focal_length_mm")
+        _require(type(mm) in (int, float) and 14 <= mm <= 135,
+                 "HANDOFF_CAMERA_FOCAL_LENGTH_REQUIRED")
+        _require(not _empty(camera.get("screen_axis")) and
+                 len(camera["screen_axis"].strip()) >= 6,
+                 "HANDOFF_CAMERA_PHYSICAL_AXIS_REQUIRED")
+        _require(art.get("lighting_state") in LIGHTING_STATES,
+                 "HANDOFF_LIGHTING_STATE_REQUIRED")
+        practical = art.get("practical_sources")
+        _require(isinstance(practical, list) and bool(practical) and
+                 all(isinstance(v, str) and v.strip() for v in practical),
+                 "HANDOFF_PRACTICAL_LIGHT_SOURCES_REQUIRED")
+        cause = art.get("lighting_change_reason")
+        _require(not _empty(cause) and len(cause.strip()) >= 6,
+                 "HANDOFF_LIGHT_CHANGE_CAUSE_REQUIRED")
+        # An AI-video shot transitioning to a new state must not call it
+        # unchanged or omit the physical reason. State is not inferred from
+        # freeform Chinese prose, to avoid pretending semantic certainty.
+        if previous_lighting_state is not None and (
+                previous_lighting_state != art["lighting_state"]):
+            _require(cause.strip().lower() not in (
+                "unchanged", "no change", "same as previous", "灯光不变",
+                "无变化", "没有变化"),
+                "HANDOFF_LIGHT_TRANSITION_DENIED_AS_UNCHANGED")
+        previous_lighting_state = art["lighting_state"]
+    return {"kind": "typed_camera_preflight_v1",
+            "status": "candidate_camera_fields_structurally_present",
+            "source_assets_verified": False,
+            "lighting_continuity_physically_verified": False,
+            "human_approved": False,
+            "video_generated": False}
