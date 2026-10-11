@@ -82,7 +82,8 @@ def inspect_locked_role(snapshot, episode_source, state, task_id):
 
 
 def run_one_locked_role(snapshot, episode_source, state, journal, *,
-                        permit=None, client=None, api_key=None, task_id):
+                        permit=None, client=None, api_key=None, task_id,
+                        result_vault=None):
     """One role, one declared revision, one budget reserve and one transport.
 
     No loop, no silent role switching, no retry, no approval shortcut.
@@ -130,6 +131,15 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
                "PILOT_PRIVATE_API_KEY_MISSING")
     else:
         _check(api_key is None, "PILOT_NO_SECRETS_IN_FIXTURE")
+    if type(client) is pilot.DeepSeekHTTPSClient or result_vault is not None:
+        from private_result_checkpoint import PrivateResultVault
+        _check(type(result_vault) is PrivateResultVault and
+               result_vault.journal is journal,
+               "PILOT_PRIVATE_RESULT_VAULT_REQUIRED")
+        try:
+            result_vault.assert_existing_accepted_checkpoint_chain(state)
+        except Exception:
+            raise pilot.PilotError("PILOT_PRIVATE_RESULT_CHAIN_NOT_SAFE") from None
     record_id = journal.reserve(task_id, check["next_revision"], envelope)
     parsed = None
     try:
@@ -187,7 +197,17 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
                 record_id, "response_rejected",
                 usage=parsed["usage"] if parsed is not None else None)
         raise pilot.PilotError("PILOT_SPECIALIST_RESPONSE_REJECTED_NO_RETRY") from None
-    journal.finish(record_id, "response_accepted", usage=parsed["usage"])
+    if result_vault is not None:
+        try:
+            result_vault.save(record_id, state, updated, usage=parsed["usage"])
+        except Exception:
+            raise pilot.PilotError(
+                "PILOT_RESULT_CHECKPOINT_UNCERTAIN_NO_RETRY") from None
+    try:
+        journal.finish(record_id, "response_accepted", usage=parsed["usage"])
+    except Exception:
+        raise pilot.PilotError(
+            "PILOT_LEDGER_COMMIT_UNCERTAIN_RECOVERY_REQUIRED") from None
     return updated, {
         "version": VERSION, "task_id": task_id,
         "revision": check["next_revision"],
