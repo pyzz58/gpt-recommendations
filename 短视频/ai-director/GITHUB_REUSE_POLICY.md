@@ -114,6 +114,10 @@
 - 进度：**已查到 ≠ 已集成 ≠ 已验证**。三者必须单独标记。
 
 以上为 2026-10-11 公开仓库初筛结论，许可证和维护活跃度日后须重新核查。
+## 2026-10-11 创意剧本编辑的开源复用决策
+
+本次直接重用本项目既有的 `agent_role_contracts.build_role_messages/submit_role_output`、`agent_team.start`、`article_intake.prepare_episode` 和 `director.validate`；专业扩展对照原岗位文档而不引入新编排框架。创作拓展和源稿哈希验收由标准库实现，没有复制/引入外部 Agent 库，没有变更第三方许可证，也没有进行真实 LLM 调用。先证实合成短故事由总导演与编剧形成“独立具体分镜建议”，再请求后续真实模型的隐私、费用授权，避免把单纯架构扩张误当作导演品质提升。
+
 ## 2026-10-11 长文案拆分与导演团队直入
 
 复用仓库现有的 `director.py.validate/render_preview`、`agent_team.start/packet` 和 `agent_role_contracts.build_role_messages`，新拆分器仅使用 Python 标准库（`re`、`hashlib`），避免为了 Markdown 数字标题检索而引入完整多 Agent 或 Markdown 服务框架。此阶段无第三方代码复制、版权依赖、供应商服务调用；复杂上下文的艺术性分集仍需交给专业剧本编辑/总导演而非把正则自动识别宣传成 AI 理解。
