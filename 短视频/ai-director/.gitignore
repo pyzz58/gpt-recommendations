@@ -4,3 +4,23 @@ jobs/
 .env
 .DS_Store
 .api_usage.lock
+
+# Future runtime dependencies and build outputs; never commit machine-local state
+.venv/
+venv/
+node_modules/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage/
+dist/
+build/
+# Private generated work and temporary media; not upstream source code
+outputs/
+renders/
+cache/
+.cache/
+*.log
+*.env
+.env.*
