@@ -1,0 +1,4 @@
+# Runtime requirement for validation of model-authored JSON. MIT license.
+# Version v4.25.1 supports Python >=3.9 (upstream pyproject.toml).
+# Never treat a missing validator as permission to accept model responses.
+jsonschema==4.25.1
