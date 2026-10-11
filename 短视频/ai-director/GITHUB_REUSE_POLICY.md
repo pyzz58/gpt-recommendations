@@ -114,6 +114,10 @@
 - 进度：**已查到 ≠ 已集成 ≠ 已验证**。三者必须单独标记。
 
 以上为 2026-10-11 公开仓库初筛结论，许可证和维护活跃度日后须重新核查。
+## 2026-10-11 长文案拆分与导演团队直入
+
+复用仓库现有的 `director.py.validate/render_preview`、`agent_team.start/packet` 和 `agent_role_contracts.build_role_messages`，新拆分器仅使用 Python 标准库（`re`、`hashlib`），避免为了 Markdown 数字标题检索而引入完整多 Agent 或 Markdown 服务框架。此阶段无第三方代码复制、版权依赖、供应商服务调用；复杂上下文的艺术性分集仍需交给专业剧本编辑/总导演而非把正则自动识别宣传成 AI 理解。
+
 ## 2026-10-11 DeepSeek 协议与账本实现的参考来源
 
 本轮再次查询 [DeepSeek API 官方更新](https://api-docs.deepseek.com/updates/)、[Chat Completions](https://api-docs.deepseek.com/api/create-chat-completion/)、[JSON Output](https://api-docs.deepseek.com/guides/json_mode/) 和 [Models & Pricing](https://api-docs.deepseek.com/quick_start/pricing/)，确认当前 API 模型名 `deepseek-flash` 对应 V4.1 Flash，响应 usage 包含输入缓存命中/未命中、总输入/输出数，计价区分缓存和峰谷时段。标准库实现小型请求形状与解析器，遵守已有供应商无关 `agent_role_contracts`，未复制第三方代码或导入新的框架。持久预留机制采用 Python 标准库 `fcntl`、`tempfile`、`os.replace`，仅模拟单机 POSIX 锁及断点，不是供应商费用控制保证；实时文档与发票仍需上线前再次验证。参考 CrewAI/LangGraph/LiteLLM/Pydantic AI 的历史选型仍成立，但没有作为本轮依赖纳入。
