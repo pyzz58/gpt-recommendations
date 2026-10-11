@@ -18,10 +18,15 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Run AI Director unit tests
+      - name: Install verified OSS test coverage tracer
+        run: |
+          python -m pip install "coverage==7.16.1"
+      - name: Run AI Director unit tests with branch coverage
         working-directory: "短视频/ai-director"
         run: |
-          python -m unittest discover -s tests -v
+          python -m coverage run --branch --source=article_intake,editorial_storyboard,editorial_review_lock,creative_production_handoff,agent_team,agent_role_contracts,agent_live_pilot,agent_live_crew,agent_provider_wire,agent_handoff_audit,agent_creative_review,production_delivery,director_v2,director_workbook,one_time_deepseek_cloud_trial,agent_executor,local_director,llm_budget,director_timeline,director_shootability,director_narrative_bridges -m unittest discover -s tests -v
+          python -m coverage json -o /tmp/ai-director-branch-coverage.json
+          python -m coverage report -m
           python local_director.py doctor
           python -m py_compile local_director.py local_ui.py llm_budget.py agent_team.py agent_handoff_audit.py agent_creative_review.py creative_production_handoff.py agent_executor.py agent_role_contracts.py agent_model_gateway.py article_intake.py editorial_storyboard.py editorial_review_lock.py production_delivery.py agent_live_pilot.py agent_live_crew.py offline_vertical_demo.py live_pilot_readiness.py one_time_deepseek_cloud_trial.py agent_provider_wire.py agent_durable_preflight.py director_v2.py director_workbook.py
           # Public sample only: compile a readable operator work-order pack
@@ -55,5 +60,13 @@ jobs:
         with:
           name: ai-director-SYNTHETIC-NOT-REAL-AI-operator-pack
           path: /tmp/ai-director-complete-synthetic-demo/
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Attach module branch-coverage baseline (no scripts or secrets)
+        uses: actions/upload-artifact@v6
+        with:
+          name: ai-director-COVERAGE-BASELINE-ONLY
+          path: /tmp/ai-director-branch-coverage.json
           retention-days: 7
           if-no-files-found: error
