@@ -7,6 +7,8 @@ It does NOT invent cuts, dialogue, voiceover pauses or visual animations.
 from __future__ import annotations
 import re
 
+AUDIO_BRIDGE_TYPES = {"none", "j_cut", "l_cut"}
+AUDIO_TRACKS = {"none", "voiceover", "dialogue", "ambience", "music", "sfx"}
 HAN = re.compile(r"[\u3400-\u9fff]")
 
 
@@ -23,7 +25,8 @@ def assemble(base, direction):
         findings.append({"shot_id": sid, "code": code,
                          "severity": level, "detail": detail})
 
-    for shot in base["shots"]:
+    all_shots = base["shots"]
+    for shot_index, shot in enumerate(all_shots):
         sid = shot["id"]
         d = directions[sid]
         shot_start = shot["start"]
@@ -82,7 +85,7 @@ def assemble(base, direction):
                     texts.append(text)
                     info["text"] = text
                     timed_voice.append(info)
-                if "".join(texts).replace(" ", "") != voiceover.replace(" ", ""):
+                if "".join("".join(text.split()) for text in texts) != "".join(voiceover.split()):
                     issue(sid, "VOICEOVER_CUE_DRIFT", "blocker",
                           "timecoded voiceover text does not reproduce original narration")
         if voiceover and not timed_voice:
@@ -95,7 +98,11 @@ def assemble(base, direction):
                   f"({chinese_count/duration:.1f} characters/s); audition narration before lock")
 
         dialogues = []
-        for i, line in enumerate(speech.get("dialogue", [])):
+        raw_dialogue = speech.get("dialogue", [])
+        if not isinstance(raw_dialogue, list):
+            issue(sid, "DIALOGUE_LIST_INVALID", "blocker", "speech.dialogue must be an array")
+            raw_dialogue = []
+        for i, line in enumerate(raw_dialogue):
             info = timed(line, "dialogue[" + str(i) + "]", required=True)
             if info:
                 info.update({"speaker_id": line.get("speaker_id"), "text": line.get("text"),
@@ -107,7 +114,12 @@ def assemble(base, direction):
 
         fx_events = []
         sound = d.get("sound", {})
-        for i, fx in enumerate(sound.get("effects", [])):
+        effects = sound.get("effects", []) if isinstance(sound, dict) else []
+        if not isinstance(effects, list):
+            issue(sid, "SFX_LIST_INVALID", "blocker",
+                  "sound.effects must be an array")
+            effects = []
+        for i, fx in enumerate(effects):
             t = fx.get("time_s") if isinstance(fx, dict) else None
             if not isinstance(t, (int, float)) or isinstance(t, bool) or not 0 <= t <= duration:
                 issue(sid, "SFX_CUE_OUT_OF_RANGE", "blocker",
@@ -143,6 +155,49 @@ def assemble(base, direction):
             issue(sid, "MOTION_GRAPHIC_DESIGN_REVIEW", "review",
                   "base shot requires graphics; animation.mode=none must be justified")
         edit = d.get("editing") if isinstance(d.get("editing"), dict) else {}
+        audio_bridge = edit.get("audio_bridge")
+        bridge_track = None
+        if audio_bridge is None:
+            issue(sid, "AUDIO_BRIDGE_DECISION_PENDING", "review",
+                  "director must explicitly choose no bridge or J-cut/L-cut for handoff")
+        elif not isinstance(audio_bridge, dict):
+            issue(sid, "AUDIO_BRIDGE_INVALID", "blocker",
+                  "editing.audio_bridge must be an object")
+        else:
+            bridge_type = audio_bridge.get("type")
+            bridge_duration = audio_bridge.get("duration_s")
+            track = audio_bridge.get("track")
+            next_shot = all_shots[shot_index + 1] if shot_index + 1 < len(all_shots) else None
+            valid_duration = (isinstance(bridge_duration, (int, float))
+                              and not isinstance(bridge_duration, bool))
+            valid = (bridge_type in AUDIO_BRIDGE_TYPES and track in AUDIO_TRACKS
+                     and valid_duration and bridge_duration >= 0)
+            if not valid:
+                issue(sid, "AUDIO_BRIDGE_INVALID", "blocker",
+                      "bridge needs type, track and numeric duration_s")
+            elif bridge_type == "none":
+                if bridge_duration != 0 or track != "none":
+                    issue(sid, "AUDIO_BRIDGE_NONE_CONFLICT", "blocker",
+                          "type=none requires duration_s=0 and track=none")
+                else:
+                    bridge_track = {"type": "none", "duration_s": 0, "track": "none",
+                                    "reason": audio_bridge.get("reason", "")}
+            elif (not next_shot or track == "none" or bridge_duration <= 0
+                  or bridge_duration > min(duration, next_shot["duration"])):
+                issue(sid, "AUDIO_BRIDGE_TIME_INVALID", "blocker",
+                      "J/L cut must have adjacent shot and positive duration within both shots")
+            elif not isinstance(audio_bridge.get("reason"), str) or not audio_bridge["reason"].strip():
+                issue(sid, "AUDIO_BRIDGE_REASON_MISSING", "blocker",
+                      "J/L cut must explain dramatic reason for cross-shot audio")
+            else:
+                cut = shot_start + duration
+                bridge_track = {"type": bridge_type, "duration_s": bridge_duration,
+                                "track": track, "reason": audio_bridge["reason"],
+                                "next_shot_id": next_shot["id"],
+                                "absolute_in_s": round(cut - bridge_duration, 3)
+                                                  if bridge_type == "j_cut" else cut,
+                                "absolute_out_s": cut if bridge_type == "j_cut"
+                                    else round(cut + bridge_duration, 3)}
         tracks.append({
             "shot_id": sid, "absolute_in_s": shot_start,
             "absolute_out_s": shot_start + duration,
@@ -157,7 +212,7 @@ def assemble(base, direction):
                      "outgoing_transition": edit.get("outgoing_transition", shot.get("transition")),
                      "cut_reason": edit.get("cut_reason"),
                      "assembly_instructions": edit.get("assembly_instructions"),
-                     "audio_bridge": edit.get("audio_bridge")},
+                     "audio_bridge": bridge_track},
             "source_media_exists": False, "frame_accurate": False,
         })
     return tracks, findings
