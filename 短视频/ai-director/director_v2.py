@@ -21,6 +21,51 @@ FORBIDDEN_UNSUPPORTED_MODES = {"paid_video_generation", "publish", "auto_upload"
 REQUIRED_SHOT_FIELDS = ("objective", "staging", "performance", "beats", "camera", "art", "sound", "continuity", "graphics", "generation", "qa")
 REQUIRED_BEAT_FIELDS = ("from_s", "to_s", "visible_change", "performance", "camera", "sound")
 
+# An ai_video base shot may be produced using still images, editing or real
+# inserts. These are planning routes only: this module cannot render footage.
+PRODUCTION_ROUTES = {"ai_video", "static_post", "edit_composite", "live_action_insert", "post_production"}
+METHOD_ALIASES = {
+    "ai_video": "ai_video", "ai视频": "ai_video", "ai视频生成": "ai_video", "ai生成视频": "ai_video",
+    "static_post": "static_post", "static_image_post": "static_post", "still_post": "static_post",
+    "静态图+后期": "static_post", "静态图后期": "static_post",
+    "静态关键帧+后期灯光": "static_post", "静态关键帧+后期": "static_post",
+    "静态图+后期灯光": "static_post",
+    "edit_composite": "edit_composite", "editing_composite": "edit_composite",
+    "剪辑合成": "edit_composite", "后期剪辑合成": "edit_composite", "剪辑+合成": "edit_composite",
+    "live_action_insert": "live_action_insert", "live_action": "live_action_insert",
+    "practical_insert": "live_action_insert", "实拍插入": "live_action_insert", "实拍": "live_action_insert",
+    "post_production": "post_production", "后期制作": "post_production",
+}
+
+def production_route(shot, generation):
+    """Resolve an explicit non-video production method without changing base.
+
+    Supports a known production_method overriding old direction.route=ai_video
+    for conceptually ai_video shots. Unknown methods and conflicting explicit
+    routes fail closed. Route choices are plans, not rendered/verified assets.
+    """
+    route = generation.get("route")
+    if route in FORBIDDEN_UNSUPPORTED_MODES:
+        raise ValueError("disallowed execution route")
+    if route not in PRODUCTION_ROUTES:
+        raise ValueError("unsupported execution route: " + str(route))
+    method = generation.get("production_method")
+    if method is not None:
+        if not isinstance(method, str) or not method.strip():
+            raise ValueError("production_method must be a nonempty string")
+        mapped = METHOD_ALIASES.get(method.strip().lower().replace(" ", ""))
+        if mapped is None:
+            raise ValueError("unrecognized production_method; choose a documented canonical route")
+        if mapped != route:
+            if route == "ai_video" and shot.get("visual_type") == "ai_video":
+                route = mapped
+            else:
+                raise ValueError("production_method contradicts generation.route")
+    if shot.get("visual_type") != "ai_video" and route == "ai_video":
+        raise ValueError("generation route contradicts base visual_type")
+    return route
+
+
 
 def read_json(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
@@ -136,12 +181,12 @@ def validate(base, directions):
         move_time=direction["camera"].get("move_trigger_s",0)
         if not isinstance(move_time,(int,float)) or move_time<0 or move_time>shot["duration"]:
             errors.append(f"{prefix}: camera move trigger outside shot")
-        if direction["generation"].get("route") in FORBIDDEN_UNSUPPORTED_MODES:
-            errors.append(f"{prefix}: disallowed execution route")
-        should_be_video=(shot["visual_type"]=="ai_video")
-        if should_be_video != (direction["generation"].get("route")=="ai_video"):
-            errors.append(f"{prefix}: generation route contradicts base visual_type")
-        if should_be_video and not direction["continuity"].get("locked_entities"):
+        try:
+            route = production_route(shot, direction["generation"])
+        except ValueError as exc:
+            errors.append(f"{prefix}: {exc}")
+            route = None
+        if route == "ai_video" and not direction["continuity"].get("locked_entities"):
             errors.append(f"{prefix}: ai_video missing locked identity/prop constraints")
         if direction["graphics"].get("claims_used") != shot.get("claim_ids",[]):
             errors.append(f"{prefix}: graphics.claims_used must match base claims without adding new assertions")
@@ -191,10 +236,21 @@ def compile_package(base, directions):
     jobs=[]
     for shot in base["shots"]:
         d=shots[shot["id"]]
-        shared={"shot_id":shot["id"],"duration":shot["duration"],"visual_type":shot["visual_type"],"human_review_required":True,
+        route = production_route(shot, d["generation"])
+        shared={"shot_id":shot["id"],"duration":shot["duration"],"visual_type":shot["visual_type"],
+                "execution_route":route, "human_review_required":True,
                 "direction":d, "reference_roles":d["generation"]["reference_roles"]}
-        if shot["visual_type"] != "ai_video":
-            shared["postproduction_job"]={"visual":shot["visual"],"graphics":d["graphics"],"sound":d["sound"],"editorial_claims":shot["claim_ids"],"overlay_text":shot["subtitles"]["text"]}
+        if route != "ai_video":
+            shared["postproduction_job"]={
+                "production_route":route, "visual":shot["visual"], "graphics":d["graphics"],
+                "sound":d["sound"], "editorial_claims":shot["claim_ids"],
+                "overlay_text":shot["subtitles"]["text"],
+                "voiceover":shot["narration"], "voiceover_source":"base.narration",
+                "voiceover_note":d["sound"]["voiceover_note"],
+                "beats":d["beats"], "fallback":d["generation"].get("fallback"),
+                "cost_note":d["generation"].get("cost_note"),
+                "reference_roles":d["generation"]["reference_roles"],
+                "asset_status":"not_verified", "requires_operator_review":True}
             shared["prompts"]={}
         else:
             lens=d["camera"]
@@ -219,7 +275,7 @@ def compile_package(base, directions):
                        "\nPrefer a vetted reference image for consistent face and wardrobe when available; do not assert nonexistent references were supplied."),
                 "seedance":(f"Single continuous {shot['duration']:g}s shot, portrait 9:16. One clear evolving visual intention; keep subject and prop continuity stable.\n"+shot_direction+
                             "\nDo not force multiple cuts into one generation. Preserve observed end frame for continuation planning.")}
-            shared["postproduction_job"]={"voiceover":shot["narration"],"ambience":d["sound"]["ambient"],"music":d["sound"]["music"],"effects":d["sound"]["effects"],"overlay_text":shot["subtitles"]["text"]}
+            shared["postproduction_job"]={"voiceover":shot["narration"],"voiceover_source":"base.narration","voiceover_note":d["sound"]["voiceover_note"],"ambience":d["sound"]["ambient"],"music":d["sound"]["music"],"effects":d["sound"]["effects"],"overlay_text":shot["subtitles"]["text"]}
         jobs.append(shared)
     return {"schema_version":"0.2", "title":base["title"], "aspect_ratio":"9:16", "shots":jobs,
             "warnings":warnings, "not_generated_video":True, "publishing_allowed":False,
@@ -233,7 +289,7 @@ def render_compare(base, directions, output):
     for s in base["shots"]:
         d=shot_dirs[s["id"]]
         beats="".join("<tr><th>"+esc(f"{b['from_s']:g}–{b['to_s']:g}s")+"</th><td>"+esc(b['visible_change'])+"</td><td>"+esc(b['performance'])+"</td><td>"+esc(b['camera'])+"</td><td>"+esc(b['sound'])+"</td></tr>" for b in d["beats"])
-        cards.append(f'''<article><h2>{esc(s['id'])} · {esc(s['duration'])}s · {esc(s['purpose'])}</h2><div class="pair"><div class="old"><b>旧版概略</b><p>{esc(s['visual'])}</p><p>摄影：{esc(s['camera']['movement'])} · {esc(s['camera']['shot_size'])}</p></div><div class="new"><b>专业导演意图</b><p>{esc(d['objective']['observable_turn'])}</p><p><b>构图</b>：{esc(d['camera']['start_frame'])}</p><p><b>运镜</b>：{esc(d['camera']['movement'])}</p><p><b>质感</b>：{esc(d['art']['texture'])}</p></div></div><table><thead><tr><th>时间</th><th>画面变化</th><th>表演</th><th>摄影</th><th>声音</th></tr></thead><tbody>{beats}</tbody></table><p class="dim">画面审查：{esc('、'.join(d['qa']['acceptance_tests']))}</p></article>''')
+        cards.append(f'''<article><h2>{esc(s['id'])} · {esc(s['duration'])}s · {esc(s['purpose'])}</h2><div class="pair"><div class="old"><b>旧版概略</b><p>{esc(s['visual'])}</p><p>摄影：{esc(s['camera']['movement'])} · {esc(s['camera']['shot_size'])}</p></div><div class="new"><b>专业导演意图</b><p>{esc(d['objective']['observable_turn'])}</p><p><b>构图</b>：{esc(d['camera']['start_frame'])}</p><p><b>运镜</b>：{esc(d['camera']['movement'])}</p><p><b>质感</b>：{esc(d['art']['texture'])}</p><p><b>建议制作路线</b>：{esc(production_route(s, d['generation']))}</p></div></div><table><thead><tr><th>时间</th><th>画面变化</th><th>表演</th><th>摄影</th><th>声音</th></tr></thead><tbody>{beats}</tbody></table><p class="dim">画面审查：{esc('、'.join(d['qa']['acceptance_tests']))}</p></article>''')
     page=f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(base['title'])} v0.2 专业导演审片</title><style>body{{max-width:1350px;padding:26px;margin:auto;background:#101723;color:#eef3fa;font-family:system-ui,"PingFang SC",sans-serif}}article{{background:#1c2635;border:1px solid #334256;border-radius:14px;margin:18px 0;padding:20px}}h1{{margin-bottom:4px}}.notice{{padding:12px 15px;background:#323128;border-radius:8px}}.pair{{display:grid;grid-template-columns:1fr 1fr;gap:12px}}.old,.new{{border-radius:9px;padding:13px;background:#273244}}.old{{opacity:.72}}p{{line-height:1.55}}table{{width:100%;border-collapse:collapse;margin-top:15px;font-size:13px}}td,th{{border-bottom:1px solid #475365;padding:10px;text-align:left;vertical-align:top}}.dim{{color:#bcc7d7;font-size:13px}}@media(max-width:720px){{.pair{{grid-template-columns:1fr}}table{{display:block;overflow-x:auto}}}}</style></head><body><h1>{esc(base['title'])} · 专业导演 v0.2</h1><p>{esc(base['duration'])} 秒 / {len(base['shots'])} 镜头 / 9:16</p><div class="notice">这是用于比较的文字导演计划，不是真正的视频；医学数字未获事实核验，不能直接发布。模型生成也无法保证逐秒精确执行。</div>{''.join(cards)}</body></html>'''
     path=Path(output);path.parent.mkdir(parents=True,exist_ok=True);path.write_text(page,encoding="utf-8")
 
