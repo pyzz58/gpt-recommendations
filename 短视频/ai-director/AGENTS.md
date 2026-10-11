@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 逐镜审阅、返工和版本锁定（2026-10-11；仍未真人批准）
+
+- 本轮新增 [EDITORIAL_REVIEW_AND_LOCK.md](EDITORIAL_REVIEW_AND_LOCK.md)、`editorial_review_lock.py`、`tests/test_editorial_review_lock.py`。针对创意导演提案提供全部镜头、原文删减、待核验事实及全部待改稿建议的精确审阅表；每个具体分镜均绑定 SHA-256，遗漏、换版本、换原稿、请求返工或拒绝即不允许锁定。
+- `lock_planning_snapshot` **只是离线规划版本快照**（`planning_locked_identity_unverified`）。没有可信用户身份验证、付款/素材传输同意、安全签名或供应商账单授权；必须由未来私有后台额外确认。纯 JSON 中的“保留”选择不是作者已经实际同意的证明，不能以此运行付费模型。
+- `stage_locked_team` 重建绑定锁定 base/source 指纹的新十阶段账本，状态明确为 `offline_planning_only_not_authorized_to_dispatch`。所有真人审批、真实模型费用、影片生成与发布标志始终 False。
+- 仅以虚构信封故事合成审阅单测试；用户提供的《上学以后的孩子》不得写入公开 GitHub、CI、导出示例或其他第三方。
+
 ## 长文章导演与剧本编辑的创意分镜方案（2026-10-11，离线研发）
 
 - 阅读 [EDITORIAL_CREATIVE_BRIDGE.md](EDITORIAL_CREATIVE_BRIDGE.md)，模块 `editorial_storyboard.py` 将已有单集草案接入**现有**总导演 `director_brief` 与剧本编辑 `script_edit` 的正式任务、依赖版本、源稿哈希和标准岗位 JSON 验收。没有增加重复 Agent，没有真的调用 DeepSeek。
