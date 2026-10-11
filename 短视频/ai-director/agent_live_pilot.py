@@ -307,6 +307,10 @@ class PilotJournal:
             self._save()
         except Exception:
             self.records["attempts"].pop()
+            # The rename may have committed even when directory fsync failed.
+            # An in-memory rollback is not proof that no reservation exists.
+            # Reopen the durable journal before any further operation.
+            self.poisoned = True
             raise
         return record["id"]
 
@@ -567,3 +571,4 @@ def run_one_creative_task(intake, state, episode_source, journal,
         "publisher_approved": False,
         "human_identity_cryptographically_verified": False,
     }
+

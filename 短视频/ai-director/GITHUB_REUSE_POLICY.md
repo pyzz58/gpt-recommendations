@@ -1,5 +1,19 @@
 # GitHub 优先复用决策清单（2026-10-11）
 
+## 2026-10-11 私有恢复链与预留失败一致性复核（AUD-023/024/025）
+
+本轮保护导演/编剧和后续岗位已经产生的完整创作结果，避免恢复时混用历史状态或继续未知费用操作。基于 `3c7a8bf` 的合成故障注入证实：reserve 写盘失败后会话未锁死；checkpoint 只逐份验证而未比较相邻前后状态；人工恢复可以接受高于预留的 usage，已接受结果的 usage 未与账本比较。
+
+| 候选 | 本轮实际核查 | 采纳决定 |
+| --- | --- | --- |
+| [LangGraph checkpoint](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint) | README 中 checkpoint/config/pending writes 分离、避免重跑成功节点；仓库 MIT、未归档，2026-10-11 有推送 | 继续借鉴状态快照与副作用分离；保留项目自有付费单次授权，不引入其运行时、序列化器或自动恢复执行 |
+| [python-atomicwrites](https://github.com/untitaker/python-atomicwrites/blob/master/atomicwrites/__init__.py) | 核查 `sync/commit`、link/rename 后目录同步的实际源码；MIT，已归档，最近推送 2022-07-08 | 仅作故障边界参考，不新增依赖；它没有本项目的费用状态机或 checkpoint 来源链，不能直接解决这次缺陷 |
+
+只修改现有标准库实现，不复制第三方源码。测试限定隔离 Linux/Python 与 GitHub 合成 CI，不声称验证过 Mac 文件系统断电、长期云存储或中国网络；运行时无新增依赖、无需额外网络、没有后台进程。完整框架依赖/安装体积和 Mac 兼容未试装，不列为已验证集成。
+
+回退：按提交恢复这两个模块和新增测试，但旧版已知缺口会恢复，禁止因此开放真实私稿付费流程。SHA 摘要只能检查声明的一致性，不能抵御攻击者同时重写账本和全部快照；身份、可信备份和服务商账单仍由 AUD-002 跟踪。
+
+
 > **研发阶段限制（2026-10-11）**：开源借鉴/集成只在 GitHub 代码与非敏感隔离测试中进行；用户未批准前，不能要求 Mac 同步、安装、运行或下载，也不能触发收费模型。集成候选先记录许可证、维护证据与安全评估；详细闸门见 [GITHUB_ONLY_DEVELOPMENT.md](GITHUB_ONLY_DEVELOPMENT.md)。
 
 

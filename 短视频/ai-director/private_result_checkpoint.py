@@ -14,6 +14,7 @@ require manual vendor reconciliation; DO NOT automatically re-send.
 from __future__ import annotations
 
 from copy import deepcopy
+from decimal import Decimal, InvalidOperation
 import hashlib
 import json
 import os
@@ -137,6 +138,41 @@ class PrivateResultVault:
                  and state.get("source_digest") == self.journal.config["source_digest"],
                  "CHECKPOINT_SOURCE_OR_PLAN_DRIFT")
 
+    def _validate_usage(self, usage, rec):
+        # Recovery must enforce the same reservation ceiling as dispatch.
+        # A locally edited usage object is not a provider invoice.
+        _require(isinstance(usage, dict) and
+                 type(usage.get("total_tokens")) is int and
+                 usage["total_tokens"] >= 0 and
+                 isinstance(usage.get("estimated_usage_cost_cny"), str),
+                 "CHECKPOINT_USAGE_TAMPERED")
+        try:
+            cost = Decimal(usage["estimated_usage_cost_cny"])
+            reserved = Decimal(rec["reserved_cny"])
+        except (InvalidOperation, ValueError, TypeError):
+            raise CheckpointError("CHECKPOINT_USAGE_TAMPERED") from None
+        _require(cost.is_finite() and cost >= 0,
+                 "CHECKPOINT_USAGE_TAMPERED")
+        _require(cost <= reserved, "CHECKPOINT_USAGE_EXCEEDS_RESERVATION")
+        if rec["status"] == "response_accepted":
+            _require(usage["total_tokens"] == rec.get("reported_tokens") and
+                     usage["estimated_usage_cost_cny"] == rec.get("usage_estimate_cny"),
+                     "CHECKPOINT_USAGE_LEDGER_MISMATCH")
+
+    def _accepted_chain(self, *, before_attempt=None):
+        """Validate each predecessor link, not just standalone snapshots."""
+        previous = None
+        count = 0
+        for rec in self.journal.records["attempts"]:
+            if before_attempt is not None and rec["id"] >= before_attempt:
+                break
+            _require(rec["status"] not in pilot.BLOCKED_STATES,
+                     "CHECKPOINT_UNKNOWN_BILLING_BLOCKS_NEXT")
+            if rec["status"] == "response_accepted":
+                previous = self.load(rec["id"], expected_before=previous)["team"]
+                count += 1
+        return previous, count
+
     def save(self, attempt_id, before, after, *, usage):
         """Write validated private source-bound result BEFORE finish(accepted)."""
         rec = self._record(attempt_id)
@@ -144,10 +180,7 @@ class PrivateResultVault:
                  "CHECKPOINT_ATTEMPT_ALREADY_FINISHED")
         self._validate_state(before)
         self._validate_state(after)
-        _require(isinstance(usage, dict) and
-                 type(usage.get("total_tokens")) is int and
-                 isinstance(usage.get("estimated_usage_cost_cny"), str),
-                 "CHECKPOINT_USAGE_REQUIRED")
+        self._validate_usage(usage, rec)
         task_id = rec["task_id"]
         pre = before["tasks"].get(task_id)
         post = after["tasks"].get(task_id)
@@ -208,10 +241,7 @@ class PrivateResultVault:
                  data.get("base_digest") == self.journal.config["base_digest"] and
                  data.get("permission_to_reissue_model_request") is False,
                  "CHECKPOINT_BINDING_MISMATCH")
-        _require(isinstance(data.get("usage"), dict) and
-                 type(data["usage"].get("total_tokens")) is int and
-                 isinstance(data["usage"].get("estimated_usage_cost_cny"), str),
-                 "CHECKPOINT_USAGE_TAMPERED")
+        self._validate_usage(data.get("usage"), rec)
         out = data.get("after_state")
         self._validate_state(out)
         _require(_hash(out) == data.get("after_state_digest") and
@@ -233,19 +263,11 @@ class PrivateResultVault:
         """Fail closed on stale/missing prior accepted paid results."""
         self._check()
         self._validate_state(current_state)
-        accepted = [x for x in self.journal.records["attempts"]
-                    if x["status"] == "response_accepted"]
-        for record in accepted:
-            self.load(record["id"])  # hash, request and source must be bound
-        if accepted:
-            last = self.load(accepted[-1]["id"])
-            _require(_hash(last["team"]) == _hash(current_state),
+        last, count = self._accepted_chain()
+        if last is not None:
+            _require(_hash(last) == _hash(current_state),
                      "CHECKPOINT_CALLER_STATE_NOT_LATEST")
-        # A pending provider side effect cannot be resolved by sending again.
-        _require(not any(x["status"] in pilot.BLOCKED_STATES
-                         for x in self.journal.records["attempts"]),
-                 "CHECKPOINT_UNKNOWN_BILLING_BLOCKS_NEXT")
-        return {"accepted_private_results": len(accepted),
+        return {"accepted_private_results": count,
                 "new_provider_calls": 0, "caller_state_verified": True}
 
     def reconcile_saved_result(self, attempt_id, before, *, operator_acknowledgement):
@@ -260,6 +282,13 @@ class PrivateResultVault:
         rec = self._record(attempt_id)
         _require(rec["status"] in ("pending_uncertain","response_accepted"),
                  "CHECKPOINT_RECONCILIATION_STATUS_INVALID")
+        previous, _ = self._accepted_chain(before_attempt=attempt_id)
+        if previous is not None:
+            _require(_hash(previous) == _hash(before),
+                     "CHECKPOINT_PREVIOUS_STATE_MISMATCH")
+        if rec["status"] == "pending_uncertain":
+            _require(attempt_id == len(self.journal.records["attempts"]),
+                     "CHECKPOINT_PENDING_NOT_LATEST")
         result = self.load(attempt_id, expected_before=before)
         if rec["status"] == "pending_uncertain":
             self.journal.finish(attempt_id, "response_accepted",
@@ -272,3 +301,4 @@ class PrivateResultVault:
                 "identity_cryptographically_verified":False,
                 "permission_to_retry_spending":False,
                 "human_release_approved":False}
+
