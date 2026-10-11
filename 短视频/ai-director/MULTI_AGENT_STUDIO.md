@@ -1,6 +1,12 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## DeepSeek 供应商协议与模拟持久预留（新增）
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 用户输入整篇文章：分集与候选分镜接口
+
+[ARTICLE_TO_EPISODE_INTAKE.md](ARTICLE_TO_EPISODE_INTAKE.md) / `article_intake.py` 将整篇 Markdown 文章识别为多个章节/视频选题，输出安全状态标记的栏目目录、保留**与原文完全一致且有位置溯源**的候选旁白、自动 3–8 秒的暂定分镜时间线。已有 `director.validate`、`director.render_preview` 可对生成的 v0.1 草案验证和 HTML 可视化；`agent_team.start` 收到的是单集待创作计划，`director_brief` 是下一张准备交给真实 AI 的岗位任务单。
+
+现在已经能从**虚构合成长文案**机械拆出可预览的单集计划与真正待执行的团队 DAG，但这仍**不是**“AI 已经按作者文案做了完整专业导演方案”：所有镜头仅文本/数据图形占位，精确数据未核实，专业行动/剪辑/镜头 prompts 仍缺，真实 DeepSeek 仍没有获授权运行。不得把 fixture 或离线方案声称为完整产品闭环。
+
+## DeepSeek 供应商协议与模拟持久预留（新增）
 
 [PROVIDER_PROTOCOL_AND_DURABLE_BUDGET.md](PROVIDER_PROTOCOL_AND_DURABLE_BUDGET.md) 描述了 DeepSeek Chat Completions **离线协议实现**：构建 `deepseek-flash` 的 JSON 输出 POST body、核对回复中的真实供应商申报 Token 与缓存拆分，并用调用方声明的费率算账。单独的 `PrivateReservationJournal` 可在未来经授权的私有运行环境保存不含文案的状态记录，模拟超时/重启留下未决预留，拒绝未核销的自动重试。当前 **没有真正的网络传输器，也没有真实发票对账**。现有十阶段专业 DAG、输出验证及 QA 无变更。
 
