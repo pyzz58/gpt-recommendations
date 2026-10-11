@@ -270,7 +270,9 @@ class LockedCrewPilotTests(unittest.TestCase):
             corrupt["tasks"]["sound"]["deliverable"]["shots"][sid]["speech"]["voiceover"]["text"]="MISMATCH"
             payload={"qa_report":{"blockers":[
                 {"task_id":"sound","shot_ids":[sid],
-                 "detail":"Source narration differs from recorded original"}],
+                 "code":"SOURCE_VOICEOVER_DRIFT",
+                 "detail":"Source narration differs from recorded original",
+                 "recommended_change":"Restore the exact authoritative voiceover text"}],
                 "findings":[],"recommendation":"revise"}}
             result,_=live.run_one_locked_role(
                 self.snapshot,self.original,corrupt,journal,
