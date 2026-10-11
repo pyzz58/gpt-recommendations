@@ -206,6 +206,8 @@ class AssetReferenceManifestTests(unittest.TestCase):
             reference_manifest=added["asset_reference_manifest"])
         self.assertIn("versioned_reference_assets",
                       packet["messages"][1]["content"])
+        self.assertIn("unbound_references",
+                      packet["messages"][1]["content"])
         self.assertNotIn("FICTIONAL_HEADER_ONLY",packet["messages"][1]["content"])
         # The old role state cannot silently run with another new manifest.
         old=review.stage_locked_team(locked,f.source)["team"]
@@ -253,6 +255,10 @@ class AssetReferenceManifestTests(unittest.TestCase):
                          team.fingerprint(manifest))
         self.assertFalse(report["reference_manifest_review"]["visual_identity_verified"])
         self.assertFalse(report["reference_manifest_review"]["rights_verified"])
+        self.assertIn("missing_bindings",
+                      report["reference_manifest_review"])
+        self.assertIn("reference_switches_needing_review",
+                      report["reference_manifest_review"])
         self.assertFalse(report["ready_to_call_video_model"])
         for work in report["shots"]:
             self.assertIn("versioned_reference_bindings",work)
