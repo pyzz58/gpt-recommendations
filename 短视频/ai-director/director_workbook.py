@@ -14,6 +14,7 @@ import sys
 import director_v2
 import director_timeline
 import director_narrative_bridges
+import director_shootability
 
 EDIT_FIELDS = ("incoming_transition", "outgoing_transition", "cut_reason",
                "rhythm", "assembly_instructions")
@@ -191,7 +192,10 @@ def compile_workbook(base, directions):
     # Repeating a dramatic justification across three or more cuts requires
     # editorial reconsideration before calling the production blueprint ready.
     # This is an exact-repeat signal, not an automated creativity score.
-    blueprint_ready = handoff_ready and narrative_ready and not specificity_findings
+    shootability = director_shootability.review(base, directions, director_v2.production_route)
+    shootability_ready = shootability["director_structure_ready"]
+    blueprint_ready = (handoff_ready and narrative_ready and
+                       not specificity_findings and shootability_ready)
     return {
         "schema_version": "1.0", "kind": "script_to_short_video_director_workbook",
         "overview": {"title": base["title"], "core_message": base["core_message"],
@@ -201,6 +205,7 @@ def compile_workbook(base, directions):
                      "series_direction": directions["global_direction"]},
         "assembly_timeline": timeline, "editor_decision_list": edit_timeline,
         "narrative_bridges": narrative_bridges,
+        "shootability_review": shootability,
         "shots": shot_rows, "production_summary": compiled["production_summary"],
         "director_review": {"creative_design_complete": concept_complete,
                             "editor_handoff_ready": handoff_ready,
@@ -210,6 +215,10 @@ def compile_workbook(base, directions):
                             "narrative_handoff_findings": narrative_findings,
                             "editorial_specificity_review_required": bool(specificity_findings),
                             "editorial_specificity_findings": specificity_findings,
+                            "shootability_structure_ready": shootability_ready,
+                            "shootability_blockers": shootability["blockers"],
+                            "shootability_pending": shootability["pending"],
+                            "shootability_review_signals": shootability["review_signals"],
                             "production_blueprint_ready": blueprint_ready,
                             "unresolved": len(findings) + len(timeline_blockers),
                             "findings": findings + timeline_blockers,
@@ -240,9 +249,17 @@ def render_markdown(book):
              "重复套话复核：" + ("需要核对 " +
                   str(len(book["director_review"]["editorial_specificity_findings"])) +
                   " 条跨镜头理由" if
-                  book["director_review"]["editorial_specificity_review_required"] else "无明显完全重复"), ""]
+                  book["director_review"]["editorial_specificity_review_required"] else "无明显完全重复"),
+             "动作可拍性结构：" + ("已设计（未试拍）" if
+                  book["director_review"]["shootability_structure_ready"] else
+                  "未完成，阻断 " + str(book["director_review"]["shootability_blockers"]) +
+                  " 项，待设计 " + str(book["director_review"]["shootability_pending"]) + " 项"),
+             "动作可拍性提醒：" +
+                  str(book["director_review"]["shootability_review_signals"]) +
+                  " 项，需导演判断，不代表模型一定失败", ""]
     timeline_by_id = {t["shot_id"]: t for t in book["editor_decision_list"]}
     bridge_by_id = {b["from_shot_id"]: b for b in book["narrative_bridges"]}
+    shootability_by_id = {x["shot_id"]: x for x in book["shootability_review"]["shots"]}
     for shot in book["shots"]:
         lines += ["## " + shot["shot_id"] + " / " + str(shot["start_s"]) + "–" + str(shot["end_s"]) + "秒",
                   "剧情任务：" + shot["story"]["visible_change"],
@@ -267,11 +284,18 @@ def render_markdown(book):
                   fence + "json",
                   json.dumps(timeline_by_id[shot["shot_id"]], ensure_ascii=False, indent=2),
                   fence]
+        lines += ["", "### 逐镜动作可拍性与双手道具检查",
+                  fence + "json", json.dumps(shootability_by_id[shot["shot_id"]],
+                                            ensure_ascii=False, indent=2), fence]
         bridge = bridge_by_id.get(shot["shot_id"])
         if bridge:
             lines += ["", "### 下一镜的叙事、节奏与混合制作风格衔接",
                       fence + "json", json.dumps(bridge, ensure_ascii=False, indent=2), fence]
         lines.append("")
+    if book["shootability_review"]["findings"]:
+        lines += ["## 动作可拍性：待补的导演设计、阻断与试制风险"]
+        lines += [f"- {x['shot_id']}：[{x['severity']}] {x['code']} —— {x['detail']}"
+                  for x in book["shootability_review"]["findings"]]
     if book["director_review"]["narrative_handoff_findings"]:
         lines += ["## 跨镜头叙事与风格仍待导演处理"]
         lines += [f"- {x['shot_id']} → {x['next_shot_id']}：{x['code']} —— {x['detail']}"
@@ -307,6 +331,10 @@ def main(argv=None):
                              " narrative/style handoff items, " +
                              str(len(book["director_review"]["editorial_specificity_findings"])) +
                              " repeated editorial reasons, " +
+                             str(book["director_review"]["shootability_blockers"]) +
+                             " shootability blockers, " +
+                             str(book["director_review"]["shootability_pending"]) +
+                             " unplanned physical actions, " +
                              str(book["director_review"]["unresolved"]) +
                              " creative blockers; no output written")
         targets = [Path(args.out)] + ([Path(args.markdown)] if args.markdown else [])
