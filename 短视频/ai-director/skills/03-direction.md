@@ -19,6 +19,12 @@
 - 单个AI生成镜头重心不超过一项主要动作链和一项主要运镜；模型不支持的复杂要求要拆分镜头。
 - 不凭空添加额外剧情；所有镜头服务于文本核心信息，保持观众能看懂。
 
+## 真实动作切点证据与避免机械套话
+
+每对相邻镜头的 `editing.narrative_bridge` **必须**附 `beat_link`：`outgoing_beat_index` 指当前镜头 `beats[]` 的最后一个真实节拍，`incoming_beat_index=0` 指下一镜首节拍；`cut_on_visible_event` 以该末节拍实际动作（手停住、视线改变、物品落下等）具体说明为什么此刻切入下一镜。不能只写“动作结束后剪辑”；如果导演需要在别处切，必须先明确调整基础镜头或动作 beats，再建立交接，而不是虚构镜头外的事件。
+
+至少三条跨镜头 `why_cut_here` / `viewer_question` / `answer_or_reframe` / `motion_or_prop_link` / `implementation` 一字不差时将产生套话复核，并暂停“制作蓝图齐备”标记。允许合理的统一审美规范重复，但**叙事问题和实际动作链接必须跟各镜头内容相关**。电影语言的真正好坏仍留给真人逐镜审阅。
+
 ## 跨镜头专业导演衔接（新增主线要求）
 
 - 参见 [NARRATIVE_HANDOFF.md](../NARRATIVE_HANDOFF.md)。除了单镜头内部摄影/动作/动画/声音，**每个非末镜都必须为紧随其后的镜头设计 `editing.narrative_bridge`**。四个独立部分：
