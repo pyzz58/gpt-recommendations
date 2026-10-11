@@ -32,7 +32,12 @@ def _shot(state, task_id, sid):
 
 
 def _number(value):
-    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        return False
+    try:
+        return math.isfinite(value)
+    except (OverflowError, ValueError, TypeError):
+        return False
 
 
 def _section(state, task_id, sid, field):
@@ -116,7 +121,9 @@ def audit_handoffs(state, base=None):
                             issues.append(_issue("HANDOFF_BEAT_TIME_CONFLICT", "editing_animation",
                                                  [sid, ids[i+1]], "引用节拍没有到达前镜尾/后镜零秒"))
 
-        if isinstance(gen, dict) and "route" in gen and gen["route"] not in PRODUCTION_ROUTES:
+        if isinstance(gen, dict) and "route" in gen and (
+                not isinstance(gen["route"], str) or
+                gen["route"] not in PRODUCTION_ROUTES):
             issues.append(_issue("HANDOFF_INVALID_PRODUCTION_ROUTE", "ai_technical", [sid],
                                  "制作路线不是已支持的规范值"))
 
