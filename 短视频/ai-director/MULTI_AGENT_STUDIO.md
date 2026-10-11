@@ -1,6 +1,12 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 专业制作包导出：视频模型提示词与后期工单（离线参考可运行）
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 单次 DeepSeek 创意岗位真实调用准备（实际调用尚未授权）
+
+[DEEPSEEK_SINGLE_TASK_PILOT.md](DEEPSEEK_SINGLE_TASK_PILOT.md) / `agent_live_pilot.py` 提供固定 DeepSeek TLS 端点的**可用单任务请求代码**，严控每次岗位（首批仅 `director_brief`、`script_edit`），单集原文与 base 版本、逐次授权、模型费率预留、响应格式和导演专业 JSON 合同。真实调用前必须由可信私有审阅系统收集传输/费用许可，当前 ChatGPT 继续开发指令不得转化为任何自动发包；用户公开 GitHub 及现有 CI 只用模拟返回。
+
+CI 已模拟两专业岗位严格顺序工作并产生待用户审稿的创意分镜；**这与真实 DeepSeek 已经跑完不是一回事**。真实回复可能在导演质量审核中被拒绝；任何失败、超额或网络未知都不自动重试。实际收费仍依照提供方账单，程序预留无法绝对限制账单。
+
+## 专业制作包导出：视频模型提示词与后期工单（离线参考可运行）
 
 [PRODUCTION_DELIVERY_PACK.md](PRODUCTION_DELIVERY_PACK.md) / `production_delivery.py` 已将 v0.2 现有专业方案落成**每镜独立制作工单**。AI 视频路线保留逐镜 Wan/Seedance 候选提示词和动作、摄影、场景、人物道具连续性；数据图形等路线改用准确的后期工单和字幕/配音工作，不生成无关的真人视频提示词。全片产出剪辑时间线、镜头间交接、参考素材清单与 QA 待办。
 
