@@ -35,6 +35,10 @@
 7. LICENSE_EVIDENCE_MISSING_MUSIC_LICENSE_CHECK：音乐真正选定之后再登记授权来源、证明与状态；计划不等于授权。
 8. LICENSE_EVIDENCE_MISSING_ASSET_LICENSE_CHECK：同样为每一件实际素材保留授权证据；不能把未核验字段改成已核验。
 
+## 时间线剪辑工作单：借鉴 OpenTimelineIO 的轨道抽象
+
+调研 [AcademySoftwareFoundation/OpenTimelineIO](https://github.com/AcademySoftwareFoundation/OpenTimelineIO) 公开 README：它是成熟影视时间线交换框架，提供面向影视编辑的 clips/tracks/time ranges 与多种适配器。当前没有真实源媒体、也不需要向特定 NLE 导出，因此不引入其 Python/原生模块；只借鉴“导演决策 → 可定位的绝对时间事件列表”思想。新增零依赖 `director_timeline.py`，使 `director_workbook.py` 输出 `editor_decision_list`，明确旁白、对白、音效、动作、摄影、动画的时间轨道和待人工核验处。详见 [EDITOR_TIMELINE.md](EDITOR_TIMELINE.md)，没有复制其源码，不承诺当前能导出 FCP/剪映/达芬奇工程。
+
 ## 用户重申的产品边界：专业导演中间层为唯一核心
 
 用户再次明确：他提供文案，由系统作为“中转导演层”，**完整设计剪辑、动作、动画、场景、台词、摄影与声音**，并交付适合 AI 视频制作的一整套方案。不能继续只围绕参考图、门禁和工具接入扩张。
