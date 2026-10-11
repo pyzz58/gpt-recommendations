@@ -156,7 +156,8 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
             # accepting conflicting handoffs; QA may report 'revise' instead.
             draft = roles.validate_role_output(
                 base, state, task_id, parsed["content"],
-                source_text=episode_source)
+                source_text=episode_source,
+                editorial_handoff=snapshot["creative_handoff"])
             agent_executor._enforce_base_audit(state, base, task_id, draft)
             if task_id == "director_final" and (
                     draft["director_decision"]["decision"] ==
@@ -171,7 +172,8 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
                        "PILOT_QA_REVISIONS_BLOCK_FINAL_ACCEPTANCE")
         updated = roles.submit_role_output(
             base, state, task_id, parsed["content"],
-            source_text=episode_source)
+            source_text=episode_source,
+            editorial_handoff=snapshot["creative_handoff"])
     except Exception:
         if journal.records["attempts"][record_id-1]["status"] == "pending_uncertain":
             journal.finish(
