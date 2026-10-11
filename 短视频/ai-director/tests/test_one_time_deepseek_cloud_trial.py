@@ -29,6 +29,7 @@ class CloudOneTimeTrialTests(unittest.TestCase):
             "GITHUB_REPOSITORY":cloud.REPO,
             "GITHUB_REF":"refs/heads/main",
             "GITHUB_ACTOR":"pyzz58",
+            "GITHUB_RUN_ATTEMPT":"1",
             "DEEPSEEK_ONE_TIME_APPROVED":"YES_ONLY_TWO_CALLS",
         }
 
@@ -43,6 +44,19 @@ class CloudOneTimeTrialTests(unittest.TestCase):
                         with self.assertRaisesRegex(cloud.CloudTrialError,"CLOUD_"):
                             cloud.run_once_public_fiction(Path(tmp)/"private",api_key="FAKE_KEY_NEVER_NETWORKED")
                         client.assert_not_called()
+
+    def test_github_rerun_is_blocked_even_if_secret_remains(self):
+        bad=dict(self.allowed, GITHUB_RUN_ATTEMPT="2")
+        with patch.dict(os.environ,bad,clear=True):
+            with tempfile.TemporaryDirectory() as temp:
+                target=Path(temp)/"no-retry"
+                with patch("one_time_deepseek_cloud_trial.pilot.DeepSeekHTTPSClient") as client:
+                    with self.assertRaisesRegex(cloud.CloudTrialError,
+                                                "WORKFLOW_RERUN_FORBIDDEN"):
+                        cloud.run_once_public_fiction(target,
+                                                    api_key="NEVER_REAL_KEY_12345")
+                    client.assert_not_called()
+                self.assertFalse(target.exists())
 
     def test_wrong_actor_repo_and_non_manual_trigger_are_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
