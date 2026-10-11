@@ -19,6 +19,14 @@
 - 单个AI生成镜头重心不超过一项主要动作链和一项主要运镜；模型不支持的复杂要求要拆分镜头。
 - 不凭空添加额外剧情；所有镜头服务于文本核心信息，保持观众能看懂。
 
+## 让动作真的可制作：手、物、秒数与拆段方案
+
+- 参考 [SHOOTABILITY.md](../SHOOTABILITY.md)。有真人出镜且用 AI 视频路线时，`shootability` 必须写 `mode`、`action_units[]`：每个 beats 节拍至少一个动作或明确姿态保持；每个单元均有 `id,beat_index,actor_id,hand,prop_id,from_s,to_s,action,visible_result`。若无道具，`prop_id=null`，但手机、书等真实道具必须先在 `continuity_contract.props` 登记稳定 ID。
+- 左右手可以协同，但同一只手不能在同一秒承担两个独立动作；不要把“右手拿手机、左手拿书、起身、转身、走路”全部合成一个模糊 action。
+- AI 模型处理手指、多道具与遮挡可能有风险，遇到短时间连续精细动作要修改表演节奏、建议静态/实拍/剪辑替代或写可执行的 `fallback`，不要为了整齐强制单镜连续生成。
+- 选择 `mode=split_stitch` 则必须给 `segments[]`：每段 `id/from_s/to_s/route/join_rule`，连续覆盖全镜，讲清动作姿势和道具状态如何从前段带到后段。只是规划，不是实际生成。
+- `director_workbook.py` 会把动作可拍性问题、剪辑/台词/动画设计缺项、跨镜头衔接汇总到唯一主交付书。没有完成就留待导演设计，不能伪装已拍通或已锁脸。
+
 ## 真实动作切点证据与避免机械套话
 
 每对相邻镜头的 `editing.narrative_bridge` **必须**附 `beat_link`：`outgoing_beat_index` 指当前镜头 `beats[]` 的最后一个真实节拍，`incoming_beat_index=0` 指下一镜首节拍；`cut_on_visible_event` 以该末节拍实际动作（手停住、视线改变、物品落下等）具体说明为什么此刻切入下一镜。不能只写“动作结束后剪辑”；如果导演需要在别处切，必须先明确调整基础镜头或动作 beats，再建立交接，而不是虚构镜头外的事件。
