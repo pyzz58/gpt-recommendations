@@ -12,6 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 import film_continuity as film
 import agent_team as team
+import agent_handoff_audit as handoff
 
 
 class FilmContinuityTests(unittest.TestCase):
@@ -152,6 +153,39 @@ class FilmContinuityTests(unittest.TestCase):
         with self.assertRaisesRegex(film.ContinuityError,
                                     "EVENT_NOT_CAUSALLY_BOUND"):
             film.inspect_tracks(self.base,self.tracks)
+
+    def test_independent_qa_catches_prop_teleport_across_departments(self):
+        # Acting can assert anything in prose, but the independent reviewer
+        # compares typed evidence from actual source shot IDs.
+        props=self.tracks["S02"]["entity_tracks"][1]
+        props["start_state"]["holder"]="right hand"
+        props["end_state"]["holder"]="right hand"
+        state=team.start(self.base,source_text=self.source)
+        state["tasks"]["acting"]["deliverable"]={
+            "shots":{sid:{"continuity":deepcopy(v)}
+                     for sid,v in self.tracks.items()}}
+        report=handoff.audit_handoffs(state,self.base)
+        self.assertIn("CONTINUITY_TELEPORT_OR_COSTUME_DRIFT",
+                      [v["code"] for v in report["issues"]])
+        self.assertEqual(report["status"],"blocked")
+        self.assertFalse(state["release"]["human_approved"])
+
+    def test_independent_qa_tracks_unverified_cast_as_review_not_pass(self):
+        source=deepcopy(self.base)
+        for shot in source["shots"]:
+            shot["character_ids"]=[]
+            shot["prop_ids"]=[]
+        state=team.start(source,source_text=self.source)
+        for sid,row in self.tracks.items():
+            row["entity_tracks"]=[]
+        state["tasks"]["acting"]["deliverable"]={
+            "shots":{sid:{"continuity":deepcopy(v)}
+                     for sid,v in self.tracks.items()}}
+        report=handoff.audit_handoffs(state,source)
+        codes={v["code"] for v in report["issues"]}
+        self.assertIn("CONTINUITY_CAST_NOT_DECLARED",codes)
+        self.assertIn("CONTINUITY_PROPS_NOT_DECLARED",codes)
+        self.assertFalse(state["release"]["human_approved"])
 
     def test_mutable_plan_wrong_ids_fail_closed(self):
         bad=deepcopy(self.base)
