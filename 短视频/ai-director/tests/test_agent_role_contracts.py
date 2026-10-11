@@ -269,6 +269,28 @@ class ProfessionalRoleContractsTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 role.parse_strict_json(bad)
 
+    def test_extreme_exponent_is_not_valid_json_evidence(self):
+        with self.assertRaisesRegex(ValueError, "NONFINITE"):
+            role.parse_strict_json('{"camera": {"move_trigger_s": 1e999}}')
+
+    def test_generated_schema_requires_real_nested_fields(self):
+        self.advance("director_lock")
+        schema = role.output_schema(self.state, "acting")
+        shot = schema["properties"]["shots"]["properties"]["S01"]
+        self.assertEqual(shot["properties"]["beats"]["type"], "array")
+        self.assertEqual(shot["properties"]["shootability"]["type"], ["object", "null"])
+        self.assertIn("ending_pose", shot["properties"]["performance"]["required"])
+        self.assertIn("spatial_constraints", shot["properties"]["staging"]["required"])
+        self.assertIn("$schema", schema)
+
+    def test_malformed_route_reports_value_error_not_type_error(self):
+        self.advance("editing_animation")
+        payload = self.payload("ai_technical")
+        payload["shots"]["S01"]["generation"]["route"] = ["illegally nested"]
+        with self.assertRaisesRegex(ValueError, "ROUTE_INVALID"):
+            role.validate_role_output(self.base, self.state, "ai_technical",
+                                      json.dumps(payload), source_text=self.original)
+
     def test_scope_extra_and_missing_departments_rejected(self):
         self.advance("director_lock")
         p = self.payload("acting")
