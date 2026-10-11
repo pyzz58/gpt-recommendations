@@ -1,6 +1,12 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 逐镜审阅与锁定具体制作版本
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 专业制作包导出：视频模型提示词与后期工单（离线参考可运行）
+
+[PRODUCTION_DELIVERY_PACK.md](PRODUCTION_DELIVERY_PACK.md) / `production_delivery.py` 已将 v0.2 现有专业方案落成**每镜独立制作工单**。AI 视频路线保留逐镜 Wan/Seedance 候选提示词和动作、摄影、场景、人物道具连续性；数据图形等路线改用准确的后期工单和字幕/配音工作，不生成无关的真人视频提示词。全片产出剪辑时间线、镜头间交接、参考素材清单与 QA 待办。
+
+GitHub Actions 用仓库既有公开 `examples/quit-smoking` 演示导出 8 镜头 JSON/Markdown（临时 CI 文件、不接触用户上传资料），确保工作单有真实结构内容。**演示来自既有专业参考导演方案，不代表本轮真的让 10 个在线 Agent 创作；也没有发送给视频模型**。专门的 `build_locked_crew_delivery` 只接独立版本锁定且十角色均完成的队伍，未完成直接阻断。所有输出 `ready_to_call_video_model=false`。
+
+## 逐镜审阅与锁定具体制作版本
 
 [EDITORIAL_REVIEW_AND_LOCK.md](EDITORIAL_REVIEW_AND_LOCK.md) / `editorial_review_lock.py` 完成剧本编辑后的用户审核接口：导出逐镜的动作/摄影/原文/时码，要求每镜 `keep/revise/reject`；单独核对省略段落、`needs_review` 事实、全片创作理念及每项改稿建议。用户尚未完成决定时所有选项是 `None`。请求修改产生针对具体镜头的返工说明，且不能锁定；一旦**结构上**全部接受才生成绑定原文、候选计划、决策哈希的规划快照。
 
