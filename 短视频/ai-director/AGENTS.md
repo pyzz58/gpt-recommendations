@@ -18,6 +18,12 @@
 - `film_continuity.py` 建立来源绑定 `characters/props/scenes` ID 表。源没有声明人物/道具，绝不可从 AI 想象自动补全；镜内状态变化必须声明事件、时间和因果，跨镜突然换装或道具移动是 blocker，画外跳转仅为待人工验证的 review。
 - 已接通锁定来源的 `acting` 岗位真实输出 Schema、局部返工合并、独立 QA 与最终制作工作包；无媒体参考图时始终 `reference_media_verified=false`、`production_ready=false`。Issue #2 仍 OPEN：参考图和真实视觉身份验证未完成，不能用字符串状态一致冒充画面成功。
 
+## 私有参考资产 ID / 图片版本锁定（AUD-020，2026-10-11）
+
+- [REFERENCE_ASSET_VERSIONING_AUDIT.md](REFERENCE_ASSET_VERSIONING_AUDIT.md)：FilmDSL 角色/道具/场景的稳定 ID 已扩展为参考资产卡 `asset_reference_manifest.py`，使用 SHA-256、不可覆盖版本链与逐镜 `asset_id/version/hash` 绑定。旧版引用会失效，模型不得通过变更参考图版本绕过已锁定的团队状态。
+- `editorial_review_lock.attach_reference_manifest` 仅生成**私人新版本**规划快照，必须在新的十岗位执行前提交；`agent_live_crew.inspect_locked_role` 和 `production_delivery` 校验相同 digest。给岗位的是 metadata，不是实际照片；所有许可、肖像同意、真人审核、图像身份验证都保持 False，禁止宣称图片已生成或已获权利许可。
+- 图片字节只在未来可信私人运行环境用于哈希校验，**不进公开 GitHub、CI 制品、原文提示词日志、AI 模型消息和最终工单**。本轮仅合成 CI，具体未部署长期私人媒体仓库；AUD-003/Issue #2 保持 OPEN。
+
 # 当前开发模式：仅 GitHub 远程开发（2026-10-11 用户明确决定，最高优先级）
 
 **自本条决定起，项目仅在 GitHub 仓库开发，直到用户明确发出“可以开始本地运行/部署”的新指令。任何较旧的“先在 Mac 执行”“让 Codex 在 Downloads 目录修改”“运行 git pull / 本地测试 / 打包”的建议，当前全部暂停。**
