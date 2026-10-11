@@ -10,6 +10,14 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 参考资产库（新增；当前仅 GitHub 研发）
+
+- 阅读 [REFERENCE_ASSETS.md](REFERENCE_ASSETS.md)、[schemas/reference_assets.schema.json](schemas/reference_assets.schema.json) 与 `reference_assets.py`；采用稳定人物 / 场景 / 道具 ID，按镜头显式登记参考角度。参考图片、面貌一致性与素材版权必须分别验证，不得混成一个“已锁定”布尔字段。
+- 人物需要正面、四分之三侧面和全身参考视图；场景需要建立镜头；道具需要细节图。目录生成器默认全部 `not_created`，不得声称已有图，也不得从自然语言片段虚构文件路径。
+- 完整连续性契约中登记的道具并不意味着每镜都入画：只将明确标注的 `generation.reference_bindings` 道具图加入镜头需求。
+- 已批准参考图必须在未来私有资产根目录内、给出来源/授权核验依据、人工审核者和 SHA-256，并再次验证路径与哈希；这也不代表 AI 视频成片已锁脸、版权许可已完成专家审查或成功生成。没有清单的旧导演稿只允许离线规划，不标记图像可用。
+- `reference_assets.py` 不生成图片、不复制用户私人素材、不上传 GitHub、不执行 AI 付费 API，不改变当前 GitHub-only/禁止本地安装的硬约束。
+
 ## 第三阶段制作路线（GitHub-only；最高技术优先级）
 
 - 阅读 [PRODUCTION_ROUTING.md](PRODUCTION_ROUTING.md)；`base.visual_type` 代表概念镜头，不等同于实际素材来源。采用规范的 `generation.route`：`ai_video` / `static_post` / `edit_composite` / `live_action_insert` / `post_production`。
