@@ -10,6 +10,10 @@
 - 不可以：提示用户执行 `git pull`、`pip install`、`brew`、`npm`、`git clone`、下载 ZIP/权重，或者让本地 Codex 执行修稿。禁止自动开机启动、守护进程、登录项、系统级配置、全局环境或其他本机安装操作。
 - 不能调用付费 DeepSeek/视频服务、不能提高或复用历史测试费用授权、不能触发可能付费的 CI 作业、不能发布或上传私人作品及密钥。
 
+## 端到端导演-剪辑制作包公共模拟样本（2026-10-11）
+
+新增 `offline_vertical_demo.py` / `tests/test_offline_vertical_demo.py` / [END_TO_END_SYNTHETIC_ACCEPTANCE.md](END_TO_END_SYNTHETIC_ACCEPTANCE.md) 和 GitHub Actions artifact（公开虚构信封文案，4 镜：2 AI 视频提示词/2 图卡后期，全部数据无外部实机调用）。流程必须完成 ten role source-locked DAG + 独立 QA + 生产编译器，未完成即失败；用户上传的文章不得进公开 CI/artifact。下载样例可检查具体镜头工单，但不能称为“DeepSeek 已做导演”。
+
 ## 锁定方案后的十岗位 DeepSeek 接入阶段（2026-10-11）
 
 `agent_live_crew.py` + `tests/test_agent_live_crew.py` + [DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md](DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md) 接入了既有十阶段团队角色，按准确 `base_digest`/`source_digest` 单次派发并在独立 QA 上拒绝已有声画/来源硬冲突。GitHub Actions 只运行经过禁止真实网络的静态模拟返回，绝无真实 DeepSeek 请求。已有私人数据禁止提交公仓，预算预留日志必须只留未来私有环境，**未启动任何 Mac 本地部署**。
