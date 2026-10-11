@@ -81,7 +81,8 @@ class EditorHandoffTests(unittest.TestCase):
 
     def test_simple_no_bridge_creates_non_invented_decision(self):
         tracks,issues=timeline.assemble(self.plan,self.complete_direction())
-        self.assertEqual(issues.count({"code":"AUDIO_BRIDGE_DECISION_PENDING"}),0)
+        self.assertNotIn("AUDIO_BRIDGE_DECISION_PENDING",
+                         {finding["code"] for finding in issues})
         self.assertEqual(tracks[0]["edit"]["audio_bridge"]["type"],"none")
 
     def test_j_cut_maps_next_audio_before_picture_cut(self):
