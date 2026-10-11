@@ -1,3 +1,10 @@
+## 全链路深入审计为后续开发默认流程（2026-10-11，用户明确授权）
+
+- **权威主账**：[DEEP_AUDIT_MASTER.md](DEEP_AUDIT_MASTER.md)（12 条并行审计线、开源复用评估、阻断门禁），[AUDIT_FINDINGS.json](AUDIT_FINDINGS.json)（目前 17 项编号 AUD-xxx、已修/确认/待调查/无媒体无法验证四类状态），[audit_registry.py](audit_registry.py)（每次 GitHub CI 校验，不允许无回归证据标“已解决”）；最高优先级 [GitHub Issue #1](https://github.com/pyzz58/gpt-recommendations/issues/1) 仍是**真实付费模型回复与私人创意结果持久化/崩溃恢复**。
+- **开发必须先诊断、后修复**：记录可复现证据、来源版本、owner/影响、回归用例、GitHub 成熟项目/许可证/供应链/引入成本，优先最小融合；验证至少完整合成 CI + 对应故障注入。真实视频/用户稿/费用依旧没有新的授权，不能写“实机验收”。
+- **已融合成熟开源**：GitHub CI 使用 [coveragepy/coveragepy](https://github.com/coveragepy/coveragepy) Apache-2.0 的 `coverage==7.16.1` 测 21 核心模块 statement+branch，发布临时公开报告；首次 494 测试总覆盖 83%，最低几个重要模块需补回归。账本 `PilotJournal.finish` 失败后回滚+锁死继续请求，防止未知扣费重放。没有安装到用户 Mac，也不调用额外 DeepSeek。
+- [GITHUB_REUSE_POLICY.md](GITHUB_REUSE_POLICY.md) 继续优先：CineCrew FilmDSL（研究代码的可复用模型）、LangGraph（持久恢复）、jsonschema（格式验证），但**未实际完整引入**以上大型框架，先验证许可、版本、复杂度和私稿/费用安全。
+
 # 当前开发模式：仅 GitHub 远程开发（2026-10-11 用户明确决定，最高优先级）
 
 **自本条决定起，项目仅在 GitHub 仓库开发，直到用户明确发出“可以开始本地运行/部署”的新指令。任何较旧的“先在 Mac 执行”“让 Codex 在 Downloads 目录修改”“运行 git pull / 本地测试 / 打包”的建议，当前全部暂停。**
