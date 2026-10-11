@@ -424,9 +424,14 @@ def run_one_creative_task(intake, state, episode_source, journal,
            permit.get("model") == config["model"] and
            permit.get("max_reserved_cny") == config["cap_cny"],
            "PILOT_PERMIT_WRONG_SCOPE")
-    plan, original = creative._ensure_source(intake, episode_source)
-    _check(team.fingerprint(plan) == config["base_digest"] and
+    _check(type(episode_source) is str and
            _sha(episode_source) == config["source_digest"],
+           "PILOT_BASE_OR_SOURCE_CHANGED")
+    try:
+        plan, original = creative._ensure_source(intake, episode_source)
+    except (KeyError, TypeError, ValueError):
+        raise PilotError("PILOT_INTAKE_SOURCE_OR_VERSION_INVALID") from None
+    _check(team.fingerprint(plan) == config["base_digest"],
            "PILOT_BASE_OR_SOURCE_CHANGED")
     _check(isinstance(state, dict) and
            state.get("base_digest") == config["base_digest"] and
