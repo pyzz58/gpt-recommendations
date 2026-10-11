@@ -100,9 +100,12 @@ class ArticleIntakeTests(unittest.TestCase):
         self.assertEqual(result["team"]["base_digest"],
                          team.fingerprint(result["plan"]))
         self.assertEqual(team.ready(result["team"]), ["director_brief"])
+        episode_text = intake.episode_source_for_team(self.article, "EP02")
+        self.assertTrue(team.source_matches(result["team"], episode_text))
+        self.assertFalse(team.source_matches(result["team"], self.article))
         req = roles.build_role_messages(
             result["plan"], result["team"], "director_brief",
-            source_text=self.article)
+            source_text=episode_text)
         self.assertTrue(req["contains_private_material"])
         self.assertFalse(req["external_model_call_authorized"])
         self.assertIn("图书馆", req["messages"][1]["content"])
@@ -213,6 +216,8 @@ class ArticleIntakeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "fingerprint"):
             roles.build_role_messages(e["plan"], e["team"], "director_brief",
                                       source_text=self.article + " edits")
+        self.assertTrue(team.source_matches(
+            e["team"], intake.episode_source_for_team(self.article)))
 
     def test_section_count_limit_fails_closed(self):
         source = "\n".join(f"### {i}. A\n- 说人话：安全。" for i in range(1, 124))
