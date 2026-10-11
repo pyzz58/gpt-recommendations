@@ -13,7 +13,7 @@
 ## 新主架构：总导演统筹的专业 Agent 影视团队（最高优先级）
 
 - **先阅读 [MULTI_AGENT_STUDIO.md](MULTI_AGENT_STUDIO.md)** 与 `agent_team.py`。产品入口仍为文案，产品输出仍为一份专业导演交付书；团队协作是内部生产方法，不增加用户需要管理的角色数量。
-- **总导演 Showrunner 拥有导演圣经/剧情方案审定与最终整合权**。剧本编辑提出源文案改写建议、动作导演管理 staging/performance/beats/continuity/shootability、摄影美术管理 camera/art、声音导演管理 sound/speech、剪辑动画管理 editing/animation/graphics、AI 技术导演管理 generation，QA 只读审查。负责人不能直接写其他部门的字段或修改原文。
+- **总导演 Showrunner 拥有导演圣经/剧情方案审定、逐镜 objective（emotion/observable_turn/visual_focus）与最终整合权**。剧本编辑提出源文案改写建议、动作导演管理 staging/performance/beats/continuity/shootability、摄影美术管理 camera/art、声音导演管理 sound/speech、剪辑动画管理 editing/animation/graphics、AI 技术导演管理 generation，QA 只读审查。负责人不能直接写其他部门的字段或修改原文。
 - 第一版通过十阶段 DAG 发包：`director_brief → script_edit → director_lock → (acting,camera_art,sound) → editing_animation → ai_technical → quality_review → director_final`。动作/摄影/声音部门的整集任务允许并行准备；不要为每个镜头机械地完整调用全体 Agent。
 - 每个专业交付必须带 `base_digest`、上游依赖版本、角色所属字段和受影响镜头范围；独立 QA 提出修改建议，只有总导演发起定向 `request_revision`，对受影响镜头与邻接剪辑重新派单，保留已通过的非相关部门成果及版本历史。
 - **共享的权威原稿、人物和道具事实不可被岗位输出静默覆盖**；源稿修改属于须另行批准的提案。专业团队的完成状态不是用户最终批准。`agent_team.compile_team_workbook` 接入现有 `director_v2.validate` / `director_workbook.compile_workbook`，不得绕过已有的专业制作质量检查。
@@ -193,3 +193,6 @@
 - 修改用户的真实 plan 时，先建立 `plan.proposed.json` 候选；保留原始 JSON、series、原文、手改内容、既有费用账本。不得自行增加 `--max-calls` 或隐式重试。
 - 道具位置必须通过可拍动作过渡：拿起、携带、放下；对复杂道具可使用 `continuity_state` 机器可验证字段。请阅读 `CONTINUITY_QA.md`。
 - 费用与版权检查独立于连续性；不能因为通过代码测试就宣称视频已生成或获得许可。
+
+- **当前多 Agent 调度从结构化 `plan.json` 开始**，尚未替换文案→基础分镜旧入口；有原始文本时可在任务状态只绑定 SHA-256、不上传正文。下一期要解决总导演先审原始文案并最终锁定可编辑的分镜来源；现在不许把该流程称为真实自动化模型团队。
+
