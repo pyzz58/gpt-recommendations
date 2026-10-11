@@ -1,6 +1,10 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 横向模块之外的纵向验收：读得见的完整镜头工作包
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 原始导演创意必须贯穿十部门，摄影设计需要实体约束
+
+2026-10-11 真实公开虚构稿的两次 DeepSeek 成功调用只证明创意/剧本编辑角色有效，暴露了原 `candidate_plan` 的摄影 `n/a` 占位、人物 `character_ids=[]`、房间 `LOC01` 仍为纯图卡模板的桥接缺陷。修复 [REAL_CREATIVE_TO_PRODUCTION_REPAIR.md](REAL_CREATIVE_TO_PRODUCTION_REPAIR.md) 后，原导演 `editorial_concept.shot_designs` 被绑定为 hash，并持续提供给十阶段各岗位及最终逐镜 AI 视频制作包。严格要求摄影美术在 AI 视频镜头定义景别、实际数字焦段、镜头轴线、门/桌/灯的同场景固定布局，在每个镜头标明灯态与来源、连续光源转换的物理原因。角色没有参考照片时不能自称人物外观已锁定；仅以来源、镜头、专业合同及空间校验形成后期制作候选工单，不宣称已经真实视频试拍。
+
+## 横向模块之外的纵向验收：读得见的完整镜头工作包
 
 现在 [END_TO_END_SYNTHETIC_ACCEPTANCE.md](END_TO_END_SYNTHETIC_ACCEPTANCE.md) 将过去分开单测的整条流程串起来：从虚构文章、合成导演/剧本编辑、规划版锁定，到十专业岗位逐次模拟回复、独立声画审查，再用现有完整视频工作单编译器导出 4 镜头公共 Markdown/JSON。GitHub Actions 上传 `ai-director-SYNTHETIC-NOT-REAL-AI-operator-pack` 供核查；输出必须同时包含 **2 个 Wan/Seedance AI 视频候选提示词镜头和 2 个非视频后期镜头**。
 
