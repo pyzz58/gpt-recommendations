@@ -87,7 +87,7 @@ def review(base, directions, route_fn):
                      f"{uid}: action interval must sit inside selected beat")
                 continue
             actor = unit.get("actor_id")
-            if actor is not None and actor not in characters:
+            if actor is not None and (not isinstance(actor, str) or actor not in characters):
                 flag(sid, "ACTION_ACTOR_UNKNOWN", "blocker",
                      f"{uid}: actor must be declared in the base plan")
             if physical and actor is None:
@@ -111,7 +111,12 @@ def review(base, directions, route_fn):
                            "action": unit.get("action"), "visible_result": unit.get("visible_result"),
                            "duration_s": round(b - a, 3)})
         row["units"] = parsed
-
+        if physical:
+            covered = {unit["beat_index"] for unit in parsed}
+            for beat_index in range(len(d["beats"])):
+                if beat_index not in covered:
+                    flag(sid, "ACTION_BEAT_UNDESIGNED", "pending",
+                         f"beat[{beat_index}] needs an action or deliberate hold unit")
         # Two simultaneous actions using the same hand (or both hands) by one
         # actor cannot be implemented literally unless the director changes
         # timing/blocks the motion. Simultaneous two-hand coordinated work is
@@ -154,7 +159,8 @@ def review(base, directions, route_fn):
                     break
         if physical and crowded and mode == "single_take":
             fallback = plan.get("fallback")
-            if not isinstance(fallback, str) or not fallback.strip():
+            if (not isinstance(fallback, str) or not fallback.strip()
+                    or "待" in fallback or "TODO" in fallback.upper()):
                 flag(sid, "DENSE_ACTION_FALLBACK_PENDING", "pending",
                      "propose a split-take / practical insert / simplified version")
         elif physical and len(prop_actions) >= 4 and mode == "single_take":
