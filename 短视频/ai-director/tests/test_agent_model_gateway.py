@@ -250,6 +250,18 @@ class ModelGatewayTests(unittest.TestCase):
         self.assertEqual(updated["tasks"]["camera_art"]["revision"], 1)
         self.assertEqual(updated["tasks"]["editing_animation"]["status"], "stale")
 
+    def test_mutating_budget_profile_after_init_cannot_lower_reservation(self):
+        book = self.book()
+        book.config["profiles"]["flash"]["input_cny_per_m"] = "0.0000001"
+        with self.assertRaisesRegex(gateway.ModelBudgetError, "configuration changed"):
+            gateway.prepare_request(
+                self.base, self.state, "director_brief", book,
+                source_text=self.source)
+        with self.assertRaisesRegex(gateway.ModelBudgetError, "configuration changed"):
+            book.reserve({
+                "task_id": "director_brief", "reserved_cny": "0.00000001"
+            }, revision=1)
+
     def test_tampered_quote_cannot_underreserve_or_change_model(self):
         book = self.book()
         request = gateway.prepare_request(
