@@ -10,6 +10,10 @@
 - 不可以：提示用户执行 `git pull`、`pip install`、`brew`、`npm`、`git clone`、下载 ZIP/权重，或者让本地 Codex 执行修稿。禁止自动开机启动、守护进程、登录项、系统级配置、全局环境或其他本机安装操作。
 - 不能调用付费 DeepSeek/视频服务、不能提高或复用历史测试费用授权、不能触发可能付费的 CI 作业、不能发布或上传私人作品及密钥。
 
+## 模型配置与预算模拟阶段（2026-10-11）
+
+新增 [MODEL_GATEWAY_AND_BUDGET.md](MODEL_GATEWAY_AND_BUDGET.md) 与 `agent_model_gateway.py`：只在 GitHub 写通用源码和合成单元测试；可为不同专业岗位配置候选模型 Profile、按声明费率预估最高输出成本、模拟预留尝试预算并通过现有专业 JSON 合同入账。不会建立 DeepSeek/其他 API 的网络传输，不接受任意回调执行器，不触达 Mac/私人 jobs；不在 GitHub 上传完整用户文案、真实 API Key、私人提示词或账本。实际供应商费率/通道、Token 计费、私有素材发送及预算需要未来另行明确授权。
+
 ## 专业创作指令与输出验收（2026-10-11）
 
 新增 `agent_role_contracts.py` 和合成测试：只在内存中为十种专业角色构建提示词，离线校验外部已提供的 JSON 响应；没有将私密 prompt 序列化、上传或传给 DeepSeek/视频模型，也没有在 Mac 装程序。岗位创作内容和真实用户文案不能保存在公开仓库。未来实际接入模型是**另外一次**需要供应商/费用/私人素材传输授权的阶段，详情见 [PROFESSIONAL_AGENT_CONTRACTS.md](PROFESSIONAL_AGENT_CONTRACTS.md)。
