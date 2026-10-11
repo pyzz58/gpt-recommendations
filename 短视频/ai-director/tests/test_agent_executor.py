@@ -213,7 +213,7 @@ class CrewExecutorTests(unittest.TestCase):
         altered["acting"]["1"]["shots"]["S01"]["camera"] = {
             "movement": "unauthorized department change"}
         snapshot = deepcopy(updated)
-        with self.assertRaisesRegex(ValueError, "ownership"):
+        with self.assertRaisesRegex(ValueError, "owned sections"):
             executor.execute_one(self.base, updated, executor.FixtureOnlyAdapter(altered))
         self.assertEqual(updated, snapshot)
 
