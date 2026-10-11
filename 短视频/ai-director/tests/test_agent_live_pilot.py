@@ -180,6 +180,42 @@ class LivePilotTests(unittest.TestCase):
                                         "UNKNOWN_ATTEMPT_BLOCKS_NEXT"):
                 restored.reserve("script_edit",1,req)
 
+    def test_json_schema_preflight_failure_never_reserves_or_sends(self):
+        with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+            fake=pilot.StaticHTTPSFrame(self.frame(self.brief))
+            with patch("agent_live_pilot.schema_guard.preflight_schema",
+                       side_effect=ValueError("UNSAFE_SYNTHETIC_SCHEMA")):
+                with self.assertRaisesRegex(
+                        pilot.PilotError,
+                        "PILOT_SCHEMA_PREFLIGHT_REJECTED_BEFORE_SEND"):
+                    pilot.run_one_creative_task(
+                        self.intake,self.state,self.source,journal,
+                        permit=self.permit("director_brief"),client=fake)
+            self.assertEqual(fake.calls,0)
+            self.assertEqual(journal.summary()["attempts"],[])
+
+    def test_extended_storyboard_schema_blocks_unowned_model_field(self):
+        # Creative script_edit extends the ordinary role schema with a strict
+        # shot-by-shot storyboard; the actual response must match THAT schema.
+        with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+            state,_=pilot.run_one_creative_task(
+                self.intake,self.state,self.source,journal,
+                permit=self.permit("director_brief"),
+                client=pilot.StaticHTTPSFrame(self.frame(self.brief)))
+            bad=deepcopy(self.treatment)
+            bad["story_treatment"]["storyboard_pitch"]["shot_designs"][0][
+                "authorize_upload"]=True
+            frame=pilot.StaticHTTPSFrame(self.frame(bad))
+            with self.assertRaisesRegex(pilot.PilotError,
+                                        "PILOT_RESPONSE_REJECTED_NO_RETRY"):
+                pilot.run_one_creative_task(
+                    self.intake,state,self.source,journal,
+                    permit=self.permit("script_edit"),client=frame)
+            self.assertEqual(frame.calls,1)
+            self.assertEqual(journal.summary()["attempts"][-1]["status"],
+                             "response_rejected")
+            self.assertEqual(state["tasks"]["script_edit"]["status"],"pending")
+
     def test_https_success_path_is_tested_with_mocked_socket_only(self):
         class FakeResponse:
             status=200
