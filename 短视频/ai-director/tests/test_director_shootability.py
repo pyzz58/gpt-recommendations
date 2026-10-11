@@ -203,6 +203,55 @@ class ShootabilityTests(unittest.TestCase):
         self.assertFalse(out["publishing_allowed"])
         self.assertIn("动作可拍性",workbook.render_markdown(out))
 
+    def test_split_stitch_segments_need_full_timeline_and_join_rules(self):
+        b,d=self.authored()
+        d["shots"][0]["shootability"].update(
+            mode="split_stitch",
+            segments=[
+              {"id":"SEG1","from_s":0,"to_s":2.5,"route":"ai_video",
+               "join_rule":"hold identical hand position, cut on natural pause"},
+              {"id":"SEG2","from_s":2.5,"to_s":5,"route":"ai_video",
+               "join_rule":"match cigarette position and camera angle before crossfade"}
+            ])
+        r=self.review(b,d)
+        self.assertTrue(r["director_structure_ready"],r["findings"])
+        self.assertEqual(len(r["shots"][0]["segments"]),2)
+        self.assertFalse(r["model_capability_verified"])
+
+    def test_split_stitch_without_two_segments_is_not_ready(self):
+        b,d=self.authored()
+        d["shots"][0]["shootability"].update(mode="split_stitch",segments=[])
+        r=self.review(b,d)
+        self.assertIn("SPLIT_SEGMENTS_MISSING",{f["code"] for f in r["findings"]})
+        self.assertFalse(r["director_structure_ready"])
+
+    def test_split_stitch_detects_gap_between_segments(self):
+        b,d=self.authored()
+        d["shots"][0]["shootability"].update(mode="split_stitch",segments=[
+            {"id":"SEG1","from_s":0,"to_s":2,"route":"ai_video","join_rule":"cut on hand pause"},
+            {"id":"SEG2","from_s":2.5,"to_s":5,"route":"static_post","join_rule":"match prop mask"}])
+        r=self.review(b,d)
+        self.assertIn("SPLIT_SEGMENT_GAP_OR_OVERLAP",{f["code"] for f in r["findings"]})
+        self.assertFalse(r["director_structure_ready"])
+
+    def test_split_stitch_rejects_unknown_route_and_missing_join(self):
+        b,d=self.authored()
+        d["shots"][0]["shootability"].update(mode="split_stitch",segments=[
+            {"id":"SEG1","from_s":0,"to_s":2,"route":"magic","join_rule":""},
+            {"id":"SEG2","from_s":2,"to_s":5,"route":"ai_video","join_rule":"matching action"}])
+        r=self.review(b,d)
+        codes={f["code"] for f in r["findings"]}
+        self.assertIn("SPLIT_SEGMENT_ROUTE_INVALID",codes)
+        self.assertIn("SPLIT_JOIN_UNDESIGNED",codes)
+
+    def test_split_stitch_requires_last_segment_to_end_at_shot_boundary(self):
+        b,d=self.authored()
+        d["shots"][0]["shootability"].update(mode="split_stitch",segments=[
+            {"id":"SEG1","from_s":0,"to_s":2,"route":"ai_video","join_rule":"cut on pause"},
+            {"id":"SEG2","from_s":2,"to_s":4,"route":"ai_video","join_rule":"match last still"}])
+        self.assertIn("SPLIT_SEGMENT_INCOMPLETE",
+                      {f["code"] for f in self.review(b,d)["findings"]})
+
     def test_inputs_not_mutated(self):
         b,d=self.authored()
         before=copy.deepcopy((b,d))
