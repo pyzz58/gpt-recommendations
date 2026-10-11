@@ -3,6 +3,14 @@
 > **研发阶段限制（2026-10-11）**：开源借鉴/集成只在 GitHub 代码与非敏感隔离测试中进行；用户未批准前，不能要求 Mac 同步、安装、运行或下载，也不能触发收费模型。集成候选先记录许可证、维护证据与安全评估；详细闸门见 [GITHUB_ONLY_DEVELOPMENT.md](GITHUB_ONLY_DEVELOPMENT.md)。
 
 
+## 2026-10-11 深入审计阶段的开源实际选择更新
+
+- **已经融合**：[coveragepy/coveragepy](https://github.com/coveragepy/coveragepy) Apache-2.0（LICENSE.txt/NOTICE.txt）：CI 使用 `coverage==7.16.1` 收集 21 个核心模块的 statement+branch 数据，成功 run 38116675207：494 tests、83% 综合覆盖率。真正可下载的公开覆盖率报告，无模型/私人内容。计量覆盖率不是实际导演质量通过率。
+- **最近核实 LICENSE 的核心候选**：CineCrew Apache-2.0（FilmDSL 与专门电影连续性）；LangGraph MIT（durable execution）；CrewAI MIT（Flows/Crews）；Microsoft Agent Framework MIT（生产级 agent workflow）；Pydantic MIT（schema）；Netflix VMAF BSD-2-Clause-Patent（参考视频指标）；MoviePy MIT（其 pyproject.toml 确认）。
+- **P0 优先复用知识**：`langchain-ai/langgraph` 的持久状态/人工 interrupt 思想用来设计 ISSUE #1；要先确定当前付费账本和私人结果的事务一致性，不得直接替换执行器并允许框架自动重试收费请求。
+- **P1 深化优先参考**：`Ironieser/CineCrew` 的 FilmDSL 人物/场景/道具/镜头统一规范，先限于数据合同对标；它属于新研究项目，不能声称其实际 Wan/Seedance 出片稳定性已广泛验证。`python-jsonschema/jsonschema` MIT 的 Draft202012Validator 优先用于离线生产合同深测，待确定兼容性和依赖后再接入运行时。
+- **禁止功能堆叠**：只有能明确解决 [DEEP_AUDIT_MASTER.md](DEEP_AUDIT_MASTER.md) 中问题编号、且能测出由失败转为可验证通过的项目才直接融合。检查许可证义务、OSSC/数据遥测、日志隐私、供应商费率、依赖固定与回滚；不得复制上游源代码到当前仓库冒充原创。
+
 **固定规则：每次修改、补足功能或修复缺陷前，先检索 GitHub 上的相关成熟仓库，核对代码、许可证、维护状况、测试和运行成本，再决定直接复用、借鉴结构还是自行实现。参见 AGENTS.md。**
 
 状态：仅完成上游仓库的第一轮公开资料调查；没有安装依赖、下载模型权重、执行付费 API、修改用户 Mac 配置或合并第三方代码。实际使用前仍需测试许可证兼容、版本和依赖。
