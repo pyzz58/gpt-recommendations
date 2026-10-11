@@ -130,7 +130,7 @@ class CrewExecutorTests(unittest.TestCase):
     def new(self, bind=False):
         return team.start(self.base, source_text=self.secret if bind else None)
 
-    def run(self, *, bind=False, final=False, adapter=None):
+    def run_fixture_pipeline(self, *, bind=False, final=False, adapter=None):
         state = self.new(bind)
         return executor.execute_until_pause(
             self.base, state, adapter or executor.FixtureOnlyAdapter(self.fixtures),
@@ -155,7 +155,7 @@ class CrewExecutorTests(unittest.TestCase):
         self.assertNotIn("original_script", json.dumps(report))
 
     def test_stop_before_final_showrunner_stage_by_default(self):
-        state, report = self.run()
+        state, report = self.run_fixture_pipeline()
         self.assertEqual(report["processed_count"], 9)
         self.assertEqual(report["ready_tasks"], ["director_final"])
         self.assertEqual(report["status"], "director_final_requires_explicit_fixture_permission")
@@ -177,7 +177,7 @@ class CrewExecutorTests(unittest.TestCase):
         self.assertEqual(original["tasks"]["acting"]["status"], "pending")
 
     def test_exact_revision_fixture_is_required_for_second_submission(self):
-        state, _ = self.run(final=True)
+        state, _ = self.run_fixture_pipeline(final=True)
         revised = team.request_revision(state, "acting", ["S02"], "Fix envelope hand continuity")
         data = deepcopy(self.fixtures)
         del data["acting"]["2"]
@@ -188,7 +188,7 @@ class CrewExecutorTests(unittest.TestCase):
         self.assertFalse(ledger["release"]["director_ai_review_complete"])
 
     def test_director_rework_preserves_independent_departments(self):
-        state, _ = self.run(final=True)
+        state, _ = self.run_fixture_pipeline(final=True)
         changed = team.request_revision(state, "acting", ["S02"], "Correct hand action")
         updated, report = executor.execute_until_pause(
             self.base, changed, executor.FixtureOnlyAdapter(self.fixtures),
