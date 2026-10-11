@@ -182,6 +182,91 @@ class PrivateCheckpointTests(unittest.TestCase):
                 vault.save(1,self.fix.state,out,usage={
                     "total_tokens":1,"estimated_usage_cost_cny":"0.1"})
 
+    def test_git_worktree_cannot_be_used_as_private_result_vault(self):
+        with tempfile.TemporaryDirectory() as root:
+            repo=Path(root)/"public-code"
+            repo.mkdir()
+            (repo/".git").mkdir()
+            nested=repo/"private-ish"
+            nested.mkdir(mode=0o700)
+            with pilot.PilotJournal(nested,self.fix.config) as ledger:
+                with self.assertRaisesRegex(vault_mod.CheckpointError,
+                                            "NO_PRIVATE_RESULTS_IN_GIT"):
+                    vault_mod.PrivateResultVault(ledger)
+
+    def test_atomic_link_after_fsync_then_ledger_failure_recovers_from_disk(self):
+        with pilot.PilotJournal(self.fix.tmp.name,self.fix.config) as ledger:
+            vault=vault_mod.PrivateResultVault(ledger)
+            original=vault_mod._fsync_folder
+            state={"failed":False}
+            def crash_once(path):
+                if not state["failed"]:
+                    state["failed"]=True
+                    raise OSError("synthetic crash AFTER atomic hardlink")
+                return original(path)
+            with patch("private_result_checkpoint._fsync_folder",
+                       side_effect=crash_once):
+                with self.assertRaisesRegex(
+                        pilot.PilotError,"RESULT_CHECKPOINT_UNCERTAIN_NO_RETRY"):
+                    self.fake_call(ledger,vault,self.fix.state,
+                                   "director_brief",self.fix.brief)
+            self.assertEqual(ledger.summary()["attempts"][0]["status"],
+                             "pending_uncertain")
+            self.assertTrue((vault.root/"attempt-0001.json").exists())
+        with pilot.PilotJournal(self.fix.tmp.name,self.fix.config) as reopened:
+            vault=vault_mod.PrivateResultVault(reopened)
+            recovered=vault.reconcile_saved_result(
+                1,self.fix.state,
+                operator_acknowledgement=vault_mod.RECOVER_CONSENT)
+            self.assertEqual(recovered["provider_calls"],0)
+            self.assertEqual(reopened.summary()["attempts"][0]["status"],
+                             "response_accepted")
+            self.assertEqual(recovered["after_state"]["tasks"][
+                "director_brief"]["status"],"completed")
+
+    def test_restarted_vault_rejects_checkpoint_from_different_config(self):
+        with pilot.PilotJournal(self.fix.tmp.name,self.fix.config) as ledger:
+            vault=vault_mod.PrivateResultVault(ledger)
+            self.fake_call(ledger,vault,self.fix.state,
+                           "director_brief",self.fix.brief)
+            p=vault.root/"attempt-0001.json"
+            a=json.loads(p.read_text("utf-8"))
+            a["config_digest"]="a"*64
+            p.write_text(json.dumps(a),encoding="utf-8")
+            os.chmod(p,0o600)
+        with pilot.PilotJournal(self.fix.tmp.name,self.fix.config) as reopened:
+            with self.assertRaisesRegex(
+                    vault_mod.CheckpointError,"BINDING_MISMATCH"):
+                vault_mod.PrivateResultVault(reopened).load(1)
+
+    def test_locked_professional_two_role_chain_survives_restart(self):
+        f=crew_fixture.LockedCrewPilotTests(
+            "test_first_three_roles_real_protocol_contract_offline")
+        f.setUp()
+        self.addCleanup(f.doCleanups)
+        with pilot.PilotJournal(f.tmp.name,f.config) as ledger:
+            vault=vault_mod.PrivateResultVault(ledger)
+            state=f.state
+            snapshots=[]
+            for task in ("director_brief","script_edit"):
+                original=state
+                state,_=crew.run_one_locked_role(
+                    f.snapshot,f.original,state,ledger,
+                    permit=f._permit(task),
+                    client=pilot.StaticHTTPSFrame(
+                        f._frame(f._payload(task,state))),
+                    task_id=task,result_vault=vault)
+                snapshots.append((original,state))
+        with pilot.PilotJournal(f.tmp.name,f.config) as reopened:
+            vault=vault_mod.PrivateResultVault(reopened)
+            self.assertEqual(vault.load(1,expected_before=snapshots[0][0])[
+                "team"],snapshots[0][1])
+            self.assertEqual(vault.load(2,expected_before=snapshots[1][0])[
+                "team"],snapshots[1][1])
+            self.assertEqual(vault.assert_existing_accepted_checkpoint_chain(
+                state)["accepted_private_results"],2)
+            self.assertEqual(team.ready(state),["director_lock"])
+
     def test_locked_professional_creative_dispatch_checkpointed_privately(self):
         f=crew_fixture.LockedCrewPilotTests(
             "test_first_three_roles_real_protocol_contract_offline")
