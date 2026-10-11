@@ -15,6 +15,7 @@ import html
 import json
 
 import agent_team as team
+import creative_production_handoff as handoff
 import director
 
 VERSION = "editorial-review-lock-v1"
@@ -277,7 +278,16 @@ def lock_planning_snapshot(candidate, episode_source, decision):
     if result["status"] != "planning_snapshot_lockable":
         raise EditorialReviewError("REVIEW_UNRESOLVED_BLOCKERS")
     candidate_plan = deepcopy(candidate["candidate_plan"])
+    # Keep the original director/editor pitch bound to this exact candidate.
+    # Previously the new ten-role team restarted from a plan and silently
+    # lost the first real creative work, leading to inconsistent departments.
+    creative_handoff = handoff.bound_handoff(candidate, episode_source)
+    preflight = handoff.inspect_preproduction(candidate_plan, creative_handoff)
     return {
+        "creative_handoff": creative_handoff,
+        "creative_handoff_digest": team.fingerprint(creative_handoff),
+        "production_preflight": preflight,
+        "production_preflight_digest": team.fingerprint(preflight),
         "kind": "editorial_planning_snapshot",
         "version": VERSION,
         "status": "planning_locked_identity_unverified",
@@ -315,12 +325,26 @@ def stage_locked_team(snapshot, episode_source):
     errors, _ = director.validate(plan)
     if errors:
         raise EditorialReviewError("REVIEW_LOCK_PLAN_INVALID")
+    # A snapshot missing its original creative vision is no longer a valid
+    # downstream planning input. All fields are private and digest-bound.
+    try:
+        intent = handoff.validate_locked_handoff(snapshot, episode_source)
+        expected = handoff.inspect_preproduction(plan, intent)
+    except (handoff.HandoffError, ValueError, KeyError, TypeError):
+        raise EditorialReviewError("REVIEW_LOCK_CREATIVE_HANDOFF_INVALID") from None
+    if (snapshot.get("production_preflight_digest") !=
+            team.fingerprint(snapshot.get("production_preflight")) or
+            snapshot.get("production_preflight") != expected):
+        raise EditorialReviewError("REVIEW_LOCK_PREFLIGHT_TAMPERED")
     state = team.start(deepcopy(plan), source_text=episode_source)
     return {
         "kind": "locked_team_planning_intake", "version": VERSION,
         "status": "offline_planning_only_not_authorized_to_dispatch",
         "team": state, "plan_digest": state["base_digest"],
         "source_digest": state["source_digest"], "ready_tasks": team.ready(state),
+        "first_editorial_vision_bound": True,
+        "production_gap_count": expected["issue_count"],
+        "production_ready": False,
         "author_identity_verified": False,
         "paid_api_authorized": False, "media_generated": False,
     }
