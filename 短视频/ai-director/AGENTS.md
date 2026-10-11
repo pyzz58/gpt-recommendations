@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## DeepSeek 真正 HTTPS 单岗位试验入口（2026-10-11；当前未经任何真实调用授权）
+
+- [DEEPSEEK_SINGLE_TASK_PILOT.md](DEEPSEEK_SINGLE_TASK_PILOT.md) / `agent_live_pilot.py` 复用现有 DeepSeek 请求/回复协议、总导演和剧本编辑专业创作合约、同一任务账本；本模块首次包含**真实 HTTPS 客户端代码**，但没有自动执行入口、命令行入口、自动加载 API Key 或自动向 DeepSeek 发送真实稿件。
+- `run_one_creative_task` 只处理**一个**选中的正式岗位：`director_brief` 或 `script_edit`。未来必须有可信私有系统完成**逐次**真实用户批准、模型、单集原文传输、费用上限及 key 管理；`explicit_pilot_permit` 只是软件内部的意图结构，不能替代身份认证或真实授权。用户说“继续开发”仅同意研发，不提供这类授权。
+- 独立 `PilotJournal` 在可能收费的 POST **之前**完成持久排他锁/0600/原子费用预留；不保留文案、私钥或完整模型输出。连接超时/供应商拒绝/不完整 JSON/账单估算超额度须 fail closed、禁止自动重试和静默退款。token 预留系估算，实际供应商账单不能保证绝对小于配置上限。
+- CI 只使用 `StaticHTTPSFrame` 合成返回与 mock HTTPS socket，零联网/零收费；正常 `agent_executor`、`agent_durable_preflight` 和现有 GitHub Actions 均保持离线。不得在公仓部署私人现场试验或把真实稿件提交 CI。
+
 ## AI 视频制作工单离线导出与专业 DAG 全链路校验（2026-10-11）
 
 - 新增 [PRODUCTION_DELIVERY_PACK.md](PRODUCTION_DELIVERY_PACK.md)、`production_delivery.py` 和 `tests/test_production_delivery.py`。复用 `director_v2.compile_package` 与 `director_workbook.compile_workbook` 将现有专业导演工作单编译成逐镜 Wan/Seedance 视频候选提示词、动作/运镜/灯光/旁白/声音、字幕数据图表后期工单、整片剪辑时间表和跨镜头承接。
