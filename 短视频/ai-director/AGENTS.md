@@ -10,6 +10,14 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 独立跨部门 QA、返工提案与交付硬门禁（当前研发要求）
+
+- 参考 [CREW_QA_GATE.md](CREW_QA_GATE.md) 和 `agent_handoff_audit.py`。在原有岗位质量检查以外，独立核对原文配音守恒、真实动作节拍与剪辑切点、制作路线、音效/动作/摄影时间范围、图表论据及动画模式矛盾。
+- `quality_review` 和 `director_final` 不得对确定性硬冲突判定通过；`compile_team_workbook(base,state)` 必须再次读取 base 做最终比对并阻断，不能直接将旧 QA 报告当作不可撤销批准。
+- `propose_director_revisions` 只读产生按责任岗位和镜头归并的建议；只有明确总导演批准，`request_planned_revision` 才使用旧 `request_revision` 的定向 DAG 返工，保留已有无关岗位成果。流程布尔字段不等于身份认证、最终用户批准或模型费用许可。
+- 老剧本缺完整专业交付允许明确标记为 `draft_needs_review` 的审阅草稿；`strict=True` 只能在文字制作蓝图、岗位证据及交接质量均满足门禁时返回供真人审片状态，绝不冒充已生成视频。
+- 当前 GitHub-only，不触碰 Mac 和私人 jobs，无收费调用。测试代码不等于已运行通过；任何远端 CI 结果须以实际检查状态为准。
+
 ## 新主架构：总导演统筹的专业 Agent 影视团队（最高优先级）
 
 - **先阅读 [MULTI_AGENT_STUDIO.md](MULTI_AGENT_STUDIO.md)** 与 `agent_team.py`。产品入口仍为文案，产品输出仍为一份专业导演交付书；团队协作是内部生产方法，不增加用户需要管理的角色数量。
