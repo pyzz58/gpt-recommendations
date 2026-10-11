@@ -27,7 +27,7 @@ JOURNAL_VERSION = "crew-private-preflight-v1"
 PER_MILLION = Decimal("1000000")
 QUANT = Decimal("0.00000001")
 BLOCKING_STATUSES = frozenset({"pending_uncertain", "timeout_unknown",
-                               "transport_unknown"})
+                               "transport_unknown", "usage_overrun_requires_review"})
 
 
 class DurablePreflightError(ValueError):
@@ -58,6 +58,8 @@ def policy(*, model, source_digest, base_digest, cap_cny,
     if not isinstance(base_digest, str) or len(base_digest) != 64 or any(
             c not in "0123456789abcdef" for c in base_digest):
         raise DurablePreflightError("MISSING_BASE_DIGEST")
+    if wire._money(cache_hit_cny_m, "hit") > wire._money(cache_miss_cny_m, "miss"):
+        raise DurablePreflightError("CACHE_HIT_CEILING_CANNOT_EXCEED_MISS_CEILING")
     p = {
         "version": JOURNAL_VERSION, "provider": "deepseek",
         "model": model, "source_digest": source_digest,
@@ -171,7 +173,8 @@ class PrivateReservationJournal:
             val = wire._money(record.get("reserved_cny"), "reserve")
             if record.get("status") not in (
                     "pending_uncertain", "timeout_unknown", "transport_unknown",
-                    "response_rejected", "response_accepted"):
+                    "response_rejected", "response_accepted",
+                    "usage_overrun_requires_review"):
                 raise DurablePreflightError("JOURNAL_UNKNOWN_STATUS")
             reserve_total += val
         if reserve_total > Decimal(self.config["cap_cny"]):
@@ -262,7 +265,8 @@ class PrivateReservationJournal:
         self._validate_integrity()
         _int(record_id, "record_id", 1, len(self.data["attempts"]))
         if status not in ("response_accepted", "response_rejected",
-                          "timeout_unknown", "transport_unknown"):
+                          "timeout_unknown", "transport_unknown",
+                          "usage_overrun_requires_review"):
             raise DurablePreflightError("INVALID_FINISH_STATUS")
         record = self.data["attempts"][record_id - 1]
         if record["status"] != "pending_uncertain":
@@ -361,10 +365,21 @@ def run_one_offline(base, state, journal, frames, task_id=None, *,
             hit_price_cny_m=journal.config["cache_hit_cny_m"],
             miss_price_cny_m=journal.config["cache_miss_cny_m"],
             output_price_cny_m=journal.config["output_cny_m"])
+        # The proxy does NOT guarantee enough reserve. If the provider-reported
+        # token count implies more than our reservation, stop and require
+        # manual reconciliation, rather than accept new downstream work.
+        expected = Decimal(journal.data["attempts"][attempt_id - 1]["reserved_cny"])
+        observed = Decimal(parsed["usage"]["estimated_usage_cost_cny"])
+        if observed > expected:
+            journal.finish(attempt_id, status="usage_overrun_requires_review",
+                           usage=parsed["usage"])
+            raise DurablePreflightError("PROVIDER_USAGE_ESTIMATE_EXCEEDS_RESERVATION")
         updated = roles.submit_role_output(
             base, state, tid, parsed["content"], source_text=source_text)
     except Exception:
-        journal.finish(attempt_id, status="response_rejected")
+        if journal.data["attempts"][attempt_id - 1]["status"] == "pending_uncertain":
+            journal.finish(attempt_id, status="response_rejected",
+                           usage=parsed["usage"] if "parsed" in locals() else None)
         raise
     journal.finish(attempt_id, status="response_accepted",
                    usage=parsed["usage"])
