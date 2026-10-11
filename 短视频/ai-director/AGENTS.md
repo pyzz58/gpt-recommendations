@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 导演交付书质量闸门（具体创作优先）
+
+- `director_workbook.compile_workbook` 产生 `director_review.creative_design_complete`（结构化导演内容无硬冲突）和 `director_review.editor_handoff_ready`（配音 cue、字幕 cue、动画关键帧、J/L 或明确 none 的声音交接决策具备时间轴）。两者不得混为一谈；人审状态始终独立。
+- 严格 `director_workbook.py --strict` 要求 `editor_handoff_ready=true`，不再仅凭有字段便通过。旧档可看草稿，但预览首页必须显式显示创作缺项及剪辑交接缺项。
+- 所有时间码相对镜头，转为绝对剪辑时间；中文配音密度以实际朗读窗口而非整镜长度为参照，作为人工审听提醒。字幕与旁白原文分别逐字守恒，不得悄悄改稿。
+- 本轮仍只提交 GitHub 通用代码和合成测试。参考图/音视频未生成，用户 Mac 未部署，AI 模型未调用。
+
 ## 剪辑时间线与声画节奏质量（仅导演工作单）
 
 - 详见 [EDITOR_TIMELINE.md](EDITOR_TIMELINE.md)。`director_timeline.py` 只将专业导演已写明的 beats、旁白 cue、出镜对白、音效、图层动画与镜头转场组合为绝对时间线，供 `director_workbook.py` 输出 `editor_decision_list`。不代表视频已剪辑或声音已完成。
