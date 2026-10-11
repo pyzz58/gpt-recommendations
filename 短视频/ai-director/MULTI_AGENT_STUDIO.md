@@ -1,3 +1,7 @@
+## 统一资产编号与跨镜连续性
+
+CineCrew FilmDSL 风格 `film_continuity.py` 已将**权威原稿资产 ID → 表演岗位逐镜状态/动作事件 → 独立场记检查 → 最终工单**接通。模型不能悄悄创建不存在的演员、道具或场景。道具从桌面到手里、服装颜色变化、信封封口打开均要有状态相等的跨镜接续或本镜事件；画外时间跳跃保留总导演人审风险。详情 [FILMDSL_CONTINUITY_AUDIT.md](FILMDSL_CONTINUITY_AUDIT.md)。当前**无人物参考图、实测视频或成片质量保证**，不等于已经解决视频模型随机变脸。
+
 ## 已验证的付费角色结果检查点协议
 
 第一轮 AUD-002 开发使真实 `agent_live_pilot` 与 `agent_live_crew` 必须携带持久私人 Vault：将**完整已通过专业合同校验的 team 状态**在付款账本标记接受前做不可覆盖的原子保存，允许崩溃后人工核实从持久文件恢复，不允许因 checkpoint 未找到而自动重放收费请求。详见 [PRIVATE_RESULT_CHECKPOINT_RECOVERY.md](PRIVATE_RESULT_CHECKPOINT_RECOVERY.md)。这只完成**离线代码验证**；没有真正私人持久主机部署，也未再调用付费 DeepSeek。P0 不能宣告完结。
