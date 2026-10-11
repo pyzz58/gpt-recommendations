@@ -20,7 +20,7 @@
 
 ## 创作交付自动检查（新增）
 
-`agent_creative_review.py` 提供 `review_deliverable` / `review_team` / `review_packet`，对专业交付的具体创作证据作保守检查：镜头缺漏、空泛内容、表演动作可观察性、声音职责、剪辑叙事桥和制作路线。`agent_team.compile_team_workbook()` 现在额外输出 `creative_quality_review`，但**不绕过原有结构审核**，且不自动批准。现阶段为**提示与人工复核**，不是严格创作质量评分；过去的草稿仍可存在并被标记。对应合成单元测试 `tests/test_agent_creative_review.py` 已提交，最新 GitHub CI/整仓测试尚未核实，不能宣称全部通过。
+`agent_creative_review.py` 提供 `review_deliverable` / `review_team` / `review_packet`，对专业交付的具体创作证据作保守检查：镜头缺漏、空泛内容、表演动作可观察性、声音职责、剪辑叙事桥和制作路线。`agent_team.compile_team_workbook()` 现在额外输出 `creative_quality_review`，但**不绕过原有结构审核**，且不自动批准。现阶段为**提示与人工复核**，不是严格创作质量评分；过去的草稿仍可存在并被标记。对应合成单元测试 `tests/test_agent_creative_review.py` 已由上方 GitHub CI 全量回归涵盖；这只证明确定性代码测试通过，不是艺术质量评分。
 
 ## 跨部门一致性、总导演返工和最终交付门禁（新增）
 
@@ -30,7 +30,7 @@
 - `request_planned_revision(base, state, proposal, showrunner_approved=True)` 只有对**当前数据重新计算后仍匹配**的建议，才可交给原有 `request_revision` 执行 DAG 失效、邻镜剪辑重审、历史保留。该布尔值只是编排层批准记录，**不能验证真实人物身份**，不是用户的人审或费用授权。
 - `compile_team_workbook(base, state)` 在汇编前重新独立核查原稿、QA 状态与部门硬冲突。有 blocker 会抛出错误，**不会生成最终导演工作单**；没有 blocker 但创作细节不足时，只生成明确标记 `team_delivery_gate.status=draft_needs_review` 的审阅草稿，绝不宣称完整。
 - `compile_team_workbook(..., strict=True)` 还要求既有 `director_review.production_blueprint_ready` 为真、没有开放的启发式创作检查或交接提醒，才标 `ready_for_human_review`。这也只是**文字交付准备就绪**，不代表真人批准、实际拍摄、版权验证或付费许可。
-- [合成离线回归测试](tests/test_agent_handoff_audit.py) 涵盖跨岗冲突、声画时间码、任务包 QA 阻断、合并返工、审批旗标、版本保护及交付拒绝。测试代码已提交 GitHub，**未执行本轮仓库全量 Python 测试**，远端 commit status 也未报告成功的测试检查。
+- [合成离线回归测试](tests/test_agent_handoff_audit.py) 涵盖跨岗冲突、声画时间码、任务包 QA 阻断、合并返工、审批旗标、版本保护及交付拒绝。测试代码已提交 GitHub，且已在上述 264 项成功的全量 GitHub Actions 回归中执行；不能将其等同于真实收费模型与视频验收。
 
 **边界**：当前并未做语义推理。例如不能从中文形容词中证明人物表演是否合情合理，或仅凭文本判定镜头色彩匹配；这些必须由导演真人审片和未来经批准的实际模型试制解决。现有 `assemble_direction` 是中间方向草稿合并功能，不是最终成片或正式工作单发布接口。
 
@@ -105,7 +105,7 @@ python3 agent_team.py ready --state agent_team.private.json
 - **不在用户 Mac 同步、下载、运行或安装**，直到用户明确说可以开始本地运行/部署。
 - `budget_policy` 中全部收费调用都是 `false`；`release` 中的 `human_approved`、`paid_api_authorized`、`media_generated`、`publishing_allowed` 永远不能被这个规划模块置为 true。
 - `director_ai_review_complete` 仅指“模拟总导演审阅了交付数据”；不代表真人同意、实际画面质量、版权许可或供应商已调用。
-- 本轮新增合成测试文件 `tests/test_agent_team.py`（20 项）。**最新版完整仓库尚未通过同一份代码快照的 CI 验证**；测试提交不等于已经实际运行通过。
+- 本轮新增合成测试文件 `tests/test_agent_team.py`（20 项）。包含这些测试在内的整仓 264 项单元测试已由上述同一版本的 GitHub CI 记录确认通过。
 
 ### 当前接入的阶段边界
 
