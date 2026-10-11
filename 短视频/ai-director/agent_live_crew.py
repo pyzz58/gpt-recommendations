@@ -20,6 +20,7 @@ import agent_handoff_audit as handoff
 import agent_creative_review as creative_review
 import creative_production_handoff as creative_bridge
 import agent_provider_wire as wire
+import role_schema_guard as schema_guard
 import editorial_review_lock as locks
 
 VERSION = "locked-ten-role-pilot-v1"
@@ -124,6 +125,9 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
         envelope = wire.prepare_chat_request(
             prompt["messages"], model=config["model"],
             max_output_tokens=config["max_output_tokens"])
+        # A broken or unavailable JSON Schema validator must be caught
+        # BEFORE an irreversible billable provider request.
+        schema_guard.preflight_schema(prompt["output_json_schema"])
     except (ValueError, TypeError, KeyError):
         raise pilot.PilotError("PILOT_ROLE_PROMPT_INVALID") from None
     if type(client) is pilot.DeepSeekHTTPSClient:
