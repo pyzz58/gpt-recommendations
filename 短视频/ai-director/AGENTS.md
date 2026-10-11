@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 长文章导演与剧本编辑的创意分镜方案（2026-10-11，离线研发）
+
+- 阅读 [EDITORIAL_CREATIVE_BRIDGE.md](EDITORIAL_CREATIVE_BRIDGE.md)，模块 `editorial_storyboard.py` 将已有单集草案接入**现有**总导演 `director_brief` 与剧本编辑 `script_edit` 的正式任务、依赖版本、源稿哈希和标准岗位 JSON 验收。没有增加重复 Agent，没有真的调用 DeepSeek。
+- `build_director_brief_request` 与 `build_script_editor_request` 生成待日后授权的专业创作请求。其中剧本编辑须附逐镜 `storyboard_pitch`（视觉目的、可观察动作、摄影与光线意图、文字后期、转场、逐字源引用）；`submit_creative_script_edit` 在入账前检查专业分镜完整度、事实源片段、数字叠字，不合格则原状态不变。
+- `propose_directed_storyboard` 把合格创意落在**新候选**导演 v0.1 计划上，原旁白、时长和 claims 不改、不吞掉人工需批准的改稿建议。候选始终 `author_review_required`，不继承旧 DAG 账本哈希；另起新团队也始终 `pending_author_editorial_review`。它不代表已拍片、已人审或可以直接投喂视频模型。
+- 只用虚构信封片段的预写 JSON 模拟接口，所有用户真实上传内容禁止写进公开 GitHub/CI，不授权付费服务或 Mac 部署。
+
 ## 长文章直入与可追溯分集（2026-10-11；真实文案严禁提交公开仓库）
 
 - 本轮新增 [ARTICLE_TO_EPISODE_INTAKE.md](ARTICLE_TO_EPISODE_INTAKE.md)、`article_intake.py` 与 `tests/test_article_intake.py`，只使用合成长文案做自动化验证。按 `### 1.` 等标题拆分节目选题，选择某一集生成来源逐字可追溯、完全未审核的 v0.1 分镜草案，交由既有 `agent_team.start` 创建十阶段导演任务账本。
