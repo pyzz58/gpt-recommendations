@@ -10,6 +10,10 @@
 - 不可以：提示用户执行 `git pull`、`pip install`、`brew`、`npm`、`git clone`、下载 ZIP/权重，或者让本地 Codex 执行修稿。禁止自动开机启动、守护进程、登录项、系统级配置、全局环境或其他本机安装操作。
 - 不能调用付费 DeepSeek/视频服务、不能提高或复用历史测试费用授权、不能触发可能付费的 CI 作业、不能发布或上传私人作品及密钥。
 
+## 长文章分集 / 分镜入口的 GitHub-only 阶段（2026-10-11）
+
+新增 `article_intake.py`、测试及 [ARTICLE_TO_EPISODE_INTAKE.md](ARTICLE_TO_EPISODE_INTAKE.md)。使用合成“雨前关窗”“图书馆”等多章节文案测试，**没有提交用户上传的《上学以后的孩子》**；支持 `### 1.`~`### 18.` 选题识别、原文候选旁白与原文位置绑定、长度超限显式省略、无证据验证硬标记、分镜合法性、既有团队首岗位任务派发。生成的 storyboards 是**待导演创作及人工确认的草案**，不是 AI 视频成品，也无付费 AI/网络调用。无需 Mac 任何操作，文案不能进公开 GitHub。
+
 ## DeepSeek 协议/持久预留离线测试阶段（2026-10-11）
 
 本阶段仅通过 GitHub 提交 `agent_provider_wire.py`、`agent_durable_preflight.py`、合成回归和 [PROVIDER_PROTOCOL_AND_DURABLE_BUDGET.md](PROVIDER_PROTOCOL_AND_DURABLE_BUDGET.md)。虽然使用 DeepSeek 最新官方请求/回应格式，也**没有向 DeepSeek、OpenAI、任何其他服务商发送请求**。持久化日志仅在 GitHub CI 临时测试目录写合成 token 预留/元数据，没有连接、访问、部署到用户 Mac；不提交真人私人素材、提示词、API Key、账单。真正线上对接依然须明确用户授权后单独实施，不能通过配置布尔值启用。
