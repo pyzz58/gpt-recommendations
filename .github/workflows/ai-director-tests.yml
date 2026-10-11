@@ -23,7 +23,10 @@ jobs:
         run: |
           python -m unittest discover -s tests -v
           python local_director.py doctor
-          python -m py_compile local_director.py local_ui.py llm_budget.py agent_team.py agent_handoff_audit.py agent_creative_review.py agent_executor.py agent_role_contracts.py agent_model_gateway.py article_intake.py editorial_storyboard.py editorial_review_lock.py agent_provider_wire.py agent_durable_preflight.py director_v2.py director_workbook.py
+          python -m py_compile local_director.py local_ui.py llm_budget.py agent_team.py agent_handoff_audit.py agent_creative_review.py agent_executor.py agent_role_contracts.py agent_model_gateway.py article_intake.py editorial_storyboard.py editorial_review_lock.py production_delivery.py agent_provider_wire.py agent_durable_preflight.py director_v2.py director_workbook.py
+          # Public sample only: compile a readable operator work-order pack
+          # into temporary CI storage. Never submit real/private scripts.
+          python production_delivery.py --base examples/quit-smoking/plan.json --direction examples/quit-smoking/direction_v02.json --out-json /tmp/ai-director-operator-work-orders.json --out-md /tmp/ai-director-operator-work-orders.md
           python director.py validate --plan examples/quit-smoking/plan.json
           python director.py compile --plan examples/quit-smoking/plan.json --out /tmp/ai-director-prompts.json
           python director.py preview --plan examples/quit-smoking/plan.json --out /tmp/ai-director-preview.html
