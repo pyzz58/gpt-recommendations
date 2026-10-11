@@ -16,6 +16,7 @@ import agent_executor as executor
 import agent_creative_review
 import agent_handoff_audit
 import creative_production_handoff as creative_bridge
+import role_schema_guard as schema_guard
 
 CONTRACT_VERSION = "1.0"
 MAX_CONTEXT_CHARS = 220_000
@@ -301,63 +302,25 @@ def output_schema(state, task_id):
             "additionalProperties": False}
 
 
-def build_role_messages(base, state, task_id, *, source_text=None,
-                        editorial_handoff=None):
-    """Build private messages in memory; never return a public or saved artifact.
+def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
+    """One authoritative runtime/prompt JSON Schema for this exact role.
 
-    For source-locked teams, include the FIRST real director/editor vision.
-    A trusted private caller must validate the surrounding snapshot first.
+    The same schema is shown to the model and enforced on its response.
+    Creative intent is bound to a source/plan fingerprint; cannot silently
+    change the editing authority or extend the user's original manuscript.
     """
-    if task_id not in ROLE_INSTRUCTIONS:
-        raise ValueError("unknown specialist")
-    context = executor.role_context(base, state, task_id, source_text=source_text)
-    packet = context["packet"]
-    scope = packet["revision_scope"]
-    ids = list(packet["shot_ids"] if scope is None else scope)
-    request = {
-        "contract_version": CONTRACT_VERSION, "task_id": task_id,
-        "role": packet["role"], "task_kind": packet["task_kind"],
-        "revision": context["next_revision"],
-        "target_shot_ids": ids, "allowed_fields": list(packet["allowed_fields"]),
-        "dependency_revisions": deepcopy(packet["dependency_revisions"]),
-        "base_digest": packet["base_digest"], "source_digest": packet["source_digest"],
-        "source_review_bound": packet["source_review_bound"],
-        "authoritative_base": context["authoritative_base"],
-        "original_script": context["original_script"],
-        "upstream_artifacts": deepcopy(packet["upstream_artifacts"]),
-        "independent_handoff_audit": deepcopy(packet["independent_handoff_audit"]),
-        "output_json_schema": output_schema(state, task_id),
-    }
+    schema = output_schema(state, task_id)
     if editorial_handoff is not None:
-        # Preserve the first director's vision across the v0.1 -> ten-role
-        # handoff, even though those initial stages restart for a NEW plan.
-        # This is proposal context and never overrides source or final consent.
-        preflight = creative_bridge.inspect_preproduction(
-            base, editorial_handoff)
+        creative_bridge.inspect_preproduction(base, editorial_handoff)
         if (editorial_handoff.get("episode_source_digest") !=
                 state.get("source_digest") or
                 editorial_handoff.get("status") !=
                 "planning_only_no_approval" or
                 editorial_handoff.get("human_approved") is not False):
             raise ValueError("CREW_EDITORIAL_HANDOFF_WRONG_SOURCE_OR_AUTHORITY")
-        request["first_director_editor_vision"] = deepcopy(
-            editorial_handoff["creative_concept"])
-        request["production_gaps_to_resolve"] = [
-            x for x in preflight["issues"]
-            if x["owner"] == task_id or task_id in
-               ("director_brief", "director_lock", "quality_review",
-                "director_final")
-        ]
-        request["first_director_vision_provenance"] = {
-            "candidate_plan_digest": editorial_handoff["candidate_plan_digest"],
-            "episode_source_digest": editorial_handoff["episode_source_digest"],
-            "author_approved": False,
-            "media_generated": False,
-            "not_a_production_bible_until_departments_resolve_gaps": True}
-        if task_id == "camera_art":
-            # Use an *actual* JSON Schema instruction, not just descriptive
-            # advice, so the next live model response has a checkable contract.
-            shape = request["output_json_schema"]["properties"]["shots"][
+    if task_id == "camera_art" and editorial_handoff is not None:
+        # Trusted schema extension shared by outgoing prompt and validation.
+            shape = schema["properties"]["shots"][
                 "properties"]
             for source_shot in base["shots"]:
                 shot_schema = shape.get(source_shot["id"])
@@ -397,6 +360,63 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                         "camera_axis": {"type":"string","minLength":1}},
                 }
                 art["required"].append("scene_geometry")
+    return schema
+
+
+def build_role_messages(base, state, task_id, *, source_text=None,
+                        editorial_handoff=None):
+    """Build private messages in memory; never return a public or saved artifact.
+
+    For source-locked teams, include the FIRST real director/editor vision.
+    A trusted private caller must validate the surrounding snapshot first.
+    """
+    if task_id not in ROLE_INSTRUCTIONS:
+        raise ValueError("unknown specialist")
+    context = executor.role_context(base, state, task_id, source_text=source_text)
+    packet = context["packet"]
+    scope = packet["revision_scope"]
+    ids = list(packet["shot_ids"] if scope is None else scope)
+    request = {
+        "contract_version": CONTRACT_VERSION, "task_id": task_id,
+        "role": packet["role"], "task_kind": packet["task_kind"],
+        "revision": context["next_revision"],
+        "target_shot_ids": ids, "allowed_fields": list(packet["allowed_fields"]),
+        "dependency_revisions": deepcopy(packet["dependency_revisions"]),
+        "base_digest": packet["base_digest"], "source_digest": packet["source_digest"],
+        "source_review_bound": packet["source_review_bound"],
+        "authoritative_base": context["authoritative_base"],
+        "original_script": context["original_script"],
+        "upstream_artifacts": deepcopy(packet["upstream_artifacts"]),
+        "independent_handoff_audit": deepcopy(packet["independent_handoff_audit"]),
+        "output_json_schema": execution_output_schema(
+            base, state, task_id, editorial_handoff=editorial_handoff),
+    }
+    if editorial_handoff is not None:
+        # Preserve the first director's vision across the v0.1 -> ten-role
+        # handoff, even though those initial stages restart for a NEW plan.
+        # This is proposal context and never overrides source or final consent.
+        preflight = creative_bridge.inspect_preproduction(
+            base, editorial_handoff)
+        if (editorial_handoff.get("episode_source_digest") !=
+                state.get("source_digest") or
+                editorial_handoff.get("status") !=
+                "planning_only_no_approval" or
+                editorial_handoff.get("human_approved") is not False):
+            raise ValueError("CREW_EDITORIAL_HANDOFF_WRONG_SOURCE_OR_AUTHORITY")
+        request["first_director_editor_vision"] = deepcopy(
+            editorial_handoff["creative_concept"])
+        request["production_gaps_to_resolve"] = [
+            x for x in preflight["issues"]
+            if x["owner"] == task_id or task_id in
+               ("director_brief", "director_lock", "quality_review",
+                "director_final")
+        ]
+        request["first_director_vision_provenance"] = {
+            "candidate_plan_digest": editorial_handoff["candidate_plan_digest"],
+            "episode_source_digest": editorial_handoff["episode_source_digest"],
+            "author_approved": False,
+            "media_generated": False,
+            "not_a_production_bible_until_departments_resolve_gaps": True}
     serialized = json.dumps(request, ensure_ascii=False, sort_keys=True,
                             separators=(",", ":"), allow_nan=False)
     _check_json_size(serialized, MAX_CONTEXT_CHARS, "private prompt")
@@ -432,6 +452,13 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
     if task_id not in team.ready(state):
         raise ValueError("CREW_TASK_NOT_READY")
     payload = parse_strict_json(raw)
+    # Enforce the EXACT schema supplied in the prompt, including camera/art
+    # extensions. Fail closed if jsonschema is not installed, and never echo
+    # private source/invalid payload in a returned error.
+    schema_guard.validate_contract(
+        execution_output_schema(base, state, task_id,
+                                editorial_handoff=editorial_handoff),
+        payload)
     team._validate_payload(state, task_id, payload)
     spec = team.SPECS[task_id]
     scoped = list(state["shot_ids"] if state["tasks"][task_id]["revision_scope"] is None
