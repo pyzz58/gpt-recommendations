@@ -18,6 +18,13 @@
 - 老剧本缺完整专业交付允许明确标记为 `draft_needs_review` 的审阅草稿；`strict=True` 只能在文字制作蓝图、岗位证据及交接质量均满足门禁时返回供真人审片状态，绝不冒充已生成视频。
 - 当前 GitHub-only，不触碰 Mac 和私人 jobs，无收费调用。测试代码不等于已运行通过；任何远端 CI 结果须以实际检查状态为准。
 
+## 专业 Agent 创作合同与严格 JSON 验收（2026-10-11）
+
+- 阅读 [PROFESSIONAL_AGENT_CONTRACTS.md](PROFESSIONAL_AGENT_CONTRACTS.md) 和 `agent_role_contracts.py`。为现有 10 个阶段提供**有区别的专业岗位创作指令**，输入仍由权威原文/plan、总导演圣经、岗位归属和依赖版本锁定。
+- `build_role_messages` 仅在**私有内存**构建 system/user 文本与岗位动态 schema；包含私密原始文案、上游素材，不能保存为公开日志、提交 GitHub 或发送未经单独批准的提供商。
+- `parse_strict_json` 拒绝多个 JSON、Markdown 围栏、重复键、非有限数值及过大响应；`validate_role_output` 校验可执行状态、准确镜头覆盖、专业字段内容、动作/声音时码、配音忠实原文、剪辑 beat 索引和合法技术路线，不得偷偷修复未通过的内容。
+- 模型接口**仍未接入**；旧 `FixtureOnlyAdapter` 原样保留，不准把这层本地静态 prompt/validator 当成完成 AI 创作、付费调用、真人批准。未来真正模型接入需用户明确另行批准供应商、数据上传及预算。
+
 ## 多 Agent 模拟执行器（2026-10-11）
 
 - 新增 [AGENT_EXECUTION_LAYER.md](AGENT_EXECUTION_LAYER.md) / `agent_executor.py`：十阶段连续处理由显式 `FixtureOnlyAdapter` 提供的预写 JSON 岗位交付，真实编排/版本/权限/QA/rework 规则生效，但**不调用任何 LLM**。不能把模拟交付叫作“8个 AI 已真正创作了电影方案”。
