@@ -18,3 +18,17 @@
 - `qa`：不满足动作连贯、人物一致性、参考图存在条件时不得宣称“已通过真人审核”；一律 human_approved=false，直到真正用户审阅。
 - 单个AI生成镜头重心不超过一项主要动作链和一项主要运镜；模型不支持的复杂要求要拆分镜头。
 - 不凭空添加额外剧情；所有镜头服务于文本核心信息，保持观众能看懂。
+
+## 新版导演完整性要求：编辑 / 动画 / 台词必须是独立设计
+
+参考 [PRODUCT_NORTH_STAR.md](../PRODUCT_NORTH_STAR.md) 及 [director_workbook.py](../director_workbook.py)。整个软件的产品是**完整的专业导演图纸**，并不是简单图像生成链。
+
+所有镜头除原有的 objective、staging、beats、camera、art、sound、continuity、graphics、generation、qa 外，**必须新增三项导演设计**（旧 JSON 可读取，但未填写就只能叫草稿）：
+
+- `editing`：`incoming_transition`、`outgoing_transition`、`cut_reason`、`rhythm`、`assembly_instructions`。不能写“自然过渡”这种没有做法的空话。转场类型应与基础稿一致；若确实需要改，单独提出基础分镜修订，不能悄悄改变时间轴。首镜 incoming_transition 为 `start`，后续接上一镜已设定的 outgoing_transition。
+- `animation`：`mode`、`timing`、`elements`、`render_in_post`、`style`。每个动效 `elements` 对象应说明 `layer`、`action`、`timing`（动画发生时间和运动参数，避免把长段镜头笼统标“加动画”）。如果不用动画，也要写 `mode=none`、`elements=[]` 并解释为何不需要。
+- `speech`：`voiceover` 对象内逐字引用 base.narration 的 `text`，独立写 `delivery`、`timing`；`dialogue` 为出镜对白数组（没有就 `[]`），每条需要 `speaker_id`、`text`、`delivery`、`from_s`、`to_s`；`subtitle_direction` 和 `lip_sync_policy` 必填。**旁白与口型对白不同，不得把配音备注当成已获用户同意的文案改写**。
+
+须关注声画并轨：动作真正出现在镜头哪一秒、台词从哪一秒开始、动画在哪一层做、何时切、该镜头交给 AI 视频、静态图还是后期合成。新增字段不许出现“待设计”“自行处理”“根据情况”等托辞。
+
+导演工作结束后使用 `director_workbook.py` 汇总并评审全镜头（此处为将来获批后的本地工作流说明，当前仍 GitHub-only）。`creative_design_complete=false` 时不得称为完成专业导演任务，更不能仅因提示词存在就宣布可制作；但不能因为参考图片尚未生成而停止完整的导演方案设计。
