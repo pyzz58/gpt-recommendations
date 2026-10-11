@@ -10,6 +10,10 @@
 - 不可以：提示用户执行 `git pull`、`pip install`、`brew`、`npm`、`git clone`、下载 ZIP/权重，或者让本地 Codex 执行修稿。禁止自动开机启动、守护进程、登录项、系统级配置、全局环境或其他本机安装操作。
 - 不能调用付费 DeepSeek/视频服务、不能提高或复用历史测试费用授权、不能触发可能付费的 CI 作业、不能发布或上传私人作品及密钥。
 
+## 锁定方案后的十岗位 DeepSeek 接入阶段（2026-10-11）
+
+`agent_live_crew.py` + `tests/test_agent_live_crew.py` + [DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md](DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md) 接入了既有十阶段团队角色，按准确 `base_digest`/`source_digest` 单次派发并在独立 QA 上拒绝已有声画/来源硬冲突。GitHub Actions 只运行经过禁止真实网络的静态模拟返回，绝无真实 DeepSeek 请求。已有私人数据禁止提交公仓，预算预留日志必须只留未来私有环境，**未启动任何 Mac 本地部署**。
+
 ## DeepSeek 单岗位真实 HTTP 能力的非付费测试阶段（2026-10-11）
 
 新建 `agent_live_pilot.py`、`tests/test_agent_live_pilot.py`、[DEEPSEEK_SINGLE_TASK_PILOT.md](DEEPSEEK_SINGLE_TASK_PILOT.md)。复用现有专业剧本创作和 DeepSeek 请求/回复结构，新增固定 HTTPS 主机、一次一岗、单集来源校验、费用预留 journal 和严格失败闸门，**在 GitHub Actions 中只运行纯合成响应**。此阶段的测试并没有真实发送你的私人文章、运行付费模型、部署 Mac 或批准任何成片。真实调用必须另行取得明确的模型、数据传输、执行环境及支出上限授权。
