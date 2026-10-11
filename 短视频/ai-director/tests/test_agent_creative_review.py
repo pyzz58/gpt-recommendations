@@ -88,7 +88,7 @@ class CreativeReviewTests(unittest.TestCase):
         payload = {"shots": {"S03": {
             "editing": {"cut_reason": "影片最后一镜以黑场停顿结束"},
             "animation": {"style": "不需要额外图层，保持原生镜头画面"},
-            "graphics": {"plan": "画面中央没有额外字幕或图形"}}}
+            "graphics": {"plan": "画面中央没有额外字幕或图形"}}}}
         result = qa.review_deliverable(
             "editing_animation", payload, ["S03"], terminal_shot_id="S03")
         self.assertNotIn("EDIT_NO_NARRATIVE_BRIDGE",
@@ -98,7 +98,7 @@ class CreativeReviewTests(unittest.TestCase):
         payload = {"shots": {"S02": {
             "editing": {"cut_reason": "下一镜将显示打开后的信封内容"},
             "animation": {"style": "不加入与故事无关的动效元素"},
-            "graphics": {"plan": "不加入任何额外图形或统计"}}}
+            "graphics": {"plan": "不加入任何额外图形或统计"}}}}
         result = qa.review_deliverable(
             "editing_animation", payload, ["S02"], terminal_shot_id="S03")
         self.assertIn("EDIT_NO_NARRATIVE_BRIDGE",
