@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -93,6 +94,17 @@ class ArticleIntakeTests(unittest.TestCase):
         self.assertGreater(len(result["plan"]["shots"]), 1)
         self.assertEqual(result["plan"]["duration"], sum(
             x["duration"] for x in result["plan"]["shots"]))
+
+    def test_legacy_storyboard_preview_renders_from_intake_draft(self):
+        candidate = intake.prepare_episode(self.article, "EP01")
+        with tempfile.TemporaryDirectory() as temp:
+            destination = Path(temp) / "synthetic-storyboard.html"
+            director.render_preview(candidate["plan"], destination)
+            html = destination.read_text("utf-8")
+            self.assertIn(candidate["plan"]["title"], html)
+            self.assertIn(candidate["plan"]["shots"][0]["narration"], html)
+            self.assertIn("不是实际视频", html)
+            self.assertFalse(candidate["review"]["ready_for_video_model"])
 
     def test_native_team_first_department_gets_same_authoritative_base(self):
         result, packet = intake.prepare_first_department(self.article, "EP02")
