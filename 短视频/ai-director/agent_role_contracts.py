@@ -360,21 +360,10 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             shape = request["output_json_schema"]["properties"]["shots"][
                 "properties"]
             for source_shot in base["shots"]:
-                if source_shot.get("visual_type") != "ai_video":
-                    continue
                 shot_schema = shape.get(source_shot["id"])
                 if shot_schema is None:
                     continue  # current scoped revision excludes this shot
-                c = shot_schema["properties"]["camera"]
                 art = shot_schema["properties"]["art"]
-                c["properties"].update({
-                    "shot_size": {"type":"string",
-                                  "enum": sorted(creative_bridge.VIDEO_SHOT_SIZES)},
-                    "focal_length_mm": {"type":"number", "minimum":14, "maximum":135},
-                    "screen_axis": {"type":"string", "minLength":6},
-                })
-                c["required"].extend([
-                    "shot_size", "focal_length_mm", "screen_axis"])
                 art["properties"].update({
                     "lighting_state": {"type":"string",
                                        "enum": sorted(creative_bridge.LIGHTING_STATES)},
@@ -385,6 +374,29 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 art["required"].extend([
                     "lighting_state", "practical_sources",
                     "lighting_change_reason"])
+                if source_shot.get("visual_type") != "ai_video":
+                    continue
+                c = shot_schema["properties"]["camera"]
+                c["properties"].update({
+                    "shot_size": {"type":"string",
+                                  "enum": sorted(creative_bridge.VIDEO_SHOT_SIZES)},
+                    "focal_length_mm": {"type":"number", "minimum":14, "maximum":135},
+                    "screen_axis": {"type":"string", "minLength":6},
+                })
+                c["required"].extend([
+                    "shot_size", "focal_length_mm", "screen_axis"])
+                art["properties"]["scene_geometry"] = {
+                    "type": "object",
+                    "required": ["anchor_positions", "key_light_position",
+                                 "camera_axis"],
+                    "properties": {
+                        "anchor_positions": {"type":"object", "minProperties":2,
+                                             "additionalProperties":{
+                                                 "type":"string","minLength":1}},
+                        "key_light_position": {"type":"string","minLength":1},
+                        "camera_axis": {"type":"string","minLength":1}},
+                }
+                art["required"].append("scene_geometry")
     serialized = json.dumps(request, ensure_ascii=False, sort_keys=True,
                             separators=(",", ":"), allow_nan=False)
     _check_json_size(serialized, MAX_CONTEXT_CHARS, "private prompt")
