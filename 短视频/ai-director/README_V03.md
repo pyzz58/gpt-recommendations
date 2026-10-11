@@ -48,6 +48,12 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 **不要直接修改原片**。按上述 Codex 工作流先生成 `plan.proposed.json`，然后在本地验证并人工审核。没有采纳整个 CineCrew 或 transitions 包；零运行时额外依赖，无视频或 API 费用。
 
+## 导演 v0.2 混合制作路线（目前仅 GitHub 研发）
+
+2026-10-11 修复：原编译器把所有 `base.visual_type=ai_video` 的镜头强制送往 AI 视频模型，现在 `generation.route` 可以单独选择 `ai_video`、`static_post`、`edit_composite`、`live_action_insert`、`post_production`。支持部分旧 `production_method` 别名，未知类型显式报错。非视频路线只输出后期/实拍工作单，`production_summary` 给出 AI 视频实际镜头数量。
+
+参见 [PRODUCTION_ROUTING.md](PRODUCTION_ROUTING.md)。这是源码和隔离环境回归测试，**不意味着用户本地私人导演档已验证、生成了视频或获得了素材授权**。Mac 部署继续暂停。
+
 ## 本地自检与备份
 
 ```bash
