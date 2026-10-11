@@ -105,6 +105,31 @@ class EditorialStoryboardTests(unittest.TestCase):
             self.base, state, self.book, transport, source_text=self.source)
         return state
 
+    def test_strict_editorial_submit_end_to_end_without_model(self):
+        state = creative.submit_director_brief(
+            self.intake, self.source, json.dumps(self.brief, ensure_ascii=False))
+        self.assertEqual(team.ready(state), ["script_edit"])
+        after = creative.submit_creative_script_edit(
+            self.intake, state, self.source,
+            json.dumps(self.treatment, ensure_ascii=False))
+        self.assertEqual(team.ready(after), ["director_lock"])
+        proposal = creative.propose_directed_storyboard(
+            self.intake, after, self.source)
+        self.assertFalse(proposal["author_approved"])
+        self.assertEqual(proposal["actual_provider_calls"], 0)
+
+    def test_atomic_editor_does_not_commit_unvalidated_creative_pitch(self):
+        brief_state = creative.submit_director_brief(
+            self.intake, self.source, json.dumps(self.brief, ensure_ascii=False))
+        before = deepcopy(brief_state)
+        bad = deepcopy(self.treatment)
+        bad["story_treatment"]["storyboard_pitch"]["shot_designs"][0]["evidence_quote"] = "伪造的证据"
+        with self.assertRaisesRegex(creative.CreativeContractError, "SOURCE_QUOTE_DRIFT"):
+            creative.submit_creative_script_edit(
+                self.intake, brief_state, self.source, json.dumps(bad, ensure_ascii=False))
+        self.assertEqual(before, brief_state)
+        self.assertEqual(team.ready(brief_state), ["script_edit"])
+
     def test_ten_stage_team_has_real_first_two_artifacts_without_live_calls(self):
         state = self._run()
         self.assertEqual(state["tasks"]["director_brief"]["status"], "completed")
