@@ -13,6 +13,7 @@ import sys
 
 import director_v2
 import director_timeline
+import director_narrative_bridges
 
 EDIT_FIELDS = ("incoming_transition", "outgoing_transition", "cut_reason",
                "rhythm", "assembly_instructions")
@@ -181,6 +182,11 @@ def compile_workbook(base, directions):
                        f["severity"] == "blocker" or f["code"] in unfinished_codes]
     concept_complete = len(findings) == 0 and len(timeline_blockers) == 0
     handoff_ready = concept_complete and not handoff_pending
+    narrative_bridges, narrative_findings = director_narrative_bridges.review(
+        base, directions, director_v2.production_route)
+    narrative_gaps = [f for f in narrative_findings if f["severity"] in ("pending", "blocker")]
+    narrative_ready = not narrative_gaps and len(narrative_bridges) == max(len(base["shots"])-1, 0)
+    blueprint_ready = handoff_ready and narrative_ready
     return {
         "schema_version": "1.0", "kind": "script_to_short_video_director_workbook",
         "overview": {"title": base["title"], "core_message": base["core_message"],
@@ -189,10 +195,15 @@ def compile_workbook(base, directions):
                      "visual_bible": base["visual_bible"],
                      "series_direction": directions["global_direction"]},
         "assembly_timeline": timeline, "editor_decision_list": edit_timeline,
+        "narrative_bridges": narrative_bridges,
         "shots": shot_rows, "production_summary": compiled["production_summary"],
         "director_review": {"creative_design_complete": concept_complete,
                             "editor_handoff_ready": handoff_ready,
                             "editor_handoff_pending": len(handoff_pending),
+                            "narrative_handoff_ready": narrative_ready,
+                            "narrative_handoff_pending": len(narrative_gaps),
+                            "narrative_handoff_findings": narrative_findings,
+                            "production_blueprint_ready": blueprint_ready,
                             "unresolved": len(findings) + len(timeline_blockers),
                             "findings": findings + timeline_blockers,
                             "handoff_findings": handoff_pending,
@@ -213,8 +224,14 @@ def render_markdown(book):
              "剪辑交接就绪：" + ("是（仅表示工作单齐全，仍需人工审片）" if
                          book["director_review"]["editor_handoff_ready"] else
                          "否，仍有 " + str(book["director_review"]["editor_handoff_pending"]) +
-                         " 项需要精确时间/音频衔接设计"), ""]
+                         " 项需要精确时间/音频衔接设计"),
+             "跨镜头叙事与风格交接：" + ("已写齐，仍待人工审看" if
+                 book["director_review"]["narrative_handoff_ready"] else
+                 "未完成，待补 " + str(book["director_review"]["narrative_handoff_pending"]) + " 项"),
+             "导演制作蓝图：" + ("待人工验收（非成片）" if
+                 book["director_review"]["production_blueprint_ready"] else "仍有待设计内容"), ""]
     timeline_by_id = {t["shot_id"]: t for t in book["editor_decision_list"]}
+    bridge_by_id = {b["from_shot_id"]: b for b in book["narrative_bridges"]}
     for shot in book["shots"]:
         lines += ["## " + shot["shot_id"] + " / " + str(shot["start_s"]) + "–" + str(shot["end_s"]) + "秒",
                   "剧情任务：" + shot["story"]["visible_change"],
@@ -239,7 +256,15 @@ def render_markdown(book):
                   fence + "json",
                   json.dumps(timeline_by_id[shot["shot_id"]], ensure_ascii=False, indent=2),
                   fence]
+        bridge = bridge_by_id.get(shot["shot_id"])
+        if bridge:
+            lines += ["", "### 下一镜的叙事、节奏与混合制作风格衔接",
+                      fence + "json", json.dumps(bridge, ensure_ascii=False, indent=2), fence]
         lines.append("")
+    if book["director_review"]["narrative_handoff_findings"]:
+        lines += ["## 跨镜头叙事与风格仍待导演处理"]
+        lines += [f"- {x['shot_id']} → {x['next_shot_id']}：{x['code']} —— {x['detail']}"
+                  for x in book["director_review"]["narrative_handoff_findings"]]
     if book["director_review"]["timing_review_findings"]:
         lines += ["## 节奏、配音与动画时间点待人工核查"]
         lines += [f"- {x['shot_id']}：{x['code']} —— {x['detail']}"
@@ -263,10 +288,12 @@ def main(argv=None):
         base = json.loads(Path(args.base).read_text(encoding="utf-8"))
         directions = json.loads(Path(args.direction).read_text(encoding="utf-8"))
         book = compile_workbook(base, directions)
-        if args.strict and not book["director_review"]["editor_handoff_ready"]:
-            raise ValueError("editor handoff incomplete: " +
+        if args.strict and not book["director_review"]["production_blueprint_ready"]:
+            raise ValueError("production director blueprint incomplete: " +
                              str(book["director_review"]["editor_handoff_pending"]) +
-                             " timecoded items, " +
+                             " timecoded handoff items, " +
+                             str(book["director_review"]["narrative_handoff_pending"]) +
+                             " narrative/style handoff items, " +
                              str(book["director_review"]["unresolved"]) +
                              " creative blockers; no output written")
         targets = [Path(args.out)] + ([Path(args.markdown)] if args.markdown else [])
