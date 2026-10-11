@@ -19,7 +19,7 @@ import director_v2
 import director_workbook
 import editorial_review_lock as review
 import agent_team as team
-from test_editorial_review_lock import EditorialReviewLockTests
+import test_editorial_review_lock as review_test_fixture
 
 
 EXAMPLE = ROOT / "examples" / "quit-smoking"
@@ -151,7 +151,7 @@ class ProductionDeliveryTests(unittest.TestCase):
             delivery.build_reference_delivery(self.base, directions)
 
     def test_locked_intake_cannot_export_without_ten_completed_roles(self):
-        f = EditorialReviewLockTests(
+        f = review_test_fixture.EditorialReviewLockTests(
             methodName="test_complete_review_locks_only_planning_snapshot")
         f.setUp()
         snap = review.lock_planning_snapshot(f.candidate, f.source, f.decide())
@@ -162,7 +162,7 @@ class ProductionDeliveryTests(unittest.TestCase):
                 snap, f.source, partial["team"])
 
     def test_forged_unlocked_version_does_not_enter_crew(self):
-        f = EditorialReviewLockTests(
+        f = review_test_fixture.EditorialReviewLockTests(
             methodName="test_complete_review_locks_only_planning_snapshot")
         f.setUp()
         snap = review.lock_planning_snapshot(f.candidate, f.source, f.decide())
@@ -173,7 +173,7 @@ class ProductionDeliveryTests(unittest.TestCase):
             delivery.build_locked_crew_delivery(snap, f.source, state)
 
     def test_wrong_source_cannot_be_used_for_locked_delivery(self):
-        f = EditorialReviewLockTests(
+        f = review_test_fixture.EditorialReviewLockTests(
             methodName="test_complete_review_locks_only_planning_snapshot")
         f.setUp()
         snap = review.lock_planning_snapshot(f.candidate, f.source, f.decide())
@@ -182,7 +182,7 @@ class ProductionDeliveryTests(unittest.TestCase):
             delivery.build_locked_crew_delivery(snap, f.source + "tamper", state)
 
     def test_fake_author_identity_true_is_rejected(self):
-        f = EditorialReviewLockTests(
+        f = review_test_fixture.EditorialReviewLockTests(
             methodName="test_complete_review_locks_only_planning_snapshot")
         f.setUp()
         snap = review.lock_planning_snapshot(f.candidate, f.source, f.decide())
