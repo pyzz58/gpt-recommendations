@@ -48,6 +48,12 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 **不要直接修改原片**。按上述 Codex 工作流先生成 `plan.proposed.json`，然后在本地验证并人工审核。没有采纳整个 CineCrew 或 transitions 包；零运行时额外依赖，无视频或 API 费用。
 
+## 本轮导演可执行性升级：具体动作切点与模板化检测
+
+新增 `narrative_bridge.beat_link` 绑定相邻镜头真实末/首 `beats`。导演交付书现在能标明切点时上一镜正在发生的可见动作，以及下一镜第一节拍；若切点没有对应行动、引用了错误的节拍编号，或设计里没有明确实际切点事件，严格制作蓝图不可通过。
+
+另外，若同一部片连续多镜重复粘贴相同的叙事/剪辑理由，会出现 `editorial_specificity_review_required` 人工复核状态并暂停 `production_blueprint_ready`。这只是重复性诊断，不代替艺术质量审查。参见 [NARRATIVE_HANDOFF.md](NARRATIVE_HANDOFF.md)。
+
 ## 新增：镜头之间为何切、如何推动情绪、AI/静态/图形风格怎样统一
 
 已新增 `director_narrative_bridges.py`、[NARRATIVE_HANDOFF.md](NARRATIVE_HANDOFF.md) 和合成回归测试。每对相邻镜头都要求具体的切点叙事原因、情绪变化、视觉链接、跨介质后期统一方案（调色/构图/排版/纹理），而不是单镜头分别写“专业摄影”“电影感”。
