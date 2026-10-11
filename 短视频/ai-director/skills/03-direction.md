@@ -19,6 +19,17 @@
 - 单个AI生成镜头重心不超过一项主要动作链和一项主要运镜；模型不支持的复杂要求要拆分镜头。
 - 不凭空添加额外剧情；所有镜头服务于文本核心信息，保持观众能看懂。
 
+## 可交接的时间线工作单
+
+参阅 [EDITOR_TIMELINE.md](../EDITOR_TIMELINE.md)。将具体导演构思落到**逐镜头的绝对时间与声画轨道**：
+
+- `beats[].from_s/to_s` 与 `camera`、表演、声效同步；清楚写出触发点、角色动作和镜头停留，而不止写“节奏自然”。
+- `speech.voiceover.cues` 推荐按逐句填写 `{from_s,to_s,text}`；拼接后必须与基础稿旁白字句一致，特别需要试读时请标注为待人审。
+- `speech.dialogue[]` 除角色与台词之外必须注明相对时间；与旁白同时出现时要设计如何压低背景声、谁先说、哪里留白。
+- `sound.effects[].time_s` 不能超过镜头时长；`animation.elements[]` 推荐每个图层带数字 `from_s/to_s` 与可执行 `timing`、`layer`、`action`，而不是只用笼统文字。
+- `editing` 要考虑相邻镜头前后帧、视觉方向、动作衔接、声画延迟（J/L cut）是否需要，明确剪辑拼接顺序。`cut_reason` 必须说明为什么在那个点剪，而不是为了堆切镜。
+- `director_workbook.py` 现在会输出 `editor_decision_list` 和人工核查警告。不得凭空填充真实素材、时间码或配音；没有实际制作素材时这是可执行**设计图纸**而非成片工程。
+
 ## 新版导演完整性要求：编辑 / 动画 / 台词必须是独立设计
 
 参考 [PRODUCT_NORTH_STAR.md](../PRODUCT_NORTH_STAR.md) 及 [director_workbook.py](../director_workbook.py)。整个软件的产品是**完整的专业导演图纸**，并不是简单图像生成链。
