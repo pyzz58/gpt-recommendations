@@ -12,6 +12,12 @@
 - `role_schema_guard.py` 在正文专业校验之外执行模型收到的同一 Draft 2020-12 Schema：固定静态错误号、不输出私人字段值、禁止远程 `$ref`、逐镜扩展 storyboard_pitch 也严格执行。继续保留原文 hash、部门字段所有权、导演/摄影视觉和灯光硬约束。首次完成十角色合成验证，不代表真实模型语义可靠。
 - [AUD-009 Issue #5](https://github.com/pyzz58/gpt-recommendations/issues/5) 保持 OPEN：原文 JSON 封装及假冒 system/tool 消息只证明传输结构没有越权，**不能证明模型完全抵御 Prompt Injection**；新实机攻防须另外授权，不复用此前临时 Key。
 
+## AUD-003 CineCrew FilmDSL 连续性子模块（2026-10-11）
+
+- [FILMDSL_CONTINUITY_AUDIT.md](FILMDSL_CONTINUITY_AUDIT.md) 记录实际融合选择和未验证边界：借鉴 [Ironieser/CineCrew](https://github.com/Ironieser/CineCrew) Apache-2.0 README 里 `D={meta,assets,memory,clips[]}` 的资产/镜头状态思想，但**没有复制源码或迁移其完整框架**。
+- `film_continuity.py` 建立来源绑定 `characters/props/scenes` ID 表。源没有声明人物/道具，绝不可从 AI 想象自动补全；镜内状态变化必须声明事件、时间和因果，跨镜突然换装或道具移动是 blocker，画外跳转仅为待人工验证的 review。
+- 已接通锁定来源的 `acting` 岗位真实输出 Schema、局部返工合并、独立 QA 与最终制作工作包；无媒体参考图时始终 `reference_media_verified=false`、`production_ready=false`。Issue #2 仍 OPEN：参考图和真实视觉身份验证未完成，不能用字符串状态一致冒充画面成功。
+
 # 当前开发模式：仅 GitHub 远程开发（2026-10-11 用户明确决定，最高优先级）
 
 **自本条决定起，项目仅在 GitHub 仓库开发，直到用户明确发出“可以开始本地运行/部署”的新指令。任何较旧的“先在 Mac 执行”“让 Codex 在 Downloads 目录修改”“运行 git pull / 本地测试 / 打包”的建议，当前全部暂停。**
