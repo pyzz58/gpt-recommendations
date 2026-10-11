@@ -253,6 +253,28 @@ class HandoffAuditTests(unittest.TestCase):
             crew.propose_director_revisions(changed, state)
 
 
+    def test_malformed_route_fails_closed_without_type_error(self):
+        state = self.through("ai_technical")
+        state["tasks"]["ai_technical"]["deliverable"]["shots"]["S01"]["generation"]["route"] = ["invalid"]
+        report = audit.audit_handoffs(state, self.base)
+        self.assertIn("HANDOFF_INVALID_PRODUCTION_ROUTE",
+                      [issue["code"] for issue in report["issues"]])
+
+    def test_compiler_blocks_missing_specialist_shot_after_qa(self):
+        state = self.through()
+        del state["tasks"]["camera_art"]["deliverable"]["shots"]["S02"]
+        with self.assertRaisesRegex(ValueError, "creative blockers"):
+            crew.compile_team_workbook(self.base, state)
+
+    def test_strict_review_gate_needs_bound_source_digest(self):
+        state = self.through()
+        self.assertFalse(state["source_review_bound"])
+        self.assertFalse(state["release"]["human_approved"])
+        # A complete source fingerprint is a prerequisite, not a substitute
+        # for real creative approval or the production blueprint checks.
+        with self.assertRaises((ValueError, KeyError)):
+            crew.compile_team_workbook(self.base, state, strict=True)
+
     def test_cli_audit_propose_and_approval_are_offline(self):
         state = self.through()
         state["tasks"]["sound"]["deliverable"]["shots"]["S01"]["speech"]["voiceover"]["text"] = "changed"
