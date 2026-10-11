@@ -86,8 +86,11 @@ def _require(condition, message):
         raise ValueError(message)
 
 
-def start(base):
-    """Produce a new task ledger, without copying user prose into GitHub."""
+def start(base, source_text=None):
+    """Produce a ledger; optional private source text is hashed, not stored."""
+    _require(source_text is None or
+             isinstance(source_text, str) and source_text.strip(),
+             "source_text must be nonempty text when provided")
     _require(isinstance(base, dict) and isinstance(base.get("shots"), list)
              and bool(base["shots"]), "base plan needs nonempty shots")
     ids = [s.get("id") if isinstance(s, dict) else None for s in base["shots"]]
@@ -102,7 +105,11 @@ def start(base):
                       "previous_versions": []}
     return {
         "schema_version": VERSION, "kind": "ai_director_team_ledger",
-        "base_digest": fingerprint(base), "shot_ids": ids,
+        "base_digest": fingerprint(base),
+        "source_digest": (hashlib.sha256(source_text.encode("utf-8")).hexdigest()
+                          if source_text is not None else None),
+        "source_review_bound": source_text is not None,
+        "shot_ids": ids,
         "team_roles": dict(TEAM), "tasks": tasks, "events": [],
         "budget_policy": {"llm_requests_enabled": False,
                           "paid_media_enabled": False,
@@ -127,6 +134,9 @@ def _check_state(state):
     _require(isinstance(state, dict) and state.get("schema_version") == VERSION
              and state.get("kind") == "ai_director_team_ledger",
              "invalid team ledger")
+    _require(state.get("source_review_bound") is
+             (state.get("source_digest") is not None),
+             "source intake status inconsistent")
     _require(isinstance(state.get("shot_ids"), list) and
              isinstance(state.get("tasks"), dict) and
              set(state["tasks"]) == set(SPECS), "team task registry mismatch")
@@ -177,6 +187,8 @@ def packet(state, task_id):
             "allowed_fields": list(spec["fields"]), "shot_ids": list(state["shot_ids"]),
             "revision_scope": item["revision_scope"],
             "dependency_revisions": deps, "base_digest": state["base_digest"],
+            "source_digest": state["source_digest"],
+            "source_review_bound": state["source_review_bound"],
             "input_task_ids": list(spec["depends_on"]),
             "no_authorized_model_calls": True, "no_payments_or_media": True,
             "note": ("Work from the approved shared base and upstream deliverables. "
@@ -228,7 +240,9 @@ def _validate_payload(state, task_id, payload):
                          "sound", "editing_animation", "ai_technical"),
                      "QA blocker needs a valid owning department")
             ids = finding.get("shot_ids", [])
-            _require(isinstance(ids, list) and set(ids) <= set(state["shot_ids"]),
+            _require(isinstance(ids, list) and
+                     all(isinstance(i, str) for i in ids) and
+                     set(ids) <= set(state["shot_ids"]),
                      "QA blocker references unknown shot")
     elif task_id == "director_final":
         decision = value.get("decision")
@@ -251,7 +265,8 @@ def submit(state, envelope, payload):
     tid = envelope.get("task_id")
     _require(tid in SPECS, "unknown task")
     expected = packet(state, tid)  # also enforces dependencies
-    for field in ("base_digest", "task_id", "dependency_revisions", "revision_scope"):
+    for field in ("base_digest", "source_digest", "task_id",
+                  "dependency_revisions", "revision_scope"):
         _require(envelope.get(field) == expected[field], "stale or mismatched envelope: " + field)
     _validate_payload(state, tid, payload)
     out = deepcopy(state)
@@ -379,6 +394,14 @@ def assemble_direction(base, state):
     return direction
 
 
+def source_matches(state, private_source_text):
+    """Verify a private source without copying it into the task ledger."""
+    _check_state(state)
+    _require(state["source_review_bound"], "source text was not bound at intake")
+    _require(isinstance(private_source_text, str), "source text must be a string")
+    return hashlib.sha256(private_source_text.encode("utf-8")).hexdigest() == state["source_digest"]
+
+
 def _save_new(path, obj):
     """No silent overwrites: a handoff history is an artifact, not cache."""
     target = Path(path)
@@ -393,6 +416,7 @@ def main(argv=None):
     sub = p.add_subparsers(dest="command", required=True)
     p_new = sub.add_parser("plan")
     p_new.add_argument("--base", required=True)
+    p_new.add_argument("--source", help="private original text, hashed but never stored")
     p_new.add_argument("--out", required=True)
     p_show = sub.add_parser("ready")
     p_show.add_argument("--state", required=True)
@@ -420,7 +444,9 @@ def main(argv=None):
         def load_json(file):
             return json.loads(Path(file).read_text(encoding="utf-8"))
         if args.command == "plan":
-            state = start(load_json(args.base))
+            source_text = (Path(args.source).read_text(encoding="utf-8")
+                           if args.source else None)
+            state = start(load_json(args.base), source_text=source_text)
             _save_new(args.out, state)
             print("Offline director team plan created; ready:", ", ".join(ready(state)))
         elif args.command == "ready":
