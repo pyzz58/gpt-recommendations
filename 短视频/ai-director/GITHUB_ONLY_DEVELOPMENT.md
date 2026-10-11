@@ -1,3 +1,7 @@
+## 持续全链路审计（2026-10-11）
+
+现将 [DEEP_AUDIT_MASTER.md](DEEP_AUDIT_MASTER.md)、[AUDIT_FINDINGS.json](AUDIT_FINDINGS.json) 与 [audit_registry.py](audit_registry.py) 设为持续工程验收来源；GitHub Actions 只运行离线合成任务，使用 Apache-2.0 `coverage.py` 固定版进行多模块分支覆盖测量，公开制品只有安全的统计与合成工作单。每一项问题必须有状态、证据、优先级、修复提交与回归。重大问题以 GitHub Issues 为主，未解决的 P0 恢复缺口不得因别的模块测试通过而隐藏。仍不在 Mac 安装、同步或部署，不自动发生私人文案传输或收费 API。
+
 # GitHub 专属开发阶段与 Mac 轻量化部署准则
 
 ## 当前执行状态（用户于 2026-10-11 明确决定）
