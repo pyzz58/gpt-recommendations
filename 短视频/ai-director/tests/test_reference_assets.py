@@ -219,3 +219,15 @@ class ReferenceAssetTests(unittest.TestCase):
             import jsonschema
             jsonschema.Draft202012Validator.check_schema(schema)
             jsonschema.Draft202012Validator(schema).validate(self.setup_manifest())
+    def test_missing_other_angle_keeps_character_pack_not_ready(self):
+        m=self.setup_manifest()
+        m["assets"]["CHAR01"]["views"]["front"]["status"]="candidate"
+        r=refs.audit(self.base,self.direction,m)
+        self.assertIn("ASSET_VIEW_NOT_READY",[f["code"] for f in r["findings"]])
+        self.assertFalse(r["ready_for_reference_preflight"])
+
+    def test_reference_binding_requires_role(self):
+        m=self.setup_manifest()
+        m["shot_requirements"]["S01"][0].pop("role")
+        r=refs.audit(self.base,self.direction,m)
+        self.assertIn("INVALID_BINDING",[f["code"] for f in r["findings"]])
