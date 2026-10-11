@@ -394,7 +394,7 @@ def compile_team_workbook(base, state, *, strict=False):
              "independent handoff blockers prevent workbook: " +
              ", ".join(x["code"] for x in handoffs["issues"] if
                        x["severity"] == "blocker")[:350])
-    creative = agent_creative_review.review_team(state)
+    creative = agent_creative_review.review_team(state, base)
     _require(creative["status"] != "blocked",
              "independent creative blockers prevent workbook: " +
              ", ".join(x["code"] for x in creative["findings"]
