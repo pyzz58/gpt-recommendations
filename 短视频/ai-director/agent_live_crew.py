@@ -19,6 +19,7 @@ import agent_role_contracts as roles
 import agent_handoff_audit as handoff
 import agent_creative_review as creative_review
 import creative_production_handoff as creative_bridge
+import film_continuity as film_tracks
 import agent_provider_wire as wire
 import role_schema_guard as schema_guard
 import editorial_review_lock as locks
@@ -195,6 +196,20 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
             # so a door cannot teleport across a legitimate partial revision.
             creative_bridge.camera_requirements_for_role(
                 base, updated["tasks"]["camera_art"]["deliverable"])
+        if task_id == "acting":
+            # Verify ALL complete shots after a scoped partial rework.
+            # Otherwise a single adjusted prop start state could contradict
+            # the accepted neighboring clips without being noticed.
+            full=updated["tasks"]["acting"]["deliverable"]["shots"]
+            result=film_tracks.inspect_tracks(
+                base,{sid:{
+                    "scene_id":row["continuity"]["scene_id"],
+                    "entity_tracks":row["continuity"]["entity_tracks"]}
+                    for sid,row in full.items()},
+                source_digest=updated["source_digest"])
+            if result["status"] == "blocked":
+                raise film_tracks.ContinuityError(
+                    "CONTINUITY_MERGED_WORKORDER_BLOCKED")
     except Exception:
         if journal.records["attempts"][record_id-1]["status"] == "pending_uncertain":
             journal.finish(
