@@ -50,7 +50,7 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 ## 多 Agent 专业制作策划团队：总导演管理、各专业部门分工（GitHub-only）
 
-新增 `agent_team.py` 和 [MULTI_AGENT_STUDIO.md](MULTI_AGENT_STUDIO.md)。内部角色为总导演、剧本编辑、动作表演、摄影美术、声音、剪辑动画、AI 技术导演与独立 QA；总导演负责初始创作方向、锁定共享规范和最终整合。各部门按整集拥有明确写入字段与上游依赖，可提交可追踪的版本交付，QA 可以指出问题，总导演选择局部返工；专业内容仍通过现有 `direction_v02` 合并为统一导演交付书。
+新增 `agent_team.py` 和 [MULTI_AGENT_STUDIO.md](MULTI_AGENT_STUDIO.md)。内部角色为总导演、剧本编辑、动作表演、摄影美术、声音、剪辑动画、AI 技术导演与独立 QA；总导演负责初始创作方向、锁定共享规范和最终整合。各部门按整集拥有明确写入字段与上游依赖；总导演还负责每镜的 `objective`（情绪、观众可见变化、视觉焦点）。交付带版本，QA 指出问题后总导演选择局部返工；专业内容仍通过现有 `direction_v02` 合并为统一导演交付书。
 
 **请勿误解**：本轮是离线任务编排器，不是八个已运行的 LLM Agent。当前尚未自动接入 Codex/DeepSeek 的真实多角色调用；未来接入的消费、模型、数据传输仍需要用户批准。也未获用户 Mac 部署许可，因此无需下载/执行。
 
@@ -192,3 +192,6 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 程序在同一集目录写入 `continuity_audit.generated.json` 与 `continuity_repair.generated.md`，不会修改原始 plan。对确认的道具跳跃作阻断、对可能有意的剪辑只提出待核查警告；`run --resume` 在方向稿的付费请求之前检查阻断项。详见 [CONTINUITY_QA.md](CONTINUITY_QA.md)。
 
 **尚未实现**：自动修复所有镜头、真正的视频渲染、人体动作物理模拟以及通用语言语义理解。修订稿应先输出为新的 `plan.proposed.json`，审核后才可替换正式计划；不自动增加付费请求。
+
+当前团队编排从已有 `plan.json` 开始，文案到基础计划的入口暂沿用旧流程；原文可以仅保存 SHA-256 校验指纹，正文仍必须留在未来经批准的私有工作区。这一阶段并未自动调用不同模型扮演岗位。
+
