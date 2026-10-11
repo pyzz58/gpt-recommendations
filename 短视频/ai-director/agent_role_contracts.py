@@ -189,6 +189,16 @@ def parse_strict_json(raw):
         raise ValueError("CREW_JSON_INVALID") from exc
     if not isinstance(obj, dict):
         raise ValueError("CREW_JSON_NOT_OBJECT")
+    def scan(value):
+        if isinstance(value, float) and not math.isfinite(value):
+            raise ValueError("CREW_JSON_NONFINITE")
+        if isinstance(value, dict):
+            for child in value.values():
+                scan(child)
+        elif isinstance(value, list):
+            for child in value:
+                scan(child)
+    scan(obj)
     return obj
 
 
@@ -202,24 +212,86 @@ def output_schema(state, task_id):
     if task_id not in team.SPECS:
         raise ValueError("unknown task")
     spec = team.SPECS[task_id]
+    def section_schema(task, section):
+        if task == "acting" and section == "beats":
+            return {"type": "array", "minItems": 1,
+                    "items": {"type": "object",
+                              "required": ["from_s", "to_s", "visible_change",
+                                           "performance", "camera", "sound"],
+                              "properties": {
+                                  "from_s": {"type": "number"},
+                                  "to_s": {"type": "number"},
+                                  "visible_change": {"type": "string", "minLength": 1},
+                                  "performance": {"type": "string", "minLength": 1},
+                                  "camera": {"type": "string", "minLength": 1},
+                                  "sound": {"type": "string", "minLength": 1}}}}
+        if task == "acting" and section == "shootability":
+            return {"type": ["object", "null"]}
+        required = list(REQUIRED_OBJECT_FIELDS[task].get(section, ()))
+        special_lists = {
+            ("director_brief", "creative_brief"): (
+                "immutable_facts", "assumptions_to_verify"),
+            ("script_edit", "story_treatment"): (
+                "beat_map", "source_change_proposals"),
+            ("quality_review", "qa_report"): ("blockers", "findings"),
+            ("director_final", "director_decision"): ("open_risks",),
+            ("acting", "staging"): ("spatial_constraints",),
+            ("acting", "continuity"): ("locked_entities", "reference_assets"),
+            ("sound", "sound"): ("effects",),
+            ("editing_animation", "animation"): ("elements",),
+            ("editing_animation", "graphics"): ("claims_used", "labels"),
+            ("ai_technical", "generation"): ("reference_roles", "negative_constraints"),
+        }
+        lists = special_lists.get((task, section), ())
+        fields = {key: {"type": "string", "minLength": 1} for key in required}
+        fields.update({key: {"type": "array"} for key in lists})
+        if section == "camera":
+            fields["move_trigger_s"] = {"type": "number"}
+            required.append("move_trigger_s")
+        if task == "sound" and section == "speech":
+            fields.update({
+                "voiceover": {"type": "object",
+                               "required": ["text", "delivery", "timing", "cues"],
+                               "properties": {
+                                   "text": {"type": "string"},
+                                   "delivery": {"type": "string", "minLength": 1},
+                                   "timing": {"type": "string", "minLength": 1},
+                                   "cues": {"type": "array"}}},
+                "dialogue": {"type": "array"},
+                "subtitle_cues": {"type": "array"}})
+            required.extend(["voiceover", "dialogue", "subtitle_cues"])
+        if task == "editing_animation" and section == "editing":
+            fields["audio_bridge"] = {"type": ["object", "null"]}
+            required.append("audio_bridge")
+        if task == "editing_animation" and section == "animation":
+            fields["render_in_post"] = {"type": "boolean"}
+            required.append("render_in_post")
+        if task == "ai_technical" and section == "generation":
+            fields["postproduction_steps"] = {"type": "array"}
+            fields["prompt_candidates"] = {"type": "array"}
+            fields["asset_requirements"] = {"type": "array"}
+        return {"type": "object",
+                "properties": fields,
+                "required": list(dict.fromkeys(required + list(lists)))}
+
     if spec["kind"] == "shots":
         scope = state["tasks"][task_id]["revision_scope"]
         ids = list(state["shot_ids"] if scope is None else scope)
-        shot_section = {}
-        for key in spec["fields"]:
-            types = ["object", "array"]
-            if key == "shootability":
-                types.append("null")
-            shot_section[key] = {"type": types}
-        shot_shape = {"type": "object", "required": list(spec["fields"]),
-                      "properties": shot_section, "additionalProperties": False}
-        return {"type": "object", "required": ["shots"],
+        shot_shape = {
+            "type": "object", "required": list(spec["fields"]),
+            "properties": {field: section_schema(task_id, field)
+                           for field in spec["fields"]},
+            "additionalProperties": False}
+        return {"$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object", "required": ["shots"],
                 "properties": {"shots": {
                     "type": "object", "properties": {sid: deepcopy(shot_shape) for sid in ids},
                     "required": ids, "additionalProperties": False}},
                 "additionalProperties": False}
-    return {"type": "object", "required": list(spec["fields"]),
-            "properties": {key: {"type": "object"} for key in spec["fields"]},
+    return {"$schema": "https://json-schema.org/draft/2020-12/schema",
+            "type": "object", "required": list(spec["fields"]),
+            "properties": {key: section_schema(task_id, key)
+                           for key in spec["fields"]},
             "additionalProperties": False}
 
 
@@ -407,7 +479,8 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None):
                         raise ValueError("CREW_EDIT_BEAT_TIME_DRIFT")
             elif task_id == "ai_technical":
                 generation = shot["generation"]
-                if generation["route"] not in agent_handoff_audit.PRODUCTION_ROUTES:
+                if not isinstance(generation.get("route"), str) or (
+                        generation["route"] not in agent_handoff_audit.PRODUCTION_ROUTES):
                     raise ValueError("CREW_PRODUCTION_ROUTE_INVALID")
                 _list(generation, "reference_roles", "CREW_GENERATION")
                 _list(generation, "negative_constraints", "CREW_GENERATION")
