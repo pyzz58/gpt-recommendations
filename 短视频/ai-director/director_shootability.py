@@ -109,7 +109,8 @@ def review(base, directions, route_fn):
                 flag(sid, "ACTION_DESCRIPTION_MISSING", "pending",
                      f"{uid}: describe concrete action and observable end state")
             parsed.append({"id": uid, "beat_index": index, "from_s": a, "to_s": b,
-                           "actor_id": actor, "hand": hand, "prop_id": prop,
+                           "actor_id": actor if isinstance(actor, str) else None,
+                           "hand": hand, "prop_id": prop if isinstance(prop, str) else None,
                            "action": unit.get("action"), "visible_result": unit.get("visible_result"),
                            "duration_s": round(b - a, 3)})
         row["units"] = parsed
