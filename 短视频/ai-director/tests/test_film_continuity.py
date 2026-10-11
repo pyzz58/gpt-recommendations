@@ -13,6 +13,10 @@ sys.path.insert(0,str(ROOT))
 import film_continuity as film
 import agent_team as team
 import agent_handoff_audit as handoff
+import agent_role_contracts as roles
+import test_agent_role_contracts as contract_fixture
+import json
+import hashlib
 
 
 class FilmContinuityTests(unittest.TestCase):
@@ -55,6 +59,60 @@ class FilmContinuityTests(unittest.TestCase):
         entry["end_state"][field]=after
         entry["events"].append({"field":field,"from":old,"to":after,
                                 "time_s":2,"cause":cause})
+
+    def test_source_locked_actor_contract_enforces_physical_asset_states(self):
+        f=contract_fixture.ProfessionalRoleContractsTests(
+            "test_complete_ten_role_strict_pipeline")
+        f.setUp()
+        f.base["characters"]=[{"id":"CHAR01","description":"Fiction actor"}]
+        f.base["props"]=[{"id":"PROP01","description":"Fiction letter"}]
+        f.base["scenes"]=[{"id":"LOC01","description":"Fiction table room"}]
+        for shot in f.base["shots"]:
+            shot["scene_id"]="LOC01"
+            shot["prop_ids"]=["PROP01"]
+        f.state=team.start(f.base,source_text=f.original)
+        f.advance("director_lock")
+        pitch={"status":"planning_only_no_approval",
+               "human_approved":False,
+               "candidate_plan_digest":team.fingerprint(f.base),
+               "episode_source_digest":hashlib.sha256(
+                   f.original.encode("utf-8")).hexdigest(),
+               "creative_concept":{"shot_designs":[{
+                   "shot_id":row["id"],
+                   "visual_type":"ai_video",
+                   "evidence_quote":row["narration"],
+                   "visual_intention":"Show actor and envelope interaction",
+                   "camera_intention":"Maintain physical sightline",
+                   "light_intention":"Same window light",
+                   "transition_intention":"Match hand movement",
+               } for row in f.base["shots"]]}}
+        proposed=f.payload("acting")
+        actor={"position":"at table","appearance":"same blue coat",
+               "condition":"healthy","holder":"none"}
+        prop={"position":"on table","appearance":"same envelope",
+              "condition":"sealed","holder":"none"}
+        for sid in proposed["shots"]:
+            cont=proposed["shots"][sid]["continuity"]
+            cont["scene_id"]="LOC01"
+            cont["entity_tracks"]=[self.line("CHAR01",actor),
+                                   self.line("PROP01",prop)]
+        schema=roles.execution_output_schema(
+            f.base,f.state,"acting",editorial_handoff=pitch)
+        self.assertIn("entity_tracks",schema["properties"]["shots"][
+            "properties"]["S01"]["properties"]["continuity"]["required"])
+        valid=roles.validate_role_output(
+            f.base,f.state,"acting",json.dumps(proposed),
+            source_text=f.original,editorial_handoff=pitch)
+        self.assertIn("S02",valid["shots"])
+        bad=deepcopy(proposed)
+        item=bad["shots"]["S02"]["continuity"]["entity_tracks"][0]
+        item["start_state"]["appearance"]="new suit without explanation"
+        item["end_state"]["appearance"]="new suit without explanation"
+        with self.assertRaisesRegex(film.ContinuityError,
+                                    "CROSS_SHOT_STATE_UNRESOLVED"):
+            roles.validate_role_output(
+                f.base,f.state,"acting",json.dumps(bad),
+                source_text=f.original,editorial_handoff=pitch)
 
     def test_source_bound_registry_never_forges_reference_media(self):
         inv=film.inventory(self.base,source_digest="a"*64)
