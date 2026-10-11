@@ -114,6 +114,10 @@
 - 进度：**已查到 ≠ 已集成 ≠ 已验证**。三者必须单独标记。
 
 以上为 2026-10-11 公开仓库初筛结论，许可证和维护活跃度日后须重新核查。
+## 2026-10-11 DeepSeek 协议与账本实现的参考来源
+
+本轮再次查询 [DeepSeek API 官方更新](https://api-docs.deepseek.com/updates/)、[Chat Completions](https://api-docs.deepseek.com/api/create-chat-completion/)、[JSON Output](https://api-docs.deepseek.com/guides/json_mode/) 和 [Models & Pricing](https://api-docs.deepseek.com/quick_start/pricing/)，确认当前 API 模型名 `deepseek-flash` 对应 V4.1 Flash，响应 usage 包含输入缓存命中/未命中、总输入/输出数，计价区分缓存和峰谷时段。标准库实现小型请求形状与解析器，遵守已有供应商无关 `agent_role_contracts`，未复制第三方代码或导入新的框架。持久预留机制采用 Python 标准库 `fcntl`、`tempfile`、`os.replace`，仅模拟单机 POSIX 锁及断点，不是供应商费用控制保证；实时文档与发票仍需上线前再次验证。参考 CrewAI/LangGraph/LiteLLM/Pydantic AI 的历史选型仍成立，但没有作为本轮依赖纳入。
+
 ## 2026-10-11 模型网关复用选型：离线阶段
 
 本轮查看了公开 GitHub 元数据：`BerriAI/litellm`（近期活跃，但 GitHub license 字段 `NOASSERTION`，单凭 API 元数据**不能判定代码许可证和引入权限**）、`pydantic/pydantic-ai`（MIT，近期活跃）、`langchain-ai/langgraph`（MIT，近期活跃）。前者适合未来多供应商网关与使用量集成，后两者适合类型化 agent / DAG，但这次没有核实可运行的供应商 API 版本、目标模型价格和数据传输政策，也没有复制源码或引入依赖。既有 `agent_team`、`agent_role_contracts` 和 `llm_budget.py` 已存在，现阶段选择标准库的声明式路由和精确 Decimal **离线模拟**，先验证职责边界和拦截逻辑。真正需要实时模型调用时再按明确供应商与私人数据规则审查可复用方案，而不是为了宣传“AI 团队”先引入几十个包。
