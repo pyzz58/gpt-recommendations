@@ -111,23 +111,58 @@ class LivePilotTests(unittest.TestCase):
             self.assertFalse(receipt2["network_attempted"])
             self.assertEqual(len(journal.summary()["attempts"]), 2)
 
-    def test_budget_reservation_comes_before_fake_send(self):
+    def test_durable_reservation_is_fsynced_before_fake_send(self):
         with pilot.PilotJournal(self.tmp.name,self.config) as journal:
-            class AssertingFrame(pilot.StaticHTTPSFrame):
+            fake=pilot.StaticHTTPSFrame(self.frame(self.brief))
+            origin=pilot.StaticHTTPSFrame.complete
+            def captured(real_self,request,api_key):
+                self.assertTrue(journal.journal.exists())
+                record=json.loads(journal.journal.read_text("utf-8"))
+                self.assertEqual(record["attempts"][0]["status"],"pending_uncertain")
+                self.assertTrue(record["attempts"][0]["request_digest"])
+                return origin(real_self,request,api_key)
+            with patch.object(pilot.StaticHTTPSFrame, "complete", captured):
+                _,receipt=pilot.run_one_creative_task(
+                    self.intake,self.state,self.source,journal,
+                    permit=self.permit("director_brief"),client=fake)
+            self.assertFalse(receipt["network_attempted"])
+            self.assertEqual(journal.summary()["attempts"][0]["status"],
+                             "response_accepted")
+
+    def test_https_success_path_is_tested_with_mocked_socket_only(self):
+        class FakeResponse:
+            status=200
+            def read(inner,limit):
+                self.assertGreater(limit,0)
+                return json.dumps(self.frame(self.brief),
+                                  ensure_ascii=False).encode("utf-8")
+        class FakeHTTPS:
+            def __init__(inner,*args,**kwargs):
+                self.assertEqual(args[0],"api.deepseek.com")
+                self.assertEqual(kwargs["port"],443)
+            def request(inner,method,path,body,headers):
+                self.assertEqual(method,"POST")
+                self.assertEqual(path,"/chat/completions")
+                self.assertEqual(headers["Authorization"],
+                                 "Bearer TEST_ONLY_NOT_REAL_KEY")
+                self.assertEqual(json.loads(body)["model"],"deepseek-flash")
+            def getresponse(inner):
+                return FakeResponse()
+            def close(inner):
                 pass
-            # A fake response runs only after on-disk record is available.
-            class Captures(pilot.StaticHTTPSFrame):
-                def complete(inner,request,api_key):
-                    self.assertTrue(journal.journal.exists())
-                    rec=json.loads(journal.journal.read_text("utf-8"))
-                    self.assertEqual(rec["attempts"][0]["status"], "pending_uncertain")
-                    return super().complete(request,api_key)
-            frame=Captures(self.frame(self.brief))
-            # Exact-type transport guard deliberately refuses arbitrary subclasses.
-            with self.assertRaisesRegex(pilot.PilotError, "TRANSPORT_NOT_ALLOWED"):
-                pilot.run_one_creative_task(self.intake,self.state,self.source,
-                    journal,permit=self.permit("director_brief"),client=frame)
-            self.assertFalse(journal.summary()["attempts"])
+        with patch("agent_live_pilot.http.client.HTTPSConnection",FakeHTTPS):
+            with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+                state, receipt=pilot.run_one_creative_task(
+                    self.intake,self.state,self.source,journal,
+                    permit=self.permit("director_brief"),
+                    client=pilot.DeepSeekHTTPSClient(),
+                    api_key="TEST_ONLY_NOT_REAL_KEY")
+                self.assertEqual(team.ready(state),["script_edit"])
+                self.assertEqual(receipt["transport"],"real_https")
+                self.assertEqual(journal.summary()["attempts"][0]["status"],
+                                 "response_accepted")
+                self.assertNotIn("TEST_ONLY_NOT_REAL_KEY",
+                                 journal.journal.read_text("utf-8"))
 
     def test_cap_rejects_before_sending_or_reserving(self):
         config=pilot.create_pilot_config(
