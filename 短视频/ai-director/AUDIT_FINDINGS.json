@@ -41,9 +41,9 @@
       "domain": "visual_identity",
       "status": "open_confirmed",
       "evidence_type": "confirmed_real_fiction_sample",
-      "description": "人物与道具身份/参考图统一登记及视觉核验未完成；现有缺项预检只是告警",
+      "description": "已新增 FilmDSL 风格的源绑定资产 ID、人物服装/道具逐镜开始结束状态及动作事件证据、跨镜一致性硬校验；实际参考人物图、资产版本与成片视觉身份验证仍不存在，AUD-003 保持开放。",
       "source": "creative_production_handoff.inspect_preproduction",
-      "test_evidence": "tests/test_creative_production_handoff.py::test_real_2026_failure_patterns_filled_into_synthetic_plan_are_flagged",
+      "test_evidence": "tests/test_film_continuity.py::test_prop_teleportation_across_shots_is_blocked;tests/test_film_continuity.py::test_independent_qa_catches_prop_teleport_across_departments;tests/test_film_continuity.py::test_source_locked_actor_contract_enforces_physical_asset_states",
       "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/2",
       "fix_commit": ""
     },
@@ -226,6 +226,18 @@
       "test_evidence": "tests/test_private_result_checkpoint.py::test_validated_full_private_results_survive_restart_both_roles;tests/test_private_result_checkpoint.py::test_crash_after_result_fsync_before_ledger_commit_manual_recovery;tests/test_private_result_checkpoint.py::test_locked_professional_two_role_chain_survives_restart",
       "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/1",
       "fix_commit": "1c897008686f5b2aca8bacf865d10dce694ce372"
+    },
+    {
+      "id": "AUD-019",
+      "priority": "P1",
+      "domain": "film_dsl_asset_state",
+      "status": "fixed_regression_verified",
+      "evidence_type": "confirmed_code",
+      "description": "CineCrew FilmDSL 风格资产追踪子模块完成离线验证：权威源中的稳定人物/道具/场景ID，逐镜 position/appearance/condition/holder 状态、事件依据、时间跳跃人工 review；表演岗位严格 schema、合并返工/独立QA/最终工单均执行检查。仅验证声明的内部一致性，不证明真实视频人物/服装/道具质量。",
+      "source": "film_continuity.py;agent_role_contracts.py;agent_live_crew.py;agent_handoff_audit.py;production_delivery.py",
+      "test_evidence": "tests/test_film_continuity.py::test_on_screen_prop_change_needs_explicit_event;tests/test_film_continuity.py::test_source_locked_actor_contract_enforces_physical_asset_states;tests/test_film_continuity.py::test_independent_qa_catches_prop_teleport_across_departments",
+      "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/2",
+      "fix_commit": "5f6d31c1ef191f1ca4dc86979308d0b9ed9c4dc1"
     }
   ]
 }
