@@ -43,7 +43,9 @@ def _candidate(candidate, episode_source):
             candidate.get("status") != "author_review_required") or (
             candidate.get("author_approved") is not False) or (
             candidate.get("paid_model_authorized") is not False) or (
-            candidate.get("actual_provider_calls") != 0):
+            candidate.get("actual_provider_calls") != 0 or
+            candidate.get("actual_billed_cny") != "0" or
+            candidate.get("ai_media_generated") is not False):
         raise EditorialReviewError("REVIEW_UNTRUSTED_CANDIDATE")
     if not isinstance(episode_source, str) or not episode_source or (
             hashlib.sha256(episode_source.encode("utf-8")).hexdigest() !=
@@ -218,8 +220,6 @@ def evaluate_review(candidate, episode_source, decision):
             "acknowledge_unverified_for_planning", "request_fact_review"):
         _review_error("CLAIMS_CHOICE_REQUIRED")
 
-    _exact(decision["source_change_proposals"], template["source_change_proposals"][:0],
-           "PROPOSALS") if False else None
     submitted_edits = decision["source_change_proposals"]
     expected_edits = sheet["source_change_proposals"]
     if not isinstance(submitted_edits, list) or len(submitted_edits) != len(expected_edits):
