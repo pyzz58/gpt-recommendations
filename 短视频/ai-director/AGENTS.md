@@ -10,6 +10,12 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 首次可检查的全链路纵向示范（2026-10-11，公开虚构素材）
+
+- [END_TO_END_SYNTHETIC_ACCEPTANCE.md](END_TO_END_SYNTHETIC_ACCEPTANCE.md) / `offline_vertical_demo.py` / `tests/test_offline_vertical_demo.py`：首次把文章入组、总导演/剧本编辑、规划锁定、十阶段专业交接、独立 QA、`production_delivery.build_locked_crew_delivery` **真实生产编译器**全部串联。使用公开虚构“桌上信封”，十个岗位响应均是预写静态 JSON，**不是 DeepSeek 真实创作**。
+- 对结果新增混合媒介强约束：必须既有 `ai_video` 镜头（各含 Wan/Seedance 候选提示词），又有无需视频生成的后期图卡镜头；不能十阶段任务均完成却没有可验证视频工单。当前合成演示为 4 镜头：2 AI 视频 / 2 后期。源稿/锁定版本改变必须拒绝导出。
+- GitHub Actions 使用 `--synthetic-only` 在临时目录生成 JSON、Markdown、QA 证据并作为明确标注 SYNTHETIC-NOT-REAL-AI 的**公共示范 artifact**供人下载审阅。不得用真实《上学以后的孩子》或任何用户私稿运行、上传公共 CI。仍无真实 API 调用、私人传输、真实费用、媒体生成或已确认的人类导演审批。
+
 ## 十专业岗位 DeepSeek 单次授权调用已接入锁定分镜（2026-10-11）
 
 - 新增 [DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md](DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md)、`agent_live_crew.py`、`tests/test_agent_live_crew.py`。共享已有 `agent_live_pilot` 的固定 TLS、真实费用预留 journal，**不是重新设计 10 个 Agent**。
