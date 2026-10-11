@@ -35,6 +35,12 @@
 7. LICENSE_EVIDENCE_MISSING_MUSIC_LICENSE_CHECK：音乐真正选定之后再登记授权来源、证明与状态；计划不等于授权。
 8. LICENSE_EVIDENCE_MISSING_ASSET_LICENSE_CHECK：同样为每一件实际素材保留授权证据；不能把未核验字段改成已核验。
 
+## 用户重申的产品边界：专业导演中间层为唯一核心
+
+用户再次明确：他提供文案，由系统作为“中转导演层”，**完整设计剪辑、动作、动画、场景、台词、摄影与声音**，并交付适合 AI 视频制作的一整套方案。不能继续只围绕参考图、门禁和工具接入扩张。
+
+本轮核对 [CineCrew](https://github.com/Ironieser/CineCrew) 的 FilmDSL 将镜头、人物、资产、摄影视为共享结构，与 [AI Cinematic Pipeline](https://github.com/billpar/ai-cinematic-pipeline) 的 `shot-list-template.csv` 把动作、表情、对白、旁白、镜头和环境声音逐列设计的做法；因此新增 `director_workbook.py`，从已存在基础分镜和专业方向稿合并成全栏目导演交付书，严格要求 `editing/animation/speech` 的真实创作决策，不引入其视频模型执行框架，也不复制其源码。产品目标写入 [PRODUCT_NORTH_STAR.md](PRODUCT_NORTH_STAR.md)，由 `tests/test_director_workbook.py` 审核关键边界。所有真实示例仍仅能在用户未来明确批准本地运行后验证。
+
 ## 模型输入适配预览（2026-10-11）
 
 继续借鉴 CineCrew 的 FilmDSL 资产绑定规则与 AI Cinematic Pipeline 的角色/场景/道具参考图分层。当前供应商 API 格式、计费和角色参考图上传规则未经正式核验，因此优先实现仅有 asset_id、view、role 的`reference_input_preview.py`，保留全部模型无关、不可执行的输出，不直接依赖厂商 SDK；下一次只有完成官方参数核查及用户费用批准，才可以另外设计真实 provider 适配器。新增 [REFERENCE_INPUT_PREVIEW.md](REFERENCE_INPUT_PREVIEW.md) 和合成回归测试，尚未运行最新整仓测试。
