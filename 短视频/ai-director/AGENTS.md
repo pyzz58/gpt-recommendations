@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 生成前安全门禁（新增；优先级高）
+
+- 阅读 [GENERATION_GATE.md](GENERATION_GATE.md)。`director_v2.compile_package()` 对每次编译输出附加 `generation_gate`：没有真实参考图核验、人工逐镜审批和交付媒体时，必须逐条显示阻断原因。
+- `production_gate.py` 是**纯离线只读审查器**，不具备执行服务调用的能力。门禁输出 `execution_authorized=false`、`paid_api_enabled=false`、`publishing_authorized=false` 恒定不变；即使 `metadata_preflight_passed=true` 也**不是**付费或发布批准。
+- 以后任何真正的视频/参考图模型适配器必须单独检查用户当次对供应商、模型、费用上限、次数和数据传输的明确授权。不能把可篡改的 JSON、`human_approved` 或本地测试通过当成付费授权。
+- 保持 GitHub-only：禁止要求 Mac 同步、安装、部署、启动后台服务或提供私人素材。
+
 ## 参考资产库（新增；当前仅 GitHub 研发）
 
 - 阅读 [REFERENCE_ASSETS.md](REFERENCE_ASSETS.md)、[schemas/reference_assets.schema.json](schemas/reference_assets.schema.json) 与 `reference_assets.py`；采用稳定人物 / 场景 / 道具 ID，按镜头显式登记参考角度。参考图片、面貌一致性与素材版权必须分别验证，不得混成一个“已锁定”布尔字段。
