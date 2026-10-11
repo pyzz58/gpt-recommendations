@@ -23,6 +23,7 @@ import tempfile
 import sys
 
 import agent_live_pilot as pilot
+import private_result_checkpoint as private_checkpoints
 import article_intake as intake
 import editorial_storyboard as creative
 import live_pilot_readiness as readiness
@@ -176,6 +177,10 @@ def run_once_public_fiction(folder, *, api_key):
     state = first["team"]
     with tempfile.TemporaryDirectory(prefix="one-time-deepseek-spend-ledger-") as tmp:
         with pilot.PilotJournal(tmp, config) as journal:
+            # The trial is PUBLIC FICTION ONLY. The private vault is a
+            # transient GitHub runner checkpoint; it is NOT a persistent
+            # storage service and cannot recover after the runner is deleted.
+            vault=private_checkpoints.PrivateResultVault(journal)
             for task in TRIAL_ROLES:
                 # Intentionally no retry path. The second role is only
                 # accessible once a valid first role has been completed.
@@ -190,7 +195,8 @@ def run_once_public_fiction(folder, *, api_key):
                         first, state, episode, journal,
                         permit=permit,
                         client=pilot.DeepSeekHTTPSClient(timeout_s=45),
-                        api_key=api_key, task_id=task)
+                        api_key=api_key, task_id=task,
+                        result_vault=vault)
                     record = journal.summary()["attempts"][-1]
                     report["real_network_attempts_recorded"] = len(
                         journal.summary()["attempts"])
