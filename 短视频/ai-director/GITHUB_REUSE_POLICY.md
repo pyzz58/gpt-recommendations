@@ -114,6 +114,10 @@
 - 进度：**已查到 ≠ 已集成 ≠ 已验证**。三者必须单独标记。
 
 以上为 2026-10-11 公开仓库初筛结论，许可证和维护活跃度日后须重新核查。
+## 2026-10-11 DeepSeek 单岗位试验的复用与依赖
+
+查阅 DeepSeek 官方当前 [Chat Completions API](https://api-docs.deepseek.com/api/create-chat-completion/) 和 [Quick Start](https://api-docs.deepseek.com/) 确认两个支持模型 `deepseek-flash` / `deepseek-v4-pro` 与标准 HTTPS endpoint。客户端只复用现成 `agent_provider_wire`、`agent_role_contracts`、`editorial_storyboard`、`agent_team`，HTTPS/SSL、durable ledger 使用标准库 `http.client`/`ssl`/`fcntl`，不复制外部源码、不安装未授权 SDK、不开第三方代理。此处的真实 HTTP 能力默认无自动入口，GitHub CI 只用完全离线 mock 验证。当前费率必须待正式小样逐次查看官方最新价格并且由用户认可，不能依据旧数字擅自收费。
+
 ## 2026-10-11 逐镜 AI 视频制作包导出策略
 
 优先**直接复用**仓库已有 `director_v2.compile_package` 的 Wan、Seedance 镜头级候选提示词及图形后期路线、`director_workbook.compile_workbook` 的剪辑/动作/声音证据、`agent_team.compile_team_workbook` 的十部门 QA；新文件只负责标准工单重整与严格前置验收。没有搬运外部项目源代码，没有新 third-party SDK，也没有进行真实付费 AI 请求。正式针对特定视频供应商的版本、价格和能力仍须在真实测试前额外核实。
