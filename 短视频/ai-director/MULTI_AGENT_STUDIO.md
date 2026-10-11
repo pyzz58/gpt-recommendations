@@ -1,3 +1,7 @@
+## 已验证的付费角色结果检查点协议
+
+第一轮 AUD-002 开发使真实 `agent_live_pilot` 与 `agent_live_crew` 必须携带持久私人 Vault：将**完整已通过专业合同校验的 team 状态**在付款账本标记接受前做不可覆盖的原子保存，允许崩溃后人工核实从持久文件恢复，不允许因 checkpoint 未找到而自动重放收费请求。详见 [PRIVATE_RESULT_CHECKPOINT_RECOVERY.md](PRIVATE_RESULT_CHECKPOINT_RECOVERY.md)。这只完成**离线代码验证**；没有真正私人持久主机部署，也未再调用付费 DeepSeek。P0 不能宣告完结。
+
 ## 本项目后续功能的唯一驱动：真实问题审计
 
 依据 [DEEP_AUDIT_MASTER.md](DEEP_AUDIT_MASTER.md)（12条审计线）、[AUDIT_FINDINGS.json](AUDIT_FINDINGS.json)（逐项证据与状态）、[GITHUB_REUSE_POLICY.md](GITHUB_REUSE_POLICY.md)（先调查成熟 GitHub 开源再选择融合）推进，不再继续添加纸面岗位。摄影美术、动作、声音、剪辑、独立 QA 均需给**逐镜可观察的真实交付与跨镜对比**，不能只凭 JSON 通过写“专业成片完成”。现已有 CI 分支覆盖率报告，但部分代码路径与真实媒体仍未验证；必须保留 human review 与付费 API 的独立授权门禁。真实一次性 Flash 文本小样不能冒充全十岗位真实能力。
