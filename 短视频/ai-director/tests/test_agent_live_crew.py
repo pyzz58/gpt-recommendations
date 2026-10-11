@@ -80,6 +80,25 @@ class LockedCrewPilotTests(unittest.TestCase):
                     item["speech"]["voiceover"]["cues"][0]["to_s"]=min(d,3)
                     item["speech"]["subtitle_cues"][0]["from_s"]=0
                     item["speech"]["subtitle_cues"][0]["to_s"]=min(d,3.5)
+                elif task=="ai_technical" and shot["visual_type"]=="ai_video":
+                    item["generation"]={
+                        "route":"ai_video",
+                        "clip_type":"single_continuous_take",
+                        "negative_constraints":[
+                            "No readable text or numbers in generated footage",
+                            "No extra fingers and no duplicate envelope"],
+                        "reference_roles":[
+                            "Identity and wardrobe photo awaiting human creation",
+                            "Wooden desk and sealed letter visual reference"],
+                        "limits":"No real media created. Model capability unknown; human review required",
+                        "fallback":"Use a still-image motion-compositing shot if hand anatomy fails",
+                        "asset_requirements":[
+                            {"role":"identity_reference",
+                             "description":"Synthetic character reference not provided"}],
+                        "prompt_candidates":[{
+                            "positive":"One continuous close-up: a protagonist's right hand hovers over a sealed paper envelope, then cautiously reaches toward the seal. The camera moves slowly forward in soft side-window daylight. Realistic hands and spatial continuity.",
+                            "negative":"No extra fingers, no duplicate letter, no readable text, no jump cuts, no camera teleportation."}]
+                    }
                 elif task=="editing_animation":
                     # The test film is a mixture of AI footage and text cards.
                     # Base data owns transition and claims; do not forge new ones.
@@ -259,6 +278,8 @@ class LockedCrewPilotTests(unittest.TestCase):
             self.assertEqual(exported["shooting_order"],
                              [s["id"] for s in self.plan["shots"]])
             self.assertEqual(exported["project"]["total_shots"],len(self.plan["shots"]))
+            self.assertGreater(exported["production_counts"]["ai_video_jobs"],0)
+            self.assertGreater(exported["production_counts"]["non_video_jobs"],0)
             self.assertTrue(exported["full_workbook_review"]["independent_crew_completed"])
             self.assertEqual(exported["project"]["duration_s"],self.plan["duration"])
             self.assertFalse(exported["ready_to_call_video_model"])
