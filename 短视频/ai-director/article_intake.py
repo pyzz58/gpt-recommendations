@@ -161,6 +161,16 @@ def episode_catalog(source):
             "approved_for_publication": False, "external_calls": 0}
 
 
+def episode_source_for_team(source, episode_id="EP01"):
+    """Minimal PRIVATE text for one chosen episode, never a public artifact."""
+    original = _article(source)
+    chosen = next((section for section in split_article(original)
+                   if section.key == episode_id), None)
+    if chosen is None:
+        raise ValueError("UNKNOWN_EPISODE_ID")
+    return original[chosen.start:chosen.end]
+
+
 def _source_excerpt(section):
     items = _fields(section)
     if items.get("说人话"):
@@ -347,15 +357,21 @@ def prepare_episode(source, episode_id="EP01"):
                 "plan": None, "team": None,
                 "warnings": warnings + errors,
                 "source_sha256": hashlib.sha256(source.encode()).hexdigest(),
+                "episode_source_sha256": hashlib.sha256(
+                    source[chosen.start:chosen.end].encode()).hexdigest(),
                 "section_source_span": [chosen.start, chosen.end],
                 "source_evidence_urls_unverified": links,
                 "no_api_calls": True, "private_source_persisted": False}
-    state = team.start(plan, source_text=source)
+    # Scope specialist context to the selected episode, not 18 unrelated
+    # topics. The full article fingerprint remains separately traceable.
+    private_episode = source[chosen.start:chosen.end]
+    state = team.start(plan, source_text=private_episode)
     return {
         "kind": "episode_intake_result", "episode_id": episode_id,
         "status": "editorial_review_required",
         "plan": plan, "team": state,
-        "source_sha256": state["source_digest"],
+        "source_sha256": hashlib.sha256(source.encode("utf-8")).hexdigest(),
+        "episode_source_sha256": state["source_digest"],
         "section_source_span": [chosen.start, chosen.end],
         "shot_source_spans": [
             {"shot_id": shots[i]["id"], "source_span": list(p)}
