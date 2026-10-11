@@ -48,6 +48,14 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 **不要直接修改原片**。按上述 Codex 工作流先生成 `plan.proposed.json`，然后在本地验证并人工审核。没有采纳整个 CineCrew 或 transitions 包；零运行时额外依赖，无视频或 API 费用。
 
+## 单镜头动作可拍性与拆段工作单（GitHub-only）
+
+新增 `director_shootability.py`，对真人 AI 视频镜头的每个导演动作节拍要求明确时间、演员、左/右手与道具、可观察结束姿态。自动识别同一只手的时间冲突、节拍覆盖缺口、道具登记缺失，并对过快的精细动作提出**人工试制提醒**，不宣称模型客观无法完成。
+
+复杂动作可以选择 `split_stitch`，明确分段生产路线、每段时间范围和后期衔接，避免凭一句“可分段剪辑”就算完成制作方案。主导演交付书新增 `shootability_review`、制作蓝图结构性就绪校验和分镜预演提醒；详见 [SHOOTABILITY.md](SHOOTABILITY.md)。
+
+**代码尚未获得最新整仓 CI 通过报告**，所有风险阈值都是导演决策辅助，不是 AI 视频模型的实测参数。本阶段仅 GitHub 源码研发，不在用户 Mac 运行。
+
 ## 本轮导演可执行性升级：具体动作切点与模板化检测
 
 新增 `narrative_bridge.beat_link` 绑定相邻镜头真实末/首 `beats`。导演交付书现在能标明切点时上一镜正在发生的可见动作，以及下一镜第一节拍；若切点没有对应行动、引用了错误的节拍编号，或设计里没有明确实际切点事件，严格制作蓝图不可通过。
