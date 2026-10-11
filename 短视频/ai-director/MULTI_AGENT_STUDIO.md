@@ -1,6 +1,10 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 模型路由与模拟预算预检（新增）
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## DeepSeek 供应商协议与模拟持久预留（新增）
+
+[PROVIDER_PROTOCOL_AND_DURABLE_BUDGET.md](PROVIDER_PROTOCOL_AND_DURABLE_BUDGET.md) 描述了 DeepSeek Chat Completions **离线协议实现**：构建 `deepseek-flash` 的 JSON 输出 POST body、核对回复中的真实供应商申报 Token 与缓存拆分，并用调用方声明的费率算账。单独的 `PrivateReservationJournal` 可在未来经授权的私有运行环境保存不含文案的状态记录，模拟超时/重启留下未决预留，拒绝未核销的自动重试。当前 **没有真正的网络传输器，也没有真实发票对账**。现有十阶段专业 DAG、输出验证及 QA 无变更。
+
+## 模型路由与模拟预算预检（新增）
 
 [MODEL_GATEWAY_AND_BUDGET.md](MODEL_GATEWAY_AND_BUDGET.md) 对应 `agent_model_gateway.py`。它让既有 10 个岗位的上下文和 JSON 输出合同通过**声明式模型 Profile 路由**连接：每个岗位选择一个供应商/模型别名、Token 限额、最高预估 CNY 单价，并由 `OfflineBudgetBook` 在模拟回复前检查总预算、总次数。成功的合成回复走 `agent_role_contracts.submit_role_output`，非法 JSON、岗位越权及前后剧本冲突仍不能合入团队账本。
 
