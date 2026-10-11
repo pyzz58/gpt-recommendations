@@ -17,6 +17,7 @@ import agent_creative_review
 import agent_handoff_audit
 import creative_production_handoff as creative_bridge
 import film_continuity as film_tracks
+import asset_reference_manifest as assetrefs
 import role_schema_guard as schema_guard
 
 CONTRACT_VERSION = "1.0"
@@ -437,7 +438,7 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
 
 
 def build_role_messages(base, state, task_id, *, source_text=None,
-                        editorial_handoff=None):
+                        editorial_handoff=None, reference_manifest=None):
     """Build private messages in memory; never return a public or saved artifact.
 
     For source-locked teams, include the FIRST real director/editor vision.
@@ -492,6 +493,25 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             "author_approved": False,
             "media_generated": False,
             "not_a_production_bible_until_departments_resolve_gaps": True}
+    if reference_manifest is not None:
+        # The manifest contains HASHES AND VERSIONS, never pictures, paths,
+        # signed URLs, licences or purported human identity approval.
+        report = assetrefs.validate(
+            base, state["source_digest"], reference_manifest)
+        if (state.get("asset_reference_manifest_digest") !=
+                report["manifest_digest"]):
+            raise ValueError("CREW_REFERENCE_MANIFEST_NOT_LOCKED")
+        request["versioned_reference_assets"] = {
+            "source_digest": report["source_digest"],
+            "manifest_digest": report["manifest_digest"],
+            "cards": deepcopy(reference_manifest["cards"]),
+            "shot_bindings": deepcopy(reference_manifest["shot_bindings"]),
+            "unbound_refs_count": report["missing_bindings_count"],
+            "image_bytes_provided_to_model": False,
+            "reference_visual_identity_verified": False,
+            "rights_and_consent_verified": False,
+            "references_are_metadata_not_visual_input": True,
+        }
     serialized = json.dumps(request, ensure_ascii=False, sort_keys=True,
                             separators=(",", ":"), allow_nan=False)
     _check_json_size(serialized, MAX_CONTEXT_CHARS, "private prompt")
