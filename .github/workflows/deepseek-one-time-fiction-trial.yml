@@ -1,0 +1,60 @@
+# ONE MANUAL cloud test ONLY. This workflow is NEVER triggered by push/PR.
+# Never paste a DeepSeek API key into this YAML, issues, logs or a chat.
+# Set a temporary GitHub Actions repository Secret:
+#   DEEPSEEK_ONE_TIME_API_KEY
+# The repository is public: results from PUBLIC FICTION ONLY are public.
+name: DeepSeek ONE-TIME public fiction director test
+
+on:
+  workflow_dispatch:
+    inputs:
+      authorize_two_calls:
+        description: "I authorize this ONE run: public fictional story, DeepSeek Flash, max TWO text requests, suggested reserve up to CNY 2. No user manuscript, no video."
+        type: boolean
+        default: false
+        required: true
+
+permissions:
+  contents: read
+
+# Prevent concurrent overlapping calls, but do not claim reruns are disabled:
+# the user must revoke the key after the single execution.
+concurrency:
+  group: ai-director-single-user-one-time-deepseek-trial
+  cancel-in-progress: false
+
+jobs:
+  one-time-two-role-trial:
+    if: ${{ github.repository == 'pyzz58/gpt-recommendations' && github.actor == 'pyzz58' && github.ref == 'refs/heads/main' && inputs.authorize_two_calls == true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    defaults:
+      run:
+        shell: bash
+        working-directory: "短视频/ai-director"
+    steps:
+      - name: Checkout only the owner-approved main version
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Prepare standard Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Call DeepSeek for one fictional director and one editor only
+        env:
+          # The KEY is provided exclusively by the GitHub encrypted secret.
+          # Never store it as a workflow input, prompt, file or log.
+          DEEPSEEK_ONE_TIME_API_KEY: ${{ secrets.DEEPSEEK_ONE_TIME_API_KEY }}
+          DEEPSEEK_ONE_TIME_APPROVED: "YES_ONLY_TWO_CALLS"
+        run: |
+          set -euo pipefail
+          python one_time_deepseek_cloud_trial.py --execute-once --out /tmp/deepseek-real-once-public-fiction
+      - name: Publish review evidence from FICTION only (public artifact)
+        if: ${{ always() && inputs.authorize_two_calls == true }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: DeepSeek-ONE-TIME-PUBLIC-FICTION-REVIEW-NO-KEY
+          path: /tmp/deepseek-real-once-public-fiction/
+          retention-days: 3
+          if-no-files-found: warn
