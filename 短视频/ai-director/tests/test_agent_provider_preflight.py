@@ -262,7 +262,7 @@ class ProviderPreflightTests(unittest.TestCase):
             with durable.PrivateReservationJournal(folder, self.config):
                 pass
             for change in (
-                {"cache_miss_cny_m": "0.001"},
+                {"cache_miss_cny_m": "5"},
                 {"source_digest": "f"*64},
                 {"model": "deepseek-v4-pro"}):
                 modified = dict(self.config)
