@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 跨镜头故事、情绪节奏及混合制作统一风格（导演主线）
+
+- 阅读 [NARRATIVE_HANDOFF.md](NARRATIVE_HANDOFF.md)。`director_narrative_bridges.py` 把每对相邻镜头的切点理由、上一镜悬念/下一镜的回答、情绪速度、构图/视线/动作/道具关联，以及 AI 视频↔静态/剪辑/实拍切换时的调色和字幕等后期指令形成导演交接表。不能用空泛“自然过渡”或每镜复制同一套话。
+- `editing.narrative_bridge` 由导演为**每个非末镜**明确创作，字段结构为四组 `cut_intention` / `emotion_pacing` / `visual_handoff` / `style_handoff`。旧导演方向文件缺此字段时仍可输出草稿，但 `narrative_handoff_ready=false`；不能谎称完成制作级导演蓝图。
+- `director_review.production_blueprint_ready` 需要先有 `editor_handoff_ready` 且所有相邻镜头的叙事/视觉交接完整；严格 `director_workbook.py --strict` 以此为门禁。通过只是**文字导演方案的结构完整**，无法证明真实画面质量、人脸风格锁定、用户人工批准或 API 付费许可。
+- 不随意强求相邻镜头同色/同构图：有动机的色彩、节奏反差可以被导演明确采用；制作方式变化可标 `motivated_contrast`。旧项目的连续性/成本/参考图库仍为**辅助工具**，不能挤占故事→导演交付书主线。
+
 ## 导演交付书质量闸门（具体创作优先）
 
 - `director_workbook.compile_workbook` 产生 `director_review.creative_design_complete`（结构化导演内容无硬冲突）和 `director_review.editor_handoff_ready`（配音 cue、字幕 cue、动画关键帧、J/L 或明确 none 的声音交接决策具备时间轴）。两者不得混为一谈；人审状态始终独立。
