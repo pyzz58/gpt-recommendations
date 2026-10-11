@@ -41,9 +41,9 @@
       "domain": "visual_identity",
       "status": "open_confirmed",
       "evidence_type": "confirmed_real_fiction_sample",
-      "description": "已新增 FilmDSL 风格的源绑定资产 ID、人物服装/道具逐镜开始结束状态及动作事件证据、跨镜一致性硬校验；实际参考人物图、资产版本与成片视觉身份验证仍不存在，AUD-003 保持开放。",
+      "description": "FilmDSL 状态/跨镜一致性与来源绑定的私人参考图版本链已离线完成：资产 SHA-256、immutable revision、镜头版本绑定、换图旧镜头失效、临时字节验证；尚无持久私人图像库、许可/身份认证、真实模型图片输入及成片人物视觉一致性试验。Issue #2 保持开放。",
       "source": "creative_production_handoff.inspect_preproduction",
-      "test_evidence": "tests/test_film_continuity.py::test_prop_teleportation_across_shots_is_blocked;tests/test_film_continuity.py::test_independent_qa_catches_prop_teleport_across_departments;tests/test_film_continuity.py::test_source_locked_actor_contract_enforces_physical_asset_states",
+      "test_evidence": "tests/test_film_continuity.py::test_prop_teleportation_across_shots_is_blocked;tests/test_film_continuity.py::test_independent_qa_catches_prop_teleport_across_departments;tests/test_film_continuity.py::test_source_locked_actor_contract_enforces_physical_asset_states;tests/test_asset_reference_manifest.py::test_snapshot_attachment_immutability_and_role_version_guard;tests/test_asset_reference_manifest.py::test_full_synthetic_ten_role_delivery_only_exports_reference_metadata",
       "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/2",
       "fix_commit": ""
     },
@@ -238,6 +238,18 @@
       "test_evidence": "tests/test_film_continuity.py::test_on_screen_prop_change_needs_explicit_event;tests/test_film_continuity.py::test_source_locked_actor_contract_enforces_physical_asset_states;tests/test_film_continuity.py::test_independent_qa_catches_prop_teleport_across_departments",
       "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/2",
       "fix_commit": "5f6d31c1ef191f1ca4dc86979308d0b9ed9c4dc1"
+    },
+    {
+      "id": "AUD-020",
+      "priority": "P1",
+      "domain": "reference_asset_revision_binding",
+      "status": "fixed_regression_verified",
+      "evidence_type": "confirmed_code",
+      "description": "私有、来源版本绑定的视觉参考资产元数据层已经完成离线回归：内存字节 SHA256、不可覆盖修订链、逐镜角色/道具/场景 ID 引用、旧版本失效、禁止伪造许可/人工批准和 URL、真实专业岗位消费前版本校验、最终十角色制作单只导出哈希/版本。没有保存图片、做图像识别或真实视频试拍。",
+      "source": "asset_reference_manifest.py;editorial_review_lock.py;agent_role_contracts.py;agent_live_crew.py;production_delivery.py",
+      "test_evidence": "tests/test_asset_reference_manifest.py::test_shot_reference_explicit_binding_and_revision_history;tests/test_asset_reference_manifest.py::test_snapshot_attachment_immutability_and_role_version_guard;tests/test_asset_reference_manifest.py::test_full_synthetic_ten_role_delivery_only_exports_reference_metadata;tests/test_asset_reference_manifest.py::test_final_delivery_cannot_use_state_from_other_asset_snapshot",
+      "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/2",
+      "fix_commit": "78a77d1521dc7503c7cf373fd154390ab0bd9b40"
     }
   ]
 }
