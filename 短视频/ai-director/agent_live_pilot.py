@@ -34,6 +34,9 @@ MAX_RESPONSE_BYTES = wire.MAX_WIRE_BYTES
 QUANT = Decimal("0.00000001")
 MILLION = Decimal(1000000)
 CREATIVE_TASKS = frozenset({"director_brief", "script_edit"})
+# Additional downstream roles are dispatched ONLY from a source-locked team;
+# do not route them through the original unapproved creative-intake entrypoint.
+PILOT_TASKS = frozenset(team.SPECS)
 BLOCKED_STATES = frozenset({
     "pending_uncertain", "timeout_unknown", "transport_unknown",
     "usage_overrun_requires_review",
@@ -109,7 +112,7 @@ def explicit_pilot_permit(config, *, task_id, acknowledgement,
     """
     _check(isinstance(config, dict) and config.get("version") == VERSION,
            "PILOT_CONFIG_REQUIRED")
-    _check(task_id in CREATIVE_TASKS, "PILOT_ROLE_OUT_OF_SCOPE")
+    _check(task_id in PILOT_TASKS, "PILOT_ROLE_OUT_OF_SCOPE")
     _check(acknowledgement == CONSENT_TEXT and
            privacy_consent is True and spending_consent is True,
            "PILOT_EXPLICIT_CONSENT_MISSING")
@@ -214,7 +217,7 @@ class PilotJournal:
                "PILOT_LEDGER_TOO_MANY_ATTEMPTS")
         for idx, rec in enumerate(attempts, 1):
             _check(isinstance(rec, dict) and rec.get("id") == idx
-                   and rec.get("task_id") in CREATIVE_TASKS
+                   and rec.get("task_id") in PILOT_TASKS
                    and type(rec.get("revision")) is int
                    and rec["revision"] >= 1
                    and rec.get("status") in (FINAL_STATES | {"pending_uncertain"})
@@ -270,7 +273,7 @@ class PilotJournal:
 
     def reserve(self, task_id, revision, request):
         self._validate()
-        _check(task_id in CREATIVE_TASKS and
+        _check(task_id in PILOT_TASKS and
                type(revision) is int and revision >= 1,
                "PILOT_INVALID_TASK_OR_REVISION")
         _check(request.get("body", {}).get("model") == self.config["model"],
