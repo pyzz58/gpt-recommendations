@@ -185,3 +185,37 @@ class ReferenceAssetTests(unittest.TestCase):
             result=subprocess.run(command,capture_output=True,text=True)
             self.assertEqual(result.returncode,0,result.stderr)
             self.assertIn("reference_asset_preflight",json.loads(out.read_text()))
+
+    def test_catalog_policy_cannot_claim_media_generated(self):
+        m=self.setup_manifest()
+        m["policy"]["generated_media"]=True
+        r=refs.audit(self.base,self.direction,m)
+        self.assertIn("CATALOG_POLICY_INVALID",[f["code"] for f in r["findings"]])
+
+    def test_missing_manual_binding_is_reported(self):
+        d=copy.deepcopy(self.direction)
+        d["shots"][0]["generation"]["reference_bindings"]=[
+            {"asset_id":"CHAR01","view":"full_body","role":"staging"}]
+        m=self.setup_manifest()
+        r=refs.audit(self.base,d,m)
+        self.assertIn("REQUIRED_REFERENCE_UNBOUND",[f["code"] for f in r["findings"]])
+
+    def test_malformed_asset_record_does_not_crash(self):
+        m=self.setup_manifest()
+        m["assets"]["CHAR01"]=None
+        r=refs.audit(self.base,self.direction,m)
+        self.assertIn("INVALID_ASSET",[f["code"] for f in r["findings"]])
+        self.assertGreater(r["blockers"],0)
+
+    def test_invalid_direction_rows_do_not_break_asset_scaffold(self):
+        m=refs.scaffold(self.base, {"shots":[None,{"shot_id":"S01","generation":{"route":"ai_video"}}]})
+        self.assertIn("S01",m["shot_requirements"])
+
+    def test_json_schema_is_valid_when_optional_jsonschema_available(self):
+        import importlib.util
+        schema=json.loads((ROOT/"schemas/reference_assets.schema.json").read_text(encoding="utf-8"))
+        self.assertEqual(schema["$schema"],"https://json-schema.org/draft/2020-12/schema")
+        if importlib.util.find_spec("jsonschema"):
+            import jsonschema
+            jsonschema.Draft202012Validator.check_schema(schema)
+            jsonschema.Draft202012Validator(schema).validate(self.setup_manifest())
