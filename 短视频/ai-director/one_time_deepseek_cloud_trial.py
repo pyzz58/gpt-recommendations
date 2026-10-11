@@ -71,6 +71,9 @@ def _cloud_gate():
            "CLOUD_MAIN_ONLY")
     _guard(os.environ.get("GITHUB_ACTOR") == AUTHORIZED_ACTOR,
            "CLOUD_OWNER_ONLY")
+    # 'Re-run jobs' would otherwise repeat chargeable API requests.
+    _guard(os.environ.get("GITHUB_RUN_ATTEMPT") == "1",
+           "CLOUD_WORKFLOW_RERUN_FORBIDDEN")
     _guard(os.environ.get("DEEPSEEK_ONE_TIME_APPROVED") == "YES_ONLY_TWO_CALLS",
            "CLOUD_EXPLICIT_MANUAL_APPROVAL_MISSING")
 
@@ -219,6 +222,19 @@ def run_once_public_fiction(folder, *, api_key):
                         "error_code": "CLOUD_UNEXPECTED_SAFE_STOP",
                         "manual_vendor_billing_check_needed": True})
                     break
+    if report["replies_accepted"] == 1:
+        # Preserve a legitimately completed first department so a rejected
+        # editor response still leaves useful evidence for human review.
+        _json_safe_write(root, "PARTIAL_DIRECTOR_ONLY_PUBLIC_FICTION.json", {
+            "kind": "public_fiction_partial_creative_result",
+            "status": "EDITOR_NOT_ACCEPTED_DO_NOT_CLAIM_TWO_ROLE_SUCCESS",
+            "model": readiness.MODEL,
+            "director_brief": deepcopy(
+                state["tasks"]["director_brief"]["deliverable"]),
+            "human_approved": False,
+            "provider_invoice_verified": False,
+            "further_paid_requests_authorized": False,
+        })
     if report["replies_accepted"] == 2:
         try:
             review = _review_summary(state, first)
