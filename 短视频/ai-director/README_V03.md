@@ -48,6 +48,12 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 **不要直接修改原片**。按上述 Codex 工作流先生成 `plan.proposed.json`，然后在本地验证并人工审核。没有采纳整个 CineCrew 或 transitions 包；零运行时额外依赖，无视频或 API 费用。
 
+## 剪辑、旁白、动画的逐秒工作单（当前仅 GitHub 研发）
+
+新增 `director_timeline.py`：把已明确写入专业导演稿的动作节拍、摄影、剪辑入出转场、旁白分句（如有独立时间码）、出镜台词、音效与动画图层整理为绝对秒数的 `editor_decision_list`，让导演交付结果便于后期实际执行。详细见 [EDITOR_TIMELINE.md](EDITOR_TIMELINE.md)。
+
+没有精确时间点时只记录待人工补齐，不伪装成已完成的配音同步或剪辑工程。对于过密中文旁白提示试读；对于超出镜头时长的音效/动画事件做阻断。这个纯 Python 模块不会调用模型、不处理真实素材，也不改变 Mac。
+
 ## 产品主线：文案输入 → 一整套短视频导演交付书（当前仅 GitHub 研发）
 
 系统真正需要输出的不是单纯视频 Prompt，而是从文章和故事提炼成逐集、逐镜头专业导演方案，覆盖动作、场景、摄影、演员、动画、台词、配音、音乐音效、剪辑、转场、参考资产、制作手段和后期工作单。详见 [PRODUCT_NORTH_STAR.md](PRODUCT_NORTH_STAR.md)。
