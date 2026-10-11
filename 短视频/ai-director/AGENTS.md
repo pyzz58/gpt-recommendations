@@ -10,6 +10,15 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 真人动作可拍性与合理拆段（当前导演主线）
+
+- 阅读 [SHOOTABILITY.md](SHOOTABILITY.md)。`director_shootability.py` 根据导演主动写出的 `shootability.action_units` 检查 actor_id、左右手、稳定道具 ID、所选 beat、秒数和可见动作结果；不从自然语言猜测真实模型能力、不自动生成素材。
+- 有真人动作的 AI 视频镜头每个 `beats[]` 至少需要明确动作或姿势保持单元；同一只手时间重叠属硬冲突、两手合理并行允许；短于0.55秒的精细道具动作及2秒内至少3项道具操作只发风险提示，不假装视频模型一定失败。
+- 如果选择 `mode=split_stitch`，必须以 `segments[]` 提供覆盖整个镜头的两段以上分段计划，每段指明 route 和 join_rule；高密度单镜若仍选择 single_take，必须给出可执行的 fallback。字段齐全不等于已试拍。
+- `director_workbook.py` 增加 `shootability_review` / `shootability_structure_ready` / `shootability_blockers` / `shootability_pending` / `shootability_review_signals`。制作蓝图结构就绪必须包含动作拆解审查；单独的人工人审/费用授权/真正视频生成依然独立。
+- 旧导演稿无动作单仍可输出带未完成项的草稿；不能为追求一次通过而把具体双手/道具动作粗暴写成一个“自然走动”。纯静态图表不必创造真人动作。
+- 继续只在 GitHub 开发，既有 Mac 文件与私人故事 `jobs/` 不触及，所有付费模型禁用。
+
 ## 实际剪辑事件绑定与防模板化（导演主线加强）
 
 - [NARRATIVE_HANDOFF.md](NARRATIVE_HANDOFF.md) 已新增 `editing.narrative_bridge.beat_link`：`outgoing_beat_index` 必须指向当前镜头最后一个实际动作节拍，`incoming_beat_index=0` 指向下一镜起始节拍，`cut_on_visible_event` 必须讲清具体可观察切点事件。审核器将真实 `visible_change` 加入 `cut_beat_evidence`，错误索引/不在切镜边界报阻断。
