@@ -452,13 +452,6 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
     if task_id not in team.ready(state):
         raise ValueError("CREW_TASK_NOT_READY")
     payload = parse_strict_json(raw)
-    # Enforce the EXACT schema supplied in the prompt, including camera/art
-    # extensions. Fail closed if jsonschema is not installed, and never echo
-    # private source/invalid payload in a returned error.
-    schema_guard.validate_contract(
-        execution_output_schema(base, state, task_id,
-                                editorial_handoff=editorial_handoff),
-        payload)
     team._validate_payload(state, task_id, payload)
     spec = team.SPECS[task_id]
     scoped = list(state["shot_ids"] if state["tasks"][task_id]["revision_scope"] is None
@@ -622,6 +615,14 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
                     for step in steps:
                         _required_string(step, "action", "CREW_POSTPRODUCTION_STEP")
                         _required_string(step, "time_window", "CREW_POSTPRODUCTION_STEP")
+    # After existing domain-specific checks, enforce the EXACT schema that
+    # the model received, including the bridged camera extensions. Preserve
+    # existing informative static domain error codes but reject any remaining
+    # nested type violations, without quoting untrusted output text.
+    schema_guard.validate_contract(
+        execution_output_schema(base, state, task_id,
+                                editorial_handoff=editorial_handoff),
+        payload)
     # Re-run original ledger's source-aware safety gate for QA/director only.
     executor._enforce_base_audit(state, base, task_id, payload)
     if editorial_handoff is not None:
