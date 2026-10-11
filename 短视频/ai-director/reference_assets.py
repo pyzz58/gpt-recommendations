@@ -32,9 +32,13 @@ def _empty_view():
 
 
 def _direction_by_id(direction):
-    if not direction:
+    if not isinstance(direction, dict):
         return {}
-    return {s["shot_id"]: s for s in direction.get("shots", [])}
+    shots = direction.get("shots", [])
+    if not isinstance(shots, list):
+        return {}
+    return {s["shot_id"]: s for s in shots if isinstance(s, dict)
+            and isinstance(s.get("shot_id"), str)}
 
 
 def _production_route(shot, directed):
