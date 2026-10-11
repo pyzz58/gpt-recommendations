@@ -712,12 +712,15 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
             # Initial all-shot delivery: model must supply causal asset tracks.
             # Scoped revisions are checked against final MERGED state below.
             if state["tasks"]["acting"]["revision_scope"] is None:
-                film_tracks.inspect_tracks(
+                continuity_result = film_tracks.inspect_tracks(
                     base,{sid:{
                         "scene_id":value["continuity"]["scene_id"],
                         "entity_tracks":value["continuity"]["entity_tracks"]}
                     for sid,value in payload["shots"].items()},
                     source_digest=state["source_digest"])
+                if continuity_result["status"] == "blocked":
+                    raise film_tracks.ContinuityError(
+                        "CONTINUITY_CROSS_SHOT_STATE_UNRESOLVED")
     return deepcopy(payload)
 
 
