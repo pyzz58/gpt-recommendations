@@ -114,6 +114,10 @@
 - 进度：**已查到 ≠ 已集成 ≠ 已验证**。三者必须单独标记。
 
 以上为 2026-10-11 公开仓库初筛结论，许可证和维护活跃度日后须重新核查。
+## 2026-10-11 逐镜 AI 视频制作包导出策略
+
+优先**直接复用**仓库已有 `director_v2.compile_package` 的 Wan、Seedance 镜头级候选提示词及图形后期路线、`director_workbook.compile_workbook` 的剪辑/动作/声音证据、`agent_team.compile_team_workbook` 的十部门 QA；新文件只负责标准工单重整与严格前置验收。没有搬运外部项目源代码，没有新 third-party SDK，也没有进行真实付费 AI 请求。正式针对特定视频供应商的版本、价格和能力仍须在真实测试前额外核实。
+
 ## 2026-10-11 逐镜审阅与来源版本绑定
 
 继续复用已有 `agent_team.fingerprint/start`、`director.validate` 与 `editorial_storyboard` 的候选计划；审核合约、HTML 转义与 SHA-256 使用 Python 标准库，避免新增不必要的外部表单和审核框架依赖。真实用户登录、可信审计、签名和审批服务此阶段未接入，不能把普通 Python 校验/自填 JSON 当身份验证或不可篡改签名。零第三方源码复制、零付费请求、零模型运行。
