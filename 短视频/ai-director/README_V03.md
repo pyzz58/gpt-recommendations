@@ -54,6 +54,12 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 **当前不生成参考图片，不声称人脸跨镜头已经锁定；用户 Mac 不需下载、同步或安装。**
 
+## 生成前阻断与禁止意外付费（仅源码）
+
+增加独立 `production_gate.py`：检查导演编译包的参考资产就绪状态、逐镜人工审核、真实参考媒体是否已交付，以及视频/静态/后期制作路线。每次 `director_v2.compile_package()` 会在结果附加 `generation_gate`。
+
+**它不具备发起视频或图像生成请求的能力**，默认禁止执行、付费和发布；参见 [GENERATION_GATE.md](GENERATION_GATE.md)。继续只在 GitHub 开发，Mac 保持不变。
+
 ## 导演 v0.2 混合制作路线（目前仅 GitHub 研发）
 
 2026-10-11 修复：原编译器把所有 `base.visual_type=ai_video` 的镜头强制送往 AI 视频模型，现在 `generation.route` 可以单独选择 `ai_video`、`static_post`、`edit_composite`、`live_action_insert`、`post_production`。支持部分旧 `production_method` 别名，未知类型显式报错。非视频路线只输出后期/实拍工作单，`production_summary` 给出 AI 视频实际镜头数量。
