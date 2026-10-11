@@ -35,6 +35,10 @@
 7. LICENSE_EVIDENCE_MISSING_MUSIC_LICENSE_CHECK：音乐真正选定之后再登记授权来源、证明与状态；计划不等于授权。
 8. LICENSE_EVIDENCE_MISSING_ASSET_LICENSE_CHECK：同样为每一件实际素材保留授权证据；不能把未核验字段改成已核验。
 
+## 模型输入适配预览（2026-10-11）
+
+继续借鉴 CineCrew 的 FilmDSL 资产绑定规则与 AI Cinematic Pipeline 的角色/场景/道具参考图分层。当前供应商 API 格式、计费和角色参考图上传规则未经正式核验，因此优先实现仅有 asset_id、view、role 的`reference_input_preview.py`，保留全部模型无关、不可执行的输出，不直接依赖厂商 SDK；下一次只有完成官方参数核查及用户费用批准，才可以另外设计真实 provider 适配器。新增 [REFERENCE_INPUT_PREVIEW.md](REFERENCE_INPUT_PREVIEW.md) 和合成回归测试，尚未运行最新整仓测试。
+
 ## 第五阶段：生成前门禁（2026-10-11）
 
 继续借鉴 CineCrew 的“生产之前统一检查资产、镜头、约束”理念。由于目前**没有真实视频模型执行器**，引入完整多代理视频流水线或付费 SDK 反而增加依赖与费用风险；新增纯 Python `production_gate.py` 最小只读门禁，接入 `director_v2.py` 的编译工作包并配套无付费回归。它只汇报“规划/参考媒体缺什么”，不能通过修改 JSON 来授权真钱的 API 调用，也不会接触用户 Mac。
