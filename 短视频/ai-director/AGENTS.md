@@ -10,6 +10,12 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## DeepSeek V4.1 Flash 真实创作小样的预检与评分标准（2026-10-11）
+
+- 参考 [REAL_DEEPSEEK_CREATIVE_PILOT.md](REAL_DEEPSEEK_CREATIVE_PILOT.md)：首轮仅计划总导演 + 剧本编辑两次模型请求，使用**公开虚构「门后的信」**，并按原创故事钩子、表演/摄影细节、剪辑音效、原文忠实、视频模型可执行性等维度，人工评分 100 分；格式合格不等于艺术质量合格。
+- `live_pilot_readiness.py` / `tests/test_live_pilot_readiness.py`：依据 2026-10-11 DeepSeek 官方峰时定价（Flash 未命中输入 ¥2/百万、输出 ¥8/百万、命中 ¥0.04/百万），在**不联网**的情况下估算首岗位待预留费用，并标记第二岗须等总导演实际返回后再估。CLI 只接受内置公共虚构素材，不能接受任何真实文案或 API Key。
+- 第一次真实请求需要可信私人执行环境、明确的逐次允许传输范围、人民币费用额度、授权 API 账户/独立防泄露 key 和供应商账单对账。**聊天里“同意继续”不自动触发真实 API**。公开 GitHub Actions 永远只能运行离线 preflight / synthetic 演示，不得发送用户稿件、使用生产密钥或声称完成实机评测。
+
 ## 首次可检查的全链路纵向示范（2026-10-11，公开虚构素材）
 
 - [END_TO_END_SYNTHETIC_ACCEPTANCE.md](END_TO_END_SYNTHETIC_ACCEPTANCE.md) / `offline_vertical_demo.py` / `tests/test_offline_vertical_demo.py`：首次把文章入组、总导演/剧本编辑、规划锁定、十阶段专业交接、独立 QA、`production_delivery.build_locked_crew_delivery` **真实生产编译器**全部串联。使用公开虚构“桌上信封”，十个岗位响应均是预写静态 JSON，**不是 DeepSeek 真实创作**。
