@@ -105,12 +105,15 @@ def scaffold(base):
             "generation": {"route": "ai_video" if shot["visual_type"] == "ai_video" else "post_production", "clip_type": "single_continuous_take" if shot["visual_type"] == "ai_video" else "not_a_video_model_job", "negative_constraints": [], "reference_roles": [], "reference_bindings": [], "limits": "不在画面内部生成准确汉字、数字或字幕"},
             "editing": {"incoming_transition": "待导演设计", "outgoing_transition": shot["transition"],
                         "cut_reason": "待导演设计", "rhythm": "待导演设计",
-                        "assembly_instructions": "待导演设计"},
+                        "assembly_instructions": "待导演设计",
+                        "audio_bridge": None},
             "animation": {"mode": "待导演设计", "timing": "待导演设计",
                           "elements": [], "render_in_post": False, "style": "待导演设计"},
             "speech": {"voiceover": {"text": shot["narration"],
-                                    "delivery": "待导演设计", "timing": "待导演设计"},
-                       "dialogue": [], "subtitle_direction": "待导演设计",
+                                    "delivery": "待导演设计", "timing": "待导演设计",
+                                    "cues": []},
+                       "dialogue": [], "subtitle_cues": [],
+                       "subtitle_direction": "待导演设计",
                        "lip_sync_policy": "待导演设计"},
             "qa": {"acceptance_tests": ["待导演明确可观察结果"], "issues": [], "human_approved": False}
         } for shot in base["shots"]]
@@ -346,7 +349,7 @@ def build_codex_task(base_path, direction_path):
 7. 将全片摄影、美术、声画风格写入 global_direction，单镜头补具体而非空泛的视觉形容词。
 8. 风险领域的内容如果没有权威来源验证，绝不可写 verified，不得改变研究类型或把 OR 写成 RR。必要时降低表述强度并保留待核验标记。
 9. 当镜头需依赖模型能力、参考图片或多段衔接时，在 qa.issues 中写出具体限制。human_approved 一律 false；review_status 可标记 reviewed，意为机器导演稿通过结构审查，绝非用户签字批准。
-9a. 每镜还要设计 editing（incoming_transition、outgoing_transition、cut_reason、rhythm、assembly_instructions）、animation（mode、timing、elements、render_in_post、style）、speech（voiceover{text,delivery,timing}、dialogue[]、subtitle_direction、lip_sync_policy）。精确安排对白/旁白、剪辑、动态图层，不能只堆画面提示词；voiceover.text 必须和基础分镜旁白逐字一致，修改需要先修订基础稿。
+9a. 每镜必须设计 editing（incoming_transition、outgoing_transition、cut_reason、rhythm、assembly_instructions、audio_bridge）、animation（mode、timing、elements、render_in_post、style）、speech（voiceover{text,delivery,timing,cues[]}、dialogue[]、subtitle_cues[]、subtitle_direction、lip_sync_policy）。若无跨镜声音连接，audio_bridge={type:none,duration_s:0,track:none,reason:不用}；否则必须选 J/L cut、时长、轨道和动机。voiceover.cues 与 subtitle_cues 各自填明确 from_s/to_s/text，注意字幕与旁白内容并不一定相同，分别保持原稿一致。动画 elements 填数字 from_s/to_s，不可以用文字“适当添加”。精确安排对白/旁白、剪辑、动态图层，不能只堆画面提示词；voiceover.text 必须和基础分镜旁白逐字一致，修改需要先修订基础稿。
 10. 运行 `python3 director_v2.py validate --base {base_path} --direction {direction_path}` 通过后再运行 compile 与 preview；原目录已有内容不覆盖，输出命名带 `_v02`。
 11. 报告每个镜头的改进点、依然不可能保证的限制和医学事实阻断。结束时停止，不付费生成视频。
 '''
