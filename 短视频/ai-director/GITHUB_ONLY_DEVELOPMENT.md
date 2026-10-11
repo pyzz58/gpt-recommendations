@@ -10,6 +10,10 @@
 - 不可以：提示用户执行 `git pull`、`pip install`、`brew`、`npm`、`git clone`、下载 ZIP/权重，或者让本地 Codex 执行修稿。禁止自动开机启动、守护进程、登录项、系统级配置、全局环境或其他本机安装操作。
 - 不能调用付费 DeepSeek/视频服务、不能提高或复用历史测试费用授权、不能触发可能付费的 CI 作业、不能发布或上传私人作品及密钥。
 
+## DeepSeek 单岗位真实 HTTP 能力的非付费测试阶段（2026-10-11）
+
+新建 `agent_live_pilot.py`、`tests/test_agent_live_pilot.py`、[DEEPSEEK_SINGLE_TASK_PILOT.md](DEEPSEEK_SINGLE_TASK_PILOT.md)。复用现有专业剧本创作和 DeepSeek 请求/回复结构，新增固定 HTTPS 主机、一次一岗、单集来源校验、费用预留 journal 和严格失败闸门，**在 GitHub Actions 中只运行纯合成响应**。此阶段的测试并没有真实发送你的私人文章、运行付费模型、部署 Mac 或批准任何成片。真实调用必须另行取得明确的模型、数据传输、执行环境及支出上限授权。
+
 ## 专业逐镜视频制作包的离线编译阶段（2026-10-11）
 
 `production_delivery.py`、专项测试与 [PRODUCTION_DELIVERY_PACK.md](PRODUCTION_DELIVERY_PACK.md) 已提交 GitHub。CI 用既有公开戒烟示例的 v0.1/base 与 v0.2/direction 编译 8 镜头精确工作单（两个候选视频模型提示词 + 后期路线 + 跨镜剪辑 + 人工 QA）；文件写入 Actions 临时目录，**没有用户私人文案，也没有第三方网络模型调用**。团队方式必须校验 `editorial_review_lock` 的版本与源文及十阶段独立 QA；所有自动发送/付款/发布布尔标志固定 false。
