@@ -92,11 +92,47 @@ def assemble(base, direction):
             issue(sid, "VOICEOVER_CUE_PENDING", "review",
                   "VO words have no exact timecodes; delivery/timing notes are not audio alignment")
         chinese_count = len(HAN.findall(voiceover))
-        if duration and chinese_count / duration > 3.5:
+        voice_window = (sum(cue["to_s"]-cue["from_s"] for cue in timed_voice)
+                        if timed_voice else duration)
+        if voice_window and chinese_count / voice_window > 3.5:
             issue(sid, "VOICEOVER_PACE_REVIEW", "review",
-                  f"{chinese_count} Chinese characters in {duration:g}s "
-                  f"({chinese_count/duration:.1f} characters/s); audition narration before lock")
+                  f"{chinese_count} Chinese characters in {voice_window:g}s of speaking time "
+                  f"({chinese_count/voice_window:.1f} characters/s); audition narration before lock")
 
+        subtitle_text = shot.get("subtitles", {}).get("text", "")
+        if not isinstance(subtitle_text, str):
+            subtitle_text = ""
+        subtitle_cues = speech.get("subtitle_cues")
+        timed_subtitles = []
+        if subtitle_cues is None and subtitle_text:
+            issue(sid, "SUBTITLE_CUE_PENDING", "review",
+                  "base subtitle has no exact on-screen entrance/exit timing")
+        elif subtitle_cues is not None:
+            if not isinstance(subtitle_cues, list):
+                issue(sid, "SUBTITLE_CUES_INVALID", "blocker",
+                      "speech.subtitle_cues must be an array")
+            else:
+                last_sub_out = 0
+                sub_texts = []
+                for i, cue in enumerate(subtitle_cues):
+                    info = timed(cue, "subtitle_cues[" + str(i) + "]", required=True)
+                    if not info:
+                        continue
+                    text = cue.get("text", "")
+                    if not isinstance(text, str) or not text.strip():
+                        issue(sid, "SUBTITLE_CUE_EMPTY", "blocker",
+                              "subtitle cue needs nonempty text")
+                        continue
+                    if info["from_s"] < last_sub_out - 0.001:
+                        issue(sid, "SUBTITLE_CUE_OVERLAP", "blocker",
+                              "one subtitle layer has overlapping cue windows")
+                    last_sub_out = info["to_s"]
+                    info["text"] = text
+                    timed_subtitles.append(info)
+                    sub_texts.append(text)
+                if "".join("".join(t.split()) for t in sub_texts) != "".join(subtitle_text.split()):
+                    issue(sid, "SUBTITLE_CUE_DRIFT", "blocker",
+                          "timed subtitle text differs from approved base subtitles")
         dialogues = []
         raw_dialogue = speech.get("dialogue", [])
         if not isinstance(raw_dialogue, list):
@@ -207,6 +243,9 @@ def assemble(base, direction):
             "voiceover": {"text": voiceover, "timed_cues": timed_voice,
                           "cue_status": "timecoded" if timed_voice else
                                         ("none" if not voiceover else "timing_unassigned")},
+            "subtitles": {"text": subtitle_text, "timed_cues": timed_subtitles,
+                          "cue_status": "timecoded" if timed_subtitles else
+                                        ("none" if not subtitle_text else "timing_unassigned")},
             "sync_dialogue": dialogues,
             "sound_effect_cues": fx_events,
             "animation_layers": animation_events,
