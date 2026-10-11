@@ -10,6 +10,10 @@
 - 不可以：提示用户执行 `git pull`、`pip install`、`brew`、`npm`、`git clone`、下载 ZIP/权重，或者让本地 Codex 执行修稿。禁止自动开机启动、守护进程、登录项、系统级配置、全局环境或其他本机安装操作。
 - 不能调用付费 DeepSeek/视频服务、不能提高或复用历史测试费用授权、不能触发可能付费的 CI 作业、不能发布或上传私人作品及密钥。
 
+## 剧本编辑专业创意方案阶段（2026-10-11）
+
+新增 `editorial_storyboard.py`、`tests/test_editorial_storyboard.py`、[EDITORIAL_CREATIVE_BRIDGE.md](EDITORIAL_CREATIVE_BRIDGE.md)。重用原导演/剧本编辑岗位，离线验证创意视觉分镜增强 Schema、逐镜可观察动作、原稿引用与新增数字强约束、旧原文与团队状态不可静默更改、新候选 hash/重建 pending 团队。测试只用合成信封故事和模拟回复，真人《上学以后的孩子》全文不在公仓，也没有发送付费模型 API 或视频生成请求。真实 AI 内容质量、导演人审和实际制作仍未验收。
+
 ## 长文章分集 / 分镜入口的 GitHub-only 阶段（2026-10-11）
 
 新增 `article_intake.py`、测试及 [ARTICLE_TO_EPISODE_INTAKE.md](ARTICLE_TO_EPISODE_INTAKE.md)。使用合成“雨前关窗”“图书馆”等多章节文案测试，**没有提交用户上传的《上学以后的孩子》**；支持 `### 1.`~`### 18.` 选题识别、原文候选旁白与原文位置绑定、长度超限显式省略、无证据验证硬标记、分镜合法性、既有团队首岗位任务派发。生成的 storyboards 是**待导演创作及人工确认的草案**，不是 AI 视频成品，也无付费 AI/网络调用。无需 Mac 任何操作，文案不能进公开 GitHub。
