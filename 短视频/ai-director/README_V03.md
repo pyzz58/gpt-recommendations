@@ -48,6 +48,10 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 **不要直接修改原片**。按上述 Codex 工作流先生成 `plan.proposed.json`，然后在本地验证并人工审核。没有采纳整个 CineCrew 或 transitions 包；零运行时额外依赖，无视频或 API 费用。
 
+## 模型输入参考清单（GitHub-only）
+
+已新增 `reference_input_preview.py` 与 [REFERENCE_INPUT_PREVIEW.md](REFERENCE_INPUT_PREVIEW.md)。它只把“每镜需要哪些人物角度、场景、道具”转换为模型无关的输入预览，不读取图片、不输出私有文件路径、不产生付费请求，不能直接用于 Wan/Seedance 的正式 API。相关 9 项新回归测试已加入源码，尚待在最新仓库完整快照上执行。
+
 ## 新增：角色/场景/道具参考资产管理（仅 GitHub 源码）
 
 通过 `reference_assets.py` 可离线生成参考资产清单（每张图默认为 `not_created`）、按镜头检查人物角度/场景/道具引用、检测不存在或哈希不符的文件，并将审核结果附入专业导演编译输出。通用格式为 `schemas/reference_assets.schema.json`，完整使用和边界见 [REFERENCE_ASSETS.md](REFERENCE_ASSETS.md)。
