@@ -31,6 +31,24 @@ class ProfessionalDirectorTests(unittest.TestCase):
         errors,_=v2.validate(self.base,d)
         self.assertTrue(any('gap/overlap' in e for e in errors))
 
+    def test_authored_waiting_and_expectation_are_not_placeholders(self):
+        d=copy.deepcopy(self.direction)
+        d['global_direction']['audience_emotion_arc']='期待回答，再等待人物回应'
+        for field in ('visible_change','performance','camera','sound'):
+            d['shots'][0]['beats'][0][field]='闭口等待三秒；时间窗口待实录校准'
+        errors,_=v2.validate(self.base,d)
+        self.assertEqual(errors, [])
+
+    def test_explicit_drafting_markers_remain_rejected(self):
+        for marker in ('待填','待导演设计','待确认：人物参考','TODO','TBD'):
+            with self.subTest(marker=marker):
+                d=copy.deepcopy(self.direction)
+                d['global_direction']['visual_grammar']=marker
+                d['shots'][0]['beats'][0]['visible_change']=marker
+                errors,_=v2.validate(self.base,d)
+                self.assertIn('global direction contains unfinished placeholder',errors)
+                self.assertTrue(any('beat 0 missing concrete visible_change' in e for e in errors))
+
     def test_beat_durations_must_cover_entire_shot(self):
         d=copy.deepcopy(self.direction)
         d['shots'][7]['beats'][-1]['to_s']-=1

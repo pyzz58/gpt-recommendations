@@ -1,0 +1,82 @@
+{
+  "authorship": {
+    "authorship": "CURRENT_CONVERSATION_ASSISTANT_AUTHORED_CANDIDATE",
+    "real_deepseek_calls": 0,
+    "ten_role_live_pipeline_executed": false,
+    "human_approved": false,
+    "media_generated": false,
+    "audio_recorded": false,
+    "timing_basis": "planned_not_measured",
+    "source_file": "source.md",
+    "source_sha256": "9379ec26497c546af0992aea23a51890b2eb39873cd17fa4543fed85633a3a02"
+  },
+  "cues": [
+    {
+      "shot_id": "S01",
+      "kind": "voiceover",
+      "speaker_id": "CHAR01",
+      "absolute_in_s": 1,
+      "absolute_out_s": 5,
+      "text": "我以为，她又要问工作。",
+      "delivery": "回忆旁白，克制、不埋怨；画中双方闭口",
+      "lip_sync_required": false,
+      "recording_exists": false
+    },
+    {
+      "shot_id": "S02",
+      "kind": "onscreen_dialogue",
+      "speaker_id": "CHAR02",
+      "absolute_in_s": 9,
+      "absolute_out_s": 13,
+      "text": "今天，过得怎么样？",
+      "delivery": "轻声真实发问；母亲出镜，需要口型",
+      "lip_sync_required": true,
+      "recording_exists": false
+    },
+    {
+      "shot_id": "S03",
+      "kind": "onscreen_dialogue",
+      "speaker_id": "CHAR01",
+      "absolute_in_s": 17,
+      "absolute_out_s": 19,
+      "text": "还行。",
+      "delivery": "短、轻，语尾收住；女儿出镜，需要口型",
+      "lip_sync_required": true,
+      "recording_exists": false
+    },
+    {
+      "shot_id": "S04",
+      "kind": "offscreen_dialogue",
+      "speaker_id": "CHAR02",
+      "absolute_in_s": 24.5,
+      "absolute_out_s": 29,
+      "text": "我问的是你，不是工作。",
+      "delivery": "画外对白，来自桌对面的母亲；保持与出镜对白相同的房间混响，不做回忆旁白",
+      "lip_sync_required": false,
+      "recording_exists": false
+    },
+    {
+      "shot_id": "S05",
+      "kind": "onscreen_dialogue",
+      "speaker_id": "CHAR01",
+      "absolute_in_s": 33,
+      "absolute_out_s": 37,
+      "text": "其实……不太好。",
+      "delivery": "女儿出镜；其实约1–2秒，2–3秒停顿，不太好约3–5秒；待实录校准",
+      "lip_sync_required": true,
+      "recording_exists": false
+    },
+    {
+      "shot_id": "S06",
+      "kind": "onscreen_dialogue",
+      "speaker_id": "CHAR02",
+      "absolute_in_s": 41,
+      "absolute_out_s": 44,
+      "text": "那就先吃饭。",
+      "delivery": "母亲出镜，轻柔落句；女儿全程闭口，听完才点头",
+      "lip_sync_required": true,
+      "recording_exists": false
+    }
+  ],
+  "assembly_note": "每句单独录制并保留前后静音余量。现有时间为创作目标；实录超时应调整节拍/镜头再编译，不能机械加速配音。所有字幕后期叠加。"
+}

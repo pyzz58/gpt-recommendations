@@ -1,0 +1,526 @@
+{
+  "schema_version": "0.1",
+  "title": "先吃饭｜48秒对白导演审阅样例",
+  "platform": "douyin",
+  "aspect_ratio": "9:16",
+  "duration": 48,
+  "risk_domain": "none",
+  "core_message": "母亲问的是女儿的感受；女儿放下手机，承认不太好，母亲用先吃饭回应而不追问。",
+  "audience": "喜欢克制日常情感短片的观众",
+  "editorial": {
+    "hook": "一声手机振动和女儿对母亲问话的误解。",
+    "narration_script": "我以为，她又要问工作。",
+    "omissions": [],
+    "adaptation_note": "全部源台词逐字保留；外观、机位、时长与手机黑屏是制作设定。"
+  },
+  "claims": [],
+  "visual_bible": {
+    "style": "克制日常写实",
+    "palette": "暖米色灯光、灰衣与暗蓝窗外",
+    "lighting": "LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。",
+    "typography": "所有字幕后期叠加，白字深描边，无打字动效",
+    "avoid": "不加工作界面、聊天内容或讲道理片尾"
+  },
+  "characters": [
+    {
+      "id": "CHAR01",
+      "description": "成年女儿小宁，齐肩黑发、灰色针织衫",
+      "wardrobe": "灰色针织衫",
+      "identity_anchor": "固定脸部参考，尚未生成"
+    },
+    {
+      "id": "CHAR02",
+      "description": "母亲，短发、米色开衫",
+      "wardrobe": "米色开衫",
+      "identity_anchor": "固定脸部参考，尚未生成"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "LOC01",
+      "description": "LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。"
+    }
+  ],
+  "continuity_contract": {
+    "version": 1,
+    "coverage": "complete",
+    "props": {
+      "PHONE01": {
+        "initial": "LOC01:table_face_up",
+        "label": "PHONE01黑色无标识手机，起初屏幕朝上但黑屏，26–30秒右手连续翻面后屏幕朝下，位置仍在女儿右手边。两碗饭与筷子全片留在桌面，不设计夹菜或道具传递。"
+      }
+    },
+    "actors": {
+      "CHAR01": {
+        "initial": "LOC01:seat_right"
+      },
+      "CHAR02": {
+        "initial": "LOC01:seat_left"
+      }
+    }
+  },
+  "shots": [
+    {
+      "id": "S01",
+      "start": 0,
+      "duration": 8,
+      "purpose": "手机先响",
+      "narration": "我以为，她又要问工作。",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01",
+        "CHAR02"
+      ],
+      "scene_id": "LOC01",
+      "visual": "母亲在左、女儿在右，都坐稳；手机黑屏朝上；女儿从手机移开视线，母亲仍注视她",
+      "action": {
+        "start": "母亲在左、女儿在右，都坐稳；手机黑屏朝上",
+        "action": "两人静坐，饭菜已摆好；手机振动，女儿低头瞥一眼；女儿视线从手机回到母亲",
+        "micro_action": "只转眼与轻低头，不拿手机",
+        "reaction": "日常里的一点防备",
+        "end": "女儿从手机移开视线，母亲仍注视她"
+      },
+      "camera": {
+        "shot_size": "两人腰部以上中景",
+        "angle": "餐桌靠观众同侧",
+        "lens": "35mm",
+        "movement": "固定",
+        "composition": "手机与两人距离可读，母亲不催促"
+      },
+      "art": {
+        "lighting": "LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。",
+        "palette": "暖米色灯光、灰衣与暗蓝窗外",
+        "set_props": "PHONE01黑色无标识手机，起初屏幕朝上但黑屏，26–30秒右手连续翻面后屏幕朝下，位置仍在女儿右手边。两碗饭与筷子全片留在桌面，不设计夹菜或道具传递。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "字幕由独立后期层负责"
+      },
+      "audio": {
+        "music": "none，无配乐",
+        "sfx": "桌上手机短振一次，无消息提示语",
+        "voice": "回忆旁白，克制、不埋怨；画中双方闭口",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "我以为，她又要问工作。",
+        "style": "白字深描边，后期叠加",
+        "placement": "1080×1920底部安全区，基线y=1580，左右各留96px；最多两行"
+      },
+      "transition": "hard_cut",
+      "continuity": "母亲在左、女儿在右，都坐稳；手机黑屏朝上 → 女儿从手机移开视线，母亲仍注视她",
+      "continuity_state": {
+        "props_before": {
+          "PHONE01": "LOC01:table_face_up"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        },
+        "prop_moves": [],
+        "actor_moves": [],
+        "props_after": {
+          "PHONE01": "LOC01:table_face_up"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        }
+      }
+    },
+    {
+      "id": "S02",
+      "start": 8,
+      "duration": 8,
+      "purpose": "先问今天",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01",
+        "CHAR02"
+      ],
+      "scene_id": "LOC01",
+      "visual": "母亲看画面右侧，双手在桌下边缘静置；母亲说完保持目光，不抢着追问",
+      "action": {
+        "start": "母亲看画面右侧，双手在桌下边缘静置",
+        "action": "母亲稍抬下巴接住女儿目光；母亲轻声问今天过得怎么样；母亲闭口等待",
+        "micro_action": "只在正式台词窗口张嘴，不点头数次",
+        "reaction": "温和但认真",
+        "end": "母亲说完保持目光，不抢着追问"
+      },
+      "camera": {
+        "shot_size": "母亲胸上近景",
+        "angle": "餐桌靠观众同侧",
+        "lens": "50mm",
+        "movement": "固定",
+        "composition": "母亲清楚的嘴部和不逼迫的视线"
+      },
+      "art": {
+        "lighting": "LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。",
+        "palette": "暖米色灯光、灰衣与暗蓝窗外",
+        "set_props": "PHONE01黑色无标识手机，起初屏幕朝上但黑屏，26–30秒右手连续翻面后屏幕朝下，位置仍在女儿右手边。两碗饭与筷子全片留在桌面，不设计夹菜或道具传递。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "字幕由独立后期层负责"
+      },
+      "audio": {
+        "music": "none，无配乐",
+        "sfx": "连续餐厅底噪",
+        "voice": "轻声真实发问；母亲出镜，需要口型",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "今天，过得怎么样？",
+        "style": "白字深描边，后期叠加",
+        "placement": "1080×1920底部安全区，基线y=1580，左右各留96px；最多两行"
+      },
+      "transition": "hard_cut",
+      "continuity": "母亲看画面右侧，双手在桌下边缘静置 → 母亲说完保持目光，不抢着追问",
+      "continuity_state": {
+        "props_before": {
+          "PHONE01": "LOC01:table_face_up"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        },
+        "prop_moves": [],
+        "actor_moves": [],
+        "props_after": {
+          "PHONE01": "LOC01:table_face_up"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        }
+      }
+    },
+    {
+      "id": "S03",
+      "start": 16,
+      "duration": 8,
+      "purpose": "惯常的回答",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01",
+        "CHAR02"
+      ],
+      "scene_id": "LOC01",
+      "visual": "女儿看向左侧母亲，嘴唇闭合；女儿移开眼神望向桌面，双手不动",
+      "action": {
+        "start": "女儿看向左侧母亲，嘴唇闭合",
+        "action": "女儿轻吸气，保持目光；女儿说还行后闭口；目光落向桌面，嘴角的勉强放松消失",
+        "micro_action": "语尾轻收，不能说成爽快肯定",
+        "reaction": "想把话题挡回去",
+        "end": "女儿移开眼神望向桌面，双手不动"
+      },
+      "camera": {
+        "shot_size": "女儿胸上近景",
+        "angle": "餐桌靠观众同侧",
+        "lens": "50mm",
+        "movement": "固定",
+        "composition": "还行之后的回避"
+      },
+      "art": {
+        "lighting": "LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。",
+        "palette": "暖米色灯光、灰衣与暗蓝窗外",
+        "set_props": "PHONE01黑色无标识手机，起初屏幕朝上但黑屏，26–30秒右手连续翻面后屏幕朝下，位置仍在女儿右手边。两碗饭与筷子全片留在桌面，不设计夹菜或道具传递。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "字幕由独立后期层负责"
+      },
+      "audio": {
+        "music": "none，无配乐",
+        "sfx": "连续餐厅底噪",
+        "voice": "短、轻，语尾收住；女儿出镜，需要口型",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "还行。",
+        "style": "白字深描边，后期叠加",
+        "placement": "1080×1920底部安全区，基线y=1580，左右各留96px；最多两行"
+      },
+      "transition": "hard_cut",
+      "continuity": "女儿看向左侧母亲，嘴唇闭合 → 女儿移开眼神望向桌面，双手不动",
+      "continuity_state": {
+        "props_before": {
+          "PHONE01": "LOC01:table_face_up"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        },
+        "prop_moves": [],
+        "actor_moves": [],
+        "props_after": {
+          "PHONE01": "LOC01:table_face_up"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        }
+      }
+    },
+    {
+      "id": "S04",
+      "start": 24,
+      "duration": 8,
+      "purpose": "把手机放下",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01",
+        "CHAR02"
+      ],
+      "scene_id": "LOC01",
+      "visual": "手机屏幕朝上留在桌上，女儿右手空着；手机屏幕朝下回到原位置，女儿右手退出画面",
+      "action": {
+        "start": "手机屏幕朝上留在桌上，女儿右手空着",
+        "action": "右手靠近手机，尚未接触；右手握手机两侧，抬起少许并翻面放回；右手松开并退到桌沿",
+        "micro_action": "屏幕从朝上连续变为朝下，不穿过桌面",
+        "reaction": "愿意停下防御",
+        "end": "手机屏幕朝下回到原位置，女儿右手退出画面"
+      },
+      "camera": {
+        "shot_size": "手机和女儿右手局部",
+        "angle": "餐桌靠观众同侧",
+        "lens": "85mm",
+        "movement": "固定",
+        "composition": "同一手机完整翻面过程，无第二只手"
+      },
+      "art": {
+        "lighting": "LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。",
+        "palette": "暖米色灯光、灰衣与暗蓝窗外",
+        "set_props": "PHONE01黑色无标识手机，起初屏幕朝上但黑屏，26–30秒右手连续翻面后屏幕朝下，位置仍在女儿右手边。两碗饭与筷子全片留在桌面，不设计夹菜或道具传递。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "字幕由独立后期层负责"
+      },
+      "audio": {
+        "music": "none，无配乐",
+        "sfx": "手机外壳轻触木桌，音量低于对白",
+        "voice": "画外对白，来自桌对面的母亲；保持与出镜对白相同的房间混响，不做回忆旁白",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "我问的是你，不是工作。",
+        "style": "白字深描边，后期叠加",
+        "placement": "1080×1920底部安全区，基线y=1580，左右各留96px；最多两行"
+      },
+      "transition": "hard_cut",
+      "continuity": "手机屏幕朝上留在桌上，女儿右手空着 → 手机屏幕朝下回到原位置，女儿右手退出画面",
+      "continuity_state": {
+        "props_before": {
+          "PHONE01": "LOC01:table_face_up"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        },
+        "prop_moves": [
+          {
+            "order": 0,
+            "prop": "PHONE01",
+            "from": "LOC01:table_face_up",
+            "to": "CHAR01:hand",
+            "kind": "pickup",
+            "visible": true,
+            "note": "26秒右手抬起，连续翻面"
+          },
+          {
+            "order": 1,
+            "prop": "PHONE01",
+            "from": "CHAR01:hand",
+            "to": "LOC01:table_face_down",
+            "kind": "place",
+            "visible": true,
+            "note": "30秒前翻面后放回，仍在原桌面位置"
+          }
+        ],
+        "actor_moves": [],
+        "props_after": {
+          "PHONE01": "LOC01:table_face_down"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        }
+      }
+    },
+    {
+      "id": "S05",
+      "start": 32,
+      "duration": 8,
+      "purpose": "终于说出口",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01",
+        "CHAR02"
+      ],
+      "scene_id": "LOC01",
+      "visual": "女儿目光还在桌面，双手已离开手机；女儿说完看向左侧母亲，等她回应",
+      "action": {
+        "start": "女儿目光还在桌面，双手已离开手机",
+        "action": "女儿抬眼看母亲；女儿承认其实不太好，中间停顿；闭口等待，肩膀稍松",
+        "micro_action": "眼眶略湿但不落泪；省略号是停顿，不读出来",
+        "reaction": "承认疲惫而不是崩溃",
+        "end": "女儿说完看向左侧母亲，等她回应"
+      },
+      "camera": {
+        "shot_size": "女儿胸上近景",
+        "angle": "餐桌靠观众同侧",
+        "lens": "50mm",
+        "movement": "固定",
+        "composition": "一次抬眼和一句真话"
+      },
+      "art": {
+        "lighting": "LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。",
+        "palette": "暖米色灯光、灰衣与暗蓝窗外",
+        "set_props": "PHONE01黑色无标识手机，起初屏幕朝上但黑屏，26–30秒右手连续翻面后屏幕朝下，位置仍在女儿右手边。两碗饭与筷子全片留在桌面，不设计夹菜或道具传递。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "字幕由独立后期层负责"
+      },
+      "audio": {
+        "music": "none，无配乐",
+        "sfx": "连续餐厅底噪",
+        "voice": "女儿出镜；其实约1–2秒，2–3秒停顿，不太好约3–5秒；待实录校准",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "其实……不太好。",
+        "style": "白字深描边，后期叠加",
+        "placement": "1080×1920底部安全区，基线y=1580，左右各留96px；最多两行"
+      },
+      "transition": "hard_cut",
+      "continuity": "女儿目光还在桌面，双手已离开手机 → 女儿说完看向左侧母亲，等她回应",
+      "continuity_state": {
+        "props_before": {
+          "PHONE01": "LOC01:table_face_down"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        },
+        "prop_moves": [],
+        "actor_moves": [],
+        "props_after": {
+          "PHONE01": "LOC01:table_face_down"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        }
+      }
+    },
+    {
+      "id": "S06",
+      "start": 40,
+      "duration": 8,
+      "purpose": "先吃饭",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01",
+        "CHAR02"
+      ],
+      "scene_id": "LOC01",
+      "visual": "母亲左、女儿右，手机已朝下，饭菜未动；女儿轻点一次头，两人仍坐着；不再说话",
+      "action": {
+        "start": "母亲左、女儿右，手机已朝下，饭菜未动",
+        "action": "回到两人中景，母亲接住女儿目光；母亲轻声说那就先吃饭，女儿安静听；女儿轻点一次头，然后安静停留",
+        "micro_action": "母亲单独开口，女儿嘴唇闭合",
+        "reaction": "被允许暂时不解释",
+        "end": "女儿轻点一次头，两人仍坐着；不再说话"
+      },
+      "camera": {
+        "shot_size": "回到首镜两人中景",
+        "angle": "餐桌靠观众同侧",
+        "lens": "35mm",
+        "movement": "固定",
+        "composition": "母亲说话、女儿听完才点头"
+      },
+      "art": {
+        "lighting": "LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。",
+        "palette": "暖米色灯光、灰衣与暗蓝窗外",
+        "set_props": "PHONE01黑色无标识手机，起初屏幕朝上但黑屏，26–30秒右手连续翻面后屏幕朝下，位置仍在女儿右手边。两碗饭与筷子全片留在桌面，不设计夹菜或道具传递。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "字幕由独立后期层负责"
+      },
+      "audio": {
+        "music": "none，无配乐",
+        "sfx": "连续餐厅底噪",
+        "voice": "母亲出镜，轻柔落句；女儿全程闭口，听完才点头",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "那就先吃饭。",
+        "style": "白字深描边，后期叠加",
+        "placement": "1080×1920底部安全区，基线y=1580，左右各留96px；最多两行"
+      },
+      "transition": "hard_cut",
+      "continuity": "母亲左、女儿右，手机已朝下，饭菜未动 → 女儿轻点一次头，两人仍坐着；不再说话",
+      "continuity_state": {
+        "props_before": {
+          "PHONE01": "LOC01:table_face_down"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        },
+        "prop_moves": [],
+        "actor_moves": [],
+        "props_after": {
+          "PHONE01": "LOC01:table_face_down"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:seat_right",
+          "CHAR02": "LOC01:seat_left"
+        }
+      }
+    }
+  ],
+  "production": {
+    "voice": "一名女儿旁白声线与同人物对白声线；母亲一名对白声线；均未录制",
+    "music_license_check": false,
+    "asset_license_check": false,
+    "publishing_status": "review_required"
+  },
+  "authorship": {
+    "authorship": "CURRENT_CONVERSATION_ASSISTANT_AUTHORED_CANDIDATE",
+    "real_deepseek_calls": 0,
+    "ten_role_live_pipeline_executed": false,
+    "human_approved": false,
+    "media_generated": false,
+    "audio_recorded": false,
+    "timing_basis": "planned_not_measured",
+    "source_file": "source.md",
+    "source_sha256": "9379ec26497c546af0992aea23a51890b2eb39873cd17fa4543fed85633a3a02"
+  }
+}

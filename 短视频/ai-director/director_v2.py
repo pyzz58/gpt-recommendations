@@ -125,6 +125,17 @@ def scaffold(base):
     }
 
 
+def _has_unfinished_placeholder(value):
+    """Detect drafting markers, not ordinary Chinese words such as 等待/期待."""
+    if isinstance(value, dict):
+        return any(_has_unfinished_placeholder(v) for v in value.values())
+    if isinstance(value, list):
+        return any(_has_unfinished_placeholder(v) for v in value)
+    return isinstance(value, str) and any(
+        marker in value for marker in ("待填", "待导演", "待设计", "待确认", "TODO", "TBD")
+    )
+
+
 def validate(base, directions, assets=None, asset_root=None):
     errors, warnings = validate_v1(base)
     if not isinstance(directions, dict):
@@ -134,7 +145,7 @@ def validate(base, directions, assets=None, asset_root=None):
     for key in ("audience_emotion_arc", "visual_grammar", "audio_grammar", "graphic_safety", "reference_strategy", "generation_budget"):
         if not isinstance(global_dir, dict) or not str(global_dir.get(key, "")).strip():
             errors.append(f"missing global_direction.{key}")
-    if "待" in str(global_dir): errors.append("global direction contains unfinished placeholder")
+    if _has_unfinished_placeholder(global_dir): errors.append("global direction contains unfinished placeholder")
     raw_shots = directions.get("shots")
     if not isinstance(raw_shots, list) or len(raw_shots) != len(base.get("shots", [])):
         return errors+["direction shots do not match base plan length"], warnings
@@ -176,7 +187,7 @@ def validate(base, directions, assets=None, asset_root=None):
                     value=obj[key]
                     if not isinstance(value, str) or not value.strip():
                         errors.append(f"{prefix}: empty {name}.{key}")
-                    elif "待填" in value or "待导演" in value:
+                    elif _has_unfinished_placeholder(value):
                         errors.append(f"{prefix}: placeholder in {name}.{key}")
         beats=direction["beats"]
         if not isinstance(beats, list) or not beats:
@@ -193,7 +204,7 @@ def validate(base, directions, assets=None, asset_root=None):
                 if end<=a: errors.append(f"{prefix}: beat {j} non-positive duration")
                 if end-a<0.30: warnings.append(f"{prefix}: beat {j} may be too short to read")
                 for k in ("visible_change", "performance", "camera", "sound"):
-                    if not isinstance(b.get(k),str) or not b[k].strip() or "待" in b[k]:
+                    if not isinstance(b.get(k),str) or not b[k].strip() or _has_unfinished_placeholder(b[k]):
                         errors.append(f"{prefix}: beat {j} missing concrete {k}")
                 t=end
             if abs(t-shot["duration"])>0.011: errors.append(f"{prefix}: beat timeline {t} != {shot['duration']}")
