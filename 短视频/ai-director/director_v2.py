@@ -15,6 +15,7 @@ from pathlib import Path
 import sys
 
 from director import validate as validate_v1
+import reference_assets as refassets
 
 VERSION = "0.2.0"
 FORBIDDEN_UNSUPPORTED_MODES = {"paid_video_generation", "publish", "auto_upload"}
@@ -106,7 +107,7 @@ def scaffold(base):
     }
 
 
-def validate(base, directions):
+def validate(base, directions, assets=None, asset_root=None):
     errors, warnings = validate_v1(base)
     if not isinstance(directions, dict):
         return errors + ["v0.2 direction must be an object"], warnings
@@ -219,6 +220,14 @@ def validate(base, directions):
     if accepted != list(expected): warnings.append("shot order differs from base; compiler will follow base order")
     if base.get("risk_domain") != "none" and any(x.get("status")!="verified" for x in base.get("claims",[])):
         warnings.append("PUBLISH BLOCKED: expert video prompting does not verify medical data")
+    if assets is not None:
+        report = refassets.audit(base, directions, assets, asset_root)
+        if report["blockers"]:
+            errors.append(f"reference catalog has {report['blockers']} invalid/unsafe entries")
+        if not report["ready_for_reference_preflight"]:
+            warnings.append(f"reference assets missing/unverified: {report['missing']} pending; no generation approval")
+        # Even ready file hashes do not verify facial identity across shots.
+        warnings.append("Reference hashes do not establish visual identity consistency or publishing approval")
     return errors, list(dict.fromkeys(warnings))
 
 
@@ -229,17 +238,24 @@ def beat_lines(direction):
     )
 
 
-def compile_package(base, directions):
-    errors,warnings=validate(base,directions)
+def compile_package(base, directions, assets=None, asset_root=None):
+    errors,warnings=validate(base,directions,assets,asset_root)
     if errors: raise ValueError("cannot compile invalid director plan:\n"+"\n".join(errors))
     shots={x["shot_id"]:x for x in directions["shots"]}
+    asset_report = refassets.audit(base, directions, assets, asset_root) if assets is not None else None
+    shot_bindings = assets.get("shot_requirements", {}) if assets is not None else {}
     jobs=[]
     for shot in base["shots"]:
         d=shots[shot["id"]]
         route = production_route(shot, d["generation"])
         shared={"shot_id":shot["id"],"duration":shot["duration"],"visual_type":shot["visual_type"],
                 "execution_route":route, "human_review_required":True,
-                "direction":d, "reference_roles":d["generation"]["reference_roles"]}
+                "direction":d, "reference_roles":d["generation"]["reference_roles"],
+                "reference_bindings":shot_bindings.get(shot["id"], []),
+                "reference_preflight_ready":bool(asset_report and
+                    asset_report["ready_for_reference_preflight"] and
+                    all(f["shot_id"] != shot["id"] for f in asset_report["findings"])),
+                "reference_media_supplied":False}
         if route != "ai_video":
             shared["postproduction_job"]={
                 "production_route":route, "visual":shot["visual"], "graphics":d["graphics"],
@@ -285,6 +301,9 @@ def compile_package(base, directions):
                                   "ai_video_jobs":route_counts.get("ai_video",0),
                                   "non_video_jobs":len(jobs)-route_counts.get("ai_video",0),
                                   "media_created":False},
+            "reference_asset_preflight":asset_report if asset_report is not None else
+                {"status":"not_assessed","ready_for_reference_preflight":False,
+                 "human_visual_consistency_verified":False, "media_generated":False},
             "warnings":warnings, "not_generated_video":True, "publishing_allowed":False,
             "prompt_usage":"Prompts are candidates for operator review and actual-model testing; platform capabilities, version and limits must be checked before generation."}
 
@@ -332,6 +351,9 @@ def main(argv=None):
             sp.add_argument("--out",required=True)
         else:
             sp.add_argument("--direction",required=True)
+            if name in ("validate", "compile"):
+                sp.add_argument("--assets", help="optional offline reference catalog")
+                sp.add_argument("--asset-root", help="private local image root for hash verification")
             if name!="validate":sp.add_argument("--out",required=True)
     args=parser.parse_args(argv)
     try:
@@ -346,11 +368,14 @@ def main(argv=None):
             print("Codex task:",args.out)
         else:
             directions=read_json(args.direction)
-            errors,warnings=validate(base,directions)
+            assets=read_json(args.assets) if getattr(args,"assets",None) else None
+            if getattr(args,"asset_root",None) and assets is None:
+                raise ValueError("--asset-root needs --assets")
+            errors,warnings=validate(base,directions,assets,getattr(args,"asset_root",None))
             for w in warnings:print("WARNING:",w)
             if errors:raise ValueError("; ".join(errors))
             if args.command=="validate":print(f"Professional direction OK: {len(base['shots'])} shots; does NOT approve publication")
-            elif args.command=="compile":write_json(args.out,compile_package(base,directions));print("Compiled:",args.out)
+            elif args.command=="compile":write_json(args.out,compile_package(base,directions,assets,getattr(args,"asset_root",None)));print("Compiled:",args.out)
             elif args.command=="preview":render_compare(base,directions,args.out);print("Preview:",args.out)
     except (ValueError, KeyError, TypeError, OSError, json.JSONDecodeError) as ex:
         print("ERROR:",ex,file=sys.stderr);return 2
