@@ -140,6 +140,11 @@ def audit(base, direction, manifest, asset_root=None):
     if not isinstance(manifest, dict) or manifest.get("schema_version") != "1.0":
         add("INVALID_CATALOG", "blocker", None, None, "manifest schema_version must be 1.0")
         return _summary(findings, 0, 0)
+    policy = manifest.get("policy")
+    if not isinstance(policy, dict) or any(policy.get(key) is not False for key in
+        ("generated_media", "identity_consistency_verified", "private_media_in_public_repo")):
+        add("CATALOG_POLICY_INVALID", "blocker", None, None,
+            "catalog must not claim generated media, identity consistency or public private assets")
     assets = manifest.get("assets")
     reqs = manifest.get("shot_requirements")
     if not isinstance(assets, dict) or not isinstance(reqs, dict):
@@ -154,7 +159,11 @@ def audit(base, direction, manifest, asset_root=None):
         for item in arr:
             if isinstance(item, dict) and isinstance(item.get("id"), str):
                 src_kinds[item["id"]] = kind
-    for asset_id in (base.get("continuity_contract") or {}).get("props", {}):
+    contract = base.get("continuity_contract") or {}
+    if not isinstance(contract, dict) or not isinstance(contract.get("props", {}), dict):
+        add("INVALID_BASE", "blocker", None, None, "continuity_contract.props must be an object")
+        return _summary(findings, 0, 0)
+    for asset_id in contract.get("props", {}):
         src_kinds.setdefault(asset_id, "prop")
 
     for aid, data in assets.items():
@@ -231,6 +240,11 @@ def audit(base, direction, manifest, asset_root=None):
             compulsory |= {(x, "three_quarter") for x in shot.get("character_ids", [])}
             if shot.get("scene_id"):
                 compulsory.add((shot["scene_id"], "establishing"))
+        for binding in (direct or {}).get("generation", {}).get("reference_bindings", []):
+            if isinstance(binding, dict):
+                aid, view = binding.get("asset_id"), binding.get("view")
+                if isinstance(aid, str) and isinstance(view, str):
+                    compulsory.add((aid, view))
         present = set()
         for binding in raw:
             if not isinstance(binding, dict):
@@ -246,10 +260,11 @@ def audit(base, direction, manifest, asset_root=None):
                 continue
             present.add(pair)
             required_total += 1
-            if aid not in assets:
-                add("UNKNOWN_ASSET", "blocker", sid, aid, "referenced asset missing from catalog")
+            if aid not in assets or not isinstance(assets[aid], dict):
+                add("UNKNOWN_ASSET", "blocker", sid, aid, "referenced asset missing or invalid in catalog")
                 continue
-            record = assets[aid].get("views", {}).get(view)
+            view_map = assets[aid].get("views")
+            record = view_map.get(view) if isinstance(view_map, dict) else None
             if not isinstance(record, dict):
                 add("MISSING_VIEW", "blocker", sid, aid, "requested view missing from asset catalog: " + view)
                 continue
