@@ -12,6 +12,7 @@ from pathlib import Path
 import sys
 
 import director_v2
+import director_timeline
 
 EDIT_FIELDS = ("incoming_transition", "outgoing_transition", "cut_reason",
                "rhythm", "assembly_instructions")
@@ -163,6 +164,8 @@ def compile_workbook(base, directions):
         prev = shot
     if abs(expected_start - base["duration"]) > 0.011:
         raise ValueError("final shot does not end at declared duration")
+    edit_timeline, timeline_findings = director_timeline.assemble(base, directions)
+    timeline_blockers = [f for f in timeline_findings if f["severity"] == "blocker"]
     return {
         "schema_version": "1.0", "kind": "script_to_short_video_director_workbook",
         "overview": {"title": base["title"], "core_message": base["core_message"],
@@ -170,10 +173,14 @@ def compile_workbook(base, directions):
                      "aspect_ratio": base["aspect_ratio"], "editorial": base["editorial"],
                      "visual_bible": base["visual_bible"],
                      "series_direction": directions["global_direction"]},
-        "assembly_timeline": timeline, "shots": shot_rows,
-        "production_summary": compiled["production_summary"],
-        "director_review": {"creative_design_complete": len(findings) == 0,
-                            "unresolved": len(findings), "findings": findings,
+        "assembly_timeline": timeline, "editor_decision_list": edit_timeline,
+        "shots": shot_rows, "production_summary": compiled["production_summary"],
+        "director_review": {"creative_design_complete": len(findings) == 0 and
+                                len(timeline_blockers) == 0,
+                            "unresolved": len(findings) + len(timeline_blockers),
+                            "findings": findings + timeline_blockers,
+                            "timing_review_findings": [f for f in timeline_findings
+                                                       if f["severity"] != "blocker"],
                             "technical_warnings": warnings},
         "is_video": False, "human_approved": False, "paid_api_authorized": False,
         "publishing_allowed": False
@@ -186,6 +193,7 @@ def render_markdown(book):
              "时长：" + str(book["overview"]["duration_s"]) + " 秒",
              "这是导演设计与制作工作单，不是已完成的影片。", "",
              "未完成的导演决策：" + str(book["director_review"]["unresolved"]), ""]
+    timeline_by_id = {t["shot_id"]: t for t in book["editor_decision_list"]}
     for shot in book["shots"]:
         lines += ["## " + shot["shot_id"] + " / " + str(shot["start_s"]) + "–" + str(shot["end_s"]) + "秒",
                   "剧情任务：" + shot["story"]["visible_change"],
@@ -205,7 +213,16 @@ def render_markdown(book):
                 fence = chr(96) * 3
                 lines += ["", "### " + title, fence + "json",
                           json.dumps(value, ensure_ascii=False, indent=2), fence]
+        fence = chr(96) * 3
+        lines += ["", "### 可交付剪辑工作台时间表（非实际素材）",
+                  fence + "json",
+                  json.dumps(timeline_by_id[shot["shot_id"]], ensure_ascii=False, indent=2),
+                  fence]
         lines.append("")
+    if book["director_review"]["timing_review_findings"]:
+        lines += ["## 节奏、配音与动画时间点待人工核查"]
+        lines += [f"- {x['shot_id']}：{x['code']} —— {x['detail']}"
+                  for x in book["director_review"]["timing_review_findings"]]
     if book["director_review"]["findings"]:
         lines += ["## 待完善问题"]
         lines += [f"- {x['shot_id']}：{x['code']} —— {x['detail']}"
