@@ -95,6 +95,11 @@ class PrivateResultVault:
         journal._validate()
         self.journal = journal
         _secure_dir(journal.path)
+        # A checkpoint may hold the FULL original/private production state.
+        # Never create it in a Git checkout (including nested directories).
+        for ancestor in (journal.path.resolve(), *journal.path.resolve().parents):
+            _require(not (ancestor / ".git").exists(),
+                     "CHECKPOINT_NO_PRIVATE_RESULTS_IN_GIT")
         self.root = journal.path / "private-result-checkpoints"
         _require(not self.root.is_symlink(), "CHECKPOINT_VAULT_SYMLINK")
         self.root.mkdir(mode=0o700, exist_ok=True)
@@ -119,6 +124,7 @@ class PrivateResultVault:
 
     def _record(self, attempt_id):
         self._check()
+        self._file(attempt_id)  # Validate positive exact integer BEFORE indexing.
         return self.journal.records["attempts"][attempt_id - 1]
 
     def _validate_state(self, state):
@@ -202,6 +208,10 @@ class PrivateResultVault:
                  data.get("base_digest") == self.journal.config["base_digest"] and
                  data.get("permission_to_reissue_model_request") is False,
                  "CHECKPOINT_BINDING_MISMATCH")
+        _require(isinstance(data.get("usage"), dict) and
+                 type(data["usage"].get("total_tokens")) is int and
+                 isinstance(data["usage"].get("estimated_usage_cost_cny"), str),
+                 "CHECKPOINT_USAGE_TAMPERED")
         out = data.get("after_state")
         self._validate_state(out)
         _require(_hash(out) == data.get("after_state_digest") and
