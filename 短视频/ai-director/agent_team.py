@@ -527,6 +527,26 @@ def main(argv=None):
     p_assemble.add_argument("--state", required=True)
     p_assemble.add_argument("--base", required=True)
     p_assemble.add_argument("--out", required=True)
+    p_audit = sub.add_parser("audit-handoffs")
+    p_audit.add_argument("--state", required=True)
+    p_audit.add_argument("--base", required=True)
+    p_audit.add_argument("--out", required=True)
+    p_propose = sub.add_parser("propose-revisions")
+    p_propose.add_argument("--state", required=True)
+    p_propose.add_argument("--base", required=True)
+    p_propose.add_argument("--include-reviews", action="store_true")
+    p_propose.add_argument("--out", required=True)
+    p_approve = sub.add_parser("approve-revision")
+    p_approve.add_argument("--state", required=True)
+    p_approve.add_argument("--base", required=True)
+    p_approve.add_argument("--proposal", required=True)
+    p_approve.add_argument("--approve-showrunner-rework", action="store_true")
+    p_approve.add_argument("--out", required=True)
+    p_workbook = sub.add_parser("workbook")
+    p_workbook.add_argument("--state", required=True)
+    p_workbook.add_argument("--base", required=True)
+    p_workbook.add_argument("--strict", action="store_true")
+    p_workbook.add_argument("--out", required=True)
     args = p.parse_args(argv)
     try:
         def load_json(file):
@@ -556,6 +576,32 @@ def main(argv=None):
             direction = assemble_direction(load_json(args.base), load_json(args.state))
             _save_new(args.out, direction)
             print("Draft direction assembled. HUMAN_APPROVED=false; no media created.")
+        elif args.command == "audit-handoffs":
+            import agent_handoff_audit
+            state, base = load_json(args.state), load_json(args.base)
+            _check_state(state)
+            _require(fingerprint(base) == state["base_digest"], "base digest mismatch")
+            report = agent_handoff_audit.audit_handoffs(state, base)
+            _save_new(args.out, report)
+            print("Independent handoff audit:", report["status"])
+        elif args.command == "propose-revisions":
+            report = propose_director_revisions(
+                load_json(args.base), load_json(args.state),
+                include_reviews=args.include_reviews)
+            _save_new(args.out, report)
+            print("Proposals created (not approved):", len(report["proposals"]))
+        elif args.command == "approve-revision":
+            state = request_planned_revision(
+                load_json(args.base), load_json(args.state), load_json(args.proposal),
+                showrunner_approved=args.approve_showrunner_rework)
+            _save_new(args.out, state)
+            print("Director scope invalidated; no model calls:", ", ".join(ready(state)))
+        elif args.command == "workbook":
+            book = compile_team_workbook(
+                load_json(args.base), load_json(args.state),
+                strict=args.strict)
+            _save_new(args.out, book)
+            print("Director workbook:", book["team_delivery_gate"]["status"])
         return 0
     except (OSError, TypeError, ValueError, KeyError) as exc:
         print("ERROR:", exc, file=sys.stderr)
