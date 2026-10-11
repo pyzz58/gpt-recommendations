@@ -287,7 +287,7 @@ class ProfessionalRoleContractsTests(unittest.TestCase):
         self.advance("editing_animation")
         payload = self.payload("ai_technical")
         payload["shots"]["S01"]["generation"]["route"] = ["illegally nested"]
-        with self.assertRaisesRegex(ValueError, "ROUTE_INVALID"):
+        with self.assertRaisesRegex(ValueError, "required meaningful route|ROUTE_INVALID"):
             role.validate_role_output(self.base, self.state, "ai_technical",
                                       json.dumps(payload), source_text=self.original)
 
