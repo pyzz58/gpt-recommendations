@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 第三阶段制作路线（GitHub-only；最高技术优先级）
+
+- 阅读 [PRODUCTION_ROUTING.md](PRODUCTION_ROUTING.md)；`base.visual_type` 代表概念镜头，不等同于实际素材来源。采用规范的 `generation.route`：`ai_video` / `static_post` / `edit_composite` / `live_action_insert` / `post_production`。
+- 有明确 `production_method` 的旧导演档可用已支持别名兼容，编译结果以 `execution_route` 为准。未识别的制作方式必须失败并人工评估，禁止悄悄生成视频模型提示词。
+- 只有 AI 视频镜头可以包含 Wan/Seedance 候选提示词，其余只输出 `postproduction_job`；不可自动发起任何生成/API 请求。保留完整 `production_summary` 和人工审核标记。
+- `voiceover_note` 是导演备注，不是正式配音文稿变更。除非修改并审核 base 候选，不得悄悄替换 base.narration。视频参考图及版权未经核验时不得标已通过。
+
 ## 完整物理连续性契约（新增；旧剧本保持兼容）
 
 - Codex 在修订既有分镜前必须阅读 [skills/06-continuity-repair.md](skills/06-continuity-repair.md) 和 [CONTINUITY_QA.md](CONTINUITY_QA.md)，并使用已审查的 GitHub 技术选型清单。
