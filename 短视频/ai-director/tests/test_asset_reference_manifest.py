@@ -1,11 +1,13 @@
-"""Versioned, source-locked reference cards using fictional in-memory headers.
+"""Versioned, source-locked reference cards using fictional valid in-memory PNGs.
 
 No actual user photos, private paths, DeepSeek network or media generated.
-Image header bytes are fictional, NOT proof of decodable/reference quality.
+Generated synthetic pixels can decode, but are NOT reference-quality proof.
 """
 from __future__ import annotations
 from copy import deepcopy
 import json
+import struct
+import zlib
 from pathlib import Path
 import sys
 import hashlib
@@ -41,7 +43,21 @@ class AssetReferenceManifestTests(unittest.TestCase):
                  "character_ids":["CHAR01"],"prop_ids":["PROP01"],
                  "duration":3,"narration":"She hesitates"}]}
         self.manifest=refs.create_empty(self.base,self.digest)
-        self.bytes=b"\x89PNG\r\n\x1a\n"+b"FICTIONAL_HEADER_ONLY_NOT_VALID_PHOTO_CONTENT"
+        self.bytes=self.png(b"FICTIONAL_PRIMARY_ASSET")
+
+
+    @staticmethod
+    def png(seed, width=1, height=1):
+        """Generate a 1x1 PNG using the stdlib, no personal photos."""
+        def chunk(tag, payload):
+            return (struct.pack(">I",len(payload))+tag+payload+
+                    struct.pack(">I",zlib.crc32(tag+payload)&0xffffffff))
+        pixel=hashlib.sha256(seed).digest()[:3]
+        header=struct.pack(">IIBBBBB",width,height,8,2,0,0,0)
+        return (b"\x89PNG\r\n\x1a\n"+
+                chunk(b"IHDR",header)+
+                chunk(b"IDAT",zlib.compress(b"\x00"+pixel))+
+                chunk(b"IEND",b""))
 
     def register(self,manifest=None,*,raw=None,asset="ASSET_CHAR01"):
         return refs.register_image(
@@ -69,13 +85,15 @@ class AssetReferenceManifestTests(unittest.TestCase):
         self.assertEqual(rev["sha256"],hashlib.sha256(self.bytes).hexdigest())
         self.assertEqual(rev["version"],1)
         self.assertEqual(rev["rights_status"],"unverified")
-        self.assertNotIn("FICTIONAL_HEADER_ONLY",json.dumps(after))
+        self.assertNotIn(self.bytes.hex(),json.dumps(after))
         self.assertNotIn("storage_path",json.dumps(after))
         check=refs.verify_bytes(after,"ASSET_CHAR01",1,self.bytes)
         self.assertTrue(check["sha256_matches"])
         self.assertFalse(check["identity_matches_persona"])
         self.assertFalse(check["rights_verified"])
         self.assertFalse(check["bytes_persisted_by_module"])
+        self.assertTrue(check["pixels_decoded"])
+        self.assertEqual(check["dimensions_px"],[1,1])
 
     def test_reject_content_hash_mismatch(self):
         after=self.register()
@@ -84,13 +102,45 @@ class AssetReferenceManifestTests(unittest.TestCase):
             refs.verify_bytes(after,"ASSET_CHAR01",1,
                               self.bytes+b"changed")
 
+
+    def test_magic_header_only_must_be_rejected(self):
+        fake=b"\x89PNG\r\n\x1a\n"+b"NOT_A_DECODABLE_PNG"
+        with self.assertRaisesRegex(refs.AssetReferenceError,
+                                    "ASSET_IMAGE_DECODE_INVALID"):
+            self.register(raw=fake)
+
+    def test_truncated_valid_image_must_be_rejected(self):
+        with self.assertRaisesRegex(refs.AssetReferenceError,
+                                    "ASSET_IMAGE_DECODE_INVALID"):
+            self.register(raw=self.bytes[:-13])
+        self.assertEqual(self.manifest["cards"],{})
+
+    def test_oversize_pixel_dimensions_must_be_rejected(self):
+        fake=self.png(b"TOO_LARGE",width=9000,height=9000)
+        with self.assertRaisesRegex(refs.AssetReferenceError,
+                                    "ASSET_IMAGE_DIMENSIONS_EXCEEDED"):
+            self.register(raw=fake)
+
+    def test_missing_decoder_must_fail_closed(self):
+        with patch.dict(sys.modules,{"PIL":None,"PIL.Image":None}):
+            with self.assertRaisesRegex(refs.AssetReferenceError,
+                                        "ASSET_IMAGE_DECODER_UNAVAILABLE"):
+                self.register()
+
+    def test_unsafe_truncated_decoder_configuration_must_fail_closed(self):
+        from PIL import ImageFile
+        with patch.object(ImageFile,"LOAD_TRUNCATED_IMAGES",True):
+            with self.assertRaisesRegex(refs.AssetReferenceError,
+                                        "ASSET_IMAGE_DECODER_UNSAFE_CONFIGURATION"):
+                self.register()
+
     def test_shot_reference_explicit_binding_and_revision_history(self):
         original=self.register()
         bound=self.bind_both(original)
         r=refs.validate(self.base,self.digest,bound)
         self.assertEqual(r["missing_bindings_count"],4)
         self.assertTrue(r["per_entity_references_consistent"])
-        rev2=self.register(bound,raw=self.bytes+b"VERSION_TWO")
+        rev2=self.register(bound,raw=self.png(b"VERSION_TWO"))
         self.assertEqual(len(rev2["cards"]["ASSET_CHAR01"]["versions"]),2)
         self.assertEqual(rev2["cards"]["ASSET_CHAR01"]["versions"][1][
             "previous_revision_digest"],team.fingerprint(
@@ -167,7 +217,7 @@ class AssetReferenceManifestTests(unittest.TestCase):
         m=self.register()
         m=refs.register_image(self.base,self.digest,m,asset_id="ASSET_OTHER",
             entity_id="CHAR01",slot="identity_side",
-            image_bytes=b"\x89PNG\r\n\x1a\n"+b"FICTIONAL_OTHER_VIEW",media_type="image/png")
+            image_bytes=self.png(b"OTHER_VIEW"),media_type="image/png")
         m=refs.bind_shot(self.base,self.digest,m,shot_id="S01",
                          entity_id="CHAR01",asset_id="ASSET_CHAR01")
         m=refs.bind_shot(self.base,self.digest,m,shot_id="S02",
@@ -191,11 +241,11 @@ class AssetReferenceManifestTests(unittest.TestCase):
         m=refs.register_image(
             self.base,self.digest,m,asset_id="ASSET_SIDE",
             entity_id="CHAR01",slot="identity_side",
-            image_bytes=self.bytes+b"SECOND_VIEW",media_type="image/png")
+            image_bytes=self.png(b"SECOND_VIEW"),media_type="image/png")
         m=refs.register_image(
             self.base,self.digest,m,asset_id="ASSET_WARDROBE",
             entity_id="CHAR01",slot="wardrobe",
-            image_bytes=self.bytes+b"WARDROBE_BLUE",media_type="image/png")
+            image_bytes=self.png(b"WARDROBE_BLUE"),media_type="image/png")
         for sid in ("S01","S02"):
             for aid in ("ASSET_CHAR01","ASSET_SIDE","ASSET_WARDROBE"):
                 m=refs.bind_shot(self.base,self.digest,m,shot_id=sid,
@@ -239,7 +289,7 @@ class AssetReferenceManifestTests(unittest.TestCase):
         m=refs.register_image(
             self.base,self.digest,m,asset_id="ASSET_WARDROBE",
             entity_id="CHAR01",slot="wardrobe",
-            image_bytes=self.bytes+b"FIRST",media_type="image/png")
+            image_bytes=self.png(b"FIRST"),media_type="image/png")
         for sid in ("S01","S02"):
             m=refs.bind_shot(self.base,self.digest,m,shot_id=sid,
                              entity_id="CHAR01",asset_id="ASSET_CHAR01")
@@ -248,7 +298,7 @@ class AssetReferenceManifestTests(unittest.TestCase):
         m=refs.register_image(
             self.base,self.digest,m,asset_id="ASSET_WARDROBE",
             entity_id="CHAR01",slot="wardrobe",
-            image_bytes=self.bytes+b"CHANGED",media_type="image/png")
+            image_bytes=self.png(b"CHANGED"),media_type="image/png")
         with self.assertRaisesRegex(refs.AssetReferenceError,
                                     "STALE_OR_WRONG_ENTITY"):
             refs.validate(self.base,self.digest,m)

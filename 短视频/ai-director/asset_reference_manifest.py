@@ -3,7 +3,7 @@
 
 Asset-bytes NEVER enter this manifest, logs, prompts, GitHub or CI artifacts.
 Caller supplies bytes only transiently in a trusted private runtime. The code
-verifies their hash, not artistic quality, IP rights, identity, or consent.
+verifies format, pixels and hash, not artistic quality, IP rights, identity, or consent.
 Records are source-bound; immutable versions are linked with SHA-256 digests.
 No network, local file access, provider calls, automatic image synthesis.
 """
@@ -11,13 +11,17 @@ from __future__ import annotations
 
 from copy import deepcopy
 import hashlib
+import io
 import re
+import warnings
 
 import agent_team as team
 import film_continuity as film
 
 VERSION="private-visual-reference-manifest-v2"
 MAX_IMAGE_BYTES=12*1024*1024
+MAX_IMAGE_PIXELS=16*1024*1024
+MAX_IMAGE_DIMENSION=8192
 IMAGE_FORMATS=frozenset(("image/png","image/jpeg","image/webp"))
 SLOTS=frozenset(("identity_front","identity_side","wardrobe",
                  "prop_reference","location_reference"))
@@ -88,6 +92,52 @@ def _type_check(media_type,data):
         data[8:12]==b"WEBP")
     _require(ok,"ASSET_MEDIA_HEADER_MISMATCH")
 
+
+
+def _decoded_image_check(media_type, data):
+    """Fully decode single-frame pixels privately; never return bytes or EXIF.
+
+    This is integrity checking, NOT consent, rights or identity verification.
+    A missing/unsafe decoder fails closed before registration or verification.
+    """
+    _type_check(media_type, data)
+    try:
+        from PIL import Image, ImageFile
+    except (ImportError, AttributeError):
+        raise AssetReferenceError("ASSET_IMAGE_DECODER_UNAVAILABLE") from None
+    _require(not ImageFile.LOAD_TRUNCATED_IMAGES,
+             "ASSET_IMAGE_DECODER_UNSAFE_CONFIGURATION")
+    expected={"image/png":"PNG", "image/jpeg":"JPEG",
+              "image/webp":"WEBP"}[media_type]
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", Image.DecompressionBombWarning)
+            with Image.open(io.BytesIO(data),
+                            formats=("PNG", "JPEG", "WEBP")) as image:
+                _require(image.format==expected,
+                         "ASSET_IMAGE_FORMAT_MISMATCH")
+                width,height=image.size
+                _require(0<width<=MAX_IMAGE_DIMENSION and
+                         0<height<=MAX_IMAGE_DIMENSION and
+                         width*height<=MAX_IMAGE_PIXELS,
+                         "ASSET_IMAGE_DIMENSIONS_EXCEEDED")
+                _require(getattr(image,"n_frames",1)==1,
+                         "ASSET_IMAGE_ANIMATED_UNSUPPORTED")
+                image.verify()
+            # verify() is not proof the pixel stream can be decompressed.
+            with Image.open(io.BytesIO(data),
+                            formats=("PNG", "JPEG", "WEBP")) as image:
+                _require(image.format==expected and image.size==(width,height),
+                         "ASSET_IMAGE_FORMAT_MISMATCH")
+                _require(getattr(image,"n_frames",1)==1,
+                         "ASSET_IMAGE_ANIMATED_UNSUPPORTED")
+                image.load()
+    except AssetReferenceError:
+        raise
+    except Exception:
+        # Do not leak parser errors containing private metadata.
+        raise AssetReferenceError("ASSET_IMAGE_DECODE_INVALID") from None
+    return {"width_px":width,"height_px":height,"pixels_decoded":True,"frames":1}
 
 def _card_digest(value):
     return team.fingerprint(value)
@@ -246,7 +296,7 @@ def register_image(plan, source_digest, manifest, *, asset_id, entity_id,
              entity_id in entities and
              slot in KIND_SLOTS[entities[entity_id]],
              "ASSET_ENTITY_OR_SLOT_NOT_AUTHORIZED")
-    _type_check(media_type,image_bytes)
+    _decoded_image_check(media_type,image_bytes)
     out=deepcopy(manifest)
     cards=out["cards"]
     if asset_id not in cards:
@@ -315,8 +365,11 @@ def verify_bytes(manifest, asset_id, version, content_bytes):
     _require(len(content_bytes)==item["size_bytes"] and
              _sha(content_bytes)==item["sha256"],
              "ASSET_VERIFY_CONTENT_MISMATCH")
+    decoded=_decoded_image_check(item["media_type"],content_bytes)
     return {"asset_id":asset_id,"version":version,
             "sha256_matches":True,"media_header_matches":True,
+            "pixels_decoded":decoded["pixels_decoded"],
+            "dimensions_px":[decoded["width_px"],decoded["height_px"]],
             "identity_matches_persona":False,
             "rights_verified":False,"human_approved":False,
             "bytes_persisted_by_module":False,"provider_calls":0}

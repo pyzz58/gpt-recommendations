@@ -1,0 +1,4 @@
+# Strict PRIVATE reference image decode (never in prompts, artifacts or uploads).
+# https://github.com/python-pillow/Pillow  MIT-CMU.
+# Re-review security advisories before private deployment.
+Pillow==12.3.0

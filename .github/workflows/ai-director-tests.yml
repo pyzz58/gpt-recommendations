@@ -22,6 +22,7 @@ jobs:
         run: |
           python -m pip install "coverage==7.16.1"
           python -m pip install -r "短视频/ai-director/requirements-schema.txt"
+          python -m pip install -r "短视频/ai-director/requirements-media.txt"
       - name: Run AI Director unit tests with branch coverage
         working-directory: "短视频/ai-director"
         run: |
