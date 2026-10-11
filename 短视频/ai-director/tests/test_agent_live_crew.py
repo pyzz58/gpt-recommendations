@@ -74,6 +74,18 @@ class LockedCrewPilotTests(unittest.TestCase):
                         item["shootability"]["action_units"][0]["to_s"]=d
                 elif task=="camera_art":
                     item["camera"]["move_trigger_s"]=min(1,d/2)
+                    if shot["visual_type"]=="ai_video":
+                        item["camera"]["shot_size"]="close_up"
+                        item["camera"]["focal_length_mm"]=50
+                        item["camera"]["screen_axis"]=(
+                            "Camera stays on the actor's room side of the "
+                            "desk axis, looking toward the sealed letter")
+                        item["art"]["lighting_state"]="lit"
+                        item["art"]["practical_sources"]=[
+                            "One existing fictional interior table lamp"]
+                        item["art"]["lighting_change_reason"]=(
+                            "Key practical source remains unchanged; "
+                            "do not invent a different wall position")
                 elif task=="sound":
                     item["sound"]["effects"][0]["time_s"]=min(d/2,2)
                     item["speech"]["voiceover"]["cues"][0]["from_s"]=0
@@ -168,6 +180,50 @@ class LockedCrewPilotTests(unittest.TestCase):
             st,_=self._step(journal,st,"acting")
             st,_=self._step(journal,st,"camera_art")
             self.assertEqual(team.ready(st),["editing_animation"])
+
+    def test_camera_art_real_provider_role_contract_rejects_n_a_parameters(self):
+        with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+            state=self.state
+            for name in ("director_brief","script_edit","director_lock"):
+                state,_=self._step(journal,state,name)
+            bad=self._payload("camera_art",state)
+            sid=next(s["id"] for s in self.plan["shots"]
+                     if s["visual_type"]=="ai_video")
+            bad["shots"][sid]["camera"]["shot_size"]="postproduction"
+            client=pilot.StaticHTTPSFrame(self._frame(bad))
+            with self.assertRaisesRegex(
+                    pilot.PilotError,"SPECIALIST_RESPONSE_REJECTED_NO_RETRY"):
+                live.run_one_locked_role(
+                    self.snapshot,self.original,state,journal,
+                    permit=self._permit("camera_art"),client=client,
+                    task_id="camera_art")
+            self.assertEqual(client.calls,1)
+            self.assertEqual(journal.summary()["attempts"][-1]["status"],
+                             "response_rejected")
+            self.assertEqual(state["tasks"]["camera_art"]["status"],"pending")
+
+    def test_camera_art_role_prompt_has_typed_video_spec_schema(self):
+        state=self.state
+        for name in ("director_brief","script_edit","director_lock"):
+            payload=self._payload(name,state)
+            state=roles.submit_role_output(
+                self.plan,state,name,json.dumps(payload,ensure_ascii=False),
+                source_text=self.original)
+        prompt=roles.build_role_messages(
+            self.plan,state,"camera_art",
+            source_text=self.original,
+            editorial_handoff=self.snapshot["creative_handoff"])
+        schema=prompt["output_json_schema"]["properties"]["shots"][
+            "properties"]
+        sid=next(s["id"] for s in self.plan["shots"]
+                 if s["visual_type"]=="ai_video")
+        required=schema[sid]["properties"]["camera"]["required"]
+        self.assertIn("shot_size",required)
+        self.assertIn("focal_length_mm",required)
+        self.assertIn("screen_axis",required)
+        art=schema[sid]["properties"]["art"]
+        self.assertIn("practical_sources",art["required"])
+        self.assertIn("lighting_state",art["required"])
 
     def test_missing_permit_rejects_without_model_call(self):
         with pilot.PilotJournal(self.tmp.name,self.config) as journal:
