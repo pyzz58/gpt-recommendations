@@ -35,6 +35,10 @@
 7. LICENSE_EVIDENCE_MISSING_MUSIC_LICENSE_CHECK：音乐真正选定之后再登记授权来源、证明与状态；计划不等于授权。
 8. LICENSE_EVIDENCE_MISSING_ASSET_LICENSE_CHECK：同样为每一件实际素材保留授权证据；不能把未核验字段改成已核验。
 
+## 第五阶段：生成前门禁（2026-10-11）
+
+继续借鉴 CineCrew 的“生产之前统一检查资产、镜头、约束”理念。由于目前**没有真实视频模型执行器**，引入完整多代理视频流水线或付费 SDK 反而增加依赖与费用风险；新增纯 Python `production_gate.py` 最小只读门禁，接入 `director_v2.py` 的编译工作包并配套无付费回归。它只汇报“规划/参考媒体缺什么”，不能通过修改 JSON 来授权真钱的 API 调用，也不会接触用户 Mac。
+
 ## 第四阶段：参考资产库复用决定（2026-10-11）
 
 对照 [CineCrew](https://github.com/Ironieser/CineCrew) FilmDSL 的 assets/stable ID 设计，以及 [AI Cinematic Pipeline](https://github.com/billpar/ai-cinematic-pipeline) 的人物多角度参考图、场景与道具表；设计通用、无依赖的资产登记和校验层。借鉴 [python-jsonschema/jsonschema](https://github.com/python-jsonschema/jsonschema) 的 Draft 2020-12 规范，将可移植结构声明放进 `schemas/reference_assets.schema.json`。
