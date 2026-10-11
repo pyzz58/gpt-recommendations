@@ -233,6 +233,37 @@ class LockedCrewPilotTests(unittest.TestCase):
             self.assertEqual(journal.summary()["attempts"][-1]["status"],
                              "response_rejected")
 
+    def test_scoped_camera_revision_cannot_move_room_geometry(self):
+        with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+            state=self.state
+            for name in ("director_brief","script_edit","director_lock",
+                         "camera_art"):
+                state,_=self._step(journal,state,name)
+            vids=[s["id"] for s in self.plan["shots"]
+                  if s["visual_type"]=="ai_video"]
+            self.assertGreaterEqual(len(vids),2)
+            revised=team.request_revision(
+                state,"camera_art",[vids[1]],
+                "Manually requested revision must preserve physical room",
+                source_task="director_final")
+            self.assertIn("camera_art",team.ready(revised))
+            bad=self._payload("camera_art",revised)
+            bad["shots"]={vids[1]:bad["shots"][vids[1]]}
+            bad["shots"][vids[1]]["art"]["scene_geometry"][
+                "anchor_positions"]["door"]="Now located on north wall"
+            fake=pilot.StaticHTTPSFrame(self._frame(bad))
+            with self.assertRaisesRegex(
+                    pilot.PilotError,"SPECIALIST_RESPONSE_REJECTED_NO_RETRY"):
+                live.run_one_locked_role(
+                    self.snapshot,self.original,revised,journal,
+                    permit=self._permit("camera_art",revision=2),
+                    client=fake,task_id="camera_art")
+            self.assertEqual(fake.calls,1)
+            self.assertEqual(journal.summary()["attempts"][-1]["status"],
+                             "response_rejected")
+            self.assertEqual(revised["tasks"]["camera_art"]["status"],
+                             "needs_revision")
+
     def test_nonvideo_blackout_needs_explanation_for_next_video_light(self):
         state=self.state
         for name in ("director_brief","script_edit","director_lock"):
