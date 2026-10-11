@@ -10,6 +10,10 @@
 - 不可以：提示用户执行 `git pull`、`pip install`、`brew`、`npm`、`git clone`、下载 ZIP/权重，或者让本地 Codex 执行修稿。禁止自动开机启动、守护进程、登录项、系统级配置、全局环境或其他本机安装操作。
 - 不能调用付费 DeepSeek/视频服务、不能提高或复用历史测试费用授权、不能触发可能付费的 CI 作业、不能发布或上传私人作品及密钥。
 
+## 逐镜审稿与不可混用版本阶段（2026-10-11）
+
+GitHub 新增 `editorial_review_lock.py` / 合成测试 / [EDITORIAL_REVIEW_AND_LOCK.md](EDITORIAL_REVIEW_AND_LOCK.md)，审核候选分镜逐项批准或退回请求、未核验事实、遗漏与原文改写风险。检查源文本 SHA256、候选 plan SHA256、每镜摘要、决策摘要和新团队版本绑定。离线 `planning_locked_identity_unverified` 只证明同一份 JSON 快照被核查一致，**不代表真实用户已做出授权或者已经签名**。没有私人原文提交、在线 LLM、Mac 同步或付费视频生成。
+
 ## 剧本编辑专业创意方案阶段（2026-10-11）
 
 新增 `editorial_storyboard.py`、`tests/test_editorial_storyboard.py`、[EDITORIAL_CREATIVE_BRIDGE.md](EDITORIAL_CREATIVE_BRIDGE.md)。重用原导演/剧本编辑岗位，离线验证创意视觉分镜增强 Schema、逐镜可观察动作、原稿引用与新增数字强约束、旧原文与团队状态不可静默更改、新候选 hash/重建 pending 团队。测试只用合成信封故事和模拟回复，真人《上学以后的孩子》全文不在公仓，也没有发送付费模型 API 或视频生成请求。真实 AI 内容质量、导演人审和实际制作仍未验收。
