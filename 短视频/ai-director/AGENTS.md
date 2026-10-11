@@ -18,6 +18,13 @@
 - 老剧本缺完整专业交付允许明确标记为 `draft_needs_review` 的审阅草稿；`strict=True` 只能在文字制作蓝图、岗位证据及交接质量均满足门禁时返回供真人审片状态，绝不冒充已生成视频。
 - 当前 GitHub-only，不触碰 Mac 和私人 jobs，无收费调用。测试代码不等于已运行通过；任何远端 CI 结果须以实际检查状态为准。
 
+## DeepSeek 协议与可恢复费用预留（2026-10-11；仍禁止真实调用）
+
+- 参阅 [PROVIDER_PROTOCOL_AND_DURABLE_BUDGET.md](PROVIDER_PROTOCOL_AND_DURABLE_BUDGET.md)，新增 `agent_provider_wire.py` 与 `agent_durable_preflight.py`。针对官方 `deepseek-flash` 的 Chat Completions 请求格式及 usage 缓存命中/未命中拆分、输出用量与响应内容编写**纯离线**协议校验；**没有发送 HTTP 的实现、没有读取密钥、没有任何收费调用**。
+- `PrivateReservationJournal` 使用文件锁+fsync+原子替换实现离线 write-ahead 模拟预留；中断后的 pending / timeout / transport unknown、返回用量超过预留金额均阻断自动重试/继续。它**不是在线真实费用的绝对保障**，且没有实现与供应商发票对账。
+- 唯一可执行的是精确 `OfflineResponseFrames` 的**合成 DeepSeek JSON**；禁止把本地测试、文档中 JSON 开关或“开始开发”理解成用户授权实际私人文案传输/调用 DeepSeek/部署 Mac。
+- CI 只允许使用合成案例及临时目录；绝不可把生产日志、真人 `jobs/` 或 API Key 放入公开 GitHub / Actions 日志。
+
 ## 模型路由与 Token 预算预检（2026-10-11；仅模拟）
 
 - 阅读 [MODEL_GATEWAY_AND_BUDGET.md](MODEL_GATEWAY_AND_BUDGET.md)、`agent_model_gateway.py` 和 `tests/test_agent_model_gateway.py`。针对现有 10 个岗位声明不同 provider/model、输入输出 Token 上限、CNY 单价、总模拟预算和总尝试次数；不会执行 HTTP/SDK/真实模型调用。
