@@ -219,35 +219,27 @@ LIGHTING_STATES = frozenset({
 
 
 def camera_requirements_for_role(base, payload):
-    """Fail before accepting an AI-video camera role with placeholder specs.
+    """Validate physical axis, matching geometry and explicit light states.
 
-    Values are proposed production designs, not verified camera hardware,
-    floorplans or physical lighting assets. No AI provider calls take place.
+    Enforces structure for source-locked crews, not realism of actual sets.
+    Each scene's static anchors must be consistent across all video shots.
+    Light-state handoffs cover *all* visual types, including black graphics.
     """
     _require(isinstance(base, dict) and isinstance(base.get("shots"), list)
              and isinstance(payload, dict) and
              isinstance(payload.get("shots"), dict),
              "HANDOFF_CAMERA_DELIVERY_INVALID")
     previous_lighting_state = None
+    geometry_by_scene = {}
     for base_shot in base["shots"]:
         sid = base_shot["id"]
         authored = payload["shots"].get(sid)
         if authored is None:
-            continue  # scoped revisions are covered by team role contract
-        if base_shot.get("visual_type") != "ai_video":
-            continue
+            continue  # scoped revision; team contract enforces coverage
         _require(isinstance(authored.get("camera"), dict) and
                  isinstance(authored.get("art"), dict),
                  "HANDOFF_CAMERA_ART_SECTIONS_REQUIRED")
         camera, art = authored["camera"], authored["art"]
-        _require(camera.get("shot_size") in VIDEO_SHOT_SIZES,
-                 "HANDOFF_CAMERA_REAL_SHOT_SIZE_REQUIRED")
-        mm = camera.get("focal_length_mm")
-        _require(type(mm) in (int, float) and 14 <= mm <= 135,
-                 "HANDOFF_CAMERA_FOCAL_LENGTH_REQUIRED")
-        _require(not _empty(camera.get("screen_axis")) and
-                 len(camera["screen_axis"].strip()) >= 6,
-                 "HANDOFF_CAMERA_PHYSICAL_AXIS_REQUIRED")
         _require(art.get("lighting_state") in LIGHTING_STATES,
                  "HANDOFF_LIGHTING_STATE_REQUIRED")
         practical = art.get("practical_sources")
@@ -257,9 +249,6 @@ def camera_requirements_for_role(base, payload):
         cause = art.get("lighting_change_reason")
         _require(not _empty(cause) and len(cause.strip()) >= 6,
                  "HANDOFF_LIGHT_CHANGE_CAUSE_REQUIRED")
-        # An AI-video shot transitioning to a new state must not call it
-        # unchanged or omit the physical reason. State is not inferred from
-        # freeform Chinese prose, to avoid pretending semantic certainty.
         if previous_lighting_state is not None and (
                 previous_lighting_state != art["lighting_state"]):
             _require(cause.strip().lower() not in (
@@ -267,9 +256,35 @@ def camera_requirements_for_role(base, payload):
                 "无变化", "没有变化"),
                 "HANDOFF_LIGHT_TRANSITION_DENIED_AS_UNCHANGED")
         previous_lighting_state = art["lighting_state"]
+        if base_shot.get("visual_type") != "ai_video":
+            continue
+        _require(camera.get("shot_size") in VIDEO_SHOT_SIZES,
+                 "HANDOFF_CAMERA_REAL_SHOT_SIZE_REQUIRED")
+        mm = camera.get("focal_length_mm")
+        _require(type(mm) in (int, float) and 14 <= mm <= 135,
+                 "HANDOFF_CAMERA_FOCAL_LENGTH_REQUIRED")
+        _require(not _empty(camera.get("screen_axis")) and
+                 len(camera["screen_axis"].strip()) >= 6,
+                 "HANDOFF_CAMERA_PHYSICAL_AXIS_REQUIRED")
+        geom = art.get("scene_geometry")
+        _require(isinstance(geom, dict) and
+                 set(geom) == {"anchor_positions", "key_light_position",
+                              "camera_axis"} and
+                 isinstance(geom["anchor_positions"], dict) and
+                 len(geom["anchor_positions"]) >= 2 and
+                 all(not _empty(v) for v in geom["anchor_positions"].values()) and
+                 not _empty(geom["key_light_position"]) and
+                 not _empty(geom["camera_axis"]),
+                 "HANDOFF_ROOM_GEOMETRY_MAP_REQUIRED")
+        location = base_shot.get("scene_id")
+        if location in geometry_by_scene:
+            _require(geometry_by_scene[location] == geom,
+                     "HANDOFF_ROOM_GEOMETRY_DRIFT_WITHIN_SCENE")
+        else:
+            geometry_by_scene[location] = deepcopy(geom)
     return {"kind": "typed_camera_preflight_v1",
             "status": "candidate_camera_fields_structurally_present",
+            "scene_geometry_consistent_by_declared_scene": True,
             "source_assets_verified": False,
             "lighting_continuity_physically_verified": False,
-            "human_approved": False,
-            "video_generated": False}
+            "human_approved": False, "video_generated": False}
