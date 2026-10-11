@@ -16,6 +16,7 @@ import json
 
 import agent_team as team
 import creative_production_handoff as handoff
+import asset_reference_manifest as assetrefs
 import director
 
 VERSION = "editorial-review-lock-v1"
@@ -336,8 +337,24 @@ def stage_locked_team(snapshot, episode_source):
             team.fingerprint(snapshot.get("production_preflight")) or
             snapshot.get("production_preflight") != expected):
         raise EditorialReviewError("REVIEW_LOCK_PREFLIGHT_TAMPERED")
+    reference_digest = None
+    if ("asset_reference_manifest" in snapshot or
+            "asset_reference_manifest_digest" in snapshot):
+        try:
+            manifest = snapshot["asset_reference_manifest"]
+            if (snapshot["asset_reference_manifest_digest"] !=
+                    team.fingerprint(manifest)):
+                raise ValueError("manifest digest changed")
+            assetrefs.validate(plan, snapshot["source_digest"], manifest)
+            reference_digest = snapshot["asset_reference_manifest_digest"]
+        except (assetrefs.AssetReferenceError, KeyError, ValueError, TypeError):
+            raise EditorialReviewError(
+                "REVIEW_LOCK_ASSET_MANIFEST_INVALID") from None
     state = team.start(deepcopy(plan), source_text=episode_source)
+    state["asset_reference_manifest_digest"] = reference_digest
     return {
+        "asset_reference_manifest_digest": reference_digest,
+        "reference_media_identity_verified": False,
         "kind": "locked_team_planning_intake", "version": VERSION,
         "status": "offline_planning_only_not_authorized_to_dispatch",
         "team": state, "plan_digest": state["base_digest"],
@@ -348,6 +365,27 @@ def stage_locked_team(snapshot, episode_source):
         "author_identity_verified": False,
         "paid_api_authorized": False, "media_generated": False,
     }
+
+
+def attach_reference_manifest(snapshot, episode_source, manifest):
+    """Create a NEW private planning snapshot with source-bound references.
+
+    Must run BEFORE any paid/specialist role starts; the team state gets the
+    exact manifest digest, so changing wardrobe/reference later requires new
+    role planning and permits. Never return a claim of author approval.
+    """
+    stage_locked_team(snapshot, episode_source)
+    try:
+        audit=assetrefs.validate(
+            snapshot["plan"], snapshot["source_digest"], manifest)
+    except (assetrefs.AssetReferenceError, ValueError, TypeError):
+        raise EditorialReviewError("REVIEW_ASSET_MANIFEST_REJECTED") from None
+    out=deepcopy(snapshot)
+    out["asset_reference_manifest"]=deepcopy(manifest)
+    out["asset_reference_manifest_digest"]=audit["manifest_digest"]
+    # Existing values in an older snapshot are overwritten only if the caller
+    # reconstructs a new locked version, never mutates the previous dict.
+    return out
 
 
 def render_private_review_html(sheet):
