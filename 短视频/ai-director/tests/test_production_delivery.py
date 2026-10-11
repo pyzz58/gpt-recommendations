@@ -112,7 +112,7 @@ class ProductionDeliveryTests(unittest.TestCase):
         self.assertIn("seedance 视频生成候选提示词", md)
         self.assertIn("全片剪辑时间线", md)
         self.assertIn("事实标记", md)
-        self.assertIn("实际", md) if False else self.assertIn("不是已生成的视频", md)
+        self.assertIn("不是已生成的视频", md)
         self.assertIn("模型调用：0", md)
 
     def test_unverified_medical_claims_remain_clearly_unverified(self):
