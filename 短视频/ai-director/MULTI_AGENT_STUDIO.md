@@ -1,6 +1,12 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 多岗位执行器（模拟流程已接入）
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 专业岗位可执行创作合同（新增）
+
+[PROFESSIONAL_AGENT_CONTRACTS.md](PROFESSIONAL_AGENT_CONTRACTS.md) / `agent_role_contracts.py` 已为总导演开题、剧本编辑、锁定导演圣经、动作表演、摄影美术、声音、剪辑动画、AI 技术导演、QA 与总导演终审这十阶段建立**不同的专业创作提示词**、动态岗位 JSON Schema 与严格验收函数。复用原有 `SPECS`、依赖快照、字段所有权和 source_digest；**只处理内存对象，不提供任何网络/模型/付费调用接口**。
+
+核心门禁：剧本改写提案必须标待批准；动作 beats 覆盖真实秒数；旁白逐字保持原稿；剪辑 beat_link 指向真实已交付的动作首末节拍；生产路线、字幕/配音 cue、可执行后期步骤各有结构规则。任何模型自然语言写得多漂亮，也不能越过源稿或数据合同。严格 JSON 通过只能说明可交给原有部门协作和人工创作复核，**不证明艺术品质或成片效果**。
+
+## 多岗位执行器（模拟流程已接入）
 
 [AGENT_EXECUTION_LAYER.md](AGENT_EXECUTION_LAYER.md) / `agent_executor.py` 实现了正式 DAG 的**离线逐岗位提交执行循环**：从 `director_brief` 到 QA 再到导演终审，按同一份上游工作包执行既有权限校验和失效重做；需要预写好的 `FixtureOnlyAdapter` 岗位结果，缺少结果就停止。默认在 `director_final` 前暂停。此层既不是收费模型传输，也不会自己创作剧情、摄影、动作或剪辑；没有真正启动八个 LLM。
 
