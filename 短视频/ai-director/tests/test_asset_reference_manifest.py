@@ -20,6 +20,9 @@ import editorial_review_lock as review
 import agent_live_crew as crew
 import agent_role_contracts as roles
 import test_editorial_review_lock as editorial_fixture
+import test_agent_live_crew as crew_fixture
+import agent_live_pilot as pilot
+import production_delivery as delivery
 
 
 class AssetReferenceManifestTests(unittest.TestCase):
@@ -214,6 +217,66 @@ class AssetReferenceManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(review.EditorialReviewError,
                                     "ASSET_MANIFEST_INVALID"):
             review.stage_locked_team(wrong,f.source)
+
+    def test_full_synthetic_ten_role_delivery_only_exports_reference_metadata(self):
+        f=crew_fixture.LockedCrewPilotTests(
+            "test_full_chain_exports_real_video_model_work_orders_not_only_team_flags")
+        f.setUp()
+        self.addCleanup(f.doCleanups)
+        original_snapshot=deepcopy(f.snapshot)
+        manifest=refs.create_empty(f.plan,f.state["source_digest"])
+        # Bind a fictional location image to each shot with LOC01, if present.
+        scene_id=f.plan["shots"][0].get("scene_id")
+        if scene_id is not None:
+            manifest=refs.register_image(
+                f.plan,f.state["source_digest"],manifest,
+                asset_id="ASSET_ROOM01",entity_id=scene_id,
+                slot="location_reference",image_bytes=self.bytes,
+                media_type="image/png")
+            for sh in f.plan["shots"]:
+                if sh.get("scene_id")==scene_id:
+                    manifest=refs.bind_shot(
+                        f.plan,f.state["source_digest"],manifest,
+                        shot_id=sh["id"],entity_id=scene_id,
+                        asset_id="ASSET_ROOM01")
+        f.snapshot=review.attach_reference_manifest(
+            original_snapshot,f.original,manifest)
+        f.state=review.stage_locked_team(f.snapshot,f.original)["team"]
+        self.assertIsNotNone(f.state["asset_reference_manifest_digest"])
+        with pilot.PilotJournal(f.tmp.name,f.config) as journal:
+            state=f.state
+            for task in team.SPECS:
+                state,_=f._step(journal,state,task)
+        report=delivery.build_locked_crew_delivery(f.snapshot,f.original,state)
+        self.assertIn("reference_manifest_review",report)
+        self.assertEqual(report["reference_manifest_review"]["manifest_digest"],
+                         team.fingerprint(manifest))
+        self.assertFalse(report["reference_manifest_review"]["visual_identity_verified"])
+        self.assertFalse(report["reference_manifest_review"]["rights_verified"])
+        self.assertFalse(report["ready_to_call_video_model"])
+        for work in report["shots"]:
+            self.assertIn("versioned_reference_bindings",work)
+        rendered=delivery.render_operator_markdown(report)
+        self.assertIn("版本锁定的参考资产",rendered)
+        self.assertNotIn("FICTIONAL_HEADER_ONLY",rendered)
+        self.assertNotIn("human_approved=true",rendered)
+
+    def test_final_delivery_cannot_use_state_from_other_asset_snapshot(self):
+        f=crew_fixture.LockedCrewPilotTests(
+            "test_full_chain_exports_real_video_model_work_orders_not_only_team_flags")
+        f.setUp()
+        self.addCleanup(f.doCleanups)
+        empty=refs.create_empty(f.plan,f.state["source_digest"])
+        new_snapshot=review.attach_reference_manifest(
+            f.snapshot,f.original,empty)
+        with pilot.PilotJournal(f.tmp.name,f.config) as journal:
+            state=f.state
+            for task in team.SPECS:
+                state,_=f._step(journal,state,task)
+        with self.assertRaisesRegex(delivery.ProductionDeliveryError,
+                                    "REFERENCE_MANIFEST_CHANGED"):
+            delivery.build_locked_crew_delivery(
+                new_snapshot,f.original,state)
 
     def test_version_digest_tamper_rejected(self):
         f=editorial_fixture.EditorialReviewLockTests(
