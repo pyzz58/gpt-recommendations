@@ -29,9 +29,9 @@
       "domain": "private_result_durability",
       "status": "open_confirmed",
       "evidence_type": "confirmed_code",
-      "description": "真实模型返回的完整私有 team 结果缺少与费用账本一致的持久化事务和崩溃恢复",
+      "description": "付费结果有了私有源/角色/请求摘要绑定的 fsync 检查点、手工无网络恢复及离线崩溃测试；但尚无长期私人执行环境/备份与真人身份或供应商账单核验，GitHub 临时 runner 不算持久化，因此 P0 未关闭",
       "source": "agent_live_crew.run_one_locked_role, agent_live_pilot.run_one_creative_task",
-      "test_evidence": "tests/test_agent_live_pilot.py::test_durable_reservation_is_fsynced_before_fake_send",
+      "test_evidence": "tests/test_private_result_checkpoint.py::test_crash_after_result_fsync_before_ledger_commit_manual_recovery;tests/test_private_result_checkpoint.py::test_response_received_but_checkpoint_disk_failure_never_resends",
       "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/1",
       "fix_commit": ""
     },
@@ -214,6 +214,18 @@
       "test_evidence": "",
       "issue_url": "",
       "fix_commit": ""
+    },
+    {
+      "id": "AUD-018",
+      "priority": "P0",
+      "domain": "private_checkpoint_protocol",
+      "status": "fixed_regression_verified",
+      "evidence_type": "confirmed_code",
+      "description": "已完成并在合成故障注入证明的私有保存协议：真实付费 API 必须先有私有 Vault、保存完整已验证 team 后才记账 accepted，崩溃可从有效 checkpoint 人工无网络恢复；非私人运行环境部署证明",
+      "source": "private_result_checkpoint.py;agent_live_pilot.py;agent_live_crew.py;one_time_deepseek_cloud_trial.py",
+      "test_evidence": "tests/test_private_result_checkpoint.py::test_validated_full_private_results_survive_restart_both_roles;tests/test_private_result_checkpoint.py::test_crash_after_result_fsync_before_ledger_commit_manual_recovery;tests/test_private_result_checkpoint.py::test_locked_professional_two_role_chain_survives_restart",
+      "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/1",
+      "fix_commit": "1c897008686f5b2aca8bacf865d10dce694ce372"
     }
   ]
 }
