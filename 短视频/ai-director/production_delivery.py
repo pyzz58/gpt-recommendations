@@ -24,6 +24,7 @@ import director_v2
 import director_workbook
 import editorial_review_lock as locks
 import creative_production_handoff as first_vision
+import film_continuity as film_tracks
 
 SCHEMA = "operator-video-production-bundle-v1"
 TARGETS = ("wan", "seedance")
@@ -214,6 +215,15 @@ def build_locked_crew_delivery(snapshot, episode_source, final_team_state):
         # Older reviewed shot revisions cannot bypass source-locked QA.
         first_vision.camera_requirements_for_role(
             base, final_team_state["tasks"]["camera_art"]["deliverable"])
+        full_acting = final_team_state["tasks"]["acting"]["deliverable"]["shots"]
+        continuity_evidence = film_tracks.inspect_tracks(
+            base, {sid: {
+                "scene_id": row["continuity"]["scene_id"],
+                "entity_tracks": row["continuity"]["entity_tracks"]}
+                for sid, row in full_acting.items()},
+            source_digest=final_team_state["source_digest"])
+        _require(continuity_evidence["status"] != "blocked",
+                 "DELIVERY_UNRESOLVED_CROSS_SHOT_CONTINUITY")
         book = team.compile_team_workbook(base, final_team_state, strict=False)
         direction = team.assemble_direction(base, final_team_state)
     except (KeyError, TypeError, ValueError) as err:
@@ -237,6 +247,9 @@ def build_locked_crew_delivery(snapshot, episode_source, final_team_state):
                 "visual_intention", "camera_intention", "light_intention",
                 "transition_intention", "reason", "observable_action")}
         job["first_vision_is_unapproved_planning_proposal"] = True
+    bundle["film_continuity_evidence"] = continuity_evidence
+    bundle["film_continuity_media_identity_verified"] = False
+    bundle["film_continuity_requires_human_visual_review"] = True
     bundle["creative_intent_provenance"] = {
         "first_director_editor_intent_digest": snapshot["creative_handoff_digest"],
         "original_plan_digest": snapshot["plan_digest"],
