@@ -77,5 +77,19 @@ class GateTests(unittest.TestCase):
         p=sample();p['reference_asset_preflight']['status']='not_assessed'
         self.assertIn('REFERENCES_NOT_VERIFIED',[f['code'] for f in gate.evaluate(p)['findings']])
 
+
+    def test_public_example_compiler_attaches_blocked_generation_gate(self):
+        import director_v2 as director
+        base=director.read_json(ROOT/"examples/quit-smoking/plan.json")
+        direction=director.read_json(ROOT/"examples/quit-smoking/direction_v02.json")
+        compiled=director.compile_package(base,direction)
+        self.assertIn("generation_gate",compiled)
+        gate_report=compiled["generation_gate"]
+        self.assertGreater(gate_report["blocker_count"],0)
+        self.assertFalse(gate_report["execution_authorized"])
+        self.assertFalse(gate_report["paid_api_enabled"])
+        self.assertFalse(gate_report["publishing_authorized"])
+        self.assertEqual(gate_report["shot_count"],len(base["shots"]))
+
 if __name__=='__main__':
     unittest.main()
