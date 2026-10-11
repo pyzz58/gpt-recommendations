@@ -1,6 +1,12 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 产品定位
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 多岗位执行器（模拟流程已接入）
+
+[AGENT_EXECUTION_LAYER.md](AGENT_EXECUTION_LAYER.md) / `agent_executor.py` 实现了正式 DAG 的**离线逐岗位提交执行循环**：从 `director_brief` 到 QA 再到导演终审，按同一份上游工作包执行既有权限校验和失效重做；需要预写好的 `FixtureOnlyAdapter` 岗位结果，缺少结果就停止。默认在 `director_final` 前暂停。此层既不是收费模型传输，也不会自己创作剧情、摄影、动作或剪辑；没有真正启动八个 LLM。
+
+经过 GitHub Actions 检查的版本 `79d9c3d7` 已通过 **278 项离线 Python 测试**（含 14 项新增执行器集成测试）：[执行记录](https://github.com/pyzz58/gpt-recommendations/actions/runs/38106703964)。后续提交需要再次核对对应的实际 CI 状态。
+
+## 产品定位
 
 **用户只输入文案。系统内部组织总导演、剧本编辑、演员动作、摄影美术、声音、剪辑动画、AI 技术导演，以及独立连续性与质量审查，产出一份结构统一的完整短视频导演交付书。**
 
