@@ -6,6 +6,18 @@
 
 本项目**不是**让八个 AI 随意聊天，也不是制作模型本身。总导演根据同一份权威源稿及导演圣经分配专业任务；专业部门负责各自交付；QA 只评审、不改稿；总导演合并意见决定是否返工；最终成果仍然是 `director_workbook.py`，不是八份互相矛盾的报告。
 
+## 2026-10-11 GitHub 离线回归验收（已实际执行）
+
+**已核对运行日志：** 代码修复版提交 `3ecfe01d4e82a89c551748c1301c0cfdff426247` 在 GitHub Actions [第 38106308398 次运行](https://github.com/pyzz58/gpt-recommendations/actions/runs/38106308398) 中执行 `python -m unittest discover -s tests -v`，结果 **264 项通过、0 项失败、0 项错误**；原有 `local_director doctor`、戒烟样例与三集长文案的验证、编译和预览步骤均在相同 workflow 里成功执行。运行环境是 GitHub 托管 Ubuntu + Python 3.11.17；**并非用户 Mac 测试，也不是收费模型、真人审片或 MP4 生成验收**。
+
+**兼容性修复：** 原 `actions/checkout@v4` / `actions/setup-python@v5` 因 Node.js 20 停用受到弃用警告；更新为已核对上游 README 的 `@v6`，并将多 Agent 核心模块纳入 `py_compile`。改动后 [第 38106229864 次运行](https://github.com/pyzz58/gpt-recommendations/actions/runs/38106229864) 通过 260 项测试，日志不再含 Node 20 警告；最终上述 264 项运行也无此警告。
+
+**规则误报修复：** 使用权威基础分镜信息判断 `shootability=None` 是否合理——纯二维图表、无真人动作的镜头不再被误标为待拍；最后一镜本身不需要指向不存在的下一镜 `narrative_bridge`，但非末镜仍需交接。新增四项合成回归证明相关边界；严格交付仍要求来源指纹、既有蓝图门禁、质量证据等检查通过。
+
+**历史失败透明记录：** 初次新增四项测试时，提交 `04257f2` 的测试文件因两处 JSON 样式嵌套字典缺少闭合花括号导致一次 CI 失败（[运行 38106280432](https://github.com/pyzz58/gpt-recommendations/actions/runs/38106280432)）；在 `3ecfe01` 修复后成功。该失败是测试代码语法错误，不涉及用户数据与收费调用。
+
+目前结果：**离线源码回归通过**；真实多模型协作/成本核算、影视美学质量、视频生成、Mac 性能和实际发布依然**未验证**。
+
 ## 创作交付自动检查（新增）
 
 `agent_creative_review.py` 提供 `review_deliverable` / `review_team` / `review_packet`，对专业交付的具体创作证据作保守检查：镜头缺漏、空泛内容、表演动作可观察性、声音职责、剪辑叙事桥和制作路线。`agent_team.compile_team_workbook()` 现在额外输出 `creative_quality_review`，但**不绕过原有结构审核**，且不自动批准。现阶段为**提示与人工复核**，不是严格创作质量评分；过去的草稿仍可存在并被标记。对应合成单元测试 `tests/test_agent_creative_review.py` 已提交，最新 GitHub CI/整仓测试尚未核实，不能宣称全部通过。
