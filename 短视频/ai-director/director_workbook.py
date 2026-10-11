@@ -199,9 +199,12 @@ def render_markdown(book):
             ("continuity", "连续性"), ("production", "AI 制作提示词与后期工单")
         ]:
             value = shot[key]
-            lines += ["", "### " + title,
-                      "尚未设计，需要导演补充" if value is None else
-                      json.dumps(value, ensure_ascii=False, indent=2)]
+            if value is None:
+                lines += ["", "### " + title, "尚未设计，需要导演补充"]
+            else:
+                fence = chr(96) * 3
+                lines += ["", "### " + title, fence + "json",
+                          json.dumps(value, ensure_ascii=False, indent=2), fence]
         lines.append("")
     if book["director_review"]["findings"]:
         lines += ["## 待完善问题"]
