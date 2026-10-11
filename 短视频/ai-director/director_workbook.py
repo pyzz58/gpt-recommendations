@@ -173,6 +173,7 @@ def compile_workbook(base, directions):
     # voiceover, keyed animation or explicit cross-shot audio decisions.
     # Keep "concept complete" separate from "editor handoff ready".
     unfinished_codes = {"VOICEOVER_CUE_PENDING",
+                        "SUBTITLE_CUE_PENDING",
                         "ANIMATION_KEYFRAMES_NEED_TIMECODES",
                         "AUDIO_BRIDGE_DECISION_PENDING",
                         "MOTION_GRAPHIC_DESIGN_REVIEW"}
