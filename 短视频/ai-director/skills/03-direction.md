@@ -19,6 +19,14 @@
 - 单个AI生成镜头重心不超过一项主要动作链和一项主要运镜；模型不支持的复杂要求要拆分镜头。
 - 不凭空添加额外剧情；所有镜头服务于文本核心信息，保持观众能看懂。
 
+## 本轮精化：逐句配音、逐段字幕与真实声音转场
+
+- 不能把“旁白从头读到尾”当作精确时间码：`speech.voiceover.cues` 按每句/呼吸点填写 `from_s/to_s/text`，组合后的原文字句不得发生增删；注意配音速度按实际 cue 时长计算。
+- `speech.subtitle_cues` 与旁白 cue **分别设计**。字幕在视觉安全区内按阅读节奏出入，`text` 应分段连接复原基础 `subtitles.text`，不能随意替换文字；没有字幕也应明确 `[]`。
+- 每镜必须明确 `editing.audio_bridge`：不用跨镜声写 `{type:none,duration_s:0,track:none,reason:具体理由}`；用声音先进入下一镜则选 `j_cut`，让上一镜声音延续则选 `l_cut`，并写明衔接秒数、具体声音轨和叙事动机。不是所有转场都必须用 J/L-cut。
+- 动画出现时不能只有“变暗”“缓慢移动”的文字描述：至少要明确图层、动作、`from_s/to_s` 与视觉结果；但不能为追求技术字段机械添加没必要的特效。
+- `director_workbook.py` 将 `creative_design_complete` 与 `editor_handoff_ready` **分开评价**：前者只证明创意栏目不缺，后者还须具备精确的声音、字幕、动画和剪辑交接信息；二者都不是人工批准或影片已生成。详见 [EDITOR_TIMELINE.md](../EDITOR_TIMELINE.md)。
+
 ## 可交接的时间线工作单
 
 参阅 [EDITOR_TIMELINE.md](../EDITOR_TIMELINE.md)。将具体导演构思落到**逐镜头的绝对时间与声画轨道**：
