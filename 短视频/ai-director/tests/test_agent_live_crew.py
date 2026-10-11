@@ -311,6 +311,22 @@ class LockedCrewPilotTests(unittest.TestCase):
         self.assertIn("practical_sources",art["required"])
         self.assertIn("lighting_state",art["required"])
 
+    def test_source_locked_schema_preflight_failed_before_reservation(self):
+        from unittest.mock import patch
+        with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+            frame=pilot.StaticHTTPSFrame(self._frame(
+                self._payload("director_brief",self.state)))
+            with patch("agent_live_crew.schema_guard.preflight_schema",
+                       side_effect=ValueError("BROKEN_SYNTHETIC_SCHEMA")):
+                with self.assertRaisesRegex(
+                        pilot.PilotError,"PILOT_ROLE_PROMPT_INVALID"):
+                    live.run_one_locked_role(
+                        self.snapshot,self.original,self.state,journal,
+                        permit=self._permit("director_brief"),
+                        client=frame,task_id="director_brief")
+            self.assertEqual(frame.calls,0)
+            self.assertEqual(journal.summary()["attempts"],[])
+
     def test_missing_permit_rejects_without_model_call(self):
         with pilot.PilotJournal(self.tmp.name,self.config) as journal:
             fake=pilot.StaticHTTPSFrame(self._frame(self._payload("director_brief",self.state)))
