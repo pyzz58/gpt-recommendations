@@ -176,10 +176,30 @@ class OfflineBudgetBook:
         if not isinstance(quote, dict) or quote.get("task_id") not in team.SPECS:
             raise ModelBudgetError("invalid quote")
         _integer(revision, "revision", 1, 1000000)
+        task_id = quote["task_id"]
+        model_key = self.config["routes"][task_id]
+        profile = self.config["profiles"][model_key]
+        input_proxy = _integer(quote.get("input_proxy_tokens"),
+                               "input proxy", 1, 2_000_000)
+        output_tokens = _integer(quote.get("reserved_output_tokens"),
+                                 "output tokens", 1, 65536)
+        if input_proxy > profile["max_input_tokens"] or (
+                output_tokens != profile["max_output_tokens"]):
+            raise ModelBudgetError("quote exceeds or mismatches selected token bounds")
+        expected_cost = (Decimal(input_proxy) *
+                         Decimal(profile["input_cny_per_m"]) / PER_MILLION +
+                         Decimal(output_tokens) *
+                         Decimal(profile["output_cny_per_m"]) / PER_MILLION
+                         ).quantize(QUANTUM, rounding=ROUND_UP)
+        if (quote.get("model_key") != model_key or
+                quote.get("provider") != profile["provider"] or
+                quote.get("model") != profile["model"] or
+                quote.get("reserved_cny") != str(expected_cost) or
+                quote.get("live_calls_authorized") is not False):
+            raise ModelBudgetError("quote does not match declared model and budget")
         if len(self.attempts) >= self.config["max_attempts"]:
             raise ModelBudgetError("max model attempts reached")
-        predicted = self.total_reserved_cny + _amount(
-            quote.get("reserved_cny"), "reserved_cny")
+        predicted = self.total_reserved_cny + expected_cost
         if predicted > Decimal(self.config["cap_cny"]):
             raise ModelBudgetError("offline budget cap exceeded before attempt")
         record = {
@@ -286,7 +306,7 @@ def simulate_one(base, state, book, transport, task_id=None, *,
         "model_key": request["quote"]["model_key"],
         "reserved_cny": request["quote"]["reserved_cny"],
         "status": "simulated_professional_output_accepted",
-        "simulated_provider_cost_cny": request["quote"]["reserved_cny"],
+        "simulated_reserved_cny": request["quote"]["reserved_cny"],
         "actual_billed_cny": "0", "actual_provider_calls": 0,
         "contains_private_material": False, "human_approved": False,
     }
