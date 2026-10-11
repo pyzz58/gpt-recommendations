@@ -48,6 +48,14 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 **不要直接修改原片**。按上述 Codex 工作流先生成 `plan.proposed.json`，然后在本地验证并人工审核。没有采纳整个 CineCrew 或 transitions 包；零运行时额外依赖，无视频或 API 费用。
 
+## 产品主线：文案输入 → 一整套短视频导演交付书（当前仅 GitHub 研发）
+
+系统真正需要输出的不是单纯视频 Prompt，而是从文章和故事提炼成逐集、逐镜头专业导演方案，覆盖动作、场景、摄影、演员、动画、台词、配音、音乐音效、剪辑、转场、参考资产、制作手段和后期工作单。详见 [PRODUCT_NORTH_STAR.md](PRODUCT_NORTH_STAR.md)。
+
+已新增 `director_workbook.py`，它将 `plan.json` 和 `direction_v02.json` 汇成 `director_workbook.json` 与 `director_workbook.md`；现有 `local_director.review_job` 也会在未来运行时生成导演交付书并在总预览首页显示。对于旧导演稿缺失的剪辑、动画、台词设计会报告 `creative_design_complete=false`，而不是自动填假内容。严格校验只对补全上述字段后的新稿开放；脚本技术正确不代表已获用户人审。
+
+**用户尚未批准在 Mac 部署**：上述仅指 GitHub 源码设计，不需要用户执行命令，也不声称已完成真实作品端到端视频制作。
+
 ## 模型输入参考清单（GitHub-only）
 
 已新增 `reference_input_preview.py` 与 [REFERENCE_INPUT_PREVIEW.md](REFERENCE_INPUT_PREVIEW.md)。它只把“每镜需要哪些人物角度、场景、道具”转换为模型无关的输入预览，不读取图片、不输出私有文件路径、不产生付费请求，不能直接用于 Wan/Seedance 的正式 API。相关 9 项新回归测试已加入源码，尚待在最新仓库完整快照上执行。
