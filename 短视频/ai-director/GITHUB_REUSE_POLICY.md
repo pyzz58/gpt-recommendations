@@ -35,6 +35,12 @@
 7. LICENSE_EVIDENCE_MISSING_MUSIC_LICENSE_CHECK：音乐真正选定之后再登记授权来源、证明与状态；计划不等于授权。
 8. LICENSE_EVIDENCE_MISSING_ASSET_LICENSE_CHECK：同样为每一件实际素材保留授权证据；不能把未核验字段改成已核验。
 
+## 本轮第三阶段混合制作路由决策（2026-10-11）
+
+- [CineCrew](https://github.com/Ironieser/CineCrew) 的 FilmDSL 明确约束镜头、资产和导演审查；[AI Cinematic Pipeline](https://github.com/billpar/ai-cinematic-pipeline) 明确视频生成与音频后期/剪辑分离。这里只借鉴`结构化镜头`和`后期路线显式表示`的设计，不安装模型、不复制第三方源码。
+- 当前自有 `director_v2.py` 已有单镜基础编译功能，目标仅需区分 **AI 视频/静态/剪辑/实拍/后期** 五种制作来源。整仓引入多模型框架的复杂度与本任务不成比例，因此实施**零额外依赖的路线解析器和合成回归测试**。实现与回滚文件：`director_v2.py`、`tests/test_production_routes.py`、`PRODUCTION_ROUTING.md`。
+- 风险和边界：别名仅覆盖已明确登记的写法，未知旧版 `production_method` 失败；编译不能修改配音稿、证明有版权、导出实际成片，也不能在未获批准时自动生成收费视频。**未读取用户 Mac 上私有第三阶段成果，不能宣称真实候选档已在 GitHub 回归通过。**
+
 ## 首轮实际采纳决定（2026-10-11）
 
 - **直接采用成熟开放标准**：JSON Schema Draft 2020-12。项目已在 `schemas/continuity_contract.schema.json` 保存正式合同结构。开发隔离环境使用成熟库 `python-jsonschema/jsonschema` 校验 Schema 与合成测试，用户 Mac 运行时仍然零安装依赖。
