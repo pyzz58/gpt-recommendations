@@ -18,6 +18,12 @@
 - `film_continuity.py` 建立来源绑定 `characters/props/scenes` ID 表。源没有声明人物/道具，绝不可从 AI 想象自动补全；镜内状态变化必须声明事件、时间和因果，跨镜突然换装或道具移动是 blocker，画外跳转仅为待人工验证的 review。
 - 已接通锁定来源的 `acting` 岗位真实输出 Schema、局部返工合并、独立 QA 与最终制作工作包；无媒体参考图时始终 `reference_media_verified=false`、`production_ready=false`。Issue #2 仍 OPEN：参考图和真实视觉身份验证未完成，不能用字符串状态一致冒充画面成功。
 
+## AUD-021：同一角色多角度与服化参考不能相互覆盖
+
+- `asset_reference_manifest.py` 现在为 v2：`shot_slot_bindings` 逐镜绑定 `identity_front`、`identity_side`、`wardrobe`；旧 `shot_bindings` 保留一个 primary，但**不得因追加服装隐式替换已选脸部参考**。
+- 每个独立槽位都校验实体、类型、文件哈希、当前版本，任何过期引用 fail-closed；`reference_switches` 记录跨镜换装/换脸待人审。角色、摄影、QA 的消息与最终逐镜工作单仅携带版本+哈希元数据，不携带原图字节、路径或外部 URL。v1 快照不可静默视为 v2，具体见 [REFERENCE_ASSET_VERSIONING_AUDIT.md](REFERENCE_ASSET_VERSIONING_AUDIT.md)。
+- 该子模块为离线结构验收，不能把 sha 相等视作观众所见脸部一致。AUD-003 主 Issue #2 仍 OPEN。
+
 ## 私有参考资产 ID / 图片版本锁定（AUD-020，2026-10-11）
 
 - [REFERENCE_ASSET_VERSIONING_AUDIT.md](REFERENCE_ASSET_VERSIONING_AUDIT.md)：FilmDSL 角色/道具/场景的稳定 ID 已扩展为参考资产卡 `asset_reference_manifest.py`，使用 SHA-256、不可覆盖版本链与逐镜 `asset_id/version/hash` 绑定。旧版引用会失效，模型不得通过变更参考图版本绕过已锁定的团队状态。
