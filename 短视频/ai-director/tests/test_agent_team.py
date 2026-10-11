@@ -124,6 +124,26 @@ class DirectorTeamTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._submit(state,"acting",payload)
 
+    def test_private_source_text_is_hashed_not_copied_into_role_packets(self):
+        secret="A private fictional story about a lost letter"
+        state=team.start(self.base,source_text=secret)
+        self.assertTrue(state["source_review_bound"])
+        self.assertTrue(team.source_matches(state,secret))
+        self.assertFalse(team.source_matches(state,secret+" changed"))
+        packet=team.packet(state,"director_brief")
+        self.assertEqual(packet["source_digest"],state["source_digest"])
+        self.assertNotIn(secret,json.dumps(state))
+        self.assertNotIn(secret,json.dumps(packet))
+        with self.assertRaises(ValueError):
+            team.source_matches(self.new(),secret)
+
+    def test_source_hash_protected_by_worker_envelopes(self):
+        state=team.start(self.base,source_text="synthetic private script")
+        env=team.packet(state,"director_brief")
+        env["source_digest"]="invalid"
+        with self.assertRaises(ValueError):
+            team.submit(state,env,{"creative_brief":{"vision":"safe"}})
+
     def test_merged_team_direction_is_in_original_schema_and_not_user_approved(self):
         state=self.completed()
         draft=team.assemble_direction(self.base,state)
