@@ -210,6 +210,10 @@ def build_locked_crew_delivery(snapshot, episode_source, final_team_state):
                  "DELIVERY_CREW_HAS_OPEN_TASKS")
         _require(team.source_matches(final_team_state, episode_source),
                  "DELIVERY_SOURCE_DOES_NOT_MATCH")
+        # Also validate final *merged* camera/scene/light source consistency.
+        # Older reviewed shot revisions cannot bypass source-locked QA.
+        first_vision.camera_requirements_for_role(
+            base, final_team_state["tasks"]["camera_art"]["deliverable"])
         book = team.compile_team_workbook(base, final_team_state, strict=False)
         direction = team.assemble_direction(base, final_team_state)
     except (KeyError, TypeError, ValueError) as err:
