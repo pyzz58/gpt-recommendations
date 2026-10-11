@@ -252,6 +252,37 @@ def output_schema(state, task_id):
         lists = special_lists.get((task, section), ())
         fields = {key: {"type": "string", "minLength": 1} for key in required}
         fields.update({key: {"type": "array"} for key in lists})
+        if task == "director_brief" and section == "creative_brief":
+            for name in ("immutable_facts", "assumptions_to_verify"):
+                fields[name] = {
+                    "type": "array",
+                    "items": {"type": "string", "minLength": 1}}
+        if task == "script_edit" and section == "story_treatment":
+            fields["beat_map"] = {
+                "type": "array", "minItems": 1,
+                "items": {"type": "object",
+                          "required": ["shot_id", "dramatic_function",
+                                       "handoff_to_next"],
+                          "properties": {
+                              "shot_id": {"type": "string", "minLength": 1},
+                              "dramatic_function": {"type": "string", "minLength": 1},
+                              "handoff_to_next": {"type": "string", "minLength": 1}},
+                          "additionalProperties": False}}
+            fields["source_change_proposals"] = {
+                "type": "array",
+                "items": {"type": "object",
+                          "required": ["reason", "proposed_change",
+                                       "requires_user_approval", "approved"],
+                          "properties": {
+                              "reason": {"type": "string", "minLength": 1},
+                              "proposed_change": {"type": "string", "minLength": 1},
+                              "requires_user_approval": {"const": True},
+                              "approved": {"const": False}},
+                          "additionalProperties": False}}
+        if task == "ai_technical" and section == "generation":
+            fields["route"] = {
+                "type": "string",
+                "enum": sorted(agent_handoff_audit.PRODUCTION_ROUTES)}
         if section == "camera":
             fields["move_trigger_s"] = {"type": "number"}
             required.append("move_trigger_s")
