@@ -14,6 +14,28 @@
 - `director_review.production_blueprint_ready`：此前的 `editor_handoff_ready` **且**跨镜头导演合同齐备；`--strict` 现在要求两方面都齐备，仍保留 `human_approved=false`。
 - Markdown 导演交付书在每镜末尾附“下一镜的叙事、节奏与混合制作风格衔接”表。旧导演文件缺少该字段会得到明示的缺项提示，**依然可以编译旧稿草稿**。
 
+## 新增：切点必须绑定真实动作节拍，拒绝模板化导演理由
+
+本轮修复了一个重要的“填字段就算完成”的漏洞。过去只要某次剪辑写了 `why_cut_here="动作完成后自然切入下一镜"`，就可能被误认为已有专业切点设计；现在**每个相邻镜头交接必须明确绑定实际分镜中的动作节拍**。
+
+在每个非末镜的 `editing.narrative_bridge` 里新增：
+
+```json
+{
+  "beat_link": {
+    "outgoing_beat_index": 2,
+    "incoming_beat_index": 0,
+    "cut_on_visible_event": "右手松开香烟，手指离开桌面，视线移向窗外的那个瞬间"
+  }
+}
+```
+
+索引均从 0 开始，分别定位前镜头 `direction.shots[].beats` 的末节拍和后镜头的首节拍。审核器核对索引有效、末节拍确实到达切镜时刻、下一节拍确实从 0 秒开始；在交付书的 `cut_beat_evidence` 中直接引用当事两镜真实的 `visible_change`。它**不臆造摄影画面**，只呈现已写入导演稿的具体动作。若末节拍编号不对、节拍没有落在切点，则按阻断处理；旧稿没写 `beat_link` 仍可读为草稿，但跨镜头交接不能标就绪。
+
+同时，当同一段具体 `viewer_question`、`why_cut_here`、`answer_or_reframe`、`motion_or_prop_link` 或 `style_handoff.implementation` 在**三个或更多**相邻镜头之间逐字重复时，发出 `BOILERPLATE_DIRECTOR_REASON` 人工复核提示，并暂停把整份工作单宣称为“制作蓝图已齐备”。这是一条**保守的文本重复检测**，不是识别所有套话的 AI，也不是艺术质量评分；统一字体规范或统一色调可以合理重复，不纳入该检测。特殊叙事手法如果确实需要重复，应由导演保留真实说明，并由人工审阅，不应绕过检查伪装成不同内容。
+
+注意：`narrative_handoff_ready` 仅代表所有切镜证据和合同格式齐全；`editorial_specificity_review_required` 标记复制套话情况；`production_blueprint_ready` 还需要通过该复核。即使所有布尔项为真，仍需人审故事表达、转场视觉效果和音频可听性。
+
 ## 相邻镜头必须由导演明确设计的四部分
 
 | 字段 | 需要做的创作决策 | 不能省略的内容 |
