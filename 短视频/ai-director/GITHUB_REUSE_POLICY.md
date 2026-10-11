@@ -114,6 +114,10 @@
 - 进度：**已查到 ≠ 已集成 ≠ 已验证**。三者必须单独标记。
 
 以上为 2026-10-11 公开仓库初筛结论，许可证和维护活跃度日后须重新核查。
+## 2026-10-11 逐镜审阅与来源版本绑定
+
+继续复用已有 `agent_team.fingerprint/start`、`director.validate` 与 `editorial_storyboard` 的候选计划；审核合约、HTML 转义与 SHA-256 使用 Python 标准库，避免新增不必要的外部表单和审核框架依赖。真实用户登录、可信审计、签名和审批服务此阶段未接入，不能把普通 Python 校验/自填 JSON 当身份验证或不可篡改签名。零第三方源码复制、零付费请求、零模型运行。
+
 ## 2026-10-11 创意剧本编辑的开源复用决策
 
 本次直接重用本项目既有的 `agent_role_contracts.build_role_messages/submit_role_output`、`agent_team.start`、`article_intake.prepare_episode` 和 `director.validate`；专业扩展对照原岗位文档而不引入新编排框架。创作拓展和源稿哈希验收由标准库实现，没有复制/引入外部 Agent 库，没有变更第三方许可证，也没有进行真实 LLM 调用。先证实合成短故事由总导演与编剧形成“独立具体分镜建议”，再请求后续真实模型的隐私、费用授权，避免把单纯架构扩张误当作导演品质提升。
