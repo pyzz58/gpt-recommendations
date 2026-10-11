@@ -10,6 +10,10 @@
 - 不可以：提示用户执行 `git pull`、`pip install`、`brew`、`npm`、`git clone`、下载 ZIP/权重，或者让本地 Codex 执行修稿。禁止自动开机启动、守护进程、登录项、系统级配置、全局环境或其他本机安装操作。
 - 不能调用付费 DeepSeek/视频服务、不能提高或复用历史测试费用授权、不能触发可能付费的 CI 作业、不能发布或上传私人作品及密钥。
 
+## 专业逐镜视频制作包的离线编译阶段（2026-10-11）
+
+`production_delivery.py`、专项测试与 [PRODUCTION_DELIVERY_PACK.md](PRODUCTION_DELIVERY_PACK.md) 已提交 GitHub。CI 用既有公开戒烟示例的 v0.1/base 与 v0.2/direction 编译 8 镜头精确工作单（两个候选视频模型提示词 + 后期路线 + 跨镜剪辑 + 人工 QA）；文件写入 Actions 临时目录，**没有用户私人文案，也没有第三方网络模型调用**。团队方式必须校验 `editorial_review_lock` 的版本与源文及十阶段独立 QA；所有自动发送/付款/发布布尔标志固定 false。
+
 ## 逐镜审稿与不可混用版本阶段（2026-10-11）
 
 GitHub 新增 `editorial_review_lock.py` / 合成测试 / [EDITORIAL_REVIEW_AND_LOCK.md](EDITORIAL_REVIEW_AND_LOCK.md)，审核候选分镜逐项批准或退回请求、未核验事实、遗漏与原文改写风险。检查源文本 SHA256、候选 plan SHA256、每镜摘要、决策摘要和新团队版本绑定。离线 `planning_locked_identity_unverified` 只证明同一份 JSON 快照被核查一致，**不代表真实用户已做出授权或者已经签名**。没有私人原文提交、在线 LLM、Mac 同步或付费视频生成。
