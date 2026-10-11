@@ -254,6 +254,50 @@ class DirectorTeamTests(unittest.TestCase):
                     "graphics":{"design":"labels"}}
                  for sid in next_packet["revision_scope"]}})
 
+    def test_real_public_example_can_merge_into_existing_professional_workbook(self):
+        import director_v2
+        direction = director_v2.read_json(ROOT/"examples/quit-smoking/direction_v02.json")
+        state=self.new()
+        state=self._submit(state,"director_brief")
+        state=self._submit(state,"script_edit")
+        state=self._submit(state,"director_lock",{
+            "global_direction":copy.deepcopy(direction["global_direction"])})
+        by_id={x["shot_id"]:x for x in direction["shots"]}
+        for tid in ("acting","camera_art","sound","editing_animation","ai_technical"):
+            bundle={"shots":{}}
+            for sid in state["shot_ids"]:
+                src=by_id[sid]
+                fields=team.SPECS[tid]["fields"]
+                item={}
+                for key in fields:
+                    if key=="shootability":
+                        item[key]=None
+                    elif key=="speech":
+                        original=next(x for x in self.base["shots"] if x["id"]==sid)
+                        item[key]={
+                            "voiceover":{"text":original["narration"],"delivery":"natural",
+                                         "timing":"subject to director timing approval"},
+                            "dialogue":[],"subtitle_direction":"safe area",
+                            "lip_sync_policy":"narrator only"}
+                    elif key=="editing":
+                        item[key]={"cut_reason":"must be precisely directed"}
+                    elif key=="animation":
+                        item[key]={"mode":"none","timing":"none","elements":[],
+                                   "render_in_post":False,"style":"restrained"}
+                    else:
+                        item[key]=copy.deepcopy(src[key])
+                bundle["shots"][sid]=item
+            # Only submit when prerequisites complete
+            state=self._submit(state,tid,bundle)
+        state=self._submit(state,"quality_review")
+        state=self._submit(state,"director_final")
+        book=team.compile_team_workbook(self.base,state)
+        self.assertEqual(len(book["shots"]),len(self.base["shots"]))
+        self.assertTrue(book["team_handoff"]["manager_review_only"])
+        self.assertFalse(book["team_handoff"]["human_approved"])
+        self.assertFalse(book["team_handoff"]["paid_media_generated"])
+        self.assertFalse(book["director_review"]["production_blueprint_ready"])
+
     def test_no_runtime_actions_behind_helpers(self):
         state=self.completed()
         self.assertEqual(team.overview(state)["ready_tasks"],[])
