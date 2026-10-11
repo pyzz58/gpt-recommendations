@@ -114,6 +114,10 @@
 - 进度：**已查到 ≠ 已集成 ≠ 已验证**。三者必须单独标记。
 
 以上为 2026-10-11 公开仓库初筛结论，许可证和维护活跃度日后须重新核查。
+## 2026-10-11 后续八专业与总导演终审路由的复用
+
+没有安装第三方运行时和重复 Agent。复用 `agent_live_pilot` 固定 DeepSeek TLS+预算 journal、`editorial_review_lock` 锁定验收、`agent_role_contracts` 严格专业输出合同、`agent_team` DAG、`agent_handoff_audit` 与 `agent_creative_review` 的独立 QA。新代码是最薄的受控桥接，零第三方源码复制。所有供应商模型调用仍未经用户另行授权，CI 只使用合成静态帧。
+
 ## 2026-10-11 DeepSeek 单岗位试验的复用与依赖
 
 查阅 DeepSeek 官方当前 [Chat Completions API](https://api-docs.deepseek.com/api/create-chat-completion/) 和 [Quick Start](https://api-docs.deepseek.com/) 确认两个支持模型 `deepseek-flash` / `deepseek-v4-pro` 与标准 HTTPS endpoint。客户端只复用现成 `agent_provider_wire`、`agent_role_contracts`、`editorial_storyboard`、`agent_team`，HTTPS/SSL、durable ledger 使用标准库 `http.client`/`ssl`/`fcntl`，不复制外部源码、不安装未授权 SDK、不开第三方代理。此处的真实 HTTP 能力默认无自动入口，GitHub CI 只用完全离线 mock 验证。当前费率必须待正式小样逐次查看官方最新价格并且由用户认可，不能依据旧数字擅自收费。
