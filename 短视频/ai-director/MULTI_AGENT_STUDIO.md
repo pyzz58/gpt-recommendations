@@ -1,3 +1,7 @@
+## 角色资产卡与镜头参考版本（2026-10-11）
+
+FilmDSL 连续性之上已新增 `asset_reference_manifest.py`：人物（正面/侧面/服装）、道具、场景参考图片各有稳定 `ASSET_ID`、内容 SHA-256 和不可覆写版本。原稿/镜头/source digest 锁定，逐镜选择引用；换图后旧镜头自动标记为失效，不能拿老角色状态悄悄进入付费下一岗。完整专业工单保留参考版本**元数据**，不暴露图片内容、私人路径或外部图片 URL。真实图像身份/版权/肖像同意未经验证，生成模型目前没有得到图片本身。见 [REFERENCE_ASSET_VERSIONING_AUDIT.md](REFERENCE_ASSET_VERSIONING_AUDIT.md)。
+
 ## 统一资产编号与跨镜连续性
 
 CineCrew FilmDSL 风格 `film_continuity.py` 已将**权威原稿资产 ID → 表演岗位逐镜状态/动作事件 → 独立场记检查 → 最终工单**接通。模型不能悄悄创建不存在的演员、道具或场景。道具从桌面到手里、服装颜色变化、信封封口打开均要有状态相等的跨镜接续或本镜事件；画外时间跳跃保留总导演人审风险。详情 [FILMDSL_CONTINUITY_AUDIT.md](FILMDSL_CONTINUITY_AUDIT.md)。当前**无人物参考图、实测视频或成片质量保证**，不等于已经解决视频模型随机变脸。
