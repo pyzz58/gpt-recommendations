@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 长文章直入与可追溯分集（2026-10-11；真实文案严禁提交公开仓库）
+
+- 本轮新增 [ARTICLE_TO_EPISODE_INTAKE.md](ARTICLE_TO_EPISODE_INTAKE.md)、`article_intake.py` 与 `tests/test_article_intake.py`，只使用合成长文案做自动化验证。按 `### 1.` 等标题拆分节目选题，选择某一集生成来源逐字可追溯、完全未审核的 v0.1 分镜草案，交由既有 `agent_team.start` 创建十阶段导演任务账本。
+- `episode_catalog` 返回的标题和 `prepare_episode` 返回的计划也可能包含私人文案，**不得提交到 GitHub 或公用日志**；`episode_source_for_team` 只传选中集完整原文，不把其他 17 集无关内容混进每个专业 Agent。保留整篇文章和当前集各自独立 SHA256。
+- 自动稿仅包含逐字截取的候选旁白与后期图卡占位，不等于有真实动作/摄影/剪辑/AI 视频模型 prompt。缺无声叙述、太长或证据问题，应明确 `needs_script_editor`、`omissions`、`claims.status=needs_review` 和各项人工审阅 flag；永远不自动标记 `ready_for_video_model`。
+- 用户同意继续研发只授权合成数据测试和 GitHub 代码开发，不自动放行 DeepSeek 联网、付费调用、个人文案云端传输或 Mac 部署。
+
 ## 独立跨部门 QA、返工提案与交付硬门禁（当前研发要求）
 
 - 参考 [CREW_QA_GATE.md](CREW_QA_GATE.md) 和 `agent_handoff_audit.py`。在原有岗位质量检查以外，独立核对原文配音守恒、真实动作节拍与剪辑切点、制作路线、音效/动作/摄影时间范围、图表论据及动画模式矛盾。
