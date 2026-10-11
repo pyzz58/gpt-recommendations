@@ -166,6 +166,16 @@ def compile_workbook(base, directions):
         raise ValueError("final shot does not end at declared duration")
     edit_timeline, timeline_findings = director_timeline.assemble(base, directions)
     timeline_blockers = [f for f in timeline_findings if f["severity"] == "blocker"]
+    # Creative fields can all be filled yet the result may still lack timed
+    # voiceover, keyed animation or explicit cross-shot audio decisions.
+    # Keep "concept complete" separate from "editor handoff ready".
+    unfinished_codes = {"VOICEOVER_CUE_PENDING",
+                        "ANIMATION_KEYFRAMES_NEED_TIMECODES",
+                        "AUDIO_BRIDGE_DECISION_PENDING"}
+    handoff_pending = [f for f in timeline_findings if
+                       f["severity"] == "blocker" or f["code"] in unfinished_codes]
+    concept_complete = len(findings) == 0 and len(timeline_blockers) == 0
+    handoff_ready = concept_complete and not handoff_pending
     return {
         "schema_version": "1.0", "kind": "script_to_short_video_director_workbook",
         "overview": {"title": base["title"], "core_message": base["core_message"],
@@ -175,10 +185,12 @@ def compile_workbook(base, directions):
                      "series_direction": directions["global_direction"]},
         "assembly_timeline": timeline, "editor_decision_list": edit_timeline,
         "shots": shot_rows, "production_summary": compiled["production_summary"],
-        "director_review": {"creative_design_complete": len(findings) == 0 and
-                                len(timeline_blockers) == 0,
+        "director_review": {"creative_design_complete": concept_complete,
+                            "editor_handoff_ready": handoff_ready,
+                            "editor_handoff_pending": len(handoff_pending),
                             "unresolved": len(findings) + len(timeline_blockers),
                             "findings": findings + timeline_blockers,
+                            "handoff_findings": handoff_pending,
                             "timing_review_findings": [f for f in timeline_findings
                                                        if f["severity"] != "blocker"],
                             "technical_warnings": warnings},
@@ -192,7 +204,11 @@ def render_markdown(book):
              "核心表达：" + book["overview"]["core_message"],
              "时长：" + str(book["overview"]["duration_s"]) + " 秒",
              "这是导演设计与制作工作单，不是已完成的影片。", "",
-             "未完成的导演决策：" + str(book["director_review"]["unresolved"]), ""]
+             "未完成的导演决策：" + str(book["director_review"]["unresolved"]),
+             "剪辑交接就绪：" + ("是（仅表示工作单齐全，仍需人工审片）" if
+                         book["director_review"]["editor_handoff_ready"] else
+                         "否，仍有 " + str(book["director_review"]["editor_handoff_pending"]) +
+                         " 项需要精确时间/音频衔接设计"), ""]
     timeline_by_id = {t["shot_id"]: t for t in book["editor_decision_list"]}
     for shot in book["shots"]:
         lines += ["## " + shot["shot_id"] + " / " + str(shot["start_s"]) + "–" + str(shot["end_s"]) + "秒",
@@ -242,9 +258,12 @@ def main(argv=None):
         base = json.loads(Path(args.base).read_text(encoding="utf-8"))
         directions = json.loads(Path(args.direction).read_text(encoding="utf-8"))
         book = compile_workbook(base, directions)
-        if args.strict and not book["director_review"]["creative_design_complete"]:
-            raise ValueError("creative design incomplete: " +
-                             str(book["director_review"]["unresolved"]) + " findings")
+        if args.strict and not book["director_review"]["editor_handoff_ready"]:
+            raise ValueError("editor handoff incomplete: " +
+                             str(book["director_review"]["editor_handoff_pending"]) +
+                             " timecoded items, " +
+                             str(book["director_review"]["unresolved"]) +
+                             " creative blockers; no output written")
         targets = [Path(args.out)] + ([Path(args.markdown)] if args.markdown else [])
         if len(set(str(p.resolve()) for p in targets)) != len(targets):
             raise ValueError("output paths must differ")
