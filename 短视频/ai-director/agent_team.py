@@ -51,6 +51,18 @@ SPECS = {
            "fields": list(fields)} for task, role, deps, kind, fields in STAGES
 }
 PRECEDENCE = {x[0]: i for i, x in enumerate(STAGES)}
+GUIDANCE = {
+    "director_brief": "Review the source story; establish audience, emotional target, immutable facts, runtime and style constraints. Do not rewrite text.",
+    "script_edit": "Propose hook, beats and any optional source edits as clearly labeled proposals. Do not alter the source plan.",
+    "director_lock": "Approve a shared global directing bible: narrative rhythm, camera/art, sound, subtitle safety, characters and budget limits.",
+    "acting": "Design every shot's physical beats, staging, identity/prop continuity and timecoded hand actions, including split-take fallbacks.",
+    "camera_art": "Design camera coverage, lighting, scene geometry, lens feel and unified visual grammar for every shot.",
+    "sound": "Design exact narration, spoken dialogue, music, sound effects, subtitles and cue timing without rewriting source text.",
+    "editing_animation": "Motivate every cut, plan motion graphics and J/L-cut audio bridges, and reconcile animation/acting/camera/sound handoffs.",
+    "ai_technical": "Translate approved creative shots to safe provider-neutral candidate prompts and postproduction work orders. No model calls.",
+    "quality_review": "Read only: evaluate structured direction, source fidelity, art/style consistency, timing, props and feasibility. Assign blockers to owning tasks.",
+    "director_final": "Reconcile departments, accept a blueprint only for human review or request scoped changes. Never claim human approval or spend.",
+}
 DOWNSTREAM = {}
 for task in SPECS:
     queue, descendants = [task], set()
@@ -101,6 +113,16 @@ def start(base):
     }
 
 
+def _ancestors(task_id):
+    queue, found = list(SPECS[task_id]["depends_on"]), set()
+    while queue:
+        upstream = queue.pop()
+        if upstream not in found:
+            found.add(upstream)
+            queue.extend(SPECS[upstream]["depends_on"])
+    return sorted(found, key=PRECEDENCE.get)
+
+
 def _check_state(state):
     _require(isinstance(state, dict) and state.get("schema_version") == VERSION
              and state.get("kind") == "ai_director_team_ledger",
@@ -146,7 +168,12 @@ def packet(state, task_id):
     _require(task_id in ready(state), "task dependencies or status are not ready")
     spec, item = SPECS[task_id], state["tasks"][task_id]
     deps = {d: state["tasks"][d]["revision"] for d in spec["depends_on"]}
+    ancestry = _ancestors(task_id)
+    upstream = {key: deepcopy(state["tasks"][key]["deliverable"])
+                for key in ancestry if state["tasks"][key]["status"] == "completed"}
     return {"task_id": task_id, "role": spec["role"], "task_kind": spec["kind"],
+            "instructions": GUIDANCE[task_id],
+            "upstream_artifacts": upstream, "source_plan_required": True,
             "allowed_fields": list(spec["fields"]), "shot_ids": list(state["shot_ids"]),
             "revision_scope": item["revision_scope"],
             "dependency_revisions": deps, "base_digest": state["base_digest"],
@@ -182,6 +209,12 @@ def _validate_payload(state, task_id, payload):
     field = spec["fields"][0]
     value = payload[field]
     _require(isinstance(value, dict) and bool(value), field + " must be a nonempty object")
+    if task_id == "director_lock":
+        mandatory = ("audience_emotion_arc", "visual_grammar", "audio_grammar",
+                     "graphic_safety", "reference_strategy", "generation_budget")
+        _require(all(isinstance(value.get(k), str) and value[k].strip()
+                     for k in mandatory),
+                 "locked director bible lacks required global directing fields")
     if task_id == "quality_review":
         _require(isinstance(value.get("blockers"), list)
                  and isinstance(value.get("findings"), list)
@@ -247,8 +280,8 @@ def submit(state, envelope, payload):
 def request_revision(state, task_id, shot_ids, reason, *, source_task="director_final"):
     """Director-governed targeted change request. No automatic revision loops."""
     _check_state(state)
-    _require(source_task in ("director_final", "quality_review"),
-             "only QA or showrunner may propose revisions")
+    _require(source_task == "director_final",
+             "QA may recommend revisions, but only showrunner may authorize rework")
     _require(task_id in SPECS and task_id not in ("quality_review", "director_final"),
              "invalid revision owner")
     _require(state["tasks"][task_id]["status"] == "completed",
@@ -278,15 +311,35 @@ def request_revision(state, task_id, shot_ids, reason, *, source_task="director_
         if item["status"] == "completed":
             item["status"] = "stale"
         if SPECS[dependent]["kind"] == "shots":
-            new_scope = set(impacted if dependent == "editing_animation"
-                            else shot_ids)
-            current = item["revision_scope"]
-            item["revision_scope"] = sorted(new_scope | set(current or []))
+            if SPECS[task_id]["kind"] == "document":
+                item["revision_scope"] = None  # whole episode bible changed
+            else:
+                new_scope = set(impacted if dependent == "editing_animation"
+                                else shot_ids)
+                current = item["revision_scope"]
+                item["revision_scope"] = sorted(new_scope | set(current or []))
     out["events"].append({"type": "revision_requested", "target": task_id,
                           "source": source_task, "shot_ids": list(shot_ids),
                           "reason": reason, "invalidated": DOWNSTREAM[task_id]})
     out["release"]["director_ai_review_complete"] = False
     return out
+
+
+def compile_team_workbook(base, state):
+    """Use the EXISTING professional director/compiler for independent QA."""
+    import director_v2
+    import director_workbook
+    draft = assemble_direction(base, state)
+    errors, warnings = director_v2.validate(base, draft)
+    _require(not errors, "merged direction invalid: " + "; ".join(errors[:8]))
+    book = director_workbook.compile_workbook(base, draft)
+    book["team_handoff"] = {
+        "specialist_task_revisions": {k: v["revision"] for k, v in
+                                      state["tasks"].items()},
+        "manager_review_only": True,
+        "human_approved": False, "llm_calls_executed": False,
+        "paid_media_generated": False}
+    return book
 
 
 def overview(state):
