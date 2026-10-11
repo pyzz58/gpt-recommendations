@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Director Reference Asset Catalog v1 (draft 2020-12)",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "assets",
+    "shot_requirements",
+    "policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "assets": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "kind",
+          "description",
+          "views"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "character",
+              "scene",
+              "prop"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "wardrobe": {
+            "type": "string"
+          },
+          "views": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+            },
+            "additionalProperties": {
+              "$ref": "#/$defs/referenceView"
+            }
+          }
+        }
+      }
+    },
+    "shot_requirements": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "asset_id",
+            "view",
+            "role"
+          ],
+          "properties": {
+            "asset_id": {
+              "type": "string"
+            },
+            "view": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "generated_media",
+        "identity_consistency_verified",
+        "private_media_in_public_repo"
+      ],
+      "properties": {
+        "generated_media": {
+          "const": false
+        },
+        "identity_consistency_verified": {
+          "const": false
+        },
+        "private_media_in_public_repo": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$defs": {
+    "referenceView": {
+      "type": "object",
+      "required": [
+        "status",
+        "path",
+        "sha256",
+        "source",
+        "rights_status",
+        "rights_evidence",
+        "reviewer",
+        "human_approved"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "not_created",
+            "candidate",
+            "approved"
+          ]
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rights_status": {
+          "enum": [
+            "unchecked",
+            "verified"
+          ]
+        },
+        "rights_evidence": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reviewer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "human_approved": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
