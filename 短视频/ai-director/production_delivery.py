@@ -262,6 +262,10 @@ def build_locked_crew_delivery(snapshot, episode_source, final_team_state):
             "cards_count":review["cards_count"],
             "missing_bindings_count":review["missing_bindings_count"],
             "missing_bindings":review["missing_bindings"],
+            "missing_recommended_slot_count":review[
+                "missing_recommended_slot_count"],
+            "missing_recommended_slots":review["missing_recommended_slots"],
+            "slot_binding_count":review["slot_binding_count"],
             "reference_switches_needing_review":review["reference_switches"],
             "reference_content_hash_matched_in_private_runtime":False,
             "visual_identity_verified":False,
@@ -272,6 +276,8 @@ def build_locked_crew_delivery(snapshot, episode_source, final_team_state):
             shot_id=work["shot_id"]
             work["versioned_reference_bindings"]=deepcopy(
                 snapshot["asset_reference_manifest"]["shot_bindings"][shot_id])
+            work["versioned_reference_slot_bindings"]=deepcopy(
+                snapshot["asset_reference_manifest"]["shot_slot_bindings"][shot_id])
     bundle["film_continuity_evidence"] = continuity_evidence
     bundle["film_continuity_media_identity_verified"] = False
     bundle["film_continuity_requires_human_visual_review"] = True
@@ -321,6 +327,9 @@ def render_operator_markdown(bundle):
             lines += [
                 "版本锁定的参考资产（仅元数据，不含图片）："+
                 json.dumps(shot["versioned_reference_bindings"],
+                           ensure_ascii=False,sort_keys=True),
+                "按用途分别锁定的参考资产（仅元数据）："+
+                json.dumps(shot["versioned_reference_slot_bindings"],
                            ensure_ascii=False,sort_keys=True),
                 "任何人物一致性、许可或真人批准状态：均未验证", "",
             ]
