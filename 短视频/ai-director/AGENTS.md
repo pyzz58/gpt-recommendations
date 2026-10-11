@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 十专业岗位 DeepSeek 单次授权调用已接入锁定分镜（2026-10-11）
+
+- 新增 [DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md](DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md)、`agent_live_crew.py`、`tests/test_agent_live_crew.py`。共享已有 `agent_live_pilot` 的固定 TLS、真实费用预留 journal，**不是重新设计 10 个 Agent**。
+- `inspect_locked_role` 严格校验 `editorial_review_lock` 的单集原文、锁定计划 SHA256、当前状态、DAG ready 和任务版本。 `run_one_locked_role` 只处理一岗；每次都要明确的 role+revision 逐岗位隐私及预算批准，绝不连续自动运行、跳过前置任务、自动重试。
+- 后续表演、摄影、美术、声音、剪辑、AI 技术、独立 QA 与总导演终审全部接入现有专业 `roles.build_role_messages` / `roles.submit_role_output`。终审 `ready_for_user_review` 受独立 handoff/创意 QA 硬阻断，只表示送人类看，绝不等于批准或发布；所有结果仍待真实模型内容质量与影音实机验证。
+- 旧 `run_one_creative_task` 仍**严格只允许**最初两个未锁定创意岗位，后续锁定团队必须使用新入口，避免混用 base。测试只用虚构信封故事的离线返回、无私人原稿网络传输、无扣费、无 Mac 部署。
+
 ## DeepSeek 真正 HTTPS 单岗位试验入口（2026-10-11；当前未经任何真实调用授权）
 
 - [DEEPSEEK_SINGLE_TASK_PILOT.md](DEEPSEEK_SINGLE_TASK_PILOT.md) / `agent_live_pilot.py` 复用现有 DeepSeek 请求/回复协议、总导演和剧本编辑专业创作合约、同一任务账本；本模块首次包含**真实 HTTPS 客户端代码**，但没有自动执行入口、命令行入口、自动加载 API Key 或自动向 DeepSeek 发送真实稿件。
