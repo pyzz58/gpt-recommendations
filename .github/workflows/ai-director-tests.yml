@@ -23,7 +23,7 @@ jobs:
         run: |
           python -m unittest discover -s tests -v
           python local_director.py doctor
-          python -m py_compile local_director.py local_ui.py llm_budget.py agent_team.py agent_handoff_audit.py agent_creative_review.py agent_executor.py agent_role_contracts.py agent_model_gateway.py article_intake.py editorial_storyboard.py editorial_review_lock.py production_delivery.py agent_live_pilot.py agent_live_crew.py agent_provider_wire.py agent_durable_preflight.py director_v2.py director_workbook.py
+          python -m py_compile local_director.py local_ui.py llm_budget.py agent_team.py agent_handoff_audit.py agent_creative_review.py agent_executor.py agent_role_contracts.py agent_model_gateway.py article_intake.py editorial_storyboard.py editorial_review_lock.py production_delivery.py agent_live_pilot.py agent_live_crew.py offline_vertical_demo.py agent_provider_wire.py agent_durable_preflight.py director_v2.py director_workbook.py
           # Public sample only: compile a readable operator work-order pack
           # into temporary CI storage. Never submit real/private scripts.
           python production_delivery.py --base examples/quit-smoking/plan.json --direction examples/quit-smoking/direction_v02.json --out-json /tmp/ai-director-operator-work-orders.json --out-md /tmp/ai-director-operator-work-orders.md
@@ -42,3 +42,17 @@ jobs:
             python director_v2.py preview --base "$base" --direction "$direction" --out "/tmp/$episode-preview.html"
           done
 
+
+      # Entirely invented letter story. No user scripts, API keys, real model
+      # responses, spend, network calls or media are involved in this demo.
+      - name: Build public synthetic complete vertical example
+        working-directory: "短视频/ai-director"
+        run: |
+          python offline_vertical_demo.py --synthetic-only --output-dir /tmp/ai-director-complete-synthetic-demo
+      - name: Attach public synthetic operator review pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-director-SYNTHETIC-NOT-REAL-AI-operator-pack
+          path: /tmp/ai-director-complete-synthetic-demo/
+          retention-days: 7
+          if-no-files-found: error
