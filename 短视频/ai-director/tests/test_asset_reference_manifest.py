@@ -186,6 +186,118 @@ class AssetReferenceManifestTests(unittest.TestCase):
                 slot="identity_front",image_bytes=self.bytes,
                 media_type="image/png")
 
+    def test_multi_slot_identity_and_wardrobe_bind_simultaneously(self):
+        m=self.register()
+        m=refs.register_image(
+            self.base,self.digest,m,asset_id="ASSET_SIDE",
+            entity_id="CHAR01",slot="identity_side",
+            image_bytes=self.bytes+b"SECOND_VIEW",media_type="image/png")
+        m=refs.register_image(
+            self.base,self.digest,m,asset_id="ASSET_WARDROBE",
+            entity_id="CHAR01",slot="wardrobe",
+            image_bytes=self.bytes+b"WARDROBE_BLUE",media_type="image/png")
+        for sid in ("S01","S02"):
+            for aid in ("ASSET_CHAR01","ASSET_SIDE","ASSET_WARDROBE"):
+                m=refs.bind_shot(self.base,self.digest,m,shot_id=sid,
+                                 entity_id="CHAR01",asset_id=aid)
+        report=refs.validate(self.base,self.digest,m)
+        self.assertEqual(report["missing_bindings_count"],4)
+        self.assertEqual(report["slot_binding_count"],6)
+        self.assertEqual(m["shot_bindings"]["S01"]["CHAR01"]["asset_id"],
+                         "ASSET_CHAR01")
+        self.assertEqual(set(m["shot_slot_bindings"]["S01"]["CHAR01"]),
+                         {"identity_front","identity_side","wardrobe"})
+        self.assertFalse(report["reference_switches"])
+        self.assertEqual(report["missing_recommended_slot_count"],4)
+        self.assertNotIn("FICTIONAL_HEADER_ONLY",json.dumps(m))
+
+    def test_wardrobe_switch_detected_without_face_switch(self):
+        m=self.register()
+        for asset,suffix in (("WARDROBE_BLUE",b"BLUE"),
+                             ("WARDROBE_RED",b"RED")):
+            m=refs.register_image(
+                self.base,self.digest,m,asset_id=asset,
+                entity_id="CHAR01",slot="wardrobe",
+                image_bytes=self.bytes+suffix,media_type="image/png")
+        for sid,wardrobe in (("S01","WARDROBE_BLUE"),
+                             ("S02","WARDROBE_RED")):
+            m=refs.bind_shot(self.base,self.digest,m,shot_id=sid,
+                             entity_id="CHAR01",asset_id="ASSET_CHAR01")
+            m=refs.bind_shot(self.base,self.digest,m,shot_id=sid,
+                             entity_id="CHAR01",asset_id=wardrobe)
+        report=refs.validate(self.base,self.digest,m)
+        changes=[v for v in report["reference_switches"]
+                 if v["slot"]=="wardrobe"]
+        self.assertEqual(len(changes),1)
+        self.assertEqual(changes[0]["shot_id"],"S02")
+        self.assertFalse(report["per_entity_references_consistent"])
+        self.assertEqual(m["shot_bindings"]["S01"]["CHAR01"],
+                         m["shot_bindings"]["S02"]["CHAR01"])
+
+    def test_changing_wardrobe_version_invalidates_specific_slot_binding(self):
+        m=self.register()
+        m=refs.register_image(
+            self.base,self.digest,m,asset_id="ASSET_WARDROBE",
+            entity_id="CHAR01",slot="wardrobe",
+            image_bytes=self.bytes+b"FIRST",media_type="image/png")
+        for sid in ("S01","S02"):
+            m=refs.bind_shot(self.base,self.digest,m,shot_id=sid,
+                             entity_id="CHAR01",asset_id="ASSET_CHAR01")
+            m=refs.bind_shot(self.base,self.digest,m,shot_id=sid,
+                             entity_id="CHAR01",asset_id="ASSET_WARDROBE")
+        m=refs.register_image(
+            self.base,self.digest,m,asset_id="ASSET_WARDROBE",
+            entity_id="CHAR01",slot="wardrobe",
+            image_bytes=self.bytes+b"CHANGED",media_type="image/png")
+        with self.assertRaisesRegex(refs.AssetReferenceError,
+                                    "STALE_OR_WRONG_ENTITY"):
+            refs.validate(self.base,self.digest,m)
+        m=refs.bind_shot(self.base,self.digest,m,shot_id="S01",
+                         entity_id="CHAR01",asset_id="ASSET_WARDROBE")
+        with self.assertRaisesRegex(refs.AssetReferenceError,
+                                    "STALE_OR_WRONG_ENTITY"):
+            refs.validate(self.base,self.digest,m)
+        m=refs.bind_shot(self.base,self.digest,m,shot_id="S02",
+                         entity_id="CHAR01",asset_id="ASSET_WARDROBE")
+        report=refs.validate(self.base,self.digest,m)
+        self.assertTrue(report["per_entity_references_consistent"])
+        self.assertEqual(m["shot_bindings"]["S01"]["CHAR01"]["asset_id"],
+                         "ASSET_CHAR01")
+        self.assertEqual(m["shot_slot_bindings"]["S02"]["CHAR01"][
+            "wardrobe"]["version"],2)
+
+    def test_injected_slot_or_entity_reference_is_rejected(self):
+        m=self.bind_both(self.register())
+        wrong=deepcopy(m)
+        wrong["shot_slot_bindings"]["S01"]["CHAR01"]["wardrobe"]=deepcopy(
+            wrong["shot_bindings"]["S01"]["CHAR01"])
+        with self.assertRaisesRegex(refs.AssetReferenceError,
+                                    "STALE_OR_WRONG_ENTITY"):
+            refs.validate(self.base,self.digest,wrong)
+        wrong=deepcopy(m)
+        wrong["shot_slot_bindings"]["S01"]["CHAR01"]["untrusted_url"]={}
+        with self.assertRaisesRegex(refs.AssetReferenceError,
+                                    "SLOT_BINDINGS_INVALID"):
+            refs.validate(self.base,self.digest,wrong)
+        wrong=deepcopy(m)
+        wrong["shot_slot_bindings"]["S01"]["PERSON_NOT_IN_SCRIPT"]={}
+        with self.assertRaisesRegex(refs.AssetReferenceError,
+                                    "ENTITY_BINDINGS_INVALID"):
+            refs.validate(self.base,self.digest,wrong)
+        wrong=deepcopy(m)
+        wrong["shot_bindings"]["S01"]["CHAR01"]=None
+        with self.assertRaisesRegex(refs.AssetReferenceError,
+                                    "PRIMARY_MISSING_WITH_SLOTS"):
+            refs.validate(self.base,self.digest,wrong)
+
+    def test_old_v1_manifest_fails_closed_requires_explicit_migration(self):
+        old=deepcopy(self.manifest)
+        old["version"]="private-visual-reference-manifest-v1"
+        old.pop("shot_slot_bindings")
+        with self.assertRaisesRegex(refs.AssetReferenceError,
+                                    "SOURCE_OR_AUTHORITY_INVALID"):
+            refs.validate(self.base,self.digest,old)
+
     def test_snapshot_attachment_immutability_and_role_version_guard(self):
         f=editorial_fixture.EditorialReviewLockTests(
             "test_complete_review_locks_only_planning_snapshot")
