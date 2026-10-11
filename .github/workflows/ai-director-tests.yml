@@ -18,18 +18,19 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Install verified OSS test coverage tracer
+      - name: Install verified OSS test and schema validators
         run: |
           python -m pip install "coverage==7.16.1"
+          python -m pip install -r "短视频/ai-director/requirements-schema.txt"
       - name: Run AI Director unit tests with branch coverage
         working-directory: "短视频/ai-director"
         run: |
-          python -m coverage run --branch --source=article_intake,editorial_storyboard,editorial_review_lock,creative_production_handoff,agent_team,agent_role_contracts,agent_live_pilot,agent_live_crew,private_result_checkpoint,agent_provider_wire,agent_handoff_audit,agent_creative_review,production_delivery,director_v2,director_workbook,one_time_deepseek_cloud_trial,agent_executor,local_director,llm_budget,director_timeline,director_shootability,director_narrative_bridges -m unittest discover -s tests -v
+          python -m coverage run --branch --source=article_intake,editorial_storyboard,editorial_review_lock,creative_production_handoff,agent_team,agent_role_contracts,role_schema_guard,agent_live_pilot,agent_live_crew,private_result_checkpoint,agent_provider_wire,agent_handoff_audit,agent_creative_review,production_delivery,director_v2,director_workbook,one_time_deepseek_cloud_trial,agent_executor,local_director,llm_budget,director_timeline,director_shootability,director_narrative_bridges -m unittest discover -s tests -v
           python -m coverage json -o /tmp/ai-director-branch-coverage.json
           python -m coverage report -m
           python audit_registry.py --summary-out /tmp/ai-director-audit-registry-summary.json
           python local_director.py doctor
-          python -m py_compile audit_registry.py local_director.py local_ui.py llm_budget.py agent_team.py agent_handoff_audit.py agent_creative_review.py creative_production_handoff.py agent_executor.py agent_role_contracts.py agent_model_gateway.py article_intake.py editorial_storyboard.py editorial_review_lock.py production_delivery.py agent_live_pilot.py agent_live_crew.py private_result_checkpoint.py offline_vertical_demo.py live_pilot_readiness.py one_time_deepseek_cloud_trial.py agent_provider_wire.py agent_durable_preflight.py director_v2.py director_workbook.py
+          python -m py_compile audit_registry.py local_director.py local_ui.py llm_budget.py agent_team.py agent_handoff_audit.py agent_creative_review.py creative_production_handoff.py agent_executor.py agent_role_contracts.py role_schema_guard.py agent_model_gateway.py article_intake.py editorial_storyboard.py editorial_review_lock.py production_delivery.py agent_live_pilot.py agent_live_crew.py private_result_checkpoint.py offline_vertical_demo.py live_pilot_readiness.py one_time_deepseek_cloud_trial.py agent_provider_wire.py agent_durable_preflight.py director_v2.py director_workbook.py
           # Public sample only: compile a readable operator work-order pack
           # into temporary CI storage. Never submit real/private scripts.
           python production_delivery.py --base examples/quit-smoking/plan.json --direction examples/quit-smoking/direction_v02.json --out-json /tmp/ai-director-operator-work-orders.json --out-md /tmp/ai-director-operator-work-orders.md
