@@ -182,6 +182,10 @@ def packet(state, task_id):
     ancestry = _ancestors(task_id)
     upstream = {key: deepcopy(state["tasks"][key]["deliverable"])
                 for key in ancestry if state["tasks"][key]["status"] == "completed"}
+    audit = None
+    if task_id in ("quality_review", "director_final"):
+        import agent_handoff_audit
+        audit = agent_handoff_audit.audit_handoffs(state)
     return {"task_id": task_id, "role": spec["role"], "task_kind": spec["kind"],
             "instructions": GUIDANCE[task_id],
             "upstream_artifacts": upstream, "source_plan_required": True,
@@ -193,6 +197,7 @@ def packet(state, task_id):
             "input_task_ids": list(spec["depends_on"]),
             "no_authorized_model_calls": True, "no_payments_or_media": True,
             "creative_review_contract": "ROLE_CREATIVE_CONTRACTS.md",
+            "independent_handoff_audit": audit,
             "note": ("Work from the approved shared base and upstream deliverables. "
                      "Propose only your own fields; cross-department or source changes "
                      "must be requested for showrunner review.")}
@@ -240,6 +245,11 @@ def _validate_payload(state, task_id, payload):
                              for k in ("emotion", "observable_turn", "visual_focus")),
                      f"{shot_id}: director objective needs emotion, visible turn and focus")
     if task_id == "quality_review":
+        import agent_handoff_audit
+        independent = agent_handoff_audit.audit_handoffs(state)
+        if independent["status"] == "blocked":
+            _require(value.get("recommendation") != "ready_for_director_review",
+                     "independent department contradictions must be marked for revision")
         _require(isinstance(value.get("blockers"), list)
                  and isinstance(value.get("findings"), list)
                  and value.get("recommendation") in
@@ -262,6 +272,10 @@ def _validate_payload(state, task_id, payload):
                  and isinstance(value.get("rationale"), str)
                  and value["rationale"].strip(), "director decision needs rationale")
         qa = state["tasks"]["quality_review"]["deliverable"]["qa_report"]
+        if decision == "ready_for_user_review":
+            import agent_handoff_audit
+            _require(agent_handoff_audit.audit_handoffs(state)["status"] != "blocked",
+                     "independent handoff blockers prevent final director acceptance")
         if qa["blockers"] or qa["recommendation"] != "ready_for_director_review":
             _require(decision == "request_changes",
                      "showrunner cannot override outstanding QA blockers")
@@ -352,16 +366,49 @@ def request_revision(state, task_id, shot_ids, reason, *, source_task="director_
     return out
 
 
-def compile_team_workbook(base, state):
-    """Use the EXISTING professional director/compiler for independent QA."""
+def compile_team_workbook(base, state, *, strict=False):
+    """Compile review draft; reject independent hard conflicts before delivery.
+
+    strict=True also demands the existing director's production blueprint gate.
+    Human signoff, footage and payment authorization always remain separate.
+    """
     import director_v2
     import director_workbook
+    import agent_creative_review
+    import agent_handoff_audit
+    _check_state(state)
+    _require(fingerprint(base) == state["base_digest"],
+             "source plan changed since crew was assigned")
+    qa = state["tasks"]["quality_review"]["deliverable"]
+    _require(isinstance(qa, dict) and isinstance(qa.get("qa_report"), dict),
+             "independent QA deliverable missing")
+    _require(not qa["qa_report"].get("blockers") and
+             qa["qa_report"].get("recommendation") == "ready_for_director_review",
+             "QA blockers or unresolved review prevent final workbook")
+    handoffs = agent_handoff_audit.audit_handoffs(state, base)
+    _require(handoffs["status"] != "blocked",
+             "independent handoff blockers prevent workbook: " +
+             ", ".join(x["code"] for x in handoffs["issues"] if
+                       x["severity"] == "blocker")[:350])
     draft = assemble_direction(base, state)
     errors, warnings = director_v2.validate(base, draft)
     _require(not errors, "merged direction invalid: " + "; ".join(errors[:8]))
     book = director_workbook.compile_workbook(base, draft)
-    import agent_creative_review
-    book["creative_quality_review"] = agent_creative_review.review_team(state)
+    creative = agent_creative_review.review_team(state)
+    book["creative_quality_review"] = creative
+    book["independent_handoff_audit"] = handoffs
+    review_ready = (bool(book["director_review"]["production_blueprint_ready"]) and
+                    creative["status"] == "structured_evidence_present" and
+                    handoffs["status"] == "no_explicit_conflicts")
+    if strict:
+        _require(review_ready,
+                 "strict director handoff requires complete blueprint and no open creative review")
+    book["team_delivery_gate"] = {
+        "status": "ready_for_human_review" if review_ready else "draft_needs_review",
+        "hard_conflicts": 0, "creative_review_findings": len(creative["findings"]),
+        "blueprint_complete": bool(book["director_review"]["production_blueprint_ready"]),
+        "automated_evidence_checked": True, "human_approved": False,
+        "actual_video_approved": False, "paid_api_authorized": False}
     book["team_handoff"] = {
         "specialist_task_revisions": {k: v["revision"] for k, v in
                                       state["tasks"].items()},
@@ -369,6 +416,31 @@ def compile_team_workbook(base, state):
         "human_approved": False, "llm_calls_executed": False,
         "paid_media_generated": False}
     return book
+
+
+def propose_director_revisions(base, state, *, include_reviews=False):
+    """Generate non-mutating revision proposals from independent QA evidence."""
+    import agent_handoff_audit
+    _check_state(state)
+    _require(fingerprint(base) == state["base_digest"],
+             "base digest mismatch; cannot propose revisions")
+    return agent_handoff_audit.propose_revisions(
+        state, base, include_reviews=include_reviews)
+
+
+def request_planned_revision(base, state, proposal, *, showrunner_approved=False):
+    """Apply only a current, approved suggestion via the existing revision DAG.
+
+    The approval flag records an orchestration decision, NOT a verified human
+    identity, model-payment authorization or user signoff.
+    """
+    _require(showrunner_approved is True, "showrunner decision required")
+    _require(isinstance(proposal, dict), "revision proposal must be an object")
+    options = (propose_director_revisions(base, state)["proposals"] +
+               propose_director_revisions(base, state, include_reviews=True)["proposals"])
+    _require(proposal in options, "proposal no longer matches the current QA evidence")
+    return request_revision(state, proposal["task_id"], proposal["shot_ids"],
+                            proposal["reason"], source_task="director_final")
 
 
 def overview(state):
