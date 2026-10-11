@@ -1,6 +1,12 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 单次 DeepSeek 创意岗位真实调用准备（实际调用尚未授权）
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 十阶段真实模型接口覆盖（仅合成静态响应验收）
+
+完整 [DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md](DEEPSEEK_TEN_ROLE_LOCKED_PILOT.md) / `agent_live_crew.py` 让**锁定版本**的十阶段专业角色可以逐岗选择并独立发往 DeepSeek，专业岗位约束/来源/后期路径不变。内置单个任务+revision+模型+文章摘要+计划摘要+人民币预算预留的严格闸门。表演、摄影、声音三个阶段都交付后才允许剪辑动画；AI 技术后由独立 QA 检查声画、时间、来源；发生冲突不允许假审批。
+
+**所有测试均用合成虚构稿和模拟返回，零实际供应商调用。** 只证明调用代码/依赖、跨部门校验可执行，尚无真实模型的导演品质结论、未验证真实运行成本或 video 模型生成功能；不把用户普通“继续”解释为授权付费上传私人文案。
+
+## 单次 DeepSeek 创意岗位真实调用准备（实际调用尚未授权）
 
 [DEEPSEEK_SINGLE_TASK_PILOT.md](DEEPSEEK_SINGLE_TASK_PILOT.md) / `agent_live_pilot.py` 提供固定 DeepSeek TLS 端点的**可用单任务请求代码**，严控每次岗位（首批仅 `director_brief`、`script_edit`），单集原文与 base 版本、逐次授权、模型费率预留、响应格式和导演专业 JSON 合同。真实调用前必须由可信私有审阅系统收集传输/费用许可，当前 ChatGPT 继续开发指令不得转化为任何自动发包；用户公开 GitHub 及现有 CI 只用模拟返回。
 
