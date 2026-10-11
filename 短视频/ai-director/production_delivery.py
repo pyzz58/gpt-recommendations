@@ -23,6 +23,7 @@ import agent_team as team
 import director_v2
 import director_workbook
 import editorial_review_lock as locks
+import creative_production_handoff as first_vision
 
 SCHEMA = "operator-video-production-bundle-v1"
 TARGETS = ("wan", "seedance")
@@ -215,9 +216,34 @@ def build_locked_crew_delivery(snapshot, episode_source, final_team_state):
         if isinstance(err, ProductionDeliveryError):
             raise
         raise ProductionDeliveryError("DELIVERY_CREW_QA_OR_COMPILE_BLOCKED") from None
-    return _make_bundle(
+    bundle = _make_bundle(
         base, direction, provenance="locked_ten_role_crew", crew_workbook=book,
         locked_digest=lock["plan_digest"], source_digest=lock["source_digest"])
+    # Preserve the original real director/editor creative intent in the
+    # exported operator pack, with the original source/plan hashes. The old
+    # assembler had dropped it when v0.1 transitioned to a new ten-role DAG.
+    editorial = first_vision.validate_locked_handoff(snapshot, episode_source)
+    initial_gaps = first_vision.inspect_preproduction(base, editorial)
+    designed = editorial["creative_concept"]["shot_designs"]
+    for job, vision in zip(bundle["shots"], designed):
+        _require(job["shot_id"] == vision["shot_id"],
+                 "DELIVERY_ORIGINAL_VISION_SHOT_ORDER_DRIFT")
+        job["first_director_editor_vision"] = {
+            key: deepcopy(vision[key]) for key in (
+                "visual_intention", "camera_intention", "light_intention",
+                "transition_intention", "reason", "observable_action")}
+        job["first_vision_is_unapproved_planning_proposal"] = True
+    bundle["creative_intent_provenance"] = {
+        "first_director_editor_intent_digest": snapshot["creative_handoff_digest"],
+        "original_plan_digest": snapshot["plan_digest"],
+        "source_digest": snapshot["source_digest"],
+        "initial_preproduction_gaps": initial_gaps,
+        "initial_gaps_not_proof_of_current_department_failures": True,
+        "actual_physical_references_verified": False,
+        "human_approved": False,
+        "real_video_feasibility_proven": False,
+    }
+    return bundle
 
 
 def render_operator_markdown(bundle):
@@ -249,6 +275,15 @@ def render_operator_markdown(bundle):
             "参考素材已提供：否，必须人工核验",
             "",
         ]
+        vision = shot.get("first_director_editor_vision")
+        if vision:
+            lines += [
+                "**第一轮导演与剧本编辑的原始创意依据（仅提案、未验收）：**",
+                "原始视觉意图：" + vision["visual_intention"],
+                "摄影原始构想：" + vision["camera_intention"],
+                "灯光原始构想：" + vision["light_intention"],
+                "相邻镜接力意图：" + vision["transition_intention"], "",
+            ]
         if shot["ai_video_prompt_candidates"]:
             for model, prompt in shot["ai_video_prompt_candidates"].items():
                 lines += [
