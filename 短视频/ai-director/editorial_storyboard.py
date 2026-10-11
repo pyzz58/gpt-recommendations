@@ -224,6 +224,33 @@ def validate_editorial_pitch(result, state, episode_source):
     return deepcopy(pitch)
 
 
+def submit_director_brief(result, episode_source, raw_json):
+    """Validate a supplied showrunner JSON response; no provider invocation."""
+    plan, state = _ensure_source(result, episode_source)
+    if team.ready(state) != ["director_brief"]:
+        raise CreativeContractError("CREATIVE_BRIEF_NOT_READY")
+    return roles.submit_role_output(
+        plan, state, "director_brief", raw_json,
+        source_text=episode_source)
+
+
+def submit_creative_script_edit(result, state, episode_source, raw_json):
+    """Atomic creative acceptance: check extended film pitch BEFORE advancing.
+
+    Generic crew roles need only their original fields. This stronger
+    editorial stage does not allow a missing/invalid shot design to silently
+    unblock director_lock; the input state is never mutated.
+    """
+    plan, bound = _ensure_source(result, episode_source)
+    if (state.get("base_digest") != bound["base_digest"] or
+            state.get("source_digest") != bound["source_digest"]):
+        raise CreativeContractError("CREATIVE_SCRIPT_STATE_MISMATCH")
+    proposed = roles.submit_role_output(
+        plan, state, "script_edit", raw_json, source_text=episode_source)
+    validate_editorial_pitch(result, proposed, episode_source)
+    return proposed
+
+
 def propose_directed_storyboard(result, state, episode_source):
     """Stage an alternate *not approved* shot plan from creative role output.
 
