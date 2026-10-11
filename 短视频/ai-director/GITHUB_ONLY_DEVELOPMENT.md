@@ -1,3 +1,7 @@
+## 私有创意保存门禁（2026-10-11）
+
+[PRIVATE_RESULT_CHECKPOINT_RECOVERY.md](PRIVATE_RESULT_CHECKPOINT_RECOVERY.md)：两个真实 HTTP DeepSeek 角色入口强制使用私人 `PrivateResultVault`；先账本 reserve，随后付费调用，完整源/岗位/请求 hash 绑定的 team 状态安全落盘，最后接受计费记录。模拟崩溃可对有效已存储结果进行**人工零网络**恢复。公开 GitHub 不存私稿/私有检查点；一次性 runner 的临时 Vault 不计作长期存储。AUD-002 直到真正私有托管、身份核验、账单对账前继续 P0 OPEN。
+
 ## 持续全链路审计（2026-10-11）
 
 现将 [DEEP_AUDIT_MASTER.md](DEEP_AUDIT_MASTER.md)、[AUDIT_FINDINGS.json](AUDIT_FINDINGS.json) 与 [audit_registry.py](audit_registry.py) 设为持续工程验收来源；GitHub Actions 只运行离线合成任务，使用 Apache-2.0 `coverage.py` 固定版进行多模块分支覆盖测量，公开制品只有安全的统计与合成工作单。每一项问题必须有状态、证据、优先级、修复提交与回归。重大问题以 GitHub Issues 为主，未解决的 P0 恢复缺口不得因别的模块测试通过而隐藏。仍不在 Mac 安装、同步或部署，不自动发生私人文案传输或收费 API。
