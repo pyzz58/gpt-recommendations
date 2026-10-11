@@ -49,6 +49,9 @@ def inspect_locked_role(snapshot, episode_source, state, task_id):
                "PILOT_LOCKED_SOURCE_VERSION_MISMATCH")
         _check(team.fingerprint(base) == locked["plan_digest"],
                "PILOT_LOCKED_BASE_DRIFT")
+        _check(state.get("asset_reference_manifest_digest") ==
+               locked["asset_reference_manifest_digest"],
+               "PILOT_LOCKED_REFERENCE_VERSION_DRIFT")
         ready = team.ready(state)
     except pilot.PilotError:
         raise
@@ -75,6 +78,9 @@ def inspect_locked_role(snapshot, episode_source, state, task_id):
         "plan_digest": locked["plan_digest"],
         "stage_ready": True,
         "first_director_vision_bound": True,
+        "asset_reference_manifest_bound": (
+            locked["asset_reference_manifest_digest"] is not None),
+        "asset_reference_visual_identity_verified": False,
         "preproduction_gap_count": snapshot["production_preflight"]["issue_count"],
         "preflight_review": status,
         "actor_camera_audio_work_fully_verified": False,
@@ -122,7 +128,8 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
     try:
         prompt = roles.build_role_messages(
             base, state, task_id, source_text=episode_source,
-            editorial_handoff=snapshot["creative_handoff"])
+            editorial_handoff=snapshot["creative_handoff"],
+            reference_manifest=snapshot.get("asset_reference_manifest"))
         envelope = wire.prepare_chat_request(
             prompt["messages"], model=config["model"],
             max_output_tokens=config["max_output_tokens"])
