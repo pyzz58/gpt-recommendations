@@ -1,6 +1,12 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 总导演 + 剧本编辑：从原文占位到可执行意图的衔接
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 逐镜审阅与锁定具体制作版本
+
+[EDITORIAL_REVIEW_AND_LOCK.md](EDITORIAL_REVIEW_AND_LOCK.md) / `editorial_review_lock.py` 完成剧本编辑后的用户审核接口：导出逐镜的动作/摄影/原文/时码，要求每镜 `keep/revise/reject`；单独核对省略段落、`needs_review` 事实、全片创作理念及每项改稿建议。用户尚未完成决定时所有选项是 `None`。请求修改产生针对具体镜头的返工说明，且不能锁定；一旦**结构上**全部接受才生成绑定原文、候选计划、决策哈希的规划快照。
+
+此处绝不声称“作者身份已经验证”——纯离线 JSON 审阅决策无法鉴别谁作出的选择。锁定快照仅供规划，有独立可信的私有授权系统之后才能决定是否真正向 DeepSeek 传输原稿和花钱。旧十阶段专业编排只有在新计划 `base_digest` 正确时才可继续准备任务，仍未自动生成专业电影制作包。
+
+## 总导演 + 剧本编辑：从原文占位到可执行意图的衔接
 
 [EDITORIAL_CREATIVE_BRIDGE.md](EDITORIAL_CREATIVE_BRIDGE.md) / `editorial_storyboard.py` 在原 `article_intake.py` 之后新增 **正式总导演首包与剧本编辑创意扩展**。对已选中的单集，基于现有 `agent_role_contracts` 的角色合同生成新的 `storyboard_pitch`：每镜必须有独立的视觉构想、可观察动作、镜头/灯光逻辑、镜间衔接、后期画面数字来源。严格 `submit_creative_script_edit` 在提交原团队 DAG 前额外检查，不让无效扩展自动解锁 `director_lock`。
 
