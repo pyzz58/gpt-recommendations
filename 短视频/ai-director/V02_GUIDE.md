@@ -11,6 +11,8 @@ cd '短视频/ai-director'
 python3 -m unittest discover -s tests -v
 ```
 
+> **当前暂停本地运行**：2026-10-11 起本项目只在 GitHub 研发，以下历史命令仅供将来用户明确授权部署后参考。现代混合制作路线的校验与编译规则参见 [PRODUCTION_ROUTING.md](PRODUCTION_ROUTING.md)，不要再把全部概念 AI 镜头当作付费视频镜头。
+
 ## A. 直接看升级后的《戒烟》演示
 
 ```bash
