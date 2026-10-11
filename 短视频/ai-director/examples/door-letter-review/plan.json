@@ -1,0 +1,662 @@
+{
+  "schema_version": "0.1",
+  "title": "门后的信｜60秒导演审阅样例",
+  "platform": "douyin",
+  "aspect_ratio": "9:16",
+  "duration": 60,
+  "risk_domain": "none",
+  "core_message": "林禾听到敲击、发现信，断电后选择收起未拆的信，再面对紧闭的门；不解释声音来源。",
+  "audience": "喜欢克制悬念的短片观众",
+  "editorial": {
+    "hook": "关门后，三下轻敲仍然响起。",
+    "narration_script": "",
+    "omissions": [],
+    "adaptation_note": "保留原故事全部事件；采用无旁白无对白表达。衣服、机位、时间分配与既有窗光为制作设定，不增加敲门者身份或结局。"
+  },
+  "claims": [],
+  "visual_bible": {
+    "style": "克制写实悬念，非恐怖怪物片",
+    "palette": "灰蓝傍晚与低饱和暖顶灯；断电后仅保留冷暗轮廓",
+    "lighting": "LOC01：从客厅朝入户门看，门在画面左后，木桌在画面右前，窗在画面右后；门至桌约两步。全部机位留在门—桌连线的同一侧。顶灯暖光，窗外傍晚冷光全程存在；28秒仅顶灯熄灭，门从2秒起始终关闭，无门缝新光。",
+    "typography": "正片无字幕和标题；作品名仅用于文件与外部封面",
+    "avoid": "不生成文字、不添加人影、不移动门桌、不额外敲门"
+  },
+  "characters": [
+    {
+      "id": "CHAR01",
+      "description": "CHAR01 林禾，成年女性，黑色齐肩直发、无首饰、灰色长外套、深色内搭；外套右侧有可容纳信封的直插口袋。此为制作设定，参考图尚未生成。",
+      "wardrobe": "灰色长外套、深色内搭、深色长裤，右侧直插口袋",
+      "identity_anchor": "同一正侧脸、发型与衣服参考；尚未制作参考图"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "LOC01",
+      "description": "LOC01：从客厅朝入户门看，门在画面左后，木桌在画面右前，窗在画面右后；门至桌约两步。全部机位留在门—桌连线的同一侧。顶灯暖光，窗外傍晚冷光全程存在；28秒仅顶灯熄灭，门从2秒起始终关闭，无门缝新光。"
+    }
+  ],
+  "continuity_contract": {
+    "version": 1,
+    "coverage": "complete",
+    "props": {
+      "ENV01": {
+        "initial": "LOC01:table",
+        "label": "ENV01 米白无字信封，约16×11厘米，封口完整，右上有一道斜折痕；起初封口朝上，长边平行桌沿；始终一封、不拆开。"
+      },
+      "DOOR01": {
+        "initial": "LOC01:door_frame",
+        "label": "木门固定左后；2秒关闭，此后不再开门"
+      }
+    },
+    "actors": {
+      "CHAR01": {
+        "initial": "LOC01:threshold"
+      }
+    }
+  },
+  "shots": [
+    {
+      "id": "S01",
+      "start": 0,
+      "duration": 7,
+      "purpose": "门已关，声音还在",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01"
+      ],
+      "scene_id": "LOC01",
+      "visual": "林禾站在门内，左手握门把，门尚留一条缝；门关闭，左手仍握把手，目光开始转向画面右侧",
+      "action": {
+        "start": "林禾站在门内，左手握门把，门尚留一条缝",
+        "action": "左手缓慢带上门，门扇在2秒合拢；三下敲击后保持握门姿势两秒；只转眼和头，看向画面右侧木桌",
+        "micro_action": "最后一次敲击后下颌轻收，肩膀停止放松",
+        "reaction": "熟悉环境突然不可信",
+        "end": "门关闭，左手仍握把手，目光开始转向画面右侧"
+      },
+      "camera": {
+        "shot_size": "腰部以上中景",
+        "angle": "门桌连线同侧，依分镜指定角度",
+        "lens": "35mm",
+        "movement": "固定；不在敲击时突然推镜",
+        "composition": "门把与左手、脸同时可读"
+      },
+      "art": {
+        "lighting": "LOC01：从客厅朝入户门看，门在画面左后，木桌在画面右前，窗在画面右后；门至桌约两步。全部机位留在门—桌连线的同一侧。顶灯暖光，窗外傍晚冷光全程存在；28秒仅顶灯熄灭，门从2秒起始终关闭，无门缝新光。",
+        "palette": "灰蓝傍晚与低饱和暖顶灯；断电后仅保留冷暗轮廓",
+        "set_props": "ENV01 米白无字信封，约16×11厘米，封口完整，右上有一道斜折痕；起初封口朝上，长边平行桌沿；始终一封、不拆开。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "无文字叠加"
+      },
+      "audio": {
+        "music": "全片不配BGM；不用音乐代替敲击",
+        "sfx": "门锁轻合，短促无混响夸张；第一下轻木敲；第二下轻木敲；第三下轻木敲",
+        "voice": "无对白无旁白",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "",
+        "style": "无字幕",
+        "placement": "不覆盖画面"
+      },
+      "transition": "hard_cut",
+      "continuity": "林禾站在门内，左手握门把，门尚留一条缝 → 门关闭，左手仍握把手，目光开始转向画面右侧",
+      "continuity_state": {
+        "props_before": {
+          "ENV01": "LOC01:table",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:threshold"
+        },
+        "prop_moves": [],
+        "actor_moves": [],
+        "props_after": {
+          "ENV01": "LOC01:table",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:threshold"
+        }
+      }
+    },
+    {
+      "id": "S02",
+      "start": 7,
+      "duration": 7,
+      "purpose": "桌上多了一封信",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01"
+      ],
+      "scene_id": "LOC01",
+      "visual": "林禾左肩占左侧前景，桌和信在右侧中景；左手松开门把，身体正对木桌但尚未迈步",
+      "action": {
+        "start": "林禾左肩占左侧前景，桌和信在右侧中景",
+        "action": "展示门、人物、木桌的距离关系；林禾左手松开把手并垂下；肩膀缓缓朝木桌转正，双脚未动",
+        "micro_action": "视线停在信封，指节逐渐松开",
+        "reaction": "警觉转向具体物件",
+        "end": "左手松开门把，身体正对木桌但尚未迈步"
+      },
+      "camera": {
+        "shot_size": "肩后中远景",
+        "angle": "门桌连线同侧，依分镜指定角度",
+        "lens": "35mm",
+        "movement": "固定；保持门框左、桌子右",
+        "composition": "信封是桌上唯一散放物"
+      },
+      "art": {
+        "lighting": "LOC01：从客厅朝入户门看，门在画面左后，木桌在画面右前，窗在画面右后；门至桌约两步。全部机位留在门—桌连线的同一侧。顶灯暖光，窗外傍晚冷光全程存在；28秒仅顶灯熄灭，门从2秒起始终关闭，无门缝新光。",
+        "palette": "灰蓝傍晚与低饱和暖顶灯；断电后仅保留冷暗轮廓",
+        "set_props": "ENV01 米白无字信封，约16×11厘米，封口完整，右上有一道斜折痕；起初封口朝上，长边平行桌沿；始终一封、不拆开。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "无文字叠加"
+      },
+      "audio": {
+        "music": "全片不配BGM；不用音乐代替敲击",
+        "sfx": "门把复位轻响",
+        "voice": "无对白无旁白",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "",
+        "style": "无字幕",
+        "placement": "不覆盖画面"
+      },
+      "transition": "hard_cut",
+      "continuity": "林禾左肩占左侧前景，桌和信在右侧中景 → 左手松开门把，身体正对木桌但尚未迈步",
+      "continuity_state": {
+        "props_before": {
+          "ENV01": "LOC01:table",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:threshold"
+        },
+        "prop_moves": [],
+        "actor_moves": [],
+        "props_after": {
+          "ENV01": "LOC01:table",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:threshold"
+        }
+      }
+    },
+    {
+      "id": "S03",
+      "start": 14,
+      "duration": 8,
+      "purpose": "两步到桌边",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01"
+      ],
+      "scene_id": "LOC01",
+      "visual": "林禾站在画面左侧门边，信在右侧桌上；站稳桌边，右手食指停在封口上方约一厘米",
+      "action": {
+        "start": "林禾站在画面左侧门边，信在右侧桌上",
+        "action": "林禾由门边向桌边走两步；在桌沿前停稳，不撞桌；右手伸出，食指停在封口上方",
+        "micro_action": "最后一步缩短，手伸出后再次迟疑",
+        "reaction": "明知不安仍想弄清楚",
+        "end": "站稳桌边，右手食指停在封口上方约一厘米"
+      },
+      "camera": {
+        "shot_size": "膝上中景",
+        "angle": "门桌连线同侧，依分镜指定角度",
+        "lens": "50mm",
+        "movement": "固定侧机位；走位由左向右，不反打",
+        "composition": "脚步结束后才开始伸手"
+      },
+      "art": {
+        "lighting": "LOC01：从客厅朝入户门看，门在画面左后，木桌在画面右前，窗在画面右后；门至桌约两步。全部机位留在门—桌连线的同一侧。顶灯暖光，窗外傍晚冷光全程存在；28秒仅顶灯熄灭，门从2秒起始终关闭，无门缝新光。",
+        "palette": "灰蓝傍晚与低饱和暖顶灯；断电后仅保留冷暗轮廓",
+        "set_props": "ENV01 米白无字信封，约16×11厘米，封口完整，右上有一道斜折痕；起初封口朝上，长边平行桌沿；始终一封、不拆开。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "无文字叠加"
+      },
+      "audio": {
+        "music": "全片不配BGM；不用音乐代替敲击",
+        "sfx": "第一步软鞋落地；第二步落地",
+        "voice": "无对白无旁白",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "",
+        "style": "无字幕",
+        "placement": "不覆盖画面"
+      },
+      "transition": "hard_cut",
+      "continuity": "林禾站在画面左侧门边，信在右侧桌上 → 站稳桌边，右手食指停在封口上方约一厘米",
+      "continuity_state": {
+        "props_before": {
+          "ENV01": "LOC01:table",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:threshold"
+        },
+        "prop_moves": [],
+        "actor_moves": [
+          {
+            "order": 0,
+            "actor": "CHAR01",
+            "from": "LOC01:threshold",
+            "to": "LOC01:table_near_edge",
+            "kind": "walk",
+            "visible": true,
+            "note": "14–17秒，门边两步走到桌边"
+          }
+        ],
+        "props_after": {
+          "ENV01": "LOC01:table",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:table_near_edge"
+        }
+      }
+    },
+    {
+      "id": "S04",
+      "start": 22,
+      "duration": 7,
+      "purpose": "触到封口，灯灭",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01"
+      ],
+      "scene_id": "LOC01",
+      "visual": "米白信封封口朝上，右食指在封口上方一厘米；画面已黑一秒，信封仍留桌上，未被拿起或拆开",
+      "action": {
+        "start": "米白信封封口朝上，右食指在封口上方一厘米",
+        "action": "保持特写让斜折痕可读；右食指缓缓下降，在镜内6秒刚触到封口中段；顶灯熄灭，画面在两帧内落到黑",
+        "micro_action": "仅食指指腹轻触，不用指甲撬封口",
+        "reaction": "好奇被突然打断",
+        "end": "画面已黑一秒，信封仍留桌上，未被拿起或拆开"
+      },
+      "camera": {
+        "shot_size": "手与信封特写",
+        "angle": "门桌连线同侧，依分镜指定角度",
+        "lens": "85mm",
+        "movement": "锁定俯角约35度；不环绕",
+        "composition": "右上斜折痕和未开启的封口"
+      },
+      "art": {
+        "lighting": "LOC01：从客厅朝入户门看，门在画面左后，木桌在画面右前，窗在画面右后；门至桌约两步。全部机位留在门—桌连线的同一侧。顶灯暖光，窗外傍晚冷光全程存在；28秒仅顶灯熄灭，门从2秒起始终关闭，无门缝新光。",
+        "palette": "灰蓝傍晚与低饱和暖顶灯；断电后仅保留冷暗轮廓",
+        "set_props": "ENV01 米白无字信封，约16×11厘米，封口完整，右上有一道斜折痕；起初封口朝上，长边平行桌沿；始终一封、不拆开。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "无文字叠加"
+      },
+      "audio": {
+        "music": "全片不配BGM；不用音乐代替敲击",
+        "sfx": "顶灯轻微电流声截断，不加爆炸或雷声",
+        "voice": "无对白无旁白",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "",
+        "style": "无字幕",
+        "placement": "不覆盖画面"
+      },
+      "transition": "hard_cut",
+      "continuity": "米白信封封口朝上，右食指在封口上方一厘米 → 画面已黑一秒，信封仍留桌上，未被拿起或拆开",
+      "continuity_state": {
+        "props_before": {
+          "ENV01": "LOC01:table",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:table_near_edge"
+        },
+        "prop_moves": [],
+        "actor_moves": [],
+        "props_after": {
+          "ENV01": "LOC01:table",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:table_near_edge"
+        }
+      }
+    },
+    {
+      "id": "S05",
+      "start": 29,
+      "duration": 6,
+      "purpose": "黑暗里的三下",
+      "narration": "",
+      "visual_type": "text_card",
+      "claim_ids": [],
+      "character_ids": [],
+      "scene_id": "LOC01",
+      "visual": "承接上一镜全黑；第三下在镜内2.2秒响起，允许1秒自然尾音，再留2.8秒无敲击空白",
+      "action": {
+        "start": "承接上一镜全黑",
+        "action": "保持黑场，不显示字幕；黑场内再次听到三下轻敲；继续黑场，让尾音自然消失",
+        "micro_action": "人物动作不在画面中，也不在黑场暗自移动道具",
+        "reaction": "看不见比看见更紧张",
+        "end": "第三下在镜内2.2秒响起，允许1秒自然尾音，再留2.8秒无敲击空白"
+      },
+      "camera": {
+        "shot_size": "纯黑画面",
+        "angle": "门桌连线同侧，依分镜指定角度",
+        "lens": "50mm",
+        "movement": "无相机运动，后期黑场",
+        "composition": "三下声音的位置与间距"
+      },
+      "art": {
+        "lighting": "LOC01：从客厅朝入户门看，门在画面左后，木桌在画面右前，窗在画面右后；门至桌约两步。全部机位留在门—桌连线的同一侧。顶灯暖光，窗外傍晚冷光全程存在；28秒仅顶灯熄灭，门从2秒起始终关闭，无门缝新光。",
+        "palette": "灰蓝傍晚与低饱和暖顶灯；断电后仅保留冷暗轮廓",
+        "set_props": "ENV01 米白无字信封，约16×11厘米，封口完整，右上有一道斜折痕；起初封口朝上，长边平行桌沿；始终一封、不拆开。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "无文字叠加"
+      },
+      "audio": {
+        "music": "全片不配BGM；不用音乐代替敲击",
+        "sfx": "第一下轻木敲；第二下轻木敲；第三下轻木敲",
+        "voice": "无对白无旁白",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "",
+        "style": "无字幕",
+        "placement": "不覆盖画面"
+      },
+      "transition": "hard_cut",
+      "continuity": "承接上一镜全黑 → 第三下在镜内2.2秒响起，允许1秒自然尾音，再留2.8秒无敲击空白",
+      "continuity_state": {
+        "props_before": {
+          "ENV01": "LOC01:table",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:table_near_edge"
+        },
+        "prop_moves": [],
+        "actor_moves": [],
+        "props_after": {
+          "ENV01": "LOC01:table",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:table_near_edge"
+        }
+      }
+    },
+    {
+      "id": "S06",
+      "start": 35,
+      "duration": 9,
+      "purpose": "拿走，不拆开",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01"
+      ],
+      "scene_id": "LOC01",
+      "visual": "信封还在桌面，右食指仍接触封口；右手从信封下缘托住整封信，停在右侧腰前",
+      "action": {
+        "start": "信封还在桌面，右食指仍接触封口",
+        "action": "暗部曝光由黑平缓提升到能认出信的轮廓；右手退离封口，从下缘夹住并抬起信封；信封移到腰前并停住，桌面原位置空出",
+        "micro_action": "食指先离封口再抓下缘，避免看起来在撕封条",
+        "reaction": "惊惧中作出决定",
+        "end": "右手从信封下缘托住整封信，停在右侧腰前"
+      },
+      "camera": {
+        "shot_size": "右手与信封近景",
+        "angle": "门桌连线同侧，依分镜指定角度",
+        "lens": "85mm",
+        "movement": "固定；不跟随信封离开画面",
+        "composition": "桌面→右手的完整拾取路径"
+      },
+      "art": {
+        "lighting": "LOC01：从客厅朝入户门看，门在画面左后，木桌在画面右前，窗在画面右后；门至桌约两步。全部机位留在门—桌连线的同一侧。顶灯暖光，窗外傍晚冷光全程存在；28秒仅顶灯熄灭，门从2秒起始终关闭，无门缝新光。",
+        "palette": "灰蓝傍晚与低饱和暖顶灯；断电后仅保留冷暗轮廓",
+        "set_props": "ENV01 米白无字信封，约16×11厘米，封口完整，右上有一道斜折痕；起初封口朝上，长边平行桌沿；始终一封、不拆开。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "无文字叠加"
+      },
+      "audio": {
+        "music": "全片不配BGM；不用音乐代替敲击",
+        "sfx": "纸张与桌面分离的轻摩擦；外套轻微摩擦",
+        "voice": "无对白无旁白",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "",
+        "style": "无字幕",
+        "placement": "不覆盖画面"
+      },
+      "transition": "hard_cut",
+      "continuity": "信封还在桌面，右食指仍接触封口 → 右手从信封下缘托住整封信，停在右侧腰前",
+      "continuity_state": {
+        "props_before": {
+          "ENV01": "LOC01:table",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:table_near_edge"
+        },
+        "prop_moves": [
+          {
+            "order": 0,
+            "prop": "ENV01",
+            "from": "LOC01:table",
+            "to": "CHAR01:hand",
+            "kind": "pickup",
+            "visible": true,
+            "note": "右手完整拿起"
+          }
+        ],
+        "actor_moves": [],
+        "props_after": {
+          "ENV01": "CHAR01:hand",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:table_near_edge"
+        }
+      }
+    },
+    {
+      "id": "S07",
+      "start": 44,
+      "duration": 8,
+      "purpose": "收入口袋",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01"
+      ],
+      "scene_id": "LOC01",
+      "visual": "右手托信停在右侧口袋前，信封仍完整；信封完全进入右侧口袋，右手抽出自然下垂",
+      "action": {
+        "start": "右手托信停在右侧口袋前，信封仍完整",
+        "action": "右手把信封短边对准已自然张开的口袋口；右手将信缓慢滑入口袋，直到纸边完全消失；右手松开并抽出，衣料落回",
+        "micro_action": "手掌护住纸面，放入后停一下才抽手",
+        "reaction": "用一个小动作保护自己",
+        "end": "信封完全进入右侧口袋，右手抽出自然下垂"
+      },
+      "camera": {
+        "shot_size": "右侧腰部局部",
+        "angle": "门桌连线同侧，依分镜指定角度",
+        "lens": "50mm",
+        "movement": "固定侧前机位，右手始终可见",
+        "composition": "信封从可见到被衣料遮挡的连续过程"
+      },
+      "art": {
+        "lighting": "LOC01：从客厅朝入户门看，门在画面左后，木桌在画面右前，窗在画面右后；门至桌约两步。全部机位留在门—桌连线的同一侧。顶灯暖光，窗外傍晚冷光全程存在；28秒仅顶灯熄灭，门从2秒起始终关闭，无门缝新光。",
+        "palette": "灰蓝傍晚与低饱和暖顶灯；断电后仅保留冷暗轮廓",
+        "set_props": "ENV01 米白无字信封，约16×11厘米，封口完整，右上有一道斜折痕；起初封口朝上，长边平行桌沿；始终一封、不拆开。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "无文字叠加"
+      },
+      "audio": {
+        "music": "全片不配BGM；不用音乐代替敲击",
+        "sfx": "信纸轻擦外套；布料回落",
+        "voice": "无对白无旁白",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "",
+        "style": "无字幕",
+        "placement": "不覆盖画面"
+      },
+      "transition": "hard_cut",
+      "continuity": "右手托信停在右侧口袋前，信封仍完整 → 信封完全进入右侧口袋，右手抽出自然下垂",
+      "continuity_state": {
+        "props_before": {
+          "ENV01": "CHAR01:hand",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:table_near_edge"
+        },
+        "prop_moves": [
+          {
+            "order": 0,
+            "prop": "ENV01",
+            "from": "CHAR01:hand",
+            "to": "LOC01:right_coat_pocket",
+            "kind": "place",
+            "visible": true,
+            "note": "林禾外套右口袋，随人物保持在桌边"
+          }
+        ],
+        "actor_moves": [],
+        "props_after": {
+          "ENV01": "LOC01:right_coat_pocket",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:table_near_edge"
+        }
+      }
+    },
+    {
+      "id": "S08",
+      "start": 52,
+      "duration": 8,
+      "purpose": "转向那扇门",
+      "narration": "",
+      "visual_type": "ai_video",
+      "claim_ids": [],
+      "character_ids": [
+        "CHAR01"
+      ],
+      "scene_id": "LOC01",
+      "visual": "林禾在桌边面朝右，双手下垂，信在右口袋；头和上身朝向画面左侧关闭的门，凝视两秒后结束",
+      "action": {
+        "start": "林禾在桌边面朝右，双手下垂，信在右口袋",
+        "action": "视线先移向画面左侧，头部尚未完全转动；头与肩缓慢转向门，双脚不移动；视线定住在关闭的门上，画面停留两秒",
+        "micro_action": "先转眼，再转头，最后肩部跟上；不做突然惊恐表情",
+        "reaction": "问题留在门后",
+        "end": "头和上身朝向画面左侧关闭的门，凝视两秒后结束"
+      },
+      "camera": {
+        "shot_size": "胸上侧面近景，门在左后虚化可辨",
+        "angle": "门桌连线同侧，依分镜指定角度",
+        "lens": "50mm",
+        "movement": "固定；最后两秒不再推近",
+        "composition": "她的视线终点必须是门"
+      },
+      "art": {
+        "lighting": "LOC01：从客厅朝入户门看，门在画面左后，木桌在画面右前，窗在画面右后；门至桌约两步。全部机位留在门—桌连线的同一侧。顶灯暖光，窗外傍晚冷光全程存在；28秒仅顶灯熄灭，门从2秒起始终关闭，无门缝新光。",
+        "palette": "灰蓝傍晚与低饱和暖顶灯；断电后仅保留冷暗轮廓",
+        "set_props": "ENV01 米白无字信封，约16×11厘米，封口完整，右上有一道斜折痕；起初封口朝上，长边平行桌沿；始终一封、不拆开。"
+      },
+      "graphics": {
+        "type": "none",
+        "text": "",
+        "animation": "",
+        "placement": "无文字叠加"
+      },
+      "audio": {
+        "music": "全片不配BGM；不用音乐代替敲击",
+        "sfx": "低电平连续室内底噪",
+        "voice": "无对白无旁白",
+        "pause_before": 0
+      },
+      "subtitles": {
+        "text": "",
+        "style": "无字幕",
+        "placement": "不覆盖画面"
+      },
+      "transition": "hard_cut",
+      "continuity": "林禾在桌边面朝右，双手下垂，信在右口袋 → 头和上身朝向画面左侧关闭的门，凝视两秒后结束",
+      "continuity_state": {
+        "props_before": {
+          "ENV01": "LOC01:right_coat_pocket",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_before": {
+          "CHAR01": "LOC01:table_near_edge"
+        },
+        "prop_moves": [],
+        "actor_moves": [],
+        "props_after": {
+          "ENV01": "LOC01:right_coat_pocket",
+          "DOOR01": "LOC01:door_frame"
+        },
+        "actors_after": {
+          "CHAR01": "LOC01:table_near_edge"
+        }
+      }
+    }
+  ],
+  "production": {
+    "voice": "无旁白、无对白；敲击与动作拟音承担叙事",
+    "music_license_check": true,
+    "asset_license_check": true,
+    "publishing_status": "review_required"
+  },
+  "authorship": {
+    "authorship": "CURRENT_CONVERSATION_ASSISTANT_AUTHORED_CANDIDATE",
+    "real_deepseek_calls": 0,
+    "ten_role_live_pipeline_executed": false,
+    "human_approved": false,
+    "media_generated": false,
+    "source_file": "source.md",
+    "source_sha256": "390f4c54210253a65361f3fd67dddfb4d5e504345768b36d4ce8228a183943c7"
+  }
+}

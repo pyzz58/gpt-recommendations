@@ -1,0 +1,52 @@
+{
+  "base_and_direction_errors": [],
+  "warnings": [
+    "S01: directing not yet marked reviewed",
+    "S02: directing not yet marked reviewed",
+    "S03: directing not yet marked reviewed",
+    "S04: directing not yet marked reviewed",
+    "S05: directing not yet marked reviewed",
+    "S06: directing not yet marked reviewed",
+    "S07: directing not yet marked reviewed",
+    "S08: directing not yet marked reviewed"
+  ],
+  "physical_continuity_findings": [],
+  "director_review": {
+    "creative_design_complete": true,
+    "editor_handoff_ready": true,
+    "editor_handoff_pending": 0,
+    "narrative_handoff_ready": true,
+    "narrative_handoff_pending": 0,
+    "narrative_handoff_findings": [],
+    "editorial_specificity_review_required": false,
+    "editorial_specificity_findings": [],
+    "shootability_structure_ready": true,
+    "shootability_blockers": 0,
+    "shootability_pending": 0,
+    "shootability_review_signals": 0,
+    "production_blueprint_ready": true,
+    "unresolved": 0,
+    "findings": [],
+    "handoff_findings": [],
+    "timing_review_findings": [],
+    "technical_warnings": [
+      "S01: directing not yet marked reviewed",
+      "S02: directing not yet marked reviewed",
+      "S03: directing not yet marked reviewed",
+      "S04: directing not yet marked reviewed",
+      "S05: directing not yet marked reviewed",
+      "S06: directing not yet marked reviewed",
+      "S07: directing not yet marked reviewed",
+      "S08: directing not yet marked reviewed"
+    ]
+  },
+  "authorship": {
+    "authorship": "CURRENT_CONVERSATION_ASSISTANT_AUTHORED_CANDIDATE",
+    "real_deepseek_calls": 0,
+    "ten_role_live_pipeline_executed": false,
+    "human_approved": false,
+    "media_generated": false,
+    "source_file": "source.md",
+    "source_sha256": "390f4c54210253a65361f3fd67dddfb4d5e504345768b36d4ce8228a183943c7"
+  }
+}

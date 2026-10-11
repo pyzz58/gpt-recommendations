@@ -1,3 +1,7 @@
+## 2026-10-12（新西兰时间）：完整导演样例优先
+
+本轮完成 [60 秒 / 8 镜导演候选](examples/door-letter-review/director_workbook.md) 和 [当前计划](PRODUCT_REVIEW_PLAN.md)，复用已有编译器，无运行代码或第三方依赖变更。基础/专业稿、连续性、严格编译与源文/产物一致性在隔离 Linux 验证通过；仍保留 8 项未审阅提示。本轮零新增 DeepSeek 调用、无媒体生成、无 Mac 部署。历史 P0 继续阻断真实生产，但不阻断公开虚构文字方案开发。
+
 ## 2026-10-11 恢复安全复验：AUD-023 / AUD-024 / AUD-025
 
 代码提交 `3f021015079f840b58ebeebde82ad5020d6a54d6`。隔离 Linux/Python 3.12 全量 **571 tests PASS**，新增 7 个故障/恢复测试。GitHub Linux/Python 3.11 CI 同样 **571 tests PASS**，受测模块总覆盖率 **85%**；证据见 [run 38121233769](https://github.com/pyzz58/gpt-recommendations/actions/runs/38121233769)。
