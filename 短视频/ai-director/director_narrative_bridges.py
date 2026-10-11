@@ -7,8 +7,6 @@ No import of media libraries, no model calls, no downloads, no paid APIs.
 """
 from __future__ import annotations
 
-import re
-
 CUT_TYPES = {"cut", "match_action", "match_gaze", "match_shape",
              "contrast", "reveal", "establish", "intentional_jump"}
 TEMPO_CHANGES = {"accelerate", "decelerate", "hold", "contrast"}
@@ -88,7 +86,7 @@ def review(base, direction, route_fn):
                          "information_change"):
                 valid = needed(left_id, right_id, cut.get(name),
                                "cut_intention." + name) and valid
-            if cut.get("cut_type") not in CUT_TYPES:
+            if not isinstance(cut.get("cut_type"), str) or cut["cut_type"] not in CUT_TYPES:
                 issue(left_id, right_id, "CUT_TYPE_INVALID", "blocker",
                       "cut_intention.cut_type must name a recognized edit intent")
                 valid = False
@@ -98,7 +96,7 @@ def review(base, direction, route_fn):
                          "tempo_reason"):
                 valid = needed(left_id, right_id, emotion.get(name),
                                "emotion_pacing." + name) and valid
-            if emotion.get("tempo_change") not in TEMPO_CHANGES:
+            if not isinstance(emotion.get("tempo_change"), str) or emotion["tempo_change"] not in TEMPO_CHANGES:
                 issue(left_id, right_id, "TEMPO_INVALID", "blocker",
                       "emotion_pacing.tempo_change must be an explicit choice")
                 valid = False
@@ -117,7 +115,7 @@ def review(base, direction, route_fn):
                          "axis_or_gaze_rule", "motion_or_prop_link"):
                 valid = needed(left_id, right_id, visual.get(name),
                                "visual_handoff." + name) and valid
-            if visual.get("relation") not in CUT_TYPES:
+            if not isinstance(visual.get("relation"), str) or visual["relation"] not in CUT_TYPES:
                 issue(left_id, right_id, "VISUAL_RELATION_INVALID", "blocker",
                       "visual_handoff.relation must explain the shot connection")
                 valid = False
@@ -128,7 +126,7 @@ def review(base, direction, route_fn):
                 valid = needed(left_id, right_id, style.get(name),
                                "style_handoff." + name) and valid
             mode = style.get("strategy")
-            if mode not in STYLE_HANDOFFS:
+            if not isinstance(mode, str) or mode not in STYLE_HANDOFFS:
                 issue(left_id, right_id, "STYLE_STRATEGY_INVALID", "blocker",
                       "style_handoff.strategy must be preserve/grade_to_match/"
                       "graphic_match/motivated_contrast")
