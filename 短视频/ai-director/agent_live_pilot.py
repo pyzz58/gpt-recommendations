@@ -429,7 +429,7 @@ class StaticHTTPSFrame:
 
 def run_one_creative_task(intake, state, episode_source, journal,
                           permit=None, client=None, *, api_key=None,
-                          task_id=None):
+                          task_id=None, result_vault=None):
     """Perform at most ONE request, returning new state + nonprivate receipt.
 
     Call ONLY after private app verifies specific human consent, provider,
@@ -486,6 +486,18 @@ def run_one_creative_task(intake, state, episode_source, journal,
                "PILOT_PRIVATE_API_KEY_MISSING")
     else:
         _check(api_key is None, "PILOT_NO_SECRETS_IN_FIXTURE")
+    # Real paid responses must be recoverable from PRIVATE durable storage.
+    # LangGraph's checkpoint / pending-write separation is the inspiration,
+    # not a new dependency or automatic network replay.
+    if type(client) is DeepSeekHTTPSClient or result_vault is not None:
+        from private_result_checkpoint import PrivateResultVault
+        _check(type(result_vault) is PrivateResultVault and
+               result_vault.journal is journal,
+               "PILOT_PRIVATE_RESULT_VAULT_REQUIRED")
+        try:
+            result_vault.assert_existing_accepted_checkpoint_chain(state)
+        except Exception:
+            raise PilotError("PILOT_PRIVATE_RESULT_CHAIN_NOT_SAFE") from None
     record_id = journal.reserve(target, req["next_revision"], envelope)
     parsed = None
     try:
@@ -520,7 +532,17 @@ def run_one_creative_task(intake, state, episode_source, journal,
             journal.finish(record_id, "response_rejected",
                            usage=parsed["usage"] if parsed is not None else None)
         raise PilotError("PILOT_RESPONSE_REJECTED_NO_RETRY") from None
-    journal.finish(record_id, "response_accepted", usage=parsed["usage"])
+    # Checkpoint the *whole* validated state BEFORE marking the model call
+    # accepted in the billing journal; network is NEVER automatically retried.
+    if result_vault is not None:
+        try:
+            result_vault.save(record_id, state, updated, usage=parsed["usage"])
+        except Exception:
+            raise PilotError("PILOT_RESULT_CHECKPOINT_UNCERTAIN_NO_RETRY") from None
+    try:
+        journal.finish(record_id, "response_accepted", usage=parsed["usage"])
+    except Exception:
+        raise PilotError("PILOT_LEDGER_COMMIT_UNCERTAIN_RECOVERY_REQUIRED") from None
     return updated, {
         "kind": VERSION, "task_id": target, "revision": req["next_revision"],
         "model": config["model"], "provider": "deepseek",
