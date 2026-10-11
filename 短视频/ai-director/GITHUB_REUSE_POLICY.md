@@ -11,6 +11,10 @@
 - **P1 深化优先参考**：`Ironieser/CineCrew` 的 FilmDSL 人物/场景/道具/镜头统一规范，先限于数据合同对标；它属于新研究项目，不能声称其实际 Wan/Seedance 出片稳定性已广泛验证。`python-jsonschema/jsonschema` MIT 的 Draft202012Validator 优先用于离线生产合同深测，待确定兼容性和依赖后再接入运行时。
 - **禁止功能堆叠**：只有能明确解决 [DEEP_AUDIT_MASTER.md](DEEP_AUDIT_MASTER.md) 中问题编号、且能测出由失败转为可验证通过的项目才直接融合。检查许可证义务、OSSC/数据遥测、日志隐私、供应商费率、依赖固定与回滚；不得复制上游源代码到当前仓库冒充原创。
 
+## 实际融合更新：成熟 JSON Schema 校验库（2026-10-11）
+
+已经实际接入 [python-jsonschema/jsonschema](https://github.com/python-jsonschema/jsonschema) `v4.25.1`，MIT 许可（参考 tag `COPYING`），其 `pyproject.toml` 支持 Python >=3.9；GitHub CI Python 3.11 固定安装 `jsonschema==4.25.1`。使用 upstream `Draft202012Validator` 而非自研 Schema 解释器，严格拒绝模型回复中违规的嵌套项、额外授权字段和 camera/art 不合法类型；发送请求前先确认 runtime library/Schema 合法。详细见 [RUNTIME_SCHEMA_AND_PROMPT_TRUST_AUDIT.md](RUNTIME_SCHEMA_AND_PROMPT_TRUST_AUDIT.md)。**新增依赖会影响部署：若缺少库，则真实 API 必须在扣费前 fail closed**。其它 framework 不因为有 GitHub 项目就默认安装。
+
 **固定规则：每次修改、补足功能或修复缺陷前，先检索 GitHub 上的相关成熟仓库，核对代码、许可证、维护状况、测试和运行成本，再决定直接复用、借鉴结构还是自行实现。参见 AGENTS.md。**
 
 状态：仅完成上游仓库的第一轮公开资料调查；没有安装依赖、下载模型权重、执行付费 API、修改用户 Mac 配置或合并第三方代码。实际使用前仍需测试许可证兼容、版本和依赖。
