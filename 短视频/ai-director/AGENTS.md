@@ -18,6 +18,13 @@
 - 老剧本缺完整专业交付允许明确标记为 `draft_needs_review` 的审阅草稿；`strict=True` 只能在文字制作蓝图、岗位证据及交接质量均满足门禁时返回供真人审片状态，绝不冒充已生成视频。
 - 当前 GitHub-only，不触碰 Mac 和私人 jobs，无收费调用。测试代码不等于已运行通过；任何远端 CI 结果须以实际检查状态为准。
 
+## 模型路由与 Token 预算预检（2026-10-11；仅模拟）
+
+- 阅读 [MODEL_GATEWAY_AND_BUDGET.md](MODEL_GATEWAY_AND_BUDGET.md)、`agent_model_gateway.py` 和 `tests/test_agent_model_gateway.py`。针对现有 10 个岗位声明不同 provider/model、输入输出 Token 上限、CNY 单价、总模拟预算和总尝试次数；不会执行 HTTP/SDK/真实模型调用。
+- `OfflineBudgetBook` 每次按 UTF-8 字节+安全余量**估计**输入代理量，再按声明单价预留最大输出费用；预留值不是供应商准确 Token、实际费用或用户付款授权。缺少报价/超限/未授权模型应阻断；费用配置中修改或伪造更低单次报价也要拒绝。
+- 只允许精确 `OfflineMockTransport`，禁止替换为带网络的同名对象、动态回调或真实付费模型。已有 `llm_budget.py` 本地账本未接入本次流程，不能声称将来自动拥有跨进程持久消费上限。
+- 全程 GitHub-only、合成测试，绝不传输用户文案，绝不改变之前的原文权限/导演 QA/人工批准/付费媒体门禁。
+
 ## 专业 Agent 创作合同与严格 JSON 验收（2026-10-11）
 
 - 阅读 [PROFESSIONAL_AGENT_CONTRACTS.md](PROFESSIONAL_AGENT_CONTRACTS.md) 和 `agent_role_contracts.py`。为现有 10 个阶段提供**有区别的专业岗位创作指令**，输入仍由权威原文/plan、总导演圣经、岗位归属和依赖版本锁定。
