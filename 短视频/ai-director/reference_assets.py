@@ -182,6 +182,11 @@ def audit(base, direction, manifest, asset_root=None):
         if not isinstance(views, dict):
             add("INVALID_VIEWS", "blocker", None, aid, "views must be an object")
             continue
+        required_views = VIEWS.get(data.get("kind"), ())
+        for view in required_views:
+            if view not in views:
+                add("REQUIRED_ASSET_VIEW_MISSING", "blocker", None, aid,
+                    "catalog missing required " + str(data.get("kind")) + " view: " + view)
         for view, record in views.items():
             if not isinstance(view, str) or not ID.fullmatch(view) or not isinstance(record, dict):
                 add("INVALID_VIEW", "blocker", None, aid, "invalid view name or view data")
@@ -225,6 +230,26 @@ def audit(base, direction, manifest, asset_root=None):
     for sid in reqs:
         if sid not in base_shots:
             add("UNKNOWN_SHOT", "blocker", sid, None, "shot requirement refers to unknown shot")
+    # A selected character is not fully reference-ready if it has only one
+    # approved angle. Other views remain part of the same reusable identity pack.
+    used_assets = set()
+    for requests in reqs.values():
+        if isinstance(requests, list):
+            for binding in requests:
+                if isinstance(binding, dict) and isinstance(binding.get("asset_id"), str):
+                    used_assets.add(binding["asset_id"])
+    for aid in sorted(used_assets):
+        data = assets.get(aid)
+        if not isinstance(data, dict) or data.get("kind") not in VIEWS:
+            continue
+        views = data.get("views", {})
+        if not isinstance(views, dict):
+            continue
+        for view in VIEWS[data["kind"]]:
+            rec = views.get(view)
+            if isinstance(rec, dict) and rec.get("status") != "approved":
+                add("ASSET_VIEW_NOT_READY", "missing", None, aid,
+                    "reusable " + data["kind"] + " asset requires approved view: " + view)
     required_total = 0
     ready_count = 0
     for sid, shot in base_shots.items():
@@ -255,8 +280,10 @@ def audit(base, direction, manifest, asset_root=None):
                 add("INVALID_BINDING", "blocker", sid, None, "binding must be an object")
                 continue
             aid, view = binding.get("asset_id"), binding.get("view")
-            if not isinstance(aid, str) or not isinstance(view, str):
-                add("INVALID_BINDING", "blocker", sid, None, "asset_id and view are required strings")
+            if (not isinstance(aid, str) or not isinstance(view, str)
+                    or not isinstance(binding.get("role"), str)
+                    or not binding["role"].strip()):
+                add("INVALID_BINDING", "blocker", sid, None, "asset_id, view and role are required strings")
                 continue
             pair = (aid, view)
             if pair in present:
