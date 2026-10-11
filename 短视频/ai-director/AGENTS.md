@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## DeepSeek 实测后的原始导演意图保护与制作参数修复（2026-10-11）
+
+- 详见 [REAL_CREATIVE_TO_PRODUCTION_REPAIR.md](REAL_CREATIVE_TO_PRODUCTION_REPAIR.md)。真实公共虚构稿《门后的信》run 38115310358 发现：6 个 ai_video 镜头沿用 camera `postproduction/n/a`，角色 ID、房间物理布局和道具仍是图卡模板，S07→S08 黑暗与门缝光缺少可核对的物理桥接。不是已经生成可拍摄影片。
+- `creative_production_handoff.py` 将第一轮 `editorial_concept` 绑定 source/plan digest 并写入 **仅私有** planning snapshot；`editorial_review_lock.stage_locked_team` 缺少/篡改该创意时拒绝；十岗位真实调用提示词继续携带原始导演设计和待办，不让导演在 v0.1→team 重启时丢掉真实创作。
+- `camera_art`（仅来源绑定的锁定专业团队）严格要求：AI 视频镜头 `shot_size`、14–135mm `focal_length_mm`、`screen_axis`；所有镜头灯光状态、实际来源、变化原因；AI 视频同一场景要提供完全一致的 `scene_geometry`。静态/黑场可声明图卡/后期，不假造视频工作。错误参数、移动门/桌、灯态变化仍说未变，结构性审查拒绝该岗位结果。
+- 生产编译包保留 `first_director_editor_vision` 和 provenance，在原导演构想与后续逐镜工单之间有证据链；无真实演员参考、光源勘查、视频试拍时仍不得声称生产就绪。此次 GitHub CI **全部离线**，不含原始私人稿件，不重复使用临时密钥。
+
 ## DeepSeek V4.1 Flash 真实创作小样的预检与评分标准（2026-10-11）
 
 - 参考 [REAL_DEEPSEEK_CREATIVE_PILOT.md](REAL_DEEPSEEK_CREATIVE_PILOT.md)：首轮仅计划总导演 + 剧本编辑两次模型请求，使用**公开虚构「门后的信」**，并按原创故事钩子、表演/摄影细节、剪辑音效、原文忠实、视频模型可执行性等维度，人工评分 100 分；格式合格不等于艺术质量合格。
