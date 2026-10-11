@@ -45,7 +45,9 @@
 
 同一镜头 `art.scene_geometry` 额外定义：`anchor_positions`（至少两项可检查的物理锚点，如门与桌）、`key_light_position`、`camera_axis`。同一个 `scene_id` 中的所有 ai_video 镜头必须复用**完全一致**的基准房间布局。程序会拒绝同一房间门从东墙瞬移到北墙。
 
-这些是**专业设计规格的结构/跨镜一致性验证**，不代表焦段已被 Wan/Seedance 实测支持，也不代表灯光真实可布、场地已租赁、参考演员照片已存在。
+这些是**专业设计规格的结构/跨镜一致性验证**，不代表焦段已被 Wan/Seedance 实测支持，也不代表灯光真实可布、场地已租赁、参考演员照片已存在。即使摄影导演只对单个镜头进行**定向返工**，`agent_live_crew` 也会在接受新状态前对**合并后的全部摄影美术交付**再做一次房间布局/灯态检查；最终 `production_delivery` 编译时再次拒绝漂移，不能绕开跨镜 QA。
+
+**迁移注意**：本轮新的 `editorial_review_lock.stage_locked_team` 要求从作者审阅后的 `creative_storyboard_candidate` 中锁定来源绑定的第一轮原创意。如已保存的旧式规划 snapshot 不含 `creative_handoff`，须找回原先完整候选和对应单集原文，重新进入规划审核流程，不能直接拷贝或伪造 digest 续跑。
 
 ### 4. 最终工作包保留早期设计的审计线索
 
