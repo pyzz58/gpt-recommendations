@@ -21,6 +21,7 @@ import agent_role_contracts as roles
 import agent_team as team
 import agent_handoff_audit as audit
 import production_delivery as delivery
+import creative_production_handoff as creative_bridge
 import director_v2
 import director_workbook
 import editorial_review_lock as review
@@ -74,18 +75,27 @@ class LockedCrewPilotTests(unittest.TestCase):
                         item["shootability"]["action_units"][0]["to_s"]=d
                 elif task=="camera_art":
                     item["camera"]["move_trigger_s"]=min(1,d/2)
+                    item["art"]["lighting_state"]="lit"
+                    item["art"]["practical_sources"]=[
+                        "One existing fictional interior table lamp"]
+                    item["art"]["lighting_change_reason"]=(
+                        "Key practical source remains unchanged; "
+                        "do not invent a different wall position")
                     if shot["visual_type"]=="ai_video":
                         item["camera"]["shot_size"]="close_up"
                         item["camera"]["focal_length_mm"]=50
                         item["camera"]["screen_axis"]=(
-                            "Camera stays on the actor's room side of the "
-                            "desk axis, looking toward the sealed letter")
-                        item["art"]["lighting_state"]="lit"
-                        item["art"]["practical_sources"]=[
-                            "One existing fictional interior table lamp"]
-                        item["art"]["lighting_change_reason"]=(
-                            "Key practical source remains unchanged; "
-                            "do not invent a different wall position")
+                            "Camera stays on the room side of the desk axis, "
+                            "looking toward the same sealed paper letter")
+                        item["art"]["scene_geometry"]={
+                            "anchor_positions":{
+                                "desk":"Center of west wall, aligned north-south",
+                                "door":"East wall left corner facing the desk"},
+                            "key_light_position":
+                                "Same table lamp beside the wooden desk",
+                            "camera_axis":
+                                "East-to-west room axis behind the desk"}
+
                 elif task=="sound":
                     item["sound"]["effects"][0]["time_s"]=min(d/2,2)
                     item["speech"]["voiceover"]["cues"][0]["from_s"]=0
@@ -201,6 +211,51 @@ class LockedCrewPilotTests(unittest.TestCase):
             self.assertEqual(journal.summary()["attempts"][-1]["status"],
                              "response_rejected")
             self.assertEqual(state["tasks"]["camera_art"]["status"],"pending")
+
+    def test_moved_door_between_ai_video_shots_is_rejected(self):
+        with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+            state=self.state
+            for name in ("director_brief","script_edit","director_lock"):
+                state,_=self._step(journal,state,name)
+            bad=self._payload("camera_art",state)
+            videos=[s["id"] for s in self.plan["shots"]
+                    if s["visual_type"]=="ai_video"]
+            self.assertGreaterEqual(len(videos),2)
+            bad["shots"][videos[1]]["art"]["scene_geometry"][
+                "anchor_positions"]["door"]="Door magically moved to north wall"
+            with self.assertRaisesRegex(
+                    pilot.PilotError,"SPECIALIST_RESPONSE_REJECTED_NO_RETRY"):
+                live.run_one_locked_role(
+                    self.snapshot,self.original,state,journal,
+                    permit=self._permit("camera_art"),
+                    client=pilot.StaticHTTPSFrame(self._frame(bad)),
+                    task_id="camera_art")
+            self.assertEqual(journal.summary()["attempts"][-1]["status"],
+                             "response_rejected")
+
+    def test_nonvideo_blackout_needs_explanation_for_next_video_light(self):
+        state=self.state
+        for name in ("director_brief","script_edit","director_lock"):
+            state=roles.submit_role_output(
+                self.plan,state,name,
+                json.dumps(self._payload(name,state),ensure_ascii=False),
+                source_text=self.original)
+        draft=self._payload("camera_art",state)
+        shots=self.plan["shots"]
+        # A normal lit video/graphic sequence with a deliberately dark graphic
+        # followed by video must provide a valid changed-state reason.
+        s1=shots[1]["id"]
+        draft["shots"][s1]["art"]["lighting_state"]="blackout"
+        draft["shots"][s1]["art"]["lighting_change_reason"]="No visible sources because deliberately black screen"
+        if len(shots)>2:
+            s2=shots[2]["id"]
+            draft["shots"][s2]["art"]["lighting_state"]="lit"
+            draft["shots"][s2]["art"]["lighting_change_reason"]="unchanged"
+            with self.assertRaisesRegex(
+                    creative_bridge.HandoffError,
+                    "LIGHT_TRANSITION_DENIED_AS_UNCHANGED"):
+                creative_bridge.camera_requirements_for_role(
+                    self.plan,draft)
 
     def test_camera_art_role_prompt_has_typed_video_spec_schema(self):
         state=self.state
