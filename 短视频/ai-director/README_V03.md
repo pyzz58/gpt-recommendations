@@ -48,6 +48,15 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 **不要直接修改原片**。按上述 Codex 工作流先生成 `plan.proposed.json`，然后在本地验证并人工审核。没有采纳整个 CineCrew 或 transitions 包；零运行时额外依赖，无视频或 API 费用。
 
+## 导演交付书升级：概念完整 ≠ 可交剪辑
+
+新增逐镜 `editing.audio_bridge` 音频跨镜头设计（J-cut/L-cut/明确不用）、`speech.subtitle_cues` 字幕时间点，并强化 `speech.voiceover.cues` 和动画关键帧检查。导演审查分离：
+
+- `creative_design_complete`：结构上具备导演设计栏目且无硬冲突；
+- `editor_handoff_ready`：时间线信息足够明确，适合交由专业剪辑进一步执行，但依然要真人验收画面、故事、声音和版权。
+
+导演工作单的严格模式只接受后者，旧稿照常能生成明确标记不足的草稿。详见 [EDITOR_TIMELINE.md](EDITOR_TIMELINE.md)。依然**不生成视频或同步你的 Mac**。
+
 ## 剪辑、旁白、动画的逐秒工作单（当前仅 GitHub 研发）
 
 新增 `director_timeline.py`：把已明确写入专业导演稿的动作节拍、摄影、剪辑入出转场、旁白分句（如有独立时间码）、出镜台词、音效与动画图层整理为绝对秒数的 `editor_decision_list`，让导演交付结果便于后期实际执行。详细见 [EDITOR_TIMELINE.md](EDITOR_TIMELINE.md)。
