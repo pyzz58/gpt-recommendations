@@ -49,6 +49,12 @@
 
 严禁“自动修复”等于模型自己多跑几遍。对真实收费请求，任何重试都需要新的明确授权，尤其响应已经发生、账单未知的情况。
 
+## Schema 与不可信文本的第二轮专项审计（2026-10-11）
+
+- **AUD-008 回归验证完成**：针对模型收到 JSON Schema 而返回结果没有共用校验的问题，正式融合 MIT `jsonschema==4.25.1`；[role_schema_guard.py](role_schema_guard.py) + `agent_role_contracts.execution_output_schema()` 强制校验所有十岗位，脚本编辑的扩展 `storyboard_pitch` 必须用原提示里的同一份 Schema。缺依赖或 Schema 错误在收费 `reserve` 和 HTTP **之前**拦截；旧业务含义错误码保留。
+- **AUD-009 尚未解决**：注入性 `SYSTEM` / `[INST]` / tool 调用文字仍按 source_script JSON 字符串保存；测试证明不会成为 API message role，也不能靠模型输出新增 `human_approved` 字段，但这不等于真实模型不会语义上服从恶意素材。[独立 Issue #5](https://github.com/pyzz58/gpt-recommendations/issues/5) 持续跟踪；不得声称“已完全防注入”。
+- 深入复现和上游证据：[RUNTIME_SCHEMA_AND_PROMPT_TRUST_AUDIT.md](RUNTIME_SCHEMA_AND_PROMPT_TRUST_AUDIT.md)。本轮仍是公开虚构离线 CI，无真实模型付费调用。
+
 ## 已经完成的第一轮可核验结论
 
 - **已修 AUD-001：写盘异常时账本内存状态不再假装已持久成功。** 修改 `agent_live_pilot.PilotJournal.finish`，提前验证 usage，失败时回滚内存记录并将 journal 标记为 `poisoned`，继续发送一律拒绝；已有磁盘记录仍能由新进程按 `pending_uncertain` 阻止重复付费。注入文件系统失败/NaN token 费用测试。**不等于 AUD-002 私有结果恢复已解决。**
