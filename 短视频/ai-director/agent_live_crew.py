@@ -18,6 +18,7 @@ import agent_executor
 import agent_role_contracts as roles
 import agent_handoff_audit as handoff
 import agent_creative_review as creative_review
+import creative_production_handoff as creative_bridge
 import agent_provider_wire as wire
 import editorial_review_lock as locks
 
@@ -174,6 +175,12 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
             base, state, task_id, parsed["content"],
             source_text=episode_source,
             editorial_handoff=snapshot["creative_handoff"])
+        if task_id == "camera_art":
+            # A scoped rework is merged with *previous* shots. Audit that
+            # resulting complete scene geometry, not only the revised shot,
+            # so a door cannot teleport across a legitimate partial revision.
+            creative_bridge.camera_requirements_for_role(
+                base, updated["tasks"]["camera_art"]["deliverable"])
     except Exception:
         if journal.records["attempts"][record_id-1]["status"] == "pending_uncertain":
             journal.finish(
