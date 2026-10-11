@@ -63,7 +63,7 @@
 ## 代码级隐私与许可边界
 
 - 只接受 `bytes` 作为**私人进程内的输入**，校验 PNG/JPEG/WEBP 文件头、文件大小上限，立即计算 SHA-256。**不会保存图片内容、路径、文件名、任意 URL、EXIF 或图像特征到公开仓库**；不会自动下载、重新上传、生成图片、修改硬盘上的任何媒体。
-- 文件头正确或 SHA-256 匹配 **不等于图片可解码、不等于人物与 reference 真一致、不等于照片版权/肖像权/生成许可已获授权**。所有这些标记均保持 `False`，需要日后的私有存储层、真正图片解析/视觉验收和认证的人类授权流程。
+- 旧版只检查文件头而不能保证图片可解码（AUD-022 已补全私有进程中的解码校验）；**即使可解码，仍不等于人物视觉一致，也不等于已获照片版权、肖像同意或生成许可**。所有这些标记均保持 `False`，需要日后的私有存储层、真正图片解析/视觉验收和认证的人类授权流程。
 - 不接受调用方写入 `human_approved=true`、`rights_verified=true`、`paid_api_authorized=true`，也不接受把外部 URL/私人绝对路径附加到 manifest。
 - 由权威 `plan_digest` + `source_digest` 绑定资产版本；改变文案、修改镜头或调换资产所属人物都 fail closed。
 - 该模块只保存**元数据**：原始图片字节需要未来建立可信长期私人库，项目目前并没有自动持久保存图片、备份、媒体上传/引用到生成模型的执行通道。
@@ -89,3 +89,13 @@
 **AUD-003 仍未关闭**：没有真实参考图存储与备份、没有真实用户许可审计/审核身份，也没有 Wan/Seedance 中的角色变脸/道具漂移视频比对。未来要创建长期私人图像库时，需单独确认本机/云环境权限与用户是否允许传输私有媒体；不能直接将 GitHub Actions 公开制品视为媒体库。
 
 [主审计账](DEEP_AUDIT_MASTER.md) · [问题清单](AUDIT_FINDINGS.json) · [AUD-003 GitHub Issue #2](https://github.com/pyzz58/gpt-recommendations/issues/2)
+
+## AUD-022 · 文件头不是图片：已修复严格解析缺口（2026-10-11）
+
+**已证实的 P1 缺陷**：此前允许仅有 PNG/JPEG/WEBP 文件头（任意尾部字节）的“图片”进入参考资产卡；SHA-256 只能证明所提供字节没有被替换，不能证明媒体真的可读。旧合成测试原本就使用故意无效的魔数假图片。
+
+**本轮最小融合**：在私有内存的 `register_image` 和 `verify_bytes` 采用 [Pillow](https://github.com/python-pillow/Pillow) 固定 `12.3.0`（MIT-CMU），强制 `Image.verify()` 与重新打开后的 `Image.load()` 完整解码；只允许 PNG/JPEG/WEBP、单帧、最大 8192 边长、16M 像素、12MB 源数据。解码器缺失、允许截断文件的宽松配置、格式冒名、文件截断、非图片、异常维度会 fail-closed。正常示例由标准库构造 1×1 的真实有效虚构 PNG，不使用真人图片。
+
+**回归证据**：[修复 commit](https://github.com/pyzz58/gpt-recommendations/commit/7bbf40f21eecea7b80650eb19ce1aa11b33cfe31)，[GitHub Actions 38120478073](https://github.com/pyzz58/gpt-recommendations/actions/runs/38120478073) **564 tests passed**，新添 5 项反例测试；CI 只处理非敏感合成字节，未发生模型调用、存储私人图像或支付模型费用。
+
+**已解决的边界**仅为“已接收图片数据在当前受信任运行进程内可以真正解析”；解析不等于人脸/衣着的跨镜视觉一致、授权许可、人审，更不代表能够将图交给 Wan/Seedance 或生成出合格画面。真实图片仍不在 GitHub/CI 持久保存，私有长期存储与人工审批流程尚未实现。高风险不可信图片将来还需进程沙箱、资源限制与第三方解码器安全公告复核，此次没有在 Mac 部署。Issue #2 保持 OPEN。

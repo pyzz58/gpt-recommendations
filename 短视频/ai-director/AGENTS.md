@@ -1,3 +1,9 @@
+## AUD-022 图片完整解码保护（2026-10-11，已获 GitHub CI 证据）
+
+- 已修复文件魔数能伪造图片有效性的 P1 缺陷：`asset_reference_manifest.py` 使用固定 Pillow==12.3.0、私有内存完整 `Image.verify()+Image.load()`；缺少解码器/危险宽松配置/伪造图片/截断/过大像素/多帧图片均不可直接登记。合成素材不含私人图片与 URL。
+- [GitHub Actions 38120478073](https://github.com/pyzz58/gpt-recommendations/actions/runs/38120478073) 全部 564 测试通过；仅修解码能力，不代表已做到身份匹配、权限审核、私有原图长期存储、模型视觉输入或视频成片验证；Issue #2 持续 OPEN。
+- 对解码复杂恶意图像仍需将来私有进程沙箱和 CVE/供应链审核。现在不部署 Mac、不上传真实文件、不请求付费 API。
+
 ## 全链路深入审计为后续开发默认流程（2026-10-11，用户明确授权）
 
 - **AUD-002 离线缓解已落地，生产 P0 仍未关闭**：参见 [PRIVATE_RESULT_CHECKPOINT_RECOVERY.md](PRIVATE_RESULT_CHECKPOINT_RECOVERY.md)。真实 DeepSeek HTTP 调用现在必须携带非 Git 工作树的 0700 私有 Vault；先持久保存完整、已验证的 0600 team 创作状态，再将账本标记 accepted。出故障只支持已存储结果的人工**零网络**恢复；长期私人存储/真人身份核验/费用核账尚未部署，公开临时 GitHub runner 不算生产持久。

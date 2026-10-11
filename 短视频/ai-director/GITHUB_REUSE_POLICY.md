@@ -179,3 +179,13 @@
 本轮复用**仓库内部已有的** `agent_team.py` 版本化 DAG、`director_v2.validate`、`director_workbook.compile_workbook` 和 `director_narrative_bridges.py` 的 `beat_link` 交接结构。继续参考此前审查的 CineCrew / CrewAI / LangGraph 三类成熟工作流模型，但本次没有重新下载、安装或合并第三方源码，**不把已有候选研究冒充本轮实时复核**。选择零外部依赖的 `agent_handoff_audit.py`，是因为当前问题只需确定性跨字段比对、源文案守恒、审片记录、定向返工与失败即阻断；完整多智能体框架会增加依赖、网络/费用复杂度，并不提高中文影视语义判定的真实性。详见 [CREW_QA_GATE.md](CREW_QA_GATE.md)。
 
 **许可证和回退**：新增模块为本项目独立编写，无第三方复制源文件；沿用现有模块和 git 提交历史回滚。没有经过真实付费/视频提供商试验，完整测试结果仍待核实，不把提交视作已经验证的电影制作功能。
+
+## 2026-10-11 参考图片可信解析（AUD-022）
+
+| GitHub 开源候选 | 许可证/依赖 | 实际结论 |
+| --- | --- | --- |
+| [python-pillow/Pillow](https://github.com/python-pillow/Pillow) | MIT-CMU；Python 3.10+，提供 PNG/JPEG/WEBP 完整解码，v12.3.0 固定 | **本轮真正局部引入**为私人内存图像完整解析，固定格式、尺寸、单帧且 fail-closed；没有复制上游源码 |
+| [imageio/imageio](https://github.com/imageio/imageio) | BSD-2-Clause，基于 NumPy 和 Pillow | 读取该类图片仍主要委托 Pillow，多一层依赖，无当前增益，因此不集成 |
+| [libvips/pyvips](https://github.com/libvips/pyvips) | 依赖原生 libvips 或平台预构建 binary | 对大量媒体的高性能流水线有价值；目前为了最小依赖和可维护性不集成，也不安装本地库 |
+
+仅接受可信私人内存中的图片字节，不允许用户私人图片进入公开 GitHub 仓库/CI。**安全边界**：解析成功≠确认权属/肖像同意≠确认人物相貌一致≠视频模型已经接收或生成。Pillow 作为本地 C 解码器仍存在潜在安全更新与恶意媒体资源攻击风险；投入私人生产前重新评估版本/安全公告与操作系统沙箱。具体说明见 [REFERENCE_ASSET_VERSIONING_AUDIT.md](REFERENCE_ASSET_VERSIONING_AUDIT.md)。

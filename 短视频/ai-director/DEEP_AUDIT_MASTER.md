@@ -4,7 +4,7 @@
 
 ## 核心交付在哪里？
 
-- [AUDIT_FINDINGS.json](AUDIT_FINDINGS.json) — 唯一机器可读问题登记（目前 18 项，含单独编号的私有结果 checkpoint 离线修复）。每条必须标明 `AUD-xxx`、P0–P3、领域、状态、证据类型、复现/回归用例、GitHub Issue、修复 commit。
+- [AUDIT_FINDINGS.json](AUDIT_FINDINGS.json) — 唯一机器可读问题登记（目前 22 项，含私有 checkpoint、参考图片解析的独立验证记录）。每条必须标明 `AUD-xxx`、P0–P3、领域、状态、证据类型、复现/回归用例、GitHub Issue、修复 commit。
 - [audit_registry.py](audit_registry.py) — CI 阻止：重复编号、没有测试却标为已修复、把没有真实素材的验证冒充已完成、P0 重要 Issue 丢失等。
 - [GitHub Issues #1–4](https://github.com/pyzz58/gpt-recommendations/issues) — 重要待办有独立讨论、证据和验收点，不能只写在聊天中。
 - [GitHub Actions AI Director MVP tests](https://github.com/pyzz58/gpt-recommendations/actions/workflows/ai-director-tests.yml) — 每次相关代码提交执行**离线合成 CI**、成本/隐私边界测试、公开虚构示范、`coverage.py` 多模块分支跟踪与审计登记检查。两个公开 artifact：模块覆盖率和审计状态摘要。没有任何私人稿件、密钥或实际收费 DeepSeek 视频请求。
@@ -48,6 +48,12 @@
 每个问题按严格流程：`观察证据 → 复现最小夹具 → 区分代码/模型/媒体/人审 → GitHub 成熟开源项目调查与许可证核实 → 设计最小接入 → 提交回归测试 → 合并修复 → 全 CI → 更新 issue/登记/覆盖率 → 需要时重新审查`。
 
 严禁“自动修复”等于模型自己多跑几遍。对真实收费请求，任何重试都需要新的明确授权，尤其响应已经发生、账单未知的情况。
+
+## AUD-022 图片媒体解析与资源限制（2026-10-11）
+
+- 修复以前只依据 PNG/JPEG/WEBP 文件魔数和 SHA-256 便接受“图片”的代码缺陷：现在采用 Pillow 12.3.0（MIT-CMU），在 PRIVATE 内存中真正验证并解码所有像素，不再只检查 header。限制 16MP、8192 像素边长、12MB、单帧，缺 decoder 或配置容忍截断时 fail-closed。
+- [GitHub Actions 38120478073](https://github.com/pyzz58/gpt-recommendations/actions/runs/38120478073) 564 项离线测试全部通过（含伪造 header、截断、超大尺寸、缺依赖、危险配置的 5 个新增用例）；修复 SHA [7bbf40f](https://github.com/pyzz58/gpt-recommendations/commit/7bbf40f21eecea7b80650eb19ce1aa11b33cfe31)。公开 CI 不包含真实媒体，也不能证明素材已持久保存或视频主体无变脸。
+- 仍未验证真实视频/视觉身份、权利/肖像许可、私有长期备份和高风险图片沙箱，因此 [AUD-003 Issue #2](https://github.com/pyzz58/gpt-recommendations/issues/2) 继续 OPEN。离线修复不得被当作人体身份判断。
 
 ## AUD-021 同镜头多用途资产参考（2026-10-11）
 

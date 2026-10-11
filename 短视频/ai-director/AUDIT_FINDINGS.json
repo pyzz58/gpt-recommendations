@@ -262,6 +262,18 @@
       "test_evidence": "tests/test_asset_reference_manifest.py::test_multi_slot_identity_and_wardrobe_bind_simultaneously;tests/test_asset_reference_manifest.py::test_wardrobe_switch_detected_without_face_switch;tests/test_asset_reference_manifest.py::test_changing_wardrobe_version_invalidates_specific_slot_binding;tests/test_asset_reference_manifest.py::test_injected_slot_or_entity_reference_is_rejected",
       "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/2",
       "fix_commit": "447c462ab11c7995528a31dc23e587166fa6dd53"
+    },
+    {
+      "id": "AUD-022",
+      "priority": "P1",
+      "domain": "reference_image_decode_integrity",
+      "status": "fixed_regression_verified",
+      "evidence_type": "confirmed_code",
+      "description": "修复仅 PNG/JPEG/WebP 魔数+SHA 就登记无效媒体的缺陷：受信任私人内存使用 Pillow verify+load 强制完整像素解析，限制格式、单帧、16MP/8192边界、阻止缺解码器及不安全截断配置；564项 GitHub 离线合成测试通过。仍无真实媒体托管、真人身份、权利核验和成片验证。",
+      "source": "asset_reference_manifest.py;requirements-media.txt;.github/workflows/ai-director-tests.yml",
+      "test_evidence": "tests/test_asset_reference_manifest.py::test_magic_header_only_must_be_rejected;tests/test_asset_reference_manifest.py::test_truncated_valid_image_must_be_rejected;tests/test_asset_reference_manifest.py::test_oversize_pixel_dimensions_must_be_rejected;tests/test_asset_reference_manifest.py::test_missing_decoder_must_fail_closed;tests/test_asset_reference_manifest.py::test_unsafe_truncated_decoder_configuration_must_fail_closed",
+      "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/2",
+      "fix_commit": "7bbf40f21eecea7b80650eb19ce1aa11b33cfe31"
     }
   ]
 }
