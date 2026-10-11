@@ -101,7 +101,7 @@ def scaffold(base):
             "sound": {"ambient": "待填", "music": "待填", "effects": [], "voiceover_note": "待填"},
             "continuity": {"start_state": "待填", "end_state": "待填", "locked_entities": [], "reference_assets": []},
             "graphics": {"treatment": "待填", "claims_used": list(shot.get("claim_ids", [])), "labels": [], "motion": "待填", "context_note": "待填"},
-            "generation": {"route": "ai_video" if shot["visual_type"] == "ai_video" else "post_production", "clip_type": "single_continuous_take" if shot["visual_type"] == "ai_video" else "not_a_video_model_job", "negative_constraints": [], "reference_roles": [], "limits": "不在画面内部生成准确汉字、数字或字幕"},
+            "generation": {"route": "ai_video" if shot["visual_type"] == "ai_video" else "post_production", "clip_type": "single_continuous_take" if shot["visual_type"] == "ai_video" else "not_a_video_model_job", "negative_constraints": [], "reference_roles": [], "reference_bindings": [], "limits": "不在画面内部生成准确汉字、数字或字幕"},
             "qa": {"acceptance_tests": ["待导演明确可观察结果"], "issues": [], "human_approved": False}
         } for shot in base["shots"]]
     }
@@ -329,7 +329,7 @@ def build_codex_task(base_path, direction_path):
 2. 读取导演蓝图 {direction_path}，按原结构完成专业创意修改，绝不丢失已有经过人工修改的内容。
 3. 对每个镜头定义清晰的戏剧任务（观众应看到什么变化）。优先确定人物/物体空间关系、环境物理、动作终点，再制定有动机的摄影移动。
 4. 每个镜头拆解为按相对时间连续的 beats，每个 beat 必须有可见变化、表演、摄影和声音线索，全部时长与 v0.1 相同。不要为堆字数而追加不可能完成的动作。
-5. 设计角色/衣服/道具/场景的固定状态与镜头的起止状态；如果没有真实参考资产，明确标注待制作，**不能杜撰已存在的参考图**。
+5. 设计角色/衣服/道具/场景的固定状态与镜头的起止状态；如果没有真实参考资产，明确标注待制作，**不能杜撰已存在的参考图**。涉及出镜道具时在 generation.reference_bindings 用稳定资产ID及所需视角明确绑定；只做规划不生成图片。
 6. 对数据图形镜头优先设计图表/字幕/旁白，而不是让生视频模型画中文数字；保留研究类型、对照组、口径的来源提示。
 7. 将全片摄影、美术、声画风格写入 global_direction，单镜头补具体而非空泛的视觉形容词。
 8. 风险领域的内容如果没有权威来源验证，绝不可写 verified，不得改变研究类型或把 OR 写成 RR。必要时降低表述强度并保留待核验标记。
