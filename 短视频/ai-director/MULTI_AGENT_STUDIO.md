@@ -25,7 +25,7 @@
 |---|---|---|---|
 | `director_brief` | 总导演 | 无 | creative_brief：目标、风格、人物及不可修改信息 |
 | `script_edit` | 剧本编辑 | 总导演开题 | story_treatment：钩子、剧本节拍、改写建议（只能提案） |
-| `director_lock` | 总导演 | 剧本编辑 | global_direction：统一镜头、灯光、音乐、字幕与成本约束 |
+| `director_lock` | 总导演 | 剧本编辑 | global_direction：统一镜头、灯光、音乐、字幕与成本约束；shot_objectives：每镜情绪、可观察变化和视觉焦点 |
 | `acting` | 动作表演导演 | 导演圣经锁定 | staging、performance、beats、continuity、shootability |
 | `camera_art` | 摄影美术导演 | 导演圣经锁定 | camera、art |
 | `sound` | 声音导演 | 导演圣经锁定 | sound、speech |
@@ -78,3 +78,12 @@ python3 agent_team.py ready --state agent_team.private.json
 - `budget_policy` 中全部收费调用都是 `false`；`release` 中的 `human_approved`、`paid_api_authorized`、`media_generated`、`publishing_allowed` 永远不能被这个规划模块置为 true。
 - `director_ai_review_complete` 仅指“模拟总导演审阅了交付数据”；不代表真人同意、实际画面质量、版权许可或供应商已调用。
 - 本轮新增合成测试文件 `tests/test_agent_team.py`（20 项）。**最新版完整仓库尚未通过同一份代码快照的 CI 验证**；测试提交不等于已经实际运行通过。
+
+### 当前接入的阶段边界
+
+**当前调度器从现有 `plan.json` 开始，而不是直接从原始文案创建全套分镜。** 总导演 `director_brief` 是进入专业协作后的首项任务；已有文案→基础计划的生成入口暂时保留，后续需要再与总导演的原文审稿接成一条完整流水线。不能把这一阶段说成“用户输入文案后八个 Agent 已经自动工作”。
+
+`agent_team.start(base, source_text=...)` 可选择把原始文案的 SHA-256 附在任务账本里，而不保存文案正文；岗位包携带该指纹。真实原文必须由未来私有运行环境提供给获授权的岗位，不能写进公开 GitHub。若不提供原文，`source_review_bound=false`，不会冒充已经审过原文。
+
+专业部门接收 `director_lock.shot_objectives`，因此**每个镜头的具体戏剧任务属于总导演**，摄影、动作等岗位只围绕它执行，不各自重写故事目标。
+
