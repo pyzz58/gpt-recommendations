@@ -35,6 +35,14 @@
 7. LICENSE_EVIDENCE_MISSING_MUSIC_LICENSE_CHECK：音乐真正选定之后再登记授权来源、证明与状态；计划不等于授权。
 8. LICENSE_EVIDENCE_MISSING_ASSET_LICENSE_CHECK：同样为每一件实际素材保留授权证据；不能把未核验字段改成已核验。
 
+## 2026-10-11 用户批准改为 Showrunner + Specialists 制片团队
+
+- 真实需求：用户文案进入，由总导演提出审稿与整体创作方向，剧本编辑、动作、摄影、美术、剪辑动画、声音及 AI 技术岗位按专业分工交付，独立 QA 后总导演整合，必要时只返工局部；**最终是一份统一导演交付书**，不是多个 Agent 在聊天中争论。
+- 已查公开 GitHub 上游：[CineCrew](https://github.com/Ironieser/CineCrew) Apache-2.0，提供 showrunner/story/acting/camera/tech/VO/reviewer 分工与 FilmDSL；[CrewAI](https://github.com/crewAIInc/crewAI) MIT，提供 Crews/Flows 和层级代理任务；[LangGraph](https://github.com/langchain-ai/langgraph) MIT，提供有状态 DAG、恢复和人审机制。
+- 复用决定：将现有 `director_workbook.py` 保持为主交付，新增零依赖 `agent_team.py` 负责十阶段有向任务、八类专业角色、统一源稿版本哈希、岗位字段所有权、依赖版本核对、QA 只读、总导演定向返工、与专业交付书合并。**未直接复制上游源码或集成其 Python 包**；GitHub-only 期间不能为多 Agent 名称付出额外框架/模型成本。
+- 已有单体 `local_director.py` 在多 Agent 真正执行器经过独立无付费回归、人审和用户批准前仍保持兼容。系统不会私自上传用户文本、视频参考图或触发收费 Agent。
+- 详见 [MULTI_AGENT_STUDIO.md](MULTI_AGENT_STUDIO.md)；新增 `tests/test_agent_team.py` 合成/公开示例回归，但提交不等于最新 CI 通过。
+
 ## 动作密度与拆段：优先导演可执行性，不扩张视频平台
 
 - 用户核心目标始终是“文案进入→专业导演全面设计剪辑、表演动作、摄影、场景、动画、台词、后期、AI制作工作单”。本轮新增 `director_shootability.py`，以每镜 `shootability.action_units` 明确人物/左手/右手/道具/节拍/时间/结果，并在必要时要求 `split_stitch.segments` 的具体分段与衔接计划。
