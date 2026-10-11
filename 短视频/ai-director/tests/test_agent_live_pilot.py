@@ -16,6 +16,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import agent_live_pilot as pilot
+import private_result_checkpoint as private_checkpoints
 import agent_team as team
 import agent_provider_wire as wire
 import editorial_storyboard as creative
@@ -202,11 +203,12 @@ class LivePilotTests(unittest.TestCase):
                 pass
         with patch("agent_live_pilot.http.client.HTTPSConnection",FakeHTTPS):
             with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+                vault=private_checkpoints.PrivateResultVault(journal)
                 state, receipt=pilot.run_one_creative_task(
                     self.intake,self.state,self.source,journal,
                     permit=self.permit("director_brief"),
                     client=pilot.DeepSeekHTTPSClient(),
-                    api_key="TEST_ONLY_NOT_REAL_KEY")
+                    api_key="TEST_ONLY_NOT_REAL_KEY",result_vault=vault)
                 self.assertEqual(team.ready(state),["script_edit"])
                 self.assertEqual(receipt["transport"],"real_https")
                 self.assertEqual(journal.summary()["attempts"][0]["status"],
