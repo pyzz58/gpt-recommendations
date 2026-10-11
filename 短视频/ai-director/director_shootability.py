@@ -10,6 +10,8 @@ import re
 
 MODES = {"single_take", "split_stitch", "static_edit",
          "post_composite", "practical_insert"}
+SEGMENT_ROUTES = {"ai_video", "static_post", "edit_composite",
+                  "live_action_insert", "post_production"}
 HANDS = {"none", "left", "right", "both"}
 ID = re.compile(r"^[A-Za-z][A-Za-z0-9_-]*$")
 
@@ -111,6 +113,50 @@ def review(base, directions, route_fn):
                            "action": unit.get("action"), "visible_result": unit.get("visible_result"),
                            "duration_s": round(b - a, 3)})
         row["units"] = parsed
+        segment_records = []
+        if mode == "split_stitch":
+            segments = plan.get("segments")
+            if not isinstance(segments, list) or len(segments) < 2:
+                flag(sid, "SPLIT_SEGMENTS_MISSING", "pending",
+                     "split_stitch needs at least two timed segments and specific edit joins")
+            else:
+                cursor = 0.0
+                identifiers = set()
+                for i, segment in enumerate(segments):
+                    if not isinstance(segment, dict):
+                        flag(sid, "SPLIT_SEGMENT_INVALID", "blocker",
+                             f"segment {i} must be an object")
+                        continue
+                    ident = segment.get("id")
+                    a, b = segment.get("from_s"), segment.get("to_s")
+                    route_name = segment.get("route")
+                    join = segment.get("join_rule")
+                    if not isinstance(ident, str) or not ID.fullmatch(ident) or ident in identifiers:
+                        flag(sid, "SPLIT_SEGMENT_ID_INVALID", "blocker",
+                             f"segment {i} needs a unique stable ID")
+                    else:
+                        identifiers.add(ident)
+                    if (not valid_time(a) or not valid_time(b) or
+                            not 0 <= a < b <= shot["duration"]):
+                        flag(sid, "SPLIT_SEGMENT_TIME_INVALID", "blocker",
+                             f"segment {i} must be inside shot time")
+                        continue
+                    if abs(a - cursor) > 0.011:
+                        flag(sid, "SPLIT_SEGMENT_GAP_OR_OVERLAP", "blocker",
+                             f"segment {i} begins at {a}, expected {cursor}")
+                    cursor = b
+                    if not isinstance(route_name, str) or route_name not in SEGMENT_ROUTES:
+                        flag(sid, "SPLIT_SEGMENT_ROUTE_INVALID", "blocker",
+                             f"segment {i} has unrecognized production route")
+                    if not isinstance(join, str) or not join.strip():
+                        flag(sid, "SPLIT_JOIN_UNDESIGNED", "pending",
+                             f"segment {i} needs concrete visual/audio stitching plan")
+                    segment_records.append({"id": ident, "from_s": a, "to_s": b,
+                                            "route": route_name, "join_rule": join})
+                if abs(cursor - shot["duration"]) > 0.011:
+                    flag(sid, "SPLIT_SEGMENT_INCOMPLETE", "blocker",
+                         "segments must cover the full shot timeline")
+        row["segments"] = segment_records
         if physical:
             covered = {unit["beat_index"] for unit in parsed}
             for beat_index in range(len(d["beats"])):
