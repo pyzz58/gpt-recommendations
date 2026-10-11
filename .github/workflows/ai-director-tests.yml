@@ -50,7 +50,7 @@ jobs:
         run: |
           python offline_vertical_demo.py --synthetic-only --output-dir /tmp/ai-director-complete-synthetic-demo
       - name: Attach public synthetic operator review pack
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ai-director-SYNTHETIC-NOT-REAL-AI-operator-pack
           path: /tmp/ai-director-complete-synthetic-demo/
