@@ -2,7 +2,10 @@
 from __future__ import annotations
 
 import copy
+import json
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 import unittest
 
@@ -248,6 +251,66 @@ class HandoffAuditTests(unittest.TestCase):
         changed["shots"][0]["narration"] = "new narration"
         with self.assertRaisesRegex(ValueError, "base digest"):
             crew.propose_director_revisions(changed, state)
+
+
+    def test_cli_audit_propose_and_approval_are_offline(self):
+        state = self.through()
+        state["tasks"]["sound"]["deliverable"]["shots"]["S01"]["speech"]["voiceover"]["text"] = "changed"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            base_p, state_p = root / "base.json", root / "state.json"
+            base_p.write_text(json.dumps(self.base), encoding="utf-8")
+            state_p.write_text(json.dumps(state), encoding="utf-8")
+            command = [sys.executable, str(ROOT / "agent_team.py")]
+            audit_out = root / "audit.json"
+            checked = subprocess.run(command + [
+                "audit-handoffs", "--base", str(base_p), "--state", str(state_p),
+                "--out", str(audit_out)], capture_output=True, text=True)
+            self.assertEqual(checked.returncode, 0, checked.stderr)
+            self.assertEqual(json.loads(audit_out.read_text())["status"], "blocked")
+
+            proposals_out = root / "proposals.json"
+            proposed = subprocess.run(command + [
+                "propose-revisions", "--base", str(base_p), "--state", str(state_p),
+                "--out", str(proposals_out)], capture_output=True, text=True)
+            self.assertEqual(proposed.returncode, 0, proposed.stderr)
+            proposal = json.loads(proposals_out.read_text())["proposals"][0]
+            self.assertEqual(proposal["task_id"], "sound")
+            chosen = root / "proposal.json"
+            chosen.write_text(json.dumps(proposal), encoding="utf-8")
+
+            revised_out = root / "revised.json"
+            blocked = subprocess.run(command + [
+                "approve-revision", "--base", str(base_p), "--state", str(state_p),
+                "--proposal", str(chosen), "--out", str(revised_out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(blocked.returncode, 0)
+            self.assertFalse(revised_out.exists())
+            approved = subprocess.run(command + [
+                "approve-revision", "--base", str(base_p), "--state", str(state_p),
+                "--proposal", str(chosen), "--approve-showrunner-rework",
+                "--out", str(revised_out)], capture_output=True, text=True)
+            self.assertEqual(approved.returncode, 0, approved.stderr)
+            self.assertEqual(json.loads(revised_out.read_text())["tasks"]["sound"]["status"],
+                             "needs_revision")
+            self.assertEqual(state_p.read_text(encoding="utf-8"),
+                             json.dumps(state))
+
+    def test_cli_workbook_does_not_publish_synthetic_incomplete_draft(self):
+        state = self.through()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            base_p, state_p, out = root / "base.json", root / "state.json", root / "book.json"
+            base_p.write_text(json.dumps(self.base), encoding="utf-8")
+            state_p.write_text(json.dumps(state), encoding="utf-8")
+            result = subprocess.run([
+                sys.executable, str(ROOT / "agent_team.py"), "workbook",
+                "--base", str(base_p), "--state", str(state_p),
+                "--strict", "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(out.exists())
+
 
 
 if __name__ == "__main__":
