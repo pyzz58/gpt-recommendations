@@ -34,7 +34,8 @@ TEAM = {
 STAGES = (
     ("director_brief", "showrunner", (), "document", ("creative_brief",)),
     ("script_edit", "script_editor", ("director_brief",), "document", ("story_treatment",)),
-    ("director_lock", "showrunner", ("script_edit",), "document", ("global_direction",)),
+    ("director_lock", "showrunner", ("script_edit",), "document",
+     ("global_direction", "shot_objectives")),
     ("acting", "acting_coach", ("director_lock",), "shots",
      ("staging", "performance", "beats", "continuity", "shootability")),
     ("camera_art", "cinematographer", ("director_lock",), "shots", ("camera", "art")),
@@ -54,7 +55,7 @@ PRECEDENCE = {x[0]: i for i, x in enumerate(STAGES)}
 GUIDANCE = {
     "director_brief": "Review the source story; establish audience, emotional target, immutable facts, runtime and style constraints. Do not rewrite text.",
     "script_edit": "Propose hook, beats and any optional source edits as clearly labeled proposals. Do not alter the source plan.",
-    "director_lock": "Approve a shared global directing bible: narrative rhythm, camera/art, sound, subtitle safety, characters and budget limits.",
+    "director_lock": "Approve shared global directing bible AND concrete per-shot dramatic objective (emotion, observable turn, visual focus).",
     "acting": "Design every shot's physical beats, staging, identity/prop continuity and timecoded hand actions, including split-take fallbacks.",
     "camera_art": "Design camera coverage, lighting, scene geometry, lens feel and unified visual grammar for every shot.",
     "sound": "Design exact narration, spoken dialogue, music, sound effects, subtitles and cue timing without rewriting source text.",
@@ -218,15 +219,25 @@ def _validate_payload(state, task_id, payload):
                          isinstance(value, (dict, list)) and bool(value),
                          f"{task_id}/{sid}.{field}: expected a real direction object/list")
         return
+    for field in spec["fields"]:
+        _require(isinstance(payload[field], dict) and bool(payload[field]),
+                 field + " must be a nonempty object")
     field = spec["fields"][0]
     value = payload[field]
-    _require(isinstance(value, dict) and bool(value), field + " must be a nonempty object")
     if task_id == "director_lock":
         mandatory = ("audience_emotion_arc", "visual_grammar", "audio_grammar",
                      "graphic_safety", "reference_strategy", "generation_budget")
         _require(all(isinstance(value.get(k), str) and value[k].strip()
                      for k in mandatory),
                  "locked director bible lacks required global directing fields")
+        objectives = payload["shot_objectives"]
+        _require(set(objectives) == set(state["shot_ids"]),
+                 "showrunner must define a distinct objective for each shot")
+        for shot_id, item in objectives.items():
+            _require(isinstance(item, dict)
+                     and all(isinstance(item.get(k), str) and item[k].strip()
+                             for k in ("emotion", "observable_turn", "visual_focus")),
+                     f"{shot_id}: director objective needs emotion, visible turn and focus")
     if task_id == "quality_review":
         _require(isinstance(value.get("blockers"), list)
                  and isinstance(value.get("findings"), list)
@@ -386,6 +397,8 @@ def assemble_direction(base, state):
                                               ["global_direction"]), "shots": []}
     for sid in state["shot_ids"]:
         item = {"shot_id": sid, "review_status": "reviewed",
+                "objective": deepcopy(full["director_lock"]["deliverable"]
+                                      ["shot_objectives"][sid]),
                 "qa": {"acceptance_tests": ["await independent human review"],
                        "issues": [], "human_approved": False}}
         for tid in ("acting", "camera_art", "sound", "editing_animation", "ai_technical"):
