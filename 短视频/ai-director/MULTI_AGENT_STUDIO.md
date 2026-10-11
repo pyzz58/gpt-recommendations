@@ -1,6 +1,12 @@
 # 多 Agent AI 影视导演团队（v0.1：零付费调度核心）
 
-**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 用户输入整篇文章：分集与候选分镜接口
+**专业岗位创作质量与跨部门验收标准：**[ROLE_CREATIVE_CONTRACTS.md](ROLE_CREATIVE_CONTRACTS.md)。该文件对动作、摄影、声音、剪辑动画、AI技术导演、总导演及 QA 逐一列明实际可检查的交付内容；属于质量合同，不代表已接入真实模型。\n\n## 总导演 + 剧本编辑：从原文占位到可执行意图的衔接
+
+[EDITORIAL_CREATIVE_BRIDGE.md](EDITORIAL_CREATIVE_BRIDGE.md) / `editorial_storyboard.py` 在原 `article_intake.py` 之后新增 **正式总导演首包与剧本编辑创意扩展**。对已选中的单集，基于现有 `agent_role_contracts` 的角色合同生成新的 `storyboard_pitch`：每镜必须有独立的视觉构想、可观察动作、镜头/灯光逻辑、镜间衔接、后期画面数字来源。严格 `submit_creative_script_edit` 在提交原团队 DAG 前额外检查，不让无效扩展自动解锁 `director_lock`。
+
+独立新的候选 v0.1 分镜可替换第一阶段文字图卡占位，原始旁白和已注册 claims 与时码保持原状；候选属于**作者待审核的提案**，不是人类已批准、完整十专业完工或可直接产生 MP4。现阶段仍用合成模型回复进行结构和流程验证，尚不能声称真实 DeepSeek 自动创作能力已完成。
+
+## 用户输入整篇文章：分集与候选分镜接口
 
 [ARTICLE_TO_EPISODE_INTAKE.md](ARTICLE_TO_EPISODE_INTAKE.md) / `article_intake.py` 将整篇 Markdown 文章识别为多个章节/视频选题，输出安全状态标记的栏目目录、保留**与原文完全一致且有位置溯源**的候选旁白、自动 3–8 秒的暂定分镜时间线。已有 `director.validate`、`director.render_preview` 可对生成的 v0.1 草案验证和 HTML 可视化；`agent_team.start` 收到的是单集待创作计划，`director_brief` 是下一张准备交给真实 AI 的岗位任务单。
 
