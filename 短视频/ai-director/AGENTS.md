@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 实际剪辑事件绑定与防模板化（导演主线加强）
+
+- [NARRATIVE_HANDOFF.md](NARRATIVE_HANDOFF.md) 已新增 `editing.narrative_bridge.beat_link`：`outgoing_beat_index` 必须指向当前镜头最后一个实际动作节拍，`incoming_beat_index=0` 指向下一镜起始节拍，`cut_on_visible_event` 必须讲清具体可观察切点事件。审核器将真实 `visible_change` 加入 `cut_beat_evidence`，错误索引/不在切镜边界报阻断。
+- 同一部片子若至少三次逐字重复观众问题、切点理由、动作/道具连接或后期方案，产生 `BOILERPLATE_DIRECTOR_REASON` 人工复核；不得把 `production_blueprint_ready` 标为 true。复制套话检测只是保守信号，不是自动审美打分，不应误判重复配色/字幕规范为缺陷。
+- 现有旧导演稿无 `beat_link` 依然可以生成未完成草稿，但严格交接不能通过。自动导演指令应为每个相邻镜头引用其真实末/首节拍而非编造事件。
+- 严守 GitHub-only：源码和合成测试可提交，不让用户本地 Codex 运行，不消耗 DeepSeek/视频模型预算。
+
 ## 跨镜头故事、情绪节奏及混合制作统一风格（导演主线）
 
 - 阅读 [NARRATIVE_HANDOFF.md](NARRATIVE_HANDOFF.md)。`director_narrative_bridges.py` 把每对相邻镜头的切点理由、上一镜悬念/下一镜的回答、情绪速度、构图/视线/动作/道具关联，以及 AI 视频↔静态/剪辑/实拍切换时的调色和字幕等后期指令形成导演交接表。不能用空泛“自然过渡”或每镜复制同一套话。
