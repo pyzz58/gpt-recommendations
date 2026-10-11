@@ -41,9 +41,9 @@
       "domain": "visual_identity",
       "status": "open_confirmed",
       "evidence_type": "confirmed_real_fiction_sample",
-      "description": "FilmDSL 状态/跨镜一致性与来源绑定的私人参考图版本链已离线完成：资产 SHA-256、immutable revision、镜头版本绑定、换图旧镜头失效、临时字节验证；尚无持久私人图像库、许可/身份认证、真实模型图片输入及成片人物视觉一致性试验。Issue #2 保持开放。",
+      "description": "已建立 FilmDSL 角色/道具状态与私人参考资产卡v2：正脸、侧脸、服装可同时逐镜独立锁定，过期版本及不同镜头更换服装可辨；但尚无真实持久图片库、角色视觉识别/肖像权人工授权及视频模型实际媒体核验，主问题仍OPEN。",
       "source": "creative_production_handoff.inspect_preproduction",
-      "test_evidence": "tests/test_film_continuity.py::test_prop_teleportation_across_shots_is_blocked;tests/test_film_continuity.py::test_independent_qa_catches_prop_teleport_across_departments;tests/test_film_continuity.py::test_source_locked_actor_contract_enforces_physical_asset_states;tests/test_asset_reference_manifest.py::test_snapshot_attachment_immutability_and_role_version_guard;tests/test_asset_reference_manifest.py::test_full_synthetic_ten_role_delivery_only_exports_reference_metadata",
+      "test_evidence": "tests/test_film_continuity.py::test_prop_teleportation_across_shots_is_blocked;tests/test_film_continuity.py::test_independent_qa_catches_prop_teleport_across_departments;tests/test_film_continuity.py::test_source_locked_actor_contract_enforces_physical_asset_states;tests/test_asset_reference_manifest.py::test_snapshot_attachment_immutability_and_role_version_guard;tests/test_asset_reference_manifest.py::test_full_synthetic_ten_role_delivery_only_exports_reference_metadata;tests/test_asset_reference_manifest.py::test_multi_slot_identity_and_wardrobe_bind_simultaneously;tests/test_asset_reference_manifest.py::test_wardrobe_switch_detected_without_face_switch",
       "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/2",
       "fix_commit": ""
     },
@@ -250,6 +250,18 @@
       "test_evidence": "tests/test_asset_reference_manifest.py::test_shot_reference_explicit_binding_and_revision_history;tests/test_asset_reference_manifest.py::test_snapshot_attachment_immutability_and_role_version_guard;tests/test_asset_reference_manifest.py::test_full_synthetic_ten_role_delivery_only_exports_reference_metadata;tests/test_asset_reference_manifest.py::test_final_delivery_cannot_use_state_from_other_asset_snapshot",
       "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/2",
       "fix_commit": "78a77d1521dc7503c7cf373fd154390ab0bd9b40"
+    },
+    {
+      "id": "AUD-021",
+      "priority": "P1",
+      "domain": "multi_slot_visual_reference",
+      "status": "fixed_regression_verified",
+      "evidence_type": "confirmed_code",
+      "description": "修复同一实体一镜只能选单张参考图的 v1 确认缺陷，v2 同时绑定 identity_front/identity_side/wardrobe 等独立槽位且不覆盖正脸主引用；逐槽校验版本/实体/哈希、换装人工复核、旧版阻断迁移，结构化上下文和最终工作单均包含纯元数据。真实参考图尚不存在，不能证明人物视觉一致。",
+      "source": "asset_reference_manifest.py;agent_role_contracts.py;production_delivery.py",
+      "test_evidence": "tests/test_asset_reference_manifest.py::test_multi_slot_identity_and_wardrobe_bind_simultaneously;tests/test_asset_reference_manifest.py::test_wardrobe_switch_detected_without_face_switch;tests/test_asset_reference_manifest.py::test_changing_wardrobe_version_invalidates_specific_slot_binding;tests/test_asset_reference_manifest.py::test_injected_slot_or_entity_reference_is_rejected",
+      "issue_url": "https://github.com/pyzz58/gpt-recommendations/issues/2",
+      "fix_commit": "447c462ab11c7995528a31dc23e587166fa6dd53"
     }
   ]
 }
