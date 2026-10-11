@@ -61,7 +61,7 @@ class PilotReadinessTests(unittest.TestCase):
         self.assertNotIn("Bearer ",content)
         self.assertNotIn("林禾",content)
         self.assertIn("OFFLINE_PREFLIGHT_ONLY_BLOCK_REAL_DISPATCH",content)
-        self.assertIn("NO_CONNECTED_DEEPSEEK_ACCOUNT_IN_THIS_CHAT",
+        self.assertIn("NO_PRIVATE_EXECUTION_ACCOUNT_SUPPLIED_TO_THIS_REHEARSAL",
                       report["missing_preconditions"])
         self.assertFalse(report["ready_for_video_generation"])
 
