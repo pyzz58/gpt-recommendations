@@ -243,8 +243,21 @@ class NarrativeBridgeTests(unittest.TestCase):
                 "subtitle_direction":"Inside the central safe area, high contrast",
                 "lip_sync_policy":"Off-screen narration only, no fake lip-sync"
             }
+            if shot["visual_type"]=="ai_video" and shot["character_ids"]:
+                dr["shootability"]={
+                    "mode":"single_take",
+                    "action_units":[{
+                        "id":f"A_{ix:02d}", "beat_index":ix,
+                        "actor_id":shot["character_ids"][0],
+                        "hand":"none", "prop_id":None,
+                        "from_s":beat["from_s"],"to_s":beat["to_s"],
+                        "action":beat["visible_change"],
+                        "visible_result":"End pose visibly follows this beat"
+                    } for ix,beat in enumerate(dr["beats"])]
+                }
             prev=shot
         book=workbook.compile_workbook(b,d)
+        self.assertTrue(book["director_review"]["shootability_structure_ready"],book["shootability_review"])
         self.assertTrue(book["director_review"]["creative_design_complete"],book["director_review"]["findings"])
         self.assertTrue(book["director_review"]["editor_handoff_ready"],book["director_review"]["handoff_findings"])
         self.assertTrue(book["director_review"]["narrative_handoff_ready"],book["director_review"]["narrative_handoff_findings"])
