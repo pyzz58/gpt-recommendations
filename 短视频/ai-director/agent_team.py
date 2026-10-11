@@ -192,6 +192,7 @@ def packet(state, task_id):
             "source_review_bound": state["source_review_bound"],
             "input_task_ids": list(spec["depends_on"]),
             "no_authorized_model_calls": True, "no_payments_or_media": True,
+            "creative_review_contract": "ROLE_CREATIVE_CONTRACTS.md",
             "note": ("Work from the approved shared base and upstream deliverables. "
                      "Propose only your own fields; cross-department or source changes "
                      "must be requested for showrunner review.")}
@@ -359,6 +360,8 @@ def compile_team_workbook(base, state):
     errors, warnings = director_v2.validate(base, draft)
     _require(not errors, "merged direction invalid: " + "; ".join(errors[:8]))
     book = director_workbook.compile_workbook(base, draft)
+    import agent_creative_review
+    book["creative_quality_review"] = agent_creative_review.review_team(state)
     book["team_handoff"] = {
         "specialist_task_revisions": {k: v["revision"] for k, v in
                                       state["tasks"].items()},
