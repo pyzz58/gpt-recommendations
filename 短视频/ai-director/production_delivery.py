@@ -25,6 +25,7 @@ import director_workbook
 import editorial_review_lock as locks
 import creative_production_handoff as first_vision
 import film_continuity as film_tracks
+import asset_reference_manifest as assetrefs
 
 SCHEMA = "operator-video-production-bundle-v1"
 TARGETS = ("wan", "seedance")
@@ -204,6 +205,10 @@ def build_locked_crew_delivery(snapshot, episode_source, final_team_state):
              "DELIVERY_TEAM_WRONG_PLAN_VERSION")
     _require(final_team_state.get("source_digest") == lock["source_digest"],
              "DELIVERY_TEAM_WRONG_SOURCE_VERSION")
+    _require(
+        final_team_state.get("asset_reference_manifest_digest") ==
+        lock["asset_reference_manifest_digest"],
+        "DELIVERY_TEAM_REFERENCE_MANIFEST_CHANGED")
     try:
         team._check_state(final_team_state)
         _require(all(x["status"] == "completed"
@@ -247,6 +252,24 @@ def build_locked_crew_delivery(snapshot, episode_source, final_team_state):
                 "visual_intention", "camera_intention", "light_intention",
                 "transition_intention", "reason", "observable_action")}
         job["first_vision_is_unapproved_planning_proposal"] = True
+    if snapshot.get("asset_reference_manifest") is not None:
+        # Only digest/counters and shot card IDs go into the work order.
+        # The private source photos are never included in any operator text.
+        review=assetrefs.validate(
+            base, lock["source_digest"], snapshot["asset_reference_manifest"])
+        bundle["reference_manifest_review"] = {
+            "manifest_digest":review["manifest_digest"],
+            "cards_count":review["cards_count"],
+            "missing_bindings_count":review["missing_bindings_count"],
+            "reference_content_hash_matched_in_private_runtime":False,
+            "visual_identity_verified":False,
+            "rights_verified":False,
+            "human_approved":False,
+        }
+        for work in bundle["shots"]:
+            shot_id=work["shot_id"]
+            work["versioned_reference_bindings"]=deepcopy(
+                snapshot["asset_reference_manifest"]["shot_bindings"][shot_id])
     bundle["film_continuity_evidence"] = continuity_evidence
     bundle["film_continuity_media_identity_verified"] = False
     bundle["film_continuity_requires_human_visual_review"] = True
@@ -292,6 +315,13 @@ def render_operator_markdown(bundle):
             "参考素材已提供：否，必须人工核验",
             "",
         ]
+        if "versioned_reference_bindings" in shot:
+            lines += [
+                "版本锁定的参考资产（仅元数据，不含图片）："+
+                json.dumps(shot["versioned_reference_bindings"],
+                           ensure_ascii=False,sort_keys=True),
+                "任何人物一致性、许可或真人批准状态：均未验证", "",
+            ]
         vision = shot.get("first_director_editor_vision")
         if vision:
             lines += [
