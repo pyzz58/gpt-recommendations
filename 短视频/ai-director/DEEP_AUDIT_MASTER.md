@@ -49,6 +49,12 @@
 
 严禁“自动修复”等于模型自己多跑几遍。对真实收费请求，任何重试都需要新的明确授权，尤其响应已经发生、账单未知的情况。
 
+## CineCrew 式资产连续性第三轮专项审计（2026-10-11）
+
+- **AUD-019 子模块已完成离线回归**：新 [film_continuity.py](film_continuity.py) 从权威源中建立稳定角色/道具/场景 ID，逐镜有可追踪位置、服装、道具状态和动作事件；跨镜突变阻断，画外时空跳转需要额外人工审核。接入表演岗位 Schema、局部返工、独立 QA、最终工单。
+- **AUD-003 继续 OPEN**：没有真实服化道/人物参考图片、许可/版本、Wan/Seedance 实际画面比对，不能用状态字符串一致性声称“真实视频不会变脸”。[Issue #2](https://github.com/pyzz58/gpt-recommendations/issues/2) 保持待办。
+- 依据 [CineCrew](https://github.com/Ironieser/CineCrew)（Apache-2.0）公开 FilmDSL 的资产 / clip / memory 观念自主设计，不搬整套研究框架；复现证据详见 [FILMDSL_CONTINUITY_AUDIT.md](FILMDSL_CONTINUITY_AUDIT.md)。本轮所有 CI 公开虚构，无真实 DeepSeek/视频生成。
+
 ## Schema 与不可信文本的第二轮专项审计（2026-10-11）
 
 - **AUD-008 回归验证完成**：针对模型收到 JSON Schema 而返回结果没有共用校验的问题，正式融合 MIT `jsonschema==4.25.1`；[role_schema_guard.py](role_schema_guard.py) + `agent_role_contracts.execution_output_schema()` 强制校验所有十岗位，脚本编辑的扩展 `storyboard_pitch` 必须用原提示里的同一份 Schema。缺依赖或 Schema 错误在收费 `reserve` 和 HTTP **之前**拦截；旧业务含义错误码保留。
