@@ -71,7 +71,7 @@ def create_empty(plan, source_digest):
 
 
 def _type_check(media_type,data):
-    _require(media_type in IMAGE_FORMATS and
+    _require(type(media_type) is str and media_type in IMAGE_FORMATS and
              type(data) is bytes and 16<=len(data)<=MAX_IMAGE_BYTES,
              "ASSET_MEDIA_BYTES_INVALID")
     ok=(media_type=="image/png" and data.startswith(b"\x89PNG\r\n\x1a\n")) or (
@@ -106,15 +106,20 @@ def validate(plan, source_digest, manifest):
     _require(set(manifest["shot_bindings"])==set(expected["shot_bindings"]),
              "ASSET_SHOT_BINDING_COVERAGE")
     cards=manifest["cards"]
+    _require(len(cards)<=250 and len(manifest["shot_bindings"])<=1000,
+             "ASSET_MANIFEST_SIZE_LIMIT")
     for key,card in cards.items():
         _require(type(key) is str and ID.fullmatch(key) is not None and
                  type(card) is dict and set(card)=={
                      "asset_id","entity_id","entity_kind","slot","versions"} and
                  card["asset_id"]==key and
+                 type(card["entity_id"]) is str and
                  card["entity_id"] in entities and
                  card["entity_kind"]==entities[card["entity_id"]] and
+                 type(card["slot"]) is str and
                  card["slot"] in KIND_SLOTS[card["entity_kind"]] and
-                 type(card["versions"]) is list and card["versions"],
+                 type(card["versions"]) is list and
+                 0<len(card["versions"])<=16,
                  "ASSET_CARD_INVALID")
         prev=None
         for i,rev in enumerate(card["versions"],1):
@@ -126,6 +131,7 @@ def validate(plan, source_digest, manifest):
                 HEX64.fullmatch(rev["sha256"]) is not None and
                 type(rev["size_bytes"]) is int and
                 16<=rev["size_bytes"]<=MAX_IMAGE_BYTES and
+                type(rev["media_type"]) is str and
                 rev["media_type"] in IMAGE_FORMATS and
                 rev["previous_revision_digest"]==prev and
                 rev["rights_status"]=="unverified" and
@@ -134,7 +140,8 @@ def validate(plan, source_digest, manifest):
                 "ASSET_REVISION_CHAIN_OR_RIGHTS_INVALID")
             prev=_card_digest(rev)
     missing=[]
-    slots_in_use={}
+    switches=[]
+    prev_entity_bindings={}
     for sid,target in expected["shot_bindings"].items():
         bindings=manifest["shot_bindings"][sid]
         _require(type(bindings) is dict and
@@ -156,8 +163,13 @@ def validate(plan, source_digest, manifest):
                      link["version"]==version["version"] and
                      link["sha256"]==version["sha256"],
                      "ASSET_SHOT_STALE_OR_WRONG_ENTITY")
-            seen=slots_in_use.setdefault(entity_id,set())
-            seen.add((card["asset_id"],link["version"]))
+            earlier=prev_entity_bindings.get(entity_id)
+            if earlier is not None and earlier != (
+                    link["asset_id"],link["version"],link["sha256"]):
+                switches.append({"entity_id":entity_id,"shot_id":sid,
+                                 "reason":"reference_switch_requires_human_review"})
+            prev_entity_bindings[entity_id]=(
+                link["asset_id"],link["version"],link["sha256"])
     return {
         "kind":VERSION,"manifest_digest":team.fingerprint(manifest),
         "source_digest":source_digest,
@@ -166,7 +178,8 @@ def validate(plan, source_digest, manifest):
         "revisions_count":sum(len(x["versions"]) for x in cards.values()),
         "missing_bindings_count":len(missing),
         "missing_bindings":missing,
-        "per_entity_references_consistent":True,
+        "reference_switches":switches,
+        "per_entity_references_consistent":len(switches)==0,
         "bytes_stored_in_manifest":False,
         "actual_reference_file_exists_verified":False,
         "media_identity_verified":False,
