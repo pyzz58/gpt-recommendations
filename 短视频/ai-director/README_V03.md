@@ -48,6 +48,12 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 **不要直接修改原片**。按上述 Codex 工作流先生成 `plan.proposed.json`，然后在本地验证并人工审核。没有采纳整个 CineCrew 或 transitions 包；零运行时额外依赖，无视频或 API 费用。
 
+## 新增：镜头之间为何切、如何推动情绪、AI/静态/图形风格怎样统一
+
+已新增 `director_narrative_bridges.py`、[NARRATIVE_HANDOFF.md](NARRATIVE_HANDOFF.md) 和合成回归测试。每对相邻镜头都要求具体的切点叙事原因、情绪变化、视觉链接、跨介质后期统一方案（调色/构图/排版/纹理），而不是单镜头分别写“专业摄影”“电影感”。
+
+`director_workbook.py` 增加 `narrative_bridges`、`narrative_handoff_ready` 和 `production_blueprint_ready`；严格模式只有剪辑时间线与跨镜头导演交接均完整才能称为制作级**文字蓝图**，仍需人工审片，绝不代表视频已生成。已有旧档可继续编译带缺项提示的草稿。详见 [NARRATIVE_HANDOFF.md](NARRATIVE_HANDOFF.md)。
+
 ## 导演交付书升级：概念完整 ≠ 可交剪辑
 
 新增逐镜 `editing.audio_bridge` 音频跨镜头设计（J-cut/L-cut/明确不用）、`speech.subtitle_cues` 字幕时间点，并强化 `speech.voiceover.cues` 和动画关键帧检查。导演审查分离：
