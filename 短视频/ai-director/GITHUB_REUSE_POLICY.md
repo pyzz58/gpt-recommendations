@@ -19,6 +19,10 @@
 
 参照 [Ironieser/CineCrew](https://github.com/Ironieser/CineCrew) 的公开 README（Apache-2.0），本项目**只借鉴 ID-约束的 assets / clips / continuity memory 结构思想**；已在 `film_continuity.py` 自主编写源资产登记、镜头开始/结束状态、镜内动作事件、跨镜冲突、画外变更人审流程。接口已进入表演/独立 QA/最终工单；没有复制上游源码、增加 CineCrew 第三方运行依赖、安装图像模型或生成媒体。尚未完成角色参考资产持久版本管理、真实性视觉检测，因此 AUD-003 Issue #2 保持 OPEN。详情 [FILMDSL_CONTINUITY_AUDIT.md](FILMDSL_CONTINUITY_AUDIT.md)。
 
+## CineCrew 后续成果：版本化资产卡（2026-10-11）
+
+延续 CineCrew FilmDSL 的资源库 `assets` 与逐镜 `clips[]` 引用思想，新增 [asset_reference_manifest.py](asset_reference_manifest.py) 作为当前项目自主编写的**元数据版本管理**，不安装 CineCrew/DVC 整个框架，也不复制上游源码。只支持可信私人进程内哈希 PNG/JPEG/WEBP 输入、逐镜 content SHA 和明确版本固定；实际图像不存 GitHub、AI 模型不获得媒体文件。许可证/肖像同意/真人验收永远标记 `unverified`，直到未来设计认证的私人媒体库/权利链与真实影像验收。详细边界：[REFERENCE_ASSET_VERSIONING_AUDIT.md](REFERENCE_ASSET_VERSIONING_AUDIT.md)。
+
 **固定规则：每次修改、补足功能或修复缺陷前，先检索 GitHub 上的相关成熟仓库，核对代码、许可证、维护状况、测试和运行成本，再决定直接复用、借鉴结构还是自行实现。参见 AGENTS.md。**
 
 状态：仅完成上游仓库的第一轮公开资料调查；没有安装依赖、下载模型权重、执行付费 API、修改用户 Mac 配置或合并第三方代码。实际使用前仍需测试许可证兼容、版本和依赖。
