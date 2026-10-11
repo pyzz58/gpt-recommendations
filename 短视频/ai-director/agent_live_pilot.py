@@ -165,6 +165,7 @@ class PilotJournal:
             flags |= os.O_NOFOLLOW
         self.fd = os.open(lock_path, flags, 0o600)
         self.closed = False
+        self.poisoned = False
         try:
             try:
                 fcntl.flock(self.fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -204,7 +205,8 @@ class PilotJournal:
         self.close()
 
     def _validate(self):
-        _check(not self.closed and self.digest == _fingerprint(self.config),
+        _check(not self.closed and not self.poisoned and
+               self.digest == _fingerprint(self.config),
                "PILOT_LEDGER_CLOSED_OR_MODIFIED")
         data = self.records
         _check(isinstance(data, dict) and
@@ -315,15 +317,35 @@ class PilotJournal:
         rec = self.records["attempts"][record_id - 1]
         _check(rec["status"] == "pending_uncertain",
                "PILOT_ATTEMPT_ALREADY_FINISHED")
-        rec["status"] = status
+        # Verify all caller-supplied usage BEFORE altering the ledger.
+        # If durable commit fails, forbid further attempts with this journal
+        # instance: the disk rename might have succeeded before fsync failed.
         if usage is not None:
             _check(isinstance(usage, dict) and
                    type(usage.get("total_tokens")) is int and
+                   usage["total_tokens"] >= 0 and
                    isinstance(usage.get("estimated_usage_cost_cny"), str),
                    "PILOT_USAGE_INVALID")
+            try:
+                actual = Decimal(usage["estimated_usage_cost_cny"])
+            except Exception:
+                raise PilotError("PILOT_USAGE_INVALID") from None
+            _check(actual.is_finite() and actual >= 0,
+                   "PILOT_USAGE_INVALID")
+        original = deepcopy(rec)
+        rec["status"] = status
+        if usage is not None:
             rec["reported_tokens"] = usage["total_tokens"]
             rec["usage_estimate_cny"] = usage["estimated_usage_cost_cny"]
-        self._save()
+        try:
+            self._save()
+        except Exception:
+            # A failed _save is not proof that the provider wasn't billed,
+            # and the filesystem rename might have already happened.
+            # Refuse any additional operation until manually reconciled.
+            self.records["attempts"][record_id - 1] = original
+            self.poisoned = True
+            raise
 
     def summary(self):
         self._validate()
