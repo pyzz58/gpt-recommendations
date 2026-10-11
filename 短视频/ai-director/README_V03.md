@@ -48,6 +48,12 @@ python3 local_director.py audit --plan jobs/live-pilot-001/episodes/ep01/plan.js
 
 **不要直接修改原片**。按上述 Codex 工作流先生成 `plan.proposed.json`，然后在本地验证并人工审核。没有采纳整个 CineCrew 或 transitions 包；零运行时额外依赖，无视频或 API 费用。
 
+## 多 Agent 专业制作策划团队：总导演管理、各专业部门分工（GitHub-only）
+
+新增 `agent_team.py` 和 [MULTI_AGENT_STUDIO.md](MULTI_AGENT_STUDIO.md)。内部角色为总导演、剧本编辑、动作表演、摄影美术、声音、剪辑动画、AI 技术导演与独立 QA；总导演负责初始创作方向、锁定共享规范和最终整合。各部门按整集拥有明确写入字段与上游依赖，可提交可追踪的版本交付，QA 可以指出问题，总导演选择局部返工；专业内容仍通过现有 `direction_v02` 合并为统一导演交付书。
+
+**请勿误解**：本轮是离线任务编排器，不是八个已运行的 LLM Agent。当前尚未自动接入 Codex/DeepSeek 的真实多角色调用；未来接入的消费、模型、数据传输仍需要用户批准。也未获用户 Mac 部署许可，因此无需下载/执行。
+
 ## 单镜头动作可拍性与拆段工作单（GitHub-only）
 
 新增 `director_shootability.py`，对真人 AI 视频镜头的每个导演动作节拍要求明确时间、演员、左/右手与道具、可观察结束姿态。自动识别同一只手的时间冲突、节拍覆盖缺口、道具登记缺失，并对过快的精细动作提出**人工试制提醒**，不宣称模型客观无法完成。
