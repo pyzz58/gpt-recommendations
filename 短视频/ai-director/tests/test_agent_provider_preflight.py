@@ -205,6 +205,38 @@ class ProviderPreflightTests(unittest.TestCase):
                         self.base, self.state, second, self.responses(),
                         source_text=self.source)
 
+    def test_reported_usage_overrun_blocks_downstream_and_reopen(self):
+        with tempfile.TemporaryDirectory() as folder:
+            with durable.PrivateReservationJournal(folder, self.config) as first:
+                oversized = self.provider_response(usage={
+                    "prompt_tokens": 1_000_000, "completion_tokens": 0,
+                    "total_tokens": 1_000_000,
+                    "prompt_cache_hit_tokens": 0,
+                    "prompt_cache_miss_tokens": 1_000_000})
+                frame = durable.OfflineResponseFrames({
+                    "director_brief": {"1": oversized}})
+                with self.assertRaisesRegex(durable.DurablePreflightError, "EXCEEDS_RESERVATION"):
+                    durable.run_one_offline(
+                        self.base, self.state, first, frame,
+                        source_text=self.source)
+                self.assertEqual(first.data["attempts"][0]["status"],
+                                 "usage_overrun_requires_review")
+                self.assertGreater(Decimal(first.data["attempts"][0]
+                                          ["provider_reported_usage"]
+                                          ["estimated_usage_cost_cny"]),
+                                   Decimal(first.data["attempts"][0]["reserved_cny"]))
+            with durable.PrivateReservationJournal(folder, self.config) as second:
+                with self.assertRaisesRegex(durable.DurablePreflightError, "UNRECONCILED"):
+                    durable.run_one_offline(
+                        self.base, self.state, second, self.responses(),
+                        source_text=self.source)
+
+    def test_hit_rate_cannot_exceed_declared_miss_rate(self):
+        bad = dict(self.config)
+        bad["cache_hit_cny_m"] = "3"
+        with self.assertRaisesRegex(durable.DurablePreflightError, "CACHE_HIT_CEILING"):
+            durable.PrivateReservationJournal(".", bad)
+
     def test_response_invalid_still_charges_attempt_reservation(self):
         with tempfile.TemporaryDirectory() as folder:
             with durable.PrivateReservationJournal(folder, self.config) as journal:
