@@ -208,7 +208,7 @@ class NarrativeBridgeTests(unittest.TestCase):
         b,d=self.authored()
         prev=None
         for shot,dr in zip(b["shots"],d["shots"]):
-            existing=dr["editing"]
+            existing=dr.get("editing", {})
             dr["editing"]={
                 "incoming_transition":prev["transition"] if prev else "start",
                 "outgoing_transition":shot["transition"],
