@@ -240,6 +240,43 @@ class DirectorTeamTests(unittest.TestCase):
             self.assertNotEqual(second.returncode,0)
             self.assertEqual(target.read_bytes(),original)
 
+    def test_packet_and_submit_cli_use_versioned_files_without_overwrite(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            base=ROOT/"examples/quit-smoking/plan.json"
+            state=root/"team_v1.json"
+            packet_path=root/"packet.json"
+            deliverable=root/"director_brief.json"
+            updated=root/"team_v2.json"
+            first=subprocess.run([sys.executable,str(ROOT/"agent_team.py"),"plan",
+                                  "--base",str(base),"--out",str(state)],
+                                 capture_output=True,text=True)
+            self.assertEqual(first.returncode,0,first.stderr)
+            p=subprocess.run([sys.executable,str(ROOT/"agent_team.py"),"packet",
+                              "--state",str(state),"--task","director_brief",
+                              "--out",str(packet_path)],
+                             capture_output=True,text=True)
+            self.assertEqual(p.returncode,0,p.stderr)
+            self.assertTrue(json.loads(packet_path.read_text())["no_authorized_model_calls"])
+            deliverable.write_text(json.dumps({
+                "creative_brief":{"vision":"Preserve source, no model calls"}
+            }),encoding="utf-8")
+            saved=subprocess.run([sys.executable,str(ROOT/"agent_team.py"),"submit",
+                                 "--state",str(state),"--envelope",str(packet_path),
+                                 "--deliverable",str(deliverable),"--out",str(updated)],
+                                capture_output=True,text=True)
+            self.assertEqual(saved.returncode,0,saved.stderr)
+            ledger=json.loads(updated.read_text())
+            self.assertEqual(ledger["tasks"]["director_brief"]["status"],"completed")
+            self.assertEqual(team.ready(ledger),["script_edit"])
+            self.assertEqual(json.loads(state.read_text())["tasks"]["director_brief"]
+                             ["status"],"pending")
+            repeat=subprocess.run([sys.executable,str(ROOT/"agent_team.py"),"submit",
+                                   "--state",str(state),"--envelope",str(packet_path),
+                                   "--deliverable",str(deliverable),"--out",str(updated)],
+                                  capture_output=True,text=True)
+            self.assertNotEqual(repeat.returncode,0)
+
     def test_resubmission_envelopes_validate_dependency_versions(self):
         state=self.completed()
         state=team.request_revision(state,"acting",["S01"],"Fix gesture")
