@@ -20,6 +20,9 @@ import agent_live_crew as live
 import agent_role_contracts as roles
 import agent_team as team
 import agent_handoff_audit as audit
+import production_delivery as delivery
+import director_v2
+import director_workbook
 import editorial_review_lock as review
 import test_editorial_review_lock as review_fixture
 import test_agent_role_contracts as role_fixture
@@ -241,6 +244,44 @@ class LockedCrewPilotTests(unittest.TestCase):
             self.assertFalse(st["release"]["paid_api_authorized"])
             self.assertTrue(st["release"]["director_ai_review_complete"])
             self.assertFalse(st["release"]["publishing_allowed"])
+
+    def test_full_chain_exports_real_video_model_work_orders_not_only_team_flags(self):
+        """Long article -> reviewed plan -> ten fixture roles -> candidate prompts."""
+        with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+            state=self.state
+            for task_id in team.SPECS:
+                state,_=self._step(journal,state,task_id)
+            self.assertFalse(state["release"]["human_approved"])
+            # This is the real production compiler, NOT a mocked output.
+            exported=delivery.build_locked_crew_delivery(
+                self.snapshot,self.original,state)
+            self.assertEqual(exported["provenance"],"locked_ten_role_crew")
+            self.assertEqual(exported["shooting_order"],
+                             [s["id"] for s in self.plan["shots"]])
+            self.assertEqual(exported["project"]["total_shots"],len(self.plan["shots"]))
+            self.assertTrue(exported["full_workbook_review"]["independent_crew_completed"])
+            self.assertEqual(exported["project"]["duration_s"],self.plan["duration"])
+            self.assertFalse(exported["ready_to_call_video_model"])
+            self.assertFalse(exported["human_approved"])
+            self.assertFalse(exported["publishing_allowed"])
+            self.assertIn("逐镜生产工单",delivery.render_operator_markdown(exported))
+            for shot,base_shot in zip(exported["shots"],self.plan["shots"]):
+                self.assertEqual(shot["film_script"]["voiceover"],base_shot["narration"])
+                self.assertEqual(shot["timeline"]["duration_s"],base_shot["duration"])
+                if shot["production_route"]=="ai_video":
+                    self.assertEqual(set(shot["ai_video_prompt_candidates"]),{"wan","seedance"})
+                else:
+                    self.assertEqual(shot["ai_video_prompt_candidates"],{})
+
+    def test_end_to_end_source_corruption_never_exports(self):
+        with pilot.PilotJournal(self.tmp.name,self.config) as journal:
+            state=self.state
+            for task_id in team.SPECS:
+                state,_=self._step(journal,state,task_id)
+            with self.assertRaisesRegex(delivery.ProductionDeliveryError,
+                                        "UNTRUSTED_LOCK"):
+                delivery.build_locked_crew_delivery(
+                    self.snapshot,self.original+"unauthorized change",state)
 
     def test_unapproved_narration_changed_in_sound_blocks_quality_review_acceptance(self):
         with pilot.PilotJournal(self.tmp.name,self.config) as journal:
