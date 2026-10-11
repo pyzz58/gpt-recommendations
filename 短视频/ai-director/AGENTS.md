@@ -10,6 +10,13 @@
 6. **上线/本地部署闸门**：只有用户明确说开始本地运行/部署时，才审查并整理单一发布版本：锁定依赖和版本、校验许可/安全、全套无付费回归、自检文档、明确区分“程序可运行”和“实际视频生产已经验证”；之后再提供一次性部署/同步步骤。**不要把用户只是同意修某个功能解释为放行本地部署**。
 7. 持续更新 `GITHUB_ONLY_DEVELOPMENT.md` 与 `GITHUB_REUSE_POLICY.md`。有外部开源项目直接合并前必须核实版权要求、许可证兼容与安全风险；禁止直接搬运 GPL 源码进入不兼容项目。
 
+## 模型参考图输入预览（仅离线开发）
+
+- 新模块 `reference_input_preview.py` 只把导演镜头与已登记资产转为供应商无关的参考需求清单；详见 [REFERENCE_INPUT_PREVIEW.md](REFERENCE_INPUT_PREVIEW.md)。
+- 输出永远不得包含私有原始图片路径、图片字节、素材来源详情/授权合同、任何 API Key 或可发起模型调用的凭据；`actual_provider_request=false`、`images_uploaded=false`、`runtime_execution_allowed=false`。
+- 不得把这份需求清单声称为 Wan/Seedance 的真实请求格式，不得以“目录 status=approved”推导已有传输授权或已验证生成效果。
+- 新增供应商适配器前先核对官方 API 现行文档、版本、模型可接收的参考图角度数量、格式、授权和成本，并单独征求用户执行授权；当前 GitHub-only 不允许上传私人文件或调用付费服务。
+
 ## 生成前安全门禁（新增；优先级高）
 
 - 阅读 [GENERATION_GATE.md](GENERATION_GATE.md)。`director_v2.compile_package()` 对每次编译输出附加 `generation_gate`：没有真实参考图核验、人工逐镜审批和交付媒体时，必须逐条显示阻断原因。
