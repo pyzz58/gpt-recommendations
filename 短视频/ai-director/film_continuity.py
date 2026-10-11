@@ -80,7 +80,9 @@ def inventory(base, *, source_digest=None):
         referenced=shot.get("character_ids",[])
         objects=shot.get("prop_ids",[])
         _check(isinstance(referenced,list) and isinstance(objects,list) and
-               all(_id(x) for x in referenced+objects),
+               all(_id(x) for x in referenced+objects) and
+               len(set(referenced))==len(referenced) and
+               len(set(objects))==len(objects),
                "CONTINUITY_BAD_SHOT_ENTITY_REFS")
         for item in referenced:
             _check(item in characters,"CONTINUITY_UNKNOWN_SHOT_CHARACTER")
@@ -146,6 +148,9 @@ def inspect_tracks(base, tracks_by_shot, *, source_digest=None):
         sid=shot["id"]
         requested=shot.get("character_ids",[])+shot.get("prop_ids",[])
         payload=tracks_by_shot[sid]
+        _check(type(shot.get("duration")) in (int,float) and
+               0 < shot["duration"] <= 86400,
+               "CONTINUITY_SHOT_DURATION_INVALID")
         _check(isinstance(payload,dict) and
                set(payload)=={"entity_tracks","scene_id"} and
                payload["scene_id"]==shot.get("scene_id") and
@@ -166,7 +171,8 @@ def inspect_tracks(base, tracks_by_shot, *, source_digest=None):
             events=item["events"]
             _check(isinstance(events,list),"CONTINUITY_EVENTS_REQUIRED")
             kind=item["cut_break"]
-            _check(kind in BREAK_KINDS and type(item["cut_reason"]) is str,
+            _check(type(kind) is str and kind in BREAK_KINDS and
+                   type(item["cut_reason"]) is str,
                    "CONTINUITY_BREAK_KIND_INVALID")
             if kind=="none":
                 _check(not item["cut_reason"].strip(),
