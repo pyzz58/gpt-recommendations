@@ -320,6 +320,8 @@ class AssetReferenceManifestTests(unittest.TestCase):
                       packet["messages"][1]["content"])
         self.assertIn("unbound_references",
                       packet["messages"][1]["content"])
+        self.assertIn("shot_slot_bindings",
+                      packet["messages"][1]["content"])
         self.assertNotIn("FICTIONAL_HEADER_ONLY",packet["messages"][1]["content"])
         # The old role state cannot silently run with another new manifest.
         old=review.stage_locked_team(locked,f.source)["team"]
@@ -374,8 +376,13 @@ class AssetReferenceManifestTests(unittest.TestCase):
         self.assertFalse(report["ready_to_call_video_model"])
         for work in report["shots"]:
             self.assertIn("versioned_reference_bindings",work)
+            self.assertIn("versioned_reference_slot_bindings",work)
+            self.assertEqual(
+                work["versioned_reference_slot_bindings"],
+                manifest["shot_slot_bindings"][work["shot_id"]])
         rendered=delivery.render_operator_markdown(report)
         self.assertIn("版本锁定的参考资产",rendered)
+        self.assertIn("按用途分别锁定的参考资产",rendered)
         self.assertNotIn("FICTIONAL_HEADER_ONLY",rendered)
         self.assertNotIn("human_approved=true",rendered)
 
