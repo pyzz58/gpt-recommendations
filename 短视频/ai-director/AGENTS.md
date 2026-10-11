@@ -18,6 +18,14 @@
 - 老剧本缺完整专业交付允许明确标记为 `draft_needs_review` 的审阅草稿；`strict=True` 只能在文字制作蓝图、岗位证据及交接质量均满足门禁时返回供真人审片状态，绝不冒充已生成视频。
 - 当前 GitHub-only，不触碰 Mac 和私人 jobs，无收费调用。测试代码不等于已运行通过；任何远端 CI 结果须以实际检查状态为准。
 
+## 多 Agent 模拟执行器（2026-10-11）
+
+- 新增 [AGENT_EXECUTION_LAYER.md](AGENT_EXECUTION_LAYER.md) / `agent_executor.py`：十阶段连续处理由显式 `FixtureOnlyAdapter` 提供的预写 JSON 岗位交付，真实编排/版本/权限/QA/rework 规则生效，但**不调用任何 LLM**。不能把模拟交付叫作“8个 AI 已真正创作了电影方案”。
+- `role_context` 只允许在将来经批准的私有运行环境暂时传递原始文案、基础分镜和上游交付；绝不可把这些请求对象、私人 fixtures 或执行后的 ledger 上传公开仓库。只读执行收据不包含原文。
+- 无 fixture 即暂停；越权写入、源指纹不匹配、未备案模型适配器均阻断；QA 与总导演终审也要重新审核权威源稿。默认停止在总导演最终决定之前，`allow_fixture_director_final` 仅供模拟验收，不等于人审。
+- **本阶段不得以任何方式调用付费模型/视频 API**，不得因为用户同意“继续”就视为授权收费、上传文案或部署 Mac。
+- 新增测试详见文档；完整自动化回归以当前 GitHub CI 记录为准。测试通过证明离线机制，不证明创作质量。
+
 ## 新主架构：总导演统筹的专业 Agent 影视团队（最高优先级）
 
 - **先阅读 [MULTI_AGENT_STUDIO.md](MULTI_AGENT_STUDIO.md)** 与 `agent_team.py`。产品入口仍为文案，产品输出仍为一份专业导演交付书；团队协作是内部生产方法，不增加用户需要管理的角色数量。
