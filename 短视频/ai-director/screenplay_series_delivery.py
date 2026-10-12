@@ -418,6 +418,34 @@ def episode_director_request(handoff, dossier, breakdown, packet, episode_id):
         "全剧本用于理解前后文，不允许把其他集节拍偷塞进当前集。"
         "编剧详细场次说明必须作为叙事理解的依据，但不构成机位指令。"
         "不得暗改原剧本或增加新台词，变更需要返回编剧。")
+    # The director's actual model-facing message must receive the specific
+    # per-episode artistic brief and relevant detailed writer scene notes.
+    # Returning them only in result metadata would not guide a real Agent.
+    separator = "\\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\\n"
+    before, found, encoded = result["messages"][1]["content"].partition(separator)
+    _need(bool(found), "SERIES_ROLE_PROMPT_FORMAT")
+    try:
+        context = json.loads(encoded)
+    except ValueError:
+        raise SeriesDeliveryError("SERIES_ROLE_PROMPT_JSON") from None
+    _need(context.get("original_script") == handoff["screenplay_fountain"] and
+          context.get("authoritative_base") == episode["authoritative_episode_base"],
+          "SERIES_ROLE_PROMPT_SOURCE_TAMPERED")
+    episode_brief = next(x for x in breakdown["episodes"]
+                         if x["episode_id"] == episode_id)
+    active = set(episode_brief["beat_ids"])
+    localized_dossier = []
+    for scene in dossier["scenes"]:
+        selected_beats = [b for b in scene["beats"] if b["beat_id"] in active]
+        if selected_beats:
+            detail = deepcopy(scene)
+            detail["beats"] = selected_beats
+            localized_dossier.append(detail)
+    context["current_episode_story_and_break_reason"] = deepcopy(episode_brief)
+    context["current_episode_detailed_writer_intent"] = localized_dossier
+    context["entire_series_director_plan_digest"] = proof["director_breakdown_digest"]
+    result["messages"][1]["content"] = before + found + json.dumps(
+        context, ensure_ascii=False, separators=(",", ":"))
     result["episode_director_context"] = {
         "episode_id": episode_id,
         "full_screenplay_digest": proof["screenplay_digest"],
