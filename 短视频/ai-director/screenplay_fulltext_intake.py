@@ -200,8 +200,12 @@ def prepare_fulltext(source, *, episode_id="FULL", risk_domain=None,
     }
 
 
-def editor_request(intake, document, *, mode="auto"):
-    """Build an UNSENT complete screenplay request, never a short preview."""
+def editor_request(intake, document, *, mode="auto", source_idea_manifest=None):
+    """UNSENT screenplay request; optional pre-script meaning anchors.
+
+    When the professional QO-W01 workflow is used, freeze source ideas
+    BEFORE drafting, not after the model knows its own proposed screenplay.
+    """
     _require(mode in ("auto", "fiction", "documentary", "essay", "hybrid"),
              "FULLTEXT_MODE_INVALID")
     _verify_intake(intake, document)
@@ -218,11 +222,23 @@ def editor_request(intake, document, *, mode="auto"):
         "建议的时长和结构须按内容确定；不能因为旁白预览上限而丢失内容。")
     payload = json.loads(task["messages"][1]["content"])
     payload["source_units"] = deepcopy(intake["scope_units"])
+    if source_idea_manifest is not None:
+        # Import only inside functions to avoid coupling the standard intake
+        # to a professional quality overlay in legacy workflows.
+        import screenplay_semantic_fidelity as semantic
+        verified = semantic.validate_manifest(intake, document, source_idea_manifest)
+        _require(source_idea_manifest["genre"] == mode,
+                 "FULLTEXT_SEMANTIC_GENRE_MISMATCH")
+        payload["pre_adaptation_source_ideas"] = deepcopy(source_idea_manifest)
+        payload["source_ideas_manifest_digest"] = verified["manifest_digest"]
     payload["source_scope_span"] = list(intake["scope_span"])
     payload["source_scope_sha256"] = intake["scope_digest"]
     task["messages"][1]["content"] = json.dumps(
         payload, ensure_ascii=False, separators=(",", ":"))
     task["fulltext_source_units"] = deepcopy(intake["scope_units"])
+    task["semantic_source_ideas_provided_before_adaptation"] = (
+        source_idea_manifest is not None)
+    task["semantic_source_ideas_verified_by_human"] = False
     task["adaptation_mode"] = mode
     task["whole_scope_indexed"] = True
     task["source_document_digest"] = intake["document_digest"]
@@ -323,3 +339,38 @@ def reviewed_director_handoff(intake, document, wrapper, decisions,
     handoff["reviewer_professional_qualifications_verified"] = False
     handoff["human_author_approval_authenticated"] = False
     return handoff
+
+
+def semantic_quality_director_handoff(intake, document, wrapper, decisions,
+                                      cast_bindings, independent_critique,
+                                      source_idea_manifest, semantic_review,
+                                      *, genre):
+    """QO-W01 strict screenwriter branch: meaning review + craft + author form.
+
+    Old director_handoff/reviewed_director_handoff remain compatible for
+    existing offline examples, but their output MUST NOT be represented
+    as having passed independent semantic fidelity review.
+    """
+    import screenplay_semantic_fidelity as semantic
+    _verify_intake(intake, document)
+    _require(source_idea_manifest is not None and semantic_review is not None,
+             "FULLTEXT_MISSING_SEMANTIC_REVIEW")
+    receipt = semantic.validate_semantic_review(
+        intake, document, wrapper, source_idea_manifest, semantic_review)
+    _require(receipt["recommendation"] == "ready_for_author_review",
+             "FULLTEXT_CORE_MEANING_REVISION_REQUIRED")
+    result = reviewed_director_handoff(
+        intake, document, wrapper, decisions, cast_bindings,
+        independent_critique, genre=genre)
+    _require(source_idea_manifest["genre"] == genre,
+             "FULLTEXT_WRONG_SEMANTIC_GENRE")
+    result["screenplay_semantic_review"] = receipt
+    result["semantic_fidelity_reviewed"] = True
+    result["core_ideas_declared_preserved_by_editor"] = (
+        receipt["critical_ideas_declared"])
+    # This is an *editorial declaration*, not authenticated truth.
+    result["source_ideas_completeness_verified_by_human"] = False
+    result["semantic_accuracy_verified_by_human"] = False
+    result["author_approval_authenticated"] = False
+    result["screenplay_artistic_quality_certified"] = False
+    return result
