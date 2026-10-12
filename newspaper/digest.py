@@ -307,12 +307,12 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
                 '<strong>英文标题 · English title</strong>'
                 f'<p style="margin:4px 0">{title}</p>'
                 f'<p style="margin:4px 0;color:#1d4b73">{zh_title}</p></div>'
-                '<h4 style="margin-top:16px">事实材料 · Sentence-by-sentence bilingual reading</h4>'
+                '<h4 style="margin-top:16px">事实材料 · 英文一行 / 中文下一行</h4>'
             )
             plain.extend([
                 f"\n{idx}. {a['title']}",a["title_zh"],
                 f"{a.get('source','')} | {time} 北京时间",
-                "【事实材料：一句英文紧跟一句中文】",
+                "【事实材料：英文一行、中文下一行、逐句对应】",
             ])
             pairs = a.get("bilingual_pairs", [])
             if not pairs:
@@ -328,12 +328,14 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
                     plain.append("")
                 last_paragraph = pid
                 parts.append(
-                    '<div style="margin-bottom:12px;padding:8px 12px;border-left:2px solid #dde6f0">'
-                    f'<div style="color:#283547">{p(pair["en"])}</div>'
-                    f'<div style="color:#215582;margin-top:3px">{p(pair["zh"])}</div>'
+                    '<div style="margin:0;padding:0;line-height:1.55">'
+                    f'<div style="margin:0;color:#283547">{p(pair["en"])}</div>'
+                    f'<div style="margin:0;color:#215582">{p(pair["zh"])}</div>'
                     '</div>'
                 )
-                plain.extend([pair["en"], pair["zh"], ""])
+                # A single physical newline separates each source sentence and
+                # its exact translation; successive pairs remain adjacent.
+                plain.append(pair["en"] + "\n" + pair["zh"])
             evaluation = article_advice(a)
             parts.append(
                 '<div style="margin:16px 0;padding:12px;background:#f7f8fa;border-radius:6px">'
