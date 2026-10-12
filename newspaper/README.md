@@ -14,6 +14,18 @@
 
 详细设计及验收指标：[V05_PRODUCT_SPEC.md](V05_PRODUCT_SPEC.md)。
 
+## DeepSeek 单次 0.20 元费用守卫（2026-10-12）
+
+GitHub Actions Secrets 中用户配置 `NEWSPAPER_LLM_API_KEY` 之后，仅主分支正式邮件发送步骤调用 DeepSeek **一次**；PR 测试、demo、live dry-run 均不发送付费请求。没有密钥或请求失败，则不自动重试，继续发送 PDF 与普通投递说明。新闻正文不经 AI 改写，AI 只撰写邮件正文的全球形势评论。
+
+- 默认模型：`deepseek-flash`，不自动升级 Pro；非思考模式，单次输出上限 2400 tokens。
+- 单次预算 **¥0.20**；按照官方**高峰价**（Flash 输入缓存未命中 ¥2／百万 tokens、输出 ¥8／百万 tokens）事前估计，输入采用 UTF-8 字节计数 + 固定协议开销进行保守估计。
+- 运行时达到 **¥0.18** 的保守估计则**不发起 API 请求**。只在一个工作流里调用一次；无自动重试，不循环多个 Agent。
+- 实际响应包含 usage 时，再按高峰价重新估算本次消耗并记入 GitHub Actions 日志，不保存密钥及输入全文；超过限制视为异常。
+- 北京时间 07:00 当前位于 DeepSeek 闲时价格窗口，但计价守卫不依赖折扣。若价格变动或平台结算异常，客户端不能替服务商保证实际扣款绝对上限；请注意控制账户余额与模型平台限额。
+- 若手动多次以 `dry_run=false` 运行，每次均可能独立收费；“一次调用”指一次工作流运行，不是平台全局每日配额。
+
+
 ## 如何直接在 GitHub 测试
 
 1. 打开 [Actions / Newspaper](https://github.com/pyzz58/gpt-recommendations/actions/workflows/newspaper.yml)。
