@@ -20,5 +20,8 @@ class MailSecretsSafetyTests(unittest.TestCase):
         preview = w.split("      - name: Preview only",1)[1].split("      - name: Send real daily report",1)[0]
         self.assertIn("python newspaper/digest.py --demo", preview)
         self.assertNotIn("secrets.", preview)
+        self.assertIn("python newspaper/digest.py --dry-run", preview)
+        self.assertIn("PREVIEW_KIND", preview)
+        self.assertIn("inputs.preview_kind", w)
 if __name__ == "__main__":
     unittest.main()
