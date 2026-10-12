@@ -57,9 +57,9 @@
       "stage": "now_screenwriter",
       "department": "screenwriter",
       "priority": "P0",
-      "status": "partially_addressed",
+      "status": "in_progress",
       "title": "全稿理解与核心思想覆盖",
-      "observed_in": "screenplay_fulltext_intake.py; screenplay_adaptation.validate_proposal",
+      "observed_in": "screenplay_fulltext_intake.py; screenplay_adaptation.validate_proposal; screenplay_semantic_fidelity.py",
       "problem": "源码结构覆盖和脚本语义理解是两回事，改编可能保全源 ID 却丢掉中心问题与观点",
       "root_cause": "当前单元来源覆盖不核查观点/因果/情绪保留",
       "solution": "建立核心命题与故事事实账本，逐条绑定来源段落、编剧版本、对应场次；独立逆向阅读检查关键想法是否保留，失败返回编剧重写",
@@ -72,9 +72,9 @@
       "owner": "screenwriter",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/24",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "tests/test_screenplay_semantic_fidelity.py::test_negative_semantic_review_blocks_full_coverage_false_claim; tests/test_screenplay_semantic_fidelity.py::test_manifest_cannot_be_replaced_after_screenplay_review",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -86,6 +86,12 @@
           "status": "partially_addressed",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "已实现原文核心思想预编剧登记与剧本语义反向审核、绑定版本和定点返修；仍待真人独立盲评，不能标质量验收完成",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/24"
         }
       ]
     },
