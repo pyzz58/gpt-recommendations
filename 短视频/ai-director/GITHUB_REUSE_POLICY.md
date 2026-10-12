@@ -1,3 +1,11 @@
+## 2026-10-12：Seedance 单镜适配的实际复用选择
+
+需求：将既有导演工作单转换为官方异步视频任务，并保存回执和视频；保留精确对白与声画类型。本轮实际核对 [volcengine/volcengine-python-sdk](https://github.com/volcengine/volcengine-python-sdk)（Apache-2.0，2026-10-09 有推送）的 content_generation/tasks.py 和 _constants.py。官方 SDK 支持 create/get，但默认 MAX_RETRIES=2；付费创建不能沿用未知重试，因此本轮只借鉴官方请求合同，使用标准库 HTTPS 薄适配，固定服务端主机，不自动重试或重定向。未复制第三方源码、未安装 SDK，无新增运行依赖。将来采用 SDK 必须显式禁用付费重试并重测。
+
+同时核对 [AcademySoftwareFoundation/OpenTimelineIO](https://github.com/AcademySoftwareFoundation/OpenTimelineIO) README：适合时间线交换，不负责视频渲染；当前尚无真实镜头和确定的剪辑交付目标，暂不引入 C++/绑定及适配器。未声称完成 OTIO 集成。官方 API 文档与具体限制见 [审查](SEEDANCE_API_AUDIT.md)。
+
+复用既有私有文件原子创建/fsync 函数，无新的通用账本或编排层。隔离 Linux/Python 3.12 全量 592 项通过；中国网络、Mac、账户开通、供应商账单、音画效果均未验证。回滚可恢复本次代码提交涉及模块；旧对白丢失会重新出现，不应据此开放生产。模型 ID 和媒体域名需按真实账号所在区域再次核对。
+
 ## 2026-10-12：正常中文表演误判的最小修复
 
 《先吃饭》样例驱动AUD-026修复。核对jsonschema关键字与Pydantic类型模块的公开源码入口，选择直接复用现有占位标记规则，集中小函数替代单字“待”判断，无新库、第三方源码或框架。实际复现、回归和未验证边界见 [DIRECTOR_DIALOGUE_REVIEW.md](DIRECTOR_DIALOGUE_REVIEW.md)。

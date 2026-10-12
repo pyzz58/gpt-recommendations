@@ -322,6 +322,42 @@
       "test_evidence": "tests/test_director_v2.py::test_authored_waiting_and_expectation_are_not_placeholders;tests/test_director_v2.py::test_explicit_drafting_markers_remain_rejected",
       "issue_url": "",
       "fix_commit": "62dd1046217387516fdc893b7714814fc369b85a"
+    },
+    {
+      "id": "AUD-027",
+      "domain": "production_dialogue_loss",
+      "description": "制作包film_script和director_v2后期单遗漏完整speech。已保留精确对白、说话人、时间及口型交接并验证深拷贝，未改变源文。",
+      "source": "production_delivery._make_bundle;director_v2.compile_package",
+      "test_evidence": "tests/test_seedance_adapter.py::test_dialogue_survives_delivery_and_postproduction",
+      "priority": "P1",
+      "status": "fixed_regression_verified",
+      "evidence_type": "confirmed_code",
+      "issue_url": "",
+      "fix_commit": "49702712088d829a5a684ee0880dc164900c18eb"
+    },
+    {
+      "id": "AUD-028",
+      "domain": "dialogue_routing_loss",
+      "description": "时间线只保留对白文本，丢弃出镜/画外类型。现保存kind及lip_sync_required；旧缺失类型为unknown，不猜测口型，非法类型阻断。",
+      "source": "director_timeline.assemble",
+      "test_evidence": "tests/test_seedance_adapter.py::test_timeline_distinguishes_visible_and_offscreen_speech;tests/test_seedance_adapter.py::test_legacy_dialogue_kind_is_unknown_and_invalid_kind_blocks",
+      "priority": "P1",
+      "status": "fixed_regression_verified",
+      "evidence_type": "confirmed_code",
+      "issue_url": "",
+      "fix_commit": "49702712088d829a5a684ee0880dc164900c18eb"
+    },
+    {
+      "id": "AUD-029",
+      "priority": "P1",
+      "domain": "api_to_final_film_gap",
+      "status": "open_confirmed",
+      "evidence_type": "confirmed_code",
+      "description": "已实现单镜API函数但未挂接生产运行和UI；缺少真实媒体完整解码、实测时长回写、选片/返工版本及最终渲染闭环。接口成功不等于成片。",
+      "source": "SEEDANCE_API_AUDIT.md;seedance_adapter.py;director_timeline.py",
+      "test_evidence": "",
+      "issue_url": "",
+      "fix_commit": ""
     }
   ]
 }

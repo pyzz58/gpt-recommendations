@@ -1,3 +1,9 @@
+## 当前最高产品目标：API 制作路线（2026-10-12）
+
+用户明确同意“文案 → 完整导演设计 → 第三方视频 API → 视频回收 → 审片返工 → 合成”。以 [PRODUCT_NORTH_STAR.md](PRODUCT_NORTH_STAR.md)、[SEEDANCE_API_AUDIT.md](SEEDANCE_API_AUDIT.md) 和当前计划为准。以下历史“只交图纸/不直接生成视频”是旧阶段边界，不能再当成产品终点；付费、私人运行和发布仍须对应的真实授权。
+
+本轮实现单镜 Seedance 适配函数，尚未挂接自动执行器、UI 或长期私有运行服务。默认只离线编译，不自动读取 Key、重试 POST、下载或生成视频。原生对白必须明确 onscreen_dialogue/offscreen_dialogue；制作包和后期单保留完整 speech。不存在真实媒体证据时，不能宣称生成质量、口型、身份一致性、最终成片或人审已经通过。优先验证 S02 单镜，再衔接 S02/S03，不扩张通用 Agent 框架。
+
 ## 对白样例与正常表演用语（2026-10-12）
 
 [《先吃饭》48秒对白样例](examples/dinner-dialogue-review/director_workbook.md)已补齐VO、画外/出镜对白、字幕与口型交接；均未录音/生成/人审。AUD-026修复“等待”被占位规则误拦，见 [DIRECTOR_DIALOGUE_REVIEW.md](DIRECTOR_DIALOGUE_REVIEW.md)。累计26项，13项回归修复，原生产P0仍开放。不得靠删掉正常中文来让样例过检，也不得将时间线sync_dialogue字段等同所有对白都要口型；按明确声画设计交付。无新增付费授权。

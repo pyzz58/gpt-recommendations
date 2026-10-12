@@ -1,3 +1,7 @@
+## 2026-10-12：API 路线的源码与离线验证
+
+用户已同意开发第三方视频 API 制作路线，本轮实现 Seedance 单镜 prepare/submit/query/download 函数和 19 项模拟网络回归。实际未发送 API、未传输文案、未产生视频费用、未部署 Mac。合成 MP4 头仅用于传输测试，不是有效影像验收。完整审查、范围与剩余运行条件见 [SEEDANCE_API_AUDIT.md](SEEDANCE_API_AUDIT.md)。
+
 ## 2026-10-12：对白交付与AUD-026
 
 完成 [48秒/6镜对白候选](examples/dinner-dialogue-review/director_workbook.md)，附逐句配音、口型责任与计划SRT；修复正常“等待”表演指令误拦。隔离Linux补齐现有固定依赖后全量573测试通过，严格样例编译通过。代码提交 `62dd1046217387516fdc893b7714814fc369b85a`；无真实配音/口型/视频、无新模型请求、无Mac操作。详情见 [说明](DIRECTOR_DIALOGUE_REVIEW.md)。
