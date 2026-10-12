@@ -84,14 +84,15 @@ class OriginalClippingTests(unittest.TestCase):
         self.assertNotIn("安全与政策事件的经济影响",html)
         self.assertNotIn("英语阅读附录",html)
 
-    def test_unlicensed_has_only_original_short_quote_and_link(self):
+    def test_unlicensed_has_only_original_short_quote_without_link(self):
         it=attach_rights({"全球新闻":[self.item]}, {})["全球新闻"][0]
         html,plain=build_clippings_html({"全球新闻":[it]},self.day)
         self.assertIn("Original sentence one gives the opening facts exactly as written.",html)
         self.assertNotIn("Finally, a separate paragraph",html)
         self.assertIn("原始英文短摘",html)
-        self.assertIn("阅读全文",html)
-        self.assertIn("https://example.com/news/2026/001",html)
+        self.assertNotIn("阅读全文",html)
+        self.assertNotIn("https://example.com/news/2026/001",html)
+        self.assertNotIn("https://example.com/news/2026/001",plain)
         self.assertNotIn("据EXAMPLE RIGHTS TEST ONLY报道",html)
         self.assertNotIn("后续应核对",html)
         self.assertNotIn("以下首先陈述报道中出现的事件",html)
@@ -101,7 +102,7 @@ class OriginalClippingTests(unittest.TestCase):
         it["bilingual_pairs"]=[{"en":"This English has no translation.","zh":"","paragraph_id":0}]
         html,_=build_clippings_html({"全球新闻":[it]},self.day)
         self.assertNotIn("This English has no translation.",html)
-        self.assertIn("没有符合短摘限制",html)
+        self.assertIn("没有符合当前使用范围",html)
 
     def test_cover_stays_typeset_and_pdf_is_searchable(self):
         it=attach_rights({"全球新闻":[self.item]}, {})["全球新闻"][0]
