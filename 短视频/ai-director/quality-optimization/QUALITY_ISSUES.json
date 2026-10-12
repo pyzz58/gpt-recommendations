@@ -827,7 +827,8 @@
       "depends_on": [
         "QO-D04",
         "QO-D05",
-        "QO-D08"
+        "QO-D08",
+        "QO-F07"
       ],
       "legacy_links": [
         "https://github.com/pyzz58/gpt-recommendations/issues/1",
@@ -1127,7 +1128,7 @@
       "acceptance": "独立安全验证+真实低成本受控验证后才解除；否则持续blocked",
       "ai_video_constraint": "供应商费用、内容安全策略和第三方存储需按账号与地域逐项核对",
       "depends_on": [
-        "QO-D11"
+        "QO-D04"
       ],
       "legacy_links": [
         "https://github.com/pyzz58/gpt-recommendations/issues/1"
