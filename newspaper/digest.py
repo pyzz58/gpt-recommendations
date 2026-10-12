@@ -19,6 +19,8 @@ from zoneinfo import ZoneInfo
 import feedparser
 import requests
 from reader import fetch_reading
+from ranking import rank_and_pool
+from english_lessons import attach_lessons
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -106,29 +108,19 @@ def _duplicate(item: dict, selected: list[dict]) -> bool:
     return False
 
 
-def choose_candidates(items: list[dict], limits: dict, pool_size: int) -> dict:
-    """A diverse source pool allows inaccessible/paywalled stories to be replaced."""
-    chosen = {}
-    for category in limits:
-        arr = [item for item in items if item["category"] == category]
-        arr.sort(key=lambda x: (bool(PRIORITY.search(x["title"])), x["date"]), reverse=True)
-        per_source = {}
-        for item in arr:
-            per_source.setdefault(item["source"], []).append(item)
-        rotated = []
-        while per_source and len(rotated) < pool_size:
-            for source in list(per_source):
-                if not per_source[source]:
-                    del per_source[source]
-                    continue
-                item = per_source[source].pop(0)
-                if not _duplicate(item, rotated):
-                    rotated.append(item)
-                if len(rotated) >= pool_size:
-                    break
-        chosen[category] = rotated
-    return chosen
-
+def choose_candidates(
+    items: list[dict], limits: dict, pool_size: int,
+    news_start: dt.datetime | None = None,
+) -> dict:
+    """Prefer valuable, distinct events and keep readable outlet fallbacks."""
+    return {
+        category: rank_and_pool(
+            [item for item in items if item["category"] == category],
+            pool_size=pool_size,
+            news_start=news_start,
+        )
+        for category in limits
+    }
 
 def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
     """
@@ -164,6 +156,12 @@ def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
                 if len(accepted) >= quota:
                     break
                 if item in accepted or _duplicate(item, selected_global + accepted):
+                    continue
+                if any(
+                    old.get("category") == item.get("category")
+                    and old.get("story_id") == item.get("story_id")
+                    for old in accepted
+                ):
                     continue
                 if diversify and counts.get(item["source"], 0) >= source_max:
                     continue
@@ -241,9 +239,30 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
         f'{total} 篇中英对照报道 · 每日 07:00 定时投递</p>',
         '<p style="font-size:13px;color:#657187">正文由公开可读取新闻页面提取并截选，'
         '译文由离线翻译生成；并非付费文章全文、也非 AI 事实核查。'
-        '原文可能更长，请结合来源和发布时间判断。</p>',
+        '原文可能更长；推荐分数由关键词、主题匹配、不同媒体覆盖度、'
+        '新动作或数据线索和时效性计算，不能代表事实已核验。</p>',
     ]
     plain = [f"全球新闻 Newspaper | {day}", f"北京时间前一日新闻 · {total} 篇双语深度阅读选段"]
+    # Editorial front page: high-scoring articles, no duplicates or fabricated headlines.
+    all_articles = [
+        article for articles in grouped.values() for article in articles
+    ]
+    top_articles = sorted(
+        all_articles, key=lambda a: a.get("importance_score", 0), reverse=True,
+    )[:5]
+    if top_articles:
+        parts.append('<h2>今日重点 · Editor Picks</h2><ol>')
+        plain.append("\n【今日重点 / Editor Picks】")
+        for article in top_articles:
+            label = html.escape(article.get("title_zh") or article["title"])
+            score = int(article.get("importance_score", 0))
+            parts.append(
+                f'<li>{label} <span style="color:#687489">'
+                f'（推荐参考分 {score}/100）</span></li>'
+            )
+            plain.append(f"{label} · 推荐参考分 {score}/100")
+        parts.append('</ol><p style="font-size:12px;color:#687489">'
+                     '推荐分数是可解释的程序启发式结果，不代表投资建议或事实核查。</p>')
     for category, articles in grouped.items():
         parts.append(
             f'<h2 style="border-bottom:2px solid #edf0f6;padding-bottom:7px">'
@@ -262,6 +281,12 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
             url = html.escape(a["url"], quote=True)
             when = a["date"].astimezone(now.tzinfo).strftime("%Y-%m-%d %H:%M")
             omitted = "（精选选段，非全文）" if a["reading_abbreviated"] else "（可提取正文）"
+            score = int(a.get("importance_score", 0))
+            why = html.escape(a.get("why_recommended", "未生成评分依据"))
+            parts.append(
+                '<div style="font-size:12px;color:#506682">'
+                f'推荐参考分 {score}/100 · {why}</div>'
+            )
             parts.append(
                 '<article style="padding:16px 0;border-bottom:1px solid #e2e6ed">'
                 f'<div style="font-size:12px;color:#687489">{source} · {when} 北京时间 · '
@@ -274,20 +299,55 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
                 f'<p><a href="{url}">原始来源 · Original source</a></p>'
                 '</article>'
             )
+            # Attach vocabulary and actual grammatical examples immediately below
+            # THIS article rather than a generic topic list at the end of the email.
+            vocab = a.get("vocabulary", [])
+            lessons = a.get("grammar_lessons", [])
+            if vocab or lessons:
+                parts.append('<section style="margin:10px 0 20px;padding:10px 14px;'
+                             'background:#eef4fb;border-radius:6px">'
+                             '<h4>English Learning · 本篇英语学习</h4>')
+                plain.append("\n【本篇英语学习】")
+            if vocab:
+                parts.append('<p><strong>Vocabulary · 词汇</strong></p><ul>')
+                for word in vocab:
+                    parts.append(
+                        f'<li><strong>{html.escape(word["word"])}</strong>：'
+                        f'{html.escape(word["definition"])}</li>'
+                    )
+                    plain.append(f'{word["word"]} — {word["definition"]}')
+                parts.append('</ul>')
+            if lessons:
+                parts.append('<p><strong>Grammar Focus · 本篇语法</strong></p>')
+                for lesson in lessons:
+                    label = html.escape(lesson["title"])
+                    quote = html.escape(lesson["sentence_en"])
+                    cn = html.escape(lesson["sentence_zh"])
+                    pattern = html.escape(lesson["pattern"])
+                    note = html.escape(lesson["explanation"])
+                    parts.append(
+                        f'<div style="margin-bottom:12px"><strong>{label}</strong>'
+                        f'<p style="margin:4px 0"><em>{quote}</em></p>'
+                        f'<p style="margin:4px 0">{cn}</p>'
+                        f'<p style="margin:4px 0">结构：{pattern}</p>'
+                        f'<p style="margin:4px 0">用法：{note}</p></div>'
+                    )
+                    plain.append(
+                        f'\n{lesson["title"]}\n原文例句：{lesson["sentence_en"]}'
+                        f'\n中文：{lesson["sentence_zh"]}'
+                        f'\n结构：{lesson["pattern"]}\n用法：{lesson["explanation"]}'
+                    )
+            if vocab or lessons:
+                parts.append('</section>')
             plain.append(
+                f"推荐参考分 {a.get('importance_score', 0)}/100 · {a.get('why_recommended', '')}\n"
                 f"{a['title']}\n{a['title_zh']}\n"
                 f"【中文阅读】\n{a['reading_zh']}\n"
                 f"【English reading】\n{a['reading_en']}\n"
                 f"{a['source']} | {a['url']}"
             )
-    parts.append('<h2>English Corner · 今日主题词汇</h2><ul>')
-    plain.append("\n【English Corner】")
-    for terms in VOCAB.values():
-        for en, zh in terms[:2]:
-            parts.append(f"<li><strong>{html.escape(en)}</strong> — {html.escape(zh)}</li>")
-            plain.append(f"{en} — {zh}")
     parts.append(
-        '</ul><p style="font-size:12px;color:#687489">'
+        '<p style="font-size:12px;color:#687489">'
         '未绕过付费墙或登录限制；未能取得正文的新闻会改用可访问报道。'
         '自动采集需尊重各来源使用条款，个人阅读不代表可公开转载。</p></body></html>'
     )
@@ -338,6 +398,16 @@ def main():
                 "reading_en": "This is a fictional example article. " * 20,
                 "reading_zh": "这是虚构测试内容。 " * 20,
                 "reading_abbreviated": True,
+                "importance_score": 78,
+                "why_recommended": "仅供版式测试的虚构评分依据",
+                "vocabulary": [{"word": "example", "definition": "例子"}],
+                "grammar_lessons": [{
+                    "title": "一般过去时 · Simple Past",
+                    "sentence_en": "The group reported the results yesterday.",
+                    "sentence_zh": "该团队昨天报告了结果。",
+                    "pattern": "动词过去式",
+                    "explanation": "用于叙述过去发生的事件。",
+                }],
                 "url": "https://example.org/", "date": now,
             }]
     else:
@@ -359,11 +429,18 @@ def main():
             [item for articles, _ in collected for item in articles],
             settings["max_per_category"],
             settings["candidate_pool_per_category"],
+            news_start=start,
         )
         readable, diagnostics = build_readings(pool, settings)
         if sum(len(x) for x in readable.values()) == 0:
             raise RuntimeError("No articles successfully extracted; aborting the email.")
-        grouped = bilingualize(readable, ensure_argos_translator())
+        translator = ensure_argos_translator()
+        grouped = attach_lessons(
+            bilingualize(readable, translator),
+            translator,
+            grammar_limit=settings.get("grammar_examples_per_article", 3),
+            vocab_limit=settings.get("vocabulary_per_article", 5),
+        )
     html_body, text_body = render(grouped, now, news_day, diagnostics)
     if args.dry_run or args.demo:
         target = Path(args.output)
