@@ -263,13 +263,19 @@ def _verify_intake(intake, source):
              "FULLTEXT_INTAKE_TAMPERED")
 
 
-def review_packet(intake, document, proposal):
-    """Bridge to existing screenplay review without accepting a shorter text."""
+def review_packet(intake, document, proposal, *,
+                  source_idea_manifest=None):
+    """Existing review packet, optionally bound to a pre-script idea register."""
     _verify_intake(intake, document)
     selected = document[slice(*intake["scope_span"])]
     packet = screenplay_adaptation.build_review_packet(
         intake["base"], selected, proposal)
-    return {
+    source_idea_binding = None
+    if source_idea_manifest is not None:
+        import screenplay_semantic_fidelity as semantic
+        source_idea_binding = semantic.validate_manifest(
+            intake, document, source_idea_manifest)["manifest_digest"]
+    wrapper = {
         "kind": "fulltext_screenplay_review_wrapper_v1",
         "scope_document_digest": intake["document_digest"],
         "intake_digest": agent_team.fingerprint(intake),
@@ -284,9 +290,13 @@ def review_packet(intake, document, proposal):
         "human_approval_authenticated": False,
         "external_calls": 0,
     }
+    if source_idea_binding is not None:
+        wrapper["pre_adaptation_idea_manifest_digest"] = source_idea_binding
+    return wrapper
 
 
-def director_handoff(intake, document, wrapper, decisions, cast_bindings):
+def director_handoff(intake, document, wrapper, decisions, cast_bindings,
+                     *, source_idea_manifest=None):
     """Existing director contract, tied to revalidated exact fulltext intake."""
     _verify_intake(intake, document)
     _require(isinstance(wrapper, dict) and
@@ -296,7 +306,9 @@ def director_handoff(intake, document, wrapper, decisions, cast_bindings):
              "FULLTEXT_REVIEW_WRONG_SOURCE")
     packet = wrapper.get("screenplay_review_packet")
     _require(isinstance(packet, dict), "FULLTEXT_PACKET_MISSING")
-    fresh = review_packet(intake, document, packet.get("proposal"))
+    fresh = review_packet(
+        intake, document, packet.get("proposal"),
+        source_idea_manifest=source_idea_manifest)
     _require(agent_team.fingerprint(fresh) == agent_team.fingerprint(wrapper),
              "FULLTEXT_REVIEW_TAMPERED")
     selected = document[slice(*intake["scope_span"])]
@@ -312,7 +324,8 @@ def director_handoff(intake, document, wrapper, decisions, cast_bindings):
 
 
 def reviewed_director_handoff(intake, document, wrapper, decisions,
-                              cast_bindings, independent_critique, *, genre):
+                              cast_bindings, independent_critique, *, genre,
+                              source_idea_manifest=None):
     """Optional STRICT craft-reviewed route; legacy compatibility unchanged.
 
     A valid external critique can prevent clearly identified flaws from being
@@ -331,7 +344,8 @@ def reviewed_director_handoff(intake, document, wrapper, decisions,
     _require(receipt["recommendation"] == "ready_for_author_review",
              "FULLTEXT_SCREENPLAY_CRAFT_REVISE_REQUIRED")
     handoff = director_handoff(
-        intake, document, wrapper, decisions, cast_bindings)
+        intake, document, wrapper, decisions, cast_bindings,
+        source_idea_manifest=source_idea_manifest)
     handoff["screenplay_craft_review"] = receipt
     handoff["screenplay_craft_pass"] = (
         "independent_review_no_reported_blockers")
@@ -361,7 +375,8 @@ def semantic_quality_director_handoff(intake, document, wrapper, decisions,
              "FULLTEXT_CORE_MEANING_REVISION_REQUIRED")
     result = reviewed_director_handoff(
         intake, document, wrapper, decisions, cast_bindings,
-        independent_critique, genre=genre)
+        independent_critique, genre=genre,
+        source_idea_manifest=source_idea_manifest)
     _require(source_idea_manifest["genre"] == genre,
              "FULLTEXT_WRONG_SEMANTIC_GENRE")
     result["screenplay_semantic_review"] = receipt
