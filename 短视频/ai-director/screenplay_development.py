@@ -492,3 +492,169 @@ def screenplay_request(intake, document, packet):
     task["writer_quality_human_verified"] = False
     task["dispatch_allowed"] = False
     return task
+
+
+
+def screenplay_review_packet(intake, document, development, proposal):
+    """Source-bound screenplay review with a pre-existing selected treatment."""
+    integrity = validate_packet(intake, document, development)
+    wrapper = fulltext.review_packet(intake, document, proposal)
+    wrapper["creative_development_packet_digest"] = integrity["packet_digest"]
+    wrapper["creative_development_selected_take_id"] = (
+        integrity["selected_take_id"])
+    wrapper["creative_development_treatment_digest"] = (
+        integrity["treatment_digest"])
+    wrapper["development_alignment_review_status"] = "not_reviewed"
+    return wrapper
+
+
+def alignment_review_request(intake, document, development, wrapper):
+    """Separate DEVELOPMENT editor checks the writer's screenplay vs treatment."""
+    actual = _checked_script_review(intake, document, development, wrapper)
+    screenplay = actual["screenplay_review_packet"]["screenplay_fountain"]
+    return {
+        "kind": "unsent_screenplay_development_alignment_review",
+        "version": VERSION,
+        "dispatch_allowed": False, "reviewer_qualification_verified": False,
+        "messages": _message(
+            "你是独立剧本开发编辑。请在已阅读完整原文后，分别阅读所选择的"
+            "影视改编take、完整treatment与实际新剧本，判断这是有电影叙事的"
+            "改编还是机械搬运。不是越多保留原文才越好，删掉拖慢影片的精彩"
+            "原文段落可能是正确的。请逐场明确treatment的认知/人物变化"
+            "有没有被影视化实现。如果有偏离，要分辨是有创造力且"
+            "不损失作者内核的正当重写，还是无理由地篡改事实、结局或论证。"
+            "评价必须引用剧本中准确短句并解释观众的具体体验。"
+            "如果整场省略，就无可引用的剧本片段，明确指出原因和可能后果。"
+            "禁止打空泛高分、禁止用来源ID替代审美判断，"
+            "不负责导演摄影/AI视频提示词或假称作者批准。",
+            {
+                "source": _scope(intake, document),
+                "development": development,
+                "screenplay": screenplay,
+                "development_packet_digest": _fingerprint(development),
+                "script_sha256": hashlib.sha256(screenplay.encode()).hexdigest(),
+                "review_fields": [
+                    "version", "development_digest", "script_sha256",
+                    "scene_assessments", "overall_recommendation"],
+                "scene_item_fields": [
+                    "scene_id", "judgment", "screenplay_quote",
+                    "viewer_effect", "specific_reason", "rewrite_action"],
+                "judgment_enum": [
+                    "realized", "creative_reinterpretation", "unjustified_loss"],
+                "overall_enum": ["revise", "ready_for_author_review"],
+                "must_evaluate_selected_treatment_not_preservation_percentage": True,
+            }),
+    }
+
+
+def _checked_script_review(intake, document, development, wrapper):
+    integrity = validate_packet(intake, document, development)
+    _need(isinstance(wrapper, dict) and
+          isinstance(wrapper.get("screenplay_review_packet"), dict),
+          "DEVELOPMENT_SCRIPT_REVIEW_REQUIRED")
+    proposal = wrapper["screenplay_review_packet"].get("proposal")
+    try:
+        original = screenplay_review_packet(
+            intake, document, development, proposal)
+    except (ValueError, KeyError, TypeError) as exc:
+        raise CreativeDevelopmentError(
+            "DEVELOPMENT_SCRIPT_REVALIDATION_FAILED") from None
+    _need(_fingerprint(original) == _fingerprint(wrapper) and
+          wrapper.get("creative_development_packet_digest") ==
+              integrity["packet_digest"],
+          "DEVELOPMENT_SCRIPT_REVIEW_TAMPERED")
+    return wrapper
+
+
+def validate_alignment_review(intake, document, development, wrapper, review):
+    """No false claim that grounding a critique makes it aesthetically correct."""
+    original = _checked_script_review(intake, document, development, wrapper)
+    script = original["screenplay_review_packet"]["screenplay_fountain"]
+    proof = validate_packet(intake, document, development)
+    _fields(review, {
+        "version", "development_digest", "script_sha256",
+        "scene_assessments", "overall_recommendation",
+    }, "DEVELOPMENT_ALIGNMENT_REVIEW_SHAPE")
+    _need(review["version"] == VERSION and
+          review["development_digest"] == proof["packet_digest"] and
+          review["script_sha256"] == hashlib.sha256(script.encode()).hexdigest(),
+          "DEVELOPMENT_ALIGNMENT_REVIEW_STALE")
+    reference_ids = {scene["id"] for scene in
+                     development["treatment"]["scenes"]}
+    assessments = review["scene_assessments"]
+    _need(isinstance(assessments, list) and
+          len(assessments) == len(reference_ids),
+          "DEVELOPMENT_ALIGNMENT_SCENE_COUNT")
+    seen, blocked = set(), set()
+    for row in assessments:
+        _fields(row, {
+            "scene_id", "judgment", "screenplay_quote", "viewer_effect",
+            "specific_reason", "rewrite_action",
+        }, "DEVELOPMENT_ALIGNMENT_ITEM_SHAPE")
+        scene_id = row["scene_id"]
+        _need(scene_id in reference_ids and scene_id not in seen,
+              "DEVELOPMENT_ALIGNMENT_SCENE_ID")
+        seen.add(scene_id)
+        _need(row["judgment"] in (
+            "realized", "creative_reinterpretation", "unjustified_loss"),
+            "DEVELOPMENT_ALIGNMENT_JUDGMENT")
+        quote = row["screenplay_quote"]
+        if row["judgment"] == "unjustified_loss":
+            _need(isinstance(quote, str) and
+                  (quote == "" or (4 <= len(quote) <= 300 and quote in script)),
+                  "DEVELOPMENT_ALIGNMENT_FALSE_QUOTE")
+        else:
+            _need(isinstance(quote, str) and
+                  4 <= len(quote) <= 300 and quote in script,
+                  "DEVELOPMENT_ALIGNMENT_FALSE_QUOTE")
+        for field in ("viewer_effect", "specific_reason"):
+            _text(row[field], "DEVELOPMENT_ALIGNMENT_GENERIC_FEEDBACK")
+        if row["judgment"] == "realized":
+            _need(row["rewrite_action"] == "",
+                  "DEVELOPMENT_ALIGNMENT_UNNEEDED_REVISION")
+        else:
+            _text(row["rewrite_action"], "DEVELOPMENT_ALIGNMENT_NO_REMEDY")
+        if row["judgment"] == "unjustified_loss":
+            blocked.add(scene_id)
+    _need(seen == reference_ids, "DEVELOPMENT_ALIGNMENT_SCENE_MISSING")
+    recommendation = review["overall_recommendation"]
+    _need(recommendation in ("revise", "ready_for_author_review") and
+          (recommendation == "revise") == bool(blocked),
+          "DEVELOPMENT_ALIGNMENT_FALSE_READY")
+    return {
+        "kind": "writer_treatment_alignment_receipt",
+        "development_digest": proof["packet_digest"],
+        "screenplay_digest": hashlib.sha256(script.encode()).hexdigest(),
+        "alignment_review_digest": _fingerprint(review),
+        "unjustified_losses": sorted(blocked),
+        "recommendation": recommendation,
+        "independent_professional_editor_authenticated": False,
+        "creative_quality_verified_by_human": False,
+        "author_approval_authenticated": False,
+    }
+
+
+def director_handoff(intake, document, development, wrapper,
+                     alignment_review, author_choices,
+                     cast_bindings, professional_critique, *, genre):
+    """Optional reviewed route into the ORIGINAL director team, no new agents."""
+    receipt = validate_alignment_review(
+        intake, document, development, wrapper, alignment_review)
+    _need(receipt["recommendation"] == "ready_for_author_review",
+          "DEVELOPMENT_UNRESOLVED_WRITER_REVISIONS")
+    _need(development["diagnosis"]["genre"] == genre,
+          "DEVELOPMENT_WRONG_GENRE")
+    # Old handoff checks entire manuscript, source mapping, proposal,
+    # professional craft review, and the existing author's review form.
+    # It doesn't authenticate an individual. Neither does this function.
+    verified_wrapper = fulltext.review_packet(
+        intake, document, wrapper["screenplay_review_packet"]["proposal"])
+    routed = fulltext.reviewed_director_handoff(
+        intake, document, verified_wrapper, author_choices, cast_bindings,
+        professional_critique, genre=genre)
+    routed["creative_development_packet_digest"] = receipt["development_digest"]
+    routed["creative_development_alignment"] = receipt
+    routed["treatment_not_a_director_shot_list"] = True
+    routed["creative_quality_verified_by_human"] = False
+    routed["author_approval_authenticated"] = False
+    return routed
