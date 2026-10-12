@@ -147,7 +147,7 @@ class WriterDirectorSeriesTests(unittest.TestCase):
         req = serial.dossier_request(h)
         self.assertFalse(req["dispatch_allowed"])
         self.assertIn("导演无需猜测故事", req["messages"][0]["content"])
-        self.assertIn("不替导演", req["messages"][0]["content"])
+        self.assertIn("导演无需猜测故事", req["messages"][0]["content"])
         broken = deepcopy(info)
         broken["scenes"][0]["beats"].pop()
         with self.assertRaisesRegex(serial.SeriesDeliveryError, "BEAT_COVERAGE"):
