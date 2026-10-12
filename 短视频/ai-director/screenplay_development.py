@@ -23,8 +23,8 @@ import screenplay_fulltext_intake as fulltext
 VERSION = "screenplay-creative-development-v1"
 GENRES = frozenset({"fiction", "documentary", "essay", "hybrid"})
 CHOICES = frozenset({"retain", "compress", "reframe", "omit"})
-MAX_TREATMENT_SCENES = 20
-MAX_SHORT_DURATION_S = 300
+MAX_TREATMENT_SCENES = 40
+MAX_WHOLE_STORY_DURATION_S = 3600  # Full treatment, not an episode
 
 
 class CreativeDevelopmentError(ValueError):
@@ -164,7 +164,8 @@ def takes_request(intake, document, diagnosis):
             "转折、结尾及具体可见可听的等价表达。"
             "诚实写出有意省略/合并/调整原文哪些部分以及其艺术代价，"
             "列出新事实风险、原作者保护项和超越来源的假设。"
-            "小片段由未来导演/技术岗位拆成视频 clip，编剧只标记"
+            "整部故事可以是十分钟乃至更长的系列：不为单集90秒上限删掉核心内容，"
+            "由总导演按故事弧合理拆集。小片段由未来导演/技术岗位拆成视频 clip，编剧只标记"
             "视觉/旁白/档案/字幕的制作挑战，不选择镜头焦距或供应商参数。"
             "绝不能为了呈现选择数量而制造三个虚假的换壳方案。",
             {
@@ -220,7 +221,7 @@ def validate_takes(intake, document, diagnosis, takes):
         signatures.add(signature)
         duration = take["estimated_duration_s"]
         _need(type(duration) in (int, float) and
-              10 <= duration <= MAX_SHORT_DURATION_S,
+              10 <= duration <= MAX_WHOLE_STORY_DURATION_S,
               "DEVELOPMENT_DURATION_NOT_SHORT_VIDEO")
         rows = take["source_choices"]
         _need(isinstance(rows, list) and 1 <= len(rows) <= 35,
@@ -332,6 +333,9 @@ def treatment_request(intake, document, diagnosis, takes, selection):
             "纪录/论证类可由观众认知变化驱动，不强造人物欲望；"
             "小说则优先把必要的内心转化为人物的行动与选择。"
             "以可拍的视觉叙事为中心，而不是复述同一段旁白并依次播放插图。"
+            "为总导演做足叙事交代：每场具体环境、人物/事物状态、行动顺序、"
+            "动机与因果、反应、情绪/认识变化、对白/旁白意图及必要的连续性，"
+            "避免只有概括和空洞形容词。详细说明故事，但不替导演定机位。"
             "让每一场有必要性，同时给导演保留机位和声音制作自由。"
             "仅用 AI 短视频适用的长度方案，不因为单次clip上限破坏作者思想。",
             {
@@ -395,7 +399,7 @@ def validate_treatment(intake, document, diagnosis, takes, selection, treatment)
         _need(type(seconds) in (int, float) and 2 <= seconds <= 120,
               "DEVELOPMENT_TREATMENT_SCENE_DURATION")
         total += seconds
-    _need(10 <= total <= MAX_SHORT_DURATION_S,
+    _need(10 <= total <= MAX_WHOLE_STORY_DURATION_S,
           "DEVELOPMENT_TREATMENT_TOTAL_DURATION")
     questions = treatment["unsolved_writer_questions"]
     _need(isinstance(questions, list) and len(questions) <= 15 and
@@ -484,7 +488,10 @@ def screenplay_request(intake, document, packet):
     task["messages"][0]["content"] += (
         "\n【职业编剧开发稿已完成】下方包含先于写作独立建立的原著诊断、"
         "不同改编方案、逐方案比较及被选中 treatment。"
-        "以选定方案发展完整剧本，不机械逐句拍原稿。"
+        "以选定方案发展**充分详尽、导演可直接理解的完整剧本**，"
+        "把每场人物/对象初态、可见行动及反应、因果、情绪/思想变化、"
+        "场次转折、空间时间与相关声画线索写足；不能只有短摘要或提示词。"
+        "不机械逐句拍原稿。"
         "重要取舍要有可供审阅的理由；受保护事实和结论不得暗改。"
         "导演的镜头分配、摄影、镜头时长和视频模型提示词不由本岗位决定。")
     task["professional_development_packet_digest"] = proof["packet_digest"]

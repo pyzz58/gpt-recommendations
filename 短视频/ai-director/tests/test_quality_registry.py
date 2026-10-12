@@ -18,9 +18,9 @@ class QualityRegistryTests(unittest.TestCase):
 
     def test_authoritative_registry_and_generated_board_are_synchronized(self):
         report = q.validate(self.data)
-        self.assertEqual(report["total"], 32)
+        self.assertEqual(report["total"], 34)
         self.assertEqual(report["stages"],
-                         {"now_screenwriter": 10, "now_director": 12, "future_dept": 10})
+                         {"now_screenwriter": 11, "now_director": 13, "future_dept": 10})
         self.assertEqual(report["complete"], 0)
         self.assertEqual(report["new_paid_requests"], 0)
         self.assertEqual(q.BOARD.read_text("utf-8"), q.render(self.data))

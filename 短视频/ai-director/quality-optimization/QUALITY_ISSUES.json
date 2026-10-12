@@ -152,9 +152,9 @@
       "status": "confirmed_open",
       "title": "故事/论证推进、原创声音与场景功能",
       "observed_in": "screenplay_professional_review.py; screenplay_adaptation.py",
-      "problem": "目前自动审核看内容是否填写和引文是否匹配，无法证明剧本不模板化、每场必要、有思想/情绪递进",
+      "problem": "目前自动审核看内容是否填写和引文是否匹配，无法证明剧本不模板化、每场必要、有思想/情绪递进；用户本轮真实阅读反馈：当前图灵剧本尚可，但思想与情绪触及心灵的余韵偏弱",
       "root_cause": "缺职业编剧发展性编辑的具象证据与反例评估",
-      "solution": "定义场景进入前/离开后变化、不可替代性、张力/认知跃迁以及差异化语言审核；对空镜头、套话与独特场面样本盲评",
+      "solution": "定义场景进入前/离开后变化、不可替代性、张力/认知跃迁以及差异化语言审核；对空镜头、套话与独特场面样本盲评；补充不煽情的意义/情绪回声审阅：具体人类处境、可感选择、独到反差、有意留白，拒绝为分数加空洞抒情",
       "acceptance": "公开样稿成对A/B盲评；至少2种文体、至少2名独立评审记录理由；重大退步必须返修，不能靠数字评分自动打勾",
       "ai_video_constraint": "每段必须有画面或叙事功能，避免科普一段话一张无差别图卡",
       "depends_on": [
@@ -178,6 +178,12 @@
           "date": "2026-10-13",
           "status": "confirmed_open",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "用户实际试读反馈：图灵剧本可接受但尚缺更深入思想和情绪回响；归入原有职业编剧艺术质量改进问题，仍未验收",
           "evidence_ref": ""
         }
       ]
@@ -443,6 +449,47 @@
           "status": "confirmed_open",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-W11",
+      "stage": "now_screenwriter",
+      "department": "screenwriter",
+      "priority": "P0",
+      "status": "in_progress",
+      "title": "编剧场次详述到导演不用猜剧情",
+      "observed_in": "screenplay_adaptation.build_editor_request; screenplay_development.screenplay_request; screenplay_series_delivery.dossier_request",
+      "problem": "编剧过去可能只交简短场次摘要和概括动作，导演不得不反向推测具体发生的事件、动机、情绪/认知变化与对白/旁白含义",
+      "root_cause": "编剧入口缺逐场逐节拍导演可读详情合同；把详述错误等同写机位或增加字数",
+      "solution": "编剧必须交付完整剧本和绑定版本的逐场/逐节拍详细说明：环境/时空、角色初态、行动与反应、因果动机、道具连续、具体对白/旁白/沉默、潜台词、情绪或思想转折、前后衔接；真正叙事不由导演补写，机位仍归导演",
+      "acceptance": "公开多场剧情/论述样例每场每节拍不缺说明、错版本和遗漏被拒；独立导演阅读无需补剧情即可做视听方案；不靠字数冒充质量",
+      "ai_video_constraint": "整部剧本可长于90秒，编剧说明不应被clip时长限制；导演后续单集90秒规划",
+      "depends_on": [],
+      "legacy_links": [],
+      "owner": "screenwriter",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/28",
+        "commit_sha": "",
+        "automated_test": "tests/test_screenplay_series_delivery.py — 10min fulltext intake, detailed beat coverage, arbitrary 7/10-episode split, <=90s incl extras, rejects loss/reorder/tampering",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "用户新增硬性约束；现已开始开发并构建合成测试，艺术质量与真实媒体执行仍需单独验收",
+          "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "已实现规范、逐场详述/分集协议和公开离线合成测试；真实专业审稿及成片质量评估尚缺，继续保持进行中",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/28"
         }
       ]
     },
@@ -907,6 +954,49 @@
           "status": "confirmed_open",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D13",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "in_progress",
+      "title": "总导演自主分集与单集90秒绝对上限",
+      "observed_in": "screenplay_director_handoff.director_request; screenplay_series_delivery.director_breakdown_request/validate_breakdown/build_per_episode_crew; skills/01-series.md",
+      "problem": "旧系列Skill允许180秒且此前编剧限300秒，十分钟剧本无法按完整编剧→导演拆分顺畅执行；可能丢节拍、硬凑三集或漏算片头/片尾",
+      "root_cause": "混淆整部故事、导演单集、AI生成单次clip三级时间尺度，缺独立分集时长核验和按集重启原有专业团队",
+      "solution": "导演完整接收编剧剧本与详细说明，自主按叙事/情绪自然断点规划1/2/3或更多集；每集叙事镜头和所有附加时间合计≤90s；所有节拍原顺序恰好一次；长剧本进入分集流程；每集独立启动原有十岗位，全文仍作为上下文，不静默重编故事",
+      "acceptance": "公开完整10分钟剧本可自主拆7集或10集，每集≤90s；90s+任意片头超时被拒；漏/重复/错序节拍拒绝；每集导演真实岗位请求接收完整上下文、受限镜头工单；未实测成片保持in_progress",
+      "ai_video_constraint": "每集90秒≠单镜clip长度；含片头、片尾、复述及原稿有来源才可选的最后1–2秒资料页；不得机械均分或制造虚假悬念",
+      "depends_on": [
+        "QO-W11"
+      ],
+      "legacy_links": [],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/28",
+        "commit_sha": "",
+        "automated_test": "tests/test_screenplay_series_delivery.py — 10min fulltext intake, detailed beat coverage, arbitrary 7/10-episode split, <=90s incl extras, rejects loss/reorder/tampering",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "用户新增硬性约束；现已开始开发并构建合成测试，艺术质量与真实媒体执行仍需单独验收",
+          "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "已实现规范、逐场详述/分集协议和公开离线合成测试；真实专业审稿及成片质量评估尚缺，继续保持进行中",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/28"
         }
       ]
     },

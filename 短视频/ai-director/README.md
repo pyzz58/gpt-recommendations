@@ -1,3 +1,9 @@
+## 最新创作与分集硬约束（2026-10-13）
+
+- **职业编剧详述**：剧本动作和场次必须充分清晰，并增加逐场逐节拍的导演可读说明（[screenplay_series_delivery.py](screenplay_series_delivery.py)），不得以简单梗概冒充可拍剧本；具体机位仍归导演。
+- **总导演自主拆集**：先读完整剧本，可达十分钟或更长；自主按故事与情绪断点决定2集、3集或更多，**每集最多90秒**，算入所有片头/回顾/结尾/可选最后出处页。每个剧本节拍必须恰好安排一次，镜头仍由导演设计。
+- **对应问题条目**：QO-W11、QO-D13；关于作品的情绪/思想余韵，继续在 QO-W03 中评审。整部电影原稿时长≠单集时长≠单次 AI 片段时长。
+
 # AI 短视频导演系统
 
 **输入文案，完成导演设计，通过第三方视频 API 制作镜头，经审片、逐镜返工和剪辑合成交付短视频。** 手动导出制作包保留为备用路径。
@@ -11,7 +17,7 @@
 - [质量优化总纲：目标、岗位边界、AI 视频约束、完成门槛](quality-optimization/QUALITY_CHARTER.md)
 - [QO-W01：职业编剧一手资料全文深读与既有模块逐项审计](quality-optimization/QO-W01_PROFESSIONAL_PRIMARY_SOURCE_AUDIT.md)：解释优秀改编与机械保留的区别，先审计方法、再设计创作流程；结构代码 PR #24 暂缓合并。
 - [QO-W01：编剧创作开发能力实际升级](quality-optimization/QO-W01_CREATIVE_DEVELOPMENT_IMPLEMENTATION.md)：读稿诊断 → 不同影视化 take → 独立选案比较 → treatment → 剧本及独立适配审核，核心实现 [screenplay_development.py](screenplay_development.py)；未完成专业真人盲评。
-- [独立问题清单：32 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
+- [独立问题清单：34 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
 - [逐批解决路线：先编剧、再总导演，其他部门持续登记](quality-optimization/EXECUTION_PLAN.md)
 - [机器可读问题总账](quality-optimization/QUALITY_ISSUES.json)：改动一个问题就更新一条，CI 拦截无证据假完成、漏问题和状态表不同步。
 - [质量阶段 GitHub 总入口 Issue #22](https://github.com/pyzz58/gpt-recommendations/issues/22)：讨论与跨任务导航；真实状态以 JSON 为准。

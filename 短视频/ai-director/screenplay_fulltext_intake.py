@@ -291,6 +291,10 @@ def director_handoff(intake, document, wrapper, decisions, cast_bindings):
     downstream["fulltext_scope_vs_document"] = wrapper["scope_vs_document"]
     downstream["fulltext_critical_ideas_retained_verified"] = False
     downstream["source_units_covered_or_explicitly_omitted"] = True
+    downstream["source_supplied_reference_url_count"] = intake[
+        "source_supplied_reference_url_count"]
+    downstream["evidence_page_requirement"] = (
+        "optional_only_if_original_supplies_real_sources")
     downstream["human_approval_authenticated"] = False
     return downstream
 
