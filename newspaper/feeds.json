@@ -1,12 +1,12 @@
 {
   "timezone": "Asia/Shanghai",
   "max_per_category": {
-    "全球新闻": 5,
-    "美股与投资": 5,
-    "美联储与宏观": 3,
-    "创业与商业模式": 5,
-    "AI与科技": 5,
-    "医疗与科学": 3
+    "全球新闻": 3,
+    "美股与投资": 3,
+    "美联储与宏观": 2,
+    "创业与商业模式": 2,
+    "AI与科技": 2,
+    "医疗与科学": 2
   },
   "feeds": {
     "全球新闻": [
@@ -178,8 +178,8 @@
       }
     ]
   },
-  "longread_max_chars": 2200,
-  "longread_min_chars": 450,
+  "longread_max_chars": 6500,
+  "longread_min_chars": 1400,
   "candidate_pool_per_category": 20,
   "source_limit_per_category": 2,
   "english_learning_terms_per_category": 2,
@@ -194,5 +194,12 @@
       "recency": 10
     },
     "description": "Transparent heuristic only; outlet agreement not verified fact."
+  },
+  "reading_policy": {
+    "mode": "consecutive_complete_paragraphs",
+    "description": "Do not assemble article paragraphs from distant sections. Readable selection begins at the lead, stops cleanly at a whole-paragraph boundary; never impersonate a fully rewritten news feature.",
+    "target_chinese_characters": "approximately 700-1400 if sufficient source evidence; not a guarantee",
+    "editorial_goal": "prioritize fewer complete narratives instead of 26 fragmented pieces",
+    "is_original_synthesis": false
   }
 }
