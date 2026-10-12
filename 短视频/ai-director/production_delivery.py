@@ -26,6 +26,7 @@ import editorial_review_lock as locks
 import creative_production_handoff as first_vision
 import film_continuity as film_tracks
 import asset_reference_manifest as assetrefs
+import closing_evidence_card as closing_card
 
 SCHEMA = "operator-video-production-bundle-v1"
 TARGETS = ("wan", "seedance")
@@ -133,6 +134,9 @@ def _make_bundle(base, direction, *, provenance, crew_workbook=None,
     design_ready = bool(book["director_review"]["production_blueprint_ready"])
     source_reviews_open = any(c.get("status") != "verified"
                               for c in base.get("claims", []))
+    # A literal, single final POST frame. It is NOT an AI-video shot and does
+    # not change the validated story shot IDs or downstream generation inputs.
+    final_evidence_card = closing_card.build_card(base)
     result = {
         "schema_version": SCHEMA, "kind": "ai_director_operator_work_orders",
         "provenance": provenance,
@@ -143,7 +147,11 @@ def _make_bundle(base, direction, *, provenance, crew_workbook=None,
         "project": {
             "title": base["title"], "core_message": base["core_message"],
             "duration_s": base["duration"], "aspect_ratio": base["aspect_ratio"],
-            "total_shots": len(deliverables), "supported_prompt_targets": list(TARGETS)},
+            "total_shots": len(deliverables), "supported_prompt_targets": list(TARGETS),
+            "story_duration_s": base["duration"],
+            "final_edit_duration_s": (final_evidence_card["end_s"]
+                                      if final_evidence_card else base["duration"])},
+        "final_closing_card": deepcopy(final_evidence_card),
         "production_counts": deepcopy(package["production_summary"]),
         "shooting_order": [x["shot_id"] for x in deliverables],
         "shots": deliverables,
@@ -159,7 +167,9 @@ def _make_bundle(base, direction, *, provenance, crew_workbook=None,
                 if provenance == "locked_ten_role_crew" else None),
             "media_generated": False,
         },
-        "blocking_conditions": [
+        "blocking_conditions": (["END_CREDITS_DENSITY_REQUIRES_MANUAL_LAYOUT"]
+                               if final_evidence_card and final_evidence_card["requires_human_relayout"]
+                               else []) + [
             "NO_AUTHORIZED_PROVIDER_DISPATCH",
             "REFERENCE_ASSETS_NOT_VERIFIED",
             "REAL_VIDEO_TEST_NOT_COMPLETED",
@@ -363,6 +373,18 @@ def render_operator_markdown(bundle):
             lines += [name + "：", "```json",
                       json.dumps(shot[key], ensure_ascii=False, indent=2), "```", ""]
         lines += ["镜头验收待办："] + ["- " + x for x in shot["human_checklist"]] + [""]
+    if bundle.get("final_closing_card"):
+        card = bundle["final_closing_card"]
+        lines += ["## 最后一个镜头｜片尾依据与鸣谢（静态单页）", "",
+                  "时间：" + str(card["start_s"]) + "–" + str(card["end_s"]) + " 秒",
+                  "时长：1.8秒；仅由后期制作；禁止调用视频生成模型生成准确文字。",
+                  "不滚动、不拆成多页、不配旁白。完整出处列入发布说明。",
+                  "版面是否拥挤需人工重排：" + str(card["requires_human_relayout"]),
+                  "**片尾文字草案：**", ""]
+        lines += ["- " + x for x in card["visible_lines"]]
+        lines += ["", "**全部引用及待核查信息（用于发布说明）：**", "```json",
+                  json.dumps(card["full_reference_details_for_description"],
+                             ensure_ascii=False, indent=2), "```", ""]
     lines += ["## 全片剪辑时间线", "```json",
               json.dumps(bundle["editor_timeline"], ensure_ascii=False, indent=2),
               "```", "", "## 镜间接力",

@@ -1,0 +1,130 @@
+{
+  "version": "screenplay-adaptation-v1",
+  "theme": "先吃饭：真正关心的不是工作",
+  "dramatic_question": "女儿能否放下防备对母亲说真话？",
+  "turning_point": "母亲明确表示关心的是女儿本人，而不是工作表现",
+  "payoff": "母女没有解决全部难题，但女儿愿意留在饭桌前",
+  "scenes": [
+    {
+      "id": "SC01",
+      "heading": "INT. 家中餐厅 - 夜",
+      "beats": [
+        {
+          "id": "B01",
+          "source_ids": [
+            "S04"
+          ],
+          "operation": "reorder",
+          "dramatic_function": "冷开场：先揭示情感冲突而非解释背景",
+          "action": "极近景：母亲筷子没有抬起，压低声音说完这句话。画面停在女儿反应前切黑。",
+          "dialogue": [
+            {
+              "speaker": "母亲",
+              "line": "我问的是你，不是工作。",
+              "origin": "source"
+            }
+          ],
+          "voiceover": "",
+          "duration_s": 5,
+          "editorial_reason": "把全片的情感问题提前抛出；下一个镜头回到手机振动前，不改变原句含义"
+        },
+        {
+          "id": "B02",
+          "source_ids": [
+            "S01"
+          ],
+          "operation": "reorder",
+          "dramatic_function": "回切交代女儿的心理预设",
+          "action": "切至数秒前的餐桌全景：菜冒热气却无人动筷，手机在小宁右侧轻震，女儿低头。",
+          "dialogue": [],
+          "voiceover": "我以为，她又要问工作。",
+          "duration_s": 6,
+          "editorial_reason": "用前后镜头对比预期与母亲真实意图"
+        },
+        {
+          "id": "B03",
+          "source_ids": [
+            "S02",
+            "S03"
+          ],
+          "operation": "merge",
+          "dramatic_function": "问题与防御回答同镜呈现",
+          "action": "双人中景保持轴线，母亲先发问，小宁眼神落回手机，停顿后简短答复。",
+          "dialogue": [
+            {
+              "speaker": "母亲",
+              "line": "今天，过得怎么样？",
+              "origin": "source"
+            },
+            {
+              "speaker": "小宁",
+              "line": "还行。",
+              "origin": "source"
+            }
+          ],
+          "voiceover": "",
+          "duration_s": 10,
+          "editorial_reason": "合并连续问答，减少切换，留出演员微表情时间"
+        }
+      ]
+    },
+    {
+      "id": "SC02",
+      "heading": "INT. 家中餐厅 - 夜",
+      "beats": [
+        {
+          "id": "B04",
+          "source_ids": [
+            "S05"
+          ],
+          "operation": "split",
+          "dramatic_function": "选择说实话之前的无声行动",
+          "action": "手机特写，小宁将手机缓慢翻至屏幕朝下，手指离开屏幕，母亲没有打断。",
+          "dialogue": [],
+          "voiceover": "",
+          "duration_s": 6,
+          "editorial_reason": "把原文中手机翻面具象化为决定性动作，不需要新增台词"
+        },
+        {
+          "id": "B05",
+          "source_ids": [
+            "S05"
+          ],
+          "operation": "split",
+          "dramatic_function": "女儿终于承认脆弱",
+          "action": "小宁轻轻抬头，眼眶发紧又控制住声音。",
+          "dialogue": [
+            {
+              "speaker": "小宁",
+              "line": "其实……不太好。",
+              "origin": "source"
+            }
+          ],
+          "voiceover": "",
+          "duration_s": 9,
+          "editorial_reason": "独立保留坦白瞬间，让停顿有戏剧重量"
+        },
+        {
+          "id": "B06",
+          "source_ids": [
+            "S06"
+          ],
+          "operation": "keep",
+          "dramatic_function": "不提供说教，以陪伴收束",
+          "action": "母亲没有追问，轻轻将饭碗推近；小宁点头，镜头停在两人同框的暖光。",
+          "dialogue": [
+            {
+              "speaker": "母亲",
+              "line": "那就先吃饭。",
+              "origin": "source"
+            }
+          ],
+          "voiceover": "",
+          "duration_s": 8,
+          "editorial_reason": "以原文结尾完成情感回应；不新增鸡汤或论证字幕"
+        }
+      ]
+    }
+  ],
+  "omissions": []
+}
