@@ -11,7 +11,7 @@
 
 | 编号 | 岗位 | 优先级 | 状态 | 问题 |
 | --- | --- | --- | --- | --- |
-| QO-W01 | screenwriter | P0 | partially_addressed | 全稿理解与核心思想覆盖 |
+| QO-W01 | screenwriter | P0 | in_progress | 全稿理解与核心思想覆盖 |
 | QO-W02 | screenwriter | P0 | partially_addressed | 不同文体专用改编工序 |
 | QO-W03 | screenwriter | P0 | confirmed_open | 故事/论证推进、原创声音与场景功能 |
 | QO-W04 | screenwriter | P0 | confirmed_open | 场次内动作/旁白/对白先后关系 |
@@ -48,8 +48,8 @@
 
 ### QO-W01 · 全稿理解与核心思想覆盖
 
-- 状态：partially_addressed；优先级：P0；阶段：now_screenwriter；负责人：screenwriter
-- 发现位置：screenplay_fulltext_intake.py; screenplay_adaptation.validate_proposal
+- 状态：in_progress；优先级：P0；阶段：now_screenwriter；负责人：screenwriter
+- 发现位置：screenplay_fulltext_intake.py; screenplay_adaptation.validate_proposal; screenplay_semantic_fidelity.py
 - 问题：源码结构覆盖和脚本语义理解是两回事，改编可能保全源 ID 却丢掉中心问题与观点
 - 根因：当前单元来源覆盖不核查观点/因果/情绪保留
 - 方案：建立核心命题与故事事实账本，逐条绑定来源段落、编剧版本、对应场次；独立逆向阅读检查关键想法是否保留，失败返回编剧重写
@@ -57,8 +57,8 @@
 - AI 视频适配：先全文摄入再做镜头/旁白裁剪；不能为了模型片段限制丢失主题
 - 依赖：无
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/19
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:partially_addressed
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/24；回归 tests/test_screenplay_semantic_fidelity.py::test_negative_semantic_review_blocks_full_coverage_false_claim; tests/test_screenplay_semantic_fidelity.py::test_manifest_cannot_be_replaced_after_screenplay_review；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:partially_addressed → 2026-10-13:in_progress
 
 ### QO-W02 · 不同文体专用改编工序
 
