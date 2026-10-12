@@ -1,0 +1,4 @@
+Newspaper original-clippings edition: one-time production email test authorized by earlier request to test via QQ.
+When this exact new marker is merged into main with [newspaper-v06-send-once] in the merge title, send one bilingual original-excerpt PDF using existing repository Secrets.
+This is a copyright-aware preview: unlicensed publishers only appear as short original quotations and clickable full-article links; authorized sources may be reproduced fully. No fake summaries.
+No mail credentials in this file.

@@ -14,6 +14,7 @@ import re
 import smtplib
 import ssl
 from pathlib import Path
+from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
 
 import feedparser
@@ -22,7 +23,9 @@ from reader import fetch_reading
 from ranking import rank_and_pool
 from english_lessons import attach_lessons, english_parser
 from adviser import domain_advice, article_advice, global_linkages
-from print_report import build_editorial_html, write_pdf, mail_cover
+from print_report import write_pdf
+from clippings import attach_rights, build_clippings_html, mail_cover_clippings
+from ai_commentary import analyze_one_call, email_commentary
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -83,6 +86,7 @@ def fetch_one(category: str, feed: dict, start: dt.datetime, end: dt.datetime):
                     "category": category, "source": feed["name"],
                     "title": title, "summary": clean(entry.get("summary", "")),
                     "url": link, "date": stamp,
+                    "author": clean(entry.get("author", ""), 150),
                 })
         return articles, True
     except Exception as exc:
@@ -135,10 +139,22 @@ def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
         unique.setdefault(item["url"], item)
     LOG.info("Reading candidate article pages: %d", len(unique))
     with concurrent.futures.ThreadPoolExecutor(max_workers=12) as pool:
+        # The default is NOT a licence to reprint copyrighted material.
+        # Longer extraction is only for source domains with a manually
+        # recorded licence covering both republication and translation.
+        license_book = settings.get("republication_licenses", {})
+        def read_cap(article: dict) -> int:
+            host = (urlparse(article.get("url", "")).hostname or "").lower()
+            rights = license_book.get(host, {})
+            if (rights.get("allow_full_republication") is True
+                and rights.get("allow_chinese_translation") is True
+                and str(rights.get("evidence_url", "")).startswith("https://")):
+                return int(settings.get("licensed_max_chars", 35000))
+            return settings["longread_max_chars"]
         futures = {
             url: pool.submit(
                 fetch_reading, article, settings["longread_min_chars"],
-                settings["longread_max_chars"],
+                read_cap(article),
             )
             for url, article in unique.items()
         }
@@ -490,20 +506,44 @@ def main():
         )
     # V0.5 prints an editorial PDF: news-source material stays in the
     # pipeline but appears in Chinese-only body, with a brief bilingual appendix.
-    html_body, text_body = build_editorial_html(grouped, news_day)
+    grouped = attach_rights(grouped, settings.get("republication_licenses", {}))
+    html_body, text_body = build_clippings_html(grouped, news_day)
     if args.dry_run or args.demo:
         target = Path(args.output)
         target.parent.mkdir(parents=True, exist_ok=True)
         target.with_suffix(".html").write_text(html_body, encoding="utf-8")
         target.with_suffix(".txt").write_text(text_body, encoding="utf-8")
         pdf_path = write_pdf(html_body, target.with_suffix(".pdf"))
-        LOG.info("V0.5 preview generated (no email): %s / .html / .txt", pdf_path)
+        LOG.info("V0.6 original-wording preview generated (no email): %s / .html / .txt", pdf_path)
     else:
         pdf_path = write_pdf(
             html_body, Path("/tmp") / f"global-briefing-{news_day.isoformat()}.pdf"
         )
-        cover_html, cover_txt = mail_cover(news_day)
-        send_email(f"全球形势秘书简报｜{news_day}", cover_html, cover_txt, pdf_attachment=pdf_path)
+        cover_html, cover_txt = mail_cover_clippings(news_day, grouped)
+        ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
+        if ai_key:
+            try:
+                commentary, ai_usage = analyze_one_call(
+                    grouped, news_day, ai_key, model="deepseek-flash"
+                )
+                cover_html, cover_txt = email_commentary(
+                    news_day, commentary,
+                    sum(len(articles) for articles in grouped.values()),
+                )
+                LOG.info("AI single-request ceiling audit: model=%s "
+                         "input_bound=%d max_peak_estimate_rmb=%s "
+                         "reported_peak_cost_rmb=%s calls=%d",
+                         ai_usage["model"],
+                         ai_usage["conservative_input_token_bound"],
+                         ai_usage["predicted_peak_rmb"],
+                         ai_usage["reported_peak_cost_rmb"],
+                         ai_usage["request_count"])
+            except Exception as exc:
+                # Important: NO automatic API retries. If insufficient budget,
+                # timeout or a provider error, send original-clipping PDF only.
+                LOG.warning("AI commentary unavailable; no retry (%s)",
+                            type(exc).__name__)
+        send_email(f"全球新闻原文选编｜{news_day}", cover_html, cover_txt, pdf_attachment=pdf_path)
         LOG.info("PDF report handed to SMTP server: %s (%d bytes)", pdf_path.name, pdf_path.stat().st_size)
 
 if __name__ == "__main__":

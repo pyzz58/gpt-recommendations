@@ -200,7 +200,7 @@
     "editorial_goal": "prioritize fewer complete narratives instead of 26 fragmented pieces",
     "is_original_synthesis": false
   },
-  "report_mode": "global_situation_adviser",
+  "report_mode": "original_clippings_not_ai_summary",
   "global_adviser": {
     "show_headline_roundup": false,
     "bilingual_format": "sentence_english_followed_immediately_by_chinese",
@@ -216,5 +216,18 @@
     ],
     "research_engine": "deterministic_evidence_bounded_v1",
     "note": "Framework and watchlist are rule-based, not fully sourced autonomous expert synthesis. Future optional LLM research adapters require suitable inference compute or provider."
-  }
+  },
+  "republication_licenses": {},
+  "quote_policy": {
+    "max_unlicensed_words_per_article": 25,
+    "full_text_only_with": "human reviewed explicit source license allowing reproduction and Chinese translation",
+    "model_generated_summaries": false,
+    "generic_followup_templates": false
+  },
+  "output_sections": [
+    "封面",
+    "按主题排列的逐句英文原文与中文翻译",
+    "篇末少量语法边注",
+    "原媒体阅读全文链接"
+  ]
 }

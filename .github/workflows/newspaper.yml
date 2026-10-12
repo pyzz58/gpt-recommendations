@@ -10,6 +10,7 @@ on:
     branches: [main]
     paths:
       - 'newspaper/V05_MAIL_TEST_REQUEST.txt'
+      - 'newspaper/V06_MAIL_TEST_REQUEST.txt'
   schedule:
     - cron: '0 23 * * *' # 07:00 Beijing, next morning
   workflow_dispatch:
@@ -29,8 +30,8 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: newspaper-daily
-  cancel-in-progress: false
+  group: newspaper-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'daily-live' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   digest:
     runs-on: ubuntu-latest
@@ -74,11 +75,12 @@ jobs:
             python newspaper/digest.py --demo --output /tmp/newspaper-preview
           fi
       - name: Send real PDF daily report — default branch only
-        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-v05-send-once]')))
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-v06-send-once]'))))
         env:
           SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
           SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
           NEWSPAPER_TO: ${{ secrets.NEWSPAPER_TO }}
+          NEWSPAPER_LLM_API_KEY: ${{ secrets.NEWSPAPER_LLM_API_KEY }}
         run: |
           set -euo pipefail
           if [ -z "$SMTP_FROM" ] || [ -z "$SMTP_PASSWORD" ] || [ -z "$NEWSPAPER_TO" ]; then
