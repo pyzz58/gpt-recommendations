@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from llm_budget import (MAX_RMB, OPERATIONAL_RMB, preflight,
                         conservative_input_tokens, estimate_peak_cost,
                         actual_cost_ceiling, estimate_window_cost, beijing_offpeak)
-from ai_commentary import analyze_one_call, email_commentary
+from ai_commentary import analyze_one_call, email_commentary, preferred_model_for_commentary, prepare_messages
 
 
 class OneCallCostTests(unittest.TestCase):
@@ -54,7 +54,7 @@ class OneCallCostTests(unittest.TestCase):
 
     def test_oversize_request_fails_closed(self):
         with self.assertRaises(ValueError):
-            preflight([{"role":"user","content":"a"*100000}])
+            preflight([{"role":"user","content":"a"*220000}])
         with self.assertRaises(ValueError):
             preflight([{"role":"user","content":"a"*65000}],model="deepseek-v4-pro")
         with self.assertRaises(ValueError):
@@ -70,7 +70,7 @@ class OneCallCostTests(unittest.TestCase):
         response=Mock()
         response.status_code=200
         response.json.return_value={
-            "choices":[{"message":{"content":"真实材料支持的审慎分析："+"市场存在不确定性。"*27},
+            "choices":[{"message":{"content":"真实材料支持的审慎分析："+"市场存在不确定性。"*70},
                         "finish_reason":"stop"}],
             "usage":{"prompt_tokens":2100, "completion_tokens":700},
         }
@@ -83,9 +83,19 @@ class OneCallCostTests(unittest.TestCase):
         self.assertLess(Decimal(audit["reported_peak_cost_rmb"]),Decimal("0.20"))
         payload=fake.call_args.kwargs["json"]
         self.assertEqual(payload["model"],"deepseek-flash")
-        self.assertEqual(payload["max_tokens"],2400)
+        self.assertEqual(payload["max_tokens"],3400)
         self.assertEqual(payload["thinking"],{"type":"disabled"})
         self.assertTrue(fake.call_args.kwargs["headers"]["Authorization"].startswith("Bearer "))
+
+    def test_skill_included_in_model_messages(self):
+        msgs=prepare_messages(self.news,self.day)
+        instructions=msgs[0]["content"]
+        self.assertIn("因果",instructions)
+        self.assertIn("二阶",instructions)
+        self.assertIn("反例",instructions)
+        self.assertIn("GLOBAL-STRATEGY-EDITOR",instructions)
+        selected=preferred_model_for_commentary(self.news,self.day)
+        self.assertIn(selected,{"deepseek-flash","deepseek-v4-pro"})
 
     def test_one_failure_no_retry_and_no_secret_leak(self):
         fail=Mock()
@@ -105,7 +115,7 @@ class OneCallCostTests(unittest.TestCase):
         fake=Mock()
         fake.status_code=200
         fake.json.return_value={
-            "choices":[{"message":{"content":"合理的经济评论："+"讨论政策变化对企业的影响。"*22},"finish_reason":"stop"}],
+            "choices":[{"message":{"content":"合理的经济评论："+"讨论政策变化对企业的影响。"*55},"finish_reason":"stop"}],
             "usage":{"prompt_tokens":200000,"completion_tokens":10000},
         }
         with self.assertRaisesRegex(RuntimeError,"0.20 RMB"):

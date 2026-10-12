@@ -24,7 +24,10 @@ from english_lessons import attach_lessons, english_parser
 from adviser import domain_advice, article_advice, global_linkages
 from print_report import write_pdf
 from clippings import build_clippings_html, mail_cover_clippings
-from ai_commentary import analyze_one_call, email_commentary
+from ai_commentary import analyze_one_call, email_commentary, preferred_model_for_commentary
+from extractive_editor import trim_extracted_article
+from translation_editor import polish_translation
+from editorial_selection import pick_politics, tech_candidates, political_regions
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -118,14 +121,27 @@ def choose_candidates(
     news_start: dt.datetime | None = None,
 ) -> dict:
     """Prefer valuable, distinct events and keep readable outlet fallbacks."""
-    return {
-        category: rank_and_pool(
-            [item for item in items if item["category"] == category],
-            pool_size=pool_size,
-            news_start=news_start,
-        )
-        for category in limits
-    }
+    output = {}
+    for category in limits:
+        pool = [item for item in items if item["category"] == category]
+        if category == "AI与科技":
+            pool = tech_candidates(pool)
+        ranked = rank_and_pool(pool, pool_size=pool_size, news_start=news_start)
+        if category == "全球新闻":
+            # Protect China and US headlines from being displaced by other
+            # high-scoring world stories before article extraction even starts.
+            already = {x["url"] for x in ranked}
+            for region in ("中国", "美国"):
+                dedicated = rank_and_pool(
+                    [a for a in pool if region in political_regions(a)],
+                    pool_size=5, news_start=news_start
+                )
+                for item in dedicated:
+                    if item["url"] not in already:
+                        ranked.append(item)
+                        already.add(item["url"])
+        output[category] = ranked
+    return output
 
 def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
     """
@@ -145,7 +161,10 @@ def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
             )
             for url, article in unique.items()
         }
-        enriched = {url: fut.result() for url, fut in futures.items()}
+        enriched = {}
+        for url, fut in futures.items():
+            article = fut.result()
+            enriched[url] = trim_extracted_article(article) if article else None
     output = {category: [] for category in candidates}
     selected_global = []
     diagnostics = {}
@@ -153,6 +172,26 @@ def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
         quota = settings["max_per_category"][category]
         source_max = settings.get("source_limit_per_category", 2)
         available = [enriched[item["url"]] for item in arr if enriched[item["url"]]]
+        if category == "AI与科技":
+            available = tech_candidates(available)
+        if category == "全球新闻":
+            accepted, pdiag = pick_politics(
+                available, quota, selected_global, _duplicate,
+                source_max=source_max,
+                extra_limit=settings.get("political_major_event_extra", 2),
+            )
+            if pdiag["political_shortfall"]:
+                LOG.warning("Political sourcing shortfall: %s", pdiag["political_shortfall"])
+            selected_global.extend(accepted)
+            output[category] = accepted
+            diagnostics[category] = {
+                "quota":quota, "candidate_count":len(arr),
+                "readable":len(available),"selected":len(accepted),
+                "sources":sorted(set(x["source"] for x in accepted)),
+                **pdiag,
+            }
+            LOG.info("%s: %s", category, diagnostics[category])
+            continue
         accepted = []
         counts = {}
         # First pass prioritizes unique outlets. Second pass fills gaps.
@@ -227,6 +266,7 @@ def bilingualize(grouped: dict, translator) -> dict:
             entry = dict(article)
             entry["title_zh"] = clean(translator.translate(article["title"]), 280)
             pairs = []
+            qa_flags = []
             for paragraph_id, paragraph in enumerate(article["reading_en"].split("\n\n")):
                 paragraph = paragraph.strip()
                 if not paragraph:
@@ -236,7 +276,11 @@ def bilingualize(grouped: dict, translator) -> dict:
                 if not sentences:
                     sentences = [paragraph]
                 for sentence in sentences:
-                    chinese = translator.translate(sentence).strip()
+                    chinese, flags = polish_translation(
+                        sentence, translator.translate(sentence)
+                    )
+                    if flags:
+                        qa_flags.append({"paragraph":paragraph_id,"flags":flags})
                     if not chinese:
                         raise RuntimeError("Translation returned blank; refuse misaligned bilingual report.")
                     pairs.append({
@@ -245,6 +289,7 @@ def bilingualize(grouped: dict, translator) -> dict:
             if not pairs:
                 raise RuntimeError("No sentence pairs extracted from article.")
             entry["bilingual_pairs"] = pairs
+            entry["translation_qa_flags"] = qa_flags
             # Backward compatibility with non-visual tests/report consumers.
             entry["reading_zh"] = "\n\n".join(
                 " ".join(p["zh"] for p in pairs if p["paragraph_id"] == pid)
@@ -509,17 +554,18 @@ def main():
         ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
         if ai_key:
             try:
+                model = preferred_model_for_commentary(grouped,news_day)
                 commentary, usage = analyze_one_call(
-                    grouped, news_day, ai_key, model="deepseek-flash"
+                    grouped, news_day, ai_key, model=model
                 )
                 cover_html, cover_txt = email_commentary(
                     news_day, commentary,
                     sum(len(entries) for entries in grouped.values()),
                 )
                 LOG.info(
-                    "DeepSeek cost guard: calls=%d, peak_estimated_RMB=%s, "
-                    "peak_usage_RMB=%s",
-                    usage["request_count"], usage["predicted_peak_rmb"],
+                    "DeepSeek cost guard: model=%s calls=%d, "
+                    "estimated_RMB=%s, reported_RMB=%s",
+                    model, usage["request_count"], usage["predicted_peak_rmb"],
                     usage["reported_peak_cost_rmb"]
                 )
             except Exception as exc:
