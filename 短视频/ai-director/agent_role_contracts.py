@@ -19,6 +19,7 @@ import creative_production_handoff as creative_bridge
 import film_continuity as film_tracks
 import asset_reference_manifest as assetrefs
 import role_schema_guard as schema_guard
+import director_department_command as director_command
 
 CONTRACT_VERSION = "1.0"
 MAX_CONTEXT_CHARS = 220_000
@@ -438,7 +439,8 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
 
 
 def build_role_messages(base, state, task_id, *, source_text=None,
-                        editorial_handoff=None, reference_manifest=None):
+                        editorial_handoff=None, reference_manifest=None,
+                        department_command=None):
     """Build private messages in memory; never return a public or saved artifact.
 
     For source-locked teams, include the FIRST real director/editor vision.
@@ -493,6 +495,21 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             "author_approved": False,
             "media_generated": False,
             "not_a_production_bible_until_departments_resolve_gaps": True}
+    command_mode = base.get("director_command_mode")
+    if command_mode is not None:
+        if command_mode != {
+                "kind": "director_department_conference_required",
+                "command_before_specialists": True}:
+            raise ValueError("CREW_DIRECTOR_COMMAND_MODE_INVALID")
+    if task_id in director_command.DEPARTMENTS:
+        if command_mode is not None and department_command is None:
+            raise ValueError("CREW_DIRECTOR_DEPARTMENT_COMMAND_REQUIRED")
+        if department_command is not None:
+            director_context = director_command.model_facing_role_context(
+                base, state, task_id, department_command)
+            request["director_department_command"] = director_context
+    elif department_command is not None:
+        raise ValueError("CREW_DIRECTOR_COMMAND_WRONG_STAGE")
     if reference_manifest is not None:
         # The manifest contains HASHES AND VERSIONS, never pictures, paths,
         # signed URLs, licences or purported human identity approval.
@@ -588,6 +605,12 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             "messages": [
                 {"role": "system", "content": FOUNDATION + "\n\n" + specialist_instruction +
                  boundary +
+                 ("\n\n【总导演专属部门任务书】本岗位必须完整阅读 user JSON 的 "
+                  "director_department_command，按总导演为本部门和每个真实shot_id"
+                  "明确的观众效果、具体动作、与其他部门交接、验收条件执行；"
+                  "遇到艺术/物理/模型冲突反馈总导演，不要套通用提示词、"
+                  "不私自改写故事或伪造已经生成的资产。" if
+                  department_command is not None else "") +
                  ("\n\n【延续经审阅规划版本的创意】user JSON 中附有 first_director_editor_vision "
                   "与本岗位 production_gaps_to_resolve：前者是先前总导演/编剧的提案而非"
                   "获真人批准的拍摄指令；不得忽略或凭空重置。后者必须具体回应，尤其人物"
