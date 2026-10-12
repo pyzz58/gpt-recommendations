@@ -10,7 +10,7 @@ CHINA = re.compile(
     r"\b(?:china|chinese|beijing|xi jinping|hong kong|taiwan|shanghai|"
     r"communist party|prc|sino[\s-])\b",re.I)
 USA = re.compile(
-    r"\b(?:u\.s\.?|united states|america|american|washington|white house|"
+    r"\b(?:u\.?s\.?|united states|america|american|washington|white house|"
     r"congress|pentagon|us senate|trump|federal government|supreme court)\b",re.I)
 PUBLIC = re.compile(
     r"\b(?:government|president|leader|minister|election|diploma|"
