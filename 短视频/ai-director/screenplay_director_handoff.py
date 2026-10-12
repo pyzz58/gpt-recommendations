@@ -173,6 +173,10 @@ def prepare_handoff(original_plan, episode_source, packet, review_decision,
             "SCRIPT_PACKET_REQUIRED")
     _ensure(isinstance(episode_source, str) and bool(episode_source.strip()),
             "SCRIPT_SOURCE_REQUIRED")
+    _ensure(packet.get("source_sha256") == _digest(episode_source),
+            "SCRIPT_SOURCE_STALE")
+    _ensure(packet.get("original_plan_digest") == team.fingerprint(original_plan),
+            "SCRIPT_BASE_STALE")
     try:
         expected = script.build_review_packet(
             original_plan, episode_source, packet["proposal"])
