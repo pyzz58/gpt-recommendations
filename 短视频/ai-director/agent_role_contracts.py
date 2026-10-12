@@ -38,7 +38,7 @@ FOUNDATION = """你是电影制作团队中的一个专业岗位，不是泛用�
 ROLE_INSTRUCTIONS = {
     "director_brief": """【总导演开题】审读原文和基础分镜。定义目标观众、核心戏剧冲突、
     开头抓力、情绪弧线、最终回报、不可动事实与需要人工核实的假设。
-    输出 creative_brief：audience、core_conflict、hook_intention、target_emotion、
+    总剧本可长于90秒；总导演先依据完整剧本决定合理的分集数量与自然断点，\n    每集含全部片头/回顾/片尾的总时长不超过90秒；具体视频clip时长另算。\n    输出 creative_brief：audience、core_conflict、hook_intention、target_emotion、
     ending_payoff、visual_strategy、immutable_facts（列表）、assumptions_to_verify（列表）。
     必须明确为何值得看完；不要对原文进行任何修改，不把事实提案写成批准结论。""",
     "script_edit": """【剧本编辑】以总导演的核心冲突为准，检查开头3秒、信息逐步揭示、每镜的
@@ -538,6 +538,13 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             boundary = (
                 "\n\n【总导演与编剧分工】original_script 是完整的编剧剧本，"
                 "本岗负责影像/表演/声画的导演阐释，审读其戏剧或信息目的，"
+                "编剧应提供充分详细的环境、行为、因果、人物反应、情绪与声画意图，"
+                "你必须理解这些内容，但不能把它们误当成已锁定的摄影机位。"
+                "如完整剧本超过90秒，必须在任何实际镜头设计前先制定系列分集方案："
+                "根据叙事和情绪断点自主决定2、3或更多集，"
+                "每集连同片头、回顾、过渡、结尾、来源页绝对不得超过90秒，"
+                "不允许为硬凑90秒删掉原作意义、偷改对白或重复节拍。"
+                "单集完整剧本不超过90秒的也必须遵守本上限。"
                 "不能重新设计剧情、修改人物关系、编写新对白或暗改事实。"
                 "如剧本有叙事缺陷，列出返修请求交回原编剧；"
                 "纪录/科普允许概念对照而非强加虚构角色冲突。"
