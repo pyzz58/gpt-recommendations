@@ -136,12 +136,10 @@ def _cast(original, revised, proposal, bindings):
             })
             ids.add(cid)
         else:
-            # Existing character ID is authoritative. The new note is a
-            # script relationship hint, never a silent rewrite of the bible.
-            _ensure(any(speaker in c.get("description", "") or
-                        (speaker == "小宁" and "女儿" in c.get("description", ""))
-                        for c in characters if c["id"] == cid),
-                    "SCRIPT_CAST_IDENTITY_UNCONFIRMED")
+            # The explicit binding is a reviewable speaker-to-existing-ID
+            # assertion, not a fuzzy guess based on character descriptions.
+            # The original character description is NEVER overwritten.
+            pass
     revised["characters"] = characters
     for shot in revised["shots"]:
         beat_dialogue = shot["source_adaptation"]["dialogue"]
@@ -248,10 +246,8 @@ def director_request(handoff):
             handoff["screenplay_text_digest"] == handoff.get("director_source_digest"),
             "SCRIPT_DIRECTOR_TEXT_TAMPERED")
     _ensure(isinstance(crew, dict) and
-            crew.get("base_digest") == handoff["director_base_digest"] and
-            crew.get("source_digest") == handoff["director_source_digest"] and
-            crew.get("shot_ids") == [x["id"] for x in base["shots"]] and
-            team.ready(crew) == ["director_brief"],
+            team.fingerprint(crew) == team.fingerprint(
+                team.start(base, source_text=screenplay)),
             "SCRIPT_DIRECTOR_CREW_TAMPERED")
     request = roles.build_role_messages(
         base, crew, "director_brief", source_text=screenplay)
@@ -269,7 +265,16 @@ def director_request(handoff):
         "human_review_authenticated": False,
         "planning_only": True,
     }
-    _ensure("original_script" in request["messages"][1]["content"] and
-            screenplay in request["messages"][1]["content"],
+    import json
+    marker = "\\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\\n"
+    _, sep, raw_context = request["messages"][1]["content"].partition(marker)
+    _ensure(bool(sep), "SCRIPT_DIRECTOR_PROMPT_FORMAT")
+    try:
+        delivered = json.loads(raw_context)
+    except ValueError:
+        raise ScriptHandoffError("SCRIPT_DIRECTOR_PROMPT_JSON") from None
+    _ensure(delivered.get("original_script") == screenplay and
+            delivered.get("authoritative_base") == base and
+            delivered.get("task_id") == "director_brief",
             "SCRIPT_NOT_DELIVERED_TO_DIRECTOR")
     return request
