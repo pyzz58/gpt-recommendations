@@ -12,6 +12,7 @@ import hashlib
 import json
 
 import agent_team
+import screenplay_adaptation
 
 VERSION = "screenplay-professional-review-v1"
 GENRES = frozenset({"fiction", "documentary", "essay", "hybrid"})
@@ -47,7 +48,10 @@ def _bound(packet, source):
     _ensure(isinstance(packet.get("screenplay_fountain"), str) and
             isinstance(packet.get("proposal"), dict) and
             packet.get("proposal_digest") == agent_team.fingerprint(
-                packet["proposal"]), "PRO_REVIEW_SCRIPT_TAMPERED")
+                packet["proposal"]) and
+            packet["screenplay_fountain"] ==
+                screenplay_adaptation.render_fountain(packet["proposal"]),
+            "PRO_REVIEW_SCRIPT_TAMPERED")
     # The screenplay is already protected by the authoritative source-bound
     # build_review_packet in the final director handoff. This critique helper
     # must not claim to be that authenticated approval stage.
