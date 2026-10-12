@@ -70,7 +70,9 @@ BBC 指南明确强调动作描写要服务于能在画面中看到的事情。S
 
 - `skills/07-professional-screenwriter.md` 为内部**原创蒸馏后的角色 skill**，内含题材分流、职业工序、反向阅读与职责矩阵，保留核查链接。
 - `screenplay_adaptation.build_editor_request` 明确写作者原文、视听行为、允许的创作空间及非虚构的事实边界。
-- `screenplay_professional_review.py` 生成独立审稿的**未发送**请求，覆盖七项创作质量检查，拒绝没有剧本引文支撑的空洞褒奖、遗漏返修、虚构权威和不一致的结论。
+- `screenplay_professional_review.py` 生成独立审稿的**未发送**请求，覆盖七项创作质量检查，拒绝没有剧本引文支撑的空洞褒奖、遗漏返修、虚构权威和不一致的结论。支持 `build_revision_request`：将定位问题返回编剧定点重写，保护未受影响场次，重新接受来源和作者审核。
+- `screenplay_fulltext_intake.reviewed_director_handoff` 是**选择启用的严格审稿交接**：有明确待修问题就拒绝作为完成剧本交导演；没有报告问题仅表示可交给作者审阅，**不等于编剧艺术水准认证**。旧入口保持兼容。
+- `screenplay_fulltext_intake.editor_request` 现在明确支持 fiction / documentary / essay / hybrid 四类；历史科普散文不会强制假造人物冲突。
 - `screenplay_director_handoff.prepare_handoff` 在编剧交接底稿上增加只读的剧本权威版本标记，`agent_role_contracts.build_role_messages` 根据标记改变现有导演/剧本编辑及下游岗位的权限声明，**不增 Agent，不改 10 阶段 DAG**。
 - 单元测试只能证明合同有效，**不能证明编辑意见真能识别逻辑漏洞、语言有大师质感或导演模型真会遵守**；后续实际运行需要真人盲评与逐稿返修、以及授权的私有模型文本调用。
 
