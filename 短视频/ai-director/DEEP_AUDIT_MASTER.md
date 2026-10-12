@@ -1,3 +1,11 @@
+## 2026-10-13（新西兰时间）复审修复验收
+
+代码提交 [8e130bf](https://github.com/pyzz58/gpt-recommendations/commit/8e130bf0e76fe221c936e7d1343ee8889207690e) 修复 AUD-030/031/032：人物及结构化摄影信息完整传入请求、原生声音设计与后期职责明确、成功查询结果追加版本且下载选用最新有效地址。新增12项回归，明确焦段冲突会阻断；原始返回、已下载视频和审片记录不会因查询被覆盖。
+
+[GitHub CI run 38233070847](https://github.com/pyzz58/gpt-recommendations/actions/runs/38233070847) 在该代码提交上 **621 tests PASS**；纳入视频模块后的统计总覆盖率 **85%**，`seedance_adapter` **93%**、`video_workflow` **91%**。登记共32项：18项回归修复、5项确认开放、6项待调查、3项待真实媒体。AUD-015保留调查；AUD-002/Issue #1生产P0仍开放。
+
+本轮无新增真实模型或付费视频调用。此前真实文本证据仍仅总导演/剧本编辑两次请求，十岗位全链仍为合成验证；没有真实Seedance视频、跨镜质量验收或最终成片。下文按时间保留历史记录，旧计数/覆盖范围不能当作当前状态。
+
 ## 2026-10-11 恢复安全复验：AUD-023 / AUD-024 / AUD-025
 
 代码提交 `3f021015079f840b58ebeebde82ad5020d6a54d6`。隔离 Linux/Python 3.12 全量 **571 tests PASS**，新增 7 个故障/恢复测试。GitHub Linux/Python 3.11 CI 同样 **571 tests PASS**，受测模块总覆盖率 **85%**；证据见 [run 38121233769](https://github.com/pyzz58/gpt-recommendations/actions/runs/38121233769)。

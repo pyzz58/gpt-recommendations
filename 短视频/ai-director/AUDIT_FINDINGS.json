@@ -185,9 +185,9 @@
       "domain": "test_coverage",
       "status": "investigate",
       "evidence_type": "coverage_baseline_pending",
-      "description": "现有CI总覆盖率85%只适用于显式source模块；2026-10-12复审发现未列入seedance_adapter/video_workflow，虽相关unittest已执行，不能推导视频链覆盖率。需补统计与关键字段映射/查询结果变化测试。",
+      "description": "已将seedance_adapter/video_workflow纳入显式source统计；修复提交GitHub CI run 38233070847通过621项测试，分支合计覆盖率85%，两模块分别93%/91%。仍需按未覆盖风险评估，而非据百分比推导完整系统或真实媒体质量；保留investigate。",
       "source": "github-actions:ai-director-tests.yml",
-      "test_evidence": "",
+      "test_evidence": "GitHub Actions run 38233070847 / job 114756993516; .github/workflows/ai-director-tests.yml",
       "issue_url": "",
       "fix_commit": ""
     },
@@ -363,37 +363,37 @@
       "id": "AUD-030",
       "priority": "P1",
       "domain": "director_to_provider_visual_loss",
-      "description": "复审确认：改变人物description/wardrobe或结构化screen_axis/focal_length_mm/spatial_constraints/scene_geometry，Seedance请求body仍不变而摘要改变；导演与摄影关键修改未完整传给模型。待修复，不代表全部摄影字段丢失。",
+      "description": "已修复已复现的导演视觉信息丢失：当前镜头人物description/wardrobe、结构化焦段/轴线/空间约束/场景布局等进入实际请求；私有参考元数据不进入prompt，明确数值焦段冲突先阻断。离线回归不证明模型服从或真实画面质量。",
       "source": "director_v2.compile_package;seedance_adapter.prepare_shot",
-      "status": "open_confirmed",
+      "status": "fixed_regression_verified",
       "evidence_type": "confirmed_code",
-      "test_evidence": "audit_probes/system_maturity_20261012.py（缺陷复现观察，非修复回归）",
+      "test_evidence": "tests/test_seedance_adapter.py::test_cast_changes_reach_wire_without_private_reference_metadata; tests/test_seedance_adapter.py::test_each_structured_camera_and_layout_field_reaches_wire; tests/test_seedance_adapter.py::test_conflicting_numeric_lens_is_rejected_before_network",
       "issue_url": "",
-      "fix_commit": ""
+      "fix_commit": "8e130bf0e76fe221c936e7d1343ee8889207690e"
     },
     {
       "id": "AUD-031",
       "priority": "P1",
       "domain": "native_audio_design_loss",
-      "description": "原生对白模式只补对白和部分beat声音线索；改变sound.ambient/music后请求body仍不变，样例“无配乐”未进入实际提示词。需区分原生/后期声音职责并完整编译，不得声称已修复或实测音效。",
+      "description": "已将原生对白模式的ambient/music/effects（包括无配乐决定）编入实际prompt；区分原生声音与后期执行职责，防止后期单误要求重复配音。保留源设计；仅离线验证，不声称实际音效或口型成功。",
       "source": "director_v2.compile_package;seedance_adapter.prepare_shot",
-      "status": "open_confirmed",
+      "status": "fixed_regression_verified",
       "evidence_type": "confirmed_code",
-      "test_evidence": "audit_probes/system_maturity_20261012.py（缺陷复现观察，非修复回归）",
+      "test_evidence": "tests/test_seedance_adapter.py::test_native_sound_design_and_effects_reach_wire; tests/test_seedance_adapter.py::test_audio_execution_policy_is_mode_specific_and_does_not_mutate_source",
       "issue_url": "",
-      "fix_commit": ""
+      "fix_commit": "8e130bf0e76fe221c936e7d1343ee8889207690e"
     },
     {
       "id": "AUD-032",
       "priority": "P2",
       "domain": "successful_result_refresh_loss",
-      "description": "同任务二次GET成功返回不同video_url时query_once保留旧result.json、丢弃新地址。mock复现，需追加版本并选择最新校验结果；不假定供应商必能刷新已过期地址，不重发POST。",
+      "description": "同任务成功查询的新结果改为追加不可覆盖版本并校验连续摘要链，下载选择最新有效URL；追加失败保留旧结果，不重发POST。已下载视频和审片记录保持绑定。仅mock验证，不保证供应商刷新过期地址。",
       "source": "seedance_adapter.query_once",
-      "status": "open_confirmed",
+      "status": "fixed_regression_verified",
       "evidence_type": "confirmed_code",
-      "test_evidence": "audit_probes/system_maturity_20261012.py（缺陷复现观察，非修复回归）",
+      "test_evidence": "tests/test_seedance_adapter.py::test_updated_result_is_appended_and_download_uses_latest_url; tests/test_seedance_adapter.py::test_result_append_failure_preserves_previous_success_without_post_retry; tests/test_seedance_adapter.py::test_corrupt_or_unlinked_result_revision_blocks_download; tests/test_seedance_adapter.py::test_revision_from_different_task_is_rejected; tests/test_video_workflow.py::test_refresh_after_review_preserves_selected_media_and_review; tests/test_video_workflow.py::test_result_revision_gap_is_not_silently_ignored; tests/test_video_workflow.py::test_orphan_result_revision_is_not_prepared",
       "issue_url": "",
-      "fix_commit": ""
+      "fix_commit": "8e130bf0e76fe221c936e7d1343ee8889207690e"
     }
   ]
 }
