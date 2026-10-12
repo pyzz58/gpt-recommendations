@@ -357,6 +357,7 @@ def build_per_episode_crew(handoff, dossier, breakdown):
                          if s["id"] in active_scenes]
         sub["editorial"]["narration_script"] = "".join(
             x["narration"] for x in sub["shots"])
+        sub["director_command_mode"] = {"kind": "director_department_conference_required", "command_before_specialists": True}
         sub["series_context"] = {
             "kind": "director_episode_from_complete_screenplay",
             "episode_id": episode["episode_id"],
