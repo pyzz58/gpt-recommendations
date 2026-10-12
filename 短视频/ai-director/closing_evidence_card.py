@@ -27,12 +27,9 @@ def build_card(plan):
         raise ClosingCardError("CLOSING_CARD_PLAN_INVALID")
     claims = plan["claims"]
     refs = plan.get("references", [])
-    if not claims or (plan.get("risk_domain") == "none" and not refs and
-                      all(not c.get("evidence_url") for c in claims
-                          if isinstance(c, dict))):
-        # The article intake labels every narrative sentence as a provisional
-        # "claim". Pure fiction is not a scientific citation roll.
-        return None
+    # Claims are NOT citations. The legacy article intake creates a claim for
+    # every narration fragment, which does not authorize an evidence roll.
+    # Risk-domain labels and unsourced numbers cannot imply source materials.
     identifiers = [c.get("id") for c in claims if isinstance(c, dict)]
     if len(identifiers) != len(claims) or len(set(identifiers)) != len(claims) or (
             not all(isinstance(x, str) and x for x in identifiers)):
@@ -52,21 +49,29 @@ def build_card(plan):
     for c in claims:
         cid = c["id"]
         ref = by_claim.get(cid)
+        url = c.get("evidence_url")
+        if ref is None and not url:
+            continue  # no placeholder source for claims lacking real material
         if ref is None:
-            label = cid + "｜原稿观点 · 尚无可核验文献"
-            verified = False
+            if not isinstance(url, str) or urlparse(url).scheme not in ("http", "https") or not urlparse(url).netloc:
+                raise ClosingCardError("CLOSING_CARD_EVIDENCE_URL_INVALID")
+            label = cid + "｜原文附有来源链接 · 待核查"
         else:
-            author = str(ref.get("author") or "作者待查")
-            year = str(ref.get("year") or "年份待查")
-            journal = str(ref.get("journal") or "机构待查")
+            # These fields are metadata supplied in the source, not invented
+            # bibliographic facts or independently verified publications.
+            author = str(ref.get("author") or "作者未提供")
+            year = str(ref.get("year") or "年份未提供")
+            journal = str(ref.get("journal") or "出处待补")
             label = cid + "｜" + author + " " + year + " · " + journal
-            verified = False  # metadata/URL alone cannot certify research support
         visible.append(label)
         details.append({
             "claim_id": cid, "source_quote": c.get("source_quote", ""),
             "review_state": c.get("status", "needs_review"),
-            "reference": deepcopy(ref), "reference_reviewed": verified,
+            "reference": deepcopy(ref), "original_evidence_url": url,
+            "reference_reviewed": False,
         })
+    if not visible:
+        return None
     # One and only one end card. Do not split to extra pages, silently truncate
     # citations or falsely mark an overcrowded page as legible.
     too_dense = len(visible) > MAX_VISIBLE_LINES or any(
