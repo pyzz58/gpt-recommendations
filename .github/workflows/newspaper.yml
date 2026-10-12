@@ -1,5 +1,9 @@
 name: Newspaper - Bilingual World News
 on:
+  pull_request:
+    paths:
+      - 'newspaper/**'
+      - '.github/workflows/newspaper.yml'
   schedule:
     - cron: '0 23 * * *' # 07:00 Beijing, next morning
   workflow_dispatch:
@@ -40,10 +44,12 @@ jobs:
         with:
           path: ~/.local/share/argos-translate/packages
           key: newspaper-argos-translate-en-zh-v1
+      - name: Test date filtering, fallback, rendering
+        run: python -m unittest discover -s newspaper -p 'test_*.py' -v
       - name: Build and email report
         run: |
           set -euo pipefail
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+          if [ "${{ github.event_name }}" = "pull_request" ] || { [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; }; then
             python newspaper/digest.py --demo --output /tmp/newspaper-preview
           else
             test -n "$SMTP_FROM" && test -n "$SMTP_PASSWORD" && test -n "$NEWSPAPER_TO" || {
@@ -53,7 +59,7 @@ jobs:
             python newspaper/digest.py
           fi
       - name: Upload example preview
-        if: github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true'
+        if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
         uses: actions/upload-artifact@v4
         with:
           name: newspaper-demo-preview
