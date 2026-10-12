@@ -11,6 +11,7 @@ from __future__ import annotations
 from copy import deepcopy
 import hashlib
 import json
+import re
 
 import agent_team
 import article_intake
@@ -107,6 +108,18 @@ def prepare_fulltext(source, *, episode_id="FULL", risk_domain=None):
     _require(len(chosen) <= MAX_UNITS_PER_SCREENPLAY,
              "FULLTEXT_SELECT_CHAPTER_OR_SHORTER_SCOPE")
     selected_text = source[span[0]:span[1]]
+    # Extract only URLs literally present in the selected author text.
+    # They are candidates for manual verification, not fabricated citations.
+    evidence_links = []
+    for match in re.finditer(r"https?://[^\\s<>）)]+", selected_text):
+        link = match.group().rstrip(".,;。")
+        if link:
+            evidence_links.append({
+                "url": link,
+                "source_span": [span[0] + match.start(),
+                                span[0] + match.start() + len(link)],
+                "status": "source_supplied_unverified",
+            })
     if risk_domain is None:
         # Metadata only: risk classification does not manufacture references.
         chapter = article_intake.Section(
@@ -160,6 +173,9 @@ def prepare_fulltext(source, *, episode_id="FULL", risk_domain=None):
         "scope_chars": len(selected_text), "scope_units": deepcopy(chosen),
         "scope_exact_nonwhitespace_coverage": True,
         "entire_document_selected": span == [0, len(source)],
+        "source_supplied_reference_urls": evidence_links,
+        "source_supplied_reference_url_count": len(evidence_links),
+        "evidence_page_requirement": "optional_if_original_has_evidence",
         "base": plan, "base_digest": agent_team.fingerprint(plan),
         "source_content_is_private": True, "video_shots_created": False,
         "real_narration_selected": False, "claims_or_citations_invented": False,
@@ -193,6 +209,9 @@ def editor_request(intake, document, *, mode="auto"):
     task["whole_scope_indexed"] = True
     task["source_document_digest"] = intake["document_digest"]
     task["source_scope_digest"] = intake["scope_digest"]
+    task["unverified_source_reference_candidates"] = deepcopy(
+        intake["source_supplied_reference_urls"])
+    task["citation_policy"] = "use_source_materials_if_present_never_invent"
     task["dispatch_allowed"] = False
     return task
 
