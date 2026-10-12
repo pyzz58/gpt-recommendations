@@ -20,7 +20,7 @@ class QualityRegistryTests(unittest.TestCase):
         report = q.validate(self.data)
         self.assertEqual(report["total"], 36)
         self.assertEqual(report["stages"],
-                         {"now_screenwriter": 11, "now_director": 14, "future_dept": 10})
+                         {"now_screenwriter": 11, "now_director": 15, "future_dept": 10})
         self.assertEqual(report["complete"], 0)
         self.assertEqual(report["new_paid_requests"], 0)
         self.assertEqual(q.BOARD.read_text("utf-8"), q.render(self.data))
