@@ -123,7 +123,7 @@ def build_clippings_html(grouped: dict, day: dt.date) -> tuple[str, str]:
             parsed=urlparse(url)
             href=esc(url) if parsed.scheme=="https" and parsed.netloc else ""
             source=str(article.get("source","未知媒体")).strip()
-            byline=source+" · "+_date_bj(article.get("date"))
+            byline=source + (" · " + str(article.get("author")).strip() if article.get("author") else "") + " · " + _date_bj(article.get("date"))
             selected,full=_choose_original_lines(article)
             rights=approved_full_text(article)
             body.extend([
