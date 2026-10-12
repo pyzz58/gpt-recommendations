@@ -470,9 +470,9 @@
       "owner": "screenwriter",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/28",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "tests/test_screenplay_series_delivery.py — 10min fulltext intake, detailed beat coverage, arbitrary 7/10-episode split, <=90s incl extras, rejects loss/reorder/tampering",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -484,6 +484,12 @@
           "status": "in_progress",
           "note": "用户新增硬性约束；现已开始开发并构建合成测试，艺术质量与真实媒体执行仍需单独验收",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "已实现规范、逐场详述/分集协议和公开离线合成测试；真实专业审稿及成片质量评估尚缺，继续保持进行中",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/28"
         }
       ]
     },
@@ -971,9 +977,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/28",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "tests/test_screenplay_series_delivery.py — 10min fulltext intake, detailed beat coverage, arbitrary 7/10-episode split, <=90s incl extras, rejects loss/reorder/tampering",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -985,6 +991,12 @@
           "status": "in_progress",
           "note": "用户新增硬性约束；现已开始开发并构建合成测试，艺术质量与真实媒体执行仍需单独验收",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "已实现规范、逐场详述/分集协议和公开离线合成测试；真实专业审稿及成片质量评估尚缺，继续保持进行中",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/28"
         }
       ]
     },
