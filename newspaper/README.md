@@ -2,6 +2,25 @@
 
 > 当前版本：Global Situation Adviser V0.4。旧版新闻速览和生词表已关闭；下文历史版本描述如与本节不同，以 V0.4 为准。
 
+## 上线前邮箱安全设置（2026-10）
+
+仓库为 public，源代码与 Actions 日志对外可见；Repository Secrets 的值不是公开文件。SMTP 授权码在安全上仍应当作敏感凭证。
+
+推荐开设专用的 QQ 发信邮箱，收件箱可以继续使用平常邮箱，减少凭证泄露时的影响。若直接把常用 QQ 邮箱的 IMAP/SMTP 授权码放到 GitHub，存在别人取得授权码后以你名义发信，及视授权权限访问邮件的风险。开启 GitHub 双因素认证、避免授权码出现在聊天记录、源码、Issue、日志。
+
+在 mail.qq.com 网页端通过设置 → 账号与安全 → 开启 IMAP/SMTP（具体界面可能变化）取得 SMTP 授权码，**不是 QQ 登录密码**。
+
+只在仓库 Settings → Secrets and variables → Actions → New repository secret 中填写：
+
+- NEWSPAPER_SMTP_FROM：QQ 发信邮箱地址
+- NEWSPAPER_SMTP_PASSWORD：该邮箱的 SMTP 授权码
+- NEWSPAPER_TO：收信地址
+
+安全隔离：只有 schedule 或在默认 main 分支人工将 dry_run 设为 false 时的正式发送步骤读取上述 Secrets；所有 pull_request、demo、测试步骤均不注入 SMTP 凭证。`permissions: contents: read` 限制 GitHub 默认 Token。绝不把 Secrets 放在命令行参数或显示到日志。授权码失窃时从 QQ 邮箱后台撤销，然后在 GitHub 重新生成/更新；不再使用时及时撤销。
+
+GitHub Actions 不能保证每日 07:00 准时启动；首次正式发送前使用 Actions 的 dry_run=true 预览排版，再人工选择 dry_run=false 做端到端实测。定时运行可能受 GitHub 负载及平台限制。个人使用请尊重原始新闻版权和自动采集条款。
+
+---
 ## 排版纠偏：每句英文独占一行，下一行紧跟对应中文
 
 必须逐句配对，不拼接多个英文句子，不整段英文后跟整段中文，也不在英文与其中文之间插入空白行。
