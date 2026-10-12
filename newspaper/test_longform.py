@@ -73,7 +73,7 @@ class CoherentLongformTests(unittest.TestCase):
         article = {"url": "https://example.org/news/2", "title": "Headline"}
         with patch.object(reader.requests, "get", return_value=response), \
              patch.object(reader.trafilatura, "extract", return_value="\n".join(paragraphs)):
-            result = reader.fetch_reading(article, min_chars=1400, max_chars=3600)
+            result = reader.fetch_reading(article, min_chars=1400, max_chars=4000)
         self.assertIsNotNone(result)
         self.assertEqual(result["reading_selection"], "consecutive_from_lead")
         self.assertTrue(result["reading_abbreviated"])
