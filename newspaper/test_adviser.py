@@ -38,14 +38,14 @@ class TestGlobalAdviser(unittest.TestCase):
         a = report["美联储与宏观"][0]
         pairs = a["bilingual_pairs"]
         self.assertGreaterEqual(len(pairs), 3)
-        self.assertTrue(all(p["zh"] == "中文译文:" + p["en"] for p in pairs))
+        self.assertTrue(all(p["zh"] == "中文译文：" + p["en"] for p in pairs))
         self.assertEqual(pairs[0]["paragraph_id"], 0)
         self.assertEqual(pairs[-1]["paragraph_id"], 1)
         html, txt = digest.render(report, self.date, self.date.date(), {})
         # Every English line is directly followed by Chinese, including in TXT.
         for pair in pairs:
             self.assertIn(pair["en"] + "\n\n" + pair["zh"], txt)
-            self.assertLess(html.index(pair["en"]), html.index("中文译文:" + pair["en"]))
+            self.assertLess(html.index(pair["en"]), html.index("中文译文：" + pair["en"]))
         self.assertNotIn("今日重点", html)
         self.assertNotIn("今日新闻速览", html)
         self.assertNotIn("Vocabulary", html)
