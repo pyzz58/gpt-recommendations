@@ -12,6 +12,7 @@
 - [独立问题清单：32 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
 - [逐批解决路线：先编剧、再总导演，其他部门持续登记](quality-optimization/EXECUTION_PLAN.md)
 - [机器可读问题总账](quality-optimization/QUALITY_ISSUES.json)：改动一个问题就更新一条，CI 拦截无证据假完成、漏问题和状态表不同步。
+- [质量阶段 GitHub 总入口 Issue #22](https://github.com/pyzz58/gpt-recommendations/issues/22)：讨论与跨任务导航；真实状态以 JSON 为准。
 - 原有 [技术/安全审计](AUDIT_FINDINGS.json) 继续独立生效；媒体未实测、账号未授权均不能被本轮优化消除。
 
 
