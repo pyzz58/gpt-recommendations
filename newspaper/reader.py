@@ -14,6 +14,20 @@ import requests
 import trafilatura
 
 LOG = logging.getLogger("daily-news")
+PAYWALL_PATTERNS = [
+    r"subscribe to (?:continue|read|unlock)",
+    r"(?:this|the) (?:article|story) is (?:only )?for subscribers",
+    r"subscription (?:is )?required",
+    r"sign in to (?:continue|read) (?:the |this )?(?:article|story)",
+    r"to continue reading,? (?:please )?subscribe",
+    r"you have reached your (?:free )?article limit",
+]
+
+
+def looks_paywalled(text: str) -> bool:
+    sample = (text[:850] + "\n" + text[-550:]).lower()
+    return any(re.search(p, sample, re.I) for p in PAYWALL_PATTERNS)
+
 
 def _usable_url(url: str) -> bool:
     parsed = urlparse(url)
@@ -89,6 +103,9 @@ def fetch_reading(article: dict, min_chars: int = 450, max_chars: int = 4200) ->
             favor_precision=True, output_format="txt",
         )
         paragraphs = _normalize_paragraphs(raw or "")
+        if looks_paywalled("\n".join(paragraphs)):
+            LOG.warning("Likely paywall or partial subscription preview, skipping: %s", url)
+            return None
         if len("\n".join(paragraphs)) < min_chars:
             LOG.warning("Article text not available: %s", url)
             return None
