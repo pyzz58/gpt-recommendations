@@ -171,6 +171,49 @@ class DirectorCreativeCutTests(unittest.TestCase):
                                     "NO_SCRIPT_REVISION_REQUIRED"):
             creative.writer_revision_request(self.handoff, self.writer, self.long)
 
+    def test_director_must_compare_both_short_and_long_for_artistic_reasons(self):
+        import agent_team
+        a = creative.validate_cut(self.handoff, self.writer, self.short)
+        b = creative.validate_cut(self.handoff, self.writer, self.long)
+        compare = {
+            "version": creative.VERSION,
+            "source_digest": self.handoff["screenplay_text_digest"],
+            "candidate_digests": [a["director_cut_digest"], b["director_cut_digest"]],
+            "selected_cut_digest": a["director_cut_digest"],
+            "selection_reason": "三集短版让角色实际选择成为核心动作，去掉冗余解释比完整朗读更有意义。",
+            "alternative_strengths": "十集长版会保留对人物复杂处境的沉默与铺陈，仍可能更感人。",
+            "weaknesses_of_selected": "三集短版会失去部分背景，独立导演审片必须核查动机是否清楚。",
+            "unresolved_core_idea_risk": "删除讨论是否让桥梁服务对象从开放问题变成已定结论仍需专业审稿。",
+            "independent_craft_review_still_needed": True,
+        }
+        validated = creative.validate_cut_comparison(
+            self.handoff, self.writer, [self.short, self.long], compare)
+        self.assertTrue(validated["shorter_does_not_automatically_win"])
+        self.assertFalse(validated["author_approved"])
+        compare["selected_cut_digest"] = b["director_cut_digest"]
+        validated = creative.validate_cut_comparison(
+            self.handoff, self.writer, [self.short, self.long], compare)
+        self.assertEqual(validated["selected_story_seconds"], 600)
+        self.assertFalse(validated["script_revision_required"])
+
+    def test_comparison_does_not_accept_duplicate_cuts(self):
+        a = creative.validate_cut(self.handoff, self.writer, self.short)
+        comparison = {
+            "version": creative.VERSION,
+            "source_digest": self.handoff["screenplay_text_digest"],
+            "candidate_digests": [a["director_cut_digest"]] * 2,
+            "selected_cut_digest": a["director_cut_digest"],
+            "selection_reason": "三集短版让角色实际选择成为核心动作，去掉冗余解释比完整朗读更有意义。",
+            "alternative_strengths": "十集长版会保留对人物复杂处境的沉默与铺陈，仍可能更感人。",
+            "weaknesses_of_selected": "三集短版会失去部分背景，独立导演审片必须核查动机是否清楚。",
+            "unresolved_core_idea_risk": "删除讨论是否让桥梁服务对象从开放问题变成已定结论仍需专业审稿。",
+            "independent_craft_review_still_needed": True,
+        }
+        with self.assertRaisesRegex(creative.DirectorCutError,
+                                    "DUPLICATE_ALTERNATIVES"):
+            creative.validate_cut_comparison(self.handoff, self.writer,
+                                             [self.short, self.short], comparison)
+
     def test_stale_dossier_or_script_is_rejected(self):
         bad = deepcopy(self.short)
         bad["source_digest"] = "not original"
