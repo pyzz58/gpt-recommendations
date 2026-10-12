@@ -74,7 +74,7 @@ class QualityRegistryTests(unittest.TestCase):
             "commit_sha": "a" * 40,
             "automated_test": "tests/test_director_v2.py::test_example",
             "independent_review": "independent screenplay and director comparison report",
-            "closure_note": "此处只是合成测试样本用于检查判定逻辑，不代表真实验收",
+            "closure_note": "此处只是合成测试样本用于验证结构和门禁判定逻辑，实际没有产生任何真实视频，不能称作完成真人媒体验收",
             "closed_on": "2026-10-13",
         })
         with self.assertRaisesRegex(q.QualityLedgerError, "MEDIA_DEPARTMENT_NEEDS_REAL_MEDIA"):
