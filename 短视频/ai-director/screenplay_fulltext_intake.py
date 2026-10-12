@@ -79,17 +79,32 @@ def _units(source, start, end):
     return units
 
 
-def _scope(source, episode_id):
+def _scope(source, episode_id, source_span):
+    if source_span is not None:
+        _require(episode_id in ("FULL", "SPAN") and
+                 isinstance(source_span, (list, tuple)) and len(source_span) == 2 and
+                 all(type(x) is int for x in source_span),
+                 "FULLTEXT_SCOPE_INVALID")
+        start, end = source_span
+        _require(0 <= start < end <= len(source) and
+                 (start == 0 or source[start - 1].isspace() or
+                  source[start - 1] in "。！？!?；;") and
+                 (end == len(source) or source[end].isspace() or
+                  source[end - 1] in "。！？!?；;"),
+                 "FULLTEXT_SCOPE_SPLITS_SENTENCE")
+        return [start, end], "SPAN", "用户选定文案片段"
     if episode_id == "FULL":
         return [0, len(source)], "FULL", "完整文案"
-    _require(isinstance(episode_id, str), "FULLTEXT_SCOPE_INVALID")
+    _require(isinstance(episode_id, str) and episode_id != "SPAN",
+             "FULLTEXT_SCOPE_INVALID")
     sections = article_intake.split_article(source)
     section = next((s for s in sections if s.key == episode_id), None)
     _require(section is not None, "FULLTEXT_UNKNOWN_SECTION")
     return [section.start, section.end], episode_id, section.title
 
 
-def prepare_fulltext(source, *, episode_id="FULL", risk_domain=None):
+def prepare_fulltext(source, *, episode_id="FULL", risk_domain=None,
+                     source_span=None):
     """Return PRIVATE intake with exact content spans and placeholder base.
 
     For long books require explicit chapter selection; don't silently shorten
@@ -103,7 +118,7 @@ def prepare_fulltext(source, *, episode_id="FULL", risk_domain=None):
              "FULLTEXT_RISK_DOMAIN_INVALID")
     # Index full manuscript first, including material before first heading.
     entire = _units(source, 0, len(source))
-    span, selected_id, title = _scope(source, episode_id)
+    span, selected_id, title = _scope(source, episode_id, source_span)
     chosen = _units(source, *span)
     _require(len(chosen) <= MAX_UNITS_PER_SCREENPLAY,
              "FULLTEXT_SELECT_CHAPTER_OR_SHORTER_SCOPE")
@@ -166,6 +181,7 @@ def prepare_fulltext(source, *, episode_id="FULL", risk_domain=None):
     return {
         "kind": VERSION, "status": "whole_scope_indexed_not_screenplay",
         "episode_id": selected_id,
+        "requested_source_span": list(source_span) if source_span is not None else None,
         "document_digest": _sha(source), "document_chars": len(source),
         "document_units_indexed": len(entire),
         "document_exact_nonwhitespace_coverage": True,
@@ -223,7 +239,8 @@ def _verify_intake(intake, source):
              "FULLTEXT_DOCUMENT_STALE")
     recomputed = prepare_fulltext(
         source, episode_id=intake["episode_id"],
-        risk_domain=intake["base"]["risk_domain"])
+        risk_domain=intake["base"]["risk_domain"],
+        source_span=intake.get("requested_source_span"))
     _require(agent_team.fingerprint(recomputed) == agent_team.fingerprint(intake),
              "FULLTEXT_INTAKE_TAMPERED")
 
