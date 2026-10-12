@@ -80,6 +80,7 @@ jobs:
           SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
           SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
           NEWSPAPER_TO: ${{ secrets.NEWSPAPER_TO }}
+          NEWSPAPER_LLM_API_KEY: ${{ secrets.NEWSPAPER_LLM_API_KEY }}
         run: |
           set -euo pipefail
           if [ -z "$SMTP_FROM" ] || [ -z "$SMTP_PASSWORD" ] || [ -z "$NEWSPAPER_TO" ]; then
