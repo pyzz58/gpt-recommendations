@@ -80,6 +80,26 @@ class QualityRegistryTests(unittest.TestCase):
         with self.assertRaisesRegex(q.QualityLedgerError, "MEDIA_DEPARTMENT_NEEDS_REAL_MEDIA"):
             q.validate(d)
 
+    def test_dependent_issue_cannot_be_closed_before_prerequisites(self):
+        d = deepcopy(self.data)
+        row = next(x for x in d["items"] if x["id"] == "QO-W02")
+        row["status"] = "complete"
+        row["history"].append({
+            "date": "2026-10-13", "status": "complete",
+            "note": "本测试假造形式上完整的证据，以便验证上游关键问题未关闭时的依赖门禁",
+            "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/23"
+        })
+        row["evidence"].update({
+            "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/23",
+            "commit_sha": "a" * 40,
+            "automated_test": "tests/test_quality_registry.py::test_dependent",
+            "independent_review": "independent documented synthetic specialist review",
+            "closure_note": "这是形式合法的单元测试模拟条目，实际并未完成专业质量复核和上游编剧问题关闭",
+            "closed_on": "2026-10-13",
+        })
+        with self.assertRaisesRegex(q.QualityLedgerError, "DEPENDENCY_NOT_CLOSED"):
+            q.validate(d)
+
     def test_future_unreviewed_stage_not_marked_progress_or_done(self):
         d = deepcopy(self.data)
         row = next(x for x in d["items"] if x["id"] == "QO-F01")
