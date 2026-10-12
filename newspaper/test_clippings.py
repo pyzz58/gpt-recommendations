@@ -119,7 +119,7 @@ class OriginalClippingTests(unittest.TestCase):
         mail_html,mail_txt=mail_cover_clippings(self.day,{"全球新闻":[it]})
         self.assertNotIn("编者导语",html)
         self.assertIn("PDF",mail_html)
-        self.assertIn("未",mail_txt) # no fabricated commentary
+        self.assertIn("没有接入可验证的研究型大模型",mail_txt) # no fabricated commentary
 
 if __name__=="__main__":
     unittest.main()
