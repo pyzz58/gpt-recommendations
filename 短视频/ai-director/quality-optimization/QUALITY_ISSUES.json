@@ -301,8 +301,7 @@
       "acceptance": "未审/拒绝/旧版本/换人提交都无法伪装通过；导演看到的剧本与审稿版本逐字一致",
       "ai_video_constraint": "短片多段制作仍保留唯一权威剧本版本，局部修改触发影响范围重审",
       "depends_on": [
-        "QO-W06",
-        "QO-D01"
+        "QO-W06"
       ],
       "legacy_links": [
         "https://github.com/pyzz58/gpt-recommendations/pull/18"
