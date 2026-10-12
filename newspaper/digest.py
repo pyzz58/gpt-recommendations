@@ -247,9 +247,24 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
     all_articles = [
         article for articles in grouped.values() for article in articles
     ]
-    top_articles = sorted(
+    ranked_articles = sorted(
         all_articles, key=lambda a: a.get("importance_score", 0), reverse=True,
-    )[:5]
+    )
+    # Cover different subjects first; otherwise the five highest-scored
+    # stories might all be about the same topic.
+    top_articles = []
+    seen_categories = set()
+    for item in ranked_articles:
+        if item["category"] not in seen_categories:
+            top_articles.append(item)
+            seen_categories.add(item["category"])
+        if len(top_articles) == 5:
+            break
+    for item in ranked_articles:
+        if len(top_articles) == 5:
+            break
+        if item not in top_articles:
+            top_articles.append(item)
     if top_articles:
         parts.append('<h2>今日重点 · Editor Picks</h2><ol>')
         plain.append("\n【今日重点 / Editor Picks】")
