@@ -32,8 +32,8 @@ GH = re.compile(r"https://github\.com/pyzz58/gpt-recommendations/(issues|pull)/\
 SHA = re.compile(r"[0-9a-f]{40}")
 IDENT = re.compile(r"QO-(W|D|F)\d{2}")
 BASELINE_IDS = frozenset(
-    [f"QO-W{i:02d}" for i in range(1, 11)] +
-    [f"QO-D{i:02d}" for i in range(1, 13)] +
+    [f"QO-W{i:02d}" for i in range(1, 12)] +
+    [f"QO-D{i:02d}" for i in range(1, 14)] +
     [f"QO-F{i:02d}" for i in range(1, 11)])
 
 
