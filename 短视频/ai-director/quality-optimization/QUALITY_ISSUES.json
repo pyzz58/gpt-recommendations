@@ -1132,9 +1132,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/30",
         "commit_sha": "",
-        "automated_test": "tests/test_director_department_command.py — director vision lock, all seven department directions, seven interfaces, source/version contracts, live model-facing specialist payload, missing/boilerplate denial",
+        "automated_test": "tests/test_director_department_command.py — 7 specialist missions, scene/shot-specific vision, 7 interfaces, model-facing injection, stale lock/data, generic repeat rejection, mandatory production output gate",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1146,6 +1146,12 @@
           "status": "in_progress",
           "note": "一手职业导演及专业部门工作指南深度审读后，新增总导演跨部门制作会、逐部门镜头交接说明和真实模型岗位入参；结构回归在进行中，独立审片仍缺",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "PR30已实现一手职业岗位深度审计、导演锁稿后主持跨部门会议、七部门逐镜工单与真实岗位模型/结果校验；仍需多题材专业盲评及实际媒体成片验收",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/30"
         }
       ]
     },
