@@ -111,7 +111,7 @@ def prepare_fulltext(source, *, episode_id="FULL", risk_domain=None):
     # Extract only URLs literally present in the selected author text.
     # They are candidates for manual verification, not fabricated citations.
     evidence_links = []
-    for match in re.finditer(r"https?://[^\s<>）)]+", selected_text):
+    for match in re.finditer(r"https?://[^\s<>）)。，；！？“”‘’]+", selected_text):
         link = match.group().rstrip(".,;。")
         if link:
             evidence_links.append({
