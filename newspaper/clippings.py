@@ -102,7 +102,7 @@ def build_clippings_html(grouped: dict, day: dt.date) -> tuple[str, str]:
         '<div class="cover-date">'+esc(date_str)+'</div>',
         '<p class="cover-note">保留媒体原始英文遣词。'
         '有明确再版及翻译授权的来源可收录其可取得的全文；'
-        '其他媒体只刊载少量原句与阅读全文链接，避免未经授权转载整篇文章。'
+        '其他报道仅收入可供本版展示的原句选段，保存原有英文与中文对照。'
         '评论另见邮件正文。</p></section>',
     ]
     plain=[f"全球新闻原文选编 | {date_str}", f"入选文章来源：{count}"]
@@ -205,7 +205,7 @@ def mail_cover_clippings(day:dt.date, grouped:dict) -> tuple[str,str]:
     txt=(f"全球新闻原文选编 | {date_str}\n"
          f"今日纳入 {count} 篇来源报道，PDF 附件收录原文短摘及逐句中文翻译，"
          "有转载及翻译许可的材料可刊用完整正文。"
-         "各篇均有源站阅读全文链接。\n"
+         "各篇附有媒体名称和发布时间。\n"
          "编辑评论：当前没有接入可验证的研究型大模型，本期不自动生成空泛观点。\n")
     html_text=(
         '<div style="font-family:Arial,sans-serif;line-height:1.7;max-width:600px">'
