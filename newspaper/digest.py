@@ -320,22 +320,19 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
                 # pretend a full paragraph is already sentence aligned.
                 pairs = [{"en": a.get("reading_en", ""), "zh": a.get("reading_zh", ""),
                           "paragraph_id": 0}]
-            last_paragraph = -1
+            bilingual_lines = []
             for pair in pairs:
-                pid = pair.get("paragraph_id", 0)
-                if pid != last_paragraph and last_paragraph != -1:
-                    parts.append('<div style="height:10px"></div>')
-                    plain.append("")
-                last_paragraph = pid
                 parts.append(
                     '<div style="margin:0;padding:0;line-height:1.55">'
                     f'<div style="margin:0;color:#283547">{p(pair["en"])}</div>'
                     f'<div style="margin:0;color:#215582">{p(pair["zh"])}</div>'
                     '</div>'
                 )
-                # A single physical newline separates each source sentence and
-                # its exact translation; successive pairs remain adjacent.
-                plain.append(pair["en"] + "\n" + pair["zh"])
+                # One English line, one Chinese line, next English line, etc.
+                # The whole block is ONE plaintext section; joining global
+                # sections must not create blank lines between sentence pairs.
+                bilingual_lines.extend([pair["en"], pair["zh"]])
+            plain.append("\n".join(bilingual_lines))
             evaluation = article_advice(a)
             parts.append(
                 '<div style="margin:16px 0;padding:12px;background:#f7f8fa;border-radius:6px">'
