@@ -222,9 +222,8 @@ class DirectorDepartmentCommandTests(unittest.TestCase):
         self.assertNotIn('"director_department_command":',
                          result["messages"][1]["content"])
         with self.assertRaisesRegex(ValueError, "WRONG_STAGE"):
-            roles.build_role_messages(base, state, "director_brief",
-                                      source_text=src,
-                                      department_command=self.bible)
+            command.model_facing_role_context(
+                base, state, "director_brief", self.bible)
 
 
 if __name__ == "__main__":
