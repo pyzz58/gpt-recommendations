@@ -184,6 +184,15 @@ class WriterDirectorSeriesTests(unittest.TestCase):
         self.assertIn("90秒分集硬约束", first_request["messages"][0]["content"])
         self.assertEqual(first_request["episode_director_context"]["max_episode_s"], 90)
         self.assertFalse(first_request["external_model_call_authorized"])
+        marker = "\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\n"
+        _, token, encoded = first_request["messages"][1]["content"].partition(marker)
+        self.assertTrue(token)
+        data = json.loads(encoded)
+        self.assertEqual(data["original_script"], h["screenplay_fountain"])
+        self.assertEqual(data["current_episode_story_and_break_reason"]["episode_id"],
+                         "EP01")
+        self.assertEqual(data["current_episode_detailed_writer_intent"][0]["beats"][0]
+                         ["beat_id"], "B001")
 
     def test_no_arbitrary_three_episode_cap_and_exact_90_allowed(self):
         h = long_story()
@@ -248,6 +257,57 @@ class WriterDirectorSeriesTests(unittest.TestCase):
         crew["episodes"][0]["authoritative_episode_base"]["title"] = "篡改剧情"
         with self.assertRaisesRegex(serial.SeriesDeliveryError, "CREW_PACKET_TAMPERED"):
             serial.episode_director_request(h, ds, plan, crew, "EP01")
+
+    def test_actual_fulltext_pipeline_accepts_600s_then_requires_director_split(self):
+        import screenplay_fulltext_intake as fulltext
+        # 20 independent invented source units, no user/private manuscript.
+        sentence = "村里的人逐渐发现，建造这座桥并非只是更快地完成工程，而是理解它服务于谁以及为何值得建造"
+        source = "\n\n".join(
+            sentence + "，第" + str(i) + "次讨论带来新的疑问。" for i in range(20))
+        indexed = fulltext.prepare_fulltext(source, risk_domain="none")
+        units = indexed["scope_units"]
+        beats = [{
+            "id": f"B{i+1:03d}",
+            "source_ids": [unit["id"]],
+            "operation": "keep",
+            "dramatic_function": "用行动展示关于修桥目的的新信息如何改变在场人物的认识。",
+            "action": f"第{i+1}次公开虚构会议上，村民走到桥梁地图前讨论新的选择。",
+            "dialogue": [],
+            "voiceover": "",
+            "duration_s": 30,
+            "editorial_reason": "保留整部故事的不同选择，交由总导演决定合理分集。",
+        } for i, unit in enumerate(units)]
+        self.assertGreater(len(beats), 10)
+        scenes = [{
+            "id": f"SC{i//4+1:02d}", "heading": "INT. 村委会会议室 - 日",
+            "beats": beats[i:i+4]
+        } for i in range(0, len(beats), 4)]
+        proposal = {
+            "version": adaptation.VERSION,
+            "theme": "桥的意义", "dramatic_question": "桥究竟为谁而建？",
+            "turning_point": "村民从比较工期走向对目的的探问。",
+            "payoff": "结尾让问题保持开放，而不编造确定结论。",
+            "scenes": scenes, "omissions": [],
+        }
+        packet = adaptation.build_review_packet(indexed["base"], source, proposal)
+        self.assertEqual(packet["review"]["estimated_duration_s"], len(units)*30)
+        self.assertGreater(packet["review"]["estimated_duration_s"], 300)
+        form = script_bridge.review_form(packet)
+        form["review_intent"] = "accept_for_director_planning"
+        for row in form["changes"]:
+            row["choice"] = "accept"
+        assembled = script_bridge.prepare_handoff(
+            indexed["base"], source, packet, form, {})
+        self.assertEqual(assembled["next_professional_role"],
+                         "director_series_breakdown")
+        with self.assertRaisesRegex(script_bridge.ScriptHandoffError,
+                                    "MUST_SPLIT_EPISODES_FIRST"):
+            script_bridge.director_request(assembled)
+        ds = dossier(assembled)
+        director_request = serial.director_breakdown_request(assembled, ds)
+        self.assertFalse(director_request["dispatch_allowed"])
+        data = json.loads(director_request["messages"][1]["content"])
+        self.assertEqual(len(data["beat_timeline"]), len(units))
 
     def test_dossier_must_change_when_writer_changes_screenplay(self):
         h = assemble_original()
