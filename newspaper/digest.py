@@ -22,6 +22,7 @@ from reader import fetch_reading
 from ranking import rank_and_pool
 from english_lessons import attach_lessons, english_parser
 from adviser import domain_advice, article_advice, global_linkages
+from print_report import build_editorial_html, write_pdf, mail_cover
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -386,7 +387,7 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
     )
     return "\n".join(parts), "\n\n".join(plain)
 
-def send_email(subject: str, html_body: str, text_body: str):
+def send_email(subject: str, html_body: str, text_body: str, pdf_attachment: Path | None = None):
     sender = os.environ.get("SMTP_FROM", "").strip()
     password = os.environ.get("SMTP_PASSWORD", "").strip()
     recipient = os.environ.get("NEWSPAPER_TO", "").strip()
@@ -394,18 +395,28 @@ def send_email(subject: str, html_body: str, text_body: str):
         raise RuntimeError("Set SMTP_FROM, SMTP_PASSWORD and NEWSPAPER_TO in GitHub Actions secrets.")
     if "\n" in sender + recipient or "\r" in sender + recipient:
         raise ValueError("Newlines in email addresses are forbidden.")
+    if pdf_attachment is not None:
+        pdf_attachment = Path(pdf_attachment)
+        if not pdf_attachment.is_file() or pdf_attachment.read_bytes()[:5] != b"%PDF-":
+            raise RuntimeError("Do not send: required PDF attachment missing or invalid.")
     msg = email.message.EmailMessage()
     msg["Subject"] = subject
     msg["From"] = sender
     msg["To"] = recipient
     msg.set_content(text_body)
     msg.add_alternative(html_body, subtype="html")
+    if pdf_attachment is not None:
+        msg.add_attachment(
+            pdf_attachment.read_bytes(),
+            maintype="application",
+            subtype="pdf",
+            filename=pdf_attachment.name,
+        )
     server = os.environ.get("SMTP_HOST", "smtp.qq.com")
     port = int(os.environ.get("SMTP_PORT", "465"))
     with smtplib.SMTP_SSL(server, port, timeout=30, context=ssl.create_default_context()) as smtp:
         smtp.login(sender, password)
         smtp.send_message(msg)
-
 
 def main():
     parser = argparse.ArgumentParser()
@@ -477,17 +488,23 @@ def main():
             grammar_limit=settings.get("grammar_examples_per_article", 3),
             vocab_limit=0,
         )
-    html_body, text_body = render(grouped, now, news_day, diagnostics)
+    # V0.5 prints an editorial PDF: news-source material stays in the
+    # pipeline but appears in Chinese-only body, with a brief bilingual appendix.
+    html_body, text_body = build_editorial_html(grouped, news_day)
     if args.dry_run or args.demo:
         target = Path(args.output)
         target.parent.mkdir(parents=True, exist_ok=True)
         target.with_suffix(".html").write_text(html_body, encoding="utf-8")
         target.with_suffix(".txt").write_text(text_body, encoding="utf-8")
-        LOG.info("Preview files saved (not emailed): %s.html and .txt", target, target)
+        pdf_path = write_pdf(html_body, target.with_suffix(".pdf"))
+        LOG.info("V0.5 preview generated (no email): %s / .html / .txt", pdf_path)
     else:
-        send_email(f"Newspaper 全球新闻双语日报｜{news_day}", html_body, text_body)
-        LOG.info("Email handed to SMTP server.")
-
+        pdf_path = write_pdf(
+            html_body, Path("/tmp") / f"global-briefing-{news_day.isoformat()}.pdf"
+        )
+        cover_html, cover_txt = mail_cover(news_day)
+        send_email(f"全球形势秘书简报｜{news_day}", cover_html, cover_txt, pdf_attachment=pdf_path)
+        LOG.info("PDF report handed to SMTP server: %s (%d bytes)", pdf_path.name, pdf_path.stat().st_size)
 
 if __name__ == "__main__":
     main()
