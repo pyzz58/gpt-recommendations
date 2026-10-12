@@ -58,7 +58,7 @@
 - 依赖：无
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/19
 - 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/26；回归 tests/test_screenplay_development.py (11 public synthetic cases): creative diagnosis, two takes, editor comparison, treatment, adaptation alignment, director routing, stale-data rejection；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:partially_addressed → 2026-10-13:partially_addressed → 2026-10-13:in_progress
+- 状态历史：2026-10-13:partially_addressed → 2026-10-13:partially_addressed → 2026-10-13:in_progress → 2026-10-13:in_progress
 
 ### QO-W02 · 不同文体专用改编工序
 

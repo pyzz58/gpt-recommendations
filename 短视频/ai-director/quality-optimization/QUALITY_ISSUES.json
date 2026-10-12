@@ -98,6 +98,12 @@
           "status": "in_progress",
           "note": "依照一手职业编剧资料，实现原稿创作诊断、不同影视take、独立编辑对比、treatment与剧本审稿贯通；代码与合成验证已实现，真实专业盲评未完成，不能认定达到一流",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/26"
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "同一私有文案已有旧8场及新6场完整人工剧本，已执行首轮逐场文学自审、旁白密度整改和匿名审阅包准备；未授权真实模型调用且尚无独立专业盲评，不能关闭问题",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/27"
         }
       ]
     },
