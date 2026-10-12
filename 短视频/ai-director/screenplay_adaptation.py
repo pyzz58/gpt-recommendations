@@ -18,8 +18,8 @@ import director
 
 VERSION = "screenplay-adaptation-v1"
 OPS = {"keep", "compress", "expand", "split", "merge", "reorder"}
-MAX_SCENES = 32
-MAX_BEATS = 100
+MAX_SCENES = 64
+MAX_BEATS = 200
 MAX_WHOLE_SCREENPLAY_S = 3600  # whole screenplay; episodes capped independently at 90s
 
 
