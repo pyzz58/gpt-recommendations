@@ -14,6 +14,7 @@ import re
 import smtplib
 import ssl
 from pathlib import Path
+from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
 
 import feedparser
@@ -84,6 +85,7 @@ def fetch_one(category: str, feed: dict, start: dt.datetime, end: dt.datetime):
                     "category": category, "source": feed["name"],
                     "title": title, "summary": clean(entry.get("summary", "")),
                     "url": link, "date": stamp,
+                    "author": clean(entry.get("author", ""), 150),
                 })
         return articles, True
     except Exception as exc:
@@ -136,10 +138,22 @@ def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
         unique.setdefault(item["url"], item)
     LOG.info("Reading candidate article pages: %d", len(unique))
     with concurrent.futures.ThreadPoolExecutor(max_workers=12) as pool:
+        # The default is NOT a licence to reprint copyrighted material.
+        # Longer extraction is only for source domains with a manually
+        # recorded licence covering both republication and translation.
+        license_book = settings.get("republication_licenses", {})
+        def read_cap(article: dict) -> int:
+            host = (urlparse(article.get("url", "")).hostname or "").lower()
+            rights = license_book.get(host, {})
+            if (rights.get("allow_full_republication") is True
+                and rights.get("allow_chinese_translation") is True
+                and str(rights.get("evidence_url", "")).startswith("https://")):
+                return int(settings.get("licensed_max_chars", 35000))
+            return settings["longread_max_chars"]
         futures = {
             url: pool.submit(
                 fetch_reading, article, settings["longread_min_chars"],
-                settings["longread_max_chars"],
+                read_cap(article),
             )
             for url, article in unique.items()
         }
