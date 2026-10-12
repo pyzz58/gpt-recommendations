@@ -26,7 +26,12 @@ def build_card(plan):
     if not isinstance(plan, dict) or not isinstance(plan.get("claims"), list):
         raise ClosingCardError("CLOSING_CARD_PLAN_INVALID")
     claims = plan["claims"]
-    if not claims:
+    refs = plan.get("references", [])
+    if not claims or (plan.get("risk_domain") == "none" and not refs and
+                      all(not c.get("evidence_url") for c in claims
+                          if isinstance(c, dict))):
+        # The article intake labels every narrative sentence as a provisional
+        # "claim". Pure fiction is not a scientific citation roll.
         return None
     identifiers = [c.get("id") for c in claims if isinstance(c, dict)]
     if len(identifiers) != len(claims) or len(set(identifiers)) != len(claims) or (
@@ -55,8 +60,7 @@ def build_card(plan):
             year = str(ref.get("year") or "年份待查")
             journal = str(ref.get("journal") or "机构待查")
             label = cid + "｜" + author + " " + year + " · " + journal
-            verified = c.get("status") == "verified" and bool(
-                ref.get("url") and urlparse(str(ref["url"])).scheme == "https")
+            verified = False  # metadata/URL alone cannot certify research support
         visible.append(label)
         details.append({
             "claim_id": cid, "source_quote": c.get("source_quote", ""),
@@ -78,7 +82,7 @@ def build_card(plan):
         "title": "依据与鸣谢", "visible_lines": visible,
         "full_reference_details_for_description": details,
         "requires_human_relayout": too_dense,
-        "all_references_verified": all(d["reference_reviewed"] for d in details),
+        "all_references_verified": False,  # source status is NOT independent fact-checking
         "rendering": "offline_svg_then_editor_composite",
         "audio": "silent_no_voiceover",
         "video_model_prompt": None,
