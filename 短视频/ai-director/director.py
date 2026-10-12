@@ -70,7 +70,9 @@ def validate(plan):
     if plan["risk_domain"] not in RISK_DOMAINS: errors.append("unknown risk_domain")
     # A full pre-adaptation source or writer rehearsal is NOT an episode.
     # Every actual episode must fit 90s, including reserved non-story time.
-    production_state = plan.get("production", {}).get("publishing_status")
+    production = plan.get("production")
+    production_state = (production.get("publishing_status")
+                        if isinstance(production, dict) else None)
     if production_state not in {"source_intake_only", "adaptation_review_required"}:
         total = plan.get("duration")
         if isinstance(total, (int, float)) and total > 90:
