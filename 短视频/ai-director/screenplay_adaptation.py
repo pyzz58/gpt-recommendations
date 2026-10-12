@@ -245,6 +245,9 @@ def compile_reviewable_shot_plan(plan, episode_source, proposal):
             shot["start"] = revised["duration"]
             shot["duration"] = beat["duration_s"]
             shot["scene_id"] = scene_id
+            shot["character_ids"] = list(dict.fromkeys(
+                person for source_id in beat["source_ids"]
+                for person in old_by_id[source_id]["character_ids"]))
             shot["purpose"] = beat["dramatic_function"]
             shot["narration"] = beat["voiceover"]
             shot["visual_type"] = "text_card"  # explicit non-video placeholder
