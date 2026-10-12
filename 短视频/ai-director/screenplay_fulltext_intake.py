@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 import hashlib
-import re
+import json
 
 import agent_team
 import article_intake
@@ -182,6 +182,12 @@ def editor_request(intake, document, *, mode="auto"):
         "资料、数据、论据或出处仅在原文确有这些内容时保留并要求核查；"
         "原文没有就不要强加参考文献、证据卡或假造引用。"
         "建议的时长和结构须按内容确定；不能因为旁白预览上限而丢失内容。")
+    payload = json.loads(task["messages"][1]["content"])
+    payload["source_units"] = deepcopy(intake["scope_units"])
+    payload["source_scope_span"] = list(intake["scope_span"])
+    payload["source_scope_sha256"] = intake["scope_digest"]
+    task["messages"][1]["content"] = json.dumps(
+        payload, ensure_ascii=False, separators=(",", ":"))
     task["fulltext_source_units"] = deepcopy(intake["scope_units"])
     task["adaptation_mode"] = mode
     task["whole_scope_indexed"] = True
