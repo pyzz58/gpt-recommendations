@@ -61,7 +61,9 @@ def _handoff(value):
           isinstance(value.get("screenplay_fountain"), str) and
           _sha(value["screenplay_fountain"]) == value.get("screenplay_text_digest") and
           value.get("director_must_rewrite_screenplay") is False and
-          value.get("paid_video_authorized") is False,
+          value.get("paid_video_authorized") is False and
+          isinstance(value.get("reconstructed_base"), dict) and
+          _digest(value["reconstructed_base"]) == value.get("director_base_digest"),
           "SERIES_UNTRUSTED_SCRIPT_HANDOFF")
     beats = []
     for scene in value["screenplay_scenes"]:
@@ -269,7 +271,8 @@ def validate_breakdown(handoff, dossier, breakdown):
         for k in ("episode_title", "opening_hook", "narrative_progression",
                   "emotional_or_idea_shift", "local_payoff",
                   "connection_to_next", "break_reason", "continuity_note"):
-            _txt(ep[k], "SERIES_EPISODE_LACKS_STORY")
+            _txt(ep[k], "SERIES_EPISODE_LACKS_STORY",
+                 minimum=3 if k == "episode_title" else 10)
         ids = ep["beat_ids"]
         _need(isinstance(ids, list) and bool(ids) and
               all(isinstance(bid, str) and bid in by_id for bid in ids),
