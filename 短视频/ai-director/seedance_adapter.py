@@ -70,7 +70,9 @@ Absent references produce a technical probe, not identity-consistent footage.
              and 4 <= duration <= 15, "ADAPTER_DURATION_OUTSIDE_REVIEWED_SUBSET")
     _require((d.get("shootability") or {}).get("mode") == "single_take",
              "SPLIT_SHOT_REQUIRES_SEGMENT_ADAPTATION")
-    prompt = job["prompts"]["seedance"]
+    prompt = job["prompts"]["seedance"].replace(
+        "logo or watermark in the generated footage.",
+        "invented logos in the scene. Provider watermark is controlled by the API setting.")
     speech = deepcopy(d["speech"])
     if audio_mode == "native_dialogue":
         _require(not speech["voiceover"]["text"], "NATIVE_VO_NOT_ADAPTED")
@@ -80,7 +82,7 @@ Absent references produce a technical probe, not identity-consistent footage.
                      "EXPLICIT_DIALOGUE_KIND_REQUIRED")
         prompt = prompt.replace("Voiceover, sound effects, music and exact charts are handled in post-production.",
                                 "Generate the authored dialogue and scene audio below; subtitles and charts remain post-production.")
-        prompt += "\nExact dialogue contract (local seconds, only the named speaker speaks): " + json.dumps(speech, ensure_ascii=False)
+        prompt += "\nExact dialogue contract (local seconds, only the named speaker speaks): " + json.dumps({"dialogue": speech["dialogue"]}, ensure_ascii=False)
         prompt += "\nDo not speak stage directions. Offscreen speakers must not animate a visible listener's mouth."
     content = [{"type": "text", "text": prompt}]
     _require(type(reference_images) in (list, tuple) and len(reference_images) <= 3,

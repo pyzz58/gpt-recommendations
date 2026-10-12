@@ -85,6 +85,8 @@ class SeedanceAdapterTests(unittest.TestCase):
         self.assertTrue(packet['body']['generate_audio'])
         self.assertIn(self.direction['shots'][1]['speech']['dialogue'][0]['text'], prompt)
         self.assertNotIn('Voiceover, sound effects, music and exact charts are handled in post-production.', prompt)
+        self.assertNotIn("先录音锁定语速再同步", prompt)
+        self.assertIn("Provider watermark is controlled by the API setting", prompt)
         self.assertFalse(self.packet['body']['generate_audio'])
         self.assertFalse(packet['media_generated'])
         self.network.assert_not_called()
