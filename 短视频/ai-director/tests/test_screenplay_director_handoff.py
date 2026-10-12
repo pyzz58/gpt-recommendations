@@ -85,10 +85,17 @@ class ScreenplayDirectorHandoffTests(unittest.TestCase):
                 self.base, self.source, self.packet, choice, self.bindings)
 
     def test_new_or_other_source_is_rejected(self):
-        with self.assertRaisesRegex(handoff.ScriptHandoffError, "SCRIPT_REVALIDATION_FAILED"):
+        with self.assertRaisesRegex(handoff.ScriptHandoffError, "SCRIPT_SOURCE_STALE"):
             handoff.prepare_handoff(
                 self.base, self.source + "\n换了源文本",
                 self.packet, self.decide(), self.bindings)
+
+    def test_changed_base_after_review_is_rejected(self):
+        changed = deepcopy(self.base)
+        changed["core_message"] = "另一个故事"
+        with self.assertRaisesRegex(handoff.ScriptHandoffError, "SCRIPT_BASE_STALE"):
+            handoff.prepare_handoff(
+                changed, self.source, self.packet, self.decide(), self.bindings)
 
     def test_unreviewed_packet_mutation_fails_closed(self):
         wrong = deepcopy(self.packet)
