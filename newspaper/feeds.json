@@ -182,9 +182,7 @@
   "longread_min_chars": 1400,
   "candidate_pool_per_category": 20,
   "source_limit_per_category": 2,
-  "english_learning_terms_per_category": 2,
   "grammar_examples_per_article": 3,
-  "vocabulary_per_article": 5,
   "ranking": {
     "weights": {
       "impact": 30,
@@ -201,5 +199,22 @@
     "target_chinese_characters": "approximately 700-1400 if sufficient source evidence; not a guarantee",
     "editorial_goal": "prioritize fewer complete narratives instead of 26 fragmented pieces",
     "is_original_synthesis": false
+  },
+  "report_mode": "global_situation_adviser",
+  "global_adviser": {
+    "show_headline_roundup": false,
+    "bilingual_format": "sentence_english_followed_immediately_by_chinese",
+    "vocabulary_glossary": false,
+    "keep_article_grammar": true,
+    "advisor_sections": [
+      "域内形势",
+      "事实材料（英中逐句）",
+      "顾问观察",
+      "关注指标",
+      "证据限制",
+      "跨领域联动"
+    ],
+    "research_engine": "deterministic_evidence_bounded_v1",
+    "note": "Framework and watchlist are rule-based, not fully sourced autonomous expert synthesis. Future optional LLM research adapters require suitable inference compute or provider."
   }
 }
