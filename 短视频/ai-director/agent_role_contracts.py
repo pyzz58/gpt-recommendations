@@ -629,13 +629,28 @@ def build_role_messages(base, state, task_id, *, source_text=None,
 
 
 def validate_role_output(base, state, task_id, raw, *, source_text=None,
-                         editorial_handoff=None):
+                         editorial_handoff=None, department_command=None):
     """Strict provider-agnostic parsing + specialist craft preflight.
 
     Return a new parsed object, never a fixed/normalized one. Refuse invalid
     authoring; do not silently inject defaults or rewrite the source script.
     """
     executor._check(base, state, source_text)
+    # The production adapter cannot accept a downstream specialist's result
+    # without the same locked director work order used to prepare its prompt.
+    if task_id in director_command.DEPARTMENTS:
+        command_mode = base.get("director_command_mode")
+        if command_mode is not None and command_mode != {
+                "kind": "director_department_conference_required",
+                "command_before_specialists": True}:
+            raise ValueError("CREW_DIRECTOR_COMMAND_MODE_INVALID")
+        if command_mode is not None and department_command is None:
+            raise ValueError("CREW_DIRECTOR_DEPARTMENT_COMMAND_REQUIRED")
+        if department_command is not None:
+            director_command.model_facing_role_context(
+                base, state, task_id, department_command)
+    elif department_command is not None:
+        raise ValueError("CREW_DIRECTOR_COMMAND_WRONG_STAGE")
     if task_id not in team.ready(state):
         raise ValueError("CREW_TASK_NOT_READY")
     payload = parse_strict_json(raw)
