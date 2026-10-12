@@ -25,6 +25,7 @@ from english_lessons import attach_lessons, english_parser
 from adviser import domain_advice, article_advice, global_linkages
 from print_report import write_pdf
 from clippings import attach_rights, build_clippings_html, mail_cover_clippings
+from ai_commentary import analyze_one_call, email_commentary
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -519,6 +520,29 @@ def main():
             html_body, Path("/tmp") / f"global-briefing-{news_day.isoformat()}.pdf"
         )
         cover_html, cover_txt = mail_cover_clippings(news_day, grouped)
+        ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
+        if ai_key:
+            try:
+                commentary, ai_usage = analyze_one_call(
+                    grouped, news_day, ai_key, model="deepseek-flash"
+                )
+                cover_html, cover_txt = email_commentary(
+                    news_day, commentary,
+                    sum(len(articles) for articles in grouped.values()),
+                )
+                LOG.info("AI single-request ceiling audit: model=%s "
+                         "input_bound=%d max_peak_estimate_rmb=%s "
+                         "reported_peak_cost_rmb=%s calls=%d",
+                         ai_usage["model"],
+                         ai_usage["conservative_input_token_bound"],
+                         ai_usage["predicted_peak_rmb"],
+                         ai_usage["reported_peak_cost_rmb"],
+                         ai_usage["request_count"])
+            except Exception as exc:
+                # Important: NO automatic API retries. If insufficient budget,
+                # timeout or a provider error, send original-clipping PDF only.
+                LOG.warning("AI commentary unavailable; no retry (%s)",
+                            type(exc).__name__)
         send_email(f"全球新闻原文选编｜{news_day}", cover_html, cover_txt, pdf_attachment=pdf_path)
         LOG.info("PDF report handed to SMTP server: %s (%d bytes)", pdf_path.name, pdf_path.stat().st_size)
 
