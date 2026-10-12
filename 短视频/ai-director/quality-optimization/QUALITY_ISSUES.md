@@ -49,16 +49,16 @@
 ### QO-W01 · 全稿理解与核心思想覆盖
 
 - 状态：partially_addressed；优先级：P0；阶段：now_screenwriter；负责人：screenwriter
-- 发现位置：screenplay_fulltext_intake.py; screenplay_adaptation.validate_proposal
-- 问题：源码结构覆盖和脚本语义理解是两回事，改编可能保全源 ID 却丢掉中心问题与观点
-- 根因：当前单元来源覆盖不核查观点/因果/情绪保留
-- 方案：建立核心命题与故事事实账本，逐条绑定来源段落、编剧版本、对应场次；独立逆向阅读检查关键想法是否保留，失败返回编剧重写
-- 完成验收：3类公开合成短文+无标题长文均无遗漏；核心思想遗漏/错位案例全部阻断；盲评原作者意图保留，不宣称自动语义算法可证明作品优秀
-- AI 视频适配：先全文摄入再做镜头/旁白裁剪；不能为了模型片段限制丢失主题
+- 发现位置：screenplay_fulltext_intake.prepare_fulltext/editor_request; screenplay_adaptation.build_editor_request/validate_proposal; screenplay_professional_review.validate_review
+- 问题：全文字符/来源ID完整不代表专业改编忠于作品内核；当前缺完整原稿创作诊断、多个真正不同的影像改编take、取舍说明与短treatment，可能既误丢原文核心又压制正当创造性删改
+- 根因：设计顺序本末倒置：直接从source_ids+JSON字段生成剧本，缺先由编剧理解作者为何写、什么适合被拍、什么可大胆重新组织的专业创作阶段；盲评/剧情质量不能由hash或字段数证明
+- 方案：先依据原始职业一手资料形成adaptation brief（核心命题/作者声音/人物与信息关系/事实硬边界/艺术可改项）；产生2–3个差异化film takes及取舍、成本和新事实风险对照；独立编辑审查确定treatment后再写剧本；原稿与剧本分别盲读比对创作成效与意义是否失真；来源映射仅作防静默遗漏的底层QA，不应最大化保留率
+- 完成验收：有公开合成小说/纪录/观点各一组加无标题长文；两种差异明显的take+选中理由+treatment+完整剧本；独立审稿能奖励正当有创意的压缩重排又发现错改关键主题，记录盲评样本与反例；作者保护事实不可静默改写；无专业真人验证不得complete
+- AI 视频适配：编剧写可见可听的影像等价表达，但单个AI生成clip的时长不反向约束小说/议论文内核；导演自行设计分镜与剪辑，技术岗位编译clip；原文无证据不强造新资料
 - 依赖：无
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/19
 - 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:partially_addressed
+- 状态历史：2026-10-13:partially_addressed → 2026-10-13:partially_addressed
 
 ### QO-W02 · 不同文体专用改编工序
 
