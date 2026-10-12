@@ -22,7 +22,8 @@ from reader import fetch_reading
 from ranking import rank_and_pool
 from english_lessons import attach_lessons, english_parser
 from adviser import domain_advice, article_advice, global_linkages
-from print_report import build_editorial_html, write_pdf, mail_cover
+from print_report import write_pdf
+from clippings import build_clippings_html, mail_cover_clippings
 from ai_commentary import analyze_one_call, email_commentary
 
 ROOT = Path(__file__).resolve().parent
@@ -84,6 +85,7 @@ def fetch_one(category: str, feed: dict, start: dt.datetime, end: dt.datetime):
                     "category": category, "source": feed["name"],
                     "title": title, "summary": clean(entry.get("summary", "")),
                     "url": link, "date": stamp,
+                    "author": clean(entry.get("author", ""), 150),
                 })
         return articles, True
     except Exception as exc:
@@ -491,19 +493,19 @@ def main():
         )
     # V0.5 prints an editorial PDF: news-source material stays in the
     # pipeline but appears in Chinese-only body, with a brief bilingual appendix.
-    html_body, text_body = build_editorial_html(grouped, news_day)
+    html_body, text_body = build_clippings_html(grouped, news_day)
     if args.dry_run or args.demo:
         target = Path(args.output)
         target.parent.mkdir(parents=True, exist_ok=True)
         target.with_suffix(".html").write_text(html_body, encoding="utf-8")
         target.with_suffix(".txt").write_text(text_body, encoding="utf-8")
         pdf_path = write_pdf(html_body, target.with_suffix(".pdf"))
-        LOG.info("V0.5 preview generated (no email): %s / .html / .txt", pdf_path)
+        LOG.info("Clippings PDF preview generated (no email): %s / .html / .txt", pdf_path)
     else:
         pdf_path = write_pdf(
             html_body, Path("/tmp") / f"global-briefing-{news_day.isoformat()}.pdf"
         )
-        cover_html, cover_txt = mail_cover(news_day)
+        cover_html, cover_txt = mail_cover_clippings(news_day, grouped)
         ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
         if ai_key:
             try:
@@ -524,7 +526,7 @@ def main():
                 # Never retry and never leak prompt or credentials to logs.
                 LOG.warning("AI commentary skipped without retry: %s",
                             type(exc).__name__)
-        send_email(f"全球形势秘书简报｜{news_day}", cover_html, cover_txt, pdf_attachment=pdf_path)
+        send_email(f"全球新闻选编｜{news_day}", cover_html, cover_txt, pdf_attachment=pdf_path)
         LOG.info("PDF report handed to SMTP server: %s (%d bytes)", pdf_path.name, pdf_path.stat().st_size)
 
 if __name__ == "__main__":
