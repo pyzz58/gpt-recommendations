@@ -105,9 +105,11 @@ class EditorAndEnglishTests(unittest.TestCase):
             }],
         }
         html, plain = digest.render({"美股与投资": [article]}, self.start, self.start.date(), {})
-        self.assertLess(html.index("English reading"), html.index("English Learning · 本篇英语学习"))
-        self.assertLess(plain.index("【English reading】"), plain.index("【本篇英语学习】"))
-        self.assertIn("推荐参考分 85/100", html)
+        self.assertLess(html.index("Sentence-by-sentence bilingual reading"), html.index("Grammar Focus · 本篇语法"))
+        self.assertLess(plain.index("【事实材料：一句英文紧跟一句中文】"), plain.index("【本篇语法】"))
+        self.assertNotIn("今日重点", html)
+        self.assertNotIn("Vocabulary · 词汇", html)
+        self.assertIn("85/100", html)
         self.assertIn("被动语态", html)
         self.assertIn("新政策公布后股市上涨", html)
 
