@@ -19,13 +19,22 @@ class FinalCreditsTests(unittest.TestCase):
         cls.base = json.loads((p / "plan.json").read_text("utf-8"))
         cls.direction = json.loads((p / "direction_v02.json").read_text("utf-8"))
 
+    def evidence_base(self):
+        plan = deepcopy(self.base)
+        plan["references"] = [{
+            "claim_id": row["id"], "author": "公开素材作者", "year": 2023,
+            "journal": "公开资料", "url": "https://example.org/reference"
+        } for row in plan["claims"]]
+        return plan
+
     def test_evidence_card_is_last_and_not_video_generation(self):
-        card = c.build_card(self.base)
+        plan = self.evidence_base()
+        card = c.build_card(plan)
         self.assertEqual(card["shot_id"], "POST_END_CREDITS")
         self.assertEqual(card["duration_s"], 1.8)
         self.assertEqual(card["start_s"], self.base["duration"])
         self.assertEqual(card["end_s"], self.base["duration"] + 1.8)
-        self.assertEqual(len(card["visible_lines"]), len(self.base["claims"]))
+        self.assertEqual(len(card["visible_lines"]), len(plan["claims"]))
         self.assertEqual(card["production_route"], "postproduction_only")
         self.assertEqual(card["audio"], "silent_no_voiceover")
         self.assertIsNone(card["video_model_prompt"])
@@ -37,7 +46,8 @@ class FinalCreditsTests(unittest.TestCase):
         self.assertEqual(svg.count("<text "), len(self.base["claims"]) + 2)
 
     def test_integrated_workbook_export_keeps_original_story_shots(self):
-        bundle = d.build_reference_delivery(self.base, self.direction)
+        plan = self.evidence_base()
+        bundle = d.build_reference_delivery(plan, self.direction)
         self.assertEqual(bundle["shooting_order"],
                          [s["id"] for s in self.base["shots"]])
         self.assertEqual(bundle["project"]["story_duration_s"], self.base["duration"])
@@ -50,20 +60,61 @@ class FinalCreditsTests(unittest.TestCase):
         self.assertIn("POST", bundle["final_closing_card"]["shot_id"])
 
     def test_densely_cited_page_blocks_automatic_svg(self):
-        plan = deepcopy(self.base)
+        plan = self.evidence_base()
         while len(plan["claims"]) < c.MAX_VISIBLE_LINES + 1:
             item = deepcopy(plan["claims"][0])
             item["id"] = "MORE" + str(len(plan["claims"]))
             plan["claims"].append(item)
+            plan["references"].append({
+                "claim_id": item["id"], "author": "材料作者",
+                "year": 2022, "journal": "公开资料"
+            })
         card = c.build_card(plan)
         self.assertTrue(card["requires_human_relayout"])
         with self.assertRaisesRegex(c.ClosingCardError, "DENSITY"):
             c.render_svg(card)
 
+    def test_no_evidence_material_means_no_card_even_for_medical_claims(self):
+        self.assertEqual(self.base["risk_domain"], "medical")
+        self.assertTrue(self.base["claims"])
+        self.assertIsNone(c.build_card(self.base))
+        bundle = d.build_reference_delivery(self.base, self.direction)
+        self.assertIsNone(bundle["final_closing_card"])
+        self.assertEqual(bundle["project"]["final_edit_duration_s"],
+                         self.base["duration"])
+        self.assertNotIn("最后一个镜头｜片尾依据与鸣谢",
+                         d.render_operator_markdown(bundle))
+
     def test_pure_fiction_has_no_evidence_page(self):
         plan = deepcopy(self.base)
         plan["claims"] = []
         self.assertIsNone(c.build_card(plan))
+
+    def test_references_are_optional_and_unreferenced_claims_not_listed(self):
+        plan = deepcopy(self.base)
+        plan["references"] = [{
+            "claim_id": plan["claims"][0]["id"],
+            "author": "论文作者", "year": 2019, "journal": "期刊名称"
+        }]
+        card = c.build_card(plan)
+        self.assertEqual(len(card["visible_lines"]), 1)
+        self.assertEqual(len(card["full_reference_details_for_description"]), 1)
+        self.assertNotIn("原稿观点", " ".join(card["visible_lines"]))
+
+    def test_unsourced_numbers_and_essay_argument_not_fake_references(self):
+        plan = deepcopy(self.base)
+        plan["risk_domain"] = "none"
+        plan["claims"][0]["source_quote"] = "论点：未来值得讨论"
+        plan["claims"][1]["source_quote"] = "2026年有人提出一种观点"
+        self.assertIsNone(c.build_card(plan))
+
+    def test_claim_with_source_url_adds_optional_card_unverified(self):
+        plan = deepcopy(self.base)
+        plan["claims"][0]["evidence_url"] = "https://example.org/source"
+        card = c.build_card(plan)
+        self.assertEqual(len(card["visible_lines"]), 1)
+        self.assertFalse(card["all_references_verified"])
+        self.assertIn("待核查", card["visible_lines"][0])
 
     def test_xml_escapes_untrusted_bibliography_strings(self):
         plan = deepcopy(self.base)
