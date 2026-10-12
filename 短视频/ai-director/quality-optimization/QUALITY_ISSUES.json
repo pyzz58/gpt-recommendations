@@ -1,0 +1,1270 @@
+{
+  "registry_version": "2.0-quality",
+  "created_on": "2026-10-13",
+  "project": "短视频/ai-director",
+  "scope": "AI short-form cinematic quality optimization",
+  "canonical_registry": true,
+  "phase_focus": [
+    "now_screenwriter",
+    "now_director"
+  ],
+  "future_departments_registered": true,
+  "world_class_is_target_not_status": true,
+  "api_calls_authorized": false,
+  "user_source_publishing_authorized": false,
+  "definition_of_done": "See QUALITY_CHARTER.md: implementation+tests+independent craft review+appropriate real media/human evidence",
+  "valid_statuses": {
+    "confirmed_open": "代码或实测确定缺口；未解决",
+    "partially_addressed": "已有局部代码/测试，未完成完整质量验收",
+    "audit_pending": "后续部门尚未按国际+AI视频标准完成审计",
+    "in_progress": "正在解决，仍未通过最终验收",
+    "blocked_external": "缺少授权的真实账号、媒体或人工验收",
+    "complete": "满足所有分级验收并提交可核查证据"
+  },
+  "reference_sources": [
+    {
+      "topic": "professional screenplay",
+      "url": "https://www.oscars.org/nicholl/about"
+    },
+    {
+      "topic": "short-film screenplay",
+      "url": "https://collab.sundance.org/catalog/Crafting-Your-Short-Film-Screenplay/October-2025"
+    },
+    {
+      "topic": "screenplay rewrite",
+      "url": "https://collab.sundance.org/catalog/Screenwriting-Rewriting-Your-Feature"
+    },
+    {
+      "topic": "Seedance2 product",
+      "url": "https://seed.bytedance.com/en/seedance2_0/"
+    },
+    {
+      "topic": "Veo3.1 API",
+      "url": "https://ai.google.dev/gemini-api/docs/veo"
+    },
+    {
+      "topic": "Runway Gen4.5",
+      "url": "https://help.runwayml.com/hc/en-us/articles/46974685288467-Creating-with-Gen-4-5"
+    },
+    {
+      "topic": "Kling official API",
+      "url": "https://kling.ai/document-api/apiReference/model/textToVideo"
+    }
+  ],
+  "items": [
+    {
+      "id": "QO-W01",
+      "stage": "now_screenwriter",
+      "department": "screenwriter",
+      "priority": "P0",
+      "status": "partially_addressed",
+      "title": "全稿理解与核心思想覆盖",
+      "observed_in": "screenplay_fulltext_intake.py; screenplay_adaptation.validate_proposal",
+      "problem": "源码结构覆盖和脚本语义理解是两回事，改编可能保全源 ID 却丢掉中心问题与观点",
+      "root_cause": "当前单元来源覆盖不核查观点/因果/情绪保留",
+      "solution": "建立核心命题与故事事实账本，逐条绑定来源段落、编剧版本、对应场次；独立逆向阅读检查关键想法是否保留，失败返回编剧重写",
+      "acceptance": "3类公开合成短文+无标题长文均无遗漏；核心思想遗漏/错位案例全部阻断；盲评原作者意图保留，不宣称自动语义算法可证明作品优秀",
+      "ai_video_constraint": "先全文摄入再做镜头/旁白裁剪；不能为了模型片段限制丢失主题",
+      "depends_on": [],
+      "legacy_links": [
+        "https://github.com/pyzz58/gpt-recommendations/issues/19"
+      ],
+      "owner": "screenwriter",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "partially_addressed",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-W02",
+      "stage": "now_screenwriter",
+      "department": "screenwriter",
+      "priority": "P0",
+      "status": "partially_addressed",
+      "title": "不同文体专用改编工序",
+      "observed_in": "screenplay_fulltext_intake.editor_request; skills/07-professional-screenwriter.md",
+      "problem": "fiction、documentary、essay、hybrid 已有提示，但真实模型仍可能硬套人物冲突与三幕式",
+      "root_cause": "类型识别只靠用户/调用参数，缺结构性适配质量验证",
+      "solution": "建立类型选择理由及可覆核模式；每型独立审稿量表与非虚构禁杜撰门禁；比较同文案错误类型和正确类型的成稿",
+      "acceptance": "至少小说、访谈、科学史、论说文各2例；无演员历史随笔不因没有主人公扣分；反例能发现编造历史人物对白",
+      "ai_video_constraint": "短视频可为纯旁白、动态图解或纪录叙事，不能强制演员镜头",
+      "depends_on": [
+        "QO-W01"
+      ],
+      "legacy_links": [],
+      "owner": "screenwriter",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "partially_addressed",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-W03",
+      "stage": "now_screenwriter",
+      "department": "screenwriter",
+      "priority": "P0",
+      "status": "confirmed_open",
+      "title": "故事/论证推进、原创声音与场景功能",
+      "observed_in": "screenplay_professional_review.py; screenplay_adaptation.py",
+      "problem": "目前自动审核看内容是否填写和引文是否匹配，无法证明剧本不模板化、每场必要、有思想/情绪递进",
+      "root_cause": "缺职业编剧发展性编辑的具象证据与反例评估",
+      "solution": "定义场景进入前/离开后变化、不可替代性、张力/认知跃迁以及差异化语言审核；对空镜头、套话与独特场面样本盲评",
+      "acceptance": "公开样稿成对A/B盲评；至少2种文体、至少2名独立评审记录理由；重大退步必须返修，不能靠数字评分自动打勾",
+      "ai_video_constraint": "每段必须有画面或叙事功能，避免科普一段话一张无差别图卡",
+      "depends_on": [
+        "QO-W01",
+        "QO-W02"
+      ],
+      "legacy_links": [],
+      "owner": "screenwriter",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-W04",
+      "stage": "now_screenwriter",
+      "department": "screenwriter",
+      "priority": "P0",
+      "status": "confirmed_open",
+      "title": "场次内动作/旁白/对白先后关系",
+      "observed_in": "screenplay_adaptation.render_fountain; screenplay_adaptation.validate_proposal",
+      "problem": "每节拍固定先动作后整段旁白再对白，无法表达打断、交叉发言、行动反应，影响可演性",
+      "root_cause": "当前 schema 将 action/dialogue/voiceover 存为平行块，没有事件顺序",
+      "solution": "兼容旧稿同时设计 ordered screenplay events（action/dialogue/VO/silence），按原顺序输出 Fountain，逐个事件保留来源及审稿记录",
+      "acceptance": "多轮双人对话与无对白反应的公开样例可往返重建；逐事件顺序不丢，旧 v1 样稿不回归",
+      "ai_video_constraint": "事件顺序是剧本，不等于强制一镜完成；长互动需拆成多次可生成片段",
+      "depends_on": [
+        "QO-W02"
+      ],
+      "legacy_links": [],
+      "owner": "screenwriter",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-W05",
+      "stage": "now_screenwriter",
+      "department": "screenwriter",
+      "priority": "P0",
+      "status": "partially_addressed",
+      "title": "职业级对白、潜台词与说话人辨识",
+      "observed_in": "screenplay_professional_review.py; screenplay_director_handoff._cast",
+      "problem": "台词精确映射已有，但角色声线、潜台词、行动回应及语言自然度仅由文字审稿提案判断",
+      "root_cause": "缺针对对话的场景级口头试读与声画避免重复测试",
+      "solution": "建立朗读式审阅、说话人匿名辨别、重复解释、人物目标和沉默行动评分；输出针对场次的改写说明",
+      "acceptance": "2人对话公开样例逐句角色可追、拟配音时长合理；盲听/盲读发现故意同质化或解释性对白",
+      "ai_video_constraint": "长对白优先分段/画外配音，不依赖生成模型一次完成完美口型",
+      "depends_on": [
+        "QO-W04"
+      ],
+      "legacy_links": [],
+      "owner": "screenwriter",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "partially_addressed",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-W06",
+      "stage": "now_screenwriter",
+      "department": "screenwriter",
+      "priority": "P0",
+      "status": "partially_addressed",
+      "title": "独立审稿、定点返修和版本冻结",
+      "observed_in": "screenplay_professional_review.py; screenplay_fulltext_intake.reviewed_director_handoff",
+      "problem": "独立审稿及返修请求已具形式，但未对真实编辑模型做两三轮质量对照，审稿者也未认证",
+      "root_cause": "结构测试≠审稿质量；模型可以用同样的口吻给自己背书",
+      "solution": "评审与改稿分离；至少首稿/专业审核/定点二稿/再审；逐项问题绑定场次、原稿及更改原因；建立客观失败与盲评证据",
+      "acceptance": "缺陷样例能被审稿识别并在返修后确实降低；二稿优于首稿的盲评记录和问题关闭证据可核验",
+      "ai_video_constraint": "按局部场次返工，不对整部片无益重生成视频",
+      "depends_on": [
+        "QO-W03",
+        "QO-W04"
+      ],
+      "legacy_links": [],
+      "owner": "screenwriter",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "partially_addressed",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-W07",
+      "stage": "now_screenwriter",
+      "department": "screenwriter",
+      "priority": "P0",
+      "status": "partially_addressed",
+      "title": "真实论据、可选片尾与新增事实",
+      "observed_in": "closing_evidence_card.py; screenplay_fulltext_intake.py; skills/05-source-credits.md",
+      "problem": "已禁止没有材料时强加文献卡，但新增史实与作者原文来源的区分仍需实际剧本审查",
+      "root_cause": "原稿观点、编辑新增事实、外部证据被不同链路混称为同一权威",
+      "solution": "分别记录原稿引用/事实陈述/编剧新增事实/艺术化演绎；新增事实只作待审提案；原稿没有资料则不添加证据页；需要时仅最后单页1–2秒",
+      "acceptance": "分别对无来源虚构、科普无引用、有真实来源、混合推理四组测试；无材料绝不出现参考书目，引用未核实不标已验证",
+      "ai_video_constraint": "精准文字和文献页应在后期合成，不能让视频模型生成准确长文字",
+      "depends_on": [
+        "QO-W01"
+      ],
+      "legacy_links": [],
+      "owner": "screenwriter",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "partially_addressed",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-W08",
+      "stage": "now_screenwriter",
+      "department": "screenwriter",
+      "priority": "P0",
+      "status": "confirmed_open",
+      "title": "总时长/旁白/留白与片段时间分层",
+      "observed_in": "screenplay_adaptation.validate_proposal; screenplay_director_handoff._pacing",
+      "problem": "剧本时长依赖预估，单节拍<=30秒、总长<=300秒，仍混淆场次、段落与供应商生成片段",
+      "root_cause": "缺独立 VO 声速、角色停顿、声音桥与可拆镜策略",
+      "solution": "编剧估算声画节奏与完整短片时长；导演负责拆镜与合成；按真实配音波形回写拍摄时间线，禁把一段30秒剧情硬塞单个生成镜头",
+      "acceptance": "沉默/快慢双场景时长人工审看；可导出不同短视频时长版本仍保留内容；实际配音后时码偏差可记录、返修",
+      "ai_video_constraint": "编剧节拍可跨多个AI片段，具体片段时长取决于所选模型能力表",
+      "depends_on": [
+        "QO-W04",
+        "QO-D04"
+      ],
+      "legacy_links": [],
+      "owner": "screenwriter",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-W09",
+      "stage": "now_screenwriter",
+      "department": "screenwriter",
+      "priority": "P0",
+      "status": "partially_addressed",
+      "title": "作者确认/版本不可篡改及编剧导演交接",
+      "observed_in": "screenplay_director_handoff.py; agent_role_contracts.py",
+      "problem": "脚本已有审稿字段与摘要，但 JSON 决定并不是可信身份授权；旧脚本变量与新版本容易混用",
+      "root_cause": "没有实际私有作者确认动作/角色身份与电子版审稿记录",
+      "solution": "构建私有端审稿确认，绑定原稿、proposal、Fountain 及来源/内容摘要；每次改稿撤销先前决定；总导演拿到完整剧本并可退回编剧",
+      "acceptance": "未审/拒绝/旧版本/换人提交都无法伪装通过；导演看到的剧本与审稿版本逐字一致",
+      "ai_video_constraint": "短片多段制作仍保留唯一权威剧本版本，局部修改触发影响范围重审",
+      "depends_on": [
+        "QO-W06"
+      ],
+      "legacy_links": [
+        "https://github.com/pyzz58/gpt-recommendations/pull/18"
+      ],
+      "owner": "screenwriter",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "partially_addressed",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-W10",
+      "stage": "now_screenwriter",
+      "department": "screenwriter",
+      "priority": "P1",
+      "status": "confirmed_open",
+      "title": "AI短视频编剧独有交付书",
+      "observed_in": "screenplay_adaptation.render_fountain; screenplay_fulltext_intake.editor_request",
+      "problem": "Fountain 有故事动作，但没有明确演员与画外比例、需要的视觉证据、可选后期图文、模型不可生成的核心元素",
+      "root_cause": "传统剧本文本尚不能充分预警 AI 制作风险",
+      "solution": "增加短片适配附页：声音形态、必须可见的证据/动作、非生成素材需求、敏感文字、候选拆段提示与导演选择权，剧本正文不写焦距和提示词",
+      "acceptance": "总导演收到剧本无需补写剧情即可设计可拍片段；短片制作附页只写意图/约束，不冒充镜头方案",
+      "ai_video_constraint": "允许无真人/混合AI+静态后期+音效的低成本叙事方式",
+      "depends_on": [
+        "QO-W04",
+        "QO-D04"
+      ],
+      "legacy_links": [],
+      "owner": "screenwriter",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D01",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "partially_addressed",
+      "title": "导演以完成剧本为唯一剧情权威",
+      "observed_in": "screenplay_director_handoff.director_request; agent_role_contracts.build_role_messages",
+      "problem": "已由角色提示禁止总导演和旧 script_edit 重写剧情，但模型执行尚无验证",
+      "root_cause": "依赖提示约束，未有输出差异强约束和真实模型反例",
+      "solution": "核对总导演视听阐释而非改写人物/情节/台词；编剧返修单由编剧回改；字段/文字差异跨版本审计",
+      "acceptance": "故意诱导导演改剧情/人物对白的公开测试被阻断，返修单返回编剧；不阻断导演合理提供视听建议",
+      "ai_video_constraint": "短片导演可以决定剪辑与视听结构，不得暗改故事内容",
+      "depends_on": [
+        "QO-W09"
+      ],
+      "legacy_links": [],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "partially_addressed",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D02",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "confirmed_open",
+      "title": "场次与分镜解耦：一场可多镜，一镜可多节拍",
+      "observed_in": "screenplay_adaptation.compile_reviewable_shot_plan; director_v2.py",
+      "problem": "现有编剧节拍编译为同数 text_card 占位；总导演受 shot_id 不增不减约束，缺自由选择覆盖镜头的通路",
+      "root_cause": "使用原稿来源slot当成物理镜头且十岗位锁镜头数",
+      "solution": "创建 scene/beat/coverage shot 三层，导演拆镜/合镜/插入/反打/空镜，结构调整有来源和剪辑锁版本",
+      "acceptance": "公开对话场：1场->多镜；蒙太奇场：多事件->多镜；重排后来源/台词/时长不丢且所有专业位置重绑定",
+      "ai_video_constraint": "不同视频生成工具可单镜、多镜头或插帧；不能按原文句子数限制镜头数",
+      "depends_on": [
+        "QO-D01"
+      ],
+      "legacy_links": [
+        "https://github.com/pyzz58/gpt-recommendations/issues/19"
+      ],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D03",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "confirmed_open",
+      "title": "导演视听母题、情绪弧线与视觉叙事",
+      "observed_in": "agent_role_contracts director_brief/director_lock; director_workbook.py",
+      "problem": "规范强调填完情绪/摄影字段，但多场图灵示范仍有翻书光标等通用意象，无法证明每镜有不可替代的故事功能",
+      "root_cause": "缺影像叙事的盲评和主动比较备选构想",
+      "solution": "建立导演 treatment：核心视听母题、场景对照关系、开场/收束视觉呼应、动作触发镜头、声画冲突；给出被否决方案与原因",
+      "acceptance": "盲评能将空泛镜头与主题驱动镜头区分；每镜存在理由可以被回溯；观众不依赖旁白也能理解至少部分情绪/事实变化",
+      "ai_video_constraint": "高质量不等于强制复杂动作；在单片可生成前提下优先视觉叙事",
+      "depends_on": [
+        "QO-D02"
+      ],
+      "legacy_links": [],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D04",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "partially_addressed",
+      "title": "模型能力适配、片段时长与路由决策",
+      "observed_in": "seedance_adapter.py; video_workflow.py; director_shootability.py",
+      "problem": "当前 Seedance single_take 4–15s 为保守自限；不同模型时长/参考/多镜/音频能力不一",
+      "root_cause": "缺有来源日期与接口版本的 capability registry 和语义编译边界",
+      "solution": "建立模型/版本/渠道能力表（clip时长、比例、首尾帧、参考、内生音频、多镜、价格/区域待核）；导演先给意图，技术岗位按注册表拆解；超能力范围拒绝而非假造支持",
+      "acceptance": "Runway/Veo/Kling/Seedance 的公开能力配置和反例单元测试；真实目标供应商用其官方API文档单独认证；任意clip符合目标provider约束",
+      "ai_video_constraint": "Runway4.5 2–10s、Veo3.1 4/6/8s、Kling3多shot、Seedance2多模态不能混成统一上限",
+      "depends_on": [
+        "QO-D02"
+      ],
+      "legacy_links": [
+        "https://github.com/pyzz58/gpt-recommendations/issues/3"
+      ],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "partially_addressed",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D05",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "partially_addressed",
+      "title": "演员/服装/道具/场景跨镜一致性",
+      "observed_in": "film_continuity.py; asset_reference_manifest.py; director_v2.py",
+      "problem": "已有ID、道具状态和参考卡结构，但未以真实视频验证身份、手部动作与方位保持",
+      "root_cause": "文本ID与资产摘要不证明视觉像同一个人",
+      "solution": "导演维护角色/道具/场景bible+分镜状态转移；实际照片参考与授权；选择首尾帧/参考图及失败重制策略，完成跨镜实测",
+      "acceptance": "至少两人物+手机/门的跨镜公开视频试镜，评价脸/服装/道具/光源/左右关系，失败镜头可定位修正",
+      "ai_video_constraint": "跨clip身份与布景漂移是AI关键风险；摘要和相同seed不等于视觉锁定",
+      "depends_on": [
+        "QO-D02",
+        "QO-D04"
+      ],
+      "legacy_links": [
+        "https://github.com/pyzz58/gpt-recommendations/issues/2"
+      ],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "partially_addressed",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D06",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "confirmed_open",
+      "title": "多动作可拍性与模型失败降级",
+      "observed_in": "director_shootability.py; agent_role_contracts acting/camera_art/ai_technical",
+      "problem": "逐秒动作表有了但复杂互动、多个连续变化易在视频生成时失败；没有真实成功率",
+      "root_cause": "下游直接按理想影视分镜要求一个视频模型完成全部演员动作",
+      "solution": "每镜列关键动作数、人物数量、接触/空间复杂度；选择分拆、静帧、蒙太奇、后期动画替代路径并量化重试预算",
+      "acceptance": "公开故障注入例：双手接触、道具交换、轴线跳变均能触发正确拆段或人工复审；真实成片有效性需单独标未验证",
+      "ai_video_constraint": "AI模型对多动作/物理交互有概率性，脚本不能假设必然符合提示词",
+      "depends_on": [
+        "QO-D04"
+      ],
+      "legacy_links": [],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D07",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "partially_addressed",
+      "title": "导演级镜头语言与视觉连续性",
+      "observed_in": "agent_role_contracts camera_art; director_v2; director_workbook.py",
+      "problem": "有景别焦距灯光字段，但经常是填模板而非可解释的摄影选择；轴线和转场缺真实审片",
+      "root_cause": "结构要求与视觉因果质量没有建立直接验收",
+      "solution": "以人物视线/动机触发镜头，检查机位关系、连续运动、构图重心、光源世界观与色彩语法；导演需能阐明每镜选择的叙事原因",
+      "acceptance": "公开短片方案盲评优于机械镜头列表；镜间轴线/光源违例静态阻断；真实视频另审",
+      "ai_video_constraint": "镜头机位复杂度要可由目标AI模型产生或有转后期替代",
+      "depends_on": [
+        "QO-D03",
+        "QO-D05"
+      ],
+      "legacy_links": [],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "partially_addressed",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D08",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P1",
+      "status": "partially_addressed",
+      "title": "导演与音效/台词/字幕精确对齐",
+      "observed_in": "agent_role_contracts sound; production_delivery; video_workflow",
+      "problem": "已传精确speech与 onscreen/offscreen，但生成后真实语音文字、口型和字幕时间码未核对",
+      "root_cause": "预算和时码是计划，缺实际声音解码/ASR与人工语音核验",
+      "solution": "按导演意图为每镜决定原生声音或后期配音；保存逐句人声、口型与字幕对应；拒绝无准确信息的错字成片",
+      "acceptance": "两人镜头至少一名说话另一人闭口；真实音视频逐句人工核验，错字有局部修复路径",
+      "ai_video_constraint": "原生声音未必可控；优先选后期配音/画外声避免错误口型",
+      "depends_on": [
+        "QO-D04",
+        "QO-D05"
+      ],
+      "legacy_links": [
+        "https://github.com/pyzz58/gpt-recommendations/issues/3"
+      ],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "partially_addressed",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D09",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P1",
+      "status": "confirmed_open",
+      "title": "剪辑节奏、过渡桥与镜头版本选择",
+      "observed_in": "agent_role_contracts editing_animation; director_timeline.py; production_delivery.py",
+      "problem": "有J/L cut、转场字段但未以真实影像验证行为连续和情绪节奏；不可默认长镜头一镜过",
+      "root_cause": "缺由真实媒体帧/音轨回写的编辑视角审计",
+      "solution": "导演审查每个镜头的入点/出点/情绪换挡/声画桥；备选剪辑与失败因果；逐镜选择最佳 take，避免盲目复拍整片",
+      "acceptance": "公开合成方案能量化错误切点；真实2+段小样有可验证片段版本与切点，比对导演剪辑意图",
+      "ai_video_constraint": "AI片段几秒钟产生，需留头尾缓冲，部分转场后期解决",
+      "depends_on": [
+        "QO-D02",
+        "QO-D08"
+      ],
+      "legacy_links": [],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D10",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "confirmed_open",
+      "title": "专业导演审片标准：不是字段全就是好片",
+      "observed_in": "agent_creative_review.py; tests/test_director_workbook.py",
+      "problem": "现有 QA 检查结构与一致性，但看不到实际镜头、心理驱动和观众投入",
+      "root_cause": "缺专业观众审阅样本及作品对照盲评",
+      "solution": "至少双样本短片方案、三类体裁，分开评分故事理解/镜头意图/动作可信/声画连贯/整体吸引；归因到编剧还是导演负责",
+      "acceptance": "3题材盲评含反例基线；区分无法自动判断的艺术主观评价；低分片不自动放行",
+      "ai_video_constraint": "不拿一个模型平台的demo宣称跨模型世界一流水平",
+      "depends_on": [
+        "QO-D03",
+        "QO-D09"
+      ],
+      "legacy_links": [],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D11",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "blocked_external",
+      "title": "真实双镜生成、跨镜验收与风险边界",
+      "observed_in": "SEEDANCE_API_AUDIT.md; video_workflow.py",
+      "problem": "尚无已获授权的 Seedance 真实镜头、人物一致性测试与合成成片",
+      "root_cause": "私有账号/费用/素材授权、持久运行及成片人工验收未部署",
+      "solution": "先审核私有账号区域、单镜预算和一次性明确批准，再S02+S03双镜真实生成，审片记录并测首次可用率/平均返工/真实费用",
+      "acceptance": "具体镜头、素材、请求、费用、结果哈希、独立真人审片与缺陷记录俱全才可标完成；无授权保持blocked_external",
+      "ai_video_constraint": "真实片段有随机性；合成视频结果必须按秒/帧检查而非只认API success",
+      "depends_on": [
+        "QO-D04",
+        "QO-D05",
+        "QO-D08",
+        "QO-F07"
+      ],
+      "legacy_links": [
+        "https://github.com/pyzz58/gpt-recommendations/issues/1",
+        "https://github.com/pyzz58/gpt-recommendations/issues/3"
+      ],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "blocked_external",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D12",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P1",
+      "status": "confirmed_open",
+      "title": "导演/编剧修订权限冲突与版本谱系",
+      "observed_in": "agent_role_contracts.py; screenplay_director_handoff.py",
+      "problem": "目前岗位提示已限定，但后续实际修改可能改变台词、场景、镜头分配时没有统一revision_request闭环",
+      "root_cause": "跨部门讨论尚无一个可复核的剧本变更影响列表",
+      "solution": "增加导演返修单->编剧改稿->作者复审->重新绑定镜头和受影响专业工单的完整修改谱系；杜绝旧版本混入新音画制作",
+      "acceptance": "至少3种跨部门改稿触发失效/回滚测试，并验证未受影响镜头可保留",
+      "ai_video_constraint": "局部返工应避免整片重复生成，高成本动作优先可追踪复用",
+      "depends_on": [
+        "QO-W09",
+        "QO-D02"
+      ],
+      "legacy_links": [],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-F01",
+      "stage": "future_dept",
+      "department": "acting",
+      "priority": "P1",
+      "status": "audit_pending",
+      "title": "演员表演与动作调度专业审计",
+      "observed_in": "agent_role_contracts acting; director_shootability.py",
+      "problem": "未对照国际表演/场面调度标准并结合AI虚拟演员真实验证",
+      "root_cause": "专业动作语义与生成模型可执行性的质量差距未知",
+      "solution": "审查意图-策略-可见行为-反应-走位/视线-手部/道具接触；建立易失败动作分拆和镜头替代方案",
+      "acceptance": "专业表演审稿+公开虚构动作片段复核后确定问题；真实媒体另验",
+      "ai_video_constraint": "多主体交互及手部一致性需按片段限制设计",
+      "depends_on": [
+        "QO-D04"
+      ],
+      "legacy_links": [],
+      "owner": "acting",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "audit_pending",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-F02",
+      "stage": "future_dept",
+      "department": "cinematography_art",
+      "priority": "P1",
+      "status": "audit_pending",
+      "title": "摄影/灯光/美术世界观专业审计",
+      "observed_in": "agent_role_contracts camera_art; director_v2",
+      "problem": "尚未独立以职业摄影指导标准审查可拍性、空间/摄影系统及 AI 参考图规划",
+      "root_cause": "摄影任务结构字段覆盖不证明实际视觉品格",
+      "solution": "梳理景别轴线、光源、反差、运动触发、镜头参考与不同模型光影保持能力",
+      "acceptance": "独立摄影审阅报告+多镜视觉统一测试计划+关键阻断点",
+      "ai_video_constraint": "参考图和生成时视觉一致性受模型/版次限制",
+      "depends_on": [
+        "QO-D07"
+      ],
+      "legacy_links": [],
+      "owner": "cinematography_art",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "audit_pending",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-F03",
+      "stage": "future_dept",
+      "department": "sound_voice",
+      "priority": "P1",
+      "status": "audit_pending",
+      "title": "配音/对白/拟音/音乐专业审计",
+      "observed_in": "agent_role_contracts sound; production_delivery",
+      "problem": "声音专业岗位尚未按真实声音总监标准核查混音、叙事留白和声音衔接",
+      "root_cause": "音轨工程和口型风险尚无系统性审计",
+      "solution": "独立 VO/角色对白/环境/音乐/拟音层，动态范围、对白清晰度、声画时间线与旁白措辞所有权",
+      "acceptance": "专业审计报告与可重现声画合成小样；不等于自动翻录真人声",
+      "ai_video_constraint": "AI原生声音与后期音轨共存会产生重读、口型与同步冲突",
+      "depends_on": [
+        "QO-D08"
+      ],
+      "legacy_links": [],
+      "owner": "sound_voice",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "audit_pending",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-F04",
+      "stage": "future_dept",
+      "department": "editing_animation",
+      "priority": "P1",
+      "status": "audit_pending",
+      "title": "剪辑/动效/信息图专业审计",
+      "observed_in": "agent_role_contracts editing_animation; director_timeline",
+      "problem": "尚未覆盖动画图表准确性、过渡逻辑、短视频观看节奏、字幕安全区",
+      "root_cause": "后期工单是否符合可交付剪辑工程质量未验",
+      "solution": "审查切点动机、镜头连续、字幕、动效层、精确数据图形、节奏/空间变化与导出规格",
+      "acceptance": "独立剪辑师审核+多段样片可验收+图表事实QA",
+      "ai_video_constraint": "文字和精确数据宜后期而非视频模型直接生成",
+      "depends_on": [
+        "QO-D09"
+      ],
+      "legacy_links": [],
+      "owner": "editing_animation",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "audit_pending",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-F05",
+      "stage": "future_dept",
+      "department": "ai_technical",
+      "priority": "P0",
+      "status": "audit_pending",
+      "title": "AI视频技术导演适配与提示词编译审计",
+      "observed_in": "seedance_adapter.py; agent_role_contracts ai_technical",
+      "problem": "部分模型只支持单镜，但现有多镜/首尾帧/参考资产能力未适配；跨模型路由可能有隐性假设",
+      "root_cause": "供应商接口能力更新和渠道差异缺产品级验证",
+      "solution": "分供应商能力注册表、参考素材链路、失败分类、模型适配/降级及成本策略；最小化不确定性",
+      "acceptance": "真实目标供应商参数核对+错误输入拒绝+样本试镜结果",
+      "ai_video_constraint": "Seedance/Veo/Runway/Kling仅作可选能力，不预设账号必有",
+      "depends_on": [
+        "QO-D04"
+      ],
+      "legacy_links": [],
+      "owner": "ai_technical",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "audit_pending",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-F06",
+      "stage": "future_dept",
+      "department": "continuity_qa",
+      "priority": "P0",
+      "status": "audit_pending",
+      "title": "独立场记/事实/版权与质量门禁审计",
+      "observed_in": "agent_handoff_audit.py; agent_creative_review.py; audit_registry.py",
+      "problem": "既有QA主要检查合同而不是观众感受、媒体事实与版权安全",
+      "root_cause": "缺独立QA反向恶意样本、审查隔离和来源核对",
+      "solution": "建立三层QA：结构审计/专业盲评/真实音画与权利链；缺任一层不能谎称全验收",
+      "acceptance": "风险样本失败注入、角色修订 owner 复核、来源和肖像授权链记录",
+      "ai_video_constraint": "模型生成媒体的版权/标志/人物肖像需要实际素材审核",
+      "depends_on": [
+        "QO-D10"
+      ],
+      "legacy_links": [],
+      "owner": "continuity_qa",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "audit_pending",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-F07",
+      "stage": "future_dept",
+      "department": "api_privacy_cost",
+      "priority": "P0",
+      "status": "audit_pending",
+      "title": "真实账号、素材、资费和私有存储生产审计",
+      "observed_in": "AUDIT_FINDINGS.json AUD-002; seedance_adapter.py; video_workflow.py",
+      "problem": "缺可靠长期私有执行环境、真人授权和供应商费用账单验证",
+      "root_cause": "代码中的字符串批准不是真实支付/隐私权限",
+      "solution": "私有API密钥库、配额/费用硬门禁、一次性提交、回执与回收、下载校验、故障恢复、资产授权",
+      "acceptance": "独立安全验证+真实低成本受控验证后才解除；否则持续blocked",
+      "ai_video_constraint": "供应商费用、内容安全策略和第三方存储需按账号与地域逐项核对",
+      "depends_on": [
+        "QO-D04"
+      ],
+      "legacy_links": [
+        "https://github.com/pyzz58/gpt-recommendations/issues/1"
+      ],
+      "owner": "api_privacy_cost",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "audit_pending",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-F08",
+      "stage": "future_dept",
+      "department": "media_qc",
+      "priority": "P0",
+      "status": "audit_pending",
+      "title": "真实视频审片、版本优选与局部返工",
+      "observed_in": "video_workflow.py; production_delivery.py",
+      "problem": "尚无真实视频跨镜质量可重复评价、编辑最佳片段选择和局部返工闭环",
+      "root_cause": "只验证响应状态/MP4 header与摘要不足以证明画面可用",
+      "solution": "解码/关键帧/声音/字幕/人脸/手部/动作检查，记录take与fail reason，不重发未经批准费用",
+      "acceptance": "真实媒体验收与镜头级版本谱系，剪辑输出经过实际播放及人工批准",
+      "ai_video_constraint": "AI输出概率变化大、局部返工是成本与质量核心",
+      "depends_on": [
+        "QO-D11"
+      ],
+      "legacy_links": [],
+      "owner": "media_qc",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "audit_pending",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-F09",
+      "stage": "future_dept",
+      "department": "postdelivery",
+      "priority": "P1",
+      "status": "audit_pending",
+      "title": "最终合成、字幕/无障碍与可选资料尾页",
+      "observed_in": "production_delivery.py; closing_evidence_card.py",
+      "problem": "1.8s资料页是否可读、最终字幕安全区/音量/多格式未做真人成片审查",
+      "root_cause": "视频交付层只是工单而不是媒体合成实物",
+      "solution": "专业剪辑/后期审查：合成一致、精确字幕、转码质量、标题版权、可选尾页不遮蔽关键信息",
+      "acceptance": "至少竖屏/横屏若支持的真人观影QA；有依据才显示1–2秒尾页，无则不加",
+      "ai_video_constraint": "不要求视频模型拼准确字幕；片尾1–2秒只放能读的简化出处",
+      "depends_on": [
+        "QO-F04",
+        "QO-F08"
+      ],
+      "legacy_links": [],
+      "owner": "postdelivery",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "audit_pending",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-F10",
+      "stage": "future_dept",
+      "department": "product_workflow",
+      "priority": "P1",
+      "status": "audit_pending",
+      "title": "整体制作协调/进度/异常/返工成本的专业审计",
+      "observed_in": "agent_team.py; local_director.py; PRODUCT_NORTH_STAR.md",
+      "problem": "没有真实私人制作流程用户体验和交付周期证据",
+      "root_cause": "模块通过测试但实际从文案到成片可能步骤反复且不可恢复",
+      "solution": "质量阶段每轮只能围绕已登记问题；建立单镜/整片成本与返工次数、专业人员可审的版本责任和追溯日志",
+      "acceptance": "真实低成本作品从输入到导出全程可追、失败可定位恢复，人工决定明晰",
+      "ai_video_constraint": "每个AI服务不同的限流/缓存/授权并限制用户花费",
+      "depends_on": [
+        "QO-F07",
+        "QO-F08"
+      ],
+      "legacy_links": [],
+      "owner": "product_workflow",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "audit_pending",
+          "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        }
+      ]
+    }
+  ]
+}

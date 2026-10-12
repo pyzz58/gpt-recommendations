@@ -1,3 +1,22 @@
+# 当前最高优先指令｜专业质量优化阶段（2026-10-13）
+
+用户明确要求：**每个部门都以国际优秀职业标准为质量目标，但成果必须适合 AI 视频短片，不照搬一两个小时长片的工业组织和固定时长。** 现阶段只深入优化 **前置编剧与总导演**；其它表演、摄影、美术、声音、剪辑动画、AI 技术、场记 QA、API、审片与最终合成部门先登记 `audit_pending`，未来逐一按相同标准审计。
+
+本项目**独立质量总账（唯一 QO 状态权威）**：
+- [质量阶段不可变总纲](quality-optimization/QUALITY_CHARTER.md)
+- [逐问题解决方案、优先级、状态和验收条件](quality-optimization/QUALITY_ISSUES.md)
+- [具体执行批次与每轮 PR 的验收产物](quality-optimization/EXECUTION_PLAN.md)
+- [机器权威登记](quality-optimization/QUALITY_ISSUES.json)
+- [状态校验门禁](quality-optimization/quality_registry.py)
+
+**所有后续改动必须先定位 QO 编号，逐项调查根因、实现、用合成案例和独立专业审核验证，有真实音画需要时另外获授权实测，再在 JSON 的对应问题上写实证并标完成，同时同步 Markdown。未解决保持 open/partial/blocked；禁止靠代码绿色宣布电影艺术达到国际一流。** 不可删除旧问题或其他部门的待审标记。旧 `AUDIT_FINDINGS.json` 和 AUD-002 私有账本/授权问题仍独立有效，禁止借新总账关闭。
+
+AI 视频专属要求：编剧场次 ≠ 导演分镜 ≠ 模型生成片段，模型时长、原生配音、多模态参考与多镜能力必须按真实供应商/版本约束；没有用户原文资料不得加证据页；真实费用及私稿上传必须单独授权。坚持现有专业团队分工，不因为目标一流而任意增加 Agent。
+
+**若本文件后面的历史阶段优先级与本节不一致，以这节和质量总纲为准。**
+
+---
+
 ## 单镜流程已接入统一命令入口（2026-10-12）
 
 [video_workflow.py](video_workflow.py) 已由 local_director.py 的 video 子入口调用，提供离线prepare/status/page/review-template/review与明确submit/query/download。只读页面不是网页控制台；尚无部署或真实生成。审片绑定准确视频SHA，候选保留不能冒充正式生产批准；意见要求修改不自动付费重做。API Key仅由明确网络命令从不回显交互终端读取，不能写参数、环境自动读取或存入任务。现有长期私有运行、真实授权/费用核验边界继续有效。详见 [单镜操作](SINGLE_SHOT_WORKFLOW.md)。
