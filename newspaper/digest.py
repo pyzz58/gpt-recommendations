@@ -25,6 +25,7 @@ from adviser import domain_advice, article_advice, global_linkages
 from print_report import write_pdf
 from clippings import build_clippings_html, mail_cover_clippings
 from ai_commentary import analyze_one_call, email_commentary
+from editorial_selection import pick_politics, tech_candidates
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -153,6 +154,26 @@ def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
         quota = settings["max_per_category"][category]
         source_max = settings.get("source_limit_per_category", 2)
         available = [enriched[item["url"]] for item in arr if enriched[item["url"]]]
+        if category == "AI与科技":
+            available = tech_candidates(available)
+        if category == "全球新闻":
+            accepted, pdiag = pick_politics(
+                available, quota, selected_global, _duplicate,
+                source_max=source_max,
+                extra_limit=settings.get("political_major_event_extra", 2),
+            )
+            if pdiag["political_shortfall"]:
+                LOG.warning("Political sourcing shortfall: %s", pdiag["political_shortfall"])
+            selected_global.extend(accepted)
+            output[category] = accepted
+            diagnostics[category] = {
+                "quota":quota, "candidate_count":len(arr),
+                "readable":len(available),"selected":len(accepted),
+                "sources":sorted(set(x["source"] for x in accepted)),
+                **pdiag,
+            }
+            LOG.info("%s: %s", category, diagnostics[category])
+            continue
         accepted = []
         counts = {}
         # First pass prioritizes unique outlets. Second pass fills gaps.
