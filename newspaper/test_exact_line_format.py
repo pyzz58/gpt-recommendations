@@ -34,12 +34,12 @@ class ExactLineFormatTests(unittest.TestCase):
             "你来自哪里？", "你好吗？", "很高兴见到你。"
         ])
         html, plain = digest.render(grouped, when, when.date(), {})
-        expected = ("Where are you from?\n你来自哪里？\n\n"
-                    "Are you OK?\n你好吗？\n\n"
+        expected = ("Where are you from?\n你来自哪里？\n"
+                    "Are you OK?\n你好吗？\n"
                     "Nice to see you.\n很高兴见到你。")
-        # Plain text uses paragraph separators *between* pairs but never
-        # between an English line and its own Chinese translation.
+        # No blank lines anywhere inside the six-line reading passage.
         self.assertIn(expected, plain)
+        self.assertNotIn("你来自哪里？\n\nAre you OK?", plain)
         self.assertNotIn("Where are you from? Are you OK?", plain)
         self.assertNotIn("Are you OK? Nice to see you.", plain)
         self.assertIn("Where are you from?</div>", html)
