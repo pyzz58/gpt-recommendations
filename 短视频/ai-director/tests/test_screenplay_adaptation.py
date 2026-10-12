@@ -121,5 +121,22 @@ class ScreenplayAdaptationTests(unittest.TestCase):
         self.assertFalse(packet["api_authorized"])
 
 
+    def test_reconstructed_shot_preview_has_valid_new_timeline_and_preserves_provenance(self):
+        proposal = deepcopy(self.proposal)
+        original = deepcopy(self.plan)
+        preview = a.compile_reviewable_shot_plan(self.plan, TEXT, proposal)
+        revised = preview["plan"]
+        self.assertEqual(len(revised["shots"]), len(proposal["scenes"][0]["beats"]))
+        self.assertEqual(revised["duration"], sum(s["duration"] for s in revised["shots"]))
+        self.assertEqual(revised["shots"][0]["start"], 0)
+        self.assertEqual(revised["shots"][0]["source_adaptation"]["original_source_shot_ids"],
+                         [original["shots"][0]["id"]])
+        self.assertEqual(revised["shots"][0]["visual_type"], "text_card")
+        self.assertFalse(preview["paid_model_authorized"])
+        self.assertTrue(preview["speech_and_lipsync_not_implemented"])
+        self.assertEqual(original, self.plan)
+
+
+
 if __name__ == "__main__":
     unittest.main()
