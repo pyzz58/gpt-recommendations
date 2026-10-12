@@ -11,7 +11,9 @@ import argparse
 import copy
 import html
 import json
+import math
 from pathlib import Path
+import re
 import sys
 
 from director import validate as validate_v1
@@ -267,6 +269,42 @@ def beat_lines(direction):
     )
 
 
+def visual_prompt_contract(base, shot, direction):
+    """Select authored visual instructions, never private reference metadata.
+
+    Typed lens/axis/layout and the source cast define the requested design.
+    Free-form notes remain useful but cannot silently override those fields.
+    Only simple numeric lens conflicts are machine-detectable; other semantic
+    conflicts still require a director's review.
+    """
+    lens = direction['camera']
+    focal = lens.get('focal_length_mm')
+    if focal is not None:
+        if type(focal) not in (int, float) or not math.isfinite(focal) or not 14 <= focal <= 135:
+            raise ValueError('DIRECTOR_FOCAL_LENGTH_INVALID')
+        prose_lengths = re.findall(r'(\d+(?:\.\d+)?)\s*(?:mm|毫米)', lens['lens_feel'], re.I)
+        if any(abs(float(x) - focal) > .01 for x in prose_lengths):
+            raise ValueError('DIRECTOR_FOCAL_LENGTH_CONFLICT')
+    ids = set(shot.get('character_ids', []))
+    cast = [{k: actor[k] for k in ('id', 'description', 'wardrobe') if k in actor}
+            for actor in base.get('characters', []) if actor['id'] in ids]
+    contract = {
+        'visible_cast': cast,
+        'camera_spec': {k: lens[k] for k in ('shot_size', 'focal_length_mm', 'screen_axis') if k in lens},
+        'spatial_constraints': direction['staging']['spatial_constraints'],
+        'props': direction['staging'].get('props', []),
+        'performance': {k: direction['performance'][k] for k in
+                        ('motivation', 'facial_microaction', 'body_microaction', 'ending_pose')},
+        'lighting_and_geometry': {k: direction['art'][k] for k in
+                                 ('lighting_state', 'practical_sources', 'lighting_change_reason',
+                                  'scene_geometry') if k in direction['art']},
+    }
+    return ('\nAuthored visual specification (cast, numeric lens, axis and layout are authoritative; '
+            'do not replace them with conflicting decorative prose. Character IDs refer to these '
+            'descriptions, not proof of supplied reference images): '
+            + json.dumps(contract, ensure_ascii=False, allow_nan=False, sort_keys=True))
+
+
 def compile_package(base, directions, assets=None, asset_root=None):
     errors,warnings=validate(base,directions,assets,asset_root)
     if errors: raise ValueError("cannot compile invalid director plan:\n"+"\n".join(errors))
@@ -315,6 +353,7 @@ def compile_package(base, directions, assets=None, asset_root=None):
                 "Do not render any title, text, numbers, subtitles, logo or watermark in the generated footage. "
                 "Voiceover, sound effects, music and exact charts are handled in post-production."
             )
+            shot_direction += visual_prompt_contract(base, shot, d)
             shared["prompts"]={
                 "wan":(f"Create ONE coherent {shot['duration']:g}s vertical 9:16 visual clip; preserve shot identity and physical realism.\n"+shot_direction+
                        "\nPrefer a vetted reference image for consistent face and wardrobe when available; do not assert nonexistent references were supplied."),

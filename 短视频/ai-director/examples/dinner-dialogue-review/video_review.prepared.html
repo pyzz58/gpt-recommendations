@@ -19,43 +19,50 @@ Camera path: 固定; trigger at 0s, finish 母亲说完保持目光，不抢着�
 Lighting: 固定暖顶灯，无灯态变化. Palette evolution: 暖米色与灰色保持全片一致. Environment: LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。. Texture: 针织衣料、哑光木桌、黑色手机.
 Locked identities/objects: CHAR01; CHAR02; LOC01; PHONE01. Beginning continuity: 母亲看画面右侧，双手在桌下边缘静置. Final state: 母亲说完保持目光，不抢着追问.
 Do not include: 人物不换脸不换座; 手机不复制; 视频画面不生成字幕; 非说话人不得动嘴; 不添加拥抱或夹菜. Do not render any title, text, numbers, subtitles, invented logos in the scene. Provider watermark is controlled by the API setting. Generate the authored dialogue and scene audio below; subtitles and charts remain post-production.
+Authored visual specification (cast, numeric lens, axis and layout are authoritative; do not replace them with conflicting decorative prose. Character IDs refer to these descriptions, not proof of supplied reference images): {&quot;camera_spec&quot;: {&quot;focal_length_mm&quot;: 50, &quot;screen_axis&quot;: &quot;母亲左，女儿右，均在餐桌观众侧&quot;, &quot;shot_size&quot;: &quot;母亲胸上近景&quot;}, &quot;lighting_and_geometry&quot;: {}, &quot;performance&quot;: {&quot;body_microaction&quot;: &quot;身体不前倾施压，保留三秒等待&quot;, &quot;ending_pose&quot;: &quot;母亲说完保持目光，不抢着追问&quot;, &quot;facial_microaction&quot;: &quot;只在正式台词窗口张嘴，不点头数次&quot;, &quot;motivation&quot;: &quot;一句普通问候给女儿回答的余地&quot;}, &quot;props&quot;: [&quot;PHONE01黑色无标识手机，起初屏幕朝上但黑屏，26–30秒右手连续翻面后屏幕朝下，位置仍在女儿右手边。两碗饭与筷子全片留在桌面，不设计夹菜或道具传递。&quot;], &quot;spatial_constraints&quot;: [&quot;LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。&quot;, &quot;两人不换座，除S04外手机不动&quot;], &quot;visible_cast&quot;: [{&quot;description&quot;: &quot;成年女儿小宁，齐肩黑发、灰色针织衫&quot;, &quot;id&quot;: &quot;CHAR01&quot;, &quot;wardrobe&quot;: &quot;灰色针织衫&quot;}, {&quot;description&quot;: &quot;母亲，短发、米色开衫&quot;, &quot;id&quot;: &quot;CHAR02&quot;, &quot;wardrobe&quot;: &quot;米色开衫&quot;}]}
 Do not force multiple cuts into one generation. Preserve observed end frame for continuation planning.
 Exact dialogue contract (local seconds, only the named speaker speaks): {&quot;dialogue&quot;: [{&quot;speaker_id&quot;: &quot;CHAR02&quot;, &quot;from_s&quot;: 1, &quot;to_s&quot;: 5, &quot;text&quot;: &quot;今天，过得怎么样？&quot;, &quot;delivery&quot;: &quot;轻声真实发问；母亲出镜，需要口型&quot;, &quot;kind&quot;: &quot;onscreen_dialogue&quot;}]}
 Do not speak stage directions. Offscreen speakers must not animate a visible listener&#x27;s mouth.
+Native soundtrack design (generate these instructions in this clip, including explicit no-music/no-effect decisions; do not read them aloud): {&quot;ambient&quot;: &quot;全片同一条低电平餐厅底噪，不在切点重启&quot;, &quot;effects&quot;: [], &quot;music&quot;: &quot;none：无配乐&quot;}
 
 {
+  &quot;voiceover&quot;: &quot;&quot;,
+  &quot;voiceover_source&quot;: &quot;base.narration&quot;,
+  &quot;voiceover_note&quot;: &quot;轻声真实发问；母亲出镜，需要口型&quot;,
   &quot;ambience&quot;: &quot;全片同一条低电平餐厅底噪，不在切点重启&quot;,
-  &quot;effects&quot;: [],
   &quot;music&quot;: &quot;none：无配乐&quot;,
+  &quot;effects&quot;: [],
   &quot;overlay_text&quot;: &quot;今天，过得怎么样？&quot;,
   &quot;speech&quot;: {
+    &quot;voiceover&quot;: {
+      &quot;text&quot;: &quot;&quot;,
+      &quot;delivery&quot;: &quot;none，无旁白&quot;,
+      &quot;timing&quot;: &quot;无旁白&quot;,
+      &quot;cues&quot;: []
+    },
     &quot;dialogue&quot;: [
       {
-        &quot;delivery&quot;: &quot;轻声真实发问；母亲出镜，需要口型&quot;,
-        &quot;from_s&quot;: 1,
-        &quot;kind&quot;: &quot;onscreen_dialogue&quot;,
         &quot;speaker_id&quot;: &quot;CHAR02&quot;,
+        &quot;from_s&quot;: 1,
+        &quot;to_s&quot;: 5,
         &quot;text&quot;: &quot;今天，过得怎么样？&quot;,
-        &quot;to_s&quot;: 5
+        &quot;delivery&quot;: &quot;轻声真实发问；母亲出镜，需要口型&quot;,
+        &quot;kind&quot;: &quot;onscreen_dialogue&quot;
       }
     ],
-    &quot;lip_sync_policy&quot;: &quot;轻声真实发问；母亲出镜，需要口型；先录音锁定语速再同步，只让说话人开口，停顿和句尾闭口。&quot;,
     &quot;subtitle_cues&quot;: [
       {
         &quot;from_s&quot;: 1,
-        &quot;text&quot;: &quot;今天，过得怎么样？&quot;,
-        &quot;to_s&quot;: 5
+        &quot;to_s&quot;: 5,
+        &quot;text&quot;: &quot;今天，过得怎么样？&quot;
       }
     ],
     &quot;subtitle_direction&quot;: &quot;逐字对应本镜语音；白字深描边，1080×1920基线y=1580，左右各96px，最多两行；合成后手机预览调整安全区&quot;,
-    &quot;voiceover&quot;: {
-      &quot;cues&quot;: [],
-      &quot;delivery&quot;: &quot;none，无旁白&quot;,
-      &quot;text&quot;: &quot;&quot;,
-      &quot;timing&quot;: &quot;无旁白&quot;
-    }
+    &quot;lip_sync_policy&quot;: &quot;使用本次视频模型生成的原生对白与口型；逐句核对说话人、原文和闭口时段。画外对白不驱动出镜听者口型；不预先录制或重复叠加同一对白。如需后期替换配音或口型，须先明确修订制作方案。&quot;
   },
-  &quot;voiceover&quot;: &quot;&quot;,
-  &quot;voiceover_note&quot;: &quot;轻声真实发问；母亲出镜，需要口型&quot;,
-  &quot;voiceover_source&quot;: &quot;base.narration&quot;
+  &quot;audio_execution&quot;: {
+    &quot;mode&quot;: &quot;native_dialogue&quot;,
+    &quot;dialogue_and_scene_audio_owner&quot;: &quot;video_provider&quot;,
+    &quot;instructions&quot;: &quot;Retain and review the generated soundtrack. Do not add duplicate dialogue, ambience, music or effects; replacements need an explicit revision. Subtitles stay in post-production.&quot;
+  }
 }</pre></details><footer class="muted"><p>只读页面 · 不含密钥或供应商下载链接 · 不执行生成、重试或发布</p></footer></main></html>

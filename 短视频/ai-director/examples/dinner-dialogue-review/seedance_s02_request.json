@@ -9,7 +9,7 @@
     "content": [
       {
         "type": "text",
-        "text": "Single continuous 8s shot, portrait 9:16. One clear evolving visual intention; keep subject and prop continuity stable.\nNarrative task: 母亲看画面右侧，双手在桌下边缘静置；母亲说完保持目光，不抢着追问. Audience feeling: 温和但认真.\nFraming and space: 母亲看画面右侧，双手在桌下边缘静置. Lens feel: 50mm；母亲胸上近景. Blocking: 母亲看画面右侧，双手在桌下边缘静置；母亲说完保持目光，不抢着追问. Gaze direction: 母亲看向右侧女儿，不看镜头.\nWhat actually happens:\n0–1s: Visible 母亲稍抬下巴接住女儿目光; performer 不突然笑开; camera 固定机位; sound 保留连续底噪，无新台词\n1–5s: Visible 母亲轻声问今天过得怎么样; performer 只在正式台词窗口张嘴，不点头数次; camera 固定机位; sound 轻声真实发问；母亲出镜，需要口型\n5–8s: Visible 母亲闭口等待; performer 身体不前倾施压，保留三秒等待; camera 固定机位; sound 保留连续底噪，无新台词\nCamera path: 固定; trigger at 0s, finish 母亲说完保持目光，不抢着追问. Reason for movement: 母亲清楚的嘴部和不逼迫的视线.\nLighting: 固定暖顶灯，无灯态变化. Palette evolution: 暖米色与灰色保持全片一致. Environment: LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。. Texture: 针织衣料、哑光木桌、黑色手机.\nLocked identities/objects: CHAR01; CHAR02; LOC01; PHONE01. Beginning continuity: 母亲看画面右侧，双手在桌下边缘静置. Final state: 母亲说完保持目光，不抢着追问.\nDo not include: 人物不换脸不换座; 手机不复制; 视频画面不生成字幕; 非说话人不得动嘴; 不添加拥抱或夹菜. Do not render any title, text, numbers, subtitles, invented logos in the scene. Provider watermark is controlled by the API setting. Generate the authored dialogue and scene audio below; subtitles and charts remain post-production.\nDo not force multiple cuts into one generation. Preserve observed end frame for continuation planning.\nExact dialogue contract (local seconds, only the named speaker speaks): {\"dialogue\": [{\"speaker_id\": \"CHAR02\", \"from_s\": 1, \"to_s\": 5, \"text\": \"今天，过得怎么样？\", \"delivery\": \"轻声真实发问；母亲出镜，需要口型\", \"kind\": \"onscreen_dialogue\"}]}\nDo not speak stage directions. Offscreen speakers must not animate a visible listener's mouth."
+        "text": "Single continuous 8s shot, portrait 9:16. One clear evolving visual intention; keep subject and prop continuity stable.\nNarrative task: 母亲看画面右侧，双手在桌下边缘静置；母亲说完保持目光，不抢着追问. Audience feeling: 温和但认真.\nFraming and space: 母亲看画面右侧，双手在桌下边缘静置. Lens feel: 50mm；母亲胸上近景. Blocking: 母亲看画面右侧，双手在桌下边缘静置；母亲说完保持目光，不抢着追问. Gaze direction: 母亲看向右侧女儿，不看镜头.\nWhat actually happens:\n0–1s: Visible 母亲稍抬下巴接住女儿目光; performer 不突然笑开; camera 固定机位; sound 保留连续底噪，无新台词\n1–5s: Visible 母亲轻声问今天过得怎么样; performer 只在正式台词窗口张嘴，不点头数次; camera 固定机位; sound 轻声真实发问；母亲出镜，需要口型\n5–8s: Visible 母亲闭口等待; performer 身体不前倾施压，保留三秒等待; camera 固定机位; sound 保留连续底噪，无新台词\nCamera path: 固定; trigger at 0s, finish 母亲说完保持目光，不抢着追问. Reason for movement: 母亲清楚的嘴部和不逼迫的视线.\nLighting: 固定暖顶灯，无灯态变化. Palette evolution: 暖米色与灰色保持全片一致. Environment: LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。. Texture: 针织衣料、哑光木桌、黑色手机.\nLocked identities/objects: CHAR01; CHAR02; LOC01; PHONE01. Beginning continuity: 母亲看画面右侧，双手在桌下边缘静置. Final state: 母亲说完保持目光，不抢着追问.\nDo not include: 人物不换脸不换座; 手机不复制; 视频画面不生成字幕; 非说话人不得动嘴; 不添加拥抱或夹菜. Do not render any title, text, numbers, subtitles, invented logos in the scene. Provider watermark is controlled by the API setting. Generate the authored dialogue and scene audio below; subtitles and charts remain post-production.\nAuthored visual specification (cast, numeric lens, axis and layout are authoritative; do not replace them with conflicting decorative prose. Character IDs refer to these descriptions, not proof of supplied reference images): {\"camera_spec\": {\"focal_length_mm\": 50, \"screen_axis\": \"母亲左，女儿右，均在餐桌观众侧\", \"shot_size\": \"母亲胸上近景\"}, \"lighting_and_geometry\": {}, \"performance\": {\"body_microaction\": \"身体不前倾施压，保留三秒等待\", \"ending_pose\": \"母亲说完保持目光，不抢着追问\", \"facial_microaction\": \"只在正式台词窗口张嘴，不点头数次\", \"motivation\": \"一句普通问候给女儿回答的余地\"}, \"props\": [\"PHONE01黑色无标识手机，起初屏幕朝上但黑屏，26–30秒右手连续翻面后屏幕朝下，位置仍在女儿右手边。两碗饭与筷子全片留在桌面，不设计夹菜或道具传递。\"], \"spatial_constraints\": [\"LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。\", \"两人不换座，除S04外手机不动\"], \"visible_cast\": [{\"description\": \"成年女儿小宁，齐肩黑发、灰色针织衫\", \"id\": \"CHAR01\", \"wardrobe\": \"灰色针织衫\"}, {\"description\": \"母亲，短发、米色开衫\", \"id\": \"CHAR02\", \"wardrobe\": \"米色开衫\"}]}\nDo not force multiple cuts into one generation. Preserve observed end frame for continuation planning.\nExact dialogue contract (local seconds, only the named speaker speaks): {\"dialogue\": [{\"speaker_id\": \"CHAR02\", \"from_s\": 1, \"to_s\": 5, \"text\": \"今天，过得怎么样？\", \"delivery\": \"轻声真实发问；母亲出镜，需要口型\", \"kind\": \"onscreen_dialogue\"}]}\nDo not speak stage directions. Offscreen speakers must not animate a visible listener's mouth.\nNative soundtrack design (generate these instructions in this clip, including explicit no-music/no-effect decisions; do not read them aloud): {\"ambient\": \"全片同一条低电平餐厅底噪，不在切点重启\", \"effects\": [], \"music\": \"none：无配乐\"}"
       }
     ],
     "ratio": "9:16",
@@ -52,7 +52,12 @@
         }
       ],
       "subtitle_direction": "逐字对应本镜语音；白字深描边，1080×1920基线y=1580，左右各96px，最多两行；合成后手机预览调整安全区",
-      "lip_sync_policy": "轻声真实发问；母亲出镜，需要口型；先录音锁定语速再同步，只让说话人开口，停顿和句尾闭口。"
+      "lip_sync_policy": "使用本次视频模型生成的原生对白与口型；逐句核对说话人、原文和闭口时段。画外对白不驱动出镜听者口型；不预先录制或重复叠加同一对白。如需后期替换配音或口型，须先明确修订制作方案。"
+    },
+    "audio_execution": {
+      "mode": "native_dialogue",
+      "dialogue_and_scene_audio_owner": "video_provider",
+      "instructions": "Retain and review the generated soundtrack. Do not add duplicate dialogue, ambience, music or effects; replacements need an explicit revision. Subtitles stay in post-production."
     }
   },
   "scope": "reference_free_technical_probe",
@@ -63,5 +68,5 @@
   ],
   "human_approved": false,
   "media_generated": false,
-  "request_digest": "913103568af6dd8b823757c1e3f0c71c60f0298a5dcacf2d86b45bd2a581fef4"
+  "request_digest": "016a66181f8af8f66ceed57643579b337646b7817f56d5f2d2fde31d709d0c23"
 }

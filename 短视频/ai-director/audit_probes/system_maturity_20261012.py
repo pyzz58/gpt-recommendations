@@ -32,6 +32,7 @@ def observe():
     camera = deepcopy(direction)
     camera["shots"][1]["camera"]["screen_axis"] = "AUDIT_AXIS_SENTINEL"
     camera["shots"][1]["camera"]["focal_length_mm"] = 85
+    camera["shots"][1]["camera"]["lens_feel"] = "85mm，胸上近景"
     camera["shots"][1]["staging"]["spatial_constraints"] = ["AUDIT_SPATIAL_SENTINEL"]
     camera["shots"][1]["art"]["scene_geometry"] = {
         "anchor_positions": {"door": "AUDIT_DOOR_SENTINEL", "table": "AUDIT_TABLE_SENTINEL"},
@@ -71,8 +72,9 @@ def observe():
             response["content"]["video_url"] = "https://synthetic.tos-cn-beijing.volces.com/new"
             request.return_value = response
             flow.query_job(root, api_key="SYNTHETIC-NOT-A-KEY")
+            selected = api._saved_result(root, original, api._read(root / 'receipt.json'))
             result["AUD-032_updated_success_url_discarded"] = (
-                api._read(root / "result.json")["content"]["video_url"]
+                selected["content"]["video_url"]
                 != response["content"]["video_url"])
             result["mock_POST_count"] = sum(c.args[1] == "POST" for c in request.call_args_list)
             result["mock_GET_count"] = sum(c.args[1] == "GET" for c in request.call_args_list)
@@ -81,3 +83,4 @@ def observe():
 
 if __name__ == "__main__":
     print(json.dumps(observe(), ensure_ascii=False, indent=2))
+

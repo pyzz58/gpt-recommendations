@@ -193,4 +193,26 @@ class VideoWorkflowTests(unittest.TestCase):
         self.assertEqual(result, 2)
         self.assertNotIn('PRIVATE-', err.getvalue())
 
+    def test_refresh_after_review_preserves_selected_media_and_review(self):
+        state = self.saved(); flow.record_review(self.root, self.record(state))
+        before = {name:(self.root/name).read_bytes() for name in ('video.mp4', 'media.json', 'review.json')}
+        self.network.return_value['content']['video_url'] = 'https://synthetic.tos-cn-beijing.volces.com/new-url'
+        refreshed = flow.query_job(self.root, api_key='synthetic-key')
+        self.assertEqual(refreshed['state'], 'retain_candidate')
+        self.assertEqual(refreshed['media_sha256'], state['media_sha256'])
+        for name, raw in before.items(): self.assertEqual((self.root/name).read_bytes(), raw)
+        with self.assertRaisesRegex(api.SeedanceError, 'DOWNLOAD_NOT_READY'): flow.download_job(self.root)
+
+    def test_result_revision_gap_is_not_silently_ignored(self):
+        self.saved()
+        self.network.return_value['content']['video_url'] = 'https://synthetic.tos-cn-beijing.volces.com/new-url'
+        flow.query_job(self.root, api_key='synthetic-key')
+        (self.root/'result-000001.json').rename(self.root/'result-000002.json')
+        with self.assertRaisesRegex(api.SeedanceError, 'RESULT_REVISION_GAP'): flow.inspect_job(self.root)
+
+    def test_orphan_result_revision_is_not_prepared(self):
+        api._atomic_create(self.root/'result-000001.json', {})
+        with self.assertRaisesRegex(api.SeedanceError, 'ORPHANED_MEDIA_RECORD'):
+            flow.inspect_job(self.root)
+
 if __name__ == '__main__': unittest.main()

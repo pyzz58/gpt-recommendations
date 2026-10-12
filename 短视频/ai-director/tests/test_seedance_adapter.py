@@ -207,4 +207,113 @@ class SeedanceAdapterTests(unittest.TestCase):
         self.assertEqual(conn.request.call_count, 1)
         conn.close.assert_called_once()
 
+    def test_cast_changes_reach_wire_without_private_reference_metadata(self):
+        baseline = self.prepare()
+        self.base['characters'][1]['description'] = '母亲短卷发'
+        self.base['characters'][1]['wardrobe'] = '深绿色开衫'
+        self.base['characters'][1]['identity_anchor'] = 'PRIVATE_REFERENCE_PATH_DO_NOT_SEND'
+        changed = self.prepare()
+        prompt = changed['body']['content'][0]['text']
+        self.assertNotEqual(baseline['body'], changed['body'])
+        self.assertIn('母亲短卷发', prompt)
+        self.assertIn('深绿色开衫', prompt)
+        self.assertNotIn('PRIVATE_REFERENCE_PATH_DO_NOT_SEND', prompt)
+        self.network.assert_not_called()
+
+    def test_each_structured_camera_and_layout_field_reaches_wire(self):
+        baseline = self.prepare()['body']
+        original = deepcopy(self.direction)
+        changes = [('camera', 'screen_axis', 'AUDIT_AXIS'),
+                   ('staging', 'spatial_constraints', ['AUDIT_SPATIAL']),
+                   ('art', 'scene_geometry', {'anchor_positions': {'door': 'AUDIT_DOOR'}}),
+                   ('art', 'practical_sources', ['AUDIT_LAMP'])]
+        for group, key, value in changes:
+            with self.subTest(field=key):
+                self.direction = deepcopy(original)
+                self.direction['shots'][1][group][key] = value
+                body = self.prepare()['body']
+                self.assertNotEqual(baseline, body)
+                self.assertIn(json.dumps(value, ensure_ascii=False, sort_keys=True), body['content'][0]['text'])
+        self.direction = deepcopy(original)
+        self.direction['shots'][1]['camera'].update(focal_length_mm=85, lens_feel='85mm，胸上近景')
+        self.assertIn('"focal_length_mm": 85', self.prepare()['body']['content'][0]['text'])
+
+    def test_conflicting_numeric_lens_is_rejected_before_network(self):
+        self.direction['shots'][1]['camera']['focal_length_mm'] = 85
+        with self.assertRaisesRegex(ValueError, 'DIRECTOR_FOCAL_LENGTH_CONFLICT'):
+            self.prepare()
+        self.network.assert_not_called()
+
+    def test_native_sound_design_and_effects_reach_wire(self):
+        original = deepcopy(self.direction)
+        baseline = self.prepare(audio_mode='native_dialogue')
+        self.assertIn('none：无配乐', baseline['body']['content'][0]['text'])
+        for key, value in [('ambient', 'AUDIT_ROOM_TONE'), ('music', 'AUDIT_NO_MUSIC'),
+                           ('effects', [{'time_s': 6, 'cue': 'AUDIT_CHAIR_SOUND'}])]:
+            with self.subTest(field=key):
+                self.direction = deepcopy(original)
+                self.direction['shots'][1]['sound'][key] = value
+                changed = self.prepare(audio_mode='native_dialogue')
+                self.assertNotEqual(baseline['body'], changed['body'])
+                self.assertIn('AUDIT_', changed['body']['content'][0]['text'])
+
+    def test_audio_execution_policy_is_mode_specific_and_does_not_mutate_source(self):
+        original = deepcopy(self.direction)
+        native = self.prepare(audio_mode='native_dialogue')
+        silent = self.prepare(audio_mode='silent_post')
+        self.assertEqual(native['postproduction']['audio_execution']['dialogue_and_scene_audio_owner'], 'video_provider')
+        self.assertEqual(silent['postproduction']['audio_execution']['dialogue_and_scene_audio_owner'], 'postproduction')
+        self.assertNotIn('先录音锁定语速再同步', native['postproduction']['speech']['lip_sync_policy'])
+        self.assertEqual(silent['postproduction']['speech'], original['shots'][1]['speech'])
+        self.assertNotIn('Native soundtrack design', silent['body']['content'][0]['text'])
+        self.assertEqual(self.direction, original)
+
+    def test_updated_result_is_appended_and_download_uses_latest_url(self):
+        self.finish()
+        first = (self.root/'result.json').read_bytes()
+        self.network.return_value['content']['video_url'] = 'https://synthetic.tos-cn-beijing.volces.com/new.mp4?version=2'
+        api.query_once(private_dir=self.root, api_key='synthetic-key')
+        api.query_once(private_dir=self.root, api_key='synthetic-key')
+        self.assertEqual(len(list(self.root.glob('result-*.json'))), 1)
+        self.assertEqual((self.root/'result.json').read_bytes(), first)
+        conn = self.connection()
+        info = api.download_result(private_dir=self.root)
+        self.assertEqual(conn.request.call_args.args, ('GET', '/new.mp4?version=2'))
+        self.assertEqual(info['result_digest'], api.digest(self.network.return_value))
+        self.assertEqual(sum(c.args[1] == 'POST' for c in self.network.call_args_list), 1)
+
+    def test_result_append_failure_preserves_previous_success_without_post_retry(self):
+        self.finish()
+        first = (self.root/'result.json').read_bytes()
+        self.network.return_value['content']['video_url'] = 'https://synthetic.tos-cn-beijing.volces.com/new.mp4'
+        with patch.object(api, '_atomic_create', side_effect=OSError('synthetic disk full')):
+            with self.assertRaises(OSError): api.query_once(private_dir=self.root, api_key='synthetic-key')
+        self.assertEqual((self.root/'result.json').read_bytes(), first)
+        self.assertEqual(list(self.root.glob('result-*.json')), [])
+        api.query_once(private_dir=self.root, api_key='synthetic-key')
+        self.assertTrue((self.root/'result-000001.json').exists())
+        self.assertEqual(sum(c.args[1] == 'POST' for c in self.network.call_args_list), 1)
+
+    def test_corrupt_or_unlinked_result_revision_blocks_download(self):
+        self.finish()
+        self.network.return_value['content']['video_url'] = 'https://synthetic.tos-cn-beijing.volces.com/new.mp4'
+        api.query_once(private_dir=self.root, api_key='synthetic-key')
+        path = self.root/'result-000001.json'
+        record = api._read(path); record['previous_digest'] = 'wrong'
+        path.write_text(json.dumps(record))
+        with patch.object(api.http.client, 'HTTPSConnection') as conn:
+            with self.assertRaisesRegex(api.SeedanceError, 'RESULT_REVISION_MISMATCH'):
+                api.download_result(private_dir=self.root)
+            conn.assert_not_called()
+
+    def test_revision_from_different_task_is_rejected(self):
+        self.finish()
+        before = api._read(self.root/'result.json')
+        wrong = deepcopy(before); wrong['id'] = 'other_task'
+        api._atomic_create(self.root/'result-000001.json', dict(
+            sequence=1, request_digest=self.packet['request_digest'],
+            previous_digest=api.digest(before), result=wrong))
+        with self.assertRaisesRegex(api.SeedanceError, 'RESULT_MISMATCH'):
+            api.download_result(private_dir=self.root)
+
 if __name__ == '__main__': unittest.main()

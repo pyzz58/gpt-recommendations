@@ -82,7 +82,8 @@ def inspect_job(private_dir):
                 human_review_recorded=False, production_approved=False, final_film_completed=False)
     if (root / 'intent.json').exists(): view['state'] = 'submission_unknown'
     if not (root / 'receipt.json').exists():
-        _need(not any((root / f).exists() for f in ('result.json', 'video.mp4', 'media.json', 'review.json')),
+        _need(not list(root.glob('result-*.json')) and
+              not any((root / f).exists() for f in ('result.json', 'video.mp4', 'media.json', 'review.json')),
               'ORPHANED_MEDIA_RECORD')
         return view
     receipt = api._read(root / 'receipt.json')
@@ -101,10 +102,10 @@ def inspect_job(private_dir):
               'OBSERVATION_MISMATCH')
         view.update(state=last['status'] if last['status'] != 'succeeded' else 'download_ready',
                     last_query_unix_ns=last['queried_unix_ns'])
+    if list(root.glob('result-*.json')):
+        _need((root / 'result.json').exists(), 'RESULT_MISSING')
     if (root / 'result.json').exists():
-        result = api._read(root / 'result.json')
-        _need(result.get('id') == receipt['task_id'] and result.get('status') == 'succeeded'
-              and result.get('model') == packet['body']['model'], 'RESULT_MISMATCH')
+        api._saved_result(root, packet, receipt)
         view['state'] = 'download_ready'
     if (root / 'video.mp4').exists() or (root / 'media.json').exists():
         _need((root / 'result.json').exists(), 'RESULT_MISSING')

@@ -84,6 +84,26 @@ Absent references produce a technical probe, not identity-consistent footage.
                                 "Generate the authored dialogue and scene audio below; subtitles and charts remain post-production.")
         prompt += "\nExact dialogue contract (local seconds, only the named speaker speaks): " + json.dumps({"dialogue": speech["dialogue"]}, ensure_ascii=False)
         prompt += "\nDo not speak stage directions. Offscreen speakers must not animate a visible listener's mouth."
+        prompt += "\nNative soundtrack design (generate these instructions in this clip, including explicit no-music/no-effect decisions; do not read them aloud): " + json.dumps(
+            {k: d['sound'][k] for k in ('ambient', 'music', 'effects')},
+            ensure_ascii=False, allow_nan=False, sort_keys=True)
+    post = deepcopy(job['postproduction_job'])
+    post['audio_execution'] = {
+        'mode': audio_mode,
+        'dialogue_and_scene_audio_owner': 'video_provider' if audio_mode == 'native_dialogue' else 'postproduction',
+        'instructions': ('Retain and review the generated soundtrack. Do not add duplicate dialogue, '
+                         'ambience, music or effects; replacements need an explicit revision. '
+                         'Subtitles stay in post-production.' if audio_mode == 'native_dialogue' else
+                         'The generated clip is silent. Record/create, sync and mix the authored '
+                         'speech, ambience, music and effects in post-production.'),
+    }
+    if audio_mode == 'native_dialogue':
+        # The original direction remains unchanged and source-digest-bound.
+        # This is the effective execution policy for this particular request.
+        post['speech']['lip_sync_policy'] = (
+            '使用本次视频模型生成的原生对白与口型；逐句核对说话人、原文和闭口时段。'
+            '画外对白不驱动出镜听者口型；不预先录制或重复叠加同一对白。'
+            '如需后期替换配音或口型，须先明确修订制作方案。')
     content = [{"type": "text", "text": prompt}]
     _require(type(reference_images) in (list, tuple) and len(reference_images) <= 3,
              "REFERENCE_COUNT_OUTSIDE_REVIEWED_SUBSET")
@@ -100,7 +120,7 @@ Absent references produce a technical probe, not identity-consistent footage.
                  "ratio": base["aspect_ratio"], "duration": int(duration),
                  "resolution": "720p", "generate_audio": audio_mode == "native_dialogue",
                  "watermark": True},
-        "audio_mode": audio_mode, "postproduction": deepcopy(job["postproduction_job"]),
+        "audio_mode": audio_mode, "postproduction": post,
         "scope": "reference_guided_candidate" if reference_images else "reference_free_technical_probe",
         "warnings": ["No real media test or human approval", "Quoted cost is not a provider spending guarantee",
                      "Native audio must be checked against postproduction speech; do not duplicate voices"],
@@ -225,12 +245,57 @@ def query_once(*, private_dir, api_key):
         _require(result.get("model") == packet["body"]["model"], "RESULT_MODEL_MISMATCH")
         _require(isinstance(result.get("content"), dict) and
                  isinstance(result["content"].get("video_url"), str), "RESULT_URL_MISSING")
-        if not (root / "result.json").exists():
-            _atomic_create(root / "result.json", result)
+        _save_success_result(root, packet, receipt, result)
     # Caller may read signed URL from private storage, never print it in public logs.
     return {"task_id": task_id, "status": result["status"],
             "provider_generation_succeeded": result["status"] == "succeeded",
             "locally_saved": (root / "video.mp4").is_file(), "human_approved": False}
+
+
+def _validate_success(result, packet, receipt):
+    _require(isinstance(result, dict) and result.get('id') == receipt['task_id'] and result.get('status') == 'succeeded'
+             and result.get('model') == packet['body']['model'], 'RESULT_MISMATCH')
+    _require(isinstance(result.get('content'), dict)
+             and isinstance(result['content'].get('video_url'), str), 'RESULT_URL_MISSING')
+
+
+def _saved_result(root, packet, receipt):
+    """Read latest append-only success, including older result.json-only jobs.
+
+    Query revisions never change a downloaded/reviewed media file. The first
+    result remains immutable. A corrupt or missing revision cannot silently
+    fall back to a stale URL. Concurrent append collisions fail safely; callers
+    may explicitly query again (GET), never repeat the paid POST.
+    """
+    result = _read(root / 'result.json')
+    _validate_success(result, packet, receipt)
+    versions = sorted(root.glob('result-*.json'))
+    for index, path in enumerate(versions, 1):
+        _require(path.name == 'result-%06d.json' % index, 'RESULT_REVISION_GAP')
+        record = _read(path)
+        _require(record.get('sequence') == index
+                 and record.get('request_digest') == packet['request_digest']
+                 and record.get('previous_digest') == digest(result)
+                 and isinstance(record.get('result'), dict), 'RESULT_REVISION_MISMATCH')
+        result = record['result']
+        _validate_success(result, packet, receipt)
+    return result
+
+
+def _save_success_result(root, packet, receipt, result):
+    _validate_success(result, packet, receipt)
+    if not (root / 'result.json').exists():
+        _require(not list(root.glob('result-*.json')), 'RESULT_REVISION_GAP')
+        _atomic_create(root / 'result.json', result)
+        return
+    current = _saved_result(root, packet, receipt)
+    if result == current:
+        return
+    sequence = len(list(root.glob('result-*.json'))) + 1
+    _require(sequence <= 999999, 'RESULT_REVISION_LIMIT')
+    _atomic_create(root / ('result-%06d.json' % sequence), {
+        'sequence': sequence, 'request_digest': packet['request_digest'],
+        'previous_digest': digest(current), 'result': result})
 
 
 def download_result(*, private_dir):
@@ -243,7 +308,7 @@ and artistic review are separate and remain unverified.
     intent = _read(root / "intent.json"); packet = intent["packet"]
     _require(receipt.get("request_digest") == _packet(packet)
              and receipt.get("provider") == packet["provider"], "RECEIPT_MISMATCH")
-    result = _read(root / "result.json")
+    result = _saved_result(root, packet, receipt)
     _require(result.get("status") == "succeeded" and result.get("id") == receipt["task_id"],
              "RESULT_NOT_SUCCEEDED")
     _require(result.get("model") == packet["body"]["model"], "RESULT_MODEL_MISMATCH")
@@ -276,6 +341,7 @@ and artistic review are separate and remain unverified.
             f.flush(); os.fsync(f.fileno())
         os.link(temp, root / "video.mp4"); _fsync_folder(root)
         info = {"task_id": receipt["task_id"], "request_digest": receipt["request_digest"],
+                "result_digest": digest(result),
                 "sha256": sha.hexdigest(), "bytes": total, "container_signature_checked": True,
                 "fully_decoded": False, "human_approved": False, "final_film_completed": False}
         _atomic_create(root / "media.json", info)

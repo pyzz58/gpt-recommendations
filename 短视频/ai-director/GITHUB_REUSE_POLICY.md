@@ -225,3 +225,12 @@
 | [libvips/pyvips](https://github.com/libvips/pyvips) | 依赖原生 libvips 或平台预构建 binary | 对大量媒体的高性能流水线有价值；目前为了最小依赖和可维护性不集成，也不安装本地库 |
 
 仅接受可信私人内存中的图片字节，不允许用户私人图片进入公开 GitHub 仓库/CI。**安全边界**：解析成功≠确认权属/肖像同意≠确认人物相貌一致≠视频模型已经接收或生成。Pillow 作为本地 C 解码器仍存在潜在安全更新与恶意媒体资源攻击风险；投入私人生产前重新评估版本/安全公告与操作系统沙箱。具体说明见 [REFERENCE_ASSET_VERSIONING_AUDIT.md](REFERENCE_ASSET_VERSIONING_AUDIT.md)。
+
+
+## 2026-10-12 AUD-030/031/032：导演信息编译与成功结果更新
+
+- 本轮通过 GitHub 读取官方 [volcengine-python-sdk tasks.py](https://github.com/volcengine/volcengine-python-sdk/blob/master/volcenginesdkarkruntime/resources/content_generation/tasks.py)：Apache-2.0；仓库未归档，2026-10-09 有推送。核对 create/get 的独立任务接口，不需要为 GET 更新结果重发 POST。SDK 不负责本项目人物/摄影/声音合同的编译，也不负责私人结果版本；继续沿用已实现的薄适配，不新增 httpx/SDK 依赖、不复制上游代码。
+- 读取 [CPython 3.12 pathlib.py](https://github.com/python/cpython/blob/3.12/Lib/pathlib.py)，确认 rename/replace 是替换式文件操作，不能直接作为保留历史的策略。沿用本仓库已验证的 _atomic_create（标准库 os.link、fsync、0600）追加成功结果修订，并校验前序摘要；不覆盖最初 result.json 或已保存媒体。CPython 仓库未归档，2026-10-12 有推送；GitHub license 元数据为 NOASSERTION，不据此新增许可判断或复制实现。
+- 导演字段映射属于本项目合同，直接补现有 director_v2 编译器，不引入 Agent/视频框架。只选择人物 id/description/wardrobe、机位与场景、表演约束等制作字段，不发送参考文件私有路径/授权元数据；声音原生/后期职责明确分离。
+- 兼容：标准库+现有依赖，Linux/Python 3.12 离线回归；用户 Mac 未部署，未宣称 Mac 实测。旧 result.json-only 任务可继续读取；新查询形成不可覆盖修订。代码回退不应删除新格式结果或付费媒体，回退前保留目录并在支持修订的版本下处理。
+- 12 项新增回归（全量 621 项）覆盖实际请求差异、焦段冲突、声音职责、URL更新、写盘失败、修订损坏及已审片媒体不被替换；全部供应商 I/O 为 mock，没有新增费用。

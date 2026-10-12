@@ -26,7 +26,7 @@ jobs:
       - name: Run AI Director unit tests with branch coverage
         working-directory: "短视频/ai-director"
         run: |
-          python -m coverage run --branch --source=article_intake,editorial_storyboard,editorial_review_lock,creative_production_handoff,film_continuity,asset_reference_manifest,agent_team,agent_role_contracts,role_schema_guard,agent_live_pilot,agent_live_crew,private_result_checkpoint,agent_provider_wire,agent_handoff_audit,agent_creative_review,production_delivery,director_v2,director_workbook,one_time_deepseek_cloud_trial,agent_executor,local_director,llm_budget,director_timeline,director_shootability,director_narrative_bridges -m unittest discover -s tests -v
+          python -m coverage run --branch --source=seedance_adapter,video_workflow,article_intake,editorial_storyboard,editorial_review_lock,creative_production_handoff,film_continuity,asset_reference_manifest,agent_team,agent_role_contracts,role_schema_guard,agent_live_pilot,agent_live_crew,private_result_checkpoint,agent_provider_wire,agent_handoff_audit,agent_creative_review,production_delivery,director_v2,director_workbook,one_time_deepseek_cloud_trial,agent_executor,local_director,llm_budget,director_timeline,director_shootability,director_narrative_bridges -m unittest discover -s tests -v
           python -m coverage json -o /tmp/ai-director-branch-coverage.json
           python -m coverage report -m
           python audit_registry.py --summary-out /tmp/ai-director-audit-registry-summary.json

@@ -51,3 +51,8 @@ observed_duration_s 为人工填写，不是 ffprobe 实测；reviewer 是操作
 核对 CPython 3.12 getpass.py 的无法禁用回显时退化行为，选择将 GetPassWarning 作为错误拒绝；沿用已有 argparse，不增加 Click 依赖，详见 [复用决策](GITHUB_REUSE_POLICY.md)。未复制上游实现、未新增运行依赖。
 
 接下来落实账号区域、可用模型、这一镜的报价/预算和可信私人运行环境，执行一次 S02 实测。随后接人物/场景参考和 S03，最后补齐镜头版本、真实解码与时长回写、配音字幕及合成。未经这些实际结果，不宣称整套系统已完成。
+
+
+## 2026-10-12 成功结果更新
+
+查询成功后的新响应按顺序追加保存，result.json保留首次成功结果；result-000001.json起记录变更。status/download选择最新且摘要链有效的响应，损坏/缺号则阻断，不回退旧地址。已有视频和审片记录不随查询自动替换。下载media.json另记录采用的result_digest。旧result.json-only任务继续兼容。原生声音模式明确由视频模型负责对白与声景，后期不重复配音；静音模式维持原有后期声音安排。
