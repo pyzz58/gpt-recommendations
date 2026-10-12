@@ -143,6 +143,12 @@ def validate(data):
     require(BASELINE_IDS <= ids, "QUALITY_EXISTING_ID_REMOVED")
     for item in items:
         require(set(item["depends_on"]) <= ids, "QUALITY_UNKNOWN_DEPENDENCY")
+    by_id = {item["id"]: item for item in items}
+    for item in items:
+        if item["status"] == "complete":
+            require(all(by_id[parent]["status"] == "complete"
+                        for parent in item["depends_on"]),
+                    "QUALITY_DEPENDENCY_NOT_CLOSED")
     graph = {item["id"]: item["depends_on"] for item in items}
     visiting, visited = set(), set()
 
