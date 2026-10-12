@@ -1,7 +1,7 @@
 {
   "timezone": "Asia/Shanghai",
   "max_per_category": {
-    "全球新闻": 3,
+    "全球新闻": 4,
     "美股与投资": 3,
     "美联储与宏观": 1,
     "创业与商业模式": 2,
@@ -41,6 +41,18 @@
       {
         "name": "BBC Asia",
         "url": "https://feeds.bbci.co.uk/news/world/asia/rss.xml"
+      },
+      {
+        "name": "BBC China",
+        "url": "https://feeds.bbci.co.uk/news/world/asia/china/rss.xml"
+      },
+      {
+        "name": "BBC US Canada",
+        "url": "https://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml"
+      },
+      {
+        "name": "Guardian China",
+        "url": "https://www.theguardian.com/world/china/rss"
       }
     ],
     "美股与投资": [
@@ -145,6 +157,22 @@
       {
         "name": "Hacker News",
         "url": "https://news.ycombinator.com/rss"
+      },
+      {
+        "name": "MIT Physics",
+        "url": "https://news.mit.edu/rss/topic/physics"
+      },
+      {
+        "name": "MIT Fusion",
+        "url": "https://news.mit.edu/rss/topic/fusion"
+      },
+      {
+        "name": "MIT Nuclear Engineering",
+        "url": "https://news.mit.edu/rss/topic/nuclear-engineering"
+      },
+      {
+        "name": "MIT Materials Science",
+        "url": "https://news.mit.edu/rss/topic/materials-science"
       }
     ],
     "医疗与科学": [
@@ -216,5 +244,29 @@
     ],
     "research_engine": "deterministic_evidence_bounded_v1",
     "note": "Framework and watchlist are rule-based, not fully sourced autonomous expert synthesis. Future optional LLM research adapters require suitable inference compute or provider."
+  },
+  "political_major_event_extra": 2,
+  "editorial_policy": {
+    "political_minimum": 3,
+    "political_regions_required": [
+      "中国",
+      "美国"
+    ],
+    "political_extra_if_material": 2,
+    "political_shortfall_behavior": "log truthful shortfall, do not invent or replace with unrelated news",
+    "frontier_technology_only": true,
+    "avoid_entertainment_trailers": true,
+    "examples_wanted": [
+      "AI research breakthrough",
+      "nuclear fusion",
+      "superconductivity",
+      "quantum computing",
+      "physics",
+      "semiconductor",
+      "robotics"
+    ],
+    "article_editing": "unaltered journalist sentences; optional extractive edit keeps >=2/3 captured source words; do not rewrite quotes",
+    "translation": "offline with cautious terminology and alignment checks",
+    "commentary_skill": "GLOBAL_STRATEGY_EDITOR.skill.md"
   }
 }
