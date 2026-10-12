@@ -33,18 +33,20 @@ class TestGlobalAdviser(unittest.TestCase):
             "importance_score": 72, "related_sources": ["Central bank"],
         }
 
-    def test_bilingual_sentences_alternate_strictly(self):
+    def test_short_sentence_groups_are_followed_by_matching_chinese(self):
         report = digest.bilingualize({"美联储与宏观": [self.article]}, FakeTranslation())
         a = report["美联储与宏观"][0]
         pairs = a["bilingual_pairs"]
-        self.assertGreaterEqual(len(pairs), 3)
+        self.assertEqual(len(pairs), 2)
+        self.assertIn('A new report was published', pairs[0]['en'])
+        self.assertIn('The central bank has maintained', pairs[0]['en'])
         self.assertTrue(all(p["zh"] == "中文译文：" + p["en"] for p in pairs))
         self.assertEqual(pairs[0]["paragraph_id"], 0)
         self.assertEqual(pairs[-1]["paragraph_id"], 1)
         html, txt = digest.render(report, self.date, self.date.date(), {})
         # Every English line is directly followed by Chinese, including in TXT.
         for pair in pairs:
-            self.assertIn(pair["en"] + "\n\n" + pair["zh"], txt)
+            self.assertIn(pair["en"] + "\n" + pair["zh"], txt)
             self.assertLess(html.index(pair["en"]), html.index("中文译文：" + pair["en"]))
         self.assertNotIn("今日重点", html)
         self.assertNotIn("今日新闻速览", html)
@@ -79,7 +81,7 @@ class TestGlobalAdviser(unittest.TestCase):
         self.assertTrue(all(x["sentence_en"] in self.article["reading_en"]
                             for x in a["grammar_lessons"]))
 
-    def test_one_sentence_quote_is_never_split_into_unrelated_translation(self):
+    def test_two_short_sentences_form_one_translation_unit(self):
         source = dict(self.article)
         source["reading_en"] = (
             "The company announced plans to expand. "
@@ -87,11 +89,10 @@ class TestGlobalAdviser(unittest.TestCase):
         )
         res = digest.bilingualize({"美股与投资": [source]}, FakeTranslation())
         pairs = res["美股与投资"][0]["bilingual_pairs"]
-        self.assertEqual(len(pairs), 2)
+        self.assertEqual(len(pairs), 1)
         self.assertEqual(
-            [x["en"] for x in pairs],
-            ["The company announced plans to expand.",
-             "It said the policy could affect the market."],
+            pairs[0]["en"],
+            "The company announced plans to expand. It said the policy could affect the market.",
         )
 
 
