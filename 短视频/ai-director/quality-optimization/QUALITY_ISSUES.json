@@ -1050,9 +1050,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/29",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "tests/test_director_creative_cut.py — 600s original director cut to 3x≤90s and 10x60; complete editorial audit with omit/condense, fake approvals rejected, sources-page absent, multi-cut comparison, writer revision request",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1064,6 +1064,12 @@
           "status": "in_progress",
           "note": "用户要求导演能够拒绝平庸冗长剧本、主动建议剧本十分钟压缩为例如三集；已读DGA/ScreenSkills和多篇名导完整访谈，开始解决全保留门禁缺陷",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "已按DGA、ScreenSkills和多篇完整导演访谈完成岗位质量审计，开发具体导演cut多版本选择、逐beat删减、退编剧返修与90秒门槛；真实专业审片和媒体效果仍未完成",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/29"
         }
       ]
     },
