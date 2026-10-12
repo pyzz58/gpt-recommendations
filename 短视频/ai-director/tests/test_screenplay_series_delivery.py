@@ -263,7 +263,8 @@ class WriterDirectorSeriesTests(unittest.TestCase):
         # 20 independent invented source units, no user/private manuscript.
         sentence = "村里的人逐渐发现，建造这座桥并非只是更快地完成工程，而是理解它服务于谁以及为何值得建造"
         source = "\n\n".join(
-            sentence + "，第" + str(i) + "次讨论带来新的疑问。" for i in range(20))
+            sentence + sentence + "，第" + str(i) + "次讨论带来新的疑问。"
+            for i in range(20))
         indexed = fulltext.prepare_fulltext(source, risk_domain="none")
         units = indexed["scope_units"]
         beats = [{
