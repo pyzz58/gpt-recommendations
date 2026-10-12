@@ -15,6 +15,7 @@ import closing_evidence_card
 import screenplay_fulltext_intake as full
 import screenplay_adaptation as adaptation
 import screenplay_director_handoff as handoff
+import screenplay_professional_review as pro
 
 
 FIRST = "城里有人靠旧地图寻路。图上只有街道和一条尚未完工的桥。"
@@ -107,6 +108,45 @@ class FulltextScreenplayIntakeTests(unittest.TestCase):
         self.assertFalse(routed["human_approval_authenticated"])
         self.assertTrue(all(x["status"] == "pending"
                             for x in routed["crew"]["tasks"].values()))
+
+    def test_professional_critique_strict_route_requires_no_unresolved_blockers(self):
+        wrapper = full.review_packet(self.intake, SYNTH, self.proposal)
+        packet = wrapper["screenplay_review_packet"]
+        form = handoff.review_form(packet)
+        form["review_intent"] = "accept_for_director_planning"
+        for item in form["changes"]:
+            item["choice"] = "accept"
+        quote = "旧地图与河流"
+        doc = {
+            "version": pro.VERSION, "genre": "essay",
+            "screenplay_sha256": hashlib.sha256(
+                packet["screenplay_fountain"].encode("utf-8")).hexdigest(),
+            "proposal_digest": packet["proposal_digest"],
+            "criteria": [{
+                "category": name, "assessment": "effective",
+                "screenplay_quote": quote,
+                "specific_reason": "这个剧本文句准确包含了主问题的发问与转折方向。",
+                "rewrite_action": "",
+            } for name in pro.CRITERIA],
+            "blockers": [], "overall_recommendation": "ready_for_author_review",
+        }
+        result = full.reviewed_director_handoff(
+            self.intake, SYNTH, wrapper, form, {}, doc, genre="essay")
+        self.assertEqual(result["next_professional_role"], "director_brief")
+        self.assertFalse(result["script_artistic_quality_certified"])
+        self.assertFalse(result["reviewer_professional_qualifications_verified"])
+        doc["criteria"][0]["assessment"] = "needs_revision"
+        doc["criteria"][0]["rewrite_action"] = "必须解释最后一场的思想选择与原文关系。"
+        doc["blockers"] = [{
+            "category": pro.CRITERIA[0], "screenplay_quote": quote,
+            "viewer_consequence": "观众看不懂最后一场想让自己获得什么新认识。",
+            "rewrite_action": "重新写出这一场可以观察到的观念改变。",
+        }]
+        doc["overall_recommendation"] = "revise"
+        with self.assertRaisesRegex(full.FulltextIntakeError,
+                                    "CRAFT_REVISE_REQUIRED"):
+            full.reviewed_director_handoff(
+                self.intake, SYNTH, wrapper, form, {}, doc, genre="essay")
 
     def test_rejected_changes_or_missing_scope_units_block_handoff(self):
         altered = deepcopy(self.proposal)
