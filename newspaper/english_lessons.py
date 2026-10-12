@@ -143,7 +143,7 @@ def _grammar_type(sent) -> str | None:
         return "relative"
     if any(tok.pos_ == "AUX" and tok.lower_ in
            {"may", "might", "could", "must", "should", "would"}
-           and any(child.pos_ == "VERB" for child in tok.head.children)
+           and tok.dep_ == "aux" and tok.head.pos_ == "VERB"
            for tok in tokens):
         return "modal"
     for idx, tok in enumerate(tokens[:-1]):
