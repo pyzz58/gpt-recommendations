@@ -134,7 +134,8 @@ def validate(data):
             if item["department"] in {"director", "acting", "cinematography_art",
                                       "sound_voice", "editing_animation",
                                       "ai_technical", "media_qc",
-                                      "postdelivery", "api_privacy_cost"}:
+                                      "postdelivery", "api_privacy_cost",
+                                      "continuity_qa", "product_workflow"}:
                 require(len(proof["media_validation"]) >= 15,
                         "QUALITY_MEDIA_DEPARTMENT_NEEDS_REAL_MEDIA")
         else:
