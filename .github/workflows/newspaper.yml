@@ -14,6 +14,12 @@ on:
         default: 'true'
         type: choice
         options: ['true', 'false']
+      preview_kind:
+        description: 'When dry_run=true: mock layout or real latest-news reading'
+        required: false
+        default: 'demo'
+        type: choice
+        options: ['demo', 'live']
 permissions:
   contents: read
 concurrency:
@@ -27,9 +33,6 @@ jobs:
       TZ: Asia/Shanghai
       SMTP_HOST: smtp.qq.com
       SMTP_PORT: '465'
-      SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
-      SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
-      NEWSPAPER_TO: ${{ secrets.NEWSPAPER_TO }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -48,18 +51,30 @@ jobs:
           key: newspaper-argos-translate-en-zh-v1
       - name: Test date filtering, fallback, rendering
         run: python -m unittest discover -s newspaper -p 'test_*.py' -v
-      - name: Build and email report
+      - name: Preview only — never load SMTP secrets
+        if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
+        env:
+          PREVIEW_KIND: ${{ inputs.preview_kind || 'demo' }}
         run: |
           set -euo pipefail
-          if [ "${{ github.event_name }}" = "pull_request" ] || { [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; }; then
-            python newspaper/digest.py --demo --output /tmp/newspaper-preview
+          if [ "$PREVIEW_KIND" = "live" ]; then
+            python newspaper/digest.py --dry-run --output /tmp/newspaper-preview
           else
-            test -n "$SMTP_FROM" && test -n "$SMTP_PASSWORD" && test -n "$NEWSPAPER_TO" || {
-              echo "::error::Set NEWSPAPER_SMTP_FROM, NEWSPAPER_SMTP_PASSWORD, NEWSPAPER_TO secrets."
-              exit 1
-            }
-            python newspaper/digest.py
+            python newspaper/digest.py --demo --output /tmp/newspaper-preview
           fi
+      - name: Send real daily report — default branch only
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false'))
+        env:
+          SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
+          SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
+          NEWSPAPER_TO: ${{ secrets.NEWSPAPER_TO }}
+        run: |
+          set -euo pipefail
+          if [ -z "$SMTP_FROM" ] || [ -z "$SMTP_PASSWORD" ] || [ -z "$NEWSPAPER_TO" ]; then
+            echo "::error::Not configured. Set NEWSPAPER_SMTP_FROM, NEWSPAPER_SMTP_PASSWORD, NEWSPAPER_TO in GitHub Actions repository Secrets."
+            exit 1
+          fi
+          python newspaper/digest.py
       - name: Upload example preview
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
         uses: actions/upload-artifact@v4
