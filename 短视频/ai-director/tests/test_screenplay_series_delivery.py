@@ -310,6 +310,21 @@ class WriterDirectorSeriesTests(unittest.TestCase):
         data = json.loads(director_request["messages"][1]["content"])
         self.assertEqual(len(data["beat_timeline"]), len(units))
 
+    def test_legacy_actual_episode_plan_cannot_exceed_90s(self):
+        h = long_story()
+        full_source_preview = h["reconstructed_base"]
+        self.assertFalse(director.validate(full_source_preview)[0])
+        production = deepcopy(full_source_preview)
+        production["production"]["publishing_status"] = "review_required"
+        self.assertTrue(any("exceeds 90 seconds" in msg
+                            for msg in director.validate(production)[0]))
+        production["production"]["publishing_status"] = "adaptation_review_required"
+        production["series_context"] = {
+            "episode_total_planned_s": 91,
+        }
+        self.assertTrue(any("series episode total exceeds" in msg
+                            for msg in director.validate(production)[0]))
+
     def test_dossier_must_change_when_writer_changes_screenplay(self):
         h = assemble_original()
         ds = dossier(h)
