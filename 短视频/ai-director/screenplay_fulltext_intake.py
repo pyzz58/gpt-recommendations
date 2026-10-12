@@ -18,6 +18,7 @@ import article_intake
 import director
 import screenplay_adaptation
 import screenplay_director_handoff
+import screenplay_professional_review
 
 VERSION = "screenwriter-fulltext-intake-v1"
 MAX_UNITS_PER_SCREENPLAY = 100
@@ -292,3 +293,33 @@ def director_handoff(intake, document, wrapper, decisions, cast_bindings):
     downstream["source_units_covered_or_explicitly_omitted"] = True
     downstream["human_approval_authenticated"] = False
     return downstream
+
+
+def reviewed_director_handoff(intake, document, wrapper, decisions,
+                              cast_bindings, independent_critique, *, genre):
+    """Optional STRICT craft-reviewed route; legacy compatibility unchanged.
+
+    A valid external critique can prevent clearly identified flaws from being
+    passed along as a finished screenplay, but is NOT proof of excellent art,
+    editor identity, real author consent, or successful model performance.
+    """
+    _verify_intake(intake, document)
+    _require(isinstance(wrapper, dict) and
+             wrapper.get("kind") == "fulltext_screenplay_review_wrapper_v1" and
+             isinstance(wrapper.get("screenplay_review_packet"), dict),
+             "FULLTEXT_REVIEW_PACKET_REQUIRED")
+    selected = document[slice(*intake["scope_span"])]
+    receipt = screenplay_professional_review.validate_review(
+        wrapper["screenplay_review_packet"], selected,
+        independent_critique, genre=genre)
+    _require(receipt["recommendation"] == "ready_for_author_review",
+             "FULLTEXT_SCREENPLAY_CRAFT_REVISE_REQUIRED")
+    handoff = director_handoff(
+        intake, document, wrapper, decisions, cast_bindings)
+    handoff["screenplay_craft_review"] = receipt
+    handoff["screenplay_craft_pass"] = (
+        "independent_review_no_reported_blockers")
+    handoff["script_artistic_quality_certified"] = False
+    handoff["reviewer_professional_qualifications_verified"] = False
+    handoff["human_author_approval_authenticated"] = False
+    return handoff
