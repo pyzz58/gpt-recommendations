@@ -182,5 +182,17 @@
   "longread_min_chars": 450,
   "candidate_pool_per_category": 20,
   "source_limit_per_category": 2,
-  "english_learning_terms_per_category": 2
+  "english_learning_terms_per_category": 2,
+  "grammar_examples_per_article": 3,
+  "vocabulary_per_article": 5,
+  "ranking": {
+    "weights": {
+      "impact": 30,
+      "interest": 25,
+      "cross_source": 20,
+      "novelty_proxy": 15,
+      "recency": 10
+    },
+    "description": "Transparent heuristic only; outlet agreement not verified fact."
+  }
 }
