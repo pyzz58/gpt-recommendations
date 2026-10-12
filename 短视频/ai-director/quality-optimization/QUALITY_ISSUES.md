@@ -5,7 +5,7 @@
 
 ## 总览
 
-- 登记 35 项；编剧 11 项，总导演 14 项，其它部门 10 项。
+- 登记 36 项；编剧 11 项，总导演 15 项，其它部门 10 项。
 - 全部验收完成 0 项；没有真实独立验证不能自称达到一流水准。
 - 现阶段只修编剧及总导演；其它部门保持后续审计状态。
 
@@ -36,6 +36,7 @@
 | QO-D12 | director | P1 | confirmed_open | 导演/编剧修订权限冲突与版本谱系 |
 | QO-D13 | director | P0 | in_progress | 总导演自主分集与单集90秒绝对上限 |
 | QO-D14 | director | P0 | in_progress | 总导演主动创意剪辑与重大压缩权 |
+| QO-D15 | director | P0 | in_progress | 总导演详尽指挥与协调所有专业部门 |
 | QO-F01 | acting | P1 | audit_pending | 演员表演与动作调度专业审计 |
 | QO-F02 | cinematography_art | P1 | audit_pending | 摄影/灯光/美术世界观专业审计 |
 | QO-F03 | sound_voice | P1 | audit_pending | 配音/对白/拟音/音乐专业审计 |
@@ -229,7 +230,7 @@
 - 依赖：QO-D01
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/19
 - 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open
 
 ### QO-D03 · 导演视听母题、情绪弧线与视觉叙事
 
@@ -243,7 +244,7 @@
 - 依赖：QO-D02
 - 历史问题：无
 - 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open
 
 ### QO-D04 · 模型能力适配、片段时长与路由决策
 
@@ -397,6 +398,20 @@
 - 依赖：QO-D13, QO-D12, QO-W11
 - 历史问题：无
 - 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/29；回归 tests/test_director_creative_cut.py — 600s original director cut to 3x≤90s and 10x60; complete editorial audit with omit/condense, fake approvals rejected, sources-page absent, multi-cut comparison, writer revision request；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress
+
+### QO-D15 · 总导演详尽指挥与协调所有专业部门
+
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：agent_team.STAGES; agent_role_contracts.ROLE_INSTRUCTIONS/build_role_messages; screenplay_series_delivery.build_per_episode_crew; director_department_command.py
+- 问题：现有十岗位流程有导演宏观圣经和各专业通用提示词，但总导演未把每集独特创作意图、各镜观众体验、实际制作手段、专业部门交接和验收标准讲清楚并传给实际专业岗位；各Agent容易各自发挥形成漂亮但脱节的图纸
+- 根因：专业团队 DAG 定义了岗位顺序和输出字段，却缺一个导演亲自主持的跨部门制作会和真正的逐部门/逐镜工作指令；信息共享侧重原计划字段与上游JSON而不是指导专业创作的一致理念
+- 方案：依据DGA 7-101/202、ScreenSkills导演/摄影/美术/剪辑/声音/场记岗位全文、BAFTA Paul Greengrass完整导演演讲，实行 director_brief→script_edit→director_lock→导演跨部门专业制作会：7个下游岗位分别有详尽艺术使命、观众效果、逐镜执行、专业边界、验收条件、相互依赖和失败修复。真实模型岗位消息注入该岗位专属指令与必要跨专业接口；导演锁稿变更令原制作会失效；新版90秒系列严格模式无会议单不能发部门工单。真正艺术质量仍需独立盲审和媒体验证
+- 完成验收：公开合成双镜案例覆盖真实10阶段总导演锁稿→制作会→演员/摄影/声音部门真实model-facing输入；七部门、七关键交接及每镜详细意图完整；缺项、复制泛化镜头命令、版本过期、跨专业失联均阻断；独立专业电影/论述/纪录短片盲审证明多部门能按同一个vision制作，真实镜头音画连续才可关闭
+- AI 视频适配：先做导演创作协调和具体生产工单，再由技术部门决定 AI clip/静帧/动画/后期路由；单集最终≤90秒，精准AI文字/字幕后期合成，视频生成失败局部替代不得损害角色/核心思想；不以工单多字等于美学水准
+- 依赖：QO-D03, QO-D05, QO-D08, QO-D10
+- 历史问题：无
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/30；回归 tests/test_director_department_command.py — 7 specialist missions, scene/shot-specific vision, 7 interfaces, model-facing injection, stale lock/data, generic repeat rejection, mandatory production output gate；独立审核 未完成；真实媒体 未完成或不适用
 - 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress
 
 ### QO-F01 · 演员表演与动作调度专业审计
