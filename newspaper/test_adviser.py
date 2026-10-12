@@ -44,8 +44,10 @@ class TestGlobalAdviser(unittest.TestCase):
         html, txt = digest.render(report, self.date, self.date.date(), {})
         # Every English line is directly followed by Chinese, including in TXT.
         for pair in pairs:
-            self.assertIn(pair["en"] + "\n\n" + pair["zh"], txt)
+            self.assertIn(pair["en"] + "\n" + pair["zh"], txt)
+            self.assertNotIn(pair["en"] + "\n\n" + pair["zh"], txt)
             self.assertLess(html.index(pair["en"]), html.index("中文译文：" + pair["en"]))
+        self.assertEqual(txt.count("【事实材料：英文一行、中文下一行、逐句对应】"), 1)
         self.assertNotIn("今日重点", html)
         self.assertNotIn("今日新闻速览", html)
         self.assertNotIn("Vocabulary", html)
