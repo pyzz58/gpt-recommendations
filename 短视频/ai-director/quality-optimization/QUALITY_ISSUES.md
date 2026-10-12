@@ -5,7 +5,7 @@
 
 ## 总览
 
-- 登记 34 项；编剧 11 项，总导演 13 项，其它部门 10 项。
+- 登记 35 项；编剧 11 项，总导演 14 项，其它部门 10 项。
 - 全部验收完成 0 项；没有真实独立验证不能自称达到一流水准。
 - 现阶段只修编剧及总导演；其它部门保持后续审计状态。
 
@@ -35,6 +35,7 @@
 | QO-D11 | director | P0 | blocked_external | 真实双镜生成、跨镜验收与风险边界 |
 | QO-D12 | director | P1 | confirmed_open | 导演/编剧修订权限冲突与版本谱系 |
 | QO-D13 | director | P0 | in_progress | 总导演自主分集与单集90秒绝对上限 |
+| QO-D14 | director | P0 | in_progress | 总导演主动创意剪辑与重大压缩权 |
 | QO-F01 | acting | P1 | audit_pending | 演员表演与动作调度专业审计 |
 | QO-F02 | cinematography_art | P1 | audit_pending | 摄影/灯光/美术世界观专业审计 |
 | QO-F03 | sound_voice | P1 | audit_pending | 配音/对白/拟音/音乐专业审计 |
@@ -88,7 +89,7 @@
 - 依赖：QO-W01, QO-W02
 - 历史问题：无
 - 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:confirmed_open
 
 ### QO-W04 · 场次内动作/旁白/对白先后关系
 
@@ -374,14 +375,28 @@
 
 - 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
 - 发现位置：screenplay_director_handoff.director_request; screenplay_series_delivery.director_breakdown_request/validate_breakdown/build_per_episode_crew; skills/01-series.md
-- 问题：旧系列Skill允许180秒且此前编剧限300秒，十分钟剧本无法按完整编剧→导演拆分顺畅执行；可能丢节拍、硬凑三集或漏算片头/片尾
+- 问题：旧系列Skill允许180秒且此前编剧限300秒，十分钟剧本无法按完整编剧→导演拆分顺畅执行；可能丢节拍、硬凑三集或漏算片头/片尾；新发现：要求每个原剧本节拍按原时长全保留会反过来剥夺导演合法创意压缩权
 - 根因：混淆整部故事、导演单集、AI生成单次clip三级时间尺度，缺独立分集时长核验和按集重启原有专业团队
-- 方案：导演完整接收编剧剧本与详细说明，自主按叙事/情绪自然断点规划1/2/3或更多集；每集叙事镜头和所有附加时间合计≤90s；所有节拍原顺序恰好一次；长剧本进入分集流程；每集独立启动原有十岗位，全文仍作为上下文，不静默重编故事
+- 方案：导演完整接收编剧剧本与详细说明，自主按叙事/情绪自然断点规划1/2/3或更多集；每集叙事镜头和所有附加时间合计≤90s；所有节拍原顺序恰好一次；长剧本进入分集流程；每集独立启动原有十岗位，全文仍作为上下文，不静默重编故事；创意删减的版本先在QO-D14形成有理由的短版新剧本，然后再使用本项≤90秒分集硬门禁；不再把原稿100%照搬作为影片质量标准
 - 完成验收：公开完整10分钟剧本可自主拆7集或10集，每集≤90s；90s+任意片头超时被拒；漏/重复/错序节拍拒绝；每集导演真实岗位请求接收完整上下文、受限镜头工单；未实测成片保持in_progress
 - AI 视频适配：每集90秒≠单镜clip长度；含片头、片尾、复述及原稿有来源才可选的最后1–2秒资料页；不得机械均分或制造虚假悬念
 - 依赖：QO-W11
 - 历史问题：无
 - 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/28；回归 tests/test_screenplay_series_delivery.py — 10min fulltext intake, detailed beat coverage, arbitrary 7/10-episode split, <=90s incl extras, rejects loss/reorder/tampering；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress
+
+### QO-D14 · 总导演主动创意剪辑与重大压缩权
+
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：screenplay_series_delivery.director_breakdown_request/validate_breakdown/build_per_episode_crew; screenplay_director_handoff.director_request; agent_role_contracts.py
+- 问题：当前完整剧本所有beat被强制按原顺序和原长保留，剧本10分钟只能分至少7集；总导演即使认为节奏平庸且3集能有效表达，也不能主动提出删场、压缩、重排及新的导演剪辑版本
+- 根因：为了防止静默丢稿，把来源审计完整性错当成最终影片必须逐节拍原样保留；缺导演整体创作诊断、不同长度的导演cut构思、编剧协作返修与新权威拍摄稿的版本链
+- 方案：依据DGA导演参与剧本和剪辑的实际职责及ScreenSkills/BFI名导完整访谈，新增导演独立全稿读片诊断和有因果理由的两套剪辑方案；每源beat可retain/condense/omit并逐项解释观众收获及艺术代价、核心事实/人物意义风险；可设计10分钟→3×80秒但不是自动更优秀；涉及剧本正文更改必须发编剧精确返修并重审新版本，原稿不覆盖，批准后的新拍摄剧本再送现有90秒分集专业团队；单纯视听层微调由导演自主
+- 完成验收：同一公开虚构10分钟剧本提出3集240秒和较长自然断集两个有差异的cut，逐beat取舍完整且新剪辑时间不超90秒/集；拒绝无理由删除、假来源、篡改授权、伪造已批准；能指出理论命题反转、角色选择失因等阻断；能为正当删改生成定点编剧返修单而不是硬塞全部节拍；独立专业盲审对比两版思想/情绪/节奏后才能认定一流质量
+- AI 视频适配：AI片段生成≤数秒/十数秒是镜头技术限制，与90秒每集及整个母稿时长分层；导演先进行无付费故事剪辑，再决定每集镜头/供应商路由；可选资料页仅原稿含实际资料才在最后1-2秒显示且计入上限
+- 依赖：QO-D13, QO-D12, QO-W11
+- 历史问题：无
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/29；回归 tests/test_director_creative_cut.py — 600s original director cut to 3x≤90s and 10x60; complete editorial audit with omit/condense, fake approvals rejected, sources-page absent, multi-cut comparison, writer revision request；独立审核 未完成；真实媒体 未完成或不适用
 - 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress
 
 ### QO-F01 · 演员表演与动作调度专业审计

@@ -1,7 +1,14 @@
+## 国际一流总导演质量优化 · QO-D14（2026-10-13）
+
+- **编剧还没达到最终一流水准验收**：创作流程和详细交接可用，但跨题材独立盲评/真实模型写稿质量尚未完成；目前同步推进导演。
+- **总导演不再被强制保留每个原稿节拍**：按职业创作的观众体验决定每场的留、缩、删，先提出两套真正不同的 director's cut，并写清人物/论证意义及情感损失；可把原10分钟稿**建议**剪成3集各≤90秒，但不能因为更短自动认定更好。
+- **原稿版本不静默覆盖**：整场删减/剧情对白改变由导演提出精确返修单，原编剧完成新的短版剧本并经独立评审/必要授权后，才交给原有十部门按集制作。没有专业审读，240秒剪辑候选**不是**已批准的成片。
+- [DGA/ScreenSkills/BFI完整一手资料和逐模块根因审计](quality-optimization/QO-D14_PRIMARY_SOURCE_DIRECTOR_AUDIT.md) · [Skill 08：专业导演创意剪辑](skills/08-professional-director-story-edit.md) · [代码：导演多版本Cut与编剧返修](director_creative_cut.py)。
+
 ## 最新创作与分集硬约束（2026-10-13）
 
 - **职业编剧详述**：剧本动作和场次必须充分清晰，并增加逐场逐节拍的导演可读说明（[screenplay_series_delivery.py](screenplay_series_delivery.py)），不得以简单梗概冒充可拍剧本；具体机位仍归导演。
-- **总导演自主拆集**：先读完整剧本，可达十分钟或更长；自主按故事与情绪断点决定2集、3集或更多，**每集最多90秒**，算入所有片头/回顾/结尾/可选最后出处页。每个剧本节拍必须恰好安排一次，镜头仍由导演设计。
+- **总导演自主拆集**：先读完整剧本，可达十分钟或更长；自主按故事与情绪断点决定2集、3集或更多，**每集最多90秒**，算入所有片头/回顾/结尾/可选最后出处页。**导演拥有创意剪辑提案权**，可以将10分钟剧本实质压缩到例如3集，各节拍保留/浓缩/删除要说明利弊并由编剧审核生成新版本；**经审核的新制作剧本**里的节拍才必须在分集时恰好安排一次。导演不静默修改原作者台词/思想，镜头仍由导演设计。
 - **对应问题条目**：QO-W11、QO-D13；关于作品的情绪/思想余韵，继续在 QO-W03 中评审。整部电影原稿时长≠单集时长≠单次 AI 片段时长。
 
 # AI 短视频导演系统
@@ -17,7 +24,7 @@
 - [质量优化总纲：目标、岗位边界、AI 视频约束、完成门槛](quality-optimization/QUALITY_CHARTER.md)
 - [QO-W01：职业编剧一手资料全文深读与既有模块逐项审计](quality-optimization/QO-W01_PROFESSIONAL_PRIMARY_SOURCE_AUDIT.md)：解释优秀改编与机械保留的区别，先审计方法、再设计创作流程；结构代码 PR #24 暂缓合并。
 - [QO-W01：编剧创作开发能力实际升级](quality-optimization/QO-W01_CREATIVE_DEVELOPMENT_IMPLEMENTATION.md)：读稿诊断 → 不同影视化 take → 独立选案比较 → treatment → 剧本及独立适配审核，核心实现 [screenplay_development.py](screenplay_development.py)；未完成专业真人盲评。
-- [独立问题清单：34 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
+- [独立问题清单：35 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
 - [逐批解决路线：先编剧、再总导演，其他部门持续登记](quality-optimization/EXECUTION_PLAN.md)
 - [机器可读问题总账](quality-optimization/QUALITY_ISSUES.json)：改动一个问题就更新一条，CI 拦截无证据假完成、漏问题和状态表不同步。
 - [质量阶段 GitHub 总入口 Issue #22](https://github.com/pyzz58/gpt-recommendations/issues/22)：讨论与跨任务导航；真实状态以 JSON 为准。
