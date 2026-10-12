@@ -18,7 +18,7 @@ GENERATION_MODES = {"ai_video", "ai_image", "real_broll", "stock", "data_graphic
 RISK_DOMAINS = {"medical", "financial", "legal", "none"}
 
 SYSTEM_GUIDANCE = """你是严谨的 AI 短视频总导演，不是简单的分句器。输入是用户原始中文文案。只输出一个合法 JSON 对象，不用 Markdown。
-目标：适合 9:16 的 35-75 秒抖音视频；按内容自然规划，不强制每句一个镜头。
+目标：制作9:16、**每集绝对不超过90秒**的短视频；总剧本可以很长，应先接收编剧完整剧本与详细说明，由总导演自主按叙事自然断点拆成多集，再为每集设计镜头。每集90秒包括片头、回顾、结束和可选证据尾页；不要强制每句一个镜头。
 必须遵守：
 1. 忠于核心事实，允许删减重复、次要信息；把被删关键材料写入 omissions。不凭空引入数字或研究来源。
 2. 医学/法律/金融内容：绝不把相关性写成因果；明确区分 OR/RR/HR、绝对风险、相对风险；没有外部核验时，所有研究结论的 claims.status 必须为 needs_review，绝不声称已核验。
@@ -68,6 +68,19 @@ def validate(plan):
     if plan["aspect_ratio"]!="9:16": errors.append("aspect_ratio must be 9:16 for this MVP")
     if plan["platform"]!="douyin": errors.append("platform must be douyin")
     if plan["risk_domain"] not in RISK_DOMAINS: errors.append("unknown risk_domain")
+    # A full pre-adaptation source or writer rehearsal is NOT an episode.
+    # Every actual episode must fit 90s, including reserved non-story time.
+    production_state = plan.get("production", {}).get("publishing_status")
+    if production_state not in {"source_intake_only", "adaptation_review_required"}:
+        total = plan.get("duration")
+        if isinstance(total, (int, float)) and total > 90:
+            errors.append("episode duration exceeds 90 seconds")
+    series = plan.get("series_context")
+    if series is not None:
+        if (not isinstance(series, dict) or
+            not isinstance(series.get("episode_total_planned_s"), (int, float)) or
+            series["episode_total_planned_s"] > 90):
+            errors.append("series episode total exceeds 90 seconds")
     if not isinstance(plan["shots"],list) or not plan["shots"]: errors.append("shots must be non-empty")
     if errors: return errors,warnings
     claim_ids=set()
