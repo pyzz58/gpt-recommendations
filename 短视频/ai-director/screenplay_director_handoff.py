@@ -266,7 +266,7 @@ def director_request(handoff):
         "planning_only": True,
     }
     import json
-    marker = "\\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\\n"
+    marker = "\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\n"
     _, sep, raw_context = request["messages"][1]["content"].partition(marker)
     _ensure(bool(sep), "SCRIPT_DIRECTOR_PROMPT_FORMAT")
     try:
