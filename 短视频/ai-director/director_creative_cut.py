@@ -302,3 +302,57 @@ def writer_revision_request(handoff, dossier, cut):
         ],
     }
     return req
+
+
+
+def validate_cut_comparison(handoff, dossier, candidates, choice):
+    """A director must explain a real artistic choice between distinct cuts.
+
+    Neither runtime nor this form produces an automated 'winner'. It is
+    a reviewable human/LLM proposal requiring a later independent opinion.
+    """
+    _require(isinstance(candidates, list) and 2 <= len(candidates) <= 4,
+             "CUT_ALTERNATIVES_REQUIRED")
+    reports = [validate_cut(handoff, dossier, proposal) for proposal in candidates]
+    digests = [x["director_cut_digest"] for x in reports]
+    _require(len(set(digests)) == len(digests),
+             "CUT_DUPLICATE_ALTERNATIVES")
+    signatures = {(p["proposed_story_seconds"],
+                   p["proposed_episode_count"],
+                   tuple(p["omitted_source_beat_ids"]),
+                   tuple(p["shortened_source_beat_ids"]))
+                  for p in reports}
+    _require(len(signatures) >= 2,
+             "CUT_ALTERNATIVES_NOT_CREATIVE_DIFFERENCES")
+    _shape(choice, {
+        "version", "source_digest", "candidate_digests",
+        "selected_cut_digest", "selection_reason", "alternative_strengths",
+        "weaknesses_of_selected", "unresolved_core_idea_risk",
+        "independent_craft_review_still_needed",
+    }, "CUT_COMPARISON_SHAPE")
+    _require(choice["version"] == VERSION and
+             choice["source_digest"] == handoff["screenplay_text_digest"] and
+             choice["candidate_digests"] == digests and
+             choice["selected_cut_digest"] in digests and
+             choice["independent_craft_review_still_needed"] is True,
+             "CUT_COMPARISON_STALE_OR_PRETEND_APPROVAL")
+    for k in ("selection_reason", "alternative_strengths",
+              "weaknesses_of_selected", "unresolved_core_idea_risk"):
+        _text(choice[k], "CUT_COMPARISON_UNSUPPORTED_JUDGMENT",
+              minimum=20)
+    selected = reports[digests.index(choice["selected_cut_digest"])]
+    return {
+        "kind": "director_professional_cut_comparison_receipt",
+        "source_digest": handoff["screenplay_text_digest"],
+        "candidate_cut_digests": digests,
+        "choice_digest": agent_team.fingerprint(choice),
+        "selected_cut_digest": selected["director_cut_digest"],
+        "selected_story_seconds": selected["proposed_story_seconds"],
+        "selected_episode_count": selected["proposed_episode_count"],
+        "director_decision_is_proposal": True,
+        "shorter_does_not_automatically_win": True,
+        "script_revision_required": selected["script_revision_required"],
+        "author_approved": False,
+        "independent_professional_quality_proven": False,
+        "media_generated": False,
+    }
