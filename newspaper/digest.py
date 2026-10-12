@@ -299,6 +299,13 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
                 f'<p><a href="{url}">原始来源 · Original source</a></p>'
                 '</article>'
             )
+            plain.append(
+                f"推荐参考分 {a.get('importance_score', 0)}/100 · {a.get('why_recommended', '')}\n"
+                f"{a['title']}\n{a['title_zh']}\n"
+                f"【中文阅读】\n{a['reading_zh']}\n"
+                f"【English reading】\n{a['reading_en']}\n"
+                f"{a['source']} | {a['url']}"
+            )
             # Attach vocabulary and actual grammatical examples immediately below
             # THIS article rather than a generic topic list at the end of the email.
             vocab = a.get("vocabulary", [])
@@ -339,13 +346,7 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
                     )
             if vocab or lessons:
                 parts.append('</section>')
-            plain.append(
-                f"推荐参考分 {a.get('importance_score', 0)}/100 · {a.get('why_recommended', '')}\n"
-                f"{a['title']}\n{a['title_zh']}\n"
-                f"【中文阅读】\n{a['reading_zh']}\n"
-                f"【English reading】\n{a['reading_en']}\n"
-                f"{a['source']} | {a['url']}"
-            )
+
     parts.append(
         '<p style="font-size:12px;color:#687489">'
         '未绕过付费墙或登录限制；未能取得正文的新闻会改用可访问报道。'
