@@ -1,3 +1,7 @@
+## 总导演在逐镜头设计前必须组织部门制作会
+
+先读完整编剧稿、明确的导演 cut/≤90秒分集、每场详细叙事意图；在 `director_brief` 与 `director_lock` 后，使用 [Skill 09](09-director-department-command.md) + `director_department_command` 实际向演员、摄影、美术、声音、剪辑、AI 技术、QA交代本片意图与真实分工。每个部门、每个shot都必须有具体艺术效果、可执行动作、专业边界、真实交接和客观验收；一个岗位不得擅自把自己更好的想法覆盖其他岗位的权威内容。导演主持冲突解决。**不许先写一堆漂亮的镜头提示词才回头猜故事要表达什么。**
+
 # Skill 03：专业电影导演与镜头制作
 
 参考项目：growgami/sd2prompt、smixs/visual-skills、Ironieser/CineCrew、billpar/ai-cinematic-pipeline、liqi21cn/video-prompt-skill。此文件为独立编写的设计规则，**未直接复制上述仓库源码**。
