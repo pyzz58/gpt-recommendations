@@ -1,7 +1,31 @@
-# Newspaper — 全球形势顾问日报
+# Newspaper — 全球形势秘书简报 V0.5
 
-> 当前正式方案：北京时间前一自然日新闻；每日北京时间 07:00 尝试运行；文章英中逐句交替；禁止将规则顾问描述成 LLM 深度研究。
+> 本次基于用户实际收到的 QQ 邮件反馈重构。**A5 报刊风格 PDF 附件是主交付件**；邮箱正文只含简短说明。所有改造和测试均通过 GitHub Actions，不要求用户本地环境。
 
+## V0.5 现在提供什么
+
+- 主体为**中文**事件和条件性形势分析：封面→编者导语→六个领域→跨领域观察。
+- 真实新闻/来源仍采用既有 RSS + Trafilatura 采集；不把记者原文当作“秘书原创深入研究”。当前分析仅为**来源有限的规则型机制解释**，深度短板需如实说明。
+- 取消工具式栏目名“英文标题”、“事实材料”、“Grammar Focus”及旧词汇表；英文/中文逐句内容仅在 PDF 最后“英语阅读附录”。
+- 英语附录：**英文一句→中文紧下一行→下一句英文**；最多三处语法下划线+数字上标，在附录末尾数字对应一行简明解释，无大段原文重复。
+- 视觉：GitHub Actions 在 Ubuntu 上安装开源 Noto CJK 书宋和 Liberation 字体；WeasyPrint 构建**A5 竖版单栏、可选中文可搜索**的 PDF。
+- 支持 `--demo` （纯排版）、`--dry-run`（真新闻完整流程，不发邮件）和正式发送。模拟/预览的 GitHub artifact 同时包含 PDF、HTML 和 TXT；正式工作流以 QQ SMTP SSL 将 PDF **真正作为附件**发出。
+- 邮件 Secrets 只在 main 发送步骤出现，PR/demo/live 预览没有权限访问；配置名称仍为 `NEWSPAPER_SMTP_FROM`、`NEWSPAPER_SMTP_PASSWORD` 和 `NEWSPAPER_TO`。
+
+详细设计及验收指标：[V05_PRODUCT_SPEC.md](V05_PRODUCT_SPEC.md)。
+
+## 如何直接在 GitHub 测试
+
+1. 打开 [Actions / Newspaper](https://github.com/pyzz58/gpt-recommendations/actions/workflows/newspaper.yml)。
+2. Run workflow → main → `dry_run=true` → `preview_kind=live`：抓取真实新闻、生成 PDF/HTML/TXT，**不发信**；下载 artifact `newspaper-demo-preview`。
+3. 邮箱三个 Secrets 已设置后，Run workflow → main → `dry_run=false`：生成真实新闻并将 PDF 附件发至配置收件箱。
+4. 另有一个经本次改造 PR 明确授权的一次性 PDF 测试投递，只有更新 `V05_MAIL_TEST_REQUEST.txt` 的 main 提交，且提交标题包含 `[newspaper-v05-send-once]` 才执行。普通代码提交不会借此发信。
+
+如 GitHub Actions 为红叉，打开失败步骤看日志；不应向聊天或公开仓库发送 QQ 授权码。
+
+---
+
+## V0.4 历史说明（不再代表当前版式）
 ## 一、当前实际能力
 
 - 六个栏目：全球新闻、美股与投资、美联储与宏观、创业与商业模式、AI 与科技、医疗与科学，合计最多 14 篇／日。
