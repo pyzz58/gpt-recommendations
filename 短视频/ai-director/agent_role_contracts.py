@@ -519,6 +519,44 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             "rights_and_consent_verified": False,
             "references_are_metadata_not_visual_input": True,
         }
+    # The 10-stage ledger is preserved. When source is a completed
+    # screenwriter proposal, the legacy script_edit task becomes an
+    # execution-fidelity / revision-liaison review, NOT a competing author.
+    # This boundary is enforced in role messages; it does not claim a model
+    # complied or a real person authenticated the earlier editorial decision.
+    boundary = ""
+    screenplay_mode = base.get("screenplay_handoff_mode")
+    if screenplay_mode is not None:
+        if (not isinstance(screenplay_mode, dict) or
+                screenplay_mode.get("kind") != "adapted_screenplay_planning_only" or
+                screenplay_mode.get("screenplay_sha256") != state["source_digest"] or
+                screenplay_mode.get("no_silent_story_or_dialogue_rewrite") is not True or
+                screenplay_mode.get("reviewer_identity_authenticated") is not False):
+            raise ValueError("CREW_SCREENPLAY_BOUNDARY_INVALID")
+        if task_id == "director_brief":
+            boundary = (
+                "\n\n【总导演与编剧分工】original_script 是完整的编剧剧本，"
+                "本岗负责影像/表演/声画的导演阐释，审读其戏剧或信息目的，"
+                "不能重新设计剧情、修改人物关系、编写新对白或暗改事实。"
+                "如剧本有叙事缺陷，列出返修请求交回原编剧；"
+                "纪录/科普允许概念对照而非强加虚构角色冲突。"
+                "可与编剧协商，但不得直接宣称剧本修订已获作者同意。")
+        elif task_id == "script_edit":
+            boundary = (
+                "\n\n【本阶段转为剧本连续性审查，禁止重复创作】"
+                "前置编剧已经交付完整剧本。保留 story_treatment 的接口，"
+                "但 beat_map 的 dramatic_function/handoff_to_next 现在应当"
+                "核对既有场次/节拍的因果衔接、台词/动作/旁白是否在导演方案中被遗漏，"
+                "而不是新写故事骨架、新想开场钩子或重新安排结尾。"
+                "hook/central_question 只描述既有剧本，不提替代方案。"
+                "真正缺陷写在 source_change_proposals，必须"
+                "requires_user_approval=true、approved=false，"
+                "并将改稿工作归还前置编剧岗位。不得静默更改故事或导演的摄影决定。")
+        else:
+            boundary = (
+                "\n\n【编剧权威边界】此来源是前置编剧完成的剧本版本；"
+                "本岗位只完成自身专业交付，不得暗改故事、对白、旁白、人物关系和原文事实。"
+                "如需修改，只向总导演提出编剧返修请求，重新走审阅流程。")
     serialized = json.dumps(request, ensure_ascii=False, sort_keys=True,
                             separators=(",", ":"), allow_nan=False)
     _check_json_size(serialized, MAX_CONTEXT_CHARS, "private prompt")
@@ -526,6 +564,7 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             "task_id": task_id, "next_revision": context["next_revision"],
             "messages": [
                 {"role": "system", "content": FOUNDATION + "\n\n" + ROLE_INSTRUCTIONS[task_id] +
+                 boundary +
                  ("\n\n【延续经审阅规划版本的创意】user JSON 中附有 first_director_editor_vision "
                   "与本岗位 production_gaps_to_resolve：前者是先前总导演/编剧的提案而非"
                   "获真人批准的拍摄指令；不得忽略或凭空重置。后者必须具体回应，尤其人物"
