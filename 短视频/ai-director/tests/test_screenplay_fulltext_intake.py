@@ -126,6 +126,21 @@ class FulltextScreenplayIntakeTests(unittest.TestCase):
         with self.assertRaisesRegex(full.FulltextIntakeError, "FULLTEXT_REVIEW_TAMPERED"):
             full.director_handoff(self.intake, SYNTH, wrapper, form, {})
 
+    def test_literal_source_link_is_optional_unverified_candidate(self):
+        document = "仅供测试的资料链接：https://example.org/study。其它观点没有出处。"
+        intake = full.prepare_fulltext(document, risk_domain="none")
+        self.assertEqual(intake["source_supplied_reference_url_count"], 1)
+        link = intake["source_supplied_reference_urls"][0]
+        self.assertEqual(link["url"], "https://example.org/study")
+        self.assertEqual(document[slice(*link["source_span"])], link["url"])
+        self.assertEqual(link["status"], "source_supplied_unverified")
+        self.assertEqual(intake["base"]["references"], [])
+        self.assertIsNone(closing_evidence_card.build_card(intake["base"]))
+        prompt = full.editor_request(intake, document)
+        self.assertEqual(prompt["unverified_source_reference_candidates"], [link])
+        self.assertEqual(prompt["citation_policy"],
+                         "use_source_materials_if_present_never_invent")
+
     def test_titled_chapter_scope_keeps_whole_document_fingerprint(self):
         document = "前言没有剧本拍摄。\n## 第一章\n写给第一章的几个字。\n## 第二章\n第二章提出另一个问题。"
         intake = full.prepare_fulltext(document, episode_id="EP02")
