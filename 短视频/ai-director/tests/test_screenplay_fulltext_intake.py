@@ -75,6 +75,15 @@ class FulltextScreenplayIntakeTests(unittest.TestCase):
         self.assertFalse(task["dispatch_allowed"])
         self.assertFalse(self.intake["paid_text_model_authorized"])
 
+    def test_essay_and_hybrid_are_valid_professional_genres(self):
+        for mode in ("essay", "hybrid"):
+            with self.subTest(mode=mode):
+                message = full.editor_request(self.intake, SYNTH, mode=mode)
+                self.assertEqual(message["adaptation_mode"], mode)
+                self.assertFalse(message["dispatch_allowed"])
+                self.assertIn("source_units", json.loads(
+                    message["messages"][1]["content"]))
+
     def test_source_bound_review_and_existing_director_team(self):
         wrapper = full.review_packet(self.intake, SYNTH, self.proposal)
         self.assertEqual(wrapper["scope_vs_document"], "complete_document")
