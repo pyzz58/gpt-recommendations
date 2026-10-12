@@ -396,8 +396,8 @@
 - AI 视频适配：AI片段生成≤数秒/十数秒是镜头技术限制，与90秒每集及整个母稿时长分层；导演先进行无付费故事剪辑，再决定每集镜头/供应商路由；可选资料页仅原稿含实际资料才在最后1-2秒显示且计入上限
 - 依赖：QO-D13, QO-D12, QO-W11
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/29；回归 tests/test_director_creative_cut.py — 600s original director cut to 3x≤90s and 10x60; complete editorial audit with omit/condense, fake approvals rejected, sources-page absent, multi-cut comparison, writer revision request；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress
 
 ### QO-F01 · 演员表演与动作调度专业审计
 
