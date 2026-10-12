@@ -225,6 +225,8 @@ def attach_lessons(grouped: dict, translator, grammar_limit: int = 3, vocab_limi
             for grammar in lessons:
                 grammar["sentence_zh"] = translator.translate(grammar["sentence_en"])
             entry["grammar_lessons"] = lessons
-            entry["vocabulary"] = _pick_vocab(original, nlp, maximum=vocab_limit)
+            # Newspaper adviser mode has no vocabulary glossary. Preserve the
+            # key for backward compatibility, but never fill or render it.
+            entry["vocabulary"] = []
             result[category].append(entry)
     return result
