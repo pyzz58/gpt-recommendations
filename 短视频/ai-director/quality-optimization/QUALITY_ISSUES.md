@@ -335,7 +335,7 @@
 - 方案：先审核私有账号区域、单镜预算和一次性明确批准，再S02+S03双镜真实生成，审片记录并测首次可用率/平均返工/真实费用
 - 完成验收：具体镜头、素材、请求、费用、结果哈希、独立真人审片与缺陷记录俱全才可标完成；无授权保持blocked_external
 - AI 视频适配：真实片段有随机性；合成视频结果必须按秒/帧检查而非只认API success
-- 依赖：QO-D04, QO-D05, QO-D08
+- 依赖：QO-D04, QO-D05, QO-D08, QO-F07
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/1, https://github.com/pyzz58/gpt-recommendations/issues/3
 - 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
 - 状态历史：2026-10-13:blocked_external
@@ -447,7 +447,7 @@
 - 方案：私有API密钥库、配额/费用硬门禁、一次性提交、回执与回收、下载校验、故障恢复、资产授权
 - 完成验收：独立安全验证+真实低成本受控验证后才解除；否则持续blocked
 - AI 视频适配：供应商费用、内容安全策略和第三方存储需按账号与地域逐项核对
-- 依赖：QO-D11
+- 依赖：QO-D04
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/1
 - 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
 - 状态历史：2026-10-13:audit_pending
