@@ -1,0 +1,7 @@
+Newspaper V0.5 single delivery authorization
+Requested by repository owner on 2026-10-12.
+On merging this PR to main with commit subject containing [newspaper-v05-send-once],
+the guarded workflow generates a current (previous Beijing day) PDF and sends it
+using the existing configured GitHub Actions Secrets.
+This file is not a credential and contains no email password.
+Changes to other files do not retrigger the special push path.
