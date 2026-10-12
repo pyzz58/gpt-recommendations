@@ -74,7 +74,8 @@ class ScreenplayDirectorHandoffTests(unittest.TestCase):
         director_role = agent_role_contracts.build_role_messages(
             base, assembled["crew"], "director_brief", source_text=source)
         self.assertIn("总导演与编剧分工", director_role["messages"][0]["content"])
-        self.assertIn("不能重新设计剧情", director_role["messages"][0]["content"])
+        self.assertIn("有权判断原编剧稿存在冗余", director_role["messages"][0]["content"])
+        self.assertIn("不得自己悄然替换故事", director_role["messages"][0]["content"])
         self.assertNotIn("未经核准自行重写", director_role["messages"][0]["content"])
         team = agent_team.submit(
             assembled["crew"], agent_team.packet(assembled["crew"], "director_brief"),
