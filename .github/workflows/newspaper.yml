@@ -14,6 +14,12 @@ on:
         default: 'true'
         type: choice
         options: ['true', 'false']
+      preview_kind:
+        description: 'When dry_run=true: mock layout or real latest-news reading'
+        required: false
+        default: 'demo'
+        type: choice
+        options: ['demo', 'live']
 permissions:
   contents: read
 concurrency:
@@ -47,7 +53,15 @@ jobs:
         run: python -m unittest discover -s newspaper -p 'test_*.py' -v
       - name: Preview only — never load SMTP secrets
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
-        run: python newspaper/digest.py --demo --output /tmp/newspaper-preview
+        env:
+          PREVIEW_KIND: ${{ inputs.preview_kind || 'demo' }}
+        run: |
+          set -euo pipefail
+          if [ "$PREVIEW_KIND" = "live" ]; then
+            python newspaper/digest.py --dry-run --output /tmp/newspaper-preview
+          else
+            python newspaper/digest.py --demo --output /tmp/newspaper-preview
+          fi
       - name: Send real daily report — default branch only
         if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false'))
         env:
