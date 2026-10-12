@@ -207,6 +207,95 @@ def render_fountain(proposal):
     return "\n".join(lines)
 
 
+
+def compile_reviewable_shot_plan(plan, episode_source, proposal):
+    """Rebuild timing/scene/beat source mapping, but NOT a production-ready shot.
+
+    The existing v0.1 plan is a planning bridge only: each new screenplay beat
+    is a text-card placeholder until director/camera/actor/voice teams design
+    and validate actual video production. Never reuse an old crew state.
+    """
+    report = validate_proposal(plan, episode_source, proposal)
+    old_by_id = {shot["id"]: shot for shot in plan["shots"]}
+    revised = deepcopy(plan)
+    revised["scenes"] = []
+    revised["shots"] = []
+    revised["duration"] = 0
+    revised["title"] = proposal["theme"]
+    revised["editorial"]["hook"] = proposal["dramatic_question"]
+    revised["editorial"]["omissions"] = deepcopy(plan["editorial"].get("omissions", []))
+    for o in proposal["omissions"]:
+        revised["editorial"]["omissions"].append({
+            "text": old_by_id[o["source_id"]]["narration"],
+            "reason": o["reason"], "source_id": o["source_id"],
+            "requires_author_approval": True,
+        })
+    number = 0
+    for i, scene in enumerate(proposal["scenes"], 1):
+        scene_id = "LOC%02d" % i
+        revised["scenes"].append({
+            "id": scene_id, "description": scene["heading"] +
+            "｜仅剧本场次定位，实际置景和空间轴线待美术/摄影设计",
+        })
+        for beat in scene["beats"]:
+            number += 1
+            original = old_by_id[beat["source_ids"][0]]
+            shot = deepcopy(original)
+            shot["id"] = "S%02d" % number
+            shot["start"] = revised["duration"]
+            shot["duration"] = beat["duration_s"]
+            shot["scene_id"] = scene_id
+            shot["purpose"] = beat["dramatic_function"]
+            shot["narration"] = beat["voiceover"]
+            shot["visual_type"] = "text_card"  # explicit non-video placeholder
+            shot["visual"] = beat["action"]
+            shot["action"]["action"] = beat["action"]
+            shot["camera"]["movement"] = "待摄影指导按场次和动作设计"
+            shot["art"]["lighting"] = "待导演/美术审片后设计"
+            shot["audio"]["voice"] = "剧本对白/旁白待逐句校对和配音/口型设计"
+            shot["subtitles"]["text"] = beat["voiceover"] or " ".join(
+                d["line"] for d in beat["dialogue"])
+            shot["graphics"]["type"] = "text_card"
+            shot["graphics"]["text"] = "仅剧本占位，准确字幕须后期合成"
+            shot["transition"] = "fade_in" if number == 1 else "hard_cut"
+            shot["continuity"] = "待检查跨镜人物、动作、道具与时间跳切"
+            shot["claim_ids"] = list(dict.fromkeys(
+                cid for source_id in beat["source_ids"]
+                for cid in old_by_id[source_id]["claim_ids"]))
+            shot["source_adaptation"] = {
+                "beat_id": beat["id"],
+                "original_source_shot_ids": list(beat["source_ids"]),
+                "operation": beat["operation"],
+                "editorial_reason": beat["editorial_reason"],
+                "dialogue": deepcopy(beat["dialogue"]),
+                "scene_heading": scene["heading"],
+                "requires_author_review": True,
+            }
+            revised["shots"].append(shot)
+            revised["duration"] += beat["duration_s"]
+    revised["editorial"]["narration_script"] = "".join(
+        s["narration"] for s in revised["shots"])
+    revised["production"]["publishing_status"] = "adaptation_review_required"
+    errors, _ = director.validate(revised)
+    _require(not errors, "ADAPTATION_REBUILT_PLAN_INVALID")
+    return {
+        "kind": "screenplay_reconstructed_shot_plan_preview",
+        "status": "not_approved_not_director_ready",
+        "plan": revised,
+        "original_plan_digest": agent_team.fingerprint(plan),
+        "new_plan_digest": agent_team.fingerprint(revised),
+        "source_sha256": hashlib.sha256(episode_source.encode("utf-8")).hexdigest(),
+        "source_coverage": report["source_coverage"],
+        "shot_ids_rebuilt": [s["id"] for s in revised["shots"]],
+        "full_crew_must_restart_after_review": True,
+        "speech_and_lipsync_not_implemented": True,
+        "real_scene_and_character_assets_not_implemented": True,
+        "author_approval_authenticated": False,
+        "paid_model_authorized": False,
+        "media_generated": False,
+    }
+
+
 def build_review_packet(plan, episode_source, proposal):
     findings = validate_proposal(plan, episode_source, proposal)
     return {
@@ -218,6 +307,7 @@ def build_review_packet(plan, episode_source, proposal):
         "proposal_digest": agent_team.fingerprint(proposal),
         "proposal": deepcopy(proposal),
         "screenplay_fountain": render_fountain(proposal),
+        "shot_plan_preview": compile_reviewable_shot_plan(plan, episode_source, proposal),
         "review": findings,
         "next_step": "author_reviews_structure_dialogue_and_omissions_before_rebuilding_shot_plan",
         "applied_to_director_plan": False,
