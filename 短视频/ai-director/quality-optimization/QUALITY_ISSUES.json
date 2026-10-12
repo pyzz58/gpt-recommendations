@@ -49,6 +49,22 @@
     {
       "topic": "Kling official API",
       "url": "https://kling.ai/document-api/apiReference/model/textToVideo"
+    },
+    {
+      "topic": "DGA director original creative rights",
+      "url": "https://www.dga.org/en/Contracts/Creative-Rights/Basic-Agreement-Article-7"
+    },
+    {
+      "topic": "ScreenSkills professional film director profile",
+      "url": "https://www.screenskills.com/job-profiles/browse/film-and-tv-drama/development-film-and-tv-drama-job-profiles/director-film-and-tv-drama/"
+    },
+    {
+      "topic": "BFI Scorsese long interview",
+      "url": "https://www.bfi.org.uk/sight-and-sound/interviews/martin-scorsese-age-innocence"
+    },
+    {
+      "topic": "BFI Wiseman full interview",
+      "url": "https://www.bfi.org.uk/sight-and-sound/interviews/when-you-stop-shooting-thats-when-best-thing-going-happen-you-have-persevere-interview-with-frederick-wiseman"
     }
   ],
   "items": [
@@ -184,6 +200,12 @@
           "date": "2026-10-13",
           "status": "confirmed_open",
           "note": "用户实际试读反馈：图灵剧本可接受但尚缺更深入思想和情绪回响；归入原有职业编剧艺术质量改进问题，仍未验收",
+          "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "编剧质量仍需真实作品盲审；并行启动导演专业评价不是认定编剧达到一流水准",
           "evidence_ref": ""
         }
       ]
@@ -965,9 +987,9 @@
       "status": "in_progress",
       "title": "总导演自主分集与单集90秒绝对上限",
       "observed_in": "screenplay_director_handoff.director_request; screenplay_series_delivery.director_breakdown_request/validate_breakdown/build_per_episode_crew; skills/01-series.md",
-      "problem": "旧系列Skill允许180秒且此前编剧限300秒，十分钟剧本无法按完整编剧→导演拆分顺畅执行；可能丢节拍、硬凑三集或漏算片头/片尾",
+      "problem": "旧系列Skill允许180秒且此前编剧限300秒，十分钟剧本无法按完整编剧→导演拆分顺畅执行；可能丢节拍、硬凑三集或漏算片头/片尾；新发现：要求每个原剧本节拍按原时长全保留会反过来剥夺导演合法创意压缩权",
       "root_cause": "混淆整部故事、导演单集、AI生成单次clip三级时间尺度，缺独立分集时长核验和按集重启原有专业团队",
-      "solution": "导演完整接收编剧剧本与详细说明，自主按叙事/情绪自然断点规划1/2/3或更多集；每集叙事镜头和所有附加时间合计≤90s；所有节拍原顺序恰好一次；长剧本进入分集流程；每集独立启动原有十岗位，全文仍作为上下文，不静默重编故事",
+      "solution": "导演完整接收编剧剧本与详细说明，自主按叙事/情绪自然断点规划1/2/3或更多集；每集叙事镜头和所有附加时间合计≤90s；所有节拍原顺序恰好一次；长剧本进入分集流程；每集独立启动原有十岗位，全文仍作为上下文，不静默重编故事；创意删减的版本先在QO-D14形成有理由的短版新剧本，然后再使用本项≤90秒分集硬门禁；不再把原稿100%照搬作为影片质量标准",
       "acceptance": "公开完整10分钟剧本可自主拆7集或10集，每集≤90s；90s+任意片头超时被拒；漏/重复/错序节拍拒绝；每集导演真实岗位请求接收完整上下文、受限镜头工单；未实测成片保持in_progress",
       "ai_video_constraint": "每集90秒≠单镜clip长度；含片头、片尾、复述及原稿有来源才可选的最后1–2秒资料页；不得机械均分或制造虚假悬念",
       "depends_on": [
@@ -997,6 +1019,51 @@
           "status": "in_progress",
           "note": "已实现规范、逐场详述/分集协议和公开离线合成测试；真实专业审稿及成片质量评估尚缺，继续保持进行中",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/28"
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "经国际导演一手资料对标，明确原来的全保留只应是来源改稿审计，不得阻断导演主动编排短版；在D14中整改，单集90秒门槛不变",
+          "evidence_ref": ""
+        }
+      ]
+    },
+    {
+      "id": "QO-D14",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "in_progress",
+      "title": "总导演主动创意剪辑与重大压缩权",
+      "observed_in": "screenplay_series_delivery.director_breakdown_request/validate_breakdown/build_per_episode_crew; screenplay_director_handoff.director_request; agent_role_contracts.py",
+      "problem": "当前完整剧本所有beat被强制按原顺序和原长保留，剧本10分钟只能分至少7集；总导演即使认为节奏平庸且3集能有效表达，也不能主动提出删场、压缩、重排及新的导演剪辑版本",
+      "root_cause": "为了防止静默丢稿，把来源审计完整性错当成最终影片必须逐节拍原样保留；缺导演整体创作诊断、不同长度的导演cut构思、编剧协作返修与新权威拍摄稿的版本链",
+      "solution": "依据DGA导演参与剧本和剪辑的实际职责及ScreenSkills/BFI名导完整访谈，新增导演独立全稿读片诊断和有因果理由的两套剪辑方案；每源beat可retain/condense/omit并逐项解释观众收获及艺术代价、核心事实/人物意义风险；可设计10分钟→3×80秒但不是自动更优秀；涉及剧本正文更改必须发编剧精确返修并重审新版本，原稿不覆盖，批准后的新拍摄剧本再送现有90秒分集专业团队；单纯视听层微调由导演自主",
+      "acceptance": "同一公开虚构10分钟剧本提出3集240秒和较长自然断集两个有差异的cut，逐beat取舍完整且新剪辑时间不超90秒/集；拒绝无理由删除、假来源、篡改授权、伪造已批准；能指出理论命题反转、角色选择失因等阻断；能为正当删改生成定点编剧返修单而不是硬塞全部节拍；独立专业盲审对比两版思想/情绪/节奏后才能认定一流质量",
+      "ai_video_constraint": "AI片段生成≤数秒/十数秒是镜头技术限制，与90秒每集及整个母稿时长分层；导演先进行无付费故事剪辑，再决定每集镜头/供应商路由；可选资料页仅原稿含实际资料才在最后1-2秒显示且计入上限",
+      "depends_on": [
+        "QO-D13",
+        "QO-D12",
+        "QO-W11"
+      ],
+      "legacy_links": [],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "用户要求导演能够拒绝平庸冗长剧本、主动建议剧本十分钟压缩为例如三集；已读DGA/ScreenSkills和多篇名导完整访谈，开始解决全保留门禁缺陷",
+          "evidence_ref": ""
         }
       ]
     },
