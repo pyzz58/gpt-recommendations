@@ -421,7 +421,7 @@ def episode_director_request(handoff, dossier, breakdown, packet, episode_id):
     # The director's actual model-facing message must receive the specific
     # per-episode artistic brief and relevant detailed writer scene notes.
     # Returning them only in result metadata would not guide a real Agent.
-    separator = "\\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\\n"
+    separator = "\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\n"
     before, found, encoded = result["messages"][1]["content"].partition(separator)
     _need(bool(found), "SERIES_ROLE_PROMPT_FORMAT")
     try:
