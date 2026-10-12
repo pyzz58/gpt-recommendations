@@ -204,10 +204,17 @@ def validate_command(base, state, command):
         by_shot = work["per_shot"]
         _require(isinstance(by_shot, dict) and set(by_shot) == set(shot_ids),
                  "COMMAND_SHOT_COVERAGE")
+        specifics = set()
         for sid, instruction in by_shot.items():
             _exact(instruction, SHOT_FIELDS, "COMMAND_SHOT_DIRECTION_SHAPE")
             for field in SHOT_FIELDS:
                 _text(instruction[field], "COMMAND_SHOT_DIRECTION_VAGUE")
+            signature = (
+                instruction["dramatic_beat"].strip(),
+                instruction["department_execution"].strip())
+            _require(signature not in specifics,
+                     "COMMAND_REPEATED_GENERIC_SHOT_DIRECTION")
+            specifics.add(signature)
     edges = command["interfaces"]
     _require(isinstance(edges, list) and len(edges) == len(EDGES),
              "COMMAND_CROSS_DEPARTMENT_COUNT")
