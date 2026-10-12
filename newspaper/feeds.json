@@ -3,10 +3,10 @@
   "max_per_category": {
     "全球新闻": 3,
     "美股与投资": 3,
-    "美联储与宏观": 2,
+    "美联储与宏观": 1,
     "创业与商业模式": 2,
     "AI与科技": 2,
-    "医疗与科学": 2
+    "医疗与科学": 1
   },
   "feeds": {
     "全球新闻": [
@@ -178,8 +178,8 @@
       }
     ]
   },
-  "longread_max_chars": 6500,
-  "longread_min_chars": 1400,
+  "longread_max_chars": 18000,
+  "longread_min_chars": 1100,
   "candidate_pool_per_category": 20,
   "source_limit_per_category": 2,
   "grammar_examples_per_article": 3,
@@ -194,13 +194,13 @@
     "description": "Transparent heuristic only; outlet agreement not verified fact."
   },
   "reading_policy": {
-    "mode": "consecutive_complete_paragraphs",
-    "description": "Do not assemble article paragraphs from distant sections. Readable selection begins at the lead, stops cleanly at a whole-paragraph boundary; never impersonate a fully rewritten news feature.",
-    "target_chinese_characters": "approximately 700-1400 if sufficient source evidence; not a guarantee",
-    "editorial_goal": "prioritize fewer complete narratives instead of 26 fragmented pieces",
-    "is_original_synthesis": false
+    "mode": "full_extracted_original_if_accessible",
+    "description": "Keep all accessible consecutive source paragraphs, preserve sentence order, no LLM journalist rewrite. When extractor cannot access full story, show best available contiguous section without inventing missing material.",
+    "display_links": false,
+    "body": "english_original_sentence_then_matching_chinese",
+    "commentary": "independent_email_body_ai"
   },
-  "report_mode": "global_situation_adviser",
+  "report_mode": "private_original_bilingual_newspaper",
   "global_adviser": {
     "show_headline_roundup": false,
     "bilingual_format": "sentence_english_followed_immediately_by_chinese",
