@@ -10,6 +10,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import agent_team
+import agent_role_contracts
 import director
 import screenplay_adaptation as script
 import screenplay_director_handoff as handoff
@@ -63,6 +64,41 @@ class ScreenplayDirectorHandoffTests(unittest.TestCase):
         self.assertFalse(model_task["external_model_call_authorized"])
         self.assertFalse(compiled["reviewer_identity_authenticated"])
         self.assertFalse(compiled["paid_video_authorized"])
+
+    def test_adapted_screenplay_changes_downstream_script_edit_to_continuity_only(self):
+        assembled = self.accept()
+        source = assembled["screenplay_fountain"]
+        base = assembled["reconstructed_base"]
+        self.assertEqual(base["screenplay_handoff_mode"]["kind"],
+                         "adapted_screenplay_planning_only")
+        director_role = agent_role_contracts.build_role_messages(
+            base, assembled["crew"], "director_brief", source_text=source)
+        self.assertIn("总导演与编剧分工", director_role["messages"][0]["content"])
+        self.assertIn("不能重新设计剧情", director_role["messages"][0]["content"])
+        self.assertNotIn("未经核准自行重写", director_role["messages"][0]["content"])
+        team = agent_team.submit(
+            assembled["crew"], agent_team.packet(assembled["crew"], "director_brief"),
+            {"creative_brief": {"audience": "虚构观众", "core_conflict": "母女沟通"}})
+        self.assertEqual(agent_team.ready(team), ["script_edit"])
+        script_role = agent_role_contracts.build_role_messages(
+            base, team, "script_edit", source_text=source)
+        msg = script_role["messages"][0]["content"]
+        self.assertIn("本阶段转为剧本连续性审查", msg)
+        self.assertIn("不再重复重写剧情", msg)
+        self.assertIn("requires_user_approval=true", msg)
+        self.assertFalse(script_role["external_model_call_authorized"])
+        tampered = deepcopy(base)
+        tampered["screenplay_handoff_mode"]["screenplay_sha256"] = "wrong"
+        stale = agent_team.start(tampered, source_text=source)
+        with self.assertRaisesRegex(ValueError, "CREW_SCREENPLAY_BOUNDARY_INVALID"):
+            agent_role_contracts.build_role_messages(
+                tampered, stale, "director_brief", source_text=source)
+
+    def test_legacy_screenwriter_stage_unchanged_for_old_plan(self):
+        ordinary_team = agent_team.start(self.base, source_text=self.source)
+        msg = agent_role_contracts.build_role_messages(
+            self.base, ordinary_team, "director_brief", source_text=self.source)
+        self.assertNotIn("总导演与编剧分工", msg["messages"][0]["content"])
 
     def test_review_has_no_prechecked_approvals(self):
         self.assertIsNone(self.form["review_intent"])

@@ -199,9 +199,19 @@ def prepare_handoff(original_plan, episode_source, packet, review_decision,
     _pacing(packet["proposal"])
     rebuilt = deepcopy(expected["shot_plan_preview"]["plan"])
     _cast(original_plan, rebuilt, packet["proposal"], cast_bindings)
+    canonical_script = expected["screenplay_fountain"]
+    # Route the downstream legacy script_edit stage to SCRIPT CONTINUITY
+    # instead of a second unrequested narrative rewrite. This is only
+    # a planning provenance marker; it does not authenticate author consent.
+    rebuilt["screenplay_handoff_mode"] = {
+        "kind": "adapted_screenplay_planning_only",
+        "screenplay_sha256": _digest(canonical_script),
+        "original_manuscript_sha256": _digest(episode_source),
+        "no_silent_story_or_dialogue_rewrite": True,
+        "reviewer_identity_authenticated": False,
+    }
     err, _ = director.validate(rebuilt)
     _ensure(not err, "SCRIPT_DIRECTOR_BASE_INVALID")
-    canonical_script = expected["screenplay_fountain"]
     # Prevent the crew from accidentally treating the original prose as the
     # latest creative authority. The screenplay text is the source-bound
     # immutable script for director planning, while manuscript hash persists.
