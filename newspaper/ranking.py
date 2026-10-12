@@ -160,35 +160,65 @@ def rank_and_pool(
     selected = []
     counts: dict[str, int] = defaultdict(int)
     chosen_urls = set()
-    # Two passes: top story first, then alternative reporting from different
-    # sources. Finally use any remaining lower priority articles as fallback.
-    for backup_pass in (False, True):
+
+    def add_article(article: dict) -> bool:
+        if article["url"] in chosen_urls:
+            return False
+        selected.append(article)
+        chosen_urls.add(article["url"])
+        counts[article["source"]] += 1
+        return True
+
+    # Reserve some slots for an independently published alternative report on
+    # the *same* story. Without this reservation, a large set of distinct
+    # stories would consume all slots and the backup pass would never run.
+    primary_slots = max(1, round(pool_size * 0.75))
+    for variants in groups_with_scores:
+        if len(selected) >= primary_slots:
+            break
+        primary = variants[0]
+        if counts[primary["source"]] < max_per_source_first_pass:
+            add_article(primary)
+        else:
+            alternate = next(
+                (a for a in variants if
+                 counts[a["source"]] < max_per_source_first_pass), None
+            )
+            if alternate:
+                add_article(alternate)
+
+    # Source-independent backups help when the first article cannot be read.
+    covered_stories = {a["story_id"] for a in selected}
+    for variants in groups_with_scores:
+        if len(selected) >= pool_size:
+            break
+        if variants[0]["story_id"] not in covered_stories:
+            continue
+        already = {a["source"] for a in selected
+                   if a["story_id"] == variants[0]["story_id"]}
+        for article in variants:
+            if (article["source"] not in already and
+                    counts[article["source"]] < max_per_source_first_pass and
+                    add_article(article)):
+                break
+
+    # If there are few alternative outlets, fill the remaining slots with the
+    # next-ranked distinct events rather than making up missing articles.
+    if len(selected) < pool_size:
         for variants in groups_with_scores:
             if len(selected) >= pool_size:
                 break
-            pool = variants if not backup_pass else variants[1:]
-            if not backup_pass:
-                pool = variants[:1]
-            for article in pool:
-                if article["url"] in chosen_urls:
-                    continue
-                if counts[article["source"]] >= max_per_source_first_pass:
-                    continue
-                if backup_pass and any(
-                    old["story_id"] == article["story_id"] and old["source"] == article["source"]
-                    for old in selected
-                ):
-                    continue
-                selected.append(article)
-                chosen_urls.add(article["url"])
-                counts[article["source"]] += 1
-                break
+            for article in variants:
+                if (counts[article["source"]] < max_per_source_first_pass and
+                        add_article(article)):
+                    break
+
     if len(selected) < pool_size:
         for variants in groups_with_scores:
+            if len(selected) >= pool_size:
+                break
             for article in variants:
                 if len(selected) >= pool_size:
                     break
-                if article["url"] not in chosen_urls:
-                    selected.append(article)
-                    chosen_urls.add(article["url"])
+                add_article(article)
     return selected[:pool_size]
