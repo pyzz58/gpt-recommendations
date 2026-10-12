@@ -20,7 +20,8 @@ import feedparser
 import requests
 from reader import fetch_reading
 from ranking import rank_and_pool
-from english_lessons import attach_lessons
+from english_lessons import attach_lessons, english_parser
+from adviser import domain_advice, article_advice, global_linkages
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -209,172 +210,182 @@ def ensure_argos_translator():
 
 
 def bilingualize(grouped: dict, translator) -> dict:
-    """Translate the extracted article reading edition, not merely RSS blurbs."""
-    result = {}
-    for category, articles in grouped.items():
-        result[category] = []
-        for article in articles:
-            translated = dict(article)
-            translated["title_zh"] = clean(translator.translate(article["title"]), 280)
-            # Offline translation may collapse lines. Translate each paragraph individually.
-            blocks = [
-                para for para in article["reading_en"].split("\n\n")
-                if para.strip()
-            ]
-            translated["reading_zh"] = "\n\n".join(
-                translator.translate(block) for block in blocks
-            )
-            result[category].append(translated)
-    return result
+    """Strict EN sentence immediately followed by its own ZH translation.
 
+    spaCy locates sentence boundaries; Argos translates the corresponding
+    sentence, never a disconnected entire paragraph. Preserves paragraph IDs.
+    """
+    nlp = english_parser()
+    output = {}
+    for category, articles in grouped.items():
+        output[category] = []
+        for article in articles:
+            entry = dict(article)
+            entry["title_zh"] = clean(translator.translate(article["title"]), 280)
+            pairs = []
+            for paragraph_id, paragraph in enumerate(article["reading_en"].split("\n\n")):
+                paragraph = paragraph.strip()
+                if not paragraph:
+                    continue
+                doc = nlp(paragraph)
+                sentences = [sent.text.strip() for sent in doc.sents if sent.text.strip()]
+                if not sentences:
+                    sentences = [paragraph]
+                for sentence in sentences:
+                    chinese = translator.translate(sentence).strip()
+                    if not chinese:
+                        raise RuntimeError("Translation returned blank; refuse misaligned bilingual report.")
+                    pairs.append({
+                        "en": sentence, "zh": chinese, "paragraph_id": paragraph_id,
+                    })
+            if not pairs:
+                raise RuntimeError("No sentence pairs extracted from article.")
+            entry["bilingual_pairs"] = pairs
+            # Backward compatibility with non-visual tests/report consumers.
+            entry["reading_zh"] = "\n\n".join(
+                " ".join(p["zh"] for p in pairs if p["paragraph_id"] == pid)
+                for pid in sorted(set(p["paragraph_id"] for p in pairs))
+            )
+            output[category].append(entry)
+    return output
 
 def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict) -> tuple[str, str]:
+    """Research-adviser report, not a top-five news roundup.
+
+    All original English sentences are directly followed by their Chinese
+    translations. Advice is rule-based, evidence-limited, explicitly labelled.
+    """
     day = news_day.isoformat()
-    total = sum(map(len, grouped.values()))
+    total = sum(len(articles) for articles in grouped.values())
     parts = [
         '<html><body style="font-family:Arial,sans-serif;max-width:800px;'
-        'margin:auto;color:#172235;line-height:1.7">',
-        '<h1 style="color:#203b67">全球新闻 · Newspaper</h1>',
-        f'<p><strong>{html.escape(day)} 北京时间前一日新闻</strong> · '
-        f'{total} 篇连续正文中英对照阅读 · 每日 07:00 定时投递</p>',
-        '<p style="font-size:13px;color:#657187">正文由公开可读取新闻页面提取并截选，'
-        '译文由离线翻译生成；并非付费文章全文、也非 AI 事实核查。'
-        '本版优先选取来自文章开头、顺序连续且完整的段落，不再从文中和文末随机拼接。'
-        '原文可能更长；推荐分数由关键词、主题匹配、不同媒体覆盖度、'
-        '新动作或数据线索和时效性计算，不能代表事实已核验。</p>',
+        'margin:auto;color:#172235;line-height:1.65">',
+        '<h1>全球形势顾问报告 · Global Situation Adviser</h1>',
+        f'<p>{html.escape(day)} 北京时间昨日观察 · {total} 篇证据材料</p>',
+        '<p style="color:#687589;font-size:13px">本报告先按领域梳理可核实事实，'
+        '再给出分析框架、后续观察指标与不确定性。现阶段分析为规则生成，'
+        '不是大模型独立调查，也不是事实核验或投资建议；'
+        '报道正文是公开可读取的连续选段，不能替代完整授权原文。</p>',
     ]
-    plain = [f"全球新闻 Newspaper | {day}", f"北京时间前一日新闻 · {total} 篇连续阅读文章（非全文转载）"]
-    # Editorial front page: high-scoring articles, no duplicates or fabricated headlines.
-    all_articles = [
-        article for articles in grouped.values() for article in articles
+    plain = [
+        f"全球形势顾问报告 | {day}",
+        f"已采集可读材料：{total} 篇；顾问分析为可解释的规则框架，尚非大模型研究结论。",
     ]
-    ranked_articles = sorted(
-        all_articles, key=lambda a: a.get("importance_score", 0), reverse=True,
-    )
-    # Cover different subjects first; otherwise the five highest-scored
-    # stories might all be about the same topic.
-    top_articles = []
-    seen_categories = set()
-    for item in ranked_articles:
-        if item["category"] not in seen_categories:
-            top_articles.append(item)
-            seen_categories.add(item["category"])
-        if len(top_articles) == 5:
-            break
-    for item in ranked_articles:
-        if len(top_articles) == 5:
-            break
-        if item not in top_articles:
-            top_articles.append(item)
-    if top_articles:
-        parts.append('<h2>今日重点 · Editor Picks</h2><ol>')
-        plain.append("\n【今日重点 / Editor Picks】")
-        for article in top_articles:
-            label = html.escape(article.get("title_zh") or article["title"])
-            score = int(article.get("importance_score", 0))
-            parts.append(
-                f'<li>{label} <span style="color:#687489">'
-                f'（推荐参考分 {score}/100）</span></li>'
-            )
-            plain.append(f"{label} · 推荐参考分 {score}/100")
-        parts.append('</ol><p style="font-size:12px;color:#687489">'
-                     '推荐分数是可解释的程序启发式结果，不代表投资建议或事实核查。</p>')
-    for category, articles in grouped.items():
-        parts.append(
-            f'<h2 style="border-bottom:2px solid #edf0f6;padding-bottom:7px">'
-            f'{html.escape(category)} ({len(articles)})</h2>'
-        )
-        plain.append(f"\n【{category}】({len(articles)})")
-        if not articles:
-            parts.append('<p style="color:#748094">当天没有可读取且符合日期要求的报道；已尝试候补新闻源。</p>')
-            plain.append("当天没有可读取的有效报道；已尝试候补来源。")
-        for a in articles:
-            title = html.escape(a["title"])
-            zh = html.escape(a["title_zh"])
-            body = html.escape(a["reading_en"]).replace("\n\n", "</p><p>")
-            body_zh = html.escape(a["reading_zh"]).replace("\n\n", "</p><p>")
-            source = html.escape(a["source"])
-            url = html.escape(a["url"], quote=True)
-            when = a["date"].astimezone(now.tzinfo).strftime("%Y-%m-%d %H:%M")
-            omitted = (
-                "（从导语起连续选段，末尾为完整段落，非全文）"
-                if a["reading_abbreviated"] else "（可访问正文已全部提取）"
-            )
-            score = int(a.get("importance_score", 0))
-            why = html.escape(a.get("why_recommended", "未生成评分依据"))
-            parts.append(
-                '<div style="font-size:12px;color:#506682">'
-                f'推荐参考分 {score}/100 · {why}</div>'
-            )
-            parts.append(
-                '<article style="padding:16px 0;border-bottom:1px solid #e2e6ed">'
-                f'<div style="font-size:12px;color:#687489">{source} · {when} 北京时间 · '
-                f'{omitted}</div><h3>{title}</h3>'
-                f'<p style="font-weight:600">{zh}</p>'
-                '<div style="font-size:13px;color:#607188;margin:6px 0">'
-                '正文连续阅读 · 中文（离线机器翻译）</div>'
-                '<div style="background:#f5f7fa;border-radius:6px;padding:8px 12px">'
-                f'<p>{body_zh}</p></div>'
-                '<p style="font-size:12px;color:#657187">English reading · 英文阅读</p>'
-                f'<div style="font-size:14px;color:#37485e"><p>{body}</p></div>'
-                f'<p><a href="{url}">原始来源 · Original source</a></p>'
-                '</article>'
-            )
-            plain.append(
-                f"推荐参考分 {a.get('importance_score', 0)}/100 · {a.get('why_recommended', '')}\n"
-                f"{a['title']}\n{a['title_zh']}\n"
-                f"【中文阅读】\n{a['reading_zh']}\n"
-                f"【English reading】\n{a['reading_en']}\n"
-                f"{a['source']} | {a['url']}"
-            )
-            # Attach vocabulary and actual grammatical examples immediately below
-            # THIS article rather than a generic topic list at the end of the email.
-            vocab = a.get("vocabulary", [])
-            lessons = a.get("grammar_lessons", [])
-            if vocab or lessons:
-                parts.append('<section style="margin:10px 0 20px;padding:10px 14px;'
-                             'background:#eef4fb;border-radius:6px">'
-                             '<h4>English Learning · 本篇英语学习</h4>')
-                plain.append("\n【本篇英语学习】")
-            if vocab:
-                parts.append('<p><strong>Vocabulary · 词汇</strong></p><ul>')
-                for word in vocab:
-                    parts.append(
-                        f'<li><strong>{html.escape(word["word"])}</strong>：'
-                        f'{html.escape(word["definition"])}</li>'
-                    )
-                    plain.append(f'{word["word"]} — {word["definition"]}')
-                parts.append('</ul>')
-            if lessons:
-                parts.append('<p><strong>Grammar Focus · 本篇语法</strong></p>')
-                for lesson in lessons:
-                    label = html.escape(lesson["title"])
-                    quote = html.escape(lesson["sentence_en"])
-                    cn = html.escape(lesson["sentence_zh"])
-                    pattern = html.escape(lesson["pattern"])
-                    note = html.escape(lesson["explanation"])
-                    parts.append(
-                        f'<div style="margin-bottom:12px"><strong>{label}</strong>'
-                        f'<p style="margin:4px 0"><em>{quote}</em></p>'
-                        f'<p style="margin:4px 0">{cn}</p>'
-                        f'<p style="margin:4px 0">结构：{pattern}</p>'
-                        f'<p style="margin:4px 0">用法：{note}</p></div>'
-                    )
-                    plain.append(
-                        f'\n{lesson["title"]}\n原文例句：{lesson["sentence_en"]}'
-                        f'\n中文：{lesson["sentence_zh"]}'
-                        f'\n结构：{lesson["pattern"]}\n用法：{lesson["explanation"]}'
-                    )
-            if vocab or lessons:
-                parts.append('</section>')
+    def p(text: str):
+        return html.escape(str(text))
 
+    for category, articles in grouped.items():
+        advice = domain_advice(category, articles)
+        parts.append(
+            f'<h2 style="margin-top:30px;border-bottom:2px solid #e3e9f3">'
+            f'{p(advice["heading"])}</h2>'
+            f'<p><strong>本领域形势：</strong>{p(advice["situation"])}</p>'
+            f'<p><strong>分析视角：</strong>{p(advice["analytical_lens"])}</p>'
+            f'<p><strong>接下来关注：</strong>{p(advice["what_to_watch"])}</p>'
+        )
+        plain.extend([
+            f"\n【{advice['heading']}】",
+            f"本领域形势：{advice['situation']}",
+            f"分析视角：{advice['analytical_lens']}",
+            f"接下来关注：{advice['what_to_watch']}",
+        ])
+        if not articles:
+            parts.append('<p>昨天未采到满足正文质量与日期要求的材料，'
+                         '因此不表示该领域无事发生。</p>')
+            continue
+        for idx, a in enumerate(articles, 1):
+            title = p(a["title"])
+            zh_title = p(a["title_zh"])
+            source = p(a.get("source", ""))
+            time = a["date"].astimezone(now.tzinfo).strftime("%Y-%m-%d %H:%M")
+            url = p(a.get("url", ""))
+            parts.append(
+                f'<section style="margin:24px 0;padding-top:12px;border-top:1px solid #dfe5ed">'
+                f'<h3 style="margin-bottom:6px">{idx}. {zh_title}</h3>'
+                f'<div style="color:#64748b;font-size:13px">{source} · {time} 北京时间</div>'
+                '<div style="margin-top:12px;padding:10px 13px;background:#f3f6fb;border-radius:6px">'
+                '<strong>英文标题 · English title</strong>'
+                f'<p style="margin:4px 0">{title}</p>'
+                f'<p style="margin:4px 0;color:#1d4b73">{zh_title}</p></div>'
+                '<h4 style="margin-top:16px">事实材料 · Sentence-by-sentence bilingual reading</h4>'
+            )
+            plain.extend([
+                f"\n{idx}. {a['title']}",a["title_zh"],
+                f"{a.get('source','')} | {time} 北京时间",
+                "【事实材料：一句英文紧跟一句中文】",
+            ])
+            pairs = a.get("bilingual_pairs", [])
+            if not pairs:
+                # Compatibility with old fixtures/manual imports, never
+                # pretend a full paragraph is already sentence aligned.
+                pairs = [{"en": a.get("reading_en", ""), "zh": a.get("reading_zh", ""),
+                          "paragraph_id": 0}]
+            last_paragraph = -1
+            for pair in pairs:
+                pid = pair.get("paragraph_id", 0)
+                if pid != last_paragraph and last_paragraph != -1:
+                    parts.append('<div style="height:10px"></div>')
+                    plain.append("")
+                last_paragraph = pid
+                parts.append(
+                    '<div style="margin-bottom:12px;padding:8px 12px;border-left:2px solid #dde6f0">'
+                    f'<div style="color:#283547">{p(pair["en"])}</div>'
+                    f'<div style="color:#215582;margin-top:3px">{p(pair["zh"])}</div>'
+                    '</div>'
+                )
+                plain.extend([pair["en"], pair["zh"], ""])
+            evaluation = article_advice(a)
+            parts.append(
+                '<div style="margin:16px 0;padding:12px;background:#f7f8fa;border-radius:6px">'
+                '<h4>顾问观察 · Analysis</h4>'
+                f'<p><strong>为什么需要关注：</strong>{p(evaluation["assessment"])}</p>'
+                f'<p><strong>接下来看什么：</strong>{p(evaluation["watch"])}</p>'
+                f'<p><strong>证据限制：</strong>{p(evaluation["uncertainty"])}</p>'
+                f'<p><a href="{url}">核对来源 · Original reporting</a></p>'
+                '</div>'
+            )
+            plain.extend([
+                "【顾问观察（规则推导，不代表确认的未来事实）】",
+                f"为什么关注：{evaluation['assessment']}",
+                f"接下来看什么：{evaluation['watch']}",
+                f"证据限制：{evaluation['uncertainty']}",
+                f"来源：{a.get('url','')}",
+            ])
+            lessons = a.get("grammar_lessons", [])
+            if lessons:
+                parts.append('<div style="padding:12px;background:#eef4fb;border-radius:6px">'
+                             '<h4>Grammar Focus · 本篇语法</h4>')
+                plain.append("【本篇语法】")
+                for lesson in lessons:
+                    parts.append(
+                        f'<p><strong>{p(lesson["title"])}</strong></p>'
+                        f'<p style="margin:3px 0">{p(lesson["sentence_en"])}</p>'
+                        f'<p style="margin:3px 0;color:#215582">{p(lesson["sentence_zh"])}</p>'
+                        f'<p style="font-size:13px">结构：{p(lesson["pattern"])}；'
+                        f'用法：{p(lesson["explanation"])}</p>'
+                    )
+                    plain.extend([
+                        lesson["title"], lesson["sentence_en"], lesson["sentence_zh"],
+                        f"结构：{lesson['pattern']}",
+                        f"用法：{lesson['explanation']}",
+                    ])
+                parts.append('</div>')
+            parts.append('</section>')
+    links = global_linkages(grouped)
+    if links:
+        parts.append('<h2>跨领域联动研判 · Connections to Watch</h2>')
+        plain.append("\n【跨领域联动研判】")
+        for link in links:
+            parts.append(f'<p><strong>{p(link["title"])}</strong></p>'
+                         f'<p>{p(link["caution"])}</p>')
+            plain.extend([link["title"], link["caution"]])
     parts.append(
-        '<p style="font-size:12px;color:#687489">'
-        '未绕过付费墙或登录限制；未能取得正文的新闻会改用可访问报道。'
-        '自动采集需尊重各来源使用条款，个人阅读不代表可公开转载。</p></body></html>'
+        '<p style="font-size:12px;color:#687589">请注意：'
+        '本版不做原创大模型深度调查，模板只提供分析框架；'
+        '未授权的受版权保护报道不得作为完整原文对外公开转载。'
+        '不确定事实会保持不确定。</p></body></html>'
     )
     return "\n".join(parts), "\n\n".join(plain)
-
 
 def send_email(subject: str, html_body: str, text_body: str):
     sender = os.environ.get("SMTP_FROM", "").strip()
@@ -422,7 +433,11 @@ def main():
                 "reading_abbreviated": True,
                 "importance_score": 78,
                 "why_recommended": "仅供版式测试的虚构评分依据",
-                "vocabulary": [{"word": "example", "definition": "例子"}],
+                "bilingual_pairs": [{
+                    "en": "This is a fictional example.",
+                    "zh": "这是一个虚构的例子。",
+                    "paragraph_id": 0,
+                }],
                 "grammar_lessons": [{
                     "title": "一般过去时 · Simple Past",
                     "sentence_en": "The group reported the results yesterday.",
@@ -461,7 +476,7 @@ def main():
             bilingualize(readable, translator),
             translator,
             grammar_limit=settings.get("grammar_examples_per_article", 3),
-            vocab_limit=settings.get("vocabulary_per_article", 5),
+            vocab_limit=0,
         )
     html_body, text_body = render(grouped, now, news_day, diagnostics)
     if args.dry_run or args.demo:
