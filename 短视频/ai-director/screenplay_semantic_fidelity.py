@@ -153,14 +153,21 @@ def validate_manifest(intake, document, manifest):
     }
 
 
-def _checked_packet(intake, document, wrapper):
+def _checked_packet(intake, document, wrapper, manifest):
     _verify_intake(intake, document)
+    receipt = validate_manifest(intake, document, manifest)
+    _require(isinstance(wrapper, dict) and
+             wrapper.get("pre_adaptation_idea_manifest_digest") ==
+                 receipt["manifest_digest"],
+             "MEANING_PRE_SCRIPT_IDEA_BINDING_MISSING")
     _require(isinstance(wrapper, dict) and
              isinstance(wrapper.get("screenplay_review_packet"), dict),
              "MEANING_WRAPPER_MISSING")
     packet = wrapper["screenplay_review_packet"]
     try:
-        fresh = fulltext.review_packet(intake, document, packet["proposal"])
+        fresh = fulltext.review_packet(
+            intake, document, packet["proposal"],
+            source_idea_manifest=manifest)
     except (fulltext.FulltextIntakeError,
             screenplay_adaptation.AdaptationError, KeyError, TypeError, ValueError):
         raise MeaningReviewError("MEANING_SCREENPLAY_REVALIDATION_FAILED") from None
@@ -172,7 +179,7 @@ def _checked_packet(intake, document, wrapper):
 def build_semantic_review_request(intake, document, wrapper, manifest):
     """Second, independent reading with full original, screenplay and ideas."""
     receipt = validate_manifest(intake, document, manifest)
-    packet = _checked_packet(intake, document, wrapper)
+    packet = _checked_packet(intake, document, wrapper, manifest)
     scene_beats = [{
         "scene_id": scene["id"],
         "beats": [{
@@ -227,7 +234,7 @@ def validate_semantic_review(intake, document, wrapper, manifest, review):
     Actual semantic correctness demands an independent qualified human read.
     """
     receipt = validate_manifest(intake, document, manifest)
-    packet = _checked_packet(intake, document, wrapper)
+    packet = _checked_packet(intake, document, wrapper, manifest)
     screenplay = packet["screenplay_fountain"]
     _require(isinstance(review, dict) and set(review) == {
         "version", "scope_digest", "manifest_digest", "proposal_digest",
