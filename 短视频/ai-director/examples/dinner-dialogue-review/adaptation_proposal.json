@@ -16,7 +16,7 @@
           ],
           "operation": "reorder",
           "dramatic_function": "冷开场：先揭示情感冲突而非解释背景",
-          "action": "极近景：母亲筷子没有抬起，压低声音说完这句话。画面停在女儿反应前切黑。",
+          "action": "母亲的筷子停在半空。她放轻声音，把真正想问的话说出口。小宁一下怔住，来不及回答。",
           "dialogue": [
             {
               "speaker": "母亲",
@@ -35,7 +35,7 @@
           ],
           "operation": "reorder",
           "dramatic_function": "回切交代女儿的心理预设",
-          "action": "切至数秒前的餐桌全景：菜冒热气却无人动筷，手机在小宁右侧轻震，女儿低头。",
+          "action": "时间回到几秒前。餐桌上饭菜尚未动过；手机在小宁右侧轻轻振动。小宁下意识看向屏幕。",
           "dialogue": [],
           "voiceover": "我以为，她又要问工作。",
           "duration_s": 6,
@@ -49,7 +49,7 @@
           ],
           "operation": "merge",
           "dramatic_function": "问题与防御回答同镜呈现",
-          "action": "双人中景保持轴线，母亲先发问，小宁眼神落回手机，停顿后简短答复。",
+          "action": "母亲看着女儿问话。小宁不敢抬头，视线停在手机上，过了一会儿才简短回答。",
           "dialogue": [
             {
               "speaker": "母亲",
@@ -79,7 +79,7 @@
           ],
           "operation": "split",
           "dramatic_function": "选择说实话之前的无声行动",
-          "action": "手机特写，小宁将手机缓慢翻至屏幕朝下，手指离开屏幕，母亲没有打断。",
+          "action": "小宁慢慢把手机翻成屏幕朝下，手指一根根松开。母亲没有打断她。",
           "dialogue": [],
           "voiceover": "",
           "duration_s": 6,
@@ -92,7 +92,7 @@
           ],
           "operation": "split",
           "dramatic_function": "女儿终于承认脆弱",
-          "action": "小宁轻轻抬头，眼眶发紧又控制住声音。",
+          "action": "小宁抬起头，嘴唇动了动，终于说出实话。",
           "dialogue": [
             {
               "speaker": "小宁",
@@ -111,7 +111,7 @@
           ],
           "operation": "keep",
           "dramatic_function": "不提供说教，以陪伴收束",
-          "action": "母亲没有追问，轻轻将饭碗推近；小宁点头，镜头停在两人同框的暖光。",
+          "action": "母亲没有追问，将饭碗轻轻推近。小宁点头，两人重新坐在同一张饭桌前。",
           "dialogue": [
             {
               "speaker": "母亲",
