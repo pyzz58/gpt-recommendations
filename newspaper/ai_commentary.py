@@ -8,8 +8,9 @@ import os
 import requests
 from llm_budget import (
     DEFAULT_MODEL, MAX_OUTPUT_TOKENS, MAX_RMB,
-    actual_cost_ceiling, preflight,
+    actual_window_estimate, beijing_offpeak, preflight,
 )
+from zoneinfo import ZoneInfo
 
 LOG = logging.getLogger("newspaper.ai")
 API_URL = "https://api.deepseek.com/chat/completions"
@@ -62,7 +63,8 @@ def analyze_one_call(grouped: dict, day: dt.date,
     if not key or not key.strip():
         raise ValueError("Missing Newspaper DeepSeek API key")
     messages = prepare_messages(grouped, day)
-    input_bound, worst = preflight(messages, model, MAX_OUTPUT_TOKENS)
+    request_time = dt.datetime.now(ZoneInfo("Asia/Shanghai"))
+    input_bound, worst = preflight(messages, model, MAX_OUTPUT_TOKENS, at=request_time)
     request = transport or requests.post
     response = request(
         API_URL, headers={
@@ -88,7 +90,7 @@ def analyze_one_call(grouped: dict, day: dt.date,
     if len(text) < 240 or len(text) > 7000:
         raise RuntimeError("Invalid AI commentary length")
     usage = result.get("usage")
-    actual_ceiling = actual_cost_ceiling(model, usage)
+    actual_ceiling = actual_window_estimate(model, usage, at=request_time)
     if actual_ceiling >= MAX_RMB:
         # Too late to cancel provider charges, but never silently hide it.
         raise RuntimeError("DeepSeek reported usage over the 0.20 RMB limit")
@@ -100,8 +102,9 @@ def analyze_one_call(grouped: dict, day: dt.date,
         "reported_completion_tokens": int(usage["completion_tokens"]),
         "reported_peak_cost_rmb": str(actual_ceiling),
         "request_count": 1,
+        "rate_window": "offpeak" if beijing_offpeak(request_time) else "peak",
     }
-    LOG.info("One AI commentary call; conservative peak-cost RMB %s",
+    LOG.info("One AI commentary call; conservative window-cost RMB %s",
              actual_ceiling)
     return text, info
 
