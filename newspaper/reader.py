@@ -48,36 +48,50 @@ def _normalize_paragraphs(text: str) -> list[str]:
     return result
 
 def _long_read(paragraphs: list[str], max_chars: int) -> tuple[str, bool]:
-    """Select opening, middle and closing *paragraphs*, preserving original order.
+    """Keep only consecutive, complete paragraphs from the article's beginning.
 
-    This is an extractive reading edition rather than an LLM-generated summary;
-    it is not equivalent to the publisher's full article.
+    Older versions jumped among opening/middle/ending paragraphs, which made
+    the article read like random cut-and-paste fragments. Avoid that entirely.
+    A quote-friendly reading selection is not a licensed full-text republication.
     """
-    if not paragraphs:
-        return "", False
+    if not paragraphs or max_chars < 120:
+        return "", bool(paragraphs)
     full = "\n\n".join(paragraphs)
     if len(full) <= max_chars:
         return full, False
-    n = len(paragraphs)
-    # Prioritize the lead and include context from the middle and ending.
-    sequence = list(range(min(n, 5)))
-    middle_start = max(5, n // 3)
-    sequence += list(range(middle_start, min(n, middle_start + 5)))
-    tail_start = max(0, n - 4)
-    sequence += list(range(tail_start, n))
-    chosen = set()
+
+    chosen = []
+    length = 0
+    for para in paragraphs:
+        prospective = length + (2 if chosen else 0) + len(para)
+        if prospective <= max_chars:
+            chosen.append(para)
+            length = prospective
+            continue
+        # Stop at the FIRST paragraph that will not fit. Never jump into the
+        # middle or end of a story to fill the leftover character budget.
+        break
+
+    if chosen:
+        return "\n\n".join(chosen), True
+
+    # The article might be a single enormous paragraph. Prefer complete
+    # sentences; do not cut in the middle of a sentence or quoted statement.
+    candidate = paragraphs[0]
+    sentences = re.split(r"(?<=[.!?])\s+(?=[\"'\u201c\u2018A-Z0-9])", candidate)
+    complete = []
     used = 0
-    for idx in sequence:
-        if idx in chosen:
-            continue
-        p = paragraphs[idx]
-        if used + len(p) + 2 > max_chars:
-            continue
-        chosen.add(idx)
-        used += len(p) + 2
-    if not chosen:  # One exceptionally large paragraph.
-        return full[:max_chars].rsplit(" ", 1)[0], True
-    return "\n\n".join(paragraphs[i] for i in sorted(chosen)), True
+    for sent in sentences:
+        if used + len(sent) + (1 if complete else 0) > max_chars:
+            break
+        complete.append(sent)
+        used += len(sent) + (1 if len(complete) > 1 else 0)
+    if not complete:
+        # A single sentence exceeding max_chars does not produce an orphaned
+        # half-sentence; skip this item so the next accessible article can win.
+        return "", True
+    return " ".join(complete), True
+
 
 def fetch_reading(article: dict, min_chars: int = 450, max_chars: int = 4200) -> dict | None:
     """Return enriched article or None; never substitute the RSS abstract for a real article."""
@@ -100,7 +114,7 @@ def fetch_reading(article: dict, min_chars: int = 450, max_chars: int = 4200) ->
             return None
         raw = trafilatura.extract(
             response.text, include_comments=False, include_tables=False,
-            favor_precision=True, output_format="txt",
+            favor_recall=True, output_format="txt",
         )
         paragraphs = _normalize_paragraphs(raw or "")
         if looks_paywalled("\n".join(paragraphs)):
@@ -110,10 +124,16 @@ def fetch_reading(article: dict, min_chars: int = 450, max_chars: int = 4200) ->
             LOG.warning("Article text not available: %s", url)
             return None
         excerpt, abbreviated = _long_read(paragraphs, max_chars=max_chars)
+        # Reject tiny leftovers rather than quietly sending a short article.
+        if len(excerpt) < min_chars:
+            LOG.warning("No coherent section long enough for a reading: %s", url)
+            return None
         enriched = dict(article)
         enriched["reading_en"] = excerpt
         enriched["reading_abbreviated"] = abbreviated
         enriched["article_chars"] = len("\n\n".join(paragraphs))
+        enriched["reading_chars"] = len(excerpt)
+        enriched["reading_selection"] = "consecutive_from_lead"
         return enriched
     except Exception as exc:
         LOG.warning("Article unavailable: %s: %s", url, exc)

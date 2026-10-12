@@ -236,13 +236,14 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
         'margin:auto;color:#172235;line-height:1.7">',
         '<h1 style="color:#203b67">全球新闻 · Newspaper</h1>',
         f'<p><strong>{html.escape(day)} 北京时间前一日新闻</strong> · '
-        f'{total} 篇中英对照报道 · 每日 07:00 定时投递</p>',
+        f'{total} 篇连续正文中英对照阅读 · 每日 07:00 定时投递</p>',
         '<p style="font-size:13px;color:#657187">正文由公开可读取新闻页面提取并截选，'
         '译文由离线翻译生成；并非付费文章全文、也非 AI 事实核查。'
+        '本版优先选取来自文章开头、顺序连续且完整的段落，不再从文中和文末随机拼接。'
         '原文可能更长；推荐分数由关键词、主题匹配、不同媒体覆盖度、'
         '新动作或数据线索和时效性计算，不能代表事实已核验。</p>',
     ]
-    plain = [f"全球新闻 Newspaper | {day}", f"北京时间前一日新闻 · {total} 篇双语深度阅读选段"]
+    plain = [f"全球新闻 Newspaper | {day}", f"北京时间前一日新闻 · {total} 篇连续阅读文章（非全文转载）"]
     # Editorial front page: high-scoring articles, no duplicates or fabricated headlines.
     all_articles = [
         article for articles in grouped.values() for article in articles
@@ -295,7 +296,10 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
             source = html.escape(a["source"])
             url = html.escape(a["url"], quote=True)
             when = a["date"].astimezone(now.tzinfo).strftime("%Y-%m-%d %H:%M")
-            omitted = "（精选选段，非全文）" if a["reading_abbreviated"] else "（可提取正文）"
+            omitted = (
+                "（从导语起连续选段，末尾为完整段落，非全文）"
+                if a["reading_abbreviated"] else "（可访问正文已全部提取）"
+            )
             score = int(a.get("importance_score", 0))
             why = html.escape(a.get("why_recommended", "未生成评分依据"))
             parts.append(
@@ -307,6 +311,8 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
                 f'<div style="font-size:12px;color:#687489">{source} · {when} 北京时间 · '
                 f'{omitted}</div><h3>{title}</h3>'
                 f'<p style="font-weight:600">{zh}</p>'
+                '<div style="font-size:13px;color:#607188;margin:6px 0">'
+                '正文连续阅读 · 中文（离线机器翻译）</div>'
                 '<div style="background:#f5f7fa;border-radius:6px;padding:8px 12px">'
                 f'<p>{body_zh}</p></div>'
                 '<p style="font-size:12px;color:#657187">English reading · 英文阅读</p>'
