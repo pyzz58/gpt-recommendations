@@ -30,8 +30,8 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: newspaper-daily
-  cancel-in-progress: false
+  group: newspaper-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'daily-live' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   digest:
     runs-on: ubuntu-latest
