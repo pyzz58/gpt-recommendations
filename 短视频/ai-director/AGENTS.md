@@ -5,6 +5,7 @@
 本项目**独立质量总账（唯一 QO 状态权威）**：
 - [质量阶段不可变总纲](quality-optimization/QUALITY_CHARTER.md)
 - [逐问题解决方案、优先级、状态和验收条件](quality-optimization/QUALITY_ISSUES.md)
+- [具体执行批次与每轮 PR 的验收产物](quality-optimization/EXECUTION_PLAN.md)
 - [机器权威登记](quality-optimization/QUALITY_ISSUES.json)
 - [状态校验门禁](quality-optimization/quality_registry.py)
 
