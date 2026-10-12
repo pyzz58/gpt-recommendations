@@ -84,7 +84,8 @@ class QOW01SemanticFidelityTests(unittest.TestCase):
                         "beats": beats}], "omissions": [],
         }
         self.wrapper = intake_module.review_packet(
-            self.intake, ARTICLE, self.proposal)
+            self.intake, ARTICLE, self.proposal,
+            source_idea_manifest=self.manifest)
 
     def _semantics(self, *, proposal_wrapper=None, override=None):
         wrapper = proposal_wrapper or self.wrapper
@@ -157,7 +158,9 @@ class QOW01SemanticFidelityTests(unittest.TestCase):
         next(b for b in altered["scenes"][0]["beats"]
              if b["id"] == self.last_beat_id)["action"] = (
             "大家得出结论：只要过河速度最快，修桥的目的就已经实现。")
-        packet = intake_module.review_packet(self.intake, ARTICLE, altered)
+        packet = intake_module.review_packet(
+            self.intake, ARTICLE, altered,
+            source_idea_manifest=self.manifest)
         # All source IDs mapped, no mechanical omissions -- but original
         # last question has been replaced by an assertive false conclusion.
         self.assertEqual(packet["screenplay_review_packet"]["review"]["source_omitted"], 0)
@@ -272,13 +275,32 @@ class QOW01SemanticFidelityTests(unittest.TestCase):
         self.assertFalse(route["screenplay_artistic_quality_certified"])
         self.assertFalse(route["paid_video_authorized"])
 
+    def test_manifest_cannot_be_replaced_after_screenplay_review(self):
+        attached = self.wrapper["pre_adaptation_idea_manifest_digest"]
+        self.assertEqual(attached, agent_team.fingerprint(self.manifest))
+        replaced = deepcopy(self.manifest)
+        replaced["ideas"][0]["meaning"] = (
+            "事后按新剧本修改原稿核心问题的解释，并不代表已在编剧之前独立登记。")
+        with self.assertRaisesRegex(semantic.MeaningReviewError,
+                                    "PRE_SCRIPT_IDEA_BINDING_MISSING"):
+            semantic.validate_semantic_review(
+                self.intake, ARTICLE, self.wrapper, replaced, self._semantics())
+        unbound = intake_module.review_packet(
+            self.intake, ARTICLE, self.proposal)
+        with self.assertRaisesRegex(semantic.MeaningReviewError,
+                                    "PRE_SCRIPT_IDEA_BINDING_MISSING"):
+            semantic.validate_semantic_review(
+                self.intake, ARTICLE, unbound, self.manifest, self._semantics())
+
     def test_stale_document_and_script_fail_closed(self):
         with self.assertRaisesRegex(semantic.MeaningReviewError, "STALE_SOURCE_INTAKE"):
             semantic.validate_manifest(self.intake, ARTICLE + "假结尾", self.manifest)
         change = deepcopy(self.proposal)
         next(b for b in change["scenes"][0]["beats"]
              if b["id"] == self.last_beat_id)["action"] += "附带新改动"
-        packet = intake_module.review_packet(self.intake, ARTICLE, change)
+        packet = intake_module.review_packet(
+            self.intake, ARTICLE, change,
+            source_idea_manifest=self.manifest)
         with self.assertRaisesRegex(semantic.MeaningReviewError, "REVIEW_STALE"):
             semantic.validate_semantic_review(
                 self.intake, ARTICLE, packet, self.manifest, self._semantics())
