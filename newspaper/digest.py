@@ -23,6 +23,7 @@ from ranking import rank_and_pool
 from english_lessons import attach_lessons, english_parser
 from adviser import domain_advice, article_advice, global_linkages
 from print_report import build_editorial_html, write_pdf, mail_cover
+from ai_commentary import analyze_one_call, email_commentary
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -503,6 +504,26 @@ def main():
             html_body, Path("/tmp") / f"global-briefing-{news_day.isoformat()}.pdf"
         )
         cover_html, cover_txt = mail_cover(news_day)
+        ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
+        if ai_key:
+            try:
+                commentary, usage = analyze_one_call(
+                    grouped, news_day, ai_key, model="deepseek-flash"
+                )
+                cover_html, cover_txt = email_commentary(
+                    news_day, commentary,
+                    sum(len(entries) for entries in grouped.values()),
+                )
+                LOG.info(
+                    "DeepSeek cost guard: calls=%d, peak_estimated_RMB=%s, "
+                    "peak_usage_RMB=%s",
+                    usage["request_count"], usage["predicted_peak_rmb"],
+                    usage["reported_peak_cost_rmb"]
+                )
+            except Exception as exc:
+                # Never retry and never leak prompt or credentials to logs.
+                LOG.warning("AI commentary skipped without retry: %s",
+                            type(exc).__name__)
         send_email(f"全球形势秘书简报｜{news_day}", cover_html, cover_txt, pdf_attachment=pdf_path)
         LOG.info("PDF report handed to SMTP server: %s (%d bytes)", pdf_path.name, pdf_path.stat().st_size)
 
