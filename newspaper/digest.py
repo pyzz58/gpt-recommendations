@@ -27,7 +27,7 @@ from clippings import build_clippings_html, mail_cover_clippings
 from ai_commentary import analyze_one_call, email_commentary, preferred_model_for_commentary
 from extractive_editor import trim_extracted_article
 from translation_editor import polish_translation
-from editorial_selection import pick_politics, tech_candidates
+from editorial_selection import pick_politics, tech_candidates, political_regions
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -121,14 +121,27 @@ def choose_candidates(
     news_start: dt.datetime | None = None,
 ) -> dict:
     """Prefer valuable, distinct events and keep readable outlet fallbacks."""
-    return {
-        category: rank_and_pool(
-            [item for item in items if item["category"] == category],
-            pool_size=pool_size,
-            news_start=news_start,
-        )
-        for category in limits
-    }
+    output = {}
+    for category in limits:
+        pool = [item for item in items if item["category"] == category]
+        if category == "AI与科技":
+            pool = tech_candidates(pool)
+        ranked = rank_and_pool(pool, pool_size=pool_size, news_start=news_start)
+        if category == "全球新闻":
+            # Protect China and US headlines from being displaced by other
+            # high-scoring world stories before article extraction even starts.
+            already = {x["url"] for x in ranked}
+            for region in ("中国", "美国"):
+                dedicated = rank_and_pool(
+                    [a for a in pool if region in political_regions(a)],
+                    pool_size=5, news_start=news_start
+                )
+                for item in dedicated:
+                    if item["url"] not in already:
+                        ranked.append(item)
+                        already.add(item["url"])
+        output[category] = ranked
+    return output
 
 def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
     """
