@@ -97,6 +97,22 @@ class ScreenplayDirectorHandoffTests(unittest.TestCase):
             handoff.prepare_handoff(
                 changed, self.source, self.packet, self.decide(), self.bindings)
 
+    def test_abridged_article_preview_cannot_masquerade_as_complete_screenplay(self):
+        abridged = deepcopy(self.base)
+        abridged["editorial"]["omissions"].append({
+            "text": "另有重要章节未进入分镜",
+            "reason": "preview length/shot limit; author and script editor must review"
+        })
+        packet = script.build_review_packet(abridged, self.source, self.proposal)
+        form = handoff.review_form(packet)
+        form["review_intent"] = "accept_for_director_planning"
+        for change in form["changes"]:
+            change["choice"] = "accept"
+        with self.assertRaisesRegex(handoff.ScriptHandoffError,
+                                    "SCRIPT_LONG_SOURCE_PREVIEW_TRUNCATED"):
+            handoff.prepare_handoff(
+                abridged, self.source, packet, form, self.bindings)
+
     def test_unreviewed_packet_mutation_fails_closed(self):
         wrong = deepcopy(self.packet)
         wrong["screenplay_fountain"] += "\n新结局"
