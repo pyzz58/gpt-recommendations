@@ -4,3 +4,7 @@ trafilatura>=2.0,<3
 argostranslate>=1.10,<2
 scikit-learn>=1.5,<2
 spacy>=3.8,<4
+
+# V0.5 PDF output; native fonts/Pango installed in GitHub Actions.
+weasyprint>=62,<70
+pypdf>=5,<7
