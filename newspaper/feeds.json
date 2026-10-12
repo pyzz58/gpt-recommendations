@@ -203,18 +203,20 @@
   "report_mode": "global_situation_adviser",
   "global_adviser": {
     "show_headline_roundup": false,
-    "bilingual_format": "sentence_english_followed_immediately_by_chinese",
+    "bilingual_format": "short_english_group_then_matching_chinese_line",
     "vocabulary_glossary": false,
     "keep_article_grammar": true,
     "advisor_sections": [
       "域内形势",
-      "事实材料（英中逐句）",
+      "事实材料（英文短句组在上、中文翻译紧接下行）",
       "顾问观察",
       "关注指标",
       "证据限制",
       "跨领域联动"
     ],
     "research_engine": "deterministic_evidence_bounded_v1",
-    "note": "Framework and watchlist are rule-based, not fully sourced autonomous expert synthesis. Future optional LLM research adapters require suitable inference compute or provider."
-  }
+    "note": "Stable report format only. No continuous research features. Group 1–2 English sentences (max 180 chars per group except indivisible long sentences); a single corresponding Chinese line is placed immediately below."
+  },
+  "bilingual_max_sentences": 2,
+  "bilingual_max_chars": 180
 }
