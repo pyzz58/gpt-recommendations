@@ -1,0 +1,61 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; media-src 'self'; base-uri 'none'; form-action 'none'">
+<title>单镜制作审阅</title><style>
+*{box-sizing:border-box}body{margin:0;background:#10151c;color:#edf0f5;font:16px/1.7 system-ui,sans-serif}
+main{max-width:1080px;margin:auto;padding:32px 22px}header{border-bottom:1px solid #394452;padding-bottom:22px}
+h1{font-size:30px;margin:4px 0}h2{font-size:20px}small,.muted{color:#acb9c9}.badge{color:#8ee6cd}
+.grid{display:grid;grid-template-columns:minmax(240px,1fr) minmax(0,1.7fr);gap:24px;margin:28px 0}
+section{background:#1b2430;padding:24px;border-radius:12px;min-width:0}video,.empty{width:100%;aspect-ratio:9/16;background:#080c11;border-radius:8px}.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.7 system-ui,sans-serif}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:10px 6px;border-bottom:1px solid #394452;vertical-align:top}.note{border-left:3px solid #8ee6cd;padding:12px 18px;background:#1b2430}summary{cursor:pointer}@media(max-width:700px){.grid{grid-template-columns:1fr}video,.empty{max-height:480px}main{padding:20px 14px}section{padding:18px}}
+</style><main><header><div class="badge">AI 导演 · 单镜制作</div><h1>S02 · 请求与审片</h1><div>请求已准备，尚未提交</div></header><p class="note">下一步：核对本页的画面、台词、模型与费用，再由私人运行入口明确提交一次。</p><div class="grid"><section><div class="empty">尚无已保存的视频<br><small>这里不会用占位动画冒充生成结果</small></div></section><section><h2>本镜制作安排</h2><p>volcengine · doubao-seedance-2-5-260628</p><p>8 秒 · 9:16 · 720p · 原生对白</p><p class="muted">无参考图的技术试验，不能证明人物跨镜一致性。</p><h2>精确对白</h2><table><tr><th>角色</th><th>台词</th><th>时间</th><th>声画类型</th></tr><tr><td>CHAR02</td><td>今天，过得怎么样？</td><td>1–5 秒</td><td>出镜对白</td></tr></table><p>旁白：无</p><p class="muted">时间是导演计划，实际视频时长与口型尚需核对。技术候选保留不等于整片或正式制作批准。</p></section></div><section><h2>审片记录</h2><p>还没有审片记录。</p><p>检查：动作与故事、构图、台词、口型、声音、时长、人物一致性。</p></section><details><summary>查看完整生成指令与后期安排</summary><pre>Single continuous 8s shot, portrait 9:16. One clear evolving visual intention; keep subject and prop continuity stable.
+Narrative task: 母亲看画面右侧，双手在桌下边缘静置；母亲说完保持目光，不抢着追问. Audience feeling: 温和但认真.
+Framing and space: 母亲看画面右侧，双手在桌下边缘静置. Lens feel: 50mm；母亲胸上近景. Blocking: 母亲看画面右侧，双手在桌下边缘静置；母亲说完保持目光，不抢着追问. Gaze direction: 母亲看向右侧女儿，不看镜头.
+What actually happens:
+0–1s: Visible 母亲稍抬下巴接住女儿目光; performer 不突然笑开; camera 固定机位; sound 保留连续底噪，无新台词
+1–5s: Visible 母亲轻声问今天过得怎么样; performer 只在正式台词窗口张嘴，不点头数次; camera 固定机位; sound 轻声真实发问；母亲出镜，需要口型
+5–8s: Visible 母亲闭口等待; performer 身体不前倾施压，保留三秒等待; camera 固定机位; sound 保留连续底噪，无新台词
+Camera path: 固定; trigger at 0s, finish 母亲说完保持目光，不抢着追问. Reason for movement: 母亲清楚的嘴部和不逼迫的视线.
+Lighting: 固定暖顶灯，无灯态变化. Palette evolution: 暖米色与灰色保持全片一致. Environment: LOC01 夜晚的小餐厅，母亲CHAR02固定坐画面左侧，成年女儿CHAR01固定坐右侧；手机PHONE01在女儿右手边桌面。摄影机始终位于餐桌靠观众一侧，女儿单人镜视线朝左、母亲单人镜视线朝右，不越轴。暖色顶灯固定，窗外暗蓝，整片不改灯态。. Texture: 针织衣料、哑光木桌、黑色手机.
+Locked identities/objects: CHAR01; CHAR02; LOC01; PHONE01. Beginning continuity: 母亲看画面右侧，双手在桌下边缘静置. Final state: 母亲说完保持目光，不抢着追问.
+Do not include: 人物不换脸不换座; 手机不复制; 视频画面不生成字幕; 非说话人不得动嘴; 不添加拥抱或夹菜. Do not render any title, text, numbers, subtitles, invented logos in the scene. Provider watermark is controlled by the API setting. Generate the authored dialogue and scene audio below; subtitles and charts remain post-production.
+Do not force multiple cuts into one generation. Preserve observed end frame for continuation planning.
+Exact dialogue contract (local seconds, only the named speaker speaks): {&quot;dialogue&quot;: [{&quot;speaker_id&quot;: &quot;CHAR02&quot;, &quot;from_s&quot;: 1, &quot;to_s&quot;: 5, &quot;text&quot;: &quot;今天，过得怎么样？&quot;, &quot;delivery&quot;: &quot;轻声真实发问；母亲出镜，需要口型&quot;, &quot;kind&quot;: &quot;onscreen_dialogue&quot;}]}
+Do not speak stage directions. Offscreen speakers must not animate a visible listener&#x27;s mouth.
+
+{
+  &quot;ambience&quot;: &quot;全片同一条低电平餐厅底噪，不在切点重启&quot;,
+  &quot;effects&quot;: [],
+  &quot;music&quot;: &quot;none：无配乐&quot;,
+  &quot;overlay_text&quot;: &quot;今天，过得怎么样？&quot;,
+  &quot;speech&quot;: {
+    &quot;dialogue&quot;: [
+      {
+        &quot;delivery&quot;: &quot;轻声真实发问；母亲出镜，需要口型&quot;,
+        &quot;from_s&quot;: 1,
+        &quot;kind&quot;: &quot;onscreen_dialogue&quot;,
+        &quot;speaker_id&quot;: &quot;CHAR02&quot;,
+        &quot;text&quot;: &quot;今天，过得怎么样？&quot;,
+        &quot;to_s&quot;: 5
+      }
+    ],
+    &quot;lip_sync_policy&quot;: &quot;轻声真实发问；母亲出镜，需要口型；先录音锁定语速再同步，只让说话人开口，停顿和句尾闭口。&quot;,
+    &quot;subtitle_cues&quot;: [
+      {
+        &quot;from_s&quot;: 1,
+        &quot;text&quot;: &quot;今天，过得怎么样？&quot;,
+        &quot;to_s&quot;: 5
+      }
+    ],
+    &quot;subtitle_direction&quot;: &quot;逐字对应本镜语音；白字深描边，1080×1920基线y=1580，左右各96px，最多两行；合成后手机预览调整安全区&quot;,
+    &quot;voiceover&quot;: {
+      &quot;cues&quot;: [],
+      &quot;delivery&quot;: &quot;none，无旁白&quot;,
+      &quot;text&quot;: &quot;&quot;,
+      &quot;timing&quot;: &quot;无旁白&quot;
+    }
+  },
+  &quot;voiceover&quot;: &quot;&quot;,
+  &quot;voiceover_note&quot;: &quot;轻声真实发问；母亲出镜，需要口型&quot;,
+  &quot;voiceover_source&quot;: &quot;base.narration&quot;
+}</pre></details><footer class="muted"><p>只读页面 · 不含密钥或供应商下载链接 · 不执行生成、重试或发布</p></footer></main></html>

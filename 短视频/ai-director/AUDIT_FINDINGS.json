@@ -353,9 +353,9 @@
       "domain": "api_to_final_film_gap",
       "status": "open_confirmed",
       "evidence_type": "confirmed_code",
-      "description": "已实现单镜API函数但未挂接生产运行和UI；缺少真实媒体完整解码、实测时长回写、选片/返工版本及最终渲染闭环。接口成功不等于成片。",
-      "source": "SEEDANCE_API_AUDIT.md;seedance_adapter.py;director_timeline.py",
-      "test_evidence": "",
+      "description": "已实现单镜API函数、统一命令入口、只读审阅页和视频摘要绑定的人工决定；仍未部署私人生产运行及可编辑网页控制台，缺少真实媒体完整解码、实测时长回写、选片/返工版本及最终渲染闭环。接口或候选保留不等于成片。",
+      "source": "SEEDANCE_API_AUDIT.md;SINGLE_SHOT_WORKFLOW.md;video_workflow.py;director_timeline.py",
+      "test_evidence": "tests/test_video_workflow.py（合成单镜操作与人工声明记录；不关闭完整成片缺口）",
       "issue_url": "",
       "fix_commit": ""
     }

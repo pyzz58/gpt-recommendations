@@ -1,3 +1,9 @@
+## 2026-10-12：统一单镜操作入口
+
+在实现前实际核对 [python/cpython](https://github.com/python/cpython) 的 [3.12/Lib/getpass.py](https://github.com/python/cpython/blob/3.12/Lib/getpass.py) 及 LICENSE（PSF及历史许可条款；仓库2026-10-12仍维护），以及 [pallets/click](https://github.com/pallets/click) README/LICENSE.txt（BSD-3-Clause，2026-10-06推送，未归档）。Click可提供嵌套命令与提示，但本项目已经使用标准库argparse，这一组单镜命令不值得另加CLI依赖。选择复用现有argparse和标准库getpass；getpass无法关闭回显时会警告并退化到普通输入，本项目将警告转为错误，阻止读取可能泄露的Key。
+
+只新增薄工作流入口和只读HTML渲染，复用现有Seedance适配器及原子文件函数；未复制第三方源代码、安装Click或引入新框架/运行依赖。网络可用性、Mac终端兼容与账号未实测，隔离Linux/Python3.12全量609测试通过。回滚本轮video_workflow及local_director入口即可恢复独立接口状态，既有任务数据不删除。详情见 [流程说明](SINGLE_SHOT_WORKFLOW.md)。
+
 ## 2026-10-12：Seedance 单镜适配的实际复用选择
 
 需求：将既有导演工作单转换为官方异步视频任务，并保存回执和视频；保留精确对白与声画类型。本轮实际核对 [volcengine/volcengine-python-sdk](https://github.com/volcengine/volcengine-python-sdk)（Apache-2.0，2026-10-09 有推送）的 content_generation/tasks.py 和 _constants.py。官方 SDK 支持 create/get，但默认 MAX_RETRIES=2；付费创建不能沿用未知重试，因此本轮只借鉴官方请求合同，使用标准库 HTTPS 薄适配，固定服务端主机，不自动重试或重定向。未复制第三方源码、未安装 SDK，无新增运行依赖。将来采用 SDK 必须显式禁用付费重试并重测。

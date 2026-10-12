@@ -1,3 +1,7 @@
+## 单镜流程已接入统一命令入口（2026-10-12）
+
+[video_workflow.py](video_workflow.py) 已由 local_director.py 的 video 子入口调用，提供离线prepare/status/page/review-template/review与明确submit/query/download。只读页面不是网页控制台；尚无部署或真实生成。审片绑定准确视频SHA，候选保留不能冒充正式生产批准；意见要求修改不自动付费重做。API Key仅由明确网络命令从不回显交互终端读取，不能写参数、环境自动读取或存入任务。现有长期私有运行、真实授权/费用核验边界继续有效。详见 [单镜操作](SINGLE_SHOT_WORKFLOW.md)。
+
 ## 当前最高产品目标：API 制作路线（2026-10-12）
 
 用户明确同意“文案 → 完整导演设计 → 第三方视频 API → 视频回收 → 审片返工 → 合成”。以 [PRODUCT_NORTH_STAR.md](PRODUCT_NORTH_STAR.md)、[SEEDANCE_API_AUDIT.md](SEEDANCE_API_AUDIT.md) 和当前计划为准。以下历史“只交图纸/不直接生成视频”是旧阶段边界，不能再当成产品终点；付费、私人运行和发布仍须对应的真实授权。

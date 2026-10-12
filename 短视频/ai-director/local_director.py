@@ -556,6 +556,10 @@ def backup(project, archive):
 
 
 def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "video":
+        import video_workflow
+        return video_workflow.main(argv[1:])
     parser=argparse.ArgumentParser(description="v0.3: local-first short-video director. No GitHub/ChatGPT needed at runtime.")
     sub=parser.add_subparsers(dest="command",required=True)
     prep=sub.add_parser("prepare",help="prepare job for already configured Codex, no API charges")
@@ -580,6 +584,7 @@ def main(argv=None):
     z.add_argument("--project",default=str(ROOT));z.add_argument("--out",required=True)
     cs=sub.add_parser("cost-status",help="read local conservative budget ledger, offline")
     cs.add_argument("--job",required=True)
+    sub.add_parser("video",help="single-shot prepare/status/page/submit/query/download/review")
     sub.add_parser("doctor",help="explain local runtime state")
     args=parser.parse_args(argv)
     try:
