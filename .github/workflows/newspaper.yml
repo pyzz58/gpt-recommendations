@@ -1,0 +1,63 @@
+name: Newspaper - Bilingual World News
+on:
+  schedule:
+    - cron: '0 23 * * *' # 07:00 Beijing, next morning
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Generate demo without sending an email'
+        required: false
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+permissions:
+  contents: read
+concurrency:
+  group: newspaper-daily
+  cancel-in-progress: false
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      TZ: Asia/Shanghai
+      SMTP_HOST: smtp.qq.com
+      SMTP_PORT: '465'
+      SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
+      SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
+      NEWSPAPER_TO: ${{ secrets.NEWSPAPER_TO }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: newspaper/requirements.txt
+      - name: Install dependencies
+        run: python -m pip install -r newspaper/requirements.txt
+      - name: Cache offline translation model
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/argos-translate/packages
+          key: newspaper-argos-translate-en-zh-v1
+      - name: Build and email report
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            python newspaper/digest.py --demo --output /tmp/newspaper-preview
+          else
+            test -n "$SMTP_FROM" && test -n "$SMTP_PASSWORD" && test -n "$NEWSPAPER_TO" || {
+              echo "::error::Set NEWSPAPER_SMTP_FROM, NEWSPAPER_SMTP_PASSWORD, NEWSPAPER_TO secrets."
+              exit 1
+            }
+            python newspaper/digest.py
+          fi
+      - name: Upload example preview
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: newspaper-demo-preview
+          path: |
+            /tmp/newspaper-preview.html
+            /tmp/newspaper-preview.txt
+          retention-days: 3
