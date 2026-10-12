@@ -525,6 +525,7 @@ def build_role_messages(base, state, task_id, *, source_text=None,
     # This boundary is enforced in role messages; it does not claim a model
     # complied or a real person authenticated the earlier editorial decision.
     boundary = ""
+    specialist_instruction = ROLE_INSTRUCTIONS[task_id]
     screenplay_mode = base.get("screenplay_handoff_mode")
     if screenplay_mode is not None:
         if (not isinstance(screenplay_mode, dict) or
@@ -542,16 +543,24 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 "纪录/科普允许概念对照而非强加虚构角色冲突。"
                 "可与编剧协商，但不得直接宣称剧本修订已获作者同意。")
         elif task_id == "script_edit":
+            # REPLACE, don't merely append: the historical prompt asks this
+            # stage to pitch/rewrite the original hook and structure. Leaving
+            # both instructions creates duplicate creative authority.
+            specialist_instruction = (
+                "【剧本执行完整性审查】前置职业编剧已经交付剧本。"
+                "不再重复重写剧情，也不设计新的故事骨架、开场钩子或结尾。"
+                "story_treatment 是既有接口：hook 和 central_question 应当"
+                "只准确复述权威剧本；beat_map 为每个 shot_id 写"
+                "dramatic_function 和 handoff_to_next，但其内容是检验既有"
+                "节拍因果、台词/动作/旁白的连续性与遗漏，"
+                "不是创作新的戏剧情节。"
+                "发现故事、人物或事实问题，只写入 source_change_proposals，"
+                "每条包含 reason、proposed_change、"
+                "requires_user_approval=true、approved=false，"
+                "返回前置编剧进行实质修改并重新审阅。")
             boundary = (
                 "\n\n【本阶段转为剧本连续性审查，禁止重复创作】"
-                "前置编剧已经交付完整剧本。保留 story_treatment 的接口，"
-                "但 beat_map 的 dramatic_function/handoff_to_next 现在应当"
-                "核对既有场次/节拍的因果衔接、台词/动作/旁白是否在导演方案中被遗漏，"
-                "而不是新写故事骨架、新想开场钩子或重新安排结尾。"
-                "hook/central_question 只描述既有剧本，不提替代方案。"
-                "真正缺陷写在 source_change_proposals，必须"
-                "requires_user_approval=true、approved=false，"
-                "并将改稿工作归还前置编剧岗位。不得静默更改故事或导演的摄影决定。")
+                "不允许静默改写权威故事、台词或旁白，也不替代总导演的摄影方案。")
         else:
             boundary = (
                 "\n\n【编剧权威边界】此来源是前置编剧完成的剧本版本；"
@@ -563,7 +572,7 @@ def build_role_messages(base, state, task_id, *, source_text=None,
     return {"contract_version": CONTRACT_VERSION,
             "task_id": task_id, "next_revision": context["next_revision"],
             "messages": [
-                {"role": "system", "content": FOUNDATION + "\n\n" + ROLE_INSTRUCTIONS[task_id] +
+                {"role": "system", "content": FOUNDATION + "\n\n" + specialist_instruction +
                  boundary +
                  ("\n\n【延续经审阅规划版本的创意】user JSON 中附有 first_director_editor_vision "
                   "与本岗位 production_gaps_to_resolve：前者是先前总导演/编剧的提案而非"
