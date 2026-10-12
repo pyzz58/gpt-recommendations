@@ -104,5 +104,22 @@ class ScreenplayAdaptationTests(unittest.TestCase):
         self.assertEqual(original, self.plan)
 
 
+    def test_public_dinner_sample_restructures_source_without_new_dialogue(self):
+        import json
+        folder = ROOT / "examples" / "dinner-dialogue-review"
+        plan = json.loads((folder / "plan.json").read_text("utf-8"))
+        source = (folder / "source.md").read_text("utf-8")
+        proposal = json.loads((folder / "adaptation_proposal.json").read_text("utf-8"))
+        report = a.validate_proposal(plan, source, proposal)
+        operations = {b["operation"] for s in proposal["scenes"] for b in s["beats"]}
+        self.assertTrue({"reorder", "split", "merge"} <= operations)
+        self.assertEqual(report["source_coverage"], len(plan["shots"]))
+        self.assertEqual(report["source_omitted"], 0)
+        packet = a.build_review_packet(plan, source, proposal)
+        self.assertIn("我问的是你，不是工作。", packet["screenplay_fountain"])
+        self.assertEqual(packet["review"]["screenplay_beats"], 6)
+        self.assertFalse(packet["api_authorized"])
+
+
 if __name__ == "__main__":
     unittest.main()
