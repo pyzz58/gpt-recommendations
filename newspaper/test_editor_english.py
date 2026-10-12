@@ -106,7 +106,7 @@ class EditorAndEnglishTests(unittest.TestCase):
         }
         html, plain = digest.render({"美股与投资": [article]}, self.start, self.start.date(), {})
         self.assertLess(html.index("Sentence-by-sentence bilingual reading"), html.index("Grammar Focus · 本篇语法"))
-        self.assertLess(plain.index("【事实材料：一句英文紧跟一句中文】"), plain.index("【本篇语法】"))
+        self.assertLess(plain.index("【事实材料：英文一行、中文下一行、逐句对应】"), plain.index("【本篇语法】"))
         self.assertNotIn("今日重点", html)
         self.assertNotIn("Vocabulary · 词汇", html)
         self.assertIn("85/100", html)
