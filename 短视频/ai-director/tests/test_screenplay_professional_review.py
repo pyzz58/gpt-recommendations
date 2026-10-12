@@ -109,10 +109,33 @@ class ScriptCraftReviewTests(unittest.TestCase):
         self.assertEqual(review.validate_review(
             self.packet, self.source, essay, genre="essay")["genre"], "essay")
 
+    def test_targeted_rewrite_not_dispatched_or_auto_approved(self):
+        assessed = self.fixture(deficient=["story_journey", "scene_craft"])
+        request = review.build_revision_request(
+            self.packet, self.source, assessed, genre="fiction")
+        self.assertFalse(request["dispatch_allowed"])
+        self.assertTrue(request["needs_new_full_source_mapping"])
+        self.assertTrue(request["human_author_approval_required"])
+        data = json.loads(request["messages"][1]["content"])
+        self.assertEqual(len(data["problems_to_fix"]), 2)
+        self.assertEqual(data["original_source"], self.source)
+        self.assertIn(self.quote, data["previous_screenplay"])
+        with self.assertRaisesRegex(review.ProfessionalReviewError,
+                                    "NO_REVISION_NEEDED"):
+            review.build_revision_request(
+                self.packet, self.source, self.fixture(), genre="fiction")
+
+    def test_effective_criterion_may_have_no_forced_rewrite(self):
+        report = self.fixture()
+        for item in report["criteria"]:
+            item["rewrite_action"] = ""
+        result = review.validate_review(self.packet, self.source, report, genre="fiction")
+        self.assertEqual(result["recommendation"], "ready_for_author_review")
+
     def test_replacing_an_input_script_invalidates_old_review(self):
         changed = deepcopy(self.packet)
         changed["screenplay_fountain"] += "\n伪造的额外片段"
-        with self.assertRaisesRegex(review.ProfessionalReviewError, "STALE"):
+        with self.assertRaisesRegex(review.ProfessionalReviewError, "SCRIPT_TAMPERED"):
             review.validate_review(
                 changed, self.source, self.fixture(), genre="fiction")
         with self.assertRaisesRegex(review.ProfessionalReviewError, "SOURCE_STALE"):
