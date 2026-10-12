@@ -38,6 +38,9 @@ class QOW01SemanticFidelityTests(unittest.TestCase):
                                if FIRST_MARK in u["text"])
         self.last_unit = next(u["id"] for u in self.units
                               if QUESTION_MARK in u["text"])
+        self.last_beat_id = "B%03d" % (
+            1 + next(i for i, u in enumerate(self.units)
+                     if u["id"] == self.last_unit))
         self.manifest = {
             "version": semantic.VERSION, "genre": "essay",
             "document_digest": self.intake["document_digest"],
@@ -95,7 +98,7 @@ class QOW01SemanticFidelityTests(unittest.TestCase):
             "review_items": [
                 {
                     "idea_id": "IDEA-001",
-                    "beat_ids": [self.proposal["scenes"][0]["beats"][-1]["id"]],
+                    "beat_ids": [self.last_beat_id],
                     "screenplay_quote": QUESTION_MARK,
                     "assessment": "faithful",
                     "reason": "最后的追问在剧本正文中明确保留，且未被换成速度就是唯一目标。",
@@ -142,12 +145,17 @@ class QOW01SemanticFidelityTests(unittest.TestCase):
 
     def test_long_source_baseline_has_all_ids_but_semantic_gap_is_possible(self):
         self.assertGreater(len(ARTICLE), 400)
-        self.assertIn(QUESTION_MARK, self.units[-1]["text"])
+        self.assertIn(QUESTION_MARK,
+                      next(u["text"] for u in self.units if u["id"] == self.last_unit))
+        self.assertGreater(self.units.index(
+            next(u for u in self.units if u["id"] == self.last_unit)),
+            len(self.units) // 2)
         check = self.wrapper["screenplay_review_packet"]["review"]
         self.assertEqual(check["source_coverage"], len(self.units))
         self.assertEqual(check["source_omitted"], 0)
         altered = deepcopy(self.proposal)
-        altered["scenes"][0]["beats"][-1]["action"] = (
+        next(b for b in altered["scenes"][0]["beats"]
+             if b["id"] == self.last_beat_id)["action"] = (
             "大家得出结论：只要过河速度最快，修桥的目的就已经实现。")
         packet = intake_module.review_packet(self.intake, ARTICLE, altered)
         # All source IDs mapped, no mechanical omissions -- but original
@@ -268,7 +276,8 @@ class QOW01SemanticFidelityTests(unittest.TestCase):
         with self.assertRaisesRegex(semantic.MeaningReviewError, "STALE_SOURCE_INTAKE"):
             semantic.validate_manifest(self.intake, ARTICLE + "假结尾", self.manifest)
         change = deepcopy(self.proposal)
-        change["scenes"][0]["beats"][-1]["action"] += "附带新改动"
+        next(b for b in change["scenes"][0]["beats"]
+             if b["id"] == self.last_beat_id)["action"] += "附带新改动"
         packet = intake_module.review_packet(self.intake, ARTICLE, change)
         with self.assertRaisesRegex(semantic.MeaningReviewError, "REVIEW_STALE"):
             semantic.validate_semantic_review(
