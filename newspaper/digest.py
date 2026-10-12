@@ -209,11 +209,46 @@ def ensure_argos_translator():
     return translator
 
 
-def bilingualize(grouped: dict, translator) -> dict:
-    """Strict EN sentence immediately followed by its own ZH translation.
+def group_sentences(
+    sentences: list[str],
+    max_sentences: int = 2,
+    max_chars: int = 180,
+) -> list[str]:
+    """Group adjacent short English sentences into compact translation units.
 
-    spaCy locates sentence boundaries; Argos translates the corresponding
-    sentence, never a disconnected entire paragraph. Preserves paragraph IDs.
+    Preserve source wording, punctuation, paragraph order and sentence
+    boundaries. Never join a fragment from a different paragraph; callers
+    invoke this helper separately for each paragraph. One unusually long
+    sentence remains intact instead of being cut mid-sentence.
+    """
+    if max_sentences < 1 or max_chars < 1:
+        raise ValueError("Bilingual grouping limits must be positive")
+    groups: list[str] = []
+    buffer: list[str] = []
+    for sentence in sentences:
+        sentence = " ".join(str(sentence).split())
+        if not sentence:
+            continue
+        prospective = " ".join([*buffer, sentence])
+        if buffer and (len(buffer) >= max_sentences or len(prospective) > max_chars):
+            groups.append(" ".join(buffer))
+            buffer = []
+        buffer.append(sentence)
+    if buffer:
+        groups.append(" ".join(buffer))
+    return groups
+
+
+def bilingualize(
+    grouped: dict, translator,
+    max_group_sentences: int = 2, max_group_chars: int = 180,
+) -> dict:
+    """Place 1–2 adjacent English sentences above ONE corresponding ZH line.
+
+    spaCy finds original sentence boundaries. Closely related short sentences
+    are grouped, then translated together to preserve meaning and alignment.
+    It does NOT translate every individual sentence in a separate row, nor
+    stack an entire long paragraph above its translation.
     """
     nlp = english_parser()
     output = {}
@@ -231,17 +266,22 @@ def bilingualize(grouped: dict, translator) -> dict:
                 sentences = [sent.text.strip() for sent in doc.sents if sent.text.strip()]
                 if not sentences:
                     sentences = [paragraph]
-                for sentence in sentences:
-                    chinese = translator.translate(sentence).strip()
-                    if not chinese:
-                        raise RuntimeError("Translation returned blank; refuse misaligned bilingual report.")
+                for english_group in group_sentences(
+                    sentences,
+                    max_sentences=max_group_sentences,
+                    max_chars=max_group_chars,
+                ):
+                    chinese_group = " ".join(translator.translate(english_group).split())
+                    if not chinese_group:
+                        raise RuntimeError("Translation returned blank; refuse unaligned report.")
                     pairs.append({
-                        "en": sentence, "zh": chinese, "paragraph_id": paragraph_id,
+                        "en": english_group,
+                        "zh": chinese_group,
+                        "paragraph_id": paragraph_id,
                     })
             if not pairs:
-                raise RuntimeError("No sentence pairs extracted from article.")
+                raise RuntimeError("No bilingual groups extracted from article.")
             entry["bilingual_pairs"] = pairs
-            # Backward compatibility with non-visual tests/report consumers.
             entry["reading_zh"] = "\n\n".join(
                 " ".join(p["zh"] for p in pairs if p["paragraph_id"] == pid)
                 for pid in sorted(set(p["paragraph_id"] for p in pairs))
@@ -307,12 +347,12 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
                 '<strong>英文标题 · English title</strong>'
                 f'<p style="margin:4px 0">{title}</p>'
                 f'<p style="margin:4px 0;color:#1d4b73">{zh_title}</p></div>'
-                '<h4 style="margin-top:16px">事实材料 · Sentence-by-sentence bilingual reading</h4>'
+                '<h4 style="margin-top:16px">事实材料 · Short-group bilingual reading</h4>'
             )
             plain.extend([
-                f"\n{idx}. {a['title']}",a["title_zh"],
+                f"\n{idx}. {a['title']}\n{a['title_zh']}",
                 f"{a.get('source','')} | {time} 北京时间",
-                "【事实材料：一句英文紧跟一句中文】",
+                "【事实材料：一组英文，下一行对应中文】",
             ])
             pairs = a.get("bilingual_pairs", [])
             if not pairs:
@@ -333,7 +373,7 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
                     f'<div style="color:#215582;margin-top:3px">{p(pair["zh"])}</div>'
                     '</div>'
                 )
-                plain.extend([pair["en"], pair["zh"], ""])
+                plain.append(pair["en"] + "\n" + pair["zh"])
             evaluation = article_advice(a)
             parts.append(
                 '<div style="margin:16px 0;padding:12px;background:#f7f8fa;border-radius:6px">'
@@ -473,7 +513,11 @@ def main():
             raise RuntimeError("No articles successfully extracted; aborting the email.")
         translator = ensure_argos_translator()
         grouped = attach_lessons(
-            bilingualize(readable, translator),
+            bilingualize(
+                readable, translator,
+                max_group_sentences=settings.get("bilingual_max_sentences", 2),
+                max_group_chars=settings.get("bilingual_max_chars", 180),
+            ),
             translator,
             grammar_limit=settings.get("grammar_examples_per_article", 3),
             vocab_limit=0,
