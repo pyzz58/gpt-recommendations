@@ -1,3 +1,12 @@
+## 总导演跨部门制作会与详细专业指挥 · QO-D15（2026-10-13）
+
+**总导演负责“全片要达到什么效果”，还必须把艺术目标分解为各专业部门真实可执行的任务**：每个部门都要明白自己的具体镜头任务、观众感受与人物/思想转折、专业手段、前后部门信息交接、验收条件及失败后的替代方案。不能把「表演自然、画面电影感、音乐动人」当成指挥。
+
+- [一手国际职业标准全文审读和真实源码对标](quality-optimization/QO-D15_DIRECTOR_DEPARTMENT_COMMAND_AUDIT.md)
+- [Skill 09：导演部门会议与完整工作标准](skills/09-director-department-command.md)
+- [实际功能：director_department_command.py](director_department_command.py)：新系列每集必须先由导演锁定 vision，生成七部门、逐镜头、跨部门可审核任务书，才可将任务传入现有十阶段专业 Agent 工作请求；不增设新导演岗位。
+- 当前仅实现工程/离线结构层；尚缺真实模型导演会议、独立专业盲评和真实成片。D02/D03 继续推进而非标完成。
+
 ## 国际一流总导演质量优化 · QO-D14（2026-10-13）
 
 - **编剧还没达到最终一流水准验收**：创作流程和详细交接可用，但跨题材独立盲评/真实模型写稿质量尚未完成；目前同步推进导演。
@@ -24,7 +33,7 @@
 - [质量优化总纲：目标、岗位边界、AI 视频约束、完成门槛](quality-optimization/QUALITY_CHARTER.md)
 - [QO-W01：职业编剧一手资料全文深读与既有模块逐项审计](quality-optimization/QO-W01_PROFESSIONAL_PRIMARY_SOURCE_AUDIT.md)：解释优秀改编与机械保留的区别，先审计方法、再设计创作流程；结构代码 PR #24 暂缓合并。
 - [QO-W01：编剧创作开发能力实际升级](quality-optimization/QO-W01_CREATIVE_DEVELOPMENT_IMPLEMENTATION.md)：读稿诊断 → 不同影视化 take → 独立选案比较 → treatment → 剧本及独立适配审核，核心实现 [screenplay_development.py](screenplay_development.py)；未完成专业真人盲评。
-- [独立问题清单：35 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
+- [独立问题清单：36 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
 - [逐批解决路线：先编剧、再总导演，其他部门持续登记](quality-optimization/EXECUTION_PLAN.md)
 - [机器可读问题总账](quality-optimization/QUALITY_ISSUES.json)：改动一个问题就更新一条，CI 拦截无证据假完成、漏问题和状态表不同步。
 - [质量阶段 GitHub 总入口 Issue #22](https://github.com/pyzz58/gpt-recommendations/issues/22)：讨论与跨任务导航；真实状态以 JSON 为准。
