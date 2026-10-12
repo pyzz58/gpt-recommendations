@@ -150,6 +150,27 @@ class FulltextScreenplayIntakeTests(unittest.TestCase):
         self.assertIn("第二章提出", intake["scope_units"][-1]["text"])
         self.assertNotIn("前言没有", "".join(x["text"] for x in intake["scope_units"]))
 
+    def test_explicit_sentence_aligned_span_for_unheaded_long_manuscript(self):
+        document = "这是一段完整的公开虚构素材。" * 700
+        with self.assertRaisesRegex(full.FulltextIntakeError,
+                                    "FULLTEXT_SELECT_CHAPTER_OR_SHORTER_SCOPE"):
+            full.prepare_fulltext(document)
+        sentence = "这是一段完整的公开虚构素材。"
+        selected = full.prepare_fulltext(
+            document, source_span=[0, len(sentence) * 10])
+        self.assertEqual(selected["episode_id"], "SPAN")
+        self.assertFalse(selected["entire_document_selected"])
+        self.assertGreater(selected["document_units_indexed"], len(selected["scope_units"]))
+        self.assertEqual(selected["scope_span"], [0, len(sentence) * 10])
+        self.assertTrue(selected["scope_exact_nonwhitespace_coverage"])
+        self.assertEqual(json.loads(
+            full.editor_request(selected, document)["messages"][1]["content"])["source"],
+            sentence * 10)
+        with self.assertRaisesRegex(full.FulltextIntakeError,
+                                    "FULLTEXT_SCOPE_SPLITS_SENTENCE"):
+            full.prepare_fulltext(
+                document, source_span=[0, len(sentence) * 10 - 1])
+
     def test_unpunctuated_long_text_requires_explicit_smaller_scope(self):
         # Source-content presence, not film runtime, governs this gate.
         text = ("无标点测试素材" * 2600)
