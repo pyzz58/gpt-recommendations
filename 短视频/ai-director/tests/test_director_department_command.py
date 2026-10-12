@@ -162,6 +162,30 @@ class DirectorDepartmentCommandTests(unittest.TestCase):
                              self.bible["episode_intent"])
             self.assertFalse(result["external_model_call_authorized"])
 
+    def test_all_seven_specialists_receive_their_own_unique_director_intent(self):
+        for department in command.DEPARTMENTS:
+            result = command.model_facing_role_context(
+                self.base, self.state, department, self.bible)
+            self.assertEqual(result["this_department"], department)
+            self.assertEqual(result["director_mission_and_execution"],
+                             self.bible["departments"][department])
+            self.assertEqual(set(result["director_mission_and_execution"]["per_shot"]),
+                             {"S01", "S02"})
+            self.assertTrue(result["cross_department_handoffs"])
+
+    def test_strict_execution_output_rejects_bypassing_director_meeting(self):
+        with self.assertRaisesRegex(ValueError, "COMMAND_REQUIRED"):
+            roles.validate_role_output(
+                self.base, self.state, "acting", '{"shots":{}}',
+                source_text=self.source)
+        # The provided command passes the director provenance gate. The mock
+        # payload then fails downstream because it has no actual acting work.
+        with self.assertRaises(ValueError) as ctx:
+            roles.validate_role_output(
+                self.base, self.state, "acting", '{"shots":{}}',
+                source_text=self.source, department_command=self.bible)
+        self.assertNotIn("COMMAND_REQUIRED", str(ctx.exception))
+
     def test_generic_copy_paste_for_distinct_shots_rejected(self):
         altered = deepcopy(self.bible)
         altered["departments"]["acting"]["per_shot"]["S02"] = deepcopy(
