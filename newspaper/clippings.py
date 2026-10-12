@@ -119,9 +119,6 @@ def build_clippings_html(grouped: dict, day: dt.date) -> tuple[str, str]:
         for idx,article in enumerate(articles,1):
             en_title=str(article.get("title","")).strip()
             zh_title=str(article.get("title_zh") or en_title).strip()
-            url=str(article.get("url",""))
-            parsed=urlparse(url)
-            href=esc(url) if parsed.scheme=="https" and parsed.netloc else ""
             source=str(article.get("source","未知媒体")).strip()
             byline=source + (" · " + str(article.get("author")).strip() if article.get("author") else "") + " · " + _date_bj(article.get("date"))
             selected,full=_choose_original_lines(article)
@@ -138,7 +135,7 @@ def build_clippings_html(grouped: dict, day: dt.date) -> tuple[str, str]:
             elif rights:
                 statement="原始英文连续选段 · 已登记使用许可；抓取正文未覆盖全文"
             else:
-                statement="原始英文短摘 · 无整篇转载授权，阅读全文请访问原媒体"
+                statement="原始英文短摘 · 此来源未获整篇再版及翻译授权"
             body.append(f'<p class="license-note">{esc(statement)}</p>')
             plain.append(statement)
             notes=[]
@@ -180,19 +177,17 @@ def build_clippings_html(grouped: dict, day: dt.date) -> tuple[str, str]:
             if prev_para is not None:
                 body.append('</div>')
             if not selected:
-                body.append('<p>没有符合短摘限制的完整英文句子。请通过原媒体阅读全文。</p>')
-                plain.append("本篇未提供可刊用完整原句；请通过链接阅读全文。")
+                body.append('<p>没有符合当前使用范围的完整英文句子。</p>')
+                plain.append("本篇未提供可刊用完整原句。")
             if notes:
                 body.append('<div class="grammar-footnote">')
                 for n,phrase,meaning in notes:
                     body.append(f'<p>{n}. <strong>{esc(phrase)}</strong>：{esc(meaning)}</p>')
                     plain.append(f"{n}. {phrase}：{meaning}")
                 body.append('</div>')
-            if href:
-                body.append(f'<p class="source-link"><a href="{href}">阅读全文 · {esc(source)} ↗</a></p>')
-                plain.append("阅读全文："+url)
-            else:
-                body.append('<p>原文链接不可验证，本篇请核对来源。</p>')
+            # Reader-first publication: source URLs stay available in the
+            # article metadata for provenance/audit but are NEVER printed in
+            # the PDF or its plaintext companion. No "read more" links.
             body.append('</article>')
         body.append('</section>')
     body.append(
@@ -217,7 +212,7 @@ def mail_cover_clippings(day:dt.date, grouped:dict) -> tuple[str,str]:
         '<h2>全球新闻原文选编</h2>'
         '<p>'+esc(date_str)+' · '+str(count)+' 篇来源报道</p>'
         '<p>PDF 附件已生成，英文原句与中文翻译逐句对应。'
-        '如需阅读完整商业媒体报道，请点击各篇的“阅读全文”链接。'
+        '当前无完整再版许可的文章只收录短摘，内容覆盖会受限。'
         '本期不自动生成缺乏证据支持的评论。</p></div>'
     )
     return html_text,txt
