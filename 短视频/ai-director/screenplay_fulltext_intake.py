@@ -201,7 +201,8 @@ def prepare_fulltext(source, *, episode_id="FULL", risk_domain=None,
 
 def editor_request(intake, document, *, mode="auto"):
     """Build an UNSENT complete screenplay request, never a short preview."""
-    _require(mode in ("auto", "fiction", "documentary"), "FULLTEXT_MODE_INVALID")
+    _require(mode in ("auto", "fiction", "documentary", "essay", "hybrid"),
+             "FULLTEXT_MODE_INVALID")
     _verify_intake(intake, document)
     scoped = document[slice(*intake["scope_span"])]
     task = screenplay_adaptation.build_editor_request(intake["base"], scoped)
