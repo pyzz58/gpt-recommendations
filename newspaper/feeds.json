@@ -179,7 +179,7 @@
     ]
   },
   "longread_max_chars": 18000,
-  "longread_min_chars": 1100,
+  "longread_min_chars": 1400,
   "candidate_pool_per_category": 20,
   "source_limit_per_category": 2,
   "grammar_examples_per_article": 3,
