@@ -24,13 +24,17 @@ FIELDS = {
     "id", "stage", "department", "priority", "status", "title",
     "observed_in", "problem", "root_cause", "solution", "acceptance",
     "ai_video_constraint", "depends_on", "legacy_links", "owner", "opened_on",
-    "evidence",
+    "evidence", "history",
 }
 EVIDENCE = {"implementation_pr", "commit_sha", "automated_test",
             "independent_review", "media_validation", "closure_note", "closed_on"}
 GH = re.compile(r"https://github\.com/pyzz58/gpt-recommendations/(issues|pull)/\d+")
 SHA = re.compile(r"[0-9a-f]{40}")
 IDENT = re.compile(r"QO-(W|D|F)\d{2}")
+BASELINE_IDS = frozenset(
+    [f"QO-W{i:02d}" for i in range(1, 11)] +
+    [f"QO-D{i:02d}" for i in range(1, 13)] +
+    [f"QO-F{i:02d}" for i in range(1, 11)])
 
 
 class QualityLedgerError(ValueError):
@@ -87,10 +91,9 @@ def validate(data):
                     item["department"] == "director", "QUALITY_DIRECTOR_OWNERSHIP")
         if ident.startswith("QO-F"):
             require(item["stage"] == "future_dept", "QUALITY_FUTURE_STAGE")
-        if item["stage"] == "future_dept":
-            require(item["status"] in {"audit_pending", "confirmed_open",
-                                       "blocked_external"},
-                    "QUALITY_FUTURE_PREMATURE_CLOSURE")
+        if item["stage"] == "future_dept" and item["status"] != "audit_pending":
+            require(item["evidence"].get("independent_review"),
+                    "QUALITY_FUTURE_NEEDS_PROFESSIONAL_AUDIT")
         for field in ("title", "observed_in", "problem", "root_cause",
                       "solution", "acceptance", "ai_video_constraint"):
             val = item[field]
@@ -107,7 +110,20 @@ def validate(data):
         require(isinstance(proof, dict) and set(proof) == EVIDENCE and
                 all(isinstance(x, str) for x in proof.values()),
                 "QUALITY_EVIDENCE_SHAPE")
+        history = item["history"]
+        require(isinstance(history, list) and len(history) >= 1 and
+                all(isinstance(e, dict) and set(e) == {
+                    "date", "status", "note", "evidence_ref"
+                } and valid_date(e["date"]) and e["status"] in STATUSES and
+                isinstance(e["note"], str) and len(e["note"]) >= 20 and
+                isinstance(e["evidence_ref"], str) and
+                (not e["evidence_ref"] or GH.fullmatch(e["evidence_ref"]))
+                for e in history) and
+                history[-1]["status"] == item["status"],
+                "QUALITY_STATUS_HISTORY_INVALID")
         if item["status"] == "complete":
+            require(GH.fullmatch(history[-1]["evidence_ref"]) is not None,
+                    "QUALITY_COMPLETION_EVENT_MISSING")
             require(GH.fullmatch(proof["implementation_pr"]) is not None and
                     SHA.fullmatch(proof["commit_sha"]) is not None and
                     len(proof["automated_test"]) >= 15 and
@@ -124,6 +140,7 @@ def validate(data):
         else:
             require(proof["closed_on"] == "" and proof["closure_note"] == "",
                     "QUALITY_OPEN_CANNOT_HAVE_CLOSURE")
+    require(BASELINE_IDS <= ids, "QUALITY_EXISTING_ID_REMOVED")
     for item in items:
         require(set(item["depends_on"]) <= ids, "QUALITY_UNKNOWN_DEPENDENCY")
     graph = {item["id"]: item["depends_on"] for item in items}
@@ -180,6 +197,7 @@ def render(data):
             f"- 依赖：{', '.join(item['depends_on']) if item['depends_on'] else '无'}",
             f"- 历史问题：{', '.join(item['legacy_links']) if item['legacy_links'] else '无'}",
             f"- 修复证据：PR {proof['implementation_pr'] or '未提供'}；回归 {proof['automated_test'] or '未完成'}；独立审核 {proof['independent_review'] or '未完成'}；真实媒体 {proof['media_validation'] or '未完成或不适用'}",
+            f"- 状态历史：{' → '.join(h['date'] + ':' + h['status'] for h in item['history'])}",
             "",
         ])
     lines.extend([
