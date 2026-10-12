@@ -21,7 +21,7 @@ OFFPEAK_CNY_PER_MILLION = {
     "deepseek-v4-pro": (Decimal("4.5"), Decimal("13.5")),
 }
 DEFAULT_MODEL = "deepseek-flash"
-MAX_OUTPUT_TOKENS = 2400
+MAX_OUTPUT_TOKENS = 3400
 OVERHEAD_TOKENS = 1024
 
 
