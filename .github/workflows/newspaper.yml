@@ -39,6 +39,8 @@ jobs:
           cache-dependency-path: newspaper/requirements.txt
       - name: Install dependencies
         run: python -m pip install -r newspaper/requirements.txt
+      - name: Install English grammatical analysis model (spaCy official)
+        run: python -m spacy download en_core_web_sm
       - name: Cache offline translation model
         uses: actions/cache@v4
         with:
