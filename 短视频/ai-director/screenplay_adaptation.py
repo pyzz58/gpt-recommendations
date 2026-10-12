@@ -20,6 +20,7 @@ VERSION = "screenplay-adaptation-v1"
 OPS = {"keep", "compress", "expand", "split", "merge", "reorder"}
 MAX_SCENES = 32
 MAX_BEATS = 100
+MAX_WHOLE_SCREENPLAY_S = 3600  # whole screenplay; episodes capped independently at 90s
 
 
 class AdaptationError(ValueError):
@@ -56,6 +57,10 @@ def build_editor_request(plan, episode_source):
                 "必须完整理解 source，找出不可损失的核心思想、情节或重要证据；"
                 "改编时允许合并、拆分、重排、删减、新增文学性叙述，"
                 "但所有变动要逐一标注原文映射及其理由、未经审核状态。"
+                "硬性要求：剧本要尽可能详尽、具体，不许只有情节提要。逐场写清环境与时空、"
+                "角色/对象当前状态、可见行为及其顺序、刺激与反应、人物动机或论证因果、"
+                "情绪/认识由何而变、必要的道具和动作连续性、实际对白/旁白及沉默意图，"
+                "让总导演无需猜测作者究竟要发生什么；详尽不等于堆砌空洞形容词。"
                 "场次必须是可见可听的行动或认知变化；对白/旁白须具有自然人声的节奏、"
                 "独特而准确的作者表达；避免每段配一个无差别说明画面。"
                 "小说场景关注人物的行为、动机、潜台词、因果选择；"
@@ -198,7 +203,10 @@ def validate_proposal(plan, episode_source, proposal):
         if count > 1:
             _require(all(op == "split" for sid, op in assignments if sid == shot_id),
                      "ADAPTATION_DUPLICATE_SOURCE_WITHOUT_SPLIT")
-    _require(total <= 300, "ADAPTATION_RUNTIME_EXCEEDS_LIMIT")
+    # A full story may be 10 minutes or longer. The 90-second ceiling
+    # applies only to individual director-designed EPISODES, not this draft.
+    _require(total <= MAX_WHOLE_SCREENPLAY_S,
+             "ADAPTATION_WHOLE_SCREENPLAY_EXCEEDS_LIMIT")
     return {"source_coverage": len(original), "source_omitted": len(omitted),
             "screenplay_beats": len(seen_beats), "estimated_duration_s": total,
             "proposed_changes": edit_report,
