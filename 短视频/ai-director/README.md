@@ -4,6 +4,16 @@
 
 这是产品目标，当前尚未完成真实成片闭环。现有专业导演编译能力已保留，本轮纠正了旧文档只停在图纸的目标，并补上 Seedance 单镜接口。
 
+## 质量优化阶段（当前最高优先级）
+
+**目标：国际优秀编剧与导演职业标准 × AI 短视频实际生成特点。** 先完整审计和提高前置编剧、总导演的质量；未来其他部门同样审计，但不得因现有测试通过而自称达标。优先修复真实问题，不新增无用 Agent。
+
+- [质量优化总纲：目标、岗位边界、AI 视频约束、完成门槛](quality-optimization/QUALITY_CHARTER.md)
+- [独立问题清单：32 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
+- [机器可读问题总账](quality-optimization/QUALITY_ISSUES.json)：改动一个问题就更新一条，CI 拦截无证据假完成、漏问题和状态表不同步。
+- 原有 [技术/安全审计](AUDIT_FINDINGS.json) 继续独立生效；媒体未实测、账号未授权均不能被本轮优化消除。
+
+
 ## 国际编剧质量与导演分工
 
 - [国际编剧与导演职责审计](SCREENWRITER_INTERNATIONAL_AUDIT_2026-10-13.md)：对照 Nicholl、Sundance、BBC、Scriptnotes、BAFTA、DGA 的创作标准和职责，并公开现有流程的专业缺陷、已修与待修项。
