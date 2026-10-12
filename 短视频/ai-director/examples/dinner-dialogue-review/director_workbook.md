@@ -214,4 +214,4 @@ PHONE01黑色无标识手机，起初屏幕朝上但黑屏，26–30秒右手连
 - [配音交接表](speech_handoff.json)明确VO、出镜对白、画外对白与说话人；[计划字幕SRT](subtitles.planned.srt)可在录音校准后用于后期。
 - [验证记录](validation.json)：仅证明文字结构与时序一致；保留未人审、未录音、未生成标记。
 
-现有编译时间线字段sync_dialogue会同时容纳出镜与画外对白；不能仅看字段名派发口型任务，应读取speech_handoff的类型与lip_sync_required以及逐镜lip_sync_policy。本轮仅修复校验器把等待误判为占位文字的问题，没有新增执行框架。
+编译时间线保留sync_dialogue兼容名称，但现在逐句保存kind和lip_sync_required；S04为画外对白，其他对白为出镜对白。制作包和后期工作单均保留完整speech。另附[首镜API请求候选](seedance_s02_request.json)：S02原生对白技术探针，尚无参考图、费用授权或真实生成，不能证明人物一致性。

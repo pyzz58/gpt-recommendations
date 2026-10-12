@@ -490,7 +490,9 @@
           "absolute_out_s": 13,
           "speaker_id": "CHAR02",
           "text": "今天，过得怎么样？",
-          "delivery": "轻声真实发问；母亲出镜，需要口型"
+          "delivery": "轻声真实发问；母亲出镜，需要口型",
+          "kind": "onscreen_dialogue",
+          "lip_sync_required": true
         }
       ],
       "sound_effect_cues": [],
@@ -572,7 +574,9 @@
           "absolute_out_s": 19,
           "speaker_id": "CHAR01",
           "text": "还行。",
-          "delivery": "短、轻，语尾收住；女儿出镜，需要口型"
+          "delivery": "短、轻，语尾收住；女儿出镜，需要口型",
+          "kind": "onscreen_dialogue",
+          "lip_sync_required": true
         }
       ],
       "sound_effect_cues": [],
@@ -654,7 +658,9 @@
           "absolute_out_s": 29,
           "speaker_id": "CHAR02",
           "text": "我问的是你，不是工作。",
-          "delivery": "画外对白，来自桌对面的母亲；保持与出镜对白相同的房间混响，不做回忆旁白"
+          "delivery": "画外对白，来自桌对面的母亲；保持与出镜对白相同的房间混响，不做回忆旁白",
+          "kind": "offscreen_dialogue",
+          "lip_sync_required": false
         }
       ],
       "sound_effect_cues": [
@@ -742,7 +748,9 @@
           "absolute_out_s": 37,
           "speaker_id": "CHAR01",
           "text": "其实……不太好。",
-          "delivery": "女儿出镜；其实约1–2秒，2–3秒停顿，不太好约3–5秒；待实录校准"
+          "delivery": "女儿出镜；其实约1–2秒，2–3秒停顿，不太好约3–5秒；待实录校准",
+          "kind": "onscreen_dialogue",
+          "lip_sync_required": true
         }
       ],
       "sound_effect_cues": [],
@@ -824,7 +832,9 @@
           "absolute_out_s": 44,
           "speaker_id": "CHAR02",
           "text": "那就先吃饭。",
-          "delivery": "母亲出镜，轻柔落句；女儿全程闭口，听完才点头"
+          "delivery": "母亲出镜，轻柔落句；女儿全程闭口，听完才点头",
+          "kind": "onscreen_dialogue",
+          "lip_sync_required": true
         }
       ],
       "sound_effect_cues": [],
@@ -1647,7 +1657,31 @@
               "cue": "桌上手机短振一次，无消息提示语"
             }
           ],
-          "overlay_text": "我以为，她又要问工作。"
+          "overlay_text": "我以为，她又要问工作。",
+          "speech": {
+            "voiceover": {
+              "text": "我以为，她又要问工作。",
+              "delivery": "回忆旁白，克制、不埋怨；画中双方闭口",
+              "timing": "1–5秒",
+              "cues": [
+                {
+                  "from_s": 1,
+                  "to_s": 5,
+                  "text": "我以为，她又要问工作。"
+                }
+              ]
+            },
+            "dialogue": [],
+            "subtitle_cues": [
+              {
+                "from_s": 1,
+                "to_s": 5,
+                "text": "我以为，她又要问工作。"
+              }
+            ],
+            "subtitle_direction": "逐字对应本镜语音；白字深描边，1080×1920基线y=1580，左右各96px，最多两行；合成后手机预览调整安全区",
+            "lip_sync_policy": "画中两人闭口；VO不做口型"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
@@ -1692,7 +1726,8 @@
               "from_s": 1,
               "to_s": 5,
               "text": "今天，过得怎么样？",
-              "delivery": "轻声真实发问；母亲出镜，需要口型"
+              "delivery": "轻声真实发问；母亲出镜，需要口型",
+              "kind": "onscreen_dialogue"
             }
           ],
           "subtitle_cues": [
@@ -1917,7 +1952,34 @@
           "ambience": "全片同一条低电平餐厅底噪，不在切点重启",
           "music": "none：无配乐",
           "effects": [],
-          "overlay_text": "今天，过得怎么样？"
+          "overlay_text": "今天，过得怎么样？",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "无旁白",
+              "cues": []
+            },
+            "dialogue": [
+              {
+                "speaker_id": "CHAR02",
+                "from_s": 1,
+                "to_s": 5,
+                "text": "今天，过得怎么样？",
+                "delivery": "轻声真实发问；母亲出镜，需要口型",
+                "kind": "onscreen_dialogue"
+              }
+            ],
+            "subtitle_cues": [
+              {
+                "from_s": 1,
+                "to_s": 5,
+                "text": "今天，过得怎么样？"
+              }
+            ],
+            "subtitle_direction": "逐字对应本镜语音；白字深描边，1080×1920基线y=1580，左右各96px，最多两行；合成后手机预览调整安全区",
+            "lip_sync_policy": "轻声真实发问；母亲出镜，需要口型；先录音锁定语速再同步，只让说话人开口，停顿和句尾闭口。"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
@@ -1962,7 +2024,8 @@
               "from_s": 1,
               "to_s": 3,
               "text": "还行。",
-              "delivery": "短、轻，语尾收住；女儿出镜，需要口型"
+              "delivery": "短、轻，语尾收住；女儿出镜，需要口型",
+              "kind": "onscreen_dialogue"
             }
           ],
           "subtitle_cues": [
@@ -2187,7 +2250,34 @@
           "ambience": "全片同一条低电平餐厅底噪，不在切点重启",
           "music": "none：无配乐",
           "effects": [],
-          "overlay_text": "还行。"
+          "overlay_text": "还行。",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "无旁白",
+              "cues": []
+            },
+            "dialogue": [
+              {
+                "speaker_id": "CHAR01",
+                "from_s": 1,
+                "to_s": 3,
+                "text": "还行。",
+                "delivery": "短、轻，语尾收住；女儿出镜，需要口型",
+                "kind": "onscreen_dialogue"
+              }
+            ],
+            "subtitle_cues": [
+              {
+                "from_s": 1,
+                "to_s": 3,
+                "text": "还行。"
+              }
+            ],
+            "subtitle_direction": "逐字对应本镜语音；白字深描边，1080×1920基线y=1580，左右各96px，最多两行；合成后手机预览调整安全区",
+            "lip_sync_policy": "短、轻，语尾收住；女儿出镜，需要口型；先录音锁定语速再同步，只让说话人开口，停顿和句尾闭口。"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
@@ -2232,7 +2322,8 @@
               "from_s": 0.5,
               "to_s": 5,
               "text": "我问的是你，不是工作。",
-              "delivery": "画外对白，来自桌对面的母亲；保持与出镜对白相同的房间混响，不做回忆旁白"
+              "delivery": "画外对白，来自桌对面的母亲；保持与出镜对白相同的房间混响，不做回忆旁白",
+              "kind": "offscreen_dialogue"
             }
           ],
           "subtitle_cues": [
@@ -2486,7 +2577,34 @@
               "cue": "手机外壳轻触木桌，音量低于对白"
             }
           ],
-          "overlay_text": "我问的是你，不是工作。"
+          "overlay_text": "我问的是你，不是工作。",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "无旁白",
+              "cues": []
+            },
+            "dialogue": [
+              {
+                "speaker_id": "CHAR02",
+                "from_s": 0.5,
+                "to_s": 5,
+                "text": "我问的是你，不是工作。",
+                "delivery": "画外对白，来自桌对面的母亲；保持与出镜对白相同的房间混响，不做回忆旁白",
+                "kind": "offscreen_dialogue"
+              }
+            ],
+            "subtitle_cues": [
+              {
+                "from_s": 0.5,
+                "to_s": 5,
+                "text": "我问的是你，不是工作。"
+              }
+            ],
+            "subtitle_direction": "逐字对应本镜语音；白字深描边，1080×1920基线y=1580，左右各96px，最多两行；合成后手机预览调整安全区",
+            "lip_sync_policy": "纯手部局部，母亲画外对白不做口型；不得误派给女儿"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
@@ -2531,7 +2649,8 @@
               "from_s": 1,
               "to_s": 5,
               "text": "其实……不太好。",
-              "delivery": "女儿出镜；其实约1–2秒，2–3秒停顿，不太好约3–5秒；待实录校准"
+              "delivery": "女儿出镜；其实约1–2秒，2–3秒停顿，不太好约3–5秒；待实录校准",
+              "kind": "onscreen_dialogue"
             }
           ],
           "subtitle_cues": [
@@ -2756,7 +2875,34 @@
           "ambience": "全片同一条低电平餐厅底噪，不在切点重启",
           "music": "none：无配乐",
           "effects": [],
-          "overlay_text": "其实……不太好。"
+          "overlay_text": "其实……不太好。",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "无旁白",
+              "cues": []
+            },
+            "dialogue": [
+              {
+                "speaker_id": "CHAR01",
+                "from_s": 1,
+                "to_s": 5,
+                "text": "其实……不太好。",
+                "delivery": "女儿出镜；其实约1–2秒，2–3秒停顿，不太好约3–5秒；待实录校准",
+                "kind": "onscreen_dialogue"
+              }
+            ],
+            "subtitle_cues": [
+              {
+                "from_s": 1,
+                "to_s": 5,
+                "text": "其实……不太好。"
+              }
+            ],
+            "subtitle_direction": "逐字对应本镜语音；白字深描边，1080×1920基线y=1580，左右各96px，最多两行；合成后手机预览调整安全区",
+            "lip_sync_policy": "女儿出镜；其实约1–2秒，2–3秒停顿，不太好约3–5秒；待实录校准；先录音锁定语速再同步，只让说话人开口，停顿和句尾闭口。"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
@@ -2801,7 +2947,8 @@
               "from_s": 1,
               "to_s": 4,
               "text": "那就先吃饭。",
-              "delivery": "母亲出镜，轻柔落句；女儿全程闭口，听完才点头"
+              "delivery": "母亲出镜，轻柔落句；女儿全程闭口，听完才点头",
+              "kind": "onscreen_dialogue"
             }
           ],
           "subtitle_cues": [
@@ -2988,7 +3135,34 @@
           "ambience": "全片同一条低电平餐厅底噪，不在切点重启",
           "music": "none：无配乐",
           "effects": [],
-          "overlay_text": "那就先吃饭。"
+          "overlay_text": "那就先吃饭。",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "无旁白",
+              "cues": []
+            },
+            "dialogue": [
+              {
+                "speaker_id": "CHAR02",
+                "from_s": 1,
+                "to_s": 4,
+                "text": "那就先吃饭。",
+                "delivery": "母亲出镜，轻柔落句；女儿全程闭口，听完才点头",
+                "kind": "onscreen_dialogue"
+              }
+            ],
+            "subtitle_cues": [
+              {
+                "from_s": 1,
+                "to_s": 4,
+                "text": "那就先吃饭。"
+              }
+            ],
+            "subtitle_direction": "逐字对应本镜语音；白字深描边，1080×1920基线y=1580，左右各96px，最多两行；合成后手机预览调整安全区",
+            "lip_sync_policy": "母亲出镜，轻柔落句；女儿全程闭口，听完才点头；先录音锁定语速再同步，只让说话人开口，停顿和句尾闭口。"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",

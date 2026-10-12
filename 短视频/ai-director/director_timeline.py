@@ -141,8 +141,14 @@ def assemble(base, direction):
         for i, line in enumerate(raw_dialogue):
             info = timed(line, "dialogue[" + str(i) + "]", required=True)
             if info:
+                kind = line.get("kind", "unspecified_dialogue")
+                if kind not in ("onscreen_dialogue", "offscreen_dialogue", "unspecified_dialogue"):
+                    issue(sid, "DIALOGUE_KIND_INVALID", "blocker", "unsupported dialogue kind")
+                    kind = "unspecified_dialogue"
                 info.update({"speaker_id": line.get("speaker_id"), "text": line.get("text"),
-                             "delivery": line.get("delivery")})
+                             "delivery": line.get("delivery"), "kind": kind,
+                             "lip_sync_required": (None if kind == "unspecified_dialogue"
+                                                   else kind == "onscreen_dialogue")})
                 dialogues.append(info)
         if voiceover and dialogues:
             issue(sid, "VO_DIALOGUE_MIX_REVIEW", "review",
@@ -257,3 +263,4 @@ def assemble(base, direction):
             "source_media_exists": False, "frame_accurate": False,
         })
     return tracks, findings
+

@@ -445,7 +445,8 @@
             "from_s": 1,
             "to_s": 5,
             "text": "今天，过得怎么样？",
-            "delivery": "轻声真实发问；母亲出镜，需要口型"
+            "delivery": "轻声真实发问；母亲出镜，需要口型",
+            "kind": "onscreen_dialogue"
           }
         ],
         "subtitle_cues": [
@@ -692,7 +693,8 @@
             "from_s": 1,
             "to_s": 3,
             "text": "还行。",
-            "delivery": "短、轻，语尾收住；女儿出镜，需要口型"
+            "delivery": "短、轻，语尾收住；女儿出镜，需要口型",
+            "kind": "onscreen_dialogue"
           }
         ],
         "subtitle_cues": [
@@ -944,7 +946,8 @@
             "from_s": 0.5,
             "to_s": 5,
             "text": "我问的是你，不是工作。",
-            "delivery": "画外对白，来自桌对面的母亲；保持与出镜对白相同的房间混响，不做回忆旁白"
+            "delivery": "画外对白，来自桌对面的母亲；保持与出镜对白相同的房间混响，不做回忆旁白",
+            "kind": "offscreen_dialogue"
           }
         ],
         "subtitle_cues": [
@@ -1191,7 +1194,8 @@
             "from_s": 1,
             "to_s": 5,
             "text": "其实……不太好。",
-            "delivery": "女儿出镜；其实约1–2秒，2–3秒停顿，不太好约3–5秒；待实录校准"
+            "delivery": "女儿出镜；其实约1–2秒，2–3秒停顿，不太好约3–5秒；待实录校准",
+            "kind": "onscreen_dialogue"
           }
         ],
         "subtitle_cues": [
@@ -1400,7 +1404,8 @@
             "from_s": 1,
             "to_s": 4,
             "text": "那就先吃饭。",
-            "delivery": "母亲出镜，轻柔落句；女儿全程闭口，听完才点头"
+            "delivery": "母亲出镜，轻柔落句；女儿全程闭口，听完才点头",
+            "kind": "onscreen_dialogue"
           }
         ],
         "subtitle_cues": [

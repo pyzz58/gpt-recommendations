@@ -96,7 +96,8 @@ def _make_bundle(base, direction, *, provenance, crew_workbook=None,
             "target_type": "video_generation_candidate" if is_video else "postproduction_only",
             "shot_objective": deepcopy(row["story"]),
             "film_script": {"voiceover": shot["narration"],
-                            "subtitles": deepcopy(shot["subtitles"])},
+                            "subtitles": deepcopy(shot["subtitles"]),
+                            "speech": deepcopy(row["script"]["speech"])},
             "action_beats": deepcopy(row["performance"]["timed_beats"]),
             "camera": deepcopy(row["camera"]),
             "lighting_and_set": deepcopy(row["set_and_lighting"]),
@@ -319,6 +320,7 @@ def render_operator_markdown(bundle):
             "生产路线：" + shot["production_route"],
             "画面目标：" + shot["shot_objective"]["visible_change"],
             "旁白：" + shot["film_script"]["voiceover"],
+            "对白、语音时间与口型：" + json.dumps(shot["film_script"].get("speech"), ensure_ascii=False),
             "参考资产：" + json.dumps(shot["required_reference_roles"], ensure_ascii=False),
             "参考素材已提供：否，必须人工核验",
             "",
@@ -408,3 +410,4 @@ def main(argv=None):
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

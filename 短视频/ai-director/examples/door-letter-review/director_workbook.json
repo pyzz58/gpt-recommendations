@@ -2039,7 +2039,19 @@
               "cue": "第三下轻木敲"
             }
           ],
-          "overlay_text": ""
+          "overlay_text": "",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "全片无语音",
+              "cues": []
+            },
+            "dialogue": [],
+            "subtitle_cues": [],
+            "subtitle_direction": "无字幕；不把动作说明叠入画面",
+            "lip_sync_policy": "无人说话，嘴唇保持自然闭合；无口型任务"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
@@ -2304,7 +2316,19 @@
               "cue": "门把复位轻响"
             }
           ],
-          "overlay_text": ""
+          "overlay_text": "",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "全片无语音",
+              "cues": []
+            },
+            "dialogue": [],
+            "subtitle_cues": [],
+            "subtitle_direction": "无字幕；不把动作说明叠入画面",
+            "lip_sync_policy": "无人说话，嘴唇保持自然闭合；无口型任务"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
@@ -2587,7 +2611,19 @@
               "cue": "第二步落地"
             }
           ],
-          "overlay_text": ""
+          "overlay_text": "",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "全片无语音",
+              "cues": []
+            },
+            "dialogue": [],
+            "subtitle_cues": [],
+            "subtitle_direction": "无字幕；不把动作说明叠入画面",
+            "lip_sync_policy": "无人说话，嘴唇保持自然闭合；无口型任务"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
@@ -2860,7 +2896,19 @@
               "cue": "顶灯轻微电流声截断，不加爆炸或雷声"
             }
           ],
-          "overlay_text": ""
+          "overlay_text": "",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "全片无语音",
+              "cues": []
+            },
+            "dialogue": [],
+            "subtitle_cues": [],
+            "subtitle_direction": "无字幕；不把动作说明叠入画面",
+            "lip_sync_policy": "无人说话，嘴唇保持自然闭合；无口型任务"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
@@ -3182,7 +3230,19 @@
           "cost_note": "未调用模型；不报价、不自动重试",
           "reference_roles": [],
           "asset_status": "not_verified",
-          "requires_operator_review": true
+          "requires_operator_review": true,
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "全片无语音",
+              "cues": []
+            },
+            "dialogue": [],
+            "subtitle_cues": [],
+            "subtitle_direction": "无字幕；不把动作说明叠入画面",
+            "lip_sync_policy": "无人说话，嘴唇保持自然闭合；无口型任务"
+          }
         },
         "reference_roles": [],
         "fallback": "使用后期纯黑即可，不消耗视频模型请求；声音必须可在单声道手机上分辨三下。",
@@ -3469,7 +3529,19 @@
               "cue": "外套轻微摩擦"
             }
           ],
-          "overlay_text": ""
+          "overlay_text": "",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "全片无语音",
+              "cues": []
+            },
+            "dialogue": [],
+            "subtitle_cues": [],
+            "subtitle_direction": "无字幕；不把动作说明叠入画面",
+            "lip_sync_policy": "无人说话，嘴唇保持自然闭合；无口型任务"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
@@ -3752,7 +3824,19 @@
               "cue": "布料回落"
             }
           ],
-          "overlay_text": ""
+          "overlay_text": "",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "全片无语音",
+              "cues": []
+            },
+            "dialogue": [],
+            "subtitle_cues": [],
+            "subtitle_direction": "无字幕；不把动作说明叠入画面",
+            "lip_sync_policy": "无人说话，嘴唇保持自然闭合；无口型任务"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
@@ -3969,7 +4053,19 @@
           "ambience": "全片一条低电平室内底噪，不能每镜重新起音",
           "music": "none：无配乐",
           "effects": [],
-          "overlay_text": ""
+          "overlay_text": "",
+          "speech": {
+            "voiceover": {
+              "text": "",
+              "delivery": "none，无旁白",
+              "timing": "全片无语音",
+              "cues": []
+            },
+            "dialogue": [],
+            "subtitle_cues": [],
+            "subtitle_direction": "无字幕；不把动作说明叠入画面",
+            "lip_sync_policy": "无人说话，嘴唇保持自然闭合；无口型任务"
+          }
         },
         "reference_roles": [
           "CHAR01固定外观",
