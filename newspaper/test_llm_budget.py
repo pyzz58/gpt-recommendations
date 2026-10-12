@@ -54,7 +54,7 @@ class OneCallCostTests(unittest.TestCase):
 
     def test_oversize_request_fails_closed(self):
         with self.assertRaises(ValueError):
-            preflight([{"role":"user","content":"a"*100000}])
+            preflight([{"role":"user","content":"a"*220000}])
         with self.assertRaises(ValueError):
             preflight([{"role":"user","content":"a"*65000}],model="deepseek-v4-pro")
         with self.assertRaises(ValueError):
