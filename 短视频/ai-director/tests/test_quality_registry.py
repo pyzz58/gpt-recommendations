@@ -116,12 +116,12 @@ class QualityRegistryTests(unittest.TestCase):
         d = deepcopy(self.data)
         row = next(x for x in d["items"] if x["id"] == "QO-W01")
         row["history"].append({
-            "date": "2026-10-14", "status": "partially_addressed",
+            "date": "2026-10-14", "status": row["status"],
             "note": "补充新的公开合成案例，问题仍未完成完整的职业级质量验收",
-            "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/21"
+            "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/26"
         })
         self.assertEqual(q.validate(d)["complete"], 0)
-        self.assertIn("2026-10-14:partially_addressed", q.render(d))
+        self.assertIn("2026-10-14:" + row["status"], q.render(d))
 
 
 if __name__ == "__main__":
