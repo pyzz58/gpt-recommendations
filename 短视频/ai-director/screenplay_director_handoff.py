@@ -177,6 +177,15 @@ def prepare_handoff(original_plan, episode_source, packet, review_decision,
             "SCRIPT_SOURCE_STALE")
     _ensure(packet.get("original_plan_digest") == team.fingerprint(original_plan),
             "SCRIPT_BASE_STALE")
+    # The old article_intake can abridge a long chapter after 185 spoken
+    # characters / 75 seconds. Those unindexed paragraphs cannot be treated
+    # as evaluated by the screenplay source-ID coverage check.
+    original_omissions = original_plan.get("editorial", {}).get("omissions", [])
+    _ensure(not any(
+        isinstance(x, dict) and
+        "preview length/shot limit" in str(x.get("reason", ""))
+        for x in original_omissions),
+        "SCRIPT_LONG_SOURCE_PREVIEW_TRUNCATED")
     try:
         expected = script.build_review_packet(
             original_plan, episode_source, packet["proposal"])
