@@ -117,6 +117,42 @@ class TimedDialogueCoverageTests(unittest.TestCase):
         self.assertEqual(len([s for s in self.cues["subtitles"]
                               if s["beat_id"] == "B03"]), 2)
 
+    def test_absolute_editor_cues_have_one_text_and_two_picture_segments(self):
+        rebuilt = coverage.reblock_episode(
+            self.h, self.ds, self.plan, self.packet, self.approved)
+        base = rebuilt["episodes"][0]["authoritative_episode_base"]
+        sheet = base["director_editor_cue_sheet"]
+        self.assertEqual(sheet["kind"], "qod19_editor_cue_sheet_planning_only")
+        self.assertFalse(sheet["audio_rendered"])
+        self.assertFalse(sheet["lip_sync_verified"])
+        self.assertFalse(sheet["legacy_shot_text_rendering_allowed"])
+        cue = sheet["speech_cues"][0]
+        self.assertEqual(cue["text_exact"], self.beats[0]["dialogue"][0]["line"])
+        self.assertEqual([x["director_shot_id"] for x in cue["picture_segments"]],
+                         ["S01", "S02"])
+        self.assertEqual(
+            [(x["story_from_s"], x["story_to_s"]) for x in cue["picture_segments"]],
+            [(1.0, 2.5), (2.5, 4.0)])
+        self.assertEqual([cue["story_from_s"], cue["story_to_s"]], [1, 4])
+        self.assertEqual(sheet["story_runtime_s"], base["duration"])
+
+    def test_legacy_renderers_fail_closed_on_cue_aware_episode(self):
+        import director_v2
+        import production_delivery
+        rebuilt = coverage.reblock_episode(
+            self.h, self.ds, self.plan, self.packet, self.approved)
+        base = rebuilt["episodes"][0]["authoritative_episode_base"]
+        with self.assertRaisesRegex(ValueError, "TIMED_CUE_RENDERER_REQUIRED"):
+            director.compile_prompts(base)
+        with self.assertRaisesRegex(ValueError, "TIMED_CUE_PREVIEW_REQUIRED"):
+            director.render_preview(base, "/tmp/no-image.html")
+        with self.assertRaisesRegex(ValueError, "TIMED_CUE_RENDERER_REQUIRED"):
+            director_v2.compile_package(base, {})
+        with self.assertRaisesRegex(
+                production_delivery.ProductionDeliveryError,
+                "DELIVERY_TIMED_CUE_RENDERER_NOT_IMPLEMENTED"):
+            production_delivery._make_bundle(base, {}, provenance={})
+
     def test_real_director_role_request_receives_exact_audio_subtitle_timeline(self):
         import json
         rebuilt = coverage.reblock_episode(
