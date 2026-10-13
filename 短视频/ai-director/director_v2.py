@@ -306,6 +306,8 @@ def visual_prompt_contract(base, shot, direction):
 
 
 def compile_package(base, directions, assets=None, asset_root=None):
+    if base.get("director_editorial_montage"):
+        raise ValueError("EDITORIAL_MONTAGE_RENDERER_REQUIRED_LEGACY_EDITS_UNSAFE")
     if base.get("requires_timed_cue_rendering"):
         raise ValueError("TIMED_CUE_RENDERER_REQUIRED_LEGACY_SHOT_TEXT_UNSAFE")
     errors,warnings=validate(base,directions,assets,asset_root)
