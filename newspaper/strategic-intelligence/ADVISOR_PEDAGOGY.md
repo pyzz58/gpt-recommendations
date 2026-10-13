@@ -1,5 +1,7 @@
 # 首席认知与战略顾问 Skill：事实驱动的深入浅出教学
 
+> **V3.0协作提示**：这是顾问方法的原理层记录；未来AI实际写稿先参考更详细的[COGNITIVE_ADVISOR_SKILL.md](COGNITIVE_ADVISOR_SKILL.md)和[skills/chief_advisor/SKILL.md](skills/chief_advisor/SKILL.md)，不将此文件当作已运行Agent。
+
 ## 1. 角色定义
 这是专业讲解质量规范，不是“装作帝师”“扮演名人”的人格提示。目标：专业、扎实、平易而不浅薄，从已核实的真实事件教会读者独立理解世界。九个栏目共享一个顾问规范，按领域加载知识与方法，不要求九个实体 Agent。
 
