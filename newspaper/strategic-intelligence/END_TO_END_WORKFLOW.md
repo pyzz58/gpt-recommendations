@@ -214,3 +214,13 @@ delivery_attempt_id | provider_status | retry_count | failure_reason
 6. **一本杂志与长期档案**：逐篇先新闻正文A、后顾问及帝师点评B、再证据跟踪C；通过主编统一编排周报/年报、版本归档，未经授权不发送。
 
 **精确方法**：[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)。**读者实际版面**：[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)。**未来工程缺口**：[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)。内部旧12步无需作为独立微服务逐步实现，研究步骤可合并、回退和迭代；本文既有来源和时效硬要求仍有效。
+
+## 13. V4.3“先选好真实材料，再写翔实新闻，再讲透，再推演”的现行流程
+
+在六层架构中对编辑操作加以下真实门槛：
+
+- **全球发现之后、证据研究之前**：运行[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)S0—S6，按事件聚类/原发链，逐个写具体影响（BENEFIT/HARM/MIXED/UNCERTAIN及已兑现还是潜在）、受影响主体、规模、典型性或重大独立突破；过真实性/合法可报道性硬门，再做可解释、可人工调整的试用评分。热搜和美国大科技关注度不能直接选中主文。
+- **正式证据研究**：先按S7制订\`ReportingPlan\`（采访已公开/机构报告/政府原文/论文/审计财报/独立异议/研究方法和缺失资料），核完整5W1H，研究报告的统计样本/模型/适用条件。研究后S8重新评估题目价值，发现原先“有影响力”被证伪可转WATCH或DROP。
+- **新闻成稿**：A必须是可独立阅读的完整记者式真实报道，**不能是对原稿的100字概念摘要**；B才由七问顾问/帝师进行有证据的多机制解读与讲授。A中新闻声明与研究推论必须分层。
+- **末尾C改变职责**：用[SCENARIOS_AND_OPEN_QUESTIONS.md](SCENARIOS_AND_OPEN_QUESTIONS.md)在B1/B2基础上推演条件不同的路径，并提出2—4道真正开放的问题。不要再把未来跟踪指标直接作为可见的“继续观察”模块；指标仍写后台\`ThesisVersion\`供年报纠错。
+- **独立审稿**：增加SelectionAudit、News5W1HAudit、InstitutionReportMethodAudit、Scenario/QuestionAudit四组门禁，具体负例见[QA_AND_METRICS.md](QA_AND_METRICS.md)。这仍是MD设计，尚未作为运行中Python管道实施。
