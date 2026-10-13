@@ -2,7 +2,7 @@
 
 > **正式中文名称：内参系统**｜兼容简称：内参｜历史名称：全球战略内参
 >
-> **当前设计基线：V4.2 · 2026-10-13**。已完成总体项目框架、需求归档与设计文档；**未完成研究引擎、周报/年报自动生成、知识数据库、正式调度和邮件推送**。
+> **当前设计基线：V4.3 · 2026-10-13**。已完成总体项目框架、需求归档与设计文档；**未完成研究引擎、周报/年报自动生成、知识数据库、正式调度和邮件推送**。
 >
 > GitHub唯一规范目录：`pyzz58/gpt-recommendations/newspaper/strategic-intelligence/`，中文快速入口：[newspaper/内参系统.md](../内参系统.md)。
 
@@ -17,6 +17,12 @@
 **历史审计与工程问题**：[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)——每项缺口有NC编号、当前证据、状态、未来修复步骤及验收；**目前只冻结内容设计、没有启动真实源码修复**。旧12步保留为研究详细检查库，非现行单独生产链。仍只有周报＋年报，日报不修改，124源不重测。
 
 ---
+
+## V4.3选文、翔实新闻与开放性结尾（覆盖之前C继续观察的安排）
+
+- **[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)**：参考半月谈、求是的议题策划和新闻现实问题意识，以及Reuters、AP、BBC新闻标准与新闻价值研究，形成有实际步骤的选文机制。必须有可证正/负/混合现实影响或重大潜在影响、典型机制或突破、重要结构变化、原始公开资料；S0—S8按编辑门槛、评分、反茧房和研究后第二次审查选文。
+- **[SCENARIOS_AND_OPEN_QUESTIONS.md](SCENARIOS_AND_OPEN_QUESTIONS.md)**：读者文章结尾正式改为事件后续情景推演与2—4道开放性问题，不再是空泛的“继续观察”。后台历史Thesis核验仍独立保留。
+- **[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)**及[templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md)：正式文章四部分为A翔实专业记者新闻/机构报告（六要素、背景、原始来源、研究方法）→B1顾问现实判断→B2帝师底层知识教学→C事件推演＋开放思考。整本刊物仍为周报＋年报；不改父目录日报。
 
 ## 1. 此系统到底是什么？
 
