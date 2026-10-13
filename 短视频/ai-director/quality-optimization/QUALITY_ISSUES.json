@@ -662,6 +662,12 @@
           "status": "confirmed_open",
           "note": "本轮先补总导演向各部门发布分镜艺术任务书；现有镜头/场次并未完全解耦，D02仍继续开放",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "全量代码审计确认build_per_episode_crew仍直接将每个来源beat对应原始一个shot进行重编号；没有来源节拍与导演镜头的多对多重构规则，尚不符合专业分镜自由",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/40"
         }
       ]
     },
@@ -1117,6 +1123,12 @@
           "status": "in_progress",
           "note": "经国际导演一手资料对标，明确原来的全保留只应是来源改稿审计，不得阻断导演主动编排短版；在D14中整改，单集90秒门槛不变",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "此次全量审计发现分集预留时间只是汇总数字，production_delivery另固定追加1.8秒来源页，没有证明最终真实片头/回顾/结尾轨与<=90秒一致，作为P0下一项修复",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/40"
         }
       ]
     },
@@ -1247,7 +1259,7 @@
       "evidence": {
         "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/31",
         "commit_sha": "",
-        "automated_test": "tests/test_director_audiovisual_delivery.py — grounded real department-delivery assessment, pending vs completed, precise single-shot revision and staleness rejection",
+        "automated_test": "tests/test_director_audiovisual_delivery.py — grounded real department-delivery assessment, pending vs completed, precise single-shot revision and staleness rejection；PR40 tests/test_director_audiovisual_delivery.py 新增3个跨部门冲突/跨镜引用反例",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1259,6 +1271,12 @@
           "status": "in_progress",
           "note": "国际导演与剪辑专业一手访谈对标现有部门工作会后，建立导演逐镜实际交付与艺术意图复核及定点返工协议；尚无独立真人审片和实际媒体",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/31"
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "此次全量审计定位已有部门conflicts非空仍可能判ready以及借其它镜头引用佐证的可复现代码缺陷；PR40拟添加独立强制阻断与逐shot证据的反例测试，真实媒体审阅仍待完成",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/40"
         }
       ]
     },
@@ -1304,6 +1322,51 @@
           "status": "in_progress",
           "note": "实际原导演艺术机制已新增源版本绑定、人物因果喜剧和拒绝笑料选项，并接入导演视听plan与现有专业岗位model-facing请求；7项公开虚构测试与全量CI作为结构证明，真实艺术盲评/成片仍未做",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/36"
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "艺术方法虽然已实现题材选择与周星驰荒诞能力，但固定六级喜剧节拍及每镜均需名导方法绑定存在过度结构化风险；应专业对比而不是立即宣称错误或完成",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/40"
+        }
+      ]
+    },
+    {
+      "id": "QO-D18",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P0",
+      "status": "confirmed_open",
+      "title": "真实模型运行入口未接收新版总导演艺术方法与跨部门指令",
+      "observed_in": "agent_live_crew.run_one_locked_role; agent_role_contracts.build_role_messages/validate_role_output; screenplay_series_delivery.build_per_episode_crew",
+      "problem": "正式系列每集base已强制director_command_mode、director_audiovisual_mode及director_artistic_mode，但真实授权DeepSeek十岗位执行入口run_one_locked_role向model-facing构造与输出验证调用没有提供department_command、audiovisual_plan及artistic_method_plan，专业岗位将被真实门禁拒绝或无法收到导演完整艺术意图",
+      "root_cause": "新导演创作协议已在离线role builder和对应单元测试中接入，但旧实际模型执行器依旧只传editorial_handoff和reference_manifest；缺三种director-source-bound artifact共同版本校验及私有执行快照",
+      "solution": "维护一个来源和导演锁定版本一致的私有导演创作快照，含原部门制作会、完整艺术方法选择和视听计划；在执行器发起合法授权专业岗位前验证、将三个对象注入真实model-facing role请求并在收到结果时复验；无需新建第二套导演Agent；缺少任一份必须安全阻断并提供明确未授权反馈",
+      "acceptance": "全合成私有模拟HTTPS十岗位顺序测试，从director_brief→script_edit→director_lock→真实acting/camera/sound收到上述三类正确版本的导演细节且可通过schema；缺任一项、有过期版本、串稿与改写事实均拒绝；绝不自动申请API或花钱；实际联网仍需用户明确逐次授权",
+      "ai_video_constraint": "导演清楚阐述人物、空间、幽默/情绪、音画、竖屏、≤90s的意图，AI单clip能力与素材存在条件由对应岗位负责；无模型调用授权不得出网，不能因为HTTP请求成功宣称生成视频或一流艺术质量",
+      "depends_on": [
+        "QO-D15",
+        "QO-D03",
+        "QO-D17"
+      ],
+      "legacy_links": [],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "",
+        "automated_test": "",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "本轮全量代码审计确认live crew实际授权执行路径未携带正式新系列强制的三项导演艺术上下文；原单元测试只直接调用role builder，不证明真实runner贯通，等待修复",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/40"
         }
       ]
     },
