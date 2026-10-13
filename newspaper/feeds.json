@@ -158,6 +158,16 @@
         "name": "US BLS Economic Releases",
         "url": "https://www.bls.gov/feed/bls_latest.rss",
         "source_type": "primary_government"
+      },
+      {
+        "name": "US Treasury Auction Results",
+        "url": "https://www.treasurydirect.gov/TA_WS/securities/auctioned/rss",
+        "source_type": "primary_government"
+      },
+      {
+        "name": "US Treasury Offering Announcements",
+        "url": "https://www.treasurydirect.gov/TA_WS/securities/announced/rss",
+        "source_type": "primary_government"
       }
     ],
     "创业与商业模式": [
