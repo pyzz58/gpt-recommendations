@@ -323,16 +323,16 @@
 ### QO-D09 · 剪辑节奏、过渡桥与镜头版本选择
 
 - 状态：in_progress；优先级：P1；阶段：now_director；负责人：director
-- 发现位置：agent_role_contracts editing_animation; director_timeline.py; production_delivery.py; director_editorial_montage.py; director_shot_coverage.py
+- 发现位置：agent_role_contracts editing_animation; director_timeline.py; production_delivery.py; director_editorial_montage.py; director_shot_coverage.py; director_montage_editor_conform.py
 - 问题：有J/L cut、转场字段但未以真实影像验证行为连续和情绪节奏；不可默认长镜头一镜过
 - 根因：缺由真实媒体帧/音轨回写的编辑视角审计
-- 方案：导演审查每个镜头的入点/出点/情绪换挡/声画桥；备选剪辑与失败因果；逐镜选择最佳 take，避免盲目复拍整片；首版实现独立 editorial montage：镜头序列必须逐镜连续、逐切点绑定剧本场次和时间来源、保留演员/道具出入状态指纹，保留真实媒体与艺术审核门槛。
-- 完成验收：公开合成方案能量化错误切点；真实2+段小样有可验证片段版本与切点，比对导演剪辑意图；新增跨场次/倒叙与伪造时间线的公开离线回归，需GitHub CI核验。
+- 方案：导演审查每个镜头的入点/出点/情绪换挡/声画桥；备选剪辑与失败因果；逐镜选择最佳 take，避免盲目复拍整片；首版实现独立 editorial montage：镜头序列必须逐镜连续、逐切点绑定剧本场次和时间来源、保留演员/道具出入状态指纹，保留真实媒体与艺术审核门槛。；第二阶段新增帧级后期合成工作单，依照QO-D13全片时间预算输出画面源入出帧、逐剪口剪辑指令、可选QO-D19声音/字幕绝对帧和清晰的媒体/转场阻断条目；不以未渲染资源冒称导出成片。
+- 完成验收：公开合成方案能量化错误切点；真实2+段小样有可验证片段版本与切点，比对导演剪辑意图；新增跨场次/倒叙与伪造时间线的公开离线回归，需GitHub CI核验。；明确fps严格落帧，含片头/片尾/证据页且最后一页不被移位，复杂过渡的素材把柄与J/L音轨未有实证时不得误渲染；实际NLE导入和媒体验收另行验证。
 - AI 视频适配：AI片段几秒钟产生，需留头尾缓冲，部分转场后期解决
 - 依赖：QO-D02, QO-D08
 - 历史问题：无
-- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/50；回归 GitHub Actions run 38378525193: 817/817 unittest passed; synthetic package and quality registry check passed (2026-10-13).；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-13:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/51；回归 tests/test_director_montage_editor_conform.py; GitHub Actions run 38381375206 with 824/824 tests and production/synthetic checks green; later code hardening revalidation pending.；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress
 
 ### QO-D10 · 专业导演审片标准：不是字段全就是好片
 
