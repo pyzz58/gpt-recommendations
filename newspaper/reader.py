@@ -12,6 +12,7 @@ from urllib.parse import urlparse
 
 import requests
 import trafilatura
+from news_extraction import newspaper4k_from_html
 
 LOG = logging.getLogger("daily-news")
 PAYWALL_PATTERNS = [
@@ -117,11 +118,21 @@ def fetch_reading(article: dict, min_chars: int = 450, max_chars: int = 4200) ->
             favor_recall=True, output_format="txt",
         )
         paragraphs = _normalize_paragraphs(raw or "")
+        # Mature Newspaper4k parser can recover metadata/article body missed
+        # by Trafilatura. It receives the same public HTML, never re-fetches
+        # blocked/paid pages and is only used when the primary body is short.
+        extraction_engine = "trafilatura"
+        if len("\n".join(paragraphs)) < min_chars:
+            alternative = _normalize_paragraphs(
+                newspaper4k_from_html(url, response.text))
+            if len("\n".join(alternative)) > len("\n".join(paragraphs)):
+                paragraphs = alternative
+                extraction_engine = "newspaper4k_fallback"
         if looks_paywalled("\n".join(paragraphs)):
             LOG.warning("Likely paywall or partial subscription preview, skipping: %s", url)
             return None
         if len("\n".join(paragraphs)) < min_chars:
-            LOG.warning("Article text not available: %s", url)
+            LOG.warning("Article text not available via either extractor: %s", url)
             return None
         excerpt, abbreviated = _long_read(paragraphs, max_chars=max_chars)
         # Reject tiny leftovers rather than quietly sending a short article.
@@ -134,6 +145,7 @@ def fetch_reading(article: dict, min_chars: int = 450, max_chars: int = 4200) ->
         enriched["article_chars"] = len("\n\n".join(paragraphs))
         enriched["reading_chars"] = len(excerpt)
         enriched["reading_selection"] = "consecutive_from_lead"
+        enriched["extraction_engine"] = extraction_engine
         return enriched
     except Exception as exc:
         LOG.warning("Article unavailable: %s: %s", url, exc)

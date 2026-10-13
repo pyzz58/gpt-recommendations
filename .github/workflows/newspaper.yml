@@ -91,6 +91,9 @@ jobs:
       - name: Test date filtering, fallback, rendering
         if: steps.receipt.outputs.cache-hit != 'true'
         run: python -m unittest discover -s newspaper -p 'test_*.py' -v
+      - name: Audit live public RSS source coverage — no secrets
+        if: github.event_name == 'pull_request'
+        run: python newspaper/source_audit.py
       - name: Preview only — never load SMTP secrets
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
         env:
@@ -142,4 +145,5 @@ jobs:
             /tmp/newspaper-preview.html
             /tmp/newspaper-preview.txt
             /tmp/newspaper-preview.pdf
+            /tmp/newspaper-source-audit.json
           retention-days: 3
