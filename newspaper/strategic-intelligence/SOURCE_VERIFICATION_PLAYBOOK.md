@@ -4,6 +4,8 @@
 
 完整逐源网页访问结果：[ACCESS_AUDIT_2026-10-13_FULL.md](ACCESS_AUDIT_2026-10-13_FULL.md)。手动低频 HTTP/RSS/API 测试程序：[tools/source_probe.py](tools/source_probe.py)，默认只干跑、不自动发出网络请求；需在合法联网的隔离环境按指令主动运行。此程序并不能证明版权和AI处理权限。
 
+2026-10-13新增云端实际联网证据：见[SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md](SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md)及4个audits JSON。该结果属于**隔离GitHub Actions的一次性HTTP/API/RSS示例**，不是持续生产环境验收；其结果已精确回写SOURCE_REGISTRY.json。需区分初次网页发现、隔离联网试验、部署主机跨日稳定性与AI版权许可。
+
 ## 验证证据等级
 - V0：只找到官方介绍或相关搜索结果。
 - V1：实际打开官方页面，并取得有用内容或明确RSS/API文档。
