@@ -63,3 +63,6 @@ DeliveryReceipt{edition_id,channel,attempts,provider_accepted_at,verified_status
 
 ## 9. 成本与性能
 每个作业记录Token、检索请求、第三方数据费、持续时间、失败重试及单位稿件费用。分L1常规观察、L2专题、L3战略深研三级。首轮样稿测量实际成本后再定预算和并发上限；不能承诺未经验证的价格。
+
+## 内参系统V2.1的验证范围缩减（2026-10-13）
+用户决定暂停6个受限来源，活跃登记现在124个（A116、B8）。停止全量连通性测试，只对其中4个作种子随机一次性HTTPS读取测试，四个均HTTP200，3个为内容页、1个为API使用文档；原始结果见[audits/random-four-20261013.json](audits/random-four-20261013.json)。不因此宣称124个来源已稳定接入，日常采集仍未启用。
