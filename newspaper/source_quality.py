@@ -19,11 +19,11 @@ HARD = re.compile(
     re.I,
 )
 SOFT = re.compile(
-    r"\b(?:celebrity|pop star|influencer|red carpet|hollywood|"
+    r"\b(?:celebrit(?:y|ies)|pop star|influencer|red carpet|hollywood|"
     r"reality tv|viral video|social media feud|rumours?|rumors?|"
     r"fashion week|wedding|divorce|dating|box office|"
     r"gaming tips?|video game reviews?|"
-    r"launches? (?:a |an )?(?:new )?(?:app|gadget|phone|tool)|"
+    r"launches? (?:a |an )?(?:new )?(?:ai |mobile |smart )?(?:app|gadget|phone|tool)|"
     r"top \d+ (?:gadgets|apps|shows|movies)|"
     r"local (?:festival|concert|fair)|"
     r"best (?:phones?|headphones?|shoes?|restaurants?|smartwatches?))\b",
