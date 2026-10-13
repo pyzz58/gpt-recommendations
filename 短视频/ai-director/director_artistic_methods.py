@@ -266,11 +266,19 @@ def validate(base, state, director_command, plan):
               [row.get("stage") for row in ladder if isinstance(row, dict)]
               == list(GAG_LADDER) and len(ladder) == len(GAG_LADDER),
               "ARTISTIC_COMEDY_LADDER_CAUSALITY")
+        distinct_events, distinct_expectations = set(), set()
         for step in ladder:
             _shape(step, LADDER_FIELDS, "ARTISTIC_COMEDY_LADDER_SHAPE")
             _string(step["concrete_story_event"], "ARTISTIC_COMEDY_EVENT_VAGUE")
             _string(step["audience_expectation_shift"],
                     "ARTISTIC_COMEDY_EXPECTATION_VAGUE")
+            event = step["concrete_story_event"].strip().casefold()
+            expectation = step["audience_expectation_shift"].strip().casefold()
+            _need(event not in distinct_events and
+                  expectation not in distinct_expectations,
+                  "ARTISTIC_COMEDY_LADDER_REPEATED_GENERIC_STEP")
+            distinct_events.add(event)
+            distinct_expectations.add(expectation)
         # A serious idea can contain comic relief, but an explicit
         # comedy/absurdity mode must trace to a relevant serious principle,
         # not a one-word claim that a 'Stephen Chow style' was used.
