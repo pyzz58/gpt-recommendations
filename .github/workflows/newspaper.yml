@@ -91,7 +91,7 @@ jobs:
           cache: pip
           cache-dependency-path: newspaper/requirements.txt
       - name: Resolve Beijing delivery date
-        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-v05-send-once]')))
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-v05-send-once]')) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-recovery-20261014]')))
         id: delivery_date
         run: echo "date=$(TZ=Asia/Shanghai date +%F)" >> "$GITHUB_OUTPUT"
       - name: Check already-sent daily receipt
@@ -103,7 +103,7 @@ jobs:
           key: newspaper-sent-${{ steps.delivery_date.outputs.date }}
           lookup-only: true
       - name: Refuse production outside the Beijing morning dispatch window
-        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true'
+        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && !(github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-recovery-20261014]'))
         run: |
           set -euo pipefail
           hhmm=$(TZ=Asia/Shanghai date +%H%M)
@@ -150,7 +150,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: python newspaper/digest.py --dry-run --rolling-preview --output /tmp/newspaper-live-qa
       - name: Send real PDF daily report — default branch only
-        if: steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-quality-sample]'))))
+        if: steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-quality-sample]') || contains(github.event.head_commit.message, '[newspaper-recovery-20261014]'))))
         env:
           SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
           SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
@@ -162,20 +162,21 @@ jobs:
             echo "::error::Not configured. Set NEWSPAPER_SMTP_FROM, NEWSPAPER_SMTP_PASSWORD, NEWSPAPER_TO in GitHub Actions repository Secrets."
             exit 1
           fi
-          if [[ "${{ github.event_name }}" == "push" && "${{ contains(github.event.head_commit.message, '[newspaper-quality-sample]') }}" == "true" ]]; then
-            # Quality sample: uses live public news + QQ SMTP, but does not
-            # alter the official daily delivery receipt or 01:00 deadline.
+          if [[ "${{ github.event_name }}" == "push" && "${{ contains(github.event.head_commit.message, '[newspaper-recovery-20261014]') }}" == "true" ]]; then
+            # Single owner-requested catch-up, date-limited by digest.py.
+            python newspaper/digest.py --recovery-20261014
+          elif [[ "${{ github.event_name }}" == "push" && "${{ contains(github.event.head_commit.message, '[newspaper-quality-sample]') }}" == "true" ]]; then
             python newspaper/digest.py --quality-sample
           else
             python newspaper/digest.py
           fi
       - name: Record successful daily delivery
-        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && success() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-v05-send-once]')))
+        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && success() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-recovery-20261014]'))))
         run: |
           mkdir -p /tmp/newspaper-sent-receipt
           printf '%s\\n' "${{ steps.delivery_date.outputs.date }}" > /tmp/newspaper-sent-receipt/date.txt
       - name: Save successful daily receipt
-        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && success() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-v05-send-once]')))
+        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && success() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-recovery-20261014]'))))
         uses: actions/cache/save@v4
         with:
           path: /tmp/newspaper-sent-receipt
