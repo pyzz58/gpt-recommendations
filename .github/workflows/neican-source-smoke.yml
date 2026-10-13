@@ -1,0 +1,29 @@
+name: 内参 source access one-time smoke (audit branch only)
+on:
+  push:
+    branches:
+      - audit/neican-source-smoke-20261013
+    paths:
+      - '.github/workflows/neican-source-smoke.yml'
+permissions:
+  contents: write
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Run source check
+        run: python3 newspaper/strategic-intelligence/tools/source_ci_smoke.py
+      - name: Commit only test results
+        if: always()
+        run: |
+          if test -f newspaper/strategic-intelligence/audits/source-smoke-20261013.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add newspaper/strategic-intelligence/audits/source-smoke-20261013.json
+            git commit -m "test(内参): record one-shot source HTTP observations" || true
+            git push origin HEAD:audit/neican-source-smoke-20261013
+          fi
