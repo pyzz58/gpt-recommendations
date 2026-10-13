@@ -58,6 +58,26 @@ class ActualEditionEditorialTests(unittest.TestCase):
         with patch("newsroom.newsworthiness", return_value={"eligible": True}):
             self.assertIn("美股·全球金融市场", sections(sample))
 
+    def test_macro_analyst_forecast_not_filed_as_international_politics(self):
+        stories = [
+            "IMF sees milder global slowdown as AI boom offsets war hit — warns resilience is nearing limits",
+            "Threat of AI share crash puts world financial stability at risk, says IMF",
+        ]
+        for title in stories:
+            with self.subTest(title=title):
+                found = self._classify(title, "The report describes global economic outlook amid war and government disputes.")
+                self.assertNotIn("国际政治与全球事件", found)
+        self.assertIn("国际政治与全球事件", self._classify(
+            "Ukraine and Russia announce new ceasefire agreement",
+            "The government announced an agreement to end military strikes."))
+
+    def test_russia_ukraine_trump_ceasefire_update_is_same_event(self):
+        first = "Six Ukrainian energy sites hit by Russia since Trump announced ceasefire, Zelensky says"
+        second = "Trump insists energy ceasefire holds as Ukraine reports new Russian strikes"
+        self.assertTrue(near_duplicate_titles(first, second))
+        self.assertFalse(near_duplicate_titles(first,
+            "Russia unveils new central bank payment settlement rules"))
+
     def test_same_microsoft_ai_regulation_story_discouraged(self):
         self.assertTrue(near_duplicate_titles(
             "AI is less regulated than milk, says Microsoft president",
