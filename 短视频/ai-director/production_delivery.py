@@ -49,6 +49,8 @@ def _require(ok, code):
 
 def _make_bundle(base, direction, *, provenance, crew_workbook=None,
                  locked_digest=None, source_digest=None):
+    if base.get("requires_timed_cue_rendering"):
+        raise ProductionDeliveryError("DELIVERY_TIMED_CUE_RENDERER_NOT_IMPLEMENTED")
     _require(isinstance(base, dict) and isinstance(direction, dict),
              "DELIVERY_INPUT_INVALID")
     _require(isinstance(base.get("shots"), list) and
