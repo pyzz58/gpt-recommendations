@@ -105,6 +105,9 @@ jobs:
           else
             python newspaper/digest.py --demo --output /tmp/newspaper-preview
           fi
+      - name: Integration test — real public news, source selection, FRED and PDF, no secrets
+        if: github.event_name == 'pull_request'
+        run: python newspaper/digest.py --dry-run --output /tmp/newspaper-live-qa
       - name: Send real PDF daily report — default branch only
         if: steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-quality-sample]'))))
         env:
@@ -146,4 +149,7 @@ jobs:
             /tmp/newspaper-preview.txt
             /tmp/newspaper-preview.pdf
             /tmp/newspaper-source-audit.json
+            /tmp/newspaper-live-qa.pdf
+            /tmp/newspaper-live-qa.html
+            /tmp/newspaper-live-qa.txt
           retention-days: 3
