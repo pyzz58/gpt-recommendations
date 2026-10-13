@@ -29,6 +29,8 @@ from extractive_editor import trim_extracted_article
 from translation_editor import polish_translation
 from editorial_selection import pick_politics, tech_candidates, political_regions
 from newsroom import prepare_pool, select_readable, publisher
+from chinese_publications import fetch_publication
+from market_snapshot import get_market_snapshot
 from brief_editor import edit_grouped, apply_reports
 from edition_budget import EditionBudget
 from news_editor import edit_reports_in_batches, write_compact_commentary
@@ -99,6 +101,8 @@ def published_at(entry: dict) -> dt.datetime | None:
 
 def fetch_one(category: str, feed: dict, start: dt.datetime, end: dt.datetime):
     """Collect links published in the fixed preceding 24-hour Beijing window."""
+    if feed.get("kind") in ("xueqiu_special","peoples_overseas"):
+        return fetch_publication(feed,start,end)
     try:
         response = requests.get(
             feed["url"],
@@ -123,6 +127,8 @@ def fetch_one(category: str, feed: dict, start: dt.datetime, end: dt.datetime):
                     "title": title, "summary": clean(entry.get("summary", "")),
                     "url": link, "date": stamp,
                     "author": clean(entry.get("author", ""), 150),
+                    "language":feed.get("language","en"),
+                    "source_type":feed.get("source_type","editorial_media"),
                 })
         return articles, True
     except Exception as exc:
@@ -260,14 +266,14 @@ def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
     return output, diagnostics
 
 
-def ensure_argos_translator():
+def ensure_argos_translator(from_code="en",to_code="zh"):
     """Uses an offline model after first downloading it; no external model API key."""
     import argostranslate.package as package
     import argostranslate.translate as translate
 
     def installed():
         try:
-            return translate.get_translation_from_codes("en", "zh")
+            return translate.get_translation_from_codes(from_code,to_code)
         except Exception:
             return None
 
@@ -278,7 +284,7 @@ def ensure_argos_translator():
     package.update_package_index()
     candidate = next(
         (x for x in package.get_available_packages()
-         if x.from_code == "en" and x.to_code == "zh"),
+         if x.from_code == from_code and x.to_code == to_code),
         None,
     )
     if candidate is None:
@@ -583,8 +589,12 @@ def main():
             raise RuntimeError("No RSS feeds reachable; aborting rather than sending fake news.")
         if not incoming:
             raise RuntimeError("No verified in-window RSS items; do not fake a daily report.")
+        day_only = [a for a in incoming if a.get("date_precision") == "day"]
+        if day_only:
+            LOG.info("People's Overseas: %d date-only headlines, excluded from precise 24h shortlist",len(day_only))
+        eligible_incoming = [a for a in incoming if a.get("date_precision") != "day"]
         pool = choose_candidates(
-            incoming,
+            eligible_incoming,
             settings["max_per_category"],
             settings["candidate_pool_per_category"],
             news_start=start,
