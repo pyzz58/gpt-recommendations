@@ -43,3 +43,25 @@ def polish_translation(english:str,chinese:str)->tuple[str,list[str]]:
             flags.append("percentage_requires_review")
             break
     return result,flags
+
+
+def polish_news_title(english: str, chinese: str) -> tuple[str, list[str]]:
+    """Safely display an MT news headline without inventing a better translation.
+
+    A broken translated headline is worse than a legible, attributed original.
+    This simple guard catches *obvious* truncation, not subtle semantic errors.
+    """
+    source = str(english or "").strip()
+    translated = str(chinese or "").strip()
+    normalized, flags = polish_translation(source, translated)
+    normalized = normalized.strip()
+    if not normalized:
+        return source, ["title_translation_empty"]
+    if re.search(r"[,，、:：;；]$", normalized):
+        return source, ["title_translation_ends_mid_clause"]
+    han = len(re.findall(r"[\u4e00-\u9fff]", normalized))
+    if len(source) >= 25 and han < 5:
+        return source, ["title_translation_too_little_chinese"]
+    if "low_chinese_content" in flags:
+        return source, ["title_translation_too_little_chinese"]
+    return normalized, [f"title_{x}" for x in flags]

@@ -211,6 +211,11 @@
         "name": "36氪综合",
         "url": "https://www.36kr.com/feed",
         "source_type": "cn_business_media"
+      },
+      {
+        "name": "Guardian US Business",
+        "url": "https://www.theguardian.com/us/business/rss",
+        "source_type": "editorial_media"
       }
     ],
     "AI与科技": [
@@ -434,10 +439,10 @@
       "reason": "Edition HTML is not RSS; add controlled official-public-edition parsing separately"
     },
     {
-      "name": "36氪官方RSS（访问受限）",
-      "url": "https://www.36kr.com/rss-center",
-      "mode": "access_blocked",
-      "reason": "Official feed addresses confirmed but GitHub runner returns anti-bot HTML; never claim successful ingestion"
+      "name": "36氪官方RSS（已配置，持续健康审计）",
+      "url": "https://www.36kr.com/feed",
+      "mode": "rss_enabled_verify_each_run",
+      "reason": "WWW official RSS is enabled after verified 30-entry XML response on GitHub runner; track actual reachable and fresh items on every audit. Feed-article endpoint remains disabled until verified. Never assume every HTTP 200 is RSS or that availability proves 24h eligible articles."
     },
     {
       "name": "FRED美股与美债官方日度数据",
