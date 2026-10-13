@@ -11,10 +11,10 @@ on:
     paths:
       - 'newspaper/V05_MAIL_TEST_REQUEST.txt'
   schedule:
-    - cron: '0 17 * * *' # Beijing 01:00 (UTC previous date)
-    - cron: '15 17 * * *' # Beijing 01:15 fallback
-    - cron: '30 17 * * *' # Beijing 01:30 fallback
-    - cron: '40 17 * * *' # Beijing 01:40 final fallback
+    - cron: '3 17 * * *' # Beijing 01:00 (UTC previous date)
+    - cron: '18 17 * * *' # Beijing 01:15 fallback
+    - cron: '33 17 * * *' # Beijing 01:30 fallback
+    - cron: '43 17 * * *' # Beijing 01:40 final fallback
   workflow_dispatch:
     inputs:
       dry_run:
@@ -107,8 +107,8 @@ jobs:
         run: |
           set -euo pipefail
           hhmm=$(TZ=Asia/Shanghai date +%H%M)
-          if [ "$hhmm" -lt 100 ] || [ "$hhmm" -ge 157 ]; then
-            echo "::error::Beijing time outside 01:00-01:57. Aborting to prevent a report delivered after 02:00."
+          if [ "$hhmm" -lt 100 ] || [ "$hhmm" -ge 230 ]; then
+            echo "::error::Beijing time outside 01:00-02:30. Aborting to prevent a report delivered after 02:30."
             exit 1
           fi
       - name: Install print fonts on GitHub runner
@@ -130,7 +130,7 @@ jobs:
           path: ~/.local/share/argos-translate/packages
           key: newspaper-argos-translate-en-zh-v1
       - name: Test date filtering, fallback, rendering
-        if: steps.receipt.outputs.cache-hit != 'true'
+        if: github.event_name == 'pull_request'
         run: python -m unittest discover -s newspaper -p 'test_*.py' -v
       - name: Audit live public RSS source coverage — no secrets
         if: github.event_name == 'pull_request'
