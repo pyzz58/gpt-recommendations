@@ -35,7 +35,48 @@ concurrency:
   group: newspaper-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'daily-live' }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
+  # Fast, offline PR gate: run syntax/config and focused regressions before the
+  # expensive fonts, spaCy, offline translation and full newspaper integration.
+  # Scheduled/owner-dispatched delivery skips this gate and keeps its timing.
+  quick_check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify Python syntax
+        run: python -m compileall -q newspaper
+      - name: Install only lightweight test dependencies
+        run: python -m pip install --disable-pip-version-check 'requests>=2.32,<3' 'beautifulsoup4>=4.12,<5'
+      - name: Verify news-source configuration
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path('newspaper/feeds.json').read_text(encoding='utf-8'))
+          assert next(iter(cfg['max_per_category'])) == '美股·全球金融市场'
+          feeds = [item for group in cfg['feeds'].values() for item in group]
+          verified_36kr = [item for item in feeds if item['name'] == '36氪综合']
+          assert len(verified_36kr) == 1
+          assert verified_36kr[0]['url'] == 'https://www.36kr.com/feed'
+          assert not verified_36kr[0].get('disabled', False)
+          print('News-source configuration: OK (offline schema/safety check)')
+          PY
+      - name: Fast focused regression tests (no network)
+        env:
+          PYTHONPATH: newspaper
+        run: python -m unittest -v test_market_source_provenance test_people_overseas_monitor
+
   digest:
+    # On PRs, avoid heavyweight setup if the fast gate fails.
+    # On schedule/manual/main events, quick_check is skipped: preserve delivery.
+    needs: quick_check
+    if: ${{ always() && (github.event_name != 'pull_request' || needs.quick_check.result == 'success') }}
     runs-on: ubuntu-latest
     timeout-minutes: 55
     env:
