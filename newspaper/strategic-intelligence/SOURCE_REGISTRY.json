@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.2",
+  "schema_version": "1.3",
   "audit_date": "2026-10-13",
   "audit_scope": "All 130 registered URLs individually tested via public web.open browser proxy; selected alternate URLs; official World Bank and openFDA JSON samples; container direct HTTP unable to resolve DNS; no production-host API/RSS parser test",
   "status_legend": {
@@ -117,13 +117,36 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
       "id": "SRC-005",
       "sector": "新闻",
       "name": "BBC News",
-      "status": "C",
+      "status": "A",
       "url": "https://www.bbc.com/news",
       "access": "本轮访问失败",
       "fallback": "RSS/合法搜索，技术烟测",
@@ -155,6 +178,36 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "XML_HAS_ITEMS",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": {
+          "status": "RSS_ITEMS_OK",
+          "http_status": 200,
+          "items": 30,
+          "publication_time": "Mon, 12 Oct 2026 21:20:51 GMT"
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "BBC World RSS: HTTP200; 30 entries; 2026-10-12",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://feeds.bbci.co.uk/news/world/rss.xml"
       }
     },
     {
@@ -192,6 +245,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -905,6 +981,35 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "REQUEST_ERROR",
+          "http_status": 403,
+          "content_success": false
+        },
+        "round2": {
+          "status": "REQUEST_OR_PARSE_FAILED",
+          "http_status": 403,
+          "items": 0,
+          "publication_time": null
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -1018,6 +1123,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -1054,6 +1182,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -1217,13 +1368,42 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "HTML_THIN",
+          "http_status": 200,
+          "content_success": false
+        },
+        "round2": {
+          "status": "HTML_THIN",
+          "http_status": 200,
+          "items": 18,
+          "publication_time": null
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
       "id": "SRC-046",
       "sector": "军事",
       "name": "美国国防部 News",
-      "status": "C",
+      "status": "A",
       "url": "https://www.defense.gov/News/",
       "access": "本轮自动读取失败",
       "fallback": "合法公开搜索/官方单页",
@@ -1253,6 +1433,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "Official defense releases listing: HTTP200 readable HTML; continuous updates not tested",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -1389,6 +1592,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -1420,7 +1646,7 @@
       "id": "SRC-053",
       "sector": "AI/科技",
       "name": "arXiv API文档",
-      "status": "C",
+      "status": "A",
       "url": "https://arxiv.org/help/api",
       "access": "跳转地址本轮无法访问",
       "fallback": "Semantic Scholar/公开作者页",
@@ -1450,6 +1676,52 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "round1": {
+          "status": "XML_HAS_ITEMS",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": {
+          "status": "RSS_ITEMS_OK",
+          "http_status": 200,
+          "items": 1,
+          "publication_time": "2019-11-20T07:33:21Z"
+        },
+        "round3": [
+          {
+            "channel": "arxiv-fresh",
+            "http_status": 200,
+            "result_type": "xml:{http://www.w3.org/2005/Atom}feed",
+            "record_count": 1
+          }
+        ],
+        "round4": [
+          {
+            "channel": "arxiv latest by date",
+            "http_status": 200,
+            "record_count": 1,
+            "published_date": "2026-10-09T17:59:56Z"
+          }
+        ],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "arXiv Atom: HTTP200; one result latest 2026-10-09 after sortBy submittedDate",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://export.arxiv.org/api/query?search_query=cat%3Acs.AI&sortBy=submittedDate&sortOrder=descending&max_results=1"
       }
     },
     {
@@ -1608,7 +1880,7 @@
       "id": "SRC-060",
       "sector": "医疗",
       "name": "ClinicalTrials.gov",
-      "status": "C",
+      "status": "A",
       "url": "https://clinicaltrials.gov/data-api/api",
       "access": "官方API入口可读，JSON端点未烟测",
       "fallback": "临床试验网站",
@@ -1638,13 +1910,43 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "JSON_VALID",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": {
+          "status": "JSON_RECORDS_OK",
+          "http_status": 200,
+          "items": 1,
+          "publication_time": null
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "ClinicalTrials API: HTTP200; JSON studies includes NCT00711035",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://clinicaltrials.gov/api/v2/studies?pageSize=1"
       }
     },
     {
       "id": "SRC-061",
       "sector": "医疗",
       "name": "Europe PMC",
-      "status": "C",
+      "status": "A",
       "url": "https://europepmc.org/RestfulWebService",
       "access": "医学文献公开API文档",
       "fallback": "开放全文子集",
@@ -1675,6 +1977,36 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "JSON_VALID",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": {
+          "status": "JSON_RECORDS_OK",
+          "http_status": 200,
+          "items": 1,
+          "publication_time": null
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "Europe PMC: HTTP200; JSON resultList contains one real publication",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=malaria&format=json&pageSize=1"
       }
     },
     {
@@ -1711,13 +2043,42 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "XML_NO_ITEMS",
+          "http_status": 200,
+          "content_success": false
+        },
+        "round2": {
+          "status": "PUBMED_RESULT_OK",
+          "http_status": 200,
+          "items": 1,
+          "publication_time": null
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
       "id": "SRC-063",
       "sector": "医疗",
       "name": "Nature期刊",
-      "status": "C",
+      "status": "B",
       "url": "https://www.nature.com/nature/articles",
       "access": "可看目录和OA子集，非OA全文需订阅",
       "fallback": "开放获取论文/作者合法版本",
@@ -1747,6 +2108,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "Nature index HTTP200; OA articles only, paid full text excluded",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -1783,6 +2167,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -1895,6 +2302,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -2277,7 +2707,7 @@
       "id": "SRC-084",
       "sector": "新闻",
       "name": "NPR",
-      "status": "C",
+      "status": "A",
       "url": "https://www.npr.org/",
       "access": "本次访问被搜索抓取器robots拒绝；另查公开RSS",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -2307,13 +2737,43 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "REQUEST_ERROR",
+          "http_status": 404,
+          "content_success": false
+        },
+        "round2": {
+          "status": "RSS_ITEMS_OK",
+          "http_status": 200,
+          "items": 10,
+          "publication_time": "Mon, 12 Oct 2026 18:17:43 -0400"
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "NPR RSS: HTTP200; 10 entries 2026-10-12",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://feeds.npr.org/1001/rss.xml"
       }
     },
     {
       "id": "SRC-085",
       "sector": "新闻",
       "name": "France 24",
-      "status": "C",
+      "status": "A",
       "url": "https://www.france24.com/en/",
       "access": "本次自动读取403，需官方可用RSS/替代入口",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -2343,6 +2803,36 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "XML_HAS_ITEMS",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": {
+          "status": "RSS_ITEMS_OK",
+          "http_status": 200,
+          "items": 24,
+          "publication_time": "Tue, 13 Oct 2026 03:10:12 GMT"
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "France24 RSS: HTTP200; 24 entries 2026-10-13",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://www.france24.com/en/rss"
       }
     },
     {
@@ -2379,13 +2869,42 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "HTML_THIN",
+          "http_status": 200,
+          "content_success": false
+        },
+        "round2": {
+          "status": "REQUEST_OR_PARSE_FAILED",
+          "http_status": 403,
+          "items": 0,
+          "publication_time": null
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
       "id": "SRC-087",
       "sector": "新闻",
       "name": "澎湃新闻",
-      "status": "C",
+      "status": "A",
       "url": "https://www.thepaper.cn/",
       "access": "本轮站点访问失败",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -2415,13 +2934,43 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "JSON_VALID",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": {
+          "status": "JSON_RECORDS_OK",
+          "http_status": 200,
+          "items": 45,
+          "publication_time": null
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "澎湃 official public endpoint: HTTP200; JSON data with 45 records",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://cache.thepaper.cn/contentapi/wwwIndex/rightSidebar"
       }
     },
     {
       "id": "SRC-088",
       "sector": "新闻",
       "name": "第一财经",
-      "status": "C",
+      "status": "A",
       "url": "https://www.yicai.com/",
       "access": "本轮首页读取失败，搜索单篇或Feed",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -2451,13 +3000,51 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2,
+          3
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": {
+          "status": "JSON_NO_RECORDS",
+          "http_status": 200,
+          "items": 0,
+          "publication_time": null
+        },
+        "round3": [
+          {
+            "channel": "yicai-json",
+            "http_status": 200,
+            "result_type": "json",
+            "record_count": 10
+          }
+        ],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "第一财经 public AJAX: HTTP200; JSON list with 10 records, 2026-10-13 date",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://www.yicai.com/api/ajax/getlatest?page=1&pagesize=10"
       }
     },
     {
       "id": "SRC-089",
       "sector": "新闻",
       "name": "德国之声 DW英文主站",
-      "status": "C",
+      "status": "A",
       "url": "https://www.dw.com/en/top-stories/s-9097",
       "access": "抓取器robots拒绝，可尝试合法RSS与AMP",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -2487,13 +3074,43 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "HTML_THIN",
+          "http_status": 200,
+          "content_success": false
+        },
+        "round2": {
+          "status": "RSS_ITEMS_OK",
+          "http_status": 200,
+          "items": 137,
+          "publication_time": "Tue, 13 Oct 2026 03:30:00 GMT"
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "DW English RSS: HTTP200; 137 items dated 2026-10-13",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://rss.dw.com/xml/rss-en-all"
       }
     },
     {
       "id": "SRC-092",
       "sector": "新闻",
       "name": "The Hindu公开新闻",
-      "status": "C",
+      "status": "A",
       "url": "https://www.thehindu.com/",
       "access": "免费文章与会员阅读分开登记",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -2523,6 +3140,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "The Hindu public website: HTTP200 readable HTML",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -2684,6 +3324,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -2870,6 +3533,43 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2,
+          3
+        ],
+        "round1": {
+          "status": "HTML_THIN",
+          "http_status": 202,
+          "content_success": false
+        },
+        "round2": {
+          "status": "REQUEST_OR_PARSE_FAILED",
+          "http_status": 7,
+          "items": 0,
+          "publication_time": null
+        },
+        "round3": [
+          {
+            "channel": "europarl-rss",
+            "http_status": 202,
+            "result_type": "xml_parse_failed",
+            "record_count": 0
+          }
+        ],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -3056,6 +3756,35 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "HTML_THIN",
+          "http_status": 200,
+          "content_success": false
+        },
+        "round2": {
+          "status": "HTML_THIN",
+          "http_status": 200,
+          "items": 66,
+          "publication_time": null
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -3112,7 +3841,7 @@
       "id": "SRC-116",
       "sector": "医疗",
       "name": "medRxiv预印本",
-      "status": "C",
+      "status": "A",
       "url": "https://www.medrxiv.org/",
       "access": "公开预印本须标未同行评议",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -3142,6 +3871,64 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "round1": {
+          "status": "REQUEST_ERROR",
+          "http_status": 429,
+          "content_success": false
+        },
+        "round2": {
+          "status": "XML_ZERO_ITEMS",
+          "http_status": 200,
+          "items": 0,
+          "publication_time": null
+        },
+        "round3": [
+          {
+            "channel": "medrxiv-epi",
+            "http_status": 200,
+            "result_type": "xml:{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF",
+            "record_count": 0
+          },
+          {
+            "channel": "medrxiv-nursing",
+            "http_status": 200,
+            "result_type": "xml:{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF",
+            "record_count": 0
+          }
+        ],
+        "round4": [
+          {
+            "channel": "medrxiv epidemiology RDF",
+            "http_status": 200,
+            "record_count": 30,
+            "published_date": "2026-10-12"
+          },
+          {
+            "channel": "medrxiv nursing RDF",
+            "http_status": 200,
+            "record_count": 30,
+            "published_date": "2026-10-11"
+          }
+        ],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "medRxiv RSS1.0/RDF: HTTP200; 30 epidemiology items dated 2026-10-12; preprints not peer-reviewed",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=Epidemiology"
       }
     },
     {
@@ -3178,6 +3965,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "REQUEST_ERROR",
+          "http_status": 412,
+          "content_success": false
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -3214,6 +4024,29 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "REQUEST_ERROR",
+          "http_status": 412,
+          "content_success": false
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "No usable content proven; refer to round results",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -3320,7 +4153,7 @@
       "id": "SRC-123",
       "sector": "AI/科技",
       "name": "CISA美国网络安全与基础设施安全局",
-      "status": "C",
+      "status": "A",
       "url": "https://www.cisa.gov/news-events",
       "access": "网络安全告警候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -3350,6 +4183,30 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1
+        ],
+        "round1": {
+          "status": "HTML_TEXT",
+          "http_status": 200,
+          "content_success": true
+        },
+        "round2": null,
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "CISA alerts listing: HTTP200 readable HTML",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://www.cisa.gov/news-events/cybersecurity-advisories"
       }
     },
     {
@@ -3556,7 +4413,7 @@
       "id": "SRC-132",
       "sector": "社会",
       "name": "UN DESA人口",
-      "status": "C",
+      "status": "A",
       "url": "https://population.un.org/wpp/",
       "access": "国际人口统计数据库候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -3586,6 +4443,36 @@
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
+      },
+      "cloud_smoke_20261013": {
+        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
+        "test_runs": [
+          1,
+          2
+        ],
+        "round1": {
+          "status": "REQUEST_ERROR",
+          "http_status": 404,
+          "content_success": false
+        },
+        "round2": {
+          "status": "HTML_CONTENT_OK",
+          "http_status": 200,
+          "items": 2277,
+          "publication_time": null
+        },
+        "round3": [],
+        "round4": [],
+        "evidence_paths": [
+          "audits/source-smoke-20261013.json",
+          "audits/source-smoke-round2-20261013.json",
+          "audits/source-smoke-round3-20261013.json",
+          "audits/source-smoke-round4-20261013.json"
+        ],
+        "sample_note": "UN DESA population research static page: HTTP200; dynamic dataset API not validated",
+        "production_continuous_validation": "NOT_RUN",
+        "ai_processing_terms": "NOT_REVIEWED",
+        "verified_access_url": "https://www.un.org/development/desa/pd/content/world-population-prospects-2024"
       }
     },
     {
@@ -3680,5 +4567,15 @@
     "c_sources_examined": 31,
     "access_note": "Public HTML direct or official docs/indexed evidence only; not 31 source production test",
     "production_host_validations": 0
+  },
+  "smoke_test": {
+    "source_count": 130,
+    "initial_31_recovery_urls": true,
+    "rounds": 4,
+    "run_count": "31 initial HTTP targets + targeted retests",
+    "sample_data_json_and_rss_validated": true,
+    "all_130_production_tests": "NOT_RUN",
+    "lawful_use_terms_per_source": "INCOMPLETE",
+    "notes": "A only means a public webpage, report or official free API is readable; it does NOT confer rights to bulk extract/train or redistribute."
   }
 }
