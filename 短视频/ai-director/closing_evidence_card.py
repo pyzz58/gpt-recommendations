@@ -25,6 +25,13 @@ def build_card(plan):
     """Append AFTER the last story shot. Return None for pure fiction/no claims."""
     if not isinstance(plan, dict) or not isinstance(plan.get("claims"), list):
         raise ClosingCardError("CLOSING_CARD_PLAN_INVALID")
+    series = plan.get("series_context")
+    if series is not None:
+        if (not isinstance(series, dict) or
+                type(series.get("include_final_evidence_card")) is not bool):
+            raise ClosingCardError("CLOSING_CARD_SERIES_EXPLICIT_CHOICE_REQUIRED")
+        if not series["include_final_evidence_card"]:
+            return None
     claims = plan["claims"]
     refs = plan.get("references", [])
     # Claims are NOT citations. The legacy article intake creates a claim for

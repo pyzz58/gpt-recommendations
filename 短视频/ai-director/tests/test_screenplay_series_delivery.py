@@ -178,6 +178,10 @@ class WriterDirectorSeriesTests(unittest.TestCase):
         crew = serial.build_per_episode_crew(h, details, plan)
         self.assertEqual(len(crew["episodes"]), 10)
         self.assertEqual(crew["episodes"][1]["authoritative_episode_base"]["duration"], 60)
+        reserved = crew["episodes"][1]["authoritative_episode_base"]["series_context"]
+        self.assertEqual(reserved["reserved_extra_components_s"]["intro_s"], 2)
+        self.assertEqual(reserved["reserved_additional_s"], 2)
+        self.assertFalse(reserved["include_final_evidence_card"])
         self.assertEqual(crew["episodes"][1]["authoritative_episode_base"]["shots"][0]["start"], 0)
         first_request = serial.episode_director_request(
             h, details, plan, crew, "EP01")

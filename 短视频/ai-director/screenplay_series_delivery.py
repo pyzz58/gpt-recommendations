@@ -372,6 +372,9 @@ def build_per_episode_crew(handoff, dossier, breakdown):
             "beat_ids": list(episode["beat_ids"]),
             "episode_story_s": receipt["story_s"],
             "reserved_additional_s": receipt["reserved_s"],
+            "reserved_extra_components_s": {
+                field: episode[field] for field in EXTRAS},
+            "include_final_evidence_card": episode["evidence_s"] > 0,
             "episode_total_planned_s": receipt["total_s"],
             "max_total_duration_s": MAX_EPISODE_S,
             "director_breakdown_digest": checked["director_breakdown_digest"],

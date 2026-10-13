@@ -36,6 +36,11 @@
 - **原稿版本不静默覆盖**：整场删减/剧情对白改变由导演提出精确返修单，原编剧完成新的短版剧本并经独立评审/必要授权后，才交给原有十部门按集制作。没有专业审读，240秒剪辑候选**不是**已批准的成片。
 - [DGA/ScreenSkills/BFI完整一手资料和逐模块根因审计](quality-optimization/QO-D14_PRIMARY_SOURCE_DIRECTOR_AUDIT.md) · [Skill 08：专业导演创意剪辑](skills/08-professional-director-story-edit.md) · [代码：导演多版本Cut与编剧返修](director_creative_cut.py)。
 
+## 单集90秒真正约束后期（QO-D13 · PR #42）
+
+- 原剧本时长、单集故事时长、AI clip时长与**后期成片时长**是四种不同计量；最终operator制作包按绝对时间轴逐段叠加片头、回顾、剧情、过渡、片尾和原文确有证据时的唯一末页。仅凭故事时长<=90秒不得放行。
+- 证据页由导演决定使用，不因原稿提供链接而强制加；若加则当前实际后期卡长**1.8秒**且严格计入<=90秒。新增 [series_final_timeline.py](series_final_timeline.py) 及 [根因/反例详解](quality-optimization/QO-D13_FINAL_90_SECOND_EDIT_RUNTIME_AUDIT.md)；没有实际视频就不能称已完成剪辑。
+
 ## 最新创作与分集硬约束（2026-10-13）
 
 - **职业编剧详述**：剧本动作和场次必须充分清晰，并增加逐场逐节拍的导演可读说明（[screenplay_series_delivery.py](screenplay_series_delivery.py)），不得以简单梗概冒充可拍剧本；具体机位仍归导演。
@@ -55,7 +60,7 @@
 - [质量优化总纲：目标、岗位边界、AI 视频约束、完成门槛](quality-optimization/QUALITY_CHARTER.md)
 - [QO-W01：职业编剧一手资料全文深读与既有模块逐项审计](quality-optimization/QO-W01_PROFESSIONAL_PRIMARY_SOURCE_AUDIT.md)：解释优秀改编与机械保留的区别，先审计方法、再设计创作流程；结构代码 PR #24 暂缓合并。
 - [QO-W01：编剧创作开发能力实际升级](quality-optimization/QO-W01_CREATIVE_DEVELOPMENT_IMPLEMENTATION.md)：读稿诊断 → 不同影视化 take → 独立选案比较 → treatment → 剧本及独立适配审核，核心实现 [screenplay_development.py](screenplay_development.py)；未完成专业真人盲评。
-- [独立问题清单：38 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
+- [独立问题清单：39 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
 - [逐批解决路线：先编剧、再总导演，其他部门持续登记](quality-optimization/EXECUTION_PLAN.md)
 - [机器可读问题总账](quality-optimization/QUALITY_ISSUES.json)：改动一个问题就更新一条，CI 拦截无证据假完成、漏问题和状态表不同步。
 - [质量阶段 GitHub 总入口 Issue #22](https://github.com/pyzz58/gpt-recommendations/issues/22)：讨论与跨任务导航；真实状态以 JSON 为准。
