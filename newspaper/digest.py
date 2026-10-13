@@ -7,6 +7,8 @@ import concurrent.futures
 import datetime as dt
 import email.message
 import html
+import hashlib
+import time
 import json
 import logging
 import os
@@ -28,6 +30,11 @@ from ai_commentary import analyze_one_call, email_commentary, preferred_model_fo
 from extractive_editor import trim_extracted_article
 from translation_editor import polish_translation
 from editorial_selection import pick_politics, tech_candidates, political_regions
+from newsroom import prepare_pool, select_readable, SECTIONS
+from brief_editor import edit_grouped
+from edition_ai import edit_and_analyze
+from delivery_state import Journal
+from reliable_mail import deliver
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -121,6 +128,8 @@ def choose_candidates(
     news_start: dt.datetime | None = None,
 ) -> dict:
     """Prefer valuable, distinct events and keep readable outlet fallbacks."""
+    if "中国与美国" in limits:
+        return prepare_pool(items, per_section=pool_size)
     output = {}
     for category in limits:
         pool = [item for item in items if item["category"] == category]
@@ -164,7 +173,9 @@ def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
         enriched = {}
         for url, fut in futures.items():
             article = fut.result()
-            enriched[url] = trim_extracted_article(article) if article else None
+            enriched[url] = article if "中国与美国" in candidates else (trim_extracted_article(article) if article else None)
+    if "中国与美国" in candidates:
+        return select_readable(candidates, enriched)
     output = {category: [] for category in candidates}
     selected_global = []
     diagnostics = {}
@@ -435,7 +446,7 @@ def render(grouped: dict, now: dt.datetime, news_day: dt.date, diagnostics: dict
     )
     return "\n".join(parts), "\n\n".join(plain)
 
-def send_email(subject: str, html_body: str, text_body: str, pdf_attachment: Path | None = None):
+def send_email(subject: str, html_body: str, text_body: str, pdf_attachment: Path | None = None, journal=None):
     sender = os.environ.get("SMTP_FROM", "").strip()
     password = os.environ.get("SMTP_PASSWORD", "").strip()
     recipient = os.environ.get("NEWSPAPER_TO", "").strip()
@@ -462,6 +473,8 @@ def send_email(subject: str, html_body: str, text_body: str, pdf_attachment: Pat
         )
     server = os.environ.get("SMTP_HOST", "smtp.qq.com")
     port = int(os.environ.get("SMTP_PORT", "465"))
+    if journal is not None:
+        return deliver(msg, sender, password, server, port, journal)
     with smtplib.SMTP_SSL(server, port, timeout=30, context=ssl.create_default_context()) as smtp:
         smtp.login(sender, password)
         smtp.send_message(msg)
@@ -471,11 +484,51 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Write preview files; do not send.")
     parser.add_argument("--demo", action="store_true", help="Offline layout demo; not live news.")
     parser.add_argument("--output", default="/tmp/newspaper-preview")
+    parser.add_argument("--prepare-only", action="store_true")
+    parser.add_argument("--send-ready", action="store_true")
+    parser.add_argument("--delivery-date")
+    parser.add_argument("--state-dir", default="/tmp/newspaper-edition")
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    logging.getLogger("fontTools").setLevel(logging.WARNING)
+    logging.getLogger("argostranslate").setLevel(logging.WARNING)
     settings = json.loads((ROOT / "feeds.json").read_text(encoding="utf-8"))
     now = dt.datetime.now(ZoneInfo("Asia/Shanghai"))
-    news_day = (now - dt.timedelta(days=1)).date()
+    delivery_day = dt.date.fromisoformat(args.delivery_date) if args.delivery_date else now.date()
+    if delivery_day != now.date():
+        raise RuntimeError("Refuse a stale delivery-date; use an explicit reviewed backfill")
+    news_day = delivery_day - dt.timedelta(days=1)
+    journal = None
+    state_dir = Path(args.state_dir)
+    manifest_path = state_dir / "ready.json"
+    if not (args.dry_run or args.demo):
+        journal = Journal(delivery_day)
+        decision = journal.decision()
+        if decision == "accepted":
+            LOG.info("Today's edition already accepted by SMTP; skipping")
+            return
+        if decision == "review_required":
+            raise RuntimeError("Prior SMTP result uncertain; review before resend")
+        journal.ensure_branch()
+        if manifest_path.is_file():
+            manifest = json.loads(manifest_path.read_text())
+            pdf = state_dir / "report.pdf"
+            if manifest.get("delivery_date") == str(delivery_day) and pdf.is_file() and hashlib.sha256(pdf.read_bytes()).hexdigest() == manifest.get("pdf_sha256"):
+                if args.prepare_only: return
+                if args.send_ready:
+                    due = dt.datetime.combine(delivery_day, dt.time(7), tzinfo=now.tzinfo)
+                    while dt.datetime.now(now.tzinfo) < due:
+                        time.sleep(max(0, min(30, (due-dt.datetime.now(now.tzinfo)).total_seconds())))
+                    send_email(f"全球新闻选编｜{news_day}", (state_dir/"cover.html").read_text(),
+                               (state_dir/"cover.txt").read_text(), pdf, journal=journal)
+                    LOG.info("Daily PDF accepted by SMTP (not an inbox receipt)")
+                    return
+        if args.send_ready:
+            raise RuntimeError("Prepared edition missing or checksum mismatch")
+        state_dir.mkdir(parents=True, exist_ok=True)
+        journal.write(status="preparing")
+    commentary = None
+    usage = {}
     start = dt.datetime.combine(news_day, dt.time.min, tzinfo=now.tzinfo)
     end = start + dt.timedelta(days=1)
     diagnostics = {}
@@ -529,6 +582,19 @@ def main():
         readable, diagnostics = build_readings(pool, settings)
         if sum(len(x) for x in readable.values()) == 0:
             raise RuntimeError("No articles successfully extracted; aborting the email.")
+        # Initial conservative edit also bounds API input. All source spans remain
+        # in the checkpoint; the AI may select IDs, never insert factual sentences.
+        if journal and os.environ.get("NEWSPAPER_LLM_API_KEY") and not journal.state.get("ai_requested"):
+            try:
+                plans, commentary, usage = edit_and_analyze(readable, news_day,
+                    os.environ["NEWSPAPER_LLM_API_KEY"],
+                    before_request=lambda: journal.write(ai_requested=True))
+                readable = edit_grouped(readable, plans)
+            except Exception as exc:
+                LOG.warning("Editorial AI unavailable; conservative edit retained: %s", type(exc).__name__)
+                readable = edit_grouped(readable)
+        else:
+            readable = edit_grouped(readable)
         translator = ensure_argos_translator()
         grouped = attach_lessons(
             bilingualize(readable, translator),
@@ -547,33 +613,42 @@ def main():
         pdf_path = write_pdf(html_body, target.with_suffix(".pdf"))
         LOG.info("Clippings PDF preview generated (no email): %s / .html / .txt", pdf_path)
     else:
-        pdf_path = write_pdf(
-            html_body, Path("/tmp") / f"global-briefing-{news_day.isoformat()}.pdf"
-        )
+        pdf_path = write_pdf(html_body, state_dir / "report.pdf")
         cover_html, cover_txt = mail_cover_clippings(news_day, grouped)
-        ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
-        if ai_key:
-            try:
-                model = preferred_model_for_commentary(grouped,news_day)
-                commentary, usage = analyze_one_call(
-                    grouped, news_day, ai_key, model=model
-                )
-                cover_html, cover_txt = email_commentary(
-                    news_day, commentary,
-                    sum(len(entries) for entries in grouped.values()),
-                )
-                LOG.info(
-                    "DeepSeek cost guard: model=%s calls=%d, "
-                    "estimated_RMB=%s, reported_RMB=%s",
-                    model, usage["request_count"], usage["predicted_peak_rmb"],
-                    usage["reported_peak_cost_rmb"]
-                )
-            except Exception as exc:
-                # Never retry and never leak prompt or credentials to logs.
-                LOG.warning("AI commentary skipped without retry: %s",
-                            type(exc).__name__)
-        send_email(f"全球新闻选编｜{news_day}", cover_html, cover_txt, pdf_attachment=pdf_path)
-        LOG.info("PDF report handed to SMTP server: %s (%d bytes)", pdf_path.name, pdf_path.stat().st_size)
+        if commentary:
+            cover_html, cover_txt = email_commentary(news_day, commentary,
+                sum(len(entries) for entries in grouped.values()))
+        else:
+            note = "本期独立AI评论未生成；附件为保留来源事实与限制条件的编辑报道。"
+            cover_html += "<p>"+note+"</p>"
+            cover_txt += "\n"+note
+        shortages = [f"{k}：入选{v['selected']}/{v['quota']}" for k,v in diagnostics.items()
+                     if v.get("shortfall") or v.get("missing_regions")]
+        if shortages:
+            note = "选稿覆盖提示："+"；".join(shortages)+"。未用低价值新闻补足。"
+            cover_html += "<p>"+html.escape(note)+"</p>"
+            cover_txt += "\n"+note
+        (state_dir/"cover.html").write_text(cover_html)
+        (state_dir/"cover.txt").write_text(cover_txt)
+        (state_dir/"report.html").write_text(html_body)
+        (state_dir/"report.txt").write_text(text_body)
+        # Content checkpoint stays in Actions cache; never commit article text or
+        # recipient addresses to this public repository's receipt branch.
+        (state_dir/"editorial-audit.json").write_text(json.dumps(
+            {"diagnostics":diagnostics,"articles":grouped,"ai_usage":usage},
+            ensure_ascii=False,indent=2,default=str))
+        manifest = {"delivery_date":str(delivery_day),"news_date":str(news_day),
+                    "pdf_sha256":hashlib.sha256(pdf_path.read_bytes()).hexdigest(),
+                    "article_count":sum(len(x) for x in grouped.values())}
+        manifest_path.write_text(json.dumps(manifest))
+        journal.write(status="prepared",pdf_sha256=manifest["pdf_sha256"],
+                      article_count=manifest["article_count"], ai_usage=usage)
+        if not args.prepare_only:
+            due = dt.datetime.combine(delivery_day, dt.time(7), tzinfo=now.tzinfo)
+            while dt.datetime.now(now.tzinfo) < due:
+                time.sleep(max(0, min(30, (due-dt.datetime.now(now.tzinfo)).total_seconds())))
+            send_email(f"全球新闻选编｜{news_day}",cover_html,cover_txt,pdf_path,journal=journal)
+            LOG.info("Daily PDF accepted by SMTP (not an inbox receipt)")
 
 if __name__ == "__main__":
     main()

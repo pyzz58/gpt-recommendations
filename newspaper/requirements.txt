@@ -1,10 +1,9 @@
-feedparser>=6.0.11,<7
-requests>=2.32,<3
-trafilatura>=2.0,<3
-argostranslate>=1.10,<2
-scikit-learn>=1.5,<2
-spacy>=3.8,<4
-
-# V0.5 PDF output; native fonts/Pango installed in GitHub Actions.
-weasyprint>=62,<70
-pypdf>=5,<7
+# Direct versions observed in successful production run 38327891376, 2026-10-13.
+feedparser==6.0.14
+requests==2.34.2
+trafilatura==2.3.1
+argostranslate==1.11.0
+scikit-learn==1.9.1
+spacy==3.8.16
+weasyprint==69.0
+pypdf==6.20.1

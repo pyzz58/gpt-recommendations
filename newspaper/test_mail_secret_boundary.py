@@ -11,14 +11,14 @@ class MailSecretsSafetyTests(unittest.TestCase):
         self.assertNotIn("secrets.NEWSPAPER_SMTP_FROM", prefix)
         self.assertNotIn("secrets.NEWSPAPER_TO", prefix)
         self.assertIn("github.ref == 'refs/heads/main'", send)
-        self.assertIn("github.event_name == 'schedule'", send)
-        self.assertIn("[newspaper-v05-send-once]", send)
+        self.assertIn("github.event_name == 'schedule'", workflow)
+        self.assertIn("[newspaper-v05-send-once]", workflow)
         self.assertIn("secrets.NEWSPAPER_SMTP_PASSWORD", send)
         self.assertIn("python newspaper/digest.py", send)
     def test_preview_without_secrets(self):
         path = Path(__file__).resolve().parent.parent / ".github" / "workflows" / "newspaper.yml"
         w = path.read_text(encoding="utf8")
-        preview = w.split("      - name: Preview only",1)[1].split("      - name: Send real PDF daily report",1)[0]
+        preview = w.split("      - name: Preview only",1)[1].split("      - name: Upload example preview",1)[0]
         self.assertIn("python newspaper/digest.py --demo", preview)
         self.assertNotIn("secrets.", preview)
         self.assertIn("python newspaper/digest.py --dry-run", preview)
