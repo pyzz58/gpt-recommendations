@@ -1,9 +1,10 @@
 {
   "timezone": "Asia/Shanghai",
   "max_per_category": {
+    "美股市场与机构观察": 5,
     "中国与美国": 3,
     "国际政治与全球事件": 3,
-    "金融、宏观与美股": 3,
+    "全球宏观与金融政策": 2,
     "AI与数字产业": 2,
     "科技、能源与前沿科学": 2,
     "创业、商业与企业竞争": 2,
@@ -64,6 +65,25 @@
         "name": "CNA World",
         "url": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6311",
         "source_type": "regional_independent_media"
+      },
+      {
+        "name": "新华网-时政",
+        "url": "https://www.xinhuanet.com/politics/news_politics.xml",
+        "source_type": "chinese_state_news",
+        "language": "zh"
+      },
+      {
+        "name": "新华网-国际",
+        "url": "https://www.xinhuanet.com/world/news_world.xml",
+        "source_type": "chinese_state_news",
+        "language": "zh"
+      },
+      {
+        "name": "人民日报海外版",
+        "url": "https://paper.people.com.cn/rmrbhwb/pc/layout/index.html",
+        "kind": "peoples_overseas",
+        "language": "zh",
+        "source_type": "chinese_daily_newspaper"
       }
     ],
     "美股与投资": [
@@ -82,6 +102,21 @@
       {
         "name": "Guardian Business",
         "url": "https://www.theguardian.com/business/rss"
+      },
+      {
+        "name": "雪球专刊",
+        "url": "https://xueqiu.com/u/3746414875",
+        "kind": "xueqiu_special",
+        "language": "zh",
+        "source_type": "editorial_investment_opinion"
+      },
+      {
+        "name": "Nasdaq Equity Regulatory Alerts",
+        "url": "https://www.nasdaqtrader.com/Trader.aspx?id=NewsRSS",
+        "kind": "source_directory",
+        "source_type": "primary_exchange",
+        "disabled": true,
+        "disabled_reason": "Official RSS directory only; precise feed URL not verified"
       }
     ],
     "美联储与宏观": [
@@ -118,6 +153,11 @@
         "name": "European Central Bank Press",
         "url": "https://www.ecb.europa.eu/rss/press.html",
         "source_type": "primary_central_bank"
+      },
+      {
+        "name": "US BLS Economic Releases",
+        "url": "https://www.bls.gov/feed/bls_latest.rss",
+        "source_type": "primary_government"
       }
     ],
     "创业与商业模式": [
@@ -146,6 +186,18 @@
         "url": "https://venturebeat.com/feed/",
         "disabled": true,
         "disabled_reason": "2026-10-13 HTTP 429 rate limited; revalidate before enabling"
+      },
+      {
+        "name": "36氪-综合",
+        "url": "https://36kr.com/feed",
+        "source_type": "chinese_business_media",
+        "language": "zh"
+      },
+      {
+        "name": "36氪-文章",
+        "url": "https://36kr.com/feed-article",
+        "source_type": "chinese_business_media",
+        "language": "zh"
       }
     ],
     "AI与科技": [
@@ -334,7 +386,20 @@
     "do_not_pad": true,
     "allow_exceptional_major_news": true,
     "china_us_combined_quota": 3,
-    "international_minimum_when_qualified": 3
+    "international_minimum_when_qualified": 3,
+    "us_market_cover": {
+      "first_section": true,
+      "target_items": 5,
+      "domains": [
+        "指数与市场广度",
+        "美联储与利率/国债",
+        "监管机构与交易所公告",
+        "公司财报与机构持仓",
+        "资金流与行业轮动"
+      ],
+      "price_snapshot": "FRED daily published close, not live intraday",
+      "no_fabricated_prices": true
+    }
   },
   "source_health_policy": {
     "record_feed_success_and_recent_item_counts": true,
