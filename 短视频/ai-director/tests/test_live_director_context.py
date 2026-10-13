@@ -141,8 +141,7 @@ class DirectorContextLiveTests(unittest.TestCase):
                 editorial_handoff=self.fx.snapshot["creative_handoff"],
                 department_command=meeting, audiovisual_plan=viz,
                 artistic_method_plan=methods)
-            data = json.loads(prompt["messages"][1]["content"].split(
-                "\\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\\n",1)[1])
+            data = json.loads(prompt["messages"][1]["content"].split("\n")[-1])
             self.assertEqual(data["director_artistic_method_context"]["chosen_methods"][0]["method_id"],
                              methods["chosen_methods"][0]["method_id"])
             self.assertEqual(data["director_department_command"]["this_department"],"acting")
