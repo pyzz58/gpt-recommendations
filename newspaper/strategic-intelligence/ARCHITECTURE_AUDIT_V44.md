@@ -106,3 +106,14 @@
 - 不能宣称刊物已正式投递、费用已确认、未来生产时间已经安排。
 
 **审计后结论**：六层+统一研究工作台+记者A/顾问B1/帝师B2/推演开放题C在**产品逻辑上相互兼容，可以作为设计冻结前审核基线**。最大风险从“设计是否缺功能”转为“能否在真实新闻、版权与推理错误约束下达到规定的文章质量”。只有真实样刊/用户质量审核才能证明后者。
+
+## 七、本轮末次GitHub读回与内部链接静态检查（2026-10-13）
+
+1. 已重新通过GitHub连接读取确认：`CANONICAL_SYSTEM_SPEC_V44.md`（16967字符）、`ARCHITECTURE_AUDIT_V44.md`、`README.md`、`AGENTS.md`、`MASTER_BLUEPRINT.md`、`END_TO_END_WORKFLOW.md`、`templates/WEEKLY_TEMPLATE.md`、`ISSUE_BACKLOG.md`文件均真实存在并有GitHub SHA。**这是版本/文件存在性验证，不是运行质量验证**。
+2. 对当下现行18份核心相关Markdown文件分两批检查其本项目**相对文件链接是否可定位**，结果：**18份中没有发现缺失的本地链接目标**。该检查并没有验证所有外部网页、PDF许可或Markdown锚点的实际可点击体验。
+3. 确认WEEKLY_TEMPLATE不含旧`## 下期观察清单`标题，WEEKLY和ARTICLE正式模板均有可见C“事件推演与开放性思考”；DATA_CONTRACTS的现行公开Article字段为`scenario_thinking_C`，旧`watch_and_sources_C`只作为历史名称说明，不作为当前主动字段。
+4. 读取`SOURCE_REGISTRY.json`确认124条：A=116、B=8；124条`production_test=NOT_RUN`，124条`ai_processing_permission=TERMS_NOT_YET_REVIEWED`；不可因此伪称124个有效稳定内容源。
+5. GitHub总问题追踪器[Issue #43](https://github.com/pyzz58/gpt-recommendations/issues/43)已经将标题、NC数量改为**NC-001—NC-022**。其中NC-021是文档多版本歧义（仅设计更正），NC-022是真实高质量主文/杂志尚未实际检验。
+6. 保留的历史[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)、[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)、[DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)开头已经增加醒目的“历史方法，V4.4优先”声明，降低未来人工误取历史标准的风险。
+
+**仍需日后做的测试**：真正模型读入准确性、S0—S8真实正负/典型选稿、记者A实际报道的事实/版权、B顾问因果与帝师教学、C开放问题的非引导性、周报真实完整排版、年报双输入、数据版本化、运行成本及交付。以上均未因本次检查被标`VERIFIED`。
