@@ -645,6 +645,15 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                   "遇到艺术/物理/模型冲突反馈总导演，不要套通用提示词、"
                   "不私自改写故事或伪造已经生成的资产。" if
                   department_command is not None else "") +
+                 ("\n\n【总导演选定艺术方法的专业诠释】请务必逐项阅读 user JSON 中的 "
+                  "director_artistic_method_context。总导演已按剧本人物与观众认知"
+                  "选择方法，并记录替代方案和反对理由。你需要把这个为什么转成"
+                  "本部门独立可执行的详尽专业做法，既不得复制经典电影名场面，"
+                  "也不得擅改编剧的剧情和事实。若 comic_mode=off，绝不能"
+                  "自己增加无厘头笑点；若启用喜剧，人物愿望、荒诞因果与"
+                  "笑点真实动作/反应及余韵必须由你本岗认真落实，不能只加音效包。"
+                  "发现导演拍法不好，返回有具体理由的备选，不覆盖权威稿。"
+                  if artistic_method_plan is not None else "") +
                  ("\n\n【延续经审阅规划版本的创意】user JSON 中附有 first_director_editor_vision "
                   "与本岗位 production_gaps_to_resolve：前者是先前总导演/编剧的提案而非"
                   "获真人批准的拍摄指令；不得忽略或凭空重置。后者必须具体回应，尤其人物"
