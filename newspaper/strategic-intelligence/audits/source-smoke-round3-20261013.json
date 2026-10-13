@@ -1,0 +1,60 @@
+{
+  "generated_at": "2026-10-13T03:58:06.744284+00:00",
+  "results": [
+    {
+      "id": "SRC-088",
+      "label": "yicai-json",
+      "url": "https://www.yicai.com/api/ajax/getlatest?page=1&pagesize=10",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "kind": "json",
+      "records": 10,
+      "sample": "{'AppCode': None, 'ChainType': False, 'ChannelID': 100000320, 'ChannelName': '资讯', 'ChannelRoot': 0, 'ChannelRootName': None, 'CommentCount': 0, 'CreateDate': '2026-10-13T11:55:25'",
+      "error": null
+    },
+    {
+      "id": "SRC-116",
+      "label": "medrxiv-epi",
+      "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=Epidemiology",
+      "http_status": 200,
+      "content_type": "application/xml;\")",
+      "kind": "xml:{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF",
+      "records": 0,
+      "sample": "﻿<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<rdf:RDF xmlns:admin=\"http://webns.net/mvcb/\" xmlns=\"http://purl.org/rss/1.0/\" xmlns:rdf=\"http://www.w3.org/1",
+      "error": null
+    },
+    {
+      "id": "SRC-116",
+      "label": "medrxiv-nursing",
+      "url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=nursing+nutrition",
+      "http_status": 200,
+      "content_type": "application/xml;\")",
+      "kind": "xml:{http://www.w3.org/1999/02/22-rdf-syntax-ns#}RDF",
+      "records": 0,
+      "sample": "﻿<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<rdf:RDF xmlns:admin=\"http://webns.net/mvcb/\" xmlns=\"http://purl.org/rss/1.0/\" xmlns:rdf=\"http://www.w3.org/1",
+      "error": null
+    },
+    {
+      "id": "SRC-106",
+      "label": "europarl-rss",
+      "url": "https://www.europarl.europa.eu/rss/doc/press-releases/en.xml",
+      "http_status": 202,
+      "content_type": "text/html; charset=UTF-8",
+      "kind": "xml_parse_failed",
+      "records": 0,
+      "sample": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title",
+      "error": "mismatched tag: line 21, column 2"
+    },
+    {
+      "id": "SRC-053",
+      "label": "arxiv-fresh",
+      "url": "https://export.arxiv.org/api/query?search_query=cat%3Acs.AI&sortBy=submittedDate&sortOrder=descending&max_results=1",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=utf-8",
+      "kind": "xml:{http://www.w3.org/2005/Atom}feed",
+      "records": 1,
+      "sample": "Can Language Models Play the Wikipedia Game?",
+      "error": null
+    }
+  ]
+}
