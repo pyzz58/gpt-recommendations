@@ -5,7 +5,7 @@
 
 ## 总览
 
-- 登记 36 项；编剧 11 项，总导演 15 项，其它部门 10 项。
+- 登记 37 项；编剧 11 项，总导演 16 项，其它部门 10 项。
 - 全部验收完成 0 项；没有真实独立验证不能自称达到一流水准。
 - 现阶段只修编剧及总导演；其它部门保持后续审计状态。
 
@@ -24,7 +24,7 @@
 | QO-W11 | screenwriter | P0 | in_progress | 编剧场次详述到导演不用猜剧情 |
 | QO-D01 | director | P0 | partially_addressed | 导演以完成剧本为唯一剧情权威 |
 | QO-D02 | director | P0 | confirmed_open | 场次与分镜解耦：一场可多镜，一镜可多节拍 |
-| QO-D03 | director | P0 | confirmed_open | 导演视听母题、情绪弧线与视觉叙事 |
+| QO-D03 | director | P0 | in_progress | 导演视听母题、情绪弧线与视觉叙事 |
 | QO-D04 | director | P0 | partially_addressed | 模型能力适配、片段时长与路由决策 |
 | QO-D05 | director | P0 | partially_addressed | 演员/服装/道具/场景跨镜一致性 |
 | QO-D06 | director | P0 | confirmed_open | 多动作可拍性与模型失败降级 |
@@ -37,6 +37,7 @@
 | QO-D13 | director | P0 | in_progress | 总导演自主分集与单集90秒绝对上限 |
 | QO-D14 | director | P0 | in_progress | 总导演主动创意剪辑与重大压缩权 |
 | QO-D15 | director | P0 | in_progress | 总导演详尽指挥与协调所有专业部门 |
+| QO-D16 | director | P0 | in_progress | 导演审核部门真实交付与基于观众体验的精准跨岗返工 |
 | QO-F01 | acting | P1 | audit_pending | 演员表演与动作调度专业审计 |
 | QO-F02 | cinematography_art | P1 | audit_pending | 摄影/灯光/美术世界观专业审计 |
 | QO-F03 | sound_voice | P1 | audit_pending | 配音/对白/拟音/音乐专业审计 |
@@ -234,17 +235,17 @@
 
 ### QO-D03 · 导演视听母题、情绪弧线与视觉叙事
 
-- 状态：confirmed_open；优先级：P0；阶段：now_director；负责人：director
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
 - 发现位置：agent_role_contracts director_brief/director_lock; director_workbook.py
 - 问题：规范强调填完情绪/摄影字段，但多场图灵示范仍有翻书光标等通用意象，无法证明每镜有不可替代的故事功能
 - 根因：缺影像叙事的盲评和主动比较备选构想
-- 方案：建立导演 treatment：核心视听母题、场景对照关系、开场/收束视觉呼应、动作触发镜头、声画冲突；给出被否决方案与原因
+- 方案：建立导演 treatment：核心视听母题、场景对照关系、开场/收束视觉呼应、动作触发镜头、声画冲突；给出被否决方案与原因；已新增 director_visual_language：要求逐镜编写观众认知变化、画面事件、摄影静动和声音/沉默的具体理由、错位剪切的代价、AI失败时如何保留意图，并注入现有全部部门模型请求；要独立观众实测才算质量达标
 - 完成验收：盲评能将空泛镜头与主题驱动镜头区分；每镜存在理由可以被回溯；观众不依赖旁白也能理解至少部分情绪/事实变化
 - AI 视频适配：高质量不等于强制复杂动作；在单片可生成前提下优先视觉叙事
 - 依赖：QO-D02
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/31；回归 tests/test_director_audiovisual_delivery.py — visual and sound causal reasoning, distinct shot decisions, cross-shot boundary, version binding and real role-prompt injection；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress
 
 ### QO-D04 · 模型能力适配、片段时长与路由决策
 
@@ -406,13 +407,27 @@
 - 发现位置：agent_team.STAGES; agent_role_contracts.ROLE_INSTRUCTIONS/build_role_messages; screenplay_series_delivery.build_per_episode_crew; director_department_command.py
 - 问题：现有十岗位流程有导演宏观圣经和各专业通用提示词，但总导演未把每集独特创作意图、各镜观众体验、实际制作手段、专业部门交接和验收标准讲清楚并传给实际专业岗位；各Agent容易各自发挥形成漂亮但脱节的图纸
 - 根因：专业团队 DAG 定义了岗位顺序和输出字段，却缺一个导演亲自主持的跨部门制作会和真正的逐部门/逐镜工作指令；信息共享侧重原计划字段与上游JSON而不是指导专业创作的一致理念
-- 方案：依据DGA 7-101/202、ScreenSkills导演/摄影/美术/剪辑/声音/场记岗位全文、BAFTA Paul Greengrass完整导演演讲，实行 director_brief→script_edit→director_lock→导演跨部门专业制作会：7个下游岗位分别有详尽艺术使命、观众效果、逐镜执行、专业边界、验收条件、相互依赖和失败修复。真实模型岗位消息注入该岗位专属指令与必要跨专业接口；导演锁稿变更令原制作会失效；新版90秒系列严格模式无会议单不能发部门工单。真正艺术质量仍需独立盲审和媒体验证
+- 方案：依据DGA 7-101/202、ScreenSkills导演/摄影/美术/剪辑/声音/场记岗位全文、BAFTA Paul Greengrass完整导演演讲，实行 director_brief→script_edit→director_lock→导演跨部门专业制作会：7个下游岗位分别有详尽艺术使命、观众效果、逐镜执行、专业边界、验收条件、相互依赖和失败修复。真实模型岗位消息注入该岗位专属指令与必要跨专业接口；导演锁稿变更令原制作会失效；新版90秒系列严格模式无会议单不能发部门工单。真正艺术质量仍需独立盲审和媒体验证；下游真实专业交付的导演收件和定点返工通过QO-D16建立闭环，不能把会议本身冒充成果验收
 - 完成验收：公开合成双镜案例覆盖真实10阶段总导演锁稿→制作会→演员/摄影/声音部门真实model-facing输入；七部门、七关键交接及每镜详细意图完整；缺项、复制泛化镜头命令、版本过期、跨专业失联均阻断；独立专业电影/论述/纪录短片盲审证明多部门能按同一个vision制作，真实镜头音画连续才可关闭
 - AI 视频适配：先做导演创作协调和具体生产工单，再由技术部门决定 AI clip/静帧/动画/后期路由；单集最终≤90秒，精准AI文字/字幕后期合成，视频生成失败局部替代不得损害角色/核心思想；不以工单多字等于美学水准
 - 依赖：QO-D03, QO-D05, QO-D08, QO-D10
 - 历史问题：无
 - 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/30；回归 tests/test_director_department_command.py — 7 specialist missions, scene/shot-specific vision, 7 interfaces, model-facing injection, stale lock/data, generic repeat rejection, mandatory production output gate；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress
+- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress
+
+### QO-D16 · 导演审核部门真实交付与基于观众体验的精准跨岗返工
+
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：director_department_command.validate_command/model_facing_role_context; agent_role_contracts.build_role_messages; agent_team.request_revision; agent_creative_review; director_delivery_review.py
+- 问题：现有总导演可开详细制作会，把意图交给表演/摄影/声音/剪辑/AI技术/QA，但实际下游交付完成后缺一个把每镜的艺术意图、实收设计和观众可能体验逐项对照、组织责任部门返工的导演闭环
+- 根因：只校验导演命令及下游部门JSON结构，无法凭表单确认镜头表达思想/情绪；导演缺依据真实已交稿证据对具体镜头指派协作和定点修改的反馈层
+- 方案：复用原导演与部门会议模块，新增director_delivery_review按每镜每部门核实实际交付、意图是否可见、观众认知和情绪变化及证据局限；未交稿必须标pending；导演逐项给出问题证据、责任部门、具体返工动作、协作方、验收方式和冲突仲裁；已确认需返工的单镜经原agent_team.request_revision按原岗位依赖失效机制定点返修，禁止静默改剧情/事实与自动发布
+- 完成验收：公开两镜虚构影片中，演员拿信的停顿缺失能被导演定位到S01 acting，明确观众后果及摄影/剪辑协作，并只重新排该岗位指定镜头；缺失岗位被判不可评价；版本变化使旧评论失效；泛泛空话/未经交付声称审过真片遭拒；专业独立人审和实际生成的片段观感仍须验证
+- AI 视频适配：短视频每集≤90秒；每镜AI clip与完整视频节奏分层；不同模型的手/道具状态和跨镜声音连续性可能失效，真实媒体验证必须独立授权，不允许以JSON设计假称成片
+- 依赖：QO-D03, QO-D15, QO-D11
+- 历史问题：无
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/31；回归 tests/test_director_audiovisual_delivery.py — grounded real department-delivery assessment, pending vs completed, precise single-shot revision and staleness rejection；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:in_progress
 
 ### QO-F01 · 演员表演与动作调度专业审计
 
