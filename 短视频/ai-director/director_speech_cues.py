@@ -91,11 +91,6 @@ def validate(handoff, breakdown, episode, proof, timeline):
           len(subtitles) == len(expected_subtitles), "CUE_SOURCE_ITEM_COUNT")
     durations = {b: by_beat[b]["duration_s"] for b in episode["beat_ids"]}
     last_end = {}
-    beat_offsets = {}
-    cursor = 0.0
-    for bid in episode["beat_ids"]:
-        beat_offsets[bid] = cursor
-        cursor += durations[bid]
     seen = set()
     for i, (cue, original) in enumerate(zip(audio, expected_audio), 1):
         _need(isinstance(cue, dict) and set(cue) == CUE_FIELDS,
@@ -116,6 +111,7 @@ def validate(handoff, breakdown, episode, proof, timeline):
               "CUE_OVERLAPPING_OR_REORDERED_AUDIO")
         last_end[bid] = cue["to_s"]
     seen_subs = set()
+    last_subtitle_end = {}
     for i, (sub, original) in enumerate(zip(subtitles, expected_subtitles), 1):
         _need(isinstance(sub, dict) and set(sub) == SUB_FIELDS,
               "CUE_SUBTITLE_SHAPE")
@@ -127,6 +123,9 @@ def validate(handoff, breakdown, episode, proof, timeline):
                sub["source_cue_id"]) == original,
               "CUE_SUBTITLE_TEXT_OR_ORDER_CHANGED")
         _interval(sub, durations[sub["beat_id"]])
+        _need(sub["from_s"] >= last_subtitle_end.get(sub["beat_id"], 0) - EPS,
+              "CUE_SUBTITLE_OVERLAP_OR_REORDER")
+        last_subtitle_end[sub["beat_id"]] = sub["to_s"]
         if sub["source_cue_id"] is not None:
             spoken = next((c for c in audio
                            if c["cue_id"] == sub["source_cue_id"]), None)
@@ -185,3 +184,75 @@ def first_visual_owner(coverage, events, id_key):
         _need(len(matched) == 1, "CUE_NO_UNIQUE_VISUAL_OWNER")
         owned[event[id_key]] = matched[0]
     return owned
+
+
+def compile_editor_timeline(handoff, episode, proof, coverage, timeline):
+    """Make an exact, non-rendered audio/subtitle assembly cue sheet.
+
+    Event text has ONE canonical owner. Cross-shot visual segments carry
+    time+IDs only. No TTS, phoneme alignment, lipsync or subtitle frame timing
+    is inferred/verified from this planning artifact.
+    """
+    validate(handoff, None, episode, proof, timeline)
+    shots = coverage["shots"]
+    _need(isinstance(shots, list) and shots,
+          "CUE_EDITOR_COVERAGE_REQUIRED")
+    audio_bind, sub_bind = cue_bindings_for_shots(coverage, timeline)
+    beats = {b["id"]: b for scene in handoff["screenplay_scenes"]
+             for b in scene["beats"]}
+    offsets, cursor = {}, 0.0
+    for bid in episode["beat_ids"]:
+        offsets[bid] = cursor
+        cursor += beats[bid]["duration_s"]
+
+    def to_editor(events, refs_by_shot, key):
+        result = []
+        for event in events:
+            bid = event["beat_id"]
+            start = offsets[bid] + event["from_s"]
+            end = offsets[bid] + event["to_s"]
+            fragments = []
+            for shot in shots:
+                for item in refs_by_shot[shot["shot_id"]]:
+                    if item["id"] == event[key]:
+                        fragments.append({
+                            "director_shot_id": shot["shot_id"],
+                            "story_from_s": round(offsets[bid] + item["from_s"], 6),
+                            "story_to_s": round(offsets[bid] + item["to_s"], 6),
+                            "beat_id": bid,
+                        })
+            fragments.sort(key=lambda x: x["story_from_s"])
+            position = start
+            for segment in fragments:
+                _need(abs(segment["story_from_s"] - position) <= EPS and
+                      segment["story_to_s"] > position,
+                      "CUE_EDITOR_SHOT_GAP_OVERLAP")
+                position = segment["story_to_s"]
+            _need(abs(position - end) <= EPS,
+                  "CUE_EDITOR_SHOT_NOT_FULLY_COVERED")
+            result.append({
+                **event,
+                "story_from_s": round(start, 6),
+                "story_to_s": round(end, 6),
+                "picture_segments": fragments,
+            })
+        return result
+
+    audio = to_editor(timeline["cues"], audio_bind, "cue_id")
+    subtitles = to_editor(timeline["subtitles"], sub_bind, "subtitle_id")
+    return {
+        "kind": "qod19_editor_cue_sheet_planning_only",
+        "version": VERSION,
+        "source_screenplay_digest": proof["screenplay_digest"],
+        "director_breakdown_digest": proof["director_breakdown_digest"],
+        "episode_id": episode["episode_id"],
+        "speech_cues": audio,
+        "subtitle_cues": subtitles,
+        "story_runtime_s": cursor,
+        "needs_manual_subtitle_alignment": any(
+            sub["source_cue_id"] is None for sub in subtitles),
+        "lip_sync_verified": False,
+        "audio_rendered": False,
+        "subtitle_media_rendered": False,
+        "legacy_shot_text_rendering_allowed": False,
+    }

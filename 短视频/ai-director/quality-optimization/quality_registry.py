@@ -33,7 +33,7 @@ SHA = re.compile(r"[0-9a-f]{40}")
 IDENT = re.compile(r"QO-(W|D|F)\d{2}")
 BASELINE_IDS = frozenset(
     [f"QO-W{i:02d}" for i in range(1, 12)] +
-    [f"QO-D{i:02d}" for i in range(1, 19)] +
+    [f"QO-D{i:02d}" for i in range(1, 20)] +
     [f"QO-F{i:02d}" for i in range(1, 11)])
 
 

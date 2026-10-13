@@ -306,6 +306,8 @@ def visual_prompt_contract(base, shot, direction):
 
 
 def compile_package(base, directions, assets=None, asset_root=None):
+    if base.get("requires_timed_cue_rendering"):
+        raise ValueError("TIMED_CUE_RENDERER_REQUIRED_LEGACY_SHOT_TEXT_UNSAFE")
     errors,warnings=validate(base,directions,assets,asset_root)
     if errors: raise ValueError("cannot compile invalid director plan:\n"+"\n".join(errors))
     shots={x["shot_id"]:x for x in directions["shots"]}
