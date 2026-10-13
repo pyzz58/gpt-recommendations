@@ -95,3 +95,20 @@ production_actions_authorized: false
 6. **本次认可不等于授权实际生产**。保留之前“不改日报、不重测剩余百余源、不部署额外Agent、不发邮件”的执行边界。
 
 **归档改动**：[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)、[SCENARIOS_AND_OPEN_QUESTIONS.md](SCENARIOS_AND_OPEN_QUESTIONS.md)、[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)、[HARD_RULES.md](HARD_RULES.md)、[DECISIONS.md](DECISIONS.md)、[templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md)。**原话来自本轮用户消息**；没有捏造之前看不到的对话认可。
+
+## E-017｜用户本轮对V4.3具体方案的完整认可与V4.4逐项落实（2026-10-13）
+
+**用户原话**：“你说的这些很对，我要求你务必全部，写入到这个系统中，方便未来开始制作的时候，能够清楚的无误，**不要概括，要全面写入**。重新核实下架构，给我全面展开，我需要看看，审核下看看还有没有地方需要修改。”
+
+**具体被认可的不是抽象的“新闻质量很好”，而是下列实际已讨论、要留存的选文/报道/研判和读者结构：**
+1. **《半月谈内部版》正反皆报、典型调查、深挖现实问题、《求是》重现实问题与理论联系实际，再结合Reuters/AP/BBC的事实、来源和公正编审方法；不预设某机构政治结论。** 细则见[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)S0—S8。
+2. 选文先看**真实现实影响（已发生/有明确条件的潜在，正面、负面或混合）**，以及典型性**或**重要独立突破、长期制度/资本/医学/科技/社会变化、真实原始公开资料和知识价值；不让热搜、媒体身份、美股/创业偏好直接筛掉全球重要事实。S2硬门、S3各类实际利益、S4代表性与突破、S5每项有证据的试行评分、S6反信息茧房、S8研究后撤稿都需被保留。
+3. **A新闻正文六要素5W1H完整、客观、准确、翔实**：真实导语、时间线、历史背景、数字/分母/适用地区/当事人回应及不同观点、已证实与未知；报告题材查真实机构/作者、目的、研究覆盖期/样本/方法/结果/限制；第三方调查准确署名，不冒充自采；不能把付费受限原文原样全文复制或只是100字摘要。
+4. **B1顾问现实研判**：根据证据、参与者/权力/预算/选择、多个竞争或协同机制、最强反方、有条件的行动价值；不复述新闻。**B2帝师释理**：从现象教正规跨学科世界规律，真实/标明虚构的数字或法律流程、古典思想的证据/时代局限、成功/失败反例、迁移新案例；两者一个联合工作台，现实不必只有唯一终极原因。
+5. **C读者结尾由“继续观察”替换**：针对B中机制推演不同前提下真实可发生的路径、参与者策略/二阶正负后果/不成立条件，并设2—4道非引导开放题，促成独立思考；后台旧Thesis未来验证仍要保留以便年报纠错。
+6. **整本周报**：封面、目录、主编卷首、动态栏目、真正完整A/B/C的系列报道、有关的全球简讯及历史纠错、来源附录；不固定九栏配额和每篇长度。**年报**：全年周报历史原件＋全年独立世界新闻/权威公开源双输入，重做全年新综合、错判、漏报、数据修订、教学和新情景，而非周报合订。
+7. **系统实际结构/历史资料**：六层职责；资料来源124活跃候选/六弃、非生产授权；现有日报隔离；用户认可和原方案完整归档，旧观点原件不可覆盖；未来研发问题留Issue且须有真实测试验收，不能靠.md宣称成熟。
+
+**本轮文件**：[CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)、[README.md](README.md)、[AGENTS.md](AGENTS.md)、[MASTER_BLUEPRINT.md](MASTER_BLUEPRINT.md)、[END_TO_END_WORKFLOW.md](END_TO_END_WORKFLOW.md)、[templates/WEEKLY_TEMPLATE.md](templates/WEEKLY_TEMPLATE.md)、[DATA_CONTRACTS.md](DATA_CONTRACTS.md)、[ARCHITECTURE_AUDIT_V44.md](ARCHITECTURE_AUDIT_V44.md)与对应当前精确SOP/编辑模板。
+
+**认可边界**：用户要求**完整设计入库并审核架构**，尚未允许内参实际出刊、发邮件、恢复源全量测试或变更日报。不能把正在审核的V4.4当已获最终生产批准。该条依据当前用户原话与上一轮已经明确的详细方案；未实际读取的旧聊天不能声称核实百分百。
