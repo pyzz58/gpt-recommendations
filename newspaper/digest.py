@@ -206,7 +206,18 @@ def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
             article = fut.result()
             enriched[url] = article if "中国与美国" in candidates else (trim_extracted_article(article) if article else None)
     if "中国与美国" in candidates:
-        return select_readable(candidates, enriched)
+        for category, arr in candidates.items():
+            candidates_retrieved = [enriched.get(item["url"]) for item in arr]
+            LOG.info(
+                "NEWS_DESK_SOURCE_DIAG: section=%s candidates=%d readable=%d unreadable=%d",
+                category, len(arr),
+                sum(bool(x) for x in candidates_retrieved),
+                sum(not bool(x) for x in candidates_retrieved))
+        selected, diagnostics = select_readable(candidates, enriched)
+        for category, d in diagnostics.items():
+            LOG.info("NEWS_DESK_SELECTION: section=%s selected=%d quota=%d shortfall=%d",
+                     category, d["selected"], d["quota"], d["shortfall"])
+        return selected, diagnostics
     output = {category: [] for category in candidates}
     selected_global = []
     diagnostics = {}
