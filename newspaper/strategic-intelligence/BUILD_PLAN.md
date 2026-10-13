@@ -19,20 +19,20 @@
 | P-1内容V0 | 用真实案例证明研究价值 | 六份完整EvidencePacket+六份深度样稿+独立审稿及成本实测 | 机制教学/事实核查不达标先返工 |
 | P-2工程MVP | 用冻结样本把流程串通 | 最小source adapter、事件合并、研究/教学、审核、Markdown/HTML渲染、日志 | 端到端无静默错误 |
 | P-3周刊Beta | 独立全球发现与试刊 | 小规模免费来源、内部预演、邮件沙箱/干跑、质量/重试/幂等 | 多期预演无阻断，用户批准方可生产 |
-| P-4长期档案+月报 | 保存原始判断，重新评估 | 版本化Theme/Thesis/Concept、月报新的跨主题综合、历史判断纠错 | 旧版本可以完整回溯 |
+| P-4长期档案+年报 | 保存原始判断，重新评估 | 版本化Theme/Thesis/Concept、年报将全年周报与年度新闻源重新综合、历史判断纠错 | 旧版本可以完整回溯 |
 | P-5优化扩展 | 用实际瓶颈决定插件化 | 按需OpenBB/pgvector/监控工具/部分多模型 | 优势经benchmark显著、成本可控 |
 
 ## 2. 当前P-0工作包（完善设计，不写生产代码）
 
 | 任务ID | 必须完成的项目文档 | 完成门槛 |
 |---|---|---|
-| P0-01 | README.md + MASTER_BLUEPRINT.md | 命名、六目标、九板块、日报隔离、周/月产品可独立理解 |
+| P0-01 | README.md + MASTER_BLUEPRINT.md | 命名、六目标、九板块、日报隔离、周报/年报两种产品可独立理解 |
 | P0-02 | DECISIONS.md | “已批准/待批/已放弃”分清，124源口径正确 |
 | P0-03 | TRACEABILITY_MATRIX.md | 历次关键观点都能找到责任文档 |
 | P0-04 | END_TO_END_WORKFLOW.md | 输入/输出、停止、错误、审核、发布状态完整 |
 | P0-05 | DATA_CONTRACTS.md | 未来AI可以从字段规范设计schemas和版本化档案 |
 | P0-06 | COGNITIVE_ADVISOR_SKILL.md | 有专业机制研究、通俗教学、反方挑战与落地例子 |
-| P0-07 | PUBLICATION_SPEC.md | 周刊/月报的真实差异、文章深度和中文新闻质量清楚 |
+| P0-07 | PUBLICATION_SPEC.md | 周报/年报的真实差异、文章深度和中文新闻质量清楚 |
 | P0-08 | QA_AND_METRICS.md | 六成果可衡量、质量门禁与回归测试完整 |
 | P0-09 | AGENTS.md、模板、CHANGELOG.md | AI开发时不乱改生产与记录 |
 
@@ -85,7 +85,7 @@ newspaper/strategic-intelligence/
   schemas/
     candidate.schema.json / dossier.schema.json / review.schema.json
   templates/
-    ARTICLE_TEMPLATE.md / WEEKLY_TEMPLATE.md / MONTHLY_TEMPLATE.md
+    ARTICLE_TEMPLATE.md / WEEKLY_TEMPLATE.md / ANNUAL_TEMPLATE.md
     THESIS_TEMPLATE.md
   tests/
     fixtures/        # minimal permitted synthetic and real-source samples
@@ -119,12 +119,12 @@ newspaper/strategic-intelligence/
 
 **回滚**：发布门禁失败时只生成内部报告；邮件送信故障不影响归档；日报永远不应受新周刊的失败影响。
 
-## 6. P-4：月报与长期情报记忆
+## 6. P-4：年报与长期情报记忆
 
 - P4-01：为Source/Event/Entity/Theme/Thesis/Concept/Edition建立可迁移数据模型。
 - P4-02：引入as_of截点、源文合法引用、老版本不可更改、判断增量。
 - P4-03：实现跨月相同主题的差异比对、预测结果检查、Brier等指标仅在概率有定义时使用。
-- P4-04：以“首席顾问致决策者”为新的总论组织月报，研究企业/技术/政策相互传导。
+- P4-04：以“首席顾问致决策者”为新的总论组织年报，研究企业/技术/政策相互传导。
 - P4-05：构建用户关键词召回，能找到当初完整稿件和资料，不把新语言模型的摘要当旧历史。
 - P4-06：反茧房审计检查“是否对某个强大机构观点形成路径依赖”。
 - P4-07：备份恢复实测、权限审查与长期可读格式（Markdown、JSON、可迁移SQL）。
@@ -165,6 +165,22 @@ newspaper/strategic-intelligence/
 
 ## 10. 任务优先顺序的最简说明
 
-**先证明6篇文章的内容质量，再用一条可复现的管道生成一期离线周刊，接着完善审稿、历史命题、月报和可靠交付。**
+**先证明6篇文章的内容质量，再用一条可复现的管道生成一期离线周刊，接着完善审稿、历史命题、年报和可靠交付。**
 
 不是“先把所有源都跑起来”、不是“先部署九个Agent”、也不是“先重造日报”。这就是本项目的首要执行顺序。
+
+## 12. V4.0项目最高优先级执行路线（取代旧月报实施任务）
+
+**P0本轮要求**：把[HARD_RULES.md](HARD_RULES.md)、[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)、[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)、[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)、[ENDORSEMENT_LEDGER.md](ENDORSEMENT_LEDGER.md)全部写清：九栏有具体研究输入、研究顺序、可计算/法定步骤、至少一个实例、失效条件和陌生情境迁移。
+
+**P1真实内容样刊**：每篇真实新闻必须输出LearningUnit，逐领域做实际演算和法律/工程/统计查证。每篇有独立事实编辑、知识专家校验、最强反方审核，退稿意见指到缺步骤或证据。可先用已保存的4个虚构案例只测试逻辑规范，绝不能将其当成6篇真实样刊。
+
+**P2研究工序MVP**：由EvidencePacket→DomainLesson→AdvisorDraft→ReviewDecision→WeeklyEdition的一条可重复流水线；九栏加载不同专业规则，重大事实的证据引用和版权门禁不可跳过；不先部署九个Agent。
+
+**P3周报预演**：从全球公开来源独立发现、按周归档事实/知识/判断/观察指标，输出正式周报Markdown和只供内部检查的HTML；不被已有日报精选列表锁死。
+
+**P4年报预演**：首先实现`build_annual_inventory`（全年实际周报/缺期）和`build_annual_primary_source_inventory`（全年独立全球新闻、机构资料），再建立年度事件时间线、修订数据、错判审计、反常信号和跨领域教案；输出[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)的`ANNUAL-YYYY`，不得依旧模板生成MONTHLY。
+
+**P5真实运营**：若用户另行授权出版渠道、费用与定时任务才设置独立周报/年报调度。没有授权可以制作离线样刊，但不可邮件发送。
+
+**每阶段的可验证交付**：输入/输出文件+真实例子+具体操作命令（代码完成后）+测试日志+审稿缺陷表+成本+失败和补救；不得以“大师级提示词已完成”替代质量试验。
