@@ -147,3 +147,7 @@ rights_status: "UNREVIEWED|APPROVED_SUBSET|RESTRICTED"
 7. 原稿Markdown/可选HTML/PDF只作内部预览，经用户另行批准后方可公开发送。
 
 **年报成功的标志不是页数，而是“能说明过去一年我们的世界模型被哪些证据改变，并教读者如何独立解释这些变化”。**
+
+## V4.3年报选材和主题文章阅读规范
+
+年度主题同样执行[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)的正负/混合实际影响、典型性或重要突破、权威机构事实证据与报告研究方法门槛；年度主要研究不再只罗列热门事件。每个重要主题应先翔实报告**全年事实与数据（含机构、年度跨度、修订、方法与局限）**，随后给顾问判断、帝师世界知识与**年度后续推演和开放性问题**。读者不再被要求阅读一个固定“继续观察”小节；旧命题的年度审计和未来验证指标仍保存在内部研究和年报审核中，不能删除。六层杂志总标准见[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)。
