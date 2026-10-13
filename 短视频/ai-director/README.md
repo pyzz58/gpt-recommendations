@@ -1,3 +1,9 @@
+## 最新导演视听表达与部门验收（QO-D03 / D16）
+
+- 导演必须说明**为什么用这一种画面和声音来传递思想及情绪**：人物状态、可观察事件、观众前后理解、场面调度/镜头静动、声音/沉默、真正切点及普通 B-roll 替代会损失什么。新增 [director_visual_language.py](director_visual_language.py)，具体要求见 [Skill 10](skills/10-director-audiovisual-meaning-and-review.md)。
+- 原 Skill 09 的七部门制作会并不废止。新增 [director_delivery_review.py](director_delivery_review.py) 检查各部门**真实交付**是否实现导演意图；按镜头/责任岗提出具体返工，复用原十岗位版本状态机，不自动创设第二个总导演或不受控重试。
+- [一手导演/剪辑职业访谈与源码根因分析](quality-optimization/QO-D03_D16_AUDIOVISUAL_CRAFT_AND_DELIVERY_AUDIT.md)。这两项目前是离线生产设计能力，**未通过真人成片盲评**，不可标记世界级完成。
+
 ## 总导演跨部门制作会与详细专业指挥 · QO-D15（2026-10-13）
 
 **总导演负责“全片要达到什么效果”，还必须把艺术目标分解为各专业部门真实可执行的任务**：每个部门都要明白自己的具体镜头任务、观众感受与人物/思想转折、专业手段、前后部门信息交接、验收条件及失败后的替代方案。不能把「表演自然、画面电影感、音乐动人」当成指挥。
@@ -33,7 +39,7 @@
 - [质量优化总纲：目标、岗位边界、AI 视频约束、完成门槛](quality-optimization/QUALITY_CHARTER.md)
 - [QO-W01：职业编剧一手资料全文深读与既有模块逐项审计](quality-optimization/QO-W01_PROFESSIONAL_PRIMARY_SOURCE_AUDIT.md)：解释优秀改编与机械保留的区别，先审计方法、再设计创作流程；结构代码 PR #24 暂缓合并。
 - [QO-W01：编剧创作开发能力实际升级](quality-optimization/QO-W01_CREATIVE_DEVELOPMENT_IMPLEMENTATION.md)：读稿诊断 → 不同影视化 take → 独立选案比较 → treatment → 剧本及独立适配审核，核心实现 [screenplay_development.py](screenplay_development.py)；未完成专业真人盲评。
-- [独立问题清单：36 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
+- [独立问题清单：37 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
 - [逐批解决路线：先编剧、再总导演，其他部门持续登记](quality-optimization/EXECUTION_PLAN.md)
 - [机器可读问题总账](quality-optimization/QUALITY_ISSUES.json)：改动一个问题就更新一条，CI 拦截无证据假完成、漏问题和状态表不同步。
 - [质量阶段 GitHub 总入口 Issue #22](https://github.com/pyzz58/gpt-recommendations/issues/22)：讨论与跨任务导航；真实状态以 JSON 为准。
