@@ -1,6 +1,18 @@
+## QO-D19｜对白逐句声画时间轴（2026-10-13，程序实施中）
+
+**质量编号不得混用**：原 QO-D03 始终是“导演视听母题、情绪弧线与视觉叙事”；带对白反打与声音cue新问题编号为 **QO-D19**，质量总账40项，仍属于 `in_progress`，不得宣称艺术验收完成。
+
+在 QO-D02 已审定来源映射及导演自主镜头覆盖基础上，新增 [director_speech_cues.py](director_speech_cues.py) 维护独立于画面shot的原文、说话者、音频区间及逐句字幕cue。仅凭可校验的 `speech_cue_timeline`，`director_shot_coverage.py` 才允许将原本有对白/旁白/字幕的beat拆成多个视觉镜头，声音跨镜用cue引用绑定而非重复制台词；任何无cue、改写、漏条、错语者、非法时间均拒绝。原有10岗位工单从修改后的镜头重新创建，旧工单不得复用。timed cue是**计划的时间假设**，不是检测过的实际录音、口型、语音或字幕视频；需要独立合成器读取新cue ledger和真实媒体验证。绝不能把 legacy shot字幕字段当成精准合成证明。
+
+导演创作必须围绕人物关系、隐藏意图、观众注意力与情绪变化，比较长镜头、反打和反应插镜的艺术得失，不可机械增加剪切；严肃题材可完全不用反打，荒诞与周星驰方法仅按故事实际需求启用。
+
+[QO-D19技术与验收计划](quality-optimization/QO-D19_DIALOGUE_AUDIOVISUAL_CUE_SPEC.md)；核心代码 [director_speech_cues.py](director_speech_cues.py)；相关回归 [test_director_speech_cues.py](tests/test_director_speech_cues.py)。
+
+---
+
 ## QO-D02｜总导演有权重构镜头，而非被编剧节拍数量锁死
 
-导演接收**已审定的制作版**完整剧本及各场详述，完成自主≤90秒分集后，必须先判断每个关键事件应如何被演员行动、摄影空间、声音/静默和剪辑承载。编剧 beat/段落是来源与戏剧事件，不等于导演必拍摄的 shot。新 [Skill12](skills/12-director-shot-coverage.md) 与 [director_shot_coverage.py](director_shot_coverage.py) 允许**同一个无台词beat→多镜**或**同场景相邻多个beat→一个导演镜头**，并逐镜写明观众状态变化、时码、实际动作与导演理由。每个 source_span 严格覆盖已审制作版且保留原对白/旁白/事实/时长；**镜头结构变化必须重启原十角色专业工单，不能让旧摄影/配音指令串进新镜头**。没有逐句 cue 的对白反打、多地点蒙太奇及真正专业盲评仍未完成，绝不能把此项宣布世界级艺术验收。文档：[QO-D02专业审计](quality-optimization/QO-D02_DIRECTOR_SHOT_COVERAGE_PROFESSIONAL_AUDIT.md)，质量追踪 QO-D02（in_progress）。
+导演接收**已审定的制作版**完整剧本及各场详述，完成自主≤90秒分集后，必须先判断每个关键事件应如何被演员行动、摄影空间、声音/静默和剪辑承载。编剧 beat/段落是来源与戏剧事件，不等于导演必拍摄的 shot。新 [Skill12](skills/12-director-shot-coverage.md) 与 [director_shot_coverage.py](director_shot_coverage.py) 允许**同一个无台词beat→多镜**或**同场景相邻多个beat→一个导演镜头**，并逐镜写明观众状态变化、时码、实际动作与导演理由。每个 source_span 严格覆盖已审制作版且保留原对白/旁白/事实/时长；**镜头结构变化必须重启原十角色专业工单，不能让旧摄影/配音指令串进新镜头**。逐句cue现有QO-D19结构化规划首版，但真实录音同步、多地点蒙太奇及真正专业盲评仍未完成，绝不能把此项宣布世界级艺术验收。文档：[QO-D02专业审计](quality-optimization/QO-D02_DIRECTOR_SHOT_COVERAGE_PROFESSIONAL_AUDIT.md)，质量追踪 QO-D02（in_progress）。
 
 ## QO-D17｜已经确定的导演艺术方法：思想情绪优先，周星驰只在喜剧需要时启用
 
