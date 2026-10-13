@@ -91,11 +91,6 @@ def validate(handoff, breakdown, episode, proof, timeline):
           len(subtitles) == len(expected_subtitles), "CUE_SOURCE_ITEM_COUNT")
     durations = {b: by_beat[b]["duration_s"] for b in episode["beat_ids"]}
     last_end = {}
-    beat_offsets = {}
-    cursor = 0.0
-    for bid in episode["beat_ids"]:
-        beat_offsets[bid] = cursor
-        cursor += durations[bid]
     seen = set()
     for i, (cue, original) in enumerate(zip(audio, expected_audio), 1):
         _need(isinstance(cue, dict) and set(cue) == CUE_FIELDS,
@@ -116,6 +111,7 @@ def validate(handoff, breakdown, episode, proof, timeline):
               "CUE_OVERLAPPING_OR_REORDERED_AUDIO")
         last_end[bid] = cue["to_s"]
     seen_subs = set()
+    last_subtitle_end = {}
     for i, (sub, original) in enumerate(zip(subtitles, expected_subtitles), 1):
         _need(isinstance(sub, dict) and set(sub) == SUB_FIELDS,
               "CUE_SUBTITLE_SHAPE")
@@ -127,6 +123,9 @@ def validate(handoff, breakdown, episode, proof, timeline):
                sub["source_cue_id"]) == original,
               "CUE_SUBTITLE_TEXT_OR_ORDER_CHANGED")
         _interval(sub, durations[sub["beat_id"]])
+        _need(sub["from_s"] >= last_subtitle_end.get(sub["beat_id"], 0) - EPS,
+              "CUE_SUBTITLE_OVERLAP_OR_REORDER")
+        last_subtitle_end[sub["beat_id"]] = sub["to_s"]
         if sub["source_cue_id"] is not None:
             spoken = next((c for c in audio
                            if c["cue_id"] == sub["source_cue_id"]), None)
