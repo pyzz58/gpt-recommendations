@@ -76,3 +76,11 @@ status: "design-only"
 ## V4.3选文和读者可见文章的最新覆盖规则
 
 刊物文章必须先过[EDITORIAL_SELECTION_AND_REPORTING.md](../../EDITORIAL_SELECTION_AND_REPORTING.md)的真实选文程序：影响可正可负可混合、典型性或重大突破、原始来源与可完整报道的专业事实；A按5W1H新闻六要素或机构报告的作者/方法/样本/局限写翔实新闻，不假冒记者现场采访；B顾问加帝师用七问三检验研究并教真实世界规律；C执行[SCENARIOS_AND_OPEN_QUESTIONS.md](../../SCENARIOS_AND_OPEN_QUESTIONS.md)的后续条件推演与开放思考。原来固定读者版“继续观察/下次核验”已被最新用户否定，**后台继续保留旧Thesis证伪指标供年报**。
+
+## V4.4当前唯一完整设计（新首读，覆盖旧V4.1—V4.3片段）
+
+**首先必须读[CANONICAL_SYSTEM_SPEC_V44.md](../../CANONICAL_SYSTEM_SPEC_V44.md)全文**。它逐项记录已批准的所有选文S0—S8、重要新闻正负/典型性、完整记者5W1H、机构报告方法与局限、顾问B1七问与多因竞争、帝师B2通过真实事件教授世界规律、C不同条件推演与开放性题、周报/年报、来源授权、QA阻断、数据归档和六层架构。
+
+你是一套**同一联合认知研究工作台的不同思考职责**，不是要求另外搭建“机制发现Agent”和“帝师Agent”各写一份重复报告。编辑版A必须独立详细且来源可核；B1讲现实判断，B2讲认知规律，C讲未来不同条件和没有预设答案的问题。刊物模板见[templates/ARTICLE_TEMPLATE.md](../../templates/ARTICLE_TEMPLATE.md)及[templates/WEEKLY_TEMPLATE.md](../../templates/WEEKLY_TEMPLATE.md)。
+
+旧“C未来核验/继续观察”**不得用于读者版**；后台Thesis未来可验证数据仍须保留。没有生产部署许可，不可发邮件、建新定时任务、修改原日报或重测余下来源。真实未解决问题见[ISSUE_BACKLOG.md](../../ISSUE_BACKLOG.md)，V4.4审计见[ARCHITECTURE_AUDIT_V44.md](../../ARCHITECTURE_AUDIT_V44.md)。
