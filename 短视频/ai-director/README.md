@@ -1,3 +1,12 @@
+## 国际一流导演的艺术判断与周星驰荒诞喜剧（QO-D17）
+
+**创作原则已由用户确认**：思想、情绪与观众体验高于运镜炫技；学习名导如何选择/质疑一种拍法，而非复制“周星驰无厘头/王家卫慢镜/诺兰大声音”的外部风格。周星驰相关技巧只有在适合荒诞、喜剧、讽刺或有人物幽默的戏中使用，严肃科普/纪录不强制搞笑。
+
+- [职业一手资料、源码根因审计与完成标准](quality-optimization/QO-D17_ARTISTIC_METHODOLOGY_AND_CHOW_COMEDY_AUDIT.md) · [Skill 11：专业艺术判断与周星驰喜剧](skills/11-director-artistic-judgment-and-absurd-comedy.md)。
+- [director_artistic_methods.py](director_artistic_methods.py) 不是新 Agent，而是现有总导演的**真实艺术判断**：编剧与导演锁稿/七部门会议之后，完整写出故事立意、人物真实愿望、观众前后变化、镜头/声音/表演决定及被拒方案。喜剧开启时必须有合理人物处境、可信期待、视觉或动作的荒诞递进反转和人物意义；关闭时不允许无故插笑点。
+- **正式新系列门禁**：`build_per_episode_crew` 将 `director_artistic_mode` 设为必需；各岗位须收到同源版本 `artistic_method_plan` 与绑定 `audiovisual_plan`，才能生成实际本部门 model-facing 任务书，并在提交岗位结果时验证未换稿/偷换导演方法。文本/测试不代表真实电影、名导认证或人审通过。
+- 公共仓库只存虚构的例子、专业资料链接及通用 Skill；私稿、AI付费接口、发布和观影证据均不在本阶段自动执行。
+
 ## 最新导演视听表达与部门验收（QO-D03 / D16）
 
 - **新系列硬门禁**：`build_per_episode_crew` 产生的正式部门工单，必须在现有导演锁定和 Skill09 制作会后再提交逐镜视听因果 `audiovisual_plan`；专业岗位准备与产物接受双向校验该导演计划，避免只有文字会议而没有真正导演视听决定。
@@ -40,7 +49,7 @@
 - [质量优化总纲：目标、岗位边界、AI 视频约束、完成门槛](quality-optimization/QUALITY_CHARTER.md)
 - [QO-W01：职业编剧一手资料全文深读与既有模块逐项审计](quality-optimization/QO-W01_PROFESSIONAL_PRIMARY_SOURCE_AUDIT.md)：解释优秀改编与机械保留的区别，先审计方法、再设计创作流程；结构代码 PR #24 暂缓合并。
 - [QO-W01：编剧创作开发能力实际升级](quality-optimization/QO-W01_CREATIVE_DEVELOPMENT_IMPLEMENTATION.md)：读稿诊断 → 不同影视化 take → 独立选案比较 → treatment → 剧本及独立适配审核，核心实现 [screenplay_development.py](screenplay_development.py)；未完成专业真人盲评。
-- [独立问题清单：37 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
+- [独立问题清单：38 项逐条根因、解决方案、验收、状态和修复历史](quality-optimization/QUALITY_ISSUES.md)
 - [逐批解决路线：先编剧、再总导演，其他部门持续登记](quality-optimization/EXECUTION_PLAN.md)
 - [机器可读问题总账](quality-optimization/QUALITY_ISSUES.json)：改动一个问题就更新一条，CI 拦截无证据假完成、漏问题和状态表不同步。
 - [质量阶段 GitHub 总入口 Issue #22](https://github.com/pyzz58/gpt-recommendations/issues/22)：讨论与跨任务导航；真实状态以 JSON 为准。
