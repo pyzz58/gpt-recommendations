@@ -121,7 +121,7 @@ def sections(item):
 # "inflation in India" is not a US equities headline.
 US_MARKET_HEADLINE = (
     r"\b(?:wall street|nasdaq|s&p\s*500|dow jones|dow industrial|"
-    r"federal reserve|fomc|u\.?s\.?\s+(?:stocks?|equities|shares?|"
+    r"federal reserve|fomc|fed|u\.?s\.?\s+(?:stocks?|equities|shares?|"
     r"treasury|bond|inflation|cpi|gdp|jobs|unemployment|rate|"
     r"markets?|economic|earnings)|american\s+(?:stocks?|markets?|"
     r"economy)|sec\s+(?:charges?|approves?|rules?|filing)|"
@@ -165,6 +165,10 @@ def primary_topic_guard(item, labels):
         or (
             ("sec.gov" in url or "federalreserve.gov" in url)
             and matches(FINANCE, title + " " + summary)
+        )
+        or (
+            item.get("source") in {"CNBC Markets", "CNBC Investing"}
+            and matches(FINANCE, title)
         )
     )
     if not market:
