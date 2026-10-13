@@ -40,6 +40,10 @@ def plan_for(base, state, meeting, *, comedy=False):
             "拒绝通过无关快切、演员夸张大叫或持续配乐直接告诉观众该感到悲伤。",
         "departmental_creative_freedom":
             "导演规定观众必须见证决定发生，演员、摄影、声音、剪辑可提出更准确的实现方案。",
+        "why_comedy_is_or_is_not_suitable_here":
+            ("如果用喜剧，笑点只来自人物想装镇定却不能自控的真实困境，不随机增补剧情。"
+             if comedy else
+             "这一版决定不采用喜剧，因为小人物面对未知答案的真实恐惧比制造笑声更重要。"),
     }
     methods = (["chow_absurdity_from_character",
                 "chow_visual_gag_over_verbal_label",
