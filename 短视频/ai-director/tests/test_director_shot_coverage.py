@@ -123,13 +123,16 @@ class DirectorShotCoverageTests(unittest.TestCase):
 
     def test_no_fictitious_separate_scene_inside_one_physical_shot(self):
         h = long_story()
-        new_scene = deepcopy(h["screenplay_scenes"][0])
-        new_scene["id"] = "SC02"
-        new_scene["beats"] = [new_scene["beats"].pop(1)]
+        first_scene = h["screenplay_scenes"][0]
+        new_scene = {
+            "id": "SC02", "heading": "INT. 新的公共会议室 - 晚",
+            "beats": first_scene["beats"][1:]}
+        first_scene["beats"] = first_scene["beats"][:1]
         h["screenplay_scenes"].append(new_scene)
         h["reconstructed_base"]["scenes"].append({
             "id": "LOC02", "description": "新的虚构夜间场景"})
-        h["reconstructed_base"]["shots"][1]["scene_id"] = "LOC02"
+        for original in h["reconstructed_base"]["shots"][1:]:
+            original["scene_id"] = "LOC02"
         h["director_base_digest"] = agent_team.fingerprint(h["reconstructed_base"])
         new_dossier = dossier(h)
         plan = series_plan(h, new_dossier, [2]*10)
