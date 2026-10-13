@@ -10,6 +10,7 @@ import csv
 import datetime as dt
 import io
 import logging
+from zoneinfo import ZoneInfo
 from concurrent.futures import ThreadPoolExecutor
 
 import requests
@@ -59,6 +60,70 @@ def parse_fred_csv(raw, series, today):
     }
 
 
+STOOQ_DAILY = {
+    "SP500": "^spx",
+    "NASDAQCOM": "^ndq",
+    "DJIA": "^dji",
+}
+
+
+def parse_stooq_daily(raw, series, ny_local):
+    """Only fully completed New York trading sessions, with explicit dates."""
+    if series not in STOOQ_DAILY:
+        raise ValueError("Unsupported Stooq index")
+    rows = csv.DictReader(io.StringIO(raw))
+    if not {"Date", "Close"} <= set(rows.fieldnames or []):
+        return None
+    cutoff = ny_local.date() if ny_local.time() >= dt.time(16, 15) else ny_local.date() - dt.timedelta(days=1)
+    valid = []
+    for row in rows:
+        try:
+            day = dt.date.fromisoformat(row["Date"])
+            value = float(row["Close"])
+            if 0 < value < 1000000 and value == value and day <= cutoff:
+                valid.append((day, value))
+        except (ValueError, TypeError, KeyError):
+            continue
+    if not valid:
+        return None
+    valid.sort()
+    day, value = valid[-1]
+    if (cutoff - day).days > 7:
+        return None
+    prev = valid[-2][1] if len(valid)>1 else None
+    return {
+        "series": series, "name": SERIES[series],
+        "as_of": day.isoformat(), "value": value,
+        "previous": prev,
+        "change_percent": round((value/prev - 1) * 100, 2) if prev else None,
+        "source_url": "https://stooq.com/q/d/?s=" + STOOQ_DAILY[series],
+        "source": "Stooq published daily close, not exchange real-time data",
+        "stale": False,
+    }
+
+
+def fetch_stooq_completed_closes(now, getter=None):
+    """Optional public CSV fallback; never guess an unavailable index."""
+    ny_local = now.astimezone(ZoneInfo("America/New_York"))
+    end_date = ny_local.date()
+    start_date = end_date - dt.timedelta(days=14)
+    def one(pair):
+        series, ticker = pair
+        try:
+            response = (getter or requests.get)(
+                "https://stooq.com/q/d/l/",
+                params={"s": ticker, "i": "d",
+                        "d1": start_date.strftime("%Y%m%d"),
+                        "d2": end_date.strftime("%Y%m%d")},
+                timeout=8, headers={"User-Agent": "PersonalNewspaper/1.0"})
+            response.raise_for_status()
+            return parse_stooq_daily(response.text, series, ny_local)
+        except (requests.RequestException, ValueError, TypeError):
+            return None
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        return [value for value in pool.map(one, STOOQ_DAILY.items()) if value]
+
+
 def fetch_market_snapshot(now=None, getter=None):
     now = now or dt.datetime.now(dt.timezone.utc)
     if now.tzinfo is None:
@@ -86,6 +151,17 @@ def fetch_market_snapshot(now=None, getter=None):
             return None
     with ThreadPoolExecutor(max_workers=6) as pool:
         quotes = list(pool.map(fetch, SERIES))
+    # FRED's unauthenticated graph endpoint may time out on GH-hosted runners.
+    # Fill only missing historical major indices via dated, validated Stooq
+    # CSV; never overwrite an official/FRED observation with a fallback.
+    missing_indices = [s for s in STOOQ_DAILY if quotes[list(SERIES).index(s)] is None]
+    if missing_indices:
+        backups = fetch_stooq_completed_closes(now, getter=getter)
+        for backup in backups:
+            code = backup["series"]
+            idx = list(SERIES).index(code)
+            if quotes[idx] is None:
+                quotes[idx] = backup
     return {
         "as_of_request_utc": now.isoformat(),
         "kind": "latest_FRED_published_daily_close_not_intraday",

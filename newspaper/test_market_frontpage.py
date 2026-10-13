@@ -7,7 +7,7 @@ from unittest.mock import Mock,patch
 from zoneinfo import ZoneInfo
 
 from newsroom import SECTIONS, sections, countries, prepare_pool
-from market_snapshot import parse_fred_csv, fetch_market_snapshot
+from market_snapshot import parse_fred_csv, fetch_market_snapshot, parse_stooq_daily
 from people_overseas import parse_edition
 from xueqiu_magazine import parse_public_journal
 from clippings import build_clippings_html
@@ -60,6 +60,25 @@ class FrontPageTests(unittest.TestCase):
             getter=Mock(return_value=bad))
         self.assertFalse(snap["values"])
         self.assertEqual(len(snap["missing"]),6)
+
+
+    def test_stooq_requires_completed_session_and_valid_daily_csv(self):
+        from zoneinfo import ZoneInfo
+        raw="Date,Open,High,Low,Close,Volume\n2026-10-09,7410,7500,7400,7490,100\n2026-10-12,7500,7600,7490,7560,105\n2026-10-13,7560,7700,7540,7680,50\n"
+        pre_close=dt.datetime(2026,10,13,12,5,tzinfo=ZoneInfo("America/New_York"))
+        x=parse_stooq_daily(raw,"SP500",pre_close)
+        self.assertEqual(x["as_of"],"2026-10-12")
+        self.assertEqual(x["value"],7560)
+        self.assertEqual(x["source"],"Stooq published daily close, not exchange real-time data")
+        post_close=dt.datetime(2026,10,13,16,20,tzinfo=ZoneInfo("America/New_York"))
+        self.assertEqual(parse_stooq_daily(raw,"SP500",post_close)["as_of"],"2026-10-13")
+        self.assertIsNone(parse_stooq_daily("error page","SP500",post_close))
+
+    def test_stooq_rejects_stale_and_invalid_index_data(self):
+        from zoneinfo import ZoneInfo
+        ny=dt.datetime(2026,10,13,16,40,tzinfo=ZoneInfo("America/New_York"))
+        self.assertIsNone(parse_stooq_daily("Date,Close\n2026-09-01,5000\n","SP500",ny))
+        self.assertIsNone(parse_stooq_daily("Date,Close\n2026-10-12,-123\n","SP500",ny))
 
     def test_market_heading_prints_dated_only_not_intraday(self):
         snap={"values":[{"name":"标普500","series":"SP500","value":7520.0,

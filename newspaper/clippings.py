@@ -49,9 +49,9 @@ def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple
         observations = market_snapshot.get("values", [])
         page.append('<section class="market-overview">'
                     '<h2>美股头版 · 指数、波动率与利率</h2>'
-                    '<p class="part-mark">FRED公开日度数据；逐项注明数据日期，非实时行情。'
+                    '<p class="part-mark">FRED及Stooq历史日度数据；逐项注明来源与观察日期，非实时行情。'
                     '缺失数据不推测，百分比变化仅与上一条有效日度观测比较。</p>')
-        plain.append("美股头版 · FRED已公布的最近日度数据（非实时行情）")
+        plain.append("美股头版 · FRED/Stooq最近核实的历史日度数据（非实时行情）")
         for item in observations:
             name = str(item["name"])
             value = float(item["value"])
@@ -62,12 +62,12 @@ def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple
                 ("；较上一个有效观测日 " + ("%+.2f%%" % float(change)))
                 if change is not None and not suffix else ""
             )
-            statement = f"{name}：{value:,.2f}{suffix}（{as_of}）{change_str}"
+            statement = f"{name}：{value:,.2f}{suffix}（{as_of}）{change_str}；来源：{item.get('source', 'FRED')}"
             page.append(f'<p class="story-line zh">{esc(statement)}</p>')
             plain.append(statement)
         if not observations:
-            page.append('<p>本期无法核实FRED指数及收益率数据，因此不发布数值。</p>')
-            plain.append("本期FRED市场数据不可核实，未提供数字。")
+            page.append('<p>本期无法核实指数及收益率数据，因此不发布数值。</p>')
+            plain.append("本期市场数据不可核实，未提供数字。")
         if market_snapshot.get("missing"):
             page.append('<p class="part-mark">未取得最新可核实数据：'
                         + esc("、".join(market_snapshot["missing"])) + '</p>')

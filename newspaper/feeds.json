@@ -202,17 +202,15 @@
       },
       {
         "name": "36氪文章",
-        "url": "https://36kr.com/feed-article",
+        "url": "https://www.36kr.com/feed-article",
         "source_type": "cn_business_media",
         "disabled": true,
-        "disabled_reason": "GitHub Actions live verification 2026-10-13: 36Kr anti-bot HTML/non-RSS; US Treasury HTTP 406; BLS HTTP 403. Do not count as working until supported access exists."
+        "disabled_reason": "Await verified WWW endpoint"
       },
       {
         "name": "36氪综合",
-        "url": "https://36kr.com/feed",
-        "source_type": "cn_business_media",
-        "disabled": true,
-        "disabled_reason": "GitHub Actions live verification 2026-10-13: 36Kr anti-bot HTML/non-RSS; US Treasury HTTP 406; BLS HTTP 403. Do not count as working until supported access exists."
+        "url": "https://www.36kr.com/feed",
+        "source_type": "cn_business_media"
       }
     ],
     "AI与科技": [
