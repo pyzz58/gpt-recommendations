@@ -1,6 +1,6 @@
 # 全球战略内参（Global Strategic Intelligence）
 
-> 版本 V1.4 / 规划基线日期 2026-10-13 / 状态：**规划已获用户原则认可，技术未实施**。
+> 版本 V1.6 / 规划基线日期 2026-10-13 / 状态：**规划已获用户原则认可，技术未实施**。
 > 这个文件夹是独立新项目的**设计权威入口**；不可将“规划”表述为“已经开发、测试或投入运行”。
 
 ## 一句话使命
@@ -33,9 +33,12 @@
 3. [ADVISOR_PEDAGOGY.md](ADVISOR_PEDAGOGY.md) — 帝师式讲解 Skill、第一性原理/费曼教学及例子。
 4. [INTELLIGENCE_MEMORY.md](INTELLIGENCE_MEMORY.md) — 来源、事件、主体、主题、判断、出版、知识卡片的数据模型与长期追踪。
 5. [SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md) — 独立全球多语言媒体发现、来源库、报道去重、反信息茧房及验收。
-6. [TECHNICAL_DESIGN.md](TECHNICAL_DESIGN.md) — 简约架构、技术候选、接口、故障与成本设计。
-7. [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) — 从 V0 样刊到 V3 专业增强的逐步落地步骤。
-8. [ACCEPTANCE_AND_HANDOFF.md](ACCEPTANCE_AND_HANDOFF.md) — 验收测试、执行约束、给未来 AI/Codex 的交接指令。
+6. [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md) / [SOURCE_REGISTRY.json](SOURCE_REGISTRY.json) — 68个跨政治、军事、科技、医疗、创业和金融来源的可获取状态与机器可读登记。
+7. [SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md) — 明确受限的付费/客户专属研究及访问异常待复核。
+8. [SOURCE_VERIFICATION_PLAYBOOK.md](SOURCE_VERIFICATION_PLAYBOOK.md) — 实测接入、GitHub工具回退、版权审查及验收操作规程。
+9. [TECHNICAL_DESIGN.md](TECHNICAL_DESIGN.md) — 简约架构、技术候选、接口、故障与成本设计。
+10. [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) — 从 V0 样刊到 V3 专业增强的逐步落地步骤。
+11. [ACCEPTANCE_AND_HANDOFF.md](ACCEPTANCE_AND_HANDOFF.md) — 验收测试、执行约束、给未来 AI/Codex 的交接指令。
 
 ## 绝对执行边界
 - 本次只创建设计文档，不修改 newspaper 现有早报代码、Actions、Secrets、定时计划、交付地址或数据。
@@ -43,3 +46,6 @@
 - 规划中的候选开源项目都需二次核实当前许可、维护、能力及成本，不因文档提到就自动引入。
 - 原始事实、来源立场、模型推测必须可区分；若无法确认不得强行下结论。
 - 全球来源发现所用工具只是候选，未经测试不得称为已接入。免费可读不等于获准大量下载或转载全文。
+
+## 数据接入状态提醒
+当前来源白名单是**网页与API文档勘查**而非技术已连接；每个source.production_test均为NOT_RUN。某些来源明确有付费限制，详细见来源限制清单。未经新指令不部署爬虫、不注册账户、不发送邮件。
