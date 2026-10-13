@@ -28,7 +28,7 @@ from ai_commentary import email_commentary
 from extractive_editor import trim_extracted_article
 from translation_editor import polish_translation
 from editorial_selection import pick_politics, tech_candidates, political_regions
-from newsroom import prepare_pool, select_readable
+from newsroom import prepare_pool, select_readable, publisher
 from brief_editor import edit_grouped, apply_reports
 from edition_budget import EditionBudget
 from news_editor import edit_reports_in_batches, write_compact_commentary
@@ -562,6 +562,7 @@ def main():
         sources = [
             (category, feed)
             for category, feeds in settings["feeds"].items() for feed in feeds
+            if not feed.get("disabled", False)
         ]
         with concurrent.futures.ThreadPoolExecutor(max_workers=12) as pool:
             rss_futures = [
@@ -570,11 +571,20 @@ def main():
             ]
             collected = [job.result() for job in rss_futures]
         successful = sum(ok for _, ok in collected)
-        LOG.info("RSS sources: %d/%d reachable", successful, len(sources))
+        incoming = [item for articles, _ in collected for item in articles]
+        unique_publishers = {publisher(a) for a in incoming}
+        active_feeds_with_new_material = sum(bool(items) for items, _ in collected)
+        LOG.info(
+            "RSS source health: reachable=%d/%d enabled feeds, "
+            "recent_24h_nonempty=%d, stories=%d, distinct_publisher_families=%d",
+            successful, len(sources), active_feeds_with_new_material,
+            len(incoming), len(unique_publishers))
         if successful == 0:
             raise RuntimeError("No RSS feeds reachable; aborting rather than sending fake news.")
+        if not incoming:
+            raise RuntimeError("No verified in-window RSS items; do not fake a daily report.")
         pool = choose_candidates(
-            [item for articles, _ in collected for item in articles],
+            incoming,
             settings["max_per_category"],
             settings["candidate_pool_per_category"],
             news_start=start,
