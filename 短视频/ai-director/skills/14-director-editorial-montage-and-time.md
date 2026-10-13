@@ -25,3 +25,17 @@
 - **真实媒体验收**：独立AI clip之间镜头物理连续、人物面部服装、道具位置、光照、声场、字幕与出入点。无外部模型/真实素材许可，本项未验收。
 
 该 Skill 不修改已审剧本，不批准费用、发布、真人作者身份，不打开网上传稿件。
+
+## 帧级剪辑执行工单（QO-D09第二阶段）
+
+`director_montage_editor_conform.compile_work_order(handoff,dossier,breakdown,original_packet,director_coverage,fps=30)` 是**本轮新增的真实软件入口**，只在内存返回可供后期剪辑师逐项执行的源锁定工单；`fps` 由项目/剪辑师明确指定为 24、25、30、50 或 60，程序不能默选。此调用从原始剧本重验证 QO-D02 的镜头覆盖与 QO-D09 的跨场蒙太奇，并重新生成原十岗位工单，**不接受篡改的下游报表当权威**。
+
+工单输出：
+- `segments`：采用现有 `series_final_timeline.compile_final_timeline` 的片头/回顾/故事/桥/片尾/证据页最终顺序，以**入帧、出帧（exclusive）**记账。证据页存在时固定为故事及所有其它附加段之后的最后片段，整个成片仍严守≤90秒。
+- `montage_cut_jobs`：逐剪口列出 `boundary_frame`、两侧独立shot、实际编剧场次、`edit_type_exact`、时间关系、导演意图、观众前后变化、场面调度、灯光/摄影轴线交接、声音交接和降级方案。
+- `speech_events` 与 `subtitle_events`：仅在 QO-D19 时间轴合法、存在时输出原文精确的独立绝对帧事件，保留跨视觉镜头的关联；没有精确 cue 的口语不能被旧镜头级字幕替代。
+- `operator_blockers`：未提供原始镜头素材/真实配音/叠字片段与授权时，始终禁止误称实渲染。此阶段没有影像文件输入或编解码消费者，所以 `render_or_publish_authorized=false`。
+
+剪切类型的细则：`hard_cut` 对应纯剪切零长度边界；`dissolve` 必须另有素材余量、交叠帧数与转场长度，当前不可偷取本集额外时长；`match_cut` 必须由真人核验实际匹配的帧；`sound_bridge`（J/L）必须有真实音频素材与跨镜窗口，不能仅据导演一句话生出时间码；`jump_cut` 要有实际画面的导演审核。每一种未满足的功能明确给出独立修复事项，决不静默改成 hard_cut。
+
+`director_montage_editor_conform.editor_instructions(work_order)` 给后期剪辑师阅读版工单，无磁盘写入、云服务、模型调用或收费操作。任何时间码不落所选帧格、跨镜错位、总预算不符、来源篡改一律拒绝。后续真正导入剪辑软件/媒体验收时可通过本接口升级消费层，不应该绕过它调用仍未兼容的旧视频编译入口。原 QO-D09 与 QO-D19 依然 `in_progress`，文字工单不是完成影片。
