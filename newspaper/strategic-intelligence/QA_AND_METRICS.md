@@ -1,5 +1,7 @@
 # 内参系统｜质量门禁、可检验能力与验收测试
 
+> **V4.0强制门禁**：[HARD_RULES.md](HARD_RULES.md)的“禁止概念性总结”对所有九栏、周报年报、项目开发任务有效；领域评测见[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)、年报见[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)。
+>
 > 北极星不是“发出了多少篇”，而是文章是否真实、深入、独立、可迁移、长期可校正。以下是**未来实施时的目标和测试**，不是已经实现的性能报告。
 
 ## 1. 五层质量门禁
