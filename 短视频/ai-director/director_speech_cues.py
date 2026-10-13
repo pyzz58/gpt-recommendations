@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""QO-D03: independent, source-exact speech and subtitle cue timeline.
+"""QO-D19: independent, source-exact speech and subtitle cue timeline.
 
 No audio is synthesized here. Timing is asserted by the planner, never
 inferred from text length. Every cue is bound to the reviewed screenplay.
