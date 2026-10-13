@@ -169,20 +169,32 @@ def compile_work_order(handoff, dossier, breakdown, original_packet,
                 start = _frame(cue["story_from_s"], fps) + origin
                 end = _frame(cue["story_to_s"], fps) + origin
                 _need(start < end, "CONFORM_CUE_DURATION")
+                picture_segments = []
                 for frag in cue["picture_segments"]:
+                    fa = _frame(frag["story_from_s"], fps) + origin
+                    fb = _frame(frag["story_to_s"], fps) + origin
                     _need(frag["director_shot_id"] in slots and
-                          slots[frag["director_shot_id"]][0] <=
-                          _frame(frag["story_from_s"], fps) + origin <
-                          _frame(frag["story_to_s"], fps) + origin <=
+                          slots[frag["director_shot_id"]][0] <= fa < fb <=
                           slots[frag["director_shot_id"]][1],
                           "CONFORM_CUE_OUTSIDE_ASSOCIATED_SHOT")
+                    picture_segments.append({
+                        "shot_id": frag["director_shot_id"],
+                        "start_frame": fa, "end_frame_exclusive": fb,
+                        "source_beat_id": frag["beat_id"],
+                    })
+                _need(bool(picture_segments) and
+                      picture_segments[0]["start_frame"] == start and
+                      picture_segments[-1]["end_frame_exclusive"] == end and
+                      all(a["end_frame_exclusive"] == b["start_frame"]
+                          for a, b in zip(picture_segments, picture_segments[1:])),
+                      "CONFORM_CUE_FRAME_COVERAGE_INCOMPLETE")
                 dest.append({
                     "source_cue_id": cue.get("cue_id", cue.get("subtitle_id")),
                     "source_beat_id": cue["beat_id"],
                     "start_frame": start, "end_frame_exclusive": end,
                     "source_text_exact": cue["text_exact"],
                     "source_speaker": cue.get("speaker"),
-                    "video_picture_segments": deepcopy(cue["picture_segments"]),
+                    "video_picture_segments": picture_segments,
                     "audio_asset": None if track_name == "speech_cues" else "not_applicable",
                     "alignment_media_verified": False,
                 })
@@ -198,6 +210,8 @@ def compile_work_order(handoff, dossier, breakdown, original_packet,
                          for b in sc["beats"] if b["id"] in active)
         if has_speech:
             blocked.add("AUTHORITATIVE_SPEECH_AND_SUBTITLE_TIMING_REQUIRED")
+        if any(shot.get("subtitles", {}).get("text") for shot in base["shots"]):
+            blocked.add("SOURCE_CAPTION_TIMING_REQUIRED")
 
     for entry in entries:
         blocked.add("SOURCE_MEDIA_ASSETS_NOT_PROVIDED")
