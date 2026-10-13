@@ -173,6 +173,12 @@ def primary_topic_guard(item, labels):
     )
     if not market:
         keep.discard("美股·全球金融市场")
+    # A macro forecast that refers to a war only as an economic backdrop
+    # is not itself a new diplomatic or military development.
+    if (re.search(r"\\b(?:IMF|international monetary fund|world bank|OECD)\\b", title, re.I)
+            and re.search(r"\\b(?:economic|slowdown|growth|outlook|financial|debt|jobs|employment|share crash|market stability)\\b", title, re.I)
+            and not re.search(r"\\b(?:election|ceasefire agreed|treaty signed|sanctions imposed|military strike|government approves|war declared)\\b", title, re.I)):
+        keep.discard("国际政治与全球事件")
     if not (matches(TECHNICAL_HEADLINE, title) or
             re.search(TECHNICAL_ZH, title)):
         keep.discard("科技、能源与前沿科学")
@@ -267,13 +273,20 @@ def near_duplicate_titles(a, b):
     def words(title):
         normalized = re.sub(r"\bregulat(?:e|es|ed|ion|ions|ory|ions?)\b",
                             "regulat", title.lower())
-        return {w for w in re.findall(r"[a-z]{2,}", normalized)
-                if w not in _COMMON_TITLE_WORDS and len(w) > 2 or w == "ai"}
+        aliases = {
+            "ukrainian": "ukraine", "russian": "russia",
+            "american": "america", "announced": "announce",
+            "reported": "report", "reports": "report",
+            "strikes": "strike", "striking": "strike",
+        }
+        return {aliases.get(w, w) for w in re.findall(r"[a-z]{2,}", normalized)
+                if (w not in _COMMON_TITLE_WORDS and len(w) > 2) or w == "ai"}
     first, second = words(a), words(b)
     if min(len(first), len(second)) < 4:
         return False
     shared = len(first & second)
-    return shared >= 4 and shared / min(len(first), len(second)) >= 0.60
+    return (shared >= 4 and shared / min(len(first), len(second)) >= 0.60
+            or shared >= 5 and shared / min(len(first), len(second)) >= 0.50)
 
 
 def select_readable(candidates, enriched):
