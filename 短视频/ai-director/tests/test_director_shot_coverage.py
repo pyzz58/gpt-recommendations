@@ -152,6 +152,32 @@ class DirectorShotCoverageTests(unittest.TestCase):
             coverage.reblock_episode(self.h, self.ds, self.plan, packet,
                                      self.split)
 
+    def test_actual_spoken_screenplay_survives_without_text_or_character_drift(self):
+        h = assemble_original()
+        ds = dossier(h)
+        beats = [b for scene in h["screenplay_scenes"]
+                 for b in scene["beats"]]
+        plan = series_plan(h, ds, [len(beats)])
+        rows = [
+            shot(i, [span(beat["id"], 0, beat["duration_s"])])
+            for i, beat in enumerate(beats, 1)]
+        approved = proposal(h, ds, plan, rows)
+        packet = series.build_per_episode_crew(h, ds, plan)
+        rebuilt = coverage.reblock_episode(h, ds, plan, packet, approved)
+        original = packet["episodes"][0]["authoritative_episode_base"]
+        current = rebuilt["episodes"][0]["authoritative_episode_base"]
+        self.assertEqual(current["duration"], original["duration"])
+        self.assertEqual(
+            [d for sh in current["shots"]
+             for d in sh["source_adaptation"]["dialogue"]],
+            [d for sh in original["shots"]
+             for d in sh["source_adaptation"]["dialogue"]])
+        self.assertEqual(current["editorial"]["narration_script"],
+                         original["editorial"]["narration_script"])
+        self.assertEqual(current["characters"], original["characters"])
+        self.assertEqual(current["claims"], original["claims"])
+        self.assertFalse(director.validate(current)[0])
+
     def test_director_cannot_split_unmapped_dialogue_or_voiceover(self):
         h = assemble_original()
         ds = dossier(h)
