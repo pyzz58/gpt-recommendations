@@ -1,3 +1,13 @@
+## QO-D09｜跨场景蒙太奇与来源受控的时间跳转（2026-10-13）
+
+本项目仍由**同一个总导演**统筹。QO-D09主管编辑节奏和蒙太奇序列；QO-D05主管人物/服装/道具/场景状态与后续真实媒体验证；QO-D07主管轴线、摄影空间及光色连贯；QO-D02主管单个物理镜头的剧本来源连续覆盖。**禁止把不同物理场景硬写进一个物理 shot**，跨场景蒙太奇必须是多个可分别生产的物理镜头组成的后期 sequence。
+
+新增 [Skill14](skills/14-director-editorial-montage-and-time.md) 与 [director_editorial_montage.py](director_editorial_montage.py) 的结构化 `montage_plan`，每组连续 `shot_ids` 须有对应数量的真实剪口 `seams`，逐剪口解释地点、时间、演员道具状态、摄影光线、声音桥、观众理解变化、导演为何选择及 AI 不可拍时备用方案。**倒叙、提前、并行必须引用已审剧本对应场次/动作说明中实际存在的逐字时间证据；无依据的时序只能标 `unstated`，不得自行编出“几年前/同时发生”。**证明原文包含这段文字不等于人已判断语义正确；真实媒体验证另行验收。
+
+该计划已作为 QO-D02 可选输入，经原单集导演入口 `screenplay_series_delivery.episode_director_request` 实际进入 `director_brief`，并随新版 shot ID 重启原10岗位工单，镜头加入 `montage_membership`，导演整体底稿加入 `director_editorial_montage`。仅记录剪辑计划，不代表真正视频制作、音画同步或专业盲评完成。QO-D09 仍处工程验证中，不得因绿色 CI 自称国际一流。原质量总账不新增重复 issue 编号。
+
+---
+
 ## QO-D19｜对白逐句声画时间轴（2026-10-13，程序实施中）
 
 **质量编号不得混用**：原 QO-D03 始终是“导演视听母题、情绪弧线与视觉叙事”；带对白反打与声音cue新问题编号为 **QO-D19**，质量总账40项，仍属于 `in_progress`，不得宣称艺术验收完成。
