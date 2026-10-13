@@ -9,6 +9,7 @@ import hashlib
 import re
 from urllib.parse import urlparse
 from ranking import _story_groups
+from source_quality import newsworthiness
 
 SECTIONS = {
     "中国与美国": 3,
@@ -79,7 +80,7 @@ def publisher(item):
 def sections(item):
     title = item.get("title", "")
     s = title + " " + item.get("summary", "")
-    if matches(PROMO, s):
+    if not newsworthiness(item)["eligible"]:
         return set()
     result = set()
     if countries(item) & {"中国", "美国"}: result.add("中国与美国")
@@ -102,10 +103,14 @@ def score(item, independent_publishers):
     new = 15 if matches(ACTION, s) else 5
     # Publisher breadth is only a capped proxy; geographic independence unknown.
     breadth = min(10, max(0, independent_publishers - 1) * 3)
+    editorial = newsworthiness(item)
     evidence = {"cross_border_proxy": scope, "scale_proxy": scale,
                 "structural_change_proxy": duration, "new_development_proxy": new,
-                "publisher_breadth_proxy": breadth}
-    return sum(evidence.values()), evidence
+                "publisher_breadth_proxy": breadth,
+                "editorial_materiality_reason": editorial["reason"],
+                "editorial_noise_penalty": -editorial["penalty"],
+                "editorial_eligible": editorial["eligible"]}
+    return max(0, sum((scope, scale, duration, new, breadth)) - editorial["penalty"]), evidence
 
 def prepare_pool(items, per_section=20):
     unique = {}
@@ -120,12 +125,15 @@ def prepare_pool(items, per_section=20):
             a = all_items[i]
             value, evidence = score(a, len(families))
             a.update(event_key=event, importance_score=value, score_evidence=evidence,
+                     editorial_materiality_reason=evidence["editorial_materiality_reason"],
                      publisher_family=publisher(a), countries=sorted(countries(a)),
                      eligible_sections=sorted(sections(a)), related_publishers=sorted(families),
                      why_recommended="全球影响启发式；各维度保留依据，不代表事实核验")
     result = {}
     for section in SECTIONS:
-        candidates = sorted((a for a in all_items if section in a["eligible_sections"] and a["importance_score"] >= 35),
+        candidates = sorted((a for a in all_items if section in a["eligible_sections"]
+                             and a["score_evidence"]["editorial_eligible"]
+                             and a["importance_score"] >= 35),
                             key=lambda a: a["importance_score"], reverse=True)
         # Protect both regions before fetching and keep same-event alternatives.
         preferred = []
