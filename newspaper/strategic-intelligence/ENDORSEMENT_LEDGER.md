@@ -81,3 +81,17 @@ production_actions_authorized: false
 ## E-015｜本轮具体交付指令而非概念性赞同（2026-10-13）
 
 用户要求研究中国帝师、智囊、顶级顾问的书籍资料形成单一逻辑，进一步深化原12步；认为第4/5层重复，明确周刊文章应“先发生什么/新闻汇总，后评价及顾问帝师”；同意每栏目不配置独立模型；审计结果先入问题清单等未来开发时再修。本轮落实：[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)、[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)、[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)和正式文章/周刊模板。**未授权上线、外发、采购、全面来源复测。**
+
+## E-016｜V4.3用户再次确认杂志结构，并具体修订选文与结尾（2026-10-13）
+
+**用户直接原话**：“对的，新闻正文应该是标准的顶级的新闻媒体人视角，新闻六要素齐全，真实，客观，准确，详细等等，是一篇翔实的真实新闻，或事说报道，或事机构发出的报告，等等，选择这个的要素，应该是有影响力，并且产生了无论是正面，还是负面的，而且非常典型……有的时候，半月谈或事求是的选文逻辑就不错……继续观察哪里改下吧，我觉得意义不大，改成，对于前面给出的顾问研判和帝师释理后，对于该事件的推演，以及在此底层逻辑上设置几个开放性的题目，其他的都没问题。”
+
+**被认可且要求保留的详细方案及修订边界**：
+1. **保留V4.2杂志六层/一套联合顾问帝师工作台**。每篇以完整真实新闻报道（含报告、官方数据、机构研究）为开头，随后才是顾问评价、帝师教学。不能变成顾问先下定论、再找新闻佐证。
+2. **编辑选题从事实影响与典型性出发**。正面、负面与利益混合的真实现象均可入选；权力/资本/社会/科技等真实结构改变、普通人的现实遭遇和不热门却重要的典型案例也应被发现。参考半月谈及求是的“深入现实、典型调查、问题意识”编审优点，融合国际新闻事实标准，但不预设政治结论。见[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)S0—S8。
+3. **新闻正文必须是新闻，而不是摘要**。六要素5W1H、真实时点、背景、关键数据、反方/不同立场、机构报告研究方法/样本/局限、公开材料原发与版权核对。不能假冒独立采访。详见[templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md)。
+4. **唯一明确替换项**：旧“继续观察”作为读者C段被用户否定，改为**基于B1/B2机制的事件后续条件推演＋几个开放性思考问题**。题目不能复述“本质是权力”，需给角色/利益/前提改变或不同情境证据问题。见[SCENARIOS_AND_OPEN_QUESTIONS.md](SCENARIOS_AND_OPEN_QUESTIONS.md)。
+5. **旧长期证伪并不取消**：未来披露指标和Thesis版本只存内部历史研究档案供年报，或正文必要处自然写到，不恢复空泛“下次继续关注”段落。
+6. **本次认可不等于授权实际生产**。保留之前“不改日报、不重测剩余百余源、不部署额外Agent、不发邮件”的执行边界。
+
+**归档改动**：[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)、[SCENARIOS_AND_OPEN_QUESTIONS.md](SCENARIOS_AND_OPEN_QUESTIONS.md)、[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)、[HARD_RULES.md](HARD_RULES.md)、[DECISIONS.md](DECISIONS.md)、[templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md)。**原话来自本轮用户消息**；没有捏造之前看不到的对话认可。
