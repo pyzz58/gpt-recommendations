@@ -41,7 +41,7 @@ COUNTRIES = {
     "欧盟": r"\b(?:EU|European Union|European Commission|Brussels)\b",
 }
 POLITICS = r"中国|美国|政府|外交|战争|停火|选举|制裁|军事|地震|政策|外交|议会|\b(?:election|president|government|parliament|diplomac\w*|war|ceasefire|military|sanctions?|treaty|coup|missile|invasion|earthquake|pandemic|floods?|hurricane|summit)\b"
-FINANCE = r"美股|标普|纳斯达克|道琼斯|收益率|国债|美联储|财报|通胀|利率|金融|央行|经济|股市|基金|\b(?:federal reserve|central bank|interest rates?|inflation|gdp|treasury|bond yields?|stock market|nasdaq|s&p|earnings|financial|banking|currency|recession|unemployment|monetary|fiscal|tariffs?|imports?|exports?|trade)\b"
+FINANCE = r"美股|标普|纳斯达克|道琼斯|收益率|国债|美联储|人民银行|货币政策|财报|通胀|利率|金融|央行|经济|股市|基金|\b(?:federal reserve|central bank|interest rates?|inflation|gdp|treasury|bond yields?|stock market|nasdaq|s&p|earnings|financial|banking|currency|recession|unemployment|monetary|fiscal|tariffs?|imports?|exports?|trade)\b"
 AI = r"人工智能|大模型|算力|机器人|智能体|芯片|\b(?:AI|artificial intelligence|LLMs?|large language model|machine learning|data cent(?:er|re)|cloud computing|cybersecurity|software|digital platform)\b"
 SCIENCE = r"量子|航天|半导体|科技|突破|新能源|\b(?:quantum|physics|scientists?|researchers?|semiconductor|chip|robot\w*|spacecraft|satellite|rocket|superconduct\w*|materials science)\b"
 BUSINESS = r"创业|融资|并购|收购|商业模式|企业|公司|营收|上市|产业|\b(?:startup|start-up|entrepreneur\w*|business model|venture capital|funding|series [a-f]|acquisition|merger|IPO|bankruptcy|restructuring|supply chain|retail|revenue|profit|commerciali\w*|company|companies)\b"
