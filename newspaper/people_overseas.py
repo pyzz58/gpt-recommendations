@@ -6,7 +6,7 @@ and links for source-health auditing, not fabricated 01:00 publish timestamps.
 import re
 from datetime import date, timedelta, datetime
 from zoneinfo import ZoneInfo
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -34,7 +34,8 @@ def parse_edition(html, base_url=URL):
         if not re.search(r"(content_\d+|content/|content_)", href):
             continue
         url = urljoin(base_url, href)
-        if "people.com.cn" not in url:
+        host = (urlparse(url).hostname or "").lower()
+        if host != "people.com.cn" and not host.endswith(".people.com.cn"):
             continue
         links.append({"title": title, "url": url})
     unique = list({v["url"]: v for v in links}.values())
