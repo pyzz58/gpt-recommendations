@@ -89,11 +89,11 @@ C是前两部分的“知识实际应用”，不是再说一遍“政府很重�
 2. [换一个竞争解释或关键前提，考查机制边界]
 3. [迁移到不同环境或角色，要求读者重新核证]
 
-**读者无需回答问题才能读完杂志**。问题只是开放认知练习；没有用户回应不标“已掌握”。来源出处可随A/B注明并统一到刊尾；另在后台保存\`future_discriminator\`、\`ThesisVersion\`和时间截点，供年报纠错与研究，不将“继续观察”强行恢复成C段。
+**读者无需回答问题才能读完杂志**。问题只是开放认知练习；没有用户回应不标“已掌握”。来源出处可随A/B注明并统一到刊尾；另在后台保存`future_discriminator`、`ThesisVersion`和时间截点，供年报纠错与研究，不将“继续观察”强行恢复成C段。
 
 # 6. 数据接口与审核（设计，不代表代码存在）
 
-\`\`\`yaml
+```yaml
 ArticleEnding:
   section_title: "事件推演与开放性思考"
   research_dossier_ref: "shared A/B evidence and mechanism"
@@ -121,6 +121,6 @@ ArticleEnding:
     thesis_version_ref: null
     copyright_and_provenance_checked: false
   review: "PASS|REVISE|BLOCK"
-\`\`\`
+```
 
 **BLOCK**：推演写成必然事实、捏造证券目标价/政治结果概率或技术商业化证据；**REVISE**：C全部是“持续关注”、没有条件分叉、思考题只让用户复述本刊观点、在场景中把一种国家制度原样套到别国/企业。
