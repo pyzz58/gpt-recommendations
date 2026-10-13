@@ -131,6 +131,8 @@ def validate(plan):
     return errors,warnings
 
 def compile_prompts(plan):
+    if plan.get("director_editorial_montage"):
+        raise ValueError("EDITORIAL_MONTAGE_RENDERER_REQUIRED_LEGACY_EDITS_UNSAFE")
     if plan.get("requires_timed_cue_rendering"):
         raise ValueError("TIMED_CUE_RENDERER_REQUIRED_LEGACY_SHOT_TEXT_UNSAFE")
     people={x["id"]:x for x in plan["characters"]}
@@ -158,6 +160,8 @@ def compile_prompts(plan):
     return outputs
 
 def render_preview(plan, output):
+    if plan.get("director_editorial_montage"):
+        raise ValueError("EDITORIAL_MONTAGE_PREVIEW_REQUIRED_LEGACY_EDITS_UNSAFE")
     if plan.get("requires_timed_cue_rendering"):
         raise ValueError("TIMED_CUE_PREVIEW_REQUIRED_LEGACY_SHOT_TEXT_UNSAFE")
     esc=lambda x: html.escape(str(x))
