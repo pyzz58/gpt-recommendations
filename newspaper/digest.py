@@ -296,7 +296,7 @@ def ensure_argos_translator(from_code="en",to_code="zh"):
     return translator
 
 
-def bilingualize(grouped: dict, translator) -> dict:
+def bilingualize(grouped: dict, translator, reverse_translator=None) -> dict:
     """Strict EN sentence immediately followed by its own ZH translation.
 
     spaCy locates sentence boundaries; Argos translates the corresponding
@@ -308,31 +308,49 @@ def bilingualize(grouped: dict, translator) -> dict:
         output[category] = []
         for article in articles:
             entry = dict(article)
-            entry["title_zh"] = clean(translator.translate(article["title"]), 280)
+            chinese_original = article.get("language") == "zh"
+            if chinese_original:
+                if reverse_translator is None:
+                    raise RuntimeError("Chinese source requires a verified zh-to-en translator.")
+                entry["title_zh"] = clean(article["title"],280)
+                entry["title_en"] = clean(reverse_translator.translate(article["title"]),280)
+            else:
+                entry["title_zh"] = clean(translator.translate(article["title"]), 280)
             pairs = []
             qa_flags = []
             for paragraph_id, paragraph in enumerate(article["reading_en"].split("\n\n")):
                 paragraph = paragraph.strip()
                 if not paragraph:
                     continue
-                doc = nlp(paragraph)
-                sentences = [sent.text.strip() for sent in doc.sents if sent.text.strip()]
+                if chinese_original:
+                    sentences = [v.strip() for v in re.split(r"(?<=[。！？!?])",paragraph) if v.strip()]
+                else:
+                    doc = nlp(paragraph)
+                    sentences = [sent.text.strip() for sent in doc.sents if sent.text.strip()]
                 if not sentences:
                     sentences = [paragraph]
                 for sentence in sentences:
-                    chinese, flags = polish_translation(
-                        sentence, translator.translate(sentence)
-                    )
+                    if chinese_original:
+                        chinese, english, flags = sentence, reverse_translator.translate(sentence), []
+                    else:
+                        chinese, flags = polish_translation(
+                            sentence, translator.translate(sentence))
+                        english = sentence
                     if flags:
                         qa_flags.append({"paragraph":paragraph_id,"flags":flags})
                     if not chinese:
                         raise RuntimeError("Translation returned blank; refuse misaligned bilingual report.")
                     pairs.append({
-                        "en": sentence, "zh": chinese, "paragraph_id": paragraph_id,
+                        "en": english, "zh": chinese, "paragraph_id": paragraph_id,
                     })
             if not pairs:
                 raise RuntimeError("No sentence pairs extracted from article.")
             entry["bilingual_pairs"] = pairs
+            if chinese_original:
+                entry["reading_en"] = "\n\n".join(
+                    " ".join(x["en"] for x in pairs if x["paragraph_id"] == pid)
+                    for pid in sorted(set(x["paragraph_id"] for x in pairs)))
+                entry["editing_mode"] = "original_chinese_with_machine_english_translation"
             entry["translation_qa_flags"] = qa_flags
             # Backward compatibility with non-visual tests/report consumers.
             entry["reading_zh"] = "\n\n".join(
@@ -643,14 +661,29 @@ def main():
             readable = edit_grouped(readable)
             editorial_audit["fallback"] = editorial_audit["total"]
         translator = ensure_argos_translator()
+        reverse = None
+        if any(a.get("language")=="zh" for arr in readable.values() for a in arr):
+            try:
+                reverse = ensure_argos_translator("zh","en")
+            except Exception as exc:
+                LOG.warning("Chinese-to-English offline translation unavailable (%s); "
+                            "skip unsupported Chinese articles",type(exc).__name__)
+                readable = {k:[a for a in v if a.get("language")!="zh"]
+                            for k,v in readable.items()}
         grouped = attach_lessons(
-            bilingualize(readable, translator),
+            bilingualize(readable, translator, reverse),
             translator,
             grammar_limit=settings.get("grammar_examples_per_article", 3),
             vocab_limit=0,
         )
     # Print evidence-mapped edited reports; keep commentary outside news copy.
-    html_body, text_body = build_clippings_html(grouped, news_day)
+    market_snapshot = None
+    if not args.demo:
+        market_snapshot = get_market_snapshot(end)
+        LOG.info("US market cover: FRED daily series available=%s, dated metrics=%d",
+                 market_snapshot["available"],len(market_snapshot["items"]))
+    html_body, text_body = build_clippings_html(
+        grouped, news_day, market_snapshot=market_snapshot)
     if args.quality_sample:
         # Label the PDF prominently: sample is not the scheduled daily edition.
         html_body = html_body.replace(
