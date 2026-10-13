@@ -33,7 +33,7 @@ Theme ──> ThesisVersion ──> ResearchDossier ──> AdvisorDraft
 - Theme = 多个事件横跨年份构成的研究主题。
 - ThesisVersion = 在特定as_of时点关于主题的可检验判断；历史版本不可悄悄覆盖。
 - Concept = 能从多个新闻迁移使用的底层知识原理。
-- Edition = 最终周刊或月报的唯一发布版本，不是研究状态。
+- Edition = 最终周报或年报的唯一发布版本，不是研究状态。
 - DeliveryReceipt = 渠道对投递动作的逐级反馈，不伪造最终送达。
 
 ## 2. SourceRegistry（唯一活跃账本）
@@ -181,7 +181,7 @@ ReviewDecision {
  required_revision[], rationale
 }
 Edition {
- edition_id, kind(WEEKLY|MONTHLY|SPECIAL), period_start, period_end,
+ edition_id, kind(WEEKLY|ANNUAL); SPECIAL仅历史候选未批准, period_start, period_end,
  knowledge_cutoff_at, version, article_ids[], section_order[],
  editor_letter_ref, canonical_markdown_ref, html_ref, pdf_ref,
  source_index_ref, quality_status, rendered_hash, publication_state
@@ -307,3 +307,42 @@ SignalCard:
 **实际实现校验**：这些字段未来应由EvidencePacket/ClaimRegister生成，写入JSON Schema验证及单元测试。重要源缺失不得用LLM捏造缺省值；对医疗、政治和市场专业解释应按司法辖区/日期/会计数据核验。用户主动答复的学习证据如涉及个人敏感信息，不能写公开GitHub。与历史ThesisVersion为独立版本关系，旧件不覆写。
 
 详见[DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)与[INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)。
+
+## 13. V4.0年度出版数据契约及九栏可执行教学门禁
+
+```yaml
+AnnualEdition:
+  edition_id: "ANNUAL-YYYY"
+  kind: ANNUAL
+  report_year: YYYY
+  weekly_issue_refs: []
+  missing_weekly_issue_refs: []
+  annual_primary_source_refs: []
+  events_with_original_occurrence_dates: []
+  historical_thesis_versions: []
+  newly_identified_missed_signals: []
+  data_revision_log_ref: null
+  annual_learning_curriculum_ref: null
+  review_decision_ref: null
+  delivery_state: NOT_AUTHORIZED
+DomainLearningAudit:
+  article_id: "..."
+  domain: "one of nine"
+  primary_source_claim_ids: []
+  surface_event_and_baseline: "具体变化及参照"
+  actors_authority_budget_information: []
+  evidence_labeled_causal_chain: []
+  prerequisite_domain_knowledge: []
+  detailed_steps: []
+  numerical_or_institutional_worked_case: "..."
+  counterexample_or_failure_conditions: []
+  best_competing_hypothesis: "..."
+  how_to_verify: []
+  human_motives_as_hypotheses_only: []
+  classical_chinese_lens_if_relevant: null
+  classical_source_and_analogy_limits: null
+  transfer_case: "不同于原新闻的具体例子"
+  reviewer_decision: "PASS|REVISE|BLOCK"
+```
+
+**不能用非空字符串冒充实质分析**。在真实代码中须对每个栏目独立校验具体专业字段，例如政治法源/权限/否决点、创业实际付费/毛利/CAC/续费、科技复现/工程成本、宏观数据定义/传导、股票FCF/预期/折现。验证器必须能拒绝“深度分析政治博弈”“商业模式优秀”等概念性占位词及未经核实事实。具体操作见[HARD_RULES.md](HARD_RULES.md)及[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)。
