@@ -17,7 +17,7 @@
 - 每个切口保存 `exit_state_digest` 与 `entry_state_digest`，分别依据已审 base 内实际权威人物/道具状态计算。状态不一致的同场 `continuous` 明确拒绝。
 - `reblock_episode` 重新生成镜头底稿和原十岗位 crew 状态，然后把蒙太奇计划与独立验证结果放到 `base.director_editorial_montage`，每镜记录 `montage_membership`。新 `shot_id` 对旧专业工单一律失效。
 - `screenplay_series_delivery.episode_director_request` 将逐剪口和源证据进入真实 `director_brief` 的 model-facing 请求；不是只挂在文档注释。
-- 有 QO-D19 `speech_cue_timeline` 时仍需保持独立声音/字幕时间轨；本阶段不绕过其实际媒体安全门禁。
+- 有 QO-D19 `speech_cue_timeline` 时仍需保持独立声音/字幕时间轨；本阶段不绕过其实际媒体安全门禁。\n- 尚不能正确消费蒙太奇剪口的旧版 `director.compile_prompts`、`director_v2.compile_package`、`production_delivery._make_bundle` 和旧预演入口将**安全拒绝导出**，避免设计已存在而成品忽略转场/时间关系。后续实现可信的剪辑器消费并验收后才可解除门禁。
 
 ## 三项分离验收
 - **离线结构验收**：跨两个编剧场次、真实剧本倒叙、全部 shot/cut/scene ID 准确、来源时间证据属于原稿、镜头顺序连续、每集时长未变、十岗位重新创建；反例涵盖伪造时空、跨场单物理镜、人物道具无故瞬移、过期来源摘要。
