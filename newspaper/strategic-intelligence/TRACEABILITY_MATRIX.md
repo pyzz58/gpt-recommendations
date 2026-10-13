@@ -55,6 +55,27 @@
 | 49 | 有原创独立判断但必须透明标为推论 | EDITORIAL_POLICY.md、COGNITIVE_ADVISOR_SKILL.md | 已确认 |
 | 50 | 尽量用低成本工具在GitHub中可重现、可验证 | BUILD_PLAN.md、DATA_CONTRACTS.md | 设计 |
 
+## V3.1专项补录：过去详细认可、此前.md过度压缩的部分
+
+| 补录编号 | 不可压缩的实际要求 | 完整操作文档 | 检验方式 |
+|---|---|---|---|
+| 51 | 五种机构能力：新闻敏锐、情报连续、投资研究、咨询因果、家族办公室3/5/10年视角 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§1—2 | 看五种能力是否各有真实产物 |
+| 52 | 帝师的真正定义是**教会理解**，不是高深腔调、内幕或AI短评 | [DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)§1—2 | 读者能否独立分析陌生事件 |
+| 53 | 十一道教学动作：事实、问题、知识障碍、资源、因果、类比、反例、竞争解释、情景、迁移、长期记忆 | [DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)§3 | 每步对应研究输出与失败回退 |
+| 54 | 政治争吵背后需讲议会、行政、司法、财政、党纪、选举及合法预算程序 | [CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md)案例一 | 制度权力/否决点/竞争解释/新情境 |
+| 55 | 创业新闻需从融资研究到实际客户价值、医院采购、盈利、CAC、LTV、续费、法规、壁垒、小团队可行性 | [CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md)案例二 | 逐项数值和现金兑现边界 |
+| 56 | 美股“盈利增长仍下跌”的财务/预期/贴现机制 | [CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md)案例三 | 现实预期差与理论估值区分 |
+| 57 | 技术实验→工程可靠→可规模部署→可盈利三重验证 | [CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md)案例四 | 技术反例与迁移至其它行业 |
+| 58 | 战略判断追踪：旧命题、当时证据、后续反例和修正不能覆盖 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§3.1 | 带as_of、版号、原件召回 |
+| 59 | 全球商业机会雷达和可执行性，而非只是融资与热点 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§3.2 | 有买方、付款、单位经济与监管 |
+| 60 | 世界结构变化与反常雷达主动对比融资/营收、宣传/CapEx、技术性能/实际采用等背离 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§3.3 | 指标、口径、反证和状态明确 |
+| 61 | 专业研究团队逻辑角色完整，但不强制部署十多个物理Agent | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§4 | 与最小工程方案吻合 |
+| 62 | GPT Researcher / Open Deep Research / OpenBB / changedetection / GraphRAG / n8n候选需比较维护/兼容/费用 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§5 | 没做benchmark前保持候选 |
+| 63 | 特刊作为第三出版物设计候选，日报/周刊/月报边界清楚，未经授权不得发送 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§7 | 未授权时不建立触发器 |
+| 64 | 阅读反馈必须能处理学不懂/学不会/记不住/不会用，不强制考试也不虚报已学会 | [DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)§5 | TAUGHT与DEMONSTRATED区分 |
+| 65 | 不因学习机制细化而大幅增加架构复杂度 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§4和[BUILD_PLAN.md](BUILD_PLAN.md) | 先冻结六例测试质量 |
+| 66 | 详细.md并非已安装运行的Skill或模型已经掌握这些专业知识 | [AGENTS.md](AGENTS.md)、[CHANGELOG.md](CHANGELOG.md) | 文件与生产状态区分 |
+
 ## 未来审计方法
 1. 发现某个旧谈话要点没在此矩阵：先读相关原始对话/来源记录，精确恢复原意，再加新行，指向单一文档；禁止由AI想象“用户曾批准”。
 2. 设计变动：同步更新 [DECISIONS.md](DECISIONS.md)（状态/取代关系）、[CHANGELOG.md](CHANGELOG.md)（文件改变）、本矩阵（引用归属）。
