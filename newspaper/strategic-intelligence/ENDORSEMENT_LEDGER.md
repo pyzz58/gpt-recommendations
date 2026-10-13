@@ -64,3 +64,20 @@ production_actions_authorized: false
 5. 用户同时要求系统整体架构审计，需保存明确的现实状态、风险与整改步骤。
 
 **修改文档**：[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)、[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)、[HARD_RULES.md](HARD_RULES.md)R012、[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)§11、[AGENTS.md](AGENTS.md)等。本次是设计变更，未授权新生产发送。用户原话来自当前消息，可逐字回查。
+
+## E-014｜用户明确表扬并认可“多机制、证据优先、承认未知”（2026-10-13）
+
+**用户原话**：“你的回答更重要的是——，内参不应承诺每件事情背后必然存在一个唯一的‘终极规律’。现实往往由多个机制共同塑造。真正有水平的研究，应该找到最有解释力、证据最充分的机制，同时讲明哪些还无法确定。**这个很好，很对，我同意。**”
+
+**被认可的具体方法，而非笼统一句赞扬：**
+1. 研究者不得在查到证据前先把“唯一真相”写进文章标题；必须允许政治/资金/技术/组织/人性等多种机制共存。
+2. 分析时分清近端触发机制与远端结构原因，不强制互斥；对重大结论标FACT、INFERENCE、UNKNOWN。
+3. 每个核心解释必须追问中间传导证据，列能区分或推翻它的最强反方证据；无法区分就如实说明。
+4. 对读者教授适用边界和反例，而不以“帝师”人设、古典名言、某智库权威制造过度确定性。
+5. 日后真实研究质量门禁必须据此核验；当前只是批准设计方向，不等于允许生产部署或投资行动。
+
+**归档**：[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)问因/问断/问道及三检验、[HARD_RULES.md](HARD_RULES.md)R013、[QA_AND_METRICS.md](QA_AND_METRICS.md)。来源可直接从当前用户消息核实，无须猜测历史内容。
+
+## E-015｜本轮具体交付指令而非概念性赞同（2026-10-13）
+
+用户要求研究中国帝师、智囊、顶级顾问的书籍资料形成单一逻辑，进一步深化原12步；认为第4/5层重复，明确周刊文章应“先发生什么/新闻汇总，后评价及顾问帝师”；同意每栏目不配置独立模型；审计结果先入问题清单等未来开发时再修。本轮落实：[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)、[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)、[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)和正式文章/周刊模板。**未授权上线、外发、采购、全面来源复测。**
