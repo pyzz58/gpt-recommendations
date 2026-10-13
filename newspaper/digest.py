@@ -56,8 +56,10 @@ PRIORITY = re.compile(
 
 BEIJING_TZ = ZoneInfo("Asia/Shanghai")
 EDITION_CUTOFF = dt.time(1, 0)
-# Reserve three minutes for SMTP delivery; do not initiate late sends.
-LATEST_SEND_START = dt.timedelta(minutes=57)
+# Allow delayed GitHub schedule events to recover the same fixed 01:00 edition.
+# The CI startup gate stops launching new work after 02:20 Beijing; the
+# Python guard also blocks a report if it cannot reach SMTP by 02:30.
+LATEST_SEND_START = dt.timedelta(minutes=90)
 
 
 def edition_window(now: dt.datetime) -> tuple[dt.datetime, dt.datetime, dt.date]:
@@ -72,13 +74,13 @@ def edition_window(now: dt.datetime) -> tuple[dt.datetime, dt.datetime, dt.date]
 
 
 def require_live_delivery_window(now: dt.datetime, edition_end: dt.datetime) -> None:
-    """Fail visibly instead of emailing an obsolete report after 02:00 Beijing."""
+    """Reject a stale report after the latest authorized 02:30 Beijing handoff."""
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("An aware timestamp is required for the delivery deadline.")
     local = now.astimezone(BEIJING_TZ)
     if not edition_end <= local < edition_end + LATEST_SEND_START:
         raise RuntimeError(
-            "Outside Beijing delivery window (01:00–01:57). "
+            "Outside Beijing delivery window (01:00–02:30). "
             "Do not send a stale edition; inspect the scheduled workflow."
         )
 
