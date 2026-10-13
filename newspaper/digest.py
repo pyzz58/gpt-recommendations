@@ -32,6 +32,7 @@ from newsroom import prepare_pool, select_readable, publisher
 from brief_editor import edit_grouped, apply_reports
 from edition_budget import EditionBudget
 from news_editor import edit_reports_in_batches, write_compact_commentary
+from market_snapshot import fetch_market_snapshot
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -642,7 +643,12 @@ def main():
             vocab_limit=0,
         )
     # Print evidence-mapped edited reports; keep commentary outside news copy.
-    html_body, text_body = build_clippings_html(grouped, news_day)
+    market_data = None
+    if not args.demo:
+        market_data = fetch_market_snapshot()
+        LOG.info("FRED market dashboard: verified=%d missing=%d",
+                 len(market_data["values"]), len(market_data["missing"]))
+    html_body, text_body = build_clippings_html(grouped, news_day, market_snapshot=market_data)
     if args.quality_sample:
         # Label the PDF prominently: sample is not the scheduled daily edition.
         html_body = html_body.replace(
