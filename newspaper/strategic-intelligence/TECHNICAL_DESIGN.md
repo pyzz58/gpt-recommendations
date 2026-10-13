@@ -1,11 +1,14 @@
 # 技术实现蓝图：刻意保持简单
 
 ## 1. 目标架构
-既有日报（只读输入之一）+ 官网/监管/可靠新闻及金融数据 → 统一采集/去重 → 重要性选择 → 统一研究引擎（按栏目配置研究方法） → 首席认知与战略顾问教学转写 → 独立核查/主编门禁 → 周刊/月报渲染 → 邮件/PDF/Markdown交付 → 长期档案及判断更新。
+**独立全球新闻发现层（GDELT/Media Cloud等候选广域索引 + 合法的全球主流媒体原生RSS/API/Sitemap + 多语种在地报道 + 官网/监管/财报/金融原始数据）** + 既有日报（只读、可断开的辅助线索） → 统一采集/来源血缘/跨语事件去重 → 重要性选择 → 统一研究引擎（按栏目配置研究方法） → 首席认知与战略顾问教学转写 → 独立核查/主编门禁 → 周刊/月报渲染 → 邮件/PDF/Markdown交付 → 长期档案及判断更新。
 
 **九个栏目=九份领域规则配置，不代表九个物理Agent。** 首版只需研究、顾问、审核三个逻辑工序，后续若有证据证明才拆分并行角色。
 
+**核心约束：即使日报没有一条新闻或彻底不可用，研究引擎也必须能独立发现全球信息并形成可核查的候选池。** 每个候选条目记录来源、语言、地区、发布时间、发现时间、原文链接和获取权限。详见 [SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md)。
+
 ## 2. 候选技术（须在实施当天再核验）
+- 广域发现候选：GDELT和Media Cloud作为互补的全球媒体索引，用于线索发现而不是自动认证新闻真实性；动态SourceRegistry+原生RSS/API及官方公开文件完成广度与核验。
 - Python为管道实现的默认选项；PostgreSQL管理结构化档案，全文检索先用原生功能，必要时再加pgvector。
 - GPT Researcher (https://github.com/assafelovic/gpt-researcher) 为深度研究候选；先以固定资料样本对比人工/简单脚本方案的质量、费用及可维护性，不直接锁定依赖。
 - OpenBB (https://github.com/OpenBB-finance/OpenBB) 为后续金融数据整合候选；各数据提供商权限、延迟及费用单独审计。
@@ -27,11 +30,13 @@ newspaper/strategic-intelligence/
   ACCEPTANCE_AND_HANDOFF.md
   # 以下目录均为将来的建议，不在此次创建
   src/ingest/ src/research/ src/advisor/ src/review/ src/publish/
-  configs/columns.yaml configs/sources.yaml
+  configs/columns.yaml configs/sources.yaml configs/discovery.yaml
   schemas/ tests/ templates/ migrations/
 ```
 
 ## 4. 标准数据流与接口
+DiscoveryCandidate{candidate_id,source_id,source_type,original_url,aggregator_url?,original_language,region,published_at,discovered_at,discovery_channel,verification_status,source_trace}
+CoverageAudit{period,regions,languages,source_groups,missed_samples,source_failures,notes}
 InputCandidate{source_url,title,published_at,collected_at,language,claim_summary,theme_refs}
 EvidencePacket{research_question,source_refs,verified_claims,contradictions,unknowns,as_of}
 AdvisorDraft{report,teaching_explanation,principles,examples,counterexamples,conditions,claims_map}
@@ -49,7 +54,7 @@ DeliveryReceipt{edition_id,channel,attempts,provider_accepted_at,verified_status
 **成功状态不能混淆**：研究完成 ≠ 文件生成 ≠ 邮件提交 ≠ 邮件服务商接受 ≠ 送达/收件确认。只能证明哪个状态就报告哪个状态。发送失败留存文件并告警；禁止伪造成功。
 
 ## 7. 原新闻系统隔离
-默认只读现有newspaper早报的已发布成果或明确授权接口；不修改既有生产工作流、Secrets、收件地址、cron、历史档案。新项目先测试再逐步交接。如需共用数据库或触发器，先做权限和兼容性审查。
+发现系统应从全球信息源自主采集，而不是从日报结果反向扩大；仅允许把现有newspaper早报的已发布成果或明确授权接口作为只读辅助线索，不修改既有生产工作流、Secrets、收件地址、cron、历史档案。新项目先测试再逐步交接。如需共用数据库或触发器，先做权限和兼容性审查。
 
 ## 8. 数据、法律和安全
 版权遵守许可与合理摘录，不进行批量侵权全文复制；不得绕过付费墙、获取内幕消息或声称未取得的内部资料。API令牌只能由Secret管理，不入库。外部文本为不可信输入，需要防提示注入和引用投毒。私有研究档案不能默认公开到GitHub。
