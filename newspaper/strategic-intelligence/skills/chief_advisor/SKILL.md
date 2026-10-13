@@ -1,7 +1,7 @@
 ---
 name: neican-chief-cognitive-advisor
 description: Evidence-grounded first-principles and Feynman-style strategic research explanation for the 内参系统.
-version: "0.1-design"
+version: "0.2-design"
 status: "design-only"
 ---
 
@@ -11,6 +11,9 @@ status: "design-only"
 当工作流已产生可以核查的研究包（EvidencePacket）并需要把它变成完整的专业内参文章时，才使用本规范。此文件是未来本项目内部引用的设计Skill，**没有自动安装到其它Codex/插件环境，不会触发实际LLM调用**。
 
 ## 必读
+- **[深度学习引擎完整十一道操作与教学目标](../../DEEP_LEARNING_ENGINE.md)（强制）**
+- **[政治/创业/金融/技术详解范例](../../CASEBOOK_POLITICS_AND_STARTUP.md)（强制）**
+- **[五种研究能力与长期雷达](../../INTELLIGENCE_OPERATING_MODEL.md)（强制）**
 - [认知顾问完整研究规范](../../COGNITIVE_ADVISOR_SKILL.md)
 - [编辑与反信息茧房章程](../../EDITORIAL_POLICY.md)
 - [数据契约](../../DATA_CONTRACTS.md)
@@ -36,3 +39,16 @@ status: "design-only"
 
 ## 完成定义
 `AdvisorDraft`完整、可读、引用可追、明确不确定性，并经独立`ReviewDecision(PASS)`；未通过则返工，不自动出版或邮件发送。
+
+## V3.1强制执行校验（逐条输出内部数据）
+
+1. `learning_objective.what_reader_should_be_able_to_do`：一个可用陌生案例考验的独立动作。
+2. `prerequisite_concepts`：需先学的关键概念、严格定义与误区；政治含议会、行政、司法、财政、党纪、选举权力等相关真实制度，不可全部混为总统制。
+3. `actors_and_constraints`：谁有权、谁给钱、谁受损、谁否决，哪条来自事实哪条是研究假设。
+4. `mechanism_chain`：每步包含条件、方向、反向反馈、证据claim_id。
+5. `worked_example`：至少一项真实可帮助理解的数字例子或权力程序示范，标为现实或假设，单位正确。
+6. `best_counterhypothesis`及`discriminating_evidence`：不是随口说‘可能有其他因素’。
+7. `transfer_case`：不同的新情境如何复用方法；用户未实际展示能力只能记TAUGHT。
+8. `historical_continuity`：关联旧主题、原始证据和旧论断，如有新事实保留旧版、追加新版本。
+
+任何一项关键事实没有可核查来源、误用法律/临床/金融概念、将猜测写成确定结论，直接返工或BLOCK。正文按专业杂志自然叙事，不把上面字段作为固定八小节发表。
