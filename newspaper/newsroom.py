@@ -84,6 +84,11 @@ def sections(item):
         return set()
     result = set()
     if countries(item) & {"中国", "美国"}: result.add("中国与美国")
+    if item.get("source_language") == "zh":
+        # Chinese publisher headlines are used for evidence discovery and
+        # official-document monitoring. English rewriting and paired translation
+        # require a separately approved Chinese editorial path; fail closed.
+        return result if result else set()
     if item.get("source_type") in ("primary_regulator","primary_central_bank","exchange_company") and matches(FINANCE, s):
         result.add("美股·全球金融市场")
     for label, pattern in (("国际政治与全球事件", POLITICS), ("美股·全球金融市场", FINANCE),
