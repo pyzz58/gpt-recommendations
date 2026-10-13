@@ -5,3 +5,5 @@ the guarded workflow generates a current (previous Beijing day) PDF and sends it
 using the existing configured GitHub Actions Secrets.
 This file is not a credential and contains no email password.
 Changes to other files do not retrigger the special push path.
+
+2026-10-13: recovery request after missing 07:00 scheduled run; one live QQ email delivery, protected by daily receipt deduplication.
