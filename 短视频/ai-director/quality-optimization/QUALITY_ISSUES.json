@@ -931,13 +931,13 @@
       "stage": "now_director",
       "department": "director",
       "priority": "P1",
-      "status": "confirmed_open",
+      "status": "in_progress",
       "title": "剪辑节奏、过渡桥与镜头版本选择",
-      "observed_in": "agent_role_contracts editing_animation; director_timeline.py; production_delivery.py",
+      "observed_in": "agent_role_contracts editing_animation; director_timeline.py; production_delivery.py; director_editorial_montage.py; director_shot_coverage.py",
       "problem": "有J/L cut、转场字段但未以真实影像验证行为连续和情绪节奏；不可默认长镜头一镜过",
       "root_cause": "缺由真实媒体帧/音轨回写的编辑视角审计",
-      "solution": "导演审查每个镜头的入点/出点/情绪换挡/声画桥；备选剪辑与失败因果；逐镜选择最佳 take，避免盲目复拍整片",
-      "acceptance": "公开合成方案能量化错误切点；真实2+段小样有可验证片段版本与切点，比对导演剪辑意图",
+      "solution": "导演审查每个镜头的入点/出点/情绪换挡/声画桥；备选剪辑与失败因果；逐镜选择最佳 take，避免盲目复拍整片；首版实现独立 editorial montage：镜头序列必须逐镜连续、逐切点绑定剧本场次和时间来源、保留演员/道具出入状态指纹，保留真实媒体与艺术审核门槛。",
+      "acceptance": "公开合成方案能量化错误切点；真实2+段小样有可验证片段版本与切点，比对导演剪辑意图；新增跨场次/倒叙与伪造时间线的公开离线回归，需GitHub CI核验。",
       "ai_video_constraint": "AI片段几秒钟产生，需留头尾缓冲，部分转场后期解决",
       "depends_on": [
         "QO-D02",
@@ -947,9 +947,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
-        "commit_sha": "",
-        "automated_test": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/50",
+        "commit_sha": "8c5a9874773aeddbd4562c067b148d1728e4933e",
+        "automated_test": "GitHub Actions run 38378525193: 817/817 unittest passed; synthetic package and quality registry check passed (2026-10-13).",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -967,6 +967,18 @@
           "status": "confirmed_open",
           "note": "相关QO-D13增加了后期绝对剪辑轨道预览与一页片尾预算，D09真正剪辑节奏和不同剪辑版本的专业真人盲审依旧待完成",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/42"
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "QO-D09第一阶段：将跨场次组合、时间跳转依据、场次/演员道具来源指纹和逐剪口导演理由纳入现有总导演与十岗位规划。代码已写入PR #50；只有离线计划，仍须CI运行证据、独立创意盲评及实际视频连续性检验。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/50"
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "PR #50完整CI已验证817项单元回归通过；静态验证只确认导演时空蒙太奇的来源、连续状态和工单交接，不确认真实镜头和独立专业美学审片。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/50"
         }
       ]
     },

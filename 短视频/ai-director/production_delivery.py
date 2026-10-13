@@ -49,6 +49,8 @@ def _require(ok, code):
 
 def _make_bundle(base, direction, *, provenance, crew_workbook=None,
                  locked_digest=None, source_digest=None):
+    if base.get("director_editorial_montage"):
+        raise ProductionDeliveryError("DELIVERY_EDITORIAL_MONTAGE_RENDERER_NOT_IMPLEMENTED")
     if base.get("requires_timed_cue_rendering"):
         raise ProductionDeliveryError("DELIVERY_TIMED_CUE_RENDERER_NOT_IMPLEMENTED")
     _require(isinstance(base, dict) and isinstance(direction, dict),
