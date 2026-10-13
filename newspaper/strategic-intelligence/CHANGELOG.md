@@ -1,5 +1,14 @@
 # 内参系统｜版本记录
 
+## V4.4第二轮审计补丁（2026-10-13）
+
+- 对项目源登记重新直接解析确认A116+B8=124候选，所有124生产测试NOT_RUN、所有124条AI处理条款TERMS_NOT_YET_REVIEWED；此前随机4个HTTP200与上线生产是完全不同等级。
+- 实际检测并修正**S8选文复选时序错误**：L2先S0—S7→L3查事实写A→返回L2做S8→L4顾问帝师；L4反证可返工。更新[CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)、[END_TO_END_WORKFLOW.md](END_TO_END_WORKFLOW.md)、[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)。
+- 查出Markdown反引号被过度转义，直接读取与修复十余份现行规范/模板的inline code和fenced YAML/JSON文本；抽查核心代码围栏完整性。
+- 再查GitHub主要现行.md的相对文件链接，所查16份未发现缺失；未宣称已完成外部链接或GitHub渲染逐页实测。
+- 增加[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md) NC-023/NC-024，GitHub[Issue #43](https://github.com/pyzz58/gpt-recommendations/issues/43)更新至24项；文档设计修复不等于研究软件已实现。
+
+
 ## V4.4（2026-10-13）｜用户要求全量无损归档、全面审核架构与解决多版本冲突
 
 - 用户原话：“你说的这些很对，我要求你务必全部，写入到这个系统中，方便未来开始制作的时候，能够清楚的无误，不要概括，要全面写入。重新核实下架构，给我全面展开，我需要看看，审核下看看还有没有地方需要修改。”
