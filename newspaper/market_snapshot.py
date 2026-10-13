@@ -56,6 +56,7 @@ def parse_fred_csv(raw, series, today):
         "change_percent": round((last[1]/previous[1]-1)*100,2)
           if previous and previous[1] else None,
         "source_url": SOURCE.format(series=series),
+        "source": "FRED",
         "stale": False,
     }
 
