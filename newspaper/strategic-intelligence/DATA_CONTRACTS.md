@@ -382,10 +382,10 @@ AdvisorTeacherIteration:
 
 **验证**：非空文本不能代替实际因果、来源和反例；模型说“本质是利益”没有具体人/资源/行为和可分证据，不能PASS；导师发现学科错误需设置\`sent_back_for_research=true\`与可定位版本，禁止不记录就悄悄覆盖历史。九栏目决定专业核验路径，不限制\`relevant_disciplines\`。
 
-## 15. V4.2刊物阅读接口和唯一联合研究包（未来设计字段，未实现）
+## 15. V4.4现行刊物阅读接口和唯一联合研究包（未来设计字段，未实现）
 
 - 每个主文仅有**一个SharedResearchDossier**：其内部七问（event/crux/structure/actors/mechanisms/conditional_judgment/lesson）、三个审稿结果(provenance/causality/transfer)、事实源索引、旧Theme版本及RevisionLog。
-- 正式Article对象有四个顺序字段：**news_report_A**（原始新闻忠实报道）、**advisor_analysis_B1**（现实重要性、多机制研判和有条件建议）、**master_lesson_B2**（准确学科、通俗教学、真实/假设例子、正反边界、新情境迁移）、**watch_and_sources_C**（未来可核数据、出处、版权和旧版本）。B1/B2引用同一研究包，不能生成两个重复独立的完整稿。
+- 正式Article对象有四个顺序字段：**news_report_A**（原始新闻忠实报道）、**advisor_analysis_B1**（现实重要性、多机制研判和有条件建议）、**master_lesson_B2**（准确学科、通俗教学、真实/假设例子、正反边界、新情境迁移）、**scenario_thinking_C**（有证据条件推演、2—4个非引导开放问题；未来核证和出处另存后台）。B1/B2引用同一研究包，不能生成两个重复独立的完整稿。
 - magazine层有Cover、Contents、EditorLetter、Articles[]、ThesisFollowUps、SourceIndex。Edition.kind只允许WEEKLY和ANNUAL（旧SPECIAL仅未来未批准候选），年报仍需周刊全集与年度独立原始新闻双输入。
 - 校验规则：A/B段不得事实推论混淆；A缺重要事实或无权使用原文不能PASS；B缺因果/反证/教学迁移退稿；所有对象的生产字段、Schema和自动CI仍待NC-003—NC-005后续明确开工。
 
