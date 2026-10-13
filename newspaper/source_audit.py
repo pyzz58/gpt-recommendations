@@ -18,6 +18,7 @@ from digest import fetch_one, ROOT
 from newsroom import publisher, sections
 from source_quality import newsworthiness
 from people_overseas import audit_edition
+from xueqiu_magazine import audit_public_journal
 
 LOG = logging.getLogger("newspaper.source_audit")
 
@@ -60,7 +61,15 @@ def audit(settings, start, end, worker=fetch_one):
                          "linked_articles": len(people["items"]), "monitor_only": True}
     except Exception as exc:
         people_health = {"reachable": False, "error": type(exc).__name__, "monitor_only": True}
+    try:
+        journal = audit_public_journal()
+        journal_health = {"reachable": True, "page_identified": journal["page_identified"],
+                          "visible_issue_titles": journal["visible_issue_titles"],
+                          "monitor_only": True}
+    except Exception as exc:
+        journal_health = {"reachable": False, "error": type(exc).__name__, "monitor_only": True}
     return {
+        "xueqiu_journal_monitor": journal_health,
         "people_overseas_monitor": people_health,
         "window_start_beijing": start.isoformat(),
         "window_end_beijing": end.isoformat(),
