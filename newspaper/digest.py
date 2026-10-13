@@ -123,6 +123,8 @@ def fetch_one(category: str, feed: dict, start: dt.datetime, end: dt.datetime):
                     "title": title, "summary": clean(entry.get("summary", "")),
                     "url": link, "date": stamp,
                     "author": clean(entry.get("author", ""), 150),
+                    "source_type": feed.get("source_type", "media"),
+                    "source_language": "zh" if feed.get("source_type") == "cn_business_media" or feed.get("source_type") == "cn_state_media" else "en",
                 })
         return articles, True
     except Exception as exc:
