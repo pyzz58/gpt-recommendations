@@ -30,7 +30,7 @@
 | QO-D06 | director | P0 | confirmed_open | 多动作可拍性与模型失败降级 |
 | QO-D07 | director | P0 | partially_addressed | 导演级镜头语言与视觉连续性 |
 | QO-D08 | director | P1 | partially_addressed | 导演与音效/台词/字幕精确对齐 |
-| QO-D09 | director | P1 | confirmed_open | 剪辑节奏、过渡桥与镜头版本选择 |
+| QO-D09 | director | P1 | in_progress | 剪辑节奏、过渡桥与镜头版本选择 |
 | QO-D10 | director | P0 | confirmed_open | 专业导演审片标准：不是字段全就是好片 |
 | QO-D11 | director | P0 | blocked_external | 真实双镜生成、跨镜验收与风险边界 |
 | QO-D12 | director | P1 | confirmed_open | 导演/编剧修订权限冲突与版本谱系 |
@@ -322,17 +322,17 @@
 
 ### QO-D09 · 剪辑节奏、过渡桥与镜头版本选择
 
-- 状态：confirmed_open；优先级：P1；阶段：now_director；负责人：director
-- 发现位置：agent_role_contracts editing_animation; director_timeline.py; production_delivery.py
+- 状态：in_progress；优先级：P1；阶段：now_director；负责人：director
+- 发现位置：agent_role_contracts editing_animation; director_timeline.py; production_delivery.py; director_editorial_montage.py; director_shot_coverage.py
 - 问题：有J/L cut、转场字段但未以真实影像验证行为连续和情绪节奏；不可默认长镜头一镜过
 - 根因：缺由真实媒体帧/音轨回写的编辑视角审计
-- 方案：导演审查每个镜头的入点/出点/情绪换挡/声画桥；备选剪辑与失败因果；逐镜选择最佳 take，避免盲目复拍整片
-- 完成验收：公开合成方案能量化错误切点；真实2+段小样有可验证片段版本与切点，比对导演剪辑意图
+- 方案：导演审查每个镜头的入点/出点/情绪换挡/声画桥；备选剪辑与失败因果；逐镜选择最佳 take，避免盲目复拍整片；首版实现独立 editorial montage：镜头序列必须逐镜连续、逐切点绑定剧本场次和时间来源、保留演员/道具出入状态指纹，保留真实媒体与艺术审核门槛。
+- 完成验收：公开合成方案能量化错误切点；真实2+段小样有可验证片段版本与切点，比对导演剪辑意图；新增跨场次/倒叙与伪造时间线的公开离线回归，需GitHub CI核验。
 - AI 视频适配：AI片段几秒钟产生，需留头尾缓冲，部分转场后期解决
 - 依赖：QO-D02, QO-D08
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/50；回归 tests/test_director_editorial_montage.py and full GitHub Actions regression (in review).；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress
 
 ### QO-D10 · 专业导演审片标准：不是字段全就是好片
 
