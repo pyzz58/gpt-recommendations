@@ -346,6 +346,9 @@ class DirectorArtisticMethodsTests(unittest.TestCase):
 
     def test_genre_is_not_a_nickname_and_art_method_before_visual(self):
         with self.assertRaisesRegex(art.ArtisticMethodError,
+                                    "FULL_SCREENPLAY_REQUIRED"):
+            art.request(self.base, self.state, self.meeting, genre="fiction")
+        with self.assertRaisesRegex(art.ArtisticMethodError,
                                     "UNSUPPORTED_GENRE"):
             art.request(self.base, self.state, self.meeting, genre="ChowStyle")
         with self.assertRaisesRegex(art.ArtisticMethodError, "SOURCE_STALE"):
