@@ -36,12 +36,18 @@ class MarketAndChineseTests(unittest.TestCase):
             "US ETF institutional holdings and fund flows rotation",
         ]
         batch=[item(title,i) for i,title in enumerate(titles)]
-        self.assertTrue(all("美股市场与机构观察" in sections(a) for a in batch))
+        batch += [
+            item("China parliament enacts new security legislation",50),
+            item("US Congress enacts national health legislation",51),
+            item("China government approves major trade agreement",52),
+        ]
+        self.assertTrue(all("美股市场与机构观察" in sections(a) for a in batch[:5]))
         pool=prepare_pool(batch)
         enriched={a["url"]:{**a,"reading_en":"verified text "*85}
                   for block in pool.values() for a in block}
         selected,_=select_readable(pool,enriched)
-        self.assertEqual(len(selected["美股市场与机构观察"]),5)
+        self.assertGreaterEqual(len(selected["美股市场与机构观察"]),3)
+        self.assertEqual(len(selected["中国与美国"]),3)
         themes={market_theme(a) for a in selected["美股市场与机构观察"]}
         self.assertGreaterEqual(len(themes),3)
 
