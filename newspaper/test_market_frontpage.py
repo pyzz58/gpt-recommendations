@@ -9,6 +9,7 @@ from zoneinfo import ZoneInfo
 from newsroom import SECTIONS, sections, countries, prepare_pool
 from market_snapshot import parse_fred_csv, fetch_market_snapshot
 from people_overseas import parse_edition
+from xueqiu_magazine import parse_public_journal
 from clippings import build_clippings_html
 from digest import bilingualize
 
@@ -24,8 +25,8 @@ class FrontPageTests(unittest.TestCase):
         for n in ("36氪文章","新华网时政","新华网财经","US SEC Press Releases - Stocks"):
             self.assertIn(n,names)
         watch={x["name"]:x for x in j["source_watchlist"]}
-        self.assertEqual(watch["雪球杂志/雪球精选"]["mode"],"monitor_only")
-        self.assertEqual(watch["人民日报海外版电子报"]["mode"],"adapter_only")
+        self.assertEqual(watch["雪球专刊（雪球杂志）"]["mode"],"public_page_monitor")
+        self.assertEqual(watch["人民日报海外版电子报"]["mode"],"public_edition_monitor")
 
     def test_chinese_business_discovery_without_hallucinating_translation(self):
         a={"title":"中国出台半导体产业政策","summary":"国家出台芯片相关政策",
@@ -69,6 +70,13 @@ class FrontPageTests(unittest.TestCase):
         self.assertIn("2026-10-12",html)
         self.assertIn("非实时行情",html)
         self.assertNotIn("实时涨幅",html)
+
+    def test_xueqiu_journal_monitors_only_public_issue_titles(self):
+        page = "<html><body>雪球专刊 雪球专刊382期——硅基新纪元｜AI</body></html>"
+        result = parse_public_journal(page)
+        self.assertTrue(result["page_identified"])
+        self.assertTrue(result["not_daily_publication"])
+        self.assertIn("雪球专刊382期",result["visible_issue_titles"][0])
 
     def test_overseas_edition_parser_does_not_invent_article_publish_time(self):
         html='<html><body>人民日报海外版 2026年10月13日 星期二' + \
