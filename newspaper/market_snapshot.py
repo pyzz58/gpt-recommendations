@@ -258,7 +258,7 @@ def fetch_market_snapshot(now=None, getter=None):
         "kind": "dated_published_daily_observations_not_intraday",
         "values": values,
         "missing": [s for s,q in zip(SERIES,quotes) if not q],
-        "sources": sorted({q["source"] for q in values}),
+        "sources": sorted({"Stooq" if q["source"].startswith("Stooq") else "US Treasury" if q["source"].startswith("US Treasury") else q["source"] for q in values}),
         "backup_observations": backup_count,
         "warning": "仅为注明来源和日期的历史日值，可能来自FRED、Stooq或美国财政部官方收益率数据；非实时行情。缺失不可推算。",
     }
