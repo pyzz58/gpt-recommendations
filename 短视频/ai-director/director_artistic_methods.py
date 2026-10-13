@@ -45,7 +45,7 @@ METHOD_LIBRARY = {
         "artist": "Wong Kar-wai", "transferable_principle":
         "Return to a visual or sonic motif only when its human meaning changes.",
         "failure": "Same beautiful shot repeated with no new relational meaning.",
-        "source": "https://www.bfi.org.uk/sight-and-sound/interviews/wong-kar-wai-in-mood-love",
+        "source": "https://www.bfi.org.uk/sight-and-sound/interviews/wong-kar-wai-mood-love-25",
     },
     "nolan_sound_structure": {
         "artist": "Christopher Nolan", "transferable_principle":
@@ -63,7 +63,7 @@ METHOD_LIBRARY = {
         "artist": "Yasujiro Ozu", "transferable_principle":
         "Let stable human-scale space, duration and ordinary objects hold emotion.",
         "failure": "Empty static shots without concrete relationship or change.",
-        "source": "https://www.criterion.com/current/posts/5845-yasujiro-ozu-s-cinematic-style",
+        "source": "https://www.criterion.com/current/posts/3836-the-signature-style-of-yasujiro-ozu",
     },
     "chow_absurdity_from_character": {
         "artist": "Stephen Chow", "transferable_principle":
