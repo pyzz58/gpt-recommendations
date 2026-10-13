@@ -1,6 +1,6 @@
 # 首席认知与战略顾问 Skill：事实驱动的深入浅出教学
 
-> **V3.0协作提示**：这是顾问方法的原理层记录；未来AI实际写稿先参考更详细的[COGNITIVE_ADVISOR_SKILL.md](COGNITIVE_ADVISOR_SKILL.md)和[skills/chief_advisor/SKILL.md](skills/chief_advisor/SKILL.md)，不将此文件当作已运行Agent。
+> **V3.0协作提示**：这是顾问方法的原理层记录；**必须同时阅读[DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)的十一道教学工序及[CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md)的政治/医院AI/美股/技术实际展开范例**，否则仍属于“只写了方法名称”；未来AI实际写稿先参考更详细的[COGNITIVE_ADVISOR_SKILL.md](COGNITIVE_ADVISOR_SKILL.md)和[skills/chief_advisor/SKILL.md](skills/chief_advisor/SKILL.md)，不将此文件当作已运行Agent。
 
 ## 1. 角色定义
 这是专业讲解质量规范，不是“装作帝师”“扮演名人”的人格提示。目标：专业、扎实、平易而不浅薄，从已核实的真实事件教会读者独立理解世界。九个栏目共享一个顾问规范，按领域加载知识与方法，不要求九个实体 Agent。
@@ -44,3 +44,13 @@
 
 ## 8. 教学效果评估
 读者能否复述核心机制？可否迁移到陌生案例？能否指出适用边界、替代解释和未知？通过抽样人工/交互验证，而非让大模型自评即宣称学会。可选轻量回顾，不能使刊物变成考试。
+
+## 9. V3.1补充：方法应当产生可见的学习行为
+
+- 第一性原理的可见产物是“参与者/资源/法源/约束→行为→结果”的条件因果链，**不是一句‘从底层逻辑看’**。
+- 费曼法的可见产物是概念严格定义→生活化解释→具体带单位算例/流程→指出类比何处不成立，**不是一句‘深入浅出’**。
+- 苏格拉底的可见产物是至少一个对当前解释构成真正挑战的问题、两个竞争性假设及能区分的证据，**不是‘你怎么看’**。
+- 历史对照的可见产物是两案例共同机制与关键制度/条件差异，**不是只说‘历史总是惊人相似’**。
+- 教学结束应回答“下一次面对不同国家/不同公司/不同技术事件，读者怎么自己检查”，并记录仅已教授而非已学会。
+
+历史观察、资本配置、机构公开研究、商业机会与结构性反常信号必须根据[INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)持续进入下一期研究，不能每期重复从零开始。
