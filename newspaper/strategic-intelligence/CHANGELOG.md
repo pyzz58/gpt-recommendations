@@ -1,5 +1,14 @@
 # 内参系统｜版本记录
 
+## V4.3（2026-10-13）｜顶级新闻选文准则、新闻六要素、后续推演与开放问题
+
+- 用户确认周报“先翔实的真实新闻/机构报告，再顾问研判和帝师释理”；A独立达到真实、客观、准确、详细、5W1H新闻六要素的顶级记者式标准，不仅是短摘要。
+- 查《半月谈》《半月谈内部版》的问题导向/正反事实/典型调查/深入浅出与《求是》现实问题/理论联系实际和编辑标准，并对照Reuters、AP、BBC、新闻价值学术研究及ProPublica的影响力研究，形成**本项目自行设计**的[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)S0—S8选文程序。现实影响无论正负、典型或突破、长期结构性变化和可核原始资料优先于热搜；不继承任何单一机构的政治立场。
+- 新建[SCENARIOS_AND_OPEN_QUESTIONS.md](SCENARIOS_AND_OPEN_QUESTIONS.md)：用户明确废止读者固定“继续观察”C节，正式改为事件条件推演和真正开放的思考问题；后台对旧Thesis的未来核查仍保留支持年报纠错。
+- 同步修改[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)、[templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md)、[templates/WEEKLY_TEMPLATE.md](templates/WEEKLY_TEMPLATE.md)、[PUBLICATION_SPEC.md](PUBLICATION_SPEC.md)、HARD_RULES/AGENTS/工作流/QA/数据契约/年度规范/项目入口/用户认可台账。
+- 未来真实验收问题NC-019、NC-020录入[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)；这轮仍是文档规范和设计修改，**未生成真实周报、未启用模型/定时任务、未发送邮件、未恢复全面采集测试**。
+
+
 ## V4.2（2026-10-13）｜古典帝师与现代研究方法考据、杂志架构定稿、审计问题延期开发
 
 - 考察张居正《帝鉴图说》、司马光《资治通鉴》、吴兢《贞观政要》及RAND研究标准、CIA/Heuer竞争假设、McKinsey结构化问题、Rumelt《Good Strategy/Bad Strategy》、英国财政部因果评价标准，**以这些有来源的不同研究思想综合设计本项目新方法**，未伪称历史人物使用同一流程。
