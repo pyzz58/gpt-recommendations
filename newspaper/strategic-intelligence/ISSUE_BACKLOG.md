@@ -62,3 +62,12 @@
 | NC-022 | P0 | **OPEN**：V4.4虽完整规定记者A“翔实且合法”、选稿重要性和帝师教学，但从未以实际多条重大正面/负面/混合新闻或机构报告证明实现，读者尚未对整本杂志实读审核。 | 用户未来批准后至少选一篇普通重大新闻、一篇原始机构报告、一篇调查成果并覆盖正负/典型或突破，完成S0—S8记录和完整A/B1/B2/C；审核独立六要素、报告方法、因果证据、历史类比、条件推演与真正开放问题，并保留编辑退稿与成本日志。 |
 
 **截至V4.4问题编号范围：NC-001—NC-022。** 文件文档更新状态最多`DESIGN_RESOLVED`，没有模型/软件或真实样刊执行记录就不能写`VERIFIED`。GitHub Issue #43仍是总跟踪入口，下一次真正开工之前不创建未经授权的生产任务。
+
+## V4.4最终详细规范巡检新发现（2026-10-13）
+
+| 编号 | 优先级 | 确认过的真实缺陷、此次更正与状态 | 未来最小实测验收 |
+|---|---|---|---|
+| NC-023 | P0 | **DESIGN_RESOLVED，尚未软件验证**：原六层图曾将`S8研究后复选`与S0—S7一起放入L2初选，虽然S8必须等L3完成完整查证。这在真正程序里会产生时序错位。已同步把[主规格](CANONICAL_SYSTEM_SPEC_V44.md)、[工作流](END_TO_END_WORKFLOW.md)、[选文SOP](EDITORIAL_SELECTION_AND_REPORTING.md)写成`L2 S0—S7→L3原始研究和A稿→回L2 S8→通过方进入L4`；L4新增反证也可再次触发S8。 | 未来分别喂入“高分但关键数据错误”“高分且证明影响真实”“L4发现新反证”三组冻结资料，确认S8真实位于L3之后、保留初选与复选及退稿日志；未经S8 COVER不能进入L4正式主文。 |
+| NC-024 | P1 | **DESIGN_RESOLVED，软件未验证**：Markdown若干现行.md文档在代码字段上误带反斜杠转义的反引号，GitHub无法正常按inline code/YAML fenced code识别。已逐个修复[主规格](CANONICAL_SYSTEM_SPEC_V44.md)、[AGENTS.md](AGENTS.md)、[周报模板](templates/WEEKLY_TEMPLATE.md)、[选文规范](EDITORIAL_SELECTION_AND_REPORTING.md)、[情景规范](SCENARIOS_AND_OPEN_QUESTIONS.md)、[数据契约](DATA_CONTRACTS.md)及其它主规则等文件的转义字符，抽样检查fence偶数闭合。 | 未来在GitHub实际网页预览/CI Markdown lint/链接检查，确认字段名与代码块正确渲染，不能只凭原文本`includes`声称版式可读。 |
+
+**当前完整待办永久编号：NC-001—NC-024。** 无一项因为仅完成Markdown设计修订而获得生产`VERIFIED`；未来新测试必须保留来源资料、实际运行产物和复现证据。
