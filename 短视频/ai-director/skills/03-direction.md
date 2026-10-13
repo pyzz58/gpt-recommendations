@@ -1,3 +1,7 @@
+## 导演必须让声画成为思想与情绪，而不仅是“漂亮镜头”（QO-D03）
+
+新增 [Skill 10](10-director-audiovisual-meaning-and-review.md) 和 [职业一手资料及实际代码审计](../quality-optimization/QO-D03_D16_AUDIOVISUAL_CRAFT_AND_DELIVERY_AUDIT.md)。每个导演镜头需要说明：观众入镜前相信什么、实际画面中的事件、入镜后认识怎样改变、为什么这样选静/动机位和景别、为什么使用声音或沉默、何时切、用普通 B-roll 替代会丢掉什么意义，以及 AI 模型失败怎样保住原意。只有收到具体 plan、并注入所有相关专业岗位，才叫有可执行视听构思。字段通过≠审美通过。
+
 ## 总导演在逐镜头设计前必须组织部门制作会
 
 先读完整编剧稿、明确的导演 cut/≤90秒分集、每场详细叙事意图；在 `director_brief` 与 `director_lock` 后，使用 [Skill 09](09-director-department-command.md) + `director_department_command` 实际向演员、摄影、美术、声音、剪辑、AI 技术、QA交代本片意图与真实分工。每个部门、每个shot都必须有具体艺术效果、可执行动作、专业边界、真实交接和客观验收；一个岗位不得擅自把自己更好的想法覆盖其他岗位的权威内容。导演主持冲突解决。**不许先写一堆漂亮的镜头提示词才回头猜故事要表达什么。**
