@@ -125,7 +125,7 @@ class TimedDialogueCoverageTests(unittest.TestCase):
             self.h, self.ds, self.plan, rebuilt, "EP01",
             director_coverage=self.approved)
         self.assertFalse(request["external_model_call_authorized"])
-        sep = "\\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\\n"
+        sep = "\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\n"
         context = json.loads(request["messages"][1]["content"].split(sep, 1)[1])
         self.assertEqual(context["director_creative_shot_coverage"]
                          ["speech_cue_timeline"], self.cues)
