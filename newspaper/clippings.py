@@ -103,6 +103,8 @@ def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
                 plain.append(en+"\n"+zh)
             if previous is not None:
                 page.append("</div>")
+            if article.get("editing_mode") == "evidence_mapped_edited_report":
+                page.append('<div class="part-mark">依据来源整理的编辑报道，非记者原文；事实与观点归属保留，编辑段落可回查来源。</div>')
             if article.get("editing_mode") == "source_faithful_edited_report":
                 page.append('<div class="part-mark">编辑选编：保留来源完整段落及叙述顺序；非全文转载。'
                             +('为保留关键限制条件，本篇篇幅较长。' if article.get("editorial_length_exception") else '')+'</div>')

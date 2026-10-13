@@ -79,3 +79,62 @@ def edit_grouped(grouped, plans=None):
                 edited["editor_plan_rejected"] = True
             result[category].append(edited)
     return result
+
+def validate_rewritten_report(article, paragraphs):
+    """Structural/source checks; not a claim of complete semantic verification.
+
+Reject new numeric claims, altered direct quotes, removed explicit negation or
+uncertainty, missing protected source coverage, and headline-length responses.
+Unknown or rejected results fall back per article instead of publishing them.
+"""
+    a = prepare_article(article)
+    source = a["source_paragraphs"]
+    if not isinstance(paragraphs,list) or not 3 <= len(paragraphs) <= 12:
+        raise ValueError("Expected a complete report with mapped paragraphs")
+    covered, blocks, mapping = set(), [], []
+    numbers = lambda s: set(re.findall(r"\b\d+(?:[,.]\d+)*(?:%)?", s))
+    uncertainty = re.compile(r"\b(?:could|may|might|would|possible|potential|uncertain|preliminary|expected|forecast|estimate|propos\w*|subject to|if|unless)\b",re.I)
+    negative = re.compile(r"\b(?:not|no|never|denied|without|unapproved|unproven)\b",re.I)
+    for paragraph in paragraphs:
+        if not isinstance(paragraph,dict): raise ValueError("Invalid report paragraph")
+        text, ids = paragraph.get("en"), paragraph.get("source_ids")
+        if not isinstance(text,str) or not isinstance(ids,list) or not ids:
+            raise ValueError("Missing report evidence")
+        if any(type(i) is not int or i < 0 or i >= len(source) for i in ids):
+            raise ValueError("Unknown source span")
+        evidence = "\n".join(source[i] for i in ids)
+        if not numbers(text) <= numbers(evidence): raise ValueError("Unsupported numeric claim")
+        for quote in re.findall(r'["“]([^"”]{8,})["”]',text):
+            if quote not in evidence: raise ValueError("Changed direct quotation")
+        if negative.search(evidence) and not negative.search(text):
+            raise ValueError("Source negation may have been lost")
+        if uncertainty.search(evidence) and not uncertainty.search(text):
+            raise ValueError("Source uncertainty may have been hardened")
+        blocks.append(text.strip()); covered.update(ids)
+        mapping.append({"source_paragraph_ids":ids,"edited_sha256":hashlib.sha256(text.strip().encode()).hexdigest()})
+    if not set(a["protected_paragraph_ids"]) <= covered: raise ValueError("Protected facts or caveats omitted")
+    body = "\n\n".join(blocks)
+    if not min(300, word_count(a["source_reading_en"])*0.8) <= word_count(body) <= 850:
+        raise ValueError("Report is too short or exceeds substantive report limit")
+    a.update(reading_en=body,editing_mode="evidence_mapped_edited_report",
+             editing_method="ai_source_based_rewrite",editorial_trimmed=True,
+             captured_words=word_count(a["source_reading_en"]),retained_words=word_count(body),
+             retention_rate=round(word_count(body)/max(1,word_count(a["source_reading_en"])),4),
+             source_map=mapping,original_paragraphs_kept=sorted(covered),
+             editorial_length_exception=word_count(body)>650)
+    return a
+
+def apply_reports(grouped, reports):
+    output = {}
+    for section, articles in grouped.items():
+        output[section] = []
+        for article in articles:
+            try:
+                proposal = reports.get(article.get("event_key", article.get("url")))
+                edited = validate_rewritten_report(article,proposal)
+            except (ValueError,TypeError) as exc:
+                edited = edit_article(article)
+                edited["editor_plan_rejected"] = True
+                edited["editor_rejection_reason"] = str(exc)
+            output[section].append(edited)
+    return output

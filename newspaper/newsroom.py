@@ -37,16 +37,17 @@ COUNTRIES = {
     "巴西": r"\b(?:brazil|brazilian)\b",
     "澳大利亚": r"\b(?:australia|australian|canberra)\b",
     "加拿大": r"\b(?:canada|canadian|ottawa)\b",
+    "欧盟": r"\b(?:EU|European Union|European Commission|Brussels)\b",
 }
 POLITICS = r"\b(?:election|president|government|parliament|diplomac\w*|war|ceasefire|military|sanctions?|treaty|coup|missile|invasion|earthquake|pandemic|floods?|hurricane|summit)\b"
-FINANCE = r"\b(?:federal reserve|central bank|interest rates?|inflation|gdp|treasury|bond yields?|stock market|nasdaq|s&p|earnings|financial|banking|currency|recession|unemployment|monetary|fiscal|tariffs?)\b"
+FINANCE = r"\b(?:federal reserve|central bank|interest rates?|inflation|gdp|treasury|bond yields?|stock market|nasdaq|s&p|earnings|financial|banking|currency|recession|unemployment|monetary|fiscal|tariffs?|imports?|exports?|trade)\b"
 AI = r"\b(?:AI|artificial intelligence|LLMs?|large language model|machine learning|data cent(?:er|re)|cloud computing|cybersecurity|software|digital platform)\b"
 SCIENCE = r"\b(?:quantum|physics|scientists?|researchers?|semiconductor|chip|robot\w*|spacecraft|satellite|rocket|superconduct\w*|materials science)\b"
 BUSINESS = r"\b(?:startup|start-up|entrepreneur\w*|business model|venture capital|funding|series [a-f]|acquisition|merger|IPO|bankruptcy|restructuring|supply chain|retail|revenue|profit|commerciali\w*|company|companies)\b"
 ENERGY = r"\b(?:energy|oil|gas|OPEC|electricity|power grid|nuclear|fusion|solar|wind power|battery|lithium|copper|rare earth|critical minerals|shipping|supply chain|food exports?|grain|export ban)\b"
 HEALTH = r"\b(?:health|medical|clinical|drug|vaccine|cancer|hospital|biotech|gene|protein|disease|FDA|WHO)\b"
 PROMO = r"\b(?:trailer|celebrity|movie review|coupon|best deals|horoscope|sponsored content|affiliate links)\b"
-ACTION = r"\b(?:announc\w*|approv\w*|enact\w*|launch\w*|cut|hike\w*|votes?|agreed|acquir\w*|report\w*|reveal\w*|signed|ban\w*|strikes?|invad\w*|deploy\w*|discover\w*|demonstrat\w*)\b"
+ACTION = r"\b(?:announc\w*|approv\w*|enact\w*|launch\w*|cut|hike\w*|votes?|agreed|acquir\w*|report\w*|reveal\w*|signed|ban\w*|strikes?|invad\w*|deploy\w*|discover\w*|demonstrat\w*|limit\w*|restrict\w*|caps?)\b"
 
 def matches(pattern, text):
     return bool(re.search(pattern, text, re.I))
@@ -93,11 +94,11 @@ def sections(item):
 def score(item, independent_publishers):
     s = item.get("title", "") + " " + item.get("summary", "")
     cs = countries(item)
-    global_signal = matches(r"\b(?:global|worldwide|international|cross-border|world trade|supply chain|export ban|shipping|OPEC|federal reserve)\b", s)
+    global_signal = matches(r"\b(?:global|worldwide|international|cross-border|world trade|supply chain|export ban|shipping|OPEC|federal reserve|imports?|exports?|trade)\b", s)
     scope = 30 if global_signal else 22 if len(cs) >= 2 else 10 if cs else 5
     systemic = matches(r"\b(?:central bank|federal reserve|interest rate|war|invasion|pandemic|financial crisis|trade agreement|national election|export ban|power grid)\b", s)
     scale = 25 if systemic else 16 if matches(FINANCE + "|" + ENERGY, s) else 8
-    structural = matches(r"\b(?:law|legislation|treaty|regulation|sanction|tariff|approval|breakthrough|acquisition|merger|bankruptcy|infrastructure|ban)\w*", s)
+    structural = matches(r"\b(?:law|legislation|treaty|regulation|sanction|tariff|approval|breakthrough|acquisition|merger|bankruptcy|infrastructure|ban|quota|restrict|limit)\w*", s)
     duration = 20 if structural else 10 if matches(SCIENCE + "|" + BUSINESS, s) else 5
     new = 15 if matches(ACTION, s) else 5
     # Publisher breadth is only a capped proxy; geographic independence unknown.

@@ -223,11 +223,15 @@
       {
         "name": "Guardian US Politics",
         "url": "https://www.theguardian.com/us-news/us-politics/rss"
+      },
+      {
+        "name": "CGTN China",
+        "url": "https://www.cgtn.com/subscribe/rss/section/china.xml"
       }
     ]
   },
   "longread_max_chars": 18000,
-  "longread_min_chars": 900,
+  "longread_min_chars": 1200,
   "candidate_pool_per_category": 20,
   "source_limit_per_category": 2,
   "grammar_examples_per_article": 3,
@@ -242,8 +246,8 @@
     "description": "Evidence-labelled heuristic; publisher breadth is not proof or geographic independence."
   },
   "reading_policy": {
-    "mode": "source_faithful_edited_report",
-    "description": "Substantive edited reports, complete original paragraphs with attribution and caveats, not full reproduction or short abstracts.",
+    "mode": "evidence_mapped_edited_report",
+    "description": "Complete source-based edited reports, with paragraph evidence and checks; conservative extractive fallback when unavailable or rejected.",
     "display_links": false,
     "body": "english_original_sentence_then_matching_chinese",
     "commentary": "independent_email_body_ai"
@@ -285,7 +289,7 @@
       "semiconductor",
       "robotics"
     ],
-    "article_editing": "Target 350–550 English words; preserve protected caveats, source spans and reading order. Length may exceed target to preserve meaning.",
+    "article_editing": "Target 350–500 English words with mapped evidence; source-based rewrite validated for numbers/quotes/negation/uncertainty, extractive fallback. Not a claim of perfect semantic verification.",
     "translation": "offline with cautious terminology and alignment checks",
     "commentary_skill": "GLOBAL_STRATEGY_EDITOR.skill.md",
     "china_us_combined_quota": 3,

@@ -5,7 +5,7 @@ import smtplib
 import unittest
 from email.message import EmailMessage
 from unittest.mock import Mock
-from brief_editor import edit_article
+from brief_editor import edit_article, validate_rewritten_report
 from newsroom import prepare_pool, select_readable, countries, publisher, score, SECTIONS
 from reliable_mail import deliver, AcceptanceUncertain
 from edition_ai import edit_and_analyze
@@ -31,6 +31,12 @@ class V09Tests(unittest.TestCase):
         b = dict(a,source="BBC China",url="https://www.bbc.co.uk/news/a")
         c = dict(a,source="BBC World",url="https://www.bbc.com/news/a")
         self.assertEqual(publisher(b),publisher(c))
+
+    def test_cross_border_trade_restriction_not_lost_for_lacking_word_politics(self):
+        article=item("EU to limit Chinese hybrid vehicle imports to 350,000 a year",5)
+        pool=prepare_pool([article])
+        self.assertEqual(len(pool['中国与美国']),1)
+        self.assertGreaterEqual(pool['中国与美国'][0]['importance_score'],60)
 
     def test_systemic_change_above_local_keyword_noise(self):
         small=item("India local election candidates announce funding for a festival",1)
@@ -70,9 +76,21 @@ class V09Tests(unittest.TestCase):
         self.assertIn(ps[-1],a['reading_en'])
         self.assertGreaterEqual(a['retained_words'],330)
         self.assertLess(a['retained_words'],a['captured_words'])
-        self.assertEqual(a['reading_en'].split('\n\n'),[ps[i] for i in a['original_paragraphs_kept']])
+        self.assertEqual(a['reading_en'].split('\n\n'),[ps[i].strip() for i in a['original_paragraphs_kept']])
         self.assertTrue(a['source_map'])
         with self.assertRaises(ValueError): edit_article({'reading_en':'source'},[900])
+
+    def test_rewrite_rejects_new_numbers_and_hardened_claims(self):
+        a={'reading_en':'The company may start a trial with 500 people. '*40+'\n\n'+'The product is not approved. '*40+'\n\n'+'Researchers reported the findings. '*40}
+        proposed=[{'en':'The company may start a trial with 600 people. '*40,'source_ids':[0]},
+                  {'en':'The product is not approved. '*40,'source_ids':[1]},
+                  {'en':'Researchers reported the findings. '*40,'source_ids':[2]}]
+        with self.assertRaisesRegex(ValueError,'numeric'):validate_rewritten_report(a,proposed)
+        proposed[0]['en']='The company will start a trial with 500 people. '*40
+        with self.assertRaisesRegex(ValueError,'uncertainty'):validate_rewritten_report(a,proposed)
+        proposed[0]['en']='The company may start a trial with 500 people. '*40
+        result=validate_rewritten_report(a,proposed)
+        self.assertEqual(result['editing_mode'],'evidence_mapped_edited_report')
 
     def message(self):
         m=EmailMessage();m['To']='reader@example.com';m['From']='sender@example.com';m.set_content('edition')
@@ -115,12 +133,12 @@ class V09Tests(unittest.TestCase):
         a=item('Company announces new AI platform',1,reading_en='The company announced an international launch. '*70,event_key='e1')
         response=Mock(status_code=200)
         response.json.return_value={'choices':[{'finish_reason':'stop','message':{'content':json.dumps(
-            {'plans':{'e1':[0]},'commentary':'根据来源事实分析，仍需关注不确定条件。'*50})}}],
+            {'reports':{'e1':[{'en':'A source based report','source_ids':[0]}]},'commentary':'根据来源事实分析，仍需关注不确定条件。'*50})}}],
             'usage':{'prompt_tokens':3000,'completion_tokens':1800}}
         request=Mock(return_value=response);before=Mock()
         plans,commentary,usage=edit_and_analyze({'AI与数字产业':[a]},dt.date(2026,10,12),'fake',transport=request,before_request=before)
-        self.assertEqual(plans,{'e1':[0]});self.assertEqual(usage['request_count'],1)
+        self.assertEqual(plans['e1'][0]['source_ids'],[0]);self.assertEqual(usage['request_count'],1)
         request.assert_called_once();before.assert_called_once()
-        self.assertEqual(request.call_args.kwargs['json']['max_tokens'],3400)
+        self.assertEqual(request.call_args.kwargs['json']['max_tokens'],12000)
 
 if __name__=='__main__': unittest.main()

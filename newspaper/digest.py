@@ -31,7 +31,7 @@ from extractive_editor import trim_extracted_article
 from translation_editor import polish_translation
 from editorial_selection import pick_politics, tech_candidates, political_regions
 from newsroom import prepare_pool, select_readable, SECTIONS
-from brief_editor import edit_grouped
+from brief_editor import edit_grouped, apply_reports
 from edition_ai import edit_and_analyze
 from delivery_state import Journal
 from reliable_mail import deliver
@@ -582,14 +582,14 @@ def main():
         readable, diagnostics = build_readings(pool, settings)
         if sum(len(x) for x in readable.values()) == 0:
             raise RuntimeError("No articles successfully extracted; aborting the email.")
-        # Initial conservative edit also bounds API input. All source spans remain
-        # in the checkpoint; the AI may select IDs, never insert factual sentences.
+        # One bounded request writes source-mapped reports and separate commentary.
+        # Reject structural/evidence failures per article before translation.
         if journal and os.environ.get("NEWSPAPER_LLM_API_KEY") and not journal.state.get("ai_requested"):
             try:
                 plans, commentary, usage = edit_and_analyze(readable, news_day,
                     os.environ["NEWSPAPER_LLM_API_KEY"],
                     before_request=lambda: journal.write(ai_requested=True))
-                readable = edit_grouped(readable, plans)
+                readable = apply_reports(readable, plans)
             except Exception as exc:
                 LOG.warning("Editorial AI unavailable; conservative edit retained: %s", type(exc).__name__)
                 readable = edit_grouped(readable)
@@ -611,6 +611,12 @@ def main():
         target.with_suffix(".html").write_text(html_body, encoding="utf-8")
         target.with_suffix(".txt").write_text(text_body, encoding="utf-8")
         pdf_path = write_pdf(html_body, target.with_suffix(".pdf"))
+        audit = {"diagnostics":diagnostics, "articles":[
+            {k:a.get(k) for k in ("category","title","url","source","countries","event_key",
+                                  "importance_score","score_evidence","captured_words","retained_words",
+                                  "retention_rate","editorial_length_exception","original_paragraphs_kept","editing_method")}
+            for rows in grouped.values() for a in rows]}
+        target.with_suffix(".audit.json").write_text(json.dumps(audit,ensure_ascii=False,indent=2))
         LOG.info("Clippings PDF preview generated (no email): %s / .html / .txt", pdf_path)
     else:
         pdf_path = write_pdf(html_body, state_dir / "report.pdf")
