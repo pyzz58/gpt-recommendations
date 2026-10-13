@@ -54,11 +54,12 @@ class EditorialContract(unittest.TestCase):
         import re
         schedules = re.findall(r"cron: '([0-9]+) ([0-9]+) \\* \\* \\*'", workflow)
         self.assertGreaterEqual(len(schedules), 3)
-        minutes = [int(minute) for minute, hour in schedules if int(hour) == 17]
-        self.assertEqual(len(minutes), len(schedules))
-        self.assertTrue(all(0 < minute < 60 for minute in minutes))
-        self.assertLessEqual(min(minutes), 10)
-        self.assertLessEqual(max(minutes), 50)
-        self.assertEqual(len(set(minutes)), len(minutes))
+        # UTC17 corresponds to 01:xx Beijing; UTC18 to 02:xx.
+        beijing_minute_of_day = [(int(hour)+8) % 24 * 60 + int(minute)
+                                 for minute, hour in schedules]
+        self.assertEqual(len(set(beijing_minute_of_day)), len(schedules))
+        self.assertTrue(all(60 < minute <= 140 for minute in beijing_minute_of_day))
+        self.assertLessEqual(min(beijing_minute_of_day), 70)
+        self.assertGreaterEqual(max(beijing_minute_of_day), 125)
 
 if __name__=="__main__": unittest.main()
