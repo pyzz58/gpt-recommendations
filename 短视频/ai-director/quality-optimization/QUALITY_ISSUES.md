@@ -39,7 +39,7 @@
 | QO-D15 | director | P0 | in_progress | 总导演详尽指挥与协调所有专业部门 |
 | QO-D16 | director | P0 | in_progress | 导演审核部门真实交付与基于观众体验的精准跨岗返工 |
 | QO-D17 | director | P0 | in_progress | 世界级导演的可迁移艺术判断与周星驰荒诞喜剧的题材适配 |
-| QO-D18 | director | P0 | confirmed_open | 真实模型运行入口未接收新版总导演艺术方法与跨部门指令 |
+| QO-D18 | director | P0 | in_progress | 真实模型运行入口未接收新版总导演艺术方法与跨部门指令 |
 | QO-F01 | acting | P1 | audit_pending | 演员表演与动作调度专业审计 |
 | QO-F02 | cinematography_art | P1 | audit_pending | 摄影/灯光/美术世界观专业审计 |
 | QO-F03 | sound_voice | P1 | audit_pending | 配音/对白/拟音/音乐专业审计 |
@@ -447,7 +447,7 @@
 
 ### QO-D18 · 真实模型运行入口未接收新版总导演艺术方法与跨部门指令
 
-- 状态：confirmed_open；优先级：P0；阶段：now_director；负责人：director
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
 - 发现位置：agent_live_crew.run_one_locked_role; agent_role_contracts.build_role_messages/validate_role_output; screenplay_series_delivery.build_per_episode_crew
 - 问题：正式系列每集base已强制director_command_mode、director_audiovisual_mode及director_artistic_mode，但真实授权DeepSeek十岗位执行入口run_one_locked_role向model-facing构造与输出验证调用没有提供department_command、audiovisual_plan及artistic_method_plan，专业岗位将被真实门禁拒绝或无法收到导演完整艺术意图
 - 根因：新导演创作协议已在离线role builder和对应单元测试中接入，但旧实际模型执行器依旧只传editorial_handoff和reference_manifest；缺三种director-source-bound artifact共同版本校验及私有执行快照
@@ -456,8 +456,8 @@
 - AI 视频适配：导演清楚阐述人物、空间、幽默/情绪、音画、竖屏、≤90s的意图，AI单clip能力与素材存在条件由对应岗位负责；无模型调用授权不得出网，不能因为HTTP请求成功宣称生成视频或一流艺术质量
 - 依赖：QO-D15, QO-D03, QO-D17
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/41；回归 tests/test_live_director_context.py: locked three-layer director context reaches actual StaticHTTPSFrame runner; missing and stale context rejected before request; 774 all tests passed (GitHub Actions 38354967089), 88% code coverage；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:in_progress
 
 ### QO-F01 · 演员表演与动作调度专业审计
 

@@ -1336,7 +1336,7 @@
       "stage": "now_director",
       "department": "director",
       "priority": "P0",
-      "status": "confirmed_open",
+      "status": "in_progress",
       "title": "真实模型运行入口未接收新版总导演艺术方法与跨部门指令",
       "observed_in": "agent_live_crew.run_one_locked_role; agent_role_contracts.build_role_messages/validate_role_output; screenplay_series_delivery.build_per_episode_crew",
       "problem": "正式系列每集base已强制director_command_mode、director_audiovisual_mode及director_artistic_mode，但真实授权DeepSeek十岗位执行入口run_one_locked_role向model-facing构造与输出验证调用没有提供department_command、audiovisual_plan及artistic_method_plan，专业岗位将被真实门禁拒绝或无法收到导演完整艺术意图",
@@ -1353,9 +1353,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/41",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "tests/test_live_director_context.py: locked three-layer director context reaches actual StaticHTTPSFrame runner; missing and stale context rejected before request; 774 all tests passed (GitHub Actions 38354967089), 88% code coverage",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1367,6 +1367,12 @@
           "status": "confirmed_open",
           "note": "本轮全量代码审计确认live crew实际授权执行路径未携带正式新系列强制的三项导演艺术上下文；原单元测试只直接调用role builder，不证明真实runner贯通，等待修复",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/40"
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "已修真实合法DeepSeek十岗位运行入口：编剧版本绑定的七部门命令、导演声画方案与艺术方法由私有参数完整传入角色提示及结果校验；只使用合成静态HTTPS，真实授权媒体及独立艺术人审仍未进行",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/41"
         }
       ]
     },
