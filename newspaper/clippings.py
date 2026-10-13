@@ -95,13 +95,15 @@ def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple
                 f'<div class="source-meta">{esc(meta)}</div>'
             ])
             plain.extend([zh_title,en_title,meta])
+            if article.get("source_language") == "zh":
+                page.append('<p class="part-mark">中文原始来源；未生成或冒充英文原文译文。</p>')
             used=set()
             notes=[]
             previous=None
             for pair in pairs:
                 en=str(pair.get("en","")).strip()
                 zh=str(pair.get("zh","")).strip()
-                if not en or not zh:
+                if not zh:
                     continue
                 pid=pair.get("paragraph_id",0)
                 if pid!=previous:
@@ -124,13 +126,17 @@ def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple
                     notes.append((no,hit.group(0),lesson.get("explanation","")))
                     used.add(lesson.get("type"))
                     break
-                page.append(
-                    '<div class="story-line">'
-                    +f'<p class="en">{_highlight_sentence(en,matched,no)}</p>'
-                    +f'<p class="zh">{esc(zh)}</p>'
-                    +'</div>'
-                )
-                plain.append(en+"\n"+zh)
+                if en:
+                    page.append(
+                        '<div class="story-line">'
+                        +f'<p class="en">{_highlight_sentence(en,matched,no)}</p>'
+                        +f'<p class="zh">{esc(zh)}</p>'
+                        +'</div>'
+                    )
+                    plain.append(en+"\\n"+zh)
+                else:
+                    page.append('<p class="story-line zh">' + esc(zh) + '</p>')
+                    plain.append(zh)
             if previous is not None:
                 page.append("</div>")
             if article.get("editing_mode") == "evidence_mapped_edited_report":

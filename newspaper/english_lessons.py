@@ -220,6 +220,11 @@ def attach_lessons(grouped: dict, translator, grammar_limit: int = 3, vocab_limi
         result[category] = []
         for article in articles:
             entry = dict(article)
+            if entry.get("source_language") == "zh":
+                entry["grammar_lessons"] = []
+                entry["vocabulary"] = []
+                result[category].append(entry)
+                continue
             original = entry["reading_en"]
             lessons = _pick_grammar(original, nlp, count=grammar_limit)
             for grammar in lessons:

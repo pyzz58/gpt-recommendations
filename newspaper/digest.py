@@ -305,6 +305,19 @@ def bilingualize(grouped: dict, translator) -> dict:
         output[category] = []
         for article in articles:
             entry = dict(article)
+            if entry.get("source_language") == "zh":
+                # Publisher-original Chinese articles are kept in Chinese.
+                # Do not mislabel a machine-created English version as source.
+                entry["title_zh"] = article["title"]
+                chunks = [p.strip() for p in article["reading_en"].split("\\n\\n") if p.strip()]
+                entry["bilingual_pairs"] = [
+                    {"en": "", "zh": p, "paragraph_id": pid}
+                    for pid, p in enumerate(chunks)
+                ]
+                entry["reading_zh"] = article["reading_en"]
+                entry["translation_qa_flags"] = []
+                output[category].append(entry)
+                continue
             entry["title_zh"] = clean(translator.translate(article["title"]), 280)
             pairs = []
             qa_flags = []
@@ -606,8 +619,12 @@ def main():
             def before_editorial_request():
                 if not args.quality_sample:
                     require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
+            english_reports = {
+                section: [a for a in articles if a.get("source_language") != "zh"]
+                for section, articles in readable.items()
+            }
             plans, failed_batches = edit_reports_in_batches(
-                readable, ai_key, ledger,
+                english_reports, ai_key, ledger,
                 before_request=before_editorial_request)
             readable = apply_reports(readable, plans)
             editorial_audit["edited"] = sum(
