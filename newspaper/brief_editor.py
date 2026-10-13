@@ -74,6 +74,9 @@ def edit_grouped(grouped, plans=None):
     for category, articles in grouped.items():
         result[category] = []
         for a in articles:
+            if a.get("language") == "zh":
+                result[category].append({**a,"editing_mode":"original_chinese_source"})
+                continue
             ids = (plans or {}).get(a.get("event_key", a.get("url")))
             try:
                 edited = edit_article(a, ids)
@@ -132,6 +135,9 @@ def apply_reports(grouped, reports):
     for section, articles in grouped.items():
         output[section] = []
         for article in articles:
+            if article.get("language") == "zh":
+                output[section].append({**article,"editing_mode":"original_chinese_source"})
+                continue
             try:
                 proposal = reports.get(article.get("event_key", article.get("url")))
                 edited = validate_rewritten_report(article,proposal)

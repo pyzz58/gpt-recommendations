@@ -23,7 +23,7 @@ h3 { font-size:13pt; line-height:1.44; margin:6mm 0 1.5mm; break-after:avoid; }
 .part-mark { font:7.7pt "Noto Sans CJK SC",sans-serif;color:#777; }
 """
 
-def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
+def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple[str,str]:
     """Render source-faithful edited reporting with paired English-Chinese lines."""
     formatted=day.strftime("%Y年%m月%d日")
     page=[
@@ -42,6 +42,27 @@ def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
         '</section>',
     ]
     plain=[f"全球新闻选编 | {formatted}"]
+    if market_snapshot is not None:
+        page.append('<section class="market-snapshot"><h2>美股头版｜权威日频指标</h2>')
+        plain.append("美股头版：公开市场收盘指标")
+        if market_snapshot.get("items"):
+            page.append('<table style="width:100%;font-size:9pt">'
+                        '<thead><tr><th>指标</th><th>数值</th><th>数据日期</th></tr></thead><tbody>')
+            for item in market_snapshot["items"]:
+                value=f'{item["value"]:,.2f}'
+                if item["kind"]=="yield":
+                    value+="%"
+                if "change_pct" in item:
+                    value+=f'（较前一数据日 {item["change_pct"]:+.2f}%）'
+                page.append(f'<tr><td>{esc(item["label"])}</td><td>{esc(value)}</td>'
+                            f'<td>{esc(item["observation_date"])}</td></tr>')
+                plain.append(f'{item["label"]} {value} ({item["observation_date"]})')
+            page.append('</tbody></table>')
+        else:
+            page.append('<p>权威日频数据未取得，本期不展示未经核实的指数数值。</p>')
+        page.append('<p class="part-mark">'+esc(market_snapshot.get("disclaimer",""))+'</p></section>')
+        plain.append(market_snapshot.get("disclaimer",""))
+
     for sect, (category, articles) in enumerate(
             [(k,v) for k,v in grouped.items() if v],1):
         page.append(
@@ -50,11 +71,13 @@ def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
         )
         plain.append(category)
         for idx,article in enumerate(articles,1):
-            en_title=str(article.get("title","")).strip()
+            en_title=str(article.get("title_en") or article.get("title","")).strip()
             zh_title=str(article.get("title_zh") or en_title).strip()
             source=str(article.get("source","")).strip()
             author=str(article.get("author","")).strip()
-            meta=" · ".join([x for x in (source,author,_date_bj(article.get("date"))) if x])
+            mark=("投资观点，非权威公告" if article.get("source_kind")=="investment_opinion"
+                  else "中文原文／英文机译" if article.get("language")=="zh" else "")
+            meta=" · ".join([x for x in (source,author,_date_bj(article.get("date")),mark) if x])
             pairs=article.get("bilingual_pairs") or []
             if not pairs:
                 continue

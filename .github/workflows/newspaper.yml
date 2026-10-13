@@ -94,6 +94,13 @@ jobs:
       - name: Audit live public RSS source coverage — no secrets
         if: github.event_name == 'pull_request'
         run: python newspaper/source_audit.py
+      - name: Probe US index and 36Kr public endpoints — PR only
+        if: github.event_name == 'pull_request'
+        run: python newspaper/market_source_probe.py
+      - name: End-to-end live source-to-PDF preview — PR only, no secrets
+        if: github.event_name == 'pull_request'
+        timeout-minutes: 15
+        run: python newspaper/digest.py --dry-run --output /tmp/newspaper-live-preview
       - name: Preview only — never load SMTP secrets
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
         env:
@@ -146,4 +153,8 @@ jobs:
             /tmp/newspaper-preview.txt
             /tmp/newspaper-preview.pdf
             /tmp/newspaper-source-audit.json
+            /tmp/newspaper-market-source-probe.json
+            /tmp/newspaper-live-preview.pdf
+            /tmp/newspaper-live-preview.html
+            /tmp/newspaper-live-preview.txt
           retention-days: 3
