@@ -11,7 +11,9 @@ on:
     paths:
       - 'newspaper/V05_MAIL_TEST_REQUEST.txt'
   schedule:
-    - cron: '0 23 * * *' # 07:00 Beijing, next morning
+    - cron: '0 23 * * *' # 07:00 Beijing primary
+    - cron: '20 23 * * *' # 07:20 Beijing fallback
+    - cron: '20 0 * * *' # 08:20 Beijing final fallback
   workflow_dispatch:
     inputs:
       dry_run:
@@ -60,6 +62,18 @@ jobs:
         with:
           path: ~/.local/share/argos-translate/packages
           key: newspaper-argos-translate-en-zh-v1
+      - name: Resolve Beijing delivery date
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-v05-send-once]')))
+        id: delivery_date
+        run: echo "date=$(TZ=Asia/Shanghai date +%F)" >> "$GITHUB_OUTPUT"
+      - name: Check already-sent daily receipt
+        if: steps.delivery_date.outcome == 'success'
+        id: receipt
+        uses: actions/cache/restore@v4
+        with:
+          path: /tmp/newspaper-sent-receipt
+          key: newspaper-sent-${{ steps.delivery_date.outputs.date }}
+          lookup-only: true
       - name: Test date filtering, fallback, rendering
         run: python -m unittest discover -s newspaper -p 'test_*.py' -v
       - name: Preview only — never load SMTP secrets
@@ -74,7 +88,7 @@ jobs:
             python newspaper/digest.py --demo --output /tmp/newspaper-preview
           fi
       - name: Send real PDF daily report — default branch only
-        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]'))))
+        if: steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]'))))
         env:
           SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
           SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
@@ -87,6 +101,17 @@ jobs:
             exit 1
           fi
           python newspaper/digest.py
+      - name: Record successful daily delivery
+        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && success() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-v05-send-once]')))
+        run: |
+          mkdir -p /tmp/newspaper-sent-receipt
+          printf '%s\\n' "${{ steps.delivery_date.outputs.date }}" > /tmp/newspaper-sent-receipt/date.txt
+      - name: Save successful daily receipt
+        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && success() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-v05-send-once]')))
+        uses: actions/cache/save@v4
+        with:
+          path: /tmp/newspaper-sent-receipt
+          key: newspaper-sent-${{ steps.delivery_date.outputs.date }}
       - name: Upload example preview
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
         uses: actions/upload-artifact@v4
