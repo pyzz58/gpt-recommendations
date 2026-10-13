@@ -97,3 +97,11 @@
 2. 顾问必须对原始证据解释现实问题、资源/权力/收益/约束；导师把最有价值机制教成可迁移的知识。二者需要双向回查，教学发现事实漏洞时退回EvidencePacket。
 3. 独立审校复核关键机制箭头、反证、可迁移程度和类比边界。把每篇固定写成“本质是人性/博弈/供需”必须REVISE。
 4. 完整方法见[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)，完整审计见[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)。新Markdown不等于功能已运行。
+
+## 11. V4.2 必须执行的最新规范和开发冻结边界
+
+**首读顺序更新**：在旧九栏/旧12步之前先读[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)和[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)。有冲突时七问三检验及杂志A新闻→B顾问+帝师→C未来证据优先。旧12步是详细工具箱，不另部署十二Agent。
+
+整个认知研究只有**一个联合顾问—帝师工作台**；原“世界机制发现”与“顾问/帝师”不能作为两套重复写稿系统。审校环节保持独立否决。认知机制可以多因并存、诚实未知。
+
+当前已审计但未修的真实工程问题由[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)按NC编号管理；**当前只定杂志设计并记录问题，不去逐项动工**。后续用户批准实际开发时对照Issue的测试与产物，并区分DESIGN_RESOLVED和VERIFIED。父目录日报隔离、旧月报废止、124源继续暂不全量测试。
