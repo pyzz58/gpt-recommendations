@@ -41,7 +41,32 @@ class QualitySampleTests(unittest.TestCase):
         self.assertIn("python newspaper/digest.py --quality-sample",w)
         receipt=w.split("      - name: Record successful daily delivery",1)[1]
         self.assertNotIn("[newspaper-quality-sample]",receipt)
-        self.assertIn("cron: '0 17 * * *'",w)
+        # Test the actual policy rather than stale historical minute values.
+        import re
+        schedules = re.findall(r"cron: '([0-9]+) ([0-9]+) [*] [*] [*]'",w)
+        self.assertGreaterEqual(len(schedules), 3)
+        local_minutes=[(int(h)+8)%24*60+int(m) for m,h in schedules]
+        self.assertTrue(all(60 < minute <= 140 for minute in local_minutes))
+
+    def test_late_start_and_send_boundary_consistent(self):
+        from digest import require_live_delivery_window, LATEST_SEND_START
+        self.assertEqual(LATEST_SEND_START,dt.timedelta(minutes=90))
+        end=dt.datetime(2026,10,14,1,0,tzinfo=BEIJING_TZ)
+        require_live_delivery_window(
+            dt.datetime(2026,10,14,2,29,tzinfo=BEIJING_TZ),end)
+        with self.assertRaises(RuntimeError):
+            require_live_delivery_window(
+                dt.datetime(2026,10,14,2,30,tzinfo=BEIJING_TZ),end)
+
+    def test_delivery_summary_distinguishes_sent_from_duplicate_and_failure(self):
+        w=(Path(__file__).resolve().parent.parent/".github/workflows/newspaper.yml").read_text()
+        self.assertIn("NEWSPAPER_DELIVERY_STATUS=",w)
+        self.assertIn('status="ALREADY_SENT"',w)
+        self.assertIn('status="SENT"',w)
+        self.assertIn('status="FAILED"',w)
+        self.assertIn("steps.save_receipt.outcome",w)
+        self.assertIn("python newspaper/digest.py --recovery-20261014",w)
+
 
 if __name__=="__main__":
     unittest.main()

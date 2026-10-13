@@ -49,8 +49,17 @@ class EditorialContract(unittest.TestCase):
         start,end,_=edition_window(dt.datetime(2026,10,14,1,25,tzinfo=BEIJING_TZ))
         self.assertEqual((start.hour,end.hour),(1,1))
         workflow=(Path(__file__).resolve().parent.parent/".github/workflows/newspaper.yml").read_text()
-        self.assertIn("cron: '0 17 * * *'",workflow)
-        self.assertIn("cron: '40 17 * * *'",workflow)
-        self.assertNotIn("cron: '0 23 * * *'",workflow)
+        # Latest deployed policy is authoritative: 01:00 cutoff, off-hour
+        # triggers between 01:00 and 02:00; do not lock tests to old minutes.
+        import re
+        schedules = re.findall(r"cron: '([0-9]+) ([0-9]+) [*] [*] [*]'", workflow)
+        self.assertGreaterEqual(len(schedules), 3)
+        # UTC17 corresponds to 01:xx Beijing; UTC18 to 02:xx.
+        beijing_minute_of_day = [(int(hour)+8) % 24 * 60 + int(minute)
+                                 for minute, hour in schedules]
+        self.assertEqual(len(set(beijing_minute_of_day)), len(schedules))
+        self.assertTrue(all(60 < minute <= 140 for minute in beijing_minute_of_day))
+        self.assertLessEqual(min(beijing_minute_of_day), 70)
+        self.assertGreaterEqual(max(beijing_minute_of_day), 125)
 
 if __name__=="__main__": unittest.main()

@@ -10,11 +10,14 @@ on:
     branches: [main]
     paths:
       - 'newspaper/V05_MAIL_TEST_REQUEST.txt'
+  # Fixed edition cutoff stays Beijing 01:00. Triggers are deliberately
+  # off the hour to reduce GitHub scheduler contention; all use one receipt.
   schedule:
-    - cron: '0 17 * * *' # Beijing 01:00 (UTC previous date)
-    - cron: '15 17 * * *' # Beijing 01:15 fallback
-    - cron: '30 17 * * *' # Beijing 01:30 fallback
-    - cron: '40 17 * * *' # Beijing 01:40 final fallback
+    - cron: '3 17 * * *' # Beijing 01:03 primary
+    - cron: '18 17 * * *' # Beijing 01:18 fallback
+    - cron: '33 17 * * *' # Beijing 01:33 fallback
+    - cron: '43 17 * * *' # Beijing 01:43 fallback
+    - cron: '7 18 * * *' # Beijing 02:07 last resort (different UTC hour)
   workflow_dispatch:
     inputs:
       dry_run:
@@ -107,8 +110,8 @@ jobs:
         run: |
           set -euo pipefail
           hhmm=$(TZ=Asia/Shanghai date +%H%M)
-          if [ "$hhmm" -lt 100 ] || [ "$hhmm" -ge 157 ]; then
-            echo "::error::Beijing time outside 01:00-01:57. Aborting to prevent a report delivered after 02:00."
+          if [ "$hhmm" -lt 100 ] || [ "$hhmm" -ge 220 ]; then
+            echo "::error::Beijing time outside 01:00-02:20 job-start window. Aborting before an outdated late report."
             exit 1
           fi
       - name: Install print fonts on GitHub runner
@@ -130,7 +133,8 @@ jobs:
           path: ~/.local/share/argos-translate/packages
           key: newspaper-argos-translate-en-zh-v1
       - name: Test date filtering, fallback, rendering
-        if: steps.receipt.outputs.cache-hit != 'true'
+        # Run the complete regression suite on PR, never block a scheduled send.
+        if: github.event_name == 'pull_request'
         run: python -m unittest discover -s newspaper -p 'test_*.py' -v
       - name: Audit live public RSS source coverage — no secrets
         if: github.event_name == 'pull_request'
@@ -150,6 +154,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: python newspaper/digest.py --dry-run --rolling-preview --output /tmp/newspaper-live-qa
       - name: Send real PDF daily report — default branch only
+        id: send
         if: steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-quality-sample]') || contains(github.event.head_commit.message, '[newspaper-recovery-20261014]'))))
         env:
           SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
@@ -176,11 +181,47 @@ jobs:
           mkdir -p /tmp/newspaper-sent-receipt
           printf '%s\\n' "${{ steps.delivery_date.outputs.date }}" > /tmp/newspaper-sent-receipt/date.txt
       - name: Save successful daily receipt
+        id: save_receipt
         if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && success() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-recovery-20261014]'))))
         uses: actions/cache/save@v4
         with:
           path: /tmp/newspaper-sent-receipt
           key: newspaper-sent-${{ steps.delivery_date.outputs.date }}
+      - name: Report actual delivery outcome
+        # A green workflow may represent a legitimate duplicate skip, not an email.
+        # Emit durable, unambiguous status in the job summary.
+        if: ${{ always() && steps.delivery_date.outcome == 'success' }}
+        env:
+          CACHE_HIT: ${{ steps.receipt.outputs.cache-hit }}
+          SEND_RESULT: ${{ steps.send.outcome }}
+          RECEIPT_SAVED: ${{ steps.save_receipt.outcome }}
+          EDITION_DATE: ${{ steps.delivery_date.outputs.date }}
+        run: |
+          set -euo pipefail
+          if [[ "$CACHE_HIT" == "true" ]]; then
+            status="ALREADY_SENT"
+            explanation="A successful receipt exists for this date. This run did not send email."
+          elif [[ "$SEND_RESULT" == "success" && "$RECEIPT_SAVED" == "success" ]]; then
+            status="SENT"
+            explanation="SMTP accepted the report; daily deduplication receipt saved. Inbox delivery is not verified."
+          elif [[ "$SEND_RESULT" == "success" ]]; then
+            status="SENT_RECEIPT_UNVERIFIED"
+            explanation="SMTP send returned successfully, but receipt persistence was not confirmed; review before retry."
+          else
+            status="FAILED"
+            explanation="No verified SMTP handoff. Inspect this run's failed/skipped steps."
+          fi
+          echo "NEWSPAPER_DELIVERY_STATUS=$status edition=$EDITION_DATE"
+          {
+            echo "### Newspaper delivery"
+            echo "- **Edition (Beijing):** $EDITION_DATE"
+            echo "- **Result:** $status"
+            echo "- $explanation"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$status" == "FAILED" || "$status" == "SENT_RECEIPT_UNVERIFIED" ]]; then
+            echo "::error::Newspaper delivery status is $status"
+            exit 1
+          fi
       - name: Upload example preview
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
         uses: actions/upload-artifact@v4
