@@ -148,3 +148,11 @@ newspaper/
 - [EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)：从半月谈、求是问题导向及Reuters/AP/BBC事实标准提炼S0—S8选文程序，重点现实正负影响、典型性/突破；A必须完整5W1H，原始机构报告需给方法和局限。
 - [SCENARIOS_AND_OPEN_QUESTIONS.md](SCENARIOS_AND_OPEN_QUESTIONS.md)：C读者末尾不再“继续观察”，而是有条件的不同后续情景、2—4个开放思考题，历史Thesis核验保留后台。
 - [templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md)、[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)和[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)已经按最新版编辑体例及未来QA同步。
+
+## V4.4唯一完整规格与新版现行文件
+
+- [CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)：正式未来研发/文章/出版交接的**全部具体规则**，包括六层与L1—L6输入/产物/故障、选文/记者/顾问帝师/场景/年报和QA；不可用旧总蓝图的七层代替。
+- [ARCHITECTURE_AUDIT_V44.md](ARCHITECTURE_AUDIT_V44.md)：从GitHub目录/版本中定位真实旧规则冲突及V4.4修正、剩余用户可决定项和非生产状态。
+- [README.md](README.md)、[AGENTS.md](AGENTS.md)、[MASTER_BLUEPRINT.md](MASTER_BLUEPRINT.md)、[END_TO_END_WORKFLOW.md](END_TO_END_WORKFLOW.md)、[templates/WEEKLY_TEMPLATE.md](templates/WEEKLY_TEMPLATE.md)均根据V4.4**实际重写或实质改写**，不是只在旧文件后面补一条优先声明。
+- [DATA_CONTRACTS.md](DATA_CONTRACTS.md)已废除将正式可见C作为`watch_and_sources_C`的现行字段：正式读者C为`scenario_thinking_C`，资料核证信号另存后台。
+- [ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)扩展至NC001—NC022，设计更正不代表实际模型通过测试。
