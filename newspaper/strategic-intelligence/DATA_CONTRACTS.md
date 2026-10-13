@@ -349,7 +349,7 @@ DomainLearningAudit:
 
 ## 14. V4.1世界机制发现与反馈返工对象（规划接口）
 
-\`\`\`yaml
+```yaml
 MechanismDiscovery:
   input_evidence_packet: "EvidencePacketID"
   as_of: "ISO8601"
@@ -378,9 +378,9 @@ AdvisorTeacherIteration:
   sent_back_for_research: false
   revisions_and_new_evidence_refs: []
   independent_reviewer_ref: null
-\`\`\`
+```
 
-**验证**：非空文本不能代替实际因果、来源和反例；模型说“本质是利益”没有具体人/资源/行为和可分证据，不能PASS；导师发现学科错误需设置\`sent_back_for_research=true\`与可定位版本，禁止不记录就悄悄覆盖历史。九栏目决定专业核验路径，不限制\`relevant_disciplines\`。
+**验证**：非空文本不能代替实际因果、来源和反例；模型说“本质是利益”没有具体人/资源/行为和可分证据，不能PASS；导师发现学科错误需设置`sent_back_for_research=true`与可定位版本，禁止不记录就悄悄覆盖历史。九栏目决定专业核验路径，不限制`relevant_disciplines`。
 
 ## 15. V4.4现行刊物阅读接口和唯一联合研究包（未来设计字段，未实现）
 
