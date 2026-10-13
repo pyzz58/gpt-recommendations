@@ -37,8 +37,8 @@
 | 31 | 来源独立性、转载归因、跨语言去重 | END_TO_END_WORKFLOW.md、DATA_CONTRACTS.md | 设计 |
 | 32 | L1/L2/L3研究成本分级 | TECHNICAL_DESIGN.md、BUILD_PLAN.md | 已确认方向 |
 | 33 | 周刊是全新的深度研究刊物 | PUBLICATION_SPEC.md | 已确认 |
-| 34 | 月报为战略判断新综合，不拼接周刊 | PUBLICATION_SPEC.md、INTELLIGENCE_MEMORY.md | 已确认 |
-| 35 | 月报“首席顾问致决策者” | PUBLICATION_SPEC.md | 规划已讨论 |
+| 34 | 旧月报综合研究原则已于2026-10-13**被年报取代**；年报以全年周报和全年独立新闻源重新分析 | ANNUAL_REPORT_SPEC.md、DECISIONS.md | **SUPERSEDED→ANNUAL** |
+| 35 | “首席顾问致决策者”的长篇研究总论转入年报 | ANNUAL_REPORT_SPEC.md、PUBLICATION_SPEC.md | 年报已确认方向 |
 | 36 | 超长文章分章节生成、统一主编和链接验证 | END_TO_END_WORKFLOW.md、PUBLICATION_SPEC.md | 设计 |
 | 37 | 严格来源引用、事实推断未知分层 | EDITORIAL_POLICY.md、DATA_CONTRACTS.md | 硬约束 |
 | 38 | 结构化独立审校、拒稿/返工与阻断错误 | QA_AND_METRICS.md、END_TO_END_WORKFLOW.md | 设计 |
@@ -50,7 +50,7 @@
 | 44 | 优先复用成熟GitHub组件，逐项benchmark | BUILD_PLAN.md、TECHNICAL_DESIGN.md | 已确认方向 |
 | 45 | 版本化.md项目框架与可交接AI指令 | AGENTS.md、BUILD_PLAN.md、TRACEABILITY_MATRIX.md | 本轮交付 |
 | 46 | 未经用户授权不发送邮件、不变更日报、不部署付费API | AGENTS.md、DECISIONS.md | 硬约束 |
-| 47 | 周刊/月报具体发刊日、字数和版式未最终批准 | DECISIONS.md、PUBLICATION_SPEC.md | 待确认 |
+| 47 | 周报/年报具体发刊日、字数和版式未最终批准 | DECISIONS.md、PUBLICATION_SPEC.md | 待确认 |
 | 48 | 六个领域真实样刊（美股2/创业1/政治1/科技1/宏观1）先于大规模编码 | BUILD_PLAN.md、QA_AND_METRICS.md | 研发第一门槛 |
 | 49 | 有原创独立判断但必须透明标为推论 | EDITORIAL_POLICY.md、COGNITIVE_ADVISOR_SKILL.md | 已确认 |
 | 50 | 尽量用低成本工具在GitHub中可重现、可验证 | BUILD_PLAN.md、DATA_CONTRACTS.md | 设计 |
@@ -71,7 +71,7 @@
 | 60 | 世界结构变化与反常雷达主动对比融资/营收、宣传/CapEx、技术性能/实际采用等背离 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§3.3 | 指标、口径、反证和状态明确 |
 | 61 | 专业研究团队逻辑角色完整，但不强制部署十多个物理Agent | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§4 | 与最小工程方案吻合 |
 | 62 | GPT Researcher / Open Deep Research / OpenBB / changedetection / GraphRAG / n8n候选需比较维护/兼容/费用 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§5 | 没做benchmark前保持候选 |
-| 63 | 特刊作为第三出版物设计候选，日报/周刊/月报边界清楚，未经授权不得发送 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§7 | 未授权时不建立触发器 |
+| 63 | 特刊作为第三出版物设计候选，日报/周报/年报边界清楚，未经授权不得发送 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§7 | 未授权时不建立触发器 |
 | 64 | 阅读反馈必须能处理学不懂/学不会/记不住/不会用，不强制考试也不虚报已学会 | [DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)§5 | TAUGHT与DEMONSTRATED区分 |
 | 65 | 不因学习机制细化而大幅增加架构复杂度 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)§4和[BUILD_PLAN.md](BUILD_PLAN.md) | 先冻结六例测试质量 |
 | 66 | 详细.md并非已安装运行的Skill或模型已经掌握这些专业知识 | [AGENTS.md](AGENTS.md)、[CHANGELOG.md](CHANGELOG.md) | 文件与生产状态区分 |
@@ -81,3 +81,22 @@
 2. 设计变动：同步更新 [DECISIONS.md](DECISIONS.md)（状态/取代关系）、[CHANGELOG.md](CHANGELOG.md)（文件改变）、本矩阵（引用归属）。
 3. 细节冲突：最新明确的用户决定 > DECISIONS.md的明确状态 > 专题设计规范 > 历史草稿和旧测试描述。不能据此重写或删除历史证据。
 4. 此表每行描述一个**可核实的用户要求或过去讨论过的建议**，而不是宣称覆盖未实际读取的所有聊天记录。
+
+## V4.0历史回查及新决策补录（67—78）
+
+| 编号 | 本次完整要求（历史原方案及用户新决定） | 对应具体文档 | 审核要点 |
+|---|---|---|---|
+| 67 | 禁止概念性总结，必须写方法、步骤、具体证据与案例 | [HARD_RULES.md](HARD_RULES.md) | R001/R010必须过门禁 |
+| 68 | 美股模块从股价、实际/预期拆现金流/贴现/资本约束/反例 | [DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md) §1 | FCF/市场预期/风险都有查法 |
+| 69 | 创业从融资拆真实采购/付费、毛利、CAC/LTV、现金兑现与小团队入场 | [DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md) §2 | 可计算、可推翻、可迁移 |
+| 70 | AI科技拆论文/工程/物理/总成本/实际采用 | [DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md) §3 | Demo不等于商业化 |
+| 71 | 宏观拆央行/财政权限、数据口径、期限溢价和传导时滞 | [DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md) §4 | 实际/名义、存量/流量正确 |
+| 72 | 中美与国际政治必须学两国不同制度、法源、财政、党纪、选举、谈判和承诺 | [DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md) §5—6 | 拒绝人物动机无据确定 |
+| 73 | 企业竞争和社会消费分别分析利润池/代理、人口/抽样/制度与行为 | [DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md) §7—8 | 非万能模板 |
+| 74 | 战略研究室从历史旧观点与多个反常指标中形成可证伪世界模型 | [DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md) §9 | 旧版不覆盖、指标可查 |
+| 75 | 人性：声望、恐惧、身份、互惠、选择集、权力资源要有可核依据 | [HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md) | 不以心理臆测冒充事实 |
+| 76 | 中国传统文化：兵法、儒家、法家、史记等作为核原文、有时代边界的思想透镜 | [HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md) | 不强行用典/引用错误 |
+| 77 | 正式周报+年报，年报以全年周报与独立全年新闻源双输入，旧月报已取代 | [ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)／[templates/ANNUAL_TEMPLATE.md](templates/ANNUAL_TEMPLATE.md) | 年报A01—A12、原始来源/旧判断审计 |
+| 78 | 用户任何明确赞同要记录被赞同方案的具体原文/方法及修改历史 | [ENDORSEMENT_LEDGER.md](ENDORSEMENT_LEDGER.md)、[DECISIONS.md](DECISIONS.md) | 无源不编造“过去已批准” |
+
+完整历史审计方法和当前可回收证据边界见[HISTORY_RECONCILIATION.md](HISTORY_RECONCILIATION.md)。
