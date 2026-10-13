@@ -74,6 +74,26 @@ class MarketAndChineseTests(unittest.TestCase):
         self.assertEqual(yield10["kind"],"yield")
         self.assertNotIn("change_pct",yield10)
 
+    def test_yahoo_uses_only_completed_us_session_daily_close(self):
+        from zoneinfo import ZoneInfo
+        ny=ZoneInfo("America/New_York")
+        previous=dt.datetime(2026,10,12,9,30,tzinfo=ny).timestamp()
+        partial=dt.datetime(2026,10,13,9,30,tzinfo=ny).timestamp()
+        response=Mock(status_code=200)
+        response.json.return_value={"chart":{"result":[{
+            "timestamp":[previous,partial],
+            "indicators":{"quote":[{"close":[100.0,999.0]}]}
+        }]}}
+        fetch=Mock(return_value=response)
+        market=get_market_snapshot(dt.datetime(2026,10,14,1,tzinfo=self.bj),
+                                   http_get=fetch)
+        self.assertTrue(market["available"])
+        self.assertEqual(len(market["items"]),4)
+        self.assertTrue(all(item["value"]==100.0 for item in market["items"]))
+        self.assertTrue(all(item["observation_date"]=="2026-10-12"
+                            for item in market["items"]))
+        self.assertEqual(fetch.call_count,4)
+
     def test_failed_prices_are_never_fabricated(self):
         http=Mock(side_effect=ValueError("no public data"))
         snap=get_market_snapshot(dt.datetime(2026,10,14,1,tzinfo=self.bj),http_get=http)
