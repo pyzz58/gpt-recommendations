@@ -201,3 +201,16 @@ delivery_attempt_id | provider_status | retry_count | failure_reason
 每个经选题的重大事件，在EvidencePacket后必须依[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)本领域逐项填写专业LearningUnit：实际现象/历史基线/权力资源图/决策选择/因果与数量级/正确学科定义/算例或法定程序/强反方/人性文化适用边界/陌生事件迁移。缺关键输入退回研究，缺机制和实例退回教学，严重编造直接BLOCK。最高阻断见[HARD_RULES.md](HARD_RULES.md)。
 
 每周周报还要留下thesis/version/未来观测点。到年报周期时走[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)的A01—A12，首先读全年周报真实清单及缺期，再独立检索同年度新闻/机构原始数据，做遗漏、修订、因果链及旧判断年度审计后新写年报。年报生产**不能**简单把52份周报串起来；年报的实际投递仍需用户明确批准。
+
+## 12. V4.2对旧阶段表的最新归并与唯一执行流程
+
+**上面的“阶段D证据研究—4.5世界机制发现—阶段E顾问教学”是V4.1历史的按任务分段写法，不表示三个部署服务。当前唯一六层杂志生产线：**
+
+1. **全球独立发现**：公开合法资料、来源与时点；
+2. **事件聚类/选题**：去重、重大变化与探索队列；
+3. **证据研究**：原始事实、独立来源、限制与历史召回；
+4. **联合顾问—帝师认知工作台**：在同一研究循环完成“七问、三检验、顾问判断与帝师教学”，发现问题回退第3层，不产出两份重复长稿；
+5. **独立事实/逻辑/版权审稿**：有权BLOCK、退回第3/4层；
+6. **一本杂志与长期档案**：逐篇先新闻正文A、后顾问及帝师点评B、再证据跟踪C；通过主编统一编排周报/年报、版本归档，未经授权不发送。
+
+**精确方法**：[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)。**读者实际版面**：[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)。**未来工程缺口**：[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)。内部旧12步无需作为独立微服务逐步实现，研究步骤可合并、回退和迭代；本文既有来源和时效硬要求仍有效。
