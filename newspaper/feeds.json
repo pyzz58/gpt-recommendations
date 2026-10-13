@@ -1,9 +1,9 @@
 {
   "timezone": "Asia/Shanghai",
   "max_per_category": {
+    "美股与美国金融市场": 4,
     "中国与美国": 3,
     "国际政治与全球事件": 3,
-    "金融、宏观与美股": 3,
     "AI与数字产业": 2,
     "科技、能源与前沿科学": 2,
     "创业、商业与企业竞争": 2,
@@ -246,6 +246,64 @@
         "url": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6936",
         "source_type": "regional_independent_media"
       }
+    ],
+    "美股重点源": [
+      {
+        "name": "SEC EDGAR Company Filings",
+        "url": "https://www.sec.gov/Archives/edgar/usgaap.rss.xml",
+        "disabled": true,
+        "disabled_reason": "EDGAR aggregate feed not verified; official SEC releases are used instead"
+      },
+      {
+        "name": "Nasdaq Markets",
+        "url": "https://www.nasdaq.com/feed/rssoutbound?category=Markets",
+        "disabled": true,
+        "disabled_reason": "RSS endpoint not verified; avoid claiming market data"
+      },
+      {
+        "name": "CNBC Markets Focus",
+        "url": "https://www.cnbc.com/id/20409666/device/rss/rss.html",
+        "source_type": "market_media"
+      },
+      {
+        "name": "Federal Reserve Monetary Focus",
+        "url": "https://www.federalreserve.gov/feeds/press_monetary.xml",
+        "source_type": "primary_regulator"
+      }
+    ],
+    "中国权威媒体": [
+      {
+        "name": "新华网时政",
+        "url": "https://www.xinhuanet.com/politics/news_politics.xml",
+        "language": "zh",
+        "source_type": "primary_news_agency"
+      },
+      {
+        "name": "新华网国际",
+        "url": "https://www.xinhuanet.com/world/news_world.xml",
+        "language": "zh",
+        "source_type": "primary_news_agency"
+      },
+      {
+        "name": "新华网财经",
+        "url": "https://www.xinhuanet.com/finance/news_finance.xml",
+        "language": "zh",
+        "source_type": "primary_news_agency"
+      }
+    ],
+    "中国商业创新": [
+      {
+        "name": "36氪综合资讯",
+        "url": "https://36kr.com/feed",
+        "language": "zh",
+        "source_type": "business_media"
+      },
+      {
+        "name": "36氪文章",
+        "url": "https://36kr.com/feed-article",
+        "language": "zh",
+        "source_type": "business_media"
+      }
     ]
   },
   "longread_max_chars": 18000,
@@ -341,5 +399,37 @@
     "record_unique_publisher_families": true,
     "inactive_sources_are_not_counted_as_live": true,
     "one_source_cannot_confirm_itself": true
+  },
+  "monitored_pages": [
+    {
+      "name": "雪球专刊",
+      "url": "https://xueqiu.com/u/zhuankan",
+      "language": "zh",
+      "kind": "periodical_opinion_not_wire",
+      "integration": "source_health_watch_only",
+      "reason": "Not a time-stamped RSS newswire; do not attribute investing opinions to institutions"
+    },
+    {
+      "name": "人民日报海外版",
+      "url": "https://paper.people.com.cn/rmrbhwb/pc/layout/index.html",
+      "language": "zh",
+      "kind": "official_daily_epaper_index",
+      "integration": "source_health_watch_only",
+      "reason": "Edition index requires date and article-level parser; no synthetic daily RSS"
+    }
+  ],
+  "market_frontpage": {
+    "name": "美股与美国金融市场",
+    "order": 1,
+    "quota": 4,
+    "coverage": [
+      "标普500、纳指、道指、罗素2000指数或可靠的市场表现来源",
+      "美联储、国债收益率、美元及通胀就业等宏观驱动",
+      "SEC、美联储、财政部等权威公告",
+      "主要公司财报、盈利指引、板块轮动和风险"
+    ],
+    "never_invent_prices": true,
+    "primary_market_data_required_for_numbers": true,
+    "missing_data_behavior": "explicitly mark unavailable"
   }
 }
