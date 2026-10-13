@@ -54,6 +54,16 @@
       {
         "name": "Guardian China",
         "url": "https://www.theguardian.com/world/china/rss"
+      },
+      {
+        "name": "CNA Asia",
+        "url": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6511",
+        "source_type": "regional_independent_media"
+      },
+      {
+        "name": "CNA World",
+        "url": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6311",
+        "source_type": "regional_independent_media"
       }
     ],
     "美股与投资": [
@@ -230,6 +240,11 @@
       {
         "name": "CGTN China",
         "url": "https://www.cgtn.com/subscribe/rss/section/china.xml"
+      },
+      {
+        "name": "CNA Business",
+        "url": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6936",
+        "source_type": "regional_independent_media"
       }
     ]
   },
