@@ -474,6 +474,13 @@ def episode_director_request(handoff, dossier, breakdown, packet, episode_id,
         # not only a digest or a comment in documentation.
         context["director_creative_shot_coverage"] = deepcopy(director_coverage)
         context["coverage_is_approved_screenplay_only_not_rendered_footage"] = True
+        if "montage_plan" in director_coverage:
+            context["director_editorial_montage_production_notes"] = deepcopy(
+                episode["authoritative_episode_base"]["director_editorial_montage"])
+            result["messages"][0]["content"] += (
+                "\n【蒙太奇导演工单】跨场景以多个真实镜头执行，不允许同一物理镜头跨地点。"
+                "每道剪切说明时空来源、人物道具状态、声音剪接、观众理解变化。"
+                "文本规划不等于成片或艺术验收。")
         result["messages"][0]["content"] += (
             "\n【导演自由镜头覆盖】这些专业镜头由总导演按已审稿"
             "自行分合原场次节拍，source_spans是对剧本时间的"
