@@ -157,6 +157,40 @@ class DirectorAudiovisualReviewTests(unittest.TestCase):
                 self.base, self.state, "acting", source_text=self.source,
                 audiovisual_plan=self.language)
 
+    def test_new_episode_requires_audiovisual_plan_for_actual_professional_work(self):
+        new_base = deepcopy(self.base)
+        new_base["director_command_mode"] = {
+            "kind": "director_department_conference_required",
+            "command_before_specialists": True}
+        new_base["director_audiovisual_mode"] = {
+            "kind": "director_audiovisual_plan_required",
+            "audiovisual_intent_before_specialists": True}
+        newer = team.start(new_base, source_text=self.source)
+        for task_id in ("director_brief", "script_edit", "director_lock"):
+            previous_output = deepcopy(self.state["tasks"][task_id]["deliverable"])
+            newer = team.submit(newer, team.packet(newer, task_id), previous_output)
+        meeting = _command(new_base, newer)
+        visual_plan = _visual(new_base, newer, meeting)
+        with self.assertRaisesRegex(ValueError, "DIRECTOR_AUDIOVISUAL_PLAN_REQUIRED"):
+            roles.build_role_messages(
+                new_base, newer, "acting", source_text=self.source,
+                department_command=meeting)
+        actual = roles.build_role_messages(
+            new_base, newer, "acting", source_text=self.source,
+            department_command=meeting, audiovisual_plan=visual_plan)
+        self.assertIn("director_audiovisual_intention",
+                      actual["messages"][1]["content"])
+        with self.assertRaisesRegex(ValueError, "DIRECTOR_AUDIOVISUAL_PLAN_REQUIRED"):
+            roles.validate_role_output(new_base, newer, "acting", '{"shots":{}}',
+                                       source_text=self.source,
+                                       department_command=meeting)
+        with self.assertRaises(ValueError) as ex:
+            roles.validate_role_output(new_base, newer, "acting", '{"shots":{}}',
+                                       source_text=self.source,
+                                       department_command=meeting,
+                                       audiovisual_plan=visual_plan)
+        self.assertNotIn("DIRECTOR_AUDIOVISUAL_PLAN_REQUIRED", str(ex.exception))
+
     def test_false_visual_progress_and_generic_repetition_rejected(self):
         bad = deepcopy(self.language)
         bad["shots"][0]["viewer_belief_after"] = bad["shots"][0]["incoming_viewer_belief"]
