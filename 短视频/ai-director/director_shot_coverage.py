@@ -16,6 +16,7 @@ import json
 import agent_team
 import director
 import director_speech_cues as speech
+import director_editorial_montage as montage
 import screenplay_series_delivery as series
 
 VERSION = "director-shot-coverage-v1"
@@ -32,6 +33,8 @@ PLAN = ("version", "source_screenplay_digest", "writer_dossier_digest",
         "director_breakdown_digest", "episode_id", "director_coverage_thesis",
         "shots")
 PLAN_CUED = (*PLAN, "speech_cue_timeline")
+PLAN_MONTAGE = (*PLAN, "montage_plan")
+PLAN_CUED_MONTAGE = (*PLAN, "speech_cue_timeline", "montage_plan")
 
 
 class ShotCoverageError(ValueError):
@@ -100,6 +103,11 @@ def request(handoff, dossier, breakdown, episode_id):
                 "每个镜头讲清可见动作、人物调度、画面和声音重心、"
                 "观众认识变化及切点原因；不能只写“电影级运镜”。"
                 "在剪辑覆盖中，空镜与反打必须承担信息或情绪功能。"
+                "跨场景蒙太奇是多个可独立制作的物理镜头构成的剪辑序列，"
+                "绝不在单个shot里跨两个真实场景。"
+                "若要倒叙/并行时空，时间证据必须来自相关已审定剧本原文。"
+                "无源证据不得断言早晚或同时发生；写清空间认知、连续状态、"
+                "剪辑点、声画衔接和AI实现失败后的降级路径。"
                 "此步骤是导演的制作镜头规划，不代表已有素材或作者批准，"
                 "不调用模型、不申请费用，每集最终含全部额外时间<=90秒。")},
             {"role": "user", "content": json.dumps({
@@ -115,7 +123,17 @@ def request(handoff, dossier, breakdown, episode_id):
                     "source_adaptation": original[bid]["source_adaptation"],
                 } for bid in ep["beat_ids"]],
                 "required_plan_fields": PLAN,
-                "optional_extended_plan_fields": PLAN_CUED,
+                "optional_extended_plan_fields": [PLAN_CUED, PLAN_MONTAGE,
+                                                  PLAN_CUED_MONTAGE],
+                "optional_montage_contract": {
+                    "version": montage.VERSION,
+                    "plan_fields": sorted(montage.PLAN),
+                    "sequence_fields": sorted(montage.SEQUENCE),
+                    "seam_fields": sorted(montage.SEAM),
+                    "keep_cross_scene_shots_physically_separate": True,
+                    "temporal_claims_require_script_evidence": True,
+                    "no_new_script_story_or_real_media_claims": True,
+                },
                 "optional_speech_cue_contract": {
                     "version": speech.VERSION,
                     "plan_fields": sorted(speech.PLAN_FIELDS),
@@ -141,8 +159,8 @@ def request(handoff, dossier, breakdown, episode_id):
 
 def validate(handoff, dossier, breakdown, coverage):
     """Source-preserving structural check; does NOT score cinematic merit."""
-    _shape(coverage, PLAN_CUED if "speech_cue_timeline" in coverage else PLAN,
-           "COVERAGE_PLAN_SHAPE")
+    optional = {"speech_cue_timeline", "montage_plan"} & set(coverage)
+    _shape(coverage, (*PLAN, *sorted(optional)), "COVERAGE_PLAN_SHAPE")
     cue_timeline = coverage.get("speech_cue_timeline")
     proof, ep, by_beat, originals = _source_context(
         handoff, dossier, breakdown, coverage["episode_id"])
@@ -239,6 +257,9 @@ def validate(handoff, dossier, breakdown, coverage):
         # and the source speech/subtitle timeline remain authoritative.
         speech.first_visual_owner(coverage, cue_timeline["cues"], "cue_id")
         speech.first_visual_owner(coverage, cue_timeline["subtitles"], "subtitle_id")
+    montage_receipt = (montage.validate(
+        handoff, ep, proof, coverage, coverage["montage_plan"])
+        if "montage_plan" in coverage else None)
     return {
         "kind": "director_new_shot_coverage_receipt",
         "episode_id": ep["episode_id"],
@@ -251,6 +272,7 @@ def validate(handoff, dossier, breakdown, coverage):
         "split_beats": [bid for bid, count in splits.items() if count > 1],
         "source_beats_exactly_covered": True,
         "speech_cue_receipt": cue_receipt,
+        "montage_receipt": montage_receipt,
         "runtime_s": runtime,
         "author_approval_authenticated": False,
         "real_cinematic_quality_verified": False,
@@ -367,6 +389,9 @@ def reblock_episode(handoff, dossier, breakdown, packet, coverage):
             series.validate_breakdown(handoff, dossier, breakdown),
             coverage, cue_timeline)
         base["requires_timed_cue_rendering"] = True
+    if proof["montage_receipt"] is not None:
+        base = montage.bind_to_base(
+            base, coverage["montage_plan"], proof["montage_receipt"])
     base["editorial"]["narration_script"] = "".join(
         shot["narration"] for shot in output)
     # Source fidelity also covers words which aren't narration (screenplay
@@ -407,6 +432,8 @@ def reblock_episode(handoff, dossier, breakdown, packet, coverage):
         "new_shots": [s["id"] for s in output],
         "all_source_dialogue_exact": True,
         "speech_cue_timeline_attached": cue_timeline is not None,
+        "editorial_montage_attached": proof["montage_receipt"] is not None,
+        "montage_media_verified": False,
         "lip_sync_verified": False,
         "human_approved": False,
         "media_generated": False,
