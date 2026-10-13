@@ -2,7 +2,9 @@
 
 > 文件范围：`newspaper/strategic-intelligence/`。正式中文名称为**内参系统**。你正在阅读的是设计与研发护栏，不是自动启动任务的授权。本文件作为本目录未来AI/Codex的工作指引，若用户最新明确指令有冲突以最新用户指令为准，但不得由AI自行假设用户同意了部署。
 
-**V4.1最先读：[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)（由真实现象开放发现机制，栏目不能锁定教学内容）以及[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)（系统七层/15工序与真实实施缺口）。**
+**V4.2首读：[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)（七问三检验＋多因共同作用及诚实未知）、[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)（A新闻→B顾问帝师→C来源与未来核验）、[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)（工程问题暂只登记）。**
+
+**V4.1历史阅读要求：[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)（由真实现象开放发现机制，栏目不能锁定教学内容）以及[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)（系统七层/15工序与真实实施缺口）。**
 
 ## 1. 开始做任何任务前必读（按顺序）
 
