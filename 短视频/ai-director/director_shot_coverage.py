@@ -361,6 +361,11 @@ def reblock_episode(handoff, dossier, breakdown, packet, coverage):
     base["duration"] = position
     if cue_timeline is not None:
         base["director_speech_cue_timeline"] = deepcopy(cue_timeline)
+        base["director_editor_cue_sheet"] = speech.compile_editor_timeline(
+            handoff, next(e for e in breakdown["episodes"]
+                          if e["episode_id"] == coverage["episode_id"]),
+            series.validate_breakdown(handoff, dossier, breakdown),
+            coverage, cue_timeline)
         base["requires_timed_cue_rendering"] = True
     base["editorial"]["narration_script"] = "".join(
         shot["narration"] for shot in output)
