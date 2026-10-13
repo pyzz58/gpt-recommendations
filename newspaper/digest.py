@@ -544,16 +544,21 @@ def quality_sample_window(now: dt.datetime) -> tuple[dt.datetime, dt.datetime, d
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true", help="Write preview files; do not send.")
+    parser.add_argument("--rolling-preview", action="store_true", help="Preview the last 24h without sending; does not alter the scheduled 01:00 edition.")
     parser.add_argument("--quality-sample", action="store_true", help="Send one explicitly-requested real-news quality sample; never consume daily receipt.")
     parser.add_argument("--demo", action="store_true", help="Offline layout demo; not live news.")
     parser.add_argument("--output", default="/tmp/newspaper-preview")
     args = parser.parse_args()
     if args.quality_sample and (args.dry_run or args.demo):
         parser.error("--quality-sample cannot be combined with --dry-run or --demo")
+    if args.rolling_preview and (not args.dry_run or args.demo or args.quality_sample):
+        parser.error("--rolling-preview requires --dry-run and cannot send email or use --demo")
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     settings = json.loads((ROOT / "feeds.json").read_text(encoding="utf-8"))
     now = dt.datetime.now(BEIJING_TZ)
-    start, end, news_day = quality_sample_window(now) if args.quality_sample else edition_window(now)
+    start, end, news_day = (quality_sample_window(now)
+                             if args.quality_sample or args.rolling_preview
+                             else edition_window(now))
     if not (args.dry_run or args.demo or args.quality_sample):
         require_live_delivery_window(now, end)
     LOG.info("News reporting window (Beijing): %s inclusive to %s exclusive", start.isoformat(), end.isoformat())
@@ -695,6 +700,18 @@ def main():
             LOG.warning("MARKET_COVERAGE_DEGRADED: 0/%d observations; do not call the front page fully verified",
                         len(market_data["missing"]))
     html_body, text_body = build_clippings_html(grouped, news_day, market_snapshot=market_data)
+    if args.rolling_preview:
+        # Keep the daily mail's hard cutoff unchanged. This distinct dry-run
+        # measures the same rolling window as the live source-health audit.
+        html_body = html_body.replace(
+            "全球新闻<br>选编</h1>", "全球新闻<br>滚动24小时质量验收</h1>", 1)
+        html_body = html_body.replace(
+            "</section>", "<p class='part-mark'>非正式日报；取材窗口为北京时间 "
+            + html.escape(start.strftime("%Y-%m-%d %H:%M"))
+            + " 至 " + html.escape(end.strftime("%Y-%m-%d %H:%M"))
+            + "；无邮件投递。</p></section>", 1)
+        text_body = ("【滚动24小时质量验收，非正式日报；未发送邮件】\n"
+                     f"北京时间 {start:%Y-%m-%d %H:%M} 至 {end:%Y-%m-%d %H:%M}\n\n" + text_body)
     if args.quality_sample:
         # Label the PDF prominently: sample is not the scheduled daily edition.
         html_body = html_body.replace(
