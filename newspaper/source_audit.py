@@ -9,6 +9,7 @@ from __future__ import annotations
 import concurrent.futures
 import datetime as dt
 import json
+import requests
 import logging
 from collections import Counter
 from pathlib import Path
@@ -53,7 +54,21 @@ def audit(settings, start, end, worker=fetch_one):
         "reachable": bool(result[1]),
         "items_last_24h": len(result[0])
     } for pair, result in zip(sources, reports)]
+    monitored = []
+    for site in settings.get("monitored_pages", []):
+        entry = {"name":site["name"],"url":site["url"],"integration":site.get("integration"),
+                 "eligible_for_daily_selection":False}
+        try:
+            response = requests.get(site["url"],timeout=10,
+                                    headers={"User-Agent":"PersonalNewsReader/0.2"})
+            entry["http_status"] = response.status_code
+            entry["reachable"] = response.status_code == 200
+        except requests.RequestException:
+            entry["reachable"] = False
+            entry["http_status"] = None
+        monitored.append(entry)
     return {
+        "monitored_official_or_periodical_pages":monitored,
         "window_start_beijing": start.isoformat(),
         "window_end_beijing": end.isoformat(),
         "feed_endpoints_configured": len(sources) + len(disabled),
@@ -86,7 +101,7 @@ def main():
     dest.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf8")
     print("NEWSROOM_SOURCE_AUDIT=" + json.dumps({
         k:v for k,v in report.items() if k not in
-        ("by_publisher_family", "feed_details", "notes")
+        ("by_publisher_family", "feed_details", "notes", "monitored_official_or_periodical_pages")
     }, ensure_ascii=False, sort_keys=True))
     print("NEWSROOM_SOURCE_AUDIT_PATH=" + str(dest))
     if report["feeds_http_reachable"] == 0:
