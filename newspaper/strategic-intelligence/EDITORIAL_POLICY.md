@@ -1,3 +1,5 @@
+> **V5 历史资料效力（2026-10-14）**：本文件保留当时的细化、模板或审计证据，不能独立改变[唯一现行 V5 主规格](CANONICAL_SYSTEM_SPEC_V5.md)。旧九栏固定百分比、独立连续情报/雷达、旧版“最高”与读者版“继续观察”等如有冲突，以 V5 为准；未冲突的专业方法和案例可按题参考。
+
 # 编辑章程与反信息茧房规范
 
 > **V3.0协作提示**：本文件仍是编辑事实与反茧房的专门规范；完整顾问写作看[COGNITIVE_ADVISOR_SKILL.md](COGNITIVE_ADVISOR_SKILL.md)，客观质量门禁与测试看[QA_AND_METRICS.md](QA_AND_METRICS.md)。

@@ -1,3 +1,5 @@
+> **V5 历史资料效力（2026-10-14）**：本文件保留当时的细化、模板或审计证据，不能独立改变[唯一现行 V5 主规格](CANONICAL_SYSTEM_SPEC_V5.md)。旧九栏固定百分比、独立连续情报/雷达、旧版“最高”与读者版“继续观察”等如有冲突，以 V5 为准；未冲突的专业方法和案例可按题参考。
+
 > **V4.4审核方法入口**：[CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)第十一节为现行文稿质量闸门。注意[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)的**试用选文100分**与本文**研究质量/审核评分**是两个独立工具，不得用高分抵消核心失实、没有版权许可、B因果错误、C伪预测或无知情报告。两个分数都不是自动运行的质量证明。
 
 # 内参系统｜质量门禁、可检验能力与验收测试

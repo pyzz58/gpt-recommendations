@@ -1,3 +1,5 @@
+> **V5 历史资料效力（2026-10-14）**：本文件保留当时的细化、模板或审计证据，不能独立改变[唯一现行 V5 主规格](CANONICAL_SYSTEM_SPEC_V5.md)。旧九栏固定百分比、独立连续情报/雷达、旧版“最高”与读者版“继续观察”等如有冲突，以 V5 为准；未冲突的专业方法和案例可按题参考。
+
 # 内参系统｜首席认知与战略顾问 Skill（设计规范）
 
 > **V4.0最高级教学法规是[HARD_RULES.md](HARD_RULES.md)和[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)；人性/中国传统文化严谨引入需参考[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)。没有输入/步骤/案例/反方/迁移不得按“深度讲解”通过。**

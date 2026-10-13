@@ -1,3 +1,5 @@
+> **V5 历史资料效力（2026-10-14）**：本文件保留当时的细化、模板或审计证据，不能独立改变[唯一现行 V5 主规格](../CANONICAL_SYSTEM_SPEC_V5.md)。旧九栏固定百分比、独立连续情报/雷达、旧版“最高”与读者版“继续观察”等如有冲突，以 V5 为准；未冲突的专业方法和案例可按题参考。
+
 # 内参系统｜每周全球战略周报正式编辑模板（V4.4）
 
 > **读者真实看到的刊物骨架；稿件数量、字数、栏目排列由研究价值决定**，不机械每栏一篇。所有重要主文使用[ARTICLE_TEMPLATE.md](ARTICLE_TEMPLATE.md)的A翔实新闻→B1顾问→B2帝师→C事件推演与开放性思考。整套选稿按[EDITORIAL_SELECTION_AND_REPORTING.md](../EDITORIAL_SELECTION_AND_REPORTING.md) S0—S8。详见[CANONICAL_SYSTEM_SPEC_V44.md](../CANONICAL_SYSTEM_SPEC_V44.md)。

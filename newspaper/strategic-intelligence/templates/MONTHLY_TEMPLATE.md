@@ -1,3 +1,5 @@
+> **V5 历史资料效力（2026-10-14）**：本文件保留当时的细化、模板或审计证据，不能独立改变[唯一现行 V5 主规格](../CANONICAL_SYSTEM_SPEC_V5.md)。旧九栏固定百分比、独立连续情报/雷达、旧版“最高”与读者版“继续观察”等如有冲突，以 V5 为准；未冲突的专业方法和案例可按题参考。
+
 # 【DEPRECATED / 已废止】内参系统历史月报模板
 
 > **2026-10-13用户明确废止现行月报**，改为《全球战略周报》（WEEKLY）＋《全球战略年报》（ANNUAL）。此历史文件仅保留以追溯旧讨论/旧规范，**不得被Codex、LLM、出版程序或GitHub Actions作为现行MONTHLY模板**。唯一有效的年报模板为[ANNUAL_TEMPLATE.md](ANNUAL_TEMPLATE.md)，年度十二步规范为[ANNUAL_REPORT_SPEC.md](../ANNUAL_REPORT_SPEC.md)，最新用户决定见[DECISIONS.md](../DECISIONS.md)。
