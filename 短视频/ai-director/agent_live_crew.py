@@ -23,6 +23,38 @@ import film_continuity as film_tracks
 import agent_provider_wire as wire
 import role_schema_guard as schema_guard
 import editorial_review_lock as locks
+import director_department_command as director_command
+
+# The real provider path must carry exactly the same director inputs as
+# agent_role_contracts.build_role_messages / submit_role_output.
+# Nothing is persisted to the public repo or authenticated by these objects.
+CREATIVE_INPUTS = (
+    ("director_command_mode", "department_command"),
+    ("director_audiovisual_mode", "audiovisual_plan"),
+    ("director_artistic_mode", "artistic_method_plan"),
+)
+
+
+def _creative_preflight(base, task_id, *, department_command=None,
+                        audiovisual_plan=None, artistic_method_plan=None):
+    given = {
+        "department_command": department_command,
+        "audiovisual_plan": audiovisual_plan,
+        "artistic_method_plan": artistic_method_plan,
+    }
+    if task_id not in director_command.DEPARTMENTS:
+        _check(not any(x is not None for x in given.values()),
+               "PILOT_DIRECTOR_CREATIVE_CONTEXT_WRONG_STAGE")
+        return given
+    missing = [keyword for flag, keyword in CREATIVE_INPUTS
+               if base.get(flag) is not None and given[keyword] is None]
+    _check(not missing, "PILOT_DIRECTOR_CREATIVE_CONTEXT_REQUIRED")
+    # Do not allow unsupported partial mix-and-match even on legacy plans:
+    # all three director artefacts come from the SAME directorial review lock.
+    if any(x is not None for x in given.values()):
+        _check(all(x is not None for x in given.values()),
+               "PILOT_DIRECTOR_CREATIVE_CONTEXT_INCOMPLETE")
+    return given
 
 VERSION = "locked-ten-role-pilot-v1"
 
@@ -32,7 +64,9 @@ def _check(ok, code):
         raise pilot.PilotError(code)
 
 
-def inspect_locked_role(snapshot, episode_source, state, task_id):
+def inspect_locked_role(snapshot, episode_source, state, task_id, *,
+                        department_command=None, audiovisual_plan=None,
+                        artistic_method_plan=None):
     """Offline role readiness and QA preview; no prompt/secret is returned.
 
     The decision and locked snapshot must have the exact matching source/base;
@@ -53,6 +87,10 @@ def inspect_locked_role(snapshot, episode_source, state, task_id):
                locked["asset_reference_manifest_digest"],
                "PILOT_LOCKED_REFERENCE_VERSION_DRIFT")
         ready = team.ready(state)
+        given = _creative_preflight(
+            base, task_id, department_command=department_command,
+            audiovisual_plan=audiovisual_plan,
+            artistic_method_plan=artistic_method_plan)
     except pilot.PilotError:
         raise
     except (ValueError, KeyError, TypeError):
@@ -78,6 +116,12 @@ def inspect_locked_role(snapshot, episode_source, state, task_id):
         "plan_digest": locked["plan_digest"],
         "stage_ready": True,
         "first_director_vision_bound": True,
+        "director_department_context_supplied":
+            given["department_command"] is not None,
+        "director_visual_context_supplied":
+            given["audiovisual_plan"] is not None,
+        "director_artistic_context_supplied":
+            given["artistic_method_plan"] is not None,
         "asset_reference_manifest_bound": (
             locked["asset_reference_manifest_digest"] is not None),
         "asset_reference_visual_identity_verified": False,
@@ -91,7 +135,8 @@ def inspect_locked_role(snapshot, episode_source, state, task_id):
 
 def run_one_locked_role(snapshot, episode_source, state, journal, *,
                         permit=None, client=None, api_key=None, task_id,
-                        result_vault=None):
+                        result_vault=None, department_command=None,
+                        audiovisual_plan=None, artistic_method_plan=None):
     """One role, one declared revision, one budget reserve and one transport.
 
     No loop, no silent role switching, no retry, no approval shortcut.
@@ -116,7 +161,11 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
            permit.get("model") == config["model"] and
            permit.get("max_reserved_cny") == config["cap_cny"],
            "PILOT_PERMIT_WRONG_SCOPE")
-    check = inspect_locked_role(snapshot, episode_source, state, task_id)
+    check = inspect_locked_role(
+        snapshot, episode_source, state, task_id,
+        department_command=department_command,
+        audiovisual_plan=audiovisual_plan,
+        artistic_method_plan=artistic_method_plan)
     _check(check["source_digest"] == config["source_digest"] and
            check["plan_digest"] == config["base_digest"],
            "PILOT_JOURNAL_WRONG_LOCKED_VERSION")
@@ -129,7 +178,10 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
         prompt = roles.build_role_messages(
             base, state, task_id, source_text=episode_source,
             editorial_handoff=snapshot["creative_handoff"],
-            reference_manifest=snapshot.get("asset_reference_manifest"))
+            reference_manifest=snapshot.get("asset_reference_manifest"),
+            department_command=department_command,
+            audiovisual_plan=audiovisual_plan,
+            artistic_method_plan=artistic_method_plan)
         envelope = wire.prepare_chat_request(
             prompt["messages"], model=config["model"],
             max_output_tokens=config["max_output_tokens"])
@@ -180,7 +232,10 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
             draft = roles.validate_role_output(
                 base, state, task_id, parsed["content"],
                 source_text=episode_source,
-                editorial_handoff=snapshot["creative_handoff"])
+                editorial_handoff=snapshot["creative_handoff"],
+                department_command=department_command,
+                audiovisual_plan=audiovisual_plan,
+                artistic_method_plan=artistic_method_plan)
             agent_executor._enforce_base_audit(state, base, task_id, draft)
             if task_id == "director_final" and (
                     draft["director_decision"]["decision"] ==
@@ -196,7 +251,10 @@ def run_one_locked_role(snapshot, episode_source, state, journal, *,
         updated = roles.submit_role_output(
             base, state, task_id, parsed["content"],
             source_text=episode_source,
-            editorial_handoff=snapshot["creative_handoff"])
+            editorial_handoff=snapshot["creative_handoff"],
+            department_command=department_command,
+            audiovisual_plan=audiovisual_plan,
+            artistic_method_plan=artistic_method_plan)
         if task_id == "camera_art":
             # A scoped rework is merged with *previous* shots. Audit that
             # resulting complete scene geometry, not only the revised shot,
