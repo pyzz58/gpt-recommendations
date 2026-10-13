@@ -22,6 +22,22 @@
 | D-014 | 以独立事实查证、反方评估和真实可追溯审稿门禁保障质量 | 必须明确事实、推断与未知；不能宣传“零错误已实现” | 设计已确认 |
 | D-015 | 本期先完善完整设计框架与Markdown，未来再实施 | 不继续采集剩余百余来源；保留现状 | 本轮正在完成 |
 
+
+## A-2｜V3.1用户明确再次强调：深度教学必须写到“怎么教”的操作层
+
+| 编号 | 已同意的方向及本次明确重申 | 必须落实到的文件 | 当前状态 |
+|---|---|---|---|
+| D-016 | 从真实事件讲授底层世界运行规律，不仅告诉发生了什么 | [DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md) | 详细设计已归档，程序未实现 |
+| D-017 | “帝师式”要求是深入浅出的教育能力：第一性原理、费曼、苏格拉底追问、历史案例、反例和迁移 | [DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)、[COGNITIVE_ADVISOR_SKILL.md](COGNITIVE_ADVISOR_SKILL.md) | 已归档 |
+| D-018 | 政治事件要具体讲议会制度、行政、司法、财政权、党派纪律、选举激励、博弈和可实施性 | [CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md) | 完整虚构案例教学范例已归档 |
+| D-019 | 创业事件拆客户、买方、替代、融资与营收、付费、毛利、CAC/LTV、留存、扩张/监管和小团队可进入性 | [CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md) | 完整虚构案例计算已归档 |
+| D-020 | 恢复新闻机构/情报机构/投资研究/战略咨询/家族办公室**五种互补能力** | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md) | 详细设计已归档 |
+| D-021 | 战略判断追踪、全球商业机会雷达、结构性反常信号发现需有可操作的持续研究机制 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md) | 详细设计已归档 |
+| D-022 | 专业逻辑角色可分工但不先造十几个复杂Agent；独立反方事实核查有实际否决权 | [INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)、[BUILD_PLAN.md](BUILD_PLAN.md) | 设计原则已确认 |
+| D-023 | 用户已同意的细致讨论必须完整保存，不能仅在.md写“费曼学习法”等关键词 | [TRACEABILITY_MATRIX.md](TRACEABILITY_MATRIX.md)、[AGENTS.md](AGENTS.md) | 本轮纠偏执行 |
+
+**文献状态提醒**：四个详解案例是模拟教学材料，而非现成的真实新闻证据，也不代表六份真实新闻样刊已制作。用户尚未授权新刊物自动发送、正式监控或模型训练。
+
 ## B｜来源范围与验证策略的明确最新决策
 
 | 编号 | 决策与时间 | 当前状态 |
