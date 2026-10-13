@@ -17,6 +17,7 @@ def edition_quality_report(grouped: dict, *, expected_min: int = 13) -> dict:
     repeats = []
     metadata_gaps = []
     short_articles = []
+    title_translation_alerts = []
     printed = 0
     selected = 0
 
@@ -46,6 +47,9 @@ def edition_quality_report(grouped: dict, *, expected_min: int = 13) -> dict:
                 seen_urls.add(url)
             if not (title and url and source and item.get("date")):
                 metadata_gaps.append(marker)
+            if item.get("title_qa_flags"):
+                title_translation_alerts.append({
+                    **marker, "flags": item["title_qa_flags"]})
             content = str(item.get("reading_en") or item.get("reading_zh") or "")
             # Heuristic only, not a verdict on journalistic completeness.
             if len(content.strip()) < 450:
@@ -66,6 +70,8 @@ def edition_quality_report(grouped: dict, *, expected_min: int = 13) -> dict:
         warnings.append("published_stories_missing_source_date_or_title")
     if short_articles:
         warnings.append("some_stories_need_length_review")
+    if title_translation_alerts:
+        warnings.append("machine_translated_titles_need_review")
 
     return {
         "selected_articles": selected,
@@ -77,6 +83,7 @@ def edition_quality_report(grouped: dict, *, expected_min: int = 13) -> dict:
         "possible_duplicates": repeats,
         "metadata_gaps": metadata_gaps,
         "short_article_candidates": short_articles,
+        "title_translation_alerts": title_translation_alerts,
         "warnings": warnings,
         "limits": ("This is a structural and length audit, not independent "
                    "verification of facts, translation quality or significance."),
