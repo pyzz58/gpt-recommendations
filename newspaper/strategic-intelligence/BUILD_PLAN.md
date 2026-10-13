@@ -184,3 +184,7 @@ newspaper/strategic-intelligence/
 **P5真实运营**：若用户另行授权出版渠道、费用与定时任务才设置独立周报/年报调度。没有授权可以制作离线样刊，但不可邮件发送。
 
 **每阶段的可验证交付**：输入/输出文件+真实例子+具体操作命令（代码完成后）+测试日志+审稿缺陷表+成本+失败和补救；不得以“大师级提示词已完成”替代质量试验。
+
+## V4.1实施计划优先更新：研究顾问与帝师的世界机制发现
+
+在真实六篇样稿测试中先增加一个**不得预告教学主题**的盲测：输入不同板块的真实原始文件与事实，要求研究流程先生成Puzzle、MechanismCandidates、CounterEvidence和ChosenMechanism，再决定需要教什么正规学科原理。九栏专业清单只是工具箱，不是验收“必须提到某词”的清单。每次完成AdvisorAnalysis和LearningUnit后，独立审稿发现错因果/不合现实，返回EvidencePacket重新查。对比仅按照栏目清单强行套理论的旧稿，评价实际解释力、专业正确性、未知与迁移，而不是篇幅或模型评分。逐项工程契约在[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)及[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)中。生产许可仍未授权。
