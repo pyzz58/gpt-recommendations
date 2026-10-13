@@ -1,3 +1,5 @@
+> **V4.4审核方法入口**：[CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)第十一节为现行文稿质量闸门。注意[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)的**试用选文100分**与本文**研究质量/审核评分**是两个独立工具，不得用高分抵消核心失实、没有版权许可、B因果错误、C伪预测或无知情报告。两个分数都不是自动运行的质量证明。
+
 # 内参系统｜质量门禁、可检验能力与验收测试
 
 > **V4.0强制门禁**：[HARD_RULES.md](HARD_RULES.md)的“禁止概念性总结”对所有九栏、周报年报、项目开发任务有效；领域评测见[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)、年报见[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)。
