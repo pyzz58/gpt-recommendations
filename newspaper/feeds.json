@@ -211,6 +211,11 @@
         "name": "36氪综合",
         "url": "https://www.36kr.com/feed",
         "source_type": "cn_business_media"
+      },
+      {
+        "name": "Guardian US Business",
+        "url": "https://www.theguardian.com/us/business/rss",
+        "source_type": "editorial_media"
       }
     ],
     "AI与科技": [
