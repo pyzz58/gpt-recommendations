@@ -27,6 +27,7 @@ import creative_production_handoff as first_vision
 import film_continuity as film_tracks
 import asset_reference_manifest as assetrefs
 import closing_evidence_card as closing_card
+import series_final_timeline as series_timeline
 
 SCHEMA = "operator-video-production-bundle-v1"
 TARGETS = ("wan", "seedance")
@@ -137,6 +138,22 @@ def _make_bundle(base, direction, *, provenance, crew_workbook=None,
     # A literal, single final POST frame. It is NOT an AI-video shot and does
     # not change the validated story shot IDs or downstream generation inputs.
     final_evidence_card = closing_card.build_card(base)
+    try:
+        final_series_timeline = series_timeline.compile_final_timeline(
+            base, final_evidence_card)
+    except series_timeline.SeriesTimelineError as exc:
+        # The public error contains only a stable reason, never the private
+        # screenplay or an original passage.
+        raise ProductionDeliveryError(
+            "DELIVERY_" + str(exc)) from None
+    if final_series_timeline is not None and final_evidence_card is not None:
+        # The evidence card is the LAST segment of the actual proposed edit;
+        # its original generic story-only timestamp must not be reused.
+        ending = final_series_timeline["absolute_segments"][-1]
+        final_evidence_card = deepcopy(final_evidence_card)
+        final_evidence_card["start_s"] = ending["start_s"]
+        final_evidence_card["end_s"] = ending["end_s"]
+        final_evidence_card["position"] = "after_story_and_all_other_extras"
     result = {
         "schema_version": SCHEMA, "kind": "ai_director_operator_work_orders",
         "provenance": provenance,
@@ -149,9 +166,14 @@ def _make_bundle(base, direction, *, provenance, crew_workbook=None,
             "duration_s": base["duration"], "aspect_ratio": base["aspect_ratio"],
             "total_shots": len(deliverables), "supported_prompt_targets": list(TARGETS),
             "story_duration_s": base["duration"],
-            "final_edit_duration_s": (final_evidence_card["end_s"]
-                                      if final_evidence_card else base["duration"])},
+            "final_edit_duration_s": (
+                final_series_timeline["planned_final_duration_s"]
+                if final_series_timeline is not None else
+                final_evidence_card["end_s"]
+                if final_evidence_card else base["duration"]),
+            "final_edit_is_planned_not_rendered": True},
         "final_closing_card": deepcopy(final_evidence_card),
+        "series_final_editor_timeline": deepcopy(final_series_timeline),
         "production_counts": deepcopy(package["production_summary"]),
         "shooting_order": [x["shot_id"] for x in deliverables],
         "shots": deliverables,
