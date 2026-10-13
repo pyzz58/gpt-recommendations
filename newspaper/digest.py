@@ -26,7 +26,7 @@ from print_report import write_pdf
 from clippings import build_clippings_html, mail_cover_clippings
 from ai_commentary import email_commentary
 from extractive_editor import trim_extracted_article
-from translation_editor import polish_translation
+from translation_editor import polish_translation, polish_news_title
 from editorial_selection import pick_politics, tech_candidates, political_regions
 from newsroom import prepare_pool, select_readable, publisher
 from brief_editor import edit_grouped, apply_reports
@@ -319,7 +319,8 @@ def bilingualize(grouped: dict, translator) -> dict:
                 entry["translation_qa_flags"] = []
                 output[category].append(entry)
                 continue
-            entry["title_zh"] = clean(translator.translate(article["title"]), 280)
+            entry["title_zh"], entry["title_qa_flags"] = polish_news_title(
+                article["title"], clean(translator.translate(article["title"]), 280))
             pairs = []
             qa_flags = []
             for paragraph_id, paragraph in enumerate(article["reading_en"].split("\n\n")):
