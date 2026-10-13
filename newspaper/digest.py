@@ -663,8 +663,12 @@ def main():
     market_data = None
     if not args.demo:
         market_data = fetch_market_snapshot()
-        LOG.info("FRED market dashboard: verified=%d missing=%d",
-                 len(market_data["values"]), len(market_data["missing"]))
+        LOG.info("Dated market dashboard: verified=%d missing=%d sources=%s",
+                 len(market_data["values"]), len(market_data["missing"]),
+                 ",".join(market_data.get("sources", [])) or "none")
+        if not market_data["values"]:
+            LOG.warning("MARKET_COVERAGE_DEGRADED: 0/%d observations; do not call the front page fully verified",
+                        len(market_data["missing"]))
     html_body, text_body = build_clippings_html(grouped, news_day, market_snapshot=market_data)
     if args.quality_sample:
         # Label the PDF prominently: sample is not the scheduled daily edition.
@@ -675,6 +679,10 @@ def main():
         target.parent.mkdir(parents=True, exist_ok=True)
         target.with_suffix(".html").write_text(html_body, encoding="utf-8")
         target.with_suffix(".txt").write_text(text_body, encoding="utf-8")
+        if market_data is not None:
+            target.with_suffix(".market.json").write_text(
+                json.dumps(market_data, indent=2, ensure_ascii=False),
+                encoding="utf-8")
         pdf_path = write_pdf(html_body, target.with_suffix(".pdf"))
         LOG.info("Clippings PDF preview generated (no email): %s / .html / .txt", pdf_path)
     else:
