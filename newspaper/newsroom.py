@@ -175,9 +175,9 @@ def primary_topic_guard(item, labels):
         keep.discard("美股·全球金融市场")
     # A macro forecast that refers to a war only as an economic backdrop
     # is not itself a new diplomatic or military development.
-    if (re.search(r"\\b(?:IMF|international monetary fund|world bank|OECD)\\b", title, re.I)
-            and re.search(r"\\b(?:economic|slowdown|growth|outlook|financial|debt|jobs|employment|share crash|market stability)\\b", title, re.I)
-            and not re.search(r"\\b(?:election|ceasefire agreed|treaty signed|sanctions imposed|military strike|government approves|war declared)\\b", title, re.I)):
+    if (re.search(r"\b(?:IMF|international monetary fund|world bank|OECD)\b", title, re.I)
+            and re.search(r"\b(?:economic|slowdown|growth|outlook|financial|debt|jobs|employment|share crash|market stability)\b", title, re.I)
+            and not re.search(r"\b(?:election|ceasefire agreed|treaty signed|sanctions imposed|military strike|government approves|war declared)\b", title, re.I)):
         keep.discard("国际政治与全球事件")
     if not (matches(TECHNICAL_HEADLINE, title) or
             re.search(TECHNICAL_ZH, title)):
