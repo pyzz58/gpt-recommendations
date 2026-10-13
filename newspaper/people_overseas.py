@@ -40,7 +40,7 @@ def parse_edition(html, base_url=URL):
         links.append({"title": title, "url": url})
     unique = list({v["url"]: v for v in links}.values())
     if not issue:
-        pathdate = re.search(r"/(20\\d{2})(\\d{2})/(\\d{2})/", base_url)
+        pathdate = re.search(r"/(20\d{2})(\d{2})/(\d{2})/", base_url)
         if pathdate:
             try: issue = date(*map(int, pathdate.groups())).isoformat()
             except ValueError: pass
