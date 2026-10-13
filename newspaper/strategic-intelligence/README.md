@@ -87,6 +87,7 @@
 - **[HARD_RULES.md](HARD_RULES.md)** — 绝对禁止概念性总结；必须实际步骤/证据/算例/反证/迁移/验收；用户表扬与认可须具体留档；周报+年报是唯一新正式产品。
 - **[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)** — 九栏目不同学科的逐步深度教学、具体证据、负例与阻断条款。
 - **[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)** — 利益/权力/信息/人性及中国传统文化的证据化应用。
+- **[REAL_CASES_EVIDENCE_FIRST.md](REAL_CASES_EVIDENCE_FIRST.md)** — 基于可核查公开资料的三个真实历史教学案例：2013美国政府拨款停摆、Duolingo 2024年SEC财务披露、伯克希尔2024年10-K。
 - **[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)** — 全年周报+年度独立原始新闻源，十二步生产综合年报。
 - **[REAL_CASES_EVIDENCE_FIRST.md](REAL_CASES_EVIDENCE_FIRST.md)** — 以可核实的2013美国政府停摆、Duolingo 2024 SEC报表、伯克希尔2024年报真正示范事实→制度/会计根因→知识与迁移。
 - **[ENDORSEMENT_LEDGER.md](ENDORSEMENT_LEDGER.md)**、**[HISTORY_RECONCILIATION.md](HISTORY_RECONCILIATION.md)** — 用户认可的详细保存及可回查历史审计。
