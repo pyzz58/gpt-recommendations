@@ -1,5 +1,17 @@
 # 内参系统｜版本记录
 
+## V4.0（2026-10-13）— 用户硬性纠偏：拒绝空泛总结、周报+年报、九栏帝师教学及认可归档
+
+- 用户明确要求“禁止概念性总结，要明确方法，步骤，具体”；新建HARD_RULES.md，缺方法/实例/反方REVISE，虚构事实或逻辑BLOCK。
+- 九栏均有独立事实来源→学科根因→具体研究步骤→演算/制度流程→反方→新案例迁移；建DOMAIN_TEACHING_PROTOCOLS.md。
+- 新建HUMAN_NATURE_AND_CLASSICAL_LENSES.md，具体研究利益/人性/博弈、中国传统文化文本与现代证据的适用边界。
+- 用户明确改为**周报+年报**，月报历史方案SUPERSEDED；年报双输入=全年真实周报＋全年独立全球新闻和机构源，并有12步制作、时间/旧判断审计；建ANNUAL_REPORT_SPEC.md和templates/ANNUAL_TEMPLATE.md，旧MONTHLY_TEMPLATE首行标DEPRECATED。
+- 建ENDORSEMENT_LEDGER.md：用户明确赞同必须保存**紧邻认可的具体方案和方法细节**，区别设计认可与真实执行许可。建HISTORY_RECONCILIATION.md并诚实标注未逐字恢复的旧对话限制。
+- 更新README、MASTER_BLUEPRINT、DECISIONS、AGENTS、领域研究/Skill、DATA_CONTRACTS、BUILD_PLAN、QA、PUBLICATION_SPEC、Workflow、结构与交接等指向新方案。
+- **这次只修改.md设计、审稿规范和模板，没建生产模型、没测试其余来源、没发邮件或改日报工作流。**
+
+
+
 > 此处只记录**已发生的文件/规划变化**；不将研究讨论、GitHub一时采集成功误写成生产部署。
 
 ## V3.0（2026-10-13）— 完整项目框架与讨论归档
@@ -37,3 +49,6 @@
 
 ## 未来版本规范
 每个新版本记录：`日期 | 用户明确决策（如有） | 变更范围 | 修改文件 | 实际测试 | 未完成事项 | 是否触及生产`。不覆盖旧版；若改变用户已定的产品原则需记录取代关系。
+
+
+> 旧版V3.0、V2.1、V1.x中所记“月报/MONTHLY”仅为**当时历史提案**，不是V4.0现行产品，请参考D-024与最新ANNUAL_REPORT_SPEC。
