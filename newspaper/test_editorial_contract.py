@@ -52,7 +52,7 @@ class EditorialContract(unittest.TestCase):
         # Latest deployed policy is authoritative: 01:00 cutoff, off-hour
         # triggers between 01:00 and 02:00; do not lock tests to old minutes.
         import re
-        schedules = re.findall(r"cron: '([0-9]+) ([0-9]+) \\* \\* \\*'", workflow)
+        schedules = re.findall(r"cron: '([0-9]+) ([0-9]+) [*] [*] [*]'", workflow)
         self.assertGreaterEqual(len(schedules), 3)
         # UTC17 corresponds to 01:xx Beijing; UTC18 to 02:xx.
         beijing_minute_of_day = [(int(hour)+8) % 24 * 60 + int(minute)
