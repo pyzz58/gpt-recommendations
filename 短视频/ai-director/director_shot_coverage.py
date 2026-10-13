@@ -90,8 +90,11 @@ def request(handoff, dossier, breakdown, episode_id):
                 "你必须完整读审过的制作剧本、编剧逐场说明和本集分集结构。"
                 "每个制作版beat都要在时间轴上连续恰好覆盖；"
                 "任何beat被拆镜，所有source_spans的时间必须无缝覆盖原节拍。"
-                "有原剧本对白或旁白的节拍不得切碎其文字或随意改写，"
-                "没有编剧和声效部门批准的精确逐句时间码就保持完整。"
+                "有原剧本对白或旁白的节拍不得切碎其文字或随意改写。"
+                "仅在已有逐句声音与字幕时间码并能逐项匹配原剧本时，"
+                "可选交付speech_cue_timeline，让声音跨视觉镜头保持一次播放。"
+                "没有精确逐句时码就保持完整，不得仅按字数估算后假称已核准。"
+                "真实口型与字幕逐帧校验必须留给后续实际媒体验收。"
                 "保留所有权威事实、角色、台词、旁白及论证前后关系；"
                 "如果需要改剧情，提出编剧返修而非在coverage中偷改。"
                 "每个镜头讲清可见动作、人物调度、画面和声音重心、"
@@ -112,6 +115,16 @@ def request(handoff, dossier, breakdown, episode_id):
                     "source_adaptation": original[bid]["source_adaptation"],
                 } for bid in ep["beat_ids"]],
                 "required_plan_fields": PLAN,
+                "optional_extended_plan_fields": PLAN_CUED,
+                "optional_speech_cue_contract": {
+                    "version": speech.VERSION,
+                    "plan_fields": sorted(speech.PLAN_FIELDS),
+                    "audio_cue_fields": sorted(speech.CUE_FIELDS),
+                    "subtitle_cue_fields": sorted(speech.SUB_FIELDS),
+                    "must_use_exact_approved_source_words": True,
+                    "timing_must_not_be_invented": True,
+                    "actual_media_sync_not_verified": True,
+                },
                 "required_shot_fields": SHOT,
                 "required_span_fields": SPAN,
                 "provenance": {
