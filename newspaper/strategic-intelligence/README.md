@@ -43,16 +43,16 @@
 6. [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md) / [SOURCE_REGISTRY.json](SOURCE_REGISTRY.json) — 124个活跃免费/部分免费候选（A116/B8）；6个访问障碍来源已按用户指令移出；另完成4个随机来源的一次性实际HTTPS采集抽样的可获取状态与机器可读登记。
 7. [SOURCE_ABANDONED_2026-10-13.json](SOURCE_ABANDONED_2026-10-13.json) — 用户决定放弃的6条来源及原障碍记录。
 8. [SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md) — 明确受限的付费/客户专属研究及访问异常待复核。
-8. [SOURCE_VERIFICATION_PLAYBOOK.md](SOURCE_VERIFICATION_PLAYBOOK.md) — 实测接入、GitHub工具回退、版权审查及验收操作规程。
-9. [ACCESS_AUDIT_2026-10-13.md](ACCESS_AUDIT_2026-10-13.md) — 真实浏览器网页/两项公开JSON接口取样核验、失败及环境限制。
-10. [SOURCE_TOOLING_RESEARCH.md](SOURCE_TOOLING_RESEARCH.md) — RSSHub、Miniflux、Trafilatura、news-please、newspaper4k等工具的取舍。
-11. [ACCESS_AUDIT_2026-10-13_FULL.md](ACCESS_AUDIT_2026-10-13_FULL.md) — 130个注册来源逐条网页实际访问与限制结果。
-12. [tools/source_probe.py](tools/source_probe.py) — 未来在获准联网主机手动运行的低频HTTP/RSS/API探测脚本，默认干跑，不定时、不发邮件。
-13. [SOURCE_RECOVERY_AUDIT_2026-10-13.md](SOURCE_RECOVERY_AUDIT_2026-10-13.md) — 内参系统31条待验证来源的恢复审计、10条部分解决及21条遗留障碍。
-14. [SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md](SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md) — 四轮GitHub Actions实际HTTP/RSS/JSON测试，真实条目、发布时间与6个剩余障碍。
-15. [TECHNICAL_DESIGN.md](TECHNICAL_DESIGN.md) — 简约架构、技术候选、接口、故障与成本设计。
-16. [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) — 从 V0 样刊到 V3 专业增强的逐步落地步骤。
-17. [ACCEPTANCE_AND_HANDOFF.md](ACCEPTANCE_AND_HANDOFF.md) — 验收测试、执行约束、给未来 AI/Codex 的交接指令。
+9. [SOURCE_VERIFICATION_PLAYBOOK.md](SOURCE_VERIFICATION_PLAYBOOK.md) — 实测接入、GitHub工具回退、版权审查及验收操作规程。
+10. [ACCESS_AUDIT_2026-10-13.md](ACCESS_AUDIT_2026-10-13.md) — 真实浏览器网页/两项公开JSON接口取样核验、失败及环境限制。
+11. [SOURCE_TOOLING_RESEARCH.md](SOURCE_TOOLING_RESEARCH.md) — RSSHub、Miniflux、Trafilatura、news-please、newspaper4k等工具的取舍。
+12. [ACCESS_AUDIT_2026-10-13_FULL.md](ACCESS_AUDIT_2026-10-13_FULL.md) — 130个注册来源逐条网页实际访问与限制结果。
+13. [tools/source_probe.py](tools/source_probe.py) — 未来在获准联网主机手动运行的低频HTTP/RSS/API探测脚本，默认干跑，不定时、不发邮件。
+14. [SOURCE_RECOVERY_AUDIT_2026-10-13.md](SOURCE_RECOVERY_AUDIT_2026-10-13.md) — 内参系统31条待验证来源的恢复审计、10条部分解决及21条遗留障碍。
+15. [SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md](SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md) — 四轮GitHub Actions实际HTTP/RSS/JSON测试，真实条目、发布时间与6个剩余障碍。
+16. [TECHNICAL_DESIGN.md](TECHNICAL_DESIGN.md) — 简约架构、技术候选、接口、故障与成本设计。
+17. [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) — 从 V0 样刊到 V3 专业增强的逐步落地步骤。
+18. [ACCEPTANCE_AND_HANDOFF.md](ACCEPTANCE_AND_HANDOFF.md) — 验收测试、执行约束、给未来 AI/Codex 的交接指令。
 
 ## 绝对执行边界
 - 项目当前只允许修改独立目录内规划与审计文件，不修改 newspaper 现有早报代码、Actions、Secrets、定时计划、交付地址或数据。
