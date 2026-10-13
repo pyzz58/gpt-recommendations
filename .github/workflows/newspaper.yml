@@ -4,8 +4,8 @@ on:
     paths:
       - 'newspaper/**'
       - '.github/workflows/newspaper.yml'
-  # One-time V0.5 delivery trigger: fires only if the explicit marker changes
-  # and the main-branch merge message includes [newspaper-v05-send-once].
+  # Explicit owner-requested one-time deliveries only; normal cron unchanged.
+  # Quality sample uses its own non-receipted path; never consumes the daily slot.
   push:
     branches: [main]
     paths:
@@ -103,7 +103,7 @@ jobs:
             python newspaper/digest.py --demo --output /tmp/newspaper-preview
           fi
       - name: Send real PDF daily report — default branch only
-        if: steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]'))))
+        if: steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-quality-sample]'))))
         env:
           SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
           SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
@@ -115,7 +115,13 @@ jobs:
             echo "::error::Not configured. Set NEWSPAPER_SMTP_FROM, NEWSPAPER_SMTP_PASSWORD, NEWSPAPER_TO in GitHub Actions repository Secrets."
             exit 1
           fi
-          python newspaper/digest.py
+          if [[ "${{ github.event_name }}" == "push" && "${{ contains(github.event.head_commit.message, '[newspaper-quality-sample]') }}" == "true" ]]; then
+            # Quality sample: uses live public news + QQ SMTP, but does not
+            # alter the official daily delivery receipt or 01:00 deadline.
+            python newspaper/digest.py --quality-sample
+          else
+            python newspaper/digest.py
+          fi
       - name: Record successful daily delivery
         if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && success() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-v05-send-once]')))
         run: |

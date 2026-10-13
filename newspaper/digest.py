@@ -503,17 +503,28 @@ def send_email(subject: str, html_body: str, text_body: str, pdf_attachment: Pat
         smtp.login(sender, password)
         smtp.send_message(msg)
 
+def quality_sample_window(now: dt.datetime) -> tuple[dt.datetime, dt.datetime, dt.date]:
+    """Ad hoc sample: the exact preceding 24 hours, not a scheduled edition."""
+    if now.tzinfo is None or now.utcoffset() is None:
+        raise ValueError("Aware timestamp required for quality sample")
+    end = now.astimezone(BEIJING_TZ)
+    return end - dt.timedelta(hours=24), end, end.date()
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true", help="Write preview files; do not send.")
+    parser.add_argument("--quality-sample", action="store_true", help="Send one explicitly-requested real-news quality sample; never consume daily receipt.")
     parser.add_argument("--demo", action="store_true", help="Offline layout demo; not live news.")
     parser.add_argument("--output", default="/tmp/newspaper-preview")
     args = parser.parse_args()
+    if args.quality_sample and (args.dry_run or args.demo):
+        parser.error("--quality-sample cannot be combined with --dry-run or --demo")
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     settings = json.loads((ROOT / "feeds.json").read_text(encoding="utf-8"))
     now = dt.datetime.now(BEIJING_TZ)
-    start, end, news_day = edition_window(now)
-    if not (args.dry_run or args.demo):
+    start, end, news_day = quality_sample_window(now) if args.quality_sample else edition_window(now)
+    if not (args.dry_run or args.demo or args.quality_sample):
         require_live_delivery_window(now, end)
     LOG.info("News reporting window (Beijing): %s inclusive to %s exclusive", start.isoformat(), end.isoformat())
     diagnostics = {}
@@ -595,6 +606,10 @@ def main():
         )
     # Print evidence-mapped edited reports; keep commentary outside news copy.
     html_body, text_body = build_clippings_html(grouped, news_day)
+    if args.quality_sample:
+        # Label the PDF prominently: sample is not the scheduled daily edition.
+        html_body = html_body.replace(
+            "全球新闻<br>选编</h1>", "全球新闻<br>质量测试样刊</h1>", 1)
     if args.dry_run or args.demo:
         target = Path(args.output)
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -632,8 +647,22 @@ def main():
                 # Never retry and never leak prompt or credentials to logs.
                 LOG.warning("AI commentary skipped without retry: %s",
                             type(exc).__name__)
-        require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
-        send_email(f"全球新闻选编｜{news_day} 01:00截稿", cover_html, cover_txt, pdf_attachment=pdf_path)
+        if args.quality_sample:
+            window = (f"北京时间 {start:%Y-%m-%d %H:%M} 至 {end:%Y-%m-%d %H:%M}")
+            note = ("【新版质量测试样刊｜非正式日报】\\n"
+                    "此邮件为用户明确要求的即时样刊，不占用凌晨01:00正式日报的发送记录。\\n"
+                    f"取材窗口：{window}。内容来自真实采集源，未经人工逐条复核。")
+            cover_html = (
+                '<div style="border:1px solid #9b353b;padding:12px;color:#611d22">'
+                + html.escape(note).replace("\\n", "<br>")
+                + "</div>" + cover_html
+            )
+            cover_txt = note + "\\n\\n" + cover_txt
+            subject = f"【质量测试·非正式日报】全球新闻选编｜{news_day}"
+        else:
+            require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
+            subject = f"全球新闻选编｜{news_day} 01:00截稿"
+        send_email(subject, cover_html, cover_txt, pdf_attachment=pdf_path)
         LOG.info("PDF report handed to SMTP server: %s (%d bytes)", pdf_path.name, pdf_path.stat().st_size)
 
 if __name__ == "__main__":
