@@ -121,8 +121,14 @@ def request(base, state, meeting, language):
                     "version", "snapshot", "director_judgment",
                     "findings", "conflicts", "next_step"],
                 "next_step_enum": [
+                    "resolve_cross_department_conflict",
                     "revise_specifications", "continue_department_work",
                     "ready_for_real_media_and_human_review"],
+                "conflicts_must_block_readiness": True,
+                "conflict_evidence_rule": (
+                    "Both departments must have submitted real designs; "
+                    "cite exact excerpts from each. Unresolved disagreement "
+                    "is NOT a completed/director-approved shot."),
             }, ensure_ascii=False, separators=(",", ":"))}
         ],
     }
@@ -193,6 +199,7 @@ def validate(base, state, meeting, language, review):
     for c in conflicts:
         _shape(c, {
             "shot_id", "left_department", "right_department",
+            "left_delivery_quote", "right_delivery_quote",
             "incompatible_work", "director_resolution", "human_decision_needed",
         }, "REVIEW_CONFLICT_SHAPE")
         _need(c["shot_id"] in state["shot_ids"] and
@@ -203,13 +210,26 @@ def validate(base, state, meeting, language, review):
               "REVIEW_CONFLICT_TARGET")
         _text(c["incompatible_work"], "REVIEW_CONFLICT_UNEXPLAINED")
         _text(c["director_resolution"], "REVIEW_CONFLICT_UNRESOLVED")
+        for side in ("left", "right"):
+            dept = c[side + "_department"]
+            task = state["tasks"][dept]
+            quote = c[side + "_delivery_quote"]
+            _need(task["status"] == "completed" and
+                  isinstance(quote, str) and 6 <= len(quote) <= 240 and
+                  quote in json.dumps(task["deliverable"], ensure_ascii=False),
+                  "REVIEW_CONFLICT_NOT_GROUNDED_IN_BOTH_DELIVERIES")
     next_step = review["next_step"]
     _need(next_step in {
+        "resolve_cross_department_conflict",
         "revise_specifications", "continue_department_work",
         "ready_for_real_media_and_human_review"}, "REVIEW_NEXT_STEP")
-    _need((bool(needs) and next_step == "revise_specifications") or
-          (not needs and bool(pending) and next_step == "continue_department_work") or
-          (not needs and not pending and
+    _need((bool(conflicts) and
+           next_step == "resolve_cross_department_conflict") or
+          (not conflicts and bool(needs) and
+           next_step == "revise_specifications") or
+          (not conflicts and not needs and bool(pending) and
+           next_step == "continue_department_work") or
+          (not conflicts and not needs and not pending and
            next_step == "ready_for_real_media_and_human_review"),
           "REVIEW_FALSE_READINESS")
     return {
@@ -221,6 +241,13 @@ def validate(base, state, meeting, language, review):
         "still_missing_deliveries": [{"department": d, "shot_id": sid}
                                     for d, sid in pending],
         "next_step": next_step,
+        "unresolved_cross_department_conflicts": [
+            {"shot_id": c["shot_id"],
+             "departments": [c["left_department"], c["right_department"]],
+             "human_decision_needed": c["human_decision_needed"]}
+            for c in conflicts],
+        "can_enter_real_media_review": (
+            not conflicts and not needs and not pending),
         "real_media_seen": False,
         "independent_human_craft_verified": False,
         "author_approval_authenticated": False,
