@@ -102,6 +102,13 @@ def sections(item):
         return {'美股市场与机构观察'} if matches(US_MARKET,s) else set()
     if matches(US_MARKET, s) and (matches(r"\b(?:us|u.s.|american|nasdaq|dow jones|s&p|nyse|sec|federal reserve|fomc|wall street|etf)\b|美股|标普|纳斯达克|道琼斯|华尔街|美国|美联储|机构持仓|ETF", s) or item.get("source_type") in ("primary_exchange","primary_regulator")):
         result.add("美股市场与机构观察")
+    # Dedicated American-market desks need not repeat "U.S." in titles.
+    if item.get("source") in ("CNBC Markets","CNBC Investing"):
+        if matches(r"\b(?:stocks?|shares|market|futures|index|equities|earnings|treasury|yield|nasdaq|dow|fed|investors?|funds?|etfs?)\b",s):
+            result.add("美股市场与机构观察")
+    if item.get("source_type") in ("primary_regulator","primary_exchange"):
+        if matches(r"\b(?:stocks?|securities|etfs?|investors?|markets?|listings?|exchange|registrations?|filings?)\b",s):
+            result.add("美股市场与机构观察")
     if countries(item) & {"中国", "美国"}: result.add("中国与美国")
     for label, pattern in (("国际政治与全球事件", POLITICS), ("全球宏观与金融政策", FINANCE),
                            ("AI与数字产业", AI), ("科技、能源与前沿科学", SCIENCE + "|" + ENERGY),
