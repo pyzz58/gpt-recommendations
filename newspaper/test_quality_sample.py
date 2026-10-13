@@ -43,7 +43,7 @@ class QualitySampleTests(unittest.TestCase):
         self.assertNotIn("[newspaper-quality-sample]",receipt)
         # Test the actual policy rather than stale historical minute values.
         import re
-        schedules = re.findall(r"cron: '([0-9]+) ([0-9]+) \\* \\* \\*'",w)
+        schedules = re.findall(r"cron: '([0-9]+) ([0-9]+) [*] [*] [*]'",w)
         self.assertGreaterEqual(len(schedules), 3)
         local_minutes=[(int(h)+8)%24*60+int(m) for m,h in schedules]
         self.assertTrue(all(60 < minute <= 140 for minute in local_minutes))
