@@ -142,8 +142,13 @@ def validate(base, state, director_command, plan,
         fields.add("artistic_methods_digest")
     _object(plan, fields, "VISION_SHAPE")
     if art_proof is not None:
+        artistic_genre = artistic_method_plan["genre"]
+        expected_screen_genre = (
+            "fiction" if artistic_genre in (
+                "absurd_comedy", "character_comedy", "satire")
+            else artistic_genre)
         _need(plan["artistic_methods_digest"] == art_proof["plan_digest"] and
-              plan["genre"] == artistic_method_plan["genre"],
+              plan["genre"] == expected_screen_genre,
               "VISION_ARTISTIC_PRECEDENT_CHANGED")
     _need(plan["version"] == VERSION and plan["genre"] in GENRES and
           plan["source_digest"] == state["source_digest"] and
