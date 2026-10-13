@@ -1,6 +1,6 @@
 # 内参系统｜GitHub项目目录、真实状态和未来工程结构
 
-> 目的：未来AI打开GitHub就能知道**哪些文件真实存在、哪些只是建议未来建立**，避免把设计方案误当已部署模块。2026-10-13 V3.0。
+> 目的：未来AI打开GitHub就能知道**哪些文件真实存在、哪些只是建议未来建立**，避免把设计方案误当已部署模块。2026-10-13 V4.0。
 
 ## 1. 规范定位
 - 官方项目名：**内参系统**；兼容别名：全球战略内参、Global Strategic Intelligence（GSI）。
@@ -16,6 +16,12 @@ newspaper/
   内参系统.md                     # 中文搜索入口；导航用，不复制系统配置
   strategic-intelligence/
     AGENTS.md                     # Codex / AI 工作边界与阅读顺序
+    HARD_RULES.md                # 禁止概念性总结、周报年报、用户赞同归档
+    DOMAIN_TEACHING_PROTOCOLS.md # 九栏事实→专业根因→案例→迁移
+    HUMAN_NATURE_AND_CLASSICAL_LENSES.md # 博弈、人性和古典文化证据化
+    ANNUAL_REPORT_SPEC.md        # 年度来源双输入与十二道年报工序
+    ENDORSEMENT_LEDGER.md        # 用户赞同方案的细节档案
+    HISTORY_RECONCILIATION.md    # 旧讨论回查与已知遗漏
     README.md                     # 当前状态唯一入口
     MASTER_BLUEPRINT.md          # 产品总纲
     DECISIONS.md                 # 用户确定/未确认/放弃的事项
@@ -38,7 +44,7 @@ newspaper/
     END_TO_END_WORKFLOW.md       # 12道工序与故障/回退
     DATA_CONTRACTS.md            # 每步数据交换与历史版本
     INTELLIGENCE_MEMORY.md       # 主题/判断/概念归档
-    PUBLICATION_SPEC.md          # 周刊/月报刊物规格
+    PUBLICATION_SPEC.md          # 周报/年报刊物规格
     QA_AND_METRICS.md            # 六项目标测试、100分审核、回归测试
     TECHNICAL_DESIGN.md
     IMPLEMENTATION_ROADMAP.md    # 历史阶段计划（以BUILD_PLAN为最新）
@@ -57,7 +63,8 @@ newspaper/
     templates/
       ARTICLE_TEMPLATE.md
       WEEKLY_TEMPLATE.md
-      MONTHLY_TEMPLATE.md
+      ANNUAL_TEMPLATE.md           # 正式年报模板
+      MONTHLY_TEMPLATE.md          # DEPRECATED历史模板，禁止使用
       THESIS_TEMPLATE.md
     skills/chief_advisor/
       SKILL.md                   # 项目内部的设计Skill，非系统插件安装
@@ -121,3 +128,7 @@ newspaper/
 
 ## 6. 文档一致性验收
 所有.md内部链接必须存在；不同文档提到来源数量应说明日期与最新状态；AGENTS与README应指向唯一正式路径；没有未授权生产任务和发信动作；源档案与历史日志保持可读；用户所有重要诉求均可在TRACEABILITY_MATRIX查到。
+
+## V4.0变更记录：真实存在与尚未实现
+
+新增HARD_RULES、九栏专业教学、古典与人性透镜、ANNUAL_REPORT_SPEC、ENDORSEMENT_LEDGER、HISTORY_RECONCILIATION以及[templates/ANNUAL_TEMPLATE.md](templates/ANNUAL_TEMPLATE.md)，旧MONTHLY模板仍存在但首行标DEPRECATED，仅为历史追踪。**这些均是Markdown规则/模板，不等于真实研究、教学和审稿程序已实现**。当前正式内参产品只有WEEKLY/ANNUAL，不得生成MONTHLY作业或邮件。
