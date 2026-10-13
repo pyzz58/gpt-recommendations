@@ -300,6 +300,20 @@ class DirectorArtisticMethodsTests(unittest.TestCase):
                 source_text=self.source, department_command=meeting,
                 audiovisual_plan=vis, artistic_method_plan=plan)
         self.assertNotIn("ARTISTIC_METHOD_PLAN_REQUIRED", str(ex.exception))
+        import director_delivery_review as final_review
+        with self.assertRaisesRegex(
+                visual.VisualLanguageError, "DIRECTOR_ARTISTIC_METHODS_REQUIRED"):
+            final_review.request(base, state, meeting, vis)
+        review_request = final_review.request(
+            base, state, meeting, vis, artistic_method_plan=plan)
+        rev_context = json.loads(review_request["messages"][1]["content"])
+        self.assertEqual(
+            rev_context["versioned_source"]["artistic_methods_digest"],
+            rec["plan_digest"])
+        self.assertEqual(
+            rev_context["selected_director_artistic_method"]["comic_mode"],
+            "character_based")
+        self.assertFalse(review_request["media_viewed"])
         wrong = deepcopy(plan)
         wrong["comic_design"]["real_character_need"] += "此处未经审核添加了额外动机。"
         with self.assertRaisesRegex(
