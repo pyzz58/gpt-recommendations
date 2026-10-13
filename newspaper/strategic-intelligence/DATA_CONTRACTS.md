@@ -243,3 +243,67 @@ ConceptCard { concept_id, concept_name, formal_definition, plain_language,
 - **V3**：当普通SQL/全文搜索表现不够时再加pgvector或知识图谱。
 
 **权威来源真相**：SOURCE_REGISTRY.json是当前活跃源记录；DECISIONS.md记录用户确认的意图；已发布Edition的原始定稿和ThesisVersion不可由新AI总结覆盖。
+
+## 12. V3.1学习引擎和三类情报雷达追加对象（设计，不是已存在数据表）
+
+```yaml
+LearningUnit:
+  unit_id: "LEARN-YYYY-###"
+  article_id: "ART-..."
+  knowledge_cutoff_at: "ISO8601"
+  learning_objective: "未来独立完成的分析动作"
+  prerequisite_concept_ids: []
+  actors_and_constraints: []
+  mechanism_steps:
+    - condition: "有来源的事实/有标签的假设"
+      behavior: "行动或传导"
+      consequence: "结果及边界"
+      supporting_claim_ids: []
+  feynman_explanation: "自然语言与具体带单位示例"
+  analogy_limitations: []
+  strongest_competing_hypothesis: "..."
+  disambiguating_observations: []
+  transfer_case: "不同于源事件的陌生例子"
+  repeat_learning_needed: false
+  learner_state: "TAUGHT|NOT_ASSESSED|PRACTICED|DEMONSTRATED"
+  demonstrated_evidence_ref: null
+MechanismCard:
+  mechanism_id: "MECH-..."
+  formal_definition: "..."
+  causal_conditions: []
+  applicable_scope: []
+  failure_conditions: []
+  real_source_refs: []
+  examples: []
+  counterexamples: []
+OpportunityCard:
+  opportunity_id: "OPP-..."
+  theme_id: "THEME-..."
+  user: "..."
+  buyer: "..."
+  beneficiary: "..."
+  customer_cost_without_product: null
+  willingness_to_pay_evidence: []
+  pricing_and_recognized_revenue: null
+  contribution_margin_assumptions: []
+  cac_ltv_payback_assumptions: []
+  customer_retention_evidence: []
+  regulation_and_integration: []
+  incumbent_alternatives: []
+  small_team_experiment: "..."
+  evidence_status: "UNVERIFIED|INTEREST_ONLY|PILOT_ONLY|VALIDATED_PAID"
+SignalCard:
+  signal_id: "SIG-..."
+  observed_at: "ISO8601"
+  variables_with_units_periods_sources: []
+  apparent_divergence: "..."
+  alternative_hypotheses: []
+  likely_data_biases: []
+  next_discriminating_data: []
+  status: "WATCH|RESEARCH|CONFIRMED_PATTERN|REFUTED"
+  theme_id: null
+```
+
+**实际实现校验**：这些字段未来应由EvidencePacket/ClaimRegister生成，写入JSON Schema验证及单元测试。重要源缺失不得用LLM捏造缺省值；对医疗、政治和市场专业解释应按司法辖区/日期/会计数据核验。用户主动答复的学习证据如涉及个人敏感信息，不能写公开GitHub。与历史ThesisVersion为独立版本关系，旧件不覆写。
+
+详见[DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)与[INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)。
