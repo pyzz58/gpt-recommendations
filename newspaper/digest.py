@@ -24,13 +24,14 @@ from english_lessons import attach_lessons, english_parser
 from adviser import domain_advice, article_advice, global_linkages
 from print_report import write_pdf
 from clippings import build_clippings_html, mail_cover_clippings
-from ai_commentary import analyze_one_call, email_commentary, preferred_model_for_commentary
+from ai_commentary import email_commentary
 from extractive_editor import trim_extracted_article
 from translation_editor import polish_translation
 from editorial_selection import pick_politics, tech_candidates, political_regions
 from newsroom import prepare_pool, select_readable
 from brief_editor import edit_grouped, apply_reports
-from edition_ai import edit_and_analyze
+from edition_budget import EditionBudget
+from news_editor import edit_reports_in_batches, write_compact_commentary
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -529,7 +530,8 @@ def main():
     LOG.info("News reporting window (Beijing): %s inclusive to %s exclusive", start.isoformat(), end.isoformat())
     diagnostics = {}
     edited_commentary = None
-    editorial_api_called = {"value": False}
+    editorial_audit = {"edited": 0, "total": 0, "fallback": 0}
+    edition_cost = None
     if args.demo:
         grouped = {}
         for category in settings["max_per_category"]:
@@ -580,23 +582,46 @@ def main():
         readable, diagnostics = build_readings(pool, settings)
         if sum(len(x) for x in readable.values()) == 0:
             raise RuntimeError("No articles successfully extracted; aborting the email.")
-        # Source-mapped editorial rewrites require validation against captured evidence.
-        # If they fail or exceed the model budget, use complete source paragraphs.
-        if not args.dry_run and os.environ.get("NEWSPAPER_LLM_API_KEY"):
-            def mark_editorial_call():
-                editorial_api_called["value"] = True
+        # The model edits at most two sourced articles per request.
+        # All billable requests, including commentary, share one <=1 CNY ledger.
+        # Preview uses no API. A failed article falls back individually with
+        # explicit degraded-quality counts; other articles remain eligible.
+        ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
+        editorial_audit["total"] = sum(len(items) for items in readable.values())
+        if not args.dry_run and ai_key:
+            ledger = EditionBudget()
+            def before_editorial_request():
+                if not args.quality_sample:
+                    require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
+            plans, failed_batches = edit_reports_in_batches(
+                readable, ai_key, ledger,
+                before_request=before_editorial_request)
+            readable = apply_reports(readable, plans)
+            editorial_audit["edited"] = sum(
+                a.get("editing_mode") == "evidence_mapped_edited_report"
+                for articles in readable.values() for a in articles)
+            editorial_audit["fallback"] = (
+                editorial_audit["total"] - editorial_audit["edited"])
+            editorial_audit["failed_batches"] = failed_batches
             try:
-                plans, edited_commentary, usage = edit_and_analyze(
-                    readable, news_day, os.environ["NEWSPAPER_LLM_API_KEY"],
-                    before_request=mark_editorial_call)
-                readable = apply_reports(readable, plans)
-                LOG.info("Editorial verification completed; source mappings preserved")
+                # Independent strategic commentary is shorter and cheaper than
+                # source-grounded full-length article editing.
+                edited_commentary = write_compact_commentary(
+                    readable, news_day, ai_key, ledger,
+                    before_request=before_editorial_request)
             except Exception as exc:
-                LOG.warning("Editorial rewrite unavailable; preserve source paragraphs: %s",
+                LOG.warning("Independent strategic commentary unavailable: %s",
                             type(exc).__name__)
-                readable = edit_grouped(readable)
+            edition_cost = ledger.snapshot()
+            LOG.info(
+                "Edition editorial audit: validated=%d/%d, fallback=%d, "
+                "api_calls=%d, conservative_peak_RMB=%s (cap 1.00)",
+                editorial_audit["edited"], editorial_audit["total"],
+                editorial_audit["fallback"], edition_cost["request_count"],
+                edition_cost["estimated_peak_cost_rmb"])
         else:
             readable = edit_grouped(readable)
+            editorial_audit["fallback"] = editorial_audit["total"]
         translator = ensure_argos_translator()
         grouped = attach_lessons(
             bilingualize(readable, translator),
@@ -622,31 +647,22 @@ def main():
             html_body, Path("/tmp") / f"global-briefing-{news_day.isoformat()}.pdf"
         )
         cover_html, cover_txt = mail_cover_clippings(news_day, grouped)
-        ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
         if edited_commentary:
             cover_html, cover_txt = email_commentary(
                 news_day, edited_commentary,
                 sum(len(entries) for entries in grouped.values()))
-        elif ai_key and not editorial_api_called["value"]:
-            try:
-                model = preferred_model_for_commentary(grouped,news_day)
-                commentary, usage = analyze_one_call(
-                    grouped, news_day, ai_key, model=model
-                )
-                cover_html, cover_txt = email_commentary(
-                    news_day, commentary,
-                    sum(len(entries) for entries in grouped.values()),
-                )
-                LOG.info(
-                    "DeepSeek cost guard: model=%s calls=%d, "
-                    "estimated_RMB=%s, reported_RMB=%s",
-                    model, usage["request_count"], usage["predicted_peak_rmb"],
-                    usage["reported_peak_cost_rmb"]
-                )
-            except Exception as exc:
-                # Never retry and never leak prompt or credentials to logs.
-                LOG.warning("AI commentary skipped without retry: %s",
-                            type(exc).__name__)
+        if editorial_audit["total"] and editorial_audit["fallback"]:
+            note = (
+                "编辑质量提示：本期%d篇采用来源可追溯的AI完整编辑报道，"
+                "%d篇因证据校验或预算约束退回原文完整段落选编；"
+                "未将降级稿冒充为精编稿。"
+                % (editorial_audit["edited"], editorial_audit["fallback"])
+            )
+            cover_html += "<p style='font-size:12px;color:#666'>" + html.escape(note) + "</p>"
+            cover_txt += "\n" + note
+        if edition_cost:
+            LOG.info("Whole-issue DeepSeek budget accounting: %s",
+                     json.dumps(edition_cost, ensure_ascii=False))
         if args.quality_sample:
             window = (f"北京时间 {start:%Y-%m-%d %H:%M} 至 {end:%Y-%m-%d %H:%M}")
             note = ("【新版质量测试样刊｜非正式日报】\\n"
