@@ -70,7 +70,7 @@ jobs:
       - name: Fast focused regression tests (no network)
         env:
           PYTHONPATH: newspaper
-        run: python -m unittest -v test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality
+        run: python -m unittest -v test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality test_editorial_topic_relevance
 
   digest:
     # On PRs, avoid heavyweight setup if the fast gate fails.
