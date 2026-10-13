@@ -955,6 +955,12 @@
           "status": "confirmed_open",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "confirmed_open",
+          "note": "相关QO-D13增加了后期绝对剪辑轨道预览与一页片尾预算，D09真正剪辑节奏和不同剪辑版本的专业真人盲审依旧待完成",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/42"
         }
       ]
     },
@@ -1087,8 +1093,8 @@
       "observed_in": "screenplay_director_handoff.director_request; screenplay_series_delivery.director_breakdown_request/validate_breakdown/build_per_episode_crew; skills/01-series.md",
       "problem": "旧系列Skill允许180秒且此前编剧限300秒，十分钟剧本无法按完整编剧→导演拆分顺畅执行；可能丢节拍、硬凑三集或漏算片头/片尾；新发现：要求每个原剧本节拍按原时长全保留会反过来剥夺导演合法创意压缩权",
       "root_cause": "混淆整部故事、导演单集、AI生成单次clip三级时间尺度，缺独立分集时长核验和按集重启原有专业团队",
-      "solution": "导演完整接收编剧剧本与详细说明，自主按叙事/情绪自然断点规划1/2/3或更多集；每集叙事镜头和所有附加时间合计≤90s；所有节拍原顺序恰好一次；长剧本进入分集流程；每集独立启动原有十岗位，全文仍作为上下文，不静默重编故事；创意删减的版本先在QO-D14形成有理由的短版新剧本，然后再使用本项≤90秒分集硬门禁；不再把原稿100%照搬作为影片质量标准",
-      "acceptance": "公开完整10分钟剧本可自主拆7集或10集，每集≤90s；90s+任意片头超时被拒；漏/重复/错序节拍拒绝；每集导演真实岗位请求接收完整上下文、受限镜头工单；未实测成片保持in_progress",
+      "solution": "导演完整接收编剧剧本与详细说明，自主按叙事/情绪自然断点规划1/2/3或更多集；每集叙事镜头和所有附加时间合计≤90s；所有节拍原顺序恰好一次；长剧本进入分集流程；每集独立启动原有十岗位，全文仍作为上下文，不静默重编故事；创意删减的版本先在QO-D14形成有理由的短版新剧本，然后再使用本项≤90秒分集硬门禁；不再把原稿100%照搬作为影片质量标准；新增实际最终后期轨道的绝对时间码合成：每集保留intro/recap/bridge/outro/evidence分项，来源页按导演真实决定可有可无，有则后期固定1.8秒必须匹配预留，故事镜头全体平移并核对最终<=90秒且末卡为真正最后段；不得只报故事长",
+      "acceptance": "公开完整10分钟剧本可自主拆7集或10集，每集≤90s；90s+任意片头超时被拒；漏/重复/错序节拍拒绝；每集导演真实岗位请求接收完整上下文、受限镜头工单；未实测成片保持in_progress；operator实际工单对齐各片头/回顾/过渡/片尾轨道和固定1.8秒来源页，拒绝90s剧情加1.8s或只给1s预算、来源卡未选却自动追加；逐段绝对时间码没有空档/重叠，真实媒体仍未完成时不能说成片可发",
       "ai_video_constraint": "每集90秒≠单镜clip长度；含片头、片尾、复述及原稿有来源才可选的最后1–2秒资料页；不得机械均分或制造虚假悬念",
       "depends_on": [
         "QO-W11"
@@ -1097,9 +1103,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/28",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/42",
         "commit_sha": "",
-        "automated_test": "tests/test_screenplay_series_delivery.py — 10min fulltext intake, detailed beat coverage, arbitrary 7/10-episode split, <=90s incl extras, rejects loss/reorder/tampering",
+        "automated_test": "tests/test_screenplay_series_delivery.py and tests/test_series_final_timeline.py; explicit intro/recap/bridge/outro/card absolute timeline, forged planned seconds, fake missing source, 90+1.8 overflow, optional last credit page; GitHub Actions 791/791 passed on precursor commit",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1129,6 +1135,12 @@
           "status": "in_progress",
           "note": "此次全量审计发现分集预留时间只是汇总数字，production_delivery另固定追加1.8秒来源页，没有证明最终真实片头/回顾/结尾轨与<=90秒一致，作为P0下一项修复",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/40"
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "修复剧本故事时间与后期成片总时长脱节：每集保存5项附加预算，operator端用全部绝对时间码重算并强制90秒，真实来源卡仅按导演选择加入且固定1.8秒；需要真实视频和独立观影才能最终关闭",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/42"
         }
       ]
     },
