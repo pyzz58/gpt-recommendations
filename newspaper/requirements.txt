@@ -9,3 +9,5 @@ spacy>=3.8,<4
 # V0.5 PDF output; native fonts/Pango installed in GitHub Actions.
 weasyprint>=62,<70
 pypdf>=5,<7
+
+beautifulsoup4>=4.12,<5  # only publicly accessible magazine/press HTML

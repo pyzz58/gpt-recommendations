@@ -17,6 +17,7 @@ from zoneinfo import ZoneInfo
 from digest import fetch_one, ROOT
 from newsroom import publisher, sections
 from source_quality import newsworthiness
+from chinese_publications import fetch_publication
 
 LOG = logging.getLogger("newspaper.source_audit")
 
@@ -33,13 +34,19 @@ def audit(settings, start, end, worker=fetch_one):
     ]
     with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
         reports = list(executor.map(
-            lambda pair: worker(pair[0], pair[1], start, end), sources))
+            lambda pair: (fetch_publication(pair[1],start,end)
+                          if pair[1].get("kind") in ("xueqiu_special","peoples_overseas")
+                          else worker(pair[0], pair[1], start, end)), sources))
     articles = [item for entries, ok in reports for item in entries]
     by_family = Counter(publisher(a) for a in articles)
     by_section = Counter()
     noise = Counter()
     eligible = []
+    day_dated_count = 0
     for a in articles:
+        if a.get("date_precision") == "day":
+            day_dated_count += 1
+            continue
         rating = newsworthiness(a)
         noise[rating["reason"]] += 1
         if not rating["eligible"]:
@@ -61,7 +68,8 @@ def audit(settings, start, end, worker=fetch_one):
         "feeds_http_reachable": sum(ok for _, ok in reports),
         "feeds_with_fresh_items": sum(bool(articles) for articles, ok in reports),
         "disabled": disabled,
-        "raw_articles_last_24h": len(articles),
+        "raw_articles_last_24h": len(articles)-day_dated_count,
+        "day_dated_press_items_excluded_from_strict_window": day_dated_count,
         "independent_publisher_families_with_fresh_articles": len(by_family),
         "by_publisher_family": dict(sorted(by_family.items())),
         "eligible_by_section_before_dedup": dict(sorted(by_section.items())),

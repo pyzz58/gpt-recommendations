@@ -141,6 +141,8 @@ def fetch_reading(article: dict, min_chars: int = 450, max_chars: int = 4200) ->
             return None
         enriched = dict(article)
         enriched["reading_en"] = excerpt
+        if article.get("language") == "zh":
+            enriched["reading_zh_original"] = excerpt
         enriched["reading_abbreviated"] = abbreviated
         enriched["article_chars"] = len("\n\n".join(paragraphs))
         enriched["reading_chars"] = len(excerpt)
