@@ -45,6 +45,19 @@ class ActualEditionEditorialTests(unittest.TestCase):
             "Startup raises $100 million in funding round",
             "Investors back a new company."))
 
+    def test_market_desk_keeps_fed_and_dedicated_finance_feeds(self):
+        self.assertIn("美股·全球金融市场", self._classify(
+            "Fed announces a rate decision after its policy meeting",
+            "U.S. investors await the monetary policy release."))
+        sample = {
+            "title": "Nvidia quarterly earnings send shares higher",
+            "summary": "Technology company reports results.",
+            "source": "CNBC Markets",
+            "source_language": "en",
+        }
+        with patch("newsroom.newsworthiness", return_value={"eligible": True}):
+            self.assertIn("美股·全球金融市场", sections(sample))
+
     def test_same_microsoft_ai_regulation_story_discouraged(self):
         self.assertTrue(near_duplicate_titles(
             "AI is less regulated than milk, says Microsoft president",
