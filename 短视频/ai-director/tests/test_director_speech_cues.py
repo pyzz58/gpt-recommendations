@@ -117,6 +117,21 @@ class TimedDialogueCoverageTests(unittest.TestCase):
         self.assertEqual(len([s for s in self.cues["subtitles"]
                               if s["beat_id"] == "B03"]), 2)
 
+    def test_real_director_role_request_receives_exact_audio_subtitle_timeline(self):
+        import json
+        rebuilt = coverage.reblock_episode(
+            self.h, self.ds, self.plan, self.packet, self.approved)
+        request = series.episode_director_request(
+            self.h, self.ds, self.plan, rebuilt, "EP01",
+            director_coverage=self.approved)
+        self.assertFalse(request["external_model_call_authorized"])
+        sep = "\\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\\n"
+        context = json.loads(request["messages"][1]["content"].split(sep, 1)[1])
+        self.assertEqual(context["director_creative_shot_coverage"]
+                         ["speech_cue_timeline"], self.cues)
+        self.assertEqual(context["authoritative_base"]
+                         ["director_speech_cue_timeline"], self.cues)
+
     def test_refuse_all_untrusted_cue_edits(self):
         for mutate in (
             lambda t: t["cues"][0].update(text_exact="改写台词"),
