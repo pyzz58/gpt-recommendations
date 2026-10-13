@@ -100,3 +100,19 @@
 | 78 | 用户任何明确赞同要记录被赞同方案的具体原文/方法及修改历史 | [ENDORSEMENT_LEDGER.md](ENDORSEMENT_LEDGER.md)、[DECISIONS.md](DECISIONS.md) | 无源不编造“过去已批准” |
 
 完整历史审计方法和当前可回收证据边界见[HISTORY_RECONCILIATION.md](HISTORY_RECONCILIATION.md)。
+
+## V4.4本轮用户再次认可与全面审核的详细追踪（编号79—89）
+
+| 编号 | 用户已批准/明确要求的真实细节 | 唯一现行完整规范与相关细化 | 检验要求 |
+|---|---|---|---|
+| 79 | “这些都对，务必全部写入，不能概括” | [CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)全部十五章 | 必须有步骤/输入/输出/拒稿/例子/长期档案 |
+| 80 | 全球免费合法权威媒体与机构及不同国家/学科、不仅财经 | 主规格第三节、[SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md) | 不假装124源全部生产可用，不恢复6弃源 |
+| 81 | 正面、负面与混合现实影响、典型或突破、多地区低热信号可选 | 主规格第四节、[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)S0—S8 | 必须有S2四门、S3影响、S4典型突破、S5有依据评分及S8撤稿 |
+| 82 | A完整顶级记者式新闻/机构报告，5W1H、客观详细 | 主规格第五节、[templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md) | 重要事实/背景/数字/样本/方法/反方/时点及权利准确 |
+| 83 | 顾问B1实际利益/制度约束/多因解释/条件化判断 | 主规格第六节、[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md) | 有真实反方、可校传导；不复述A |
+| 84 | 帝师B2应由现实教真正有用的跨学科世界知识、不受栏目限制 | 主规格第六节、[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md) | 有正规知识、过程、实例反例和陌生案例迁移 |
+| 85 | 不承诺唯一终极规律，可能多个机制共同构成现实 | 主规格第六节、[HARD_RULES.md](HARD_RULES.md)R013—R015 | 不装作已证秘密动机或强因果 |
+| 86 | C不要“继续观察”，改后续推演与非引导开放问题 | 主规格第七节、[SCENARIOS_AND_OPEN_QUESTIONS.md](SCENARIOS_AND_OPEN_QUESTIONS.md) | 真实不同条件路径、行动/后果/失效边界、2—4开放问题 |
+| 87 | 整本周刊像杂志而非九栏小摘要，栏目按重大价值灵活编排 | 主规格第八节、[templates/WEEKLY_TEMPLATE.md](templates/WEEKLY_TEMPLATE.md) | 真实封面/目录/卷首/完整系列主文/参考文献及历史纠错 |
+| 88 | 年报=全年周报+独立年度新闻权威源的新综合，并审核旧判断 | 主规格第九节、[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md) | 双输入、数据修订、错判与漏报、年度新学习 |
+| 89 | 重新核实架构，记录全部冲突，未来从问题台账追踪 | 主规格第十至十五节、[ARCHITECTURE_AUDIT_V44.md](ARCHITECTURE_AUDIT_V44.md)、[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md) NC021/022 | 六层/七问/年报十二步区分，状态只据真实测试调整 |
