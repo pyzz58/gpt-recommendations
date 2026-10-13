@@ -1,4 +1,4 @@
-"""QO-D03: public synthetic spoken scene, exact timecoded sound over visual cuts."""
+"""QO-D19: public synthetic spoken scene, exact timecoded sound over visual cuts."""
 from __future__ import annotations
 
 from copy import deepcopy
