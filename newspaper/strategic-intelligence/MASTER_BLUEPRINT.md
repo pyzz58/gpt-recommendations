@@ -198,6 +198,6 @@ GPT Researcher、OpenBB、pgvector、Langfuse、RSSHub、Trafilatura等仅候选
 
 历史研究结合张居正《帝鉴图说》的正反史鉴、司马光《资治通鉴》的时间与史论分层、吴兢《贞观政要》中的君臣政务议论，与RAND独立质量、Heuer竞争解释、麦肯锡问题拆解、Rumelt诊断/行动及英国财政部的因果评价。并**不声称这些主体原本使用相同规则**。本项目综合建立了[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)的七问三检验和双向返工：由事实决定该教哪种跨学科规律，多个机制可以共存且须诚实说明未知。
 
-原“机制发现”和“顾问＋帝师”在产品架构中合并为**一个联合认知研究工作台**，只在工序内有互相检查，不作为两个需要额外Agent的重复部门。整套六层逻辑与整本刊物、每篇A新闻+B顾问帝师+C未来观察的正式阅读顺序，均以[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)为准。
+原“机制发现”和“顾问＋帝师”在产品架构中合并为**一个联合认知研究工作台**，只在工序内有互相检查，不作为两个需要额外Agent的重复部门。整套六层逻辑与整本刊物、每篇A完整新闻/机构报告+B1顾问研判+B2帝师释理+C事件推演和开放性问题的正式阅读顺序，均以[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)为准。
 
 旧架构审计问题（来源许可未验证、内容未实测、历史召回未实现、自动审稿没有证明有效等）只登记[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)，不会因为本轮写好设计规范就伪称已经修复。当前工作仅确定内参周报＋年报的产品架构，不改变父目录日报、不启动生产工作流。
