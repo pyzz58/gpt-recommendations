@@ -49,9 +49,9 @@ def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple
         observations = market_snapshot.get("values", [])
         page.append('<section class="market-overview">'
                     '<h2>美股头版 · 指数、波动率与利率</h2>'
-                    '<p class="part-mark">FRED及Stooq历史日度数据；逐项注明来源与观察日期，非实时行情。'
-                    '缺失数据不推测，百分比变化仅与上一条有效日度观测比较。</p>')
-        plain.append("美股头版 · FRED/Stooq最近核实的历史日度数据（非实时行情）")
+                    '<p class="part-mark">逐项注明真实来源、日期及行情类型；网页可能是盘中或盘后报价，'
+                    '并非交易所认证收盘价。美债收益率为年化百分数；缺失指标不推算。</p>')
+        plain.append("美股头版 · 带日期来源的历史日值及公开网页报价（均非实时保证）")
         for item in observations:
             name = str(item["name"])
             value = float(item["value"])
@@ -62,7 +62,16 @@ def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple
                 ("；较上一个有效观测日 " + ("%+.2f%%" % float(change)))
                 if change is not None and not suffix else ""
             )
-            statement = f"{name}：{value:,.2f}{suffix}（{as_of}）{change_str}；来源：{item.get('source', 'FRED')}"
+            quote_kind = item.get("observation_type")
+            quote_note = (
+                "；盘中网页报价，非收盘价" if quote_kind == "intraday_web_quote"
+                else "；盘后网页报价，未经交易所结算认证"
+                if quote_kind == "post_session_web_quote" else ""
+            )
+            observed_time = ("；纽约时间 " + str(item["observed_at_ny"])
+                             if item.get("observed_at_ny") else "")
+            statement = (f"{name}：{value:,.2f}{suffix}（{as_of}）{change_str}"
+                         f"{quote_note}{observed_time}；来源：{item.get('source', '未标注')}")
             page.append(f'<p class="story-line zh">{esc(statement)}</p>')
             plain.append(statement)
         if not observations:
