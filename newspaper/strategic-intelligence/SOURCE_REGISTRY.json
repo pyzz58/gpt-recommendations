@@ -1,7 +1,7 @@
 {
-  "schema_version": "1.3",
+  "schema_version": "1.4",
   "audit_date": "2026-10-13",
-  "audit_scope": "All 130 registered URLs individually tested via public web.open browser proxy; selected alternate URLs; official World Bank and openFDA JSON samples; container direct HTTP unable to resolve DNS; no production-host API/RSS parser test",
+  "audit_scope": "124 active free/partially-free candidates; 6 blocked sources excluded at user direction; no blanket retesting",
   "status_legend": {
     "A": "public page or API/RSS documentation confirmed",
     "B": "partial open content only",
@@ -948,71 +948,6 @@
       }
     },
     {
-      "id": "SRC-034",
-      "sector": "政治",
-      "name": "Congress.gov",
-      "status": "C",
-      "url": "https://api.congress.gov/",
-      "access": "公开API文档，需申请免费Key",
-      "fallback": "国会网站搜索",
-      "production_test": "NOT_RUN",
-      "audit_access": "PRIOR_PUBLIC_PAGE_OR_DOCUMENTATION_REVIEW",
-      "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
-      "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13",
-      "web_audit_20261013": {
-        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
-        "result": "API_LANDING_SHELL_ONLY_API_KEY_REQUIRED",
-        "checked_at": "2026-10-13",
-        "browser_html_or_feed_test": "API_LANDING_SHELL_ONLY_API_KEY_REQUIRED",
-        "production_host_request": "NOT_RUN",
-        "repeated_daily_runs": 0,
-        "access_rights": "NOT_FULLY_REVIEWED",
-        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
-      },
-      "recovery_20261013": {
-        "previous_status": "C",
-        "new_status": "C",
-        "result": "FREE_ACCOUNT_KEY_REQUIRED",
-        "preferred_url": "https://api.congress.gov/",
-        "comment": "美国国会公开v3 API确实存在，但需免费api.data.gov密钥；未取得密钥也未请求真实法案JSON。可先用国会公开网页。",
-        "evidence_url": "https://github.com/LibraryOfCongress/api.congress.gov/blob/main/README.md",
-        "verified_at": "2026-10-13",
-        "production_host_validation": "NOT_RUN",
-        "permission_for_AI": "NOT_REVIEWED"
-      },
-      "cloud_smoke_20261013": {
-        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
-        "test_runs": [
-          1,
-          2
-        ],
-        "round1": {
-          "status": "REQUEST_ERROR",
-          "http_status": 403,
-          "content_success": false
-        },
-        "round2": {
-          "status": "REQUEST_OR_PARSE_FAILED",
-          "http_status": 403,
-          "items": 0,
-          "publication_time": null
-        },
-        "round3": [],
-        "round4": [],
-        "evidence_paths": [
-          "audits/source-smoke-20261013.json",
-          "audits/source-smoke-round2-20261013.json",
-          "audits/source-smoke-round3-20261013.json",
-          "audits/source-smoke-round4-20261013.json"
-        ],
-        "sample_note": "No usable content proven; refer to round results",
-        "production_continuous_validation": "NOT_RUN",
-        "ai_processing_terms": "NOT_REVIEWED"
-      }
-    },
-    {
       "id": "SRC-035",
       "sector": "政治",
       "name": "英国议会 UK Parliament",
@@ -1120,65 +1055,6 @@
         "preferred_url": "https://www.ungeneva.org/en/news-media/rss",
         "comment": "联合国日内瓦办事处官方RSS目录可读，链接新闻稿、会议记录、总部按主题订阅；RSS条目尚待XML实际解析。",
         "evidence_url": "https://www.ungeneva.org/en/news-media/rss",
-        "verified_at": "2026-10-13",
-        "production_host_validation": "NOT_RUN",
-        "permission_for_AI": "NOT_REVIEWED"
-      },
-      "cloud_smoke_20261013": {
-        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
-        "test_runs": [
-          1
-        ],
-        "round1": {
-          "status": "HTML_TEXT",
-          "http_status": 200,
-          "content_success": true
-        },
-        "round2": null,
-        "round3": [],
-        "round4": [],
-        "evidence_paths": [
-          "audits/source-smoke-20261013.json",
-          "audits/source-smoke-round2-20261013.json",
-          "audits/source-smoke-round3-20261013.json",
-          "audits/source-smoke-round4-20261013.json"
-        ],
-        "sample_note": "No usable content proven; refer to round results",
-        "production_continuous_validation": "NOT_RUN",
-        "ai_processing_terms": "NOT_REVIEWED"
-      }
-    },
-    {
-      "id": "SRC-039",
-      "sector": "政治",
-      "name": "欧盟委员会 Press Corner",
-      "status": "C",
-      "url": "https://ec.europa.eu/commission/presscorner/home/en",
-      "access": "动态栏目内容为空，未确认自动读取",
-      "fallback": "EU单篇公告/公开检索",
-      "production_test": "NOT_RUN",
-      "audit_access": "PRIOR_PUBLIC_PAGE_OR_DOCUMENTATION_REVIEW",
-      "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
-      "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "access_cost": "UNVERIFIED",
-      "audited_at": "2026-10-13",
-      "web_audit_20261013": {
-        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
-        "result": "EU_PRESS_CORNER_DYNAMIC_EMPTY",
-        "checked_at": "2026-10-13",
-        "browser_html_or_feed_test": "EU_PRESS_CORNER_DYNAMIC_EMPTY",
-        "production_host_request": "NOT_RUN",
-        "repeated_daily_runs": 0,
-        "access_rights": "NOT_FULLY_REVIEWED",
-        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
-      },
-      "recovery_20261013": {
-        "previous_status": "C",
-        "new_status": "C",
-        "result": "OFFICIAL_EMAIL_SUBSCRIPTION_DOCUMENTED",
-        "preferred_url": "https://commission.europa.eu/about/contact/press-services/press-releases-and-notifications_en",
-        "comment": "欧委会官方明确支持按主题订阅Press Corner新闻邮件，网页内容可读；尚未取得可无需登录直接采集的发布列表。",
-        "evidence_url": "https://commission.europa.eu/about/contact/press-services/press-releases-and-notifications_en",
         "verified_at": "2026-10-13",
         "production_host_validation": "NOT_RUN",
         "permission_for_AI": "NOT_REVIEWED"
@@ -2836,71 +2712,6 @@
       }
     },
     {
-      "id": "SRC-086",
-      "sector": "新闻",
-      "name": "NHK World Japan",
-      "status": "C",
-      "url": "https://www3.nhk.or.jp/nhkworld/en/news/",
-      "access": "旧www.nhk.or.jp入口读取失败，新URL须复测",
-      "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
-      "production_test": "NOT_RUN",
-      "audit_access": "NOT_TESTED",
-      "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
-      "content_test_result": "UNCONFIRMED",
-      "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13",
-      "web_audit_20261013": {
-        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
-        "result": "PAGE_NOT_RETRIEVED",
-        "checked_at": "2026-10-13",
-        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
-        "production_host_request": "NOT_RUN",
-        "repeated_daily_runs": 0,
-        "access_rights": "NOT_FULLY_REVIEWED",
-        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
-      },
-      "recovery_20261013": {
-        "previous_status": "C",
-        "new_status": "C",
-        "result": "OFFICIAL_NEWS_BROWSER_FAIL",
-        "preferred_url": "https://www3.nhk.or.jp/nhkworld/en/news/",
-        "comment": "NHK官方新闻目录尚未被本工具取得正文或有效XML；需网络隔离环境和官方RSS回退。",
-        "evidence_url": "https://www3.nhk.or.jp/nhkworld/en/news/",
-        "verified_at": "2026-10-13",
-        "production_host_validation": "NOT_RUN",
-        "permission_for_AI": "NOT_REVIEWED"
-      },
-      "cloud_smoke_20261013": {
-        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
-        "test_runs": [
-          1,
-          2
-        ],
-        "round1": {
-          "status": "HTML_THIN",
-          "http_status": 200,
-          "content_success": false
-        },
-        "round2": {
-          "status": "REQUEST_OR_PARSE_FAILED",
-          "http_status": 403,
-          "items": 0,
-          "publication_time": null
-        },
-        "round3": [],
-        "round4": [],
-        "evidence_paths": [
-          "audits/source-smoke-20261013.json",
-          "audits/source-smoke-round2-20261013.json",
-          "audits/source-smoke-round3-20261013.json",
-          "audits/source-smoke-round4-20261013.json"
-        ],
-        "sample_note": "No usable content proven; refer to round results",
-        "production_continuous_validation": "NOT_RUN",
-        "ai_processing_terms": "NOT_REVIEWED"
-      }
-    },
-    {
       "id": "SRC-087",
       "sector": "新闻",
       "name": "澎湃新闻",
@@ -3500,79 +3311,6 @@
       }
     },
     {
-      "id": "SRC-106",
-      "sector": "政治",
-      "name": "European Parliament",
-      "status": "C",
-      "url": "https://www.europarl.europa.eu/news/en",
-      "access": "欧洲立法及公告候选",
-      "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
-      "production_test": "NOT_RUN",
-      "audit_access": "NOT_TESTED",
-      "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
-      "content_test_result": "UNCONFIRMED",
-      "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13",
-      "web_audit_20261013": {
-        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
-        "result": "EUROPEAN_PARLIAMENT_MINIMAL_SHELL",
-        "checked_at": "2026-10-13",
-        "browser_html_or_feed_test": "EUROPEAN_PARLIAMENT_MINIMAL_SHELL",
-        "production_host_request": "NOT_RUN",
-        "repeated_daily_runs": 0,
-        "access_rights": "NOT_FULLY_REVIEWED",
-        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
-      },
-      "recovery_20261013": {
-        "previous_status": "C",
-        "new_status": "C",
-        "result": "SINGLE_RELEASE_INDEXED_DIRECT_ROBOT_CHALLENGE",
-        "preferred_url": "https://www.europarl.europa.eu/news/en/press-room/20260708IPR46377/",
-        "comment": "欧洲议会官方单篇新闻及其正文被搜索索引收录；web.open返回JS机器人验证，浏览器直读未解决。",
-        "evidence_url": "https://www.europarl.europa.eu/news/en/press-room/20260708IPR46377/",
-        "verified_at": "2026-10-13",
-        "production_host_validation": "NOT_RUN",
-        "permission_for_AI": "NOT_REVIEWED"
-      },
-      "cloud_smoke_20261013": {
-        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
-        "test_runs": [
-          1,
-          2,
-          3
-        ],
-        "round1": {
-          "status": "HTML_THIN",
-          "http_status": 202,
-          "content_success": false
-        },
-        "round2": {
-          "status": "REQUEST_OR_PARSE_FAILED",
-          "http_status": 7,
-          "items": 0,
-          "publication_time": null
-        },
-        "round3": [
-          {
-            "channel": "europarl-rss",
-            "http_status": 202,
-            "result_type": "xml_parse_failed",
-            "record_count": 0
-          }
-        ],
-        "round4": [],
-        "evidence_paths": [
-          "audits/source-smoke-20261013.json",
-          "audits/source-smoke-round2-20261013.json",
-          "audits/source-smoke-round3-20261013.json",
-          "audits/source-smoke-round4-20261013.json"
-        ],
-        "sample_note": "No usable content proven; refer to round results",
-        "production_continuous_validation": "NOT_RUN",
-        "ai_processing_terms": "NOT_REVIEWED"
-      }
-    },
-    {
       "id": "SRC-107",
       "sector": "政治",
       "name": "美国财政部 Treasury",
@@ -3929,124 +3667,6 @@
         "production_continuous_validation": "NOT_RUN",
         "ai_processing_terms": "NOT_REVIEWED",
         "verified_access_url": "https://connect.medrxiv.org/medrxiv_xml.php?subject=Epidemiology"
-      }
-    },
-    {
-      "id": "SRC-117",
-      "sector": "医疗",
-      "name": "国家药监局 NMPA",
-      "status": "C",
-      "url": "https://www.nmpa.gov.cn/",
-      "access": "中国药品及器械监管数据候选",
-      "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
-      "production_test": "NOT_RUN",
-      "audit_access": "NOT_TESTED",
-      "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
-      "content_test_result": "UNCONFIRMED",
-      "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13",
-      "web_audit_20261013": {
-        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
-        "result": "PAGE_NOT_RETRIEVED",
-        "checked_at": "2026-10-13",
-        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
-        "production_host_request": "NOT_RUN",
-        "repeated_daily_runs": 0,
-        "access_rights": "NOT_FULLY_REVIEWED",
-        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
-      },
-      "recovery_20261013": {
-        "previous_status": "C",
-        "new_status": "C",
-        "result": "NMPA_OFFICIAL_REPORTS_INDEXED_BROWSER_412",
-        "preferred_url": "https://www.nmpa.gov.cn/directory/web/nmpa/ylqx/ylqxjgdt/index.html",
-        "comment": "2026-10-09官方医疗器械审核目录有搜索索引可读；web.open仍412，不满足直接自动抓取验收。",
-        "evidence_url": "https://www.nmpa.gov.cn/directory/web/nmpa/ylqx/ylqxjgdt/index.html",
-        "verified_at": "2026-10-13",
-        "production_host_validation": "NOT_RUN",
-        "permission_for_AI": "NOT_REVIEWED"
-      },
-      "cloud_smoke_20261013": {
-        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
-        "test_runs": [
-          1
-        ],
-        "round1": {
-          "status": "REQUEST_ERROR",
-          "http_status": 412,
-          "content_success": false
-        },
-        "round2": null,
-        "round3": [],
-        "round4": [],
-        "evidence_paths": [
-          "audits/source-smoke-20261013.json",
-          "audits/source-smoke-round2-20261013.json",
-          "audits/source-smoke-round3-20261013.json",
-          "audits/source-smoke-round4-20261013.json"
-        ],
-        "sample_note": "No usable content proven; refer to round results",
-        "production_continuous_validation": "NOT_RUN",
-        "ai_processing_terms": "NOT_REVIEWED"
-      }
-    },
-    {
-      "id": "SRC-118",
-      "sector": "医疗",
-      "name": "国家卫健委 NHC",
-      "status": "C",
-      "url": "https://www.nhc.gov.cn/",
-      "access": "中国医疗政策原文候选",
-      "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
-      "production_test": "NOT_RUN",
-      "audit_access": "NOT_TESTED",
-      "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
-      "content_test_result": "UNCONFIRMED",
-      "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13",
-      "web_audit_20261013": {
-        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
-        "result": "PAGE_NOT_RETRIEVED",
-        "checked_at": "2026-10-13",
-        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
-        "production_host_request": "NOT_RUN",
-        "repeated_daily_runs": 0,
-        "access_rights": "NOT_FULLY_REVIEWED",
-        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
-      },
-      "recovery_20261013": {
-        "previous_status": "C",
-        "new_status": "C",
-        "result": "NHC_OFFICIAL_REPORTS_INDEXED_BROWSER_412",
-        "preferred_url": "https://www.nhc.gov.cn/",
-        "comment": "国家卫健委公开2026政策与新闻搜索索引可读；当前网页工具直接打开412，继续待验证。",
-        "evidence_url": "https://www.nhc.gov.cn/",
-        "verified_at": "2026-10-13",
-        "production_host_validation": "NOT_RUN",
-        "permission_for_AI": "NOT_REVIEWED"
-      },
-      "cloud_smoke_20261013": {
-        "test_env": "isolated GitHub Actions ubuntu-latest branch audit/neican-source-smoke-20261013",
-        "test_runs": [
-          1
-        ],
-        "round1": {
-          "status": "REQUEST_ERROR",
-          "http_status": 412,
-          "content_success": false
-        },
-        "round2": null,
-        "round3": [],
-        "round4": [],
-        "evidence_paths": [
-          "audits/source-smoke-20261013.json",
-          "audits/source-smoke-round2-20261013.json",
-          "audits/source-smoke-round3-20261013.json",
-          "audits/source-smoke-round4-20261013.json"
-        ],
-        "sample_note": "No usable content proven; refer to round results",
-        "production_continuous_validation": "NOT_RUN",
-        "ai_processing_terms": "NOT_REVIEWED"
       }
     },
     {
@@ -4577,5 +4197,38 @@
     "all_130_production_tests": "NOT_RUN",
     "lawful_use_terms_per_source": "INCOMPLETE",
     "notes": "A only means a public webpage, report or official free API is readable; it does NOT confer rights to bulk extract/train or redistribute."
-  }
+  },
+  "active_registry_size": 124,
+  "excluded_by_user": [
+    {
+      "id": "SRC-034",
+      "name": "Congress.gov",
+      "record_file": "SOURCE_ABANDONED_2026-10-13.json"
+    },
+    {
+      "id": "SRC-039",
+      "name": "欧盟委员会 Press Corner",
+      "record_file": "SOURCE_ABANDONED_2026-10-13.json"
+    },
+    {
+      "id": "SRC-086",
+      "name": "NHK World Japan",
+      "record_file": "SOURCE_ABANDONED_2026-10-13.json"
+    },
+    {
+      "id": "SRC-106",
+      "name": "European Parliament",
+      "record_file": "SOURCE_ABANDONED_2026-10-13.json"
+    },
+    {
+      "id": "SRC-117",
+      "name": "国家药监局 NMPA",
+      "record_file": "SOURCE_ABANDONED_2026-10-13.json"
+    },
+    {
+      "id": "SRC-118",
+      "name": "国家卫健委 NHC",
+      "record_file": "SOURCE_ABANDONED_2026-10-13.json"
+    }
+  ]
 }
