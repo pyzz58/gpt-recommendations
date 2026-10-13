@@ -47,6 +47,36 @@ PRIORITY = re.compile(
 )
 
 
+
+BEIJING_TZ = ZoneInfo("Asia/Shanghai")
+EDITION_CUTOFF = dt.time(1, 0)
+# Reserve three minutes for SMTP delivery; do not initiate late sends.
+LATEST_SEND_START = dt.timedelta(minutes=57)
+
+
+def edition_window(now: dt.datetime) -> tuple[dt.datetime, dt.datetime, dt.date]:
+    """Fixed Beijing 01:00-to-01:00 reporting interval, independent of runner delay."""
+    if now.tzinfo is None or now.utcoffset() is None:
+        raise ValueError("An aware timestamp is required for the edition window.")
+    local = now.astimezone(BEIJING_TZ)
+    edition_date = local.date() if local.time() >= EDITION_CUTOFF else local.date() - dt.timedelta(days=1)
+    end = dt.datetime.combine(edition_date, EDITION_CUTOFF, tzinfo=BEIJING_TZ)
+    start = end - dt.timedelta(hours=24)
+    return start, end, edition_date
+
+
+def require_live_delivery_window(now: dt.datetime, edition_end: dt.datetime) -> None:
+    """Fail visibly instead of emailing an obsolete report after 02:00 Beijing."""
+    if now.tzinfo is None or now.utcoffset() is None:
+        raise ValueError("An aware timestamp is required for the delivery deadline.")
+    local = now.astimezone(BEIJING_TZ)
+    if not edition_end <= local < edition_end + LATEST_SEND_START:
+        raise RuntimeError(
+            "Outside Beijing delivery window (01:00–01:57). "
+            "Do not send a stale edition; inspect the scheduled workflow."
+        )
+
+
 def clean(value: str, limit: int = 260) -> str:
     value = html.unescape(re.sub(r"<[^>]*>", " ", value or ""))
     value = re.sub(r"\s+", " ", value).strip()
@@ -64,7 +94,7 @@ def published_at(entry: dict) -> dt.datetime | None:
 
 
 def fetch_one(category: str, feed: dict, start: dt.datetime, end: dt.datetime):
-    """Collect links published during the previous Beijing calendar day."""
+    """Collect links published in the fixed preceding 24-hour Beijing window."""
     try:
         response = requests.get(
             feed["url"],
@@ -474,10 +504,11 @@ def main():
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     settings = json.loads((ROOT / "feeds.json").read_text(encoding="utf-8"))
-    now = dt.datetime.now(ZoneInfo("Asia/Shanghai"))
-    news_day = (now - dt.timedelta(days=1)).date()
-    start = dt.datetime.combine(news_day, dt.time.min, tzinfo=now.tzinfo)
-    end = start + dt.timedelta(days=1)
+    now = dt.datetime.now(BEIJING_TZ)
+    start, end, news_day = edition_window(now)
+    if not (args.dry_run or args.demo):
+        require_live_delivery_window(now, end)
+    LOG.info("News reporting window (Beijing): %s inclusive to %s exclusive", start.isoformat(), end.isoformat())
     diagnostics = {}
     if args.demo:
         grouped = {}
@@ -572,7 +603,8 @@ def main():
                 # Never retry and never leak prompt or credentials to logs.
                 LOG.warning("AI commentary skipped without retry: %s",
                             type(exc).__name__)
-        send_email(f"全球新闻选编｜{news_day}", cover_html, cover_txt, pdf_attachment=pdf_path)
+        require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
+        send_email(f"全球新闻选编｜{news_day} 01:00截稿", cover_html, cover_txt, pdf_attachment=pdf_path)
         LOG.info("PDF report handed to SMTP server: %s (%d bytes)", pdf_path.name, pdf_path.stat().st_size)
 
 if __name__ == "__main__":
