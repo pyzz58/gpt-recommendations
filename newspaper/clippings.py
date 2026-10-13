@@ -104,6 +104,9 @@ def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple
                 f'<div class="source-meta">{esc(meta)}</div>'
             ])
             plain.extend([zh_title,en_title,meta])
+            if "title_translation_ends_mid_clause" in (article.get("title_qa_flags") or []) or "title_translation_too_little_chinese" in (article.get("title_qa_flags") or []) or "title_translation_empty" in (article.get("title_qa_flags") or []):
+                page.append('<p class="part-mark">中文机译标题疑似残缺，故优先展示原始英文标题；新闻正文仍保留逐句双语对照。</p>')
+                plain.append("中文标题疑似残缺，已以英文原标题替代。")
             if article.get("source_language") == "zh":
                 page.append('<p class="part-mark">中文原始来源；未生成或冒充英文原文译文。</p>')
             used=set()
