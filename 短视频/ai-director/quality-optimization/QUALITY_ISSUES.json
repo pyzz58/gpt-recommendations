@@ -948,8 +948,8 @@
       "opened_on": "2026-10-13",
       "evidence": {
         "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/50",
-        "commit_sha": "f6dc758433448a468233d80464adf852e4a9aa06",
-        "automated_test": "tests/test_director_editorial_montage.py and full GitHub Actions regression (in review).",
+        "commit_sha": "8c5a9874773aeddbd4562c067b148d1728e4933e",
+        "automated_test": "GitHub Actions run 38378525193: 817/817 unittest passed; synthetic package and quality registry check passed (2026-10-13).",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -972,6 +972,12 @@
           "date": "2026-10-13",
           "status": "in_progress",
           "note": "QO-D09第一阶段：将跨场次组合、时间跳转依据、场次/演员道具来源指纹和逐剪口导演理由纳入现有总导演与十岗位规划。代码已写入PR #50；只有离线计划，仍须CI运行证据、独立创意盲评及实际视频连续性检验。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/50"
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "PR #50完整CI已验证817项单元回归通过；静态验证只确认导演时空蒙太奇的来源、连续状态和工单交接，不确认真实镜头和独立专业美学审片。",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/50"
         }
       ]
