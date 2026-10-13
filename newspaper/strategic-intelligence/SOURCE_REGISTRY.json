@@ -32,10 +32,10 @@
       "access": "公开栏目；部分正文/商业授权有限",
       "fallback": "GDELT与公开合法检索",
       "production_test": "NOT_RUN",
-      "audit_access": "PRIOR_PUBLIC_PAGE_OR_DOCUMENTATION_REVIEW",
-      "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
+      "audit_access": "Reuters world and 2026-10-12 article read successfully",
+      "content_test_result": "WEB_TOOL_ARTICLE_FULL_HTML_SAMPLE_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "access_cost": "FREE_PARTIAL_SUBSET_ONLY",
+      "access_cost": "FREE_PUBLIC_ARTICLE_SAMPLE__COMMERCIAL_LICENSE_NOT_GRANTED",
       "audited_at": "2026-10-13"
     },
     {
@@ -78,9 +78,9 @@
       "fallback": "RSS/合法搜索，技术烟测",
       "production_test": "NOT_RUN",
       "audit_access": "PRIOR_PUBLIC_PAGE_OR_DOCUMENTATION_REVIEW",
-      "content_test_result": "RSS_URL_XML_RESPONSE_WEB_TOOL_CANNOT_PARSE",
+      "content_test_result": "RSS_ENDPOINT_RESPONDED_TEXT_XML_BUT_BROWSER_PARSER_UNSUPPORTED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "access_cost": "UNVERIFIED",
+      "access_cost": "FREE_FEED_EXPECTED__NEEDS_XML_CLIENT_SMOKE_TEST",
       "audited_at": "2026-10-13"
     },
     {
@@ -93,7 +93,7 @@
       "fallback": "新华中文官网/搜索",
       "production_test": "NOT_RUN",
       "audit_access": "PRIOR_PUBLIC_PAGE_OR_DOCUMENTATION_REVIEW",
-      "content_test_result": "WEB_TOOL_FETCH_FAILED_ENGLISH_ONLY",
+      "content_test_result": "ENGLISH_SITE_FAIL__CHINESE_NEWS_CN_WORKS",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "UNVERIFIED",
       "audited_at": "2026-10-13"
@@ -123,9 +123,9 @@
       "fallback": "GDELT/媒体原生源",
       "production_test": "NOT_RUN",
       "audit_access": "PRIOR_PUBLIC_PAGE_OR_DOCUMENTATION_REVIEW",
-      "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
+      "content_test_result": "PREVIOUS_API_DOC_REVIEW",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "access_cost": "FREE_PARTIAL_SUBSET_ONLY",
+      "access_cost": "DOCUMENTED_API_UNTESTED",
       "audited_at": "2026-10-13"
     },
     {
@@ -348,7 +348,7 @@
       "fallback": "指标页面",
       "production_test": "NOT_RUN",
       "audit_access": "PRIOR_PUBLIC_PAGE_OR_DOCUMENTATION_REVIEW",
-      "content_test_result": "WEB_TOOL_JSON_RESPONSE_OK",
+      "content_test_result": "WEB_TOOL_JSON_RESPONSE_OK_2026_10_13",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
       "audited_at": "2026-10-13"
@@ -873,7 +873,7 @@
       "fallback": "药监公告",
       "production_test": "NOT_RUN",
       "audit_access": "PRIOR_PUBLIC_PAGE_OR_DOCUMENTATION_REVIEW",
-      "content_test_result": "WEB_TOOL_JSON_RESPONSE_OK",
+      "content_test_result": "WEB_TOOL_JSON_RESPONSE_OK_2026_10_13",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
       "audited_at": "2026-10-13"
@@ -1344,36 +1344,6 @@
       "audited_at": "2026-10-13"
     },
     {
-      "id": "SRC-090",
-      "sector": "新闻",
-      "name": "Financial Times免费可读栏目",
-      "status": "C",
-      "url": "https://www.ft.com/",
-      "access": "大量内容可能付费；仅允许确认为公开的单篇，不作为完整免费全文来源",
-      "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
-      "production_test": "NOT_RUN",
-      "audit_access": "NOT_TESTED",
-      "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
-      "content_test_result": "UNCONFIRMED",
-      "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
-    },
-    {
-      "id": "SRC-091",
-      "sector": "新闻",
-      "name": "Bloomberg免费可读栏目",
-      "status": "C",
-      "url": "https://www.bloomberg.com/",
-      "access": "仅单篇合法公开内容候选，付费研究排除",
-      "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
-      "production_test": "NOT_RUN",
-      "audit_access": "NOT_TESTED",
-      "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
-      "content_test_result": "UNCONFIRMED",
-      "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
-    },
-    {
       "id": "SRC-092",
       "sector": "新闻",
       "name": "The Hindu公开新闻",
@@ -1440,21 +1410,6 @@
       "status": "C",
       "url": "https://www.africanews.com/",
       "access": "非洲本地视角候选，逐篇复核",
-      "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
-      "production_test": "NOT_RUN",
-      "audit_access": "NOT_TESTED",
-      "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
-      "content_test_result": "UNCONFIRMED",
-      "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
-    },
-    {
-      "id": "SRC-097",
-      "sector": "新闻",
-      "name": "Le Monde公开部分",
-      "status": "C",
-      "url": "https://www.lemonde.fr/",
-      "access": "付费文章剔除，只保留可免费获取单篇",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
       "production_test": "NOT_RUN",
       "audit_access": "NOT_TESTED",
@@ -2004,5 +1959,22 @@
       "audited_at": "2026-10-13"
     }
   ],
-  "access_note": "Free public access and legal reuse/AI processing are separate. Direct test conducted by web browsing proxy not project runtime; all production_test NOT_RUN."
+  "access_note": "B publicly free subsets remain eligible for manual reading with permission review; paid/full institutional research removed. All production_test NOT_RUN.",
+  "removed_paid_or_unverified_subsets": [
+    {
+      "name": "Financial Times免费可读栏目",
+      "url": "https://www.ft.com/",
+      "reason": "Complete content not verified as free; remove from active free-source catalog; preserve as restricted leads only"
+    },
+    {
+      "name": "Bloomberg免费可读栏目",
+      "url": "https://www.bloomberg.com/",
+      "reason": "Complete content not verified as free; remove from active free-source catalog; preserve as restricted leads only"
+    },
+    {
+      "name": "Le Monde公开部分",
+      "url": "https://www.lemonde.fr/",
+      "reason": "Complete content not verified as free; remove from active free-source catalog; preserve as restricted leads only"
+    }
+  ]
 }
