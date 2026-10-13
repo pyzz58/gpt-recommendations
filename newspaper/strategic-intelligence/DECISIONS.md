@@ -118,3 +118,15 @@ review_due: "何时或何种触发条件再复核"
 | D-031 | “另外我需要审计下这个整体的内参框架和逻辑流程是什么” | [ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)，包含当前实际资产、七层/15工序、严重断点和逐步修复 |
 
 **用户并未要求也未授权启用正式系统、恢复来源全量测试或修改既有日报。上述决策是设计与文档的修改。**
+
+## I｜V4.2本轮用户明确赞同、架构定稿与延期修复（2026-10-13）
+
+| 编号 | 用户决定的具体范围 | 现行归档与状态 |
+|---|---|---|
+| D-032 | 用户明确说“**这个很好，很对，我同意**”：认可**内参不应承诺任何事件背后必有唯一终极规律；现实可能由多机制构成，研究应选解释力强且证据充分的机制，同时明示未知** | 最高判断原则，落在[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)、[HARD_RULES.md](HARD_RULES.md)R013；APPROVED_DIRECTION |
+| D-033 | “搜索中国古代帝师、现代智囊团、顶级顾问的思考逻辑（通过书籍资料），整理一套逻辑写规范”，并深化旧十二步直接写入顾问帝师 | 依据古典原籍、博物馆学术研究、RAND、Heuer、McKinsey、Rumelt、英国财政部规范形成新**七问三检验**；[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)；APPROVED_DIRECTION；非已训练模型 |
+| D-034 | 指出原第4层机制发现、第5层顾问帝师可能重复；同意不用各栏目独立模型；**明确把杂志内容结构先定下来** | 合并成一个联合认知研究工作台，逻辑六层；[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)；APPROVED_DIRECTION |
+| D-035 | 读者看到一本周刊杂志，逐篇是“某某事件发生了什么的汇总/新闻正文”，随后是“评价和顾问帝师讲解” | 正式主文**A记者式报道→B顾问研判＋帝师释理→C继续验证及来源**；[templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md)；APPROVED_DIRECTION |
+| D-036 | “审计结论先记录到问题中，等到未来开始实际做的时候，从这里面可以看到问题在修复”；当前只定杂志架构 | [ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)NC-001—NC-018；状态DESIGN_RESOLVED不等于VERIFIED；**不实际动工**；APPROVED_EXECUTION（文档登记） |
+
+**其它已生效决定不变**：正式周报＋年报、原日报隔离、124条活跃候选源不再大批量重测、用户认可内容要留档、未经授权不发件/不启收费服务。古籍案例借鉴不代表其史料价值立场均适合现代制度，也不代表AI拥有人类全部知识。
