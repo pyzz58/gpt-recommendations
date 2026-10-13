@@ -154,10 +154,13 @@ def select_readable(candidates, enriched):
             if a["url"] in used_urls or a["event_key"] in used_events: return False
             cs = set(a.get("countries", [])) - {"中国", "美国"}
             overcrowded = section == "国际政治与全球事件" and any(concentration[c] >= 1 for c in cs)
-            if overcrowded and not (allow_exception and a["importance_score"] >= 80): return False
+            # Geographic concentration triggers a review, not an absolute veto.
+            # Pass one prefers country diversity; pass two may retain a
+            # substantiated event and must record the exception.
+            if overcrowded and not allow_exception: return False
             if families[a["publisher_family"]] >= 2: return False
             if overcrowded:
-                exceptions.append({"event": a["event_key"], "reason": "同国重大事件达到80分；保留集中度复核标记"})
+                exceptions.append({"event": a["event_key"], "reason": "同国重要新闻集中，记录来源和必要性待复核；不自动删除事件"})
             selected.append({**a, "category": section})
             used_events.add(a["event_key"]); used_urls.add(a["url"])
             families[a["publisher_family"]] += 1
@@ -172,6 +175,15 @@ def select_readable(candidates, enriched):
             for a in available:
                 if len(selected) >= quota: break
                 add(a, exceptional)
+        # Additional exceptional political events may exceed the normal quota.
+        # Only very high-ranking distinct events qualify; never fill to a fixed
+        # page count merely to make the newsletter longer.
+        if section == "国际政治与全球事件":
+            for article in available:
+                if len(selected) >= quota + 2:
+                    break
+                if article["importance_score"] >= 90:
+                    add(article, allow_exception=True)
         output[section] = selected
         missing = [c for c in ("中国", "美国") if not any(c in a.get("countries", []) for a in selected)] if section == "中国与美国" else []
         diagnostics[section] = {"quota": quota, "candidate_count": len(candidates.get(section, [])),
