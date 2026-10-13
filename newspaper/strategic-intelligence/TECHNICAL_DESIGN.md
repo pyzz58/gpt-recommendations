@@ -7,7 +7,7 @@
 
 **核心约束：即使日报没有一条新闻或彻底不可用，研究引擎也必须能独立发现全球信息并形成可核查的候选池。** 每个候选条目记录来源、语言、地区、发布时间、发现时间、原文链接和获取权限。详见 [SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md)。
 
-生产候选来源与访问状态见 [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md)、[SOURCE_REGISTRY.json](SOURCE_REGISTRY.json)、[SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md) 与 [SOURCE_VERIFICATION_PLAYBOOK.md](SOURCE_VERIFICATION_PLAYBOOK.md)。特别要求政治、军事、AI、医疗、创业、社会与金融各类来源独立覆盖；当前目录SOURCE_REGISTRY.json列130个活动候选（A76、B7、C47），且全部production_test=NOT_RUN；抽样网页和两项JSON请求不等于真实部署。收费/AI用途禁止的产品已从生产来源资格中剔除，参见SOURCE_ACCESS_BLOCKLIST.md。
+生产候选来源与访问状态见 [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md)、[SOURCE_REGISTRY.json](SOURCE_REGISTRY.json)、[SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md) 与 [SOURCE_VERIFICATION_PLAYBOOK.md](SOURCE_VERIFICATION_PLAYBOOK.md)。特别要求政治、军事、AI、医疗、创业、社会与金融各类来源独立覆盖；截至2026-10-13逐源浏览器测试后，SOURCE_REGISTRY.json列130个活动候选（A94、B5、C31；生产测试0/130），且全部production_test=NOT_RUN；逐条网页访问和两项JSON请求不等于真实部署。收费/AI用途禁止的产品已从生产来源资格中剔除，参见SOURCE_ACCESS_BLOCKLIST.md。
 
 ## 2. 候选技术（须在实施当天再核验）
 - 广域发现候选：GDELT和Media Cloud作为互补的全球媒体索引，用于线索发现而不是自动认证新闻真实性；动态SourceRegistry+原生RSS/API及官方公开文件完成广度与核验。
