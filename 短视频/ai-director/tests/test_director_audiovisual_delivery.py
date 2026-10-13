@@ -97,6 +97,7 @@ def _review(base, state, meeting, plan, *, one_revision=False):
                             "evidence_supports_intent" if finished else
                             "cannot_evaluate"),
                 "evidence_level": "submitted_design" if finished else "not_submitted",
+                "delivery_quote": "The character faces the sealed envelope" if finished else "",
                 "intended_viewer_effect": f"镜头{sid}需要在具体手部动作中让观众经历意义变化。",
                 "observed_delivery_evidence": (
                     f"{dept}实际提交了相关镜头的已规划动作，但还没有真实影片证据。"
@@ -192,6 +193,18 @@ class DirectorAudiovisualReviewTests(unittest.TestCase):
         bad["findings"][0]["verdict"] = "evidence_supports_intent"
         with self.assertRaisesRegex(review.DirectorReviewError, "CANNOT_PASS_MISSING"):
             review.validate(self.base, self.state, self.command, self.language, bad)
+
+    def test_claimed_department_evidence_must_quote_real_submitted_work(self):
+        delivered = _acting_completed(self.base, self.state)
+        assessed = _review(self.base, delivered, self.command, self.language)
+        tampered = deepcopy(assessed)
+        tampered["findings"][0]["delivery_quote"] = "this quote never appeared in any specialist deliverable"
+        with self.assertRaisesRegex(review.DirectorReviewError, "QUOTE_NOT_IN_ACTUAL_DELIVERY"):
+            review.validate(self.base, delivered, self.command, self.language, tampered)
+        pending = _review(self.base, self.state, self.command, self.language)
+        pending["findings"][0]["delivery_quote"] = "fabricated"
+        with self.assertRaisesRegex(review.DirectorReviewError, "FAKE_MISSING_DELIVERY_QUOTE"):
+            review.validate(self.base, self.state, self.command, self.language, pending)
 
     def test_scoped_director_rework_only_after_a_real_delivery(self):
         completed = _acting_completed(self.base, self.state)
