@@ -12,6 +12,8 @@
 
 **正式杂志结构**：[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)——周报/年报的整本结构，以及每篇主文**A记者式新闻报道→B顾问研判＋帝师释理→C未来核查与来源**。原V4.1“机制发现”和“顾问＋帝师”合并为一个认知研究工作台，不重复生产两份点评。
 
+**GitHub Issues跟踪入口**：[Issue #43｜架构审计与未来修复清单](https://github.com/pyzz58/gpt-recommendations/issues/43)；完整18项依据保存在[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)，仍未执行修复。
+
 **历史审计与工程问题**：[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)——每项缺口有NC编号、当前证据、状态、未来修复步骤及验收；**目前只冻结内容设计、没有启动真实源码修复**。旧12步保留为研究详细检查库，非现行单独生产链。仍只有周报＋年报，日报不修改，124源不重测。
 
 ---
