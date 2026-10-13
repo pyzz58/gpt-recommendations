@@ -12,11 +12,11 @@ from ranking import _story_groups
 from source_quality import newsworthiness
 
 SECTIONS = {
+    "美股·全球金融市场": 4,
     "中国与美国": 3,
     "国际政治与全球事件": 3,
-    "金融、宏观与美股": 3,
     "AI与数字产业": 2,
-    "科技、能源与前沿科学": 2,
+    "科技、能源与前沿科学": 1,
     "创业、商业与企业竞争": 2,
     "医疗、生命科学与公共健康": 1
 }
@@ -63,6 +63,10 @@ def countries(item):
                 result.add(name)
         elif matches(pattern, title):
             result.add(name)
+    if re.search(r"中国|中方|北京|国务院|央行|央企", title):
+        result.add("中国")
+    if re.search(r"美国|美联储|华尔街|白宫|美股|特朗普", title):
+        result.add("美国")
     return result
 
 def publisher(item):
@@ -84,7 +88,27 @@ def sections(item):
         return set()
     result = set()
     if countries(item) & {"中国", "美国"}: result.add("中国与美国")
-    for label, pattern in (("国际政治与全球事件", POLITICS), ("金融、宏观与美股", FINANCE),
+    if item.get("source_language") == "zh":
+        # Preserve Chinese as the publisher's original text (never invent an
+        # English translation). Chinese-specific relevance routing is required.
+        if re.search(r"美股|纳指|标普|道指|美联储|美国国债|财报|港股|股市|利率|通胀|资本市场", s):
+            result.add("美股·全球金融市场")
+        if re.search(r"国际|外交|冲突|关税|战事|军事|政策|选举|制裁|条约|总统", s):
+            result.add("国际政治与全球事件")
+        if re.search(r"人工智能|大模型|算力|芯片|AI|数字经济", s, re.I):
+            result.add("AI与数字产业")
+        if re.search(r"科技|能源|核电|航天|半导体|机器人|材料|量子|新能源", s):
+            result.add("科技、能源与前沿科学")
+        if re.search(r"创业|融资|企业|并购|商业|上市|营收|利润|零售", s):
+            result.add("创业、商业与企业竞争")
+        if re.search(r"医疗|卫生|临床|疾病|生物科技|新药|医保", s):
+            result.add("医疗、生命科学与公共健康")
+        if re.search(r"八卦|追星|恋爱|短剧|电视剧|花边|明星绯闻|优惠券|博彩|抽奖", title):
+            return set()
+        return result
+    if item.get("source_type") in ("primary_regulator","primary_central_bank","exchange_company") and matches(FINANCE, s):
+        result.add("美股·全球金融市场")
+    for label, pattern in (("国际政治与全球事件", POLITICS), ("美股·全球金融市场", FINANCE),
                            ("AI与数字产业", AI), ("科技、能源与前沿科学", SCIENCE + "|" + ENERGY),
                            ("创业、商业与企业竞争", BUSINESS),
                            ("医疗、生命科学与公共健康", HEALTH)):
@@ -96,6 +120,18 @@ def score(item, independent_publishers):
     cs = countries(item)
     global_signal = matches(r"\b(?:global|worldwide|international|cross-border|world trade|supply chain|export ban|shipping|OPEC|federal reserve|imports?|exports?|trade)\b", s)
     scope = 30 if global_signal else 22 if len(cs) >= 2 else 10 if cs else 5
+    if item.get("source_language") == "zh":
+        material = bool(re.search(r"政策|央行|利率|通胀|股市|财报|上市|监管|法律|关税|国家|国际|贸易|出口|产业|核电|临床|制裁|金融市场", s))
+        score_value = (62 if material else 24) + (10 if len(cs) >= 2 else 0)
+        rating = newsworthiness(item)
+        return min(100,score_value), {
+            "cross_border_proxy":scope, "scale_proxy": 20 if material else 5,
+            "structural_change_proxy": 15 if material else 5,
+            "new_development_proxy": 10, "publisher_breadth_proxy": 0,
+            "editorial_materiality_reason": "Chinese language source: native text retained",
+            "editorial_noise_penalty": -rating["penalty"],
+            "editorial_eligible": rating["eligible"]
+        }
     systemic = matches(r"\b(?:central bank|federal reserve|interest rate|war|invasion|pandemic|financial crisis|trade agreement|national election|export ban|power grid)\b", s)
     scale = 25 if systemic else 16 if matches(FINANCE + "|" + ENERGY, s) else 8
     structural = matches(r"\b(?:law|legislation|treaty|regulation|sanction|tariff|approval|breakthrough|acquisition|merger|bankruptcy|infrastructure|ban|quota|restrict|limit)\w*", s)
@@ -155,11 +191,23 @@ def prepare_pool(items, per_section=20):
 def select_readable(candidates, enriched):
     output, diagnostics = {}, {}
     used_events, used_urls = set(), set()
+    # Moving finance to the front must not consume the last three eligible
+    # China/US events; front-page reporting and that fixed three-item panel
+    # share one deduplicated event pool.
+    china_us_events = {
+        enriched[a["url"]]["event_key"]
+        for a in candidates.get("中国与美国", [])
+        if enriched.get(a["url"])
+    }
     for section, quota in SECTIONS.items():
         available = [enriched[a["url"]] for a in candidates.get(section, []) if enriched.get(a["url"])]
         selected, families, concentration, exceptions = [], Counter(), Counter(), []
         def add(a, allow_exception=False):
             if a["url"] in used_urls or a["event_key"] in used_events: return False
+            if (section == "美股·全球金融市场"
+                    and a["event_key"] in china_us_events
+                    and len(china_us_events - used_events) <= 3):
+                return False
             cs = set(a.get("countries", [])) - {"中国", "美国"}
             overcrowded = section == "国际政治与全球事件" and any(concentration[c] >= 1 for c in cs)
             # Geographic concentration triggers a review, not an absolute veto.
@@ -174,6 +222,17 @@ def select_readable(candidates, enriched):
             families[a["publisher_family"]] += 1
             concentration.update(cs)
             return True
+        if section == "美股·全球金融市场":
+            # Reserve one slot for a genuinely important primary institutional
+            # release when available. Do not fill the paper with routine SEC
+            # event notices or ordinary Treasury auctions merely for variety.
+            for article in available:
+                if article.get("source_type") in {
+                    "primary_regulator", "primary_central_bank",
+                    "primary_treasury", "primary_economic_data"
+                } and article.get("importance_score", 0) >= 65:
+                    if add(article):
+                        break
         if section == "中国与美国":
             for country in ("中国", "美国"):
                 if any(country in a.get("countries", []) for a in selected): continue

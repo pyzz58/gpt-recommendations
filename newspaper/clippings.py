@@ -23,7 +23,7 @@ h3 { font-size:13pt; line-height:1.44; margin:6mm 0 1.5mm; break-after:avoid; }
 .part-mark { font:7.7pt "Noto Sans CJK SC",sans-serif;color:#777; }
 """
 
-def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
+def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple[str,str]:
     """Render source-faithful edited reporting with paired English-Chinese lines."""
     formatted=day.strftime("%Y年%m月%d日")
     page=[
@@ -35,13 +35,43 @@ def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
         '<div class="kicker">GLOBAL NEWS · PERSONAL EDITION</div>',
         '<div class="cover-rule"></div>',
         '<h1 class="cover-title">全球新闻<br>选编</h1>',
-        '<div class="cover-subtitle">中美 · 政治 · 金融 · AI · 商业 · 能源 · 科学</div>',
+        '<div class="cover-subtitle">美股 · 全球金融 · 中美 · 政治 · AI · 商业 · 科学</div>',
         '<div class="cover-date">'+esc(formatted)+'</div>',
         '<p class="cover-note">面向决策者的完整编辑报道 · 英中逐句对照<br>'
         '删节重复与枝节，保留关键事实、背景、观点归属与限制条件。</p>',
         '</section>',
     ]
     plain=[f"全球新闻选编 | {formatted}"]
+    # A concise, sourced US market dashboard precedes all editorial sections.
+    # The 01:00 Beijing edition cannot truthfully claim a complete same-day
+    # US close: FRED values are dated completed-session observations only.
+    if market_snapshot is not None:
+        observations = market_snapshot.get("values", [])
+        page.append('<section class="market-overview">'
+                    '<h2>美股头版 · 指数、波动率与利率</h2>'
+                    '<p class="part-mark">FRED公开日度数据；逐项注明数据日期，非实时行情。'
+                    '缺失数据不推测，百分比变化仅与上一条有效日度观测比较。</p>')
+        plain.append("美股头版 · FRED已公布的最近日度数据（非实时行情）")
+        for item in observations:
+            name = str(item["name"])
+            value = float(item["value"])
+            as_of = str(item["as_of"])
+            suffix = "%" if item["series"].startswith("DGS") else ""
+            change = item.get("change_percent")
+            change_str = (
+                ("；较上一个有效观测日 " + ("%+.2f%%" % float(change)))
+                if change is not None and not suffix else ""
+            )
+            statement = f"{name}：{value:,.2f}{suffix}（{as_of}）{change_str}"
+            page.append(f'<p class="story-line zh">{esc(statement)}</p>')
+            plain.append(statement)
+        if not observations:
+            page.append('<p>本期无法核实FRED指数及收益率数据，因此不发布数值。</p>')
+            plain.append("本期FRED市场数据不可核实，未提供数字。")
+        if market_snapshot.get("missing"):
+            page.append('<p class="part-mark">未取得最新可核实数据：'
+                        + esc("、".join(market_snapshot["missing"])) + '</p>')
+        page.append('</section>')
     for sect, (category, articles) in enumerate(
             [(k,v) for k,v in grouped.items() if v],1):
         page.append(
@@ -65,13 +95,15 @@ def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
                 f'<div class="source-meta">{esc(meta)}</div>'
             ])
             plain.extend([zh_title,en_title,meta])
+            if article.get("source_language") == "zh":
+                page.append('<p class="part-mark">中文原始来源；未生成或冒充英文原文译文。</p>')
             used=set()
             notes=[]
             previous=None
             for pair in pairs:
                 en=str(pair.get("en","")).strip()
                 zh=str(pair.get("zh","")).strip()
-                if not en or not zh:
+                if not zh:
                     continue
                 pid=pair.get("paragraph_id",0)
                 if pid!=previous:
@@ -94,13 +126,17 @@ def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
                     notes.append((no,hit.group(0),lesson.get("explanation","")))
                     used.add(lesson.get("type"))
                     break
-                page.append(
-                    '<div class="story-line">'
-                    +f'<p class="en">{_highlight_sentence(en,matched,no)}</p>'
-                    +f'<p class="zh">{esc(zh)}</p>'
-                    +'</div>'
-                )
-                plain.append(en+"\n"+zh)
+                if en:
+                    page.append(
+                        '<div class="story-line">'
+                        +f'<p class="en">{_highlight_sentence(en,matched,no)}</p>'
+                        +f'<p class="zh">{esc(zh)}</p>'
+                        +'</div>'
+                    )
+                    plain.append(en+"\\n"+zh)
+                else:
+                    page.append('<p class="story-line zh">' + esc(zh) + '</p>')
+                    plain.append(zh)
             if previous is not None:
                 page.append("</div>")
             if article.get("editing_mode") == "evidence_mapped_edited_report":

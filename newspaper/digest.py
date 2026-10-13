@@ -32,6 +32,7 @@ from newsroom import prepare_pool, select_readable, publisher
 from brief_editor import edit_grouped, apply_reports
 from edition_budget import EditionBudget
 from news_editor import edit_reports_in_batches, write_compact_commentary
+from market_snapshot import fetch_market_snapshot
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -123,6 +124,8 @@ def fetch_one(category: str, feed: dict, start: dt.datetime, end: dt.datetime):
                     "title": title, "summary": clean(entry.get("summary", "")),
                     "url": link, "date": stamp,
                     "author": clean(entry.get("author", ""), 150),
+                    "source_type": feed.get("source_type", "media"),
+                    "source_language": "zh" if feed.get("source_type") == "cn_business_media" or feed.get("source_type") == "cn_state_media" else "en",
                 })
         return articles, True
     except Exception as exc:
@@ -302,6 +305,19 @@ def bilingualize(grouped: dict, translator) -> dict:
         output[category] = []
         for article in articles:
             entry = dict(article)
+            if entry.get("source_language") == "zh":
+                # Publisher-original Chinese articles are kept in Chinese.
+                # Do not mislabel a machine-created English version as source.
+                entry["title_zh"] = article["title"]
+                chunks = [p.strip() for p in article["reading_en"].split("\\n\\n") if p.strip()]
+                entry["bilingual_pairs"] = [
+                    {"en": "", "zh": p, "paragraph_id": pid}
+                    for pid, p in enumerate(chunks)
+                ]
+                entry["reading_zh"] = article["reading_en"]
+                entry["translation_qa_flags"] = []
+                output[category].append(entry)
+                continue
             entry["title_zh"] = clean(translator.translate(article["title"]), 280)
             pairs = []
             qa_flags = []
@@ -603,8 +619,12 @@ def main():
             def before_editorial_request():
                 if not args.quality_sample:
                     require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
+            english_reports = {
+                section: [a for a in articles if a.get("source_language") != "zh"]
+                for section, articles in readable.items()
+            }
             plans, failed_batches = edit_reports_in_batches(
-                readable, ai_key, ledger,
+                english_reports, ai_key, ledger,
                 before_request=before_editorial_request)
             readable = apply_reports(readable, plans)
             editorial_audit["edited"] = sum(
@@ -640,7 +660,12 @@ def main():
             vocab_limit=0,
         )
     # Print evidence-mapped edited reports; keep commentary outside news copy.
-    html_body, text_body = build_clippings_html(grouped, news_day)
+    market_data = None
+    if not args.demo:
+        market_data = fetch_market_snapshot()
+        LOG.info("FRED market dashboard: verified=%d missing=%d",
+                 len(market_data["values"]), len(market_data["missing"]))
+    html_body, text_body = build_clippings_html(grouped, news_day, market_snapshot=market_data)
     if args.quality_sample:
         # Label the PDF prominently: sample is not the scheduled daily edition.
         html_body = html_body.replace(

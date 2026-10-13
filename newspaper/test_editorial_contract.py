@@ -11,7 +11,7 @@ from digest import edition_window,BEIJING_TZ
 class EditorialContract(unittest.TestCase):
     def test_approved_seven_sections(self):
         self.assertEqual(list(SECTIONS),[
-            "中国与美国","国际政治与全球事件","金融、宏观与美股",
+            "美股·全球金融市场","中国与美国","国际政治与全球事件",
             "AI与数字产业","科技、能源与前沿科学",
             "创业、商业与企业竞争","医疗、生命科学与公共健康"])
         self.assertEqual(SECTIONS["中国与美国"],3)
