@@ -12,6 +12,10 @@ class FakeResponse:
     def __init__(self, body):
         self.text = body
 
+    @property
+    def content(self):
+        return self.text.encode('utf-8')
+
     def raise_for_status(self):
         pass
 
@@ -30,6 +34,8 @@ class MarketProvenanceTests(unittest.TestCase):
                 if ticker == "^spx":
                     return FakeResponse("Date,Close\n2026-10-09,6700\n2026-10-12,6710\n")
                 return FakeResponse("Date,Close\n")
+            if "home.treasury.gov" in url:
+                return FakeResponse('<feed xmlns="http://www.w3.org/2005/Atom" />')
             raise AssertionError("Unexpected external request")
 
         with patch("market_snapshot.requests.get", side_effect=fake_get):
