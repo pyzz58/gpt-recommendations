@@ -62,7 +62,7 @@ def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple
                 ("；较上一个有效观测日 " + ("%+.2f%%" % float(change)))
                 if change is not None and not suffix else ""
             )
-            statement = f"{name}：{value:,.2f}{suffix}（{as_of}）{change_str}；来源：{item.get(\'source\', \'FRED\')}"
+            statement = f"{name}：{value:,.2f}{suffix}（{as_of}）{change_str}；来源：{item.get('source', 'FRED')}"
             page.append(f'<p class="story-line zh">{esc(statement)}</p>')
             plain.append(statement)
         if not observations:
