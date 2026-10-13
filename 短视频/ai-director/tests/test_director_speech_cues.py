@@ -195,6 +195,15 @@ class TimedDialogueCoverageTests(unittest.TestCase):
                 "COVERAGE_CANNOT_SPLIT_UNTIMED_SPEECH"):
             coverage.validate(self.h, self.ds, self.plan, bad)
 
+    def test_overlapping_adjacent_subtitle_cues_are_rejected(self):
+        bad = deepcopy(self.approved)
+        captions = [x for x in bad["speech_cue_timeline"]["subtitles"]
+                    if x["beat_id"] == "B03"]
+        self.assertEqual(len(captions), 2)
+        captions[0]["to_s"] = captions[1]["from_s"] + .1
+        with self.assertRaisesRegex(cues.SpeechCueError, "SUBTITLE_OVERLAP"):
+            coverage.validate(self.h, self.ds, self.plan, bad)
+
     def test_overlapping_consecutive_dialogue_rejected(self):
         bad = deepcopy(self.approved)
         # B03 has two utterances; overlapping windows violate spoken order.
