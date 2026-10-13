@@ -47,7 +47,9 @@ class PageText(HTMLParser):
             self.text.append(v)
 
 def check(entry, user_agent):
-    url = entry["url"]
+    url = (entry.get("cloud_smoke_20261013", {}).get("verified_access_url")
+           or entry.get("recovery_20261013", {}).get("preferred_url")
+           or entry["url"])
     result = {"id": entry["id"], "name": entry["name"], "url": url,
               "at": datetime.now(timezone.utc).isoformat(),
               "status": "UNKNOWN", "error": None, "content_type": None,
@@ -60,7 +62,7 @@ def check(entry, user_agent):
         result["status"] = "SKIPPED_NOT_HTTPS"
         return result
     req = Request(url, headers={"User-Agent": user_agent,
-                                "Accept": "text/html,application/json,application/rss+xml,application/xml,*/*"})
+                                "Accept": "text/html,application/json,application/rss+xml,application/atom+xml,application/xml,text/xml,*/*"})
     try:
         with urlopen(req, timeout=TIMEOUT) as response:
             result["http_status"] = response.status
@@ -72,19 +74,37 @@ def check(entry, user_agent):
             decoded = data.decode("utf-8", errors="replace")
             if "json" in ctype:
                 obj = json.loads(decoded)
-                result["status"] = "JSON_VALID"
-                if isinstance(obj, dict):
-                    result["sample_title"] = ", ".join(list(obj)[:5])
-                elif isinstance(obj, list):
+                result["record_count"] = 0
+                if isinstance(obj, list):
+                    result["record_count"] = len(obj)
                     result["sample_title"] = "JSON array, length " + str(len(obj))
+                elif isinstance(obj, dict):
+                    nested = obj.get("data")
+                    if isinstance(nested, list):
+                        result["record_count"] = len(nested)
+                    elif isinstance(nested, dict):
+                        result["record_count"] = sum(len(v) for v in nested.values() if isinstance(v, list))
+                    elif isinstance(obj.get("studies"), list):
+                        result["record_count"] = len(obj["studies"])
+                    elif isinstance(obj.get("resultList"), dict):
+                        result["record_count"] = len(obj["resultList"].get("result", []))
+                    result["sample_title"] = ", ".join(list(obj)[:5])
+                result["status"] = "JSON_HAS_RECORDS" if result["record_count"] else "JSON_NO_RECORDS"
             elif any(v in ctype for v in ("rss", "xml", "atom")) or decoded.lstrip().startswith("<?xml"):
                 try:
                     tree = ElementTree.fromstring(data)
+                    rss = tree.findall(".//item")
+                    atom = tree.findall(".//{http://www.w3.org/2005/Atom}entry")
+                    rdf = tree.findall(".//{http://purl.org/rss/1.0/}item")
+                    pubmed = tree.findall(".//IdList/Id") if tree.tag.lower().endswith("esearchresult") else []
+                    result["record_count"] = len(rss) + len(atom) + len(rdf) + len(pubmed)
                     title = tree.find(".//item/title")
                     if title is None:
                         title = tree.find(".//{http://www.w3.org/2005/Atom}entry/{http://www.w3.org/2005/Atom}title")
-                    result["sample_title"] = title.text[:200] if title is not None and title.text else None
-                    result["status"] = "XML_PARSED_HAS_ENTRY" if title is not None else "XML_PARSED_NO_ENTRY"
+                    if title is None:
+                        title = tree.find(".//{http://purl.org/rss/1.0/}item/{http://purl.org/rss/1.0/}title")
+                    result["sample_title"] = title.text[:200] if title is not None and title.text else (pubmed[0].text if pubmed else None)
+                    result["status"] = "XML_PARSED_HAS_ENTRIES" if result["record_count"] else "XML_PARSED_NO_ENTRIES"
                 except ElementTree.ParseError as ex:
                     result["status"] = "XML_TRUNCATED_OR_INVALID"
                     result["error"] = str(ex)[:250]
