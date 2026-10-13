@@ -1,3 +1,5 @@
+> **历史设计档案，非现行执行规范。** 本文V4.1的“七层与15道工序”已在V4.2—V4.4归并为**六层系统／顾问七问三检验／专业S0—S8选文／正式A-B1-B2-C杂志结构**。未来制作请先读[CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)与[ARCHITECTURE_AUDIT_V44.md](ARCHITECTURE_AUDIT_V44.md)。本文仍保留历史问题诊断，不授权按七层搭建重复Agent。
+
 # 内参系统｜V4.1完整架构与逻辑流程审计：现状、断点、修复顺序
 
 > 审计时点：2026-10-13；审计对象：GitHub仓库 \`pyzz58/gpt-recommendations/newspaper/strategic-intelligence/\` 以及父目录 \`newspaper/\`和 \`.github/workflows/\` 的目录结构。用户要求：全面审计“内参框架和逻辑流程是什么”，并且**帝师＋顾问的世界机制教学不能被九栏的固定课程限制**。
