@@ -377,7 +377,19 @@
     "allow_exceptional_major_news": true,
     "china_us_combined_quota": 3,
     "international_minimum_when_qualified": 3,
-    "us_markets_frontpage": true
+    "us_markets_frontpage": true,
+    "market_briefing_scope": [
+      "S&P 500",
+      "NASDAQ Composite",
+      "DJIA",
+      "VIX",
+      "US Treasury 2Y",
+      "US Treasury 10Y",
+      "SEC actions",
+      "Federal Reserve releases",
+      "corporate earnings",
+      "institutional research"
+    ]
   },
   "source_health_policy": {
     "record_feed_success_and_recent_item_counts": true,
@@ -387,15 +399,15 @@
   },
   "source_watchlist": [
     {
-      "name": "雪球杂志/雪球精选",
-      "url": "https://xueqiu.com/",
-      "mode": "monitor_only",
-      "reason": "No stable verified publicly authorized RSS endpoint; do not scrape authenticated user discussions or infer investment research authority"
+      "name": "雪球专刊（雪球杂志）",
+      "url": "https://xueqiu.com/u/3746414875",
+      "mode": "public_page_monitor",
+      "reason": "Official Snowball periodic investment journal, not an unrestricted RSS or authoritative exchange data; monitor public title/updated time, no private content and no daily article date imputation"
     },
     {
       "name": "人民日报海外版电子报",
       "url": "https://paper.people.com.cn/rmrbhwb/pc/layout/index.html",
-      "mode": "adapter_only",
+      "mode": "public_edition_monitor",
       "reason": "Edition HTML is not RSS; add controlled official-public-edition parsing separately"
     }
   ]
