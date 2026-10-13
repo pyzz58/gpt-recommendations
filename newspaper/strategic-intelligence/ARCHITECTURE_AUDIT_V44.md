@@ -117,3 +117,15 @@
 6. 保留的历史[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)、[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)、[DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)开头已经增加醒目的“历史方法，V4.4优先”声明，降低未来人工误取历史标准的风险。
 
 **仍需日后做的测试**：真正模型读入准确性、S0—S8真实正负/典型选稿、记者A实际报道的事实/版权、B顾问因果与帝师教学、C开放问题的非引导性、周报真实完整排版、年报双输入、数据版本化、运行成本及交付。以上均未因本次检查被标`VERIFIED`。
+
+## 七、二轮静态复审：流程回路和Markdown渲染问题（2026-10-13）
+
+**DOC-13（已修文档、未代码验证）**：全局六层架构之前把选题S0—S8当成L2阶段的前置整体工作，但S8要求**先完成L3原始资料查证及A记者稿，才能根据真实证据重新决定是否刊登**。本轮已具体把时序修成`L2(S0—S7初选)→L3(原件/Claim/NewsA)→L2(S8二次复审)→L4(顾问帝师及情景)`。如L4推演发现新关键证据还可重新复选，退稿与原先评分/原因不能被覆盖。真实执行与反证验收为[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)NC-023。
+
+**DOC-14（已修文档、需网页检查）**：新建主规格和部分专题规范曾因反引号转义问题使Markdown行内字段名/YAML块不能正确显示。已读取GitHub真实内容发现大量`\\` ` 转义残留，逐份修正文档（包括主规格、编辑与场景SOP、周报模板、AGENTS、工作流、数据契约、硬规则、README及年报SOP），再次抽样检查反引号转义=0且代码围栏成对闭合。仍未进行GitHub渲染网页的人工逐页检查，此项是NC-024。
+
+**静态链接检查结果**：按GitHub目录列表检查主规格/README/AGENTS/总蓝图/工作流/杂志及周报模板等8份的相对Markdown链接，**8份未发现指向不存在的目标**。对另一组8份主SOP/规则的同目录链接，亦未发现缺失。**这是部分核心文件的静态检查，不是全仓库/所有锚点/外部网址均能访问的保证。**
+
+**来源状态独立读库核实**：`SOURCE_REGISTRY.json` 当前总124条活跃候选，其中A116、B8；124/124`production_test=NOT_RUN`，124/124`ai_processing_permission=TERMS_NOT_YET_REVIEWED`，**绝不能把历史4个URL HTTP200抽样等同于124条可在生产中合法全文采集**。
+
+**更新后的问题台账范围是NC-001—NC-024**，GitHub总跟踪Issue [#43](https://github.com/pyzz58/gpt-recommendations/issues/43)已同步。这些静态检查改善了今后开发可读性，但**新闻事实准确、独立审核、知识学习效果和生产连续性仍没有真实样刊/自动流程验收**。
