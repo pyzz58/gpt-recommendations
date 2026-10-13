@@ -12,3 +12,6 @@
 - 视频情绪连贯而不空泛；镜头运动有动机；面对 AI 视频模型采取可拍摄的动作，数字图表走后期。
 - 全系列统一 visual_bible 风格，不使用“电影感、震撼、大师级”等空洞词替代具体场景与镜头语言。
 - 输出 series.json 的 JSON 必需有 series_title, characters, visual_bible, episodes，不能带额外文字。
+## 90秒最终成片绝对时间线（QO-D13）
+
+导演分集时分别交付 `intro_s/recap_s/bridge_s/outro_s/evidence_s`，不仅交付一个“片头片尾合计N秒”数字。来源/鸣谢末页仅当原文存在真实引用且**导演决定**显示时才设置 `evidence_s`，当前后期静态卡实际固定1.8秒，最后制片工单必须预留相等时长。为避免单集故事恰好90秒后被偷偷追加1.8秒，operator bundle 要求 `series_final_timeline.compile_final_timeline` 形成绝对时间轴并校验最后位置不超过90秒。时序为：片头→回顾→故事镜头→过渡→结尾→可选唯一末卡。所有最终媒体素材未实际生成的必须标记未生成，不得冒称剪辑完成。完整证据见 [QO-D13](../quality-optimization/QO-D13_FINAL_90_SECOND_EDIT_RUNTIME_AUDIT.md)。
