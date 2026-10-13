@@ -1,12 +1,13 @@
 {
   "timezone": "Asia/Shanghai",
   "max_per_category": {
-    "全球新闻": 4,
-    "美股与投资": 3,
-    "美联储与宏观": 1,
-    "创业与商业模式": 2,
-    "AI与科技": 2,
-    "医疗与科学": 1
+    "中国与美国": 3,
+    "国际政治与全球事件": 3,
+    "金融、宏观与美股": 3,
+    "AI与数字产业": 2,
+    "科技、能源与前沿科学": 2,
+    "创业、商业与企业竞争": 2,
+    "医疗、生命科学与公共健康": 1
   },
   "feeds": {
     "全球新闻": [
@@ -204,26 +205,48 @@
         "name": "MIT News Health",
         "url": "https://news.mit.edu/rss/topic/health"
       }
+    ],
+    "全球商业补充": [
+      {
+        "name": "BBC Business",
+        "url": "https://feeds.bbci.co.uk/news/business/rss.xml"
+      },
+      {
+        "name": "Guardian Economics",
+        "url": "https://www.theguardian.com/business/economics/rss"
+      },
+      {
+        "name": "Guardian Energy",
+        "url": "https://www.theguardian.com/environment/energy/rss"
+      },
+      {
+        "name": "Guardian US Politics",
+        "url": "https://www.theguardian.com/us-news/us-politics/rss"
+      },
+      {
+        "name": "CGTN China",
+        "url": "https://www.cgtn.com/subscribe/rss/section/china.xml"
+      }
     ]
   },
   "longread_max_chars": 18000,
-  "longread_min_chars": 1400,
+  "longread_min_chars": 1200,
   "candidate_pool_per_category": 20,
   "source_limit_per_category": 2,
   "grammar_examples_per_article": 3,
   "ranking": {
     "weights": {
-      "impact": 30,
-      "interest": 25,
-      "cross_source": 20,
-      "novelty_proxy": 15,
-      "recency": 10
+      "cross_border": 30,
+      "scale": 25,
+      "structural_change": 20,
+      "new_development": 15,
+      "publisher_breadth": 10
     },
-    "description": "Transparent heuristic only; outlet agreement not verified fact."
+    "description": "Evidence-labelled heuristic; publisher breadth is not proof or geographic independence."
   },
   "reading_policy": {
-    "mode": "full_extracted_original_if_accessible",
-    "description": "Keep all accessible consecutive source paragraphs, preserve sentence order, no LLM journalist rewrite. When extractor cannot access full story, show best available contiguous section without inventing missing material.",
+    "mode": "evidence_mapped_edited_report",
+    "description": "Complete source-based edited reports, with paragraph evidence and checks; conservative extractive fallback when unavailable or rejected.",
     "display_links": false,
     "body": "english_original_sentence_then_matching_chinese",
     "commentary": "independent_email_body_ai"
@@ -265,8 +288,22 @@
       "semiconductor",
       "robotics"
     ],
-    "article_editing": "unaltered journalist sentences; optional extractive edit keeps >=2/3 captured source words; do not rewrite quotes",
+    "article_editing": "Decision-maker complete reporting, ordinary 500-800 Chinese characters, important 900-1300, major exceptional longer. Source-based rewriting with evidence mapping and careful guarded fallback.",
     "translation": "offline with cautious terminology and alignment checks",
-    "commentary_skill": "GLOBAL_STRATEGY_EDITOR.skill.md"
+    "commentary_skill": "GLOBAL_STRATEGY_EDITOR.skill.md",
+    "china_us_combined_quota": 3,
+    "global_event_deduplication": true,
+    "country_concentration_review": true
+  },
+  "edition_version": "0.9",
+  "edition_target": {
+    "usual_total_range": [
+      13,
+      16
+    ],
+    "do_not_pad": true,
+    "allow_exceptional_major_news": true,
+    "china_us_combined_quota": 3,
+    "international_minimum_when_qualified": 3
   }
 }

@@ -130,7 +130,7 @@ def email_commentary(day: dt.date, text: str, articles: int) -> tuple[str, str]:
             '<h2 style="border-bottom:2px solid #9b353b">'
             + html.escape(title) + '</h2>'
             '<p style="font-size:12px;color:#777">基于'
-            + str(articles) + '篇入选报道生成的 AI 评论；PDF 附原文剪报。</p>')
+            + str(articles) + '篇入选报道生成的 AI 评论；PDF 附完整编辑报道。</p>')
     content = "\n".join("<p>" + html.escape(p) + "</p>" for p in paragraphs)
     tail = "</div>"
     return head + content + tail, title + "\n\n" + text

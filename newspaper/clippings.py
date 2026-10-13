@@ -1,7 +1,7 @@
 """Newspaper personal reading edition: extracted journalist prose and line-by-line ZH.
 
-Source text is taken unchanged from the publisher article extractor, never
-LLM rewritten. The original URL remains internal metadata only. Access only
+Evidence-mapped editorial rewrites are explicitly labelled; they are not
+journalist originals. The original URL remains internal metadata only. Access only
 public readable pages (no paywall bypass).
 """
 from __future__ import annotations
@@ -24,7 +24,7 @@ h3 { font-size:13pt; line-height:1.44; margin:6mm 0 1.5mm; break-after:avoid; }
 """
 
 def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
-    """True extracted sentence order; no journalist prose replaced by templates."""
+    """Render source-faithful edited reporting with paired English-Chinese lines."""
     formatted=day.strftime("%Y年%m月%d日")
     page=[
         '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">',
@@ -35,10 +35,10 @@ def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
         '<div class="kicker">GLOBAL NEWS · PERSONAL EDITION</div>',
         '<div class="cover-rule"></div>',
         '<h1 class="cover-title">全球新闻<br>选编</h1>',
-        '<div class="cover-subtitle">国际 · 美股 · 创业 · 科技 · 医学</div>',
+        '<div class="cover-subtitle">中美 · 政治 · 金融 · AI · 商业 · 能源 · 科学</div>',
         '<div class="cover-date">'+esc(formatted)+'</div>',
-        '<p class="cover-note">英文媒体报道选编 · 原文逐句对照中文译文<br>'
-        '每篇保留记者原有叙述顺序，英语批注只解释原句用法。</p>',
+        '<p class="cover-note">面向决策者的完整编辑报道 · 英中逐句对照<br>'
+        '删节重复与枝节，保留关键事实、背景、观点归属与限制条件。</p>',
         '</section>',
     ]
     plain=[f"全球新闻选编 | {formatted}"]
@@ -103,8 +103,13 @@ def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
                 plain.append(en+"\n"+zh)
             if previous is not None:
                 page.append("</div>")
+            if article.get("editing_mode") == "evidence_mapped_edited_report":
+                page.append('<div class="part-mark">依据来源整理的编辑报道，非记者原文；事实与观点归属保留，编辑段落可回查来源。</div>')
+            if article.get("editing_mode") == "source_faithful_edited_report":
+                page.append('<div class="part-mark">编辑选编：保留来源完整段落及叙述顺序；非全文转载。'
+                            +('为保留关键限制条件，本篇篇幅较长。' if article.get("editorial_length_exception") else '')+'</div>')
             if article.get("reading_abbreviated"):
-                page.append('<div class="part-mark">本篇为可提取的连续原文选段。</div>')
+                page.append('<div class="part-mark">来源正文提取不完整；本篇依据可取得部分编辑。</div>')
             if notes:
                 page.append('<div class="notes">')
                 for n,phrase,explanation in notes:
@@ -120,8 +125,8 @@ def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
 def mail_cover_clippings(day:dt.date,grouped:dict)->tuple[str,str]:
     count=sum(len(x) for x in grouped.values())
     title="全球新闻选编｜"+day.isoformat()
-    text=f"{title}\n本期收录{count}篇报道。详见附件 PDF（原文及逐句中文译文）。"
+    text=f"{title}\n本期收录{count}篇报道。详见附件 PDF（编辑报道及逐句中文译文）。"
     html_text=('<div style="font-family:Georgia,serif;max-width:670px;line-height:1.8">'
                '<h2>'+esc(title)+'</h2><p>今日入选 '+str(count)
-               +' 篇报道，新闻原文与逐句中文译文已排入附件 PDF。</p></div>')
+               +' 篇报道，编辑报道与逐句中文译文已排入附件 PDF。</p></div>')
     return html_text,text
