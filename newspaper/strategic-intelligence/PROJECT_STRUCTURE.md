@@ -142,3 +142,9 @@ newspaper/
 - [OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)及[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)是此前更细的研究和旧架构审计，仍供查阅，但方法和系统层数以V4.2为准。
 
 **项目实际运行状态不变**：来源登记和部分历史抽样/探测脚本存在；独立顾问-帝师研究引擎及正式周报/年报自动生产不存在。用户只同意本轮定架构，未授权实装。
+
+## V4.3新增编辑规范
+
+- [EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)：从半月谈、求是问题导向及Reuters/AP/BBC事实标准提炼S0—S8选文程序，重点现实正负影响、典型性/突破；A必须完整5W1H，原始机构报告需给方法和局限。
+- [SCENARIOS_AND_OPEN_QUESTIONS.md](SCENARIOS_AND_OPEN_QUESTIONS.md)：C读者末尾不再“继续观察”，而是有条件的不同后续情景、2—4个开放思考题，历史Thesis核验保留后台。
+- [templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md)、[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)和[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)已经按最新版编辑体例及未来QA同步。
