@@ -284,5 +284,54 @@ class DirectorAudiovisualReviewTests(unittest.TestCase):
                             self.language, bad)
 
 
+
+    def test_real_interdepartment_conflict_blocks_preproduction_readiness(self):
+        acting = _acting_completed(self.base, self.state)
+        camera_lines = {}
+        for sid in acting["shot_ids"]:
+            camera_lines[sid] = {
+                "camera": {"framing": "Camera tight crop hides the character's reaching right hand"},
+                "art": {"lighting": "Low light still preserves the original sealed letter"}}
+        complete = team.submit(
+            acting, team.packet(acting, "camera_art"), {"shots": camera_lines})
+        notes = _review(self.base, complete, self.command, self.language)
+        for item in notes["findings"]:
+            if item["department"] == "camera_art":
+                item["delivery_quote"] = "Camera tight crop hides the character's reaching right hand"
+        notes["conflicts"] = [{
+            "shot_id": "S01", "left_department": "acting",
+            "right_department": "camera_art",
+            "left_delivery_quote": "The character faces the sealed envelope",
+            "right_delivery_quote": "Camera tight crop hides the character's reaching right hand",
+            "incompatible_work": "The acting brief needs the paused hand visible, but camera cropping hides the only important choice.",
+            "director_resolution": "Director must compare widening the shot with reblocking the actor before a scoped correction.",
+            "human_decision_needed": True,
+        }]
+        notes["next_step"] = "resolve_cross_department_conflict"
+        result = review.validate(
+            self.base, complete, self.command, self.language, notes)
+        self.assertFalse(result["can_enter_real_media_review"])
+        self.assertEqual(len(result["unresolved_cross_department_conflicts"]), 1)
+        self.assertTrue(result["unresolved_cross_department_conflicts"][0]["human_decision_needed"])
+        premature = deepcopy(notes)
+        premature["next_step"] = "continue_department_work"
+        with self.assertRaisesRegex(review.DirectorReviewError, "FALSE_READINESS"):
+            review.validate(self.base, complete, self.command, self.language, premature)
+        fabricated = deepcopy(notes)
+        fabricated["conflicts"][0]["right_delivery_quote"] = "invented camera delivery"
+        with self.assertRaisesRegex(review.DirectorReviewError, "CONFLICT_NOT_GROUNDED"):
+            review.validate(self.base, complete, self.command, self.language, fabricated)
+        missing = deepcopy(notes)
+        missing["conflicts"][0]["right_department"] = "sound"
+        with self.assertRaisesRegex(review.DirectorReviewError, "CONFLICT_NOT_GROUNDED"):
+            review.validate(self.base, complete, self.command, self.language, missing)
+
+    def test_unresolved_conflict_does_not_silently_disappear_from_review_prompt(self):
+        req = review.request(self.base, self.state, self.command, self.language)
+        prompt = json.loads(req["messages"][1]["content"])
+        self.assertTrue(prompt["conflicts_must_block_readiness"])
+        self.assertIn("resolve_cross_department_conflict", prompt["next_step_enum"])
+
+
 if __name__ == "__main__":
     unittest.main()
