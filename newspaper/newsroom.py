@@ -50,13 +50,13 @@ HEALTH = r"医疗|医药|临床|癌症|新药|公共卫生|\b(?:health|medical|c
 PROMO = r"\b(?:trailer|celebrity|movie review|coupon|best deals|horoscope|sponsored content|affiliate links)\b"
 ACTION = r"\b(?:announc\w*|approv\w*|enact\w*|launch\w*|cut|hike\w*|votes?|agreed|acquir\w*|report\w*|reveal\w*|signed|ban\w*|strikes?|invad\w*|deploy\w*|discover\w*|demonstrat\w*|limit\w*|restrict\w*|caps?)\b"
 
-US_MARKET = r"\\b(?:s&p 500|nasdaq|dow jones|russell 2000|wall street|nyse|us stocks?|u\\.s\\. stocks?|stock index|market breadth|market closing|equities|earnings|sec filing|institutional investors?|hedge funds?|exchange traded funds?|etf flows?|buyback|volatility|vix|10.year treasury|yield curve)\\b|美股|纳斯达克|道琼斯|标普|华尔街|美国股市|机构持仓|财报|ETF资金流"
+US_MARKET = r"\b(?:s&p 500|nasdaq|dow jones|russell 2000|wall street|nyse|us stocks?|u\.s\. stocks?|stock index|market breadth|market closing|equities|earnings|sec filing|institutional investors?|hedge funds?|exchange traded funds?|etf flows?|buyback|volatility|vix|10.year treasury|yield curve)\b|美股|纳斯达克|道琼斯|标普|华尔街|美国股市|机构持仓|财报|ETF资金流"
 MARKET_THEME = {
-    "index": r"\\b(?:s&p|nasdaq|dow jones|russell|stock market|equities|vix|volatility|market breadth|index)\\b|指数|大盘|标普|纳斯达克|道琼斯",
-    "institution": r"\\b(?:sec|nasdaq inc|exchange|13f|institutional|federal reserve|regulator|form 4)\\b|监管|机构|证券交易委员会|美联储",
-    "rates": r"\\b(?:treasury|yields?|interest rates?|fomc|fed decision|inflation|monetary policy)\\b|利率|国债|美联储|通胀",
-    "earnings": r"\\b(?:earnings|results|quarterly|profit|guidance|revenue|filing|10-k|10-q)\\b|财报|利润|营收|业绩|季度",
-    "flows": r"\\b(?:etfs?|capital flows?|fund flows?|rotation|buyback|positioning|hedge funds?|breadth|institutional holdings?)\\b|资金流|板块轮动|ETF|持仓|回购",
+    "index": r"\b(?:s&p|nasdaq|dow jones|russell|stock market|equities|vix|volatility|market breadth|index)\b|指数|大盘|标普|纳斯达克|道琼斯",
+    "institution": r"\b(?:sec|nasdaq inc|exchange|13f|institutional|federal reserve|regulator|form 4)\b|监管|机构|证券交易委员会|美联储",
+    "rates": r"\b(?:treasury|yields?|interest rates?|fomc|fed decision|inflation|monetary policy)\b|利率|国债|美联储|通胀",
+    "earnings": r"\b(?:earnings|results|quarterly|profit|guidance|revenue|filing|10-k|10-q)\b|财报|利润|营收|业绩|季度",
+    "flows": r"\b(?:etfs?|capital flows?|fund flows?|rotation|buyback|positioning|hedge funds?|breadth|institutional holdings?)\b|资金流|板块轮动|ETF|持仓|回购",
 }
 def market_theme(item):
     s=item.get("title","")+" "+item.get("summary","")
@@ -98,6 +98,8 @@ def sections(item):
     if not newsworthiness(item)["eligible"]:
         return set()
     result = set()
+    if item.get('source_kind') == 'investment_opinion':
+        return {'美股市场与机构观察'} if matches(US_MARKET,s) else set()
     if matches(US_MARKET, s) and (matches(r"\\b(?:us|u.s.|american|nasdaq|dow jones|s&p|nyse|sec|federal reserve|fomc|wall street|etf)\\b|美股|标普|纳斯达克|道琼斯|华尔街|美国|美联储|机构持仓|ETF", s) or item.get("source_type") in ("primary_exchange","primary_regulator")):
         result.add("美股市场与机构观察")
     if countries(item) & {"中国", "美国"}: result.add("中国与美国")
