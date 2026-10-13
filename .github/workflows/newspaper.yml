@@ -11,10 +11,10 @@ on:
     paths:
       - 'newspaper/V05_MAIL_TEST_REQUEST.txt'
   schedule:
-    - cron: '3 17 * * *' # Beijing 01:00 (UTC previous date)
-    - cron: '18 17 * * *' # Beijing 01:15 fallback
-    - cron: '33 17 * * *' # Beijing 01:30 fallback
-    - cron: '43 17 * * *' # Beijing 01:40 final fallback
+    - cron: '3 17 * * *' # Beijing 01:03 (UTC previous date)
+    - cron: '18 17 * * *' # Beijing 01:18 fallback
+    - cron: '33 17 * * *' # Beijing 01:33 fallback
+    - cron: '43 17 * * *' # Beijing 01:43 final fallback
   workflow_dispatch:
     inputs:
       dry_run:
