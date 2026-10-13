@@ -108,3 +108,13 @@ review_due: "何时或何种触发条件再复核"
 | D-028 | 重新核对可访问的旧讨论与GitHub，标出遗漏和不确定，既有认可的完整方案不能压缩成概念 | [HISTORY_RECONCILIATION.md](HISTORY_RECONCILIATION.md) | APPROVED_DIRECTION，旧记录无法逐字取回时须明示 |
 
 **现行两个正式内参产品只有周报和年报；重大事件特刊仍是未来候选，日报仍是独立产品。历史月报可存档，但不得作为现行开发需求、模板或待发送排期。**
+
+## H｜V4.1本轮用户明确决定（取代“九栏＝必教知识清单”的读法）
+
+| 编号 | 具体要求与执行约束 | 归档 |
+|---|---|---|
+| D-029 | “增加下每个板块中帝师+顾问的讲解本质的底层逻辑，通过现象，现实，实际，教会我相应的世界本质知识，让我认识到世界的底层逻辑，所以不要局限于上面你列出的必须追查到的东西。” | [OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)、[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)、[HARD_RULES.md](HARD_RULES.md) R012；**栏目不再决定被教授的知识种类** |
+| D-030 | “教学的重点应该是根据现象和现实告诉我底层逻辑是什么，就像是真正的顾问和帝师是做什么的吧？” | 顾问以可证现实与选择/资源/风险回答问题，导师以可迁移的真实知识教学；要有反馈修正，详见[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md) |
+| D-031 | “另外我需要审计下这个整体的内参框架和逻辑流程是什么” | [ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)，包含当前实际资产、七层/15工序、严重断点和逐步修复 |
+
+**用户并未要求也未授权启用正式系统、恢复来源全量测试或修改既有日报。上述决策是设计与文档的修改。**
