@@ -2,7 +2,7 @@
 
 > **设计版本：V4.4 · 2026-10-13 · 供用户全面审核、尚非生产验收。**  
 > 正式中文名称：**内参系统／内参**；历史名称：全球战略内参。  
-> 唯一GitHub目录：\`pyzz58/gpt-recommendations/newspaper/strategic-intelligence/\`；中文快捷入口：[newspaper/内参系统.md](../内参系统.md)。
+> 唯一GitHub目录：`pyzz58/gpt-recommendations/newspaper/strategic-intelligence/`；中文快捷入口：[newspaper/内参系统.md](../内参系统.md)。
 >
 > **没有正式上线：**本目录已完成来源注册、历史少量联网试验、多轮设计.md和文章/杂志模板；**未运行完整全球研究—记者—顾问帝师—审稿—出版生产系统**，也未授权邮件、定时任务或收费服务。不能把V4.4已归档描述为软件功能已经通过测试。
 
@@ -42,7 +42,7 @@
 
 ## 2. 现行系统只有六层（不是七Agent）
 
-\`\`\`text
+```text
 L1 独立全球来源发现（合法、免费、跨地域/领域/语言）
  ↓
 L2 事件聚类与选文委员会（S0—S8，重要现实影响/典型或突破、去热度偏差）
@@ -55,7 +55,7 @@ L5 独立事实、专业、因果与版权审稿（PASS/REVISE/BLOCK）
  ↓
 L6 主编、周报/年报排版、长期档案与经授权才交付
    ↘ 新证据/纠错回L2—L4
-\`\`\`
+```
 
 细节、每层输入输出、失败路由及年度做法请读[CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)第十至十四节。
 
@@ -90,7 +90,7 @@ L6 主编、周报/年报排版、长期档案与经授权才交付
 - 全球创业雷达需要真实付款、利润/留存/单位经济和最小验证方法，不能把融资/试点当商业模式成功；
 - 世界反常信号雷达不能把不寻常数据当秘密阴谋，必须有区分解释所需的原始资料；
 - 用户的“你说的对/同意”必须记录**当时认可的详细方法和边界**，修改规范和决策，而非只留一句“用户认可”；
-- 未得到读者独立练习结果时，文章最多是\`TAUGHT\`，不能声称\`MASTERED\`。
+- 未得到读者独立练习结果时，文章最多是`TAUGHT`，不能声称`MASTERED`。
 
 深入规则：[INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)、[INTELLIGENCE_MEMORY.md](INTELLIGENCE_MEMORY.md)、[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)、[REAL_CASES_EVIDENCE_FIRST.md](REAL_CASES_EVIDENCE_FIRST.md)。
 
