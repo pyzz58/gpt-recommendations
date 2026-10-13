@@ -1,9 +1,9 @@
 {
   "timezone": "Asia/Shanghai",
   "max_per_category": {
+    "美股·全球金融市场": 4,
     "中国与美国": 3,
     "国际政治与全球事件": 3,
-    "金融、宏观与美股": 3,
     "AI与数字产业": 2,
     "科技、能源与前沿科学": 2,
     "创业、商业与企业竞争": 2,
@@ -64,6 +64,16 @@
         "name": "CNA World",
         "url": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6311",
         "source_type": "regional_independent_media"
+      },
+      {
+        "name": "新华网时政",
+        "url": "http://www.xinhuanet.com/politics/news_politics.xml",
+        "source_type": "cn_state_media"
+      },
+      {
+        "name": "新华网国际",
+        "url": "http://www.xinhuanet.com/world/news_world.xml",
+        "source_type": "cn_state_media"
       }
     ],
     "美股与投资": [
@@ -82,6 +92,28 @@
       {
         "name": "Guardian Business",
         "url": "https://www.theguardian.com/business/rss"
+      },
+      {
+        "name": "US SEC Press Releases - Stocks",
+        "url": "https://www.sec.gov/news/pressreleases.rss",
+        "source_type": "primary_regulator"
+      },
+      {
+        "name": "Federal Reserve Monetary - Stocks",
+        "url": "https://www.federalreserve.gov/feeds/press_monetary.xml",
+        "source_type": "primary_central_bank"
+      },
+      {
+        "name": "Nasdaq Corporate Releases",
+        "url": "https://ir.nasdaq.com/rss/news-releases.xml",
+        "source_type": "exchange_company",
+        "disabled": true,
+        "disabled_reason": "Awaiting feed verification; do not count as working"
+      },
+      {
+        "name": "新华网财经",
+        "url": "http://www.xinhuanet.com/finance/news_finance.xml",
+        "source_type": "cn_state_media"
       }
     ],
     "美联储与宏观": [
@@ -146,6 +178,16 @@
         "url": "https://venturebeat.com/feed/",
         "disabled": true,
         "disabled_reason": "2026-10-13 HTTP 429 rate limited; revalidate before enabling"
+      },
+      {
+        "name": "36氪文章",
+        "url": "https://36kr.com/feed-article",
+        "source_type": "cn_business_media"
+      },
+      {
+        "name": "36氪综合",
+        "url": "https://36kr.com/feed",
+        "source_type": "cn_business_media"
       }
     ],
     "AI与科技": [
@@ -334,12 +376,27 @@
     "do_not_pad": true,
     "allow_exceptional_major_news": true,
     "china_us_combined_quota": 3,
-    "international_minimum_when_qualified": 3
+    "international_minimum_when_qualified": 3,
+    "us_markets_frontpage": true
   },
   "source_health_policy": {
     "record_feed_success_and_recent_item_counts": true,
     "record_unique_publisher_families": true,
     "inactive_sources_are_not_counted_as_live": true,
     "one_source_cannot_confirm_itself": true
-  }
+  },
+  "source_watchlist": [
+    {
+      "name": "雪球杂志/雪球精选",
+      "url": "https://xueqiu.com/",
+      "mode": "monitor_only",
+      "reason": "No stable verified publicly authorized RSS endpoint; do not scrape authenticated user discussions or infer investment research authority"
+    },
+    {
+      "name": "人民日报海外版电子报",
+      "url": "https://paper.people.com.cn/rmrbhwb/pc/layout/index.html",
+      "mode": "adapter_only",
+      "reason": "Edition HTML is not RSS; add controlled official-public-edition parsing separately"
+    }
+  ]
 }
