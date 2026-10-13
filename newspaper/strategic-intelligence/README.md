@@ -1,75 +1,133 @@
-# 内参系统（Global Strategic Intelligence）
+# 内参系统（Global Strategic Intelligence · GSI）
 
-> 正式中文项目名：**内参系统**｜英文技术标识：Global Strategic Intelligence（GSI）｜历史名：全球战略内参
-> 版本 V2.1 / 规划基线日期 2026-10-13 / 状态：**规划已获用户原则认可，技术未实施**。
-> 这个文件夹是独立新项目的**设计权威入口**；不可将“规划”表述为“已经开发、测试或投入运行”。
+> **正式中文名称：内参系统**｜兼容简称：内参｜历史名称：全球战略内参
+>
+> **当前设计基线：V3.0 · 2026-10-13**。已完成总体项目框架、需求归档与设计文档；**未完成研究引擎、周/月刊自动生成、知识数据库、正式调度和邮件推送**。
+>
+> GitHub唯一规范目录：`pyzz58/gpt-recommendations/newspaper/strategic-intelligence/`，中文快速入口：[newspaper/内参系统.md](../内参系统.md)。
 
-## GitHub定位和搜索入口
-- 正式名称只能写 **内参系统**。中文搜索词：`内参`、`内参系统`；英文兼容词：`Global Strategic Intelligence`、`GSI`、`strategic-intelligence`。
-- GitHub现有规范目录继续使用 `newspaper/strategic-intelligence/`，保持外部书签与所有交接引用有效；**不要创建第二套具有不同结论的“内参系统”配置或数据源**。
-- 根目录中文快捷入口：[`../内参系统.md`](../内参系统.md)；本目录专门索引：[`内参系统.md`](内参系统.md)。
-- 用户在之后的聊天中说“内参”，均指本项目，而非每日新闻系统；日报属于独立产品和可选辅助信息。
+## 1. 此系统到底是什么？
 
-## 一句话使命
-通过高质量事实、一线公开资料、独立调查、第一性原理与费曼式教学，持续提升个人对世界、政治、资本市场及创业的理解与独立判断能力；以美股和创业为双核心，建立长期可检验、可修正的私人战略情报与知识体系。
+内参系统不是每日新闻的增强摘要，而是一套**独立全球发现 → 可核实研究 → 第一性原理与费曼式深度教学 → 反方审核 → 周/月内参 → 长期可追溯的世界判断档案**的私人认知和战略研究系统。
 
-## 目标用户与立场
-个人读者，重视美股与低资本门槛创业；采用顶级家族办公室**研究标准**，而非模仿其庞大组织、跨国并购或私有情报获取方式。信息必须合法、可信、可追溯，不宣称拥有未获得的非公开信息或内幕消息。保持全球视野，避免信息茧房和迎合读者既有观点。
+目标不是简单知道头条，而是像获得有严谨来源和独立判断的一流战略顾问长期服务一样，**真正认识世界如何运作，减少信息茧房，形成能迁移的新理解**。参照顶级家族办公室的严谨研究标准，但不假装有内幕、私人数据库或未授权一手消息。
 
-## 六项长期可检验的改变
-1. 世界知识图景不断完善：能理解国家、制度、金融、企业、技术和社会如何运作。
-2. 独立判断能力提高：面对新事件可识别激励、约束、因果、风险和未知。
-3. 投资与创业素养提高：可分析现金流、估值、商业模式、单位经济性和可执行性。
-4. 知识与判断连续积累：跨周、跨月、跨年检索完整原始研究与结论变迁。
-5. **跳出信息茧房**：能公平理解竞争性立场，主动寻找反证，独立深度思考而非接受单一叙事。
-6. **深入、真实、一线、前沿地理解世界**：优先权威原始材料、及时的一手公开披露、地面事实与领先研究；深究结构与实际运行机制，并明确任何信息盲区。
+重点是**美股投资和普通人/小团队创业**，同时保持对全球政治、军事、经济、AI、医学、社会、产业和重要突发事件的独立观察。
 
-## 出版产品
-- **独立全球资讯发现**：周刊/月报选题须直接面向全球合法免费可访问的主流媒体、多语种地方媒体和公开一手资料；**不经过每日早报的筛选漏斗**。原日报仍保持不变，只作为非必需辅助线索。全球所有媒体无法保证逐家穷尽，须用来源覆盖审计衡量盲点。
-- 每周《全球战略情报周刊》：动态篇幅、深度杂志形态；内容不是七份日报的拼接。
-- 每月《全球战略判断报告》：跨月趋势、历史判断修正、美股与创业机会深研，而非周刊摘要合订。
-- 重大事件专项：仅在明确触发与审核规则后考虑。
-- 邮件为预期主要交付渠道；同时可规划 PDF / Markdown。**未配置新邮件、定时任务或 API。**
+## 2. 用户明确确定的六项成果
 
-## 核心组织：一套系统而非九套 Agent
-一套包含**独立全球发现层**的统一研究引擎、一名逻辑上的首席认知与战略顾问、一条独立证据核查与编辑门禁、一套长期档案。九大栏目只是研究规范/视角；并非九个必须部署的模型。
+1. 懂世界：能解释陌生事件背后的制度、经济、产业、科技和权力约束。
+2. 独立思考：自己衡量事实、竞争解释、证据强弱与失效条件。
+3. 提升美股投资和创业能力：懂预期差、现金流、风险、PMF、CAC、LTV及商业现实。
+4. 长期积累：几年后依关键词召回**当时的完整材料、判断及后来变化**。
+5. **跳出信息茧房**：主动接受可靠的陌生议题、不同地区和最强反方，拒绝迎合/伪均衡。
+6. **深度、真实、一线、前沿地认识世界**：原始政策、真实统计、财报、专业公开研究、可信现场与工程/医学证据，而不是无根据的神秘叙事。
 
-## 本目录文档索引
-1. [VISION_AND_SCOPE.md](VISION_AND_SCOPE.md) — 愿景、六项目标、九大栏目与内容边界。
-2. [EDITORIAL_POLICY.md](EDITORIAL_POLICY.md) — 选题、证据、反茧房、观点、政治与质量规范。
-3. [ADVISOR_PEDAGOGY.md](ADVISOR_PEDAGOGY.md) — 帝师式讲解 Skill、第一性原理/费曼教学及例子。
-4. [INTELLIGENCE_MEMORY.md](INTELLIGENCE_MEMORY.md) — 来源、事件、主体、主题、判断、出版、知识卡片的数据模型与长期追踪。
-5. [SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md) — 独立全球多语言媒体发现、来源库、报道去重、反信息茧房及验收。
-6. [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md) / [SOURCE_REGISTRY.json](SOURCE_REGISTRY.json) — 124个活跃免费/部分免费候选（A116/B8）；6个访问障碍来源已按用户指令移出；另完成4个随机来源的一次性实际HTTPS采集抽样的可获取状态与机器可读登记。
-7. [SOURCE_ABANDONED_2026-10-13.json](SOURCE_ABANDONED_2026-10-13.json) — 用户决定放弃的6条来源及原障碍记录。
-8. [SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md) — 明确受限的付费/客户专属研究及访问异常待复核。
-9. [SOURCE_VERIFICATION_PLAYBOOK.md](SOURCE_VERIFICATION_PLAYBOOK.md) — 实测接入、GitHub工具回退、版权审查及验收操作规程。
-10. [ACCESS_AUDIT_2026-10-13.md](ACCESS_AUDIT_2026-10-13.md) — 真实浏览器网页/两项公开JSON接口取样核验、失败及环境限制。
-11. [SOURCE_TOOLING_RESEARCH.md](SOURCE_TOOLING_RESEARCH.md) — RSSHub、Miniflux、Trafilatura、news-please、newspaper4k等工具的取舍。
-12. [ACCESS_AUDIT_2026-10-13_FULL.md](ACCESS_AUDIT_2026-10-13_FULL.md) — 130个注册来源逐条网页实际访问与限制结果。
-13. [tools/source_probe.py](tools/source_probe.py) — 未来在获准联网主机手动运行的低频HTTP/RSS/API探测脚本，默认干跑，不定时、不发邮件。
-14. [SOURCE_RECOVERY_AUDIT_2026-10-13.md](SOURCE_RECOVERY_AUDIT_2026-10-13.md) — 内参系统31条待验证来源的恢复审计、10条部分解决及21条遗留障碍。
-15. [SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md](SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md) — 四轮GitHub Actions实际HTTP/RSS/JSON测试，真实条目、发布时间与6个剩余障碍。
-16. [TECHNICAL_DESIGN.md](TECHNICAL_DESIGN.md) — 简约架构、技术候选、接口、故障与成本设计。
-17. [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) — 从 V0 样刊到 V3 专业增强的逐步落地步骤。
-18. [ACCEPTANCE_AND_HANDOFF.md](ACCEPTANCE_AND_HANDOFF.md) — 验收测试、执行约束、给未来 AI/Codex 的交接指令。
+如何衡量见 [QA_AND_METRICS.md](QA_AND_METRICS.md)。
 
-## 绝对执行边界
-- 项目当前只允许修改独立目录内规划与审计文件，不修改 newspaper 现有早报代码、Actions、Secrets、定时计划、交付地址或数据。
-- 未经用户另行授权不得创建实际任务、外发邮件、付费开通 API、采集受限数据或启用生产服务。
-- 规划中的候选开源项目都需二次核实当前许可、维护、能力及成本，不因文档提到就自动引入。
-- 原始事实、来源立场、模型推测必须可区分；若无法确认不得强行下结论。
-- 全球来源发现所用工具只是候选，未经测试不得称为已接入。免费可读不等于获准大量下载或转载全文。
+## 3. 九个研究栏目（初始研究资源权重，不是刊发篇数配额）
 
-## 数据接入状态提醒
-当前活跃名单124条（A116/B8），六条无法确认获取的来源已从候选库排除。对124条不再进行逐项全面测试；随机抽取4条完成一次性云端HTTPS读取，4条均HTTP200，3条新闻/研究内容页面、1条API文档。原始数据见[audits/random-four-20261013.json](audits/random-four-20261013.json)。**没有持续生产验证或版权授权，所有production_test仍为NOT_RUN。**某些来源明确有付费限制，详细见来源限制清单。未经新指令不部署爬虫、不注册账户、不发送邮件。
-### 2026-10-13完整逐源网页审计
-130个原始URL已逐个通过网页浏览工具访问。**这次初始审计当时**A94/B5/C31；随后恢复核查更新为**A102/B7/C21**，详见下一节。**网页浏览成功不等于程序真实自动采集成功**：所有来源production_test=NOT_RUN。详情和每条错误见ACCESS_AUDIT_2026-10-13_FULL.md。
-## 第一阶段恢复记录（2026-10-13，历史状态）
-从31条待验证来源中找到10条合法公开文章、研究目录或官方API文档路径（A增加8条、B增加2条），另外21条仍需端到端网络测试、密钥、许可审核或合法替代。130条生产级自动采集均未运行。权威结果请查SOURCE_REGISTRY.json与SOURCE_RECOVERY_AUDIT_2026-10-13.md，切勿将公开可读当作生产已启用。
+| 栏目 | 比重 | 栏目 | 比重 |
+|---|---:|---|---:|
+| 美股与投资 | 25% | 全球创业与商业机会 | 25% |
+| AI与前沿科技 | 12% | 全球宏观与金融 | 10% |
+| 中国与美国 | 10% | 全球政治与地缘战略 | 6% |
+| 全球企业与产业竞争 | 5% | 社会与消费趋势 | 4% |
+| 战略研究室 | 3% | **总计** | **100%** |
 
-## 最新来源验证结果（2026-10-13，第二阶段）
-在隔离GitHub Actions测试分支执行4轮真实联网请求，确认BBC/NPR/France24/DW官方RSS，澎湃/第一财经公开JSON及arXiv、PubMed、ClinicalTrials、Europe PMC、medRxiv RSS1.0等可提取实际记录。A116/B8/C6；6个剩余障碍包括Congress.gov免费API密钥、欧委会公告机器化来源、NHK、欧洲议会挑战页、国家药监局及国家卫健委412。原始数据见[SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md](SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md)。**生产连续验证仍为0/130，逐源AI用途许可尚未完成审核。**
+资源权重是长期优先级，不能把非热门但影响世界的重要医疗、军事、政治和社会事件在发现阶段排除。九栏**不代表九个独立Agent**。
 
-## 最新用户决策：停止排查六条，抽查四条
-已放弃Congress.gov、欧盟委员会Press Corner、NHK、欧洲议会、国家药监局、国家卫健委，不再纳入活跃来源。GitHub Actions隔离分支一次性随机抽中CBS News、NCBI/PubMed、PwC全球CEO调查、证券时报，四个网址均可读取HTML，但PubMed读取的是API文档而不是具体医学论文。此为抽样，不是124条全面验收。历史130来源研究报告仍作为归档保留，**当前以124条活跃登记为准**。
+## 4. 整体逻辑和两种出版物
+
+```text
+全球免费公开新闻/投行资管/四大/咨询/政府/军工/医疗/AI/创投/原始数据
+                     + [已有日报：可选只读线索，不是前置]
+                                     |
+                              独立广域发现
+                                     |
+                   同事件去重 + 来源血缘 + 反茧房检查
+                                     |
+                        重要性/证据筛选 + 分层预算
+                                     |
+                      专业研究员生成可查证EvidencePacket
+                                     |
+              首席认知与战略顾问：原理、案例、反例、认知迁移
+                                     |
+                   独立事实/因果/强反方审校和主编质量门禁
+                                     |
+                     每周深度内参  /  每月战略判断总报告
+                                     |
+                文件/交付状态/长期主题/命题版本/原理知识归档
+```
+
+周刊是新的高密度、深度但自然流畅的新闻与顾问研究；**不是7份日报拼接**。月报要写新的战略总论和判断重估、审计旧观点；**不是4份周刊拼接**。版式和“首席顾问致决策者”参见 [PUBLICATION_SPEC.md](PUBLICATION_SPEC.md)。
+
+## 5. 当前来源策略与已验证状态
+
+- **当前活跃源：124条**（A公开入口116、B仅免费部分8），权威机器登记为 [SOURCE_REGISTRY.json](SOURCE_REGISTRY.json)，可读表为 [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md)。
+- 用户明确放弃6条难以在当前条件下取得合规内容的来源，[历史记录](SOURCE_ABANDONED_2026-10-13.json)；**不得自行恢复或继续钻研**。
+- 已经对一些RSS/JSON做过四轮隔离GitHub Actions专项联网测试；随后用户决定只需从124条随机抽3—4条作采集可行性测试；实际随机4条HTTPS均200，**其中3条读取新闻/研究页面、1条仅API说明文档**。[原始测试结果](audits/random-four-20261013.json)。
+- **现在不继续测试余下约120条来源**，把工作重心放到研究质量、架构设计与后续内容样刊。
+- **生产来源的连续稳定性和AI内容处理版权许可均未全面核验；正式自动采集上线为0条。**
+- 所有来源都必须符合“免费合法访问”和特定处理/转载许可；有商业付费或明确AI处理禁止的产品见 [SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md)。
+
+## 6. 整套项目文档导航
+
+### A. 先读这六份（快速准确理解项目）
+1. [MASTER_BLUEPRINT.md](MASTER_BLUEPRINT.md) — **正式完整总纲**、六项成果、九栏目、十二步、双刊与边界。
+2. [DECISIONS.md](DECISIONS.md) — **用户明确同意、尚未批准及已放弃**的各项决定，防止误部署。
+3. [TRACEABILITY_MATRIX.md](TRACEABILITY_MATRIX.md) — **50项历史讨论的需求到文档映射**，防遗漏。
+4. [END_TO_END_WORKFLOW.md](END_TO_END_WORKFLOW.md) — **从独立发现到最终归档的全流程工序、产物与错误出口**。
+5. [BUILD_PLAN.md](BUILD_PLAN.md) — **分阶段可执行开发任务**，先六案例样刊后工程化。
+6. [AGENTS.md](AGENTS.md) — **Codex/AI交接和权限边界**。
+
+### B. 产品、认知教学与质量
+- [VISION_AND_SCOPE.md](VISION_AND_SCOPE.md) — 六项目标、九栏及已有出版原则。
+- [EDITORIAL_POLICY.md](EDITORIAL_POLICY.md) — 严肃新闻、机构利益、反茧房与审稿约束。
+- [ADVISOR_PEDAGOGY.md](ADVISOR_PEDAGOGY.md) — 四种教学方法和领域知识的早期规范。
+- [COGNITIVE_ADVISOR_SKILL.md](COGNITIVE_ADVISOR_SKILL.md) — 可实际交付研究/撰稿任务的“首席顾问”细化规则。
+- [PUBLICATION_SPEC.md](PUBLICATION_SPEC.md) — 周刊/月报的内容形态、中文写作、长稿与编辑质量。
+- [QA_AND_METRICS.md](QA_AND_METRICS.md) — 100分审稿、硬阻断、六能力检验与测试清单。
+- [skills/chief_advisor/SKILL.md](skills/chief_advisor/SKILL.md) — 面向未来Codex的项目内部简化Skill。
+
+### C. 数据、技术、安全及工程
+- [DATA_CONTRACTS.md](DATA_CONTRACTS.md) — Source/Event/Claim/Evidence/Thesis/Edition/Delivery数据契约。
+- [INTELLIGENCE_MEMORY.md](INTELLIGENCE_MEMORY.md) — 原件保真、跨年召回、知识卡与历史修正。
+- [TECHNICAL_DESIGN.md](TECHNICAL_DESIGN.md) — 技术架构和候选成熟开源组件。
+- [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) — 实际GitHub文件与**尚未建立的未来src/configs**区分。
+- [OPERATIONS_AND_COST.md](OPERATIONS_AND_COST.md) — 模型Token、授权成本、重试、隔离、回滚与生产门禁。
+- [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) — 旧阶段实施规划，现以BUILD_PLAN为更新路线。
+- [ACCEPTANCE_AND_HANDOFF.md](ACCEPTANCE_AND_HANDOFF.md) — 原有独立审校及交接规则。
+- [CHANGELOG.md](CHANGELOG.md) — 设计/来源历史版本记录。
+
+### D. 来源注册与历史核查（本阶段暂停）
+- [SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md) — 全球独立发现、双队列、来源多元。
+- [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md) / [SOURCE_REGISTRY.json](SOURCE_REGISTRY.json) — 124个活跃来源。
+- [SOURCE_ABANDONED_2026-10-13.json](SOURCE_ABANDONED_2026-10-13.json) — 6个已弃来源。
+- [SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md)、[SOURCE_TOOLING_RESEARCH.md](SOURCE_TOOLING_RESEARCH.md)、[SOURCE_VERIFICATION_PLAYBOOK.md](SOURCE_VERIFICATION_PLAYBOOK.md) — 权限/开源工具/采集测试规范。
+- [SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md](SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md)、[audits/random-four-20261013.json](audits/random-four-20261013.json) — 真实测试历史；**不是已部署系统**。
+
+### E. 实际内容制作模板
+- [templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md) — 文章及来源核验模板。
+- [templates/WEEKLY_TEMPLATE.md](templates/WEEKLY_TEMPLATE.md) — 深度周刊编辑框架。
+- [templates/MONTHLY_TEMPLATE.md](templates/MONTHLY_TEMPLATE.md) — 月报与新综合战略判断框架。
+- [templates/THESIS_TEMPLATE.md](templates/THESIS_TEMPLATE.md) — 长期研究及可追溯历史判断版本。
+
+## 7. 开始实施的正确顺序
+
+**第一步**：阅读全文、检查决策台账与追溯矩阵；
+**第二步**：用**6个真实、可核验的议题**制作完整深度样稿（美股2、创业1、政治1、AI科技1、宏观1），用户审定研究质量；
+**第三步**：把证据包→顾问讲解→独立审稿→周刊Markdown/HTML串成可复现的最小流程；
+**第四步**：才考虑全球来源的小规模正式接入、周刊内部预演、月报与长期知识数据库；
+**第五步**：经实际质量/运行/预算/权限验收和用户批准，再进入新刊物生产投递。
+
+关键判断：**我们建设的是一位能够教会你理解世界的长期认知与战略顾问，不是一台高频堆砌摘要的新闻机器**。
+
+## 8. 严格的授权和状态边界
+
+- **已有每日早报**的源代码、运行、北京时间07:00推送、邮箱、Secrets和生产Actions一概不因本项目设计而改变。
+- **内参系统没有获得新的周刊/月报上线、真实邮件外发、定时任务、付费API或私有存储部署授权**。
+- Markdown完成=设计归档；一些来源单次HTTP成功≠124源生产可用；构建了Skill.md≠AI顾问程序已集成；写了栏目权重≠已经发行内刊。
+- 有冲突先看DECISIONS.md和最新用户明确指令；历史报告依旧保存，不重写旧来源测试记录。
+
+> **项目下一项真正的研发门槛**：先交付六份有可靠证据、深度机制教学、强反方、优质中文新闻写作的样稿，并取得用户对内容质量的真实判断。之后才决定进一步技术实现。
