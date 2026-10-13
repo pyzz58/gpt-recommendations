@@ -390,3 +390,32 @@ AdvisorTeacherIteration:
 - 校验规则：A/B段不得事实推论混淆；A缺重要事实或无权使用原文不能PASS；B缺因果/反证/教学迁移退稿；所有对象的生产字段、Schema和自动CI仍待NC-003—NC-005后续明确开工。
 
 见[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)、[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)、[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)。
+
+## 16. V4.3选文、记者六要素、情景开放题接口（设计，未开发运行）
+
+```yaml
+StorySelection:
+  source_and_event_refs: []
+  medium: "EVENT|REPORT|INVESTIGATION|DEVELOPMENT|RESEARCH_FEATURE"
+  verified_primary_material: false
+  impact_direction: "BENEFIT|HARM|MIXED|UNCERTAIN"
+  impact_realization: "OBSERVED|POTENTIAL|PARTIAL|UNKNOWN"
+  affected_groups_and_scale_refs: []
+  representativeness_or_breakthrough: "REPRESENTATIVE|BREAKTHROUGH"
+  rationale_and_limits: ""
+  news_six_elements: {who: "", what: "", when: "", where: "", why_verified_or_unknown: "", how_verified_or_unknown: ""}
+  proof_and_copyright_gate: "PASS|RESEARCH_PENDING|BLOCK"
+  editorial_impact_score_with_reasons: null
+  selection_after_research: "COVER|REVISE|WATCH|DROP"
+PublicationArticle:
+  news_report_A: "独立翔实、六要素齐全的记者式报道/机构报告研究方法与结论"
+  advisor_analysis_B1: "现实判断、证据、强反方、机制"
+  master_lesson_B2: "知识原理、现实与反例、可迁移推理"
+  scenario_thinking_C:
+    title: "事件推演与开放性思考"
+    conditional_paths: []
+    open_ended_questions: []
+  backend_research_only: {future_verification_triggers: [], thesis_version_ref: null}
+```
+
+**现行名称生效规则**：此前Article对象中`watch_and_sources_C`仅为历史字段，此次取代为`scenario_thinking_C`；原始来源标注于全文和刊尾，未来核验转为后台研究数据，而不是读者固定“继续观察”段落。准确规格见[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)、[SCENARIOS_AND_OPEN_QUESTIONS.md](SCENARIOS_AND_OPEN_QUESTIONS.md)。
