@@ -35,7 +35,7 @@ def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple
         '<div class="kicker">GLOBAL NEWS · PERSONAL EDITION</div>',
         '<div class="cover-rule"></div>',
         '<h1 class="cover-title">全球新闻<br>选编</h1>',
-        '<div class="cover-subtitle">中美 · 政治 · 金融 · AI · 商业 · 能源 · 科学</div>',
+        '<div class="cover-subtitle">美股 · 全球金融 · 中美 · 政治 · AI · 商业 · 科学</div>',
         '<div class="cover-date">'+esc(formatted)+'</div>',
         '<p class="cover-note">面向决策者的完整编辑报道 · 英中逐句对照<br>'
         '删节重复与枝节，保留关键事实、背景、观点归属与限制条件。</p>',
