@@ -29,15 +29,16 @@ def timed_plan(h, ds, plan):
         beat = beats[bid]
         duration = beat["duration_s"]
         source = []
-        for i, d in enumerate(beat["dialogue"]):
-            source.append(("dialogue", i, d["speaker"], d["line"]))
         if beat["voiceover"]:
             source.append(("voiceover", 0, "NARRATOR", beat["voiceover"]))
         elif originals[bid]["narration"]:
             source.append(("narration", 0, "NARRATOR",
                            originals[bid]["narration"]))
+        for i, d in enumerate(beat["dialogue"]):
+            source.append(("dialogue", i, d["speaker"], d["line"]))
         # One original word sequence per spoken source. First B01 cue crosses
         # the 2.5-second picture cut: no duplication of its words.
+        beat_speech = []
         for i, (kind, index, speaker, line) in enumerate(source):
             speech.append({
                 "cue_id": f"C{len(speech)+1:03d}",
@@ -48,13 +49,21 @@ def timed_plan(h, ds, plan):
                         else min(duration - .25, 2.0 + i * 1.5),
                 "audio_mode": "voiceover" if kind != "dialogue" else "off_screen",
             })
+            beat_speech.append(speech[-1])
         caption = originals[bid]["subtitles"]["text"]
         if caption:
-            subtitles.append({
-                "subtitle_id": f"T{len(subtitles)+1:03d}",
-                "beat_id": bid, "text_exact": caption,
-                "from_s": .5, "to_s": duration - .25,
-            })
+            separated = (beat_speech if caption == " ".join(c["text_exact"]
+                           for c in beat_speech) else [])
+            for item in (separated or [None]):
+                subtitles.append({
+                    "subtitle_id": f"T{len(subtitles)+1:03d}",
+                    "beat_id": bid,
+                    "source_cue_id": item["cue_id"] if item else None,
+                    "text_exact": item["text_exact"] if item else caption,
+                    "from_s": max(0, item["from_s"] - .2) if item else .5,
+                    "to_s": min(duration, item["to_s"] + .2)
+                            if item else duration - .25,
+                })
     return {
         "version": cues.VERSION, "episode_id": "EP01",
         "source_screenplay_digest": proof["screenplay_digest"],
@@ -105,6 +114,8 @@ class TimedDialogueCoverageTests(unittest.TestCase):
         self.assertTrue(rebuilt["director_coverage_applied"]
                         ["speech_cue_timeline_attached"])
         self.assertEqual(agent_team.ready(ep["crew"]), ["director_brief"])
+        self.assertEqual(len([s for s in self.cues["subtitles"]
+                              if s["beat_id"] == "B03"]), 2)
 
     def test_refuse_all_untrusted_cue_edits(self):
         for mutate in (
@@ -114,6 +125,8 @@ class TimedDialogueCoverageTests(unittest.TestCase):
             lambda t: t["cues"][0].update(to_s=8),
             lambda t: t["cues"].pop(0),
             lambda t: t["subtitles"][0].update(text_exact="假字幕"),
+            lambda t: t["subtitles"][0].update(source_cue_id="C999"),
+            lambda t: t["subtitles"][0].update(to_s=.7),
             lambda t: t["cues"][0].update(audio_mode="invalid"),
             lambda t: t.update(source_screenplay_digest="stale"),
         ):
