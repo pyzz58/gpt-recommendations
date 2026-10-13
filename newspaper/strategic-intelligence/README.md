@@ -2,7 +2,7 @@
 
 > **正式中文名称：内参系统**｜兼容简称：内参｜历史名称：全球战略内参
 >
-> **当前设计基线：V4.0 · 2026-10-13**。已完成总体项目框架、需求归档与设计文档；**未完成研究引擎、周报/年报自动生成、知识数据库、正式调度和邮件推送**。
+> **当前设计基线：V4.1 · 2026-10-13**。已完成总体项目框架、需求归档与设计文档；**未完成研究引擎、周报/年报自动生成、知识数据库、正式调度和邮件推送**。
 >
 > GitHub唯一规范目录：`pyzz58/gpt-recommendations/newspaper/strategic-intelligence/`，中文快速入口：[newspaper/内参系统.md](../内参系统.md)。
 
@@ -83,7 +83,9 @@
 
 ## 6. 整套项目文档导航
 
-### A. 最优先的V4.0硬性规则（任何AI必读）
+### A. 最优先的V4.1硬性规则（任何AI必读）
+- **[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)** — 从真实现象跨学科发现机制，顾问回答现实问题、导师教授可迁移的世界规律，九栏不应成为封闭教学清单。
+- **[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)** — 七层结构、15道工序、实际GitHub资产、严重缺口和修复路线。
 - **[HARD_RULES.md](HARD_RULES.md)** — 绝对禁止概念性总结；必须实际步骤/证据/算例/反证/迁移/验收；用户表扬与认可须具体留档；周报+年报是唯一新正式产品。
 - **[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)** — 九栏目不同学科的逐步深度教学、具体证据、负例与阻断条款。
 - **[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)** — 利益/权力/信息/人性及中国传统文化的证据化应用。
@@ -155,3 +157,9 @@
 - 有冲突先看DECISIONS.md和最新用户明确指令；历史报告依旧保存，不重写旧来源测试记录。
 
 > **项目下一项真正的研发门槛**：先交付六份有可靠证据、深度机制教学、强反方、优质中文新闻写作的样稿，并取得用户对内容质量的真实判断。之后才决定进一步技术实现。
+
+## V4.1追加：顾问和导师不是栏目附属的固定概念讲解机
+
+现在要求：先用事实、历史变化与竞争机制找到真正解释现实的底层规律，再决定应教什么知识。九栏只指导来源及专业查证，**跨栏目教学完全允许**，但任何解释均需准确证据、因果边界与反证。机制发现M01—M12和两个角色的实际交接见[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)。
+
+现状、证据边界、七层/15工序逻辑总图与缺口见[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)。本轮规划升级未启用新采集、模型、邮件和定时任务，日报隔离不变。
