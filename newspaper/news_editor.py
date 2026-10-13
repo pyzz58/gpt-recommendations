@@ -105,6 +105,13 @@ def write_compact_commentary(grouped, news_day, key, ledger, *, transport=None,
                              before_request=None):
     # Existing editorial skill stays in the dedicated strategic-commentary prompt.
     messages = prepare_messages(grouped, news_day)
+    # The legacy commentary prompt requests plain text; the unified API
+    # adapter needs an explicit JSON envelope for reliable parsing.
+    messages[0]["content"] += (
+        "\\n只返回有效JSON对象，唯一键为commentary，值为完整中文评论文章。"
+        "不要返回Markdown代码块、列表或其他字段。"
+    )
+    messages[1]["content"] += "\\n输出格式：{\\\"commentary\\\":\\\"中文深度评论\\\"}。"
     raw = ledger.request(
         messages, 2100, key, purpose="commentary", transport=transport,
         before_request=before_request,
