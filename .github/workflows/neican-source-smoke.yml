@@ -1,4 +1,4 @@
-name: 内参 source access one-time smoke round 2 (audit branch only)
+name: 内参 source access one-time smoke round 3 (audit branch only)
 on:
   push:
     branches:
@@ -15,15 +15,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
-      - name: Run targeted second source check
-        run: python3 newspaper/strategic-intelligence/tools/source_ci_retest.py
+      - name: Run third parsing and freshness check
+        run: python3 newspaper/strategic-intelligence/tools/source_ci_finalcheck.py
       - name: Commit only test results
         if: always()
         run: |
-          if test -f newspaper/strategic-intelligence/audits/source-smoke-round2-20261013.json; then
+          if test -f newspaper/strategic-intelligence/audits/source-smoke-round3-20261013.json; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add newspaper/strategic-intelligence/audits/source-smoke-round2-20261013.json
+            git add newspaper/strategic-intelligence/audits/source-smoke-round3-20261013.json
             git commit -m "test(内参): record one-shot source HTTP observations" || true
             git push origin HEAD:audit/neican-source-smoke-20261013
           fi
