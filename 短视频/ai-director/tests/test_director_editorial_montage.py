@@ -115,6 +115,23 @@ class DirectorEditorialMontageTests(unittest.TestCase):
         self.assertTrue(rebuilt["director_coverage_applied"]
                         ["editorial_montage_attached"])
 
+    def test_old_renderers_must_not_silently_drop_montage_edits(self):
+        import director_v2
+        import production_delivery
+        rebuilt = coverage.reblock_episode(
+            self.h, self.ds, self.plan, self.packet, self.cov)
+        base = rebuilt["episodes"][0]["authoritative_episode_base"]
+        with self.assertRaisesRegex(ValueError, "EDITORIAL_MONTAGE_RENDERER_REQUIRED"):
+            director.compile_prompts(base)
+        with self.assertRaisesRegex(ValueError, "EDITORIAL_MONTAGE_PREVIEW_REQUIRED"):
+            director.render_preview(base, "/tmp/no-montage-preview.html")
+        with self.assertRaisesRegex(ValueError, "EDITORIAL_MONTAGE_RENDERER_REQUIRED"):
+            director_v2.compile_package(base, {})
+        with self.assertRaisesRegex(
+                production_delivery.ProductionDeliveryError,
+                "DELIVERY_EDITORIAL_MONTAGE_RENDERER_NOT_IMPLEMENTED"):
+            production_delivery._make_bundle(base, {}, provenance={})
+
     def test_same_showrunner_prompt_receives_montage_not_just_metadata(self):
         packet = coverage.reblock_episode(
             self.h, self.ds, self.plan, self.packet, self.cov)
