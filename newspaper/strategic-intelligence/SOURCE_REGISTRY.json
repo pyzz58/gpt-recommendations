@@ -1,7 +1,7 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "audit_date": "2026-10-13",
-  "audit_scope": "Global official pages and documented free channels; tested sampled HTML + two live JSON API endpoints through web browser; no production ingestion",
+  "audit_scope": "All 130 registered URLs individually tested via public web.open browser proxy; selected alternate URLs; official World Bank and openFDA JSON samples; container direct HTTP unable to resolve DNS; no production-host API/RSS parser test",
   "status_legend": {
     "A": "public page or API/RSS documentation confirmed",
     "B": "partial open content only",
@@ -21,7 +21,17 @@
       "content_test_result": "PUBLIC_SITE_DOCUMENTED_NOT_RETESTED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-002",
@@ -36,7 +46,17 @@
       "content_test_result": "WEB_TOOL_ARTICLE_FULL_HTML_SAMPLE_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_ARTICLE_SAMPLE__COMMERCIAL_LICENSE_NOT_GRANTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-003",
@@ -51,13 +71,23 @@
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-004",
       "sector": "新闻",
       "name": "Deutsche Welle",
-      "status": "A",
+      "status": "C",
       "url": "https://amp.dw.com/en/the-day-with-brent-goff/video-19049331",
       "access": "主站报错，AMP官方内容可读",
       "fallback": "官方RSS/AMP",
@@ -66,7 +96,17 @@
       "content_test_result": "WEB_TOOL_MAIN_ROBOTS_DENIED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "WRONG_SCOPE_PAGE_IS_SINGLE_VIDEO",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "WRONG_SCOPE_PAGE_IS_SINGLE_VIDEO",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-005",
@@ -81,7 +121,19 @@
       "content_test_result": "RSS_ENDPOINT_RESPONDED_TEXT_XML_BUT_BROWSER_PARSER_UNSUPPORTED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_FEED_EXPECTED__NEEDS_XML_CLIENT_SMOKE_TEST",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "BBC_HTML_AND_XML_UNREADABLE_IN_TEST_BROWSER",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "BBC_HTML_AND_XML_UNREADABLE_IN_TEST_BROWSER",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
+        "fallback_url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+        "fallback_status": "XML_UNPARSABLE_IN_CURRENT_BROWSER; third-party feed index exists, host parser test pending"
+      }
     },
     {
       "id": "SRC-006",
@@ -96,7 +148,18 @@
       "content_test_result": "ENGLISH_SITE_FAIL__CHINESE_NEWS_CN_WORKS",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "UNVERIFIED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
+        "fallback_url": "https://www.news.cn/"
+      }
     },
     {
       "id": "SRC-007",
@@ -111,7 +174,17 @@
       "content_test_result": "PRIOR_PUBLIC_INDEX_DOCUMENTED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-008",
@@ -126,7 +199,17 @@
       "content_test_result": "PREVIOUS_API_DOC_REVIEW",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "DOCUMENTED_API_UNTESTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "DOCUMENTED_SEARCH_API_WITH_AUTH_NOT_TESTED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "DOCUMENTED_SEARCH_API_WITH_AUTH_NOT_TESTED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-009",
@@ -141,7 +224,17 @@
       "content_test_result": "WEB_TOOL_API_DOCUMENTATION_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-010",
@@ -156,7 +249,17 @@
       "content_test_result": "WEB_TOOL_RSS_DIRECTORY_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-011",
@@ -171,7 +274,17 @@
       "content_test_result": "WEB_TOOL_RSS_DIRECTORY_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-012",
@@ -186,7 +299,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-013",
@@ -201,7 +324,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-014",
@@ -216,7 +349,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-015",
@@ -231,7 +374,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-016",
@@ -246,7 +399,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PARTIAL_SUBSET_ONLY",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-017",
@@ -261,7 +424,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-018",
@@ -276,7 +449,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PARTIAL_SUBSET_ONLY",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-019",
@@ -291,7 +474,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-020",
@@ -306,7 +499,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-021",
@@ -321,7 +524,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-022",
@@ -336,7 +549,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-023",
@@ -351,7 +574,19 @@
       "content_test_result": "WEB_TOOL_JSON_RESPONSE_OK_2026_10_13",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "LIVE_JSON_API_SAMPLE_AND_DOC_PAGE_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "LIVE_JSON_API_SAMPLE_AND_DOC_PAGE_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
+        "data_sample": "At least one actual JSON observation from separate official endpoint, public web proxy",
+        "data_sample_url": "https://api.worldbank.org/v2/country/US/indicator/NY.GDP.MKTP.CD?format=json"
+      }
     },
     {
       "id": "SRC-024",
@@ -366,7 +601,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-025",
@@ -381,7 +626,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PARTIAL_SUBSET_ONLY",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-026",
@@ -396,7 +651,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-027",
@@ -411,7 +676,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-028",
@@ -426,7 +701,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-029",
@@ -441,7 +726,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-030",
@@ -456,7 +751,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-031",
@@ -471,7 +776,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-032",
@@ -486,7 +801,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-033",
@@ -501,13 +826,23 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-034",
       "sector": "政治",
       "name": "Congress.gov",
-      "status": "A",
+      "status": "C",
       "url": "https://api.congress.gov/",
       "access": "公开API文档，需申请免费Key",
       "fallback": "国会网站搜索",
@@ -516,7 +851,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "API_LANDING_SHELL_ONLY_API_KEY_REQUIRED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "API_LANDING_SHELL_ONLY_API_KEY_REQUIRED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-035",
@@ -531,7 +876,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-036",
@@ -546,7 +901,18 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "GOV_CN_POLICY_URL_403_AND_ALTERNATE_REDIRECT_LOOP",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "GOV_CN_POLICY_URL_403_AND_ALTERNATE_REDIRECT_LOOP",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
+        "fallback_url": "https://big5.www.gov.cn/gate/big5/www.gov.cn/zhengce/index.htm"
+      }
     },
     {
       "id": "SRC-037",
@@ -561,13 +927,23 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-038",
       "sector": "政治",
       "name": "联合国 UN News",
-      "status": "A",
+      "status": "C",
       "url": "https://www.un.org/en/events-and-news/",
       "access": "官方多语新闻页面；原press路径403",
       "fallback": "docs.un.org/press/releases/",
@@ -576,7 +952,18 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "UN_PAGE_AND_NEWS_UNREADABLE_BROWSER",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "UN_PAGE_AND_NEWS_UNREADABLE_BROWSER",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
+        "fallback_url": "https://news.un.org/en/"
+      }
     },
     {
       "id": "SRC-039",
@@ -591,7 +978,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "UNVERIFIED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "EU_PRESS_CORNER_DYNAMIC_EMPTY",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "EU_PRESS_CORNER_DYNAMIC_EMPTY",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-040",
@@ -606,7 +1003,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-041",
@@ -621,7 +1028,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-042",
@@ -636,7 +1053,19 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "ALTERNATIVE_OFFICIAL_NEWS_HTML_OK_ORIGINAL_URL_FAIL",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "ALTERNATIVE_OFFICIAL_NEWS_HTML_OK_ORIGINAL_URL_FAIL",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
+        "fallback_url": "https://www.nato.int/cps/en/natohq/news.htm",
+        "fallback_status": "PUBLIC_HTML_OK"
+      }
     },
     {
       "id": "SRC-043",
@@ -651,7 +1080,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-044",
@@ -666,13 +1105,23 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-045",
       "sector": "军事",
       "name": "IISS公开文章",
-      "status": "B",
+      "status": "C",
       "url": "https://www.iiss.org/publications/the-military-balance/2026/the-military-balance-2026/global-defence-spending/",
       "access": "部分国防研究免费；完整版商业产品另列D",
       "fallback": "SIPRI/CSIS/RAND",
@@ -681,7 +1130,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PARTIAL_SUBSET_ONLY",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "IISS_PAGE_TITLE_OR_LOGIN_ONLY",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "IISS_PAGE_TITLE_OR_LOGIN_ONLY",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-046",
@@ -696,7 +1155,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "UNVERIFIED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-047",
@@ -711,7 +1180,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-048",
@@ -726,7 +1205,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-049",
@@ -741,7 +1230,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-050",
@@ -756,7 +1255,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-051",
@@ -771,7 +1280,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "UNVERIFIED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "META_AI_DYNAMIC_EMPTY",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "META_AI_DYNAMIC_EMPTY",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-052",
@@ -786,7 +1305,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-053",
@@ -801,7 +1330,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "UNVERIFIED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "ARXIV_API_DOCUMENTATION_BLOCKED_AT_CURRENT_PATH",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "ARXIV_API_DOCUMENTATION_BLOCKED_AT_CURRENT_PATH",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-054",
@@ -816,7 +1355,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-055",
@@ -831,7 +1380,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-056",
@@ -846,7 +1405,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-057",
@@ -861,7 +1430,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "API_OR_RSS_DOCUMENTATION_PAGE",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-058",
@@ -876,7 +1455,19 @@
       "content_test_result": "WEB_TOOL_JSON_RESPONSE_OK_2026_10_13",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "LIVE_JSON_API_SAMPLE_AND_DOC_PAGE_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "LIVE_JSON_API_SAMPLE_AND_DOC_PAGE_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
+        "data_sample": "At least one actual JSON observation from separate official endpoint, public web proxy",
+        "data_sample_url": "https://api.fda.gov/drug/label.json?limit=1"
+      }
     },
     {
       "id": "SRC-059",
@@ -891,13 +1482,23 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-060",
       "sector": "医疗",
       "name": "ClinicalTrials.gov",
-      "status": "A",
+      "status": "C",
       "url": "https://clinicaltrials.gov/data-api/api",
       "access": "官方API入口可读，JSON端点未烟测",
       "fallback": "临床试验网站",
@@ -906,13 +1507,23 @@
       "content_test_result": "WEB_TOOL_API_DOCUMENTATION_OK_ENDPOINT_NOT_FETCHED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "API_DOC_SHELL_ENDPOINT_UNTESTED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "API_DOC_SHELL_ENDPOINT_UNTESTED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-061",
       "sector": "医疗",
       "name": "Europe PMC",
-      "status": "A",
+      "status": "C",
       "url": "https://europepmc.org/RestfulWebService",
       "access": "医学文献公开API文档",
       "fallback": "开放全文子集",
@@ -921,7 +1532,18 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "EUROPE_PMC_API_DOCUMENTATION_BLOCKED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "EUROPE_PMC_API_DOCUMENTATION_BLOCKED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
+        "fallback_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=malaria&format=json"
+      }
     },
     {
       "id": "SRC-062",
@@ -936,13 +1558,23 @@
       "content_test_result": "PRIOR_BOT_CHALLENGE",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "UNVERIFIED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "NCBI_RECAPTCHA_BLOCKED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "NCBI_RECAPTCHA_BLOCKED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-063",
       "sector": "医疗",
       "name": "Nature期刊",
-      "status": "B",
+      "status": "C",
       "url": "https://www.nature.com/nature/articles",
       "access": "可看目录和OA子集，非OA全文需订阅",
       "fallback": "开放获取论文/作者合法版本",
@@ -951,13 +1583,23 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PARTIAL_SUBSET_ONLY",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "COOKIE_ERROR_WITH_PARTIAL_LISTING",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "COOKIE_ERROR_WITH_PARTIAL_LISTING",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-064",
       "sector": "社会",
       "name": "Our World in Data",
-      "status": "A",
+      "status": "C",
       "url": "https://ourworldindata.org/search",
       "access": "公开图表、RSS、部分开放数据",
       "fallback": "原始统计机构",
@@ -966,7 +1608,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "SEARCH_SHELL_PAGE_ONLY",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "SEARCH_SHELL_PAGE_ONLY",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-065",
@@ -981,7 +1633,17 @@
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-066",
@@ -996,7 +1658,18 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "YC_LIBRARY_PAGE_OVER_4MB_TOOL_LIMIT",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "YC_LIBRARY_PAGE_OVER_4MB_TOOL_LIMIT",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
+        "fallback_url": "https://www.ycombinator.com/library"
+      }
     },
     {
       "id": "SRC-067",
@@ -1011,7 +1684,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "FREE_PUBLIC_OR_DOCUMENTED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-068",
@@ -1026,7 +1709,17 @@
       "content_test_result": "NO_DIRECT_TEST_THIS_ROUND",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
       "access_cost": "UNVERIFIED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-069",
@@ -1041,7 +1734,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-070",
@@ -1056,7 +1759,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-071",
@@ -1071,7 +1784,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-072",
@@ -1086,7 +1809,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-073",
@@ -1101,7 +1834,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-074",
@@ -1116,7 +1859,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-075",
@@ -1131,7 +1884,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK_BUT_REDIRECTED_TO_SITE_ROOT",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK_BUT_REDIRECTED_TO_SITE_ROOT",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-076",
@@ -1146,7 +1909,18 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK_BUT_CACHED_6_MONTHS",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK_BUT_CACHED_6_MONTHS",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
+        "freshness_issue": "Crawler snapshot approx six months old; requires newly fetched sample"
+      }
     },
     {
       "id": "SRC-077",
@@ -1161,7 +1935,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-078",
@@ -1176,7 +1960,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-079",
@@ -1191,7 +1985,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-080",
@@ -1206,7 +2010,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-081",
@@ -1221,7 +2035,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-082",
@@ -1236,7 +2060,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-083",
@@ -1251,7 +2085,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-084",
@@ -1266,7 +2110,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-085",
@@ -1281,7 +2135,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-086",
@@ -1296,7 +2160,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-087",
@@ -1311,7 +2185,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-088",
@@ -1326,7 +2210,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-089",
@@ -1341,7 +2235,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-092",
@@ -1356,13 +2260,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-093",
       "sector": "新闻",
       "name": "Dawn 巴基斯坦",
-      "status": "C",
+      "status": "A",
       "url": "https://www.dawn.com/",
       "access": "南亚地区新闻候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1371,13 +2285,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-094",
       "sector": "新闻",
       "name": "Hindustan Times",
-      "status": "C",
+      "status": "A",
       "url": "https://www.hindustantimes.com/",
       "access": "印度本地新闻候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1386,13 +2310,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-095",
       "sector": "新闻",
       "name": "Arab News",
-      "status": "C",
+      "status": "A",
       "url": "https://www.arabnews.com/",
       "access": "中东媒体候选，逐篇复核",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1401,13 +2335,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-096",
       "sector": "新闻",
       "name": "Africanews",
-      "status": "C",
+      "status": "A",
       "url": "https://www.africanews.com/",
       "access": "非洲本地视角候选，逐篇复核",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1416,7 +2360,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-098",
@@ -1431,13 +2385,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-099",
       "sector": "政治",
       "name": "GAO美国政府问责局",
-      "status": "A",
+      "status": "C",
       "url": "https://www.gao.gov/",
       "access": "官方审计调查报告可读",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1446,7 +2410,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "GAO_MAIN_PAGE_UNREADABLE_BROWSER",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "GAO_MAIN_PAGE_UNREADABLE_BROWSER",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-100",
@@ -1461,7 +2435,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-101",
@@ -1476,13 +2460,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-102",
       "sector": "政治",
       "name": "CFR Council on Foreign Relations",
-      "status": "C",
+      "status": "A",
       "url": "https://www.cfr.org/",
       "access": "独立政策研究候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1491,13 +2485,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-103",
       "sector": "政治",
       "name": "Brookings Institution",
-      "status": "C",
+      "status": "A",
       "url": "https://www.brookings.edu/",
       "access": "公开研究候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1506,13 +2510,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-104",
       "sector": "政治",
       "name": "Carnegie Endowment",
-      "status": "C",
+      "status": "A",
       "url": "https://carnegieendowment.org/",
       "access": "外交与安全分析候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1521,13 +2535,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-105",
       "sector": "政治",
       "name": "Chatham House",
-      "status": "C",
+      "status": "A",
       "url": "https://www.chathamhouse.org/",
       "access": "国际关系报告候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1536,7 +2560,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-106",
@@ -1551,13 +2585,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "EUROPEAN_PARLIAMENT_MINIMAL_SHELL",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "EUROPEAN_PARLIAMENT_MINIMAL_SHELL",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-107",
       "sector": "政治",
       "name": "美国财政部 Treasury",
-      "status": "C",
+      "status": "A",
       "url": "https://home.treasury.gov/news/press-releases",
       "access": "制裁、税收、金融政策原文候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1566,13 +2610,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK_METADATA_MINIMAL",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK_METADATA_MINIMAL",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-108",
       "sector": "政治",
       "name": "英国政府 GOV.UK",
-      "status": "C",
+      "status": "A",
       "url": "https://www.gov.uk/search/news-and-communications",
       "access": "政府原始发布候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1581,13 +2635,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-109",
       "sector": "政治",
       "name": "中国商务部 MOFCOM",
-      "status": "C",
+      "status": "A",
       "url": "https://www.mofcom.gov.cn/",
       "access": "贸易政策原文候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1596,13 +2660,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-110",
       "sector": "政治",
       "name": "美国联邦公报 Federal Register",
-      "status": "C",
+      "status": "A",
       "url": "https://www.federalregister.gov/",
       "access": "法规原文候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1611,13 +2685,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-111",
       "sector": "军事",
       "name": "RUSI",
-      "status": "C",
+      "status": "A",
       "url": "https://www.rusi.org/explore-our-research",
       "access": "公开安全研究候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1626,13 +2710,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-112",
       "sector": "军事",
       "name": "FAS Federation of American Scientists",
-      "status": "C",
+      "status": "A",
       "url": "https://fas.org/",
       "access": "核军控及政策研究候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1641,7 +2735,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-113",
@@ -1656,7 +2760,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "IISS_PAGE_TITLE_OR_LOGIN_ONLY",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "IISS_PAGE_TITLE_OR_LOGIN_ONLY",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-114",
@@ -1671,7 +2785,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-115",
@@ -1686,7 +2810,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-116",
@@ -1701,7 +2835,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-117",
@@ -1716,7 +2860,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-118",
@@ -1731,7 +2885,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "PAGE_NOT_RETRIEVED",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "PAGE_NOT_RETRIEVED",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-119",
@@ -1746,7 +2910,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-120",
@@ -1761,13 +2935,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "WEB_TOOL_HTML_CONTENT_OK",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-121",
       "sector": "AI/科技",
       "name": "NVIDIA技术博客",
-      "status": "C",
+      "status": "A",
       "url": "https://developer.nvidia.com/blog/",
       "access": "芯片与模型工程官方实践候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1776,13 +2960,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-122",
       "sector": "AI/科技",
       "name": "NeurIPS Proceedings",
-      "status": "C",
+      "status": "A",
       "url": "https://proceedings.neurips.cc/",
       "access": "公开学术会议论文候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1791,7 +2985,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-123",
@@ -1806,13 +3010,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "CISA_MAIN_PAGE_UNREADABLE_BROWSER",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "CISA_MAIN_PAGE_UNREADABLE_BROWSER",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-124",
       "sector": "创业",
       "name": "First Round Review",
-      "status": "C",
+      "status": "A",
       "url": "https://review.firstround.com/",
       "access": "公开创业实操文章候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1821,13 +3035,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-125",
       "sector": "创业",
       "name": "Stripe Atlas创业指南",
-      "status": "C",
+      "status": "A",
       "url": "https://stripe.com/atlas/guides",
       "access": "支付/公司注册/商业运营专题候选",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1836,13 +3060,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-126",
       "sector": "创业",
       "name": "Hacker News",
-      "status": "C",
+      "status": "A",
       "url": "https://news.ycombinator.com/",
       "access": "仅作为创业趋势发现索引，不是权威事实源",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1851,13 +3085,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-127",
       "sector": "创业",
       "name": "Product Hunt",
-      "status": "C",
+      "status": "A",
       "url": "https://www.producthunt.com/",
       "access": "产品发现信号，非成功真实性证据",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1866,13 +3110,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-128",
       "sector": "创业",
       "name": "GitHub Trending",
-      "status": "C",
+      "status": "A",
       "url": "https://github.com/trending",
       "access": "开源项目发现信号，非新闻核查凭据",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1881,13 +3135,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-129",
       "sector": "创业",
       "name": "Indie Hackers",
-      "status": "C",
+      "status": "A",
       "url": "https://www.indiehackers.com/",
       "access": "一线个人创业经验但需事实复核",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1896,13 +3160,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK_BUT_CACHED_WEEK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK_BUT_CACHED_WEEK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-130",
       "sector": "社会",
       "name": "Our World in Data（社会指标）",
-      "status": "C",
+      "status": "A",
       "url": "https://ourworldindata.org/",
       "access": "已有同机构其它条目，这条是公开社会研究单独专题",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1911,13 +3185,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-131",
       "sector": "社会",
       "name": "UNDP人类发展报告",
-      "status": "C",
+      "status": "A",
       "url": "https://hdr.undp.org/",
       "access": "人类发展和社会结构研究",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1926,7 +3210,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-132",
@@ -1941,13 +3235,23 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "UN_POPULATION_DYNAMIC_EMPTY",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "UN_POPULATION_DYNAMIC_EMPTY",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     },
     {
       "id": "SRC-133",
       "sector": "社会",
       "name": "Gallup公开研究",
-      "status": "C",
+      "status": "A",
       "url": "https://news.gallup.com/",
       "access": "公开民意调查，与付费后台区分",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -1956,7 +3260,17 @@
       "access_cost": "FREE_PUBLIC_OR_RESTRICTED_SUBSET",
       "content_test_result": "UNCONFIRMED",
       "ai_processing_permission": "TERMS_NOT_YET_REVIEWED",
-      "audited_at": "2026-10-13"
+      "audited_at": "2026-10-13",
+      "web_audit_20261013": {
+        "method": "public web.open browser proxy, original registered URL, attempted exactly once; selected fallbacks where recorded",
+        "result": "HTML_CONTENT_OK",
+        "checked_at": "2026-10-13",
+        "browser_html_or_feed_test": "HTML_CONTENT_OK",
+        "production_host_request": "NOT_RUN",
+        "repeated_daily_runs": 0,
+        "access_rights": "NOT_FULLY_REVIEWED",
+        "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      }
     }
   ],
   "access_note": "B publicly free subsets remain eligible for manual reading with permission review; paid/full institutional research removed. All production_test NOT_RUN.",
@@ -1976,5 +3290,42 @@
       "url": "https://www.lemonde.fr/",
       "reason": "Complete content not verified as free; remove from active free-source catalog; preserve as restricted leads only"
     }
-  ]
+  ],
+  "web_audit_20261013": {
+    "entries_tested": 130,
+    "counts_by_result": {
+      "HTML_CONTENT_OK": 81,
+      "WRONG_SCOPE_PAGE_IS_SINGLE_VIDEO": 1,
+      "BBC_HTML_AND_XML_UNREADABLE_IN_TEST_BROWSER": 1,
+      "PAGE_NOT_RETRIEVED": 13,
+      "DOCUMENTED_SEARCH_API_WITH_AUTH_NOT_TESTED": 1,
+      "API_OR_RSS_DOCUMENTATION_PAGE": 8,
+      "LIVE_JSON_API_SAMPLE_AND_DOC_PAGE_OK": 2,
+      "API_LANDING_SHELL_ONLY_API_KEY_REQUIRED": 1,
+      "GOV_CN_POLICY_URL_403_AND_ALTERNATE_REDIRECT_LOOP": 1,
+      "UN_PAGE_AND_NEWS_UNREADABLE_BROWSER": 1,
+      "EU_PRESS_CORNER_DYNAMIC_EMPTY": 1,
+      "ALTERNATIVE_OFFICIAL_NEWS_HTML_OK_ORIGINAL_URL_FAIL": 1,
+      "IISS_PAGE_TITLE_OR_LOGIN_ONLY": 2,
+      "META_AI_DYNAMIC_EMPTY": 1,
+      "ARXIV_API_DOCUMENTATION_BLOCKED_AT_CURRENT_PATH": 1,
+      "API_DOC_SHELL_ENDPOINT_UNTESTED": 1,
+      "EUROPE_PMC_API_DOCUMENTATION_BLOCKED": 1,
+      "NCBI_RECAPTCHA_BLOCKED": 1,
+      "COOKIE_ERROR_WITH_PARTIAL_LISTING": 1,
+      "SEARCH_SHELL_PAGE_ONLY": 1,
+      "YC_LIBRARY_PAGE_OVER_4MB_TOOL_LIMIT": 1,
+      "HTML_CONTENT_OK_BUT_REDIRECTED_TO_SITE_ROOT": 1,
+      "HTML_CONTENT_OK_BUT_CACHED_6_MONTHS": 1,
+      "GAO_MAIN_PAGE_UNREADABLE_BROWSER": 1,
+      "EUROPEAN_PARLIAMENT_MINIMAL_SHELL": 1,
+      "HTML_CONTENT_OK_METADATA_MINIMAL": 1,
+      "CISA_MAIN_PAGE_UNREADABLE_BROWSER": 1,
+      "HTML_CONTENT_OK_BUT_CACHED_WEEK": 1,
+      "UN_POPULATION_DYNAMIC_EMPTY": 1
+    },
+    "all_production_test": "NOT_RUN",
+    "copyright_review": "INCOMPLETE",
+    "test_type": "BROWSER_PROXY_NOT_PRODUCTION_HOST"
+  }
 }
