@@ -133,6 +133,7 @@ def request(base, state, meeting, language, *,
                     "version", "snapshot", "director_judgment",
                     "findings", "conflicts", "next_step"],
                 "next_step_enum": [
+                    "resolve_cross_department_conflict",
                     "revise_specifications", "continue_department_work",
                     "ready_for_real_media_and_human_review"],
             }, ensure_ascii=False, separators=(",", ":"))}
