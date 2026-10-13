@@ -102,6 +102,7 @@ DIRECTOR_FIELDS = (
     "artistic_style_reason", "visual_motif_and_evolution",
     "sound_silence_and_rhythm", "protect_meaning_over_spectacle",
     "what_the_director_refuses", "departmental_creative_freedom",
+    "why_comedy_is_or_is_not_suitable_here",
 )
 SHOT_FIELDS = (
     "shot_id", "applied_methods", "audience_before", "audience_after",
