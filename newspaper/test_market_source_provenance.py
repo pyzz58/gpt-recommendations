@@ -36,6 +36,8 @@ class MarketProvenanceTests(unittest.TestCase):
                 return FakeResponse("Date,Close\n")
             if "home.treasury.gov" in url:
                 return FakeResponse('<feed xmlns="http://www.w3.org/2005/Atom" />')
+            if "google.com/finance/quote/" in url:
+                return FakeResponse("<html><body>public quote unavailable</body></html>")
             raise AssertionError("Unexpected external request")
 
         with patch("market_snapshot.requests.get", side_effect=fake_get):
