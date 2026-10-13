@@ -4,7 +4,10 @@
 **原始证据不可被AI摘要覆盖；历史判断不可用未来信息偷改。** 所有研究都要可追溯到当时可得到的来源。
 
 ## 2. MVP 数据对象（建议PostgreSQL起步）
-- sources: source_id, title, publisher, url, license/access, published_at, event_at, collected_at, content_hash, archived_excerpt_or_permitted_copy, language, reliability_notes.
+- source_registry: source_id, canonical_name, region, primary_language, source_type, original_site, feed_or_api, ownership_group, availability, access_terms, last_checked, quality_notes。**全球媒体发现动态来源库，不是日报新闻条目列表。**
+- discovery_candidates: candidate_id, original_url, aggregator_url, discovery_channel, source_id, region, language, discovered_at, published_at, event_key, verification_status, source_trace。明确“发现渠道”和“事实证据来源”不同。
+- coverage_audits: period, regions, languages, independent_media_groups, sampling_misses, source_health, limitations。记录来源和议题盲区。
+- sources: source_id, title, publisher, url, license/access, published_at, event_at, collected_at, content_hash, archived_excerpt_or_permitted_copy, language, reliability_notes。
 - events: event_id, description, occurred_at, sources[], disputed_facts[], revision.
 - entities: entity_id, canonical_name, type(country/company/person/regulator), aliases, links. 不记录未经证实的私人敏感资料。
 - themes: theme_id, question, scope, importance, related_entities/events, current_state, next_review_at.
@@ -20,7 +23,7 @@
 至少区分 occurred_at(事件)、published_at(公开)、collected_at(取得)；thesis保存as_of研究截点和各次版本。允许问“当时知道什么？”并只使用该时点之前可获得的证据。纠错追加记录，不静默覆盖。
 
 ## 4. 档案关系
-来源 → 证据主张 → 事件/实体 → 永久主题 → 判断版本 → 周/月刊文章 → 知识原理卡片。单事件可关联多个主题，同一主题跨年更新。保留完整原始讨论/研究笔记及独立可发布稿，不把简略总结视为权威替代。
+全球媒体/机构来源注册表 → 独立发现候选池 → 核验来源 → 证据主张 → 事件/实体 → 永久主题 → 判断版本 → 周/月刊文章 → 知识原理卡片。单事件可关联多个主题，同一主题跨年更新。保留完整原始讨论/研究笔记及独立可发布稿，不把简略总结视为权威替代。
 
 ## 5. 一个长期主题模板
 THEME-AI-ENERGY-001：“算力瓶颈是否向电力基础设施迁移？”
