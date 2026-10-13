@@ -441,8 +441,8 @@
 - AI 视频适配：每集包含片头回顾片尾尾页最多90秒；荒诞笑点需可见物理行动和反应切点，多个AI短clip可组合但不能篡改剧本事实；可能由2D/静态/后期合成替代无法生成的手部/道具特技；未授权不得发送付费模型或发布任何私稿
 - 依赖：QO-D03, QO-D15, QO-D10
 - 历史问题：无
-- 修复证据：PR 未提供；回归 tests/test_director_artistic_methods.py — genre-specific transfer, serious no-gag gate, character causal comedy ladder, method source/shot/lock validation and model-facing per-department directions；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/36；回归 tests/test_director_artistic_methods.py — genre-specific transfer, serious no-gag gate, character causal comedy ladder, method source/shot/lock validation and model-facing per-department directions；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress
 
 ### QO-F01 · 演员表演与动作调度专业审计
 
