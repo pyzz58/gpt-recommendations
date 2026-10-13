@@ -15,6 +15,8 @@ from test_closing_evidence_card import FinalCreditsTests
 class FullSeriesTimelineTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        # Make this test independent of discovery/order of legacy test modules.
+        FinalCreditsTests.setUpClass()
         fixture = FinalCreditsTests("test_evidence_card_is_last_and_not_video_generation")
         cls.script = fixture
         cls.base = deepcopy(fixture.base)
