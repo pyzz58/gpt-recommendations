@@ -307,6 +307,43 @@ class DirectorArtisticMethodsTests(unittest.TestCase):
             visual.validate(base, state, meeting, vis,
                             artistic_method_plan=wrong)
 
+    def test_all_seven_specialists_get_distinct_executable_artistic_reasons(self):
+        expected = {
+            "acting": "acting_direction",
+            "camera_art": "camera_art_direction",
+            "sound": "sound_direction",
+            "editing_animation": "editing_direction",
+            "ai_technical": "ai_production_fallback",
+            "quality_review": "emotion_or_meaning_lost_if_generic",
+            "director_final": "why_choice_works_better",
+        }
+        import director_department_command as conference
+        self.assertEqual(set(expected), set(conference.DEPARTMENTS))
+        for name, field in expected.items():
+            with self.subTest(department=name):
+                data = art.departmental_context(
+                    self.base, self.state, self.meeting, self.comic, name)
+                self.assertEqual(data["this_department"], name)
+                self.assertEqual(data["per_shot"][0]["detailed_department_direction"],
+                                 self.comic["shots"][0][field])
+                self.assertTrue(data["specialist_may_propose_better_means_not_silently_rewrite_story"])
+                self.assertTrue(data["independent_craft_or_media_not_verified"])
+
+    def test_new_episode_planning_will_require_same_director_artistic_method(self):
+        import screenplay_series_delivery as series
+        from test_screenplay_series_delivery import long_story, dossier, series_plan
+        handoff = long_story()
+        ds = dossier(handoff)
+        outline = series_plan(handoff, ds, [3, 3, 3, 3, 3, 3, 2])
+        packet = series.build_per_episode_crew(handoff, ds, outline)
+        for episode in packet["episodes"]:
+            base = episode["authoritative_episode_base"]
+            self.assertEqual(
+                base["director_artistic_mode"],
+                {"kind": "director_artistic_method_required",
+                 "artistic_intent_before_specialists": True})
+            self.assertLessEqual(episode["episode_total_planned_s"], 90)
+
     def test_genre_is_not_a_nickname_and_art_method_before_visual(self):
         with self.assertRaisesRegex(art.ArtisticMethodError,
                                     "UNSUPPORTED_GENRE"):
