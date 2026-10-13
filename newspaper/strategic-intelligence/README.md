@@ -1,7 +1,7 @@
 # 内参系统（Global Strategic Intelligence）
 
 > 正式中文项目名：**内参系统**｜英文技术标识：Global Strategic Intelligence（GSI）｜历史名：全球战略内参
-> 版本 V2.0 / 规划基线日期 2026-10-13 / 状态：**规划已获用户原则认可，技术未实施**。
+> 版本 V2.1 / 规划基线日期 2026-10-13 / 状态：**规划已获用户原则认可，技术未实施**。
 > 这个文件夹是独立新项目的**设计权威入口**；不可将“规划”表述为“已经开发、测试或投入运行”。
 
 ## GitHub定位和搜索入口
@@ -40,8 +40,9 @@
 3. [ADVISOR_PEDAGOGY.md](ADVISOR_PEDAGOGY.md) — 帝师式讲解 Skill、第一性原理/费曼教学及例子。
 4. [INTELLIGENCE_MEMORY.md](INTELLIGENCE_MEMORY.md) — 来源、事件、主体、主题、判断、出版、知识卡片的数据模型与长期追踪。
 5. [SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md) — 独立全球多语言媒体发现、来源库、报道去重、反信息茧房及验收。
-6. [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md) / [SOURCE_REGISTRY.json](SOURCE_REGISTRY.json) — 130个候选跨政治、军事、科技、医疗、创业和金融来源（逐项浏览器验证后A116/B8/C6；四轮隔离云端真实联网测试；持续生产验收0/130）的可获取状态与机器可读登记。
-7. [SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md) — 明确受限的付费/客户专属研究及访问异常待复核。
+6. [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md) / [SOURCE_REGISTRY.json](SOURCE_REGISTRY.json) — 124个活跃免费/部分免费候选（A116/B8）；6个访问障碍来源已按用户指令移出；另完成4个随机来源的一次性实际HTTPS采集抽样的可获取状态与机器可读登记。
+7. [SOURCE_ABANDONED_2026-10-13.json](SOURCE_ABANDONED_2026-10-13.json) — 用户决定放弃的6条来源及原障碍记录。
+8. [SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md) — 明确受限的付费/客户专属研究及访问异常待复核。
 8. [SOURCE_VERIFICATION_PLAYBOOK.md](SOURCE_VERIFICATION_PLAYBOOK.md) — 实测接入、GitHub工具回退、版权审查及验收操作规程。
 9. [ACCESS_AUDIT_2026-10-13.md](ACCESS_AUDIT_2026-10-13.md) — 真实浏览器网页/两项公开JSON接口取样核验、失败及环境限制。
 10. [SOURCE_TOOLING_RESEARCH.md](SOURCE_TOOLING_RESEARCH.md) — RSSHub、Miniflux、Trafilatura、news-please、newspaper4k等工具的取舍。
@@ -61,7 +62,7 @@
 - 全球来源发现所用工具只是候选，未经测试不得称为已接入。免费可读不等于获准大量下载或转载全文。
 
 ## 数据接入状态提醒
-当前130源来源库包含公开网页勘查、四轮隔离GitHub Actions实际HTTP/XML/JSON测试与相应原始结果；**不是持续生产系统已连接**；每个source.production_test均为NOT_RUN。某些来源明确有付费限制，详细见来源限制清单。未经新指令不部署爬虫、不注册账户、不发送邮件。
+当前活跃名单124条（A116/B8），六条无法确认获取的来源已从候选库排除。对124条不再进行逐项全面测试；随机抽取4条完成一次性云端HTTPS读取，4条均HTTP200，3条新闻/研究内容页面、1条API文档。原始数据见[audits/random-four-20261013.json](audits/random-four-20261013.json)。**没有持续生产验证或版权授权，所有production_test仍为NOT_RUN。**某些来源明确有付费限制，详细见来源限制清单。未经新指令不部署爬虫、不注册账户、不发送邮件。
 ### 2026-10-13完整逐源网页审计
 130个原始URL已逐个通过网页浏览工具访问。**这次初始审计当时**A94/B5/C31；随后恢复核查更新为**A102/B7/C21**，详见下一节。**网页浏览成功不等于程序真实自动采集成功**：所有来源production_test=NOT_RUN。详情和每条错误见ACCESS_AUDIT_2026-10-13_FULL.md。
 ## 第一阶段恢复记录（2026-10-13，历史状态）
@@ -69,3 +70,6 @@
 
 ## 最新来源验证结果（2026-10-13，第二阶段）
 在隔离GitHub Actions测试分支执行4轮真实联网请求，确认BBC/NPR/France24/DW官方RSS，澎湃/第一财经公开JSON及arXiv、PubMed、ClinicalTrials、Europe PMC、medRxiv RSS1.0等可提取实际记录。A116/B8/C6；6个剩余障碍包括Congress.gov免费API密钥、欧委会公告机器化来源、NHK、欧洲议会挑战页、国家药监局及国家卫健委412。原始数据见[SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md](SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md)。**生产连续验证仍为0/130，逐源AI用途许可尚未完成审核。**
+
+## 最新用户决策：停止排查六条，抽查四条
+已放弃Congress.gov、欧盟委员会Press Corner、NHK、欧洲议会、国家药监局、国家卫健委，不再纳入活跃来源。GitHub Actions隔离分支一次性随机抽中CBS News、NCBI/PubMed、PwC全球CEO调查、证券时报，四个网址均可读取HTML，但PubMed读取的是API文档而不是具体医学论文。此为抽样，不是124条全面验收。历史130来源研究报告仍作为归档保留，**当前以124条活跃登记为准**。
