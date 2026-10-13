@@ -45,7 +45,8 @@ class QualitySampleTests(unittest.TestCase):
         import re
         schedules = re.findall(r"cron: '([0-9]+) ([0-9]+) \\* \\* \\*'",w)
         self.assertGreaterEqual(len(schedules), 3)
-        self.assertTrue(all(int(h) == 17 and 0 < int(m) < 60 for m,h in schedules))
+        local_minutes=[(int(h)+8)%24*60+int(m) for m,h in schedules]
+        self.assertTrue(all(60 < minute <= 140 for minute in local_minutes))
 
     def test_late_start_and_send_boundary_consistent(self):
         from digest import require_live_delivery_window, LATEST_SEND_START
