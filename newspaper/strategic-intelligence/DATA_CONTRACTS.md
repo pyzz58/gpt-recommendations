@@ -346,3 +346,38 @@ DomainLearningAudit:
 ```
 
 **不能用非空字符串冒充实质分析**。在真实代码中须对每个栏目独立校验具体专业字段，例如政治法源/权限/否决点、创业实际付费/毛利/CAC/续费、科技复现/工程成本、宏观数据定义/传导、股票FCF/预期/折现。验证器必须能拒绝“深度分析政治博弈”“商业模式优秀”等概念性占位词及未经核实事实。具体操作见[HARD_RULES.md](HARD_RULES.md)及[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)。
+
+## 14. V4.1世界机制发现与反馈返工对象（规划接口）
+
+\`\`\`yaml
+MechanismDiscovery:
+  input_evidence_packet: "EvidencePacketID"
+  as_of: "ISO8601"
+  apparent_news_narrative: "标题/最初印象"
+  verified_observations: ["带claim_refs的事实"]
+  historical_baseline: "何时什么指标"
+  real_puzzle: "最值得解释的疑问"
+  candidate_mechanisms:
+    - mechanism_id: "MECH-CAND-..."
+      causal_steps: ["条件→中介变量→结果"]
+      necessity_or_sufficiency: "NECESSARY|SUFFICIENT_WITH_CONDITIONS|CORRELATION|UNKNOWN"
+      supporting_claim_ids: []
+      strongest_refuting_claim_ids: []
+      unknowns: []
+      discriminating_observations: []
+      relevant_disciplines: ["不限于文章栏目"]
+  chosen_mechanism_ids: []
+  selection_reasons: ["为何相对竞争候选更有解释力"]
+  rejected_candidates_with_reasons: []
+  stopping_reason: "EVIDENCE_ADEQUATE|INSUFFICIENT_EVIDENCE|RESEARCH_BUDGET|UNCERTAIN"
+AdvisorTeacherIteration:
+  draft_version: 1
+  advisor_analysis_ref: "现实问题/制度权力/资金与代价"
+  teacher_learning_unit_ref: "知识/案例/反例/迁移"
+  teacher_found_evidence_gaps: []
+  sent_back_for_research: false
+  revisions_and_new_evidence_refs: []
+  independent_reviewer_ref: null
+\`\`\`
+
+**验证**：非空文本不能代替实际因果、来源和反例；模型说“本质是利益”没有具体人/资源/行为和可分证据，不能PASS；导师发现学科错误需设置\`sent_back_for_research=true\`与可定位版本，禁止不记录就悄悄覆盖历史。九栏目决定专业核验路径，不限制\`relevant_disciplines\`。
