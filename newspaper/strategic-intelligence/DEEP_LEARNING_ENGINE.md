@@ -1,3 +1,5 @@
+> **V4.4优先级说明**：本文V3/V4.0的详细教学动作保留供参考。真正的优先研究方法是[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)七问三门，完整读者结构见[CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)；旧十一道动作不是十一位AI导师或固定稿件标题，九领域知识不是每篇的封闭课表。
+
 # 内参系统｜深度认知学习引擎：完整目标、工作机制与可执行教学协议
 
 > 设计版本 V4.0（2026-10-13）。**这是本项目最重要的产品能力规范之一，而不是一份“在提示词中写帝师二字”的风格宣言。** 尚未实现为生产代码。**最高硬规则为[HARD_RULES.md](HARD_RULES.md)；九栏专业协议为[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)，人性与中国文化的实操为[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)。**
