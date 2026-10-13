@@ -1,3 +1,7 @@
+## 最新制作会后的导演复核（QO-D16）
+
+已有七部门详细会议继续作为权威，不应复制另一套“指挥 Agent”。新 [Skill 10](10-director-audiovisual-meaning-and-review.md) 在原会议后具体化**思想和情绪的声画因果**，并用 `director_delivery_review` 将**实际已提交**的专业产物逐镜交还导演审读。未提交必须标 pending；导演应指出具体部门/镜头/观众损失、协作岗位、返工方案、验收方法；需要修订时调用原 `agent_team.request_revision` 单镜定点返工。没有真实视频时只能审文字设计，不能谎称真实成片已通过。
+
 # Skill 09｜职业总导演的跨部门指挥、详细制作会与实际验收
 
 > 基于 [QO-D15 国际一手资料专业审计](../quality-optimization/QO-D15_DIRECTOR_DEPARTMENT_COMMAND_AUDIT.md)；与 Skill 08（全剧本创意剪辑）和 Skill 03（逐镜头技术导演）配合。**这是本项目的制作方法，非 DGA 官方认证。**
