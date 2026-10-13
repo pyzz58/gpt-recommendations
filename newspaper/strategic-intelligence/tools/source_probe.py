@@ -1,0 +1,132 @@
+#!/usr/bin/env python3
+"""Manual, low-rate source reachability smoke test. NO scheduler, NO publishing.
+This probes a URL's metadata and markup; it does NOT verify re-use/AI rights.
+Usage:
+    python tools/source_probe.py                       # dry-run
+    python tools/source_probe.py --execute --limit 10  # actual, consented smoke test
+    python tools/source_probe.py --execute --limit 130 --delay 3 --out source_probe_results.json
+"""
+from __future__ import annotations
+import argparse
+import json
+import time
+from datetime import datetime, timezone
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
+from xml.etree import ElementTree
+
+MAX_BYTES = 350000
+TIMEOUT = 12
+
+class PageText(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.title = []
+        self.text = []
+        self.in_title = False
+        self.skip = 0
+    def handle_starttag(self, tag, attrs):
+        if tag in ("script", "style", "noscript"):
+            self.skip += 1
+        if tag == "title":
+            self.in_title = True
+    def handle_endtag(self, tag):
+        if tag in ("script", "style", "noscript"):
+            self.skip = max(0, self.skip - 1)
+        if tag == "title":
+            self.in_title = False
+    def handle_data(self, data):
+        v = data.strip()
+        if not v or self.skip:
+            return
+        if self.in_title:
+            self.title.append(v)
+        else:
+            self.text.append(v)
+
+def check(entry, user_agent):
+    url = entry["url"]
+    result = {"id": entry["id"], "name": entry["name"], "url": url,
+              "at": datetime.now(timezone.utc).isoformat(),
+              "status": "UNKNOWN", "error": None, "content_type": None,
+              "http_status": None, "sample_title": None}
+    # SEC asks automated clients to identify their organization and contact.
+    if "sec.gov" in url and "@" not in user_agent:
+        result["status"] = "SKIPPED_REQUIRES_CONTACT_IN_USER_AGENT"
+        return result
+    if not url.startswith("https://"):
+        result["status"] = "SKIPPED_NOT_HTTPS"
+        return result
+    req = Request(url, headers={"User-Agent": user_agent,
+                                "Accept": "text/html,application/json,application/rss+xml,application/xml,*/*"})
+    try:
+        with urlopen(req, timeout=TIMEOUT) as response:
+            result["http_status"] = response.status
+            ctype = response.headers.get("Content-Type", "").lower()
+            result["content_type"] = ctype
+            data = response.read(MAX_BYTES + 1)
+            result["truncated"] = len(data) > MAX_BYTES
+            data = data[:MAX_BYTES]
+            decoded = data.decode("utf-8", errors="replace")
+            if "json" in ctype:
+                obj = json.loads(decoded)
+                result["status"] = "JSON_VALID"
+                if isinstance(obj, dict):
+                    result["sample_title"] = ", ".join(list(obj)[:5])
+                elif isinstance(obj, list):
+                    result["sample_title"] = "JSON array, length " + str(len(obj))
+            elif any(v in ctype for v in ("rss", "xml", "atom")) or decoded.lstrip().startswith("<?xml"):
+                try:
+                    tree = ElementTree.fromstring(data)
+                    title = tree.find(".//item/title")
+                    if title is None:
+                        title = tree.find(".//{http://www.w3.org/2005/Atom}entry/{http://www.w3.org/2005/Atom}title")
+                    result["sample_title"] = title.text[:200] if title is not None and title.text else None
+                    result["status"] = "XML_PARSED_HAS_ENTRY" if title is not None else "XML_PARSED_NO_ENTRY"
+                except ElementTree.ParseError as ex:
+                    result["status"] = "XML_TRUNCATED_OR_INVALID"
+                    result["error"] = str(ex)[:250]
+            elif "html" in ctype:
+                parser = PageText()
+                parser.feed(decoded)
+                result["sample_title"] = " ".join(parser.title)[:200]
+                result["approx_text_chars"] = len(" ".join(parser.text))
+                result["status"] = "HTML_HAS_TEXT" if result["approx_text_chars"] > 400 else "HTML_THIN_OR_DYNAMIC"
+            else:
+                result["status"] = "OTHER_CONTENT_TYPE"
+    except (HTTPError, URLError, TimeoutError, OSError, ValueError) as exc:
+        result["status"] = "REQUEST_FAILED"
+        result["http_status"] = getattr(exc, "code", None)
+        result["error"] = str(exc)[:350]
+    return result
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--execute", action="store_true", help="Make real HTTPS requests")
+    p.add_argument("--limit", type=int, default=130)
+    p.add_argument("--delay", type=float, default=3.0, help="Seconds between sources, >=2")
+    p.add_argument("--out", default="source_probe_results.json")
+    p.add_argument("--user-agent", default="StrategicIntelligenceSourceAudit/0.1 (noncommercial-research; contact-required-for-SEC)")
+    args = p.parse_args()
+    if args.delay < 2:
+        p.error("Delay must be >= 2 seconds")
+    registry = Path(__file__).resolve().parents[1] / "SOURCE_REGISTRY.json"
+    entries = json.loads(registry.read_text(encoding="utf-8"))["entries"][:max(0, args.limit)]
+    if not args.execute:
+        print("DRY RUN: would check", len(entries), "URLs. Pass --execute to make network requests.")
+        return
+    results = []
+    for n, entry in enumerate(entries):
+        if n:
+            time.sleep(args.delay)
+        r = check(entry, args.user_agent)
+        results.append(r)
+        print(entry["id"], r["status"], r["http_status"] or "", flush=True)
+    Path(args.out).write_text(json.dumps({"executed_at": datetime.now(timezone.utc).isoformat(),
+                                         "warnings": ["This does not establish content licensing, AI use rights or long-term reliability."],
+                                         "results": results}, indent=2, ensure_ascii=False), encoding="utf-8")
+    print("Results:", args.out)
+if __name__ == "__main__":
+    main()
