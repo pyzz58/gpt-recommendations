@@ -111,7 +111,7 @@ def request(base, state, meeting, language):
                     "departments": TARGETS, "shot_ids": state["shot_ids"]},
                 "finding_fields": [
                     "department", "shot_id", "verdict", "evidence_level",
-                    "intended_viewer_effect", "observed_delivery_evidence",
+                    "delivery_quote", "intended_viewer_effect", "observed_delivery_evidence",
                     "specific_viewer_consequence", "rewrite_instruction",
                     "professional_collaborators", "how_to_verify_next"],
                 "conflict_fields": [
@@ -145,7 +145,7 @@ def validate(base, state, meeting, language, review):
     for entry in rows:
         _shape(entry, {
             "department", "shot_id", "verdict", "evidence_level",
-            "intended_viewer_effect", "observed_delivery_evidence",
+            "delivery_quote", "intended_viewer_effect", "observed_delivery_evidence",
             "specific_viewer_consequence", "rewrite_instruction",
             "professional_collaborators", "how_to_verify_next",
         }, "REVIEW_FINDING_SHAPE")
@@ -157,6 +157,14 @@ def validate(base, state, meeting, language, review):
         completed = state["tasks"][entry["department"]]["status"] == "completed"
         _need((entry["evidence_level"] == "submitted_design") == completed,
               "REVIEW_INVENTED_DEPARTMENT_EVIDENCE")
+        quote = entry["delivery_quote"]
+        if completed:
+            _need(isinstance(quote, str) and 6 <= len(quote) <= 240 and
+                  quote in json.dumps(state["tasks"][entry["department"]]
+                                      ["deliverable"], ensure_ascii=False),
+                  "REVIEW_QUOTE_NOT_IN_ACTUAL_DELIVERY")
+        else:
+            _need(quote == "", "REVIEW_FAKE_MISSING_DELIVERY_QUOTE")
         if not completed:
             _need(entry["verdict"] == "cannot_evaluate",
                   "REVIEW_CANNOT_PASS_MISSING_DEPARTMENT")
