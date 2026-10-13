@@ -12,7 +12,7 @@
 
 ## Phase 1 — 最小可用周刊
 **1.1 独立代码目录**：只在strategic-intelligence下新增文件；不得修改日报生产流程。
-**1.2 独立全球发现层**：先核查SOURCE_REGISTRY.md/json的130个候选和SOURCE_ACCESS_BLOCKLIST.md明确移出的付费/AI限制来源，按SOURCE_VERIFICATION_PLAYBOOK.md执行逐源网络/API/RSS实际解析烟测（参见ACCESS_AUDIT_2026-10-13.md已进行的Web抽样和仍未解决的C类访问），合法开源回退（SOURCE_TOOLING_RESEARCH.md）、状态转换和来源健康日志，再按采集优先级接入。先建立SourceRegistry，登记媒体国家/语言/来源类型/许可/可用性。评估一至两个广域索引（GDELT/Media Cloud等候选）+ 全球多语主流媒体原生RSS/API/Sitemap + 官方披露与财报，构建**不依赖日报的候选池**。记录事件发布时间、采集时间和原始URL血缘；跨语去重及转引识别。尊重收费与版权限制。详见SOURCE_DISCOVERY.md。
+**1.2 独立全球发现层**：先核查SOURCE_REGISTRY.md/json的130个候选和SOURCE_ACCESS_BLOCKLIST.md明确移出的付费/AI限制来源，按SOURCE_VERIFICATION_PLAYBOOK.md在独立获准联网测试环境执行逐源网络/API/RSS实际解析烟测；可使用tools/source_probe.py手动低频测试（默认dry-run、未经批准不得建立定时工作流）（参见ACCESS_AUDIT_2026-10-13.md已进行的Web抽样和仍未解决的C类访问），合法开源回退（SOURCE_TOOLING_RESEARCH.md）、状态转换和来源健康日志，再按采集优先级接入。先建立SourceRegistry，登记媒体国家/语言/来源类型/许可/可用性。评估一至两个广域索引（GDELT/Media Cloud等候选）+ 全球多语主流媒体原生RSS/API/Sitemap + 官方披露与财报，构建**不依赖日报的候选池**。记录事件发布时间、采集时间和原始URL血缘；跨语去重及转引识别。尊重收费与版权限制。详见SOURCE_DISCOVERY.md。
 **1.3 全球多样性与候选评分**：来源/地区/语言覆盖审计、探索队列及漏报抽样；重要性与证据门槛分离。美股/创业仅在研究资源分配阶段优先，不能阻断全球发现；重大事件越级审核。
 **1.4 统一研究引擎**：可先简单Python管道+LLM工具；测试GPT Researcher若显著提升再引入。每阶段结构化产物和失败状态可见。
 **1.5 顾问教学**：按领域策略加载教学知识；输出要包含例子、反例、适用边界、下一次自分析方法。
