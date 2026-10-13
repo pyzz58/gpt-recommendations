@@ -33,7 +33,7 @@ class FrontPageTests(unittest.TestCase):
            "url":"https://36kr.com/p/123","source":"36氪文章","source_language":"zh"}
         self.assertIn("中国",countries(a))
         self.assertIn("科技、能源与前沿科学",sections(a))
-        self.assertIn("中国与美国",prepare_pool([a])["中国与美国"])
+        self.assertEqual(len(prepare_pool([a])["中国与美国"]), 1)
         grouped={"中国与美国":[{
             **a,"reading_en":"中国出台新产业政策。政策将分阶段实施。"}]}
         translator=Mock()
