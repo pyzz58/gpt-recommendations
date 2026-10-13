@@ -151,7 +151,7 @@ class DirectorAudiovisualReviewTests(unittest.TestCase):
         self.assertEqual(data["department"], "acting")
         self.assertIn("封口", data["detailed_shots"][0]["observable_screen_event"])
         self.assertIn("纸张轻响", data["cross_shot_audiovisual_handoffs"][0]["image_sound_link"])
-        with self.assertRaisesRegex(ValueError, "REQUIRES_DEPARTMENT_COMMAND"):
+        with self.assertRaisesRegex(ValueError, "DIRECTOR_DEPARTMENT_COMMAND_REQUIRED"):
             roles.build_role_messages(
                 self.base, self.state, "acting", source_text=self.source,
                 audiovisual_plan=self.language)
