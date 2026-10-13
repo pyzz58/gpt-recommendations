@@ -132,3 +132,13 @@ newspaper/
 ## V4.0变更记录：真实存在与尚未实现
 
 新增HARD_RULES、九栏专业教学、古典与人性透镜、ANNUAL_REPORT_SPEC、ENDORSEMENT_LEDGER、HISTORY_RECONCILIATION以及[templates/ANNUAL_TEMPLATE.md](templates/ANNUAL_TEMPLATE.md)，旧MONTHLY模板仍存在但首行标DEPRECATED，仅为历史追踪。**这些均是Markdown规则/模板，不等于真实研究、教学和审稿程序已实现**。当前正式内参产品只有WEEKLY/ANNUAL，不得生成MONTHLY作业或邮件。
+
+## V4.2最新权威文件及当前状态
+
+- [ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)：现在唯一正式顾问帝师“七问三检验”规范（古代帝师/现代智囊及咨询方法经公开史料研究后综合提炼）。
+- [MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)：**现行定版的六层产品逻辑**；整本周刊与年报、主文A记者新闻→B顾问研判/帝师释理→C后续核查。
+- [ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)：历史审计真实问题NC-001—NC-018及**未实施**修复；DESIGN_RESOLVED不等于测试VERIFIED。
+- [templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md)：已按V4.2重做，旧结构留GitHub历史提交可回查。
+- [OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)及[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)是此前更细的研究和旧架构审计，仍供查阅，但方法和系统层数以V4.2为准。
+
+**项目实际运行状态不变**：来源登记和部分历史抽样/探测脚本存在；独立顾问-帝师研究引擎及正式周报/年报自动生产不存在。用户只同意本轮定架构，未授权实装。
