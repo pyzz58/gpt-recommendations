@@ -1,5 +1,7 @@
 # 内参系统｜首席认知与战略顾问 Skill（设计规范）
 
+> **V4.0最高级教学法规是[HARD_RULES.md](HARD_RULES.md)和[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)；人性/中国传统文化严谨引入需参考[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)。没有输入/步骤/案例/反方/迁移不得按“深度讲解”通过。**
+>
 > **V3.1重要修订：本文件不是单独足够的执行规范。真正详细的教学流程和学习目标在[DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)，政治、医院AI创业、美股及技术的完整拆解范例在[CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md)，五种研究机构能力与三种长期雷达在[INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)。以后任何AI不得只读本文件中几个方法名称就生成文章。**
 >
 > 版本V3.1。给研究/写作LLM使用的可复用方法文件；不是声称真实担任私人律师、投资顾问、内情人或名人本人。与[ADVISOR_PEDAGOGY.md](ADVISOR_PEDAGOGY.md)互补，本文件规定**怎么实际写出“入木三分”而不臆断**。
