@@ -97,7 +97,7 @@ jobs:
       - name: Preview only — never load SMTP secrets
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
         env:
-          PREVIEW_KIND: ${{ inputs.preview_kind || 'demo' }}
+          PREVIEW_KIND: ${{ github.event_name == 'pull_request' && 'live' || inputs.preview_kind || 'demo' }}
         run: |
           set -euo pipefail
           if [ "$PREVIEW_KIND" = "live" ]; then
