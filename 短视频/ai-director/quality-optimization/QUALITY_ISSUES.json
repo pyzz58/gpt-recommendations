@@ -1767,6 +1767,43 @@
           "evidence_ref": ""
         }
       ]
+    },
+    {
+      "id": "QO-D19",
+      "stage": "now_director",
+      "department": "director",
+      "priority": "P1",
+      "status": "in_progress",
+      "title": "导演对白逐句声画cue与跨镜反打同步",
+      "observed_in": "director_shot_coverage.py / director_speech_cues.py / screenplay_series_delivery.py",
+      "problem": "原导演镜头覆盖不能拆分带对白或旁白的节拍；若强行拆镜，会造成台词和字幕重复、错位、说话人错绑与工单沿用旧镜头。",
+      "root_cause": "原生产规划将画面shot、台词文字与字幕绑定在同一个镜头对象，缺少来源精确的独立音轨时间轴和跨镜引用。",
+      "solution": "建立独立、逐条源文本精确匹配的cue ledger及字幕时间轴，只有有效时间码才允许拆分带台词节拍；导演镜头引用声轨片段而非复制台词，工单重建；进一步实现媒体验证和口型同步。",
+      "acceptance": "源文本、说话人、台词顺序100%精确；跨镜头无遗漏重复；无cue时拒绝拆镜；连续/重叠/超出区间/篡改测试全通过；独立真实音画与口型审验后才可完成。",
+      "ai_video_constraint": "制作时画面与音轨必须分离；AI视频模型不能凭文字cue被视为口型已同步，字幕须由独立后期时间轨处理，未验收仅可作规划。",
+      "depends_on": [
+        "QO-D02"
+      ],
+      "legacy_links": [],
+      "owner": "director",
+      "opened_on": "2026-10-13",
+      "evidence": {
+        "implementation_pr": "",
+        "commit_sha": "b0882ff4f4095062e4062499edf5cdb7b3702beb",
+        "automated_test": "已写入公开虚构样例 tests/test_director_speech_cues.py；需以 GitHub Actions 运行结果确认全绿。",
+        "independent_review": "",
+        "media_validation": "",
+        "closure_note": "",
+        "closed_on": ""
+      },
+      "history": [
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "保留既有QO-D03视听母题事项；独立登记QO-D19逐句声画同步。增加源文本cue校验、镜头跨声轨绑定和虚构例测试；尚未证明CI全绿及真实媒体同步。",
+          "evidence_ref": ""
+        }
+      ]
     }
   ]
 }
