@@ -193,4 +193,6 @@ jobs:
             /tmp/newspaper-live-qa.pdf
             /tmp/newspaper-live-qa.html
             /tmp/newspaper-live-qa.txt
+            /tmp/newspaper-live-qa.market.json
+            /tmp/newspaper-preview.market.json
           retention-days: 3
