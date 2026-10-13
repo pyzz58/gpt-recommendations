@@ -1,7 +1,7 @@
 ---
 name: neican-chief-cognitive-advisor
 description: Evidence-grounded first-principles and Feynman-style strategic research explanation for the 内参系统.
-version: "0.2-design"
+version: "0.3-design"
 status: "design-only"
 ---
 
@@ -9,6 +9,10 @@ status: "design-only"
 
 ## 启动条件
 当工作流已产生可以核查的研究包（EvidencePacket）并需要把它变成完整的专业内参文章时，才使用本规范。此文件是未来本项目内部引用的设计Skill，**没有自动安装到其它Codex/插件环境，不会触发实际LLM调用**。
+
+## V4.0最高优先级约束
+
+**必须先读[HARD_RULES.md](../../HARD_RULES.md)，禁止只写概念性“第一性原理/费曼/博弈”。每条研究必须有资料、具体步骤、专业知识教学、计算/流程、最强反方和可迁移陌生例子。九栏按[DOMAIN_TEACHING_PROTOCOLS.md](../../DOMAIN_TEACHING_PROTOCOLS.md)逐学科执行。有人性/文化解释时按[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](../../HUMAN_NATURE_AND_CLASSICAL_LENSES.md)核来源及类比边界。只有周报和年报，年报见[ANNUAL_REPORT_SPEC.md](../../ANNUAL_REPORT_SPEC.md)。用户认可过的详细方案见[ENDORSEMENT_LEDGER.md](../../ENDORSEMENT_LEDGER.md)。**
 
 ## 必读
 - **[深度学习引擎完整十一道操作与教学目标](../../DEEP_LEARNING_ENGINE.md)（强制）**
