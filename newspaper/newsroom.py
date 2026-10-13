@@ -15,10 +15,10 @@ SECTIONS = {
     "美股市场与机构观察": 5,
     "中国与美国": 3,
     "国际政治与全球事件": 3,
-    "全球宏观与金融政策": 2,
-    "AI与数字产业": 2,
-    "科技、能源与前沿科学": 2,
-    "创业、商业与企业竞争": 2,
+    "全球宏观与金融政策": 1,
+    "AI与数字产业": 1,
+    "科技、能源与前沿科学": 1,
+    "创业、商业与企业竞争": 1,
     "医疗、生命科学与公共健康": 1
 }
 COUNTRIES = {
@@ -74,7 +74,7 @@ def countries(item):
     result = set()
     for name, pattern in COUNTRIES.items():
         if name == "美国":
-            if matches(pattern, title):
+            if matches(pattern.replace(r"|\bU\.?S\.?\b",""), title) or re.search(r"\bU\.?S\.?\b",title):
                 result.add(name)
         elif matches(pattern, title):
             result.add(name)
@@ -156,13 +156,6 @@ def prepare_pool(items, per_section=20):
                             key=lambda a: a["importance_score"], reverse=True)
         # Protect both regions before fetching and keep same-event alternatives.
         preferred = []
-        if section == "美股市场与机构观察":
-            # A genuinely comprehensive cover should not contain five copies
-            # of the same kind of market headline. Cover evidence buckets first.
-            for topic in ("index","institution","rates","earnings","flows"):
-                for a in available:
-                    if market_theme(a)==topic and add(a):
-                        break
         if section == "中国与美国":
             for country in ("中国", "美国"):
                 preferred.extend([a for a in candidates if country in a["countries"]][:5])
@@ -181,7 +174,11 @@ def prepare_pool(items, per_section=20):
 def select_readable(candidates, enriched):
     output, diagnostics = {}, {}
     used_events, used_urls = set(), set()
-    for section, quota in SECTIONS.items():
+    # Select combined China/US priorities first to preserve three distinct
+    # stories; PDF and rendered front page still lead with the US market.
+    selection_order=["中国与美国"]+[name for name in SECTIONS if name!="中国与美国"]
+    for section in selection_order:
+        quota=SECTIONS[section]
         available = [enriched[a["url"]] for a in candidates.get(section, []) if enriched.get(a["url"])]
         selected, families, concentration, exceptions = [], Counter(), Counter(), []
         def add(a, allow_exception=False):
@@ -200,6 +197,12 @@ def select_readable(candidates, enriched):
             families[a["publisher_family"]] += 1
             concentration.update(cs)
             return True
+        if section == "美股市场与机构观察":
+            # Prefer one news event per institutional market evidence bucket.
+            for theme in ("index","institution","rates","earnings","flows"):
+                for a in available:
+                    if len(selected)>=quota:break
+                    if market_theme(a)==theme and add(a):break
         if section == "中国与美国":
             for country in ("中国", "美国"):
                 if any(country in a.get("countries", []) for a in selected): continue
@@ -224,4 +227,4 @@ def select_readable(candidates, enriched):
             "readable": len(available), "selected": len(selected), "missing_regions": missing,
             "shortfall": max(0, quota-len(selected)), "country_counts": dict(concentration),
             "concentration_exceptions": exceptions}
-    return output, diagnostics
+    return {k:output.get(k,[]) for k in SECTIONS}, {k:diagnostics.get(k,{}) for k in SECTIONS}
