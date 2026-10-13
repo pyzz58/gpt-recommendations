@@ -4,7 +4,7 @@
 >
 > 这是**设计模板**。真实发行和发送没有得到用户授权，不能因模板存在就启用周报cron/邮件。
 
-\`\`\`yaml
+```yaml
 edition_id: "WEEKLY-YYYY-Www"       # 对应目标研究/出版周期；实际标准需以后代码验证
 kind: WEEKLY
 period_start: "YYYY-MM-DD"
@@ -21,7 +21,7 @@ fact_check_report_ref: null
 chief_editor_approval_ref: null
 historical_thesis_updates_ref: null
 copyright_audit_ref: null
-\`\`\`
+```
 
 # 内参系统｜全球战略周报
 
@@ -102,7 +102,7 @@ copyright_audit_ref: null
 
 ## 历史判断与事实更正（有真实新证据才更新）
 
-[列往期命题编号、原话和旧\`as_of\`、本周新原始证据、原判断为何被支持/削弱/推翻、旧原件链接/更正。没有真实新资料就不制造更新。]
+[列往期命题编号、原话和旧`as_of`、本周新原始证据、原判断为何被支持/削弱/推翻、旧原件链接/更正。没有真实新资料就不制造更新。]
 
 **这里不是早期读者版“下期观察清单”**。未来需要验证的新闻/企业指标存在后台Theme与ThesisVersion，并为年报提供证据，不为增加页数单独制作空泛清单。
 
