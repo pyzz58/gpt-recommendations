@@ -28,7 +28,7 @@
 
 **输出**：\`DiscoveryCandidate\`（SourceID、URL、发表/事件日、地区、语言、类型、授权等级、状态）、\`SourceHealth\`和\`CoverageMap\`。**错误出口**：源故障不等于当期世界没有新闻；合法材料不足进入\`NO_SOURCE_EVIDENCE\`。
 
-## L2｜事件聚类与选文委员会：S0—S8完整执行
+## L2｜事件聚类与选文委员会：先S0—S7初选；证据层之后回访S8
 
 **输入**：发现候选、历史Theme/Thesis、对同一事实的不同公开版本。
 
@@ -41,9 +41,9 @@
 6. S5用试行100分（25影响+15结构/持续+20典型或突破+15证据+15知识+10原创全球/时效），每项有事实说明；**不以分数代替S2**；
 7. S6全刊防信息茧房：检查国家、语言、社会/医疗/军事等非金融主题；
 8. S7决定EVENT/REPORT/INVESTIGATION/DEVELOPMENT/RESEARCH_FEATURE及要查的原始资料、不同意见、是否是第三方调查；
-9. S8研究完毕后再次评议；若重要性或数据不实，**降级、等待或撤稿**。
+9. **S8不是在L3之前假装执行完毕**：L2完成S0—S7初选后先送L3。**L3完成原始资料查验和翔实A稿，再带EvidencePacket返回L2，正式执行S8**。若真实影响、代表性、研究方法或数据不实，必须降级、等待或撤稿；只有S8最终`COVER`方可进入L4，重要新反证出现再次触发S8。
 
-**输出**：\`EventCluster\`、\`StorySelection\`（方向/典型/素材门/打分来源/结果）、\`ReportingPlan\`，以及\`COVER / RESEARCH_PENDING / SIGNAL / WATCH / DROP\`。
+**输出**：第一次是\`EventCluster\`、\`StorySelectionInitial(S0—S7)\`、\`ReportingPlan\`和初选状态；**L3回访后的第二次**是\`StorySelectionFinal(S8)\`以及最终\`COVER / RESEARCH_PENDING / SIGNAL / WATCH / DROP\`。必须保留前后状态与变更理由，不能覆盖初选。
 
 **错误出口**：有新闻价值但证据不够→RESEARCH_PENDING；热搜但没有实质变化→SIGNAL/DROP；全刊过度同质→补探索队列或调整稿件，不凭空编故事。
 
@@ -59,11 +59,11 @@
 5. 核多媒体转载血缘、原数字/法条/财务会计口径/科研复现与不确定性；翻译原意忠实、中文自然专业，不能把受限原文整段照抄/翻译转载。
 6. 写一篇独立能看明白的**A journalist draft**。记者段可以解释已有来源证实的背景，但不写模型自己推断的私人动机或未经核实证券走势。
 
-**输出**：\`EvidencePacket\`、\`ClaimSourceMap\`、\`NewsReportA\`、\`EvidenceGaps\`。**失败出口**：关键事实错误→BLOCK/改证；受限版权或无足够来源→不能发布完整版A；不以顾问长文补填空。
+**输出**：\`EvidencePacket\`、\`ClaimSourceMap\`、\`NewsReportA\`、\`EvidenceGaps\`；**先返回L2执行S8正式复审，再进入L4**。**失败出口**：关键事实错误→BLOCK/改证；受限版权或无足够来源→不能发布完整版A；不以顾问长文补填空。
 
 ## L4｜联合顾问—帝师核心：用同一份研究案卷完成B1、B2和C
 
-**输入**：A稿、EvidencePacket、真实旧Theme/Thesis资料及当前事件变化。
+**输入**：A稿、EvidencePacket、**已经通过L2回访S8的最终选文准入记录**、真实旧Theme/Thesis资料及当前事件变化。
 
 **七问执行顺序**（实际详细步骤和失败出口见[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)）：
 - 问事：A核实事实和时间；
