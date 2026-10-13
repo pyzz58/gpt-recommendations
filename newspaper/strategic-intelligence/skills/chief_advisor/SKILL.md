@@ -72,3 +72,7 @@ status: "design-only"
 执行前必须读取[ADVISOR_MASTER_METHOD.md](../../ADVISOR_MASTER_METHOD.md)的**七问（事、题、势、人、因、断、道）＋三检验（事实、反证、迁移）＋顾问/帝师返工**，以及[MAGAZINE_ARCHITECTURE.md](../../MAGAZINE_ARCHITECTURE.md)的**A记者新闻正文→B本刊顾问研判/帝师释理→C下次核查**。原十二步属于详情库，非必须部署12个Agent。一个认知研究工作台共享事实和机制，只需一份深度研究报告；不要为第4、5层分别写重复的全文。遗留工程问题见[ISSUE_BACKLOG.md](../../ISSUE_BACKLOG.md)，用户本轮仅定规范，不允许提前开始修复。
 
 **禁止绝对主义**：不预设单一“终极规律”；同一结果可以由资源/制度/激励等多种机制共同形成。只有证据可以提高判断确信度，模型预训练知识不是最新新闻证据。不得把古代帝师与现代咨询研究的历史方法表述成同一个既有算法。
+
+## V4.3选文和读者可见文章的最新覆盖规则
+
+刊物文章必须先过[EDITORIAL_SELECTION_AND_REPORTING.md](../../EDITORIAL_SELECTION_AND_REPORTING.md)的真实选文程序：影响可正可负可混合、典型性或重大突破、原始来源与可完整报道的专业事实；A按5W1H新闻六要素或机构报告的作者/方法/样本/局限写翔实新闻，不假冒记者现场采访；B顾问加帝师用七问三检验研究并教真实世界规律；C执行[SCENARIOS_AND_OPEN_QUESTIONS.md](../../SCENARIOS_AND_OPEN_QUESTIONS.md)的后续条件推演与开放思考。原来固定读者版“继续观察/下次核验”已被最新用户否定，**后台继续保留旧Thesis证伪指标供年报**。
