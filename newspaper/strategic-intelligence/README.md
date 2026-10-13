@@ -88,6 +88,7 @@
 - **[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)** — 九栏目不同学科的逐步深度教学、具体证据、负例与阻断条款。
 - **[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)** — 利益/权力/信息/人性及中国传统文化的证据化应用。
 - **[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)** — 全年周报+年度独立原始新闻源，十二步生产综合年报。
+- **[REAL_CASES_EVIDENCE_FIRST.md](REAL_CASES_EVIDENCE_FIRST.md)** — 以可核实的2013美国政府停摆、Duolingo 2024 SEC报表、伯克希尔2024年报真正示范事实→制度/会计根因→知识与迁移。
 - **[ENDORSEMENT_LEDGER.md](ENDORSEMENT_LEDGER.md)**、**[HISTORY_RECONCILIATION.md](HISTORY_RECONCILIATION.md)** — 用户认可的详细保存及可回查历史审计。
 
 ### B. 先读这六份（快速准确理解项目）
