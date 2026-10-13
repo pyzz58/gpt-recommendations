@@ -1,0 +1,29 @@
+name: 内参系统：随机四源一次性采集测试
+on:
+  push:
+    branches:
+      - audit/neican-random-four-20261013
+    paths:
+      - '.github/workflows/neican-random-four.yml'
+permissions:
+  contents: write
+jobs:
+  sample-four:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch only four randomly sampled sources
+        run: |
+          cd newspaper/strategic-intelligence
+          python3 tools/source_probe.py --execute --random-four --delay 2 --out audits/random-four-20261013.json
+      - name: Preserve sampled observations on audit branch
+        if: always()
+        run: |
+          if test -f newspaper/strategic-intelligence/audits/random-four-20261013.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add newspaper/strategic-intelligence/audits/random-four-20261013.json
+            git commit -m "audit(内参): save random four sampled source observations" || true
+            git push origin HEAD:audit/neican-random-four-20261013
+          fi
