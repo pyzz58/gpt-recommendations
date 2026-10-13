@@ -159,10 +159,10 @@ def request(base, state, director_command, *, genre, source_text=None):
     """Build UNSENT *same director* craft analysis after existing lock/meeting."""
     _need(genre in MODES, "ARTISTIC_UNSUPPORTED_GENRE")
     version = _source_lock(base, state, director_command)
-    if source_text is not None:
-        _need(isinstance(source_text, str) and
-              hashlib.sha256(source_text.encode("utf-8")).hexdigest() ==
-              state["source_digest"], "ARTISTIC_SOURCE_STALE")
+    _need(isinstance(source_text, str) and bool(source_text.strip()),
+          "ARTISTIC_FULL_SCREENPLAY_REQUIRED")
+    _need(hashlib.sha256(source_text.encode("utf-8")).hexdigest() ==
+          state["source_digest"], "ARTISTIC_SOURCE_STALE")
     return {
         "kind": "unsent_director_creative_craft_decision",
         "version": VERSION, "dispatch_allowed": False,
