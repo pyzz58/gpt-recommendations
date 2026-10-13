@@ -1,8 +1,8 @@
-# 内参系统｜正式杂志体例与单篇文章编辑结构（V4.3编辑内容定版）
+# 内参系统｜正式杂志体例与单篇文章编辑结构（V4.4审核版）
 
 > 用户对内容形态的具体说明：“周刊假设一本杂志，第一篇文章是某某事件，什么什么事。一个汇总，然后后面是评价和顾问帝师。”本文件明确**最终读者真正看到什么**，并将后台研究流程与刊物版式分离。**周报＋年报为正式产品，月报不运行；日报是另一套系统。**
 >
-> 最高规则：[HARD_RULES.md](HARD_RULES.md)；**顾问/帝师的统一七问三检验：[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)**。该内部方法不直接等于刊物章节。
+> **完整执行规则先读[CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)**。最高硬性门禁：[HARD_RULES.md](HARD_RULES.md)；**顾问/帝师的统一七问三检验：[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)**。该内部方法不直接等于刊物章节。
 
 ## 1. 不再将“世界机制发现”与“顾问+帝师”算两个物理模块
 
