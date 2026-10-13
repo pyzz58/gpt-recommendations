@@ -5,7 +5,7 @@
 
 ## 总览
 
-- 登记 37 项；编剧 11 项，总导演 16 项，其它部门 10 项。
+- 登记 38 项；编剧 11 项，总导演 17 项，其它部门 10 项。
 - 全部验收完成 0 项；没有真实独立验证不能自称达到一流水准。
 - 现阶段只修编剧及总导演；其它部门保持后续审计状态。
 
@@ -38,6 +38,7 @@
 | QO-D14 | director | P0 | in_progress | 总导演主动创意剪辑与重大压缩权 |
 | QO-D15 | director | P0 | in_progress | 总导演详尽指挥与协调所有专业部门 |
 | QO-D16 | director | P0 | in_progress | 导演审核部门真实交付与基于观众体验的精准跨岗返工 |
+| QO-D17 | director | P0 | in_progress | 世界级导演的可迁移艺术判断与周星驰荒诞喜剧的题材适配 |
 | QO-F01 | acting | P1 | audit_pending | 演员表演与动作调度专业审计 |
 | QO-F02 | cinematography_art | P1 | audit_pending | 摄影/灯光/美术世界观专业审计 |
 | QO-F03 | sound_voice | P1 | audit_pending | 配音/对白/拟音/音乐专业审计 |
@@ -245,7 +246,7 @@
 - 依赖：QO-D02
 - 历史问题：无
 - 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/31；回归 tests/test_director_audiovisual_delivery.py — visual and sound causal reasoning, distinct shot decisions, cross-shot boundary, version binding and real role-prompt injection；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-13:in_progress
 
 ### QO-D04 · 模型能力适配、片段时长与路由决策
 
@@ -413,7 +414,7 @@
 - 依赖：QO-D03, QO-D05, QO-D08, QO-D10
 - 历史问题：无
 - 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/30；回归 tests/test_director_department_command.py — 7 specialist missions, scene/shot-specific vision, 7 interfaces, model-facing injection, stale lock/data, generic repeat rejection, mandatory production output gate；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress
+- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress
 
 ### QO-D16 · 导演审核部门真实交付与基于观众体验的精准跨岗返工
 
@@ -427,6 +428,20 @@
 - 依赖：QO-D03, QO-D15, QO-D11
 - 历史问题：无
 - 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/31；回归 tests/test_director_audiovisual_delivery.py — grounded real department-delivery assessment, pending vs completed, precise single-shot revision and staleness rejection；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:in_progress
+
+### QO-D17 · 世界级导演的可迁移艺术判断与周星驰荒诞喜剧的题材适配
+
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：director_visual_language.py; director_department_command.py; agent_role_contracts.py; new director_artistic_methods.py; skills/11-director-artistic-judgment-and-absurd-comedy.md
+- 问题：原导演已有分镜因果与七部门任务书，但未独立证明能根据剧本思想和情绪选择不同名导的可迁移创作方法；普通AI可把喜剧等同搞怪BGM/夸张表情，也可能在严肃科普、纪录片强行塞笑点，导致画面漂亮却人物因果失真
+- 根因：现有单镜视听规划有形式字段，但缺艺术方法的适用和失败条件、具体导演选择的反论证、喜剧内在人物需要和世界规则，以及方法选择与部门专业交付之间的版本化一致性；大师风格外观被误当创作机制
+- 方案：深入核对斯科塞斯、王家卫、诺兰、迈克李及周星驰本人访谈和小津二手技法研究；新增可迁移创作机制知识卡、导演理由与反向比较、喜剧按题材可关闭或启用，启用时需要人物渴望、合理预期、物理因果荒诞升级、可见反转和不强制煽情的情绪回声；每镜讲清行为/视听/观众变化并绑源/导演锁/会议版本后传现有七部门专业任务；不模仿名家台词画面演员形象
+- 完成验收：公开虚构两镜短片分别作为严肃人物戏和人物因果喜剧测试；严肃版不会被强迫喜剧，荒诞版具完整人物诉求/预期/反转逻辑且逐镜观众改变；未知技法、固定套路、剧情版本失效、未选技法、错误角色指令被阻断；现有岗位模型真正收到分专业详细原因而非仅元数据；独立专业盲评人物及笑点成立且真实视频验证后才可完全关闭
+- AI 视频适配：每集包含片头回顾片尾尾页最多90秒；荒诞笑点需可见物理行动和反应切点，多个AI短clip可组合但不能篡改剧本事实；可能由2D/静态/后期合成替代无法生成的手部/道具特技；未授权不得发送付费模型或发布任何私稿
+- 依赖：QO-D03, QO-D15, QO-D10
+- 历史问题：无
+- 修复证据：PR 未提供；回归 tests/test_director_artistic_methods.py — genre-specific transfer, serious no-gag gate, character causal comedy ladder, method source/shot/lock validation and model-facing per-department directions；独立审核 未完成；真实媒体 未完成或不适用
 - 状态历史：2026-10-13:in_progress
 
 ### QO-F01 · 演员表演与动作调度专业审计
