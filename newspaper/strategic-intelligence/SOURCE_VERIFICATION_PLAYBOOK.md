@@ -2,6 +2,8 @@
 
 > 设计文件，不表示已执行。依据SOURCE_REGISTRY.json的130个活动候选记录逐源实施，避免“主页打开=完全可采集”的误判。
 
+完整逐源网页访问结果：[ACCESS_AUDIT_2026-10-13_FULL.md](ACCESS_AUDIT_2026-10-13_FULL.md)。手动低频 HTTP/RSS/API 测试程序：[tools/source_probe.py](tools/source_probe.py)，默认只干跑、不自动发出网络请求；需在合法联网的隔离环境按指令主动运行。此程序并不能证明版权和AI处理权限。
+
 ## 验证证据等级
 - V0：只找到官方介绍或相关搜索结果。
 - V1：实际打开官方页面，并取得有用内容或明确RSS/API文档。
