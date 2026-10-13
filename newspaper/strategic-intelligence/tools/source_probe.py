@@ -8,6 +8,7 @@ Usage:
 """
 from __future__ import annotations
 import argparse
+import random
 import json
 import time
 from datetime import datetime, timezone
@@ -125,6 +126,7 @@ def check(entry, user_agent):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--execute", action="store_true", help="Make real HTTPS requests")
+    p.add_argument("--random-four", action="store_true", help="Seeded random sample of four active sources")
     p.add_argument("--limit", type=int, default=130)
     p.add_argument("--delay", type=float, default=3.0, help="Seconds between sources, >=2")
     p.add_argument("--out", default="source_probe_results.json")
@@ -133,7 +135,12 @@ def main():
     if args.delay < 2:
         p.error("Delay must be >= 2 seconds")
     registry = Path(__file__).resolve().parents[1] / "SOURCE_REGISTRY.json"
-    entries = json.loads(registry.read_text(encoding="utf-8"))["entries"][:max(0, args.limit)]
+    entries = json.loads(registry.read_text(encoding="utf-8"))["entries"]
+    if args.random_four:
+        eligible = [e for e in entries if e.get("status") in ("A", "B") and "sec.gov" not in e["url"]]
+        entries = random.Random(20261013).sample(eligible, 4)
+    else:
+        entries = entries[:max(0, args.limit)]
     if not args.execute:
         print("DRY RUN: would check", len(entries), "URLs. Pass --execute to make network requests.")
         return
