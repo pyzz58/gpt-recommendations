@@ -71,7 +71,7 @@
 - 人性/动机分析使用可观察行为、公开约束和多种竞争假设，区分利己、身份、信念、声望、恐惧、互惠、道德承诺；
 - 如果中国传统文化不适用于本期事实，则注明不适用，**不强行套典故**。
 
-完整应用和反例见[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)。
+完整应用和反例见[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)。真实来源教学的标准样稿参照[REAL_CASES_EVIDENCE_FIRST.md](REAL_CASES_EVIDENCE_FIRST.md)：美国2013年停摆、Duolingo2024原始SEC披露与伯克希尔2024年报；不能仅用假设案例冒充现实。
 
 ## R-005 不能把“读完”说成“教会”
 
