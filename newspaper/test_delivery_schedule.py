@@ -42,12 +42,14 @@ class DeliveryScheduleTests(unittest.TestCase):
 
     def test_send_window_boundaries_and_timeout(self):
         end = dt.datetime(2026, 10, 14, 1, 0, tzinfo=self.bj)
-        for minute in (0, 10, 20, 56):
+        # The active 2026-10-14 policy accepts delayed GitHub events
+        # through 02:29:59, rejecting handoff at or after 02:30.
+        for minute in (0, 3, 18, 43, 67, 89):
             require_live_delivery_window(end + dt.timedelta(minutes=minute), end)
         for when in (
             end - dt.timedelta(seconds=1),
-            end + dt.timedelta(minutes=57),
-            end + dt.timedelta(hours=1),
+            end + dt.timedelta(minutes=90),
+            end + dt.timedelta(hours=2),
             end + dt.timedelta(hours=10),
         ):
             with self.subTest(when=when), self.assertRaises(RuntimeError):
