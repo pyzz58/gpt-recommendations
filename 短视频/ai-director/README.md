@@ -1,5 +1,6 @@
 ## 最新导演视听表达与部门验收（QO-D03 / D16）
 
+- **新系列硬门禁**：`build_per_episode_crew` 产生的正式部门工单，必须在现有导演锁定和 Skill09 制作会后再提交逐镜视听因果 `audiovisual_plan`；专业岗位准备与产物接受双向校验该导演计划，避免只有文字会议而没有真正导演视听决定。
 - 导演必须说明**为什么用这一种画面和声音来传递思想及情绪**：人物状态、可观察事件、观众前后理解、场面调度/镜头静动、声音/沉默、真正切点及普通 B-roll 替代会损失什么。新增 [director_visual_language.py](director_visual_language.py)，具体要求见 [Skill 10](skills/10-director-audiovisual-meaning-and-review.md)。
 - 原 Skill 09 的七部门制作会并不废止。新增 [director_delivery_review.py](director_delivery_review.py) 检查各部门**真实交付**是否实现导演意图；按镜头/责任岗提出具体返工，复用原十岗位版本状态机，不自动创设第二个总导演或不受控重试。
 - [一手导演/剪辑职业访谈与源码根因分析](quality-optimization/QO-D03_D16_AUDIOVISUAL_CRAFT_AND_DELIVERY_AUDIT.md)。这两项目前是离线生产设计能力，**未通过真人成片盲评**，不可标记世界级完成。
