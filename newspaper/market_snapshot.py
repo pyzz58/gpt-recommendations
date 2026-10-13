@@ -12,6 +12,7 @@ import io
 import logging
 from zoneinfo import ZoneInfo
 from concurrent.futures import ThreadPoolExecutor
+from xml.etree import ElementTree as ET
 
 import requests
 
@@ -118,12 +119,92 @@ def fetch_stooq_completed_closes(now, getter=None):
                         "d2": end_date.strftime("%Y%m%d")},
                 timeout=8, headers={"User-Agent": "PersonalNewspaper/1.0"})
             response.raise_for_status()
-            return parse_stooq_daily(response.text, series, ny_local)
-        except (requests.RequestException, ValueError, TypeError):
+            parsed = parse_stooq_daily(response.text, series, ny_local)
+            if parsed is None:
+                LOG.warning("Stooq %s returned no valid dated CSV (may require API access)", series)
+            return parsed
+        except (requests.RequestException, ValueError, TypeError) as exc:
+            LOG.warning("Stooq %s feed unavailable (%s)", series, type(exc).__name__)
             return None
     with ThreadPoolExecutor(max_workers=3) as pool:
         return [value for value in pool.map(one, STOOQ_DAILY.items()) if value]
 
+
+
+
+TREASURY_URL = (
+    "https://home.treasury.gov/resource-center/data-chart-center/"
+    "interest-rates/pages/xml"
+)
+TREASURY_FIELDS = {"DGS2": "BC_2YEAR", "DGS10": "BC_10YEAR"}
+
+
+def parse_treasury_yield_xml(raw, ny_local):
+    """Parse Treasury's dated daily *par* yield curve (percent), not bond prices.
+
+    We conservatively use the previous New York day until 16:15 local time,
+    never claim an in-progress daily market observation is completed.
+    """
+    if ny_local.tzinfo is None:
+        raise ValueError("Treasury cutoff requires timezone-aware New York time")
+    root = ET.fromstring(raw)
+    cutoff = (ny_local.date() if ny_local.time() >= dt.time(16, 15)
+              else ny_local.date() - dt.timedelta(days=1))
+    histories = {code: [] for code in TREASURY_FIELDS}
+    atom_entry = "{http://www.w3.org/2005/Atom}entry"
+    for entry in root.findall(atom_entry):
+        fields = {node.tag.rsplit("}", 1)[-1]: (node.text or "").strip()
+                  for node in entry.iter()}
+        try:
+            day = dt.date.fromisoformat(fields.get("NEW_DATE", "").split("T")[0])
+        except ValueError:
+            continue
+        if day > cutoff:
+            continue
+        for code, field in TREASURY_FIELDS.items():
+            try:
+                value = float(fields.get(field, ""))
+            except ValueError:
+                continue
+            if 0 < value < 30 and value == value:
+                histories[code].append((day, value))
+    results = []
+    for code, points in histories.items():
+        if not points:
+            continue
+        points.sort()
+        day, value = points[-1]
+        if (cutoff - day).days > 7:
+            continue
+        results.append({
+            "series": code, "name": SERIES[code], "as_of": day.isoformat(),
+            "value": value,
+            "previous": points[-2][1] if len(points) > 1 else None,
+            "change_percent": None,  # A yield delta should be in bp, not % of yield.
+            "source": "US Treasury official daily par yield curve",
+            "source_url": TREASURY_URL + "?data=daily_treasury_yield_curve",
+            "stale": False,
+        })
+    return results
+
+
+def fetch_treasury_yields(now, getter=None):
+    """Official, key-free alternative for missing FRED 2Y and 10Y par yields."""
+    ny_local = now.astimezone(ZoneInfo("America/New_York"))
+    try:
+        response = (getter or requests.get)(
+            TREASURY_URL,
+            params={"data": "daily_treasury_yield_curve",
+                    "field_tdr_date_value_month": ny_local.strftime("%Y%m")},
+            timeout=15, headers={"User-Agent": "PersonalNewspaper/1.0"})
+        response.raise_for_status()
+        values = parse_treasury_yield_xml(response.content, ny_local)
+        if not values:
+            LOG.warning("US Treasury feed contained no fresh dated 2Y/10Y yield observations")
+        return values
+    except (requests.RequestException, ET.ParseError, ValueError, TypeError) as exc:
+        LOG.warning("US Treasury official yield feed unavailable (%s)", type(exc).__name__)
+        return []
 
 def fetch_market_snapshot(now=None, getter=None):
     now = now or dt.datetime.now(dt.timezone.utc)
@@ -163,14 +244,21 @@ def fetch_market_snapshot(now=None, getter=None):
             idx = list(SERIES).index(code)
             if quotes[idx] is None:
                 quotes[idx] = backup
+    # The US Treasury publishes a separate official XML feed for par yields.
+    # Never replace any valid FRED observation.
+    if any(quotes[list(SERIES).index(code)] is None for code in TREASURY_FIELDS):
+        for backup in fetch_treasury_yields(now, getter=getter):
+            idx = list(SERIES).index(backup["series"])
+            if quotes[idx] is None:
+                quotes[idx] = backup
     values = [q for q in quotes if q]
-    backup_count = sum("source" in q and "Stooq" in q["source"] for q in values)
+    backup_count = sum(q.get("source") != "FRED" for q in values)
     return {
         "as_of_request_utc": now.isoformat(),
         "kind": "dated_published_daily_observations_not_intraday",
         "values": values,
         "missing": [s for s,q in zip(SERIES,quotes) if not q],
-        "sources": sorted({"Stooq" if q.get("source", "").startswith("Stooq") else "FRED" for q in values}),
+        "sources": sorted({q["source"] for q in values}),
         "backup_observations": backup_count,
-        "warning": "仅为注明来源和日期的已发布历史日值，可能混用FRED与Stooq；不是盘中实时行情。缺失数据不得推算。",
+        "warning": "仅为注明来源和日期的历史日值，可能来自FRED、Stooq或美国财政部官方收益率数据；非实时行情。缺失不可推算。",
     }
