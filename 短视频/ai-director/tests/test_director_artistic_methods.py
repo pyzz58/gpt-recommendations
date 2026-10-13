@@ -116,11 +116,23 @@ def plan_for(base, state, meeting, *, comedy=False):
                 "不让信纸说话、不编造信中内容、不添加与人物处境无关的无厘头插科打诨。",
             "beat_ladder": [{
                 "stage": stage,
-                "concrete_story_event":
-                    "同一个人和封口之间的接触不断被真实的犹豫打断，最终由角色自己完成动作。",
-                "audience_expectation_shift":
-                    "观众最初以为他会直接打开，经过反复停顿后变成期待他终于肯承担答案。",
-            } for stage in art.GAG_LADDER],
+                "concrete_story_event": event,
+                "audience_expectation_shift": change,
+            } for stage, event, change in zip(art.GAG_LADDER, [
+                "人物确实渴望知道信里的答案，却因此无法直视那张尚未撕开的纸面。",
+                "右手本来只是要完成一个人人都会的拆信动作，此时动作非常简单。",
+                "指尖已经接近封口却突然停住，那个普通动作首次暴露出不合理的迟疑。",
+                "角色努力用更庄严的姿势掩饰害怕，结果手仍然迟迟没有碰到纸。",
+                "他不再试图表现镇定，反而在没有戏剧配乐的情况下真的撕开封口。",
+                "信封被自己打开而未被别人拯救，人物终于面对自己不知道的答案。",
+            ], [
+                "观众先认为角色应该轻而易举就能完成拆信，尚未意识到内心障碍。",
+                "观众已经预期伸手后信封很快打开，所以普通延迟开始积累张力。",
+                "观众发现物理障碍根本不存在，人物内心恐惧才造成意外停顿。",
+                "观众开始在庄严姿态和渺小动作之间感到荒唐，却能理解害怕。",
+                "观众以为角色还会重复退缩，结果简单撕纸声成为真正的反转。",
+                "观众理解先前荒唐的犹豫背后是真实的选择，而非无意义摔倒笑话。",
+            ])],
         }
     return {
         "version": art.VERSION,
@@ -198,6 +210,12 @@ class DirectorArtisticMethodsTests(unittest.TestCase):
         bad["comic_design"]["worlds_internal_logic"] = "随机好笑"
         with self.assertRaisesRegex(art.ArtisticMethodError,
                                     "COMEDY_CAUSALITY_MISSING"):
+            art.validate(self.base, self.state, self.meeting, bad)
+        bad = deepcopy(self.comic)
+        bad["comic_design"]["beat_ladder"][2]["concrete_story_event"] = (
+            bad["comic_design"]["beat_ladder"][1]["concrete_story_event"])
+        with self.assertRaisesRegex(art.ArtisticMethodError,
+                                    "COMEDY_LADDER_REPEATED_GENERIC_STEP"):
             art.validate(self.base, self.state, self.meeting, bad)
         bad = deepcopy(self.comic)
         bad["comic_design"]["beat_ladder"].pop()
