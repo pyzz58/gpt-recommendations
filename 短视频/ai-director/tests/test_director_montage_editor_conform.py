@@ -47,6 +47,8 @@ class MontageEditorConformTests(unittest.TestCase):
         self.assertIn("SOURCE_MEDIA_ASSETS_NOT_PROVIDED", order["operator_blockers"])
         self.assertIn("AUTHORITATIVE_SPEECH_AND_SUBTITLE_TIMING_REQUIRED",
                       order["operator_blockers"])
+        self.assertIn("SOURCE_CAPTION_TIMING_REQUIRED",
+                      order["operator_blockers"])
         report = conform.editor_instructions(order)
         self.assertIn("S01 -> S02 帧 150", report)
         self.assertIn("sound_bridge", report)
@@ -102,6 +104,11 @@ class MontageEditorConformTests(unittest.TestCase):
         self.assertEqual(result["speech_events"][0]["start_frame"], 30)
         self.assertEqual(result["speech_events"][0]["end_frame_exclusive"], 120)
         self.assertIn("REAL_LIP_SYNC_NOT_VERIFIED", result["operator_blockers"])
+        segments = result["speech_events"][0]["video_picture_segments"]
+        self.assertEqual(segments[0]["shot_id"], "S01")
+        self.assertEqual(segments[0]["start_frame"], 30)
+        self.assertEqual(segments[0]["end_frame_exclusive"], 120)
+        self.assertNotIn("SOURCE_CAPTION_TIMING_REQUIRED", result["operator_blockers"])
 
     def test_unknown_fps_and_tampered_source_packet_refused(self):
         for fps in (0, 29.97, True, 120):
