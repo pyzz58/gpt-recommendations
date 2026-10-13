@@ -3,7 +3,7 @@
 > **V3.0当前状态**：技术规划而非程序已落地。此文件记录早期130源→124源演变，最新当前状态看[README.md](README.md)、[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)、[DATA_CONTRACTS.md](DATA_CONTRACTS.md)。用户本阶段要求完整.md设计而非继续来源采集。
 
 ## 1. 目标架构
-**独立全球新闻发现层（GDELT/Media Cloud等候选广域索引 + 合法的全球主流媒体原生RSS/API/Sitemap + 多语种在地报道 + 官网/监管/财报/金融原始数据）** + 既有日报（只读、可断开的辅助线索） → 统一采集/来源血缘/跨语事件去重 → 重要性选择 → 统一研究引擎（按栏目配置研究方法） → 首席认知与战略顾问教学转写 → 独立核查/主编门禁 → 周刊/月报渲染 → 邮件/PDF/Markdown交付 → 长期档案及判断更新。
+**独立全球新闻发现层（GDELT/Media Cloud等候选广域索引 + 合法的全球主流媒体原生RSS/API/Sitemap + 多语种在地报道 + 官网/监管/财报/金融原始数据）** + 既有日报（只读、可断开的辅助线索） → 统一采集/来源血缘/跨语事件去重 → 重要性选择 → 统一研究引擎（按栏目配置研究方法） → 首席认知与战略顾问教学转写 → 独立核查/主编门禁 → 周报/年报渲染 → 邮件/PDF/Markdown交付 → 长期档案及判断更新。
 
 **九个栏目=九份领域规则配置，不代表九个物理Agent。** 首版只需研究、顾问、审核三个逻辑工序，后续若有证据证明才拆分并行角色。
 
@@ -68,3 +68,9 @@ DeliveryReceipt{edition_id,channel,attempts,provider_accepted_at,verified_status
 
 ## 内参系统V2.1的验证范围缩减（2026-10-13）
 用户决定暂停6个受限来源，活跃登记现在124个（A116、B8）。停止全量连通性测试，只对其中4个作种子随机一次性HTTPS读取测试，四个均HTTP200，3个为内容页、1个为API使用文档；原始结果见[audits/random-four-20261013.json](audits/random-four-20261013.json)。不因此宣称124个来源已稳定接入，日常采集仍未启用。
+
+## V4.0新最终约束（历史技术候选不变）
+
+现行正式出版为**WEEKLY周报＋ANNUAL年报**，不再建立月报。年报需要`weekly_issue_inventory`与`annual_primary_source_inventory`两个互不替代的来源集合、年度事件时间线、ThesisVersion年份审核、旧论断as_of检查、年度公开遗漏及修订指标，参见[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)。
+
+技术上应以九栏独立专业策略配置而不是九个新物理Agent来实现[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)。每个AdvisorDraft必须拥有具体FactPacket/MechanismChain/WorkedCase/Counterargument/TransferCase/HistoryRef；没有具体分析步骤直接REVISE，造假BLOCK，见[HARD_RULES.md](HARD_RULES.md)。用户认可/赞同的具体方案进入[ENDORSEMENT_LEDGER.md](ENDORSEMENT_LEDGER.md)。所有内容依然是**规划**，不是已经实现的源代码。
