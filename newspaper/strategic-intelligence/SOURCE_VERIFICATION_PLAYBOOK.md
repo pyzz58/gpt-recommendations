@@ -1,10 +1,12 @@
 # 信息源真实接入验收与GitHub工具回退手册
 
-> 设计文件，不表示已执行。依据SOURCE_REGISTRY.json的130个活动候选记录逐源实施，避免“主页打开=完全可采集”的误判。
+> 设计文件，不表示已执行。现在SOURCE_REGISTRY.json仅保留124个活跃候选。用户已决定不再逐源完成全量初期技术测试，只随机抽取3至4个来源做采集可行性验证；此要求已在2026-10-13的4条抽样中完成。只有实际启用的适配器才继续进行必要的独立上线验收。，避免“主页打开=完全可采集”的误判。
 
 完整逐源网页访问结果：[ACCESS_AUDIT_2026-10-13_FULL.md](ACCESS_AUDIT_2026-10-13_FULL.md)。手动低频 HTTP/RSS/API 测试程序：[tools/source_probe.py](tools/source_probe.py)，默认只干跑、不自动发出网络请求；需在合法联网的隔离环境按指令主动运行。此程序并不能证明版权和AI处理权限。
 
 2026-10-13新增云端实际联网证据：见[SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md](SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md)及4个audits JSON。该结果属于**隔离GitHub Actions的一次性HTTP/API/RSS示例**，不是持续生产环境验收；其结果已精确回写SOURCE_REGISTRY.json。需区分初次网页发现、隔离联网试验、部署主机跨日稳定性与AI版权许可。
+
+随机4条结果 [audits/random-four-20261013.json](audits/random-four-20261013.json)。6个放弃的来源见[SOURCE_ABANDONED_2026-10-13.json](SOURCE_ABANDONED_2026-10-13.json)。
 
 ## 验证证据等级
 - V0：只找到官方介绍或相关搜索结果。
