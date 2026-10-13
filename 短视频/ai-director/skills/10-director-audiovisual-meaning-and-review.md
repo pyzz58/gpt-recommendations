@@ -1,3 +1,5 @@
+> **进阶艺术方法已形成 Skill 11**：[总导演艺术选择与周星驰式荒诞喜剧](11-director-artistic-judgment-and-absurd-comedy.md)。同一总导演先在 `director_artistic_methods` 中比较题材适用的电影语言，明确拒绝不适合的笑点与炫技，然后本 Skill 的声画判断用 `artistic_methods_digest` 绑定该选择。不能默认任何场景都需要喜剧，也不能仅引用名导名字作创作理由。
+
 # Skill 10｜总导演的思想与情绪视听表达，以及部门交付审片与返工
 
 > 基于 [QO-D03/D16 一手访谈与既有代码深度审计](../quality-optimization/QO-D03_D16_AUDIOVISUAL_CRAFT_AND_DELIVERY_AUDIT.md)，补强 Skill 08（导演决定故事内容）→ Skill 09（向各部门下达详细制作工单）→ Skill 03（具体专业镜头）之间最容易缺失的两种能力。**不是另造一位导演，也不是“漂亮镜头生成器”。**
