@@ -100,4 +100,6 @@ pending_director_review = r.request(base, state, meeting, plan)
 #                   department="acting", shot_id="S01")
 ```
 
+**新系列正式制作路径采取硬性门禁**：`screenplay_series_delivery.build_per_episode_crew` 为每集标记 `director_audiovisual_plan_required`，已有制作会后，`agent_role_contracts.build_role_messages` 与 `validate_role_output` 都必须同时接到版本绑定的 `audiovisual_plan`；只有部门会议但缺导演具体视听意图不能让专业岗位开工或验收。旧兼容示例不会被无条件重写或伪称已采用新规范。
+
 已有离线测试验证具体用户消息、交付状态、版本、局部返工的技术边界。**没有真实 AI 生成和观众盲审，因此 QO-D03/D16 仍未完成世界级艺术验收。** QO-D02 对场次与镜头的真正分离、QO-D11 真实媒体测试仍是独立问题。
