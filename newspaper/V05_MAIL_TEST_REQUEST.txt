@@ -9,3 +9,5 @@ Changes to other files do not retrigger the special push path.
 2026-10-13: recovery request after missing 07:00 scheduled run; one live QQ email delivery, protected by daily receipt deduplication.
 
 2026-10-13: owner-requested single real-news QUALITY SAMPLE via existing QQ SMTP; does not count as the daily edition and must not be auto-repeated.
+
+2026-10-14 one-time catch-up requested by owner: resend the official Beijing 01:00 edition for 2026-10-14 only; use existing SMTP secrets, same daily receipt and ¥1 per-edition model budget. [newspaper-recovery-20261014]
