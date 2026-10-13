@@ -61,7 +61,7 @@ def build_report_messages(batch):
 
 def edit_reports_in_batches(grouped, key, ledger, *, transport=None,
                             before_request=None):
-    articles = [a for row in grouped.values() for a in row]
+    articles = [a for row in grouped.values() for a in row if a.get("language")!="zh"]
     plans = {}
     failures = []
     for offset in range(0, len(articles), REPORTS_PER_BATCH):

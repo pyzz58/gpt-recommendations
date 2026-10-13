@@ -10,11 +10,12 @@ import re
 from urllib.parse import urlparse
 from ranking import _story_groups
 from source_quality import newsworthiness
+from zh_news import chinese_sections, chinese_importance, is_chinese
 
 SECTIONS = {
+    "美股与美国金融市场": 4,
     "中国与美国": 3,
     "国际政治与全球事件": 3,
-    "金融、宏观与美股": 3,
     "AI与数字产业": 2,
     "科技、能源与前沿科学": 2,
     "创业、商业与企业竞争": 2,
@@ -57,6 +58,9 @@ def countries(item):
     # Title is the primary-event proxy. Incidental countries in background should
     # not turn every international article into a China/US story.
     result = set()
+    if is_chinese(item):
+        if re.search(r"中国|全国|国务院|北京|上海|深圳|央行|人民银行", title): result.add("中国")
+        if re.search(r"美国|美联储|华尔街|特朗普|纳斯达克|标普", title): result.add("美国")
     for name, pattern in COUNTRIES.items():
         if name == "美国":
             if matches(pattern.split("|\\bU")[0], title) or re.search(r"\bU\.?S\.?\b", title):
@@ -82,9 +86,13 @@ def sections(item):
     s = title + " " + item.get("summary", "")
     if not newsworthiness(item)["eligible"]:
         return set()
-    result = set()
+    result = chinese_sections(item) if is_chinese(item) else set()
     if countries(item) & {"中国", "美国"}: result.add("中国与美国")
-    for label, pattern in (("国际政治与全球事件", POLITICS), ("金融、宏观与美股", FINANCE),
+    if matches(r"\b(?:s&p 500|nasdaq|dow jones|russell 2000|wall street|u\.s\. stocks?|us equities|"
+              r"treasury yields?|federal reserve|fomc|sec filings?|quarterly earnings|"
+              r"stock futures|market close|fed rate|bond market|equity market)\b", s):
+        result.add("美股与美国金融市场")
+    for label, pattern in (("国际政治与全球事件", POLITICS), 
                            ("AI与数字产业", AI), ("科技、能源与前沿科学", SCIENCE + "|" + ENERGY),
                            ("创业、商业与企业竞争", BUSINESS),
                            ("医疗、生命科学与公共健康", HEALTH)):
@@ -104,6 +112,9 @@ def score(item, independent_publishers):
     # Publisher breadth is only a capped proxy; geographic independence unknown.
     breadth = min(10, max(0, independent_publishers - 1) * 3)
     editorial = newsworthiness(item)
+    if is_chinese(item):
+        zh_score = chinese_importance(item)
+        scope, scale, duration, new = zh_score
     evidence = {"cross_border_proxy": scope, "scale_proxy": scale,
                 "structural_change_proxy": duration, "new_development_proxy": new,
                 "publisher_breadth_proxy": breadth,
@@ -137,6 +148,12 @@ def prepare_pool(items, per_section=20):
                             key=lambda a: a["importance_score"], reverse=True)
         # Protect both regions before fetching and keep same-event alternatives.
         preferred = []
+        if section == "美股与美国金融市场":
+            selected_types = set()
+            for kind in ("primary_regulator","market_media","business_media"):
+                for a in available:
+                    if a.get("source_type") == kind and a["importance_score"] >= 35 and add(a):
+                        selected_types.add(kind); break
         if section == "中国与美国":
             for country in ("中国", "美国"):
                 preferred.extend([a for a in candidates if country in a["countries"]][:5])
@@ -197,5 +214,11 @@ def select_readable(candidates, enriched):
         diagnostics[section] = {"quota": quota, "candidate_count": len(candidates.get(section, [])),
             "readable": len(available), "selected": len(selected), "missing_regions": missing,
             "shortfall": max(0, quota-len(selected)), "country_counts": dict(concentration),
-            "concentration_exceptions": exceptions}
+            "concentration_exceptions": exceptions,
+            "market_coverage": {
+                "indices": any(re.search(r"(S&P 500|Nasdaq|Dow Jones|Russell|标普|纳斯达克|道琼斯)",a.get("title",""),re.I) for a in selected),
+                "primary_official": any(a.get("source_type")=="primary_regulator" for a in selected),
+                "rates_bonds": any(re.search(r"(Fed|Federal Reserve|Treasury|bond yield|美联储|国债|收益率)",a.get("title",""),re.I) for a in selected),
+                "earnings": any(re.search(r"(earnings|guidance|quarterly|财报|业绩)",a.get("title",""),re.I) for a in selected),
+            } if section=="美股与美国金融市场" else {}}
     return output, diagnostics

@@ -123,6 +123,8 @@ def fetch_one(category: str, feed: dict, start: dt.datetime, end: dt.datetime):
                     "title": title, "summary": clean(entry.get("summary", "")),
                     "url": link, "date": stamp,
                     "author": clean(entry.get("author", ""), 150),
+                    "language": feed.get("language","en"),
+                    "source_type":feed.get("source_type","editorial_media_or_institution"),
                 })
         return articles, True
     except Exception as exc:
@@ -302,6 +304,17 @@ def bilingualize(grouped: dict, translator) -> dict:
         output[category] = []
         for article in articles:
             entry = dict(article)
+            if article.get("language")=="zh":
+                from reader import _normalize_paragraphs
+                entry["title_zh"] = article["title"]
+                entry["bilingual_pairs"] = [
+                    {"en":"","zh":p,"paragraph_id":i}
+                    for i,p in enumerate(_normalize_paragraphs(article["reading_en"]))
+                ]
+                entry["reading_zh"]=article["reading_en"]
+                entry["translation_qa_flags"]=[]
+                output[category].append(entry)
+                continue
             entry["title_zh"] = clean(translator.translate(article["title"]), 280)
             pairs = []
             qa_flags = []
@@ -606,7 +619,9 @@ def main():
             plans, failed_batches = edit_reports_in_batches(
                 readable, ai_key, ledger,
                 before_request=before_editorial_request)
-            readable = apply_reports(readable, plans)
+            english = {k:[a for a in v if a.get("language")!="zh"] for k,v in readable.items()}
+            edited_en = apply_reports(english, plans)
+            readable = {k:edited_en[k]+[a for a in v if a.get("language")=="zh"] for k,v in readable.items()}
             editorial_audit["edited"] = sum(
                 a.get("editing_mode") == "evidence_mapped_edited_report"
                 for articles in readable.values() for a in articles)
@@ -630,7 +645,9 @@ def main():
                 editorial_audit["fallback"], edition_cost["request_count"],
                 edition_cost["estimated_peak_cost_rmb"])
         else:
-            readable = edit_grouped(readable)
+            english = {k:[a for a in v if a.get("language")!="zh"] for k,v in readable.items()}
+            edited_en = edit_grouped(english)
+            readable = {k:edited_en[k]+[a for a in v if a.get("language")=="zh"] for k,v in readable.items()}
             editorial_audit["fallback"] = editorial_audit["total"]
         translator = ensure_argos_translator()
         grouped = attach_lessons(

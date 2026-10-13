@@ -71,7 +71,7 @@ def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
             for pair in pairs:
                 en=str(pair.get("en","")).strip()
                 zh=str(pair.get("zh","")).strip()
-                if not en or not zh:
+                if not zh:
                     continue
                 pid=pair.get("paragraph_id",0)
                 if pid!=previous:
@@ -94,15 +94,21 @@ def build_clippings_html(grouped:dict, day:dt.date)->tuple[str,str]:
                     notes.append((no,hit.group(0),lesson.get("explanation","")))
                     used.add(lesson.get("type"))
                     break
-                page.append(
-                    '<div class="story-line">'
-                    +f'<p class="en">{_highlight_sentence(en,matched,no)}</p>'
-                    +f'<p class="zh">{esc(zh)}</p>'
-                    +'</div>'
-                )
-                plain.append(en+"\n"+zh)
+                if en:
+                    page.append(
+                        '<div class="story-line">'
+                        +f'<p class="en">{_highlight_sentence(en,matched,no)}</p>'
+                        +f'<p class="zh">{esc(zh)}</p>'
+                        +'</div>'
+                    )
+                    plain.append(en+"\n"+zh)
+                else:
+                    page.append('<div class="story-line"><p class="zh">'+esc(zh)+'</p></div>')
+                    plain.append(zh)
             if previous is not None:
                 page.append("</div>")
+            if article.get("language")=="zh":
+                page.append('<div class="part-mark">中文原始新闻：按公开可读取段落编排，非英文机器译文；来源所述观点不代表本刊立场。</div>')
             if article.get("editing_mode") == "evidence_mapped_edited_report":
                 page.append('<div class="part-mark">依据来源整理的编辑报道，非记者原文；事实与观点归属保留，编辑段落可回查来源。</div>')
             if article.get("editing_mode") == "source_faithful_edited_report":
