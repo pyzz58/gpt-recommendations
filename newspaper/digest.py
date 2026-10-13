@@ -546,6 +546,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Write preview files; do not send.")
     parser.add_argument("--rolling-preview", action="store_true", help="Preview the last 24h without sending; does not alter the scheduled 01:00 edition.")
     parser.add_argument("--quality-sample", action="store_true", help="Send one explicitly-requested real-news quality sample; never consume daily receipt.")
+    parser.add_argument("--recovery-20261014", action="store_true", help="Owner-authorized, once-only late delivery of the 2026-10-14 Beijing 01:00 edition.")
     parser.add_argument("--demo", action="store_true", help="Offline layout demo; not live news.")
     parser.add_argument("--output", default="/tmp/newspaper-preview")
     args = parser.parse_args()
@@ -553,13 +554,20 @@ def main():
         parser.error("--quality-sample cannot be combined with --dry-run or --demo")
     if args.rolling_preview and (not args.dry_run or args.demo or args.quality_sample):
         parser.error("--rolling-preview requires --dry-run and cannot send email or use --demo")
+    if args.recovery_20261014 and (args.dry_run or args.demo or args.quality_sample or args.rolling_preview):
+        parser.error("--recovery-20261014 cannot combine with preview or quality sample")
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     settings = json.loads((ROOT / "feeds.json").read_text(encoding="utf-8"))
     now = dt.datetime.now(BEIJING_TZ)
     start, end, news_day = (quality_sample_window(now)
                              if args.quality_sample or args.rolling_preview
                              else edition_window(now))
-    if not (args.dry_run or args.demo or args.quality_sample):
+    if args.recovery_20261014:
+        # An explicitly authorized one-off exception. Never retarget a later edition.
+        expected = dt.date(2026, 10, 14)
+        if news_day != expected or not end <= now.astimezone(BEIJING_TZ) < end + dt.timedelta(hours=12):
+            raise RuntimeError("One-off Oct 14 recovery period expired or edition date changed")
+    elif not (args.dry_run or args.demo or args.quality_sample):
         require_live_delivery_window(now, end)
     LOG.info("News reporting window (Beijing): %s inclusive to %s exclusive", start.isoformat(), end.isoformat())
     diagnostics = {}
@@ -635,7 +643,7 @@ def main():
         if not args.dry_run and ai_key:
             ledger = EditionBudget()
             def before_editorial_request():
-                if not args.quality_sample:
+                if not (args.quality_sample or args.recovery_20261014):
                     require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
             english_reports = {
                 section: [a for a in articles if a.get("source_language") != "zh"]
@@ -763,6 +771,14 @@ def main():
             )
             cover_txt = note + "\\n\\n" + cover_txt
             subject = f"【质量测试·非正式日报】全球新闻选编｜{news_day}"
+        elif args.recovery_20261014:
+            current = dt.datetime.now(BEIJING_TZ)
+            if not end <= current < end + dt.timedelta(hours=12):
+                raise RuntimeError("One-time recovery authorization has expired")
+            recovery_note = "【补发说明】原定定时任务未触发。本邮件为2026年10月14日01:00截稿的正式新闻日报补发，不是滚动样刊。"
+            cover_html = "<p>" + html.escape(recovery_note) + "</p>" + cover_html
+            cover_txt = recovery_note + "\n\n" + cover_txt
+            subject = f"【补发】全球新闻选编｜{news_day} 01:00截稿"
         else:
             require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
             subject = f"全球新闻选编｜{news_day} 01:00截稿"
