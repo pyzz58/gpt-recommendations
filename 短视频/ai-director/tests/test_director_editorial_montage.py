@@ -171,6 +171,23 @@ class DirectorEditorialMontageTests(unittest.TestCase):
         with self.assertRaisesRegex(coverage.ShotCoverageError, "MULTIPLE_SCENES"):
             coverage.validate(self.h, self.ds, self.plan, bad)
 
+    def test_canonical_script_rejects_forged_time_and_scene_headings(self):
+        proof = series.validate_breakdown(self.h, self.ds, self.plan)
+        episode = self.plan["episodes"][0]
+        forged = deepcopy(self.h)
+        forged["screenplay_scenes"][0]["heading"] = "EXT. 虚构港口 - 十年后"
+        with self.assertRaisesRegex(montage.MontageError, "SCENE_HEADING_DRIFT"):
+            montage.validate(forged, episode, proof, self.cov,
+                             self.cov["montage_plan"])
+        forged = deepcopy(self.h)
+        forged["screenplay_scenes"][0]["beats"][1]["action"] += "十年后才知道真相"
+        altered = deepcopy(self.cov)
+        altered["montage_plan"]["sequences"][0]["seams"][0][
+            "source_time_evidence"] = "十年后才知道真相"
+        with self.assertRaisesRegex(montage.MontageError, "TIME_EVIDENCE"):
+            montage.validate(forged, episode, proof, altered,
+                             altered["montage_plan"])
+
     def test_missing_seam_reordered_shots_and_fake_scene_blocked(self):
         bad = deepcopy(self.cov)
         bad["montage_plan"]["sequences"][1]["seams"] = []
