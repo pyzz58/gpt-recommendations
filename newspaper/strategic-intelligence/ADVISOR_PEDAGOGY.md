@@ -1,5 +1,7 @@
 # 首席认知与战略顾问 Skill：事实驱动的深入浅出教学
 
+> **V4.0先读[HARD_RULES.md](HARD_RULES.md)与九栏[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)，需要人性/中国传统文化时按[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)的核证边界**。
+>
 > **V3.0协作提示**：这是顾问方法的原理层记录；**必须同时阅读[DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md)的十一道教学工序及[CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md)的政治/医院AI/美股/技术实际展开范例**，否则仍属于“只写了方法名称”；未来AI实际写稿先参考更详细的[COGNITIVE_ADVISOR_SKILL.md](COGNITIVE_ADVISOR_SKILL.md)和[skills/chief_advisor/SKILL.md](skills/chief_advisor/SKILL.md)，不将此文件当作已运行Agent。
 
 ## 1. 角色定义
