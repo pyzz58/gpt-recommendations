@@ -15,6 +15,7 @@ import json
 
 import agent_team
 import director
+import director_speech_cues as speech
 import screenplay_series_delivery as series
 
 VERSION = "director-shot-coverage-v1"
@@ -30,6 +31,7 @@ SHOT = ("shot_id", "source_spans", *DIRECTION)
 PLAN = ("version", "source_screenplay_digest", "writer_dossier_digest",
         "director_breakdown_digest", "episode_id", "director_coverage_thesis",
         "shots")
+PLAN_CUED = (*PLAN, "speech_cue_timeline")
 
 
 class ShotCoverageError(ValueError):
@@ -126,7 +128,9 @@ def request(handoff, dossier, breakdown, episode_id):
 
 def validate(handoff, dossier, breakdown, coverage):
     """Source-preserving structural check; does NOT score cinematic merit."""
-    _shape(coverage, PLAN, "COVERAGE_PLAN_SHAPE")
+    _shape(coverage, PLAN_CUED if "speech_cue_timeline" in coverage else PLAN,
+           "COVERAGE_PLAN_SHAPE")
+    cue_timeline = coverage.get("speech_cue_timeline")
     proof, ep, by_beat, originals = _source_context(
         handoff, dossier, breakdown, coverage["episode_id"])
     _need(coverage["version"] == VERSION and
@@ -198,7 +202,7 @@ def validate(handoff, dossier, breakdown, coverage):
               "COVERAGE_BEAT_NOT_FULLY_COVERED")
         splits[bid] = len(parts)
         beat = by_beat[bid][1]
-        if len(parts) > 1:
+        if len(parts) > 1 and cue_timeline is None:
             _need(not beat["dialogue"] and not beat["voiceover"] and
                   not originals[bid]["narration"] and
                   not originals[bid]["subtitles"]["text"],
@@ -215,6 +219,13 @@ def validate(handoff, dossier, breakdown, coverage):
     _need(abs(runtime - proof["episodes"][
         [e["episode_id"] for e in proof["episodes"]].index(ep["episode_id"])
     ]["story_s"]) <= EPS, "COVERAGE_EPISODE_STORY_RUNTIME_DRIFT")
+    cue_receipt = (speech.validate(handoff, breakdown, ep, proof, cue_timeline)
+                   if cue_timeline is not None else None)
+    if cue_receipt is not None:
+        # A cue may outlive its original speaking shot; both picture cuts
+        # and the source speech/subtitle timeline remain authoritative.
+        speech.first_visual_owner(coverage, cue_timeline["cues"], "cue_id")
+        speech.first_visual_owner(coverage, cue_timeline["subtitles"], "subtitle_id")
     return {
         "kind": "director_new_shot_coverage_receipt",
         "episode_id": ep["episode_id"],
@@ -226,6 +237,7 @@ def validate(handoff, dossier, breakdown, coverage):
         "shot_merge_count": merged,
         "split_beats": [bid for bid, count in splits.items() if count > 1],
         "source_beats_exactly_covered": True,
+        "speech_cue_receipt": cue_receipt,
         "runtime_s": runtime,
         "author_approval_authenticated": False,
         "real_cinematic_quality_verified": False,
@@ -256,6 +268,14 @@ def reblock_episode(handoff, dossier, breakdown, packet, coverage):
     by_beat = {b["id"]: b for scene in handoff["screenplay_scenes"]
                for b in scene["beats"]}
     output, position = [], 0.0
+    cue_timeline = coverage.get("speech_cue_timeline")
+    if cue_timeline is not None:
+        audio_bindings, caption_bindings = speech.cue_bindings_for_shots(
+            coverage, cue_timeline)
+        audio_owners = speech.first_visual_owner(
+            coverage, cue_timeline["cues"], "cue_id")
+        caption_owners = speech.first_visual_owner(
+            coverage, cue_timeline["subtitles"], "subtitle_id")
     covered_total = set()
     for row in coverage["shots"]:
         spans = row["source_spans"]
@@ -276,11 +296,24 @@ def reblock_episode(handoff, dossier, breakdown, packet, coverage):
         position += shot["duration"]
         shot["purpose"] = row["dramatic_purpose"]
         shot["visual"] = row["observable_screen_event"]
-        shot["narration"] = "".join(source_shots[bid]["narration"]
-                                   for bid in text_owners)
-        shot["subtitles"]["text"] = " ".join(
-            source_shots[bid]["subtitles"]["text"]
-            for bid in text_owners if source_shots[bid]["subtitles"]["text"])
+        if cue_timeline is None:
+            shot["narration"] = "".join(source_shots[bid]["narration"]
+                                       for bid in text_owners)
+            shot["subtitles"]["text"] = " ".join(
+                source_shots[bid]["subtitles"]["text"]
+                for bid in text_owners if source_shots[bid]["subtitles"]["text"])
+        else:
+            shot["narration"] = "".join(
+                source_shots[c["beat_id"]]["narration"]
+                for c in cue_timeline["cues"]
+                if c["source_kind"] in {"narration", "voiceover"} and
+                audio_owners[c["cue_id"]] == row["shot_id"])
+            shot["subtitles"]["text"] = " ".join(
+                c["text_exact"] for c in cue_timeline["subtitles"]
+                if caption_owners[c["subtitle_id"]] == row["shot_id"])
+            shot["speech_cue_refs"] = audio_bindings[row["shot_id"]]
+            shot["subtitle_cue_refs"] = caption_bindings[row["shot_id"]]
+            shot["requires_timed_cue_rendering"] = True
         shot["character_ids"] = list(dict.fromkeys(
             cid for bid in ids for cid in source_shots[bid]["character_ids"]))
         shot["claim_ids"] = list(dict.fromkeys(
@@ -297,8 +330,13 @@ def reblock_episode(handoff, dossier, breakdown, packet, coverage):
             "covered_beat_ids": list(dict.fromkeys(ids)),
             "coverage_source_spans": deepcopy(spans),
             "coverage_digest": proof["coverage_digest"],
-            "dialogue": [deepcopy(d) for bid in text_owners
-                         for d in by_beat[bid]["dialogue"]],
+            "dialogue": ([deepcopy(d) for bid in text_owners
+                          for d in by_beat[bid]["dialogue"]]
+                         if cue_timeline is None else
+                         [deepcopy(by_beat[c["beat_id"]]["dialogue"][c["source_index"]])
+                          for c in cue_timeline["cues"]
+                          if c["source_kind"] == "dialogue" and
+                          audio_owners[c["cue_id"]] == row["shot_id"]]),
             "original_source_shot_ids": list(dict.fromkeys(
                 x for bid in ids
                 for x in source_shots[bid]["source_adaptation"]
@@ -308,6 +346,9 @@ def reblock_episode(handoff, dossier, breakdown, packet, coverage):
         output.append(shot)
     base["shots"] = output
     base["duration"] = position
+    if cue_timeline is not None:
+        base["director_speech_cue_timeline"] = deepcopy(cue_timeline)
+        base["requires_timed_cue_rendering"] = True
     base["editorial"]["narration_script"] = "".join(
         shot["narration"] for shot in output)
     # Source fidelity also covers words which aren't narration (screenplay
@@ -347,6 +388,8 @@ def reblock_episode(handoff, dossier, breakdown, packet, coverage):
         "coverage_digest": proof["coverage_digest"],
         "new_shots": [s["id"] for s in output],
         "all_source_dialogue_exact": True,
+        "speech_cue_timeline_attached": cue_timeline is not None,
+        "lip_sync_verified": False,
         "human_approved": False,
         "media_generated": False,
     }
