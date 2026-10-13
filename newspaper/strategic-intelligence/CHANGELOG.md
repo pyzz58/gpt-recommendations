@@ -1,5 +1,16 @@
 # 内参系统｜版本记录
 
+## V4.4（2026-10-13）｜用户要求全量无损归档、全面审核架构与解决多版本冲突
+
+- 用户原话：“你说的这些很对，我要求你务必全部，写入到这个系统中，方便未来开始制作的时候，能够清楚的无误，不要概括，要全面写入。重新核实下架构，给我全面展开，我需要看看，审核下看看还有没有地方需要修改。”
+- 新建[CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)，用约1.7万字把用户已认可具体步骤、材料/版权、全球反信息茧房、S0—S8选文、记者A六要素/机构报告、B1顾问、B2帝师、C情景与开放问题、六层真实接口、周报、年报十二工序、完整归档与QA、授权一次写清。**不是只记录“提高新闻质量”的概念**。
+- 真实审计Github当前入口和主要规范，新建[ARCHITECTURE_AUDIT_V44.md](ARCHITECTURE_AUDIT_V44.md)列DOC-01—DOC-12实际冲突及文档修复边界、当前未实现状态与未来可选择细节。
+- 重写README、AGENTS、END_TO_END_WORKFLOW和WEEKLY_TEMPLATE，修订MASTER_BLUEPRINT六层/细化十二生产动作、DATA_CONTRACTS字段；MAGAZINE_ARCHITECTURE/ARTICLE/ANNUAL模板同步主规格。
+- 将用户认可全部具体方法入DECISIONS D041—D042、ENDORSEMENT_LEDGER E017、TRACEABILITY_MATRIX新79—89；新增NC021/022，问题总数现22，不把DESIGN_RESOLVED说成VERIFIED。
+- 重新读GitHub确认124条来源均仍是候选：A116/B8，production_test=NOT_RUN为124，AI内容处理条款TERMS_NOT_YET_REVIEWED为124；六源已弃，本轮没有新联网全量来源测试。
+- **没有**实际实现LLM采集/研究/审稿和周报年报，没有生产邮件或新定时器，不改父目录日报及Secret。本轮是文件与产品架构审计。
+
+
 ## V4.3（2026-10-13）｜顶级新闻选文准则、新闻六要素、后续推演与开放问题
 
 - 用户确认周报“先翔实的真实新闻/机构报告，再顾问研判和帝师释理”；A独立达到真实、客观、准确、详细、5W1H新闻六要素的顶级记者式标准，不仅是短摘要。
