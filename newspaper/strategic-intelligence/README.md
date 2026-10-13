@@ -2,13 +2,13 @@
 
 > **正式中文名称：内参系统**｜兼容简称：内参｜历史名称：全球战略内参
 >
-> **当前设计基线：V3.1 · 2026-10-13**。已完成总体项目框架、需求归档与设计文档；**未完成研究引擎、周/月刊自动生成、知识数据库、正式调度和邮件推送**。
+> **当前设计基线：V4.0 · 2026-10-13**。已完成总体项目框架、需求归档与设计文档；**未完成研究引擎、周报/年报自动生成、知识数据库、正式调度和邮件推送**。
 >
 > GitHub唯一规范目录：`pyzz58/gpt-recommendations/newspaper/strategic-intelligence/`，中文快速入口：[newspaper/内参系统.md](../内参系统.md)。
 
 ## 1. 此系统到底是什么？
 
-内参系统不是每日新闻的增强摘要，而是一套**独立全球发现 → 可核实研究 → 第一性原理与费曼式深度教学 → 反方审核 → 周/月内参 → 长期可追溯的世界判断档案**的私人认知和战略研究系统。
+内参系统不是每日新闻的增强摘要，而是一套**独立全球发现 → 可核实研究 → 第一性原理与费曼式深度教学 → 反方审核 → 周报/年报 → 长期可追溯的世界判断档案**的私人认知和战略研究系统。
 
 目标不是简单知道头条，而是像获得有严谨来源和独立判断的一流战略顾问长期服务一样，**真正认识世界如何运作，减少信息茧房，形成能迁移的新理解**。参照顶级家族办公室的严谨研究标准，但不假装有内幕、私人数据库或未授权一手消息。
 
@@ -65,12 +65,12 @@
                                      |
                    独立事实/因果/强反方审校和主编质量门禁
                                      |
-                     每周深度内参  /  每月战略判断总报告
+                     每周深度周报  /  每年综合战略年报
                                      |
                 文件/交付状态/长期主题/命题版本/原理知识归档
 ```
 
-周刊是新的高密度、深度但自然流畅的新闻与顾问研究；**不是7份日报拼接**。月报要写新的战略总论和判断重估、审计旧观点；**不是4份周刊拼接**。版式和“首席顾问致决策者”参见 [PUBLICATION_SPEC.md](PUBLICATION_SPEC.md)。
+周报是独立全球研究而不是7份日报拼接；年报以本年度周报及**全年独立新闻源、机构原始研究**为双重依据，重新进行长期命题审计和综合研究，绝不把全年周报原样合订。版式和“首席顾问致决策者”参见 [PUBLICATION_SPEC.md](PUBLICATION_SPEC.md)。
 
 ## 5. 当前来源策略与已验证状态
 
@@ -83,7 +83,14 @@
 
 ## 6. 整套项目文档导航
 
-### A. 先读这六份（快速准确理解项目）
+### A. 最优先的V4.0硬性规则（任何AI必读）
+- **[HARD_RULES.md](HARD_RULES.md)** — 绝对禁止概念性总结；必须实际步骤/证据/算例/反证/迁移/验收；用户表扬与认可须具体留档；周报+年报是唯一新正式产品。
+- **[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)** — 九栏目不同学科的逐步深度教学、具体证据、负例与阻断条款。
+- **[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)** — 利益/权力/信息/人性及中国传统文化的证据化应用。
+- **[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)** — 全年周报+年度独立原始新闻源，十二步生产综合年报。
+- **[ENDORSEMENT_LEDGER.md](ENDORSEMENT_LEDGER.md)**、**[HISTORY_RECONCILIATION.md](HISTORY_RECONCILIATION.md)** — 用户认可的详细保存及可回查历史审计。
+
+### B. 先读这六份（快速准确理解项目）
 1. [MASTER_BLUEPRINT.md](MASTER_BLUEPRINT.md) — **正式完整总纲**、六项成果、九栏目、十二步、双刊与边界。
 2. [DECISIONS.md](DECISIONS.md) — **用户明确同意、尚未批准及已放弃**的各项决定，防止误部署。
 3. [TRACEABILITY_MATRIX.md](TRACEABILITY_MATRIX.md) — **50项历史讨论的需求到文档映射**，防遗漏。
@@ -91,7 +98,7 @@
 5. [BUILD_PLAN.md](BUILD_PLAN.md) — **分阶段可执行开发任务**，先六案例样刊后工程化。
 6. [AGENTS.md](AGENTS.md) — **Codex/AI交接和权限边界**。
 
-### B. 产品、认知教学与质量
+### C. 产品、认知教学与质量
 - **[DEEP_LEARNING_ENGINE.md](DEEP_LEARNING_ENGINE.md) — 深度教学目标、具体十一道机制、领域知识路径、迁移和回访。**
 - **[CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md) — 政治、医院AI商业、美股及科技四份详解教学案例。**
 - **[INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md) — 五种研究能力、三种雷达与专业岗位分工。**
@@ -99,11 +106,11 @@
 - [EDITORIAL_POLICY.md](EDITORIAL_POLICY.md) — 严肃新闻、机构利益、反茧房与审稿约束。
 - [ADVISOR_PEDAGOGY.md](ADVISOR_PEDAGOGY.md) — 四种教学方法和领域知识的早期规范。
 - [COGNITIVE_ADVISOR_SKILL.md](COGNITIVE_ADVISOR_SKILL.md) — 可实际交付研究/撰稿任务的“首席顾问”细化规则。
-- [PUBLICATION_SPEC.md](PUBLICATION_SPEC.md) — 周刊/月报的内容形态、中文写作、长稿与编辑质量。
+- [PUBLICATION_SPEC.md](PUBLICATION_SPEC.md) — 周报/年报的内容形态、中文写作、长稿与编辑质量。
 - [QA_AND_METRICS.md](QA_AND_METRICS.md) — 100分审稿、硬阻断、六能力检验与测试清单。
 - [skills/chief_advisor/SKILL.md](skills/chief_advisor/SKILL.md) — 面向未来Codex的项目内部简化Skill。
 
-### C. 数据、技术、安全及工程
+### D. 数据、技术、安全及工程
 - [DATA_CONTRACTS.md](DATA_CONTRACTS.md) — Source/Event/Claim/Evidence/Thesis/Edition/Delivery数据契约。
 - [INTELLIGENCE_MEMORY.md](INTELLIGENCE_MEMORY.md) — 原件保真、跨年召回、知识卡与历史修正。
 - [TECHNICAL_DESIGN.md](TECHNICAL_DESIGN.md) — 技术架构和候选成熟开源组件。
@@ -113,17 +120,18 @@
 - [ACCEPTANCE_AND_HANDOFF.md](ACCEPTANCE_AND_HANDOFF.md) — 原有独立审校及交接规则。
 - [CHANGELOG.md](CHANGELOG.md) — 设计/来源历史版本记录。
 
-### D. 来源注册与历史核查（本阶段暂停）
+### E. 来源注册与历史核查（本阶段暂停）
 - [SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md) — 全球独立发现、双队列、来源多元。
 - [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md) / [SOURCE_REGISTRY.json](SOURCE_REGISTRY.json) — 124个活跃来源。
 - [SOURCE_ABANDONED_2026-10-13.json](SOURCE_ABANDONED_2026-10-13.json) — 6个已弃来源。
 - [SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md)、[SOURCE_TOOLING_RESEARCH.md](SOURCE_TOOLING_RESEARCH.md)、[SOURCE_VERIFICATION_PLAYBOOK.md](SOURCE_VERIFICATION_PLAYBOOK.md) — 权限/开源工具/采集测试规范。
 - [SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md](SOURCE_CLOUD_SMOKE_AUDIT_2026-10-13.md)、[audits/random-four-20261013.json](audits/random-four-20261013.json) — 真实测试历史；**不是已部署系统**。
 
-### E. 实际内容制作模板
+### F. 实际内容制作模板
 - [templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md) — 文章及来源核验模板。
 - [templates/WEEKLY_TEMPLATE.md](templates/WEEKLY_TEMPLATE.md) — 深度周刊编辑框架。
-- [templates/MONTHLY_TEMPLATE.md](templates/MONTHLY_TEMPLATE.md) — 月报与新综合战略判断框架。
+- **[templates/ANNUAL_TEMPLATE.md](templates/ANNUAL_TEMPLATE.md)** — 年报完整编辑/证据/年度错判审计模板。
+- [templates/MONTHLY_TEMPLATE.md](templates/MONTHLY_TEMPLATE.md) — 历史废止的月报模板，仅旧版追溯；不使用。
 - [templates/THESIS_TEMPLATE.md](templates/THESIS_TEMPLATE.md) — 长期研究及可追溯历史判断版本。
 
 ## 7. 开始实施的正确顺序
@@ -131,7 +139,7 @@
 **第一步**：必须先阅读深度学习引擎、政治/创业实例与五种能力研究模式，再阅读全文、检查决策台账与追溯矩阵；
 **第二步**：用**6个真实、可核验的议题**制作完整深度样稿（美股2、创业1、政治1、AI科技1、宏观1），用户审定研究质量；
 **第三步**：把证据包→顾问讲解→独立审稿→周刊Markdown/HTML串成可复现的最小流程；
-**第四步**：才考虑全球来源的小规模正式接入、周刊内部预演、月报与长期知识数据库；
+**第四步**：才考虑全球来源的小规模正式接入、周报内部预演、年报与长期知识数据库；
 **第五步**：经实际质量/运行/预算/权限验收和用户批准，再进入新刊物生产投递。
 
 关键判断：**我们建设的是一位能够教会你理解世界的长期认知与战略顾问，不是一台高频堆砌摘要的新闻机器**。
@@ -139,7 +147,7 @@
 ## 8. 严格的授权和状态边界
 
 - **已有每日早报**的源代码、运行、北京时间07:00推送、邮箱、Secrets和生产Actions一概不因本项目设计而改变。
-- **内参系统没有获得新的周刊/月报上线、真实邮件外发、定时任务、付费API或私有存储部署授权**。
+- **内参系统没有获得新的周报/年报上线、真实邮件外发、定时任务、付费API或私有存储部署授权**。
 - Markdown完成=设计归档；一些来源单次HTTP成功≠124源生产可用；构建了Skill.md≠AI顾问程序已集成；写了栏目权重≠已经发行内刊。
 - 有冲突先看DECISIONS.md和最新用户明确指令；历史报告依旧保存，不重写旧来源测试记录。
 
