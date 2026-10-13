@@ -284,5 +284,95 @@ class DirectorAudiovisualReviewTests(unittest.TestCase):
                             self.language, bad)
 
 
+    def test_audit_quote_must_belong_to_that_specific_shot(self):
+        original = _acting_completed(self.base, self.state)
+        candidate = deepcopy(original["tasks"]["acting"]["deliverable"])
+        candidate["shots"]["S02"]["staging"]["action"] = (
+            "Second scene actor opens the envelope while facing the window.")
+        delivered = team.submit(
+            self.state, team.packet(self.state, "acting"), candidate)
+        notes = _review(self.base, delivered, self.command, self.language)
+        for line in notes["findings"]:
+            if line["department"] == "acting" and line["shot_id"] == "S02":
+                line["delivery_quote"] = (
+                    "Second scene actor opens the envelope while facing the window.")
+        self.assertEqual(
+            review.validate(self.base, delivered, self.command,
+                            self.language, notes)["next_step"],
+            "continue_department_work")
+        fake = deepcopy(notes)
+        for line in fake["findings"]:
+            if line["department"] == "acting" and line["shot_id"] == "S02":
+                line["delivery_quote"] = "The character faces the sealed envelope"
+        with self.assertRaisesRegex(review.DirectorReviewError,
+                                    "QUOTE_NOT_IN_ACTUAL_DELIVERY"):
+            review.validate(self.base, delivered, self.command,
+                            self.language, fake)
+
+    def test_real_actor_camera_conflict_blocks_even_if_other_work_pending(self):
+        acting = _acting_completed(self.base, self.state)
+        camera_payload = {"shots": {sid: {
+            "camera": {"composition": (
+                "Camera tight crop hides the character's reaching right hand")},
+            "art": {"light_source": (
+                "Single table lamp shows only the envelope and top of desk")},
+        } for sid in acting["shot_ids"]}}
+        delivered = team.submit(
+            acting, team.packet(acting, "camera_art"), camera_payload)
+        notes = _review(self.base, delivered, self.command, self.language)
+        for line in notes["findings"]:
+            if line["department"] == "camera_art":
+                line["delivery_quote"] = (
+                    "Camera tight crop hides the character's reaching right hand")
+        notes["conflicts"] = [{
+            "shot_id": "S01",
+            "left_department": "acting",
+            "right_department": "camera_art",
+            "left_delivery_quote": "The character faces the sealed envelope",
+            "right_delivery_quote": (
+                "Camera tight crop hides the character's reaching right hand"),
+            "incompatible_work": (
+                "Actor's critical hand hesitation must be visible, "
+                "but camera framing cuts the hand from the image."),
+            "director_resolution": (
+                "Director must first decide whether to widen framing "
+                "or adapt staging; consult acting and camera."),
+            "human_decision_needed": True,
+        }]
+        notes["next_step"] = "resolve_cross_department_conflict"
+        receipt = review.validate(
+            self.base, delivered, self.command, self.language, notes)
+        self.assertFalse(receipt["can_enter_real_media_review"])
+        self.assertEqual(len(receipt["unresolved_cross_department_conflicts"]), 1)
+        fake_ready = deepcopy(notes)
+        fake_ready["next_step"] = "continue_department_work"
+        with self.assertRaisesRegex(review.DirectorReviewError,
+                                    "FALSE_READINESS"):
+            review.validate(
+                self.base, delivered, self.command, self.language, fake_ready)
+        false_evidence = deepcopy(notes)
+        false_evidence["conflicts"][0]["right_delivery_quote"] = (
+            "An invented camera instruction never written by cinematographer.")
+        with self.assertRaisesRegex(review.DirectorReviewError,
+                                    "CONFLICT_NOT_GROUNDED"):
+            review.validate(self.base, delivered, self.command,
+                            self.language, false_evidence)
+        absent_department = deepcopy(notes)
+        absent_department["conflicts"][0]["right_department"] = "sound"
+        with self.assertRaisesRegex(review.DirectorReviewError,
+                                    "MISSING_ACTUAL_DELIVERIES"):
+            review.validate(self.base, delivered, self.command,
+                            self.language, absent_department)
+
+    def test_conflicts_cannot_be_ignored_by_final_review_prompt(self):
+        prompt = review.request(
+            self.base, self.state, self.command, self.language)
+        sent = json.loads(prompt["messages"][1]["content"])
+        self.assertTrue(
+            sent["unresolved_cross_department_conflicts_block_readiness"])
+        self.assertIn(
+            "resolve_cross_department_conflict", sent["next_step_enum"])
+
+
 if __name__ == "__main__":
     unittest.main()

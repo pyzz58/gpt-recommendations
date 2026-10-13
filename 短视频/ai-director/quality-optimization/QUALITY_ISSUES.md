@@ -5,7 +5,7 @@
 
 ## 总览
 
-- 登记 38 项；编剧 11 项，总导演 17 项，其它部门 10 项。
+- 登记 39 项；编剧 11 项，总导演 18 项，其它部门 10 项。
 - 全部验收完成 0 项；没有真实独立验证不能自称达到一流水准。
 - 现阶段只修编剧及总导演；其它部门保持后续审计状态。
 
@@ -39,6 +39,7 @@
 | QO-D15 | director | P0 | in_progress | 总导演详尽指挥与协调所有专业部门 |
 | QO-D16 | director | P0 | in_progress | 导演审核部门真实交付与基于观众体验的精准跨岗返工 |
 | QO-D17 | director | P0 | in_progress | 世界级导演的可迁移艺术判断与周星驰荒诞喜剧的题材适配 |
+| QO-D18 | director | P0 | confirmed_open | 真实模型运行入口未接收新版总导演艺术方法与跨部门指令 |
 | QO-F01 | acting | P1 | audit_pending | 演员表演与动作调度专业审计 |
 | QO-F02 | cinematography_art | P1 | audit_pending | 摄影/灯光/美术世界观专业审计 |
 | QO-F03 | sound_voice | P1 | audit_pending | 配音/对白/拟音/音乐专业审计 |
@@ -232,7 +233,7 @@
 - 依赖：QO-D01
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/19
 - 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:confirmed_open
 
 ### QO-D03 · 导演视听母题、情绪弧线与视觉叙事
 
@@ -386,7 +387,7 @@
 - 依赖：QO-W11
 - 历史问题：无
 - 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/28；回归 tests/test_screenplay_series_delivery.py — 10min fulltext intake, detailed beat coverage, arbitrary 7/10-episode split, <=90s incl extras, rejects loss/reorder/tampering；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress
+- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress
 
 ### QO-D14 · 总导演主动创意剪辑与重大压缩权
 
@@ -427,8 +428,8 @@
 - AI 视频适配：短视频每集≤90秒；每镜AI clip与完整视频节奏分层；不同模型的手/道具状态和跨镜声音连续性可能失效，真实媒体验证必须独立授权，不允许以JSON设计假称成片
 - 依赖：QO-D03, QO-D15, QO-D11
 - 历史问题：无
-- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/31；回归 tests/test_director_audiovisual_delivery.py — grounded real department-delivery assessment, pending vs completed, precise single-shot revision and staleness rejection；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/31；回归 tests/test_director_audiovisual_delivery.py — grounded real department-delivery assessment, pending vs completed, precise single-shot revision and staleness rejection；PR40 tests/test_director_audiovisual_delivery.py 新增3个跨部门冲突/跨镜引用反例；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress
 
 ### QO-D17 · 世界级导演的可迁移艺术判断与周星驰荒诞喜剧的题材适配
 
@@ -442,7 +443,21 @@
 - 依赖：QO-D03, QO-D15, QO-D10
 - 历史问题：无
 - 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/36；回归 tests/test_director_artistic_methods.py — genre-specific transfer, serious no-gag gate, character causal comedy ladder, method source/shot/lock validation and model-facing per-department directions；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress
+- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress
+
+### QO-D18 · 真实模型运行入口未接收新版总导演艺术方法与跨部门指令
+
+- 状态：confirmed_open；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：agent_live_crew.run_one_locked_role; agent_role_contracts.build_role_messages/validate_role_output; screenplay_series_delivery.build_per_episode_crew
+- 问题：正式系列每集base已强制director_command_mode、director_audiovisual_mode及director_artistic_mode，但真实授权DeepSeek十岗位执行入口run_one_locked_role向model-facing构造与输出验证调用没有提供department_command、audiovisual_plan及artistic_method_plan，专业岗位将被真实门禁拒绝或无法收到导演完整艺术意图
+- 根因：新导演创作协议已在离线role builder和对应单元测试中接入，但旧实际模型执行器依旧只传editorial_handoff和reference_manifest；缺三种director-source-bound artifact共同版本校验及私有执行快照
+- 方案：维护一个来源和导演锁定版本一致的私有导演创作快照，含原部门制作会、完整艺术方法选择和视听计划；在执行器发起合法授权专业岗位前验证、将三个对象注入真实model-facing role请求并在收到结果时复验；无需新建第二套导演Agent；缺少任一份必须安全阻断并提供明确未授权反馈
+- 完成验收：全合成私有模拟HTTPS十岗位顺序测试，从director_brief→script_edit→director_lock→真实acting/camera/sound收到上述三类正确版本的导演细节且可通过schema；缺任一项、有过期版本、串稿与改写事实均拒绝；绝不自动申请API或花钱；实际联网仍需用户明确逐次授权
+- AI 视频适配：导演清楚阐述人物、空间、幽默/情绪、音画、竖屏、≤90s的意图，AI单clip能力与素材存在条件由对应岗位负责；无模型调用授权不得出网，不能因为HTTP请求成功宣称生成视频或一流艺术质量
+- 依赖：QO-D15, QO-D03, QO-D17
+- 历史问题：无
+- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:confirmed_open
 
 ### QO-F01 · 演员表演与动作调度专业审计
 
