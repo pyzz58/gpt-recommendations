@@ -200,3 +200,116 @@ def departmental_context(base, state, director_command, plan, department):
         "creative_merit_not_certified": True,
     }
     return shared
+
+
+# Creative decisions, not another obligatory AI role. A complete versioned
+# comparison is authored by the SAME director and can be sent to existing
+# specialists after human/model generation. No film merit is inferred.
+CHOICE_VERSION = "director-audiovisual-choice-v1"
+CHOICE_FIELDS = (
+    "camera_and_space", "observable_performance", "sound_and_silence",
+    "editing_and_hold", "viewer_effect", "creative_advantage",
+    "emotional_or_factual_cost", "production_risk_and_fallback",
+)
+
+
+def choices_request(base, state, director_command, visual_plan):
+    proof = validate(base, state, director_command, visual_plan)
+    return {
+        "kind": "unsent_director_audiovisual_alternative_comparison",
+        "version": CHOICE_VERSION, "dispatch_allowed": False,
+        "messages": [
+            {"role": "system", "content": (
+                "你是总导演。对于每个已经有完整导演视听意图的镜头，"
+                "另提出两套真正不同的电影化实现方案：两者必须在"
+                "摄影空间、声音/沉默或剪辑时机至少两处有明确差异。"
+                "两者都服务同一剧本事实和人物选择，不能偷加新故事。"
+                "对两版的观众感受、专业部门可执行动作、失去的情绪/思想、"
+                "AI模型的失败替代做具体反论证。"
+                "可偏爱长镜/静默，不自动选择节奏更快、剪辑更多或成本更低的一版。"
+                "做出明确的导演取舍，并写出没有选择另一版的具体原因。"
+                "正式岗位应收到选中版本而非两个互相矛盾的拍摄要求。"
+                "不声称已生成、已观影、已获真人批准。")},
+            {"role": "user", "content": json.dumps({
+                "original_director_visual_plan": visual_plan,
+                "director_visual_plan_digest": proof["plan_digest"],
+                "source_digest": proof["source_digest"],
+                "director_command_digest": proof["director_command_digest"],
+                "shot_ids": list(state["shot_ids"]),
+                "required_option_fields": CHOICE_FIELDS,
+                "required_per_shot": ["shot_id", "alternatives",
+                                      "selected_index",
+                                      "choice_and_rejection_reason"],
+                "alternatives_per_shot": 2,
+            }, ensure_ascii=False, separators=(",", ":"))},
+        ],
+    }
+
+
+def validate_choices(base, state, director_command, visual_plan, choices):
+    original = validate(base, state, director_command, visual_plan)
+    _object(choices, {
+        "version", "visual_plan_digest", "source_digest",
+        "director_command_digest", "shots",
+    }, "VISION_CHOICES_SHAPE")
+    _need(choices["version"] == CHOICE_VERSION and
+          choices["visual_plan_digest"] == original["plan_digest"] and
+          choices["source_digest"] == original["source_digest"] and
+          choices["director_command_digest"] == original["director_command_digest"],
+          "VISION_CHOICES_STALE")
+    rows = choices["shots"]
+    _need(isinstance(rows, list) and len(rows) == len(state["shot_ids"]),
+          "VISION_CHOICES_MISSING_SHOTS")
+    for sid, row in zip(state["shot_ids"], rows):
+        _object(row, {"shot_id", "alternatives", "selected_index",
+                      "choice_and_rejection_reason"}, "VISION_CHOICES_SHOT_SHAPE")
+        _need(row["shot_id"] == sid, "VISION_CHOICES_SHOT_ORDER")
+        _need(type(row["selected_index"]) is int and
+              row["selected_index"] in (0, 1), "VISION_CHOICES_NO_DIRECTOR_CHOICE")
+        _text(row["choice_and_rejection_reason"], "VISION_CHOICES_NO_TRADEOFF",
+              minimum=40)
+        options = row["alternatives"]
+        _need(isinstance(options, list) and len(options) == 2,
+              "VISION_CHOICES_NEED_TWO_TAKES")
+        for option in options:
+            _object(option, CHOICE_FIELDS, "VISION_CHOICES_TAKE_SHAPE")
+            for value in option.values():
+                _text(value, "VISION_CHOICES_UNDEREXPLAINED", minimum=24)
+        a, b = options
+        # A syntactic guard against same plan twice. Film-level distinction
+        # still requires independent reading of both proposed performances.
+        _need(sum(a[key] != b[key] for key in (
+            "camera_and_space", "sound_and_silence", "editing_and_hold")) >= 2,
+            "VISION_CHOICES_NOT_SUBSTANTIALLY_DIFFERENT")
+    return {
+        "kind": "director_audiovisual_alternatives_receipt",
+        "choices_digest": agent_team.fingerprint(choices),
+        "visual_plan_digest": original["plan_digest"],
+        "shot_count": len(rows),
+        "selected_but_not_approved": True,
+        "independent_creative_quality_unverified": True,
+        "media_generated": False,
+    }
+
+
+def selected_choices_context(base, state, director_command, visual_plan,
+                             choices, department):
+    proof = validate_choices(base, state, director_command,
+                             visual_plan, choices)
+    _need(department in command.DEPARTMENTS, "VISION_CHOICES_UNKNOWN_DEPARTMENT")
+    return {
+        "kind": "director_selected_audiovisual_approach_for_department",
+        "choices_digest": proof["choices_digest"],
+        "department": department,
+        "per_shot": [{
+            "shot_id": row["shot_id"],
+            "selected_execution": deepcopy(
+                row["alternatives"][row["selected_index"]]),
+            "director_selection_and_rejected_tradeoff":
+                row["choice_and_rejection_reason"],
+            "rejected_option_for_comparison_only": deepcopy(
+                row["alternatives"][1-row["selected_index"]]),
+        } for row in choices["shots"]],
+        "only_selected_is_execution_direction": True,
+        "not_model_generated_media": True,
+    }
