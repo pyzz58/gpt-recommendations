@@ -32,3 +32,12 @@
 阶段2：对没有RSS的合法来源按站点单测RSSHub。
 阶段3：只有当大量站点出现无法覆盖才测试news-please/newspaper4k并比较质量与成本。
 上线前逐个检查协议、使用条款、robots、请求节奏和版权；不做未授权访问或网页全文批量转载。
+
+## 2026-10-13 专项恢复发现（内参系统）
+- **澎湃新闻**：RSSHub源码 https://github.com/DIYgod/RSSHub/blob/master/lib/routes/thepaper/sidebar.ts ，可见公开缓存接口 `https://cache.thepaper.cn/contentapi/wwwIndex/rightSidebar`；本轮网页工具收到application/json，但未能取得可解析条目；**真实可用性未通过**。注意源站许可。
+- **第一财经**：`/yicai/latest` https://github.com/DIYgod/RSSHub/blob/master/lib/routes/yicai/latest.ts 、`/yicai/brief` https://github.com/DIYgod/RSSHub/blob/master/lib/routes/yicai/brief.ts ；源码在，但官方RSSHub演示本轮未能读取且历史存在失败issue，不计生产有效。
+- **BBC**：原生世界RSS https://feeds.bbci.co.uk/news/world/rss.xml ，返回text/xml但浏览器不支持解析；先选原生RSS而非RSSHub复制全文。
+- **arXiv**：官方文档源码 https://github.com/arXiv/arxiv-docs/blob/develop/source/help/api/user-manual.md ，Atom标准，今后由XML解析器而非浏览器全文抓取。
+- **美国Congress.gov**：官方API https://github.com/LibraryOfCongress/api.congress.gov ，需要注册免费API Key，并非付费API；未取得Key前仅保持候选，不试图跳过鉴权。
+- **DW**：官方rss.dw.com提供西班牙语公开HTML供稿页供合法阅读，非英语版，也不等于可自由全文分发。
+- 以上源的具体证据与分类一律以 [SOURCE_RECOVERY_AUDIT_2026-10-13.md](SOURCE_RECOVERY_AUDIT_2026-10-13.md) 为准。
