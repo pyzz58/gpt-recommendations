@@ -115,7 +115,7 @@ jobs:
             echo "::error::Not configured. Set NEWSPAPER_SMTP_FROM, NEWSPAPER_SMTP_PASSWORD, NEWSPAPER_TO in GitHub Actions repository Secrets."
             exit 1
           fi
-          if [[ "${{ github.event_name }}" == "push" && "${{ github.event.head_commit.message }}" == *"[newspaper-quality-sample]"* ]]; then
+          if [[ "${{ github.event_name }}" == "push" && "${{ contains(github.event.head_commit.message, '[newspaper-quality-sample]') }}" == "true" ]]; then
             # Quality sample: uses live public news + QQ SMTP, but does not
             # alter the official daily delivery receipt or 01:00 deadline.
             python newspaper/digest.py --quality-sample
