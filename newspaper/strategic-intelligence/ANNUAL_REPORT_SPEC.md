@@ -20,17 +20,17 @@
 # 2. 全年研究时段、口径与三类时间
 
 明确：
-- \`report_year\`：自然年，如2026-01-01—2026-12-31（若最后一年数据截至12-31尚未公布，必须在附录注明修订风险）。
-- \`publication_cutoff_at\`：实际制作年报时已知的公开信息截点；如果是次年1月发布，不能把次年新事件悄悄说成报告年内发生。
-- \`weekly_issue_period\`与\`weekly_as_of\`：每份周报当时已知什么、其后哪个事实推翻了当时判断。
-- \`event_occurred_at\`、\`source_published_at\`、\`source_collected_at\`：必须区分事件发生、公布和采集时点。
+- `report_year`：自然年，如2026-01-01—2026-12-31（若最后一年数据截至12-31尚未公布，必须在附录注明修订风险）。
+- `publication_cutoff_at`：实际制作年报时已知的公开信息截点；如果是次年1月发布，不能把次年新事件悄悄说成报告年内发生。
+- `weekly_issue_period`与`weekly_as_of`：每份周报当时已知什么、其后哪个事实推翻了当时判断。
+- `event_occurred_at`、`source_published_at`、`source_collected_at`：必须区分事件发生、公布和采集时点。
 
 所有跨年经济数据注意官方统计后修订；对年内决策评判只能用当时可用资料，对年度事后结果可以用后来公开的数据但必须标其发布时间。
 
 # 3. 两种输入必须独立、再融合
 
 ## A. 全年已出版周报
-全部 \`WEEKLY-YYYY-Www\`：
+全部 `WEEKLY-YYYY-Www`：
 - 一期的所有专题、来源ID、Theme/Thesis/MechanismCard；
 - 每篇分析当时知识截点、引用的原始事实、假设、最强反方、读者学到的知识；
 - 每期尚待观察的现实指标，哪项已得到新证据；
@@ -49,7 +49,7 @@
 
 | 顺序 | 实际操作 | 明确产物 | 不能接受 |
 |---|---|---|---|
-| A01 | 冻结\`report_year\`与\`as_of\`，列全年的周报及缺失期次 | IssueInventory、missing_issues | 假装52期都已完整 |
+| A01 | 冻结`report_year`与`as_of`，列全年的周报及缺失期次 | IssueInventory、missing_issues | 假装52期都已完整 |
 | A02 | 建立当年原始新闻、机构报告/数据清单（不用只选周报引用） | AnnualSourceInventory、覆盖领域/地区 | 周报以外的新证据完全没查 |
 | A03 | 提取所有Theme、ThesisVersion、观察清单及其当时证据 | AnnualThesisLedger | 不见原件只按新模型脑补 |
 | A04 | 事件去重与影响链，按发生时间排列重大变化和后续结果 | AnnualEventTimeline、SourceLineage | 热搜/转载数当重大证据 |
@@ -98,7 +98,7 @@
 
 # 7. 年报数据契约（未来开发）
 
-\`\`\`yaml
+```yaml
 edition_id: ANNUAL-YYYY
 kind: ANNUAL
 report_year: YYYY
@@ -121,9 +121,9 @@ editorial_review_ref: null
 status: "DRAFT|REVISE|PASS|BLOCK|RENDERED|PUBLISHED"
 delivery_receipt_ref: null
 rights_status: "UNREVIEWED|APPROVED_SUBSET|RESTRICTED"
-\`\`\`
+```
 
-所有周报的\`issue_id\`保持不变；年报只**引用**周报原版并新增独立内容，不能回写改变去年周报。年报与周报原始资料都进入长期档案，保持跨年的一致主题ID与判断版本。
+所有周报的`issue_id`保持不变；年报只**引用**周报原版并新增独立内容，不能回写改变去年周报。年报与周报原始资料都进入长期档案，保持跨年的一致主题ID与判断版本。
 
 # 8. 年报专门QA：审稿必须逐项检查
 - [ ] **取回真实全年周报清单**，缺失数量明确，没有伪造旧期次。
@@ -139,9 +139,9 @@ rights_status: "UNREVIEWED|APPROVED_SUBSET|RESTRICTED"
 
 # 9. 年报实施的最小开发步骤
 1. 先用**至少若干份冻结样本周报 + 对应年度原始资料**做离线测试，不要求真的运行一年才能测数据通路。
-2. 开发\`build_annual_inventory\`取回周报ID/原件/来源；缺失上报。
-3. 开发\`build_annual_event_timeline\`和\`build_thesis_audit\`以as_of避免未来信息污染过去。
-4. 开发\`compare_annual_primary_sources\`，核查原新闻年度变化是否被周报漏掉。
+2. 开发`build_annual_inventory`取回周报ID/原件/来源；缺失上报。
+3. 开发`build_annual_event_timeline`和`build_thesis_audit`以as_of避免未来信息污染过去。
+4. 开发`compare_annual_primary_sources`，核查原新闻年度变化是否被周报漏掉。
 5. 加载九栏专业Skill，输出新的年度分析与学习单元，不复读旧稿。
 6. 用独立审核阻断假数据/假预测/错数字/不正确文化历史引用。
 7. 原稿Markdown/可选HTML/PDF只作内部预览，经用户另行批准后方可公开发送。
