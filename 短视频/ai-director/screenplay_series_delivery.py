@@ -361,6 +361,9 @@ def build_per_episode_crew(handoff, dossier, breakdown):
         sub["director_audiovisual_mode"] = {
             "kind": "director_audiovisual_plan_required",
             "audiovisual_intent_before_specialists": True}
+        sub["director_artistic_mode"] = {
+            "kind": "director_artistic_method_required",
+            "artistic_intent_before_specialists": True}
         sub["series_context"] = {
             "kind": "director_episode_from_complete_screenplay",
             "episode_id": episode["episode_id"],
