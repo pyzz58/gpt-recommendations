@@ -1,95 +1,204 @@
-# 全球权威信息源白名单｜V1.6
+# 全球权威信息源登记表 V1.7
 
-> 调查日期：2026-10-13。**规划与公开来源侦察，未实现真实自动采集。**
+> 核查日期：2026-10-13。**公开网页/部分JSON接口的实际读取审计，不是生产采集通过验收。** 机器可读原件见 [SOURCE_REGISTRY.json](SOURCE_REGISTRY.json)。
 
-## 状态语义（不可混用）
-- **A**：官网存在可公开阅读内容，或者公开列明RSS/API；这不代表已经成功调用接口或获准转载全文。
-- **B**：有部分公开内容，但完整商业研究/非OA全文未获免费访问确认。
-- **C**：本轮路径出现访问/动态渲染问题，仍需官方替代路径、合法搜索、GitHub工具和真实运行环境测试。**不等于绝对不存在信息。**
-- **D**：特定的付费/客户专属产品，目前不存在已确认合法免费全文路径；详见 SOURCE_ACCESS_BLOCKLIST.md。
+## 本轮进展与解释
+- 候选从原有68扩容至现在 **130**（A=76，B=7，C=47）。
+- **A：免费公开页面内容或官方API/RSS文档已确认存在**；不是已完成定时接口采集，更不意味着可以合法重新分发全文。
+- **B：机构有合法可免费阅读的栏目、节选或单篇，但客户独家研报/整套全文未授权。只把免费部分纳入候选。**
+- **C：源有潜在价值但当前不能确认能够实际自动获取，有的因robots/403、动态渲染、跳转、解析XML限制；不计作可上线生产的白名单。**
+- D/付费来源已从活动候选剔除并写入 [SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md)。
+- 运行状态 **production_test=NOT_RUN 对所有来源均成立**。只有在实际宿主机按 [SOURCE_VERIFICATION_PLAYBOOK.md](SOURCE_VERIFICATION_PLAYBOOK.md) 连续通过测试才标生产有效。
+- 当前真正经浏览器工具取得 HTML/JSON/RSS目录/API文档示例的来源有 32 个条目；其余大多是上一轮确认的公开入口或本轮未能测试，见具体 `content_test_result` 字段。特别要区分 **能读元信息、能读新闻正文、允许自动获取、允许 AI 处理、允许重发** 五种不同状态。
 
-本轮单独抽查 openFDA 示例接口 https://api.fda.gov/drug/label.json?limit=1 ，通过外部网页检索工具取得 JSON 与数据记录（返回meta.last_updated=2026-10-09）；这并不等于在未来部署的生产宿主机完成验证。其它部分API接口被工具访问规则阻断，不可据此认定网站永久不可用。
+## 核心媒体补充
+- 中国：人民日报海外版、海外网、人民网、新华网（中文）、央视、证券时报、21世纪经济报道、上海证券报、中国证券报、界面新闻等已出现可读的公开页面。新华社英文站另保留C类路径待验证。
+- 国际：Reuters公开栏目及某一篇2026-10-12文章正文可读取；BBC世界新闻RSS返回XML内容类型，但本次浏览器工具不支持解析XML，**不可以算接口已完成成功拉取**；CNA、Al Jazeera、ABC、CBS、VOA等有公开可读目录。NPR/France24/DW英文主站当前抓取机器人受限，不能因此认定普通浏览器访问也失败。
+- 重点风险：Guardian Open Platform当前条款包含禁止用其内容进行AI/文本数据分析的约束，因此在缺少相应授权前应排除自动AI摄取；NewsAPI.org免费开发者计划也不能未经许可作为生产源。
 
-查询门户/官方API文档验证 ≠ 端点真实返回成功 ≠ 长期稳定采集 ≠ 已获版权二次分发权。未来逐源必须执行真实HTTP、解析、时效、权限和复测验收。
+## 分领域全量登记
 
-## 九大栏目跨领域初始来源表
+### 新闻
 
-| 类别 | 机构与专题 | 状态 | 官方地址 | 已知获取形式 | 候选回退 |
-|---|---|---|---|---|---|
-| 新闻 | AP News | **A** | [官网](https://apnews.com/) | 公开新闻网页 | 原文引用、Newsletter |
-| 新闻 | Reuters World | **B** | [官网](https://www.reuters.com/world/) | 公开栏目；部分正文/商业授权有限 | GDELT与公开合法检索 |
-| 新闻 | Al Jazeera | **A** | [官网](https://www.aljazeera.com/) | 公开新闻页 | 官网栏目与RSS核验 |
-| 新闻 | Deutsche Welle | **A** | [官网](https://amp.dw.com/en/the-day-with-brent-goff/video-19049331) | 主站报错，AMP官方内容可读 | 官方RSS/AMP |
-| 新闻 | BBC News | **C** | [官网](https://www.bbc.com/news) | 本轮访问失败 | RSS/合法搜索，技术烟测 |
-| 新闻 | 新华社英文站 | **C** | [官网](https://english.news.cn/) | 本轮直接访问失败 | 新华中文官网/搜索 |
-| 新闻 | GDELT | **A** | [官网](https://gdeltproject.org/) | 公开全球新闻发现索引，不是原始事实源 | 原发媒体核实 |
-| 新闻 | Media Cloud | **B** | [官网](https://www.mediacloud.org/documentation/search-api-guide) | 搜索/API文档可见；权限与调用未测 | GDELT/媒体原生源 |
-| 金融 | SEC EDGAR | **A** | [官网](https://www.sec.gov/search-filings/edgar-application-programming-interfaces) | 官方无Key API文档 | sec-edgar-downloader |
-| 金融 | Federal Reserve | **A** | [官网](https://www.federalreserve.gov/feeds/feeds.htm) | 官方RSS | 官方公告页 |
-| 金融 | BIS | **A** | [官网](https://www.bis.org/rss) | 官方研究与讲话RSS | 官方研究页 |
-| 金融 | 摩根大通 Guide to the Markets | **A** | [官网](https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/guide-to-the-markets/) | 官方说明免费完整指南 | 官网更新监测 |
-| 金融 | 贝莱德 Investment Institute | **A** | [官网](https://www.blackrock.com/us/individual/insights/blackrock-investment-institute/weekly-commentary) | 免费公开周评 | 官网更新监测 |
-| 金融 | 先锋 Vanguard Outlook | **A** | [官网](https://corporate.vanguard.com/content/corporatesite/us/en/corp/vemo/vanguard-economic-market-outlook.html) | 公开经济展望 | 官网公开研究 |
-| 金融 | 道富 State Street | **A** | [官网](https://www.ssga.com/us/en/individual/insights/featured-insights) | 公开精选洞察 | 栏目更新 |
-| 金融 | 高盛 Goldman Sachs Research | **B** | [官网](https://www.goldmansachs.com/insights/goldman-sachs-research/) | 公开精选，不等于所有专有研报 | 公开文章/一手数据 |
-| 金融 | 花旗 Citi Institute | **A** | [官网](https://www.citigroup.com/global/insights/citi-institute) | 公开研究专题 | 官网发布页 |
-| 金融 | 美国银行 BofA Securities | **B** | [官网](https://business.bofa.com/en-us/content/market-strategies-insights.html) | 公开精选；客户研究不保证 | 公开市场洞察 |
-| 金融 | 摩根士丹利 Insights | **A** | [官网](https://www.morganstanley.com/insights/) | 公开市场与科技精选 | 官网更新 |
-| 金融 | 伯克希尔股东信 | **A** | [官网](https://www.berkshirehathaway.com/letters/letters.html) | 历史股东信目录 | SEC年报/官网报告 |
-| 金融 | Oaktree/Howard Marks | **A** | [官网](https://www.oaktreecapital.com/insights) | 公开投资备忘录目录 | 公开newsletter |
-| 宏观 | IMF Data | **A** | [官网](https://data.imf.org/en/Resource-Pages/IMF-API) | 官方SDMX API文档，真实调用未测 | 公开报告 |
-| 宏观 | 世界银行 World Bank | **A** | [官网](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392) | 官方无需密钥的API | 指标页面 |
-| 宏观 | OECD | **A** | [官网](https://www.oecd.org/en/data/insights/data-explainers/2024/09/api.html) | 免费SDMX API文档、有频限 | 数据浏览器 |
-| 宏观 | 国际能源署 IEA | **B** | [官网](https://www.iea.org/reports) | 研究目录公开，全文逐篇判许可 | 免费概要/网页 |
-| 产业 | PwC全球CEO调查 | **A** | [官网](https://www.pwc.com/gx/en/issues/c-suite-insights/ceo-survey.html) | 公开报告正文 | 研究页面监测 |
-| 产业 | Deloitte Tech Trends | **A** | [官网](https://www.deloitte.com/global/en/insights/topics/technology-management/tech-trends.html) | 公开专题报告 | 网站更新 |
-| 产业 | EY CEO Outlook | **A** | [官网](https://www.ey.com/en_gl/ceo/ceo-outlook-global-report) | 公开报告正文 | 网站更新 |
-| 产业 | KPMG Insights | **A** | [官网](https://kpmg.com/xx/en/our-insights.html) | 公开研究页面 | 具体系列逐篇检验 |
-| 产业 | McKinsey Global Institute | **A** | [官网](https://www.mckinsey.com/mgi/overview) | 公开研究目录 | 公开报告原文 |
-| 产业 | BCG | **A** | [官网](https://www.bcg.com/publications) | 公开文章与研究 | 网站监控 |
-| 产业 | Bain | **A** | [官网](https://www.bain.com/insights/) | 公开商业洞察 | 研究文章 |
-| 政治 | 美国白宫 Presidential Actions | **A** | [官网](https://www.whitehouse.gov/presidential-actions/) | 2026政策/政令可读 | 联邦公报 |
-| 政治 | Congress.gov | **A** | [官网](https://api.congress.gov/) | 公开API文档，需申请免费Key | 国会网站搜索 |
-| 政治 | 英国议会 UK Parliament | **A** | [官网](https://www.parliament.uk/site-information/rss-feeds/) | 法案/研究简报官方RSS | 议会官网 |
-| 政治 | 中国国务院政策库 | **A** | [官网](https://www.gov.cn/zhengce/zhengceku/bmwj/home.htm) | 中文政策原文索引可读 | 中国政府网搜索 |
-| 政治 | 中国外交部 | **A** | [官网](https://www.mfa.gov.cn/) | 官方声明/问答网页 | 公告频道 |
-| 政治 | 联合国 UN News | **A** | [官网](https://www.un.org/en/events-and-news/) | 官方多语新闻页面；原press路径403 | docs.un.org/press/releases/ |
-| 政治 | 欧盟委员会 Press Corner | **C** | [官网](https://ec.europa.eu/commission/presscorner/home/en) | 动态栏目内容为空，未确认自动读取 | EU单篇公告/公开检索 |
-| 政治 | EUISS欧洲安全研究所 | **A** | [官网](https://www.iss.europa.eu/publications) | 公开完整研究PDF | 官网研究目录 |
-| 军事 | SIPRI军费数据库 | **A** | [官网](https://www.sipri.org/databases/milex) | 公开数据下载，商业许可另议 | OWID衍生数据 |
-| 军事 | NATO | **A** | [官网](https://www.nato.int/cps/en/natohq/RSS.htm) | 官方新闻RSS | 官网声明 |
-| 军事 | CSIS国防研究 | **A** | [官网](https://www.csis.org/topics/defense-and-security) | 公开研究文章 | CSIS分析 |
-| 军事 | RAND兰德 | **A** | [官网](https://www.rand.org/pubs/research_reports.html) | 公开研究目录和部分PDF | 公开研究单页 |
-| 军事 | IISS公开文章 | **B** | [官网](https://www.iiss.org/publications/the-military-balance/2026/the-military-balance-2026/global-defence-spending/) | 部分国防研究免费；完整版商业产品另列D | SIPRI/CSIS/RAND |
-| 军事 | 美国国防部 News | **C** | [官网](https://www.defense.gov/News/) | 本轮自动读取失败 | 合法公开搜索/官方单页 |
-| AI/科技 | Google Research | **A** | [官网](https://research.google/pubs/) | 官方研究论文目录 | 论文原始网址 |
-| AI/科技 | Google DeepMind | **A** | [官网](https://deepmind.google/research/) | 官方研究成果 | 公开论文 |
-| AI/科技 | OpenAI Research | **A** | [官网](https://openai.com/research/) | 官方研究页面 | 论文及发布原文 |
-| AI/科技 | Anthropic Research | **A** | [官网](https://www.anthropic.com/research) | 官方研究成果 | 公开研究资料 |
-| AI/科技 | Meta AI Research | **C** | [官网](https://ai.meta.com/research/) | 本轮页面为空 | 论文索引及公开文章搜索 |
-| AI/科技 | Hugging Face Papers | **A** | [官网](https://huggingface.co/papers) | 论文发现索引 | 论文原始链接 |
-| AI/科技 | arXiv API文档 | **C** | [官网](https://arxiv.org/help/api) | 跳转地址本轮无法访问 | Semantic Scholar/公开作者页 |
-| AI/科技 | Semantic Scholar API | **A** | [官网](https://webflow.semanticscholar.org/product/api) | 公开论文API文档、有访问限额 | Europe PMC/原论文 |
-| AI/科技 | NIST AI Risk Framework | **A** | [官网](https://www.nist.gov/itl/ai-risk-management-framework) | 美国标准与研究页 | NIST官网 |
-| AI/科技 | NASA News | **A** | [官网](https://www.nasa.gov/news/) | 官方航天新闻页面 | NASA项目网页 |
-| 医疗 | WHO全球卫生数据库 | **A** | [官网](https://www.who.int/data/gho/info/athena-api/GHO) | 官方API文档 | 卫生数据门户 |
-| 医疗 | FDA openFDA | **A** | [官网](https://open.fda.gov/apis/authentication/) | 免费API及调用限额官方文档 | 药监公告 |
-| 医疗 | EMA欧洲药品管理局 | **A** | [官网](https://www.ema.europa.eu/en/news-events) | 新闻与RSS明确列出 | 药品审批信息 |
-| 医疗 | ClinicalTrials.gov | **A** | [官网](https://clinicaltrials.gov/data-api/api) | 官方API入口可读，JSON端点未烟测 | 临床试验网站 |
-| 医疗 | Europe PMC | **A** | [官网](https://europepmc.org/RestfulWebService) | 医学文献公开API文档 | 开放全文子集 |
-| 医疗 | NCBI/PubMed | **C** | [官网](https://www.ncbi.nlm.nih.gov/books/NBK25501/) | 本轮反机器人验证页 | Europe PMC API |
-| 医疗 | Nature期刊 | **B** | [官网](https://www.nature.com/nature/articles) | 可看目录和OA子集，非OA全文需订阅 | 开放获取论文/作者合法版本 |
-| 社会 | Our World in Data | **A** | [官网](https://ourworldindata.org/search) | 公开图表、RSS、部分开放数据 | 原始统计机构 |
-| 创业 | Y Combinator RFS | **A** | [官网](https://www.ycombinator.com/rfs) | 公开创业需求主题 | YC官方库 |
-| 创业 | Y Combinator Library | **A** | [官网](https://www.ycombinator.com/library?categories=Diversity+++Inclusion) | 可查公开教程和访谈 | YC Startup School |
-| 创业 | a16z | **A** | [官网](https://a16z.com/) | 公开投资与科技文章 | 合法newsletter |
-| 创业 | Sequoia文章 | **C** | [官网](https://www.sequoiacap.com/article/) | 本轮栏目读取报错 | 官网单篇/索引搜索 |
+| ID | 来源 | 状态 | 获取观察 | 官方入口 |
+|---|---|---|---|---|
+| SRC-001 | AP News | A 公开入口 | PUBLIC SITE DOCUMENTED NOT RETESTED | [打开](https://apnews.com/) |
+| SRC-002 | Reuters World | B 免费部分 | WEB TOOL ARTICLE FULL HTML SAMPLE OK | [打开](https://www.reuters.com/world/) |
+| SRC-003 | Al Jazeera | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.aljazeera.com/) |
+| SRC-004 | Deutsche Welle | A 公开入口 | WEB TOOL MAIN ROBOTS DENIED | [打开](https://amp.dw.com/en/the-day-with-brent-goff/video-19049331) |
+| SRC-005 | BBC News | C 待验证 | RSS ENDPOINT RESPONDED TEXT XML BUT BROWSER PARSER UNSUPPORTED | [打开](https://www.bbc.com/news) |
+| SRC-006 | 新华社英文站 | C 待验证 | ENGLISH SITE FAIL  CHINESE NEWS CN WORKS | [打开](https://english.news.cn/) |
+| SRC-007 | GDELT | A 公开入口 | PRIOR PUBLIC INDEX DOCUMENTED | [打开](https://gdeltproject.org/) |
+| SRC-008 | Media Cloud | B 免费部分 | PREVIOUS API DOC REVIEW | [打开](https://www.mediacloud.org/documentation/search-api-guide) |
+| SRC-069 | 人民日报海外版 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://paper.people.com.cn/rmrbhwb/pc/layout/202610/13/node_01.html) |
+| SRC-070 | 海外网 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.haiwainet.cn/) |
+| SRC-071 | 人民网 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.people.com.cn/) |
+| SRC-072 | 新华网（中文） | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.news.cn/) |
+| SRC-073 | 央视网 CCTV | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.cctv.com/) |
+| SRC-074 | CNA 亚洲新闻台 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.channelnewsasia.com/world) |
+| SRC-075 | ABC Australia | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.abc.net.au/news) |
+| SRC-076 | RNZ 新西兰广播电台 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.rnz.co.nz/news) |
+| SRC-077 | 证券时报 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.stcn.com/) |
+| SRC-078 | 21世纪经济报道 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.21jingji.com/) |
+| SRC-079 | 上海证券报 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.cnstock.com/) |
+| SRC-080 | 中国证券报 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.cs.com.cn/) |
+| SRC-081 | 界面新闻 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.jiemian.com/) |
+| SRC-082 | CBS News World | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.cbsnews.com/world/) |
+| SRC-083 | VOA 美国之音 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.voanews.com/) |
+| SRC-084 | NPR | C 待验证 | UNCONFIRMED | [打开](https://www.npr.org/) |
+| SRC-085 | France 24 | C 待验证 | UNCONFIRMED | [打开](https://www.france24.com/en/) |
+| SRC-086 | NHK World Japan | C 待验证 | UNCONFIRMED | [打开](https://www3.nhk.or.jp/nhkworld/en/news/) |
+| SRC-087 | 澎湃新闻 | C 待验证 | UNCONFIRMED | [打开](https://www.thepaper.cn/) |
+| SRC-088 | 第一财经 | C 待验证 | UNCONFIRMED | [打开](https://www.yicai.com/) |
+| SRC-089 | 德国之声 DW英文主站 | C 待验证 | UNCONFIRMED | [打开](https://www.dw.com/en/top-stories/s-9097) |
+| SRC-092 | The Hindu公开新闻 | C 待验证 | UNCONFIRMED | [打开](https://www.thehindu.com/) |
+| SRC-093 | Dawn 巴基斯坦 | C 待验证 | UNCONFIRMED | [打开](https://www.dawn.com/) |
+| SRC-094 | Hindustan Times | C 待验证 | UNCONFIRMED | [打开](https://www.hindustantimes.com/) |
+| SRC-095 | Arab News | C 待验证 | UNCONFIRMED | [打开](https://www.arabnews.com/) |
+| SRC-096 | Africanews | C 待验证 | UNCONFIRMED | [打开](https://www.africanews.com/) |
 
-## 规则
-1. 媒体与研究机构、政策原文、公开财报、医学文献均独立发现，绝不只从日报精选中二次筛选。
-2. A状态仅针对公开页面与官方接口文档的可发现性，不是生产连接成功报告。所有实际技术运行状态保持NOT_RUN，直到Codex真实验证。
-3. 任何受限研究不因RSSHub、Trafilatura或搜索引擎存在就被视为开放；不可绕过付费墙或盗用会话。
-4. 每个来源未来补充频率、语言、地区、所有权、许可证、上次成功、失败代码、错误原因与下次复检；重要来源以多个相互独立的原始资料交叉核查。
-5. A/B/C动态转移，D只针对具体受限系列不封禁整个机构。
+### 金融
 
-本轮来源数量：**68**；A=53，B=7，C=8；D产品另见限制清单。
+| ID | 来源 | 状态 | 获取观察 | 官方入口 |
+|---|---|---|---|---|
+| SRC-009 | SEC EDGAR | A 公开入口 | WEB TOOL API DOCUMENTATION OK | [打开](https://www.sec.gov/search-filings/edgar-application-programming-interfaces) |
+| SRC-010 | Federal Reserve | A 公开入口 | WEB TOOL RSS DIRECTORY OK | [打开](https://www.federalreserve.gov/feeds/feeds.htm) |
+| SRC-011 | BIS | A 公开入口 | WEB TOOL RSS DIRECTORY OK | [打开](https://www.bis.org/rss) |
+| SRC-012 | 摩根大通 Guide to the Markets | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/guide-to-the-markets/) |
+| SRC-013 | 贝莱德 Investment Institute | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.blackrock.com/us/individual/insights/blackrock-investment-institute/weekly-commentary) |
+| SRC-014 | 先锋 Vanguard Outlook | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://corporate.vanguard.com/content/corporatesite/us/en/corp/vemo/vanguard-economic-market-outlook.html) |
+| SRC-015 | 道富 State Street | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.ssga.com/us/en/individual/insights/featured-insights) |
+| SRC-016 | 高盛 Goldman Sachs Research | B 免费部分 | NO DIRECT TEST THIS ROUND | [打开](https://www.goldmansachs.com/insights/goldman-sachs-research/) |
+| SRC-017 | 花旗 Citi Institute | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.citigroup.com/global/insights/citi-institute) |
+| SRC-018 | 美国银行 BofA Securities | B 免费部分 | NO DIRECT TEST THIS ROUND | [打开](https://business.bofa.com/en-us/content/market-strategies-insights.html) |
+| SRC-019 | 摩根士丹利 Insights | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.morganstanley.com/insights/) |
+| SRC-020 | 伯克希尔股东信 | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.berkshirehathaway.com/letters/letters.html) |
+| SRC-021 | Oaktree/Howard Marks | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.oaktreecapital.com/insights) |
+
+### 宏观
+
+| ID | 来源 | 状态 | 获取观察 | 官方入口 |
+|---|---|---|---|---|
+| SRC-022 | IMF Data | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://data.imf.org/en/Resource-Pages/IMF-API) |
+| SRC-023 | 世界银行 World Bank | A 公开入口 | WEB TOOL JSON RESPONSE OK 2026 10 13 | [打开](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392) |
+| SRC-024 | OECD | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.oecd.org/en/data/insights/data-explainers/2024/09/api.html) |
+| SRC-025 | 国际能源署 IEA | B 免费部分 | NO DIRECT TEST THIS ROUND | [打开](https://www.iea.org/reports) |
+
+### 产业
+
+| ID | 来源 | 状态 | 获取观察 | 官方入口 |
+|---|---|---|---|---|
+| SRC-026 | PwC全球CEO调查 | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.pwc.com/gx/en/issues/c-suite-insights/ceo-survey.html) |
+| SRC-027 | Deloitte Tech Trends | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.deloitte.com/global/en/insights/topics/technology-management/tech-trends.html) |
+| SRC-028 | EY CEO Outlook | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.ey.com/en_gl/ceo/ceo-outlook-global-report) |
+| SRC-029 | KPMG Insights | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://kpmg.com/xx/en/our-insights.html) |
+| SRC-030 | McKinsey Global Institute | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.mckinsey.com/mgi/overview) |
+| SRC-031 | BCG | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.bcg.com/publications) |
+| SRC-032 | Bain | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.bain.com/insights/) |
+
+### 政治
+
+| ID | 来源 | 状态 | 获取观察 | 官方入口 |
+|---|---|---|---|---|
+| SRC-033 | 美国白宫 Presidential Actions | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.whitehouse.gov/presidential-actions/) |
+| SRC-034 | Congress.gov | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://api.congress.gov/) |
+| SRC-035 | 英国议会 UK Parliament | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.parliament.uk/site-information/rss-feeds/) |
+| SRC-036 | 中国国务院政策库 | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.gov.cn/zhengce/zhengceku/bmwj/home.htm) |
+| SRC-037 | 中国外交部 | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.mfa.gov.cn/) |
+| SRC-038 | 联合国 UN News | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.un.org/en/events-and-news/) |
+| SRC-039 | 欧盟委员会 Press Corner | C 待验证 | NO DIRECT TEST THIS ROUND | [打开](https://ec.europa.eu/commission/presscorner/home/en) |
+| SRC-040 | EUISS欧洲安全研究所 | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.iss.europa.eu/publications) |
+| SRC-098 | CBO美国国会预算办公室 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.cbo.gov/) |
+| SRC-099 | GAO美国政府问责局 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.gao.gov/) |
+| SRC-100 | Pew Research Center | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.pewresearch.org/) |
+| SRC-101 | IAEA国际原子能机构 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.iaea.org/newscenter) |
+| SRC-102 | CFR Council on Foreign Relations | C 待验证 | UNCONFIRMED | [打开](https://www.cfr.org/) |
+| SRC-103 | Brookings Institution | C 待验证 | UNCONFIRMED | [打开](https://www.brookings.edu/) |
+| SRC-104 | Carnegie Endowment | C 待验证 | UNCONFIRMED | [打开](https://carnegieendowment.org/) |
+| SRC-105 | Chatham House | C 待验证 | UNCONFIRMED | [打开](https://www.chathamhouse.org/) |
+| SRC-106 | European Parliament | C 待验证 | UNCONFIRMED | [打开](https://www.europarl.europa.eu/news/en) |
+| SRC-107 | 美国财政部 Treasury | C 待验证 | UNCONFIRMED | [打开](https://home.treasury.gov/news/press-releases) |
+| SRC-108 | 英国政府 GOV.UK | C 待验证 | UNCONFIRMED | [打开](https://www.gov.uk/search/news-and-communications) |
+| SRC-109 | 中国商务部 MOFCOM | C 待验证 | UNCONFIRMED | [打开](https://www.mofcom.gov.cn/) |
+| SRC-110 | 美国联邦公报 Federal Register | C 待验证 | UNCONFIRMED | [打开](https://www.federalregister.gov/) |
+
+### 军事
+
+| ID | 来源 | 状态 | 获取观察 | 官方入口 |
+|---|---|---|---|---|
+| SRC-041 | SIPRI军费数据库 | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.sipri.org/databases/milex) |
+| SRC-042 | NATO | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.nato.int/cps/en/natohq/RSS.htm) |
+| SRC-043 | CSIS国防研究 | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.csis.org/topics/defense-and-security) |
+| SRC-044 | RAND兰德 | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.rand.org/pubs/research_reports.html) |
+| SRC-045 | IISS公开文章 | B 免费部分 | NO DIRECT TEST THIS ROUND | [打开](https://www.iiss.org/publications/the-military-balance/2026/the-military-balance-2026/global-defence-spending/) |
+| SRC-046 | 美国国防部 News | C 待验证 | NO DIRECT TEST THIS ROUND | [打开](https://www.defense.gov/News/) |
+| SRC-111 | RUSI | C 待验证 | UNCONFIRMED | [打开](https://www.rusi.org/explore-our-research) |
+| SRC-112 | FAS Federation of American Scientists | C 待验证 | UNCONFIRMED | [打开](https://fas.org/) |
+| SRC-113 | IISS免费公开Insights | C 待验证 | UNCONFIRMED | [打开](https://www.iiss.org/) |
+
+### AI/科技
+
+| ID | 来源 | 状态 | 获取观察 | 官方入口 |
+|---|---|---|---|---|
+| SRC-047 | Google Research | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://research.google/pubs/) |
+| SRC-048 | Google DeepMind | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://deepmind.google/research/) |
+| SRC-049 | OpenAI Research | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://openai.com/research/) |
+| SRC-050 | Anthropic Research | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.anthropic.com/research) |
+| SRC-051 | Meta AI Research | C 待验证 | NO DIRECT TEST THIS ROUND | [打开](https://ai.meta.com/research/) |
+| SRC-052 | Hugging Face Papers | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://huggingface.co/papers) |
+| SRC-053 | arXiv API文档 | C 待验证 | NO DIRECT TEST THIS ROUND | [打开](https://arxiv.org/help/api) |
+| SRC-054 | Semantic Scholar API | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://webflow.semanticscholar.org/product/api) |
+| SRC-055 | NIST AI Risk Framework | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.nist.gov/itl/ai-risk-management-framework) |
+| SRC-056 | NASA News | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.nasa.gov/news/) |
+| SRC-119 | Stanford HAI | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://hai.stanford.edu/research) |
+| SRC-120 | Microsoft Research | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.microsoft.com/en-us/research/publications/) |
+| SRC-121 | NVIDIA技术博客 | C 待验证 | UNCONFIRMED | [打开](https://developer.nvidia.com/blog/) |
+| SRC-122 | NeurIPS Proceedings | C 待验证 | UNCONFIRMED | [打开](https://proceedings.neurips.cc/) |
+| SRC-123 | CISA美国网络安全与基础设施安全局 | C 待验证 | UNCONFIRMED | [打开](https://www.cisa.gov/news-events) |
+
+### 医疗
+
+| ID | 来源 | 状态 | 获取观察 | 官方入口 |
+|---|---|---|---|---|
+| SRC-057 | WHO全球卫生数据库 | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.who.int/data/gho/info/athena-api/GHO) |
+| SRC-058 | FDA openFDA | A 公开入口 | WEB TOOL JSON RESPONSE OK 2026 10 13 | [打开](https://open.fda.gov/apis/authentication/) |
+| SRC-059 | EMA欧洲药品管理局 | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.ema.europa.eu/en/news-events) |
+| SRC-060 | ClinicalTrials.gov | A 公开入口 | WEB TOOL API DOCUMENTATION OK ENDPOINT NOT FETCHED | [打开](https://clinicaltrials.gov/data-api/api) |
+| SRC-061 | Europe PMC | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://europepmc.org/RestfulWebService) |
+| SRC-062 | NCBI/PubMed | C 待验证 | PRIOR BOT CHALLENGE | [打开](https://www.ncbi.nlm.nih.gov/books/NBK25501/) |
+| SRC-063 | Nature期刊 | B 免费部分 | NO DIRECT TEST THIS ROUND | [打开](https://www.nature.com/nature/articles) |
+| SRC-114 | CDC美国疾病控制中心 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.cdc.gov/) |
+| SRC-115 | NIH新闻公告 | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.nih.gov/news-events/news-releases) |
+| SRC-116 | medRxiv预印本 | C 待验证 | UNCONFIRMED | [打开](https://www.medrxiv.org/) |
+| SRC-117 | 国家药监局 NMPA | C 待验证 | UNCONFIRMED | [打开](https://www.nmpa.gov.cn/) |
+| SRC-118 | 国家卫健委 NHC | C 待验证 | UNCONFIRMED | [打开](https://www.nhc.gov.cn/) |
+
+### 社会
+
+| ID | 来源 | 状态 | 获取观察 | 官方入口 |
+|---|---|---|---|---|
+| SRC-064 | Our World in Data | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://ourworldindata.org/search) |
+| SRC-130 | Our World in Data（社会指标） | C 待验证 | UNCONFIRMED | [打开](https://ourworldindata.org/) |
+| SRC-131 | UNDP人类发展报告 | C 待验证 | UNCONFIRMED | [打开](https://hdr.undp.org/) |
+| SRC-132 | UN DESA人口 | C 待验证 | UNCONFIRMED | [打开](https://population.un.org/wpp/) |
+| SRC-133 | Gallup公开研究 | C 待验证 | UNCONFIRMED | [打开](https://news.gallup.com/) |
+
+### 创业
+
+| ID | 来源 | 状态 | 获取观察 | 官方入口 |
+|---|---|---|---|---|
+| SRC-065 | Y Combinator RFS | A 公开入口 | WEB TOOL HTML CONTENT OK | [打开](https://www.ycombinator.com/rfs) |
+| SRC-066 | Y Combinator Library | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://www.ycombinator.com/library?categories=Diversity+++Inclusion) |
+| SRC-067 | a16z | A 公开入口 | NO DIRECT TEST THIS ROUND | [打开](https://a16z.com/) |
+| SRC-068 | Sequoia文章 | C 待验证 | NO DIRECT TEST THIS ROUND | [打开](https://www.sequoiacap.com/article/) |
+| SRC-124 | First Round Review | C 待验证 | UNCONFIRMED | [打开](https://review.firstround.com/) |
+| SRC-125 | Stripe Atlas创业指南 | C 待验证 | UNCONFIRMED | [打开](https://stripe.com/atlas/guides) |
+| SRC-126 | Hacker News | C 待验证 | UNCONFIRMED | [打开](https://news.ycombinator.com/) |
+| SRC-127 | Product Hunt | C 待验证 | UNCONFIRMED | [打开](https://www.producthunt.com/) |
+| SRC-128 | GitHub Trending | C 待验证 | UNCONFIRMED | [打开](https://github.com/trending) |
+| SRC-129 | Indie Hackers | C 待验证 | UNCONFIRMED | [打开](https://www.indiehackers.com/) |
+
+## 停用/排除原则
+- B只使用真正公开的文章/摘要；**所有需要付费的全文、客户数据库、商业许可证要求的获取方式不进入免费自动采集计划**。
+- C先找机构原生RSS/API、免费网页，再评估RSSHub、Trafilatura等合法工具，然后搜索公开渠道；无法确认就保持C，并记下失败原因。不可用黑客手段绕过反爬及收费。
+- 定期维护失败状态，发现许可变化时及时停用；严禁把“官网主页打开”冒充“深度研报已完整获得”。
