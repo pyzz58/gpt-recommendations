@@ -1,0 +1,692 @@
+{
+  "schema_version": "1.0",
+  "audit_date": "2026-10-13",
+  "audit_scope": "public web pages and documented interfaces; not live ingestion",
+  "status_legend": {
+    "A": "public page or API/RSS documentation confirmed",
+    "B": "partial open content only",
+    "C": "not verified in this environment; investigate"
+  },
+  "entries": [
+    {
+      "id": "SRC-001",
+      "sector": "新闻",
+      "name": "AP News",
+      "status": "A",
+      "url": "https://apnews.com/",
+      "access": "公开新闻网页",
+      "fallback": "原文引用、Newsletter",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-002",
+      "sector": "新闻",
+      "name": "Reuters World",
+      "status": "B",
+      "url": "https://www.reuters.com/world/",
+      "access": "公开栏目；部分正文/商业授权有限",
+      "fallback": "GDELT与公开合法检索",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-003",
+      "sector": "新闻",
+      "name": "Al Jazeera",
+      "status": "A",
+      "url": "https://www.aljazeera.com/",
+      "access": "公开新闻页",
+      "fallback": "官网栏目与RSS核验",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-004",
+      "sector": "新闻",
+      "name": "Deutsche Welle",
+      "status": "A",
+      "url": "https://amp.dw.com/en/the-day-with-brent-goff/video-19049331",
+      "access": "主站报错，AMP官方内容可读",
+      "fallback": "官方RSS/AMP",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-005",
+      "sector": "新闻",
+      "name": "BBC News",
+      "status": "C",
+      "url": "https://www.bbc.com/news",
+      "access": "本轮访问失败",
+      "fallback": "RSS/合法搜索，技术烟测",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-006",
+      "sector": "新闻",
+      "name": "新华社英文站",
+      "status": "C",
+      "url": "https://english.news.cn/",
+      "access": "本轮直接访问失败",
+      "fallback": "新华中文官网/搜索",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-007",
+      "sector": "新闻",
+      "name": "GDELT",
+      "status": "A",
+      "url": "https://gdeltproject.org/",
+      "access": "公开全球新闻发现索引，不是原始事实源",
+      "fallback": "原发媒体核实",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-008",
+      "sector": "新闻",
+      "name": "Media Cloud",
+      "status": "B",
+      "url": "https://www.mediacloud.org/documentation/search-api-guide",
+      "access": "搜索/API文档可见；权限与调用未测",
+      "fallback": "GDELT/媒体原生源",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-009",
+      "sector": "金融",
+      "name": "SEC EDGAR",
+      "status": "A",
+      "url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "access": "官方无Key API文档",
+      "fallback": "sec-edgar-downloader",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-010",
+      "sector": "金融",
+      "name": "Federal Reserve",
+      "status": "A",
+      "url": "https://www.federalreserve.gov/feeds/feeds.htm",
+      "access": "官方RSS",
+      "fallback": "官方公告页",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-011",
+      "sector": "金融",
+      "name": "BIS",
+      "status": "A",
+      "url": "https://www.bis.org/rss",
+      "access": "官方研究与讲话RSS",
+      "fallback": "官方研究页",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-012",
+      "sector": "金融",
+      "name": "摩根大通 Guide to the Markets",
+      "status": "A",
+      "url": "https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/guide-to-the-markets/",
+      "access": "官方说明免费完整指南",
+      "fallback": "官网更新监测",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-013",
+      "sector": "金融",
+      "name": "贝莱德 Investment Institute",
+      "status": "A",
+      "url": "https://www.blackrock.com/us/individual/insights/blackrock-investment-institute/weekly-commentary",
+      "access": "免费公开周评",
+      "fallback": "官网更新监测",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-014",
+      "sector": "金融",
+      "name": "先锋 Vanguard Outlook",
+      "status": "A",
+      "url": "https://corporate.vanguard.com/content/corporatesite/us/en/corp/vemo/vanguard-economic-market-outlook.html",
+      "access": "公开经济展望",
+      "fallback": "官网公开研究",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-015",
+      "sector": "金融",
+      "name": "道富 State Street",
+      "status": "A",
+      "url": "https://www.ssga.com/us/en/individual/insights/featured-insights",
+      "access": "公开精选洞察",
+      "fallback": "栏目更新",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-016",
+      "sector": "金融",
+      "name": "高盛 Goldman Sachs Research",
+      "status": "B",
+      "url": "https://www.goldmansachs.com/insights/goldman-sachs-research/",
+      "access": "公开精选，不等于所有专有研报",
+      "fallback": "公开文章/一手数据",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-017",
+      "sector": "金融",
+      "name": "花旗 Citi Institute",
+      "status": "A",
+      "url": "https://www.citigroup.com/global/insights/citi-institute",
+      "access": "公开研究专题",
+      "fallback": "官网发布页",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-018",
+      "sector": "金融",
+      "name": "美国银行 BofA Securities",
+      "status": "B",
+      "url": "https://business.bofa.com/en-us/content/market-strategies-insights.html",
+      "access": "公开精选；客户研究不保证",
+      "fallback": "公开市场洞察",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-019",
+      "sector": "金融",
+      "name": "摩根士丹利 Insights",
+      "status": "A",
+      "url": "https://www.morganstanley.com/insights/",
+      "access": "公开市场与科技精选",
+      "fallback": "官网更新",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-020",
+      "sector": "金融",
+      "name": "伯克希尔股东信",
+      "status": "A",
+      "url": "https://www.berkshirehathaway.com/letters/letters.html",
+      "access": "历史股东信目录",
+      "fallback": "SEC年报/官网报告",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-021",
+      "sector": "金融",
+      "name": "Oaktree/Howard Marks",
+      "status": "A",
+      "url": "https://www.oaktreecapital.com/insights",
+      "access": "公开投资备忘录目录",
+      "fallback": "公开newsletter",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-022",
+      "sector": "宏观",
+      "name": "IMF Data",
+      "status": "A",
+      "url": "https://data.imf.org/en/Resource-Pages/IMF-API",
+      "access": "官方SDMX API文档，真实调用未测",
+      "fallback": "公开报告",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-023",
+      "sector": "宏观",
+      "name": "世界银行 World Bank",
+      "status": "A",
+      "url": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+      "access": "官方无需密钥的API",
+      "fallback": "指标页面",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-024",
+      "sector": "宏观",
+      "name": "OECD",
+      "status": "A",
+      "url": "https://www.oecd.org/en/data/insights/data-explainers/2024/09/api.html",
+      "access": "免费SDMX API文档、有频限",
+      "fallback": "数据浏览器",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-025",
+      "sector": "宏观",
+      "name": "国际能源署 IEA",
+      "status": "B",
+      "url": "https://www.iea.org/reports",
+      "access": "研究目录公开，全文逐篇判许可",
+      "fallback": "免费概要/网页",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-026",
+      "sector": "产业",
+      "name": "PwC全球CEO调查",
+      "status": "A",
+      "url": "https://www.pwc.com/gx/en/issues/c-suite-insights/ceo-survey.html",
+      "access": "公开报告正文",
+      "fallback": "研究页面监测",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-027",
+      "sector": "产业",
+      "name": "Deloitte Tech Trends",
+      "status": "A",
+      "url": "https://www.deloitte.com/global/en/insights/topics/technology-management/tech-trends.html",
+      "access": "公开专题报告",
+      "fallback": "网站更新",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-028",
+      "sector": "产业",
+      "name": "EY CEO Outlook",
+      "status": "A",
+      "url": "https://www.ey.com/en_gl/ceo/ceo-outlook-global-report",
+      "access": "公开报告正文",
+      "fallback": "网站更新",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-029",
+      "sector": "产业",
+      "name": "KPMG Insights",
+      "status": "A",
+      "url": "https://kpmg.com/xx/en/our-insights.html",
+      "access": "公开研究页面",
+      "fallback": "具体系列逐篇检验",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-030",
+      "sector": "产业",
+      "name": "McKinsey Global Institute",
+      "status": "A",
+      "url": "https://www.mckinsey.com/mgi/overview",
+      "access": "公开研究目录",
+      "fallback": "公开报告原文",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-031",
+      "sector": "产业",
+      "name": "BCG",
+      "status": "A",
+      "url": "https://www.bcg.com/publications",
+      "access": "公开文章与研究",
+      "fallback": "网站监控",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-032",
+      "sector": "产业",
+      "name": "Bain",
+      "status": "A",
+      "url": "https://www.bain.com/insights/",
+      "access": "公开商业洞察",
+      "fallback": "研究文章",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-033",
+      "sector": "政治",
+      "name": "美国白宫 Presidential Actions",
+      "status": "A",
+      "url": "https://www.whitehouse.gov/presidential-actions/",
+      "access": "2026政策/政令可读",
+      "fallback": "联邦公报",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-034",
+      "sector": "政治",
+      "name": "Congress.gov",
+      "status": "A",
+      "url": "https://api.congress.gov/",
+      "access": "公开API文档，需申请免费Key",
+      "fallback": "国会网站搜索",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-035",
+      "sector": "政治",
+      "name": "英国议会 UK Parliament",
+      "status": "A",
+      "url": "https://www.parliament.uk/site-information/rss-feeds/",
+      "access": "法案/研究简报官方RSS",
+      "fallback": "议会官网",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-036",
+      "sector": "政治",
+      "name": "中国国务院政策库",
+      "status": "A",
+      "url": "https://www.gov.cn/zhengce/zhengceku/bmwj/home.htm",
+      "access": "中文政策原文索引可读",
+      "fallback": "中国政府网搜索",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-037",
+      "sector": "政治",
+      "name": "中国外交部",
+      "status": "A",
+      "url": "https://www.mfa.gov.cn/",
+      "access": "官方声明/问答网页",
+      "fallback": "公告频道",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-038",
+      "sector": "政治",
+      "name": "联合国 UN News",
+      "status": "A",
+      "url": "https://www.un.org/en/events-and-news/",
+      "access": "官方多语新闻页面；原press路径403",
+      "fallback": "docs.un.org/press/releases/",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-039",
+      "sector": "政治",
+      "name": "欧盟委员会 Press Corner",
+      "status": "C",
+      "url": "https://ec.europa.eu/commission/presscorner/home/en",
+      "access": "动态栏目内容为空，未确认自动读取",
+      "fallback": "EU单篇公告/公开检索",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-040",
+      "sector": "政治",
+      "name": "EUISS欧洲安全研究所",
+      "status": "A",
+      "url": "https://www.iss.europa.eu/publications",
+      "access": "公开完整研究PDF",
+      "fallback": "官网研究目录",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-041",
+      "sector": "军事",
+      "name": "SIPRI军费数据库",
+      "status": "A",
+      "url": "https://www.sipri.org/databases/milex",
+      "access": "公开数据下载，商业许可另议",
+      "fallback": "OWID衍生数据",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-042",
+      "sector": "军事",
+      "name": "NATO",
+      "status": "A",
+      "url": "https://www.nato.int/cps/en/natohq/RSS.htm",
+      "access": "官方新闻RSS",
+      "fallback": "官网声明",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-043",
+      "sector": "军事",
+      "name": "CSIS国防研究",
+      "status": "A",
+      "url": "https://www.csis.org/topics/defense-and-security",
+      "access": "公开研究文章",
+      "fallback": "CSIS分析",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-044",
+      "sector": "军事",
+      "name": "RAND兰德",
+      "status": "A",
+      "url": "https://www.rand.org/pubs/research_reports.html",
+      "access": "公开研究目录和部分PDF",
+      "fallback": "公开研究单页",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-045",
+      "sector": "军事",
+      "name": "IISS公开文章",
+      "status": "B",
+      "url": "https://www.iiss.org/publications/the-military-balance/2026/the-military-balance-2026/global-defence-spending/",
+      "access": "部分国防研究免费；完整版商业产品另列D",
+      "fallback": "SIPRI/CSIS/RAND",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-046",
+      "sector": "军事",
+      "name": "美国国防部 News",
+      "status": "C",
+      "url": "https://www.defense.gov/News/",
+      "access": "本轮自动读取失败",
+      "fallback": "合法公开搜索/官方单页",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-047",
+      "sector": "AI/科技",
+      "name": "Google Research",
+      "status": "A",
+      "url": "https://research.google/pubs/",
+      "access": "官方研究论文目录",
+      "fallback": "论文原始网址",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-048",
+      "sector": "AI/科技",
+      "name": "Google DeepMind",
+      "status": "A",
+      "url": "https://deepmind.google/research/",
+      "access": "官方研究成果",
+      "fallback": "公开论文",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-049",
+      "sector": "AI/科技",
+      "name": "OpenAI Research",
+      "status": "A",
+      "url": "https://openai.com/research/",
+      "access": "官方研究页面",
+      "fallback": "论文及发布原文",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-050",
+      "sector": "AI/科技",
+      "name": "Anthropic Research",
+      "status": "A",
+      "url": "https://www.anthropic.com/research",
+      "access": "官方研究成果",
+      "fallback": "公开研究资料",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-051",
+      "sector": "AI/科技",
+      "name": "Meta AI Research",
+      "status": "C",
+      "url": "https://ai.meta.com/research/",
+      "access": "本轮页面为空",
+      "fallback": "论文索引及公开文章搜索",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-052",
+      "sector": "AI/科技",
+      "name": "Hugging Face Papers",
+      "status": "A",
+      "url": "https://huggingface.co/papers",
+      "access": "论文发现索引",
+      "fallback": "论文原始链接",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-053",
+      "sector": "AI/科技",
+      "name": "arXiv API文档",
+      "status": "C",
+      "url": "https://arxiv.org/help/api",
+      "access": "跳转地址本轮无法访问",
+      "fallback": "Semantic Scholar/公开作者页",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-054",
+      "sector": "AI/科技",
+      "name": "Semantic Scholar API",
+      "status": "A",
+      "url": "https://webflow.semanticscholar.org/product/api",
+      "access": "公开论文API文档、有访问限额",
+      "fallback": "Europe PMC/原论文",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-055",
+      "sector": "AI/科技",
+      "name": "NIST AI Risk Framework",
+      "status": "A",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "access": "美国标准与研究页",
+      "fallback": "NIST官网",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-056",
+      "sector": "AI/科技",
+      "name": "NASA News",
+      "status": "A",
+      "url": "https://www.nasa.gov/news/",
+      "access": "官方航天新闻页面",
+      "fallback": "NASA项目网页",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-057",
+      "sector": "医疗",
+      "name": "WHO全球卫生数据库",
+      "status": "A",
+      "url": "https://www.who.int/data/gho/info/athena-api/GHO",
+      "access": "官方API文档",
+      "fallback": "卫生数据门户",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-058",
+      "sector": "医疗",
+      "name": "FDA openFDA",
+      "status": "A",
+      "url": "https://open.fda.gov/apis/authentication/",
+      "access": "免费API及调用限额官方文档",
+      "fallback": "药监公告",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-059",
+      "sector": "医疗",
+      "name": "EMA欧洲药品管理局",
+      "status": "A",
+      "url": "https://www.ema.europa.eu/en/news-events",
+      "access": "新闻与RSS明确列出",
+      "fallback": "药品审批信息",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-060",
+      "sector": "医疗",
+      "name": "ClinicalTrials.gov",
+      "status": "A",
+      "url": "https://clinicaltrials.gov/data-api/api",
+      "access": "官方API入口可读，JSON端点未烟测",
+      "fallback": "临床试验网站",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-061",
+      "sector": "医疗",
+      "name": "Europe PMC",
+      "status": "A",
+      "url": "https://europepmc.org/RestfulWebService",
+      "access": "医学文献公开API文档",
+      "fallback": "开放全文子集",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-062",
+      "sector": "医疗",
+      "name": "NCBI/PubMed",
+      "status": "C",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK25501/",
+      "access": "本轮反机器人验证页",
+      "fallback": "Europe PMC API",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-063",
+      "sector": "医疗",
+      "name": "Nature期刊",
+      "status": "B",
+      "url": "https://www.nature.com/nature/articles",
+      "access": "可看目录和OA子集，非OA全文需订阅",
+      "fallback": "开放获取论文/作者合法版本",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-064",
+      "sector": "社会",
+      "name": "Our World in Data",
+      "status": "A",
+      "url": "https://ourworldindata.org/search",
+      "access": "公开图表、RSS、部分开放数据",
+      "fallback": "原始统计机构",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-065",
+      "sector": "创业",
+      "name": "Y Combinator RFS",
+      "status": "A",
+      "url": "https://www.ycombinator.com/rfs",
+      "access": "公开创业需求主题",
+      "fallback": "YC官方库",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-066",
+      "sector": "创业",
+      "name": "Y Combinator Library",
+      "status": "A",
+      "url": "https://www.ycombinator.com/library?categories=Diversity+++Inclusion",
+      "access": "可查公开教程和访谈",
+      "fallback": "YC Startup School",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-067",
+      "sector": "创业",
+      "name": "a16z",
+      "status": "A",
+      "url": "https://a16z.com/",
+      "access": "公开投资与科技文章",
+      "fallback": "合法newsletter",
+      "production_test": "NOT_RUN"
+    },
+    {
+      "id": "SRC-068",
+      "sector": "创业",
+      "name": "Sequoia文章",
+      "status": "C",
+      "url": "https://www.sequoiacap.com/article/",
+      "access": "本轮栏目读取报错",
+      "fallback": "官网单篇/索引搜索",
+      "production_test": "NOT_RUN"
+    }
+  ]
+}
