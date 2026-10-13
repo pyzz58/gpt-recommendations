@@ -202,11 +202,23 @@ def prepare_pool(items, per_section=20):
 def select_readable(candidates, enriched):
     output, diagnostics = {}, {}
     used_events, used_urls = set(), set()
+    # Moving finance to the front must not consume the last three eligible
+    # China/US events; front-page reporting and that fixed three-item panel
+    # share one deduplicated event pool.
+    china_us_events = {
+        enriched[a["url"]]["event_key"]
+        for a in candidates.get("中国与美国", [])
+        if enriched.get(a["url"])
+    }
     for section, quota in SECTIONS.items():
         available = [enriched[a["url"]] for a in candidates.get(section, []) if enriched.get(a["url"])]
         selected, families, concentration, exceptions = [], Counter(), Counter(), []
         def add(a, allow_exception=False):
             if a["url"] in used_urls or a["event_key"] in used_events: return False
+            if (section == "美股·全球金融市场"
+                    and a["event_key"] in china_us_events
+                    and len(china_us_events - used_events) <= 3):
+                return False
             cs = set(a.get("countries", [])) - {"中国", "美国"}
             overcrowded = section == "国际政治与全球事件" and any(concentration[c] >= 1 for c in cs)
             # Geographic concentration triggers a review, not an absolute veto.
