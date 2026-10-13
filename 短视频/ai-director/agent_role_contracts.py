@@ -20,6 +20,7 @@ import film_continuity as film_tracks
 import asset_reference_manifest as assetrefs
 import role_schema_guard as schema_guard
 import director_department_command as director_command
+import director_visual_language as visual_language
 
 CONTRACT_VERSION = "1.0"
 MAX_CONTEXT_CHARS = 220_000
@@ -440,7 +441,7 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
 
 def build_role_messages(base, state, task_id, *, source_text=None,
                         editorial_handoff=None, reference_manifest=None,
-                        department_command=None):
+                        department_command=None, audiovisual_plan=None):
     """Build private messages in memory; never return a public or saved artifact.
 
     For source-locked teams, include the FIRST real director/editor vision.
@@ -510,6 +511,12 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             request["director_department_command"] = director_context
     elif department_command is not None:
         raise ValueError("CREW_DIRECTOR_COMMAND_WRONG_STAGE")
+    if audiovisual_plan is not None:
+        if task_id not in director_command.DEPARTMENTS or department_command is None:
+            raise ValueError("CREW_AUDIOVISUAL_PLAN_REQUIRES_DEPARTMENT_COMMAND")
+        request["director_audiovisual_intention"] = (
+            visual_language.departmental_context(
+                base, state, department_command, audiovisual_plan, task_id))
     if reference_manifest is not None:
         # The manifest contains HASHES AND VERSIONS, never pictures, paths,
         # signed URLs, licences or purported human identity approval.
