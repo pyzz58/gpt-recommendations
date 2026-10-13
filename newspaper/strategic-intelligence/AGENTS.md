@@ -7,6 +7,7 @@
 0. **[HARD_RULES.md](HARD_RULES.md) —— 最高优先级：不许概念性总结，必须方法/步骤/案例/反证/迁移/验收；周报+年报；用户赞同原方案必须保真留档。**
 1. [README.md](README.md) —— 最新状态、文档地图与运行边界。
 1a. **[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)、[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)、[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)（强制）**
+1b. **[REAL_CASES_EVIDENCE_FIRST.md](REAL_CASES_EVIDENCE_FIRST.md)——真实公开原始材料的政治/商业/投资逐步教学基准**
 2. [DECISIONS.md](DECISIONS.md) —— 用户批准/否决/未决、日报隔离和弃用来源。
 3. [MASTER_BLUEPRINT.md](MASTER_BLUEPRINT.md) —— 六目标、九栏目、整体系统与价值。
 4. [TRACEABILITY_MATRIX.md](TRACEABILITY_MATRIX.md) —— 过往讨论归档对应的责任文档；遇不清楚的问题先回证据。
