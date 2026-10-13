@@ -304,3 +304,7 @@ review_decision: "PASS|REVISE|BLOCK"
 7. 独立编辑验收要问“为什么选择讲这个规律、而不是其它机制”，而非“本栏目列出的必教词条覆盖多少”。
 
 详见[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)与[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)。
+
+## V4.2新的优先级：先七问识机制，后跨栏目选教学知识
+
+所有九栏继续作为专业事实查证、编辑分类和知识候选工具箱，但统一研究主逻辑必须采用[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)“问事→问题→问势→问人→问因→问断→问道”与事实/反证/迁移三道校验。**不能因政治栏目就硬教选举，不能因美股栏目就硬教DCF**；实际解释最有力的学科可以横跨栏目。文章对外先新闻，再顾问评价和帝师完整教学，详见[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)。
