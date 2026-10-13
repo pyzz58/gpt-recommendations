@@ -1284,7 +1284,7 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/36",
         "commit_sha": "",
         "automated_test": "tests/test_director_artistic_methods.py — genre-specific transfer, serious no-gag gate, character causal comedy ladder, method source/shot/lock validation and model-facing per-department directions",
         "independent_review": "",
@@ -1298,6 +1298,12 @@
           "status": "in_progress",
           "note": "用户正式批准导演艺术核心理念并指定加入周星驰荒诞喜剧；已核实多篇周本人完整采访与其他导演原始资料，开始开发题材条件化艺术判断和七部门专业传播；未完成真实作品审片及媒体验收",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "实际原导演艺术机制已新增源版本绑定、人物因果喜剧和拒绝笑料选项，并接入导演视听plan与现有专业岗位model-facing请求；7项公开虚构测试与全量CI作为结构证明，真实艺术盲评/成片仍未做",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/36"
         }
       ]
     },
