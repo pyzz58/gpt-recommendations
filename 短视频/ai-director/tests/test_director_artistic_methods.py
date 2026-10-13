@@ -358,6 +358,17 @@ class DirectorArtisticMethodsTests(unittest.TestCase):
                  "artistic_intent_before_specialists": True})
             self.assertLessEqual(episode["episode_total_planned_s"], 90)
 
+    def test_no_screenplay_bound_source_cannot_fake_director_artistic_quality(self):
+        unbound = team.start(self.base)
+        for task_id in ("director_brief", "script_edit", "director_lock"):
+            previous = deepcopy(self.state["tasks"][task_id]["deliverable"])
+            unbound = team.submit(unbound, team.packet(unbound, task_id), previous)
+        conference = _command(self.base, unbound)
+        forged = plan_for(self.base, unbound, conference)
+        with self.assertRaisesRegex(
+                art.ArtisticMethodError, "ORIGINAL_SCREENPLAY_NOT_BOUND"):
+            art.validate(self.base, unbound, conference, forged)
+
     def test_genre_is_not_a_nickname_and_art_method_before_visual(self):
         with self.assertRaisesRegex(art.ArtisticMethodError,
                                     "FULL_SCREENPLAY_REQUIRED"):
