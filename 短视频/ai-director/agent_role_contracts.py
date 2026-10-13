@@ -521,13 +521,6 @@ def build_role_messages(base, state, task_id, *, source_text=None,
     if (audiovisual_mode is not None and
             task_id in director_command.DEPARTMENTS and audiovisual_plan is None):
         raise ValueError("CREW_DIRECTOR_AUDIOVISUAL_PLAN_REQUIRED")
-    if audiovisual_plan is not None:
-        if task_id not in director_command.DEPARTMENTS or department_command is None:
-            raise ValueError("CREW_AUDIOVISUAL_PLAN_REQUIRES_DEPARTMENT_COMMAND")
-        request["director_audiovisual_intention"] = (
-            visual_language.departmental_context(
-                base, state, department_command, audiovisual_plan, task_id,
-                artistic_method_plan=artistic_method_plan))
     art_mode = base.get("director_artistic_mode")
     if art_mode is not None and art_mode != {
             "kind": "director_artistic_method_required",
@@ -536,6 +529,13 @@ def build_role_messages(base, state, task_id, *, source_text=None,
     if (art_mode is not None and task_id in director_command.DEPARTMENTS
             and artistic_method_plan is None):
         raise ValueError("CREW_ARTISTIC_METHOD_PLAN_REQUIRED")
+    if audiovisual_plan is not None:
+        if task_id not in director_command.DEPARTMENTS or department_command is None:
+            raise ValueError("CREW_AUDIOVISUAL_PLAN_REQUIRES_DEPARTMENT_COMMAND")
+        request["director_audiovisual_intention"] = (
+            visual_language.departmental_context(
+                base, state, department_command, audiovisual_plan, task_id,
+                artistic_method_plan=artistic_method_plan))
     if artistic_method_plan is not None:
         if (task_id not in director_command.DEPARTMENTS or
                 department_command is None or audiovisual_plan is None):
@@ -694,12 +694,6 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
     if (audiovisual_mode is not None and
             task_id in director_command.DEPARTMENTS and audiovisual_plan is None):
         raise ValueError("CREW_DIRECTOR_AUDIOVISUAL_PLAN_REQUIRED")
-    if audiovisual_plan is not None:
-        if task_id not in director_command.DEPARTMENTS or department_command is None:
-            raise ValueError("CREW_AUDIOVISUAL_PLAN_REQUIRES_DEPARTMENT_COMMAND")
-        visual_language.validate(
-            base, state, department_command, audiovisual_plan,
-            artistic_method_plan=artistic_method_plan)
     art_mode = base.get("director_artistic_mode")
     if art_mode is not None and art_mode != {
             "kind": "director_artistic_method_required",
@@ -708,6 +702,12 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
     if (art_mode is not None and task_id in director_command.DEPARTMENTS
             and artistic_method_plan is None):
         raise ValueError("CREW_ARTISTIC_METHOD_PLAN_REQUIRED")
+    if audiovisual_plan is not None:
+        if task_id not in director_command.DEPARTMENTS or department_command is None:
+            raise ValueError("CREW_AUDIOVISUAL_PLAN_REQUIRES_DEPARTMENT_COMMAND")
+        visual_language.validate(
+            base, state, department_command, audiovisual_plan,
+            artistic_method_plan=artistic_method_plan)
     if artistic_method_plan is not None:
         if (task_id not in director_command.DEPARTMENTS or
                 department_command is None or audiovisual_plan is None):
