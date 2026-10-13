@@ -44,9 +44,9 @@ class FrontPageTests(unittest.TestCase):
 
     def test_market_snapshot_rejects_old_or_missing_fred_prices(self):
         today=dt.date(2026,10,13)
-        csv="observation_date,SP500\\n2026-10-01,7600\\n2026-10-02,.\\n"
+        csv="observation_date,SP500\n2026-10-01,7600\n2026-10-02,.\n"
         self.assertIsNone(parse_fred_csv(csv,"SP500",today))
-        recent="observation_date,SP500\\n2026-10-09,7500\\n2026-10-12,7650\\n"
+        recent="observation_date,SP500\n2026-10-09,7500\n2026-10-12,7650\n"
         q=parse_fred_csv(recent,"SP500",today)
         self.assertEqual(q["value"],7650)
         self.assertEqual(q["as_of"],"2026-10-12")

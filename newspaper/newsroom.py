@@ -16,7 +16,7 @@ SECTIONS = {
     "中国与美国": 3,
     "国际政治与全球事件": 3,
     "AI与数字产业": 2,
-    "科技、能源与前沿科学": 2,
+    "科技、能源与前沿科学": 1,
     "创业、商业与企业竞争": 2,
     "医疗、生命科学与公共健康": 1
 }
@@ -173,17 +173,6 @@ def prepare_pool(items, per_section=20):
                             key=lambda a: a["importance_score"], reverse=True)
         # Protect both regions before fetching and keep same-event alternatives.
         preferred = []
-        if section == "美股·全球金融市场":
-            # Reserve one slot for a genuinely important primary institutional
-            # release when available. Do not fill the paper with routine SEC
-            # event notices or ordinary Treasury auctions merely for variety.
-            for article in available:
-                if article.get("source_type") in {
-                    "primary_regulator", "primary_central_bank",
-                    "primary_treasury", "primary_economic_data"
-                } and article.get("importance_score", 0) >= 65:
-                    if add(article):
-                        break
         if section == "中国与美国":
             for country in ("中国", "美国"):
                 preferred.extend([a for a in candidates if country in a["countries"]][:5])
@@ -233,6 +222,17 @@ def select_readable(candidates, enriched):
             families[a["publisher_family"]] += 1
             concentration.update(cs)
             return True
+        if section == "美股·全球金融市场":
+            # Reserve one slot for a genuinely important primary institutional
+            # release when available. Do not fill the paper with routine SEC
+            # event notices or ordinary Treasury auctions merely for variety.
+            for article in available:
+                if article.get("source_type") in {
+                    "primary_regulator", "primary_central_bank",
+                    "primary_treasury", "primary_economic_data"
+                } and article.get("importance_score", 0) >= 65:
+                    if add(article):
+                        break
         if section == "中国与美国":
             for country in ("中国", "美国"):
                 if any(country in a.get("countries", []) for a in selected): continue
