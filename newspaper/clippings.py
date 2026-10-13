@@ -50,7 +50,7 @@ def build_clippings_html(grouped:dict, day:dt.date, market_snapshot=None)->tuple
         page.append('<section class="market-overview">'
                     '<h2>美股头版 · 指数、波动率与利率</h2>'
                     '<p class="part-mark">逐项注明真实来源、日期及行情类型；网页可能是盘中或盘后报价，'
-                    '并非交易所认证收盘价。美债收益率为年化百分数；缺失指标不推算。</p>')
+                    '并非交易所认证收盘价；整体属于非实时行情。美债收益率为年化百分数；缺失指标不推算。</p>')
         plain.append("美股头版 · 带日期来源的历史日值及公开网页报价（均非实时保证）")
         for item in observations:
             name = str(item["name"])
