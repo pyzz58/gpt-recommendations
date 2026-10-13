@@ -58,6 +58,10 @@ LOW_VALUE = re.compile(
 def newsworthiness(item: dict) -> dict:
     """Transparent negative signals; only unambiguously trivial items are excluded."""
     title = str(item.get("title") or "")
+    if re.search(r"明星八卦|明星恋情|优惠券|广告推广|明星穿搭|新剧预告|福利视频|星座运势|游戏攻略",title):
+        return {"eligible":False,"penalty":100,"reason":"chinese_entertainment_or_advertising"}
+    if re.search(r"抽奖活动|限时优惠|新品种草|明星同款|网红探店|带货直播",title):
+        return {"eligible":True,"penalty":42,"reason":"chinese_promotional_noise"}
     if HARD.search(title):
         return {"eligible": False, "penalty": 100,
                 "reason": "hard_advertising_entertainment_or_sports"}
