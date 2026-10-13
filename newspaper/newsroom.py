@@ -12,9 +12,9 @@ from ranking import _story_groups
 from source_quality import newsworthiness
 
 SECTIONS = {
+    "美股·全球金融市场": 4,
     "中国与美国": 3,
     "国际政治与全球事件": 3,
-    "金融、宏观与美股": 3,
     "AI与数字产业": 2,
     "科技、能源与前沿科学": 2,
     "创业、商业与企业竞争": 2,
@@ -84,7 +84,9 @@ def sections(item):
         return set()
     result = set()
     if countries(item) & {"中国", "美国"}: result.add("中国与美国")
-    for label, pattern in (("国际政治与全球事件", POLITICS), ("金融、宏观与美股", FINANCE),
+    if item.get("source_type") in ("primary_regulator","primary_central_bank","exchange_company") and matches(FINANCE, s):
+        result.add("美股·全球金融市场")
+    for label, pattern in (("国际政治与全球事件", POLITICS), ("美股·全球金融市场", FINANCE),
                            ("AI与数字产业", AI), ("科技、能源与前沿科学", SCIENCE + "|" + ENERGY),
                            ("创业、商业与企业竞争", BUSINESS),
                            ("医疗、生命科学与公共健康", HEALTH)):
