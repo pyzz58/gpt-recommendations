@@ -11,9 +11,10 @@ on:
     paths:
       - 'newspaper/V05_MAIL_TEST_REQUEST.txt'
   schedule:
-    - cron: '0 23 * * *' # 07:00 Beijing primary
-    - cron: '20 23 * * *' # 07:20 Beijing fallback
-    - cron: '20 0 * * *' # 08:20 Beijing final fallback
+    - cron: '0 17 * * *' # Beijing 01:00 (UTC previous date)
+    - cron: '15 17 * * *' # Beijing 01:15 fallback
+    - cron: '30 17 * * *' # Beijing 01:30 fallback
+    - cron: '40 17 * * *' # Beijing 01:40 final fallback
   workflow_dispatch:
     inputs:
       dry_run:
@@ -48,20 +49,6 @@ jobs:
           python-version: '3.11'
           cache: pip
           cache-dependency-path: newspaper/requirements.txt
-      - name: Install print fonts on GitHub runner
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq fonts-noto-cjk fonts-liberation
-          fc-match 'Noto Serif CJK SC'
-      - name: Install dependencies
-        run: python -m pip install -r newspaper/requirements.txt
-      - name: Install English grammatical analysis model (spaCy official)
-        run: python -m spacy download en_core_web_sm
-      - name: Cache offline translation model
-        uses: actions/cache@v4
-        with:
-          path: ~/.local/share/argos-translate/packages
-          key: newspaper-argos-translate-en-zh-v1
       - name: Resolve Beijing delivery date
         if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-v05-send-once]')))
         id: delivery_date
@@ -74,7 +61,35 @@ jobs:
           path: /tmp/newspaper-sent-receipt
           key: newspaper-sent-${{ steps.delivery_date.outputs.date }}
           lookup-only: true
+      - name: Refuse production outside the Beijing morning dispatch window
+        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          hhmm=$(TZ=Asia/Shanghai date +%H%M)
+          if [ "$hhmm" -lt 100 ] || [ "$hhmm" -ge 157 ]; then
+            echo "::error::Beijing time outside 01:00-01:57. Aborting to prevent a report delivered after 02:00."
+            exit 1
+          fi
+      - name: Install print fonts on GitHub runner
+        if: steps.receipt.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk fonts-liberation
+          fc-match 'Noto Serif CJK SC'
+      - name: Install dependencies
+        if: steps.receipt.outputs.cache-hit != 'true'
+        run: python -m pip install -r newspaper/requirements.txt
+      - name: Install English grammatical analysis model (spaCy official)
+        if: steps.receipt.outputs.cache-hit != 'true'
+        run: python -m spacy download en_core_web_sm
+      - name: Cache offline translation model
+        if: steps.receipt.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/argos-translate/packages
+          key: newspaper-argos-translate-en-zh-v1
       - name: Test date filtering, fallback, rendering
+        if: steps.receipt.outputs.cache-hit != 'true'
         run: python -m unittest discover -s newspaper -p 'test_*.py' -v
       - name: Preview only — never load SMTP secrets
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
