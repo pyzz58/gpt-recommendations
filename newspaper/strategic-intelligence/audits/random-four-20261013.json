@@ -1,0 +1,60 @@
+{
+  "executed_at": "2026-10-13T04:14:53.826845+00:00",
+  "warnings": [
+    "This does not establish content licensing, AI use rights or long-term reliability."
+  ],
+  "results": [
+    {
+      "id": "SRC-082",
+      "name": "CBS News World",
+      "url": "https://www.cbsnews.com/world/",
+      "at": "2026-10-13T04:14:43.418764+00:00",
+      "status": "HTML_HAS_TEXT",
+      "error": null,
+      "content_type": "text/html; charset=utf-8",
+      "http_status": 200,
+      "sample_title": "World news: Latest news, breaking news, today's news stories from around the world, updated daily from CBS News",
+      "truncated": true,
+      "approx_text_chars": 5767
+    },
+    {
+      "id": "SRC-062",
+      "name": "NCBI/PubMed",
+      "url": "https://www.nlm.nih.gov/dataguide/eutilities/utilities.html",
+      "at": "2026-10-13T04:14:45.659184+00:00",
+      "status": "HTML_HAS_TEXT",
+      "error": null,
+      "content_type": "text/html",
+      "http_status": 200,
+      "sample_title": "The 9 E-utilities and Associated Parameters - The Insider's Guide to Accessing NLM Data - National Library of Medicine Lock",
+      "truncated": false,
+      "approx_text_chars": 33688
+    },
+    {
+      "id": "SRC-026",
+      "name": "PwC全球CEO调查",
+      "url": "https://www.pwc.com/gx/en/issues/c-suite-insights/ceo-survey.html",
+      "at": "2026-10-13T04:14:48.281184+00:00",
+      "status": "HTML_HAS_TEXT",
+      "error": null,
+      "content_type": "text/html;charset=utf-8",
+      "http_status": 200,
+      "sample_title": "PwC’s 29th Global CEO Survey: Leading through uncertainty in the age of AI",
+      "truncated": false,
+      "approx_text_chars": 29070
+    },
+    {
+      "id": "SRC-077",
+      "name": "证券时报",
+      "url": "https://www.stcn.com/",
+      "at": "2026-10-13T04:14:50.494355+00:00",
+      "status": "HTML_HAS_TEXT",
+      "error": null,
+      "content_type": "text/html; charset=utf-8",
+      "http_status": 200,
+      "sample_title": "证券时报官方网站-中国资本市场信息披露平台",
+      "truncated": false,
+      "approx_text_chars": 6867
+    }
+  ]
+}
