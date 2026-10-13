@@ -50,7 +50,7 @@ HEALTH = r"医疗|医药|临床|癌症|新药|公共卫生|\b(?:health|medical|c
 PROMO = r"\b(?:trailer|celebrity|movie review|coupon|best deals|horoscope|sponsored content|affiliate links)\b"
 ACTION = r"\b(?:announc\w*|approv\w*|enact\w*|launch\w*|cut|hike\w*|votes?|agreed|acquir\w*|report\w*|reveal\w*|signed|ban\w*|strikes?|invad\w*|deploy\w*|discover\w*|demonstrat\w*|limit\w*|restrict\w*|caps?)\b"
 
-US_MARKET = r"\b(?:s&p 500|nasdaq|dow jones|russell 2000|wall street|nyse|us stocks?|u\.s\. stocks?|stock index|market breadth|market closing|equities|earnings|sec filing|institutional investors?|hedge funds?|exchange traded funds?|etf flows?|buyback|volatility|vix|10.year treasury|yield curve)\b|美股|纳斯达克|道琼斯|标普|华尔街|美国股市|机构持仓|财报|ETF资金流"
+US_MARKET = r"\b(?:s&p 500|nasdaq|dow jones|russell 2000|wall street|nyse|us stocks?|u\.s\. stocks?|stock index|market breadth|market closing|equities|earnings|sec filing|sec (?:announc\w*|report\w*|charges?|rule\w*)|securities exchange|institutional investors?|institutional holdings?|hedge funds?|exchange traded funds?|etfs?|etf flows?|buyback|volatility|vix|10.year treasury|yield curve)\b|美股|纳斯达克|道琼斯|标普|华尔街|美国股市|机构持仓|财报|ETF资金流"
 MARKET_THEME = {
     "index": r"\b(?:s&p|nasdaq|dow jones|russell|stock market|equities|vix|volatility|market breadth|index)\b|指数|大盘|标普|纳斯达克|道琼斯",
     "institution": r"\b(?:sec|nasdaq inc|exchange|13f|institutional|federal reserve|regulator|form 4)\b|监管|机构|证券交易委员会|美联储",
