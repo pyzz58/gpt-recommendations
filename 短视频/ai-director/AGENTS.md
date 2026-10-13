@@ -1,3 +1,15 @@
+## QO-D09｜第二阶段：全片帧级蒙太奇剪辑工单（2026-10-13）
+
+**保留同一个总导演与原十岗位，不添加新的统筹Agent。** 第一阶段 `director_editorial_montage` 负责有来源的蒙太奇创意规划和时空/演员道具入出状态；第二阶段 `director_montage_editor_conform.compile_work_order(...,fps=...)` 真正从已审剧本和导演镜头覆盖重验证、重建权威十岗位计划，复用现有 `series_final_timeline` 的全片≤90秒预算，输出机器可读帧级编辑表、逐剪口导演任务、绝对帧级声音与字幕绑定（仅已提供 QO-D19 有效cue时），以及可阅读的 `editor_instructions`。没有字幕时间码时明确阻断，而不允许“所有台词字幕放在本镜第一帧”。
+
+帧率**必须由操作者明确指定**，支持24、25、30、50、60整数fps；不能把小数秒随意四舍五入后假装准确。证据页仅在原文确有支持和导演预留时作为全片最后单独后期片段（1.8秒）。硬切零时长；叠化必须有明确交叠/把柄，匹配剪切需要真实帧核验，J/L 声音桥必须有实录音及出入点，跳切要有艺术审核。若没有真实媒体/授权/音画审核，`ready_for_rough_cut=false`、`render_or_publish_authorized=false`，绝不可由剪辑软件默认为普通硬切。
+
+旧的 `director.py` / `director_v2.py` / `production_delivery.py` 仍会明确拒绝尚不能正确消费蒙太奇的实际视频编译入口；**新增合法帧级工作单不是已生成可播放文件或声称导出完整 NLE 时间线**。后续媒体引用、转场把柄、配音口型和实际剪辑验证另做第二轮，在用户明确授权前不使用私人剧本、无付费API及媒体上传。
+
+[Skill14](skills/14-director-editorial-montage-and-time.md) / [编译器](director_montage_editor_conform.py) / [回归测试](tests/test_director_montage_editor_conform.py)。质量总账既有 QO-D09 `in_progress`，对应 QO-D13 90秒全片时轴、QO-D19 声画cue，绝不新增重复Issue编号。
+
+---
+
 ## QO-D09｜跨场景蒙太奇与来源受控的时间跳转（2026-10-13）
 
 本项目仍由**同一个总导演**统筹。QO-D09主管编辑节奏和蒙太奇序列；QO-D05主管人物/服装/道具/场景状态与后续真实媒体验证；QO-D07主管轴线、摄影空间及光色连贯；QO-D02主管单个物理镜头的剧本来源连续覆盖。**禁止把不同物理场景硬写进一个物理 shot**，跨场景蒙太奇必须是多个可分别生产的物理镜头组成的后期 sequence。
