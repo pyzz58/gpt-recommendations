@@ -40,9 +40,12 @@ def _shape(obj, fields, code):
     _need(isinstance(obj, dict) and set(obj) == set(fields), code)
 
 
-def _snapshot(base, state, meeting, language):
+def _snapshot(base, state, meeting, language,
+              artistic_method_plan=None):
     meeting_proof = command.validate_command(base, state, meeting)
-    vision_proof = visual.validate(base, state, meeting, language)
+    vision_proof = visual.validate(
+        base, state, meeting, language,
+        artistic_method_plan=artistic_method_plan)
     proof = {}
     for department in TARGETS:
         task = state["tasks"][department]
@@ -57,13 +60,16 @@ def _snapshot(base, state, meeting, language):
         "base_digest": state["base_digest"],
         "meeting_digest": meeting_proof["command_digest"],
         "visual_language_digest": vision_proof["plan_digest"],
+        "artistic_methods_digest": vision_proof["artistic_methods_digest"],
         "submitted_work": proof,
     }
 
 
-def request(base, state, meeting, language):
-    """Hand the director the ACTUAL role outputs, not just work assignments."""
-    snapshot = _snapshot(base, state, meeting, language)
+def request(base, state, meeting, language, *,
+            artistic_method_plan=None):
+    """Hand the director ACTUAL role outputs and the selected artistic why."""
+    snapshot = _snapshot(base, state, meeting, language,
+                         artistic_method_plan=artistic_method_plan)
     context = {}
     for dept in TARGETS:
         task = state["tasks"][dept]
@@ -105,6 +111,9 @@ def request(base, state, meeting, language):
                 "versioned_source": snapshot,
                 "episode_shots": base["shots"],
                 "director_av_language": language,
+                "selected_director_artistic_method": (
+                    artistic_method_plan if artistic_method_plan is not None
+                    else None),
                 "director_department_meeting": meeting,
                 "actual_department_deliveries": context,
                 "required_findings_per_department_per_shot": {
@@ -128,8 +137,10 @@ def request(base, state, meeting, language):
     }
 
 
-def validate(base, state, meeting, language, review):
-    snapshot = _snapshot(base, state, meeting, language)
+def validate(base, state, meeting, language, review, *,
+             artistic_method_plan=None):
+    snapshot = _snapshot(base, state, meeting, language,
+                         artistic_method_plan=artistic_method_plan)
     _shape(review, {
         "version", "snapshot", "director_judgment",
         "findings", "conflicts", "next_step",
@@ -229,13 +240,15 @@ def validate(base, state, meeting, language, review):
 
 
 def targeted_rework(base, state, meeting, language, review, *,
-                    department, shot_id):
+                    department, shot_id, artistic_method_plan=None):
     """Director-authorized *single* targeted revision in existing team ledger.
 
     Do not use this as an automatic review loop: each invocation is a specific
     deliberate decision, and the next review must refer to the NEW ledger.
     """
-    receipt = validate(base, state, meeting, language, review)
+    receipt = validate(
+        base, state, meeting, language, review,
+        artistic_method_plan=artistic_method_plan)
     _need({"department": department, "shot_id": shot_id}
           in receipt["requested_revisions"], "REWORK_NOT_RECOMMENDED")
     _need(department in team.SPECS and

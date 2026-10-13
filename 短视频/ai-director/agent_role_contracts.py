@@ -21,6 +21,7 @@ import asset_reference_manifest as assetrefs
 import role_schema_guard as schema_guard
 import director_department_command as director_command
 import director_visual_language as visual_language
+import director_artistic_methods as artistic_methods
 
 CONTRACT_VERSION = "1.0"
 MAX_CONTEXT_CHARS = 220_000
@@ -441,7 +442,8 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
 
 def build_role_messages(base, state, task_id, *, source_text=None,
                         editorial_handoff=None, reference_manifest=None,
-                        department_command=None, audiovisual_plan=None):
+                        department_command=None, audiovisual_plan=None,
+                        artistic_method_plan=None):
     """Build private messages in memory; never return a public or saved artifact.
 
     For source-locked teams, include the FIRST real director/editor vision.
@@ -519,12 +521,29 @@ def build_role_messages(base, state, task_id, *, source_text=None,
     if (audiovisual_mode is not None and
             task_id in director_command.DEPARTMENTS and audiovisual_plan is None):
         raise ValueError("CREW_DIRECTOR_AUDIOVISUAL_PLAN_REQUIRED")
+    art_mode = base.get("director_artistic_mode")
+    if art_mode is not None and art_mode != {
+            "kind": "director_artistic_method_required",
+            "artistic_intent_before_specialists": True}:
+        raise ValueError("CREW_ARTISTIC_METHOD_MODE_INVALID")
+    if (art_mode is not None and task_id in director_command.DEPARTMENTS
+            and artistic_method_plan is None):
+        raise ValueError("CREW_ARTISTIC_METHOD_PLAN_REQUIRED")
     if audiovisual_plan is not None:
         if task_id not in director_command.DEPARTMENTS or department_command is None:
             raise ValueError("CREW_AUDIOVISUAL_PLAN_REQUIRES_DEPARTMENT_COMMAND")
         request["director_audiovisual_intention"] = (
             visual_language.departmental_context(
-                base, state, department_command, audiovisual_plan, task_id))
+                base, state, department_command, audiovisual_plan, task_id,
+                artistic_method_plan=artistic_method_plan))
+    if artistic_method_plan is not None:
+        if (task_id not in director_command.DEPARTMENTS or
+                department_command is None or audiovisual_plan is None):
+            raise ValueError("CREW_ARTISTIC_METHOD_WRONG_STAGE")
+        request["director_artistic_method_context"] = (
+            artistic_methods.departmental_context(
+                base, state, department_command, artistic_method_plan,
+                task_id))
     if reference_manifest is not None:
         # The manifest contains HASHES AND VERSIONS, never pictures, paths,
         # signed URLs, licences or purported human identity approval.
@@ -626,6 +645,15 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                   "遇到艺术/物理/模型冲突反馈总导演，不要套通用提示词、"
                   "不私自改写故事或伪造已经生成的资产。" if
                   department_command is not None else "") +
+                 ("\n\n【总导演选定艺术方法的专业诠释】请务必逐项阅读 user JSON 中的 "
+                  "director_artistic_method_context。总导演已按剧本人物与观众认知"
+                  "选择方法，并记录替代方案和反对理由。你需要把这个为什么转成"
+                  "本部门独立可执行的详尽专业做法，既不得复制经典电影名场面，"
+                  "也不得擅改编剧的剧情和事实。若 comic_mode=off，绝不能"
+                  "自己增加无厘头笑点；若启用喜剧，人物愿望、荒诞因果与"
+                  "笑点真实动作/反应及余韵必须由你本岗认真落实，不能只加音效包。"
+                  "发现导演拍法不好，返回有具体理由的备选，不覆盖权威稿。"
+                  if artistic_method_plan is not None else "") +
                  ("\n\n【延续经审阅规划版本的创意】user JSON 中附有 first_director_editor_vision "
                   "与本岗位 production_gaps_to_resolve：前者是先前总导演/编剧的提案而非"
                   "获真人批准的拍摄指令；不得忽略或凭空重置。后者必须具体回应，尤其人物"
@@ -645,7 +673,7 @@ def build_role_messages(base, state, task_id, *, source_text=None,
 
 def validate_role_output(base, state, task_id, raw, *, source_text=None,
                          editorial_handoff=None, department_command=None,
-                         audiovisual_plan=None):
+                         audiovisual_plan=None, artistic_method_plan=None):
     """Strict provider-agnostic parsing + specialist craft preflight.
 
     Return a new parsed object, never a fixed/normalized one. Refuse invalid
@@ -675,10 +703,26 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
     if (audiovisual_mode is not None and
             task_id in director_command.DEPARTMENTS and audiovisual_plan is None):
         raise ValueError("CREW_DIRECTOR_AUDIOVISUAL_PLAN_REQUIRED")
+    art_mode = base.get("director_artistic_mode")
+    if art_mode is not None and art_mode != {
+            "kind": "director_artistic_method_required",
+            "artistic_intent_before_specialists": True}:
+        raise ValueError("CREW_ARTISTIC_METHOD_MODE_INVALID")
+    if (art_mode is not None and task_id in director_command.DEPARTMENTS
+            and artistic_method_plan is None):
+        raise ValueError("CREW_ARTISTIC_METHOD_PLAN_REQUIRED")
     if audiovisual_plan is not None:
         if task_id not in director_command.DEPARTMENTS or department_command is None:
             raise ValueError("CREW_AUDIOVISUAL_PLAN_REQUIRES_DEPARTMENT_COMMAND")
-        visual_language.validate(base, state, department_command, audiovisual_plan)
+        visual_language.validate(
+            base, state, department_command, audiovisual_plan,
+            artistic_method_plan=artistic_method_plan)
+    if artistic_method_plan is not None:
+        if (task_id not in director_command.DEPARTMENTS or
+                department_command is None or audiovisual_plan is None):
+            raise ValueError("CREW_ARTISTIC_METHOD_WRONG_STAGE")
+        artistic_methods.validate(
+            base, state, department_command, artistic_method_plan)
     if task_id not in team.ready(state):
         raise ValueError("CREW_TASK_NOT_READY")
     payload = parse_strict_json(raw)
@@ -881,7 +925,7 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
 
 def submit_role_output(base, state, task_id, raw, *, source_text=None,
                        editorial_handoff=None, department_command=None,
-                       audiovisual_plan=None):
+                       audiovisual_plan=None, artistic_method_plan=None):
     """Offline transition from a *provided* strict JSON response to a new ledger.
 
     No model invocation; caller must arrange private transport separately.
@@ -890,5 +934,6 @@ def submit_role_output(base, state, task_id, raw, *, source_text=None,
                                    source_text=source_text,
                                    editorial_handoff=editorial_handoff,
                                    department_command=department_command,
-                                   audiovisual_plan=audiovisual_plan)
+                                   audiovisual_plan=audiovisual_plan,
+                                   artistic_method_plan=artistic_method_plan)
     return team.submit(state, team.packet(state, task_id), payload)

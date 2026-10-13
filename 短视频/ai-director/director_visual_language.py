@@ -15,6 +15,7 @@ import json
 
 import agent_team
 import director_department_command as command
+import director_artistic_methods as artistic_methods
 
 VERSION = "director-audiovisual-language-v1"
 MODES = frozenset({"hold", "cut", "move", "reframe", "sound-led"})
@@ -39,10 +40,17 @@ def _object(x, fields, error):
     _need(isinstance(x, dict) and set(x) == set(fields), error)
 
 
-def request(base, state, director_command, *, genre, source_text=None):
+def request(base, state, director_command, *, genre, source_text=None,
+            artistic_method_plan=None):
     """Deep director's audiovisual articulation, then distribute to departments."""
     _need(genre in GENRES, "VISION_GENRE")
     meeting = command.validate_command(base, state, director_command)
+    required = base.get("director_artistic_mode") is not None
+    if required and artistic_method_plan is None:
+        raise VisualLanguageError("VISION_DIRECTOR_ARTISTIC_METHODS_REQUIRED")
+    artist_proof = (artistic_methods.validate(
+        base, state, director_command, artistic_method_plan)
+        if artistic_method_plan is not None else None)
     if source_text is not None:
         import hashlib
         _need(hashlib.sha256(source_text.encode()).hexdigest() ==
@@ -84,12 +92,17 @@ def request(base, state, director_command, *, genre, source_text=None):
                 "department_conference": director_command,
                 "director_command_digest": meeting["command_digest"],
                 "director_lock_digest": meeting["director_lock_digest"],
+                "detailed_director_artistic_thinking": (
+                    artistic_method_plan if artist_proof is not None else None),
+                "artistic_methods_digest": (
+                    artist_proof["plan_digest"] if artist_proof else None),
                 "required_overall_fields": [
                     "version", "source_digest", "base_digest",
                     "director_lock_digest", "director_command_digest",
                     "genre", "point_of_view", "emotional_question",
                     "visual_motif_evolution", "sound_silence_arc",
-                    "rhythm_and_attention_strategy", "shots", "handoffs"],
+                    "rhythm_and_attention_strategy", "shots", "handoffs"] +
+                    (["artistic_methods_digest"] if artist_proof else []),
                 "required_shot_fields": [
                     "shot_id", "incoming_viewer_belief",
                     "observable_screen_event", "viewer_belief_after",
@@ -110,14 +123,33 @@ def request(base, state, director_command, *, genre, source_text=None):
     }
 
 
-def validate(base, state, director_command, plan):
+def validate(base, state, director_command, plan,
+             artistic_method_plan=None):
     meeting = command.validate_command(base, state, director_command)
-    _object(plan, {
+    mandatory = base.get("director_artistic_mode") is not None
+    if mandatory and artistic_method_plan is None:
+        raise VisualLanguageError("VISION_DIRECTOR_ARTISTIC_METHODS_REQUIRED")
+    art_proof = (artistic_methods.validate(
+        base, state, director_command, artistic_method_plan)
+        if artistic_method_plan is not None else None)
+    fields = {
         "version", "source_digest", "base_digest", "director_lock_digest",
         "director_command_digest", "genre", "point_of_view",
         "emotional_question", "visual_motif_evolution", "sound_silence_arc",
         "rhythm_and_attention_strategy", "shots", "handoffs",
-    }, "VISION_SHAPE")
+    }
+    if art_proof is not None:
+        fields.add("artistic_methods_digest")
+    _object(plan, fields, "VISION_SHAPE")
+    if art_proof is not None:
+        artistic_genre = artistic_method_plan["genre"]
+        expected_screen_genre = (
+            "fiction" if artistic_genre in (
+                "absurd_comedy", "character_comedy", "satire")
+            else artistic_genre)
+        _need(plan["artistic_methods_digest"] == art_proof["plan_digest"] and
+              plan["genre"] == expected_screen_genre,
+              "VISION_ARTISTIC_PRECEDENT_CHANGED")
     _need(plan["version"] == VERSION and plan["genre"] in GENRES and
           plan["source_digest"] == state["source_digest"] and
           plan["base_digest"] == state["base_digest"] and
@@ -174,6 +206,8 @@ def validate(base, state, director_command, plan):
         "source_digest": state["source_digest"],
         "director_lock_digest": meeting["director_lock_digest"],
         "director_command_digest": meeting["command_digest"],
+        "artistic_methods_digest": (art_proof["plan_digest"]
+                                    if art_proof is not None else None),
         "shot_count": len(shots),
         "boundary_count": len(edges),
         "artistic_effect_verified": False,
@@ -182,12 +216,15 @@ def validate(base, state, director_command, plan):
     }
 
 
-def departmental_context(base, state, director_command, plan, department):
+def departmental_context(base, state, director_command, plan, department,
+                         artistic_method_plan=None):
     """Provide concrete director reasoning in the ACTUAL role-facing request."""
-    proof = validate(base, state, director_command, plan)
+    proof = validate(base, state, director_command, plan,
+                     artistic_method_plan=artistic_method_plan)
     _need(department in command.DEPARTMENTS, "VISION_UNKNOWN_DEPARTMENT")
     shared = {
         "plan_digest": proof["plan_digest"],
+        "artistic_methods_digest": proof["artistic_methods_digest"],
         "director_point_of_view": plan["point_of_view"],
         "emotional_question": plan["emotional_question"],
         "visual_motif_evolution": plan["visual_motif_evolution"],
