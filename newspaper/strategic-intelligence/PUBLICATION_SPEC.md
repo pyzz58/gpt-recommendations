@@ -128,3 +128,11 @@
 **逐篇主文**：A新闻报道（保留事件事实与叙事完整性、不做100字摘要）→B本刊原创的“顾问研判”（现实机制/强反方/有条件判断）及“帝师释理”（正规学科、通俗解释、正反现实案例、边界与迁移）→C下一步证据/来源。**不再要求在正文印出后台七问或旧十二步的标题**。顾问与帝师用一份联合研究包供稿，避免重复评论。
 
 **唯一统一研究思路**为[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)的七问＋三检验；旧[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)十二步仅作为按需调用的细化工具。当前设计已定、生产未验收；旧工程缺口待[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)未来逐项修复。
+
+## 13. V4.3定版优先条款（覆盖此前读者版“继续观察”的表述）
+
+**首席编辑选文必须先做实际新闻价值研究，而非先拟“顾问教学”后再找一则材料强行配套**。采用[EDITORIAL_SELECTION_AND_REPORTING.md](EDITORIAL_SELECTION_AND_REPORTING.md)的S0—S8：事实/来源/法律门槛、实际正负/混合影响、典型性或重大突破、长远制度/财富/社会/技术变化、证据和丰富报道可用性、反信息茧房、研究后第二次刊登审查。半月谈/求是的实际问题和调查深度可借鉴，但不等于本刊预设其政治立场。
+
+**所有重点主文严格**：A具5W1H新闻六要素的翔实记者式新闻、政府/商业/医学机构真实报告或已经署名的调查报道→B1真实问题及多机制的顾问研判→B2从事实教世界知识的帝师释理→C**事件推演与开放性思考**。最后对未来不同条件推演具体实际结果/利益/失败分支，附不预设答案的开放问题；**不再机械设置“继续观察”段落**。历史Thesis观察信号留在内部档案或年报复盘，不删除验证责任。
+
+优先指向新[templates/ARTICLE_TEMPLATE.md](templates/ARTICLE_TEMPLATE.md)、[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)与[SCENARIOS_AND_OPEN_QUESTIONS.md](SCENARIOS_AND_OPEN_QUESTIONS.md)。旧模板或历史小节凡提“C未来核查”，应视为旧版，不得覆盖此最新规范。
