@@ -162,10 +162,14 @@ def fetch_market_snapshot(now=None, getter=None):
             idx = list(SERIES).index(code)
             if quotes[idx] is None:
                 quotes[idx] = backup
+    values = [q for q in quotes if q]
+    backup_count = sum("source" in q and "Stooq" in q["source"] for q in values)
     return {
         "as_of_request_utc": now.isoformat(),
-        "kind": "latest_FRED_published_daily_close_not_intraday",
-        "values": [q for q in quotes if q],
+        "kind": "dated_published_daily_observations_not_intraday",
+        "values": values,
         "missing": [s for s,q in zip(SERIES,quotes) if not q],
-        "warning": "仅为FRED已发布的最近一次收盘/官方日值；不是实时行情。缺失数据不得推算。",
+        "sources": sorted({"Stooq" if q.get("source", "").startswith("Stooq") else "FRED" for q in values}),
+        "backup_observations": backup_count,
+        "warning": "仅为注明来源和日期的已发布历史日值，可能混用FRED与Stooq；不是盘中实时行情。缺失数据不得推算。",
     }
