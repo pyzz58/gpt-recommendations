@@ -105,7 +105,7 @@ def sections(item):
             result.add("医疗、生命科学与公共健康")
         if re.search(r"八卦|追星|恋爱|短剧|电视剧|花边|明星绯闻|优惠券|博彩|抽奖", title):
             return set()
-        return result
+        return primary_topic_guard(item, result)
     if item.get("source_type") in ("primary_regulator","primary_central_bank","exchange_company") and matches(FINANCE, s):
         result.add("美股·全球金融市场")
     for label, pattern in (("国际政治与全球事件", POLITICS), ("美股·全球金融市场", FINANCE),
@@ -113,7 +113,69 @@ def sections(item):
                            ("创业、商业与企业竞争", BUSINESS),
                            ("医疗、生命科学与公共健康", HEALTH)):
         if matches(pattern, s): result.add(label)
-    return result
+    return primary_topic_guard(item, result)
+
+
+# Title-level topical evidence is intentionally stricter than generic summary
+# keywords. A war mentioning "energy" is not a science breakthrough, and
+# "inflation in India" is not a US equities headline.
+US_MARKET_HEADLINE = (
+    r"\b(?:wall street|nasdaq|s&p\s*500|dow jones|dow industrial|"
+    r"federal reserve|fomc|u\.?s\.?\s+(?:stocks?|equities|shares?|"
+    r"treasury|bond|inflation|cpi|gdp|jobs|unemployment|rate|"
+    r"markets?|economic|earnings)|american\s+(?:stocks?|markets?|"
+    r"economy)|sec\s+(?:charges?|approves?|rules?|filing)|"
+    r"stock\s+market|stock\s+indexes?|stock\s+futures?)\b"
+)
+US_MARKET_ZH = r"美股|美联储|纳斯达克|纳指|标普\s*500|道琼斯|道指|美国国债|美债|华尔街|美国(?:股市|通胀|就业|利率|经济)"
+TECHNICAL_HEADLINE = (
+    r"\b(?:quantum|semiconductor|microchips?|chipmaking|"
+    r"nuclear fusion|fusion reactor|superconduct\w*|robot\w*|"
+    r"spacecraft|satellite|rocket|scientific discovery|"
+    r"battery technolog\w*|lithium extraction|solar technolog\w*|"
+    r"researchers? (?:discover|develop|demonstrate)|"
+    r"scientists? (?:discover|develop|demonstrate))\b"
+)
+TECHNICAL_ZH = r"量子|半导体|芯片|核聚变|超导|机器人|航天|卫星|科技突破|科研突破|新能源技术|电池技术"
+ENTERPRISE_HEADLINE = (
+    r"\b(?:startups?|start-ups?|entrepreneur\w*|venture capital|"
+    r"funding round|raises? \$|merger|acquisition|acquires?|"
+    r"bankruptcy|restructur\w*|ipo|initial public offering|"
+    r"earnings|revenue|profit|business model|"
+    r"(?:company|companies|business(?:es)?) (?:reports?|launches?|"
+    r"announces?|buys?|cuts?|raises?|acquires?|merges?|files?))\b"
+)
+ENTERPRISE_ZH = r"创业|初创|融资|并购|收购|上市|财报|营收|利润|企业重组|商业模式|破产"
+
+
+def primary_topic_guard(item, labels):
+    """Require a defensible title/primary-source connection for specialized desks.
+
+    This is a simple deterministic eligibility guard, not a second scoring
+    service. Country and international reporting remain broad, so important
+    news can still be selected in their proper sections.
+    """
+    title = str(item.get("title", ""))
+    summary = str(item.get("summary", ""))
+    url = str(item.get("url", "")).lower()
+    keep = set(labels)
+    market = (
+        matches(US_MARKET_HEADLINE, title)
+        or bool(re.search(US_MARKET_ZH, title))
+        or (
+            ("sec.gov" in url or "federalreserve.gov" in url)
+            and matches(FINANCE, title + " " + summary)
+        )
+    )
+    if not market:
+        keep.discard("美股·全球金融市场")
+    if not (matches(TECHNICAL_HEADLINE, title) or
+            re.search(TECHNICAL_ZH, title)):
+        keep.discard("科技、能源与前沿科学")
+    if not (matches(ENTERPRISE_HEADLINE, title) or
+            re.search(ENTERPRISE_ZH, title)):
+        keep.discard("创业、商业与企业竞争")
+    return keep
 
 def score(item, independent_publishers):
     s = item.get("title", "") + " " + item.get("summary", "")
