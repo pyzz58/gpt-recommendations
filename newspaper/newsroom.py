@@ -250,6 +250,28 @@ def prepare_pool(items, per_section=20):
         result[section] = sorted(list(picked.values())[:per_section], key=lambda a:a["importance_score"], reverse=True)
     return result
 
+
+_COMMON_TITLE_WORDS = {
+    "the", "and", "for", "from", "after", "with", "that", "will",
+    "says", "said", "what", "could", "would", "over", "into", "than",
+    "more", "this", "new", "about", "against", "amid", "how", "why"
+}
+
+
+def near_duplicate_titles(a, b):
+    """Conservative same-actor/same-topic headline check alongside event IDs."""
+    def words(title):
+        normalized = re.sub(r"\bregulat(?:e|es|ed|ion|ions|ory|ions?)\b",
+                            "regulat", title.lower())
+        return {w for w in re.findall(r"[a-z]{2,}", normalized)
+                if w not in _COMMON_TITLE_WORDS and len(w) > 2 or w == "ai"}
+    first, second = words(a), words(b)
+    if min(len(first), len(second)) < 4:
+        return False
+    shared = len(first & second)
+    return shared >= 4 and shared / min(len(first), len(second)) >= 0.60
+
+
 def select_readable(candidates, enriched):
     output, diagnostics = {}, {}
     used_events, used_urls = set(), set()
@@ -266,6 +288,16 @@ def select_readable(candidates, enriched):
         selected, families, concentration, exceptions = [], Counter(), Counter(), []
         def add(a, allow_exception=False):
             if a["url"] in used_urls or a["event_key"] in used_events: return False
+            # TF-IDF alone misses some different-worded titles from the same
+            # speaker and announcement; avoid obvious repeated editorial slots.
+            if any(near_duplicate_titles(str(a.get("title", "")),
+                                         str(old.get("title", "")))
+                   for arr in output.values() for old in arr):
+                return False
+            if any(near_duplicate_titles(str(a.get("title", "")),
+                                         str(old.get("title", "")))
+                   for old in selected):
+                return False
             if (section == "美股·全球金融市场"
                     and a["event_key"] in china_us_events
                     and len(china_us_events - used_events) <= 3):
