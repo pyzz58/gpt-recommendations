@@ -87,7 +87,7 @@
       "id": "SRC-004",
       "sector": "新闻",
       "name": "Deutsche Welle",
-      "status": "C",
+      "status": "A",
       "url": "https://amp.dw.com/en/the-day-with-brent-goff/video-19049331",
       "access": "主站报错，AMP官方内容可读",
       "fallback": "官方RSS/AMP",
@@ -106,6 +106,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "A",
+        "result": "PUBLIC_HTML_ALTERNATE",
+        "preferred_url": "https://rss.dw.com/syndication/feeds/vam_volltextfeedconfirmado.20605-copypaste.html",
+        "comment": "DW官方西班牙语公开供稿HTML含2026-10-12日期、标题及正文；并非英文版，版权和二次使用另审。",
+        "evidence_url": "https://rss.dw.com/syndication/feeds/vam_volltextfeedconfirmado.20605-copypaste.html",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -133,13 +144,24 @@
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
         "fallback_url": "https://feeds.bbci.co.uk/news/world/rss.xml",
         "fallback_status": "XML_UNPARSABLE_IN_CURRENT_BROWSER; third-party feed index exists, host parser test pending"
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "FREE_RSS_XML_BROWSER_UNSUPPORTED",
+        "preferred_url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+        "comment": "BBC World RSS存在2026年9月第三方逐项更新检验；本轮web.open返回text/xml，浏览器无法解析，须联网Python解析并核验BBC使用条款。",
+        "evidence_url": "https://feeder.co/knowledge-base/rss-content/bbc-rss-feeds/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
       "id": "SRC-006",
       "sector": "新闻",
       "name": "新华社英文站",
-      "status": "C",
+      "status": "A",
       "url": "https://english.news.cn/",
       "access": "本轮直接访问失败",
       "fallback": "新华中文官网/搜索",
@@ -159,6 +181,17 @@
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
         "fallback_url": "https://www.news.cn/"
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "A",
+        "result": "PUBLIC_HTML_ALTERNATE",
+        "preferred_url": "https://english.news.cn/xinhuanews/index.htm",
+        "comment": "官方英文栏目直读，2026-10-13新闻标题、时间与文章链接均出现。",
+        "evidence_url": "https://english.news.cn/xinhuanews/index.htm",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -861,6 +894,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "FREE_ACCOUNT_KEY_REQUIRED",
+        "preferred_url": "https://api.congress.gov/",
+        "comment": "美国国会公开v3 API确实存在，但需免费api.data.gov密钥；未取得密钥也未请求真实法案JSON。可先用国会公开网页。",
+        "evidence_url": "https://github.com/LibraryOfCongress/api.congress.gov/blob/main/README.md",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -943,7 +987,7 @@
       "id": "SRC-038",
       "sector": "政治",
       "name": "联合国 UN News",
-      "status": "C",
+      "status": "A",
       "url": "https://www.un.org/en/events-and-news/",
       "access": "官方多语新闻页面；原press路径403",
       "fallback": "docs.un.org/press/releases/",
@@ -963,6 +1007,17 @@
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
         "fallback_url": "https://news.un.org/en/"
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "A",
+        "result": "OFFICIAL_RSS_DIRECTORY_HTML",
+        "preferred_url": "https://www.ungeneva.org/en/news-media/rss",
+        "comment": "联合国日内瓦办事处官方RSS目录可读，链接新闻稿、会议记录、总部按主题订阅；RSS条目尚待XML实际解析。",
+        "evidence_url": "https://www.ungeneva.org/en/news-media/rss",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -988,6 +1043,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "OFFICIAL_EMAIL_SUBSCRIPTION_DOCUMENTED",
+        "preferred_url": "https://commission.europa.eu/about/contact/press-services/press-releases-and-notifications_en",
+        "comment": "欧委会官方明确支持按主题订阅Press Corner新闻邮件，网页内容可读；尚未取得可无需登录直接采集的发布列表。",
+        "evidence_url": "https://commission.europa.eu/about/contact/press-services/press-releases-and-notifications_en",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -1121,7 +1187,7 @@
       "id": "SRC-045",
       "sector": "军事",
       "name": "IISS公开文章",
-      "status": "C",
+      "status": "B",
       "url": "https://www.iiss.org/publications/the-military-balance/2026/the-military-balance-2026/global-defence-spending/",
       "access": "部分国防研究免费；完整版商业产品另列D",
       "fallback": "SIPRI/CSIS/RAND",
@@ -1140,6 +1206,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "B",
+        "result": "FREE_TAGGED_ANALYSIS_SUBSET",
+        "preferred_url": "https://www.iiss.org/research/defence-and-military-analysis",
+        "comment": "IISS官方公开研究频道与明确标为Free to Read的部分文章可找到，完整Military Balance+继续付费排除；具体免费全文按篇核验。",
+        "evidence_url": "https://www.iiss.org/latest/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -1165,6 +1242,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "OFFICIAL_ALTERNATIVE_INDEXED_BROWSER_403",
+        "preferred_url": "https://www.war.gov/News/Releases/News/",
+        "comment": "官方新域名war.gov新闻发布列表已被搜索索引收录，但直接web.open本轮403；不能标机器接口可用，需合法联网宿主机或订阅验证。",
+        "evidence_url": "https://www.war.gov/News/Releases/News/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -1271,7 +1359,7 @@
       "id": "SRC-051",
       "sector": "AI/科技",
       "name": "Meta AI Research",
-      "status": "C",
+      "status": "A",
       "url": "https://ai.meta.com/research/",
       "access": "本轮页面为空",
       "fallback": "论文索引及公开文章搜索",
@@ -1290,6 +1378,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "A",
+        "result": "PUBLIC_HTML_ALTERNATE",
+        "preferred_url": "https://research.meta.ai/",
+        "comment": "Meta AI独立官方研究站点直接返回2026-10-12研究更新及文章链接。",
+        "evidence_url": "https://research.meta.ai/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -1340,6 +1439,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "OFFICIAL_GITHUB_API_DOC_READABLE_ATOM_UNTESTED",
+        "preferred_url": "https://github.com/arXiv/arxiv-docs/blob/develop/source/help/api/user-manual.md",
+        "comment": "arXiv官方GitHub API手册可读，说明开放Atom搜索接口；实际API XML数据在本环境未能解析或确认。",
+        "evidence_url": "https://github.com/arXiv/arxiv-docs/blob/develop/source/help/api/user-manual.md",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -1517,6 +1627,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "OFFICIAL_JSON_API_DOC_ENDPOINT_UNTESTED",
+        "preferred_url": "https://clinicaltrials.gov/api/v2/studies",
+        "comment": "ClinicalTrials.gov公开v2接口有规范，但当前网页工具对实际JSON请求无法返回可解析数据；仍待联网运行环境确认。",
+        "evidence_url": "https://clinicaltrials.gov/data-api/api",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -1543,13 +1664,24 @@
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution.",
         "fallback_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=malaria&format=json"
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "OFFICIAL_REST_DOC_SEARCH_INDEXED_ENDPOINT_UNTESTED",
+        "preferred_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=p53&format=json",
+        "comment": "Europe PMC文档明确公开JSON/XML REST检索；直接API请求在当前Web工具无法解析，不能报成功。",
+        "evidence_url": "https://europepmc.org/RestfulWebService",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
       "id": "SRC-062",
       "sector": "医疗",
       "name": "NCBI/PubMed",
-      "status": "C",
+      "status": "A",
       "url": "https://www.ncbi.nlm.nih.gov/books/NBK25501/",
       "access": "本轮反机器人验证页",
       "fallback": "Europe PMC API",
@@ -1568,6 +1700,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "A",
+        "result": "OFFICIAL_API_DOCUMENTATION_HTML_ONLY",
+        "preferred_url": "https://www.nlm.nih.gov/dataguide/eutilities/utilities.html",
+        "comment": "NLM官方E-Utilities文档可读并说明PubMed ESearch等；实际文献数据接口尚未进行运行宿主机烟测。",
+        "evidence_url": "https://www.nlm.nih.gov/dataguide/eutilities/utilities.html",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -1593,13 +1736,24 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "OA_SUBSET_UNVERIFIED_BROWSER_COOKIE",
+        "preferred_url": "https://www.nature.com/nature/articles",
+        "comment": "Nature非OA全文依旧需订阅；公开目录和OA子集待逐篇检测，不使用付费正文。",
+        "evidence_url": "https://www.nature.com/nature/articles",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
       "id": "SRC-064",
       "sector": "社会",
       "name": "Our World in Data",
-      "status": "C",
+      "status": "A",
       "url": "https://ourworldindata.org/search",
       "access": "公开图表、RSS、部分开放数据",
       "fallback": "原始统计机构",
@@ -1618,6 +1772,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "A",
+        "result": "PUBLIC_HTML_AND_DOCUMENTED_CSV_API",
+        "preferred_url": "https://ourworldindata.org/",
+        "comment": "OWID主站可直接读取公开数据研究文章；官方文档列出Grapher CSV数据端点，端点逐项授权另审。",
+        "evidence_url": "https://docs.owid.io/projects/etl/api/chart-api/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -1700,7 +1865,7 @@
       "id": "SRC-068",
       "sector": "创业",
       "name": "Sequoia文章",
-      "status": "C",
+      "status": "A",
       "url": "https://www.sequoiacap.com/article/",
       "access": "本轮栏目读取报错",
       "fallback": "官网单篇/索引搜索",
@@ -1719,6 +1884,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "A",
+        "result": "PUBLIC_HTML_ALTERNATE",
+        "preferred_url": "https://sequoiacap.com/stories",
+        "comment": "红杉官方新版Stories目录及创业案例链接可直接读取，原/sequoiacap.com/article/为404应退役。",
+        "evidence_url": "https://sequoiacap.com/stories",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2120,6 +2296,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "PUBLIC_RSS_CANDIDATE_WEB_ROBOTS_DENIED",
+        "preferred_url": "https://www.npr.org/rss/",
+        "comment": "NPR主站在本浏览器环境被robots拒绝；无法声明RSS运行成功。",
+        "evidence_url": "https://www.npr.org/rss/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2145,6 +2332,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "BROWSER_403_FREE_FEED_UNVERIFIED",
+        "preferred_url": "https://www.france24.com/en/rss",
+        "comment": "France24当前网页浏览请求403；免费RSS候选路径本轮同样403，仍需合规RSS测试。",
+        "evidence_url": "https://www.france24.com/en/rss",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2170,6 +2368,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "OFFICIAL_NEWS_BROWSER_FAIL",
+        "preferred_url": "https://www3.nhk.or.jp/nhkworld/en/news/",
+        "comment": "NHK官方新闻目录尚未被本工具取得正文或有效XML；需网络隔离环境和官方RSS回退。",
+        "evidence_url": "https://www3.nhk.or.jp/nhkworld/en/news/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2195,6 +2404,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "RSSHUB_ROUTE_FOUND_API_JSON_CONTENT_UNDECODED",
+        "preferred_url": "https://github.com/DIYgod/RSSHub/blob/master/lib/routes/thepaper/sidebar.ts",
+        "comment": "RSSHub存在澎湃sidebar公开路由，cache.thepaper.cn接口返回application/json但本工具未显示具体可解析记录；自建RSSHub/合规客户端实测待做。",
+        "evidence_url": "https://github.com/DIYgod/RSSHub/blob/master/lib/routes/thepaper/sidebar.ts",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2220,6 +2440,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "RSSHUB_ROUTE_FOUND_ENDPOINT_TEST_FAILED",
+        "preferred_url": "https://github.com/DIYgod/RSSHub/blob/master/lib/routes/yicai/latest.ts",
+        "comment": "RSSHub具有第一财经latest、brief与news等源码路由，但源接口及rsshub.app演示本轮访问失败；存在2023年的路由失效Issue。代码存在不等于路线可用。",
+        "evidence_url": "https://github.com/DIYgod/RSSHub/blob/master/lib/routes/yicai/latest.ts",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2245,6 +2476,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "DW_ENGLISH_NEWS_NOT_RETRIEVED_SPANISH_ALTERNATE_AVAILABLE",
+        "preferred_url": "https://www.dw.com/en/top-stories/s-9097",
+        "comment": "DW的西班牙语可读供稿归属于SRC-004，不自动认定英文站抓取已解决；英文版仍需合法直读或RSS解析。",
+        "evidence_url": "https://rss.dw.com/syndication/feeds/vam_volltextfeedconfirmado.20605-copypaste.html",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2270,6 +2512,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "THE_HINDU_ROBOTS_BLOCKED",
+        "preferred_url": "https://www.thehindu.com/",
+        "comment": "本工具对thehindu.com受robots限制；没有证据可持续无障碍取得免费文章，继续待验证。",
+        "evidence_url": "https://www.thehindu.com/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2401,7 +2654,7 @@
       "id": "SRC-099",
       "sector": "政治",
       "name": "GAO美国政府问责局",
-      "status": "C",
+      "status": "A",
       "url": "https://www.gao.gov/",
       "access": "官方审计调查报告可读",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -2420,6 +2673,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "A",
+        "result": "OFFICIAL_REPORTS_HTML_ALTERNATE",
+        "preferred_url": "https://www.gao.gov/topics/government-operations?page=1",
+        "comment": "GAO政府运作专题页直接返回发布日期、报告摘要和报告链接，具备实际公开研究内容。",
+        "evidence_url": "https://www.gao.gov/topics/government-operations?page=1",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2595,6 +2859,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "SINGLE_RELEASE_INDEXED_DIRECT_ROBOT_CHALLENGE",
+        "preferred_url": "https://www.europarl.europa.eu/news/en/press-room/20260708IPR46377/",
+        "comment": "欧洲议会官方单篇新闻及其正文被搜索索引收录；web.open返回JS机器人验证，浏览器直读未解决。",
+        "evidence_url": "https://www.europarl.europa.eu/news/en/press-room/20260708IPR46377/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2751,7 +3026,7 @@
       "id": "SRC-113",
       "sector": "军事",
       "name": "IISS免费公开Insights",
-      "status": "C",
+      "status": "B",
       "url": "https://www.iiss.org/",
       "access": "仅公开文章；Military Balance+付费排除",
       "fallback": "优先官方公开资料；如受限用合法RSS或搜索元信息；付费全文移入排除名单",
@@ -2770,6 +3045,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "B",
+        "result": "IISS_FREE_PUBLIC_SUBSET_DUPLICATE_045",
+        "preferred_url": "https://www.iiss.org/latest/",
+        "comment": "与SRC-045同一机构免费研究系列，宜在未来规范化为一源多栏目，公开免费文章存在而付费数据库排除。",
+        "evidence_url": "https://www.iiss.org/latest/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2845,6 +3131,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "PREPRINT_SEARCH_INDEXED_BROWSER_403",
+        "preferred_url": "https://www.medrxiv.org/content/early/recent",
+        "comment": "搜索索引可确认2026-10-09最新预印本列表，但本工具直接打开403，待官方RSS/合法镜像/网络主机实测；不得把预印本当同行评审证据。",
+        "evidence_url": "https://www.medrxiv.org/content/early/recent",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2870,6 +3167,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "NMPA_OFFICIAL_REPORTS_INDEXED_BROWSER_412",
+        "preferred_url": "https://www.nmpa.gov.cn/directory/web/nmpa/ylqx/ylqxjgdt/index.html",
+        "comment": "2026-10-09官方医疗器械审核目录有搜索索引可读；web.open仍412，不满足直接自动抓取验收。",
+        "evidence_url": "https://www.nmpa.gov.cn/directory/web/nmpa/ylqx/ylqxjgdt/index.html",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -2895,6 +3203,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "NHC_OFFICIAL_REPORTS_INDEXED_BROWSER_412",
+        "preferred_url": "https://www.nhc.gov.cn/",
+        "comment": "国家卫健委公开2026政策与新闻搜索索引可读；当前网页工具直接打开412，继续待验证。",
+        "evidence_url": "https://www.nhc.gov.cn/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -3020,6 +3339,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "CISA_ADVISORIES_INDEXED_BROWSER_403",
+        "preferred_url": "https://www.cisa.gov/news-events/cybersecurity-advisories",
+        "comment": "官方安全通告目录通过搜索可取得旧版记录；web.open403，未证明实时可采集。",
+        "evidence_url": "https://www.cisa.gov/news-events/cybersecurity-advisories",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -3245,6 +3575,17 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "recovery_20261013": {
+        "previous_status": "C",
+        "new_status": "C",
+        "result": "UN_DESA_POPULATION_DYNAMIC_UNREADABLE",
+        "preferred_url": "https://population.un.org/wpp/",
+        "comment": "UN人口数据库门户动态内容不可读；需要UN静态数据下载与授权核验，未确认真实数据。",
+        "evidence_url": "https://population.un.org/wpp/",
+        "verified_at": "2026-10-13",
+        "production_host_validation": "NOT_RUN",
+        "permission_for_AI": "NOT_REVIEWED"
       }
     },
     {
@@ -3327,5 +3668,17 @@
     "all_production_test": "NOT_RUN",
     "copyright_review": "INCOMPLETE",
     "test_type": "BROWSER_PROXY_NOT_PRODUCTION_HOST"
+  },
+  "project_name": "内参系统",
+  "project_aliases": [
+    "内参",
+    "内参系统",
+    "Global Strategic Intelligence",
+    "GSI"
+  ],
+  "recovery_audit_20261013": {
+    "c_sources_examined": 31,
+    "access_note": "Public HTML direct or official docs/indexed evidence only; not 31 source production test",
+    "production_host_validations": 0
   }
 }
