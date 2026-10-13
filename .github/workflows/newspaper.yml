@@ -16,7 +16,8 @@ on:
     - cron: '3 17 * * *' # Beijing 01:03 primary
     - cron: '18 17 * * *' # Beijing 01:18 fallback
     - cron: '33 17 * * *' # Beijing 01:33 fallback
-    - cron: '43 17 * * *' # Beijing 01:43 final scheduled fallback
+    - cron: '43 17 * * *' # Beijing 01:43 fallback
+    - cron: '7 18 * * *' # Beijing 02:07 last resort (different UTC hour)
   workflow_dispatch:
     inputs:
       dry_run:
