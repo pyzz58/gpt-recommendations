@@ -33,6 +33,7 @@ from brief_editor import edit_grouped, apply_reports
 from edition_budget import EditionBudget
 from news_editor import edit_reports_in_batches, write_compact_commentary
 from market_snapshot import fetch_market_snapshot
+from editorial_quality import edition_quality_report
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -659,6 +660,18 @@ def main():
             grammar_limit=settings.get("grammar_examples_per_article", 3),
             vocab_limit=0,
         )
+    # Count only news articles that will truly appear in the PDF.
+    # This audit does not certify factual correctness; shortfalls are not padded.
+    quality = edition_quality_report(grouped)
+    LOG.info("Editorial print audit: selected=%d printable=%d outlets=%d warnings=%s",
+             quality["selected_articles"], quality["printable_articles"],
+             quality["distinct_publisher_families_printable"],
+             ",".join(quality["warnings"]) or "none")
+    if quality["warnings"]:
+        LOG.warning("Editorial quality review required: %s",
+                    ",".join(quality["warnings"]))
+    if quality["printable_articles"] == 0:
+        raise RuntimeError("No actual printable sourced news; abort empty edition")
     # Print evidence-mapped edited reports; keep commentary outside news copy.
     market_data = None
     if not args.demo:
@@ -679,6 +692,9 @@ def main():
         target.parent.mkdir(parents=True, exist_ok=True)
         target.with_suffix(".html").write_text(html_body, encoding="utf-8")
         target.with_suffix(".txt").write_text(text_body, encoding="utf-8")
+        target.with_suffix(".editorial.json").write_text(
+            json.dumps(quality, indent=2, ensure_ascii=False),
+            encoding="utf-8")
         if market_data is not None:
             target.with_suffix(".market.json").write_text(
                 json.dumps(market_data, indent=2, ensure_ascii=False),
