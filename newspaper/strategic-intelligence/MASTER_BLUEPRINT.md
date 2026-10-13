@@ -1,7 +1,7 @@
 # 内参系统｜总体蓝图与唯一产品总纲
 
-> 版本：设计基线 V4.1（2026-10-13）｜状态：**详细规划与项目框架已建；研究引擎、刊物和生产调度尚未实现**。
-> 正式名称：**内参系统**；英文缩写 GSI / Global Strategic Intelligence。规范路径 `newspaper/strategic-intelligence/`。此文为最高层产品愿景、范围与主流程索引，具体字段及步骤由专题文件详述。
+> 版本：设计基线 V4.4（审核稿）（2026-10-13）｜状态：**详细规划与项目框架已建；研究引擎、刊物和生产调度尚未实现**。
+> 正式名称：**内参系统**；英文缩写 GSI / Global Strategic Intelligence。规范路径 `newspaper/strategic-intelligence/`。**现行详细操作以[CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)为第一权威文件**；本文件保留愿景、早期推演与长期目标供参考，具体字段及步骤由专题文件详述。
 > **名词说明**：本系统不是现有的每日双语新闻早报。其独立产出是**每周战略深度内参**和**每年综合战略年报**。即使完全断开日报，也必须可以独立研究和出版。
 
 ## 0. 第一性原理：到底要建设什么
@@ -13,7 +13,7 @@
 2. 尽可能贴近原始发布与真实业务现场，核实事实、时间、口径和证据来源。
 3. 用一流记者的事实转述能力、一流研究员的结构性研究、一流教师/战略顾问的讲解能力揭示世界运行机制。
 4. 主动构建竞争性解释和最强反方观点，降低信息茧房与模型迎合。
-5. 将原始可归档证据、研究过程、历史判断与知识原理长期保存；每月回看何处曾经正确或错误。
+5. 将原始可归档证据、研究过程、历史判断与知识原理长期保存；在重大新证据出现时回看，并在年报系统审计何处曾经正确或错误。
 6. 帮助个人读者形成独立判断、美股投资与小团队创业能力，能够迁移到从未见过的新事件上。
 
 **愿景参照**：顶级财富管理家族/家族办公室的研究严谨度、世界视野、长期资本与制度理解，**不声称拥有其内部会议、特权渠道、内幕消息或不可合法取得的资料**。判断依证据，不依大机构的名气。
@@ -57,58 +57,51 @@
 
 低成本原则：广覆盖元数据/Feed优先，少量高价值议题才投入检索、PDF分析与深推理；优先官方免费RSS/API、公开报告和必要的合规抓取。站点免费可见≠可自动抓取、可发给LLM或可全文再发布。所有假定的工具许可必须按具体用途审核。
 
-## 4. 逻辑架构（概念而非已部署服务）
+## 4. V4.4唯一现行六层架构（概念分工，不是六位独立Agent）
 
-```text
- GLOBAL INTELLIGENCE SOURCES                        Existing Daily News (optional/read-only)
- [Media][Investment banks][Funds][Big4][Policy][AI][Health][Defense][Startups]
-                    \                                   /
-                     +---- Independent Discover & Source Registry ----+
-                                                  |
-                               Normalize, date, language, provenance
-                                                  |
-                         Event grouping / dedup / source independence
-                                                  |
-                        Core queue + Outside-the-bubble exploration
-                                                  |
-                      Priority scoring + evidence feasibility gate
-                                                  |
-                  Research plan and verified evidence packets (L1/L2/L3)
-                                                  |
-                 CHIEF COGNITIVE & STRATEGIC ADVISOR (education)
-                                                  |
-                Independent fact check + adversarial editorial review
-                                                  |
-                               Main editor / copy + consistency
-                                         /                   \
-                                Weekly deep issue       Annual integrated review
-                                         \                   /
-                                  Publish, receipts and logs
-                                                  |
-                      Source / Event / Theme / Thesis / Concept archives
-                                      (versioned feedback loop)
-```
+\`\`\`text
+L1 全球独立公开信息发现（免费合法来源，主流＋跨地区非热点）
+    ↓
+L2 事件血缘聚类＋选文委员会S0—S8
+    （现实正面/负面/混合影响、典型性/重大突破、原始资料硬门槛）
+    ↓
+L3 证据查验＋顶级记者式事实报道A
+    （5W1H、真实历史背景/机构报告方法与局限、事实归属）
+    ↓
+L4 一套联合顾问—帝师研究工作台
+    （七问三检验、B1顾问/B2帝师/C情景与开放问题，
+     因果/教学有漏洞回退L3或L4）
+    ↓
+L5 独立事实/专业/逻辑/版权审稿（PASS/REVISE/BLOCK）
+    ↓
+L6 主编整本周报/年报＋长期可回查事实、机制与判断档案
+    ↑ 新事实/历史核错/读者自愿反馈循环回L2—L4
+\`\`\`
 
-**最小职责**：统一研究引擎 + 单一首席认知/战略顾问 + 独立审校门禁 + 一套长期档案 + 周报与年报两类出版产品。可以使用不同LLM工序/配置来实现逻辑职责，但不能因为“角色多”自动搭建微服务或每个栏目专属Agent。
+**编辑版单篇主文**：A完整独立可读的**记者式新闻/机构原始报告报道** → B1顾问现实研判 → B2帝师机制与知识教学 → C**事件推演及开放性问题**；原先“C继续观察”被用户否决，未来可证伪变量留内部Thesis资料。具体[杂志结构](MAGAZINE_ARCHITECTURE.md)、[选文与记者标准](EDITORIAL_SELECTION_AND_REPORTING.md)、[情景与开放题](SCENARIOS_AND_OPEN_QUESTIONS.md)。
 
-## 5. 全流程的十二个明确步骤
+**研究思路**：古代帝师历史材料与现代智囊/咨询方法综合出的[七问三检验](ADVISOR_MASTER_METHOD.md)是主法；旧12步世界发现库只是扩展专业工具。事实可由多机制协同或竞争解释，不保证存在唯一终极原因。
 
-| 顺序 | 阶段 | 输入 | 必须留存的输出 | 防错关键 |
+## 5. 生产中可再分工的十二项细粒度操作（不是十二个Agent或十二步帝师教学）
+
+下列是**六层架构内部可以按需要拆分的处理任务**，与主研究逻辑“七问”不同。每项具体输入输出、失败与纠错以[CANONICAL_SYSTEM_SPEC_V44.md](CANONICAL_SYSTEM_SPEC_V44.md)第十节为准：
+
+| 编号 | 所属层 | 真实操作 | 必有产物 | 硬门 |
 |---|---|---|---|---|
-| 01 | 独立发现 | 全球合法源、公开公告、可选日报线索 | Candidate和发现时间/原址/来源ID | 日报断流不影响发现 |
-| 02 | 规范化与去重 | 多语相同报道、转载、更新 | Event和来源血缘 | 10篇转引不是10份独立核实 |
-| 03 | 反茧房覆盖检查 | 候选集、语言/地域/机构分布 | CoverageAudit、探索队列 | 小众重大信号能进入 |
-| 04 | 选题与资源决策 | 重要性、结构意义、证据可得性 | TopicDecision、L1/L2/L3 | 不因为热度凑篇数 |
-| 05 | 证据收集与查验 | 原始政策/财报/论文/媒体 | EvidencePacket、关键论断定位 | 事实与推断分层 |
-| 06 | 研究机制与假设 | EvidencePacket、历史主题 | 机制、反例、反方、情景和观察指标 | 相关不等于因果 |
-| 07 | 首席顾问教学 | 已核验事实、机制 | 有严谨定义和通俗例子的详细教学稿 | 增加可迁移认知 |
-| 08 | 独立审校与返工 | 稿件、claim-source映射 | PASS/REVISE/BLOCK门禁日志 | 核心事实无来源则BLOCK |
-| 09 | 主编整合与定稿 | 已通过稿件、跨文章重复 | WeeklyDraft / AnnualDraft | 主编统一逻辑，不混杂观点 |
-| 10 | 格式与发布检查 | 定稿和参考引用 | Markdown/HTML/PDF + QA清单 | 不静默漏章/断链 |
-| 11 | 交付与反馈 | 发布物、收件/渠道配置 | DeliveryReceipt、费用、错误 | 创建≠接受≠送达 |
-| 12 | 长期归档与复盘 | 证据、稿、判断、现实变化 | 不可覆写历史版本+新证据 | 不以后见之明重写旧结论 |
+| 01 | L1 | 合法全球信息发现及来源时间记录 | Candidate/SourceID | 可访问不等于许可全文 |
+| 02 | L2 | 媒体转载血缘和同事件归并 | EventCluster | 转载不算独立证据 |
+| 03 | L2 | 重要地区/非金融/正面成果反茧房检查 | CoverageAudit | 热搜不等于影响 |
+| 04 | L2 | S0—S8新闻价值评估及报道体裁安排 | StorySelection/ReportingPlan | S2事实及授权门不可抵消 |
+| 05 | L3 | 法规/报告/论文/财报与多方事实核查 | Claim/EvidencePacket | 关键错BLOCK |
+| 06 | L3 | 完整5W1H记者稿/机构报告A段 | NewsDraftA | 只能写已核真实来源 |
+| 07 | L4 | 顾问七问与竞争机制及现实研判B1 | SharedDossier/AdvisorB1 | 多因并存、不装作无所不知 |
+| 08 | L4 | 帝师实际教育B2，反例、陌生案例迁移 | MasterB2/MechanismCard | 知识和事实不符须返工 |
+| 09 | L4 | 从B推演条件不同的未来与开放问题C | Scenarios/OpenQuestions | 无凭空概率及引导题 |
+| 10 | L5 | 独立事实/因果/专业/版权与整篇审稿 | ReviewDecision | BLOCK必须消除 |
+| 11 | L6 | 整刊封面/目录/动态栏目/引用与长篇完整性 | WeeklyEdition/AnnualEdition | 完整不截断，未授权不发 |
+| 12 | L6 | 历史版本/Theme/Thesis/年度漏报及纠错 | Archive/RevisionLog | 不覆写旧原件 |
 
-这十二项是**逻辑工作流**，可以在一个程序中按工序串联，不意味部署十二个独立组件。细化见 [END_TO_END_WORKFLOW.md](END_TO_END_WORKFLOW.md)。
+**特别区分**：\`ANNUAL_REPORT_SPEC.md\`还定义**年报年度专门的十二项研究**，不是这十二项日常细分，也不是顾问七问；概念层级分别是“六层系统→十二项可选生产任务→顾问七问→年报自己的年度审计步骤”。任何AI不得把它们拼成36位Agent。
 
 ## 6. 两个出版产品
 
