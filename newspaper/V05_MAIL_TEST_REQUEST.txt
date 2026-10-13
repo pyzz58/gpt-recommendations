@@ -7,3 +7,5 @@ This file is not a credential and contains no email password.
 Changes to other files do not retrigger the special push path.
 
 2026-10-13: recovery request after missing 07:00 scheduled run; one live QQ email delivery, protected by daily receipt deduplication.
+
+2026-10-13: owner-requested single real-news QUALITY SAMPLE via existing QQ SMTP; does not count as the daily edition and must not be auto-repeated.
