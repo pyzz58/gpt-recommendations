@@ -1,3 +1,9 @@
+# 【DEPRECATED / 已废止】内参系统历史月报模板
+
+> **2026-10-13用户明确废止现行月报**，改为《全球战略周报》（WEEKLY）＋《全球战略年报》（ANNUAL）。此历史文件仅保留以追溯旧讨论/旧规范，**不得被Codex、LLM、出版程序或GitHub Actions作为现行MONTHLY模板**。唯一有效的年报模板为[ANNUAL_TEMPLATE.md](ANNUAL_TEMPLATE.md)，年度十二步规范为[ANNUAL_REPORT_SPEC.md](../ANNUAL_REPORT_SPEC.md)，最新用户决定见[DECISIONS.md](../DECISIONS.md)。
+
+---
+
 # 内参系统｜全球战略判断月报（编辑骨架）
 
 > 月报=新的跨领域综合研究+长期命题审计。**不得把4份周刊合成PDF并称月报完成**。所有跨期判断保留时间截点与原有版本。
