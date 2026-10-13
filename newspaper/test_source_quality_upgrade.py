@@ -80,7 +80,7 @@ class SourceQualityUpgradeTests(unittest.TestCase):
                       headers={"Content-Type":"text/html"})
         long_body="A national central bank published the final terms of the decision. "*30
         with patch.object(reader.requests,"get",return_value=response), \
-             patch.object(reader.trafilatura,"extract",return_value="Not enough text"), \\
+             patch.object(reader.trafilatura,"extract",return_value="Not enough text"), \
              patch.object(reader,"newspaper4k_from_html",return_value=long_body) as fallback:
             result=reader.fetch_reading(article,min_chars=180,max_chars=2100)
         self.assertIsNotNone(result)
@@ -93,7 +93,7 @@ class SourceQualityUpgradeTests(unittest.TestCase):
                       headers={"Content-Type":"text/html"})
         fallback_text="Subscribe to continue reading the article. " * 18
         with patch.object(reader.requests,"get",return_value=response), \
-             patch.object(reader.trafilatura,"extract",return_value=""), \\
+             patch.object(reader.trafilatura,"extract",return_value=""), \
              patch.object(reader,"newspaper4k_from_html",return_value=fallback_text):
             self.assertIsNone(reader.fetch_reading(article,min_chars=180,max_chars=2000))
 
@@ -103,7 +103,7 @@ class SourceQualityUpgradeTests(unittest.TestCase):
                       headers={"Content-Type":"text/html"})
         text="This is the complete important public account of a government rule. "*24
         with patch.object(reader.requests,"get",return_value=response), \
-             patch.object(reader.trafilatura,"extract",return_value=text), \\
+             patch.object(reader.trafilatura,"extract",return_value=text), \
              patch.object(reader,"newspaper4k_from_html") as fallback:
             result=reader.fetch_reading(article,min_chars=180,max_chars=2100)
         self.assertEqual(result["extraction_engine"],"trafilatura")
