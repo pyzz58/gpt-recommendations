@@ -1,6 +1,8 @@
 # 内参系统｜深度认知学习引擎：完整目标、工作机制与可执行教学协议
 
-> 设计版本 V3.1（2026-10-13）。**这是本项目最重要的产品能力规范之一，而不是一份“在提示词中写帝师二字”的风格宣言。** 尚未实现为生产代码。本文与[COGNITIVE_ADVISOR_SKILL.md](COGNITIVE_ADVISOR_SKILL.md)、[CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md)、[INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)共同构成教学与研究的执行标准。
+> 设计版本 V4.0（2026-10-13）。**这是本项目最重要的产品能力规范之一，而不是一份“在提示词中写帝师二字”的风格宣言。** 尚未实现为生产代码。**最高硬规则为[HARD_RULES.md](HARD_RULES.md)；九栏专业协议为[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)，人性与中国文化的实操为[HUMAN_NATURE_AND_CLASSICAL_LENSES.md](HUMAN_NATURE_AND_CLASSICAL_LENSES.md)。**
+>
+> 本文与[COGNITIVE_ADVISOR_SKILL.md](COGNITIVE_ADVISOR_SKILL.md)、[CASEBOOK_POLITICS_AND_STARTUP.md](CASEBOOK_POLITICS_AND_STARTUP.md)、[INTELLIGENCE_OPERATING_MODEL.md](INTELLIGENCE_OPERATING_MODEL.md)共同构成教学与研究的执行标准。
 >
 > 这里的“深度学习”是**读者对世界机制的深入学习**，不是指训练或微调深度神经网络。内参最终交付的不是“结论”，而是读者面对陌生问题时可独立使用的分析方法。
 
@@ -231,3 +233,9 @@ review_status: "DRAFT|REVISE|PASS|BLOCK"
 6. 收集人工意见并记录具体改进；不达标先改规范和证据质量，**不优先增加十个Agent**。
 
 **最终验收问题**：如果用户下个月读到另一场政治冲突/另一家创业公司财报，是否能够在没有顾问即时提示下独立提出关键制度、现金流、激励、证据与反方问题？若不能，这篇内参最多只是写得好的评论，不是我们建设的学习引擎。
+
+# 第八章：V4.0九栏不得统一泛化的专业硬约束
+
+这十一道教学工序只是共享的“如何由真实事件教学”，不是九个栏目都使用同一套示例。执行时先判定所属栏目，再逐项加载[DOMAIN_TEACHING_PROTOCOLS.md](DOMAIN_TEACHING_PROTOCOLS.md)的来源、详细研究顺序、具体学科、算例、反例和迁移检验。例如政治不能只讲“权力”，必须按该国法定行政/立法/司法/财政/党派规则；医疗AI创业不能只讲“商业模式”，必须算客户价值兑现、买方预算、贡献利润/CAC/留存；社会必须检查统计抽样和制度/文化差异。相关中国传统文化与人性问题要经过来源与类比限度检验，不能把传统术语当成真实事件背后的必然原因。
+
+读者如果下个月仍不能独立分析陌生案例，说明教学策略尚需改进；没有读者实际反馈时只记录TAUGHT，**不可自己宣布“教会了”**。
