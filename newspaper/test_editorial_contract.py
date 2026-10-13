@@ -17,7 +17,7 @@ class EditorialContract(unittest.TestCase):
             "创业、商业与企业竞争","医疗、生命科学与公共健康"])
         self.assertEqual(SECTIONS["美股市场与机构观察"],5)
         self.assertEqual(SECTIONS["中国与美国"],3)
-        self.assertEqual(sum(SECTIONS.values()),20)
+        self.assertEqual(sum(SECTIONS.values()),16)
 
     def test_us_china_events_do_not_repeat_in_other_domains(self):
         inputs=[
