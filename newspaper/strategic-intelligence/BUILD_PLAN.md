@@ -188,3 +188,7 @@ newspaper/strategic-intelligence/
 ## V4.1实施计划优先更新：研究顾问与帝师的世界机制发现
 
 在真实六篇样稿测试中先增加一个**不得预告教学主题**的盲测：输入不同板块的真实原始文件与事实，要求研究流程先生成Puzzle、MechanismCandidates、CounterEvidence和ChosenMechanism，再决定需要教什么正规学科原理。九栏专业清单只是工具箱，不是验收“必须提到某词”的清单。每次完成AdvisorAnalysis和LearningUnit后，独立审稿发现错因果/不合现实，返回EvidencePacket重新查。对比仅按照栏目清单强行套理论的旧稿，评价实际解释力、专业正确性、未知与迁移，而不是篇幅或模型评分。逐项工程契约在[OPEN_ENDED_WORLD_MODEL.md](OPEN_ENDED_WORLD_MODEL.md)及[ARCHITECTURE_LOGIC_AUDIT_V41.md](ARCHITECTURE_LOGIC_AUDIT_V41.md)中。生产许可仍未授权。
+
+## V4.2开发先决条件（用户本次暂未要求实际开发）
+
+现在先**冻结杂志设计而非开发整个系统**。以后用户再要求开工时，先打开[ISSUE_BACKLOG.md](ISSUE_BACKLOG.md)按NC编号读取问题、具体复现与验收，不把“已写详细规范”当作VERIFIED。第一批应是把[MAGAZINE_ARCHITECTURE.md](MAGAZINE_ARCHITECTURE.md)的A新闻+B顾问/帝师+C未来核查，用真实公开证据做1—3篇离线样稿；联合研究引擎加载[ADVISOR_MASTER_METHOD.md](ADVISOR_MASTER_METHOD.md)七问三检验，非12套分立模型。来源余下全部生产测试、年度自动生成、邮件和日程**继续等待用户明确批准**。
