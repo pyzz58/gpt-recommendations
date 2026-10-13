@@ -1,4 +1,4 @@
-# 内参系统｜单篇主文统一模板（V4.2）
+# 内参系统｜单篇主文统一模板（V4.4现行模板）
 
 > 本模板是**读者真正看到的顺序**。每篇主文必须先有相对完整、忠于事实的**记者式新闻报道**，然后是**顾问研判＋帝师释理**，最后是**事件推演与开放思考，来源和实证可核对**。后台七问三检验是内部分析逻辑，不能硬生生印成七段文章。最高优先级：[MAGAZINE_ARCHITECTURE.md](../MAGAZINE_ARCHITECTURE.md)、[ADVISOR_MASTER_METHOD.md](../ADVISOR_MASTER_METHOD.md)和[HARD_RULES.md](../HARD_RULES.md)。
 
