@@ -91,6 +91,7 @@
 - **[ANNUAL_REPORT_SPEC.md](ANNUAL_REPORT_SPEC.md)** — 全年周报+年度独立原始新闻源，十二步生产综合年报。
 - **[REAL_CASES_EVIDENCE_FIRST.md](REAL_CASES_EVIDENCE_FIRST.md)** — 以可核实的2013美国政府停摆、Duolingo 2024 SEC报表、伯克希尔2024年报真正示范事实→制度/会计根因→知识与迁移。
 - **[ENDORSEMENT_LEDGER.md](ENDORSEMENT_LEDGER.md)**、**[HISTORY_RECONCILIATION.md](HISTORY_RECONCILIATION.md)** — 用户认可的详细保存及可回查历史审计。
+- **[V4_RECONCILIATION_AND_QA.md](V4_RECONCILIATION_AND_QA.md)** — 已核查文档、现行决策、30份核心Markdown相对链接检查及未完成的真实实施验证。
 
 ### B. 先读这六份（快速准确理解项目）
 1. [MASTER_BLUEPRINT.md](MASTER_BLUEPRINT.md) — **正式完整总纲**、六项成果、九栏目、十二步、双刊与边界。
