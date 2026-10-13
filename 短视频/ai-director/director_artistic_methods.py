@@ -147,6 +147,10 @@ def _source_lock(base, state, director_command):
         raise ArtisticMethodError("ARTISTIC_DIRECTOR_MEETING_NOT_LOCKED") from None
     _need(agent_team.fingerprint(base) == state["base_digest"],
           "ARTISTIC_BASE_STALE")
+    _need(state.get("source_review_bound") is True and
+          isinstance(state.get("source_digest"), str) and
+          len(state["source_digest"]) == 64,
+          "ARTISTIC_ORIGINAL_SCREENPLAY_NOT_BOUND")
     return {
         "source_digest": state["source_digest"],
         "base_digest": state["base_digest"],
