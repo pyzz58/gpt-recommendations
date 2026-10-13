@@ -40,16 +40,17 @@
 3. [ADVISOR_PEDAGOGY.md](ADVISOR_PEDAGOGY.md) — 帝师式讲解 Skill、第一性原理/费曼教学及例子。
 4. [INTELLIGENCE_MEMORY.md](INTELLIGENCE_MEMORY.md) — 来源、事件、主体、主题、判断、出版、知识卡片的数据模型与长期追踪。
 5. [SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md) — 独立全球多语言媒体发现、来源库、报道去重、反信息茧房及验收。
-6. [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md) / [SOURCE_REGISTRY.json](SOURCE_REGISTRY.json) — 130个候选跨政治、军事、科技、医疗、创业和金融来源（逐项浏览器验证后A94/B5/C31，生产环境测试0/130）的可获取状态与机器可读登记。
+6. [SOURCE_REGISTRY.md](SOURCE_REGISTRY.md) / [SOURCE_REGISTRY.json](SOURCE_REGISTRY.json) — 130个候选跨政治、军事、科技、医疗、创业和金融来源（逐项浏览器验证后A102/B7/C21，生产环境测试0/130）的可获取状态与机器可读登记。
 7. [SOURCE_ACCESS_BLOCKLIST.md](SOURCE_ACCESS_BLOCKLIST.md) — 明确受限的付费/客户专属研究及访问异常待复核。
 8. [SOURCE_VERIFICATION_PLAYBOOK.md](SOURCE_VERIFICATION_PLAYBOOK.md) — 实测接入、GitHub工具回退、版权审查及验收操作规程。
 9. [ACCESS_AUDIT_2026-10-13.md](ACCESS_AUDIT_2026-10-13.md) — 真实浏览器网页/两项公开JSON接口取样核验、失败及环境限制。
 10. [SOURCE_TOOLING_RESEARCH.md](SOURCE_TOOLING_RESEARCH.md) — RSSHub、Miniflux、Trafilatura、news-please、newspaper4k等工具的取舍。
 11. [ACCESS_AUDIT_2026-10-13_FULL.md](ACCESS_AUDIT_2026-10-13_FULL.md) — 130个注册来源逐条网页实际访问与限制结果。
 12. [tools/source_probe.py](tools/source_probe.py) — 未来在获准联网主机手动运行的低频HTTP/RSS/API探测脚本，默认干跑，不定时、不发邮件。
-13. [TECHNICAL_DESIGN.md](TECHNICAL_DESIGN.md) — 简约架构、技术候选、接口、故障与成本设计。
-14. [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) — 从 V0 样刊到 V3 专业增强的逐步落地步骤。
-15. [ACCEPTANCE_AND_HANDOFF.md](ACCEPTANCE_AND_HANDOFF.md) — 验收测试、执行约束、给未来 AI/Codex 的交接指令。
+13. [SOURCE_RECOVERY_AUDIT_2026-10-13.md](SOURCE_RECOVERY_AUDIT_2026-10-13.md) — 内参系统31条待验证来源的恢复审计、10条部分解决及21条遗留障碍。
+14. [TECHNICAL_DESIGN.md](TECHNICAL_DESIGN.md) — 简约架构、技术候选、接口、故障与成本设计。
+15. [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) — 从 V0 样刊到 V3 专业增强的逐步落地步骤。
+16. [ACCEPTANCE_AND_HANDOFF.md](ACCEPTANCE_AND_HANDOFF.md) — 验收测试、执行约束、给未来 AI/Codex 的交接指令。
 
 ## 绝对执行边界
 - 本次只创建设计文档，不修改 newspaper 现有早报代码、Actions、Secrets、定时计划、交付地址或数据。
@@ -62,3 +63,5 @@
 当前130源来源库包含公开网页和API文档勘查、实际网页读取抽样及两项真实JSON示例测试，**不是持续技术已连接**；每个source.production_test均为NOT_RUN。某些来源明确有付费限制，详细见来源限制清单。未经新指令不部署爬虫、不注册账户、不发送邮件。
 ### 2026-10-13完整逐源网页审计
 130个原始URL已逐个通过网页浏览工具访问。取得公开目录/HTML或官方API文档的94个为A；仅有免费部分的5个为B；仍未证实可用的31个为C。**网页浏览成功不等于程序真实自动采集成功**：所有来源production_test=NOT_RUN。详情和每条错误见ACCESS_AUDIT_2026-10-13_FULL.md。
+## 内参系统来源恢复最新状态（2026-10-13）
+从31条待验证来源中找到10条合法公开文章、研究目录或官方API文档路径（A增加8条、B增加2条），另外21条仍需端到端网络测试、密钥、许可审核或合法替代。130条生产级自动采集均未运行。权威结果请查SOURCE_REGISTRY.json与SOURCE_RECOVERY_AUDIT_2026-10-13.md，切勿将公开可读当作生产已启用。
