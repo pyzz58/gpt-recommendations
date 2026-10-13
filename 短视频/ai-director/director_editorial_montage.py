@@ -84,6 +84,9 @@ def validate(handoff, episode, proof, coverage, plan):
         _need(len(scene_ids) == 1,
               "MONTAGE_ONE_SHOT_MUST_HAVE_ONE_SOURCE_SCENE")
         first = shot["source_spans"][0]["beat_id"]
+        _need(source[first]["source_adaptation"]["scene_heading"] ==
+              by_scene_beat[first][0]["heading"],
+              "MONTAGE_SOURCE_SCENE_HEADING_DRIFT")
         shot_info[shot["shot_id"]] = {
             "source_scene_id": next(iter(scene_ids)),
             "physical_scene_id": source[first]["scene_id"],
@@ -138,7 +141,8 @@ def validate(handoff, episode, proof, coverage, plan):
                 corpus = (incoming_scene["heading"] + "\n" +
                           incoming_beat["action"])
                 _words(evidence, "MONTAGE_TIME_RELATION_NEEDS_SOURCE", minimum=4)
-                _need(evidence in corpus,
+                _need(evidence in corpus and
+                      evidence in handoff["screenplay_fountain"],
                       "MONTAGE_TIME_EVIDENCE_NOT_IN_REVIEWED_SCRIPT")
                 shifts += 1
             else:
