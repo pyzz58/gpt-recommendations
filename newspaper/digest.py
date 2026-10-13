@@ -28,6 +28,9 @@ from ai_commentary import analyze_one_call, email_commentary, preferred_model_fo
 from extractive_editor import trim_extracted_article
 from translation_editor import polish_translation
 from editorial_selection import pick_politics, tech_candidates, political_regions
+from newsroom import prepare_pool, select_readable
+from brief_editor import edit_grouped, apply_reports
+from edition_ai import edit_and_analyze
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -151,6 +154,8 @@ def choose_candidates(
     news_start: dt.datetime | None = None,
 ) -> dict:
     """Prefer valuable, distinct events and keep readable outlet fallbacks."""
+    if "中国与美国" in limits:
+        return prepare_pool(items, per_section=pool_size)
     output = {}
     for category in limits:
         pool = [item for item in items if item["category"] == category]
@@ -194,7 +199,9 @@ def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
         enriched = {}
         for url, fut in futures.items():
             article = fut.result()
-            enriched[url] = trim_extracted_article(article) if article else None
+            enriched[url] = article if "中国与美国" in candidates else (trim_extracted_article(article) if article else None)
+    if "中国与美国" in candidates:
+        return select_readable(candidates, enriched)
     output = {category: [] for category in candidates}
     selected_global = []
     diagnostics = {}
@@ -510,6 +517,8 @@ def main():
         require_live_delivery_window(now, end)
     LOG.info("News reporting window (Beijing): %s inclusive to %s exclusive", start.isoformat(), end.isoformat())
     diagnostics = {}
+    edited_commentary = None
+    editorial_api_called = {"value": False}
     if args.demo:
         grouped = {}
         for category in settings["max_per_category"]:
@@ -560,6 +569,23 @@ def main():
         readable, diagnostics = build_readings(pool, settings)
         if sum(len(x) for x in readable.values()) == 0:
             raise RuntimeError("No articles successfully extracted; aborting the email.")
+        # Source-mapped editorial rewrites require validation against captured evidence.
+        # If they fail or exceed the model budget, use complete source paragraphs.
+        if not args.dry_run and os.environ.get("NEWSPAPER_LLM_API_KEY"):
+            def mark_editorial_call():
+                editorial_api_called["value"] = True
+            try:
+                plans, edited_commentary, usage = edit_and_analyze(
+                    readable, news_day, os.environ["NEWSPAPER_LLM_API_KEY"],
+                    before_request=mark_editorial_call)
+                readable = apply_reports(readable, plans)
+                LOG.info("Editorial verification completed; source mappings preserved")
+            except Exception as exc:
+                LOG.warning("Editorial rewrite unavailable; preserve source paragraphs: %s",
+                            type(exc).__name__)
+                readable = edit_grouped(readable)
+        else:
+            readable = edit_grouped(readable)
         translator = ensure_argos_translator()
         grouped = attach_lessons(
             bilingualize(readable, translator),
@@ -567,8 +593,7 @@ def main():
             grammar_limit=settings.get("grammar_examples_per_article", 3),
             vocab_limit=0,
         )
-    # V0.5 prints an editorial PDF: news-source material stays in the
-    # pipeline but appears in Chinese-only body, with a brief bilingual appendix.
+    # Print evidence-mapped edited reports; keep commentary outside news copy.
     html_body, text_body = build_clippings_html(grouped, news_day)
     if args.dry_run or args.demo:
         target = Path(args.output)
@@ -583,7 +608,11 @@ def main():
         )
         cover_html, cover_txt = mail_cover_clippings(news_day, grouped)
         ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
-        if ai_key:
+        if edited_commentary:
+            cover_html, cover_txt = email_commentary(
+                news_day, edited_commentary,
+                sum(len(entries) for entries in grouped.values()))
+        elif ai_key and not editorial_api_called["value"]:
             try:
                 model = preferred_model_for_commentary(grouped,news_day)
                 commentary, usage = analyze_one_call(
