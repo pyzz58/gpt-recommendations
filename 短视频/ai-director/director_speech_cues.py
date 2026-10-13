@@ -16,7 +16,7 @@ PLAN_FIELDS = {"version", "episode_id", "source_screenplay_digest",
                "director_breakdown_digest", "cues", "subtitles"}
 CUE_FIELDS = {"cue_id", "beat_id", "source_kind", "source_index", "speaker",
               "text_exact", "from_s", "to_s", "audio_mode"}
-SUB_FIELDS = {"subtitle_id", "beat_id", "text_exact", "from_s", "to_s"}
+SUB_FIELDS = {"subtitle_id", "beat_id", "source_cue_id", "text_exact", "from_s", "to_s"}
 
 
 class SpeechCueError(ValueError):
@@ -40,19 +40,33 @@ def _expected(episode, beat_index, original_shots):
     for beat_id in episode["beat_ids"]:
         beat = beat_index[beat_id]
         original = original_shots[beat_id]
-        for idx, utterance in enumerate(beat["dialogue"]):
-            audio.append((beat_id, "dialogue", idx,
-                          utterance["speaker"], utterance["line"]))
+        local = []
+        # The reviewed source owns the utterance text, not the chosen picture.
+        # Normal screenplay subtitle order is voiceover first, then dialogue;
+        # audio sequencing follows exactly that existing subtitle convention.
         if beat["voiceover"]:
-            audio.append((beat_id, "voiceover", 0, "NARRATOR",
+            local.append((beat_id, "voiceover", 0, "NARRATOR",
                           beat["voiceover"]))
             _need(original["narration"] == beat["voiceover"],
                   "CUE_SOURCE_VOICEOVER_NARRATION_CONFLICT")
         elif original["narration"]:
-            audio.append((beat_id, "narration", 0, "NARRATOR",
+            local.append((beat_id, "narration", 0, "NARRATOR",
                           original["narration"]))
-        if original["subtitles"]["text"]:
-            captions.append((beat_id, original["subtitles"]["text"]))
+        for idx, utterance in enumerate(beat["dialogue"]):
+            local.append((beat_id, "dialogue", idx,
+                          utterance["speaker"], utterance["line"]))
+        start = len(audio)
+        audio.extend(local)
+        original_caption = original["subtitles"]["text"]
+        if original_caption:
+            # Exact per-line breakup only when original aggregated subtitle
+            # matches the source utterances. Never invent a text segmentation.
+            if local and original_caption == " ".join(x[4] for x in local):
+                for offset, utterance in enumerate(local, 1):
+                    captions.append((beat_id, utterance[4],
+                                     f"C{start+offset:03d}"))
+            else:
+                captions.append((beat_id, original_caption, None))
     return audio, captions
 
 
@@ -94,8 +108,8 @@ def validate(handoff, breakdown, episode, proof, timeline):
                cue["speaker"], cue["text_exact"]) == original,
               "CUE_SOURCE_WORDS_SPEAKER_OR_ORDER_CHANGED")
         mode = cue["audio_mode"]
-        _need(mode in {"on_screen", "off_screen", "voiceover"} and
-              (kind == "dialogue" or mode == "voiceover"),
+        _need((mode in {"on_screen", "off_screen"} if kind == "dialogue"
+               else mode == "voiceover"),
               "CUE_AUDIO_MODE_INVALID")
         _interval(cue, durations[bid])
         _need(cue["from_s"] >= last_end.get(bid, 0) - EPS,
@@ -109,9 +123,17 @@ def validate(handoff, breakdown, episode, proof, timeline):
               sub["subtitle_id"] not in seen_subs,
               "CUE_SUBTITLE_ID_ORDER")
         seen_subs.add(sub["subtitle_id"])
-        _need((sub["beat_id"], sub["text_exact"]) == original,
+        _need((sub["beat_id"], sub["text_exact"],
+               sub["source_cue_id"]) == original,
               "CUE_SUBTITLE_TEXT_OR_ORDER_CHANGED")
         _interval(sub, durations[sub["beat_id"]])
+        if sub["source_cue_id"] is not None:
+            spoken = next((c for c in audio
+                           if c["cue_id"] == sub["source_cue_id"]), None)
+            _need(spoken is not None and
+                  sub["from_s"] <= spoken["from_s"] + EPS and
+                  sub["to_s"] >= spoken["to_s"] - EPS,
+                  "CUE_SUBTITLE_OUT_OF_SPEECH_SYNC")
     return {
         "kind": "director_source_exact_speech_timeline_receipt",
         "timeline_digest": agent_team.fingerprint(timeline),
