@@ -34,3 +34,21 @@
 - 网站公开本身不等于版权允许全文存档；引用、短摘与自写研究遵循许可证。
 - 没有授权不能通过GitHub开源代码绕过专业订阅。
 - 每季度重新检查D内容是否有合法OA版本或官方免费公开变动；黑名单可逆。
+
+
+## V1.7 免费路线清理（2026-10-13）
+**从活动免费候选清单移出的“完整免费获取未经证实/付费内容”**：
+- Financial Times 全站/付费正文：https://www.ft.com/ 。公开标题与搜索结果可能存在，但**不纳入保证可免费取全文的渠道**。
+- Bloomberg 全站/终端/付费报道：https://www.bloomberg.com/ 。需要订阅的资讯不列入免费全文采集。
+- Le Monde 付费频道：https://www.lemonde.fr/ 。暂移出自动免费候选；未来只有合法开放的单篇经实测和许可核查后才可加入。
+- WSJ完整订阅、The Economist完整订阅、Nikkei Asia订阅栏目、CB Insights和PitchBook付费完整商业数据库均不作为免费依赖；未经实际公开验证不得伪装成无成本API。
+- Reuters/LSEG专业商业内容及Reuters新闻再分发许可：公开Reuters.com可读新闻不等于获得专业全文库与批量再分发许可。保留Reuters公开网页候选B，付费专有产品排除。
+- 高盛/美银的机构客户专有研究库：保留公开精选栏目B；移除完整客户报告的免费获取假设。
+- **The Guardian Open Platform 的AI使用限制**：Developer虽然对符合条件的非商业用途免费，但条款明确涉及AI/文本挖掘限制。出处：https://www.theguardian.com/open-platform/terms-and-conditions 。故不得未经授权将文章正文送入自动LLM内参流程。另查询 https://open-platform.theguardian.com/access/ ；这是**用途许可排除**，不是收费问题。
+- **NewsAPI.org Developer**：https://newsapi.org/pricing 免费套餐面向开发/测试，不能将其当成不受限制的正式免费生产新闻渠道。
+
+### 黑名单处理原则
+1. 一家机构允许有A（免费公开页面）与D（受限专有数据库）两个不同具体产品，不封杀全部机构。
+2. 付费研究产品永久保留“为何移除”的审计记录，但从自动采集启用白名单**排除**。
+3. 对403/robots/XML解析器不支持/动态页面空白的来源保持C待验证，不得虚假声称“没有免费的信息”。
+4. GitHub开源程序不能改变源站访问许可。无论工具是否能技术上获取，不可绕过订阅或明确AI使用禁令。
