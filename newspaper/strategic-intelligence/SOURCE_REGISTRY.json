@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.4",
+  "schema_version": "1.5",
   "audit_date": "2026-10-13",
   "audit_scope": "124 active free/partially-free candidates; 6 blocked sources excluded at user direction; no blanket retesting",
   "status_legend": {
@@ -770,6 +770,19 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "random_four_spotcheck_20261013": {
+        "tested_at": "2026-10-13T04:14:48.281184+00:00",
+        "site_status": "HTML_HAS_TEXT",
+        "http_status": 200,
+        "extracted_text_chars": 29070,
+        "observed_page_title": "PwC’s 29th Global CEO Survey: Leading through uncertainty in the age of AI",
+        "content_type": "text/html;charset=utf-8",
+        "observation_kind": "OPEN_RESEARCH_REPORT",
+        "raw_evidence": "audits/random-four-20261013.json",
+        "test_type": "ONE_TIME_GITHUB_ACTIONS_HTTP_HTML_PARSING",
+        "cross_day_validation": "NOT_RUN",
+        "ai_processing_permission": "NOT_REVIEWED"
       }
     },
     {
@@ -1948,6 +1961,19 @@
         "sample_note": "No usable content proven; refer to round results",
         "production_continuous_validation": "NOT_RUN",
         "ai_processing_terms": "NOT_REVIEWED"
+      },
+      "random_four_spotcheck_20261013": {
+        "tested_at": "2026-10-13T04:14:45.659184+00:00",
+        "site_status": "HTML_HAS_TEXT",
+        "http_status": 200,
+        "extracted_text_chars": 33688,
+        "observed_page_title": "The 9 E-utilities and Associated Parameters - The Insider's Guide to Accessing NLM Data - National Library of Medicine Lock",
+        "content_type": "text/html",
+        "observation_kind": "API_DOCUMENTATION_ONLY",
+        "raw_evidence": "audits/random-four-20261013.json",
+        "test_type": "ONE_TIME_GITHUB_ACTIONS_HTTP_HTML_PARSING",
+        "cross_day_validation": "NOT_RUN",
+        "ai_processing_permission": "NOT_REVIEWED"
       }
     },
     {
@@ -2427,6 +2453,19 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "random_four_spotcheck_20261013": {
+        "tested_at": "2026-10-13T04:14:50.494355+00:00",
+        "site_status": "HTML_HAS_TEXT",
+        "http_status": 200,
+        "extracted_text_chars": 6867,
+        "observed_page_title": "证券时报官方网站-中国资本市场信息披露平台",
+        "content_type": "text/html; charset=utf-8",
+        "observation_kind": "OPEN_FINANCIAL_NEWS_HOMEPAGE",
+        "raw_evidence": "audits/random-four-20261013.json",
+        "test_type": "ONE_TIME_GITHUB_ACTIONS_HTTP_HTML_PARSING",
+        "cross_day_validation": "NOT_RUN",
+        "ai_processing_permission": "NOT_REVIEWED"
       }
     },
     {
@@ -2552,6 +2591,19 @@
         "repeated_daily_runs": 0,
         "access_rights": "NOT_FULLY_REVIEWED",
         "evidence_note": "Availability/readability observation only; not legal right for bulk AI ingest or redistribution."
+      },
+      "random_four_spotcheck_20261013": {
+        "tested_at": "2026-10-13T04:14:43.418764+00:00",
+        "site_status": "HTML_HAS_TEXT",
+        "http_status": 200,
+        "extracted_text_chars": 5767,
+        "observed_page_title": "World news: Latest news, breaking news, today's news stories from around the world, updated daily from CBS News",
+        "content_type": "text/html; charset=utf-8",
+        "observation_kind": "OPEN_NEWS_CATEGORY",
+        "raw_evidence": "audits/random-four-20261013.json",
+        "test_type": "ONE_TIME_GITHUB_ACTIONS_HTTP_HTML_PARSING",
+        "cross_day_validation": "NOT_RUN",
+        "ai_processing_permission": "NOT_REVIEWED"
       }
     },
     {
@@ -4230,5 +4282,20 @@
       "name": "国家卫健委 NHC",
       "record_file": "SOURCE_ABANDONED_2026-10-13.json"
     }
-  ]
+  ],
+  "random_sample_20261013": {
+    "method": "Python random.Random(20261013).sample(...,4), sampling from active A/B entries excluding SEC domain without registered contact; one-time audit branch",
+    "sample_ids": [
+      "SRC-082",
+      "SRC-062",
+      "SRC-026",
+      "SRC-077"
+    ],
+    "eligible_population": 123,
+    "http_200": 4,
+    "content_pages": 3,
+    "docs_only": 1,
+    "artifact": "audits/random-four-20261013.json",
+    "production_stability_test": "NOT_RUN"
+  }
 }
