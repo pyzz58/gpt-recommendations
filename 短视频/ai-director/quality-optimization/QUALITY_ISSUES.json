@@ -625,12 +625,12 @@
       "stage": "now_director",
       "department": "director",
       "priority": "P0",
-      "status": "confirmed_open",
+      "status": "in_progress",
       "title": "场次与分镜解耦：一场可多镜，一镜可多节拍",
-      "observed_in": "screenplay_adaptation.compile_reviewable_shot_plan; director_v2.py",
+      "observed_in": "screenplay_adaptation.compile_reviewable_shot_plan; director_v2.py; director_shot_coverage.py; screenplay_series_delivery.episode_director_request",
       "problem": "现有编剧节拍编译为同数 text_card 占位；总导演受 shot_id 不增不减约束，缺自由选择覆盖镜头的通路",
       "root_cause": "使用原稿来源slot当成物理镜头且十岗位锁镜头数",
-      "solution": "创建 scene/beat/coverage shot 三层，导演拆镜/合镜/插入/反打/空镜，结构调整有来源和剪辑锁版本",
+      "solution": "创建 scene/beat/coverage shot 三层，导演拆镜/合镜/插入/反打/空镜，结构调整有来源和剪辑锁版本；第一阶段已用导演source_spans覆盖图开放一beat多镜/同场相邻多beat合镜，保持作者稿、音画原字和秒数，并重建十角色专业状态；无cue的对白拆镜与跨场蒙太奇保留下一阶段，不默改。",
       "acceptance": "公开对话场：1场->多镜；蒙太奇场：多事件->多镜；重排后来源/台词/时长不丢且所有专业位置重绑定",
       "ai_video_constraint": "不同视频生成工具可单镜、多镜头或插帧；不能按原文句子数限制镜头数",
       "depends_on": [
@@ -642,9 +642,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/48",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "tests/test_director_shot_coverage.py — public synthetic multi-shot/single-shot source spans, immutable dialogue, runtime, reblocked director model request, stale/invalid scene/speech rejection",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -668,6 +668,12 @@
           "status": "confirmed_open",
           "note": "全量代码审计确认build_per_episode_crew仍直接将每个来源beat对应原始一个shot进行重编号；没有来源节拍与导演镜头的多对多重构规则，尚不符合专业分镜自由",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/40"
+        },
+        {
+          "date": "2026-10-13",
+          "status": "in_progress",
+          "note": "职业导演QO-D02首轮：新增导演独立镜头覆盖选择、合法分镜和合镜、精确来源时段/台词/总时长验证，实际原十岗团队按新版镜头重建；真人审片、含台词反打和跨时空蒙太奇未完成。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/48"
         }
       ]
     },

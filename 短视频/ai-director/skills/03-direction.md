@@ -1,3 +1,7 @@
+## 导演首先决定电影实际要几个镜头（QO-D02）
+
+来自编剧的剧本节拍/占位镜头不能限制导演的摄影与剪辑自由。同一沉默事件可通过多个动作/反应镜头，连续两个事件也可以用一个稳定长镜头表达；**不能凭多镜头就断言更专业**。在原 Skill03 逐镜技术设计前，使用 [Skill12](12-director-shot-coverage.md) 选择拍摄覆盖，并按新版 shot ID **重新启动原十岗位团队**；严格保留制作版权威剧本及来源时码。不能因为想拍反打就悄悄拆开未分配逐句 cue 的台词。未解决的艺术质量/跨时空蒙太奇限制，见 [QO-D02审计](../quality-optimization/QO-D02_DIRECTOR_SHOT_COVERAGE_PROFESSIONAL_AUDIT.md)。
+
 ## 导演必须让声画成为思想与情绪，而不仅是“漂亮镜头”（QO-D03）
 
 新增 [Skill 10](10-director-audiovisual-meaning-and-review.md) 和 [职业一手资料及实际代码审计](../quality-optimization/QO-D03_D16_AUDIOVISUAL_CRAFT_AND_DELIVERY_AUDIT.md)。每个导演镜头需要说明：观众入镜前相信什么、实际画面中的事件、入镜后认识怎样改变、为什么这样选静/动机位和景别、为什么使用声音或沉默、何时切、用普通 B-roll 替代会丢掉什么意义，以及 AI 模型失败怎样保住原意。只有收到具体 plan、并注入所有相关专业岗位，才叫有可执行视听构思。字段通过≠审美通过。

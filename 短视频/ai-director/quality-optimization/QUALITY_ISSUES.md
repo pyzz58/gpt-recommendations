@@ -23,7 +23,7 @@
 | QO-W10 | screenwriter | P1 | confirmed_open | AI短视频编剧独有交付书 |
 | QO-W11 | screenwriter | P0 | in_progress | 编剧场次详述到导演不用猜剧情 |
 | QO-D01 | director | P0 | partially_addressed | 导演以完成剧本为唯一剧情权威 |
-| QO-D02 | director | P0 | confirmed_open | 场次与分镜解耦：一场可多镜，一镜可多节拍 |
+| QO-D02 | director | P0 | in_progress | 场次与分镜解耦：一场可多镜，一镜可多节拍 |
 | QO-D03 | director | P0 | in_progress | 导演视听母题、情绪弧线与视觉叙事 |
 | QO-D04 | director | P0 | partially_addressed | 模型能力适配、片段时长与路由决策 |
 | QO-D05 | director | P0 | partially_addressed | 演员/服装/道具/场景跨镜一致性 |
@@ -223,17 +223,17 @@
 
 ### QO-D02 · 场次与分镜解耦：一场可多镜，一镜可多节拍
 
-- 状态：confirmed_open；优先级：P0；阶段：now_director；负责人：director
-- 发现位置：screenplay_adaptation.compile_reviewable_shot_plan; director_v2.py
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：screenplay_adaptation.compile_reviewable_shot_plan; director_v2.py; director_shot_coverage.py; screenplay_series_delivery.episode_director_request
 - 问题：现有编剧节拍编译为同数 text_card 占位；总导演受 shot_id 不增不减约束，缺自由选择覆盖镜头的通路
 - 根因：使用原稿来源slot当成物理镜头且十岗位锁镜头数
-- 方案：创建 scene/beat/coverage shot 三层，导演拆镜/合镜/插入/反打/空镜，结构调整有来源和剪辑锁版本
+- 方案：创建 scene/beat/coverage shot 三层，导演拆镜/合镜/插入/反打/空镜，结构调整有来源和剪辑锁版本；第一阶段已用导演source_spans覆盖图开放一beat多镜/同场相邻多beat合镜，保持作者稿、音画原字和秒数，并重建十角色专业状态；无cue的对白拆镜与跨场蒙太奇保留下一阶段，不默改。
 - 完成验收：公开对话场：1场->多镜；蒙太奇场：多事件->多镜；重排后来源/台词/时长不丢且所有专业位置重绑定
 - AI 视频适配：不同视频生成工具可单镜、多镜头或插帧；不能按原文句子数限制镜头数
 - 依赖：QO-D01
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/19
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:confirmed_open
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/48；回归 tests/test_director_shot_coverage.py — public synthetic multi-shot/single-shot source spans, immutable dialogue, runtime, reblocked director model request, stale/invalid scene/speech rejection；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress
 
 ### QO-D03 · 导演视听母题、情绪弧线与视觉叙事
 

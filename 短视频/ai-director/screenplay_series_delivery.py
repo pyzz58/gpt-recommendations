@@ -412,11 +412,22 @@ def build_per_episode_crew(handoff, dossier, breakdown):
     }
 
 
-def episode_director_request(handoff, dossier, breakdown, packet, episode_id):
-    """Actual EXISTING role contract with full context, but one 90s episode."""
+def episode_director_request(handoff, dossier, breakdown, packet, episode_id,
+                             *, director_coverage=None):
+    """Actual original role request, optionally with director-authored shot plan.
+
+    The optional coverage is recomputed from the original immutable reviewed
+    screenplay and compared by digest; no arbitrary altered packet is trusted.
+    """
     from agent_role_contracts import build_role_messages
     proof = validate_breakdown(handoff, dossier, breakdown)
     expected = build_per_episode_crew(handoff, dossier, breakdown)
+    if director_coverage is not None:
+        import director_shot_coverage
+        _need(director_coverage["episode_id"] == episode_id,
+              "SERIES_COVERAGE_WRONG_EPISODE")
+        expected = director_shot_coverage.reblock_episode(
+            handoff, dossier, breakdown, expected, director_coverage)
     _need(isinstance(packet, dict) and
           _digest(packet) == _digest(expected),
           "SERIES_EPISODE_CREW_PACKET_TAMPERED")
@@ -458,6 +469,17 @@ def episode_director_request(handoff, dossier, breakdown, packet, episode_id):
     context["current_episode_story_and_break_reason"] = deepcopy(episode_brief)
     context["current_episode_detailed_writer_intent"] = localized_dossier
     context["entire_series_director_plan_digest"] = proof["director_breakdown_digest"]
+    if director_coverage is not None:
+        # The *real* director model request must see the shot relationships,
+        # not only a digest or a comment in documentation.
+        context["director_creative_shot_coverage"] = deepcopy(director_coverage)
+        context["coverage_is_approved_screenplay_only_not_rendered_footage"] = True
+        result["messages"][0]["content"] += (
+            "\n【导演自由镜头覆盖】这些专业镜头由总导演按已审稿"
+            "自行分合原场次节拍，source_spans是对剧本时间的"
+            "完整来源映射而非一镜一beat。你需要保留已审稿台词、"
+            "人物选择及事实；逐镜开展实际表演、摄影、声画设计，"
+            "不得将该文字版误称成片。")
     result["messages"][1]["content"] = before + found + json.dumps(
         context, ensure_ascii=False, separators=(",", ":"))
     result["episode_director_context"] = {

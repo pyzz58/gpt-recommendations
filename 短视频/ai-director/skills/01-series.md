@@ -1,3 +1,7 @@
+## 总导演的剧本节拍不等于摄影镜头（QO-D02）
+
+正式分集只是编剧事件与时间边界，并不锁死实际拍几个镜头。完成每集≤90秒分集后，导演可先使用 [Skill12](12-director-shot-coverage.md) 和 director_shot_coverage 在**原编剧制作版**来源时码不变的前提下，拆分静默事件为反应/主观视角等多镜，或将**同场景相邻**剧本节拍合为一个镜头。每镜必须有具体观众情绪/认知变化与声画理由，**随后用新版 shot IDs 重建原十岗位团队，不能沿用老拍摄工单**。未有精确 timecue 的对白/旁白节拍暂不允许硬拆；故事删减本身仍需导演与编剧独立协作审稿。详见 [职业根因审计](../quality-optimization/QO-D02_DIRECTOR_SHOT_COVERAGE_PROFESSIONAL_AUDIT.md)。
+
 # Skill 01：系列总编 / 跨集叙事（供 DeepSeek / Codex 阅读）
 
 目标：对用户中文原文执行真正的取舍与系列设计，输出 JSON，不照着段落序号机械拆。
