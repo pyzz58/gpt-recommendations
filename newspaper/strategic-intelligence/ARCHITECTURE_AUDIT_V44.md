@@ -8,12 +8,12 @@
 
 ### 1. GitHub文件层实际核查
 
-以GitHub连接读取 \`pyzz58/gpt-recommendations/newspaper/strategic-intelligence/\` 的实时目录与以下源文件/规范：
-- 入口、总纲、用户授权与AI交接：\`README.md\`, \`MASTER_BLUEPRINT.md\`, \`DECISIONS.md\`, \`ENDORSEMENT_LEDGER.md\`, \`AGENTS.md\`, \`TRACEABILITY_MATRIX.md\`；
-- 选文和正式刊物：\`EDITORIAL_SELECTION_AND_REPORTING.md\`, \`SOURCE_DISCOVERY.md\`, \`MAGAZINE_ARCHITECTURE.md\`, \`PUBLICATION_SPEC.md\`, \`templates/ARTICLE_TEMPLATE.md\`, \`templates/WEEKLY_TEMPLATE.md\`, \`templates/ANNUAL_TEMPLATE.md\`；
-- 顾问、知识与长期档案：\`ADVISOR_MASTER_METHOD.md\`, \`OPEN_ENDED_WORLD_MODEL.md\`, \`DOMAIN_TEACHING_PROTOCOLS.md\`, \`DEEP_LEARNING_ENGINE.md\`, \`HUMAN_NATURE_AND_CLASSICAL_LENSES.md\`, \`INTELLIGENCE_OPERATING_MODEL.md\`, \`INTELLIGENCE_MEMORY.md\`；
-- 研究质量与工程：\`END_TO_END_WORKFLOW.md\`, \`QA_AND_METRICS.md\`, \`HARD_RULES.md\`, \`DATA_CONTRACTS.md\`, \`BUILD_PLAN.md\`, \`ISSUE_BACKLOG.md\`, \`ANNUAL_REPORT_SPEC.md\`及其关联；
-- 资料真实来源：\`SOURCE_REGISTRY.json\`、六条弃用档案、历史访问/抽样日志目录，以及\`tools/source_probe.py\`。
+以GitHub连接读取 `pyzz58/gpt-recommendations/newspaper/strategic-intelligence/` 的实时目录与以下源文件/规范：
+- 入口、总纲、用户授权与AI交接：`README.md`, `MASTER_BLUEPRINT.md`, `DECISIONS.md`, `ENDORSEMENT_LEDGER.md`, `AGENTS.md`, `TRACEABILITY_MATRIX.md`；
+- 选文和正式刊物：`EDITORIAL_SELECTION_AND_REPORTING.md`, `SOURCE_DISCOVERY.md`, `MAGAZINE_ARCHITECTURE.md`, `PUBLICATION_SPEC.md`, `templates/ARTICLE_TEMPLATE.md`, `templates/WEEKLY_TEMPLATE.md`, `templates/ANNUAL_TEMPLATE.md`；
+- 顾问、知识与长期档案：`ADVISOR_MASTER_METHOD.md`, `OPEN_ENDED_WORLD_MODEL.md`, `DOMAIN_TEACHING_PROTOCOLS.md`, `DEEP_LEARNING_ENGINE.md`, `HUMAN_NATURE_AND_CLASSICAL_LENSES.md`, `INTELLIGENCE_OPERATING_MODEL.md`, `INTELLIGENCE_MEMORY.md`；
+- 研究质量与工程：`END_TO_END_WORKFLOW.md`, `QA_AND_METRICS.md`, `HARD_RULES.md`, `DATA_CONTRACTS.md`, `BUILD_PLAN.md`, `ISSUE_BACKLOG.md`, `ANNUAL_REPORT_SPEC.md`及其关联；
+- 资料真实来源：`SOURCE_REGISTRY.json`、六条弃用档案、历史访问/抽样日志目录，以及`tools/source_probe.py`。
 
 本轮**没有**拉取全部124条新闻源做真实采集，也**没有**运行任何周报/年报生产脚本、模型质量试验或付费数据库；不能把Markdown“校验表”说成执行过。
 
@@ -33,7 +33,7 @@
 | DOC-03 | 周报模板正文曾显性保留“下期观察清单”，又在下方补了“C未来观察/资料”及更新后的“C推演” | 用户已否定的结尾和新结尾同时出现在制作模板，极易又生成空泛观察栏目 | **实际重写WEEKLY_TEMPLATE**：封面/主编/目录/完整A/B1/B2/C每篇、动态栏目、历史纠错与来源；删除旧下期观察清单，后台指标不丢 | 文档更正 |
 | DOC-04 | MASTER_BLUEPRINT顶部自称旧V4.1最高产品总纲，列生产十二步和早期每月回看 | 与主规格的六层、顾问七问、年报年度专门十二步混淆 | 改最高优先级指向V4.4主规格，**重写第4—5节**为六层+十二项可细分的生产动作，明确与七问/年报十二工序不同；每月回看更改为新证据与年报核查 | 文档更正 |
 | DOC-05 | END_TO_END_WORKFLOW旧版本仍有7个阶段A—G、分开“机制发现”和“顾问教学”的模块，并在文件后反复加优先级补丁 | 容易被误部署成重复两套研究Agent或单次写作不返工 | **实际重写整个工作流**为六层的输入、处理、输出、失败和返工；L4统一B1/B2/C及七问 | 文档更正 |
-| DOC-06 | DATA_CONTRACTS曾在V4.2段将读者C称为\`watch_and_sources_C\`，在V4.3段又称\`scenario_thinking_C\` | 实际Schema可能生成两套不兼容字段，使C出现错栏目 | 将现行表述改为\`scenario_thinking_C\`并写历史字段已废止，来源/未来指标在后台另存；正式实现仍待schema回归验证 | 文档修订，未代码实测 |
+| DOC-06 | DATA_CONTRACTS曾在V4.2段将读者C称为`watch_and_sources_C`，在V4.3段又称`scenario_thinking_C` | 实际Schema可能生成两套不兼容字段，使C出现错栏目 | 将现行表述改为`scenario_thinking_C`并写历史字段已废止，来源/未来指标在后台另存；正式实现仍待schema回归验证 | 文档修订，未代码实测 |
 | DOC-07 | ARTICLE_TEMPLATE、MAGAZINE_ARCHITECTURE与年报模板版本标题旧V4.2/V4.3，内容已采用新C | GPT读标题可能错误地根据历史版本选旧逻辑 | 改V4.4标题/最高入口，保留全部详细A/B1/B2/C内容和年报双输入 | 文档修订 |
 | DOC-08 | ISSUE_BACKLOG收集初始18项、后增NC-019/020；GitHub Issue #43标题仍称18项 | 以后看到不同数量会误以为丢失某些问题 | 现将NC-001—020继续保留，并增加文档漂移/验收问题；同步更新Issue #43的总清单链接与实际数量（在本轮提交后复核） | 本轮文档追踪，未工程修复 |
 | DOC-09 | 部分老版教学文件仍列“本板块必教的知识”；新版已确认跨领域动态选择 | 系统可能变成每篇新闻套预设经济学/兵法，而不是从现实找真正机制 | 当前最高主规格和AGENTS明确“九栏专业工具箱，非封闭课表”；旧专业论文可以供查，但不能覆盖顾问七问三检验 | 现行规则明确，实际模型仍待负例测试 |
@@ -95,7 +95,7 @@
 - MASTER_BLUEPRINT去除其正文里与现行六层冲突的旧最高主张；
 - END_TO_END_WORKFLOW以六层清晰输入/产物/故障/返工代替旧多版追加；
 - 正式WEEKLY模板删除“下期观察清单”和旧C观点，按最新A/B1/B2/C完整排列；
-- 数据契约和正式文章/年报模板使用\`scenario_thinking_C\`、新版六要素与开放题；
+- 数据契约和正式文章/年报模板使用`scenario_thinking_C`、新版六要素与开放题；
 - 用户再次认可的**全部具体方法**入ENDORSEMENT_LEDGER和DECISIONS；
 - 新增冲突及未实现事项可在ISSUE_BACKLOG按永久ID追踪。
 
