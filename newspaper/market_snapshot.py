@@ -9,6 +9,7 @@ from __future__ import annotations
 import csv
 import datetime as dt
 import io
+import logging
 from concurrent.futures import ThreadPoolExecutor
 
 import requests
@@ -22,6 +23,7 @@ SERIES = {
     "DGS2": "美国2年期国债收益率",
 }
 SOURCE = "https://fred.stlouisfed.org/series/{series}"
+LOG = logging.getLogger("newspaper.market_snapshot")
 
 
 def parse_fred_csv(raw, series, today):
@@ -70,8 +72,17 @@ def fetch_market_snapshot(now=None, getter=None):
                              "cosd":(today-dt.timedelta(days=13)).isoformat()},
                 timeout=10, headers={"User-Agent":"PersonalNewspaper/1.0"})
             response.raise_for_status()
-            return parse_fred_csv(response.text, series, today)
-        except (requests.RequestException, ValueError, TypeError):
+            item = parse_fred_csv(response.text, series, today)
+            if item is None:
+                LOG.warning("FRED %s returned no fresh numeric observations; content_type=%s",
+                            series, response.headers.get("Content-Type","unknown"))
+            return item
+        except requests.RequestException as exc:
+            code = getattr(getattr(exc,"response",None),"status_code",None)
+            LOG.warning("FRED %s source unavailable (%s HTTP=%s)",series,type(exc).__name__,code)
+            return None
+        except (ValueError, TypeError) as exc:
+            LOG.warning("FRED %s invalid source data (%s)",series,type(exc).__name__)
             return None
     with ThreadPoolExecutor(max_workers=6) as pool:
         quotes = list(pool.map(fetch, SERIES))

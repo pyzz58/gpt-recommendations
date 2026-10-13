@@ -118,12 +118,16 @@
       {
         "name": "US Treasury Auction Results",
         "url": "https://www.treasurydirect.gov/TA_WS/securities/auctioned/rss",
-        "source_type": "primary_treasury"
+        "source_type": "primary_treasury",
+        "disabled": true,
+        "disabled_reason": "GitHub Actions live verification 2026-10-13: 36Kr anti-bot HTML/non-RSS; US Treasury HTTP 406; BLS HTTP 403. Do not count as working until supported access exists."
       },
       {
         "name": "US Treasury Offering Announcements",
         "url": "https://www.treasurydirect.gov/TA_WS/securities/announced/rss",
-        "source_type": "primary_treasury"
+        "source_type": "primary_treasury",
+        "disabled": true,
+        "disabled_reason": "GitHub Actions live verification 2026-10-13: 36Kr anti-bot HTML/non-RSS; US Treasury HTTP 406; BLS HTTP 403. Do not count as working until supported access exists."
       }
     ],
     "美联储与宏观": [
@@ -164,7 +168,9 @@
       {
         "name": "US BLS Latest Economic Indicators",
         "url": "https://www.bls.gov/feed/bls_latest.rss",
-        "source_type": "primary_economic_data"
+        "source_type": "primary_economic_data",
+        "disabled": true,
+        "disabled_reason": "GitHub Actions live verification 2026-10-13: 36Kr anti-bot HTML/non-RSS; US Treasury HTTP 406; BLS HTTP 403. Do not count as working until supported access exists."
       }
     ],
     "创业与商业模式": [
@@ -197,12 +203,16 @@
       {
         "name": "36氪文章",
         "url": "https://36kr.com/feed-article",
-        "source_type": "cn_business_media"
+        "source_type": "cn_business_media",
+        "disabled": true,
+        "disabled_reason": "GitHub Actions live verification 2026-10-13: 36Kr anti-bot HTML/non-RSS; US Treasury HTTP 406; BLS HTTP 403. Do not count as working until supported access exists."
       },
       {
         "name": "36氪综合",
         "url": "https://36kr.com/feed",
-        "source_type": "cn_business_media"
+        "source_type": "cn_business_media",
+        "disabled": true,
+        "disabled_reason": "GitHub Actions live verification 2026-10-13: 36Kr anti-bot HTML/non-RSS; US Treasury HTTP 406; BLS HTTP 403. Do not count as working until supported access exists."
       }
     ],
     "AI与科技": [
@@ -424,6 +434,18 @@
       "url": "https://paper.people.com.cn/rmrbhwb/pc/layout/index.html",
       "mode": "public_edition_monitor",
       "reason": "Edition HTML is not RSS; add controlled official-public-edition parsing separately"
+    },
+    {
+      "name": "36氪官方RSS（访问受限）",
+      "url": "https://www.36kr.com/rss-center",
+      "mode": "access_blocked",
+      "reason": "Official feed addresses confirmed but GitHub runner returns anti-bot HTML; never claim successful ingestion"
+    },
+    {
+      "name": "FRED美股与美债官方日度数据",
+      "url": "https://fred.stlouisfed.org/graph/?id=SP500%2CNASDAQCOM%2CDJIA",
+      "mode": "degraded",
+      "reason": "Live CI 2026-10-13 could not verify any of six requested numeric series, dashboard must show missing not fabricate"
     }
   ]
 }

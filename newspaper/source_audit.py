@@ -57,13 +57,13 @@ def audit(settings, start, end, worker=fetch_one):
     } for pair, result in zip(sources, reports)]
     try:
         people = audit_edition()
-        people_health = {"reachable": True, "issue_date": people["issue_date"],
+        people_health = {"reachable": bool(people["issue_date"] and people["items"]), "issue_date": people["issue_date"],
                          "linked_articles": len(people["items"]), "monitor_only": True}
     except Exception as exc:
         people_health = {"reachable": False, "error": type(exc).__name__, "monitor_only": True}
     try:
         journal = audit_public_journal()
-        journal_health = {"reachable": True, "page_identified": journal["page_identified"],
+        journal_health = {"reachable": bool(journal["page_identified"]), "page_identified": journal["page_identified"],
                           "visible_issue_titles": journal["visible_issue_titles"],
                           "monitor_only": True}
     except Exception as exc:
