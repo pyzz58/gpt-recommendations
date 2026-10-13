@@ -15,6 +15,7 @@ from concurrent.futures import ThreadPoolExecutor
 from xml.etree import ElementTree as ET
 
 import requests
+from market_web_quotes import fetch_public_index_quotes
 
 SERIES = {
     "SP500": "标普500",
@@ -251,6 +252,15 @@ def fetch_market_snapshot(now=None, getter=None):
             idx = list(SERIES).index(backup["series"])
             if quotes[idx] is None:
                 quotes[idx] = backup
+    # Public-page backup for three headline indices when FRED/Stooq provide
+    # no verifiable figure. The observation type records whether the quote
+    # was intraday or post-session; it is NEVER silently labeled EOD.
+    if any(quotes[list(SERIES).index(code)] is None
+           for code in ("SP500", "NASDAQCOM", "DJIA")):
+        for quote in fetch_public_index_quotes(now, getter=getter):
+            idx = list(SERIES).index(quote["series"])
+            if quotes[idx] is None:
+                quotes[idx] = quote
     values = [q for q in quotes if q]
     backup_count = sum(q.get("source") != "FRED" for q in values)
     return {
@@ -258,7 +268,7 @@ def fetch_market_snapshot(now=None, getter=None):
         "kind": "dated_published_daily_observations_not_intraday",
         "values": values,
         "missing": [s for s,q in zip(SERIES,quotes) if not q],
-        "sources": sorted({"Stooq" if q["source"].startswith("Stooq") else "US Treasury" if q["source"].startswith("US Treasury") else q["source"] for q in values}),
+        "sources": sorted({"Stooq" if q["source"].startswith("Stooq") else "US Treasury" if q["source"].startswith("US Treasury") else "Google Finance" if q["source"].startswith("Google Finance") else q["source"] for q in values}),
         "backup_observations": backup_count,
-        "warning": "仅为注明来源和日期的历史日值，可能来自FRED、Stooq或美国财政部官方收益率数据；非实时行情。缺失不可推算。",
+        "warning": "每项数值按实际来源及时间标注；Google Finance网页报价可能为盘中或盘后观察值，不能当作官方收盘数据；FRED、Stooq及美国财政部为带日期历史观测。缺失不可推算。",
     }
