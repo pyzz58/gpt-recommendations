@@ -114,6 +114,16 @@
         "name": "新华网财经",
         "url": "http://www.xinhuanet.com/finance/news_finance.xml",
         "source_type": "cn_state_media"
+      },
+      {
+        "name": "US Treasury Auction Results",
+        "url": "https://www.treasurydirect.gov/TA_WS/securities/auctioned/rss",
+        "source_type": "primary_treasury"
+      },
+      {
+        "name": "US Treasury Offering Announcements",
+        "url": "https://www.treasurydirect.gov/TA_WS/securities/announced/rss",
+        "source_type": "primary_treasury"
       }
     ],
     "美联储与宏观": [
@@ -150,6 +160,11 @@
         "name": "European Central Bank Press",
         "url": "https://www.ecb.europa.eu/rss/press.html",
         "source_type": "primary_central_bank"
+      },
+      {
+        "name": "US BLS Latest Economic Indicators",
+        "url": "https://www.bls.gov/feed/bls_latest.rss",
+        "source_type": "primary_economic_data"
       }
     ],
     "创业与商业模式": [
