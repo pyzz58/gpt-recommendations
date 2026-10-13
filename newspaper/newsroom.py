@@ -173,6 +173,17 @@ def prepare_pool(items, per_section=20):
                             key=lambda a: a["importance_score"], reverse=True)
         # Protect both regions before fetching and keep same-event alternatives.
         preferred = []
+        if section == "美股·全球金融市场":
+            # Reserve one slot for a genuinely important primary institutional
+            # release when available. Do not fill the paper with routine SEC
+            # event notices or ordinary Treasury auctions merely for variety.
+            for article in available:
+                if article.get("source_type") in {
+                    "primary_regulator", "primary_central_bank",
+                    "primary_treasury", "primary_economic_data"
+                } and article.get("importance_score", 0) >= 65:
+                    if add(article):
+                        break
         if section == "中国与美国":
             for country in ("中国", "美国"):
                 preferred.extend([a for a in candidates if country in a["countries"]][:5])
