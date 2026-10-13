@@ -186,7 +186,7 @@ class DirectorArtisticMethodsTests(unittest.TestCase):
         payload = art.departmental_context(
             self.base, self.state, self.meeting, self.comic, "acting")
         self.assertEqual(payload["this_department"], "acting")
-        self.assertIn("角色", payload["per_shot"][0]["detailed_department_direction"])
+        self.assertIn("演员维持明确的手部姿态", payload["per_shot"][0]["detailed_department_direction"])
         self.assertEqual(len(payload["genre_comic_design_if_any"]["beat_ladder"]), 6)
 
     def test_absurd_must_have_character_logic_real_beats_and_chow_method(self):
