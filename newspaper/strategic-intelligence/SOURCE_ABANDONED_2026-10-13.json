@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "project_name": "内参系统",
+  "date": "2026-10-13",
+  "reason": "User requested abandoning all six remaining unconfirmed sources and only testing a random 3-4 of retained sources.",
+  "status_note": "Excluded due to acquisition blockers, not necessarily paid or intrinsically unreliable.",
+  "records": [
+    {
+      "id": "SRC-034",
+      "name": "Congress.gov",
+      "sector": "政治",
+      "url": "https://api.congress.gov/",
+      "last_issue": "No usable content proven; refer to round results",
+      "disposition": "ABANDONED_BY_USER_2026-10-13",
+      "active": false,
+      "do_not_retry": true
+    },
+    {
+      "id": "SRC-039",
+      "name": "欧盟委员会 Press Corner",
+      "sector": "政治",
+      "url": "https://ec.europa.eu/commission/presscorner/home/en",
+      "last_issue": "No usable content proven; refer to round results",
+      "disposition": "ABANDONED_BY_USER_2026-10-13",
+      "active": false,
+      "do_not_retry": true
+    },
+    {
+      "id": "SRC-086",
+      "name": "NHK World Japan",
+      "sector": "新闻",
+      "url": "https://www3.nhk.or.jp/nhkworld/en/news/",
+      "last_issue": "No usable content proven; refer to round results",
+      "disposition": "ABANDONED_BY_USER_2026-10-13",
+      "active": false,
+      "do_not_retry": true
+    },
+    {
+      "id": "SRC-106",
+      "name": "European Parliament",
+      "sector": "政治",
+      "url": "https://www.europarl.europa.eu/news/en",
+      "last_issue": "No usable content proven; refer to round results",
+      "disposition": "ABANDONED_BY_USER_2026-10-13",
+      "active": false,
+      "do_not_retry": true
+    },
+    {
+      "id": "SRC-117",
+      "name": "国家药监局 NMPA",
+      "sector": "医疗",
+      "url": "https://www.nmpa.gov.cn/",
+      "last_issue": "No usable content proven; refer to round results",
+      "disposition": "ABANDONED_BY_USER_2026-10-13",
+      "active": false,
+      "do_not_retry": true
+    },
+    {
+      "id": "SRC-118",
+      "name": "国家卫健委 NHC",
+      "sector": "医疗",
+      "url": "https://www.nhc.gov.cn/",
+      "last_issue": "No usable content proven; refer to round results",
+      "disposition": "ABANDONED_BY_USER_2026-10-13",
+      "active": false,
+      "do_not_retry": true
+    }
+  ]
+}
