@@ -331,8 +331,8 @@
 - AI 视频适配：AI片段几秒钟产生，需留头尾缓冲，部分转场后期解决
 - 依赖：QO-D02, QO-D08
 - 历史问题：无
-- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/57；回归 2026-10-14 correction: PR #56 run 38519560054 and early PR #57 run 38520233683 had FFmpeg-dependent unittest skips because runner lacked FFmpeg; these are NOT valid real-media execution evidence. PR #57 run 38520394978 force-installed FFmpeg and exposed 3 OTIO metadata-comparison failures. Fix committed; final real-media run pending.；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-14:in_progress → 2026-10-14:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/57；回归 Prior PR #56 run 38519560054 had FFmpeg media test SKIPS (not valid actual media evidence), corrected in PR #57. Full FFmpeg-enabled GitHub Actions runs 38520561503 and 38520595560: 839/839 unit tests PASS; logs explicitly show real ffprobe, native OTIO re-import and decoded red/green/blue 90-frame picture order tests executed (not skipped).；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-14:in_progress → 2026-10-14:in_progress → 2026-10-14:in_progress
 
 ### QO-D10 · 专业导演审片标准：不是字段全就是好片
 
