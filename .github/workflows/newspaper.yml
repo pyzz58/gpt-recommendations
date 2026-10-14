@@ -207,14 +207,6 @@ jobs:
           set -euo pipefail
           python newspaper/digest.py --prepare --output /tmp/newspaper-ready
 
-      - name: Cache completed edition for recovery attempts
-        id: save_prepared
-        if: steps.build.outcome == 'success'
-        uses: actions/cache/save@v4
-        with:
-          key: newspaper-ready-v22-${{ steps.date.outputs.edition }}
-          path: /tmp/newspaper-ready
-
       - name: Send verified edition via QQ SMTP (default branch only)
         id: send
         if: steps.phase.outputs.phase == 'send' && steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
@@ -226,6 +218,14 @@ jobs:
           set -euo pipefail
           test -s /tmp/newspaper-ready/manifest.json || { echo '::error::Missing verified newspaper bundle'; exit 1; }
           python newspaper/prepared_delivery.py --bundle-dir /tmp/newspaper-ready --edition-date "${{ steps.date.outputs.edition }}"
+
+      - name: Cache completed edition for recovery attempts
+        id: save_prepared
+        if: steps.build.outcome == 'success'
+        uses: actions/cache/save@v4
+        with:
+          key: newspaper-ready-v22-${{ steps.date.outputs.edition }}
+          path: /tmp/newspaper-ready
 
       - name: Make accepted-mail receipt
         if: steps.send.outcome == 'success'
