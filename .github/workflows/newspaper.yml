@@ -4,30 +4,27 @@ on:
     paths:
       - 'newspaper/**'
       - '.github/workflows/newspaper.yml'
-  # Explicit owner-requested one-time deliveries only; normal cron unchanged.
-  # Quality sample uses its own non-receipted path; never consumes the daily slot.
-  push:
-    branches: [main]
-    paths:
-      - 'newspaper/V05_MAIL_TEST_REQUEST.txt'
-  # Fixed edition cutoff stays Beijing 01:00. Triggers are deliberately
-  # off the hour to reduce GitHub scheduler contention; all use one receipt.
+  # GitHub schedule may be delayed or dropped. Off-hour starts and several
+  # attempts reduce risk but do not provide a guaranteed real-time SLA.
+  # UTC 22:05/22:20 = Beijing 06:05/06:20 (prepare after 06:00 cutoff).
+  # UTC 23:01/23:17/23:31/23:47 = Beijing 07:01/07:17/07:31/07:47 (send).
   schedule:
-    - cron: '3 17 * * *' # Beijing 01:03 primary
-    - cron: '18 17 * * *' # Beijing 01:18 fallback
-    - cron: '33 17 * * *' # Beijing 01:33 fallback
-    - cron: '43 17 * * *' # Beijing 01:43 fallback
-    - cron: '7 18 * * *' # Beijing 02:07 last resort (different UTC hour)
+    - cron: '5 22 * * *'
+    - cron: '20 22 * * *'
+    - cron: '1 23 * * *'
+    - cron: '17 23 * * *'
+    - cron: '31 23 * * *'
+    - cron: '47 23 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Generate demo without sending an email'
+        description: 'Preview only; do not send'
         required: false
         default: 'true'
         type: choice
         options: ['true', 'false']
       preview_kind:
-        description: 'When dry_run=true: mock layout or real latest-news reading'
+        description: 'Preview mock layout or recent real news'
         required: false
         default: 'demo'
         type: choice
@@ -38,15 +35,10 @@ concurrency:
   group: newspaper-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'daily-live' }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
-  # Fast, offline PR gate: run syntax/config and focused regressions before the
-  # expensive fonts, spaCy, offline translation and full newspaper integration.
-  # Scheduled/owner-dispatched delivery skips this gate and keeps its timing.
   quick_check:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 8
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -54,34 +46,30 @@ jobs:
           python-version: '3.11'
       - name: Verify Python syntax
         run: python -m compileall -q newspaper
-      - name: Install only lightweight test dependencies
+      - name: Install lightweight test dependencies
         run: python -m pip install --disable-pip-version-check 'requests>=2.32,<3' 'beautifulsoup4>=4.12,<5' 'scikit-learn>=1.4,<2'
-      - name: Verify news-source configuration
+      - name: Verify newspaper config
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          cfg = json.loads(Path('newspaper/feeds.json').read_text(encoding='utf-8'))
+          cfg=json.loads(Path('newspaper/feeds.json').read_text(encoding='utf8'))
           assert next(iter(cfg['max_per_category'])) == '美股·全球金融市场'
-          feeds = [item for group in cfg['feeds'].values() for item in group]
-          verified_36kr = [item for item in feeds if item['name'] == '36氪综合']
-          assert len(verified_36kr) == 1
-          assert verified_36kr[0]['url'] == 'https://www.36kr.com/feed'
-          assert not verified_36kr[0].get('disabled', False)
-          print('News-source configuration: OK (offline schema/safety check)')
+          assert any(feed['name']=='36氪综合' and feed['url']=='https://www.36kr.com/feed'
+                     and not feed.get('disabled',False)
+                     for group in cfg['feeds'].values() for feed in group)
           PY
-      - name: Fast focused regression tests (no network)
+      - name: Focused regression suite
         env:
           PYTHONPATH: newspaper
-        run: python -m unittest -v test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality test_editorial_topic_relevance test_headline_quality
+        run: |
+          python -m unittest -v test_prepared_delivery test_mail_secret_boundary test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality test_editorial_topic_relevance test_headline_quality
 
   digest:
-    # On PRs, avoid heavyweight setup if the fast gate fails.
-    # On schedule/manual/main events, quick_check is skipped: preserve delivery.
     needs: quick_check
     if: ${{ always() && (github.event_name != 'pull_request' || needs.quick_check.result == 'success') }}
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 45
     env:
       TZ: Asia/Shanghai
       SMTP_HOST: smtp.qq.com
@@ -93,136 +81,177 @@ jobs:
           python-version: '3.11'
           cache: pip
           cache-dependency-path: newspaper/requirements.txt
-      - name: Resolve Beijing delivery date
-        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-v05-send-once]')) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-recovery-20261014]')))
-        id: delivery_date
-        run: echo "date=$(TZ=Asia/Shanghai date +%F)" >> "$GITHUB_OUTPUT"
-      - name: Check already-sent daily receipt
-        if: steps.delivery_date.outcome == 'success'
-        id: receipt
-        uses: actions/cache/restore@v4
-        with:
-          path: /tmp/newspaper-sent-receipt
-          key: newspaper-sent-${{ steps.delivery_date.outputs.date }}
-          lookup-only: true
-      - name: Refuse production outside the Beijing morning dispatch window
-        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && !(github.event_name == 'push' && contains(github.event.head_commit.message, '[newspaper-recovery-20261014]'))
+
+      - name: Resolve edition date
+        id: date
+        run: echo "edition=$(TZ=Asia/Shanghai date +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: Select production phase
+        id: phase
+        env:
+          EVENT: ${{ github.event_name }}
+          CRON: ${{ github.event.schedule }}
+          DRY_RUN: ${{ inputs.dry_run }}
         run: |
           set -euo pipefail
-          hhmm=$(TZ=Asia/Shanghai date +%H%M)
-          if [ "$hhmm" -lt 100 ] || [ "$hhmm" -ge 220 ]; then
-            echo "::error::Beijing time outside 01:00-02:20 job-start window. Aborting before an outdated late report."
-            exit 1
+          phase=preview
+          if [[ "$EVENT" == "schedule" || ("$EVENT" == "workflow_dispatch" && "$DRY_RUN" == "false") ]]; then
+            case "$CRON" in
+              '5 22 * * *'|'20 22 * * *') phase=prepare ;;
+              *) phase=send ;;
+            esac
+            # A preparation cron that was delayed past 07:00 must attempt
+            # delivery instead of consuming the only available send window.
+            if [[ "$phase" == "prepare" ]]; then
+              hhmm=$(TZ=Asia/Shanghai date +%H%M)
+              if [[ "$hhmm" > "0659" ]]; then phase=send; fi
+            fi
           fi
-      - name: Install print fonts on GitHub runner
-        if: steps.receipt.outputs.cache-hit != 'true'
+          echo "phase=$phase" >> "$GITHUB_OUTPUT"
+          echo "Newspaper V2 phase=$phase edition=${{ steps.date.outputs.edition }}"
+
+      - name: Check sent receipt (never means inbox delivery)
+        id: receipt
+        if: steps.phase.outputs.phase != 'preview'
+        uses: actions/cache/restore@v4
+        with:
+          key: newspaper-sent-${{ steps.date.outputs.edition }}
+          path: /tmp/newspaper-sent-receipt
+          lookup-only: true
+
+      - name: Restore prebuilt verified edition
+        id: prepared
+        if: steps.phase.outputs.phase != 'preview' && steps.receipt.outputs.cache-hit != 'true'
+        uses: actions/cache/restore@v4
+        with:
+          key: newspaper-ready-v2-${{ steps.date.outputs.edition }}
+          path: /tmp/newspaper-ready
+
+      - name: Install print fonts
+        if: steps.phase.outputs.phase == 'preview' || (steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk fonts-liberation
           fc-match 'Noto Serif CJK SC'
-      - name: Install dependencies
-        if: steps.receipt.outputs.cache-hit != 'true'
+
+      - name: Install newsroom dependencies
+        if: steps.phase.outputs.phase == 'preview' || (steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
         run: python -m pip install -r newspaper/requirements.txt
-      - name: Install English grammatical analysis model (spaCy official)
-        if: steps.receipt.outputs.cache-hit != 'true'
+
+      - name: Install English grammar model
+        if: steps.phase.outputs.phase == 'preview' || (steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
         run: python -m spacy download en_core_web_sm
+
       - name: Cache offline translation model
-        if: steps.receipt.outputs.cache-hit != 'true'
+        if: steps.phase.outputs.phase == 'preview' || (steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
         uses: actions/cache@v4
         with:
           path: ~/.local/share/argos-translate/packages
           key: newspaper-argos-translate-en-zh-v1
-      - name: Test date filtering, fallback, rendering
-        # Run the complete regression suite on PR, never block a scheduled send.
+
+      - name: Complete regression suite (PR only)
         if: github.event_name == 'pull_request'
         run: python -m unittest discover -s newspaper -p 'test_*.py' -v
-      - name: Audit live public RSS source coverage — no secrets
+
+      - name: Audit live public sources (PR only)
         if: github.event_name == 'pull_request'
         run: python newspaper/source_audit.py
-      - name: Preview only — never load SMTP secrets
-        if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
+
+      - name: Preview without SMTP or LLM credentials
+        if: steps.phase.outputs.phase == 'preview'
         env:
           PREVIEW_KIND: ${{ inputs.preview_kind || 'demo' }}
         run: |
           set -euo pipefail
-          if [ "$PREVIEW_KIND" = "live" ]; then
+          if [[ "$PREVIEW_KIND" == "live" ]]; then
             python newspaper/digest.py --dry-run --rolling-preview --output /tmp/newspaper-preview
           else
             python newspaper/digest.py --demo --output /tmp/newspaper-preview
           fi
-      - name: Integration test — real public news, source selection, FRED and PDF, no secrets
+
+      - name: Live-source PDF integration (PR only; no credentials)
         if: github.event_name == 'pull_request'
         run: python newspaper/digest.py --dry-run --rolling-preview --output /tmp/newspaper-live-qa
-      - name: Send real PDF daily report — default branch only
+
+      - name: Prepare verified edition (no SMTP credentials)
+        id: build
+        if: steps.phase.outputs.phase != 'preview' && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
+        env:
+          NEWSPAPER_LLM_API_KEY: ${{ secrets.NEWSPAPER_LLM_API_KEY }}
+        run: |
+          set -euo pipefail
+          python newspaper/digest.py --prepare --output /tmp/newspaper-ready
+
+      - name: Cache completed edition for later send attempts
+        id: save_prepared
+        if: steps.build.outcome == 'success'
+        uses: actions/cache/save@v4
+        with:
+          key: newspaper-ready-v2-${{ steps.date.outputs.edition }}
+          path: /tmp/newspaper-ready
+
+      - name: Send prebuilt edition via SMTP (default branch only)
         id: send
-        if: steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-quality-sample]') || contains(github.event.head_commit.message, '[newspaper-recovery-20261014]'))))
+        if: steps.phase.outputs.phase == 'send' && steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
         env:
           SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
           SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
           NEWSPAPER_TO: ${{ secrets.NEWSPAPER_TO }}
-          NEWSPAPER_LLM_API_KEY: ${{ secrets.NEWSPAPER_LLM_API_KEY }}
         run: |
           set -euo pipefail
-          if [ -z "$SMTP_FROM" ] || [ -z "$SMTP_PASSWORD" ] || [ -z "$NEWSPAPER_TO" ]; then
-            echo "::error::Not configured. Set NEWSPAPER_SMTP_FROM, NEWSPAPER_SMTP_PASSWORD, NEWSPAPER_TO in GitHub Actions repository Secrets."
-            exit 1
-          fi
-          if [[ "${{ github.event_name }}" == "push" && "${{ contains(github.event.head_commit.message, '[newspaper-recovery-20261014]') }}" == "true" ]]; then
-            # Single owner-requested catch-up, date-limited by digest.py.
-            python newspaper/digest.py --recovery-20261014
-          elif [[ "${{ github.event_name }}" == "push" && "${{ contains(github.event.head_commit.message, '[newspaper-quality-sample]') }}" == "true" ]]; then
-            python newspaper/digest.py --quality-sample
-          else
-            python newspaper/digest.py
-          fi
-      - name: Record successful daily delivery
-        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && success() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-recovery-20261014]'))))
+          python newspaper/prepared_delivery.py --bundle-dir /tmp/newspaper-ready --edition-date "${{ steps.date.outputs.edition }}"
+
+      - name: Make accepted-mail receipt
+        if: steps.send.outcome == 'success'
         run: |
           mkdir -p /tmp/newspaper-sent-receipt
-          printf '%s\\n' "${{ steps.delivery_date.outputs.date }}" > /tmp/newspaper-sent-receipt/date.txt
-      - name: Save successful daily receipt
+          printf '%s\n' "${{ steps.date.outputs.edition }}" > /tmp/newspaper-sent-receipt/date.txt
+
+      - name: Save accepted-mail receipt
         id: save_receipt
-        if: steps.delivery_date.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true' && success() && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') || (github.event_name == 'push' && (contains(github.event.head_commit.message, '[newspaper-v05-send-once]') || contains(github.event.head_commit.message, '[newspaper-recovery-20261014]'))))
+        if: steps.send.outcome == 'success'
         uses: actions/cache/save@v4
         with:
+          key: newspaper-sent-${{ steps.date.outputs.edition }}
           path: /tmp/newspaper-sent-receipt
-          key: newspaper-sent-${{ steps.delivery_date.outputs.date }}
-      - name: Report actual delivery outcome
-        # A green workflow may represent a legitimate duplicate skip, not an email.
-        # Emit durable, unambiguous status in the job summary.
-        if: ${{ always() && steps.delivery_date.outcome == 'success' }}
+
+      - name: Publish explicit delivery status
+        if: ${{ always() && steps.phase.outputs.phase != 'preview' }}
         env:
-          CACHE_HIT: ${{ steps.receipt.outputs.cache-hit }}
-          SEND_RESULT: ${{ steps.send.outcome }}
-          RECEIPT_SAVED: ${{ steps.save_receipt.outcome }}
-          EDITION_DATE: ${{ steps.delivery_date.outputs.date }}
+          PHASE: ${{ steps.phase.outputs.phase }}
+          SENT_CACHE: ${{ steps.receipt.outputs.cache-hit }}
+          READY_CACHE: ${{ steps.prepared.outputs.cache-hit }}
+          BUILD: ${{ steps.build.outcome }}
+          SEND: ${{ steps.send.outcome }}
+          RECEIPT: ${{ steps.save_receipt.outcome }}
+          READY_SAVED: ${{ steps.save_prepared.outcome }}
         run: |
           set -euo pipefail
-          if [[ "$CACHE_HIT" == "true" ]]; then
-            status="ALREADY_SENT"
-            explanation="A successful receipt exists for this date. This run did not send email."
-          elif [[ "$SEND_RESULT" == "success" && "$RECEIPT_SAVED" == "success" ]]; then
-            status="SENT"
-            explanation="SMTP accepted the report; daily deduplication receipt saved. Inbox delivery is not verified."
-          elif [[ "$SEND_RESULT" == "success" ]]; then
-            status="SENT_RECEIPT_UNVERIFIED"
-            explanation="SMTP send returned successfully, but receipt persistence was not confirmed; review before retry."
+          if [[ "$SENT_CACHE" == "true" ]]; then
+            status=ALREADY_SENT
+          elif [[ "$PHASE" == "prepare" && ("$READY_CACHE" == "true" || ("$BUILD" == "success" && "$READY_SAVED" == "success")) ]]; then
+            status=PREPARED_NOT_SENT
+          elif [[ "$SEND" == "success" && "$RECEIPT" == "success" ]]; then
+            status=SMTP_ACCEPTED
+          elif [[ "$SEND" == "success" ]]; then
+            status=SMTP_ACCEPTED_RECEIPT_UNVERIFIED
           else
-            status="FAILED"
-            explanation="No verified SMTP handoff. Inspect this run's failed/skipped steps."
+            status=FAILED
           fi
-          echo "NEWSPAPER_DELIVERY_STATUS=$status edition=$EDITION_DATE"
+          echo "NEWSPAPER_DELIVERY_STATUS=$status edition=${{ steps.date.outputs.edition }}"
           {
-            echo "### Newspaper delivery"
-            echo "- **Edition (Beijing):** $EDITION_DATE"
-            echo "- **Result:** $status"
-            echo "- $explanation"
+            echo "### Newspaper V2"
+            echo "- Edition (Beijing): ${{ steps.date.outputs.edition }}"
+            echo "- Status: **$status**"
+            echo "- Prepared cache hit: $READY_CACHE"
+            echo "- SMTP accepted is not inbox-delivered confirmation"
           } >> "$GITHUB_STEP_SUMMARY"
-          if [[ "$status" == "FAILED" || "$status" == "SENT_RECEIPT_UNVERIFIED" ]]; then
-            echo "::error::Newspaper delivery status is $status"
+          if [[ "$status" == FAILED || "$status" == SMTP_ACCEPTED_RECEIPT_UNVERIFIED ]]; then
+            echo "::error::Review newspaper run before retry: $status"
             exit 1
           fi
-      - name: Upload example preview
+
+      - name: Upload PR preview
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
         uses: actions/upload-artifact@v4
         with:
@@ -231,7 +260,6 @@ jobs:
             /tmp/newspaper-preview.html
             /tmp/newspaper-preview.txt
             /tmp/newspaper-preview.pdf
-            /tmp/newspaper-source-audit.json
             /tmp/newspaper-live-qa.pdf
             /tmp/newspaper-live-qa.html
             /tmp/newspaper-live-qa.txt

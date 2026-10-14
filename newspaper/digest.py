@@ -34,6 +34,7 @@ from edition_budget import EditionBudget
 from news_editor import edit_reports_in_batches, write_compact_commentary
 from market_snapshot import fetch_market_snapshot
 from editorial_quality import edition_quality_report
+from prepared_delivery import write_bundle
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -55,15 +56,13 @@ PRIORITY = re.compile(
 
 
 BEIJING_TZ = ZoneInfo("Asia/Shanghai")
-EDITION_CUTOFF = dt.time(1, 0)
-# Allow delayed GitHub schedule events to recover the same fixed 01:00 edition.
-# The CI startup gate stops launching new work after 02:20 Beijing; the
-# Python guard also blocks a report if it cannot reach SMTP by 02:30.
-LATEST_SEND_START = dt.timedelta(minutes=90)
+EDITION_CUTOFF = dt.time(6, 0)
+# Preparation 06:00-08:00 Beijing; SMTP separately guarded at 07:00-08:00.
+LATEST_SEND_START = dt.timedelta(hours=2)
 
 
 def edition_window(now: dt.datetime) -> tuple[dt.datetime, dt.datetime, dt.date]:
-    """Fixed Beijing 01:00-to-01:00 reporting interval, independent of runner delay."""
+    """Fixed Beijing 06:00-to-06:00 interval, independent of runner delay."""
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("An aware timestamp is required for the edition window.")
     local = now.astimezone(BEIJING_TZ)
@@ -74,14 +73,14 @@ def edition_window(now: dt.datetime) -> tuple[dt.datetime, dt.datetime, dt.date]
 
 
 def require_live_delivery_window(now: dt.datetime, edition_end: dt.datetime) -> None:
-    """Reject a stale report after the latest authorized 02:30 Beijing handoff."""
+    """Reject stale live preparation after the 08:00 Beijing deadline."""
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("An aware timestamp is required for the delivery deadline.")
     local = now.astimezone(BEIJING_TZ)
     if not edition_end <= local < edition_end + LATEST_SEND_START:
         raise RuntimeError(
-            "Outside Beijing delivery window (01:00–02:30). "
-            "Do not send a stale edition; inspect the scheduled workflow."
+            "Outside Beijing preparation window (06:00–08:00). "
+            "Do not prepare a stale edition; inspect the scheduled workflow."
         )
 
 
@@ -546,9 +545,9 @@ def quality_sample_window(now: dt.datetime) -> tuple[dt.datetime, dt.datetime, d
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true", help="Write preview files; do not send.")
-    parser.add_argument("--rolling-preview", action="store_true", help="Preview the last 24h without sending; does not alter the scheduled 01:00 edition.")
+    parser.add_argument("--rolling-preview", action="store_true", help="Preview the last 24h without sending; does not alter the scheduled 06:00 edition.")
+    parser.add_argument("--prepare", action="store_true", help="Build a verified edition package, never send SMTP.")
     parser.add_argument("--quality-sample", action="store_true", help="Send one explicitly-requested real-news quality sample; never consume daily receipt.")
-    parser.add_argument("--recovery-20261014", action="store_true", help="Owner-authorized, once-only late delivery of the 2026-10-14 Beijing 01:00 edition.")
     parser.add_argument("--demo", action="store_true", help="Offline layout demo; not live news.")
     parser.add_argument("--output", default="/tmp/newspaper-preview")
     args = parser.parse_args()
@@ -556,20 +555,17 @@ def main():
         parser.error("--quality-sample cannot be combined with --dry-run or --demo")
     if args.rolling_preview and (not args.dry_run or args.demo or args.quality_sample):
         parser.error("--rolling-preview requires --dry-run and cannot send email or use --demo")
-    if args.recovery_20261014 and (args.dry_run or args.demo or args.quality_sample or args.rolling_preview):
-        parser.error("--recovery-20261014 cannot combine with preview or quality sample")
+    if args.prepare and (args.dry_run or args.demo or args.rolling_preview or args.quality_sample):
+        parser.error("--prepare cannot combine with previews or quality samples")
+    if not (args.prepare or args.dry_run or args.demo or args.quality_sample):
+        parser.error("V2 production requires --prepare followed by prepared_delivery.py")
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     settings = json.loads((ROOT / "feeds.json").read_text(encoding="utf-8"))
     now = dt.datetime.now(BEIJING_TZ)
     start, end, news_day = (quality_sample_window(now)
                              if args.quality_sample or args.rolling_preview
                              else edition_window(now))
-    if args.recovery_20261014:
-        # An explicitly authorized one-off exception. Never retarget a later edition.
-        expected = dt.date(2026, 10, 14)
-        if news_day != expected or not end <= now.astimezone(BEIJING_TZ) < end + dt.timedelta(hours=12):
-            raise RuntimeError("One-off Oct 14 recovery period expired or edition date changed")
-    elif not (args.dry_run or args.demo or args.quality_sample):
+    if not (args.dry_run or args.demo or args.quality_sample):
         require_live_delivery_window(now, end)
     LOG.info("News reporting window (Beijing): %s inclusive to %s exclusive", start.isoformat(), end.isoformat())
     diagnostics = {}
@@ -637,7 +633,7 @@ def main():
         if sum(len(x) for x in readable.values()) == 0:
             raise RuntimeError("No articles successfully extracted; aborting the email.")
         # The model edits at most two sourced articles per request.
-        # All billable requests, including commentary, share one <=1 CNY ledger.
+        # All billable requests, including commentary, share one conservative budget ledger.
         # Preview uses no API. A failed article falls back individually with
         # explicit degraded-quality counts; other articles remain eligible.
         ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
@@ -645,7 +641,7 @@ def main():
         if not args.dry_run and ai_key:
             ledger = EditionBudget()
             def before_editorial_request():
-                if not (args.quality_sample or args.recovery_20261014):
+                if not args.quality_sample:
                     require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
             english_reports = {
                 section: [a for a in articles if a.get("source_language") != "zh"]
@@ -764,7 +760,7 @@ def main():
         if args.quality_sample:
             window = (f"北京时间 {start:%Y-%m-%d %H:%M} 至 {end:%Y-%m-%d %H:%M}")
             note = ("【新版质量测试样刊｜非正式日报】\\n"
-                    "此邮件为用户明确要求的即时样刊，不占用凌晨01:00正式日报的发送记录。\\n"
+                    "此邮件为用户明确要求的即时样刊，不占用北京时间07:00正式日报的发送记录。\\n"
                     f"取材窗口：{window}。内容来自真实采集源，未经人工逐条复核。")
             cover_html = (
                 '<div style="border:1px solid #9b353b;padding:12px;color:#611d22">'
@@ -773,17 +769,14 @@ def main():
             )
             cover_txt = note + "\\n\\n" + cover_txt
             subject = f"【质量测试·非正式日报】全球新闻选编｜{news_day}"
-        elif args.recovery_20261014:
-            current = dt.datetime.now(BEIJING_TZ)
-            if not end <= current < end + dt.timedelta(hours=12):
-                raise RuntimeError("One-time recovery authorization has expired")
-            recovery_note = "【补发说明】原定定时任务未触发。本邮件为2026年10月14日01:00截稿的正式新闻日报补发，不是滚动样刊。"
-            cover_html = "<p>" + html.escape(recovery_note) + "</p>" + cover_html
-            cover_txt = recovery_note + "\n\n" + cover_txt
-            subject = f"【补发】全球新闻选编｜{news_day} 01:00截稿"
         else:
             require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
-            subject = f"全球新闻选编｜{news_day} 01:00截稿"
+            subject = f"全球新闻选编｜{news_day} 06:00截稿"
+        if args.prepare:
+            manifest = write_bundle(Path(args.output), news_day, subject,
+                                    cover_html, cover_txt, pdf_path)
+            LOG.info("PREPARED edition=%s bundle_manifest=%s", news_day, manifest)
+            return
         send_email(subject, cover_html, cover_txt, pdf_attachment=pdf_path)
         LOG.info("PDF report handed to SMTP server: %s (%d bytes)", pdf_path.name, pdf_path.stat().st_size)
 

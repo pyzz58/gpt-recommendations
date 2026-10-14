@@ -1,28 +1,34 @@
-"""Credential-boundary regression for the public Newspaper workflow."""
+"""Credential isolation: preview/prepare never see SMTP secrets."""
 from pathlib import Path
 import unittest
 
+
 class MailSecretsSafetyTests(unittest.TestCase):
-    def test_secrets_only_enter_default_branch_send_step(self):
-        path = Path(__file__).resolve().parent.parent / ".github" / "workflows" / "newspaper.yml"
-        workflow = path.read_text(encoding="utf8")
-        prefix, send = workflow.split("      - name: Send real PDF daily report", 1)
-        self.assertNotIn("secrets.NEWSPAPER_SMTP_PASSWORD", prefix)
-        self.assertNotIn("secrets.NEWSPAPER_SMTP_FROM", prefix)
-        self.assertNotIn("secrets.NEWSPAPER_TO", prefix)
-        self.assertIn("github.ref == 'refs/heads/main'", send)
-        self.assertIn("github.event_name == 'schedule'", send)
-        self.assertIn("[newspaper-v05-send-once]", send)
-        self.assertIn("secrets.NEWSPAPER_SMTP_PASSWORD", send)
-        self.assertIn("python newspaper/digest.py", send)
-    def test_preview_without_secrets(self):
-        path = Path(__file__).resolve().parent.parent / ".github" / "workflows" / "newspaper.yml"
-        w = path.read_text(encoding="utf8")
-        preview = w.split("      - name: Preview only",1)[1].split("      - name: Send real PDF daily report",1)[0]
-        self.assertIn("python newspaper/digest.py --demo", preview)
-        self.assertNotIn("secrets.", preview)
-        self.assertIn("python newspaper/digest.py --dry-run", preview)
-        self.assertIn("PREVIEW_KIND", preview)
-        self.assertIn("inputs.preview_kind", w)
-if __name__ == "__main__":
+    def setUp(self):
+        self.workflow=(Path(__file__).resolve().parent.parent/
+                       ".github/workflows/newspaper.yml").read_text(encoding="utf-8")
+
+    def test_smtp_credentials_only_in_send_step(self):
+        prefix, tail=self.workflow.split("      - name: Send prebuilt edition via SMTP",1)
+        for value in ("secrets.NEWSPAPER_SMTP_PASSWORD","secrets.NEWSPAPER_SMTP_FROM","secrets.NEWSPAPER_TO"):
+            self.assertNotIn(value,prefix)
+            self.assertIn(value,tail)
+        send=tail.split("      - name: Make accepted-mail receipt",1)[0]
+        self.assertIn("github.ref == 'refs/heads/main'",send)
+        self.assertIn("steps.phase.outputs.phase == 'send'",send)
+        self.assertIn("prepared_delivery.py",send)
+        self.assertNotIn("digest.py",send)
+
+    def test_preview_and_pr_do_not_use_credentials(self):
+        w=self.workflow
+        preview=w.split("      - name: Preview without SMTP or LLM credentials",1)[1].split(
+            "      - name: Live-source PDF integration",1)[0]
+        self.assertIn("--demo",preview)
+        self.assertIn("--dry-run",preview)
+        self.assertNotIn("secrets.",preview)
+        self.assertIn("inputs.preview_kind",w)
+        self.assertIn("github.event_name == 'pull_request'",w)
+
+
+if __name__=="__main__":
     unittest.main()
