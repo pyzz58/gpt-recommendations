@@ -61,13 +61,12 @@ PRIORITY = re.compile(
 # All schedule controls are defined once in production_policy.json.
 from production_policy import (
     BEIJING as BEIJING_TZ, CUTOFF as EDITION_CUTOFF,
-    PREPARATION_SPAN as LATEST_SEND_START,
     edition_window, check_preparation_window,
 )
 
 
 def require_live_delivery_window(now: dt.datetime, edition_end: dt.datetime) -> None:
-    """Preparation is allowed only 00:00–02:00 BJT; SMTP has a 01:00 guard."""
+    """Build only the current Beijing edition; send as soon as ready."""
     check_preparation_window(now, edition_end)
 
 
