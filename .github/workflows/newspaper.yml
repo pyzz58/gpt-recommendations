@@ -112,7 +112,7 @@ jobs:
 
       - name: Check sent receipt (never means inbox delivery)
         id: receipt
-        if: steps.phase.outputs.phase != 'preview'
+        if: steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send'
         uses: actions/cache/restore@v4
         with:
           key: newspaper-sent-${{ steps.date.outputs.edition }}
@@ -121,7 +121,7 @@ jobs:
 
       - name: Restore prebuilt verified edition
         id: prepared
-        if: steps.phase.outputs.phase != 'preview' && steps.receipt.outputs.cache-hit != 'true'
+        if: (steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true'
         uses: actions/cache/restore@v4
         with:
           key: newspaper-ready-v21-${{ steps.date.outputs.edition }}
@@ -201,7 +201,7 @@ jobs:
 
       - name: Prepare verified edition (no SMTP credentials)
         id: build
-        if: steps.phase.outputs.phase != 'preview' && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
+        if: (steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
         env:
           NEWSPAPER_LLM_API_KEY: ${{ secrets.NEWSPAPER_LLM_API_KEY }}
           NEWSPAPER_SEC_CONTACT: ${{ secrets.NEWSPAPER_SEC_CONTACT }}
@@ -243,7 +243,7 @@ jobs:
           path: /tmp/newspaper-sent-receipt
 
       - name: Publish explicit delivery status
-        if: ${{ always() && steps.phase.outputs.phase != 'preview' }}
+        if: ${{ always() && github.event_name != 'pull_request' && steps.phase.outputs.phase != 'preview' }}
         env:
           PHASE: ${{ steps.phase.outputs.phase }}
           SENT_CACHE: ${{ steps.receipt.outputs.cache-hit }}
@@ -254,7 +254,11 @@ jobs:
           READY_SAVED: ${{ steps.save_prepared.outcome }}
         run: |
           set -euo pipefail
-          if [[ "$SENT_CACHE" == "true" ]]; then
+          if [[ "$PHASE" == "expired" ]]; then
+            status=EXPIRED_NO_SEND
+          elif [[ "$PHASE" == "wait" ]]; then
+            status=EARLY_NO_SEND
+          elif [[ "$SENT_CACHE" == "true" ]]; then
             status=ALREADY_SENT
           elif [[ "$PHASE" == "prepare" && ("$READY_CACHE" == "true" || ("$BUILD" == "success" && "$READY_SAVED" == "success")) ]]; then
             status=PREPARED_NOT_SENT
@@ -273,7 +277,7 @@ jobs:
             echo "- Prepared cache hit: $READY_CACHE"
             echo "- SMTP accepted is not inbox-delivered confirmation"
           } >> "$GITHUB_STEP_SUMMARY"
-          if [[ "$status" == FAILED || "$status" == SMTP_ACCEPTED_RECEIPT_UNVERIFIED ]]; then
+          if [[ "$status" == FAILED || "$status" == EXPIRED_NO_SEND || "$status" == EARLY_NO_SEND || "$status" == SMTP_ACCEPTED_RECEIPT_UNVERIFIED ]]; then
             echo "::error::Review newspaper run before retry: $status"
             exit 1
           fi
