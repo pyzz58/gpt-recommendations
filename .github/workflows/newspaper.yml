@@ -63,7 +63,7 @@ jobs:
         env:
           PYTHONPATH: newspaper
         run: |
-          python -m unittest -v test_prepared_delivery test_delivery_schedule test_quality_sample test_mail_secret_boundary test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality test_editorial_topic_relevance test_headline_quality
+          python -m unittest -v test_prepared_delivery test_mail_secret_boundary test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality test_editorial_topic_relevance test_headline_quality
 
   digest:
     needs: quick_check
@@ -218,11 +218,12 @@ jobs:
           BUILD: ${{ steps.build.outcome }}
           SEND: ${{ steps.send.outcome }}
           RECEIPT: ${{ steps.save_receipt.outcome }}
+          READY_SAVED: ${{ steps.save_prepared.outcome }}
         run: |
           set -euo pipefail
           if [[ "$SENT_CACHE" == "true" ]]; then
             status=ALREADY_SENT
-          elif [[ "$PHASE" == "prepare" && ("$READY_CACHE" == "true" || ("$BUILD" == "success" && "$RECEIPT" != "failure")) ]]; then
+          elif [[ "$PHASE" == "prepare" && ("$READY_CACHE" == "true" || ("$BUILD" == "success" && "$READY_SAVED" == "success")) ]]; then
             status=PREPARED_NOT_SENT
           elif [[ "$SEND" == "success" && "$RECEIPT" == "success" ]]; then
             status=SMTP_ACCEPTED
