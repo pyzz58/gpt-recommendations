@@ -116,9 +116,9 @@ def request(base, state, *, request_id, origin_role, kind, shot_ids,
            kind != "director_whole_film_vision" else True),
           "LINEAGE_LOCAL_CHANGE_REQUIRES_SHOT_SCOPE")
     _need(isinstance(scene_or_source_beat_ids, list) and
-          len(scene_or_source_beat_ids) == len(set(scene_or_source_beat_ids))
-          and all(isinstance(x, str) and x.strip() and len(x) <= 100
-                  for x in scene_or_source_beat_ids),
+          all(isinstance(x, str) and x.strip() and len(x) <= 100
+                  for x in scene_or_source_beat_ids)
+          and len(scene_or_source_beat_ids) == len(set(scene_or_source_beat_ids)),
           "LINEAGE_SOURCE_BEAT_REFS_INVALID")
     declared_refs = {
         ident for shot in base["shots"]
