@@ -97,6 +97,29 @@ class MarketCoverageFunnelTests(unittest.TestCase):
                 self.assertFalse(result["eligible"], result)
                 self.assertNotIn(MARKET,sections(article))
 
+    def test_cnbc_earnings_real_feed_separates_fact_from_stock_pick(self):
+        earnings=row(
+            "UnitedHealth Group tops estimates, hikes profit outlook as insurer manages high medical costs",
+            source="CNBC Earnings")
+        recommendation=row(
+            "We're upgrading our rating on Wells Fargo as the stock's pullback offers a nice entry point",
+            source="CNBC Earnings")
+        self.assertTrue(market_evidence(earnings)["eligible"])
+        self.assertIn(MARKET,sections(earnings))
+        self.assertFalse(market_evidence(recommendation)["eligible"])
+        self.assertNotIn(MARKET,sections(recommendation))
+
+    def test_runner_verified_cnbc_new_sources_are_in_active_config(self):
+        import json
+        from pathlib import Path
+        data=json.loads(Path(__file__).with_name("feeds.json").read_text(encoding="utf8"))
+        all_feeds=data["feeds"]["美股与投资"]
+        by_name={f["name"]:f for f in all_feeds}
+        for name in ("CNBC Earnings","CNBC Finance","CNBC Top News"):
+            self.assertIn(name,by_name)
+            self.assertFalse(by_name[name].get("disabled",False))
+        self.assertEqual(data["max_per_category"][MARKET],4)
+
     def test_us_market_releases_survive_foreign_macro_mention(self):
         title="Wall Street stocks drop as US CPI rises and European shares rally"
         article=row(title,source="CNBC Markets")
