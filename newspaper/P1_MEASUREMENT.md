@@ -71,3 +71,19 @@ python -m unittest discover -s newspaper -p 'test_p1_benchmark.py' -v
 - GitHub PR 的 Artifact：`newspaper-p1-benchmark`，含可计算的 JSON 明细。
 - GitHub 新闻日报/PR 的 Artifact：`newspaper-p1-selection-audit`，含 `newspaper-selection-audit.json`；仅当真实素材采集、筛选已执行才产生文件。
 - 运行日志：`NEWSROOM_P1_BENCHMARK` 和 `NEWSROOM_P1_SELECTION_AUDIT`，供后续趋势采集。
+
+
+## 6. 美股头版来源—分类—入选漏斗（2026-10-14）
+
+上一轮 [Actions 38522372758](https://github.com/pyzz58/gpt-recommendations/actions/runs/38522372758) 的真实公开源集成结果：529 条抓取记录；437 个不同 URL；美股栏目候选池仅 1 篇，实际刊登 1 篇，常规 4 篇目标缺 3 篇。60 个启用 RSS 入口全部 HTTP 可达，但这不等于其当天发布了足够多高质量美股新闻。
+
+**本批最小升级：**
+
+1. \`market_headline.py\`：新闻是否与美国资本市场有实质联系，使用带理由的规则判定。支持 Fed/SEC 官方决策、美国股市宏观与交易动态、主要美国上市公司财报/重大指引/并购、专业金融新闻来源中标题确实存在金融事件的文章；不因泛指投资或政治就入选。
+2. \`market_funnel.py\`：记录 RSS 观测、可信市场线索、板块筛选、候选池、最终刊登各阶段的数量、来源分布、丢失原因与可回查的标题/URL 元数据；不保存版权新闻全文。
+3. \`source_audit.py\`：统计专门市场来源当天的有效新闻产出量，避免“60/60 HTTP 可访问”误导成“市场内容充分”。
+4. \`test_market_coverage_funnel.py\`：既验证应入选的美国市场实质新闻，也验证印度通胀、欧洲政策、与股价无直接关系的产品发布和虚假 SEC 域名均不会冒进头版。
+
+**安全原则**：4 篇是正常目标，不是凑数指标。当天权威消息不足，应如实刊登 1–3 篇并报告缺口。新闻源可达性、选文重要性、源文章可完整提取是三个不同维度，不得相互替代。
+
+**新增报告**：\`/tmp/newspaper-market-funnel.json\`；在 PR 或日报 workflow 中留存为 \`newspaper-p1-selection-audit\` 附件，日志含 \`NEWSROOM_MARKET_FUNNEL\`。CI 完成后，需对比上一轮 1/4 的真实样刊，确认改善出自**有实质内容的新入选稿**，而非降低门槛；日后仍需人工新闻编辑审核。
