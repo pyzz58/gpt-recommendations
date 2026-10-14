@@ -7,30 +7,18 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import os
-from production_policy import POLICY, BEIJING, SEND_START, SEND_END
+from production_policy import POLICY, BEIJING
 
 
 def choose_phase(event: str, cron: str, dry_run: str, now: dt.datetime) -> str:
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("Aware clock required")
     if event == "schedule":
-        if cron in POLICY["prepare_crons_utc"]:
-            planned = "prepare"
-        elif cron in POLICY["send_crons_utc"]:
-            planned = "send"
-        else:
+        if cron not in POLICY["send_crons_utc"]:
             raise RuntimeError("Unknown scheduled cron; refusing unexpected production run")
-        local_time = now.astimezone(BEIJING).time()
-        if local_time >= SEND_END:
-            return "expired"
-        if planned == "prepare" and local_time >= SEND_START:
-            return "send"
-        if planned == "send" and local_time < SEND_START:
-            return "wait"
-        return planned
+        return "send"
     if event == "workflow_dispatch" and dry_run == "false":
-        local_time = now.astimezone(BEIJING).time()
-        return "send" if SEND_START <= local_time < SEND_END else "expired"
+        return "send"
     return "preview"
 
 
