@@ -67,7 +67,17 @@ jobs:
         env:
           PYTHONPATH: newspaper
         run: |
-          python -m unittest -v test_prepared_delivery test_mail_secret_boundary test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality test_editorial_topic_relevance test_headline_quality
+          python -m unittest -v test_prepared_delivery test_mail_secret_boundary test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality test_editorial_topic_relevance test_headline_quality test_p1_benchmark
+      - name: Measure P1 labeled fixture baseline (no network / no model)
+        run: python newspaper/editorial_benchmark.py
+      - name: Preserve P1 frozen-case benchmark
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newspaper-p1-benchmark
+          path: /tmp/newspaper-p1-benchmark.json
+          if-no-files-found: warn
+          retention-days: 14
 
   digest:
     needs: quick_check
@@ -240,6 +250,17 @@ jobs:
             echo "::error::Review newspaper run before retry: $status"
             exit 1
           fi
+
+      - name: Preserve P1 observed-feed selection audit
+        if: always() && (github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+        uses: actions/upload-artifact@v4
+        with:
+          name: newspaper-p1-selection-audit
+          path: |
+            /tmp/newspaper-selection-audit.json
+            /tmp/newspaper-source-audit.json
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: Upload PR preview
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true')
