@@ -15,7 +15,6 @@ import json
 from pathlib import Path
 import re
 import subprocess
-from urllib.parse import urlparse
 
 import agent_team
 
@@ -199,18 +198,13 @@ def inspect_local_media(order, manifest, *, media_root):
     }
 
 
-def export_native_otio_preview(order, inspection):
+def export_native_otio_preview(order, manifest, *, media_root):
     """Native .otio JSON via the OSS package; picture gaps remain real gaps.
 
     Import/export guarantees only the native OTIO schema roundtrip, NOT that
     individual NLE software reproduces effects, subtitles, music or credits.
     """
-    _trusted_order(order)
-    _need(isinstance(inspection, dict) and
-          inspection.get("kind") == "local_only_editor_media_inspection" and
-          inspection.get("work_order_digest") == agent_team.fingerprint(order) and
-          inspection.get("permission_to_render_or_publish") is False,
-          "MEDIA_CONFORM_INSPECTION_STALE")
+    inspection = inspect_local_media(order, manifest, media_root=media_root)
     try:
         import opentimelineio as otio
     except ImportError:
