@@ -23,6 +23,7 @@ import director_department_command as director_command
 import director_visual_language as visual_language
 import director_artistic_methods as artistic_methods
 import director_action_rescue as action_rescue
+import director_creative_integration as creative_gates
 
 CONTRACT_VERSION = "1.0"
 MAX_CONTEXT_CHARS = 220_000
@@ -444,7 +445,8 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
 def build_role_messages(base, state, task_id, *, source_text=None,
                         editorial_handoff=None, reference_manifest=None,
                         department_command=None, audiovisual_plan=None,
-                        artistic_method_plan=None, action_rescue_plan=None):
+                        artistic_method_plan=None, action_rescue_plan=None,
+                        holistic_critique=None):
     """Build private messages in memory; never return a public or saved artifact.
 
     For source-locked teams, include the FIRST real director/editor vision.
@@ -561,6 +563,23 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             action_rescue.departmental_context(
                 base, state, department_command, audiovisual_plan,
                 action_rescue_plan, task_id,
+                artistic_method_plan=artistic_method_plan))
+    # QO-D10 + QO-D06 are ONE director's creative decisions. When opted in,
+    # both source-locked plans must agree and unresolved author/director flaws
+    # MUST be handled before any specialist model-facing request is built.
+    integrated_required = creative_gates.check_mode(base)
+    if (integrated_required and task_id in director_command.DEPARTMENTS and
+            (holistic_critique is None or action_rescue_plan is None)):
+        raise ValueError("CREW_INTEGRATED_DIRECTOR_CRITIQUE_AND_ACTION_REQUIRED")
+    if holistic_critique is not None:
+        if (task_id not in director_command.DEPARTMENTS or
+                department_command is None or audiovisual_plan is None or
+                action_rescue_plan is None):
+            raise ValueError("CREW_INTEGRATED_DIRECTOR_CONTEXT_INCOMPLETE")
+        request["same_director_integrated_art_and_shootability"] = (
+            creative_gates.departmental_context(
+                base, state, department_command, audiovisual_plan,
+                holistic_critique, action_rescue_plan, task_id,
                 artistic_method_plan=artistic_method_plan))
     if reference_manifest is not None:
         # The manifest contains HASHES AND VERSIONS, never pictures, paths,
@@ -692,7 +711,7 @@ def build_role_messages(base, state, task_id, *, source_text=None,
 def validate_role_output(base, state, task_id, raw, *, source_text=None,
                          editorial_handoff=None, department_command=None,
                          audiovisual_plan=None, artistic_method_plan=None,
-                         action_rescue_plan=None):
+                         action_rescue_plan=None, holistic_critique=None):
     """Strict provider-agnostic parsing + specialist craft preflight.
 
     Return a new parsed object, never a fixed/normalized one. Refuse invalid
@@ -757,6 +776,21 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
         action_rescue.departmental_context(
             base, state, department_command, audiovisual_plan,
             action_rescue_plan, task_id,
+            artistic_method_plan=artistic_method_plan)
+    integrated_required = creative_gates.check_mode(base)
+    if (integrated_required and task_id in director_command.DEPARTMENTS and
+            (holistic_critique is None or action_rescue_plan is None)):
+        raise ValueError("CREW_INTEGRATED_DIRECTOR_CRITIQUE_AND_ACTION_REQUIRED")
+    if holistic_critique is not None:
+        if (task_id not in director_command.DEPARTMENTS or
+                department_command is None or audiovisual_plan is None or
+                action_rescue_plan is None):
+            raise ValueError("CREW_INTEGRATED_DIRECTOR_CONTEXT_INCOMPLETE")
+        # Recompute BEFORE accepting role output: an old director artistic
+        # review cannot be used to validate a new source or creative lock.
+        creative_gates.departmental_context(
+            base, state, department_command, audiovisual_plan,
+            holistic_critique, action_rescue_plan, task_id,
             artistic_method_plan=artistic_method_plan)
     if task_id not in team.ready(state):
         raise ValueError("CREW_TASK_NOT_READY")
@@ -961,7 +995,7 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
 def submit_role_output(base, state, task_id, raw, *, source_text=None,
                        editorial_handoff=None, department_command=None,
                        audiovisual_plan=None, artistic_method_plan=None,
-                       action_rescue_plan=None):
+                       action_rescue_plan=None, holistic_critique=None):
     """Offline transition from a *provided* strict JSON response to a new ledger.
 
     No model invocation; caller must arrange private transport separately.
@@ -972,5 +1006,6 @@ def submit_role_output(base, state, task_id, raw, *, source_text=None,
                                    department_command=department_command,
                                    audiovisual_plan=audiovisual_plan,
                                    artistic_method_plan=artistic_method_plan,
-                                   action_rescue_plan=action_rescue_plan)
+                                   action_rescue_plan=action_rescue_plan,
+                                   holistic_critique=holistic_critique)
     return team.submit(state, team.packet(state, task_id), payload)
