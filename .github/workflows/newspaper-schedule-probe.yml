@@ -1,0 +1,40 @@
+# Read-only discriminator for GitHub schedule registration vs. newsletter jobs.
+# NEVER reads SMTP/LLM secrets, prepares editions, or sends mail.
+# Temporary hourly probe for P0 investigation; remove after diagnosis.
+name: Newspaper - Schedule Trigger Probe
+on:
+  schedule:
+    - cron: '37 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'newspaper/schedule_probe_marker.txt'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  trigger-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Record actual event and UTC execution time (no mail)
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+          COMMIT_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          printf 'NEWSPAPER_TRIGGER_PROOF event=%s scheduled_cron=%s run_id=%s sha=%s execution_utc=%s\n' \
+            "$EVENT_NAME" "$EVENT_SCHEDULE" "$RUN_ID" "$COMMIT_SHA" "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          if [[ "$EVENT_NAME" == schedule ]]; then
+            echo 'NEWSPAPER_CRON_REAL_EVENT=true'
+          else
+            echo 'NEWSPAPER_CRON_REAL_EVENT=false (manual or push test is NOT a schedule event)'
+          fi
+          {
+            echo '### Newspaper scheduler registration probe'
+            echo "- Event: $EVENT_NAME"
+            echo "- Actual UTC: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo '- Independent of newspaper content and QQ SMTP'
+          } >> "$GITHUB_STEP_SUMMARY"
