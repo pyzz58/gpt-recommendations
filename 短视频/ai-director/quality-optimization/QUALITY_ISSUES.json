@@ -1092,13 +1092,13 @@
       "stage": "now_director",
       "department": "director",
       "priority": "P1",
-      "status": "confirmed_open",
+      "status": "in_progress",
       "title": "导演/编剧修订权限冲突与版本谱系",
-      "observed_in": "agent_role_contracts.py; screenplay_director_handoff.py",
+      "observed_in": "agent_role_contracts.py; screenplay_director_handoff.py; director_revision_lineage.py; skills/17-director-screenwriter-revision-lineage.md",
       "problem": "目前岗位提示已限定，但后续实际修改可能改变台词、场景、镜头分配时没有统一revision_request闭环",
       "root_cause": "跨部门讨论尚无一个可复核的剧本变更影响列表",
-      "solution": "增加导演返修单->编剧改稿->作者复审->重新绑定镜头和受影响专业工单的完整修改谱系；杜绝旧版本混入新音画制作",
-      "acceptance": "至少3种跨部门改稿触发失效/回滚测试，并验证未受影响镜头可保留",
+      "solution": "增加导演返修单->编剧改稿->作者复审->重新绑定镜头和受影响专业工单的完整修改谱系；杜绝旧版本混入新音画制作；第一阶段实现全ledger/导演锁/剧本source digest绑定的修订提案，识别同剧本专业/导演修改与需要编剧全稿重写的两类权属：同剧本复用原agent_team.request_revision定点失效下游及剪辑相邻镜头，保存不相关岗位；故事/事实/对白/结构变化不得原地覆盖，须调用现有screenplay_director_handoff审核交接并启动一份全新空白十岗位账本，旧导演锁及审批不可迁移。唯一源beat、源shot内容、角色道具世界及剪辑相邻关系用于形成可人工审查的素材复用候选，不自动复制已认证素材；作者身份/许可需独立核实。",
+      "acceptance": "至少3种跨部门改稿触发失效/回滚测试，并验证未受影响镜头可保留；本轮仅编写代码，暂不测试。下一轮在获得允许时应证明三类修改导致正确局部/全局失效、旧ledger/stale指令被拒、新编剧稿不继承旧批准、非改动镜头候选需复审；没有独立作者身份/真实媒体校验不得complete。",
       "ai_video_constraint": "局部返工应避免整片重复生成，高成本动作优先可追踪复用",
       "depends_on": [
         "QO-W09",
@@ -1108,9 +1108,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
-        "commit_sha": "",
-        "automated_test": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/66",
+        "commit_sha": "3984df8e334e3aea9b0b27875e13758e3baeca72",
+        "automated_test": "用户明确要求先不测试：此处仅是未经手动验证的实现与规范（Draft PR）；没有本轮真实模型运行、正式AI视频生成或独立艺术/法律授权验收。",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1122,6 +1122,12 @@
           "status": "confirmed_open",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-14",
+          "status": "in_progress",
+          "note": "QO-D12初版新增修订方案来源/全十岗位状态锁定、同版走原DAG定点返工、编剧改稿经既有审查入口另建独立新账本、未改来源节拍素材的人工复用候选，旧批准绝不自动迁移。按用户要求先不测试、暂不合并。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/66"
         }
       ]
     },
