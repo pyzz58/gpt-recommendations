@@ -603,16 +603,16 @@
 ### QO-D19 · 导演对白逐句声画cue与跨镜反打同步
 
 - 状态：in_progress；优先级：P1；阶段：now_director；负责人：director
-- 发现位置：director_shot_coverage.py / director_speech_cues.py / screenplay_series_delivery.py
+- 发现位置：director_shot_coverage.py / director_speech_cues.py / screenplay_series_delivery.py; director_av_sync_smoke.py; tests/test_director_av_sync_smoke.py
 - 问题：原导演镜头覆盖不能拆分带对白或旁白的节拍；若强行拆镜，会造成台词和字幕重复、错位、说话人错绑与工单沿用旧镜头。
 - 根因：原生产规划将画面shot、台词文字与字幕绑定在同一个镜头对象，缺少来源精确的独立音轨时间轴和跨镜引用。
-- 方案：建立独立、逐条源文本精确匹配的cue ledger及字幕时间轴，只有有效时间码才允许拆分带台词节拍；导演镜头引用声轨片段而非复制台词，工单重建；进一步实现媒体验证和口型同步。
-- 完成验收：源文本、说话人、台词顺序100%精确；跨镜头无遗漏重复；无cue时拒绝拆镜；连续/重叠/超出区间/篡改测试全通过；独立真实音画与口型审验后才可完成。
+- 方案：建立独立、逐条源文本精确匹配的cue ledger及字幕时间轴，只有有效时间码才允许拆分带台词节拍；导演镜头引用声轨片段而非复制台词，工单重建；进一步实现媒体验证和口型同步。；第五阶段新增公开合成3秒声画验证：48 kHz/16bit mono逐帧测试音tone限定声源时间区间，FFmpeg/libass实际叠加由QO-D19既有时间码导出的字幕，再真实解码逐sample验证PCM未变化、画面像素验证叠字在指定时间出现。真实语音、唇形、NLE导入与影视艺术审核仍独立推进。
+- 完成验收：源文本、说话人、台词顺序100%精确；跨镜头无遗漏重复；无cue时拒绝拆镜；连续/重叠/超出区间/篡改测试全通过；独立真实音画与口型审验后才可完成。；CI强制FFmpeg/libass实际执行公开合成音轨提前/遗漏与字幕重叠负例，真实演员音频波形、字幕语义与口型另审。
 - AI 视频适配：制作时画面与音轨必须分离；AI视频模型不能凭文字cue被视为口型已同步，字幕须由独立后期时间轨处理，未验收仅可作规划。
 - 依赖：QO-D02
 - 历史问题：无
-- 修复证据：PR 未提供；回归 已写入公开虚构样例 tests/test_director_speech_cues.py；需以 GitHub Actions 运行结果确认全绿。；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/59；回归 GitHub Actions 38521915790: 845/845 unittest PASS, real FFmpeg/libass subtitle pixel visibility and decoded 48k PCM exact-sample roundtrip, plus early/missing audio and overlapping subtitle rejections; later documentation sync CI pending.；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:in_progress → 2026-10-14:in_progress
 
 ## 修复一项就更新一项
 
