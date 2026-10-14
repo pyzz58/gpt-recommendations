@@ -106,3 +106,22 @@ python -m unittest discover -s newspaper -p 'test_p1_benchmark.py' -v
 `market_readability_probe.py` 只选上述五个候选源、每源最多两篇符合美股筛选的稿件，使用正式 `reader.fetch_reading` 检验真实来源的公开网页是否可以合规取得至少 450 字有效正文。禁止登录、规避付费墙或转载受版权保护的全文。只记录 RSS 日期、来源、标题、URL、正文可读/不可读、长度、提取器名称，不保存文章正文。PR Runner 用相同环境验证，并将 JSON Artifact 保留 14 天。
 
 该报告只是**单日正文可读性**，不能证明长期可用、事实可靠、许可全文复制或投资重要性。直到运行结果证明稳定、来源权威、正文可读且有合适的引用方式，候选财经源不自动启用生产。
+
+## 9. 实际拒稿路径追踪与同快照验收（P1 第四批）
+
+原始 GitHub Actions run `38539695982` 的 `newspaper-p1-selection-audit` 元数据可见：美股头版候选池 4 条，均可读，最终刊登 2 条。三条独立 URL 的真实历史标题和来源已经固定在 `benchmarks/p1_market_candidate_trace_v1.json`：UnitedHealth 盈利新闻、美国国债收益率与通胀预期、美联储 Williams 利率观点。**只保留有公开审计出处的三个标题/URL；事件 ID 和部分测试分数是为可重复测试人工设定的，并非完整历史候选池或真实历史召回率。**
+
+本批保留 `newsroom.select_readable()` 的原有配额、优先顺序、去重及每出版机构最多两篇规则，不放宽任何标准。原本只返回已入选新闻，现在在既有 diagnostics 中附带 **每个候选的实际决策结果**：
+
+- `selected`：入选；
+- `article_unreadable_or_inaccessible`：正文未通过提取关卡（不能武断解释为付费墙）；
+- `publisher_family_cap_two`：同一机构当天在当前栏目占满两篇；
+- `event_selected_same_section` / `event_selected_other_section`：同事件已被当前/其他栏目选中；
+- `near_duplicate_same_section` / `near_duplicate_other_section`：不同 URL 标题高度类似，被编辑去重；
+- `reserved_for_china_us_quota`：为三篇中美新闻保留已发现事件；
+- `geographic_diversity_first_pass`：同国新闻先尝试留给不同国家，多轮可能重新接受；
+- `section_quota_full_not_attempted`：本栏已达到目标，因此未再尝试该候选。
+
+拒稿原因优先取**实际调用选稿器时产生的结果**，必要时记录阻挡它的已入选新闻 URL。选中稿二次尝试成功后清除旧的失败原因，避免把第一轮地域偏好误写成最终拒稿。`selection_audit.py` 及 `market_funnel.py` 输出元数据、原因统计和少量标题 URL；不存完整新闻正文或引用未确认的理由。
+
+**客观验收：** 使用同一组三条有来源的真实标题（伴随显式人工测试分数、事件 ID），验证本次变动前后的**同配额同出版机构**最终选择仍为两条先前已被选中的新闻，Williams 作为第三条 CNBC 新闻因 `publisher_family_cap_two` 未入选。此测试证明“旧规则不变，原因更清楚”，不是证明编辑质量或重大新闻全球召回率提高。若独立权威事件确实重大但长期因单家媒体上限漏选，后续应优先补充独立机构报道与新闻源，例外放宽须另行提出且人工验收。

@@ -17,7 +17,7 @@ MARKET_FEED_GROUPS={"美股与投资","美联储与宏观"}
 MAX_SAMPLES=12
 
 
-def report_market_funnel(incoming, pool, selected, *, limits=None):
+def report_market_funnel(incoming, pool, selected, *, limits=None, diagnostics=None):
     by_url={}
     for a in incoming:
         if a.get("url"):
@@ -27,6 +27,9 @@ def report_market_funnel(incoming, pool, selected, *, limits=None):
     by_feed=defaultdict(lambda:Counter())
     reasons=Counter()
     stages=Counter()
+    decisions=(diagnostics or {}).get(MARKET_SECTION,{}).get("candidate_decisions",[])
+    selected_reason_by_url={d["url"]:d for d in decisions}
+    selector_reasons=Counter(d["reason_code"] for d in decisions)
     dropped=[]
     for url,a in by_url.items():
         source=str(a.get("source","unknown"))[:100]
@@ -55,6 +58,8 @@ def report_market_funnel(incoming, pool, selected, *, limits=None):
                 "source":source,"source_group":feed_category,
                 "title":str(a.get("title",""))[:180],
                 "url":url,"stage":stage,"market_reason":reason,
+                "selector_reason":selected_reason_by_url.get(url,{}).get("reason_code"),
+                "blocked_by_url":selected_reason_by_url.get(url,{}).get("blocked_by_url"),
             })
     chosen=[{"title":str(a.get("title",""))[:180],
              "source":str(a.get("source",""))[:100],
@@ -77,6 +82,8 @@ def report_market_funnel(incoming, pool, selected, *, limits=None):
         "routed_market_count":sum(v["passes_market_section_routing"] for v in by_feed.values()),
         "candidate_pool_count":len(candidate_urls),
         "stage_counts":dict(sorted(stages.items())),
+        "market_section_selector_reasons":dict(sorted(selector_reasons.items())),
+        "candidate_decisions":decisions,
         "headline_gate_reasons":dict(sorted(reasons.items())),
         "by_feed":per_source,
         "selected_headlines":chosen,

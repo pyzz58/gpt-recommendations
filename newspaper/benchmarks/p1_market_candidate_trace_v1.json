@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "scope": "fixed_snapshot_of_real_2026-10-14_RSS_metadata_for_unit_tests",
+  "source_artifact": "GitHub Actions run 38539695982 / newspaper-p1-selection-audit / newspaper-market-funnel.json",
+  "truth_boundaries": "Three real sourced titles/URLs only. Recreated event IDs and scores for deterministic selector tests; not the complete production candidate pool and not historical recall.",
+  "expected_prechange_urls": [
+    "https://www.cnbc.com/2026/10/13/unitedhealth-group-unh-earnings-q3-2026.html",
+    "https://www.cnbc.com/2026/10/14/us-treasury-yields-cpi-inflation-report.html"
+  ],
+  "market_candidates": [
+    {
+      "title": "UnitedHealth Group tops estimates, hikes profit outlook as insurer manages high medical costs",
+      "source": "CNBC Business",
+      "url": "https://www.cnbc.com/2026/10/13/unitedhealth-group-unh-earnings-q3-2026.html",
+      "importance_score": 54,
+      "test_event_key": "fixture-unh",
+      "publisher_family": "cnbc"
+    },
+    {
+      "title": "U.S. Treasury yields inch lower as investors await key inflation report",
+      "source": "CNBC Top News",
+      "url": "https://www.cnbc.com/2026/10/14/us-treasury-yields-cpi-inflation-report.html",
+      "importance_score": 46,
+      "test_event_key": "fixture-yields",
+      "publisher_family": "cnbc"
+    },
+    {
+      "title": "Williams says Fed may not have to hike rates in 2027, at odds with traders",
+      "source": "CNBC Finance",
+      "url": "https://www.cnbc.com/2026/10/13/john-williams-fed-rate-hikes-2027.html",
+      "importance_score": 44,
+      "test_event_key": "fixture-fed-comments",
+      "publisher_family": "cnbc"
+    }
+  ]
+}

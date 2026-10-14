@@ -627,7 +627,8 @@ def main():
         # article count is not permission to manufacture or pad news.
         try:
             market_report=report_market_funnel(
-                incoming,pool,readable,limits=settings["max_per_category"])
+                incoming,pool,readable,limits=settings["max_per_category"],
+                diagnostics=diagnostics)
             market_path=save_market_funnel(market_report,
                 "/tmp/newspaper-market-funnel.json")
             LOG.info("NEWSROOM_MARKET_FUNNEL: routed=%d candidate=%d printed=%d quota=%d missing=%d report=%s",
@@ -635,6 +636,9 @@ def main():
                      market_report["candidate_pool_count"],
                      market_report["printed"],market_report["print_quota"],
                      market_report["shortfall"],market_path)
+            LOG.info("NEWSROOM_MARKET_REJECTION_REASONS=%s",
+                     json.dumps(market_report["market_section_selector_reasons"],
+                                sort_keys=True,ensure_ascii=False))
         except Exception:
             LOG.exception("Market coverage audit unavailable (does not block newspaper)")
         # P1: record the exact candidates and final newsroom choice before

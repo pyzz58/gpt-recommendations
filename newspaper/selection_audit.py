@@ -21,6 +21,16 @@ def make_selection_audit(incoming, candidates, selected, diagnostics=None):
     candidate_event_by_url={a["url"]:a.get("event_key") for a in candidate_by_url.values()}
     selected_events={a.get("event_key") for a in selected_by_url.values() if a.get("event_key")}
     selected_sections={a["url"]:a.get("category","") for a in selected_by_url.values()}
+    # Genuine decisions from the selector, not inferred after the fact.
+    # Prefer the market desk when a URL competed in multiple sections.
+    per_section_decisions={
+        section:details.get("candidate_decisions",[])
+        for section,details in (diagnostics or {}).items()
+    }
+    decision_by_url={}
+    for section in sorted(per_section_decisions, key=lambda x:(x!="美股·全球金融市场", x)):
+        for decision in per_section_decisions[section]:
+            decision_by_url.setdefault(decision["url"],{**decision,"section":section})
     reasons=Counter()
     unselected=[]
     for url,a in all_by_url.items():
@@ -36,6 +46,8 @@ def make_selection_audit(incoming, candidates, selected, diagnostics=None):
             reason="no_editorial_section"
         elif url not in candidate_by_url:
             reason="not_in_candidate_pool_or_below_threshold"
+        elif url in decision_by_url:
+            reason=decision_by_url[url]["reason_code"]
         elif candidate_event_by_url[url] in selected_events:
             reason="same_cluster_event_already_selected"
         else:
@@ -58,6 +70,9 @@ def make_selection_audit(incoming, candidates, selected, diagnostics=None):
         "pool_candidates":len(articles),
         "printed_candidates":len(selected.get(section,[])),
         "quota_shortfall":(diagnostics or {}).get(section,{}).get("shortfall"),
+        "decision_reasons":dict(sorted(Counter(
+            x["reason_code"] for x in per_section_decisions.get(section,[])
+        ).items())),
     } for section,articles in candidates.items()}
     selected_records=[]
     for url,a in sorted(selected_by_url.items(),key=lambda kv:(kv[1].get("category",""),kv[0])):
@@ -80,6 +95,17 @@ def make_selection_audit(incoming, candidates, selected, diagnostics=None):
         "selected_urls":len(selected_by_url),
         "reasons_by_unique_url":dict(sorted(reasons.items())),
         "section_health":section_health,
+        "candidate_decisions_by_section":{
+            section:[
+                {**decision, "title":str(candidate_by_url.get(decision["url"],{}).get("title") or "")[:200]}
+                for decision in entries
+            ]
+            for section,entries in per_section_decisions.items()
+        },
+        "selection_reason_provenance":(
+            "actual_selector_attempts" if any(per_section_decisions.values())
+            else "fallback_posthoc_inference"
+        ),
         "candidate_high_score_unselected_count":len(unselected),
         "candidate_high_score_unselected_top":unselected[:MAX_DISPLAY],
         "selected_records":selected_records,
@@ -88,7 +114,7 @@ def make_selection_audit(incoming, candidates, selected, diagnostics=None):
         "limits":[
             "High score is a heuristic, not proof an event is significant.",
             "A missing item from outside subscribed RSS feeds cannot be detected here.",
-            "Unselected readable status is ambiguous unless extraction outcomes are separately persisted.",
+            "Individual fetch failures are recorded only as unreadable/inaccessible; HTTP vs paywall vs text length requires extractor diagnostics.",
         ],
     }
 
