@@ -816,13 +816,13 @@
       "stage": "now_director",
       "department": "director",
       "priority": "P0",
-      "status": "confirmed_open",
+      "status": "in_progress",
       "title": "多动作可拍性与模型失败降级",
-      "observed_in": "director_shootability.py; agent_role_contracts acting/camera_art/ai_technical",
+      "observed_in": "director_shootability.py; agent_role_contracts acting/camera_art/ai_technical; director_action_rescue.py; agent_role_contracts.py; director_creative_integration.py; skills/16-director-action-feasibility-and-creative-preservation.md",
       "problem": "逐秒动作表有了但复杂互动、多个连续变化易在视频生成时失败；没有真实成功率",
       "root_cause": "下游直接按理想影视分镜要求一个视频模型完成全部演员动作",
-      "solution": "每镜列关键动作数、人物数量、接触/空间复杂度；选择分拆、静帧、蒙太奇、后期动画替代路径并量化重试预算",
-      "acceptance": "公开故障注入例：双手接触、道具交换、轴线跳变均能触发正确拆段或人工复审；真实成片有效性需单独标未验证",
+      "solution": "每镜列关键动作数、人物数量、接触/空间复杂度；选择分拆、静帧、蒙太奇、后期动画替代路径并量化重试预算；本轮整合分阶段的同导演动作保全：逐镜两套完整动作拍法、时间闭合、演员道具和空间轴线及观众关键行为，专业角色消息实际接入QO-D10艺术审查。制作前候选不因岗位正常交稿而失效；制作后基于真实演员与AI技术交付重跑原shootability风险检测；被标记需重新设计/返编剧的动作阻断后续专业指令。没有任何模型实拍成功声明。",
+      "acceptance": "公开故障注入例：双手接触、道具交换、轴线跳变均能触发正确拆段或人工复审；真实成片有效性需单独标未验证；物理接触与道具切换等故障注入、真实演员/AI视频与跨镜连贯性必须以后独立验收；当前只开发和静态接口审查。",
       "ai_video_constraint": "AI模型对多动作/物理交互有概率性，脚本不能假设必然符合提示词",
       "depends_on": [
         "QO-D04"
@@ -831,9 +831,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "待本轮融合PR创建，参见开发分支 ai-director-integrated-creative-gates-v1；原代码草稿PR #62/#65/#66",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "按用户要求：未主动运行单元测试、真实媒体测试或人工艺术验收。融合代码尚未验证，且不合并主分支。",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -845,6 +845,12 @@
           "status": "confirmed_open",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-14",
+          "status": "in_progress",
+          "note": "将复杂动作导演保全方案接到已锁定整片艺术审查，统一七岗位请求/回执、前后版本有效期、源剧情与修订授权边界；未运行测试、未产生视频。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/tree/ai-director-integrated-creative-gates-v1/短视频/ai-director"
         }
       ]
     },
@@ -1011,13 +1017,13 @@
       "stage": "now_director",
       "department": "director",
       "priority": "P0",
-      "status": "confirmed_open",
+      "status": "in_progress",
       "title": "专业导演审片标准：不是字段全就是好片",
-      "observed_in": "agent_creative_review.py; tests/test_director_workbook.py",
+      "observed_in": "agent_creative_review.py; tests/test_director_workbook.py; director_whole_film_critique.py; director_creative_integration.py; skills/15-director-whole-film-artistic-critique.md; skills/18-director-integrated-creative-production-gates.md",
       "problem": "现有 QA 检查结构与一致性，但看不到实际镜头、心理驱动和观众投入",
       "root_cause": "缺专业观众审阅样本及作品对照盲评",
-      "solution": "至少双样本短片方案、三类体裁，分开评分故事理解/镜头意图/动作可信/声画连贯/整体吸引；归因到编剧还是导演负责",
-      "acceptance": "3题材盲评含反例基线；区分无法自动判断的艺术主观评价；低分片不自动放行",
+      "solution": "至少双样本短片方案、三类体裁，分开评分故事理解/镜头意图/动作可信/声画连贯/整体吸引；归因到编剧还是导演负责；本轮将艺术自批判、保护的独特镜头、证据锁定和同导演专业团队指令纳入统一生产前门槛；修复制作前审查误绑定尚未提交岗位revision导致正常交付后过期的问题。制作前只绑定权威剧本、导演锁、会议、视听和艺术方法，制作后才绑定实际部门交付。待编剧/导演艺术修订未解决时禁止继续派发，后续问题通过QO-D12版本提案精准交接，不以字段完整冒称艺术优秀。",
+      "acceptance": "3题材盲评含反例基线；区分无法自动判断的艺术主观评价；低分片不自动放行；融合入口及旧工作流兼容性尚未集中测试；三题材盲评、专业审查与真实影片艺术对照仍待完成。",
       "ai_video_constraint": "不拿一个模型平台的demo宣称跨模型世界一流水平",
       "depends_on": [
         "QO-D03",
@@ -1027,9 +1033,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "待本轮融合PR创建，参见开发分支 ai-director-integrated-creative-gates-v1；原代码草稿PR #62/#65/#66",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "按用户要求：未主动运行单元测试、真实媒体测试或人工艺术验收。融合代码尚未验证，且不合并主分支。",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1041,6 +1047,12 @@
           "status": "confirmed_open",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-14",
+          "status": "in_progress",
+          "note": "QO-D10与QO-D06/12统一到同一个导演创作闭环：已修复制作前状态误失效；源锁定整片评议进入角色消息和接收校验；重大艺术/编剧问题阻断，真实媒体与真人审片未进行。按用户要求本轮暂不测试，保留draft。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/tree/ai-director-integrated-creative-gates-v1/短视频/ai-director"
         }
       ]
     },
@@ -1092,13 +1104,13 @@
       "stage": "now_director",
       "department": "director",
       "priority": "P1",
-      "status": "confirmed_open",
+      "status": "in_progress",
       "title": "导演/编剧修订权限冲突与版本谱系",
-      "observed_in": "agent_role_contracts.py; screenplay_director_handoff.py",
+      "observed_in": "agent_role_contracts.py; screenplay_director_handoff.py; director_revision_lineage.py; director_creative_integration.py; skills/17-director-screenwriter-revision-lineage.md",
       "problem": "目前岗位提示已限定，但后续实际修改可能改变台词、场景、镜头分配时没有统一revision_request闭环",
       "root_cause": "跨部门讨论尚无一个可复核的剧本变更影响列表",
-      "solution": "增加导演返修单->编剧改稿->作者复审->重新绑定镜头和受影响专业工单的完整修改谱系；杜绝旧版本混入新音画制作",
-      "acceptance": "至少3种跨部门改稿触发失效/回滚测试，并验证未受影响镜头可保留",
+      "solution": "增加导演返修单->编剧改稿->作者复审->重新绑定镜头和受影响专业工单的完整修改谱系；杜绝旧版本混入新音画制作；与总导演整体艺术审片的确定问题生成精准的未派发版号锁定提案：同剧本导演修改/专业返工走唯一现有agent_team.request_revision依赖树，剧本事实、原对白、人物抉择或结构改稿先退编剧并经既有screenplay_director_handoff审核另建全新空白十岗位账本；旧镜头仅形成必经人工导演复审的复用候选，不继承旧作者许可或专业完成状态。统一入口不自动返工、付费或发布。",
+      "acceptance": "至少3种跨部门改稿触发失效/回滚测试，并验证未受影响镜头可保留；尚需后续测试三类权限冲突、同剧本定点下游失效、跨稿新团队、旧镜头候选无法越权复用及用户真实审批；本轮未测试。",
       "ai_video_constraint": "局部返工应避免整片重复生成，高成本动作优先可追踪复用",
       "depends_on": [
         "QO-W09",
@@ -1108,9 +1120,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "待本轮融合PR创建，参见开发分支 ai-director-integrated-creative-gates-v1；原代码草稿PR #62/#65/#66",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "按用户要求：未主动运行单元测试、真实媒体测试或人工艺术验收。融合代码尚未验证，且不合并主分支。",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1122,6 +1134,12 @@
           "status": "confirmed_open",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-14",
+          "status": "in_progress",
+          "note": "建立从QO-D10具体问题到QO-D12版本修订提案的单向桥接，绝不因艺术复审而直接修改原剧本或自动变更ledger。跨剧本新权威需作者/编剧审核及原十岗位全新规划；未运行测试。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/tree/ai-director-integrated-creative-gates-v1/短视频/ai-director"
         }
       ]
     },
