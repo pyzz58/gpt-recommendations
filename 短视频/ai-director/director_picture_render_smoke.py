@@ -13,6 +13,7 @@ from pathlib import Path
 import hashlib
 import re
 import subprocess
+from urllib.parse import unquote, urlparse
 
 import director_media_otio_export as media
 
@@ -39,7 +40,7 @@ def _read_hash(path):
     return h.hexdigest()
 
 
-def render_synthetic_picture_smoke(order, manifest, *,
+def render_synthetic_picture_smoke(order, manifest, *, otio_json,
                                    media_root, output_dir,
                                    filename="synthetic_smoke.mp4"):
     """Render and decode-check silent picture-only synthetic montage.
@@ -78,6 +79,31 @@ def render_synthetic_picture_smoke(order, manifest, *,
     _need(inspection["all_media_segments_present"] and
           len(inspection["assets"]) == len(segments),
           "SMOKE_SOURCE_MEDIA_MISSING")
+    _need(isinstance(otio_json, str) and 20 <= len(otio_json) <= 1_000_000,
+          "SMOKE_NATIVE_OTIO_REQUIRED")
+    try:
+        import opentimelineio as otio
+        timeline = otio.adapters.read_from_string(
+            otio_json, adapter_name="otio_json")
+        _need(len(timeline.tracks) == 1 and
+              len(timeline.tracks[0]) == len(segments) and
+              timeline.duration().rescaled_to(fps).value == total and
+              timeline.metadata["ai_director"]["render_or_publish_authorized"] is False and
+              timeline.metadata["ai_director"]["montage_cut_jobs"] == edits,
+              "SMOKE_OTIO_TIMELINE_OR_AUTHORITY_DRIFT")
+        for segment, item in zip(segments, timeline.tracks[0]):
+            ref = inspection["assets"][segment["editor_segment_id"]]
+            src = item.source_range
+            _need(isinstance(item, otio.schema.Clip) and
+                  item.name == segment["editor_segment_id"] and
+                  item.media_reference.target_url == ref["asset_uri"] and
+                  src.start_time.rescaled_to(fps).value == ref["source_in_frame"] and
+                  src.duration.rescaled_to(fps).value == segment["duration_frames"],
+                  "SMOKE_OTIO_MEDIA_BINDING_OR_FRAME_DRIFT")
+    except SmokeError:
+        raise
+    except (ImportError, KeyError, IndexError, TypeError, ValueError, AttributeError):
+        raise SmokeError("SMOKE_OTIO_IMPORT_INVALID") from None
     _need(isinstance(filename, str) and NAME.fullmatch(filename),
           "SMOKE_OUTPUT_FILENAME_UNSAFE")
     root = Path(output_dir).expanduser().resolve(strict=True)
@@ -90,7 +116,11 @@ def render_synthetic_picture_smoke(order, manifest, *,
     sources, chains = [], []
     for i, seg in enumerate(segments):
         ref = inspection["assets"][seg["editor_segment_id"]]
-        src = Path(ref["asset_uri"].removeprefix("file://"))
+        uri = urlparse(ref["asset_uri"])
+        _need(uri.scheme == "file" and uri.netloc in ("", "localhost") and
+              not uri.query and not uri.fragment,
+              "SMOKE_NONLOCAL_MEDIA_REFERENCE")
+        src = Path(unquote(uri.path))
         _need(src.is_file() and _read_hash(src) == ref["asset_sha256"],
               "SMOKE_MEDIA_CHANGED_DURING_PREFLIGHT")
         sources.extend(["-i", str(src)])
