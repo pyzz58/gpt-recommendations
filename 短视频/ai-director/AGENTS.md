@@ -1,3 +1,14 @@
+## QO-D06｜导演复杂动作艺术保全与可拍性方案（2026-10-14，用户要求暂不测试）
+
+总导演必须清楚一项身体动作为什么对人物抉择、因果和观众情绪不可替代，才决定如何让AI生成工具和各部门完成。新增 `director_action_rescue.py`，复用现有 `director_shootability.review()` 动作风险扫描：只有演员及AI技术两个岗位均有真实交付，才重建该实际风险报告；制作前只能是导演提出的风险假设，不能假称经过媒体验证。
+
+对每镜锁定既有演员/道具ID、手部道具初末状态、空间轴线、光和视线、观众必须看到的具体行动结果，给出**两套制作路线不同**的候选方案、每段入出时刻、表演/摄影/声音/剪辑专业执行方式、需要的参考资产、动作单元覆盖、艺术损失和失败修复。任何路线不得静默改写事实、人物抉择、剧本事件和原台词；需要变更原剧本只能递交编剧返修提案。真实模型是否能拍出、人类审片是否认可，当前一律保持待验证。
+
+本轮已经把 `action_rescue_plan` 作为兼容性可选参数纳入现有 `agent_role_contracts.build_role_messages` / `validate_role_output` / `submit_role_output`，在消息中提供经源锁定核验的七专业不同重点的导演动作方案。base 如声明 `director_action_rescue_mode={kind:'director_action_rescue_required',before_specialists:true}`，对应七部门缺导演动作方案会阻断其下发或接收，原旧base不默认升级。**没有创建第二导演或新的独立Agent团队**。前期计划不能因为正常部门逐次交稿就失效；事后风险复审必须绑定演员/AI技术实交付的revision和哈希，避免复用旧稿。
+
+操作规范：`skills/16-director-action-feasibility-and-creative-preservation.md`。此轮用户明确先不测试，开发中的代码、模型消息接口和规范尚未完成实测，不得把 QO-D06 标记 `complete`，只能 `in_progress`；也不允许调用付费平台、上传私有稿件/视频或自动发布。QO-D10 位于未合并的独立开发PR，不能假定它已经进入主分支。
+
+---
 ## QO-D19 / QO-D09｜第五阶段：公开合成声轨、字幕的实际解码级时间验证（2026-10-14）
 
 总导演掌握剧本与声画思想的**源锁定指令**，不能把视频静音、没有真实台词、字幕错时的成品冒充通过验收。第四阶段 QO-D09 已使用原生OTIO读回和FFmpeg真实视频帧验收；第五阶段新增 `director_av_sync_smoke.py`、`tests/test_director_av_sync_smoke.py`，测试环境仅允许**公开合成视频+精确帧时间码的测试音调与字幕**：48kHz 16-bit 单声道 PCM 在每个已指定声音帧内必须有非零声能、所有间隔必须真正静音；FFmpeg/libass生成画面叠字并与声轨合成Matroska，解码后逐sample对比音轨、逐帧比较字幕显隐，任何偏离必须失败。
