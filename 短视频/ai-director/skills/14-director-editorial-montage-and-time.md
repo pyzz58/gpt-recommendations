@@ -51,3 +51,13 @@ export_native_otio_preview 使用 Academy Software Foundation 的 OpenTimelineIO
 export_subtitle_srt_plan 根据原剧本来源锁定的 QO-D19 字幕时码生成 .srt 导入候选；千分之一秒离散与声音/口型实际对齐必须人工核验。没有 cue 不自动捏造字幕时码。
 
 只允许在本机私有目录保存包含视频路径、剧本原文的 .otio/.srt 文件。公开 GitHub CI 只使用现场生成的无隐私纯色视频做 FFprobe/SHA/OTIO roundtrip 测试。未经实际 NLE 导入与影视专业验收，render_or_publish_authorized 保持 false；QO-D09 和 QO-D19 保持 in_progress。
+
+## 第四阶段｜真实 FFmpeg 画面回放与 NLE 兼容性边界
+
+2026-10-14 重新核对官方维护情况：Kdenlive 从 25.04 起具有**原生 OpenTimelineIO 导入支持**，历史 otio-kdenlive-adapter 已被维护方弃用；本系统**不再额外安装该弃用适配器**。OTIO 可在 NLE 中导入不等于完成转场、音频、字幕或人物连续性验证。后续必须在真实 Kdenlive 25.04+ 桌面环境手动打开 `.otio`、检查媒体重定位、镜头顺序与首尾帧、播放并导出验收，记录导入软件/版本/失败截屏与可复现步骤。
+
+本阶段新增 `director_picture_render_smoke.py`：这是单独的**公开合成、无声音、硬切画面验收工具**，必须使用受 SHA + FFprobe 校验的本地纯色视频，并且必须先使用 OTIO 原生适配器读回导出项目，逐项核对 Clip 名称、视频 URI、视频源入帧与片段帧数、导演剪口；再由 FFmpeg 真实解码、选择源帧并串联成 mp4；导出后重新 FFprobe 检查总帧数。公开测试进一步检查红/绿/蓝三个真实解码镜头的帧顺序和切点位置。不允许凭空以原工单代替已经导入的 OTIO 内容。
+
+严格禁用：未提供源视频、出现任何配音、源脚本文字无字幕时间、存在需真实片段编辑的片头/片尾/证据页、非 hard_cut 的 dissolve/match_cut/J-L sound bridge/jump cut；若有任一项，测试渲染直接失败，不得静默降级。输出仅用于合成验收且必须有独立工作目录，`render_or_publish_authorized=false`，不得作为真实成片发表。当前工具刻意不处理声轨、不验证声学同步或复杂转场，不产生私人稿件或模型调用。
+
+下一阶段待办：真实 Kdenlive 软件原生导入实例验收、双声道与对白口型、字幕叠字像素审查、AI 片段之间的真实轴线/动作/颜色连续性、非硬切过渡的精确素材把柄处理；QO-D09 仍为 `in_progress`。
