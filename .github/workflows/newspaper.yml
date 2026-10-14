@@ -69,7 +69,7 @@ jobs:
     needs: quick_check
     if: ${{ always() && (github.event_name != 'pull_request' || needs.quick_check.result == 'success') }}
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 45
     env:
       TZ: Asia/Shanghai
       SMTP_HOST: smtp.qq.com
@@ -100,6 +100,12 @@ jobs:
               '5 22 * * *'|'20 22 * * *') phase=prepare ;;
               *) phase=send ;;
             esac
+            # A preparation cron that was delayed past 07:00 must attempt
+            # delivery instead of consuming the only available send window.
+            if [[ "$phase" == "prepare" ]]; then
+              hhmm=$(TZ=Asia/Shanghai date +%H%M)
+              if [[ "$hhmm" > "0659" ]]; then phase=send; fi
+            fi
           fi
           echo "phase=$phase" >> "$GITHUB_OUTPUT"
           echo "Newspaper V2 phase=$phase edition=${{ steps.date.outputs.edition }}"
