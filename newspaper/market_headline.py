@@ -90,9 +90,9 @@ def market_evidence(item: dict) -> dict:
 
     if (source_type == "primary_company_filing"
             and _official_domain(host,"sec.gov")
-            and re.search(r"\\b(?:files (?:quarterly|annual) report|"
-                          r"files results-related form 8-k)\\b",title,re.I)
-            and re.search(r"\\b(?:10-q|10-k|8-k|quarterly|annual)\\b",
+            and re.search(r"\b(?:files (?:quarterly|annual) report|"
+                          r"files results-related form 8-k)\b",title,re.I)
+            and re.search(r"\b(?:10-q|10-k|8-k|quarterly|annual)\b",
                           title+" "+summary,re.I)):
         return {"eligible":True,"reason":"official_us_issuer_financial_filing_notice"}
     if language == "zh":
