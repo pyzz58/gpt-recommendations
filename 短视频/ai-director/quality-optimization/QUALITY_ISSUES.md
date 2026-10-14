@@ -31,7 +31,7 @@
 | QO-D07 | director | P0 | partially_addressed | 导演级镜头语言与视觉连续性 |
 | QO-D08 | director | P1 | partially_addressed | 导演与音效/台词/字幕精确对齐 |
 | QO-D09 | director | P1 | in_progress | 剪辑节奏、过渡桥与镜头版本选择 |
-| QO-D10 | director | P0 | confirmed_open | 专业导演审片标准：不是字段全就是好片 |
+| QO-D10 | director | P0 | in_progress | 专业导演审片标准：不是字段全就是好片 |
 | QO-D11 | director | P0 | blocked_external | 真实双镜生成、跨镜验收与风险边界 |
 | QO-D12 | director | P1 | confirmed_open | 导演/编剧修订权限冲突与版本谱系 |
 | QO-D13 | director | P0 | in_progress | 总导演自主分集与单集90秒绝对上限 |
@@ -336,17 +336,17 @@
 
 ### QO-D10 · 专业导演审片标准：不是字段全就是好片
 
-- 状态：confirmed_open；优先级：P0；阶段：now_director；负责人：director
-- 发现位置：agent_creative_review.py; tests/test_director_workbook.py
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：agent_creative_review.py; tests/test_director_workbook.py; director_whole_film_critique.py; skills/15-director-whole-film-artistic-critique.md
 - 问题：现有 QA 检查结构与一致性，但看不到实际镜头、心理驱动和观众投入
 - 根因：缺专业观众审阅样本及作品对照盲评
-- 方案：至少双样本短片方案、三类体裁，分开评分故事理解/镜头意图/动作可信/声画连贯/整体吸引；归因到编剧还是导演负责
-- 完成验收：3题材盲评含反例基线；区分无法自动判断的艺术主观评价；低分片不自动放行
+- 方案：至少双样本短片方案、三类体裁，分开评分故事理解/镜头意图/动作可信/声画连贯/整体吸引；归因到编剧还是导演负责；第一阶段建立同一位导演源锁定的整片艺术自批判，区分制作前设计与各部门交付后的两种审片。按小说、纪录、论说、混合四种体裁分别追加专业维度，逐项真实镜头证据、观众预期影响、不同手法及其艺术代价；至少保留一项值得保护的独特拍法，避免审片只会套工业标准或为了得分删除留白。逐条把导演视听修订、编剧故事返修、已提交部门专业细修与需真实媒体才能判断的项目分开；可选纳入原QO-D16交付评审而不新建第二导演Agent。
+- 完成验收：3题材盲评含反例基线；区分无法自动判断的艺术主观评价；低分片不自动放行；本轮先完成未测试的创作契约，不得把结构完整或所有维度写齐当成真正高级艺术判断；下一阶段必须有反例和跨题材真人盲评、实际导演改稿质量证据，且真实媒体验证另行完成。
 - AI 视频适配：不拿一个模型平台的demo宣称跨模型世界一流水平
 - 依赖：QO-D03, QO-D09
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/62；回归 用户要求暂不测试：本轮未主动运行单元测试、CI或任何真实媒体/真人艺术质量验证；PR仅为代码与规范的未验收草案。；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:confirmed_open → 2026-10-14:in_progress
 
 ### QO-D11 · 真实双镜生成、跨镜验收与风险边界
 
