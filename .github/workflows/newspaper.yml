@@ -212,7 +212,7 @@ jobs:
         if: steps.build.outcome == 'success'
         uses: actions/cache/save@v4
         with:
-          key: newspaper-ready-v21-${{ steps.date.outputs.edition }}
+          key: newspaper-ready-v22-${{ steps.date.outputs.edition }}
           path: /tmp/newspaper-ready
 
       - name: Send prebuilt edition via SMTP (default branch only)
