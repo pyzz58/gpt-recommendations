@@ -1,3 +1,16 @@
+## QO-D09 第三阶段｜私有视频文件核验与原生 OTIO 交换
+
+本项目同一总导演负责镜头与跨场景蒙太奇创作，不增加第二个导演。现有 QO-D09 剪辑工作单来自导演已经审查的剧本和逐镜时码，不得因为给出剪辑格式而放宽剧本来源、90秒预算或声音 cue 保护。
+
+新模块 director_media_otio_export.py 只能在用户本地私有媒资目录工作。必须使用 FFprobe 核验素材实际帧数、帧率、尺寸，使用 SHA-256 比对全部文件字节，并通过工单摘要和路径检查锁定单镜素材。没有素材则保留真实 Gap。输出使用开源的 OpenTimelineIO 0.18.1 原生 .otio JSON，另可输出精确源文本的 SRT 拟定字幕表；不等于实际视频编码或已验证剪辑软件导入。
+
+导演的 dissolve / match_cut / sound_bridge / jump_cut 在 OTIO 中保留作为待核验元数据；不因存在匹配素材就自动变成已经完成的时间轴效果。所有过渡仍受实拍/AI素材余量、逐镜视觉、人和道具、配音/口型与专业审片制约；绝不静默降级成硬切。
+
+私人视频文件、含真实本地路径的 OTIO、原台词与全部字幕不允许写入公开 CI、仓库、Issues、PR 或普通调试日志。CI 测试生成虚构纯色视频，不调用任何付费生成 API，不验证真人角色创作质量。render_or_publish_authorized 永远为 false，直到后续真正完成媒体验收和用户授权。质量总账 QO-D09 及 QO-D19 继续 in_progress。
+
+入口：skills/14-director-editorial-montage-and-time.md；director_montage_editor_conform.py；director_media_otio_export.py；tests/test_director_media_otio_export.py。
+
+---
 ## QO-D09｜第二阶段：全片帧级蒙太奇剪辑工单（2026-10-13）
 
 **保留同一个总导演与原十岗位，不添加新的统筹Agent。** 第一阶段 `director_editorial_montage` 负责有来源的蒙太奇创意规划和时空/演员道具入出状态；第二阶段 `director_montage_editor_conform.compile_work_order(...,fps=...)` 真正从已审剧本和导演镜头覆盖重验证、重建权威十岗位计划，复用现有 `series_final_timeline` 的全片≤90秒预算，输出机器可读帧级编辑表、逐剪口导演任务、绝对帧级声音与字幕绑定（仅已提供 QO-D19 有效cue时），以及可阅读的 `editor_instructions`。没有字幕时间码时明确阻断，而不允许“所有台词字幕放在本镜第一帧”。
