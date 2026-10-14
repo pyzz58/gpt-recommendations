@@ -1,9 +1,5 @@
 name: Newspaper - Global Situation PDF
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'newspaper/.one_shot_live_test'
   pull_request:
     paths:
       - 'newspaper/**'
