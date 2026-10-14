@@ -207,6 +207,21 @@ jobs:
           set -euo pipefail
           python newspaper/digest.py --prepare --output /tmp/newspaper-ready
 
+      - name: Check QQ SMTP configuration
+        if: steps.phase.outputs.phase == 'send' && steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
+        env:
+          SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
+          SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
+          NEWSPAPER_TO: ${{ secrets.NEWSPAPER_TO }}
+        run: |
+          set -euo pipefail
+          for variable in SMTP_FROM SMTP_PASSWORD NEWSPAPER_TO; do
+            if [[ -z "${!variable}" ]]; then
+              echo "::error::Missing QQ SMTP configuration: $variable"
+              exit 1
+            fi
+          done
+
       - name: Send verified edition via QQ SMTP (default branch only)
         id: send
         if: steps.phase.outputs.phase == 'send' && steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
