@@ -1,23 +1,22 @@
 {
   "schema": 1,
-  "version": "V2.1",
+  "version": "V2.2",
   "effective_date": "2026-10-14",
   "scope": "newspaper only; neican is independent",
   "timezone": "Asia/Shanghai",
   "cutoff_bjt": "00:00",
-  "scheduled_delivery_bjt": "01:00",
-  "allowed_delivery_start_bjt": "01:00",
-  "allowed_delivery_end_bjt": "02:00",
-  "prepare_crons_utc": [
-    "5 16 * * *",
-    "20 16 * * *"
-  ],
+  "scheduled_delivery_bjt": "as_soon_as_ready",
+  "prepare_crons_utc": [],
   "send_crons_utc": [
-    "3 17 * * *",
-    "16 17 * * *",
-    "29 17 * * *",
-    "42 17 * * *",
-    "55 17 * * *"
+    "1 16 * * *",
+    "16 16 * * *",
+    "31 16 * * *",
+    "46 16 * * *",
+    "7 17 * * *",
+    "37 17 * * *",
+    "7 18 * * *",
+    "7 19 * * *",
+    "7 20 * * *"
   ],
   "mail_subject_prefix": "全球新闻选编",
   "cost_ceiling_cny": 1,
@@ -26,8 +25,8 @@
     "analysis": "重大新闻分析 + 期末《今日关键变化》",
     "market_lead": "美股与全球资本市场作为头版",
     "source_policy": "事实可溯、事件级去重、重要新闻覆盖检查",
-    "delivery": "提前生成、北京时间凌晨01:00后首次尽快送出",
+    "delivery": "北京时间00:01启动；PDF生成完成后立即发送QQ邮箱；同一刊期仅发送一次，迟到启动不因时间而拒发",
     "copyright": "不默认全文转载第三方版权报道"
   },
-  "conflict_resolution": "This file overrides older README excerpts. A policy change requires coherent code, cron and test changes in one PR. Never copy historical run times into production."
+  "conflict_resolution": "This policy is authoritative for newspaper only. GitHub schedule is best-effort; retries share one daily receipt."
 }
