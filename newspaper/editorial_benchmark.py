@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from newsroom import prepare_pool, select_readable
 
-DATA = Path(__file__).resolve().parent / "benchmarks" / "p1_headline_v1.json"
+DATA = Path(__file__).resolve().parent / "benchmarks" / "p1_headline_v2.json"
 
 
 def load_cases(path=DATA):
