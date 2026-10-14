@@ -11,10 +11,10 @@ from urllib.parse import urlparse
 US_MARKET = re.compile(
     r"\b(?:wall street|s&p\s*500|nasdaq(?:\s*100)?|nyse|dow jones|"
     r"dow industrials?|u\.?s\.?\s+(?:stocks?|equities|shares?|"
-    r"markets?|stock market|treasur(?:y|ies)|bond yields?|"
+    r"stock market|treasur(?:y|ies)|bond yields?|"
     r"government bonds?|inflation|cpi|gdp|jobs|payrolls|unemployment|"
     r"interest rates?|economic data|earnings)|american (?:stocks?|"
-    r"equities|markets?|treasur(?:y|ies)))\b", re.I)
+    r"equities|treasur(?:y|ies)))\b", re.I)
 FED = re.compile(r"\b(?:federal reserve|fomc|fed)\b", re.I)
 SEC = re.compile(r"\b(?:sec|securities and exchange commission)\b", re.I)
 POLICY_ACTION = re.compile(
@@ -44,6 +44,23 @@ US_ISSUERS = re.compile(
     r"micron technology|qualcomm|uber|airbnb|"
     r"blackrock|citigroup|wells fargo)\b", re.I)
 MARKET_SPECIFIC_FEEDS = {"CNBC Markets", "CNBC Investing"}
+# An explicit foreign-equity lead is not a US-stock story just because it
+# mentions a forthcoming US economic indicator in the background.
+FOREIGN_EQUITIES_LEAD = re.compile(
+    r"^\s*(?:ftse\s*100|european stocks?|european shares?|"
+    r"europe stocks?|eurozone stocks?|uk stocks?|london stocks?|"
+    r"japanese stocks?|hong kong stocks?|chinese stocks?)\b", re.I)
+US_EQUITIES_LEAD = re.compile(
+    r"\b(?:wall street|u\.?s\.?\s+(?:stocks?|equities|shares?|markets?)|"
+    r"s&p\s*500|nasdaq(?:\s*100)?|dow jones|nyse)\b", re.I)
+OPINION_LEAD = re.compile(r"^\s*(?:opinion|op-ed|editorial|column)\s*:", re.I)
+# Author-owned CNBC/portfolio recommendations are not independent events.
+# Explicitly named third-party analyst changes can remain market news.
+EDITORIAL_STOCK_PICK = re.compile(
+    r"^\s*(?:we(?:'|’)?re\s+(?:upgrading|downgrading|buying|selling)|"
+    r"our\s+(?:top\s+)?(?:stock\s+)?picks?\b|"
+    r"why\s+we(?:'|’)?re\s+(?:buying|selling)|"
+    r"\d+\s+stocks?\s+to\s+buy\b)", re.I)
 MARKET_RESEARCH = re.compile(
     r"\b(?:goldman sachs|j\.?p\.?\s*morgan|bank of america|"
     r"morgan stanley|citigroup|ubs|barclays)\b.*"
@@ -63,6 +80,13 @@ def market_evidence(item: dict) -> dict:
     source_type = str(item.get("source_type") or "")
     language = str(item.get("source_language") or "en")
     host = (urlparse(str(item.get("url") or "")).hostname or "").lower()
+
+    if OPINION_LEAD.search(title):
+        return {"eligible": False, "reason": "opinion_not_factual_market_report"}
+    if EDITORIAL_STOCK_PICK.search(title):
+        return {"eligible": False, "reason": "publisher_stock_pick_not_material_market_event"}
+    if FOREIGN_EQUITIES_LEAD.search(title) and not US_EQUITIES_LEAD.search(title):
+        return {"eligible": False, "reason": "non_us_market_primary_subject"}
 
     if language == "zh":
         # Exclude generic Chinese/HK equities unless clear US market involvement.

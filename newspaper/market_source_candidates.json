@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "scope": "newspaper-only",
+  "approved": false,
+  "notes": [
+    "Verification candidates, not automatically enabled in feeds.json.",
+    "Independent service or third-party listing confirms feed links, but GitHub runner HTTP/date/readability are unverified until probe.",
+    "Do not insert paywall-only text or infer newsletter full-body reprint rights.",
+    "0 eligible headlines on a quiet day is not necessarily an invalid source; store longer dated observations for issuer feeds."
+  ],
+  "feeds": [
+    {
+      "name": "MarketWatch Top Stories",
+      "url": "https://feeds.marketwatch.com/marketwatch/topstories",
+      "source_type": "financial_media",
+      "official_listing": "https://feeder.co/knowledge-base/rss-content/finance-news-rss-feeds/",
+      "priority": "financial_reporting",
+      "note": "Top stories; not all are specifically US equities"
+    },
+    {
+      "name": "MarketWatch Bulletins",
+      "url": "https://feeds.marketwatch.com/marketwatch/bulletins",
+      "source_type": "financial_media",
+      "official_listing": "https://feeder.co/knowledge-base/rss-content/finance-news-rss-feeds/",
+      "priority": "market_updates",
+      "note": "Bulletins; needs publisher/readability check"
+    },
+    {
+      "name": "Financial Times Markets",
+      "url": "https://www.ft.com/markets?format=rss",
+      "source_type": "financial_media",
+      "official_listing": "https://feeder.co/knowledge-base/rss-content/finance-news-rss-feeds/",
+      "priority": "financial_reporting",
+      "note": "Paywall can block extraction; do not summarize inaccessible full text"
+    },
+    {
+      "name": "Financial Times US",
+      "url": "https://www.ft.com/us?format=rss",
+      "source_type": "financial_media",
+      "official_listing": "https://feeder.co/knowledge-base/rss-content/finance-news-rss-feeds/",
+      "priority": "us_reporting",
+      "note": "US content broad; preserve explicit US-market title guards"
+    },
+    {
+      "name": "Seeking Alpha Breaking News",
+      "url": "https://seekingalpha.com/market_currents.xml",
+      "source_type": "financial_media",
+      "official_listing": "https://feeder.co/knowledge-base/rss-content/finance-news-rss-feeds/",
+      "priority": "market_updates",
+      "note": "Personal/noncommercial feed; extraction/paywall and reuse rights matter"
+    },
+    {
+      "name": "Investing.com Stock Market News",
+      "url": "https://www.investing.com/rss/news_25.rss",
+      "source_type": "financial_media",
+      "official_listing": "https://feeder.co/knowledge-base/rss-content/finance-news-rss-feeds/",
+      "priority": "market_updates",
+      "note": "Readability and source originality to be checked"
+    },
+    {
+      "name": "Nasdaq Investor Financial Releases",
+      "url": "https://ir.nasdaq.com/rss/news-releases.xml?category=Financial&items=15",
+      "source_type": "exchange_company",
+      "official_listing": "https://ir.nasdaq.com/tools/rss-feeds",
+      "priority": "corporate_primary",
+      "note": "Nasdaq Inc company disclosures; not all Nasdaq-listed companies"
+    },
+    {
+      "name": "Nvidia News Press Releases",
+      "url": "https://nvidianews.nvidia.com/cats/press_release.xml",
+      "source_type": "company_primary",
+      "official_listing": "https://investor.nvidia.com/investor-resources/rss/default.aspx",
+      "priority": "corporate_primary",
+      "note": "Corporate publicity mostly; only material finance/equity releases qualify"
+    },
+    {
+      "name": "Investing.com Company News",
+      "url": "https://www.investing.com/rss/news_356.rss",
+      "source_type": "financial_media",
+      "official_listing": "https://feeder.co/knowledge-base/rss-content/finance-news-rss-feeds/",
+      "priority": "company_reporting",
+      "note": "Test distinct yield versus stock news"
+    },
+    {
+      "name": "CNBC Earnings",
+      "url": "https://www.cnbc.com/id/15839135/device/rss/rss.html",
+      "source_type": "financial_media",
+      "official_listing": "https://www.cnbc.com/rss-feeds/",
+      "priority": "company_earnings",
+      "note": "Official CNBC earning desk, 2026 Feeder source confirms active"
+    },
+    {
+      "name": "CNBC Finance",
+      "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html",
+      "source_type": "financial_media",
+      "official_listing": "https://www.cnbc.com/rss-feeds/",
+      "priority": "financial_institutions",
+      "note": "Finance and banking sector; only US-market relevant headlines allowed"
+    },
+    {
+      "name": "CNBC Top News",
+      "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html",
+      "source_type": "financial_media",
+      "official_listing": "https://www.cnbc.com/rss-feeds/",
+      "priority": "broad_top_news",
+      "note": "Top stories 30 most recent, not dedicated finance; only explicit market relevance allowed"
+    }
+  ]
+}

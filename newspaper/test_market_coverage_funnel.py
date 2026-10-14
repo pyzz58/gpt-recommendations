@@ -81,6 +81,66 @@ class MarketCoverageFunnelTests(unittest.TestCase):
                 self.assertFalse(market_evidence(a)["eligible"])
                 self.assertNotIn(MARKET,sections(a))
 
+    def test_real_rss_false_positives_do_not_fill_us_equities(self):
+        # Verbatim source headlines seen in 2026-10-14 GitHub RSS probe:
+        # European equity coverage, merely referencing US CPI, is not a
+        # US-stock lead. Signed opinion columns belong outside fact reports.
+        titles=[
+            "FTSE 100 today: Stocks edge up ahead of U.S. CPI",
+            "European stocks gain on ASML sales forecast; U.S. CPI test awaited",
+            "Opinion: New SEC rules would fleece everyday investors to enrich Wall Street",
+        ]
+        for title in titles:
+            with self.subTest(title=title):
+                article=row(title,source="MarketWatch Bulletins")
+                result=market_evidence(article)
+                self.assertFalse(result["eligible"], result)
+                self.assertNotIn(MARKET,sections(article))
+
+    def test_cnbc_earnings_real_feed_separates_fact_from_stock_pick(self):
+        earnings=row(
+            "UnitedHealth Group tops estimates, hikes profit outlook as insurer manages high medical costs",
+            source="CNBC Earnings")
+        recommendation=row(
+            "We're upgrading our rating on Wells Fargo as the stock's pullback offers a nice entry point",
+            source="CNBC Earnings")
+        self.assertTrue(market_evidence(earnings)["eligible"])
+        self.assertIn(MARKET,sections(earnings))
+        self.assertFalse(market_evidence(recommendation)["eligible"])
+        self.assertNotIn(MARKET,sections(recommendation))
+
+    def test_runner_verified_cnbc_new_sources_are_in_active_config(self):
+        import json
+        from pathlib import Path
+        data=json.loads(Path(__file__).with_name("feeds.json").read_text(encoding="utf8"))
+        all_feeds=data["feeds"]["美股与投资"]
+        by_name={f["name"]:f for f in all_feeds}
+        for name in ("CNBC Earnings","CNBC Finance","CNBC Top News"):
+            self.assertIn(name,by_name)
+            self.assertFalse(by_name[name].get("disabled",False))
+        self.assertEqual(data["max_per_category"][MARKET],4)
+
+    def test_actual_npr_diesel_story_is_not_us_securities_news(self):
+        title="How will a diesel deal with Russia impact the U.S. market?"
+        article=row(title,source="NPR World")
+        self.assertFalse(market_evidence(article)["eligible"])
+        self.assertNotIn(MARKET,sections(article))
+        for positive in (
+            "U.S. stock market falls on inflation fears",
+            "U.S. Treasury yields inch lower as investors await key inflation report",
+            "Wall Street stocks rally as corporate profits rebound",
+        ):
+            with self.subTest(positive=positive):
+                market=row(positive,source="CNBC Top News")
+                self.assertTrue(market_evidence(market)["eligible"])
+                self.assertIn(MARKET,sections(market))
+
+    def test_us_market_releases_survive_foreign_macro_mention(self):
+        title="Wall Street stocks drop as US CPI rises and European shares rally"
+        article=row(title,source="CNBC Markets")
+        self.assertTrue(market_evidence(article)["eligible"])
+        self.assertIn(MARKET,sections(article))
+
     def test_chinese_us_stock_news_but_not_generic_shares(self):
         for title in ("美股纳斯达克指数下跌","美联储公布新的利率政策",
                       "微软在美上市公司公布重要财报"):

@@ -157,6 +157,19 @@ jobs:
         if: github.event_name == 'pull_request'
         run: python newspaper/source_audit.py
 
+      - name: Verify candidate market RSS feeds on actual GitHub runner (PR only)
+        if: github.event_name == 'pull_request'
+        run: python newspaper/probe_market_sources.py
+
+      - name: Archive market-source verification evidence (PR only)
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: newspaper-p1-market-source-probe
+          path: /tmp/newspaper-market-source-probe.json
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Preview without SMTP or LLM credentials
         if: steps.phase.outputs.phase == 'preview'
         env:
