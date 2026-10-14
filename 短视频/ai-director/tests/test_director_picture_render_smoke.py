@@ -132,6 +132,16 @@ class PictureRenderSmokeTests(unittest.TestCase):
         m = self.create_assets()
         tl = otio.adapters.read_from_string(self.otio_json,
                                              adapter_name="otio_json")
+        forged_cut = otio.adapters.read_from_string(self.otio_json,
+                                                     adapter_name="otio_json")
+        forged_cut.metadata["ai_director"]["montage_cut_jobs"][0][
+            "boundary_frame"] = 29
+        cut_json = otio.adapters.write_to_string(forged_cut,
+                                                  adapter_name="otio_json")
+        with self.assertRaisesRegex(smoke.SmokeError, "CUT_PROVENANCE_DRIFT"):
+            smoke.render_synthetic_picture_smoke(
+                self.order, m, otio_json=cut_json,
+                media_root=self.media_root, output_dir=self.output_root)
         tl.tracks[0][1].name = "SPOOFED_SHOT"
         forged = otio.adapters.write_to_string(tl,
                                                adapter_name="otio_json")
