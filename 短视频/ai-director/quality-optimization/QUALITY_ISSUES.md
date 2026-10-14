@@ -323,16 +323,16 @@
 ### QO-D09 · 剪辑节奏、过渡桥与镜头版本选择
 
 - 状态：in_progress；优先级：P1；阶段：now_director；负责人：director
-- 发现位置：agent_role_contracts editing_animation; director_timeline.py; production_delivery.py; director_editorial_montage.py; director_shot_coverage.py; director_montage_editor_conform.py; director_media_otio_export.py
+- 发现位置：agent_role_contracts editing_animation; director_timeline.py; production_delivery.py; director_editorial_montage.py; director_shot_coverage.py; director_montage_editor_conform.py; director_media_otio_export.py; director_picture_render_smoke.py
 - 问题：有J/L cut、转场字段但未以真实影像验证行为连续和情绪节奏；不可默认长镜头一镜过
 - 根因：缺由真实媒体帧/音轨回写的编辑视角审计
-- 方案：导演审查每个镜头的入点/出点/情绪换挡/声画桥；备选剪辑与失败因果；逐镜选择最佳 take，避免盲目复拍整片；首版实现独立 editorial montage：镜头序列必须逐镜连续、逐切点绑定剧本场次和时间来源、保留演员/道具出入状态指纹，保留真实媒体与艺术审核门槛。；第二阶段新增帧级后期合成工作单，依照QO-D13全片时间预算输出画面源入出帧、逐剪口剪辑指令、可选QO-D19声音/字幕绝对帧和清晰的媒体/转场阻断条目；不以未渲染资源冒称导出成片。；第三阶段采用 Academy Software Foundation OpenTimelineIO 原生 JSON，将离线导演剪辑工单绑定本地真实媒体，要求SHA-256全字节校验与FFprobe核验视频实际帧率/帧数；检查剪入剪出与可用转场余量，缺素材保持Gap；源锁定字幕生成SRT候选。不允许用文件元数据代替视觉/音频/艺术审查。
-- 完成验收：公开合成方案能量化错误切点；真实2+段小样有可验证片段版本与切点，比对导演剪辑意图；新增跨场次/倒叙与伪造时间线的公开离线回归，需GitHub CI核验。；明确fps严格落帧，含片头/片尾/证据页且最后一页不被移位，复杂过渡的素材把柄与J/L音轨未有实证时不得误渲染；实际NLE导入和媒体验收另行验证。；本地合成视频的实际FFprobe/SHA/OTIO序列化回读证明工程正确性；仍须不同真实剪辑软件独立导入与转场、文字、口型和版权媒体验收。
+- 方案：导演审查每个镜头的入点/出点/情绪换挡/声画桥；备选剪辑与失败因果；逐镜选择最佳 take，避免盲目复拍整片；首版实现独立 editorial montage：镜头序列必须逐镜连续、逐切点绑定剧本场次和时间来源、保留演员/道具出入状态指纹，保留真实媒体与艺术审核门槛。；第二阶段新增帧级后期合成工作单，依照QO-D13全片时间预算输出画面源入出帧、逐剪口剪辑指令、可选QO-D19声音/字幕绝对帧和清晰的媒体/转场阻断条目；不以未渲染资源冒称导出成片。；第三阶段采用 Academy Software Foundation OpenTimelineIO 原生 JSON，将离线导演剪辑工单绑定本地真实媒体，要求SHA-256全字节校验与FFprobe核验视频实际帧率/帧数；检查剪入剪出与可用转场余量，缺素材保持Gap；源锁定字幕生成SRT候选。不允许用文件元数据代替视觉/音频/艺术审查。；第四阶段将OTIO本地原生读回与FFmpeg实际纯色视频解码组合成可复现实验，并核对不同颜色镜头的真实像素和剪口帧。禁止原配音/字幕或非硬切转场被静默转为静音/硬切。
+- 完成验收：公开合成方案能量化错误切点；真实2+段小样有可验证片段版本与切点，比对导演剪辑意图；新增跨场次/倒叙与伪造时间线的公开离线回归，需GitHub CI核验。；明确fps严格落帧，含片头/片尾/证据页且最后一页不被移位，复杂过渡的素材把柄与J/L音轨未有实证时不得误渲染；实际NLE导入和媒体验收另行验证。；本地合成视频的实际FFprobe/SHA/OTIO序列化回读证明工程正确性；仍须不同真实剪辑软件独立导入与转场、文字、口型和版权媒体验收。；CI必须真实安装ffmpeg/ffprobe并执行样本，不能因依赖缺失跳过后仍算通过；Kdenlive 25.04+ 原生OTIO GUI导入需独立验证，旧独立适配器已弃用。
 - AI 视频适配：AI片段几秒钟产生，需留头尾缓冲，部分转场后期解决
 - 依赖：QO-D02, QO-D08
 - 历史问题：无
-- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/56；回归 tests/test_director_media_otio_export.py; GitHub Actions run 38519560054 passed 832/832 unit tests with FFmpeg real synthetic video and native OTIO read/write; updated commits pending final CI.；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-14:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/57；回归 2026-10-14 correction: PR #56 run 38519560054 and early PR #57 run 38520233683 had FFmpeg-dependent unittest skips because runner lacked FFmpeg; these are NOT valid real-media execution evidence. PR #57 run 38520394978 force-installed FFmpeg and exposed 3 OTIO metadata-comparison failures. Fix committed; final real-media run pending.；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-14:in_progress → 2026-10-14:in_progress
 
 ### QO-D10 · 专业导演审片标准：不是字段全就是好片
 
