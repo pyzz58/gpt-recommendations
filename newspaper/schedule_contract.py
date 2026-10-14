@@ -28,6 +28,11 @@ def choose_phase(event: str, cron: str, dry_run: str, now: dt.datetime) -> str:
         if planned == "send" and local_time < SEND_START:
             return "wait"
         return planned
+    if event == "repository_dispatch":
+        local_time = now.astimezone(BEIJING).time()
+        if local_time >= SEND_END:
+            return "expired"
+        return "send" if local_time >= SEND_START else "prepare"
     if event == "workflow_dispatch" and dry_run == "false":
         local_time = now.astimezone(BEIJING).time()
         return "send" if SEND_START <= local_time < SEND_END else "expired"
