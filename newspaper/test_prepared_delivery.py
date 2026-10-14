@@ -40,6 +40,14 @@ class PreparedDeliveryTests(unittest.TestCase):
         self.assertTrue(files["edition.pdf"].startswith(b"%PDF-"))
         self.assertIn(b"mail.html",str(sorted(files)).encode())
 
+    def test_brief_cover_is_allowed_when_commentary_unavailable(self):
+        short_text = "全球新闻选编｜2026-10-14。本期报道详见附件 PDF。"
+        write_bundle(self.directory, self.day, self.subject,
+                     "<html><body><h2>全球新闻选编</h2><p>今日报道请见PDF附件。</p></body></html>",
+                     short_text, self.pdf)
+        _, files = read_bundle(self.directory, self.day)
+        self.assertIn("详见附件", files["mail.txt"].decode("utf-8"))
+
     def test_tamper_detected(self):
         (self.directory/"mail.txt").write_text("altered",encoding="utf8")
         with self.assertRaises(ValueError):
