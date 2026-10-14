@@ -816,13 +816,13 @@
       "stage": "now_director",
       "department": "director",
       "priority": "P0",
-      "status": "confirmed_open",
+      "status": "in_progress",
       "title": "多动作可拍性与模型失败降级",
-      "observed_in": "director_shootability.py; agent_role_contracts acting/camera_art/ai_technical",
+      "observed_in": "director_shootability.py; agent_role_contracts acting/camera_art/ai_technical; director_action_rescue.py; agent_role_contracts.build_role_messages/validate_role_output/submit_role_output; skills/16-director-action-feasibility-and-creative-preservation.md",
       "problem": "逐秒动作表有了但复杂互动、多个连续变化易在视频生成时失败；没有真实成功率",
       "root_cause": "下游直接按理想影视分镜要求一个视频模型完成全部演员动作",
-      "solution": "每镜列关键动作数、人物数量、接触/空间复杂度；选择分拆、静帧、蒙太奇、后期动画替代路径并量化重试预算",
-      "acceptance": "公开故障注入例：双手接触、道具交换、轴线跳变均能触发正确拆段或人工复审；真实成片有效性需单独标未验证",
+      "solution": "每镜列关键动作数、人物数量、接触/空间复杂度；选择分拆、静帧、蒙太奇、后期动画替代路径并量化重试预算；第一阶段增设同一总导演的真实制作动作意图保全：原剧本人物/道具/手部占用/空间轴线与观众必须看到的选择作为不可删改条件，逐镜提供两套路线不同、时间闭合、动作单元明确、演摄声剪可执行及艺术代价透明的候选方案。已有演员与AI技术交付时必须重跑原director_shootability.review及重新锁定revision/交付摘要；前期指令不会被正常顺序交稿误判过期。模块经agent_role_contracts真实岗位消息创建/接收路径可选绑定并可在新base设置强制门禁；无付费调用、无自动改剧本或新建第二导演。",
+      "acceptance": "公开故障注入例：双手接触、道具交换、轴线跳变均能触发正确拆段或人工复审；真实成片有效性需单独标未验证；本轮暂不主动测试，尚需以后对同手并发/道具交换/错误轴线/旧稿误用分别做反例与真人审查；目前仅为未验收开发稿，不能把字段完整或风险分析冒充真实模型生成能力。",
       "ai_video_constraint": "AI模型对多动作/物理交互有概率性，脚本不能假设必然符合提示词",
       "depends_on": [
         "QO-D04"
@@ -831,9 +831,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
-        "commit_sha": "",
-        "automated_test": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/65",
+        "commit_sha": "1f3ead34ec1c2021662db874e5b136ab26247ff2",
+        "automated_test": "用户明确要求暂不测试：本次未主动运行本模块单元测试、媒体生成或真人审片。PR #65为未验收的草案（draft），不作为完成证明。",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -845,6 +845,12 @@
           "status": "confirmed_open",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-14",
+          "status": "in_progress",
+          "note": "QO-D06第一阶段已编码导演逐镜动作艺术保全、真实时间闭合的两套不同拍摄策略、源演员道具/轴线连续性、实交付风险扫描、真实7部门模型消息与返回复验衔接。用户指定暂不测试，因此仍未做物理动作模型成功率、人类艺术审核或CI人工触发，不合并草案。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/65"
         }
       ]
     },
