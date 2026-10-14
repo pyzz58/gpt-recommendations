@@ -1811,11 +1811,11 @@
       "priority": "P1",
       "status": "in_progress",
       "title": "导演对白逐句声画cue与跨镜反打同步",
-      "observed_in": "director_shot_coverage.py / director_speech_cues.py / screenplay_series_delivery.py",
+      "observed_in": "director_shot_coverage.py / director_speech_cues.py / screenplay_series_delivery.py; director_av_sync_smoke.py; tests/test_director_av_sync_smoke.py",
       "problem": "原导演镜头覆盖不能拆分带对白或旁白的节拍；若强行拆镜，会造成台词和字幕重复、错位、说话人错绑与工单沿用旧镜头。",
       "root_cause": "原生产规划将画面shot、台词文字与字幕绑定在同一个镜头对象，缺少来源精确的独立音轨时间轴和跨镜引用。",
-      "solution": "建立独立、逐条源文本精确匹配的cue ledger及字幕时间轴，只有有效时间码才允许拆分带台词节拍；导演镜头引用声轨片段而非复制台词，工单重建；进一步实现媒体验证和口型同步。",
-      "acceptance": "源文本、说话人、台词顺序100%精确；跨镜头无遗漏重复；无cue时拒绝拆镜；连续/重叠/超出区间/篡改测试全通过；独立真实音画与口型审验后才可完成。",
+      "solution": "建立独立、逐条源文本精确匹配的cue ledger及字幕时间轴，只有有效时间码才允许拆分带台词节拍；导演镜头引用声轨片段而非复制台词，工单重建；进一步实现媒体验证和口型同步。；第五阶段新增公开合成3秒声画验证：48 kHz/16bit mono逐帧测试音tone限定声源时间区间，FFmpeg/libass实际叠加由QO-D19既有时间码导出的字幕，再真实解码逐sample验证PCM未变化、画面像素验证叠字在指定时间出现。真实语音、唇形、NLE导入与影视艺术审核仍独立推进。",
+      "acceptance": "源文本、说话人、台词顺序100%精确；跨镜头无遗漏重复；无cue时拒绝拆镜；连续/重叠/超出区间/篡改测试全通过；独立真实音画与口型审验后才可完成。；CI强制FFmpeg/libass实际执行公开合成音轨提前/遗漏与字幕重叠负例，真实演员音频波形、字幕语义与口型另审。",
       "ai_video_constraint": "制作时画面与音轨必须分离；AI视频模型不能凭文字cue被视为口型已同步，字幕须由独立后期时间轨处理，未验收仅可作规划。",
       "depends_on": [
         "QO-D02"
@@ -1824,9 +1824,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
-        "commit_sha": "b0882ff4f4095062e4062499edf5cdb7b3702beb",
-        "automated_test": "已写入公开虚构样例 tests/test_director_speech_cues.py；需以 GitHub Actions 运行结果确认全绿。",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/59",
+        "commit_sha": "cb57a33036f3e3f6eec0449bcd3fd2bfc193da91",
+        "automated_test": "GitHub Actions 38521915790: 845/845 unittest PASS, real FFmpeg/libass subtitle pixel visibility and decoded 48k PCM exact-sample roundtrip, plus early/missing audio and overlapping subtitle rejections; later documentation sync CI pending.",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1838,6 +1838,12 @@
           "status": "in_progress",
           "note": "保留既有QO-D03视听母题事项；独立登记QO-D19逐句声画同步。增加源文本cue校验、镜头跨声轨绑定和虚构例测试；尚未证明CI全绿及真实媒体同步。",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-14",
+          "status": "in_progress",
+          "note": "QO-D19公开虚构合成声画烟雾验证：按指定帧音调，FFmpeg/libass真字幕叠加，Matroska无损PCM真实解码逐样本相同，字幕前后像素差异确认；845/845 CI通过。真实演员口型、中文字幕可读性、复杂J/L声音桥、音乐版权及Kdenlive GUI导入均未认证，仍不可发布或标记complete。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/59"
         }
       ]
     }
