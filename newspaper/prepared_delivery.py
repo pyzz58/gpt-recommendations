@@ -30,7 +30,7 @@ def sha256(data: bytes) -> str:
 
 
 def assert_delivery_window(now: dt.datetime, edition: dt.date) -> None:
-    """Enforce Beijing 01:00–02:00 on the correct issue date."""
+    """Enforce same-day edition integrity; no fixed delivery hour."""
     check_send_window(now, edition)
 
 
