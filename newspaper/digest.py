@@ -37,6 +37,7 @@ from editorial_quality import edition_quality_report
 from selection_audit import make_selection_audit, save_selection_audit
 from market_funnel import report_market_funnel, save_market_funnel
 from prepared_delivery import write_bundle
+from sec_edgar import fetch_filings
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -598,6 +599,12 @@ def main():
             collected = [job.result() for job in rss_futures]
         successful = sum(ok for _, ok in collected)
         incoming = [item for articles, _ in collected for item in articles]
+        # Optional official company filings: no configured contact means no
+        # SEC requests; missing filings cannot block the regular RSS edition.
+        filing_items, filing_status = fetch_filings(start,end)
+        incoming.extend(filing_items)
+        LOG.info("NEWSROOM_EDGAR_DISCOVERY=%s",
+                 json.dumps(filing_status,sort_keys=True))
         unique_publishers = {publisher(a) for a in incoming}
         active_feeds_with_new_material = sum(bool(items) for items, _ in collected)
         LOG.info(
