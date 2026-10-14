@@ -20,7 +20,7 @@ import director_media_otio_export as media
 VERSION = "director-synthetic-av-timing-smoke-v1"
 SAMPLE_RATE = 48000
 MAX_FRAMES = 300
-SAFE_NAME = re.compile(r"^[A-Za-z0-9_-]{1,64}\\.(?:mp4|wav|mkv)$")
+SAFE_NAME = re.compile(r"^[A-Za-z0-9_-]{1,64}\.(?:mp4|wav|mkv)$")
 SAFE_FILTER_PATH = re.compile(r"^/[A-Za-z0-9_./-]+$")
 MAX_BYTES = 32 * 1024 * 1024
 
