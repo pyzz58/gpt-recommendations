@@ -40,3 +40,9 @@
 | Nasdaq Financial Release | 0 | 0 | **不能启用**：GitHub runner 返回 HTTP 错误 |
 
 **准入不是 P1 完整验收**：当前 PR 已拟将 3 个官方 CNBC 频道写入 `feeds.json`；仍需本 PR 最新提交的完整 CI，通过新的真实来源 PDF 集成测试，复核最终刊登篇数和内容质量。特别注意，滚动 24 小时的 PR 样刊不同于北京时间 00:00 截稿的正式日报。
+
+## 2026-10-14 实际 PDF 审校更正（不得把绿色 CI 当新闻质量过关）
+
+[Run #38531616853](https://github.com/pyzz58/gpt-recommendations/actions/runs/38531616853) 的 166 个回归测试全部通过，63 个启用 RSS 入口正常可访问，滚动样刊中美股候选池 5 篇、实际刊登 3 篇。但抽查发现其中一篇 NPR 标题为 “How will a diesel deal with Russia impact the U.S. market?”，谈的是柴油/商品经济市场，不能凭泛指 “U.S. market” 就归为证券市场事实新闻。**因此该轮 3/4 的数字不能作为三篇优质美股报道的验收结论。**
+
+新修订移除了单独的 `U.S. market`/`American market` 泛用头版锚点，继续保留美股、华尔街、指数、美债等明确证券及金融资产关键词；并将本条 NPR 标题纳入回归测试。**修改后必须重新通过全量 CI 和实时 PDF 集成，仍需人工抽查最终入选标题。**
