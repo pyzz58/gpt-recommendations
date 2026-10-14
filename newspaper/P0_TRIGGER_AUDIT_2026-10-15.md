@@ -31,6 +31,8 @@
 - 此探针**只是隔离诊断，不是备用邮件发送器**，不证明正式发送恢复。证据足够后应及时删除每小时探针，避免无意义长期运行。
 - 手动对照 URL：`https://github.com/pyzz58/gpt-recommendations/actions/workflows/newspaper.yml`，核实该工作流是否显示 `Enable workflow`。如显示则按官方步骤启用。若需核实状态，可在本地 `gh api repos/pyzz58/gpt-recommendations/actions/workflows/newspaper.yml --jq .state`。
 
+本探针还使用 `github.token` 的 **Actions: read / Contents: read** 内置只读权限调用官方工作流详情接口，生成 `NEWSPAPER_MAIN_WORKFLOW_STATE`（含状态 `active`、`disabled_*` 或明确无法读取的状态），不披露 token、不进行启用、写入或发送操作。通过有意的普通 `push` 探针可立刻查询登记状态；**`push` 成功依然不等于 cron 成功**。
+
 ## 4. 生产事故验收门槛
 
 - P0-Trigger：GitHub 已创建真实 `schedule` 运行（不是 PR、手动或标记推送），且运行开始时间属于当前北京时间稿期。
