@@ -407,11 +407,16 @@ def select_readable(candidates, enriched):
             return False
         def add(a, allow_exception=False):
             if a["url"] in used_urls:
-                return reject(a, "already_selected_other_section")
+                in_section = next((old for old in selected if old["url"] == a["url"]), None)
+                return reject(a, "already_selected_same_section" if in_section
+                              else "already_selected_other_section", in_section)
             if a["event_key"] in used_events:
-                blocker = next((old for arr in output.values() for old in arr
+                in_section = next((old for old in selected
+                                   if old.get("event_key") == a["event_key"]), None)
+                blocker = in_section or next((old for arr in output.values() for old in arr
                                 if old.get("event_key") == a["event_key"]), None)
-                return reject(a, "event_selected_other_section", blocker)
+                return reject(a, "event_selected_same_section" if in_section
+                              else "event_selected_other_section", blocker)
             # TF-IDF alone misses some different-worded titles from the same
             # speaker and announcement; avoid obvious repeated editorial slots.
             blocker = next((old for arr in output.values() for old in arr
