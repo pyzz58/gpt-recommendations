@@ -17,6 +17,7 @@ from zoneinfo import ZoneInfo
 from digest import fetch_one, ROOT
 from newsroom import publisher, sections
 from source_quality import newsworthiness
+from market_headline import market_evidence
 from people_overseas import audit_edition
 from xueqiu_magazine import audit_public_journal
 
@@ -53,7 +54,9 @@ def audit(settings, start, end, worker=fetch_one):
         "source": pair[1]["name"],
         "origin_type": pair[1].get("source_type", "editorial_media_or_institution"),
         "reachable": bool(result[1]),
-        "items_last_24h": len(result[0])
+        "items_last_24h": len(result[0]),
+        "grounded_us_market_headlines": sum(market_evidence(a)["eligible"] for a in result[0]),
+        "dedicated_financial_source": pair[0] in ("美股与投资","美联储与宏观")
     } for pair, result in zip(sources, reports)]
     try:
         people = audit_edition()
@@ -84,6 +87,12 @@ def audit(settings, start, end, worker=fetch_one):
         "eligible_by_section_before_dedup": dict(sorted(by_section.items())),
         "quality_gate_reasons": dict(sorted(noise.items())),
         "feed_details": feed_details,
+        "market_source_health": [
+            d for d in feed_details if d["dedicated_financial_source"]
+        ],
+        "market_headlines_eligible_in_all_feeds": sum(
+            market_evidence(a)["eligible"] for a in articles),
+
         "notes": [
             "Different feeds from the same publisher are not independent coverage.",
             "Titles matching a topic are not automatically important or fact-checked.",
@@ -105,6 +114,8 @@ def main():
         k:v for k,v in report.items() if k not in
         ("by_publisher_family", "feed_details", "notes")
     }, ensure_ascii=False, sort_keys=True))
+    print("NEWSROOM_MARKET_SOURCE_HEALTH=" + json.dumps(
+        report["market_source_health"],ensure_ascii=False,sort_keys=True))
     print("NEWSROOM_SOURCE_AUDIT_PATH=" + str(dest))
     if report["feeds_http_reachable"] == 0:
         raise RuntimeError("No public RSS feeds reachable")
