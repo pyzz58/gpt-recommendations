@@ -129,8 +129,7 @@ def _shot_context(base, state, meeting, av_plan, genre,
         if name == "director_final":
             continue
         item = state["tasks"][name]
-        _need(item["status"] in ("pending", "completed", "needs_revision",
-                                "ready", "blocked"),
+        _need(item["status"] in ("pending", "completed", "stale", "needs_revision"),
               "WHOLE_FILM_UNRECOGNIZED_DEPARTMENT_STATUS")
         completed = item["status"] == "completed"
         depts[name] = {
@@ -442,3 +441,32 @@ def route_critique_proposals(base, state, meeting, av_plan, critique, *,
         "no_existing_media_review_claim": True,
         "no_automatic_dispatch_or_publication": True,
     }
+
+
+def request_existing_department_review_with_critique(
+        base, state, meeting, av_plan, critique, *,
+        artistic_method_plan=None):
+    """Optional existing QO-D16 handoff; same director, no second reviewer Agent.
+
+    Does not change the existing QO-D16 schema, agent ledger or legacy route.
+    The critique is *prompt context*, not a fake already-approved decision.
+    """
+    _need(isinstance(critique, dict) and
+          isinstance(critique.get("snapshot"), dict) and
+          critique["snapshot"].get("phase") == "post_department_design",
+          "WHOLE_FILM_DEPARTMENT_REVIEW_REQUIRES_POST_PHASE")
+    receipt = validate(base, state, meeting, av_plan, critique,
+                       artistic_method_plan=artistic_method_plan)
+    import director_delivery_review as delivery
+    result = delivery.request(base, state, meeting, av_plan,
+                              artistic_method_plan=artistic_method_plan)
+    payload = json.loads(result["messages"][1]["content"])
+    payload["same_director_prior_holistic_critique"] = deepcopy(critique)
+    payload["holistic_critique_digest"] = receipt["critique_digest"]
+    payload["read_critique_as_proposal_not_verified_film_art"] = True
+    result["messages"][1]["content"] = json.dumps(
+        payload, ensure_ascii=False, separators=(",", ":"))
+    result["whole_film_critique_digest"] = receipt["critique_digest"]
+    result["directors_artistic_self_criticism_is_unsent"] = True
+    result["ready_for_media_or_publication"] = False
+    return result
