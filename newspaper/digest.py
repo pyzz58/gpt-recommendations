@@ -34,6 +34,7 @@ from edition_budget import EditionBudget
 from news_editor import edit_reports_in_batches, write_compact_commentary
 from market_snapshot import fetch_market_snapshot
 from editorial_quality import edition_quality_report
+from selection_audit import make_selection_audit, save_selection_audit
 from prepared_delivery import write_bundle
 
 ROOT = Path(__file__).resolve().parent
@@ -614,6 +615,21 @@ def main():
             news_start=start,
         )
         readable, diagnostics = build_readings(pool, settings)
+        # P1: record the exact candidates and final newsroom choice before
+        # editing or translations can mutate source metadata.
+        # This is only an observed-feed audit; never a global recall claim.
+        try:
+            selection_report = make_selection_audit(incoming, pool, readable, diagnostics)
+            audit_file = save_selection_audit(
+                selection_report, "/tmp/newspaper-selection-audit.json")
+            LOG.info("NEWSROOM_P1_SELECTION_AUDIT: observed=%d candidates=%d selected=%d high_score_unselected=%d path=%s",
+                     selection_report["distinct_observed_urls"],
+                     selection_report["candidate_urls"],
+                     selection_report["selected_urls"],
+                     selection_report["candidate_high_score_unselected_count"],
+                     audit_file)
+        except Exception:
+            LOG.exception("P1 editorial audit unavailable; keep actual news delivery independent")
         if sum(len(x) for x in readable.values()) == 0:
             raise RuntimeError("No articles successfully extracted; aborting the email.")
         # The model edits at most two sourced articles per request.
