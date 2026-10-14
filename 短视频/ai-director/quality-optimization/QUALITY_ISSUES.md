@@ -27,7 +27,7 @@
 | QO-D03 | director | P0 | in_progress | 导演视听母题、情绪弧线与视觉叙事 |
 | QO-D04 | director | P0 | partially_addressed | 模型能力适配、片段时长与路由决策 |
 | QO-D05 | director | P0 | partially_addressed | 演员/服装/道具/场景跨镜一致性 |
-| QO-D06 | director | P0 | confirmed_open | 多动作可拍性与模型失败降级 |
+| QO-D06 | director | P0 | in_progress | 多动作可拍性与模型失败降级 |
 | QO-D07 | director | P0 | partially_addressed | 导演级镜头语言与视觉连续性 |
 | QO-D08 | director | P1 | partially_addressed | 导演与音效/台词/字幕精确对齐 |
 | QO-D09 | director | P1 | in_progress | 剪辑节奏、过渡桥与镜头版本选择 |
@@ -280,17 +280,17 @@
 
 ### QO-D06 · 多动作可拍性与模型失败降级
 
-- 状态：confirmed_open；优先级：P0；阶段：now_director；负责人：director
-- 发现位置：director_shootability.py; agent_role_contracts acting/camera_art/ai_technical
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：director_shootability.py; agent_role_contracts acting/camera_art/ai_technical; director_action_rescue.py; agent_role_contracts.build_role_messages/validate_role_output/submit_role_output; skills/16-director-action-feasibility-and-creative-preservation.md
 - 问题：逐秒动作表有了但复杂互动、多个连续变化易在视频生成时失败；没有真实成功率
 - 根因：下游直接按理想影视分镜要求一个视频模型完成全部演员动作
-- 方案：每镜列关键动作数、人物数量、接触/空间复杂度；选择分拆、静帧、蒙太奇、后期动画替代路径并量化重试预算
-- 完成验收：公开故障注入例：双手接触、道具交换、轴线跳变均能触发正确拆段或人工复审；真实成片有效性需单独标未验证
+- 方案：每镜列关键动作数、人物数量、接触/空间复杂度；选择分拆、静帧、蒙太奇、后期动画替代路径并量化重试预算；第一阶段增设同一总导演的真实制作动作意图保全：原剧本人物/道具/手部占用/空间轴线与观众必须看到的选择作为不可删改条件，逐镜提供两套路线不同、时间闭合、动作单元明确、演摄声剪可执行及艺术代价透明的候选方案。已有演员与AI技术交付时必须重跑原director_shootability.review及重新锁定revision/交付摘要；前期指令不会被正常顺序交稿误判过期。模块经agent_role_contracts真实岗位消息创建/接收路径可选绑定并可在新base设置强制门禁；无付费调用、无自动改剧本或新建第二导演。
+- 完成验收：公开故障注入例：双手接触、道具交换、轴线跳变均能触发正确拆段或人工复审；真实成片有效性需单独标未验证；本轮暂不主动测试，尚需以后对同手并发/道具交换/错误轴线/旧稿误用分别做反例与真人审查；目前仅为未验收开发稿，不能把字段完整或风险分析冒充真实模型生成能力。
 - AI 视频适配：AI模型对多动作/物理交互有概率性，脚本不能假设必然符合提示词
 - 依赖：QO-D04
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/65；回归 用户明确要求暂不测试：本次未主动运行本模块单元测试、媒体生成或真人审片。PR #65为未验收的草案（draft），不作为完成证明。；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:confirmed_open → 2026-10-14:in_progress
 
 ### QO-D07 · 导演级镜头语言与视觉连续性
 
