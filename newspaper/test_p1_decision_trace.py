@@ -99,7 +99,7 @@ class P1DecisionTraceTests(unittest.TestCase):
         self.assertEqual(len(chosen[MARKET]),1)
         dec=diag[MARKET]["candidate_decisions"][1]
         self.assertIn(dec["reason_code"],
-                      ("event_selected_other_section","near_duplicate_same_section"))
+                      ("event_selected_same_section","near_duplicate_same_section"))
         self.assertEqual(dec["blocked_by_url"],records[0]["url"])
 
     def test_second_pass_geographic_exception_clears_false_rejection(self):
