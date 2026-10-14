@@ -1028,7 +1028,7 @@
       "opened_on": "2026-10-13",
       "evidence": {
         "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/62",
-        "commit_sha": "b863ad245f736b0115814c90e0c66d990d171a2e",
+        "commit_sha": "0b2059b7d48afc0f51c8b16420216ca88e06c728",
         "automated_test": "用户要求暂不测试：本轮未主动运行单元测试、CI或任何真实媒体/真人艺术质量验证；PR仅为代码与规范的未验收草案。",
         "independent_review": "",
         "media_validation": "",
