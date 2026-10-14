@@ -120,6 +120,21 @@ class MarketCoverageFunnelTests(unittest.TestCase):
             self.assertFalse(by_name[name].get("disabled",False))
         self.assertEqual(data["max_per_category"][MARKET],4)
 
+    def test_actual_npr_diesel_story_is_not_us_securities_news(self):
+        title="How will a diesel deal with Russia impact the U.S. market?"
+        article=row(title,source="NPR World")
+        self.assertFalse(market_evidence(article)["eligible"])
+        self.assertNotIn(MARKET,sections(article))
+        for positive in (
+            "U.S. stock market falls on inflation fears",
+            "U.S. Treasury yields inch lower as investors await key inflation report",
+            "Wall Street stocks rally as corporate profits rebound",
+        ):
+            with self.subTest(positive=positive):
+                market=row(positive,source="CNBC Top News")
+                self.assertTrue(market_evidence(market)["eligible"])
+                self.assertIn(MARKET,sections(market))
+
     def test_us_market_releases_survive_foreign_macro_mention(self):
         title="Wall Street stocks drop as US CPI rises and European shares rally"
         article=row(title,source="CNBC Markets")
