@@ -235,7 +235,7 @@ jobs:
 
       - name: Cache completed edition for recovery attempts
         id: save_prepared
-        if: steps.build.outcome == 'success'
+        if: ${{ always() && steps.build.outcome == 'success' }}
         uses: actions/cache/save@v4
         with:
           key: newspaper-ready-v22-${{ steps.date.outputs.edition }}
