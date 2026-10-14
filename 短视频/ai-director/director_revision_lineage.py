@@ -108,8 +108,9 @@ def request(base, state, *, request_id, origin_role, kind, shot_ids,
               HEX.fullmatch(snapshot["source_digest"]),
               "LINEAGE_SCRIPT_REVISION_REQUIRES_SOURCE_BOUND_LEDGER")
     _need(isinstance(shot_ids, list) and
-          len(shot_ids) == len(set(shot_ids)) and
-          set(shot_ids) <= set(snapshot["shot_ids"]),
+          all(isinstance(s, str) and s in snapshot["shot_ids"]
+              for s in shot_ids) and
+          len(shot_ids) == len(set(shot_ids)),
           "LINEAGE_SHOT_SCOPE_INVALID")
     _need((bool(shot_ids) if kind not in SCRIPT_KINDS and
            kind != "director_whole_film_vision" else True),
