@@ -153,6 +153,18 @@ def _shot_context(base, state, meeting, av_plan, genre,
     }
 
 
+def _text_value_contains(value, excerpt):
+    """Anchor evidence in authored text VALUES, not merely JSON field names."""
+    if isinstance(value, str):
+        return excerpt in value
+    if isinstance(value, list):
+        return any(_text_value_contains(item, excerpt) for item in value)
+    if isinstance(value, dict):
+        return any(_text_value_contains(item, excerpt)
+                   for item in value.values())
+    return False
+
+
 def _evidence(value, snap, meeting, av_plan, state, *, phase):
     _shape(value, ("source", "shot_id", "department", "exact_excerpt"),
            "WHOLE_FILM_EVIDENCE_SHAPE")
@@ -185,7 +197,7 @@ def _evidence(value, snap, meeting, av_plan, state, *, phase):
     excerpt = value["exact_excerpt"]
     _need(isinstance(excerpt, str) and
           8 <= len(excerpt) <= 240 and
-          excerpt in json.dumps(source, ensure_ascii=False),
+          _text_value_contains(source, excerpt),
           "WHOLE_FILM_EVIDENCE_NOT_IN_REAL_SOURCE")
     return sid
 
