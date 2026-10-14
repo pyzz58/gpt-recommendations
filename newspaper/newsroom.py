@@ -10,6 +10,7 @@ import re
 from urllib.parse import urlparse
 from ranking import _story_groups
 from source_quality import newsworthiness
+from market_headline import market_evidence
 
 SECTIONS = {
     "美股·全球金融市场": 4,
@@ -113,6 +114,8 @@ def sections(item):
                            ("创业、商业与企业竞争", BUSINESS),
                            ("医疗、生命科学与公共健康", HEALTH)):
         if matches(pattern, s): result.add(label)
+    if market_evidence(item)["eligible"]:
+        result.add("美股·全球金融市场")
     return primary_topic_guard(item, result)
 
 
@@ -159,18 +162,7 @@ def primary_topic_guard(item, labels):
     summary = str(item.get("summary", ""))
     url = str(item.get("url", "")).lower()
     keep = set(labels)
-    market = (
-        matches(US_MARKET_HEADLINE, title)
-        or bool(re.search(US_MARKET_ZH, title))
-        or (
-            ("sec.gov" in url or "federalreserve.gov" in url)
-            and matches(FINANCE, title + " " + summary)
-        )
-        or (
-            item.get("source") in {"CNBC Markets", "CNBC Investing"}
-            and matches(FINANCE, title)
-        )
-    )
+    market = market_evidence(item)["eligible"]
     if not market:
         keep.discard("美股·全球金融市场")
     # A macro forecast that refers to a war only as an economic backdrop
