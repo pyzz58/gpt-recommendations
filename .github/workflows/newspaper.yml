@@ -254,7 +254,11 @@ jobs:
           READY_SAVED: ${{ steps.save_prepared.outcome }}
         run: |
           set -euo pipefail
-          if [[ "$SENT_CACHE" == "true" ]]; then
+          if [[ "$PHASE" == "expired" ]]; then
+            status=EXPIRED_NO_SEND
+          elif [[ "$PHASE" == "wait" ]]; then
+            status=EARLY_NO_SEND
+          elif [[ "$SENT_CACHE" == "true" ]]; then
             status=ALREADY_SENT
           elif [[ "$PHASE" == "prepare" && ("$READY_CACHE" == "true" || ("$BUILD" == "success" && "$READY_SAVED" == "success")) ]]; then
             status=PREPARED_NOT_SENT
@@ -273,7 +277,7 @@ jobs:
             echo "- Prepared cache hit: $READY_CACHE"
             echo "- SMTP accepted is not inbox-delivered confirmation"
           } >> "$GITHUB_STEP_SUMMARY"
-          if [[ "$status" == FAILED || "$status" == SMTP_ACCEPTED_RECEIPT_UNVERIFIED ]]; then
+          if [[ "$status" == FAILED || "$status" == EXPIRED_NO_SEND || "$status" == EARLY_NO_SEND || "$status" == SMTP_ACCEPTED_RECEIPT_UNVERIFIED ]]; then
             echo "::error::Review newspaper run before retry: $status"
             exit 1
           fi
