@@ -421,16 +421,16 @@
 ### QO-D16 · 导演审核部门真实交付与基于观众体验的精准跨岗返工
 
 - 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
-- 发现位置：director_department_command.validate_command/model_facing_role_context; agent_role_contracts.build_role_messages; agent_team.request_revision; agent_creative_review; director_delivery_review.py
+- 发现位置：director_department_command.validate_command/model_facing_role_context; agent_role_contracts.build_role_messages; agent_team.request_revision; agent_creative_review; director_delivery_review.py; director_conflict_arbitration.py; director_creative_integration.final_director_role_gate; agent_role_contracts.build_role_messages/validate_role_output/submit_role_output; skills/19-director-cross-department-artistic-arbitration.md
 - 问题：现有总导演可开详细制作会，把意图交给表演/摄影/声音/剪辑/AI技术/QA，但实际下游交付完成后缺一个把每镜的艺术意图、实收设计和观众可能体验逐项对照、组织责任部门返工的导演闭环
 - 根因：只校验导演命令及下游部门JSON结构，无法凭表单确认镜头表达思想/情绪；导演缺依据真实已交稿证据对具体镜头指派协作和定点修改的反馈层
-- 方案：复用原导演与部门会议模块，新增director_delivery_review按每镜每部门核实实际交付、意图是否可见、观众认知和情绪变化及证据局限；未交稿必须标pending；导演逐项给出问题证据、责任部门、具体返工动作、协作方、验收方式和冲突仲裁；已确认需返工的单镜经原agent_team.request_revision按原岗位依赖失效机制定点返修，禁止静默改剧情/事实与自动发布
-- 完成验收：公开两镜虚构影片中，演员拿信的停顿缺失能被导演定位到S01 acting，明确观众后果及摄影/剪辑协作，并只重新排该岗位指定镜头；缺失岗位被判不可评价；版本变化使旧评论失效；泛泛空话/未经交付声称审过真片遭拒；专业独立人审和实际生成的片段观感仍须验证
+- 方案：复用原导演与部门会议模块，新增director_delivery_review按每镜每部门核实实际交付、意图是否可见、观众认知和情绪变化及证据局限；未交稿必须标pending；导演逐项给出问题证据、责任部门、具体返工动作、协作方、验收方式和冲突仲裁；已确认需返工的单镜经原agent_team.request_revision按原岗位依赖失效机制定点返修，禁止静默改剧情/事实与自动发布；本轮增加同一个总导演的跨部门艺术仲裁：基于原QO-D16已提交的左右双方原句和QO-D10已保护的整片独特艺术选择，逐冲突列观众理解受到的伤害、双方各自局部合理性、两套实际不同的电影手法与成本、导演取舍及责任归属。分别交给原专业、导演锁稿、编剧或等待真实媒体；通过QO-D12形成版本锁定但未派发的具体返修建议。统一接入现有导演最终role-facing入口：若未提供制作后整片审查、动作复审、原QO-D16实际岗位交付及必须的艺术仲裁，则不允许正式终审；即使有仲裁，仍有实际专业冲突或待返工时禁止标ready_for_user_review。
+- 完成验收：公开两镜虚构影片中，演员拿信的停顿缺失能被导演定位到S01 acting，明确观众后果及摄影/剪辑协作，并只重新排该岗位指定镜头；缺失岗位被判不可评价；版本变化使旧评论失效；泛泛空话/未经交付声称审过真片遭拒；专业独立人审和实际生成的片段观感仍须验证；今后测试需包含两专业相冲突但各有合理性、保护独特导演取舍、不存在真实交付却捏造引文、错误专业归属/越权改编剧、仲裁方案存在而实际冲突未解除仍不能通过终审。真人艺术盲评与真实成片独立验收未完成；本阶段不测试。
 - AI 视频适配：短视频每集≤90秒；每镜AI clip与完整视频节奏分层；不同模型的手/道具状态和跨镜声音连续性可能失效，真实媒体验证必须独立授权，不允许以JSON设计假称成片
 - 依赖：QO-D03, QO-D15, QO-D11
 - 历史问题：无
-- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/31；回归 tests/test_director_audiovisual_delivery.py — grounded real department-delivery assessment, pending vs completed, precise single-shot revision and staleness rejection；PR40 tests/test_director_audiovisual_delivery.py 新增3个跨部门冲突/跨镜引用反例；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/67；回归 按用户要求暂不测试：本轮仅提交新导演冲突仲裁及原岗位终审门槛的开发代码、具体导演规范；不宣称单元测试、真实媒体、人类盲评或真实API调用已验收。；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-14:in_progress
 
 ### QO-D17 · 世界级导演的可迁移艺术判断与周星驰荒诞喜剧的题材适配
 
