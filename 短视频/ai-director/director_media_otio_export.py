@@ -113,6 +113,8 @@ def _probe(path, fps, expected_sha):
         return {"frame_count": count, "width": row["width"],
                 "height": row["height"], "codec": row["codec_name"],
                 "sha256": expected_sha}
+    except MediaConformError:
+        raise
     except (KeyError, TypeError, ValueError, ZeroDivisionError):
         raise MediaConformError("MEDIA_CONFORM_FFPROBE_UNTRUSTED_METADATA") from None
 
