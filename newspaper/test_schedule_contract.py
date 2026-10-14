@@ -28,6 +28,12 @@ class ScheduleContractTests(unittest.TestCase):
     def test_unknown_cron_fails_closed(self):
         with self.assertRaises(RuntimeError):
             choose_phase("schedule", "0 0 * * *", "", clock(1, 10))
+    def test_external_tick_prepares_before_one(self):
+        self.assertEqual(choose_phase("repository_dispatch", "", "", clock(0, 20)), "prepare")
+    def test_external_tick_sends_in_window(self):
+        self.assertEqual(choose_phase("repository_dispatch", "", "", clock(1, 10)), "send")
+    def test_external_tick_expires(self):
+        self.assertEqual(choose_phase("repository_dispatch", "", "", clock(2, 0)), "expired")
     def test_preview_never_sends(self):
         self.assertEqual(choose_phase("workflow_dispatch", "", "true", clock(1, 10)), "preview")
 
