@@ -21,10 +21,10 @@ class QualitySampleTests(unittest.TestCase):
         self.assertEqual(day,dt.date(2026,10,13))
         self.assertEqual(end-start,dt.timedelta(hours=24))
 
-    def test_official_edition_fixed_at_0600(self):
+    def test_official_edition_fixed_at_midnight(self):
         now=dt.datetime(2026,10,13,11,35,tzinfo=BEIJING_TZ)
         a,b,_=edition_window(now)
-        self.assertEqual((a.hour,b.hour),(6,6))
+        self.assertEqual((a.hour,b.hour),(0,0))
         self.assertEqual(LATEST_SEND_START,dt.timedelta(hours=2))
 
     def test_preview_never_sends_or_uses_api_key(self):
@@ -42,11 +42,11 @@ class QualitySampleTests(unittest.TestCase):
         self.assertIn("python newspaper/digest.py --prepare --output /tmp/newspaper-ready",w)
         self.assertIn("python newspaper/prepared_delivery.py --bundle-dir /tmp/newspaper-ready",w)
         schedules=re.findall(r"cron: '([0-9]+) ([0-9]+) [*] [*] [*]'",w)
-        self.assertGreaterEqual(len(schedules),6)
+        self.assertGreaterEqual(len(schedules),7)
         local=[((int(h)+8)%24,int(m)) for m,h in schedules]
-        self.assertTrue(any(hr==6 for hr,_ in local))
-        self.assertTrue(any(hr==7 for hr,_ in local))
-        self.assertTrue(all(hr in (6,7) for hr,_ in local))
+        self.assertTrue(any(hr==0 for hr,_ in local))
+        self.assertTrue(any(hr==1 for hr,_ in local))
+        self.assertTrue(all(hr in (0,1) for hr,_ in local))
         self.assertNotIn("[newspaper-recovery-20261014]",w)
         self.assertNotIn("[newspaper-v05-send-once]",w)
 
