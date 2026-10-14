@@ -305,3 +305,46 @@ def make_lineage_change_from_finding(
         "existing_ledger_mutated": False,
         "external_dispatch_authorized": False,
     }
+
+
+def final_director_role_gate(
+        base, state, meeting, audiovisual, holistic_post, rescue_post,
+        delivery_review, *, arbitration_plan=None,
+        artistic_method_plan=None):
+    """Give the ORIGINAL final-director task verified post-crew review evidence.
+
+    Without real QO-D16 review, 'no conflict' is unknowable. If conflicts are
+    confirmed, require source-locked artistic arbitration before the final
+    director can even receive this approval-stage task. Arbitration remains a
+    proposed choice, never clears old crew conflicts on its own.
+    """
+    _need(check_mode(base), "INTEGRATED_FINAL_ROLE_GATE_NOT_ENABLED")
+    _need(delivery_review is not None and holistic_post is not None and
+          rescue_post is not None,
+          "INTEGRATED_FINAL_CANNOT_SKIP_ACTUAL_CREW_REVIEW")
+    result = postproduction_assessment(
+        base, state, meeting, audiovisual, holistic_post, rescue_post,
+        artistic_method_plan=artistic_method_plan,
+        delivery_review=delivery_review,
+        arbitration_plan=arbitration_plan)
+    _need(result["qod16_conflict_count"] is not None,
+          "INTEGRATED_FINAL_NO_DELIVERY_EVIDENCE")
+    _need(not result["qod16_conflict_count"] or
+          result["qod16_arbitration_digest"] is not None,
+          "INTEGRATED_FINAL_UNARBITRATED_DEPARTMENT_CONFLICT")
+    return {
+        "kind": "source_locked_same_director_final_creative_review_evidence",
+        "version": VERSION,
+        "qod16_review_digest": result["qod16_delivery_review_digest"],
+        "qod16_arbitration_digest": result["qod16_arbitration_digest"],
+        "actual_conflict_count": result["qod16_conflict_count"],
+        "whole_film_review_digest": result["holistic_critique_digest"],
+        "physical_action_review_digest": result["action_rescue_digest"],
+        "director_next_step": result["next_director_step"],
+        "ready_for_user_review_candidate_only": (
+            result["next_director_step"] ==
+            "continue_in_separate_real_media_and_independent_human_review"),
+        "arbitration_does_not_erase_original_conflicts": True,
+        "no_actual_film_or_author_signoff": True,
+        "no_model_payment_or_publication": True,
+    }
