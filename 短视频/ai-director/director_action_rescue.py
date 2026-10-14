@@ -264,8 +264,9 @@ def validate(base, state, meeting, av_plan, rescue_plan, *,
         _shape(continuity, CONTINUITY, "RESCUE_CONTINUITY_SHAPE")
         _need(continuity["cast_ids"] == official_cast and
               isinstance(continuity["prop_ids"], list) and
-              len(continuity["prop_ids"]) == len(set(continuity["prop_ids"])) and
-              set(continuity["prop_ids"]) <= known_props,
+              all(isinstance(p, str) and p in known_props
+                  for p in continuity["prop_ids"]) and
+              len(continuity["prop_ids"]) == len(set(continuity["prop_ids"])),
               "RESCUE_UNAPPROVED_CAST_OR_PROP")
         for k in CONTINUITY:
             if k not in ("cast_ids", "prop_ids"):
