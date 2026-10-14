@@ -80,6 +80,30 @@
       "official_listing": "https://feeder.co/knowledge-base/rss-content/finance-news-rss-feeds/",
       "priority": "company_reporting",
       "note": "Test distinct yield versus stock news"
+    },
+    {
+      "name": "CNBC Earnings",
+      "url": "https://www.cnbc.com/id/15839135/device/rss/rss.html",
+      "source_type": "financial_media",
+      "official_listing": "https://www.cnbc.com/rss-feeds/",
+      "priority": "company_earnings",
+      "note": "Official CNBC earning desk, 2026 Feeder source confirms active"
+    },
+    {
+      "name": "CNBC Finance",
+      "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html",
+      "source_type": "financial_media",
+      "official_listing": "https://www.cnbc.com/rss-feeds/",
+      "priority": "financial_institutions",
+      "note": "Finance and banking sector; only US-market relevant headlines allowed"
+    },
+    {
+      "name": "CNBC Top News",
+      "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html",
+      "source_type": "financial_media",
+      "official_listing": "https://www.cnbc.com/rss-feeds/",
+      "priority": "broad_top_news",
+      "note": "Top stories 30 most recent, not dedicated finance; only explicit market relevance allowed"
     }
   ]
 }
