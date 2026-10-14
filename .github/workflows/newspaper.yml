@@ -219,14 +219,6 @@ jobs:
           test -s /tmp/newspaper-ready/manifest.json || { echo '::error::Missing verified newspaper bundle'; exit 1; }
           python newspaper/prepared_delivery.py --bundle-dir /tmp/newspaper-ready --edition-date "${{ steps.date.outputs.edition }}"
 
-      - name: Cache completed edition for recovery attempts
-        id: save_prepared
-        if: steps.build.outcome == 'success'
-        uses: actions/cache/save@v4
-        with:
-          key: newspaper-ready-v22-${{ steps.date.outputs.edition }}
-          path: /tmp/newspaper-ready
-
       - name: Make accepted-mail receipt
         if: steps.send.outcome == 'success'
         run: |
@@ -240,6 +232,14 @@ jobs:
         with:
           key: newspaper-sent-${{ steps.date.outputs.edition }}
           path: /tmp/newspaper-sent-receipt
+
+      - name: Cache completed edition for recovery attempts
+        id: save_prepared
+        if: steps.build.outcome == 'success'
+        uses: actions/cache/save@v4
+        with:
+          key: newspaper-ready-v22-${{ steps.date.outputs.edition }}
+          path: /tmp/newspaper-ready
 
       - name: Publish explicit delivery status
         if: ${{ always() && steps.phase.outputs.phase != 'preview' }}
