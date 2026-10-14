@@ -21,10 +21,14 @@ class TriggerProofTests(unittest.TestCase):
         self.assertIn("schedule_probe_marker.txt",text)
         self.assertIn("timeout-minutes: 2",text)
         self.assertIn("contents: read",text)
+        self.assertIn("actions: read",text)
+        self.assertIn("NEWSPAPER_MAIN_WORKFLOW_STATE=",text)
+        self.assertIn("api.github.com/repos/",text)
+        self.assertNotIn("method=\"POST\"",text)
         self.assertNotIn("contents: write",text)
         forbidden=["send_email","send_bundle","prepared_delivery.py",
                    "SMTP_PASSWORD","NEWSPAPER_TO","secrets.","workflow_call",
-                   "api.github.com","smtp.qq.com","NEWSPAPER_LLM_API_KEY"]
+                   "smtp.qq.com","NEWSPAPER_LLM_API_KEY"]
         for word in forbidden:
             with self.subTest(word=word):
                 self.assertNotIn(word,text)
