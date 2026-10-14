@@ -949,7 +949,7 @@
       "evidence": {
         "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/57",
         "commit_sha": "7ceff5c66e4febdcd6bb92c0aedfc61c5997418b",
-        "automated_test": "2026-10-14 correction: PR #56 run 38519560054 and early PR #57 run 38520233683 had FFmpeg-dependent unittest skips because runner lacked FFmpeg; these are NOT valid real-media execution evidence. PR #57 run 38520394978 force-installed FFmpeg and exposed 3 OTIO metadata-comparison failures. Fix committed; final real-media run pending.",
+        "automated_test": "Prior PR #56 run 38519560054 had FFmpeg media test SKIPS (not valid actual media evidence), corrected in PR #57. Full FFmpeg-enabled GitHub Actions runs 38520561503 and 38520595560: 839/839 unit tests PASS; logs explicitly show real ffprobe, native OTIO re-import and decoded red/green/blue 90-frame picture order tests executed (not skipped).",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -996,6 +996,12 @@
           "date": "2026-10-14",
           "status": "in_progress",
           "note": "重要验收更正：早期声称832项测试含真实FFmpeg视频验证不准确，相关媒体测试因CI缺少FFmpeg被跳过。PR #57已强制安装FFmpeg且加入禁止默跳检查，第一次实际执行发现OTIO容器比较漏洞（三项失败），已修改为逐字段校验并等待复验。测试失败未合并；Kdenlive桌面导入、真实AI镜头/声画/艺术验收均未完成。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/57"
+        },
+        {
+          "date": "2026-10-14",
+          "status": "in_progress",
+          "note": "已修复CI原先无FFmpeg造成假绿，实际安装依赖并加依赖必测门禁。最新PR #57 GitHub Actions 38520595560 实际运行839项全通过，包括原生OTIO导入、真实视频帧解码与像素顺序、伪造剪口阻断。仅是公开合成/硬切影片测试，不构成Kdenlive GUI、AI真实镜头、配音口型、字幕或专业盲评通过。",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/57"
         }
       ]
