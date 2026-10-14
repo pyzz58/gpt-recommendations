@@ -24,6 +24,12 @@ jobs:
           python -m pip install "opentimelineio==0.18.1"
           python -m pip install -r "短视频/ai-director/requirements-schema.txt"
           python -m pip install -r "短视频/ai-director/requirements-media.txt"
+      - name: Install FFmpeg for actual decoded-frame media regression
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+          ffmpeg -version | head -n 1
+          ffprobe -version | head -n 1
       - name: Run AI Director unit tests with branch coverage
         working-directory: "短视频/ai-director"
         run: |
