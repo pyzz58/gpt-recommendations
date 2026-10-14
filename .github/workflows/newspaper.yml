@@ -146,22 +146,22 @@ jobs:
           path: /tmp/newspaper-ready
 
       - name: Install print fonts
-        if: steps.phase.outputs.phase == 'preview' || (steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
+        if: steps.phase.outputs.phase == 'preview' || ((steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk fonts-liberation
           fc-match 'Noto Serif CJK SC'
 
       - name: Install newsroom dependencies
-        if: steps.phase.outputs.phase == 'preview' || (steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
+        if: steps.phase.outputs.phase == 'preview' || ((steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
         run: python -m pip install -r newspaper/requirements.txt
 
       - name: Install English grammar model
-        if: steps.phase.outputs.phase == 'preview' || (steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
+        if: steps.phase.outputs.phase == 'preview' || ((steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
         run: python -m spacy download en_core_web_sm
 
       - name: Cache offline translation model
-        if: steps.phase.outputs.phase == 'preview' || (steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
+        if: steps.phase.outputs.phase == 'preview' || ((steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
         uses: actions/cache@v4
         with:
           path: ~/.local/share/argos-translate/packages
@@ -301,7 +301,7 @@ jobs:
           fi
 
       - name: Preserve P1 observed-feed selection audit
-        if: always() && (github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+        if: always() && (github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch')
         uses: actions/upload-artifact@v4
         with:
           name: newspaper-p1-selection-audit
