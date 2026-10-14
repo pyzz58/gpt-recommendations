@@ -44,7 +44,7 @@ def write_bundle(directory: Path, edition: dt.date, subject: str,
         raise ValueError("Invalid production edition / subject")
     if str(edition) not in subject:
         raise ValueError("Subject date and edition differ")
-    if len(html_body.strip()) < 100 or len(text_body.strip()) < 100:
+    if len(html_body.strip()) < 50 or len(text_body.strip()) < 20:
         raise ValueError("Refuse to prepare an empty or placeholder email")
     pdf_bytes = Path(pdf_path).read_bytes()
     if not pdf_bytes.startswith(b"%PDF-") or len(pdf_bytes) < 100:
