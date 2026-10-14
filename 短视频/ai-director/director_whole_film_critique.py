@@ -109,8 +109,10 @@ def _text(value, code, minimum=22, maximum=3000):
 
 
 def _ids(value, allowed, code):
-    _need(isinstance(value, list) and 1 <= len(value) <= len(allowed) and
-          len(set(value)) == len(value) and set(value) <= set(allowed), code)
+    _need(isinstance(value, list) and 1 <= len(value) <= len(allowed)
+          and all(isinstance(s, str) and s in allowed for s in value),
+          code)
+    _need(len(set(value)) == len(value), code)
 
 
 def _shot_context(base, state, meeting, av_plan, genre,
