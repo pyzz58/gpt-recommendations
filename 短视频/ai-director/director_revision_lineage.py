@@ -103,6 +103,10 @@ def request(base, state, *, request_id, origin_role, kind, shot_ids,
     _need(origin_role in ORIGINS and kind in KINDS,
           "LINEAGE_ROLE_OR_CHANGE_KIND_UNKNOWN")
     snapshot = _source(base, state)
+    if kind in SCRIPT_KINDS:
+        _need(isinstance(snapshot["source_digest"], str) and
+              HEX.fullmatch(snapshot["source_digest"]),
+              "LINEAGE_SCRIPT_REVISION_REQUIRES_SOURCE_BOUND_LEDGER")
     _need(isinstance(shot_ids, list) and
           len(shot_ids) == len(set(shot_ids)) and
           set(shot_ids) <= set(snapshot["shot_ids"]),
@@ -115,6 +119,19 @@ def request(base, state, *, request_id, origin_role, kind, shot_ids,
           and all(isinstance(x, str) and x.strip() and len(x) <= 100
                   for x in scene_or_source_beat_ids),
           "LINEAGE_SOURCE_BEAT_REFS_INVALID")
+    declared_refs = {
+        ident for shot in base["shots"]
+        for ident in [
+            (shot.get("source_adaptation") or {}).get("beat_id")
+            if isinstance(shot.get("source_adaptation"), dict) else None,
+            shot.get("scene_id")]
+        if isinstance(ident, str) and ident
+    }
+    declared_refs.update(s["id"] for s in base.get("scenes", [])
+                         if isinstance(s, dict) and
+                         isinstance(s.get("id"), str))
+    _need(set(scene_or_source_beat_ids) <= declared_refs,
+          "LINEAGE_SOURCE_BEAT_REF_NOT_IN_AUTHORITATIVE_BASE")
     for value in (
             observed_defect_or_creative_opportunity, viewer_or_story_consequence,
             proposed_change_in_own_words, what_must_remain_unchanged,
@@ -359,6 +376,10 @@ def screenplay_rebase_preview(old_base, old_state, proposal, *,
           "LINEAGE_HANDOFF_FORGED_OR_AUTHORITY_INFLATED")
     _need(new_crew["source_digest"] != old_state["source_digest"],
           "LINEAGE_NO_NEW_SCREENPLAY_TO_REBASE")
+    _need(all(t["status"] == "pending" and t["revision"] == 0
+              and t["deliverable"] is None
+              for t in new_crew["tasks"].values()),
+          "LINEAGE_NEW_TEAM_MUST_BE_PRISTINE")
     for key in ("accepted_screenplay_proposal_digest",
                 "editorial_decision_digest",
                 "cast_bindings_digest"):
@@ -388,3 +409,26 @@ def screenplay_rebase_preview(old_base, old_state, proposal, *,
         "ready_to_autoreuse_or_publish": False,
         "model_calls_or_payments": 0,
     }
+
+def prepare_reviewed_writer_rebase(old_base, old_state, proposal, *,
+                                 new_original_plan, new_episode_source,
+                                 new_screenplay_packet, review_decision,
+                                 cast_bindings):
+    """Invoke existing reviewed screenplay intake in memory, then compare.
+
+    A review form is STRUCTURALLY verified by the original screenwriter module.
+    This does NOT authenticate a person or grant automatic production consent.
+    """
+    rec = validate_request(old_base, old_state, proposal)
+    _need(rec["script_review_required"],
+          "LINEAGE_WRITER_PACKET_REQUIRED")
+    import screenplay_director_handoff as handoff
+    try:
+        new_handoff = handoff.prepare_handoff(
+            new_original_plan, new_episode_source, new_screenplay_packet,
+            review_decision, cast_bindings)
+    except (ValueError, KeyError, TypeError):
+        raise RevisionLineageError(
+            "LINEAGE_NEW_SCREENPLAY_REVIEW_PACKET_REJECTED") from None
+    return screenplay_rebase_preview(
+        old_base, old_state, proposal, reviewed_handoff=new_handoff)
