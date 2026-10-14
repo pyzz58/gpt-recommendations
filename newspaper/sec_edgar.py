@@ -59,14 +59,20 @@ def parse_submissions(payload,ticker,name,cik,start,end):
             continue
         stamp=str(recent["acceptanceDateTime"][i])
         try:
-            # SEC acceptanceDateTime is an Eastern local timestamp, not UTC.
-            accepted=dt.datetime.fromisoformat(stamp)
-            if accepted.tzinfo is None:
-                from zoneinfo import ZoneInfo
-                accepted=accepted.replace(tzinfo=ZoneInfo("America/New_York"))
+            # SEC submission JSON has been observed to contain mixed UTC/ET
+            # clocks, even with a trailing Z. Require BOTH interpretations
+            # to fall within the edition window, rather than silently assign
+            # a filing to the wrong day around Beijing midnight.
+            from zoneinfo import ZoneInfo
+            raw_stamp=dt.datetime.fromisoformat(stamp.replace("Z","+00:00"))
+            utc_candidate=raw_stamp.astimezone(dt.timezone.utc)
+            local_clock=raw_stamp.replace(tzinfo=None)
+            et_candidate=local_clock.replace(tzinfo=ZoneInfo("America/New_York"))
+            if not (start <= utc_candidate.astimezone(start.tzinfo) < end
+                    and start <= et_candidate.astimezone(start.tzinfo) < end):
+                continue
+            accepted=utc_candidate
         except (ValueError,TypeError):
-            continue
-        if not start <= accepted.astimezone(start.tzinfo) < end:
             continue
         accession=str(recent["accessionNumber"][i])
         link=official_link(cik,accession)
