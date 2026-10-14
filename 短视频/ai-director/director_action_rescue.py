@@ -322,8 +322,9 @@ def validate(base, state, meeting, av_plan, rescue_plan, *,
                         _text(step[k], "RESCUE_NO_EXECUTABLE_CRAFT_INSTRUCTION")
                 ids = step["covered_action_unit_ids"]
                 _need(isinstance(ids, list) and
-                      len(ids) == len(set(ids)) and
-                      set(ids) <= all_units,
+                      all(isinstance(uid, str) and uid in all_units
+                          for uid in ids) and
+                      len(ids) == len(set(ids)),
                       "RESCUE_NONEXISTENT_ACTOR_ACTION_UNIT")
                 covered.update(ids)
             _need(abs(cursor - duration) <= 0.011,
