@@ -1,3 +1,14 @@
+## QO-D16｜同一总导演对真实专业冲突的艺术仲裁与终审阻断（2026-10-14，暂不测试）
+
+新增 `director_conflict_arbitration.py`，专门补上原 `director_delivery_review.py`（QO-D16）只会记录两专业冲突和一条 `director_resolution`、却无法真实比较摄影/表演/声音/剪辑方案及其艺术代价的问题。仲裁不是新导演Agent：必须先有**两个实际交稿的专业部门**和 QO-D16 当前版本的真正冲突记录，同时用 QO-D10 制作后全片艺术自评保护好的独特镜头，逐冲突公平解释双方专业依据、观众失去的叙事因果、两种不同视听路线上观众收益与艺术成本，并指定专业岗位修改、原导演锁稿修订、编剧故事返修或媒体待验之一。其引文必须存在于真正岗位交付的**文字值**中，不能仅凭 JSON 字段名冒充证据。
+
+仲裁只形成同版来源锁定、未发送的QO-D12修订提案。**仲裁写完不等于专业冲突消失**：专业岗位必须基于新版本返工、原QO-D16再次核对后方能取消冲突；涉及人物抉择/事实/原对白须交编剧及作者审查，导演不能以「技术降级」偷改原作。
+
+已接到实际的原10专业 `agent_role_contracts.build_role_messages`、`validate_role_output`、`submit_role_output` 的**严格模式 director_final**终审入口：必须有QO-D10 post审片、QO-D06 post实际动作风险复查、QO-D16实际岗位交付审查；确认有两部门冲突时还必须有完整艺术仲裁。缺任何必要审查不得进入最终导演正式请求；即使已有仲裁，只要实际冲突、待返工或未提交岗位还在，就不能接受终审的 `ready_for_user_review`。历史旧项目不启用该严格mode时原合约兼容。
+
+详尽职责、每项必备观众证据、两备选方案、归属权限与否定案例，见 `skills/19-director-cross-department-artistic-arbitration.md`；三模块统一制作约束见 `skills/18-director-integrated-creative-production-gates.md`。**本轮没有主动运行任何测试、真实AI视频、付费API或真人独立导演审查，未合并main。QO-D16仍只标 `in_progress`。**
+
+---
 ## 总导演一体化创作闭环（QO-D10 / QO-D06 / QO-D12，2026-10-14；暂不测试）
 
 同一位总导演使用**三种不可互相替代的能力**：QO-D10 `director_whole_film_critique.py` 判断整部作品的主题、人物、情绪与视听表达是否值得执行，保护有因果理由的非套路创意；QO-D06 `director_action_rescue.py` 将真正需要观众看见的复杂表演与道具状态转换为两种时间完整且有艺术代价说明的专业制作路线；QO-D12 `director_revision_lineage.py` 保障作者、编剧、导演与演员/摄影/声音/剪辑/AI技术岗的修改权限、回滚影响与不同剧本版本隔离。**任何部门不得借技术降级悄悄删除人物抉择、原文台词、事实或因果。**
