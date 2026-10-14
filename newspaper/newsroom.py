@@ -281,11 +281,19 @@ def near_duplicate_titles(a, b):
         }
         return {aliases.get(w, w) for w in re.findall(r"[a-z]{2,}", normalized)
                 if (w not in _COMMON_TITLE_WORDS and len(w) > 2) or w == "ai"}
+    # Distinct explicitly stated magnitudes distinguish material decisions.
+    quantities_a = set(re.findall(r"\\b\\d+(?:\\.\\d+)?\\s*(?:basis points?|bps|percentage points?|%)", a.lower()))
+    quantities_b = set(re.findall(r"\\b\\d+(?:\\.\\d+)?\\s*(?:basis points?|bps|percentage points?|%)", b.lower()))
+    if quantities_a and quantities_b and quantities_a.isdisjoint(quantities_b):
+        return False
     first, second = words(a), words(b)
     if min(len(first), len(second)) < 4:
         return _high_confidence_same_event(a, b)
     shared = len(first & second)
-    exact_word_overlap = (
+    generic_shared = {"china","government","announces","announce","export",
+                      "federal","reserve","the","policy","new","rules","us"}
+    event_specific = (first & second) - generic_shared
+    exact_word_overlap = bool(event_specific) and (
         shared >= 4 and shared / min(len(first), len(second)) >= 0.60
         or shared >= 5 and shared / min(len(first), len(second)) >= 0.50
     )
