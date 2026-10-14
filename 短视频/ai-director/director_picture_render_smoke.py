@@ -85,12 +85,22 @@ def render_synthetic_picture_smoke(order, manifest, *, otio_json,
         import opentimelineio as otio
         timeline = otio.adapters.read_from_string(
             otio_json, adapter_name="otio_json")
+        metadata = timeline.metadata["ai_director"]
+        loaded_edits = metadata["montage_cut_jobs"]
         _need(len(timeline.tracks) == 1 and
               len(timeline.tracks[0]) == len(segments) and
               timeline.duration().rescaled_to(fps).value == total and
-              timeline.metadata["ai_director"]["render_or_publish_authorized"] is False and
-              timeline.metadata["ai_director"]["montage_cut_jobs"] == edits,
+              metadata["render_or_publish_authorized"] is False and
+              len(loaded_edits) == len(edits),
               "SMOKE_OTIO_TIMELINE_OR_AUTHORITY_DRIFT")
+        # OTIO deserializes metadata collections into AnyVector/AnyDictionary.
+        # Compare source-bound cut values, never container-class equality.
+        essential = ("sequence_id", "out_shot_id", "in_shot_id",
+                     "boundary_frame", "edit_type_exact",
+                     "transition_duration_frames", "required_gate")
+        for actual, expected in zip(loaded_edits, edits):
+            _need(all(actual[k] == expected[k] for k in essential),
+                  "SMOKE_OTIO_CUT_PROVENANCE_DRIFT")
         for segment, item in zip(segments, timeline.tracks[0]):
             ref = inspection["assets"][segment["editor_segment_id"]]
             src = item.source_range
