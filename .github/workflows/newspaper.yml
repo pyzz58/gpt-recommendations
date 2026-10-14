@@ -67,7 +67,7 @@ jobs:
         env:
           PYTHONPATH: newspaper
         run: |
-          python -m unittest -v test_prepared_delivery test_mail_secret_boundary test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality test_editorial_topic_relevance test_headline_quality test_p1_benchmark test_market_coverage_funnel test_sec_edgar
+          python -m unittest -v test_prepared_delivery test_mail_secret_boundary test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality test_editorial_topic_relevance test_headline_quality test_p1_benchmark test_market_coverage_funnel test_sec_edgar test_market_readability_probe
       - name: Measure P1 labeled fixture baseline (no network / no model)
         run: python newspaper/editorial_benchmark.py
       - name: Preserve P1 frozen-case benchmark
@@ -160,6 +160,19 @@ jobs:
       - name: Verify candidate market RSS feeds on actual GitHub runner (PR only)
         if: github.event_name == 'pull_request'
         run: python newspaper/probe_market_sources.py
+
+      - name: Probe actual market article readability (PR only)
+        if: github.event_name == 'pull_request'
+        run: python newspaper/market_readability_probe.py
+
+      - name: Archive market readability evidence (PR only)
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: newspaper-p1-market-readability
+          path: /tmp/newspaper-market-readability.json
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: Archive market-source verification evidence (PR only)
         if: always() && github.event_name == 'pull_request'

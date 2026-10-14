@@ -98,3 +98,11 @@ python -m unittest discover -s newspaper -p 'test_p1_benchmark.py' -v
 **显式开关**：SEC 对自动访问要求可追溯身份。只有生产环境已设置 `NEWSPAPER_SEC_CONTACT`（有效联系人邮箱，由仓库所有者授权提供）才会开启实际数据拉取；未配置则日志打印 `disabled_missing_contact_email`，新闻日报现有 RSS 不受影响。PR 不读取该 secret，模拟测试不发送电子邮件或调用付费 LLM。**没有看到真实 Runner 验证之前，不能声称 EDGAR 数据源已成功上线供稿**。
 
 验收清单：1. 单元测试涵盖申报形式、时区边界、来源与 URL 校验、请求失败；2. 真实 runner 显示 EDGAR 读取状态；3. 若 SEC 站点可读，记录真实新增申报数与阅读正文成功率；4. 同日期单样本旧/新并行对照，美股头版出现内容真实且不重复的新增新闻才判改善；5. 所有定时规则继续以 `production_policy.json` 为准。
+
+## 8. 财经候选源正文可读性验证（新增，只读）
+
+已有 2026-10-14 GitHub Runner 的财经候选 RSS 探测报告：FT US、FT Markets、CNBC Earnings、CNBC Finance、CNBC Top News 在滚动 24 小时中都出现过至少一条满足美股标题筛选条件的新闻；其他来源可达不等于足够相关。
+
+`market_readability_probe.py` 只选上述五个候选源、每源最多两篇符合美股筛选的稿件，使用正式 `reader.fetch_reading` 检验真实来源的公开网页是否可以合规取得至少 450 字有效正文。禁止登录、规避付费墙或转载受版权保护的全文。只记录 RSS 日期、来源、标题、URL、正文可读/不可读、长度、提取器名称，不保存文章正文。PR Runner 用相同环境验证，并将 JSON Artifact 保留 14 天。
+
+该报告只是**单日正文可读性**，不能证明长期可用、事实可靠、许可全文复制或投资重要性。直到运行结果证明稳定、来源权威、正文可读且有合适的引用方式，候选财经源不自动启用生产。
