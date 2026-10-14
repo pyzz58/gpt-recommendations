@@ -282,8 +282,8 @@ def near_duplicate_titles(a, b):
         return {aliases.get(w, w) for w in re.findall(r"[a-z]{2,}", normalized)
                 if (w not in _COMMON_TITLE_WORDS and len(w) > 2) or w == "ai"}
     # Distinct explicitly stated magnitudes distinguish material decisions.
-    quantities_a = set(re.findall(r"\\b\\d+(?:\\.\\d+)?\\s*(?:basis points?|bps|percentage points?|%)", a.lower()))
-    quantities_b = set(re.findall(r"\\b\\d+(?:\\.\\d+)?\\s*(?:basis points?|bps|percentage points?|%)", b.lower()))
+    quantities_a = set(re.findall(r"\b\d+(?:\.\d+)?\s*(?:basis points?|bps|percentage points?|%)", a.lower()))
+    quantities_b = set(re.findall(r"\b\d+(?:\.\d+)?\s*(?:basis points?|bps|percentage points?|%)", b.lower()))
     if quantities_a and quantities_b and quantities_a.isdisjoint(quantities_b):
         return False
     first, second = words(a), words(b)
@@ -344,7 +344,8 @@ def _high_confidence_same_event(first_title, second_title):
               "supreme","russia","ukraine","microsoft","nvidia"}
     actions = {"approve","cut","announce","propose","declare","decide","outline"}
     generic = actors | actions | {"bank","act","policy","regulation",
-                                  "trade","law","product","new","system"}
+                                  "trade","law","product","new","system",
+                                  "export","tariff","control","rate"}
     def terms(title):
         value = title.lower()
         for pattern,replacement in replacements:
