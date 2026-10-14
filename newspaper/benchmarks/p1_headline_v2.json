@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "description": "50 frozen editorial fixture headlines: 5 independently verified historical reference headlines and 45 synthetic cases. Corrected synthetic duplicate labels; NOT chronological historical news replay.",
+  "description": "50 frozen editorial fixture headlines: 5 independently sourced historical reference headlines and 45 synthetic editorial stress inputs. Episodes are synthetic mixtures, NOT chronological historical news replays. This is the corrected-label v2 fixture.",
   "scope": "classification and selection pipeline smoke benchmark; NOT historical real-world recall",
   "provenance_checked": "2026-10-14",
   "cases": [
