@@ -33,7 +33,10 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: newspaper-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'daily-live' }}
+  # Keep each scheduled event independent: a long-running prepare must not
+  # replace a pending send attempt in GitHub's one-pending-run concurrency slot.
+  # Distinct cron slots may overlap; edition receipt checks guard resends.
+  group: newspaper-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || (github.event_name == 'schedule' && format('cron-{0}', github.event.schedule)) || format('manual-{0}', github.run_id) }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   quick_check:
