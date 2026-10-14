@@ -15,7 +15,7 @@ US_MARKET = re.compile(
     r"government bonds?|inflation|cpi|gdp|jobs|payrolls|unemployment|"
     r"interest rates?|economic data|earnings)|american (?:stocks?|"
     r"equities|markets?|treasur(?:y|ies)))\b", re.I)
-FED = re.compile(r"\b(?:federal reserve|fomc|fed (?:chair|governor|official|rates?|policy))\b", re.I)
+FED = re.compile(r"\b(?:federal reserve|fomc|fed)\b", re.I)
 SEC = re.compile(r"\b(?:sec|securities and exchange commission)\b", re.I)
 POLICY_ACTION = re.compile(
     r"\b(?:policy|rates?|inflation|fomc|monetary|balance sheet|"
@@ -73,6 +73,9 @@ def market_evidence(item: dict) -> dict:
         return {"eligible": False, "reason": "no_us_market_headline_anchor"}
 
     if US_MARKET.search(title):
+        # A venue name in an unrelated press item is insufficient.
+        if re.search(r"\b(?:nasdaq|nyse)\b",title,re.I) and not (STOCK_IMPACT.search(title) or POLICY_ACTION.search(title)):
+            return {"eligible": False, "reason": "exchange_name_without_market_development"}
         return {"eligible": True, "reason": "explicit_us_market_headline"}
 
     if FED.search(title) and POLICY_ACTION.search(title + " " + summary):
@@ -80,9 +83,12 @@ def market_evidence(item: dict) -> dict:
 
     if (source_type in {"primary_regulator","primary_central_bank","primary_treasury",
                         "primary_economic_data"}
-            and (_official_domain(host,"sec.gov")
-                 or _official_domain(host,"federalreserve.gov"))
-            and (POLICY_ACTION.search(title) or SEC.search(title))):
+            and ((_official_domain(host,"sec.gov") and re.search(
+                r"\b(?:securities|trading|investment|disclosure|enforcement|"
+                r"charges?|fraud|regulation|rule|rules|funds?|market|ipo|"
+                r"settlement|listing)\b",title,re.I))
+                 or (_official_domain(host,"federalreserve.gov")
+                     and POLICY_ACTION.search(title)))):
         return {"eligible": True, "reason": "verified_us_primary_market_institution"}
 
     # CNBC's dedicated *market* desks may cover issuers beyond a fixed
