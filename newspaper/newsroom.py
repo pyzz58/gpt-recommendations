@@ -198,8 +198,22 @@ def score(item, independent_publishers):
         }
     systemic = matches(r"\b(?:central bank|federal reserve|interest rate|war|invasion|pandemic|financial crisis|trade agreement|national election|export ban|power grid)\b", s)
     scale = 25 if systemic else 16 if matches(FINANCE + "|" + ENERGY, s) else 8
+    market_reason = market_evidence(item)["reason"]
+    market_financial_event = (
+        market_reason == "us_issuer_material_financial_development"
+        and matches(r"\b(?:quarterly|earnings|revenue|profit|guidance|"
+                    r"acquisition|merger|takeover|buyback|dividend)\b",
+                    item.get("title", ""))
+    )
+    # US-listed issuers' significant financial events have material
+    # economic scale even when title lacks a general macro keyword.
+    # Consumer product teasers and analyst shopping tips get no uplift.
+    if market_financial_event:
+        scale = max(scale, 24)
     structural = matches(r"\b(?:law|legislation|treaty|regulation|sanction|tariff|approval|breakthrough|acquisition|merger|bankruptcy|infrastructure|ban|quota|restrict|limit)\w*", s)
     duration = 20 if structural else 10 if matches(SCIENCE + "|" + BUSINESS, s) else 5
+    if market_financial_event:
+        duration = max(duration, 10)
     new = 15 if matches(ACTION, s) else 5
     # Publisher breadth is only a capped proxy; geographic independence unknown.
     breadth = min(10, max(0, independent_publishers - 1) * 3)
@@ -209,7 +223,8 @@ def score(item, independent_publishers):
                 "publisher_breadth_proxy": breadth,
                 "editorial_materiality_reason": editorial["reason"],
                 "editorial_noise_penalty": -editorial["penalty"],
-                "editorial_eligible": editorial["eligible"]}
+                "editorial_eligible": editorial["eligible"],
+                "us_issuer_financial_materiality_uplift": market_financial_event}
     return max(0, sum((scope, scale, duration, new, breadth)) - editorial["penalty"]), evidence
 
 def prepare_pool(items, per_section=20):
