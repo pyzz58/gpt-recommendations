@@ -4,17 +4,18 @@ on:
     paths:
       - 'newspaper/**'
       - '.github/workflows/newspaper.yml'
-  # GitHub schedule may be delayed or dropped. Off-hour starts and several
-  # attempts reduce risk but do not provide a guaranteed real-time SLA.
-  # UTC 22:05/22:20 = Beijing 06:05/06:20 (prepare after 06:00 cutoff).
-  # UTC 23:01/23:17/23:31/23:47 = Beijing 07:01/07:17/07:31/07:47 (send).
+  # Authoritative timetable: newspaper/production_policy.json (Asia/Shanghai).
+  # UTC day before: 16:05/16:20 = Beijing 00:05/00:20 (preparation).
+  # UTC day before: 17:03/17:16/17:29/17:42/17:55 = Beijing 01:xx (send).
+  # Scheduled workflow events can be delayed/missed; watchdog is independent.
   schedule:
-    - cron: '5 22 * * *'
-    - cron: '20 22 * * *'
-    - cron: '1 23 * * *'
-    - cron: '17 23 * * *'
-    - cron: '31 23 * * *'
-    - cron: '47 23 * * *'
+    - cron: '5 16 * * *'
+    - cron: '20 16 * * *'
+    - cron: '3 17 * * *'
+    - cron: '16 17 * * *'
+    - cron: '29 17 * * *'
+    - cron: '42 17 * * *'
+    - cron: '55 17 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -59,6 +60,9 @@ jobs:
                      and not feed.get('disabled',False)
                      for group in cfg['feeds'].values() for feed in group)
           PY
+      - name: Check authoritative timetable against workflow cron
+        run: python newspaper/verify_schedule.py
+
       - name: Focused regression suite
         env:
           PYTHONPATH: newspaper
@@ -86,7 +90,7 @@ jobs:
         id: date
         run: echo "edition=$(TZ=Asia/Shanghai date +%F)" >> "$GITHUB_OUTPUT"
 
-      - name: Select production phase
+      - name: Select production phase from canonical policy
         id: phase
         env:
           EVENT: ${{ github.event_name }}
@@ -94,21 +98,7 @@ jobs:
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
           set -euo pipefail
-          phase=preview
-          if [[ "$EVENT" == "schedule" || ("$EVENT" == "workflow_dispatch" && "$DRY_RUN" == "false") ]]; then
-            case "$CRON" in
-              '5 22 * * *'|'20 22 * * *') phase=prepare ;;
-              *) phase=send ;;
-            esac
-            # A preparation cron that was delayed past 07:00 must attempt
-            # delivery instead of consuming the only available send window.
-            if [[ "$phase" == "prepare" ]]; then
-              hhmm=$(TZ=Asia/Shanghai date +%H%M)
-              if [[ "$hhmm" > "0659" ]]; then phase=send; fi
-            fi
-          fi
-          echo "phase=$phase" >> "$GITHUB_OUTPUT"
-          echo "Newspaper V2 phase=$phase edition=${{ steps.date.outputs.edition }}"
+          python newspaper/schedule_contract.py --event "$EVENT" --cron "$CRON" --dry-run "$DRY_RUN"
 
       - name: Check sent receipt (never means inbox delivery)
         id: receipt
@@ -124,7 +114,7 @@ jobs:
         if: steps.phase.outputs.phase != 'preview' && steps.receipt.outputs.cache-hit != 'true'
         uses: actions/cache/restore@v4
         with:
-          key: newspaper-ready-v2-${{ steps.date.outputs.edition }}
+          key: newspaper-ready-v21-${{ steps.date.outputs.edition }}
           path: /tmp/newspaper-ready
 
       - name: Install print fonts
@@ -187,7 +177,7 @@ jobs:
         if: steps.build.outcome == 'success'
         uses: actions/cache/save@v4
         with:
-          key: newspaper-ready-v2-${{ steps.date.outputs.edition }}
+          key: newspaper-ready-v21-${{ steps.date.outputs.edition }}
           path: /tmp/newspaper-ready
 
       - name: Send prebuilt edition via SMTP (default branch only)
