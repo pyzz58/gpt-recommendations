@@ -27,6 +27,7 @@ DECISIONS = frozenset({
 SPECIALISTS = frozenset({
     "acting", "camera_art", "sound", "editing_animation", "ai_technical",
 })
+PARTICIPANTS = SPECIALISTS | {"quality_review"}
 OWNERS = SPECIALISTS | {"director_lock", "screenwriter", "none"}
 FIELDS = (
     "conflict_index", "conflict_digest", "shot_id",
@@ -251,7 +252,7 @@ def validate(base, state, meeting, language, holistic_post, delivery_review,
               "ARBITRATION_WRONG_AUTHORITY_OR_CHOICE")
         deps = row["participating_departments"]
         _need(isinstance(deps, list) and
-              all(isinstance(x, str) and x in SPECIALISTS for x in deps)
+              all(isinstance(x, str) and x in PARTICIPANTS for x in deps)
               and len(set(deps)) == len(deps)
               and set((source["left_department"], source["right_department"])) <= set(deps),
               "ARBITRATION_NOT_COORDINATING_BOTH_SPECIALISTS")
