@@ -1,3 +1,16 @@
+## QO-D10：同一总导演的整片艺术审查与自我修订（2026-10-14；暂不测试）
+
+**只有一个总导演**。此前 QO-D17 的名导可迁移创作方法与周星驰人物因果荒诞喜剧、QO-D03 具体视听表达、QO-D15 跨专业指令已能提供“如何设计”。新增 `director_whole_film_critique.py` 强制导演批判自己“是否值得这样设计、有什么可替代的表达及其代价”，并保护成立的、有独特意义的镜头，杜绝机械化为了分数删去有意的沉默、凝视及作者声音。不得把长提示词或字段完整叫一流导演。
+
+该模块分 `preproduction_plan` 与 `post_department_design` 两阶段，由 `director_department_command.validate_command`、`director_visual_language.validate`、可选的 `director_artistic_methods.validate` 及现有 `agent_team` 剧本/导演锁/逐部门交付摘要计算源锁快照；原对象一变，旧审查作废。逐项电影意见必须引用真实的逐镜方案/导演会议/已完成岗位设计中的原句，未提交部门不能伪造证据或宣称已看片。
+
+采用8个共通叙事和视听维度+2个按 fiction/documentary/essay/hybrid 体裁专设的判断领域；逐项写镜头证据、观众可能感知、反事实方案和艺术损失、不确定性。至少保护一个具体独特方案；问题必须提供**两种不同的可行处理和代价**，声明责任岗位，分流为 `director_revise`、`return_to_screenwriter`、`department_refine`、`defer_until_media_review`。所有编剧故事、角色重大选择、事实与对白改动只能返编剧/原作者复核。
+
+`route_critique_proposals` 只能输出未派发的专业返工建议；`request_existing_department_review_with_critique` 将合法 post-phase 全片艺术判断带回原 QO-D16 逐镜岗位交付审查，保留旧流程兼容，**没有第二套Agent或自动修改**。所有真实性/媒体/盲评/付费/作者批准标志始终 false。规则见 `skills/15-director-whole-film-artistic-critique.md`。
+
+**本轮用户明确“先不测试”**：只实现模块和规范，未主动运行任何单元、CI、媒体或真人艺术质量验证。即使代码和文档完成，QO-D10也仅为 `in_progress`，不得标世界级艺术验收已完成。下一优先 QO-D06 复杂动作可拍性及 QO-D12 编导演稿件权威版本治理。
+
+---
 ## QO-D19 / QO-D09｜第五阶段：公开合成声轨、字幕的实际解码级时间验证（2026-10-14）
 
 总导演掌握剧本与声画思想的**源锁定指令**，不能把视频静音、没有真实台词、字幕错时的成品冒充通过验收。第四阶段 QO-D09 已使用原生OTIO读回和FFmpeg真实视频帧验收；第五阶段新增 `director_av_sync_smoke.py`、`tests/test_director_av_sync_smoke.py`，测试环境仅允许**公开合成视频+精确帧时间码的测试音调与字幕**：48kHz 16-bit 单声道 PCM 在每个已指定声音帧内必须有非零声能、所有间隔必须真正静音；FFmpeg/libass生成画面叠字并与声轨合成Matroska，解码后逐sample对比音轨、逐帧比较字幕显隐，任何偏离必须失败。
