@@ -170,7 +170,7 @@ class AVSyncSyntheticSmokeTests(unittest.TestCase):
         bad["subtitle_events"][1]["start_frame"]=25
         self.av_order=bad
         with self.assertRaisesRegex(
-                media.MediaConformError, "SUBTITLE_FRAME_OVERLAP"):
+                av.AVSmokeError, "SUBTITLE_INTERVAL_INVALID"):
             self.mux()
 
     def test_refuse_publish_or_complex_effect_or_stale_picture_receipt(self):
