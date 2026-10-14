@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 import hashlib
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -47,6 +48,13 @@ def public_order():
         "operator_blockers": ["SOURCE_MEDIA_ASSETS_NOT_PROVIDED"],
         "director_coverage_digest": "public-synthetic-only",
     }
+
+
+class RequiredCIMediaDependenciesTests(unittest.TestCase):
+    def test_real_media_suite_must_not_be_silently_skipped_on_ci(self):
+        if os.environ.get("CI") == "true":
+            self.assertIsNotNone(shutil.which("ffmpeg"))
+            self.assertIsNotNone(shutil.which("ffprobe"))
 
 
 @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"),
