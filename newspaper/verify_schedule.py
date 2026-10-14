@@ -22,6 +22,8 @@ def verify():
         local=(dt.datetime(2026,10,13,int(hour),int(minute),tzinfo=dt.timezone.utc)).astimezone(BEIJING)
         if local.hour not in (0, 1, 2, 3, 4):
             raise AssertionError(f"Unexpected Beijing recovery hour: {local:%H:%M}: {cron}")
+    if POLICY["prepare_crons_utc"]:
+        raise AssertionError("Obsolete prepare-only cron must not be configured")
     if actual[0] != "1 16 * * *":
         raise AssertionError("First startup must be Beijing 00:01")
     return True
