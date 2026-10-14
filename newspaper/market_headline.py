@@ -88,6 +88,13 @@ def market_evidence(item: dict) -> dict:
     if FOREIGN_EQUITIES_LEAD.search(title) and not US_EQUITIES_LEAD.search(title):
         return {"eligible": False, "reason": "non_us_market_primary_subject"}
 
+    if (source_type == "primary_company_filing"
+            and _official_domain(host,"sec.gov")
+            and re.search(r"\b(?:files (?:quarterly|annual) report|"
+                          r"files results-related form 8-k)\b",title,re.I)
+            and re.search(r"\b(?:10-q|10-k|8-k|quarterly|annual)\b",
+                          title+" "+summary,re.I)):
+        return {"eligible":True,"reason":"official_us_issuer_financial_filing_notice"}
     if language == "zh":
         # Exclude generic Chinese/HK equities unless clear US market involvement.
         if re.search(r"美股|纳指|纳斯达克|标普\s*500|道指|道琼斯|华尔街|"

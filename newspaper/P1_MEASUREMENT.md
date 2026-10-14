@@ -87,3 +87,14 @@ python -m unittest discover -s newspaper -p 'test_p1_benchmark.py' -v
 **安全原则**：4 篇是正常目标，不是凑数指标。当天权威消息不足，应如实刊登 1–3 篇并报告缺口。新闻源可达性、选文重要性、源文章可完整提取是三个不同维度，不得相互替代。
 
 **新增报告**：\`/tmp/newspaper-market-funnel.json\`；在 PR 或日报 workflow 中留存为 \`newspaper-p1-selection-audit\` 附件，日志含 \`NEWSROOM_MARKET_FUNNEL\`。CI 完成后，需对比上一轮 1/4 的真实样刊，确认改善出自**有实质内容的新入选稿**，而非降低门槛；日后仍需人工新闻编辑审核。
+
+
+## 7. 美国 SEC EDGAR 公司财报申报发现（2026-10-14）
+
+此批引入 `sec_edgar.py`：基于 SEC 官方免费 [EDGAR submissions API](https://www.sec.gov/search-filings/edgar-application-programming-interfaces)，有界读取 8 家大型美国上市公司最近提交的 `10-Q`、`10-K` 以及 **仅注明 Item 2.02** 的 `8-K`。此为“已提交备案的官方通知”，不得改写成“财报超预期/业绩增长”之类未经文件核验的事实；企业筛选名单不等于全市场覆盖。
+
+**重要限制**：EDGAR JSON 的 `acceptanceDateTime` 存在时区表示不一致的公开证据；本版要求“UTC 与美国东部时间两种解释均在北京时间当天收稿窗口内”，遇到跨截稿时间不一致时跳过，不自行推断；因此可能牺牲一部分召回率。SEC 申报链接还可能被 GitHub 云端阻挡，报表提取失败不能发布假新闻。
+
+**显式开关**：SEC 对自动访问要求可追溯身份。只有生产环境已设置 `NEWSPAPER_SEC_CONTACT`（有效联系人邮箱，由仓库所有者授权提供）才会开启实际数据拉取；未配置则日志打印 `disabled_missing_contact_email`，新闻日报现有 RSS 不受影响。PR 不读取该 secret，模拟测试不发送电子邮件或调用付费 LLM。**没有看到真实 Runner 验证之前，不能声称 EDGAR 数据源已成功上线供稿**。
+
+验收清单：1. 单元测试涵盖申报形式、时区边界、来源与 URL 校验、请求失败；2. 真实 runner 显示 EDGAR 读取状态；3. 若 SEC 站点可读，记录真实新增申报数与阅读正文成功率；4. 同日期单样本旧/新并行对照，美股头版出现内容真实且不重复的新增新闻才判改善；5. 所有定时规则继续以 `production_policy.json` 为准。

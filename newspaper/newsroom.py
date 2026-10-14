@@ -199,6 +199,7 @@ def score(item, independent_publishers):
     systemic = matches(r"\b(?:central bank|federal reserve|interest rate|war|invasion|pandemic|financial crisis|trade agreement|national election|export ban|power grid)\b", s)
     scale = 25 if systemic else 16 if matches(FINANCE + "|" + ENERGY, s) else 8
     market_reason = market_evidence(item)["reason"]
+    official_filing_notice = market_reason == "official_us_issuer_financial_filing_notice"
     market_financial_event = (
         market_reason == "us_issuer_material_financial_development"
         and matches(r"\b(?:quarterly|earnings|revenue|profit|guidance|"
@@ -210,11 +211,20 @@ def score(item, independent_publishers):
     # Consumer product teasers and analyst shopping tips get no uplift.
     if market_financial_event:
         scale = max(scale, 24)
+    if official_filing_notice:
+        # Official quarterly/annual/results-related filing is newsworthy
+        # enough for consideration, but never auto-promoted as an earnings
+        # surprise or a high-impact result.
+        scale = max(scale, 20)
     structural = matches(r"\b(?:law|legislation|treaty|regulation|sanction|tariff|approval|breakthrough|acquisition|merger|bankruptcy|infrastructure|ban|quota|restrict|limit)\w*", s)
     duration = 20 if structural else 10 if matches(SCIENCE + "|" + BUSINESS, s) else 5
     if market_financial_event:
         duration = max(duration, 10)
+    if official_filing_notice:
+        duration = max(duration, 10)
     new = 15 if matches(ACTION, s) else 5
+    if official_filing_notice:
+        new = max(new, 10)
     # Publisher breadth is only a capped proxy; geographic independence unknown.
     breadth = min(10, max(0, independent_publishers - 1) * 3)
     editorial = newsworthiness(item)
@@ -224,7 +234,8 @@ def score(item, independent_publishers):
                 "editorial_materiality_reason": editorial["reason"],
                 "editorial_noise_penalty": -editorial["penalty"],
                 "editorial_eligible": editorial["eligible"],
-                "us_issuer_financial_materiality_uplift": market_financial_event}
+                "us_issuer_financial_materiality_uplift": market_financial_event,
+                "sec_official_filing_notice_not_results": official_filing_notice}
     return max(0, sum((scope, scale, duration, new, breadth)) - editorial["penalty"]), evidence
 
 def prepare_pool(items, per_section=20):
