@@ -350,8 +350,10 @@ def validate(base, state, meeting, av_plan, critique, *,
             _need(row["owner"] == "director",
                   "WHOLE_FILM_DIRECTOR_OWNERSHIP_REQUIRED")
         elif row["response"] == "department_refine":
-            _need(row["owner"] not in ("director", "screenwriter"),
-                  "WHOLE_FILM_SPECIFIC_SPECIALIST_REQUIRED")
+            _need(row["owner"] in (
+                "acting", "camera_art", "sound", "editing_animation",
+                "ai_technical"),
+                "WHOLE_FILM_SPECIFIC_SPECIALIST_REQUIRED")
             _need(phase == "post_department_design" and
                   snap["department_state"][row["owner"]]["status"] == "completed",
                   "WHOLE_FILM_CANNOT_REVISE_MISSING_SPECIALIST")
@@ -389,6 +391,13 @@ def validate(base, state, meeting, av_plan, critique, *,
     if any(row["severity"] == "critical" for row in problems):
         _need(decision != "keep_with_open_questions",
               "WHOLE_FILM_CRITICAL_DEFECT_CANNOT_BE_PASSED")
+    if any(row["response"] == "director_revise" for row in problems):
+        _need(decision in ("revise_director_plan", "return_to_screenwriter"),
+              "WHOLE_FILM_DIRECTOR_DEFECT_CANNOT_BE_SILENTLY_KEPT")
+    if any(row["response"] == "department_refine" for row in problems):
+        _need(decision in ("await_department_design",
+                           "revise_director_plan", "return_to_screenwriter"),
+              "WHOLE_FILM_SPECIALIST_DEFECT_CANNOT_BE_SILENTLY_KEPT")
     return {
         "kind": "source_locked_director_whole_film_critique_receipt",
         "critique_digest": team.fingerprint(critique),
