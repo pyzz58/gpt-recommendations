@@ -11,8 +11,7 @@ import json
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from probe_market_sources import CANDIDATES, probe_one
-from reader import fetch_reading
+CANDIDATES=Path(__file__).resolve().parent / "market_source_candidates.json"
 
 OUT=Path("/tmp/newspaper-market-readability.json")
 BJT=ZoneInfo("Asia/Shanghai")
@@ -26,7 +25,11 @@ NAMES={
 MAX_ARTICLES_PER_SOURCE=2
 
 
-def check_one(feed,start,end,*,rss_probe=probe_one,article_reader=fetch_reading):
+def check_one(feed,start,end,*,rss_probe=None,article_reader=None):
+    if rss_probe is None:
+        from probe_market_sources import probe_one as rss_probe
+    if article_reader is None:
+        from reader import fetch_reading as article_reader
     raw=rss_probe(feed,start,end)
     result={
         "name":feed["name"],
@@ -71,7 +74,7 @@ def check_one(feed,start,end,*,rss_probe=probe_one,article_reader=fetch_reading)
     return result
 
 
-def probe_readability(spec,now,*,rss_probe=probe_one,article_reader=fetch_reading):
+def probe_readability(spec,now,*,rss_probe=None,article_reader=None):
     if now.tzinfo is None: raise ValueError("A timezone-aware clock is required")
     listed=[f for f in spec["feeds"] if f["name"] in NAMES]
     if len(listed)!=len(NAMES): raise ValueError("Financial-source allowlist incomplete")
