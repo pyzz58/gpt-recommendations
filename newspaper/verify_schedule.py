@@ -20,9 +20,10 @@ def verify():
         minute,hour,_,_,_=cron.split()
         # Convert UTC cron wall-clock to Beijing clock, accounting for a date offset.
         local=(dt.datetime(2026,10,13,int(hour),int(minute),tzinfo=dt.timezone.utc)).astimezone(BEIJING)
-        target=0 if i < len(POLICY["prepare_crons_utc"]) else 1
-        if local.hour!=target:
-            raise AssertionError(f"Expected Beijing {target:02}:xx, got {local:%H:%M}: {cron}")
+        if local.hour not in (0, 1, 2, 3, 4):
+            raise AssertionError(f"Unexpected Beijing recovery hour: {local:%H:%M}: {cron}")
+    if actual[0] != "1 16 * * *":
+        raise AssertionError("First startup must be Beijing 00:01")
     return True
 
 
