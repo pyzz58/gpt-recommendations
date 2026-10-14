@@ -42,7 +42,7 @@ class RequiredSyntheticAVDependencies(unittest.TestCase):
             completed = subprocess.run(
                 ["ffmpeg", "-hide_banner", "-filters"],
                 capture_output=True, text=True, check=True, timeout=15)
-            self.assertRegex(completed.stdout, r"(?m)^\\s*\\.\\.\\. subtitles\\s")
+            self.assertRegex(completed.stdout, r"(?m)^\s*\.\.\. subtitles\s")
 
 
 @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"),
