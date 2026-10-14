@@ -831,8 +831,8 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "待本轮融合PR创建，参见开发分支 ai-director-integrated-creative-gates-v1；原代码草稿PR #62/#65/#66",
-        "commit_sha": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/67",
+        "commit_sha": "44e4a600976dfd3bcf1cfd952ce479a318aeb8dc",
         "automated_test": "按用户要求：未主动运行单元测试、真实媒体测试或人工艺术验收。融合代码尚未验证，且不合并主分支。",
         "independent_review": "",
         "media_validation": "",
@@ -850,7 +850,7 @@
           "date": "2026-10-14",
           "status": "in_progress",
           "note": "将复杂动作导演保全方案接到已锁定整片艺术审查，统一七岗位请求/回执、前后版本有效期、源剧情与修订授权边界；未运行测试、未产生视频。",
-          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/tree/ai-director-integrated-creative-gates-v1/短视频/ai-director"
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/67"
         }
       ]
     },
@@ -1033,8 +1033,8 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "待本轮融合PR创建，参见开发分支 ai-director-integrated-creative-gates-v1；原代码草稿PR #62/#65/#66",
-        "commit_sha": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/67",
+        "commit_sha": "44e4a600976dfd3bcf1cfd952ce479a318aeb8dc",
         "automated_test": "按用户要求：未主动运行单元测试、真实媒体测试或人工艺术验收。融合代码尚未验证，且不合并主分支。",
         "independent_review": "",
         "media_validation": "",
@@ -1052,7 +1052,7 @@
           "date": "2026-10-14",
           "status": "in_progress",
           "note": "QO-D10与QO-D06/12统一到同一个导演创作闭环：已修复制作前状态误失效；源锁定整片评议进入角色消息和接收校验；重大艺术/编剧问题阻断，真实媒体与真人审片未进行。按用户要求本轮暂不测试，保留draft。",
-          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/tree/ai-director-integrated-creative-gates-v1/短视频/ai-director"
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/67"
         }
       ]
     },
@@ -1120,8 +1120,8 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "待本轮融合PR创建，参见开发分支 ai-director-integrated-creative-gates-v1；原代码草稿PR #62/#65/#66",
-        "commit_sha": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/67",
+        "commit_sha": "44e4a600976dfd3bcf1cfd952ce479a318aeb8dc",
         "automated_test": "按用户要求：未主动运行单元测试、真实媒体测试或人工艺术验收。融合代码尚未验证，且不合并主分支。",
         "independent_review": "",
         "media_validation": "",
@@ -1139,7 +1139,7 @@
           "date": "2026-10-14",
           "status": "in_progress",
           "note": "建立从QO-D10具体问题到QO-D12版本修订提案的单向桥接，绝不因艺术复审而直接修改原剧本或自动变更ledger。跨剧本新权威需作者/编剧审核及原十岗位全新规划；未运行测试。",
-          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/tree/ai-director-integrated-creative-gates-v1/短视频/ai-director"
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/67"
         }
       ]
     },
