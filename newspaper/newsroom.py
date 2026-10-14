@@ -283,7 +283,7 @@ def near_duplicate_titles(a, b):
                 if (w not in _COMMON_TITLE_WORDS and len(w) > 2) or w == "ai"}
     first, second = words(a), words(b)
     if min(len(first), len(second)) < 4:
-        return False
+        return _high_confidence_same_event(a, b)
     shared = len(first & second)
     exact_word_overlap = (
         shared >= 4 and shared / min(len(first), len(second)) >= 0.60
@@ -299,32 +299,32 @@ def _high_confidence_same_event(first_title, second_title):
     announcements must NOT be merged merely because they share an institution.
     """
     replacements = [
-        (r"\\b(?:u\\.?s\\.? )?federal reserve\\b", "fed"),
-        (r"\\bworld health organization\\b", "who"),
-        (r"\\beuropean (?:union )?council\\b", "eu_council"),
-        (r"\\b(?:target )?federal funds rate\\b", "policy_rate"),
-        (r"\\bbenchmark interest rate\\b", "policy_rate"),
-        (r"\\bhalf a percentage point\\b", "50bps"),
-        (r"\\b50 basis points\\b", "50bps"),
-        (r"\\bspot bitcoin exchange traded products\\b", "bitcoin_etp"),
-        (r"\\bbitcoin spot exchange products\\b", "bitcoin_etp"),
-        (r"\\bspot bitcoin exchange products\\b", "bitcoin_etp"),
-        (r"\\bartificial intelligence\\b", "ai"),
-        (r"\\bsickle cell (?:disease|patients)\\b", "sickle_cell"),
-        (r"\\bgenome editing\\b", ""),
-        (r"\\bbanking|banks\\b", "bank"),
-        (r"\\bplatforms\\b", "platform"),
-        (r"\\bcontrols\\b", "control"),
-        (r"\\bexports\\b", "export"),
-        (r"\\btariffs\\b", "tariff"),
-        (r"\\bregulations\\b", "regulation"),
-        (r"\\b(?:approves?|approved|approval|allows?|clears?)\\b", "approve"),
-        (r"\\b(?:cuts?|lowers?|reduced|reduces?)\\b", "cut"),
-        (r"\\b(?:announces?|announced|details)\\b", "announce"),
-        (r"\\b(?:proposes?|proposed)\\b", "propose"),
-        (r"\\b(?:declares?|characterizes?)\\b", "declare"),
-        (r"\\b(?:issues? .*? decision|decides?)\\b", "decide"),
-        (r"\\b(?:outlines?|outlined)\\b", "outline"),
+        (r"\b(?:u\.?s\.? )?federal reserve\b", "fed"),
+        (r"\bworld health organization\b", "who"),
+        (r"\beuropean (?:union )?council\b", "eu_council"),
+        (r"\b(?:target )?federal funds rate\b", "policy_rate"),
+        (r"\bbenchmark interest rate\b", "policy_rate"),
+        (r"\bhalf a percentage point\b", "50bps"),
+        (r"\b50 basis points\b", "50bps"),
+        (r"\bspot bitcoin exchange traded products\b", "bitcoin_etp"),
+        (r"\bbitcoin spot exchange products\b", "bitcoin_etp"),
+        (r"\bspot bitcoin exchange products\b", "bitcoin_etp"),
+        (r"\bartificial intelligence\b", "ai"),
+        (r"\bsickle cell (?:disease|patients)\b", "sickle_cell"),
+        (r"\bgenome editing\b", ""),
+        (r"\bbanking|banks\b", "bank"),
+        (r"\bplatforms\b", "platform"),
+        (r"\bcontrols\b", "control"),
+        (r"\bexports\b", "export"),
+        (r"\btariffs\b", "tariff"),
+        (r"\bregulations\b", "regulation"),
+        (r"\b(?:approves?|approved|approval|allows?|clears?)\b", "approve"),
+        (r"\b(?:cuts?|lowers?|reduced|reduces?)\b", "cut"),
+        (r"\b(?:announces?|announced|details)\b", "announce"),
+        (r"\b(?:proposes?|proposed)\b", "propose"),
+        (r"\b(?:declares?|characterizes?)\b", "declare"),
+        (r"\b(?:issues? .*? decision|decides?)\b", "decide"),
+        (r"\b(?:outlines?|outlined)\b", "outline"),
     ]
     noise = {
         "the","new","major","national","nationwide","global","final",
@@ -341,7 +341,7 @@ def _high_confidence_same_event(first_title, second_title):
         value = title.lower()
         for pattern,replacement in replacements:
             value = re.sub(pattern,replacement,value)
-        result = {w for w in re.findall(r"[a-z_]+|\\d+(?:bps|%)?",value)
+        result = {w for w in re.findall(r"[a-z_]+|\d+(?:bps|%)?",value)
                   if len(w)>=2 and w not in noise}
         return result
     a,b=terms(first_title),terms(second_title)
@@ -350,8 +350,8 @@ def _high_confidence_same_event(first_title, second_title):
         return False
     if not common - generic:
         return False
-    nums_a={x for x in a if re.search(r"\\d",x)}
-    nums_b={x for x in b if re.search(r"\\d",x)}
+    nums_a={x for x in a if re.search(r"\d",x)}
+    nums_b={x for x in b if re.search(r"\d",x)}
     if nums_a and nums_b and not (nums_a & nums_b):
         return False
     return len(common)>=3 and len(common)/max(1,min(len(a),len(b)))>=0.60
