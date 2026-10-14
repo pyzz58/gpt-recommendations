@@ -124,20 +124,25 @@ def _shot_context(base, state, meeting, av_plan, genre,
           "WHOLE_FILM_GENRE_INCONSISTENT")
     artistic = (methods.validate(base, state, meeting, artistic_method_plan)
                 if artistic_method_plan is not None else None)
+    # A pre-production decision must survive normal specialist submissions.
+    # Only post-department critique binds to submitted designs/revisions.
     depts = {}
-    for name in department.DEPARTMENTS:
-        if name == "director_final":
-            continue
-        item = state["tasks"][name]
-        _need(item["status"] in ("pending", "completed", "stale", "needs_revision"),
-              "WHOLE_FILM_UNRECOGNIZED_DEPARTMENT_STATUS")
-        completed = item["status"] == "completed"
-        depts[name] = {
-            "status": item["status"],
-            "revision": item["revision"],
-            "deliverable_digest": (team.fingerprint(item["deliverable"])
-                                   if completed else None),
-        }
+    if phase == "post_department_design":
+        for name in department.DEPARTMENTS:
+            if name == "director_final":
+                continue
+            item = state["tasks"][name]
+            _need(item["status"] in (
+                "pending", "completed", "stale", "needs_revision"),
+                "WHOLE_FILM_UNRECOGNIZED_DEPARTMENT_STATUS")
+            completed = item["status"] == "completed"
+            depts[name] = {
+                "status": item["status"],
+                "revision": item["revision"],
+                "deliverable_digest": (
+                    team.fingerprint(item["deliverable"])
+                    if completed else None),
+            }
     return {
         "phase": phase,
         "source_digest": state["source_digest"],
@@ -395,6 +400,12 @@ def validate(base, state, meeting, av_plan, critique, *,
         _need(row["approach_a"].strip().casefold() !=
               row["approach_b"].strip().casefold(),
               "WHOLE_FILM_NO_GENUINE_ARTISTIC_CHOICE")
+    # A revision to directorial intent or to the screenplay itself is not a
+    # downstream craft task. Even if JSON shape is valid, do not claim readiness.
+    if phase == "preproduction_plan":
+        _need(all(row["response"] != "department_refine"
+                  for row in critique["problems"]),
+              "WHOLE_FILM_PREPRODUCTION_CANNOT_PRETEND_CREW_SUBMITTED")
     decision = critique["overall_next_step"]
     _need(decision in OVERALL, "WHOLE_FILM_INVALID_OVERALL_STEP")
     if any(row["response"] == "return_to_screenwriter" for row in problems):
