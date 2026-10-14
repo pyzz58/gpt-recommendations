@@ -398,31 +398,46 @@ def select_readable(candidates, enriched):
     for section, quota in SECTIONS.items():
         available = [enriched[a["url"]] for a in candidates.get(section, []) if enriched.get(a["url"])]
         selected, families, concentration, exceptions = [], Counter(), Counter(), []
+        rejected_attempts = {}
+        def reject(a, code, blocker=None):
+            rejected_attempts[a["url"]] = {
+                "reason_code": code,
+                "blocked_by_url": blocker.get("url") if blocker else None,
+            }
+            return False
         def add(a, allow_exception=False):
-            if a["url"] in used_urls or a["event_key"] in used_events: return False
+            if a["url"] in used_urls:
+                return reject(a, "already_selected_other_section")
+            if a["event_key"] in used_events:
+                blocker = next((old for arr in output.values() for old in arr
+                                if old.get("event_key") == a["event_key"]), None)
+                return reject(a, "event_selected_other_section", blocker)
             # TF-IDF alone misses some different-worded titles from the same
             # speaker and announcement; avoid obvious repeated editorial slots.
-            if any(near_duplicate_titles(str(a.get("title", "")),
-                                         str(old.get("title", "")))
-                   for arr in output.values() for old in arr):
-                return False
-            if any(near_duplicate_titles(str(a.get("title", "")),
-                                         str(old.get("title", "")))
-                   for old in selected):
-                return False
+            blocker = next((old for arr in output.values() for old in arr
+                            if near_duplicate_titles(str(a.get("title", "")),
+                                                     str(old.get("title", "")))), None)
+            if blocker:
+                return reject(a, "near_duplicate_other_section", blocker)
+            blocker = next((old for old in selected
+                            if near_duplicate_titles(str(a.get("title", "")),
+                                                     str(old.get("title", "")))), None)
+            if blocker:
+                return reject(a, "near_duplicate_same_section", blocker)
             if (section == "美股·全球金融市场"
                     and a["event_key"] in china_us_events
                     and len(china_us_events - used_events) <= 3):
-                return False
+                return reject(a, "reserved_for_china_us_quota")
             cs = set(a.get("countries", [])) - {"中国", "美国"}
             overcrowded = section == "国际政治与全球事件" and any(concentration[c] >= 1 for c in cs)
             # Geographic concentration triggers a review, not an absolute veto.
             # Pass one prefers country diversity; pass two may retain a
             # substantiated event and must record the exception.
-            if overcrowded and not allow_exception: return False
-            if families[a["publisher_family"]] >= 2: return False
+            if overcrowded and not allow_exception: return reject(a, "geographic_diversity_first_pass")
+            if families[a["publisher_family"]] >= 2: return reject(a, "publisher_family_cap_two")
             if overcrowded:
                 exceptions.append({"event": a["event_key"], "reason": "同国重要新闻集中，记录来源和必要性待复核；不自动删除事件"})
+            rejected_attempts.pop(a["url"], None)
             selected.append({**a, "category": section})
             used_events.add(a["event_key"]); used_urls.add(a["url"])
             families[a["publisher_family"]] += 1
@@ -458,9 +473,29 @@ def select_readable(candidates, enriched):
                 if article["importance_score"] >= 90:
                     add(article, allow_exception=True)
         output[section] = selected
+        chosen_urls = {item["url"] for item in selected}
+        decisions = []
+        for item in candidates.get(section, []):
+            url = item["url"]
+            if url in chosen_urls:
+                code, blocker = "selected", None
+            elif not enriched.get(url):
+                code, blocker = "article_unreadable_or_inaccessible", None
+            else:
+                attempt = rejected_attempts.get(url, {})
+                code = attempt.get("reason_code", "section_quota_full_not_attempted")
+                blocker = attempt.get("blocked_by_url")
+            decisions.append({
+                "url": url,
+                "reason_code": code,
+                "blocked_by_url": blocker,
+                "readable": bool(enriched.get(url)),
+                "importance_score": item.get("importance_score"),
+                "event_key": item.get("event_key"),
+            })
         missing = [c for c in ("中国", "美国") if not any(c in a.get("countries", []) for a in selected)] if section == "中国与美国" else []
         diagnostics[section] = {"quota": quota, "candidate_count": len(candidates.get(section, [])),
             "readable": len(available), "selected": len(selected), "missing_regions": missing,
             "shortfall": max(0, quota-len(selected)), "country_counts": dict(concentration),
-            "concentration_exceptions": exceptions}
+            "concentration_exceptions": exceptions, "candidate_decisions": decisions}
     return output, diagnostics
