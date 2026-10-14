@@ -5,6 +5,7 @@ from unittest.mock import Mock
 from zoneinfo import ZoneInfo
 from sec_edgar import parse_submissions,fetch_filings,official_link
 from market_headline import market_evidence
+from newsroom import prepare_pool
 
 BJT=ZoneInfo("Asia/Shanghai")
 start=dt.datetime(2026,10,13,0,0,tzinfo=BJT)
@@ -30,6 +31,7 @@ class EdgarTests(unittest.TestCase):
         self.assertIn("filing, not the financial results",a[0]["summary"])
         self.assertTrue(a[0]["filing_notice_only"])
         self.assertTrue(market_evidence(a[0])["eligible"])
+        self.assertIn(a[0]["url"], {x["url"] for x in prepare_pool(a)["美股·全球金融市场"]})
 
     def test_skip_unrelated_8k_and_missing_items(self):
         self.assertEqual(parse_submissions(filing("8-K",items="5.02"),
