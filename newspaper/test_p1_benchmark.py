@@ -9,6 +9,7 @@ from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from editorial_benchmark import load_cases,calculate_metrics,run_benchmark
 from selection_audit import make_selection_audit,save_selection_audit
+from newsroom import near_duplicate_titles
 
 
 class P1BenchmarkTests(unittest.TestCase):
@@ -52,6 +53,30 @@ class P1BenchmarkTests(unittest.TestCase):
         self.assertEqual(len(calls),50)
         self.assertTrue(result["NOT_REAL_HISTORICAL_REPLAY"])
         self.assertEqual(result["selected_article_slots"],0)
+
+    def test_verified_and_synthetic_same_event_pairs_are_deduplicated(self):
+        items=load_cases()["cases"]
+        lookup={c["id"]:c for c in items}
+        for episode in range(1,6):
+            for base,duplicate in ((1,9),(2,10)):
+                a=lookup[f"C{episode}-{base:02d}"]
+                b=lookup[f"C{episode}-{duplicate:02d}"]
+                self.assertEqual(a["gold_event_id"],b["gold_event_id"])
+                with self.subTest(episode=episode,base=a["title"],duplicate=b["title"]):
+                    self.assertTrue(near_duplicate_titles(a["title"],b["title"]))
+
+    def test_do_not_merge_same_actor_different_actions_or_numbers(self):
+        pairs=[
+            ("Federal Reserve cuts target federal funds rate by 50 basis points",
+             "Federal Reserve cuts target federal funds rate by 25 basis points"),
+            ("FDA approves sickle cell CRISPR therapy",
+             "FDA proposes new clinical trial restrictions for sickle cell research"),
+            ("China government announces chip export controls",
+             "China government announces new electric vehicle export tariffs"),
+        ]
+        for first,second in pairs:
+            with self.subTest(first=first,second=second):
+                self.assertFalse(near_duplicate_titles(first,second))
 
     def test_actual_pipeline_scores_five_disjoint_editions(self):
         a=run_benchmark()
