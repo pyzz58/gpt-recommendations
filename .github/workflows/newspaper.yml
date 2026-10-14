@@ -108,6 +108,10 @@ jobs:
           set -euo pipefail
           python newspaper/schedule_contract.py --event "$EVENT" --cron "$CRON" --dry-run "$DRY_RUN"
 
+      - name: Verify production schedule contract
+        if: steps.phase.outputs.phase == 'send'
+        run: python newspaper/verify_schedule.py
+
       - name: Check sent receipt (never means inbox delivery)
         id: receipt
         if: steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send'
