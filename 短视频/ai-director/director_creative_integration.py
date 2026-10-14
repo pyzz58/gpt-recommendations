@@ -16,6 +16,8 @@ import director_department_command as meeting_contract
 import director_whole_film_critique as whole
 import director_action_rescue as action
 import director_revision_lineage as lineage
+import director_delivery_review as crew_delivery
+import director_conflict_arbitration as conflict_arbitration
 
 VERSION = "director-integrated-creative-gates-v1"
 MODE = {"kind": "director_integrated_creative_review_required",
@@ -163,14 +165,53 @@ def departmental_context(base, state, meeting, audiovisual, holistic, rescue,
 
 def postproduction_assessment(base, state, meeting, audiovisual,
                               holistic_post, rescue_post, *,
-                              artistic_method_plan=None):
-    """Review real submitted crew *designs*, never pretend rendered video."""
+                              artistic_method_plan=None,
+                              delivery_review=None, arbitration_plan=None):
+    """Evaluate real crew *designs*, including genuine inter-role disagreements.
+
+    QO-D16 and QO-D16 arbitration are optional for old callers, but a missing
+    review is NEVER represented as 'zero conflicts / good to render'.
+    """
     h, a = _bind(
         base, state, meeting, audiovisual, holistic_post, rescue_post,
         artistic_method_plan=artistic_method_plan, post=True)
     issues = whole.route_critique_proposals(
         base, state, meeting, audiovisual, holistic_post,
         artistic_method_plan=artistic_method_plan)
+    _need(arbitration_plan is None or delivery_review is not None,
+          "INTEGRATED_ARBITRATION_REQUIRES_REAL_DELIVERY_REVIEW")
+    crew_proof = None
+    arbitration_proof = None
+    conflicts = []
+    if delivery_review is not None:
+        crew_proof = crew_delivery.validate(
+            base, state, meeting, audiovisual, delivery_review,
+            artistic_method_plan=artistic_method_plan)
+        conflicts = crew_proof["unresolved_cross_department_conflicts"]
+        if conflicts and arbitration_plan is not None:
+            arbitration_proof = conflict_arbitration.validate(
+                base, state, meeting, audiovisual, holistic_post,
+                delivery_review, arbitration_plan,
+                artistic_method_plan=artistic_method_plan)
+        _need(conflicts or arbitration_plan is None,
+              "INTEGRATED_ARBITRATION_CANNOT_INVENT_CONFLICT")
+    action_blocked = [
+        x["shot_id"] for x in rescue_post["shots"]
+        if x["decision"] in (
+            "blockers_need_redesign", "return_to_screenwriter")]
+    creative_revisions = any(
+        x["response"] != "defer_until_media_review"
+        for x in holistic_post["problems"])
+    review_next_step = (
+        "await_first_actual_department_review" if crew_proof is None
+        else "arbitrate_conflicts" if conflicts and arbitration_proof is None
+        else "carry_out_versioned_director_decisions" if conflicts
+        else "resolve_director_or_specialist_revisions" if (
+            action_blocked or creative_revisions or
+            crew_proof["requested_revisions"])
+        else "continue_in_separate_real_media_and_independent_human_review"
+        if crew_proof["can_enter_real_media_review"]
+        else "complete_unsubmitted_specialist_deliveries")
     return {
         "kind": "unsent_integrated_director_after_crew_design_report",
         "version": VERSION,
@@ -180,11 +221,17 @@ def postproduction_assessment(base, state, meeting, audiovisual,
         "actual_offline_risk_signal_count": a["actual_offline_risk_signals"],
         "holistic_revision_routes": deepcopy(
             issues["actions_by_existing_role"]),
-        "action_shots_needing_redesign": [
-            x["shot_id"] for x in rescue_post["shots"]
-            if x["decision"] in (
-                "blockers_need_redesign", "return_to_screenwriter")],
+        "action_shots_needing_redesign": action_blocked,
+        "qod16_delivery_review_digest": (
+            crew_proof["review_digest"] if crew_proof else None),
+        "qod16_conflict_count": len(conflicts) if crew_proof else None,
+        "qod16_arbitration_digest": (
+            arbitration_proof["arbitration_digest"]
+            if arbitration_proof else None),
+        "unresolved_professional_conflicts": deepcopy(conflicts),
+        "next_director_step": review_next_step,
         "director_lock_or_screenplay_changes_must_invalidate_prior_plans": True,
+        "arbitration_does_not_make_old_conflicts_disappear": True,
         "all_reviews_are_of_text_design_not_real_footage": True,
         "authority_to_dispatch_or_render": False,
         "independent_human_film_review_done": False,
