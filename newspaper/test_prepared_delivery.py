@@ -30,7 +30,7 @@ class PreparedDeliveryTests(unittest.TestCase):
         self.pdf=Path(self.temp.name)/"report.pdf"
         self.pdf.write_bytes(b"%PDF-1.4\n"+b"x"*130)
         self.day=dt.date(2026,10,14)
-        self.subject="全球新闻选编｜2026-10-14 06:00截稿"
+        self.subject="全球新闻选编｜2026-10-14 00:00截稿"
         write_bundle(self.directory,self.day,self.subject,
                      "<html>"+("来源核实报道"*35)+"</html>","完整新闻报道"*45,self.pdf)
 
@@ -59,7 +59,7 @@ class PreparedDeliveryTests(unittest.TestCase):
 
     def test_smtp_acceptance_and_message_id(self):
         smtp=DummySMTP()
-        now=dt.datetime(2026,10,14,7,2,tzinfo=BEIJING)
+        now=dt.datetime(2026,10,14,1,2,tzinfo=BEIJING)
         with patch.dict(os.environ,{"SMTP_FROM":"sender@example.com",
                      "SMTP_PASSWORD":"dummy","NEWSPAPER_TO":"reader@example.com"}):
             message_id=send_bundle(self.directory,self.day,now=now,
@@ -71,7 +71,7 @@ class PreparedDeliveryTests(unittest.TestCase):
     def test_partial_recipient_refusal_is_not_a_success(self):
         smtp=DummySMTP()
         smtp.refuse={"reader@example.com":(550,b"refused")}
-        now=dt.datetime(2026,10,14,7,2,tzinfo=BEIJING)
+        now=dt.datetime(2026,10,14,1,2,tzinfo=BEIJING)
         with patch.dict(os.environ,{"SMTP_FROM":"sender@example.com",
                       "SMTP_PASSWORD":"dummy","NEWSPAPER_TO":"reader@example.com"}):
             with self.assertRaises(RuntimeError):
@@ -81,7 +81,7 @@ class PreparedDeliveryTests(unittest.TestCase):
     def test_send_early_is_refused_without_smtp(self):
         with self.assertRaises(RuntimeError):
             send_bundle(self.directory,self.day,
-                        now=dt.datetime(2026,10,14,6,59,tzinfo=BEIJING))
+                        now=dt.datetime(2026,10,14,0,59,tzinfo=BEIJING))
 
 
 if __name__=="__main__":
