@@ -35,6 +35,7 @@ from news_editor import edit_reports_in_batches, write_compact_commentary
 from market_snapshot import fetch_market_snapshot
 from editorial_quality import edition_quality_report
 from selection_audit import make_selection_audit, save_selection_audit
+from market_funnel import report_market_funnel, save_market_funnel
 from prepared_delivery import write_bundle
 
 ROOT = Path(__file__).resolve().parent
@@ -615,6 +616,20 @@ def main():
             news_start=start,
         )
         readable, diagnostics = build_readings(pool, settings)
+        # Report a market story's exact stage of loss; diagnosing a low
+        # article count is not permission to manufacture or pad news.
+        try:
+            market_report=report_market_funnel(
+                incoming,pool,readable,limits=settings["max_per_category"])
+            market_path=save_market_funnel(market_report,
+                "/tmp/newspaper-market-funnel.json")
+            LOG.info("NEWSROOM_MARKET_FUNNEL: routed=%d candidate=%d printed=%d quota=%d missing=%d report=%s",
+                     market_report["routed_market_count"],
+                     market_report["candidate_pool_count"],
+                     market_report["printed"],market_report["print_quota"],
+                     market_report["shortfall"],market_path)
+        except Exception:
+            LOG.exception("Market coverage audit unavailable (does not block newspaper)")
         # P1: record the exact candidates and final newsroom choice before
         # editing or translations can mutate source metadata.
         # This is only an observed-feed audit; never a global recall claim.
