@@ -93,8 +93,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: pip
-          cache-dependency-path: newspaper/requirements.txt
 
       - name: Resolve edition date
         id: date
@@ -124,7 +122,7 @@ jobs:
         if: (steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true'
         uses: actions/cache/restore@v4
         with:
-          key: newspaper-ready-v21-${{ steps.date.outputs.edition }}
+          key: newspaper-ready-v22-${{ steps.date.outputs.edition }}
           path: /tmp/newspaper-ready
 
       - name: Install print fonts
@@ -209,7 +207,7 @@ jobs:
           set -euo pipefail
           python newspaper/digest.py --prepare --output /tmp/newspaper-ready
 
-      - name: Cache completed edition for later send attempts
+      - name: Cache completed edition for recovery attempts
         id: save_prepared
         if: steps.build.outcome == 'success'
         uses: actions/cache/save@v4
@@ -256,8 +254,6 @@ jobs:
           set -euo pipefail
           if [[ "$SENT_CACHE" == "true" ]]; then
             status=ALREADY_SENT
-          elif [[ "$PHASE" == "prepare" && ("$READY_CACHE" == "true" || ("$BUILD" == "success" && "$READY_SAVED" == "success")) ]]; then
-            status=PREPARED_NOT_SENT
           elif [[ "$SEND" == "success" && "$RECEIPT" == "success" ]]; then
             status=SMTP_ACCEPTED
           elif [[ "$SEND" == "success" ]]; then
