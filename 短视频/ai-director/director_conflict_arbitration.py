@@ -225,8 +225,8 @@ def validate(base, state, meeting, language, holistic_post, delivery_review,
         }
         selected = row["protected_artistic_choice_digests"]
         _need(isinstance(selected, list) and
-              len(selected) == len(set(selected)) and
               all(isinstance(x, str) and x in choices for x in selected)
+              and len(selected) == len(set(selected))
               and set(selected) == choices,
               "ARBITRATION_LOST_PROTECTED_ARTISTIC_CHOICE")
         for field in (
@@ -246,7 +246,9 @@ def validate(base, state, meeting, language, holistic_post, delivery_review,
             candidates.append(candidate["image_performance_sound_edit_execution"].strip().casefold())
         _need(candidates[0] != candidates[1],
               "ARBITRATION_SAME_TECHNIQUE_AS_FAKE_ALTERNATIVE")
-        _need(row["decision"] in DECISIONS and
+        _need(isinstance(row["decision"], str) and
+              row["decision"] in DECISIONS and
+              isinstance(row["responsible_owner"], str) and
               row["responsible_owner"] in OWNERS and
               row["preferred_candidate"] in ("A", "B", "undecided_real_media"),
               "ARBITRATION_WRONG_AUTHORITY_OR_CHOICE")
@@ -264,7 +266,9 @@ def validate(base, state, meeting, language, holistic_post, delivery_review,
         owner = row["responsible_owner"]
         writer_kind = row["screenplay_change_kind"]
         if action == "return_to_screenwriter":
-            _need(owner == "screenwriter" and writer_kind in lineage.SCRIPT_KINDS,
+            _need(owner == "screenwriter" and
+                  isinstance(writer_kind, str) and
+                  writer_kind in lineage.SCRIPT_KINDS,
                   "ARBITRATION_WRITER_ONLY_CAN_CHANGE_SOURCE")
         elif action == "revise_director_lock":
             _need(owner == "director_lock" and writer_kind is None,
