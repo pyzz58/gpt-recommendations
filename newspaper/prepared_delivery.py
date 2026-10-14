@@ -18,8 +18,10 @@ import smtplib
 import ssl
 from zoneinfo import ZoneInfo
 
-BEIJING = ZoneInfo("Asia/Shanghai")
-BUNDLE_SCHEMA = 2
+from production_policy import (
+    POLICY, BEIJING, check_send_window, subject as edition_subject,
+)
+BUNDLE_SCHEMA = 3
 FILES = ("edition.pdf", "mail.html", "mail.txt")
 
 
@@ -28,22 +30,15 @@ def sha256(data: bytes) -> str:
 
 
 def assert_delivery_window(now: dt.datetime, edition: dt.date) -> None:
-    """Only send today's already prepared edition from 07:00 to 07:59 BJT."""
-    if not isinstance(now, dt.datetime) or now.tzinfo is None or now.utcoffset() is None:
-        raise ValueError("Delivery requires an aware clock")
-    local = now.astimezone(BEIJING)
-    begin = dt.datetime.combine(edition, dt.time(7, 0), tzinfo=BEIJING)
-    if not begin <= local < begin + dt.timedelta(hours=1):
-        raise RuntimeError("Outside today's authorized Beijing 07:00-08:00 send window")
+    """Enforce Beijing 01:00–02:00 on the correct issue date."""
+    check_send_window(now, edition)
 
 
 def write_bundle(directory: Path, edition: dt.date, subject: str,
                  html_body: str, text_body: str, pdf_path: Path) -> Path:
     directory = Path(directory)
-    if not isinstance(edition, dt.date) or not re.fullmatch(r"全球新闻选编｜\d{4}-\d{2}-\d{2} 06:00截稿", subject):
-        raise ValueError("Invalid production edition / subject")
-    if str(edition) not in subject:
-        raise ValueError("Subject date and edition differ")
+    if not isinstance(edition, dt.date) or subject != edition_subject(edition):
+        raise ValueError("Invalid production edition or email subject")
     if len(html_body.strip()) < 50 or len(text_body.strip()) < 20:
         raise ValueError("Refuse to prepare an empty or placeholder email")
     pdf_bytes = Path(pdf_path).read_bytes()
@@ -60,7 +55,7 @@ def write_bundle(directory: Path, edition: dt.date, subject: str,
     manifest = {
         "schema": BUNDLE_SCHEMA,
         "edition_date": edition.isoformat(),
-        "cutoff_bjt": "06:00",
+        "cutoff_bjt": POLICY["cutoff_bjt"],
         "subject": subject,
         "sha256": {name: sha256(payload) for name, payload in payloads.items()},
     }
@@ -75,10 +70,10 @@ def read_bundle(directory: Path, edition: dt.date):
     manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))
     if manifest.get("schema") != BUNDLE_SCHEMA or manifest.get("edition_date") != edition.isoformat():
         raise ValueError("Edition mismatch or unsupported bundle schema")
-    if manifest.get("cutoff_bjt") != "06:00":
+    if manifest.get("cutoff_bjt") != POLICY["cutoff_bjt"]:
         raise ValueError("Unexpected cutoff in prepared bundle")
     subject = manifest.get("subject", "")
-    if subject != f"全球新闻选编｜{edition.isoformat()} 06:00截稿":
+    if subject != edition_subject(edition):
         raise ValueError("Prepared subject does not match the edition")
     payloads = {}
     if set(manifest.get("sha256", {})) != set(FILES):
