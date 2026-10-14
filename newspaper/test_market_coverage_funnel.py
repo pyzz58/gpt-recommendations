@@ -81,6 +81,28 @@ class MarketCoverageFunnelTests(unittest.TestCase):
                 self.assertFalse(market_evidence(a)["eligible"])
                 self.assertNotIn(MARKET,sections(a))
 
+    def test_real_rss_false_positives_do_not_fill_us_equities(self):
+        # Verbatim source headlines seen in 2026-10-14 GitHub RSS probe:
+        # European equity coverage, merely referencing US CPI, is not a
+        # US-stock lead. Signed opinion columns belong outside fact reports.
+        titles=[
+            "FTSE 100 today: Stocks edge up ahead of U.S. CPI",
+            "European stocks gain on ASML sales forecast; U.S. CPI test awaited",
+            "Opinion: New SEC rules would fleece everyday investors to enrich Wall Street",
+        ]
+        for title in titles:
+            with self.subTest(title=title):
+                article=row(title,source="MarketWatch Bulletins")
+                result=market_evidence(article)
+                self.assertFalse(result["eligible"], result)
+                self.assertNotIn(MARKET,sections(article))
+
+    def test_us_market_releases_survive_foreign_macro_mention(self):
+        title="Wall Street stocks drop as US CPI rises and European shares rally"
+        article=row(title,source="CNBC Markets")
+        self.assertTrue(market_evidence(article)["eligible"])
+        self.assertIn(MARKET,sections(article))
+
     def test_chinese_us_stock_news_but_not_generic_shares(self):
         for title in ("美股纳斯达克指数下跌","美联储公布新的利率政策",
                       "微软在美上市公司公布重要财报"):
