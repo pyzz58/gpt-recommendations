@@ -119,16 +119,21 @@ def _snapshot(base, state, meeting, av_plan, *,
     m = command.validate_command(base, state, meeting)
     v = visual.validate(base, state, meeting, av_plan,
                         artistic_method_plan=artistic_method_plan)
+    # Preproduction instructions must survive normal sequential crew delivery.
+    # Binding their digest to the future acting/technical status would make
+    # the second specialist incorrectly reject the same approved director plan.
+    # Post-production diagnosis DOES bind to exact submitted deliveries.
     crew_state = {}
-    for name in ("acting", "ai_technical"):
-        t = state["tasks"][name]
-        crew_state[name] = {
-            "status": t["status"],
-            "revision": t["revision"],
-            "submitted_design_digest": (
-                team.fingerprint(t["deliverable"])
-                if t["status"] == "completed" else None),
-        }
+    if phase == "after_specialist_design":
+        for name in ("acting", "ai_technical"):
+            t = state["tasks"][name]
+            crew_state[name] = {
+                "status": t["status"],
+                "revision": t["revision"],
+                "submitted_design_digest": (
+                    team.fingerprint(t["deliverable"])
+                    if t["status"] == "completed" else None),
+            }
     report = (_real_preflight(base, state)
               if phase == "after_specialist_design" else None)
     return ({
