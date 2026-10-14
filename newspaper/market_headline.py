@@ -44,6 +44,16 @@ US_ISSUERS = re.compile(
     r"micron technology|qualcomm|uber|airbnb|"
     r"blackrock|citigroup|wells fargo)\b", re.I)
 MARKET_SPECIFIC_FEEDS = {"CNBC Markets", "CNBC Investing"}
+# An explicit foreign-equity lead is not a US-stock story just because it
+# mentions a forthcoming US economic indicator in the background.
+FOREIGN_EQUITIES_LEAD = re.compile(
+    r"^\s*(?:ftse\s*100|european stocks?|european shares?|"
+    r"europe stocks?|eurozone stocks?|uk stocks?|london stocks?|"
+    r"japanese stocks?|hong kong stocks?|chinese stocks?)\b", re.I)
+US_EQUITIES_LEAD = re.compile(
+    r"\b(?:wall street|u\.?s\.?\s+(?:stocks?|equities|shares?|markets?)|"
+    r"s&p\s*500|nasdaq(?:\s*100)?|dow jones|nyse)\b", re.I)
+OPINION_LEAD = re.compile(r"^\s*(?:opinion|op-ed|editorial|column)\s*:", re.I)
 MARKET_RESEARCH = re.compile(
     r"\b(?:goldman sachs|j\.?p\.?\s*morgan|bank of america|"
     r"morgan stanley|citigroup|ubs|barclays)\b.*"
@@ -63,6 +73,11 @@ def market_evidence(item: dict) -> dict:
     source_type = str(item.get("source_type") or "")
     language = str(item.get("source_language") or "en")
     host = (urlparse(str(item.get("url") or "")).hostname or "").lower()
+
+    if OPINION_LEAD.search(title):
+        return {"eligible": False, "reason": "opinion_not_factual_market_report"}
+    if FOREIGN_EQUITIES_LEAD.search(title) and not US_EQUITIES_LEAD.search(title):
+        return {"eligible": False, "reason": "non_us_market_primary_subject"}
 
     if language == "zh":
         # Exclude generic Chinese/HK equities unless clear US market involvement.
