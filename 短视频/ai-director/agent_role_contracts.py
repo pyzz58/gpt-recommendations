@@ -442,11 +442,43 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
     return schema
 
 
+def _director_final_creative_safeguard(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, holistic_post_critique,
+        action_rescue_post_plan, department_delivery_review,
+        artistic_arbitration_plan):
+    """One authoritative final director review; unchanged legacy routes."""
+    required = creative_gates.check_mode(base)
+    supplied = any(item is not None for item in (
+        holistic_post_critique, action_rescue_post_plan,
+        department_delivery_review, artistic_arbitration_plan))
+    if task_id != "director_final":
+        if supplied:
+            raise ValueError("CREW_POST_DIRECTOR_EVIDENCE_ONLY_FOR_FINAL")
+        return None
+    if required or supplied:
+        if department_command is None or audiovisual_plan is None:
+            raise ValueError("CREW_FINAL_DIRECTOR_MISSING_CREATIVE_LOCK")
+        if not required:
+            raise ValueError("CREW_FINAL_ART_GATE_REQUIRES_OPTIN")
+        return creative_gates.final_director_role_gate(
+            base, state, department_command, audiovisual_plan,
+            holistic_post_critique, action_rescue_post_plan,
+            department_delivery_review,
+            artistic_method_plan=artistic_method_plan,
+            arbitration_plan=artistic_arbitration_plan)
+    return None
+
+
 def build_role_messages(base, state, task_id, *, source_text=None,
                         editorial_handoff=None, reference_manifest=None,
                         department_command=None, audiovisual_plan=None,
                         artistic_method_plan=None, action_rescue_plan=None,
-                        holistic_critique=None):
+                        holistic_critique=None,
+                        holistic_post_critique=None,
+                        action_rescue_post_plan=None,
+                        department_delivery_review=None,
+                        artistic_arbitration_plan=None):
     """Build private messages in memory; never return a public or saved artifact.
 
     For source-locked teams, include the FIRST real director/editor vision.
@@ -581,6 +613,14 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 base, state, department_command, audiovisual_plan,
                 holistic_critique, action_rescue_plan, task_id,
                 artistic_method_plan=artistic_method_plan))
+    final_creative_review = _director_final_creative_safeguard(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, holistic_post_critique,
+        action_rescue_post_plan, department_delivery_review,
+        artistic_arbitration_plan)
+    if final_creative_review is not None:
+        request["same_director_final_review_of_actual_crew_conflicts"] = (
+            final_creative_review)
     if reference_manifest is not None:
         # The manifest contains HASHES AND VERSIONS, never pictures, paths,
         # signed URLs, licences or purported human identity approval.
@@ -711,7 +751,11 @@ def build_role_messages(base, state, task_id, *, source_text=None,
 def validate_role_output(base, state, task_id, raw, *, source_text=None,
                          editorial_handoff=None, department_command=None,
                          audiovisual_plan=None, artistic_method_plan=None,
-                         action_rescue_plan=None, holistic_critique=None):
+                         action_rescue_plan=None, holistic_critique=None,
+                         holistic_post_critique=None,
+                         action_rescue_post_plan=None,
+                         department_delivery_review=None,
+                         artistic_arbitration_plan=None):
     """Strict provider-agnostic parsing + specialist craft preflight.
 
     Return a new parsed object, never a fixed/normalized one. Refuse invalid
@@ -792,6 +836,11 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
             base, state, department_command, audiovisual_plan,
             holistic_critique, action_rescue_plan, task_id,
             artistic_method_plan=artistic_method_plan)
+    final_creative_review = _director_final_creative_safeguard(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, holistic_post_critique,
+        action_rescue_post_plan, department_delivery_review,
+        artistic_arbitration_plan)
     if task_id not in team.ready(state):
         raise ValueError("CREW_TASK_NOT_READY")
     payload = parse_strict_json(raw)
@@ -989,13 +1038,23 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
                 if continuity_result["status"] == "blocked":
                     raise film_tracks.ContinuityError(
                         "CONTINUITY_CROSS_SHOT_STATE_UNRESOLVED")
+    if task_id == "director_final" and final_creative_review is not None:
+        decision = payload.get("director_decision", {})
+        if (isinstance(decision, dict) and
+                decision.get("decision") == "ready_for_user_review" and
+                not final_creative_review["ready_for_user_review_candidate_only"]):
+            raise ValueError("CREW_FINAL_UNRESOLVED_ARTISTIC_OR_DEPARTMENT_CONFLICT")
     return deepcopy(payload)
 
 
 def submit_role_output(base, state, task_id, raw, *, source_text=None,
                        editorial_handoff=None, department_command=None,
                        audiovisual_plan=None, artistic_method_plan=None,
-                       action_rescue_plan=None, holistic_critique=None):
+                       action_rescue_plan=None, holistic_critique=None,
+                       holistic_post_critique=None,
+                       action_rescue_post_plan=None,
+                       department_delivery_review=None,
+                       artistic_arbitration_plan=None):
     """Offline transition from a *provided* strict JSON response to a new ledger.
 
     No model invocation; caller must arrange private transport separately.
@@ -1007,5 +1066,9 @@ def submit_role_output(base, state, task_id, raw, *, source_text=None,
                                    audiovisual_plan=audiovisual_plan,
                                    artistic_method_plan=artistic_method_plan,
                                    action_rescue_plan=action_rescue_plan,
-                                   holistic_critique=holistic_critique)
+                                   holistic_critique=holistic_critique,
+                                   holistic_post_critique=holistic_post_critique,
+                                   action_rescue_post_plan=action_rescue_post_plan,
+                                   department_delivery_review=department_delivery_review,
+                                   artistic_arbitration_plan=artistic_arbitration_plan)
     return team.submit(state, team.packet(state, task_id), payload)
