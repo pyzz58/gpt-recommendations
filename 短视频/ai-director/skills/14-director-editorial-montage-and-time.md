@@ -39,3 +39,15 @@
 剪切类型的细则：`hard_cut` 对应纯剪切零长度边界；`dissolve` 必须另有素材余量、交叠帧数与转场长度，当前不可偷取本集额外时长；`match_cut` 必须由真人核验实际匹配的帧；`sound_bridge`（J/L）必须有真实音频素材与跨镜窗口，不能仅据导演一句话生出时间码；`jump_cut` 要有实际画面的导演审核。每一种未满足的功能明确给出独立修复事项，决不静默改成 hard_cut。
 
 `director_montage_editor_conform.editor_instructions(work_order)` 给后期剪辑师阅读版工单，无磁盘写入、云服务、模型调用或收费操作。任何时间码不落所选帧格、跨镜错位、总预算不符、来源篡改一律拒绝。后续真正导入剪辑软件/媒体验收时可通过本接口升级消费层，不应该绕过它调用仍未兼容的旧视频编译入口。原 QO-D09 与 QO-D19 依然 `in_progress`，文字工单不是完成影片。
+
+## 第三阶段：真实本地素材核验、OTIO 与 SRT 专业交换
+
+新模块 director_media_otio_export.py 为剪辑师提供私人工作站上的素材对位。只有本机文件可被 SHA-256 全量哈希和 FFprobe 核验；媒体相对路径必须位于指定 media_root 内，拒绝路径穿越、符号链接、远程 URL 和不匹配的帧率、裁剪长度。
+
+本模块的 inspect_local_media 在现场读取真实文件，输出已核验的字节哈希、视频尺寸、源帧数、剪入帧与剪出帧、可用头尾帧量。画面内容、脸部身份、台词口型、道具正确性、版权与观众感受仍未经核验。
+
+export_native_otio_preview 使用 Academy Software Foundation 的 OpenTimelineIO 0.18.1 创建标准 .otio 原生 JSON 预览：已核验的画面进入 Clip/ExternalReference，所有缺少的镜头或证据页保留明确 Gap，不准伪装为真实视频。原导演蒙太奇、源剧本字幕与声音 cue 保留为元数据，但旧剪辑软件是否支持导入、应用转场与字幕需另外实测。不能将文字中的声音桥伪装为 OTIO 已渲染效果。
+
+export_subtitle_srt_plan 根据原剧本来源锁定的 QO-D19 字幕时码生成 .srt 导入候选；千分之一秒离散与声音/口型实际对齐必须人工核验。没有 cue 不自动捏造字幕时码。
+
+只允许在本机私有目录保存包含视频路径、剧本原文的 .otio/.srt 文件。公开 GitHub CI 只使用现场生成的无隐私纯色视频做 FFprobe/SHA/OTIO roundtrip 测试。未经实际 NLE 导入与影视专业验收，render_or_publish_authorized 保持 false；QO-D09 和 QO-D19 保持 in_progress。
