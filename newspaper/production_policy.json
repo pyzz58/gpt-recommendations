@@ -29,5 +29,5 @@
     "delivery": "提前生成、北京时间凌晨01:00后首次尽快送出",
     "copyright": "不默认全文转载第三方版权报道"
   },
-  "conflict_resolution": "This file overrides older README excerpts. A policy change requires coherent code, cron and test changes in one PR. Never copy historical run times into production."
+  "conflict_resolution": "Latest user-approved rule (2026-10-15): daily 01:00 Asia/Shanghai is the sole authoritative delivery target; prepare before 01:00, automated attempts only within 01:00-02:00, never duplicate an edition, no automatic sends after 02:00, no test/manual resend without explicit user approval. Earlier conflicting instructions are superseded. Keep QQ SMTP recipient secrets unchanged. Coordinate code/cron/tests in a reviewed PR."
 }

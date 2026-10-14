@@ -7,7 +7,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import os
-from production_policy import POLICY, BEIJING, SEND_START
+from production_policy import POLICY, BEIJING, SEND_START, SEND_END
 
 
 def choose_phase(event: str, cron: str, dry_run: str, now: dt.datetime) -> str:
@@ -20,12 +20,22 @@ def choose_phase(event: str, cron: str, dry_run: str, now: dt.datetime) -> str:
             planned = "send"
         else:
             raise RuntimeError("Unknown scheduled cron; refusing unexpected production run")
-        # A preparation cron that arrives late must try to send before 02:00.
-        if planned == "prepare" and now.astimezone(BEIJING).time() >= SEND_START:
+        local_time = now.astimezone(BEIJING).time()
+        if local_time >= SEND_END:
+            return "expired"
+        if planned == "prepare" and local_time >= SEND_START:
             return "send"
+        if planned == "send" and local_time < SEND_START:
+            return "wait"
         return planned
+    if event == "repository_dispatch":
+        local_time = now.astimezone(BEIJING).time()
+        if local_time >= SEND_END:
+            return "expired"
+        return "send" if local_time >= SEND_START else "prepare"
     if event == "workflow_dispatch" and dry_run == "false":
-        return "send"
+        local_time = now.astimezone(BEIJING).time()
+        return "send" if SEND_START <= local_time < SEND_END else "expired"
     return "preview"
 
 
