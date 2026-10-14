@@ -78,16 +78,19 @@ class PictureRenderSmokeTests(unittest.TestCase):
                 "source_in_frame": 0,
                 "expected_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             })
-        return {
+        manifest = {
             "version": media.VERSION,
             "work_order_digest": agent_team.fingerprint(self.order),
             "assets": assets,
         }
+        self.otio_json = media.export_native_otio_preview(
+            self.order, manifest, media_root=self.media_root)["otio_json"]
+        return manifest
 
     def render(self, manifest):
         return smoke.render_synthetic_picture_smoke(
-            self.order, manifest, media_root=self.media_root,
-            output_dir=self.output_root)
+            self.order, manifest, otio_json=self.otio_json,
+            media_root=self.media_root, output_dir=self.output_root)
 
     def test_real_render_has_exact_frames_and_color_order(self):
         manifest = self.create_assets()
@@ -115,6 +118,23 @@ class PictureRenderSmokeTests(unittest.TestCase):
         self.assertGreater(colors[0][0], colors[0][1]*2)
         self.assertGreater(colors[1][1], colors[1][0]*2)
         self.assertGreater(colors[2][2], colors[2][0]*2)
+
+    def test_native_otio_import_is_required_and_wrong_clip_cannot_render(self):
+        import opentimelineio as otio
+        m = self.create_assets()
+        tl = otio.adapters.read_from_string(self.otio_json,
+                                             adapter_name="otio_json")
+        tl.tracks[0][1].name = "SPOOFED_SHOT"
+        forged = otio.adapters.write_to_string(tl,
+                                               adapter_name="otio_json")
+        with self.assertRaisesRegex(smoke.SmokeError, "MEDIA_BINDING"):
+            smoke.render_synthetic_picture_smoke(
+                self.order, m, otio_json=forged,
+                media_root=self.media_root, output_dir=self.output_root)
+        with self.assertRaisesRegex(smoke.SmokeError, "OTIO_IMPORT_INVALID"):
+            smoke.render_synthetic_picture_smoke(
+                self.order, m, otio_json="not-valid-otio-json-" * 2,
+                media_root=self.media_root, output_dir=self.output_root)
 
     def test_missing_clips_never_turn_into_a_successful_film(self):
         m = self.create_assets()
@@ -146,8 +166,9 @@ class PictureRenderSmokeTests(unittest.TestCase):
             self.render(m)
         with self.assertRaisesRegex(smoke.SmokeError, "FILENAME_UNSAFE"):
             smoke.render_synthetic_picture_smoke(
-                self.order, m, media_root=self.media_root,
-                output_dir=self.output_root, filename="../escape.mp4")
+                self.order, m, otio_json=self.otio_json,
+                media_root=self.media_root, output_dir=self.output_root,
+                filename="../escape.mp4")
 
     def test_does_not_smuggle_extra_unrendered_credit_pages(self):
         m = self.create_assets()
