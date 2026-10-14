@@ -33,7 +33,7 @@
 | QO-D09 | director | P1 | in_progress | 剪辑节奏、过渡桥与镜头版本选择 |
 | QO-D10 | director | P0 | confirmed_open | 专业导演审片标准：不是字段全就是好片 |
 | QO-D11 | director | P0 | blocked_external | 真实双镜生成、跨镜验收与风险边界 |
-| QO-D12 | director | P1 | confirmed_open | 导演/编剧修订权限冲突与版本谱系 |
+| QO-D12 | director | P1 | in_progress | 导演/编剧修订权限冲突与版本谱系 |
 | QO-D13 | director | P0 | in_progress | 总导演自主分集与单集90秒绝对上限 |
 | QO-D14 | director | P0 | in_progress | 总导演主动创意剪辑与重大压缩权 |
 | QO-D15 | director | P0 | in_progress | 总导演详尽指挥与协调所有专业部门 |
@@ -364,17 +364,17 @@
 
 ### QO-D12 · 导演/编剧修订权限冲突与版本谱系
 
-- 状态：confirmed_open；优先级：P1；阶段：now_director；负责人：director
-- 发现位置：agent_role_contracts.py; screenplay_director_handoff.py
+- 状态：in_progress；优先级：P1；阶段：now_director；负责人：director
+- 发现位置：agent_role_contracts.py; screenplay_director_handoff.py; director_revision_lineage.py; skills/17-director-screenwriter-revision-lineage.md
 - 问题：目前岗位提示已限定，但后续实际修改可能改变台词、场景、镜头分配时没有统一revision_request闭环
 - 根因：跨部门讨论尚无一个可复核的剧本变更影响列表
-- 方案：增加导演返修单->编剧改稿->作者复审->重新绑定镜头和受影响专业工单的完整修改谱系；杜绝旧版本混入新音画制作
-- 完成验收：至少3种跨部门改稿触发失效/回滚测试，并验证未受影响镜头可保留
+- 方案：增加导演返修单->编剧改稿->作者复审->重新绑定镜头和受影响专业工单的完整修改谱系；杜绝旧版本混入新音画制作；第一阶段实现全ledger/导演锁/剧本source digest绑定的修订提案，识别同剧本专业/导演修改与需要编剧全稿重写的两类权属：同剧本复用原agent_team.request_revision定点失效下游及剪辑相邻镜头，保存不相关岗位；故事/事实/对白/结构变化不得原地覆盖，须调用现有screenplay_director_handoff审核交接并启动一份全新空白十岗位账本，旧导演锁及审批不可迁移。唯一源beat、源shot内容、角色道具世界及剪辑相邻关系用于形成可人工审查的素材复用候选，不自动复制已认证素材；作者身份/许可需独立核实。
+- 完成验收：至少3种跨部门改稿触发失效/回滚测试，并验证未受影响镜头可保留；本轮仅编写代码，暂不测试。下一轮在获得允许时应证明三类修改导致正确局部/全局失效、旧ledger/stale指令被拒、新编剧稿不继承旧批准、非改动镜头候选需复审；没有独立作者身份/真实媒体校验不得complete。
 - AI 视频适配：局部返工应避免整片重复生成，高成本动作优先可追踪复用
 - 依赖：QO-W09, QO-D02
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/66；回归 用户明确要求先不测试：此处仅是未经手动验证的实现与规范（Draft PR）；没有本轮真实模型运行、正式AI视频生成或独立艺术/法律授权验收。；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:confirmed_open → 2026-10-14:in_progress
 
 ### QO-D13 · 总导演自主分集与单集90秒绝对上限
 
