@@ -11,10 +11,10 @@ from urllib.parse import urlparse
 US_MARKET = re.compile(
     r"\b(?:wall street|s&p\s*500|nasdaq(?:\s*100)?|nyse|dow jones|"
     r"dow industrials?|u\.?s\.?\s+(?:stocks?|equities|shares?|"
-    r"markets?|stock market|treasur(?:y|ies)|bond yields?|"
+    r"stock market|treasur(?:y|ies)|bond yields?|"
     r"government bonds?|inflation|cpi|gdp|jobs|payrolls|unemployment|"
     r"interest rates?|economic data|earnings)|american (?:stocks?|"
-    r"equities|markets?|treasur(?:y|ies)))\b", re.I)
+    r"equities|treasur(?:y|ies)))\b", re.I)
 FED = re.compile(r"\b(?:federal reserve|fomc|fed)\b", re.I)
 SEC = re.compile(r"\b(?:sec|securities and exchange commission)\b", re.I)
 POLICY_ACTION = re.compile(
