@@ -80,10 +80,17 @@ class P1DecisionTraceTests(unittest.TestCase):
         _,records=sample()
         # Four independent article families all admissible, plus one not visited.
         allrows=[]
-        for i in range(5):
+        independent_titles=[
+            "Nvidia reports quarterly semiconductor earnings",
+            "Federal Reserve announces bank reserve rule revisions",
+            "Treasury yields drop after US inflation data",
+            "Major airline completes merger with cargo operator",
+            "Retail chain files for bankruptcy protection",
+        ]
+        for i,title in enumerate(independent_titles):
             row={**records[i%len(records)],"url":f"https://sample.example/news-{i}",
                  "event_key":f"independent-{i}","publisher_family":f"pub{i}",
-                 "title":f"Distinct US-market financial report {i}"}
+                 "title":title}
             allrows.append(row)
         (chosen,diag),_,_=select(allrows)
         self.assertEqual(len(chosen[MARKET]),SECTIONS[MARKET])
