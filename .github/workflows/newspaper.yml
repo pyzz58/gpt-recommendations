@@ -4,18 +4,18 @@ on:
     paths:
       - 'newspaper/**'
       - '.github/workflows/newspaper.yml'
-  # Authoritative timetable: newspaper/production_policy.json (Asia/Shanghai).
-  # UTC day before: 16:05/16:20 = Beijing 00:05/00:20 (preparation).
-  # UTC day before: 17:03/17:16/17:29/17:42/17:55 = Beijing 01:xx (send).
-  # GitHub schedule is best-effort; no independent watchdog is deployed.
+  # Beijing 00:01 startup; later ticks recover missed GitHub schedule events.
+  # Each tick builds and sends immediately when ready; one receipt per edition.
   schedule:
-    - cron: '5 16 * * *'
-    - cron: '20 16 * * *'
-    - cron: '3 17 * * *'
-    - cron: '16 17 * * *'
-    - cron: '29 17 * * *'
-    - cron: '42 17 * * *'
-    - cron: '55 17 * * *'
+    - cron: '1 16 * * *'
+    - cron: '16 16 * * *'
+    - cron: '31 16 * * *'
+    - cron: '46 16 * * *'
+    - cron: '7 17 * * *'
+    - cron: '37 17 * * *'
+    - cron: '7 18 * * *'
+    - cron: '7 19 * * *'
+    - cron: '7 20 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -254,11 +254,7 @@ jobs:
           READY_SAVED: ${{ steps.save_prepared.outcome }}
         run: |
           set -euo pipefail
-          if [[ "$PHASE" == "expired" ]]; then
-            status=EXPIRED_NO_SEND
-          elif [[ "$PHASE" == "wait" ]]; then
-            status=EARLY_NO_SEND
-          elif [[ "$SENT_CACHE" == "true" ]]; then
+          if [[ "$SENT_CACHE" == "true" ]]; then
             status=ALREADY_SENT
           elif [[ "$PHASE" == "prepare" && ("$READY_CACHE" == "true" || ("$BUILD" == "success" && "$READY_SAVED" == "success")) ]]; then
             status=PREPARED_NOT_SENT
@@ -277,7 +273,7 @@ jobs:
             echo "- Prepared cache hit: $READY_CACHE"
             echo "- SMTP accepted is not inbox-delivered confirmation"
           } >> "$GITHUB_STEP_SUMMARY"
-          if [[ "$status" == FAILED || "$status" == EXPIRED_NO_SEND || "$status" == EARLY_NO_SEND || "$status" == SMTP_ACCEPTED_RECEIPT_UNVERIFIED ]]; then
+          if [[ "$status" == FAILED || "$status" == SMTP_ACCEPTED_RECEIPT_UNVERIFIED ]]; then
             echo "::error::Review newspaper run before retry: $status"
             exit 1
           fi
