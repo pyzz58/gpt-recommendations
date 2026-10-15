@@ -50,5 +50,8 @@ def check_send_window(now: dt.datetime, day: dt.date):
     local = now.astimezone(BEIJING)
     if local.date() != day:
         raise RuntimeError("Refusing to send an edition on a different Beijing date")
-    # The edition can be sent immediately after verified preparation, even before 01:00.
-    # Date validation above remains mandatory; no additional hour-based gate.
+    # No stale edition; earliest legal handoff is the 00:01 scheduled start.
+    # There is no fixed completion or delivery deadline.
+    earliest = dt.time.fromisoformat(POLICY["scheduled_delivery_bjt"])
+    if local.time() < earliest:
+        raise RuntimeError("The daily newspaper cannot be handed off before 00:01 Beijing")
