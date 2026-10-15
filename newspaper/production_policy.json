@@ -1,23 +1,11 @@
 {
   "schema": 1,
-  "version": "V2.3",
+  "version": "V2.4",
   "effective_date": "2026-10-15",
   "scope": "newspaper only; neican is independent",
   "timezone": "Asia/Shanghai",
   "cutoff_bjt": "00:00",
   "scheduled_delivery_bjt": "00:01",
-  "prepare_crons_utc": [],
-  "send_crons_utc": [
-    "1 16 * * *",
-    "16 16 * * *",
-    "31 16 * * *",
-    "46 16 * * *",
-    "7 17 * * *",
-    "37 17 * * *",
-    "7 18 * * *",
-    "7 19 * * *",
-    "7 20 * * *"
-  ],
   "mail_subject_prefix": "全球新闻选编",
   "cost_ceiling_cny": 1,
   "content_policy": {
@@ -25,8 +13,9 @@
     "analysis": "重大新闻分析 + 期末《今日关键变化》",
     "market_lead": "美股与全球资本市场作为头版",
     "source_policy": "事实可溯、事件级去重、重要新闻覆盖检查",
-    "delivery": "北京时间00:01起自动启动，核验当期PDF后立即向QQ邮箱交付；不设置01:00或其他完成时间门槛；同刊期只发送一次，延迟的同日触发允许恢复。",
+    "delivery": "每日北京时间00:01请求自动启动，真实启动时生成并校验当期PDF，成功后立即交给QQ SMTP；无备稿阶段或固定发送时点；同日SMTP回执防重复。GitHub cron不能提供准点或必达承诺。",
     "copyright": "不默认全文转载第三方版权报道"
   },
-  "conflict_resolution": "This policy is authoritative for newspaper only. GitHub schedule is best-effort; retries share one daily receipt."
+  "conflict_resolution": "Sole authoritative policy for newspaper only. Single GitHub startup cron, best effort. No duplicate scheduled workflow.",
+  "startup_cron_utc": "1 16 * * *"
 }
