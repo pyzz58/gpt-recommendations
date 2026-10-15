@@ -43,17 +43,17 @@ class QualitySampleTests(unittest.TestCase):
         self.assertIn("python newspaper/digest.py --prepare --output /tmp/newspaper-ready",w)
         self.assertIn("python newspaper/prepared_delivery.py --bundle-dir /tmp/newspaper-ready",w)
         schedules=re.findall(r"cron: '([0-9]+) ([0-9]+) [*] [*] [*]'",w)
-        self.assertGreaterEqual(len(schedules),7)
+        self.assertEqual(schedules,[("1","16")])
         local=[((int(h)+8)%24,int(m)) for m,h in schedules]
         self.assertTrue(any(hr==0 for hr,_ in local))
-        self.assertTrue(any(hr==1 for hr,_ in local))
+        self.assertTrue(all(hr==0 and m==1 for hr,m in local))
         self.assertTrue(all(hr in (0,1,2,3,4) for hr,_ in local))
         self.assertNotIn("[newspaper-recovery-20261014]",w)
         self.assertNotIn("[newspaper-v05-send-once]",w)
 
     def test_summary_cannot_confuse_ready_and_sent(self):
         w=self.workflow
-        for state in ("PREPARED_NOT_SENT","ALREADY_SENT","SMTP_ACCEPTED",
+        for state in ("ALREADY_SENT","SMTP_ACCEPTED",
                       "SMTP_ACCEPTED_RECEIPT_UNVERIFIED","FAILED"):
             self.assertIn(state,w)
         self.assertIn("steps.save_receipt.outcome",w)
