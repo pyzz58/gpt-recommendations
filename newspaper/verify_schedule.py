@@ -1,5 +1,6 @@
-"""Fail CI if actual GitHub cron differs from the single production policy."""
+"""Fail CI if the one production cron differs from canonical production_policy.json."""
 from __future__ import annotations
+
 import datetime as dt
 from pathlib import Path
 import re
@@ -8,27 +9,21 @@ from production_policy import POLICY, BEIJING
 
 def list_workflow_crons():
     workflow=(Path(__file__).resolve().parent.parent/".github/workflows/newspaper.yml").read_text(encoding="utf-8")
-    return re.findall(r"^    - cron: '([0-9]+ [0-9]+ \* \* \*)'\s*$",workflow,re.M)
+    return re.findall(r"^    - cron: '([0-9]+ [0-9]+ \\* \\* \\*)'\\s*$",workflow,re.M)
 
 
 def verify():
-    actual=list_workflow_crons()
-    expected=POLICY["prepare_crons_utc"]+POLICY["send_crons_utc"]
-    if actual != expected or len(actual)!=len(set(actual)):
-        raise AssertionError(f"Newspaper YAML cron differs from production_policy.json: {actual!r} vs {expected!r}")
-    for i,cron in enumerate(actual):
-        minute,hour,_,_,_=cron.split()
-        # Convert UTC cron wall-clock to Beijing clock, accounting for a date offset.
-        local=(dt.datetime(2026,10,13,int(hour),int(minute),tzinfo=dt.timezone.utc)).astimezone(BEIJING)
-        if local.hour not in (0, 1, 2, 3, 4):
-            raise AssertionError(f"Unexpected Beijing recovery hour: {local:%H:%M}: {cron}")
-    if POLICY["prepare_crons_utc"]:
-        raise AssertionError("Obsolete prepare-only cron must not be configured")
-    if actual[0] != "1 16 * * *":
-        raise AssertionError("First startup must be Beijing 00:01")
+    configured=POLICY["startup_cron_utc"]
+    crons=list_workflow_crons()
+    if crons != [configured]:
+        raise AssertionError(f"Expected exactly one startup cron {configured!r}, found {crons!r}")
+    minute,hour,_,_,_=configured.split()
+    actual=(dt.datetime(2026,10,14,int(hour),int(minute),tzinfo=dt.timezone.utc)).astimezone(BEIJING)
+    if (actual.hour,actual.minute)!=(0,1):
+        raise AssertionError(f"Beijing startup must be 00:01, got {actual:%H:%M}")
     return True
 
 
 if __name__=="__main__":
     verify()
-    print("NEWSPAPER_SCHEDULE_CONTRACT_OK policy=production_policy.json")
+    print("NEWSPAPER_SINGLE_SCHEDULE_OK policy=production_policy.json")
