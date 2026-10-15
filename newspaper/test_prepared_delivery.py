@@ -68,6 +68,23 @@ class PreparedDeliveryTests(unittest.TestCase):
         self.assertEqual(len(smtp.messages),1)
         self.assertEqual(smtp.messages[0]["Subject"],self.subject)
 
+    def test_one_shot_label_distinguishes_test_from_normal_edition(self):
+        smtp=DummySMTP()
+        now=dt.datetime(2026,10,14,0,3,tzinfo=BEIJING)
+        with patch.dict(os.environ,{"SMTP_FROM":"sender@example.com",
+                    "SMTP_PASSWORD":"dummy","NEWSPAPER_TO":"reader@example.com"}):
+            message_id=send_bundle(self.directory,self.day,now=now,
+                                  smtp_factory=lambda *a,**kw:smtp,
+                                  test_label="AUTO-20261015-0318")
+        self.assertIn("newspaper-test-AUTO-20261015-0318",message_id)
+        self.assertTrue(smtp.messages[0]["Subject"].startswith("[临时自动化测试 AUTO-20261015-0318]"))
+        with patch.dict(os.environ,{"SMTP_FROM":"sender@example.com",
+                    "SMTP_PASSWORD":"dummy","NEWSPAPER_TO":"reader@example.com"}):
+            with self.assertRaises(ValueError):
+                send_bundle(self.directory,self.day,now=now,
+                            smtp_factory=lambda *a,**kw:smtp,
+                            test_label="invalid\\nheader")
+
     def test_partial_recipient_refusal_is_not_a_success(self):
         smtp=DummySMTP()
         smtp.refuse={"reader@example.com":(550,b"refused")}
