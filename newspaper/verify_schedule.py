@@ -9,7 +9,7 @@ from production_policy import POLICY, BEIJING
 
 def list_workflow_crons():
     workflow=(Path(__file__).resolve().parent.parent/".github/workflows/newspaper.yml").read_text(encoding="utf-8")
-    return re.findall(r"^    - cron: '([0-9]+ [0-9]+ \\* \\* \\*)'\\s*$",workflow,re.M)
+    return re.findall(r"^    - cron: '([^']+)'$",workflow,re.M)
 
 
 def verify():
