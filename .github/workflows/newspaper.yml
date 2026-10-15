@@ -68,7 +68,7 @@ jobs:
         env:
           PYTHONPATH: newspaper
         run: |
-          python -m unittest -v test_prepared_delivery test_mail_secret_boundary test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality test_editorial_topic_relevance test_headline_quality test_p1_benchmark test_market_coverage_funnel test_sec_edgar test_market_readability_probe test_p1_decision_trace
+          python -m unittest -v test_prepared_delivery test_mail_secret_boundary test_market_source_provenance test_people_overseas_monitor test_treasury_yields test_market_web_quotes test_editorial_quality test_editorial_topic_relevance test_headline_quality test_p1_benchmark test_market_coverage_funnel test_sec_edgar test_market_readability_probe test_p1_decision_trace test_schedule_policy test_schedule_trigger_proof
       - name: Measure P1 labeled fixture baseline (no network / no model)
         run: python newspaper/editorial_benchmark.py
       - name: Preserve P1 frozen-case benchmark
