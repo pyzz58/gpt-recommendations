@@ -4,19 +4,10 @@ on:
     paths:
       - 'newspaper/**'
       - '.github/workflows/newspaper.yml'
-  # Beijing 00:01 first start; send immediately when verified PDF is ready.
-  # Later ticks recover delayed/failed runs on the same date.
-  # SMTP receipt suppresses repeat sends across retries.
+  # Single Beijing 00:01 startup. GitHub schedule is best-effort.
+  # Produce current edition, verify PDF, hand off to QQ SMTP immediately.
   schedule:
     - cron: '1 16 * * *'
-    - cron: '16 16 * * *'
-    - cron: '31 16 * * *'
-    - cron: '46 16 * * *'
-    - cron: '7 17 * * *'
-    - cron: '37 17 * * *'
-    - cron: '7 18 * * *'
-    - cron: '7 19 * * *'
-    - cron: '7 20 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -110,12 +101,12 @@ jobs:
           python newspaper/schedule_contract.py --event "$EVENT" --cron "$CRON" --dry-run "$DRY_RUN"
 
       - name: Verify production schedule contract
-        if: steps.phase.outputs.phase == 'send' || steps.phase.outputs.phase == 'prepare'
+        if: steps.phase.outputs.phase == 'send'
         run: python newspaper/verify_schedule.py
 
       - name: Check sent receipt (never means inbox delivery)
         id: receipt
-        if: steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send'
+        if: steps.phase.outputs.phase == 'send'
         uses: actions/cache/restore@v4
         with:
           key: newspaper-sent-${{ steps.date.outputs.edition }}
@@ -137,31 +128,23 @@ jobs:
             fi
           done
 
-      - name: Restore prebuilt verified edition
-        id: prepared
-        if: (steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true'
-        uses: actions/cache/restore@v4
-        with:
-          key: newspaper-ready-v22-${{ steps.date.outputs.edition }}
-          path: /tmp/newspaper-ready
-
       - name: Install print fonts
-        if: steps.phase.outputs.phase == 'preview' || ((steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
+        if: steps.phase.outputs.phase == 'preview' || (steps.phase.outputs.phase == 'send' && steps.receipt.outputs.cache-hit != 'true')
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk fonts-liberation
           fc-match 'Noto Serif CJK SC'
 
       - name: Install newsroom dependencies
-        if: steps.phase.outputs.phase == 'preview' || ((steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
+        if: steps.phase.outputs.phase == 'preview' || (steps.phase.outputs.phase == 'send' && steps.receipt.outputs.cache-hit != 'true')
         run: python -m pip install -r newspaper/requirements.txt
 
       - name: Install English grammar model
-        if: steps.phase.outputs.phase == 'preview' || ((steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
+        if: steps.phase.outputs.phase == 'preview' || (steps.phase.outputs.phase == 'send' && steps.receipt.outputs.cache-hit != 'true')
         run: python -m spacy download en_core_web_sm
 
       - name: Cache offline translation model
-        if: steps.phase.outputs.phase == 'preview' || ((steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true')
+        if: steps.phase.outputs.phase == 'preview' || (steps.phase.outputs.phase == 'send' && steps.receipt.outputs.cache-hit != 'true')
         uses: actions/cache@v4
         with:
           path: ~/.local/share/argos-translate/packages
@@ -219,7 +202,7 @@ jobs:
 
       - name: Prepare verified edition (no SMTP credentials)
         id: build
-        if: (steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send') && steps.receipt.outputs.cache-hit != 'true' && steps.prepared.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
+        if: steps.phase.outputs.phase == 'send' && steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
         env:
           NEWSPAPER_LLM_API_KEY: ${{ secrets.NEWSPAPER_LLM_API_KEY }}
           NEWSPAPER_SEC_CONTACT: ${{ secrets.NEWSPAPER_SEC_CONTACT }}
@@ -253,30 +236,18 @@ jobs:
           key: newspaper-sent-${{ steps.date.outputs.edition }}
           path: /tmp/newspaper-sent-receipt
 
-      - name: Cache completed edition for recovery attempts
-        id: save_prepared
-        if: ${{ always() && steps.build.outcome == 'success' }}
-        uses: actions/cache/save@v4
-        with:
-          key: newspaper-ready-v22-${{ steps.date.outputs.edition }}
-          path: /tmp/newspaper-ready
-
       - name: Publish explicit delivery status
         if: ${{ always() && steps.phase.outputs.phase != 'preview' }}
         env:
           PHASE: ${{ steps.phase.outputs.phase }}
           SENT_CACHE: ${{ steps.receipt.outputs.cache-hit }}
-          READY_CACHE: ${{ steps.prepared.outputs.cache-hit }}
           BUILD: ${{ steps.build.outcome }}
           SEND: ${{ steps.send.outcome }}
           RECEIPT: ${{ steps.save_receipt.outcome }}
-          READY_SAVED: ${{ steps.save_prepared.outcome }}
         run: |
           set -euo pipefail
           if [[ "$SENT_CACHE" == "true" ]]; then
             status=ALREADY_SENT
-          elif [[ "$PHASE" == "prepare" && ( "$READY_CACHE" == "true" || ( "$BUILD" == "success" && "$READY_SAVED" == "success" ) ) ]]; then
-            status=PREPARED_NOT_SENT
           elif [[ "$SEND" == "success" && "$RECEIPT" == "success" ]]; then
             status=SMTP_ACCEPTED
           elif [[ "$SEND" == "success" ]]; then
@@ -286,10 +257,9 @@ jobs:
           fi
           echo "NEWSPAPER_DELIVERY_STATUS=$status edition=${{ steps.date.outputs.edition }}"
           {
-            echo "### Newspaper V2"
+            echo "### Newspaper startup V2.4"
             echo "- Edition (Beijing): ${{ steps.date.outputs.edition }}"
             echo "- Status: **$status**"
-            echo "- Prepared cache hit: $READY_CACHE"
             echo "- SMTP accepted is not inbox-delivered confirmation"
           } >> "$GITHUB_STEP_SUMMARY"
           if [[ "$status" == FAILED || "$status" == SMTP_ACCEPTED_RECEIPT_UNVERIFIED ]]; then
