@@ -1,10 +1,8 @@
-"""P0: scheduler must have one production cron and no competing probes."""
-import datetime as dt
+"""P0: exactly one external startup marker, no competing GitHub cron or probes."""
 from pathlib import Path
+import json
 import re
 import unittest
-from zoneinfo import ZoneInfo
-import json
 
 ROOT=Path(__file__).resolve().parent.parent
 WORKFLOW=ROOT/".github/workflows/newspaper.yml"
@@ -12,11 +10,17 @@ POLICY=ROOT/"newspaper/production_policy.json"
 
 
 class TriggerProofTests(unittest.TestCase):
-    def test_one_authoritative_scheduled_entry(self):
+    def test_authoritative_external_startup_entry(self):
         cfg=json.loads(POLICY.read_text(encoding="utf-8"))
         main=WORKFLOW.read_text(encoding="utf-8")
+        self.assertEqual(cfg["startup_mode"],"external-marker-push")
+        self.assertEqual(cfg["startup_marker_path"],"newspaper/.scheduler-tick")
+        self.assertEqual(cfg["startup_timezone"],"Asia/Shanghai")
+        self.assertEqual(cfg["startup_time_bjt"],"00:01")
         crons=re.findall(r"^    - cron: '([^']+)'$",main,re.M)
-        self.assertEqual(crons,[cfg["startup_cron_utc"]])
+        self.assertEqual(crons,[])
+        self.assertNotIn("  schedule:\n",main)
+        self.assertIn("  push:\n    branches: [main]\n    paths:\n      - 'newspaper/.scheduler-tick'\n",main)
         self.assertNotIn("newspaper-ready-v22-",main)
         self.assertNotIn("PREPARED_NOT_SENT",main)
         self.assertIn("NEWSPAPER_DELIVERY_STATUS=",main)
@@ -27,13 +31,11 @@ class TriggerProofTests(unittest.TestCase):
         directory=ROOT/".github/workflows"
         self.assertFalse((directory/"newspaper-schedule-probe.yml").exists())
         self.assertFalse((directory/"newspaper-one-time-autonomous-test-20261015.yml").exists())
+        self.assertFalse((directory/"newspaper-one-shot-20261015-0359.yml").exists())
 
-    def test_single_cron_maps_to_beijing_midnight_one(self):
+    def test_canonical_marker_file_exists(self):
         cfg=json.loads(POLICY.read_text(encoding="utf-8"))
-        minute,hour,_,_,_=cfg["startup_cron_utc"].split()
-        utc=dt.datetime(2026,10,14,int(hour),int(minute),tzinfo=dt.timezone.utc)
-        bj=utc.astimezone(ZoneInfo("Asia/Shanghai"))
-        self.assertEqual((bj.date(),bj.hour,bj.minute),(dt.date(2026,10,15),0,1))
+        self.assertTrue((ROOT/cfg["startup_marker_path"]).is_file())
 
 
 if __name__=="__main__":
