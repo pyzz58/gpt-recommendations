@@ -15,13 +15,13 @@ class CanonicalSchedulePolicyTests(unittest.TestCase):
 
     def test_workflow_cron_equals_canonical_json_exactly(self):
         self.assertTrue(verify())
-        self.assertEqual(list_workflow_crons(),
-            [POLICY["startup_cron_utc"]])
+        self.assertEqual(list_workflow_crons(), [])
+        self.assertEqual(POLICY["startup_mode"], "external-marker-push")
 
     def test_midnight_start_and_immediate_send(self):
         self.assertEqual(POLICY["scheduled_delivery_bjt"],"00:01")
         self.assertEqual(POLICY["cutoff_bjt"],"00:00")
-        self.assertEqual(POLICY["startup_cron_utc"],"1 16 * * *")
+        self.assertEqual(POLICY["startup_time_bjt"],"00:01")
         self.assertIn("00:00截稿",subject(self.day))
 
     def test_news_window_crosses_midnight(self):
@@ -34,11 +34,10 @@ class CanonicalSchedulePolicyTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             choose_phase("schedule","5 22 * * *","",dt.datetime(2026,10,15,1,2,tzinfo=BEIJING))
 
-    def test_one_scheduled_start_generates_then_sends_when_ready(self):
-        cron=POLICY["startup_cron_utc"]
+    def test_external_push_starts_existing_pipeline(self):
         for hour,minute in ((0,1),(0,59),(4,15)):
             clock=dt.datetime(2026,10,15,hour,minute,tzinfo=BEIJING)
-            self.assertEqual(choose_phase("schedule",cron,"",clock),"send")
+            self.assertEqual(choose_phase("push","","",clock),"send")
 
     def test_dedicated_external_push_selects_production(self):
         t=dt.datetime(2026,10,15,10,10,tzinfo=BEIJING)
