@@ -26,7 +26,7 @@ class QualitySampleTests(unittest.TestCase):
         now=dt.datetime(2026,10,13,11,35,tzinfo=BEIJING_TZ)
         a,b,_=edition_window(now)
         self.assertEqual((a.hour,b.hour),(0,0))
-        self.assertEqual(POLICY["scheduled_delivery_bjt"],"01:00")
+        self.assertEqual(POLICY["scheduled_delivery_bjt"],"00:01")
 
     def test_preview_never_sends_or_uses_api_key(self):
         w=self.workflow
