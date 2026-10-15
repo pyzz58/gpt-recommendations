@@ -1,55 +1,39 @@
-"""P0 scheduler proof constraints: independent and strictly non-sending."""
+"""P0: scheduler must have one production cron and no competing probes."""
 import datetime as dt
 from pathlib import Path
 import re
 import unittest
 from zoneinfo import ZoneInfo
+import json
 
 ROOT=Path(__file__).resolve().parent.parent
 WORKFLOW=ROOT/".github/workflows/newspaper.yml"
-PROBE=ROOT/".github/workflows/newspaper-schedule-probe.yml"
 POLICY=ROOT/"newspaper/production_policy.json"
 
 
 class TriggerProofTests(unittest.TestCase):
-    def test_probe_is_separate_and_cannot_send_mail_or_pay_for_generation(self):
-        text=PROBE.read_text(encoding="utf-8")
-        self.assertIn("name: Newspaper - Schedule Trigger Probe",text)
-        self.assertIn("cron: '37 * * * *'",text)
-        self.assertIn("NEWSPAPER_CRON_REAL_EVENT=true",text)
-        self.assertIn("NEWSPAPER_CRON_REAL_EVENT=false",text)
-        self.assertIn("schedule_probe_marker.txt",text)
-        self.assertIn("timeout-minutes: 2",text)
-        self.assertIn("contents: read",text)
-        self.assertIn("actions: read",text)
-        self.assertIn("NEWSPAPER_MAIN_WORKFLOW_STATE=",text)
-        self.assertIn("api.github.com/repos/",text)
-        self.assertNotIn("method=\"POST\"",text)
-        self.assertNotIn("contents: write",text)
-        forbidden=["send_email","send_bundle","prepared_delivery.py",
-                   "SMTP_PASSWORD","NEWSPAPER_TO","secrets.","workflow_call",
-                   "smtp.qq.com","NEWSPAPER_LLM_API_KEY"]
-        for word in forbidden:
-            with self.subTest(word=word):
-                self.assertNotIn(word,text)
-        self.assertNotIn("schedule_probe_marker.txt",
-            WORKFLOW.read_text(encoding="utf-8"))
-
-    def test_all_configured_crons_map_to_correct_beijing_date(self):
-        import json
+    def test_one_authoritative_scheduled_entry(self):
         cfg=json.loads(POLICY.read_text(encoding="utf-8"))
-        workflow=WORKFLOW.read_text(encoding="utf-8")
-        expected=cfg["prepare_crons_utc"]+cfg["send_crons_utc"]
-        self.assertEqual(len(expected),9)
-        for idx,cron in enumerate(expected):
-            with self.subTest(cron=cron):
-                self.assertIn(f"cron: '{cron}'",workflow)
-                minute,hour,_,_,_=cron.split()
-                utc=dt.datetime(2026,10,14,int(hour),int(minute),
-                                tzinfo=dt.timezone.utc)
-                beijing=utc.astimezone(ZoneInfo("Asia/Shanghai"))
-                self.assertEqual(beijing.date(),dt.date(2026,10,15))
-                self.assertEqual(beijing.hour,int(hour)-16)
+        main=WORKFLOW.read_text(encoding="utf-8")
+        crons=re.findall(r"^    - cron: '([^']+)'$",main,re.M)
+        self.assertEqual(crons,[cfg["startup_cron_utc"]])
+        self.assertNotIn("newspaper-ready-v22-",main)
+        self.assertNotIn("PREPARED_NOT_SENT",main)
+        self.assertIn("NEWSPAPER_DELIVERY_STATUS=",main)
+        self.assertIn("newspaper/digest.py --prepare",main)
+        self.assertIn("newspaper/prepared_delivery.py",main)
+
+    def test_no_extra_temporary_news_schedulers(self):
+        directory=ROOT/".github/workflows"
+        self.assertFalse((directory/"newspaper-schedule-probe.yml").exists())
+        self.assertFalse((directory/"newspaper-one-time-autonomous-test-20261015.yml").exists())
+
+    def test_single_cron_maps_to_beijing_midnight_one(self):
+        cfg=json.loads(POLICY.read_text(encoding="utf-8"))
+        minute,hour,_,_,_=cfg["startup_cron_utc"].split()
+        utc=dt.datetime(2026,10,14,int(hour),int(minute),tzinfo=dt.timezone.utc)
+        bj=utc.astimezone(ZoneInfo("Asia/Shanghai"))
+        self.assertEqual((bj.date(),bj.hour,bj.minute),(dt.date(2026,10,15),0,1))
 
 
 if __name__=="__main__":
