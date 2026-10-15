@@ -78,14 +78,15 @@ class PreparedDeliveryTests(unittest.TestCase):
                 send_bundle(self.directory,self.day,now=now,
                             smtp_factory=lambda *a,**kw:smtp)
 
-    def test_send_immediately_after_midnight_is_allowed(self):
+    def test_send_before_one_am_is_refused_without_using_smtp(self):
         smtp=DummySMTP()
         with patch.dict(os.environ,{"SMTP_FROM":"sender@example.com",
                      "SMTP_PASSWORD":"dummy","NEWSPAPER_TO":"reader@example.com"}):
-            send_bundle(self.directory,self.day,
-                        now=dt.datetime(2026,10,14,0,1,tzinfo=BEIJING),
-                        smtp_factory=lambda *a,**kw:smtp)
-        self.assertEqual(len(smtp.messages),1)
+            with self.assertRaises(RuntimeError):
+                send_bundle(self.directory,self.day,
+                            now=dt.datetime(2026,10,14,0,1,tzinfo=BEIJING),
+                            smtp_factory=lambda *a,**kw:smtp)
+        self.assertEqual(len(smtp.messages),0)
 
     def test_send_late_same_day_is_allowed(self):
         smtp=DummySMTP()
