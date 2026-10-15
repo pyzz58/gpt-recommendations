@@ -1,9 +1,16 @@
 name: Newspaper - One-time Autonomous Delivery Test
 on:
-  # Registered only for 2026-10-15, 03:18 UTC / 11:18 Beijing / 16:18 Auckland.
-  # The date gate below permanently disables work outside this one calendar day.
+  # Original 03:18 UTC slot was not observed. Retry slots allow GitHub's
+  # best-effort cron registration to settle. All slots use the SAME single
+  # accepted-mail receipt: at most one confirmed QQ SMTP handoff.
+  # UTC/BJT date gate prevents any repeat after 2026-10-15.
   schedule:
     - cron: '18 3 * * *'
+    - cron: '53 3 * * *'
+    - cron: '8 4 * * *'
+    - cron: '23 4 * * *'
+    - cron: '38 4 * * *'
+    - cron: '53 4 * * *'
 permissions:
   contents: read
 concurrency:
