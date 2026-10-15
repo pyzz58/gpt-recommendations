@@ -1,0 +1,60 @@
+name: Intelligence specification sync
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'newspaper/strategic-intelligence/**'
+      - '.github/workflows/intelligence-spec-sync.yml'
+  pull_request:
+    paths:
+      - 'newspaper/strategic-intelligence/**'
+      - '.github/workflows/intelligence-spec-sync.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: intelligence-spec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check canonical projections
+        run: python3 newspaper/strategic-intelligence/tools/sync_spec.py --check
+      - name: Test drift and failure handling
+        run: python3 -m unittest discover -s newspaper/strategic-intelligence/tests -v
+
+  synchronize:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Generate only canonical projections
+        run: python3 newspaper/strategic-intelligence/tools/sync_spec.py --write
+      - name: Verify generated files and failure handling
+        run: |
+          python3 newspaper/strategic-intelligence/tools/sync_spec.py --check
+          python3 -m unittest discover -s newspaper/strategic-intelligence/tests -v
+      - name: Commit generated projections if necessary
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -- newspaper/strategic-intelligence/README.md newspaper/strategic-intelligence/AGENTS.md newspaper/strategic-intelligence/runtime_contract.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs(intelligence): synchronize canonical projections'
+          git push origin HEAD:main

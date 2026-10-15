@@ -17,8 +17,11 @@ from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 from xml.etree import ElementTree
 
-MAX_BYTES = 350000
-TIMEOUT = 12
+from sync_spec import assert_current
+
+# Operational parameters are generated from the canonical specification.
+MAX_BYTES: int
+TIMEOUT: int
 
 class PageText(HTMLParser):
     def __init__(self):
@@ -123,15 +126,25 @@ def check(entry, user_agent):
     return result
 
 def main():
+    global MAX_BYTES, TIMEOUT
+    root = Path(__file__).resolve().parents[1]
+    try:
+        config = assert_current(root)["source_probe"]
+    except (ValueError, OSError, KeyError) as exc:
+        raise SystemExit("Specification preflight failed: " + str(exc))
+    MAX_BYTES = config["max_bytes"]
+    TIMEOUT = config["timeout_seconds"]
     p = argparse.ArgumentParser()
     p.add_argument("--execute", action="store_true", help="Make real HTTPS requests")
-    p.add_argument("--limit", type=int, default=130)
-    p.add_argument("--delay", type=float, default=3.0, help="Seconds between sources, >=2")
-    p.add_argument("--out", default="source_probe_results.json")
+    p.add_argument("--limit", type=int, default=config["default_limit"])
+    p.add_argument("--delay", type=float, default=config["default_delay_seconds"], help="Seconds between sources; minimum from canonical contract")
+    p.add_argument("--out", default=str(root / config["default_output"]))
     p.add_argument("--user-agent", default="StrategicIntelligenceSourceAudit/0.1 (noncommercial-research; contact-required-for-SEC)")
     args = p.parse_args()
-    if args.delay < 2:
-        p.error("Delay must be >= 2 seconds")
+    if not (config["minimum_delay_seconds"] <= args.delay < float("inf")):
+        p.error("Delay is below the canonical minimum or is not finite")
+    if args.execute and Path(args.out).exists():
+        p.error("Refusing to overwrite an existing audit; choose a new --out path")
     registry = Path(__file__).resolve().parents[1] / "SOURCE_REGISTRY.json"
     entries = json.loads(registry.read_text(encoding="utf-8"))["entries"][:max(0, args.limit)]
     if not args.execute:
@@ -150,3 +163,4 @@ def main():
     print("Results:", args.out)
 if __name__ == "__main__":
     main()
+
