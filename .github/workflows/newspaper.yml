@@ -4,8 +4,8 @@ on:
     paths:
       - 'newspaper/**'
       - '.github/workflows/newspaper.yml'
-  # Beijing 00:01–00:46 prebuild only; never SMTP before 01:00 BJT.
-  # 01:07 onward send ready edition; delayed ticks recover on the same date.
+  # Beijing 00:01 first start; send immediately when verified PDF is ready.
+  # Later ticks recover delayed/failed runs on the same date.
   # SMTP receipt suppresses repeat sends across retries.
   schedule:
     - cron: '1 16 * * *'
