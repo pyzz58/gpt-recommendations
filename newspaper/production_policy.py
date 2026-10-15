@@ -47,5 +47,9 @@ def check_send_window(now: dt.datetime, day: dt.date):
     """Allow immediate handoff whenever today's edition is ready."""
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("Aware clock required")
-    if now.astimezone(BEIJING).date() != day:
+    local = now.astimezone(BEIJING)
+    if local.date() != day:
         raise RuntimeError("Refusing to send an edition on a different Beijing date")
+    earliest = dt.time.fromisoformat(POLICY["scheduled_delivery_bjt"])
+    if local.time() < earliest:
+        raise RuntimeError("Refusing QQ SMTP delivery before the scheduled Beijing 01:00 time")
