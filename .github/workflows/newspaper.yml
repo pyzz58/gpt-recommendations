@@ -102,6 +102,26 @@ jobs:
         id: date
         run: echo "edition=$(TZ=Asia/Shanghai date +%F)" >> "$GITHUB_OUTPUT"
 
+      - name: Detect isolated one-shot QQ email test
+        id: mailtest
+        env:
+          EVENT: ${{ github.event_name }}
+          EDITION: ${{ steps.date.outputs.edition }}
+        run: |
+          set -euo pipefail
+          enabled=false
+          receipt_key="newspaper-sent-$EDITION"
+          if [[ "$EVENT" == "push" && "$EDITION" == "2026-10-15" ]] \
+             && grep -Fxq 'edition=2026-10-15' newspaper/.scheduler-tick \
+             && grep -Fxq 'source=chatgpt-mailtest-once' newspaper/.scheduler-tick \
+             && grep -Fxq 'test_id=ONESHOT-20261015' newspaper/.scheduler-tick; then
+            enabled=true
+            receipt_key="newspaper-mailtest-ONESHOT-20261015"
+          fi
+          echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
+          echo "receipt_key=$receipt_key" >> "$GITHUB_OUTPUT"
+          echo "NEWSPAPER_MAILTEST_MODE=$enabled receipt_key=$receipt_key"
+
       - name: Select production phase from canonical policy
         id: phase
         env:
@@ -121,7 +141,7 @@ jobs:
         if: steps.phase.outputs.phase == 'send'
         uses: actions/cache/restore@v4
         with:
-          key: newspaper-sent-${{ steps.date.outputs.edition }}
+          key: ${{ steps.mailtest.outputs.receipt_key }}
           path: /tmp/newspaper-sent-receipt
           lookup-only: true
 
@@ -232,7 +252,11 @@ jobs:
         run: |
           set -euo pipefail
           test -s /tmp/newspaper-ready/manifest.json || { echo '::error::Missing verified newspaper bundle'; exit 1; }
-          python newspaper/prepared_delivery.py --bundle-dir /tmp/newspaper-ready --edition-date "${{ steps.date.outputs.edition }}"
+          if [[ "${{ steps.mailtest.outputs.enabled }}" == "true" ]]; then
+            python newspaper/prepared_delivery.py --bundle-dir /tmp/newspaper-ready --edition-date "${{ steps.date.outputs.edition }}" --test-label AUTO-ONESHOT-20261015
+          else
+            python newspaper/prepared_delivery.py --bundle-dir /tmp/newspaper-ready --edition-date "${{ steps.date.outputs.edition }}"
+          fi
 
       - name: Make accepted-mail receipt
         if: steps.send.outcome == 'success'
@@ -245,7 +269,7 @@ jobs:
         if: steps.send.outcome == 'success'
         uses: actions/cache/save@v4
         with:
-          key: newspaper-sent-${{ steps.date.outputs.edition }}
+          key: ${{ steps.mailtest.outputs.receipt_key }}
           path: /tmp/newspaper-sent-receipt
 
       - name: Publish explicit delivery status
