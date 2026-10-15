@@ -1,0 +1,149 @@
+name: Newspaper - One-time Autonomous Delivery Test
+on:
+  # Registered only for 2026-10-15, 03:18 UTC / 11:18 Beijing / 16:18 Auckland.
+  # The date gate below permanently disables work outside this one calendar day.
+  schedule:
+    - cron: '18 3 * * *'
+permissions:
+  contents: read
+concurrency:
+  group: newspaper-oneshot-20261015-0318
+  cancel-in-progress: false
+jobs:
+  autonomous_once:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      TZ: Asia/Shanghai
+      SMTP_HOST: smtp.qq.com
+      SMTP_PORT: '465'
+    steps:
+      - name: One-time 2026-10-15 date gate
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$(date -u +%F)" == "2026-10-15" && "$(TZ=Asia/Shanghai date +%F)" == "2026-10-15" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "ONE_SHOT_AUTONOMOUS_SCHEDULE_FIRED=true"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "One-shot date expired: no PDF work and no SMTP"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.run == 'true'
+      - uses: actions/setup-python@v5
+        if: steps.gate.outputs.run == 'true'
+        with:
+          python-version: '3.11'
+
+      - name: Check original QQ recipient and sender secrets
+        if: steps.gate.outputs.run == 'true'
+        env:
+          SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
+          SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
+          NEWSPAPER_TO: ${{ secrets.NEWSPAPER_TO }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for v in SMTP_FROM SMTP_PASSWORD NEWSPAPER_TO; do
+            if [[ -z "${!v}" ]]; then
+              echo "::error::Missing configured production QQ email secret: $v"
+              exit 1
+            fi
+          done
+
+      - name: Restore one-time send receipt (avoid duplicate handoffs)
+        id: receipt
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          key: newspaper-oneshot-sent-2026-10-15-0318
+          path: /tmp/newspaper-oneshot-receipt
+          lookup-only: true
+
+      - name: Install print fonts
+        if: steps.gate.outputs.run == 'true' && steps.receipt.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk fonts-liberation
+      - name: Install newspaper dependencies
+        if: steps.gate.outputs.run == 'true' && steps.receipt.outputs.cache-hit != 'true'
+        run: python -m pip install -r newspaper/requirements.txt
+      - name: Install English grammar model
+        if: steps.gate.outputs.run == 'true' && steps.receipt.outputs.cache-hit != 'true'
+        run: python -m spacy download en_core_web_sm
+      - name: Cache translation package
+        if: steps.gate.outputs.run == 'true' && steps.receipt.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/argos-translate/packages
+          key: newspaper-argos-translate-en-zh-v1
+
+      - name: Generate real news and verified PDF (no SMTP yet)
+        id: build
+        if: steps.gate.outputs.run == 'true' && steps.receipt.outputs.cache-hit != 'true'
+        env:
+          NEWSPAPER_LLM_API_KEY: ${{ secrets.NEWSPAPER_LLM_API_KEY }}
+          NEWSPAPER_SEC_CONTACT: ${{ secrets.NEWSPAPER_SEC_CONTACT }}
+        run: |
+          set -euo pipefail
+          python newspaper/digest.py --prepare --output /tmp/newspaper-oneshot-ready
+          test -s /tmp/newspaper-oneshot-ready/manifest.json
+          test -s /tmp/newspaper-oneshot-ready/edition.pdf
+          echo "ONE_SHOT_PDF_GENERATED=true bytes=$(stat -c%s /tmp/newspaper-oneshot-ready/edition.pdf)"
+
+      - name: Immediately send verified PDF to existing QQ address
+        id: send
+        if: steps.build.outcome == 'success' && steps.receipt.outputs.cache-hit != 'true'
+        env:
+          SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
+          SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
+          NEWSPAPER_TO: ${{ secrets.NEWSPAPER_TO }}
+        run: |
+          set -euo pipefail
+          python newspaper/prepared_delivery.py \
+            --bundle-dir /tmp/newspaper-oneshot-ready \
+            --edition-date "$(TZ=Asia/Shanghai date +%F)" \
+            --test-label AUTO-20261015-0318
+
+      - name: Mark one-time SMTP acceptance
+        if: steps.send.outcome == 'success'
+        run: |
+          mkdir -p /tmp/newspaper-oneshot-receipt
+          printf 'accepted on %s\n' "$(date -u +%FT%TZ)" > /tmp/newspaper-oneshot-receipt/accepted.txt
+      - name: Cache one-time receipt
+        if: steps.send.outcome == 'success'
+        uses: actions/cache/save@v4
+        with:
+          key: newspaper-oneshot-sent-2026-10-15-0318
+          path: /tmp/newspaper-oneshot-receipt
+
+      - name: Publish proof of automatic trigger, build and SMTP
+        if: always()
+        env:
+          RUN_ENABLED: ${{ steps.gate.outputs.run }}
+          READY_STATUS: ${{ steps.build.outcome }}
+          SMTP_STATUS: ${{ steps.send.outcome }}
+        run: |
+          {
+            echo '### Independent GitHub schedule: one-time test'
+            echo "- GitHub event: ${{ github.event_name }}"
+            echo "- Scheduled UTC cron: ${{ github.event.schedule }}"
+            echo "- Schedule was admitted by date gate: $RUN_ENABLED"
+            echo "- PDF generation result: $READY_STATUS"
+            echo "- QQ SMTP result: $SMTP_STATUS (not an inbox receipt)"
+            echo '- One-shot test is independent of the production daily sent receipt'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload generated PDF and manifest as test evidence
+        if: always() && steps.build.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: newspaper-one-time-autonomous-pdf-20261015
+          path: |
+            /tmp/newspaper-oneshot-ready/edition.pdf
+            /tmp/newspaper-oneshot-ready/manifest.json
+          if-no-files-found: warn
+          retention-days: 7
