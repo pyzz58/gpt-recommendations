@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "canonical": "CANONICAL_SYSTEM_SPEC_V5.md",
+  "generated_files": [
+    "README.md",
+    "AGENTS.md",
+    "runtime_contract.json"
+  ],
+  "manual_code_files": [
+    "tools/source_probe.py",
+    "tools/sync_spec.py",
+    "tests/test_spec_sync.py"
+  ],
+  "data_files": [
+    "SOURCE_REGISTRY.json",
+    "SOURCE_ABANDONED_2026-10-13.json"
+  ],
+  "evidence_dirs": [
+    "audits"
+  ],
+  "source_probe": {
+    "max_bytes": 350000,
+    "timeout_seconds": 12,
+    "default_limit": 130,
+    "default_delay_seconds": 3.0,
+    "minimum_delay_seconds": 2.0,
+    "default_output": "audits/source_probe_results.json"
+  },
+  "spec_sha256": "aa2db029e56b816f3c0ffc8dc60329eef681642cc8283b8cf1108cd068d4c0e3"
+}
