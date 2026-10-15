@@ -14,10 +14,9 @@ def choose_phase(event: str, cron: str, dry_run: str, now: dt.datetime) -> str:
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("Aware clock required")
     if event == "schedule":
-        if cron not in POLICY["send_crons_utc"]:
+        if cron != POLICY["startup_cron_utc"]:
             raise RuntimeError("Unknown scheduled cron; refusing unexpected production run")
-        # Every configured tick may generate and immediately hand off the finished edition.
-        # Same-edition receipts suppress duplicate SMTP handoffs.
+        # A single GitHub schedule triggers PDF generation then immediate handoff.
         return "send"
     if event == "workflow_dispatch" and dry_run == "false":
         return "send"
