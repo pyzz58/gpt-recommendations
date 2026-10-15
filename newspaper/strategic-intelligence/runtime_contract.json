@@ -21,10 +21,10 @@
   "source_probe": {
     "max_bytes": 350000,
     "timeout_seconds": 12,
-    "default_limit": 130,
+    "selection_mode": "explicit_source_ids",
     "default_delay_seconds": 3.0,
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "cd5afbd93c7b6ca1e784238ab79fff4eebd000cd7c66c32d75e33220e6c6eca7"
+  "spec_sha256": "fc28023a2f5dab380a9d7ce1d86e7aada216c29730be3cfdb5b10f7902613f16"
 }
