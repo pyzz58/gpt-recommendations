@@ -18,7 +18,7 @@ CUTOFF = dt.time.fromisoformat(POLICY["cutoff_bjt"])
 REPORTING_SPAN = dt.timedelta(days=1)
 PREPARATION_SPAN = dt.timedelta(days=1)  # same Beijing edition day
 
-if CUTOFF != dt.time(0) or not POLICY["send_crons_utc"]:
+if CUTOFF != dt.time(0) or not POLICY["startup_cron_utc"]:
     raise RuntimeError("Newspaper requires midnight cutoff and at least one startup cron")
 
 
