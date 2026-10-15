@@ -89,7 +89,7 @@ def read_bundle(directory: Path, edition: dt.date):
 
 
 def send_bundle(directory: Path, edition: dt.date, *, now: dt.datetime | None = None,
-                smtp_factory=None):
+                smtp_factory=None, test_label: str | None = None):
     assert_delivery_window(now or dt.datetime.now(BEIJING), edition)
     subject, files = read_bundle(directory, edition)
     sender = os.environ.get("SMTP_FROM", "").strip()
@@ -99,15 +99,18 @@ def send_bundle(directory: Path, edition: dt.date, *, now: dt.datetime | None = 
         raise RuntimeError("Newspaper SMTP secrets not configured")
     if any(ch in (sender + recipient) for ch in "\r\n"):
         raise ValueError("Invalid email header")
+    if test_label is not None and not re.fullmatch(r"[A-Za-z0-9-]{1,40}", test_label):
+        raise ValueError("Invalid one-shot test label")
     msg = email.message.EmailMessage()
-    msg["Subject"] = subject
+    msg["Subject"] = f"[临时自动化测试 {test_label}] {subject}" if test_label else subject
     msg["From"] = sender
     msg["To"] = recipient
     digest = sha256(files["edition.pdf"])[:24]
     domain = sender.rpartition("@")[2]
     if not domain or not re.fullmatch(r"[A-Za-z0-9.-]+", domain):
         raise ValueError("Invalid SMTP sender domain")
-    msg["Message-ID"] = f"<newspaper-{edition:%Y%m%d}-{digest}@{domain}>"
+    label_part = f"test-{test_label}-" if test_label else ""
+    msg["Message-ID"] = f"<newspaper-{label_part}{edition:%Y%m%d}-{digest}@{domain}>"
     msg.set_content(files["mail.txt"].decode("utf-8"))
     msg.add_alternative(files["mail.html"].decode("utf-8"), subtype="html")
     msg.add_attachment(files["edition.pdf"], maintype="application", subtype="pdf",
@@ -130,8 +133,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bundle-dir", required=True)
     parser.add_argument("--edition-date", required=True, help="YYYY-MM-DD in Beijing")
+    parser.add_argument("--test-label", default=None, help="One-shot visible test prefix; normal production leaves this unset")
     args = parser.parse_args()
-    send_bundle(Path(args.bundle_dir), dt.date.fromisoformat(args.edition_date))
+    send_bundle(Path(args.bundle_dir), dt.date.fromisoformat(args.edition_date), test_label=args.test_label)
 
 
 if __name__ == "__main__":
