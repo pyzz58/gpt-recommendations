@@ -10,10 +10,8 @@ on:
     paths:
       - 'newspaper/**'
       - '.github/workflows/newspaper.yml'
-  # Single Beijing 00:01 startup. GitHub schedule is best-effort.
-  # Produce current edition, verify PDF, hand off to QQ SMTP immediately.
-  schedule:
-    - cron: '1 16 * * *'
+  # Only the independent Beijing 00:01 scheduler updates newspaper/.scheduler-tick.
+  # Existing PDF generation and QQ SMTP handoff remain unchanged.
   workflow_dispatch:
     inputs:
       dry_run:
