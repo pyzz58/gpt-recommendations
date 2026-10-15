@@ -14,8 +14,9 @@
 - GitHub 自身的旧 `schedule` cron 已从正式工作流删除，避免继续积累多条失效触发器；PR 检验和人工 `workflow_dispatch` 仍保留。
 - GitHub 启动后，按既有代码制作报纸和 PDF、校验邮件包、立即交给 QQ SMTP。**新闻生成、PDF、QQ 邮件代码均未因这次启动器替换而改变。**
 - 本日相同刊期一旦有 SMTP 接受回执，重复启动将显示 `ALREADY_SENT`，不重发。
-- 2026-10-15 真实启动入口烟雾测试：[Run 38680528022](https://github.com/pyzz58/gpt-recommendations/actions/runs/38680528022) 通过，事件为 marker 文件 `push`，结果为 `ALREADY_SENT`。这是新 GitHub 启动入口测试，**不是外部定时器无人干预和次日真正生成发送的验收**。
-- 独立定时服务自身是否可靠，必须结合其真实运行和下一期 GitHub Run ID 继续核查；不能因为配置保存成功就声称完成全链路验收。
+- 2026-10-15 启动入口烟雾测试：[Run 38680528022](https://github.com/pyzz58/gpt-recommendations/actions/runs/38680528022) 成功，事件为指定 marker 文件的 `push`，回执为 `ALREADY_SENT`。
+- 2026-10-15 **外部定时器无人干预测试已成功**：定时任务自动更新 marker，提交 `e07d96f260ffe5079e9e061649fffd1845f789ab` 触发 GitHub [Run 38680948833](https://github.com/pyzz58/gpt-recommendations/actions/runs/38680948833)，`digest=success`，`NEWSPAPER_EXTERNAL_STARTUP_OK`，`ALREADY_SENT`。未改生成及邮件程序，也未重复发信。
+- 下一期无人干预的 **生成 PDF + QQ SMTP 接受 + QQ 收件箱到达** 仍需按次日完整链路验收。
 
 历史故障见 [P0 事故审计](P0_TRIGGER_AUDIT_2026-10-15.md)。旧版本中的多条 cron、提前备稿和固定发送时间窗口均属于历史规则。
 
