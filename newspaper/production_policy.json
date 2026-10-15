@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "V2.4",
+  "version": "V2.5",
   "effective_date": "2026-10-15",
   "scope": "newspaper only; neican is independent",
   "timezone": "Asia/Shanghai",
@@ -13,9 +13,13 @@
     "analysis": "重大新闻分析 + 期末《今日关键变化》",
     "market_lead": "美股与全球资本市场作为头版",
     "source_policy": "事实可溯、事件级去重、重要新闻覆盖检查",
-    "delivery": "每日北京时间00:01请求自动启动，真实启动时生成并校验当期PDF，成功后立即交给QQ SMTP；无备稿阶段或固定发送时点；同日SMTP回执防重复。GitHub cron不能提供准点或必达承诺。",
+    "delivery": "由独立自动任务每天北京时间00:01仅更新 main/newspaper/.scheduler-tick 启动现有日报工作流；生成和发送程序保持不变；PDF校验完成即向QQ SMTP交接；以当日回执防重复。",
     "copyright": "不默认全文转载第三方版权报道"
   },
-  "conflict_resolution": "Sole authoritative policy for newspaper only. Single GitHub startup cron, best effort. No duplicate scheduled workflow.",
-  "startup_cron_utc": "1 16 * * *"
+  "conflict_resolution": "This policy is authoritative for newspaper only. Exactly one external scheduled starter; GitHub production workflow only listens for restricted marker push or explicit manual preview/dispatch. No native GitHub schedule.",
+  "startup_mode": "external-marker-push",
+  "startup_marker_path": "newspaper/.scheduler-tick",
+  "startup_branch": "main",
+  "startup_timezone": "Asia/Shanghai",
+  "startup_time_bjt": "00:01"
 }
