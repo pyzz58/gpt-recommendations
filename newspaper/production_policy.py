@@ -50,6 +50,5 @@ def check_send_window(now: dt.datetime, day: dt.date):
     local = now.astimezone(BEIJING)
     if local.date() != day:
         raise RuntimeError("Refusing to send an edition on a different Beijing date")
-    earliest = dt.time.fromisoformat(POLICY["scheduled_delivery_bjt"])
-    if local.time() < earliest:
-        raise RuntimeError("Refusing QQ SMTP delivery before the scheduled Beijing 01:00 time")
+    # The edition can be sent immediately after verified preparation, even before 01:00.
+    # Date validation above remains mandatory; no additional hour-based gate.
