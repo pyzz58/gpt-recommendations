@@ -5,7 +5,7 @@
   "scope": "newspaper only; neican is independent",
   "timezone": "Asia/Shanghai",
   "cutoff_bjt": "00:00",
-  "scheduled_delivery_bjt": "as_soon_as_ready",
+  "scheduled_delivery_bjt": "01:00",
   "prepare_crons_utc": [],
   "send_crons_utc": [
     "1 16 * * *",
@@ -25,7 +25,7 @@
     "analysis": "重大新闻分析 + 期末《今日关键变化》",
     "market_lead": "美股与全球资本市场作为头版",
     "source_policy": "事实可溯、事件级去重、重要新闻覆盖检查",
-    "delivery": "北京时间00:01启动；PDF生成完成后立即发送QQ邮箱；同一刊期仅发送一次，迟到启动不因时间而拒发",
+    "delivery": "北京时间00:01起备稿、01:00起交付QQ邮箱；同刊期只发送一次；迟到同一天仍可补发，但不得提前于01:00发送。",
     "copyright": "不默认全文转载第三方版权报道"
   },
   "conflict_resolution": "This policy is authoritative for newspaper only. GitHub schedule is best-effort; retries share one daily receipt."
