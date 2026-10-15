@@ -35,13 +35,12 @@ class DeliveryScheduleTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 require_live_delivery_window(end+dt.timedelta(minutes=minute),end)
 
-    def test_email_never_before_one_am_and_no_next_date(self):
+    def test_email_immediately_after_ready_and_no_next_date(self):
         edition=dt.date(2026,10,14)
-        for t in (dt.time(1,0),dt.time(1,47),dt.time(4,0),dt.time(23,59)):
+        for t in (dt.time(0,1),dt.time(0,30),dt.time(1,0),dt.time(4,0),dt.time(23,59)):
             assert_delivery_window(dt.datetime.combine(edition,t,tzinfo=self.bj),edition)
         for when in (
-            dt.datetime(2026,10,14,0,1,tzinfo=self.bj),
-            dt.datetime(2026,10,14,0,59,tzinfo=self.bj),
+            dt.datetime(2026,10,13,23,59,tzinfo=self.bj),
             dt.datetime(2026,10,15,1,10,tzinfo=self.bj),
         ):
             with self.subTest(when=when),self.assertRaises(RuntimeError):
