@@ -26,11 +26,20 @@ export default {
         inputs: { dry_run: "false", preview_kind: "live" }
       })
     });
-    if (response.status !== 204) {
-      // Do not print credentials or response bodies. A non-204 is not success.
+    if (response.status !== 200 && response.status !== 204) {
+      // Never print credentials or a potentially sensitive response body.
       throw new Error(`NEWSPAPER_STARTUP_FAILED github_http=${response.status}`);
     }
-    // HTTP 204 means dispatch request accepted, NOT PDF creation or QQ inbox delivery.
-    console.log("NEWSPAPER_DISPATCH_ACCEPTED github_http=204 event=workflow_dispatch");
+    // The current GitHub API can return 200 with the created run details;
+    // older API versions can return 204 with no body.
+    let runId = "not_provided";
+    if (response.status === 200) {
+      const details = await response.json();
+      if (details && details.workflow_run_id) {
+        runId = String(details.workflow_run_id);
+      }
+    }
+    // A successful dispatch is not evidence of PDF creation or QQ delivery.
+    console.log(`NEWSPAPER_DISPATCH_ACCEPTED github_http=${response.status} run_id=${runId} event=workflow_dispatch`);
   }
 };
