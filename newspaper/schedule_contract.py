@@ -14,10 +14,7 @@ def choose_phase(event: str, cron: str, dry_run: str, now: dt.datetime) -> str:
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("Aware clock required")
     if event == "schedule":
-        if cron != POLICY["startup_cron_utc"]:
-            raise RuntimeError("Unknown scheduled cron; refusing unexpected production run")
-        # A single GitHub schedule triggers PDF generation then immediate handoff.
-        return "send"
+        raise RuntimeError("Native GitHub cron is disabled; use the independent marker scheduler")
     if event == "push":
         # YAML restricts this event to main and a single scheduler marker path.
         # Date-specific sent receipt in the workflow prevents duplicate mail.
