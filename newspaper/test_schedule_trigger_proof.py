@@ -49,7 +49,7 @@ class TriggerProofTests(unittest.TestCase):
                                 tzinfo=dt.timezone.utc)
                 beijing=utc.astimezone(ZoneInfo("Asia/Shanghai"))
                 self.assertEqual(beijing.date(),dt.date(2026,10,15))
-                self.assertEqual(beijing.hour,0 if idx<4 else (idx-3))
+                self.assertEqual(beijing.hour,int(hour)-16)
 
 
 if __name__=="__main__":
