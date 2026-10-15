@@ -4,8 +4,9 @@ on:
     paths:
       - 'newspaper/**'
       - '.github/workflows/newspaper.yml'
-  # Beijing 00:01 startup; later ticks recover missed GitHub schedule events.
-  # Each tick builds and sends immediately when ready; one receipt per edition.
+  # Beijing 00:01–00:46 prebuild only; never SMTP before 01:00 BJT.
+  # 01:07 onward send ready edition; delayed ticks recover on the same date.
+  # SMTP receipt suppresses repeat sends across retries.
   schedule:
     - cron: '1 16 * * *'
     - cron: '16 16 * * *'
@@ -109,8 +110,17 @@ jobs:
           python newspaper/schedule_contract.py --event "$EVENT" --cron "$CRON" --dry-run "$DRY_RUN"
 
       - name: Verify production schedule contract
-        if: steps.phase.outputs.phase == 'send'
+        if: steps.phase.outputs.phase == 'send' || steps.phase.outputs.phase == 'prepare'
         run: python newspaper/verify_schedule.py
+
+      - name: Check sent receipt (never means inbox delivery)
+        id: receipt
+        if: steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send'
+        uses: actions/cache/restore@v4
+        with:
+          key: newspaper-sent-${{ steps.date.outputs.edition }}
+          path: /tmp/newspaper-sent-receipt
+          lookup-only: true
 
       - name: Check QQ SMTP configuration
         if: steps.phase.outputs.phase == 'send' && steps.receipt.outputs.cache-hit != 'true' && github.ref == 'refs/heads/main'
@@ -126,15 +136,6 @@ jobs:
               exit 1
             fi
           done
-
-      - name: Check sent receipt (never means inbox delivery)
-        id: receipt
-        if: steps.phase.outputs.phase == 'prepare' || steps.phase.outputs.phase == 'send'
-        uses: actions/cache/restore@v4
-        with:
-          key: newspaper-sent-${{ steps.date.outputs.edition }}
-          path: /tmp/newspaper-sent-receipt
-          lookup-only: true
 
       - name: Restore prebuilt verified edition
         id: prepared
@@ -274,6 +275,8 @@ jobs:
           set -euo pipefail
           if [[ "$SENT_CACHE" == "true" ]]; then
             status=ALREADY_SENT
+          elif [[ "$PHASE" == "prepare" && ( "$READY_CACHE" == "true" || ( "$BUILD" == "success" && "$READY_SAVED" == "success" ) ) ]]; then
+            status=PREPARED_NOT_SENT
           elif [[ "$SEND" == "success" && "$RECEIPT" == "success" ]]; then
             status=SMTP_ACCEPTED
           elif [[ "$SEND" == "success" ]]; then
