@@ -1,6 +1,6 @@
 """Single authoritative production schedule for Newspaper (NOT neican).
 
-GitHub cron entries have to be literal in YAML; contract tests check each one
+External scheduler metadata and the dedicated push marker are validated
 against production_policy.json. All Python dates, windows and manifest stamps
 are read from this file instead of repeating configuration strings.
 """
@@ -18,8 +18,8 @@ CUTOFF = dt.time.fromisoformat(POLICY["cutoff_bjt"])
 REPORTING_SPAN = dt.timedelta(days=1)
 PREPARATION_SPAN = dt.timedelta(days=1)  # same Beijing edition day
 
-if CUTOFF != dt.time(0) or not POLICY["startup_cron_utc"]:
-    raise RuntimeError("Newspaper requires midnight cutoff and at least one startup cron")
+if CUTOFF != dt.time(0) or POLICY.get("startup_mode") != "external-marker-push" or not POLICY.get("startup_marker_path"):
+    raise RuntimeError("Newspaper requires midnight cutoff and a configured external startup marker")
 
 
 def subject(edition: dt.date) -> str:
