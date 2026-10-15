@@ -3,6 +3,26 @@
 > 范围仅 `newspaper/` 日报，与独立内参无关。  
 > 这是**已证据确认的未触发事件**，尚不能据此断言 GitHub 后端或 workflow 状态的最终根因。**绝不将 Gmail 作为 QQ 收件箱证据。**
 
+## 后续核查结果与原始记录更正（2026-10-15）
+
+**本节为最新证据，下文 §1—5 保留当时调查截面，不能再作为最终系统状态。** 当时查询到“仅一次 schedule”是早期查询时点的真实结果，但此后 GitHub 又创建了多次严重迟到的 `schedule` 运行；因此今天不是永远没有触发，而是**准点窗口内没有运行 + 到达过晚 + 旧版时限拒绝恢复**：
+
+| 北京时间，2026-10-15 | run | 实际 GitHub 结论 |
+| --- | --- | --- |
+| 04:09 | [38629642981](https://github.com/pyzz58/gpt-recommendations/actions/runs/38629642981) | `event=schedule`；备稿因超出原 00:00–02:00 窗口失败 |
+| 04:13 | [38630279581](https://github.com/pyzz58/gpt-recommendations/actions/runs/38630279581) | `event=schedule`；相同备稿期限失败 |
+| 04:34 | [38633203909](https://github.com/pyzz58/gpt-recommendations/actions/runs/38633203909) | `event=schedule`；标记过期/失败 |
+| 04:41 | [38634172442](https://github.com/pyzz58/gpt-recommendations/actions/runs/38634172442) | `event=schedule`；`EXPIRED_NO_SEND` |
+| 07:23 | [38653814094](https://github.com/pyzz58/gpt-recommendations/actions/runs/38653814094) | 独立只读 `schedule` 探针真实成功；日志 `NEWSPAPER_CRON_REAL_EVENT=true` 且主工作流 `state=active` |
+| 约 07:26 | [38653377545](https://github.com/pyzz58/gpt-recommendations/actions/runs/38653377545) | 一次**专门的 push**（非 schedule）生成当天 PDF；`NEWSPAPER_SMTP_ACCEPTED edition=2026-10-15`；`newspaper-sent-2026-10-15` 回执缓存保存 |
+
+最后一行仅证明 QQ SMTP 交接，用户 QQ 收件箱是否到达仍未核实。不能与日报每日凌晨 01:00 定时发送成功混淆。
+
+**已实施但尚待下一次真实准点验证的 P0 保护**：[PR #74](https://github.com/pyzz58/gpt-recommendations/pull/74) 于 2026-10-15 合并，固定 00:00 截稿，00:xx 只能备稿、`01:00` 前 SMTP 禁发；过 01:00 后至北京当天结束可恢复。同步修复每日回执读取/凭据检查顺序及旧版冲突测试；[CI 38657988185](https://github.com/pyzz58/gpt-recommendations/actions/runs/38657988185) **187 项回归+真实新闻 PDF 集成通过**。以上验证生产程序的行为，**不是 GitHub 计划调度的准点 SLA**。
+
+**剩余关键未完成**：配置真实独立于 GitHub cron 的外部触发器，以 `workflow_dispatch(ref=main,inputs.dry_run=false)` 发起同日定时兜底，外部服务须由所有者专门授权且不公开 token；当前未部署。外部触发完成后，至少验证一次真实定时执行和 QQ SMTP 回执，再连续多日复查。
+
+---
 ## 1. 从 GitHub 生产系统取得的证据
 
 - 默认分支 `main`，审计时 HEAD `10d7a8dc1d2ebee3072273648568f1ed6f9b0bc7`，`.github/workflows/newspaper.yml` 位于此分支。
