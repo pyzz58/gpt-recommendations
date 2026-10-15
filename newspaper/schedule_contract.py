@@ -16,10 +16,9 @@ def choose_phase(event: str, cron: str, dry_run: str, now: dt.datetime) -> str:
     if event == "schedule":
         if cron not in POLICY["send_crons_utc"]:
             raise RuntimeError("Unknown scheduled cron; refusing unexpected production run")
-        # A GitHub schedule run can arrive early, late, or out of order.
-        # Before 01:00 only prepare and cache, never call SMTP.
-        earliest = dt.time.fromisoformat(POLICY["scheduled_delivery_bjt"])
-        return "prepare" if now.astimezone(BEIJING).time() < earliest else "send"
+        # Every configured tick may generate and immediately hand off the finished edition.
+        # Same-edition receipts suppress duplicate SMTP handoffs.
+        return "send"
     if event == "workflow_dispatch" and dry_run == "false":
         return "send"
     return "preview"
