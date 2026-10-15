@@ -4,19 +4,20 @@
 
 ## 生产唯一权威入口
 
-- [production_policy.json](production_policy.json)：**唯一机器可读生产合同**（时区、截稿、定时制作、发送窗口、来源与产品原则）。任何改变时刻的提交，必须同步修改 Python、工作流 cron、回归测试，并由 `verify_schedule.py` 校验一致性；禁止凭 README 里的旧时刻上线。
+- [production_policy.json](production_policy.json)：**唯一机器可读生产合同**（时区、截稿、定时制作、发送窗口、来源与产品原则）。任何改变时刻的提交，必须同步修改 Python、启动器、工作流入口和回归测试，并由 `verify_schedule.py` 校验一致性；禁止凭 README 里的旧时刻上线。
 - [V2_IMPLEMENTATION.md](V2_IMPLEMENTATION.md)：详细需求、测试和验收标准。不得出现与上面 JSON 相矛盾的当前操作说明。
 - [HISTORY_BEFORE_20261014.md](HISTORY_BEFORE_20261014.md)：旧版说明，仅供追溯，任何旧时间要求均已作废。
 
-## 当前生产启动和交付（V2.4 唯一生产规则）
+## 当前生产启动与交付（V2.5 权威规则）
 
-- **北京时间 00:00 截稿，00:01 唯一自动启动请求**（对应 UTC 前一日 16:01；正式入口为 `.github/workflows/newspaper.yml`）。
-- 工作流开始后直接生成当期报刊；PDF 与邮件包校验成功后 **立即提交 QQ SMTP**，没有固定发送截止分钟或“只预生成”的阶段。
-- 当日接受回执用于防止同刊期再次投递。SMTP 服务器接受不代表实际进入 QQ 收件箱。
-- 临时一次性自动测试工作流和每小时探针均已删除，不设置补充 cron；与内参系统完全独立。
-- **注意 GitHub 自身不是严格定时服务**：`schedule` 可能严重延迟或丢失，单靠重写工作流不能承诺 00:01 准时运行。若需要可靠的准点调度，应改用单一独立的外部定时触发器，但须先配置服务和调用 GitHub 的授权。
+- 唯一运行计划：独立自动任务每天北京时间 **00:01**，更新 main 分支 `newspaper/.scheduler-tick` 标记文件；GitHub Actions 的 `push` 过滤器只监听此文件，自动执行现有 `.github/workflows/newspaper.yml`。
+- GitHub 自身的旧 `schedule` cron 已从正式工作流删除，避免继续积累多条失效触发器；PR 检验和人工 `workflow_dispatch` 仍保留。
+- GitHub 启动后，按既有代码制作报纸和 PDF、校验邮件包、立即交给 QQ SMTP。**新闻生成、PDF、QQ 邮件代码均未因这次启动器替换而改变。**
+- 本日相同刊期一旦有 SMTP 接受回执，重复启动将显示 `ALREADY_SENT`，不重发。
+- 2026-10-15 真实启动入口烟雾测试：[Run 38680528022](https://github.com/pyzz58/gpt-recommendations/actions/runs/38680528022) 通过，事件为 marker 文件 `push`，结果为 `ALREADY_SENT`。这是新 GitHub 启动入口测试，**不是外部定时器无人干预和次日真正生成发送的验收**。
+- 独立定时服务自身是否可靠，必须结合其真实运行和下一期 GitHub Run ID 继续核查；不能因为配置保存成功就声称完成全链路验收。
 
-原事故与历史失败证据见 [P0 事故审计](P0_TRIGGER_AUDIT_2026-10-15.md)。旧版多次触发、01:00 最早发送、00:00–02:00 过期限制均已废弃。历史记录不作为运行配置。
+历史故障见 [P0 事故审计](P0_TRIGGER_AUDIT_2026-10-15.md)。旧版本中的多条 cron、提前备稿和固定发送时间窗口均属于历史规则。
 
 ## 编辑标准
 
