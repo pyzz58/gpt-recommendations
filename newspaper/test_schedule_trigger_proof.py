@@ -35,11 +35,12 @@ class TriggerProofTests(unittest.TestCase):
         self.assertNotIn("schedule_probe_marker.txt",
             WORKFLOW.read_text(encoding="utf-8"))
 
-    def test_all_seven_configured_crons_map_to_correct_beijing_date(self):
+    def test_all_configured_crons_map_to_correct_beijing_date(self):
         import json
         cfg=json.loads(POLICY.read_text(encoding="utf-8"))
         workflow=WORKFLOW.read_text(encoding="utf-8")
         expected=cfg["prepare_crons_utc"]+cfg["send_crons_utc"]
+        self.assertEqual(len(expected),9)
         for idx,cron in enumerate(expected):
             with self.subTest(cron=cron):
                 self.assertIn(f"cron: '{cron}'",workflow)
@@ -48,7 +49,7 @@ class TriggerProofTests(unittest.TestCase):
                                 tzinfo=dt.timezone.utc)
                 beijing=utc.astimezone(ZoneInfo("Asia/Shanghai"))
                 self.assertEqual(beijing.date(),dt.date(2026,10,15))
-                self.assertEqual(beijing.hour,0 if idx<2 else 1)
+                self.assertEqual(beijing.hour,0 if idx<4 else (idx-3))
 
 
 if __name__=="__main__":
