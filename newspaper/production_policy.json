@@ -21,5 +21,16 @@
   "startup_marker_path": "newspaper/.scheduler-tick",
   "startup_branch": "main",
   "startup_timezone": "Asia/Shanghai",
-  "startup_time_bjt": "00:01"
+  "startup_time_bjt": "00:01",
+  "startup_replacement": {
+    "provider": "cloudflare-workers-cron",
+    "deployment_status": "code_ready_not_deployed",
+    "worker": "newspaper/startup/worker.js",
+    "config": "newspaper/startup/wrangler.toml",
+    "cron_utc": "1 16 * * *",
+    "github_workflow": "newspaper.yml",
+    "method": "workflow_dispatch",
+    "secret_name": "GH_ACTIONS_TOKEN",
+    "cutover_rule": "Disable old ChatGPT scheduled marker task only after an actual Cloudflare-triggered GitHub run succeeds; never expose the token in source."
+  }
 }
