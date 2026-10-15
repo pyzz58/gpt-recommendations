@@ -40,6 +40,10 @@ class CanonicalSchedulePolicyTests(unittest.TestCase):
             clock=dt.datetime(2026,10,15,hour,minute,tzinfo=BEIJING)
             self.assertEqual(choose_phase("schedule",cron,"",clock),"send")
 
+    def test_dedicated_external_push_selects_production(self):
+        t=dt.datetime(2026,10,15,10,10,tzinfo=BEIJING)
+        self.assertEqual(choose_phase("push","","",t),"send")
+
     def test_preview_never_sends_and_manual_send_honors_time_guard(self):
         t=dt.datetime(2026,10,15,1,2,tzinfo=BEIJING)
         self.assertEqual(choose_phase("pull_request","","",t),"preview")
