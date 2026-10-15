@@ -18,6 +18,10 @@ def choose_phase(event: str, cron: str, dry_run: str, now: dt.datetime) -> str:
             raise RuntimeError("Unknown scheduled cron; refusing unexpected production run")
         # A single GitHub schedule triggers PDF generation then immediate handoff.
         return "send"
+    if event == "push":
+        # YAML restricts this event to main and a single scheduler marker path.
+        # Date-specific sent receipt in the workflow prevents duplicate mail.
+        return "send"
     if event == "workflow_dispatch" and dry_run == "false":
         return "send"
     return "preview"
