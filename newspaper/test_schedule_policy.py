@@ -1,4 +1,4 @@
-"""P0: daily 00:00 cutoff, 00:xx preparation, 01:00+ QQ handoff."""
+"""P0: daily 00:00 cutoff, start at 00:01, hand off as soon as PDF is verified."""
 import datetime as dt
 import sys
 import unittest
@@ -18,8 +18,8 @@ class CanonicalSchedulePolicyTests(unittest.TestCase):
         self.assertEqual(list_workflow_crons(),
             POLICY["prepare_crons_utc"]+POLICY["send_crons_utc"])
 
-    def test_midnight_prebuild_with_earliest_send_0100(self):
-        self.assertEqual(POLICY["scheduled_delivery_bjt"],"01:00")
+    def test_midnight_start_and_immediate_send(self):
+        self.assertEqual(POLICY["scheduled_delivery_bjt"],"00:01")
         self.assertEqual(POLICY["cutoff_bjt"],"00:00")
         self.assertEqual(POLICY["send_crons_utc"][0],"1 16 * * *")
         self.assertIn("00:00截稿",subject(self.day))
@@ -34,12 +34,12 @@ class CanonicalSchedulePolicyTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             choose_phase("schedule","5 22 * * *","",dt.datetime(2026,10,15,1,2,tzinfo=BEIJING))
 
-    def test_every_early_tick_prepares_and_delayed_tick_sends(self):
+    def test_every_tick_sends_immediately_after_ready(self):
         for cron in POLICY["send_crons_utc"]:
             with self.subTest(cron=cron):
                 early=dt.datetime(2026,10,15,0,59,tzinfo=BEIJING)
                 later=dt.datetime(2026,10,15,4,15,tzinfo=BEIJING)
-                self.assertEqual(choose_phase("schedule",cron,"",early),"prepare")
+                self.assertEqual(choose_phase("schedule",cron,"",early),"send")
                 self.assertEqual(choose_phase("schedule",cron,"",later),"send")
 
     def test_preview_never_sends_and_manual_send_honors_time_guard(self):
@@ -56,11 +56,10 @@ class CanonicalSchedulePolicyTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 check_preparation_window(when,end)
 
-    def test_hard_no_early_send_and_same_day_late_recovery(self):
-        for t in (dt.time(1,0),dt.time(1,3),dt.time(4,8),dt.time(23,59)):
+    def test_immediate_send_and_same_day_late_recovery(self):
+        for t in (dt.time(0,1),dt.time(0,30),dt.time(1,0),dt.time(4,8),dt.time(23,59)):
             check_send_window(dt.datetime.combine(self.day,t,tzinfo=BEIJING),self.day)
-        for now in (dt.datetime(2026,10,15,0,59,tzinfo=BEIJING),
-                    dt.datetime(2026,10,14,23,59,tzinfo=BEIJING),
+        for now in (dt.datetime(2026,10,14,23,59,tzinfo=BEIJING),
                     dt.datetime(2026,10,16,1,3,tzinfo=BEIJING)):
             with self.subTest(now=now),self.assertRaises(RuntimeError):
                 check_send_window(now,self.day)
