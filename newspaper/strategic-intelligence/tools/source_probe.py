@@ -2,9 +2,10 @@
 """Manual, low-rate source reachability smoke test. NO scheduler, NO publishing.
 This probes a URL's metadata and markup; it does NOT verify re-use/AI rights.
 Usage:
-    python tools/source_probe.py                       # dry-run
-    python tools/source_probe.py --execute --limit 10  # actual, consented smoke test
-    python tools/source_probe.py --execute --limit 130 --delay 3 --out source_probe_results.json
+    python tools/source_probe.py                              # dry-run, zero sources
+    python tools/source_probe.py --source-id SRC-001           # preview an explicit selection
+    python tools/source_probe.py --source-id SRC-001 --execute # actual scoped smoke test
+See the canonical specification, sections 23.1 and 24.3, for selection boundaries.
 """
 from __future__ import annotations
 import argparse
@@ -125,30 +126,43 @@ def check(entry, user_agent):
         result["error"] = str(exc)[:350]
     return result
 
-def main():
+def main(argv=None, root=None):
     global MAX_BYTES, TIMEOUT
-    root = Path(__file__).resolve().parents[1]
+    root = Path(root) if root is not None else Path(__file__).resolve().parents[1]
     try:
-        config = assert_current(root)["source_probe"]
+        contract = assert_current(root)
+        config = contract["source_probe"]
     except (ValueError, OSError, KeyError) as exc:
         raise SystemExit("Specification preflight failed: " + str(exc))
     MAX_BYTES = config["max_bytes"]
     TIMEOUT = config["timeout_seconds"]
     p = argparse.ArgumentParser()
     p.add_argument("--execute", action="store_true", help="Make real HTTPS requests")
-    p.add_argument("--limit", type=int, default=config["default_limit"])
+    p.add_argument("--source-id", action="append", default=[], help="Explicit candidate ID to check; repeat for each needed source")
     p.add_argument("--delay", type=float, default=config["default_delay_seconds"], help="Seconds between sources; minimum from canonical contract")
     p.add_argument("--out", default=str(root / config["default_output"]))
     p.add_argument("--user-agent", default="StrategicIntelligenceSourceAudit/0.1 (noncommercial-research; contact-required-for-SEC)")
-    args = p.parse_args()
+    args = p.parse_args(argv)
     if not (config["minimum_delay_seconds"] <= args.delay < float("inf")):
         p.error("Delay is below the canonical minimum or is not finite")
+    selected_ids = list(dict.fromkeys(args.source_id))
+    if args.execute and not selected_ids:
+        p.error("Execution requires at least one explicit --source-id; no sources are selected by default")
+    registry = json.loads((root / "SOURCE_REGISTRY.json").read_text(encoding="utf-8"))["entries"]
+    by_id = {entry["id"]: entry for entry in registry}
+    if len(by_id) != len(registry):
+        p.error("Duplicate source IDs in the registry; resolve before probing")
+    abandoned = json.loads((root / "SOURCE_ABANDONED_2026-10-13.json").read_text(encoding="utf-8"))["records"]
+    abandoned_ids = {entry["id"] for entry in abandoned}
+    invalid = [sid for sid in selected_ids if sid not in by_id or sid in abandoned_ids]
+    if invalid:
+        p.error("Unknown or abandoned source IDs: " + ", ".join(invalid))
+    entries = [by_id[sid] for sid in selected_ids]
     if args.execute and Path(args.out).exists():
         p.error("Refusing to overwrite an existing audit; choose a new --out path")
-    registry = Path(__file__).resolve().parents[1] / "SOURCE_REGISTRY.json"
-    entries = json.loads(registry.read_text(encoding="utf-8"))["entries"][:max(0, args.limit)]
     if not args.execute:
-        print("DRY RUN: would check", len(entries), "URLs. Pass --execute to make network requests.")
+        print("DRY RUN: would check", len(entries), "URLs; selected IDs:", ", ".join(selected_ids) or "none")
+        print("Provide --source-id for each needed source and --execute to make network requests.")
         return
     results = []
     for n, entry in enumerate(entries):
@@ -157,9 +171,13 @@ def main():
         r = check(entry, args.user_agent)
         results.append(r)
         print(entry["id"], r["status"], r["http_status"] or "", flush=True)
-    Path(args.out).write_text(json.dumps({"executed_at": datetime.now(timezone.utc).isoformat(),
-                                         "warnings": ["This does not establish content licensing, AI use rights or long-term reliability."],
-                                         "results": results}, indent=2, ensure_ascii=False), encoding="utf-8")
+    # Exclusive creation also preserves an audit created after the preflight check.
+    with Path(args.out).open("x", encoding="utf-8") as output:
+        json.dump({"executed_at": datetime.now(timezone.utc).isoformat(),
+                   "spec_sha256": contract["spec_sha256"],
+                   "selected_source_ids": selected_ids,
+                   "warnings": ["This does not establish content licensing, AI use rights or long-term reliability."],
+                   "results": results}, output, indent=2, ensure_ascii=False)
     print("Results:", args.out)
 if __name__ == "__main__":
     main()

@@ -51,7 +51,9 @@ def projected(root: Path) -> dict[str, bytes]:
         for path in contract[key]:
             relative_name(path)
     probe = contract["source_probe"]
-    for key in ("max_bytes", "timeout_seconds", "default_limit"):
+    if probe.get("selection_mode") != "explicit_source_ids" or "default_limit" in probe:
+        raise ValueError("source_probe requires explicit_source_ids and no implicit default_limit")
+    for key in ("max_bytes", "timeout_seconds"):
         if type(probe.get(key)) is not int or probe[key] <= 0:
             raise ValueError(f"Invalid source_probe.{key}")
     for key in ("default_delay_seconds", "minimum_delay_seconds"):
