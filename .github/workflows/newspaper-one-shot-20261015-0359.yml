@@ -1,0 +1,137 @@
+name: Newspaper - Single Autonomous PDF and QQ Mail Test 20261015
+on:
+  # UTC 2026-10-15 03:59 = Beijing 11:59 = Auckland 16:59.
+  # Only this single cron. An explicit date gate makes it a one-day test.
+  schedule:
+    - cron: '59 3 * * *'
+permissions:
+  contents: read
+concurrency:
+  group: newspaper-one-shot-test-20261015-0359
+  cancel-in-progress: false
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      TZ: Asia/Shanghai
+      SMTP_HOST: smtp.qq.com
+      SMTP_PORT: '465'
+    steps:
+      - name: Verify actual GitHub schedule and single permitted date
+        id: gate
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          set -euo pipefail
+          echo "EVENT_NAME=$EVENT_NAME EVENT_SCHEDULE=$EVENT_SCHEDULE STARTED_UTC=$(date -u +%FT%TZ)"
+          if [[ "$EVENT_NAME" == schedule && "$EVENT_SCHEDULE" == '59 3 * * *' && "$(TZ=Asia/Shanghai date +%F)" == '2026-10-15' ]]; then
+            echo 'enabled=true' >> "$GITHUB_OUTPUT"
+            echo 'NEWS_ONE_SHOT_REAL_SCHEDULE=true'
+          else
+            echo 'enabled=false' >> "$GITHUB_OUTPUT"
+            echo 'NEWS_ONE_SHOT_EXPIRED_OR_NOT_AUTOMATIC=true'
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.enabled == 'true'
+      - uses: actions/setup-python@v5
+        if: steps.gate.outputs.enabled == 'true'
+        with:
+          python-version: '3.11'
+
+      - name: Check already-accepted receipt
+        id: accepted
+        if: steps.gate.outputs.enabled == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          key: newspaper-one-shot-smtp-accepted-20261015-0359
+          path: /tmp/newspaper-one-shot-accepted
+          lookup-only: true
+
+      - name: Install print fonts
+        if: steps.gate.outputs.enabled == 'true' && steps.accepted.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk fonts-liberation
+      - name: Install newspaper Python dependencies
+        if: steps.gate.outputs.enabled == 'true' && steps.accepted.outputs.cache-hit != 'true'
+        run: python -m pip install -r newspaper/requirements.txt
+      - name: Install grammar model
+        if: steps.gate.outputs.enabled == 'true' && steps.accepted.outputs.cache-hit != 'true'
+        run: python -m spacy download en_core_web_sm
+      - name: Restore translation model cache
+        if: steps.gate.outputs.enabled == 'true' && steps.accepted.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/argos-translate/packages
+          key: newspaper-argos-translate-en-zh-v1
+
+      - name: Automatically generate actual news PDF
+        id: generate
+        if: steps.gate.outputs.enabled == 'true' && steps.accepted.outputs.cache-hit != 'true'
+        env:
+          NEWSPAPER_LLM_API_KEY: ${{ secrets.NEWSPAPER_LLM_API_KEY }}
+          NEWSPAPER_SEC_CONTACT: ${{ secrets.NEWSPAPER_SEC_CONTACT }}
+        run: |
+          set -euo pipefail
+          python newspaper/digest.py --prepare --output /tmp/news-one-shot
+          test -s /tmp/news-one-shot/manifest.json
+          test -s /tmp/news-one-shot/edition.pdf
+          PYTHONPATH=newspaper python - <<'PY'
+          import datetime as dt
+          from pathlib import Path
+          from prepared_delivery import read_bundle
+          subject, files = read_bundle(Path('/tmp/news-one-shot'), dt.date(2026,10,15))
+          print(f'NEWS_ONE_SHOT_PDF_VERIFIED=true bytes={len(files["edition.pdf"])} subject={subject}')
+          PY
+
+      - name: Send generated PDF to configured QQ mail
+        id: smtp
+        if: steps.generate.outcome == 'success'
+        env:
+          SMTP_FROM: ${{ secrets.NEWSPAPER_SMTP_FROM }}
+          SMTP_PASSWORD: ${{ secrets.NEWSPAPER_SMTP_PASSWORD }}
+          NEWSPAPER_TO: ${{ secrets.NEWSPAPER_TO }}
+        run: |
+          set -euo pipefail
+          python newspaper/prepared_delivery.py --bundle-dir /tmp/news-one-shot --edition-date 2026-10-15 --test-label ONE-SHOT-20261015-0359
+
+      - name: Save successful SMTP acceptance to avoid accidental repeat
+        if: steps.smtp.outcome == 'success'
+        run: |
+          mkdir -p /tmp/newspaper-one-shot-accepted
+          date -u +%FT%TZ > /tmp/newspaper-one-shot-accepted/receipt.txt
+      - name: Cache successful SMTP acceptance
+        if: steps.smtp.outcome == 'success'
+        uses: actions/cache/save@v4
+        with:
+          key: newspaper-one-shot-smtp-accepted-20261015-0359
+          path: /tmp/newspaper-one-shot-accepted
+
+      - name: Save PDF evidence
+        if: always() && steps.generate.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: newspaper-one-shot-20261015-0359
+          path: |
+            /tmp/news-one-shot/manifest.json
+            /tmp/news-one-shot/edition.pdf
+          retention-days: 7
+
+      - name: Log separate trigger, PDF and SMTP status
+        if: always()
+        env:
+          GATE: ${{ steps.gate.outputs.enabled }}
+          PDF: ${{ steps.generate.outcome }}
+          SMTP: ${{ steps.smtp.outcome }}
+        run: |
+          {
+            echo '## One-time automatic newspaper validation'
+            echo "- Trigger event: ${{ github.event_name }}"
+            echo "- Cron: ${{ github.event.schedule }}"
+            echo "- Date gate: $GATE"
+            echo "- PDF generation: $PDF"
+            echo "- QQ SMTP: $SMTP (server acceptance is not proof of inbox delivery)"
+          } >> "$GITHUB_STEP_SUMMARY"
