@@ -5,7 +5,8 @@ import sys
 import re
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from digest import quality_sample_window, edition_window, BEIJING_TZ, LATEST_SEND_START
+from digest import quality_sample_window, edition_window, BEIJING_TZ
+from production_policy import POLICY
 
 
 class QualitySampleTests(unittest.TestCase):
@@ -25,7 +26,7 @@ class QualitySampleTests(unittest.TestCase):
         now=dt.datetime(2026,10,13,11,35,tzinfo=BEIJING_TZ)
         a,b,_=edition_window(now)
         self.assertEqual((a.hour,b.hour),(0,0))
-        self.assertEqual(LATEST_SEND_START,dt.timedelta(hours=2))
+        self.assertEqual(POLICY["scheduled_delivery_bjt"],"01:00")
 
     def test_preview_never_sends_or_uses_api_key(self):
         w=self.workflow
@@ -46,7 +47,7 @@ class QualitySampleTests(unittest.TestCase):
         local=[((int(h)+8)%24,int(m)) for m,h in schedules]
         self.assertTrue(any(hr==0 for hr,_ in local))
         self.assertTrue(any(hr==1 for hr,_ in local))
-        self.assertTrue(all(hr in (0,1) for hr,_ in local))
+        self.assertTrue(all(hr in (0,1,2,3,4) for hr,_ in local))
         self.assertNotIn("[newspaper-recovery-20261014]",w)
         self.assertNotIn("[newspaper-v05-send-once]",w)
 

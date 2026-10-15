@@ -58,8 +58,8 @@ class EditorialContract(unittest.TestCase):
         beijing_minutes = [((int(hour) + 8) % 24) * 60 + int(minute)
                            for minute, hour in schedules]
         self.assertEqual(len(set(beijing_minutes)), len(schedules))
-        self.assertTrue(all(0 < minute < 120 for minute in beijing_minutes))
+        self.assertTrue(all(0 < minute <= 4*60 + 59 for minute in beijing_minutes))
         self.assertLessEqual(min(beijing_minutes), 10)  # advance preparation
-        self.assertGreaterEqual(max(beijing_minutes), 50)  # late send recovery
+        self.assertGreaterEqual(max(beijing_minutes), 4*60)  # same-day late send recovery
 
 if __name__=="__main__": unittest.main()
