@@ -33,6 +33,20 @@ class TriggerProofTests(unittest.TestCase):
         self.assertFalse((directory/"newspaper-one-time-autonomous-test-20261015.yml").exists())
         self.assertFalse((directory/"newspaper-one-shot-20261015-0359.yml").exists())
 
+    def test_pending_cloudflare_dispatch_adapter_matches_policy(self):
+        cfg=json.loads(POLICY.read_text(encoding="utf-8"))
+        replacement=cfg["startup_replacement"]
+        self.assertEqual(replacement["deployment_status"], "code_ready_not_deployed")
+        self.assertEqual(replacement["cron_utc"], "1 16 * * *")
+        worker=(ROOT/replacement["worker"]).read_text(encoding="utf-8")
+        wrangler=(ROOT/replacement["config"]).read_text(encoding="utf-8")
+        self.assertIn('crons = ["1 16 * * *"]', wrangler)
+        self.assertIn("GH_ACTIONS_TOKEN", worker)
+        self.assertIn("/actions/workflows/newspaper.yml/dispatches", worker)
+        self.assertIn('dry_run: "false"', worker)
+        self.assertIn('  workflow_dispatch:', WORKFLOW.read_text(encoding="utf-8"))
+        self.assertNotIn("ghp_", worker)
+
     def test_canonical_marker_file_exists(self):
         cfg=json.loads(POLICY.read_text(encoding="utf-8"))
         self.assertTrue((ROOT/cfg["startup_marker_path"]).is_file())
