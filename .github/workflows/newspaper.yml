@@ -1,5 +1,11 @@
 name: Newspaper - Global Situation PDF
 on:
+  # Independent scheduler starts the existing production workflow by changing
+  # only this dedicated marker on main. No secondary workflow or SMTP logic.
+  push:
+    branches: [main]
+    paths:
+      - 'newspaper/.scheduler-tick'
   pull_request:
     paths:
       - 'newspaper/**'
@@ -85,6 +91,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      - name: Record startup event provenance
+        env:
+          TRIGGER_EVENT: ${{ github.event_name }}
+          TRIGGER_REF: ${{ github.ref }}
+          TRIGGER_SHA: ${{ github.sha }}
+        run: |
+          echo "NEWSPAPER_STARTUP_EVENT=$TRIGGER_EVENT ref=$TRIGGER_REF sha=$TRIGGER_SHA run_id=$GITHUB_RUN_ID"
 
       - name: Resolve edition date
         id: date
