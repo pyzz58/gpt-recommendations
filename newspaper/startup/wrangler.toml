@@ -1,0 +1,7 @@
+name = "newspaper-daily-start"
+main = "worker.js"
+compatibility_date = "2026-10-15"
+workers_dev = false
+
+[triggers]
+crons = ["1 16 * * *"] # UTC: 00:01 Beijing next day
