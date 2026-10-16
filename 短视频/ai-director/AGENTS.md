@@ -1,3 +1,27 @@
+## QO-D16｜同一总导演对真实专业冲突的艺术仲裁与终审阻断（2026-10-14，暂不测试）
+
+新增 `director_conflict_arbitration.py`，专门补上原 `director_delivery_review.py`（QO-D16）只会记录两专业冲突和一条 `director_resolution`、却无法真实比较摄影/表演/声音/剪辑方案及其艺术代价的问题。仲裁不是新导演Agent：必须先有**两个实际交稿的专业部门**和 QO-D16 当前版本的真正冲突记录，同时用 QO-D10 制作后全片艺术自评保护好的独特镜头，逐冲突公平解释双方专业依据、观众失去的叙事因果、两种不同视听路线上观众收益与艺术成本，并指定专业岗位修改、原导演锁稿修订、编剧故事返修或媒体待验之一。其引文必须存在于真正岗位交付的**文字值**中，不能仅凭 JSON 字段名冒充证据。
+
+仲裁只形成同版来源锁定、未发送的QO-D12修订提案。**仲裁写完不等于专业冲突消失**：专业岗位必须基于新版本返工、原QO-D16再次核对后方能取消冲突；涉及人物抉择/事实/原对白须交编剧及作者审查，导演不能以「技术降级」偷改原作。
+
+已接到实际的原10专业 `agent_role_contracts.build_role_messages`、`validate_role_output`、`submit_role_output` 的**严格模式 director_final**终审入口：必须有QO-D10 post审片、QO-D06 post实际动作风险复查、QO-D16实际岗位交付审查；确认有两部门冲突时还必须有完整艺术仲裁。缺任何必要审查不得进入最终导演正式请求；即使已有仲裁，只要实际冲突、待返工或未提交岗位还在，就不能接受终审的 `ready_for_user_review`。历史旧项目不启用该严格mode时原合约兼容。
+
+详尽职责、每项必备观众证据、两备选方案、归属权限与否定案例，见 `skills/19-director-cross-department-artistic-arbitration.md`；三模块统一制作约束见 `skills/18-director-integrated-creative-production-gates.md`。**本轮没有主动运行任何测试、真实AI视频、付费API或真人独立导演审查，未合并main。QO-D16仍只标 `in_progress`。**
+
+---
+## 总导演一体化创作闭环（QO-D10 / QO-D06 / QO-D12，2026-10-14；暂不测试）
+
+同一位总导演使用**三种不可互相替代的能力**：QO-D10 `director_whole_film_critique.py` 判断整部作品的主题、人物、情绪与视听表达是否值得执行，保护有因果理由的非套路创意；QO-D06 `director_action_rescue.py` 将真正需要观众看见的复杂表演与道具状态转换为两种时间完整且有艺术代价说明的专业制作路线；QO-D12 `director_revision_lineage.py` 保障作者、编剧、导演与演员/摄影/声音/剪辑/AI技术岗的修改权限、回滚影响与不同剧本版本隔离。**任何部门不得借技术降级悄悄删除人物抉择、原文台词、事实或因果。**
+
+融合入口 `director_creative_integration.py` 要求同一权威剧本、source/base digest、导演锁稿、制作会、视听方案、所选电影艺术方法和镜头ID完全一致。已修复 QO-D10 旧草稿的重要失效缺陷：**制作前审片不因专业部门正常交稿而过期**，制作后批判才绑定实际已提交部门的版本/摘要；与QO-D06的相同二阶段约束保持一致。真实专业消息构造 `agent_role_contracts.build_role_messages` 与收到结果时的 `validate_role_output` / `submit_role_output` 均可同时核验整片创作方案及动作设计。仅新base显式设置 `director_integrated_creative_mode={kind:'director_integrated_creative_review_required',before_specialists:true}` 才强制七下游部门完整遵循这两份艺术计划；原项目不改既有兼容性。**存在待编剧修稿、待导演艺术改稿或动作方案仍被结构性阻断时，不允许继续下发专业任务。**
+
+制作后由 `director_creative_integration.postproduction_assessment()` 综合 QO-D10 的真实岗位设计证据与 QO-D06 在实际演员/AI技术交稿上重算的离线动作风险，返回未派发的专业问题和艺术判断。`make_lineage_change_from_finding()` 只为一个具体导演问题生成版本锁定的 QO-D12 修改提议；需要总导演另行明确同剧本返工，涉及人物、事实、故事、对白必须给编剧全新完整剧本并通过原 `screenplay_director_handoff` 审稿，再开始**新**十岗位任务账本。旧素材只能列成人工复核候选，旧导演锁和审批不得迁移。原同导演 QO-D16 专业交付审核仍负责逐镜目标与精准返工，不创建第二导演或第二套任务权威。
+
+详尽、唯一的融合顺序见 `skills/18-director-integrated-creative-production-gates.md`，细分专业规范 `skills/15-director-whole-film-artistic-critique.md`、`skills/16-director-action-feasibility-and-creative-preservation.md`、`skills/17-director-screenwriter-revision-lineage.md`。此前各草稿 PR #62 / #65 / #66 **未合并main**，融合开发分支集中携带三版代码、原技能文档以及统一入口；不可将草稿视为主分支已实现。
+
+**当前验收纪律：** 用户明确“先不测试”，本轮仅开发及静态核对，不运行单元/媒体测试、不请求付费接口、不上传私人稿件，也不将draft代码合并入main。QO-D10/06/12只能记 `in_progress`，艺术质量、真片观众反应、Kdenlive桌面操作及模型实际复杂动作生成均不能据此声称完成。原十岗位与作者的权限保持唯一权威。
+
+---
 ## QO-D19 / QO-D09｜第五阶段：公开合成声轨、字幕的实际解码级时间验证（2026-10-14）
 
 总导演掌握剧本与声画思想的**源锁定指令**，不能把视频静音、没有真实台词、字幕错时的成品冒充通过验收。第四阶段 QO-D09 已使用原生OTIO读回和FFmpeg真实视频帧验收；第五阶段新增 `director_av_sync_smoke.py`、`tests/test_director_av_sync_smoke.py`，测试环境仅允许**公开合成视频+精确帧时间码的测试音调与字幕**：48kHz 16-bit 单声道 PCM 在每个已指定声音帧内必须有非零声能、所有间隔必须真正静音；FFmpeg/libass生成画面叠字并与声轨合成Matroska，解码后逐sample对比音轨、逐帧比较字幕显隐，任何偏离必须失败。
