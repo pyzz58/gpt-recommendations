@@ -10,7 +10,7 @@ import re
 import sys
 
 SPEC = "CANONICAL_SYSTEM_SPEC_V5.md"
-OUTPUTS = ("README.md", "AGENTS.md", "runtime_contract.json")
+OUTPUTS = ("README.md", "AGENTS.md", "runtime_contract.json", "问题.md")
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -63,9 +63,19 @@ def projected(root: Path) -> dict[str, bytes]:
         raise ValueError("Default delay is below minimum delay")
     relative_name(probe["default_output"])
     result = {}
-    for filename in OUTPUTS[:2]:
+    for filename in (name for name in OUTPUTS if name != "runtime_contract.json"):
         body = block(text, f"GENERATED {filename}")
         body = body.replace("{{SPEC_FILE}}", SPEC).replace("{{SPEC_SHA256}}", digest)
+        if filename == "问题.md":
+            if body.count("{{ISSUE_LEDGER}}") != 1:
+                raise ValueError("Issue projection must include exactly one canonical ledger")
+            # Validate template placeholders before inserting the verbatim ledger;
+            # future issue evidence may legitimately contain literal braces.
+            template = body.replace("{{ISSUE_LEDGER}}", "")
+            if "{{" in template or "}}" in template:
+                raise ValueError(f"Unknown template placeholder in {filename}")
+            result[filename] = body.replace("{{ISSUE_LEDGER}}", block(text, "ISSUE_LEDGER").rstrip("\n")).encode("utf-8")
+            continue
         if "{{" in body or "}}" in body:
             raise ValueError(f"Unknown template placeholder in {filename}")
         result[filename] = body.encode("utf-8")

@@ -50,7 +50,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add -- newspaper/strategic-intelligence/README.md newspaper/strategic-intelligence/AGENTS.md newspaper/strategic-intelligence/runtime_contract.json
+          git add -- newspaper/strategic-intelligence/README.md newspaper/strategic-intelligence/AGENTS.md newspaper/strategic-intelligence/runtime_contract.json 'newspaper/strategic-intelligence/问题.md'
           if git diff --cached --quiet; then
             exit 0
           fi

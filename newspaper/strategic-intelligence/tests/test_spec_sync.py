@@ -54,12 +54,38 @@ class SynchronizationTests(unittest.TestCase):
         self.assertEqual(sync.assert_current(self.root)["source_probe"]["max_bytes"], 12345)
 
     def test_hand_edited_entry_is_detected_and_rebuilt(self):
-        p = self.root / "AGENTS.md"
-        expected = p.read_bytes()
-        p.write_text("wrong independent rules", encoding="utf-8")
-        self.assertTrue(sync.synchronize(self.root))
+        for name in ("AGENTS.md", "问题.md"):
+            with self.subTest(name=name):
+                p = self.root / name
+                expected = p.read_bytes()
+                p.write_text("wrong independent rules", encoding="utf-8")
+                self.assertTrue(sync.synchronize(self.root))
+                self.assertEqual(sync.synchronize(self.root, write=True), [])
+                self.assertEqual(p.read_bytes(), expected)
+
+    def test_issue_update_propagates_verbatim_without_rewriting_evidence(self):
+        before = self.data_hashes()
+        note = "\n验收备注：本项仍待验证；保留证据原话 {{actual}}。\n"
+        self.change_spec(lambda s: s.replace("<!-- END ISSUE_LEDGER -->", note + "<!-- END ISSUE_LEDGER -->"))
+        errors = sync.synchronize(self.root)
+        self.assertTrue(any("Stale generated file: 问题.md" in error for error in errors))
         self.assertEqual(sync.synchronize(self.root, write=True), [])
-        self.assertEqual(p.read_bytes(), expected)
+        body = (self.root / "问题.md").read_text(encoding="utf-8")
+        self.assertIn(note.strip(), body)
+        for number in range(1, 39):
+            self.assertIn(f"NC-{number:03d}", body)
+        self.assertEqual(self.data_hashes(), before)
+
+    def test_missing_or_duplicate_issue_ledger_blocks_all_writes(self):
+        canonical = (self.root / sync.SPEC).read_text(encoding="utf-8")
+        before = {name: (self.root / name).read_bytes() for name in sync.OUTPUTS}
+        for invalid in (canonical.replace("<!-- END ISSUE_LEDGER -->", ""),
+                        canonical + "\n<!-- BEGIN ISSUE_LEDGER -->\n"):
+            with self.subTest(ending=invalid[-80:]):
+                (self.root / sync.SPEC).write_text(invalid, encoding="utf-8")
+                with self.assertRaises(ValueError):
+                    sync.synchronize(self.root, write=True)
+                self.assertEqual(before, {name: (self.root / name).read_bytes() for name in sync.OUTPUTS})
 
     def test_unregistered_rules_block_without_deleting_user_content(self):
         p = self.root / "SIDE_RULES.md"

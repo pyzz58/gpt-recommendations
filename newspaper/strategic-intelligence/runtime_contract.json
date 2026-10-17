@@ -4,7 +4,8 @@
   "generated_files": [
     "README.md",
     "AGENTS.md",
-    "runtime_contract.json"
+    "runtime_contract.json",
+    "问题.md"
   ],
   "manual_code_files": [
     "tools/source_probe.py",
@@ -26,5 +27,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "45479437d3a1b68b244c64453865f5d21484f7f32a02b81ac2d75e88ccc2b6ac"
+  "spec_sha256": "0452812aa20734f09ff37b923d3bf3df6e21f63811e933244afd3a7262044875"
 }
