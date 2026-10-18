@@ -6,4 +6,4 @@
 
 规则变更直接修改该说明书，再运行 `python tools/sync_spec.py --write` 和 `python tools/sync_spec.py --check`（从本目录执行）。不要从Git旧文件恢复已被替代的规范。
 
-本文件自动生成，请勿手工修改。规范SHA-256：`611f1fbf27479e6e7db2f9b76169739ecda06c54425c82b2e8643712b89b7bc4`
+本文件自动生成，请勿手工修改。规范SHA-256：`945117d5d35961a00464f50eb0f6322a7a87b36a4b96a5ce4ede88337c9ff27f`
