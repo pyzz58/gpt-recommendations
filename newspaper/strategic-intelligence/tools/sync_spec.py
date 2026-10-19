@@ -12,11 +12,14 @@ import sys
 
 SPEC = "CANONICAL_SYSTEM_SPEC_V5.md"
 OUTPUTS = ("README.md", "AGENTS.md", "runtime_contract.json", "问题.md",
-           "technical_trace.json", "TECHNICAL_TRACE.md")
+           "technical_trace.json", "TECHNICAL_TRACE.md", "work_plan.json", "WORK_PLAN.md")
 ROOT = Path(__file__).resolve().parents[1]
 _trace_spec = importlib.util.spec_from_file_location("technical_trace", ROOT / "tools/technical_trace.py")
 trace = importlib.util.module_from_spec(_trace_spec)
 _trace_spec.loader.exec_module(trace)
+_plan_spec = importlib.util.spec_from_file_location("work_plan", ROOT / "tools/work_plan.py")
+work_plan = importlib.util.module_from_spec(_plan_spec)
+_plan_spec.loader.exec_module(work_plan)
 
 
 def block(text: str, name: str) -> str:
@@ -86,7 +89,9 @@ def projected(root: Path) -> dict[str, bytes]:
         result[filename] = body.encode("utf-8")
     contract["spec_sha256"] = digest
     result[OUTPUTS[2]] = (json.dumps(contract, ensure_ascii=False, indent=2, allow_nan=False) + "\n").encode("utf-8")
-    result.update(trace.project(text, digest))
+    technical = trace.project(text, digest)
+    result.update(technical)
+    result.update(work_plan.project(text, digest, json.loads(technical["technical_trace.json"]), trace))
     return result
 
 
@@ -155,19 +160,36 @@ def assert_technical_current(root: Path = ROOT, node_ids=None) -> dict:
     return result
 
 
+def assert_work_plan_current(root: Path = ROOT, work_ids=None) -> dict:
+    """Check checklist correspondence, not completion, stage approval or permission."""
+    assert_current(root)
+    result = json.loads((root / "work_plan.json").read_text(encoding="utf-8"))
+    errors = work_plan.pending_errors(result, work_ids)
+    if errors:
+        raise ValueError("\n".join(errors))
+    return result
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     modes = p.add_mutually_exclusive_group(required=True)
     modes.add_argument("--write", action="store_true")
     modes.add_argument("--check", action="store_true")
     modes.add_argument("--check-technical", action="store_true")
+    modes.add_argument("--check-work-plan", action="store_true")
     p.add_argument("--node", action="append", help="T/R ID to check; repeat to select several")
+    p.add_argument("--work", action="append", help="W/G ID to check; repeat to select several")
     args = p.parse_args()
     try:
         if args.node and not args.check_technical:
             raise ValueError("--node requires --check-technical")
+        if args.work and not args.check_work_plan:
+            raise ValueError("--work requires --check-work-plan")
         if args.check_technical:
             assert_technical_current(node_ids=args.node)
+            errors = []
+        elif args.check_work_plan:
+            assert_work_plan_current(work_ids=args.work)
             errors = []
         else:
             errors = synchronize(write=args.write)
@@ -179,6 +201,8 @@ def main() -> int:
     print("Canonical projections synchronized; inventory and links checked.")
     if args.check_technical:
         print("Technical bindings match reviewed versions; implementation/content/authorization not verified.")
+    if args.check_work_plan:
+        print("Work-plan bindings match reviewed versions; completion/stage/content/authorization not verified.")
     return 0
 
 

@@ -1,0 +1,2447 @@
+# 内参系统开发工作清单
+
+本文件从[最高说明§26](CANONICAL_SYSTEM_SPEC_V5.md#tech-work-26)机械生成；任务、验收条件及进度只改唯一原文。
+
+**13个功能模块，8条跨模块路线，72项既有逻辑；拆为55个小工作包，加4个阶段验收门，共59步。**
+
+工作包不是新增服务、模型或Agent。顺序号用于对照；按明确前置依赖推进，同阶段独立项可并行，仍须原阶段质量门。
+
+CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
+
+当前规范SHA-256：`898a90a4f04db5f2b5f71289bfcd1f8e725b8e448fbf7aa6b566b93978da7715`。
+
+清单需复核：无；仅限清单关联新鲜度。
+
+验收通过：0；有据不适用：0；其余按下表实际状态。
+
+## 四阶段与数量
+
+| 阶段 | 小工作包 | 阶段门 | 对照步骤数 | 主要交付 |
+|---|---:|---|---:|---|
+| 1 编辑体系 | 12 | [G01](#g01) | 13 | 人工真实专题→完整同周样刊；内容验证先行 |
+| 2 研究体系 | 29 | [G02](#g02) | 30 | 最小研究代码→真实跨周/纠错→六例 |
+| 3 专业能力 | 4 | [G03](#g03) | 5 | 按题专业能力与有据增益，必要时比较分工 |
+| 4 生产体系 | 10 | [G04](#g04) | 11 | 生产离线预演、恢复/交付及年度双输入回放 |
+
+## 每包共同验收Q01—Q07
+
+各包同时满足[§26.2](CANONICAL_SYSTEM_SPEC_V5.md#tech-work-26-2)的Q01—Q07：依据新鲜、输入/前置有效、实际交付物、正反及衔接结果、失败/限制、相称复核、主要投入与权限。
+
+结果记录复用RunLog/Review/Git与私有成果指针。模板：[§26.3](CANONICAL_SYSTEM_SPEC_V5.md#tech-work-26-3)。验收清单存在或复选框被勾选，不构成实际证据。
+
+## 按步骤对照
+
+| 顺序 | 工作包/阶段门 | 类型 | T/R | 前置工作包 | 实际进度 / 关联 |
+|---:|---|---|---|---|---|
+| 1 | [W01 固定样刊任务与第一篇档案](#w01) | 人工内容验证 | T01/T11/T13/R07 | 无 | 待开始 / CURRENT_BINDING |
+| 2 | [W02 人工发现、归并与池外参照](#w02) | 人工内容验证 | T02/T03/R01 | [W01](#w01) | 待开始 / CURRENT_BINDING |
+| 3 | [W03 初选与有边界的取证计划](#w03) | 人工内容验证 | T03/R01 | [W02](#w02) | 待开始 / CURRENT_BINDING |
+| 4 | [W04 真实原件、许可与主张支持核对](#w04) | 人工内容验证 | T04/R04 | [W03](#w03) | 待开始 / CURRENT_BINDING |
+| 5 | [W05 S8复选与入选中文材料](#w05) | 人工内容验证 | T03/T04/R03 | [W04](#w04) | 待开始 / CURRENT_BINDING |
+| 6 | [W06 联合界定事实、问题与完成边界](#w06) | 人工内容验证 | T05/T07/R01 | [W05](#w05) | 待开始 / CURRENT_BINDING |
+| 7 | [W07 竞争解释、专业前提与真实方法应用](#w07) | 人工内容验证 | T05/T04/R04 | [W06](#w06) | 待开始 / CURRENT_BINDING |
+| 8 | [W08 顾问B1真实成稿与增益对照](#w08) | 人工内容验证 | T06 | [W07](#w07) | 待开始 / CURRENT_BINDING |
+| 9 | [W09 帝师B2主动研究与自足讲解](#w09) | 人工内容验证 | T07 | [W07](#w07) | 待开始 / CURRENT_BINDING |
+| 10 | [W10 条件推演与事前复查准备](#w10) | 人工内容验证 | T08 | [W08](#w08)、[W09](#w09) | 待开始 / CURRENT_BINDING |
+| 11 | [W11 独立审稿、改稿与真实版本放行](#w11) | 人工内容验证 | T09/R01/R03 | [W08](#w08)、[W09](#w09)、[W10](#w10) | 待开始 / CURRENT_BINDING |
+| 12 | [W12 完整同周样刊与实际阅读验收](#w12) | 人工内容验证 | T03/T10/T11/R01/R03 | [W11](#w11) | 待开始 / CURRENT_BINDING |
+| 13 | [G01 第一阶段门：真实专题及完整同周样刊](#g01) | 阶段门 | R01/R03/R04/R07/T01/T02/T03/T04/T05/T06/T07/T08/T09/T10/T11/T13 | [W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12) | 待开始 / CURRENT_BINDING |
+| 14 | [W13 共享对象、版本与档案基础接口](#w13) | 代码与接口工作包 | T11/T01/T04 | [G01](#g01) | 待开始 / CURRENT_BINDING |
+| 15 | [W14 当前规范与任务输入准备接口](#w14) | 代码与接口工作包 | T01/R07 | [W13](#w13) | 待开始 / CURRENT_BINDING |
+| 16 | [W15 采用检查与权威决定接口](#w15) | 代码与接口工作包 | T01 | [W14](#w14) | 待开始 / CURRENT_BINDING |
+| 17 | [W16 共享研究修订与并发提交边界](#w16) | 代码与接口工作包 | T05/T01/T11 | [W13](#w13)、[W15](#w15) | 待开始 / CURRENT_BINDING |
+| 18 | [W17 工具适配器与真实操作身份](#w17) | 代码与接口工作包 | T13/T11 | [W13](#w13)、[W15](#w15) | 待开始 / CURRENT_BINDING |
+| 19 | [W18 调用前权限、预算与能力核验](#w18) | 代码与接口工作包 | T13/T01 | [W17](#w17)、[W15](#w15) | 待开始 / CURRENT_BINDING |
+| 20 | [W19 模型任务配置与有限准入证据](#w19) | 代码与接口工作包 | T13/T09 | [W18](#w18) | 待开始 / CURRENT_BINDING |
+| 21 | [W20 少量来源适配与候选输入](#w20) | 代码与接口工作包 | T02 | [W17](#w17)、[W18](#w18) | 待开始 / CURRENT_BINDING |
+| 22 | [W21 事件归并、血缘与探索队列](#w21) | 代码与接口工作包 | T02 | [W20](#w20)、[W13](#w13) | 待开始 / CURRENT_BINDING |
+| 23 | [W22 独立参照与覆盖缺口接口](#w22) | 代码与接口工作包 | T02/T03 | [W20](#w20)、[W21](#w21) | 待开始 / CURRENT_BINDING |
+| 24 | [W23 初选、S8与当期取舍记录](#w23) | 代码与接口工作包 | T03 | [W15](#w15)、[W21](#w21) | 待开始 / CURRENT_BINDING |
+| 25 | [W24 原件取得、结构提取与用途控制](#w24) | 代码与接口工作包 | T04 | [W13](#w13)、[W17](#w17)、[W18](#w18)、[W23](#w23) | 待开始 / CURRENT_BINDING |
+| 26 | [W25 主张支持、计算与定向补证接口](#w25) | 代码与接口工作包 | T04/T05/R04 | [W24](#w24)、[W16](#w16) | 待开始 / CURRENT_BINDING |
+| 27 | [W26 入选中文、节选边界与重要更新](#w26) | 代码与接口工作包 | T04/T03 | [W24](#w24)、[W25](#w25)、[W23](#w23) | 待开始 / CURRENT_BINDING |
+| 28 | [W27 M工序、共同研究与有限收口接口](#w27) | 代码与接口工作包 | T05/T07/R04 | [W16](#w16)、[W25](#w25)、[W19](#w19) | 待开始 / CURRENT_BINDING |
+| 29 | [W28 顾问任务、判断与增益提交](#w28) | 代码与接口工作包 | T06 | [W27](#w27) | 待开始 / CURRENT_BINDING |
+| 30 | [W29 帝师研究、连续教学与迁移提交](#w29) | 代码与接口工作包 | T07 | [W27](#w27) | 待开始 / CURRENT_BINDING |
+| 31 | [W30 条件路径与原判断检验条件](#w30) | 代码与接口工作包 | T08 | [W28](#w28)、[W29](#w29) | 待开始 / CURRENT_BINDING |
+| 32 | [W31 独立核查、意见闭环与审核决定](#w31) | 代码与接口工作包 | T09/T01 | [W28](#w28)、[W29](#w29)、[W30](#w30)、[W19](#w19)、[W15](#w15) | 待开始 / CURRENT_BINDING |
+| 33 | [W32 连续文章、卷首与审后变更承接](#w32) | 代码与接口工作包 | T10/T03 | [W31](#w31)、[W23](#w23)、[W26](#w26) | 待开始 / CURRENT_BINDING |
+| 34 | [W33 原文档案、双模式查询与知识复用](#w33) | 代码与接口工作包 | T11 | [W13](#w13)、[W16](#w16)、[W32](#w32) | 待开始 / CURRENT_BINDING |
+| 35 | [W34 更正影响、限制采用与有限恢复](#w34) | 代码与接口工作包 | T11/T01 | [W33](#w33)、[W25](#w25)、[W31](#w31)、[W15](#w15) | 待开始 / CURRENT_BINDING |
+| 36 | [W35 必要时的原文任务视图与分段装载](#w35) | 条件能力 | T01/T13/R07 | [W14](#w14)、[W17](#w17)、[W27](#w27) | 待开始 / CURRENT_BINDING |
+| 37 | [W36 最小深度主题闭环与中断重接](#w36) | 路线集成验收 | R01/R07/T01/T09/T11/T13 | [W22](#w22)、[W32](#w32)、[W33](#w33)、[W18](#w18) | 待开始 / CURRENT_BINDING |
+| 38 | [W37 精选、首次事实、进展及更正分支](#w37) | 路线集成验收 | R03/T03/T04/T09/T10 | [W23](#w23)、[W26](#w26)、[W31](#w31)、[W32](#w32)、[W34](#w34) | 待开始 / CURRENT_BINDING |
+| 39 | [W38 定向补证、解释变化与回S8](#w38) | 路线集成验收 | R04/T03/T04/T05 | [W25](#w25)、[W27](#w27)、[W23](#w23)、[W31](#w31) | 待开始 / CURRENT_BINDING |
+| 40 | [W39 真实跨周接续与长期专题入刊](#w39) | 路线集成验收 | R02/T03/T05/T11 | [W33](#w33)、[W27](#w27)、[W23](#w23)、[W36](#w36) | 待开始 / CURRENT_BINDING |
+| 41 | [W40 更正、当前采用与历史回放集成](#w40) | 路线集成验收 | R05/T11/T09/T10 | [W34](#w34)、[W39](#w39)、[W31](#w31)、[W32](#w32) | 待开始 / CURRENT_BINDING |
+| 42 | [W41 六份真实跨领域案例与投入联合验收](#w41) | 真实案例与能力验收 | R01/R02/R03/R04/R05/R07/T09/T13 | [W36](#w36)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[W40](#w40) | 待开始 / CURRENT_BINDING |
+| 43 | [G02 第二阶段门：研究闭环、跨周与六例](#g02) | 阶段门 | R01/R02/R03/R04/R05/R07/T01/T02/T03/T04/T05/T06/T07/T08/T09/T10/T11/T13 | [W13](#w13)、[W14](#w14)、[W15](#w15)、[W16](#w16)、[W17](#w17)、[W18](#w18)、[W19](#w19)、[W20](#w20)、[W21](#w21)、[W22](#w22)、[W23](#w23)、[W24](#w24)、[W25](#w25)、[W26](#w26)、[W27](#w27)、[W28](#w28)、[W29](#w29)、[W30](#w30)、[W31](#w31)、[W32](#w32)、[W33](#w33)、[W34](#w34)、[W35](#w35)、[W36](#w36)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[W40](#w40)、[W41](#w41) | 待开始 / CURRENT_BINDING |
+| 44 | [W42 按题接入必要专业原始资料](#w42) | 代码与接口工作包 | T04/T05/T13 | [G02](#g02) | 待开始 / CURRENT_BINDING |
+| 45 | [W43 专业深度专题与方法实际增益](#w43) | 真实案例与能力验收 | T05/T06/T07/T08/T09 | [W42](#w42) | 待开始 / CURRENT_BINDING |
+| 46 | [W44 必要时的专业分工比较](#w44) | 条件能力 | T09/T13 | [W43](#w43) | 待开始 / CURRENT_BINDING |
+| 47 | [W45 新例复核与有限能力范围更新](#w45) | 真实案例与能力验收 | T09/T13/T01 | [W43](#w43) | 待开始 / CURRENT_BINDING |
+| 48 | [G03 第三阶段门：专业增益与有限能力](#g03) | 阶段门 | T01/T04/T05/T06/T07/T08/T09/T13 | [W42](#w42)、[W43](#w43)、[W44](#w44)、[W45](#w45) | 待开始 / CURRENT_BINDING |
+| 49 | [W46 生产参数与私有持久环境落实](#w46) | 代码与接口工作包 | T01/T11/T13/R08 | [G03](#g03) | 待开始 / CURRENT_BINDING |
+| 50 | [W47 生产触发、增量与任务身份](#w47) | 代码与接口工作包 | T13/T01/T02/R08 | [W46](#w46)、[W20](#w20)、[W21](#w21)、[W18](#w18) | 待开始 / CURRENT_BINDING |
+| 51 | [W48 生产恢复、预算结算与故障告警](#w48) | 代码与接口工作包 | T13/T01/T11/R07/R08 | [W47](#w47)、[W18](#w18)、[W17](#w17)、[W33](#w33) | 待开始 / CURRENT_BINDING |
+| 52 | [W49 正式阅读格式、审后锁定与出版身份](#w49) | 代码与接口工作包 | T10/T09/T11/R08 | [W46](#w46)、[W32](#w32)、[W48](#w48) | 待开始 / CURRENT_BINDING |
+| 53 | [W50 授权交付、回执与重复投递防护](#w50) | 代码与接口工作包 | T13/T10/T11/R08 | [W49](#w49)、[W48](#w48) | 待开始 / CURRENT_BINDING |
+| 54 | [W51 私有归档、备份与真实恢复](#w51) | 代码与接口工作包 | T11/T13 | [W46](#w46)、[W48](#w48)、[W49](#w49) | 待开始 / CURRENT_BINDING |
+| 55 | [W52 年度双输入与旧判断审计](#w52) | 代码与接口工作包 | T12/R06/T11/T04 | [W51](#w51)、[W39](#w39)、[W40](#w40) | 待开始 / CURRENT_BINDING |
+| 56 | [W53 年度新综合、教学与重新独审](#w53) | 代码与接口工作包 | T12/R06/T05/T09/T10 | [W52](#w52)、[W43](#w43)、[W49](#w49) | 待开始 / CURRENT_BINDING |
+| 57 | [W54 R06年度缩区间完整回放](#w54) | 路线集成验收 | R06/T12/T11/T09/T10 | [W52](#w52)、[W53](#w53) | 待开始 / CURRENT_BINDING |
+| 58 | [W55 连续离线周刊与生产故障集成验收](#w55) | 路线集成验收 | R08/R01/R03/R05/R07/T01/T10/T11/T13 | [W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W54](#w54) | 待开始 / CURRENT_BINDING |
+| 59 | [G04 第四阶段门：生产离线验收与年度回放](#g04) | 阶段门 | R01/R03/R05/R06/R07/R08/T01/T02/T04/T05/T09/T10/T11/T12/T13 | [W46](#w46)、[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W52](#w52)、[W53](#w53)、[W54](#w54)、[W55](#w55) | 待开始 / CURRENT_BINDING |
+
+<a id="w01"></a>
+## W01｜固定样刊任务与第一篇档案
+
+顺序：1/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：无。
+
+前置尚未验收：无。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T01](TECHNICAL_TRACE.md#t01)、[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)、[R07](TECHNICAL_TRACE.md#r07)。
+
+逐项逻辑：T01.L01、T11.L01、R07.F01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-1)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：当前最高说明、一个真实周的候选区间；尚未确定的持久宿主与资源明确列缺口。
+
+**交付物**：
+
+- 任务卡：区间/截点、当期范围、规范版本、获准工具和材料用途。
+- 第一篇即保存的材料/原话/完整稿/审核目录及三时间记录；持久位置落实记录。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：逐项打开任务卡和实际档案，能找到规范版本、事件/公开/记录时间、材料版本与后续稿件位置。
+- [ ] 反向：用后来补录、无持久位置及仅聊天摘要的对照，分别识别时点差异、临时草稿和缺失原文；不宣称长期保存通过。
+- [ ] 衔接：把同一任务ID交给W02—W12；后续每次修稿追加版本而非覆盖旧判断。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：缺宿主时先保留临时草稿并标限制；缺必要权限停止相应用途，不创建生产调度。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w02"></a>
+## W02｜人工发现、归并与池外参照
+
+顺序：2/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W01](#w01)。
+
+前置尚未验收：[W01](#w01)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T02](TECHNICAL_TRACE.md#t02)、[T03](TECHNICAL_TRACE.md#t03)、[R01](TECHNICAL_TRACE.md#r01)。
+
+逐项逻辑：T02.L01、T02.L02、T02.L03、R01.F01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-4-1)、[§4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-4-2)、[§4.3](CANONICAL_SYSTEM_SPEC_V5.md#th-4-3)、[§4.4](CANONICAL_SYSTEM_SPEC_V5.md#th-4-4)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：获准且本轮实际使用的来源、区间和旧题；独立参照的预定范围。
+
+**交付物**：
+
+- 轻量候选索引、原发/转引血缘、事件归并建议。
+- 池外参照与候选/入选的差异、覆盖缺口及原因。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：实际来源能回查，可靠冷门和正面事项有被比较的机会；不同时间含义分别记。
+- [ ] 反向：同源转载不作多重独立支持；不同事件不因相似标题强并；旧数据报告不改写成本周发生。
+- [ ] 衔接：由T03独立取舍；移除日报输入仍能完成本次发现，参照不是从入选稿倒推。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：断源留SOURCE_UNAVAILABLE和覆盖缺口，转其他获准来源；不声称全球零漏题。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w03"></a>
+## W03｜初选与有边界的取证计划
+
+顺序：3/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W02](#w02)。
+
+前置尚未验收：[W02](#w02)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T03](TECHNICAL_TRACE.md#t03)、[R01](TECHNICAL_TRACE.md#r01)。
+
+逐项逻辑：T03.L01、R01.F02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§5.4](CANONICAL_SYSTEM_SPEC_V5.md#th-5-4)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.5](CANONICAL_SYSTEM_SPEC_V5.md#th-8-5)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：候选、真实日期/血缘、主题背景和已知资源。
+
+**交付物**：
+
+- S0—S7决定及理由、具体问题、拟用稿型。
+- S7阅读/取证计划：关键主张、区分材料、可得性与限制。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：价值、可知程度、投入和整刊互补分别有依据，重要难题有下一动作而非因易写性淘汰。
+- [ ] 反向：热度、领域配额、最高分和COVER均不能直接变成内容PASS或本期刊登承诺。
+- [ ] 衔接：W04按计划取得关键材料，W05依据真实结果重新选择，不沿用初选自证。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：无价值则DROP/降优先；重要但未熟则WATCH并留下具体接续条件。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w04"></a>
+## W04｜真实原件、许可与主张支持核对
+
+顺序：4/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W03](#w03)。
+
+前置尚未验收：[W03](#w03)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T04](TECHNICAL_TRACE.md#t04)、[R04](TECHNICAL_TRACE.md#r04)。
+
+逐项逻辑：T04.L01、T04.L02、R04.F01、R04.F02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：S7计划、具体作品/版本及允许访问、处理、保存、翻译和收录范围。
+
+**交付物**：
+
+- 实际取得记录、原段/原表定位、RightsRecord、支持与未知清单。
+- 必要计算的真实输入/运行结果；定向补证及取得限制。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：关键主张能定位实际版本与核对范围，数量/单位/口径及来源独立性可复核。
+- [ ] 反向：HTTP成功却无正文、真实但无关引用、局部支持整句、未执行代码均不能当已核结论。
+- [ ] 衔接：向W05交S8前关键证据包；研究发现专业缺环时可带具体问题回本步追加材料。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：按缺口补证、收窄或暂停；权限不足改允许定位/导引，不伪造原文或日志。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w05"></a>
+## W05｜S8复选与入选中文材料
+
+顺序：5/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W04](#w04)。
+
+前置尚未验收：[W04](#w04)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T03](TECHNICAL_TRACE.md#t03)、[T04](TECHNICAL_TRACE.md#t04)、[R03](TECHNICAL_TRACE.md#r03)。
+
+逐项逻辑：T03.L02、T04.L03、R03.F01、R03.F02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：实际证据包、拟用稿型、许可及原作重点的必要上下文。
+
+**交付物**：
+
+- S8后决定、稿型/刊登依据及未完成研究责任。
+- 仅对确定入选范围制作的中文材料/导引、节选标识与原文对应。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：查证结果确实改变或支持选择；中文保留关键否定、限定、表注与单位。
+- [ ] 反向：未经许可不收录/翻译全文；节选不冒称全译；无旧稿的INITIAL_FACT不伪造前文。
+- [ ] 衔接：深度题进入W06；精选/首次事实/进展/更正按R03保留对应责任，之后同受W11—W12检查。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：材料、价值或类型实变回S8；无许可则合法导引；不得靠改型逃避整刊深度。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w06"></a>
+## W06｜联合界定事实、问题与完成边界
+
+顺序：6/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W05](#w05)。
+
+前置尚未验收：[W05](#w05)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T05](TECHNICAL_TRACE.md#t05)、[T07](TECHNICAL_TRACE.md#t07)、[R01](TECHNICAL_TRACE.md#r01)。
+
+逐项逻辑：T05.L01、T07.L01、R01.F03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§8.5](CANONICAL_SYSTEM_SPEC_V5.md#th-8-5)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)、[§10.1](CANONICAL_SYSTEM_SPEC_V5.md#th-10-1)、[§11](CANONICAL_SYSTEM_SPEC_V5.md#th-11)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：同一已核事实包、S8范围、旧背景/知识的具体版本与当前限制。
+
+**交付物**：
+
+- M01—M03真实产物、主/子问题、事实与未知边界。
+- 顾问和帝师从问题形成期共同提出的研究与知识问题。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：问题对应真实差异，完成标准说明要查清什么、什么仍可合理未决；B2从M02参与。
+- [ ] 反向：不以固定角色话术或方法名称代替问题；不同截点/问题版本不拼成同一案卷。
+- [ ] 衔接：W07—W10共享同一案卷版本，解释不足、取证不足与教学不足有不同返工去向。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：事实缺口回W04，选题实变回W03/W05；保留不依赖缺口的探索性质。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w07"></a>
+## W07｜竞争解释、专业前提与真实方法应用
+
+顺序：7/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W06](#w06)。
+
+前置尚未验收：[W06](#w06)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T05](TECHNICAL_TRACE.md#t05)、[T04](TECHNICAL_TRACE.md#t04)、[R04](TECHNICAL_TRACE.md#r04)。
+
+逐项逻辑：T05.L02、T05.L03、R04.F03、R04.F04。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§8.8](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：共同问题、原作解释、必要专业资料、实际适用方法原文与反证。
+
+**交付物**：
+
+- M04—M09：条件/行动/过程、竞争解释、区分证据、反例与时滞。
+- MethodUse、前提核对、补证及有限收口/停止依据。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：指出哪条材料区分哪些解释；方法的前提、必要中间过程及对判断的实际作用可查。
+- [ ] 反向：前提失配撤销应用；同源重复和事后换标签不算验证；无法区分时不强编唯一原因。
+- [ ] 衔接：专业缺环回W04；对象/价值/类型改变回W05；向W08/W09交可采用的有限结果。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：按有价值新动作补研；无新增信息或获准资源受限时记录未完成与下一触发，不无限检索。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w08"></a>
+## W08｜顾问B1真实成稿与增益对照
+
+顺序：8/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W07](#w07)。
+
+前置尚未验收：[W07](#w07)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T06](TECHNICAL_TRACE.md#t06)。
+
+逐项逻辑：T06.L01、T06.L02、T06.L03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§1.3](CANONICAL_SYSTEM_SPEC_V5.md#th-1-3)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§8.7](CANONICAL_SYSTEM_SPEC_V5.md#th-8-7)、[§8.8](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8)、[§9](CANONICAL_SYSTEM_SPEC_V5.md#th-9)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：共同研究、主体处境/制度资源/行动和原作已有解释。
+
+**交付物**：
+
+- M10顾问稿、关键判断与支持、条件/反证/未知。
+- 与原作及既有写法的具体段落对照，必要时才比较行动与机会。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：删去B1会失去的本案理解能具体指出；判断强度、主体约束与证据相称。
+- [ ] 反向：通用建议、强造新观点、宣传当动机、融资当营收均不能借顾问身份通过。
+- [ ] 衔接：与W09同一问题/截点互校；重要新判断回W07核证，再交W11。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：无理解增益先回研究；确应改型则由W05重新核本期依据和整刊责任。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w09"></a>
+## W09｜帝师B2主动研究与自足讲解
+
+顺序：9/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W07](#w07)。
+
+前置尚未验收：[W07](#w07)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T07](TECHNICAL_TRACE.md#t07)。
+
+逐项逻辑：T07.L02、T07.L03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)、[§10.1](CANONICAL_SYSTEM_SPEC_V5.md#th-10-1)、[§10.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-10-2-1)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：材料中的知识问题、实际知识来源、必要概念/专业前提及W08可用成果。
+
+**交付物**：
+
+- M11连续读者稿：具体事实—中间过程—认识—边界/反例—迁移重查。
+- 知识依据、必要算例/图示及应登记概念，按实际需要留卡。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：不用术语仍能讲清关键连接，成熟知识可充分教学；迁移说明哪些条件需重新核。
+- [ ] 反向：格言、加书名、改写B1、缺关键连接及无依据的跨情境套用须分别识别。
+- [ ] 衔接：与W08双向纠偏；认识未形成回W07/原件，有据却未讲清只返教学；交W11审实际段落。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：按原因补知识研究或重写连接；不靠字数、卡数或用户已掌握的宣称验收。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w10"></a>
+## W10｜条件推演与事前复查准备
+
+顺序：10/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W08](#w08)、[W09](#w09)。
+
+前置尚未验收：[W08](#w08)、[W09](#w09)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T08](TECHNICAL_TRACE.md#t08)。
+
+逐项逻辑：T08.L01、T08.L02、T08.L03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§8.8](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8)、[§8.8.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8-3)、[§11](CANONICAL_SYSTEM_SPEC_V5.md#th-11)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：有据的B1/B2起点、合理未知和可观察条件。
+
+**交付物**：
+
+- 适用时的C：条件、行动、传导、时滞及可区分结果。
+- M12事前原话/条件/观察窗口或无法确定原因、开放问题。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：每条路径的中间连接和可证伪条件可查；当期先保存准备，不等未来结果才出刊。
+- [ ] 反向：仅好坏终点、凑概率/题数、未证原因当事实不得通过；确不适用须有据说明而非填零。
+- [ ] 衔接：原判断进入W01档案，W11核条件表述，未来结果走R02/R05重新研究。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：传导缺环回W07，区分材料不足保留可辨别条件，不强造确定预测。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w11"></a>
+## W11｜独立审稿、改稿与真实版本放行
+
+顺序：11/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W08](#w08)、[W09](#w09)、[W10](#w10)。
+
+前置尚未验收：[W08](#w08)、[W09](#w09)、[W10](#w10)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T09](TECHNICAL_TRACE.md#t09)、[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)。
+
+逐项逻辑：T09.L01、T09.L02、T09.L03、R01.F04、R03.F03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§15.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-1)、[§15.2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-2)、[§15.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-3)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：实际全文、原作/方法/计算、材料版本、限制与作者产物；检查任务与写作分开。
+
+**交付物**：
+
+- 先独立形成的具体疑点、回源核查、作者回应和修订差异。
+- 绑定实际稿件版本/范围的Review及PASS/REVISE/BLOCK或待审。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：每个重要意见可定位原句和证据，改稿后核受影响内容；合理未知和合格成熟知识能正确接受。
+- [ ] 反向：作者自评、预定PASS、投票或全拒稿不当能力证据；错审意见也须回原件修正。
+- [ ] 衔接：事实退W04、问题/研究退W06/W07、教学退W09；实际通过版本交W12，不能只审案卷。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：关键未核保留待审/阻止相应用途；分歧回材料，不因流程走完提前盖章。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w12"></a>
+## W12｜完整同周样刊与实际阅读验收
+
+顺序：12/59；阶段：1；类型：人工内容验证。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W11](#w11)。
+
+前置尚未验收：[W11](#w11)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T03](TECHNICAL_TRACE.md#t03)、[T10](TECHNICAL_TRACE.md#t10)、[T11](TECHNICAL_TRACE.md#t11)、[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)。
+
+逐项逻辑：T03.L03、T10.L01、T10.L02、T10.L03、R01.F05、R03.F04。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.5](CANONICAL_SYSTEM_SPEC_V5.md#th-13-5)、[§13.6](CANONICAL_SYSTEM_SPEC_V5.md#th-13-6)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
+
+**输入**：真实同周专题及必要短稿、当前重要更新、有效Review和允许格式。
+
+**交付物**：
+
+- 封面/范围/截点、目录、卷首、深度主题及按需精选/更正的完整可读样刊。
+- 原作重点与中文、来源/方法/权利索引、整刊漏题/解释审计及投入/失败记录。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：实际文件逐页/逐段查看，连续中文阅读清楚；B1/B2贡献和整刊互补有具体依据。
+- [ ] 反向：标题删限定、卷首新增因果、单字改意、脚注/单位漏失须处理；单篇或PDF生成不代替整刊通过。
+- [ ] 衔接：语义变动回W11及相应研究；纯呈现保留差异与审核承接。保存用户实际审阅读体验记录后交G01。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：未达内容或阅读要求继续修订，明确未验格式；本步不自动发信或转入生产。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="g01"></a>
+## G01｜第一阶段门：真实专题及完整同周样刊
+
+顺序：13/59；阶段：1；类型：阶段门。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12)。
+
+前置尚未验收：[W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)、[R04](TECHNICAL_TRACE.md#r04)、[R07](TECHNICAL_TRACE.md#r07)、[T01](TECHNICAL_TRACE.md#t01)、[T02](TECHNICAL_TRACE.md#t02)、[T03](TECHNICAL_TRACE.md#t03)、[T04](TECHNICAL_TRACE.md#t04)、[T05](TECHNICAL_TRACE.md#t05)、[T06](TECHNICAL_TRACE.md#t06)、[T07](TECHNICAL_TRACE.md#t07)、[T08](TECHNICAL_TRACE.md#t08)、[T09](TECHNICAL_TRACE.md#t09)、[T10](TECHNICAL_TRACE.md#t10)、[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)。
+
+逐项逻辑：本项为综合验收，按所列T/R及本卡检查。。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§1.3](CANONICAL_SYSTEM_SPEC_V5.md#th-1-3)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§8.8.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8-3)、[§9](CANONICAL_SYSTEM_SPEC_V5.md#th-9)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§11](CANONICAL_SYSTEM_SPEC_V5.md#th-11)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：W01—W12真实产物；实际用户审阅读体验记录与独立内容核查。
+
+**交付物**：
+
+- 第一阶段适用§19.4/19.5.1/19.6/19.7的逐项证据和未解决问题。
+- 明确是否进入第二阶段，实际通过范围及阻碍。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 内容与证据：真实专题具备适用A/B1/B2/C、主张支持/条件、双方实际增益及独立Review。
+- [ ] 范围与质量：同一真实周完整可读样刊及重要更新/漏题/解释审计、权利和实际阅读检查通过；用户意见如实记录。
+- [ ] 禁止的捷径：模板齐全、单篇、分数、维护测试或文件生成不能替代内容验收；不启自动发信。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：保留实际证据与未过项，退回相应工作包修订；不能以后阶段工具或维护检查替代本阶段质量门。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w13"></a>
+## W13｜共享对象、版本与档案基础接口
+
+顺序：14/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[G01](#g01)。
+
+前置尚未验收：[G01](#g01)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T11](TECHNICAL_TRACE.md#t11)、[T01](TECHNICAL_TRACE.md#t01)、[T04](TECHNICAL_TRACE.md#t04)。
+
+逐项逻辑：T11.L01、T01.L01、T04.L01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§8.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-1)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：第一阶段真实案卷、对象/时间/权限定义与已确定的开发环境。
+
+**交付物**：
+
+- 单应用内的对象ID、追加式版本、三时间/数据期和引用用途接口。
+- 原稿/允许材料/定位与可重建索引的存取；最小接口说明及变更迁移样例。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：同一材料被多题引用仍只有一个权威版本；可完整取回原稿、审核及原判断。
+- [ ] 反向：重复ID、悬空版本、无权全文写入或索引冒充事实原件均被识别；许可撤回可限制相应副本。
+- [ ] 衔接：T01/T04/T05/T09/T10通过同一接口引用真实版本，接口测试使用明示合法副本。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：存储/权限未落实保持受阻；先普通文件/表，不另建事实库或部署高级索引。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w14"></a>
+## W14｜当前规范与任务输入准备接口
+
+顺序：15/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W13](#w13)。
+
+前置尚未验收：[W13](#w13)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T01](TECHNICAL_TRACE.md#t01)、[R07](TECHNICAL_TRACE.md#r07)。
+
+逐项逻辑：T01.L01、R07.F01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-1)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：当前最高说明、T/R关联、实际任务/M步骤及材料依赖。
+
+**交付物**：
+
+- 任务准备入口：规范版本、适用原文定位、实际输入清单与缺口。
+- 已有文档同步/关联检查接入研究任务的调用边界。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：真实任务正式采用前检查所用T/R关联，规范原文、材料和任务指令明确分开。
+- [ ] 反向：过期视图、漏关键否定/例外、材料注入命令及伪造已读范围不能升级为有效输入。
+- [ ] 衔接：向W15交实际提供的输入版本与性质；现有维护程序复用，但研究入口须另验。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：补原文/实际材料或停止受影响部分；不依赖缺口的修复/探索可继续。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w15"></a>
+## W15｜采用检查与权威决定接口
+
+顺序：16/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W14](#w14)。
+
+前置尚未验收：[W14](#w14)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T01](TECHNICAL_TRACE.md#t01)。
+
+逐项逻辑：T01.L02、T01.L03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：任务输入、实际前步产物、当前限制及相应内容核查记录。
+
+**交付物**：
+
+- 产物提交与决定写入分离的最小控制器。
+- 按版本/性质/用途的采用检查、决定与交接记录。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：PENDING/READY/RETURN/NOT_APPLICABLE/BLOCKED沿原定义；候选可交接但不升级为已证因果。
+- [ ] 反向：写作职责自签READY/PASS、过期批准、跳步或缺必要支持时无法正式采用；有据合格产物可继续。
+- [ ] 衔接：上游变化限制实际受影响用途，W27/W31/W32共用检查入口；不要求最终PASS后才能启动研究。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：按具体原因退责任模块或待核，保留允许的探索和未受影响产物。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w16"></a>
+## W16｜共享研究修订与并发提交边界
+
+顺序：17/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W15](#w15)。
+
+前置尚未验收：[W13](#w13)、[W15](#w15)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T05](TECHNICAL_TRACE.md#t05)、[T01](TECHNICAL_TRACE.md#t01)、[T11](TECHNICAL_TRACE.md#t11)。
+
+逐项逻辑：T05.L01、T05.L02、T01.L02、T11.L01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.5](CANONICAL_SYSTEM_SPEC_V5.md#th-8-5)、[§8.8](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
+
+**输入**：同一问题/证据/截点/限制修订及B1/B2/C/Review所基于的版本。
+
+**交付物**：
+
+- 研究修订身份与输入兼容性检查；原子提交或等效比较后写入接口。
+- NC-041实现/验证证据、冲突与重核记录。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：B1/B2共用同一有效研究截面，更新能定位失效输出；顺序执行也记录明确基线。
+- [ ] 反向：以B1新版本拼B2旧版本、审核期间换证据及两个写入丢失更新均被拒绝或明确重核。
+- [ ] 衔接：W27—W32提交均带所基于修订；受影响作品回责任模块，历史稿不覆盖。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：冲突保留两版并补核；未实现并发能力时禁用并发写入，不能静默最后写入者获胜。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w17"></a>
+## W17｜工具适配器与真实操作身份
+
+顺序：18/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W15](#w15)。
+
+前置尚未验收：[W13](#w13)、[W15](#w15)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T13](TECHNICAL_TRACE.md#t13)、[T11](TECHNICAL_TRACE.md#t11)。
+
+逐项逻辑：T13.L02、T13.L03、T11.L01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-1)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：获准操作、实际配置、允许材料、任务和操作身份。
+
+**交付物**：
+
+- 最小可替换调用接口、真实请求/响应或错误、运行/操作ID。
+- 操作级重复请求识别、未知结果及原始用量/费用/耗时记录。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：实际返回与模型声称分开；重试/恢复可追原操作，未知和估计分别标明。
+- [ ] 反向：请求已受理但超时不直接当未执行；模型不能补造成功、版本、页码或费用；不重复计同次操作。
+- [ ] 衔接：W18控制调用前许可和预算，W24—W31使用同一适配器，恢复交W48；当前仅验已实现范围。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：先核可查询的真实结果，再决定有限重试/停止；保持未知，禁止无限自动换模型求PASS。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w18"></a>
+## W18｜调用前权限、预算与能力核验
+
+顺序：19/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W17](#w17)、[W15](#w15)。
+
+前置尚未验收：[W15](#w15)、[W17](#w17)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T13](TECHNICAL_TRACE.md#t13)、[T01](TECHNICAL_TRACE.md#t01)。
+
+逐项逻辑：T13.L01、T13.L03、T01.L02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：实际操作、任务配置准入范围、材料处理权和已获准额度/重试限制。
+
+**交付物**：
+
+- 调用前校验、共享预算预留/结算/未知处理及可核拒绝原因。
+- NC-044证据；未配置项和受控试用的有限范围记录。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：有授权且能力/材料用途符合的调用可执行；费用实际值/估计/未知及币种分开，预留可核。
+- [ ] 反向：并发抢占同一余额不能超用；未知额度不当无限授权；无外发权、越准入范围或重试不足不能偷偷调用。
+- [ ] 衔接：每次实际调用均经本入口；可先串行实现并拒绝不支持的并发，W48再验生产多任务恢复/结算。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：不足/未知按实际已授权范围停止或受控处理；无授权不新增收费；关内容任务不妨碍离线修复。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w19"></a>
+## W19｜模型任务配置与有限准入证据
+
+顺序：20/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W18](#w18)。
+
+前置尚未验收：[W18](#w18)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T13](TECHNICAL_TRACE.md#t13)、[T09](TECHNICAL_TRACE.md#t09)。
+
+逐项逻辑：T13.L01、T13.L02、T09.L01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-1)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§17.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：拟用实际模型/版本、提示、工具、材料、人工帮助与明确职责。
+
+**交付物**：
+
+- 配置身份、给定材料/真实检索/约束增益分别记录的验证结果。
+- 职责及领域有限准入、失败/未验范围与配置变更复验规则。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：配置能复现，保留失败；给定材料、检索、写作和审稿分别判断，不以同一分数通用授权。
+- [ ] 反向：人工改稿冒充模型独立成功、只报最好一轮、固定材料通过后直接扩大到未验检索均不获准。
+- [ ] 衔接：W28/W29/W31采用对应配置范围，变化触发实际受影响用途复验。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：未验任务明确限制；允许的受控尝试仍须核产物，不按便宜或角色名直接放行。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w20"></a>
+## W20｜少量来源适配与候选输入
+
+顺序：21/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W17](#w17)、[W18](#w18)。
+
+前置尚未验收：[W17](#w17)、[W18](#w18)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T02](TECHNICAL_TRACE.md#t02)。
+
+逐项逻辑：T02.L01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-4-1)、[§4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-4-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：本轮实际需要、已核许可的少量来源及区间；不预设具体项目版本。
+
+**交付物**：
+
+- 最小来源适配器与CandidateIndex、实际取得元信息和故障记录。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：合法RSS/API/页面等按实际配置取得可回查线索，日期/摘要缺失如实标记。
+- [ ] 反向：来源不可用保留缺口；标题不能补造正文事实，手动探测成功不当自动发现已验。
+- [ ] 衔接：输出交W21/W23；关闭日报仍独立工作；W47才补生产增量/巡视频率。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：保留故障并改其他获准来源；不一次接入全部候选工具/来源。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w21"></a>
+## W21｜事件归并、血缘与探索队列
+
+顺序：22/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W20](#w20)、[W13](#w13)。
+
+前置尚未验收：[W13](#w13)、[W20](#w20)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T02](TECHNICAL_TRACE.md#t02)。
+
+逐项逻辑：T02.L02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-4-2)、[§4.3](CANONICAL_SYSTEM_SPEC_V5.md#th-4-3)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：真实候选、原发/转引链及可得事件事实。
+
+**交付物**：
+
+- 事件归并建议、来源血缘、未确定合并与探索队列。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：同一事件更新可关联、真实不同事件可拆开，保留原始候选与合并理由。
+- [ ] 反向：十次同源转载不作十个独立立场，模糊相似不强并；冷门候选不因无热度自动丢弃。
+- [ ] 衔接：T03可覆核合并且保留差异，后续证据支持独立性回到血缘而非URL数量。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：不确定则交编辑核；语义聚类确有必要才接入经过任务验证的模型。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w22"></a>
+## W22｜独立参照与覆盖缺口接口
+
+顺序：23/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W20](#w20)、[W21](#w21)。
+
+前置尚未验收：[W20](#w20)、[W21](#w21)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T02](TECHNICAL_TRACE.md#t02)、[T03](TECHNICAL_TRACE.md#t03)。
+
+逐项逻辑：T02.L03、T03.L03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§4.4](CANONICAL_SYSTEM_SPEC_V5.md#th-4-4)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：事先固定范围的独立参照、候选/入选及实际取得限制。
+
+**交付物**：
+
+- CoverageGap及未发现/取得失败/主动舍弃/未成熟/重复覆盖的区分记录。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：能从参照回查具体遗漏及原因，非热门地区/正面事项有真实比较记录。
+- [ ] 反向：用入选稿倒推参照、把断源当无重要事件、领域配额冒充覆盖均被指出。
+- [ ] 衔接：缺口返回T02发现或T03重选，在W36/W41核整刊影响，不声称全球无遗漏。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：限定参照覆盖范围和剩余盲区，具体重要漏题优先处理。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w23"></a>
+## W23｜初选、S8与当期取舍记录
+
+顺序：24/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W15](#w15)、[W21](#w21)。
+
+前置尚未验收：[W15](#w15)、[W21](#w21)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T03](TECHNICAL_TRACE.md#t03)。
+
+逐项逻辑：T03.L01、T03.L02、T03.L03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§5.4](CANONICAL_SYSTEM_SPEC_V5.md#th-5-4)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.5](CANONICAL_SYSTEM_SPEC_V5.md#th-8-5)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：候选/血缘、证据包接口、Theme及期号和刊登依据。
+
+**交付物**：
+
+- S0—S7/S8前后决定与理由、阅读计划、稿型及publication_basis。
+- 长期研究准入与本期刊登分离的选题接口。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：同候选前后决定可比较，重要单次事项、长期题与困难题能按实际证据走不同分支。
+- [ ] 反向：最高分拼刊、COVER=PASS、沉没投入强发和长期题自动降成当周精选均不能发生。
+- [ ] 衔接：W24—W26提供证据/中文版本，R04改变对象/类型回S8，整刊最终再比较价值。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：WATCH留具体下一动作，改型重核适用责任与整刊深度；程序不替编辑作无据判断。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w24"></a>
+## W24｜原件取得、结构提取与用途控制
+
+顺序：25/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W17](#w17)、[W18](#w18)、[W23](#w23)。
+
+前置尚未验收：[W13](#w13)、[W17](#w17)、[W18](#w18)、[W23](#w23)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T04](TECHNICAL_TRACE.md#t04)。
+
+逐项逻辑：T04.L01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：具体作品/版本、S7/补证请求与实际用途许可。
+
+**交付物**：
+
+- 原文/允许副本或定位、解析结果、真实取得/核对范围、RightsRecord。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：能回原页/原段/原表，复杂表格或OCR关键数据核原件，存留内容符合相应用途。
+- [ ] 反向：空正文、错版本、解析截断及无权保存/翻译必须显式处理，模型输出不能自写已核。
+- [ ] 衔接：向W25/26交同一实际版本，许可或重要修订回W34限制已知用途。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：改合法定位/导引或报缺口，不用现网页伪造旧版，故障不误删其他有效材料。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w25"></a>
+## W25｜主张支持、计算与定向补证接口
+
+顺序：26/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W24](#w24)、[W16](#w16)。
+
+前置尚未验收：[W16](#w16)、[W24](#w24)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T04](TECHNICAL_TRACE.md#t04)、[T05](TECHNICAL_TRACE.md#t05)、[R04](TECHNICAL_TRACE.md#r04)。
+
+逐项逻辑：T04.L02、R04.F01、R04.F02、R04.F03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：具体主张/缺环、原件和专业条件、计算输入及可区分证据。
+
+**交付物**：
+
+- Claim—Evidence支持范围/反证/未知、来源独立性及实际计算记录。
+- 补证请求与真实结果、受影响判断的前后差异。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：主张强度对应实际支持；计算输入、口径/单位/时间与执行结果均可核。
+- [ ] 反向：真实无关引用、局部支持、同源重复、公式正确但输入错及生成代码未执行均不通过。
+- [ ] 衔接：发现条件失配回W27并按影响回W23，查剩余支持后再限制/恢复用途。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：有区分价值才继续补证；无条件完成则收窄/待研，不能由日志齐全推断因果成立。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w26"></a>
+## W26｜入选中文、节选边界与重要更新
+
+顺序：27/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W24](#w24)、[W25](#w25)、[W23](#w23)。
+
+前置尚未验收：[W23](#w23)、[W24](#w24)、[W25](#w25)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T04](TECHNICAL_TRACE.md#t04)、[T03](TECHNICAL_TRACE.md#t03)。
+
+逐项逻辑：T04.L03、T03.L02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：S8确定范围、许可、原件/表注与实际译文配置。
+
+**交付物**：
+
+- 版本化中文/导引、原文范围对应和节选标识。
+- 定稿前重要更新及截点变化的影响记录。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：普通中文准确保留限定/否定/单位，长报告重点包含理解本题所需语境。
+- [ ] 反向：S8前批量全译、节选冒充全文、漏否定或无授权收录均被识别；后出材料不混入旧截点。
+- [ ] 衔接：译文更正进入W34，重要更新回研究/审稿或明确保留原截点并调整刊登。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：回原作核对/改允许导引；材料不足报具体限制，不以更流畅掩盖错译。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w27"></a>
+## W27｜M工序、共同研究与有限收口接口
+
+顺序：28/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W16](#w16)、[W25](#w25)、[W19](#w19)。
+
+前置尚未验收：[W16](#w16)、[W19](#w19)、[W25](#w25)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T05](TECHNICAL_TRACE.md#t05)、[T07](TECHNICAL_TRACE.md#t07)、[R04](TECHNICAL_TRACE.md#r04)。
+
+逐项逻辑：T05.L01、T05.L02、T05.L03、T07.L01、R04.F04。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§8.5](CANONICAL_SYSTEM_SPEC_V5.md#th-8-5)、[§8.8](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)、[§10.1](CANONICAL_SYSTEM_SPEC_V5.md#th-10-1)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：共同案卷修订、真实问题、专业资料/方法原文、前步可用产物。
+
+**交付物**：
+
+- M01—M12依赖组织及真实中间产物；B1/B2从问题期共同参与。
+- 竞争解释/MethodUse/未知与补证、改题、暂停的有据路由。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：方法前提被实际查验，研究按具体依赖推进；M07不是首次选方法，M12不等未来才开始。
+- [ ] 反向：流程齐全但无解释、假设自动升级事实、未完成改称不适用和静态设计依赖当启动门均被阻止。
+- [ ] 衔接：采用边界共用W15；事实回W25、对象/价值回W23、教学不足回W29，并保存检查点。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：说明已做/未做及下一动作价值，有据有限交付或暂停；不为PASS无限重写。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w28"></a>
+## W28｜顾问任务、判断与增益提交
+
+顺序：29/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W27](#w27)。
+
+前置尚未验收：[W27](#w27)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T06](TECHNICAL_TRACE.md#t06)。
+
+逐项逻辑：T06.L01、T06.L02、T06.L03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§1.3](CANONICAL_SYSTEM_SPEC_V5.md#th-1-3)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§8.7](CANONICAL_SYSTEM_SPEC_V5.md#th-8-7)、[§8.8](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8)、[§9](CANONICAL_SYSTEM_SPEC_V5.md#th-9)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：同一研究截面、主体处境/行动、竞争解释和任务准入配置。
+
+**交付物**：
+
+- B1研究/写作入口、判断及支持/限制、原作与本刊贡献的区别。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：能指出具体本案理解增益；行动建议只在实际有决策问题时给出，证据变化能收窄判断。
+- [ ] 反向：仅设置顶级顾问角色、通用建议、自评分、未经检验动机或强造机会不能成为合格研判。
+- [ ] 衔接：共享修订检查拒绝旧基线，研究不足回W27，原件问题回W25，成稿交W31。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：有限解释如实交；改型由W23重核而非由作者直接宣布完成。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w29"></a>
+## W29｜帝师研究、连续教学与迁移提交
+
+顺序：30/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W27](#w27)。
+
+前置尚未验收：[W27](#w27)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T07](TECHNICAL_TRACE.md#t07)。
+
+逐项逻辑：T07.L01、T07.L02、T07.L03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)、[§10.1](CANONICAL_SYSTEM_SPEC_V5.md#th-10-1)、[§10.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-10-2-1)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：共同问题、真实知识来源、必要基础和可采用的B1研究。
+
+**交付物**：
+
+- 从M02介入的知识研究入口和M11连续讲解稿。
+- 过程/算例/反例/迁移条件与按需Concept关联。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：普通语言把关键连接讲清，成熟知识与必要回顾可保留；每次迁移核本题条件。
+- [ ] 反向：仅复述B1、跳关键连接、堆书名和把收到知识卡记为掌握均不合格。
+- [ ] 衔接：与B1可交错研究而非固定末尾润色；认识不足回W27/25、讲解不足只返教学，交W31审实际稿。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：补必要研究或连接；不预建课程、读者测评或每篇强制卡数。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w30"></a>
+## W30｜条件路径与原判断检验条件
+
+顺序：31/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W28](#w28)、[W29](#w29)。
+
+前置尚未验收：[W28](#w28)、[W29](#w29)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T08](TECHNICAL_TRACE.md#t08)。
+
+逐项逻辑：T08.L01、T08.L02、T08.L03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§8.8](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8)、[§8.8.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8-3)、[§11](CANONICAL_SYSTEM_SPEC_V5.md#th-11)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：有据起点、条件/传导、未知和共享案卷修订。
+
+**交付物**：
+
+- C与M12任务入口、条件路径、开放问题和事前检验条件。
+- 原判断版本及观察窗口/无法区分原因。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：路径差别有实质依据，关键中间连接及反证/时滞可回查；未来结果按新版本另核。
+- [ ] 反向：凑概率、只写好坏终点、将推演当事实、抹去旧预测或强迫短稿执行全套C不通过。
+- [ ] 衔接：原判断交W33保存，W31核现实起点和表述，真实到期复查进入W39/W40。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：条件不足回W27/25；确不适用写具体理由，不等未来结果才完成当期准备。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w31"></a>
+## W31｜独立核查、意见闭环与审核决定
+
+顺序：32/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W28](#w28)、[W29](#w29)、[W30](#w30)、[W19](#w19)、[W15](#w15)。
+
+前置尚未验收：[W15](#w15)、[W19](#w19)、[W28](#w28)、[W29](#w29)、[W30](#w30)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T09](TECHNICAL_TRACE.md#t09)、[T01](TECHNICAL_TRACE.md#t01)。
+
+逐项逻辑：T09.L01、T09.L02、T09.L03、T01.L02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-1)、[§15.2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-2)、[§15.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-3)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：实际读者稿、原件/方法/计算、真实版本和限制；分开的审稿配置与输入。
+
+**交付物**：
+
+- 独立疑点/回源核查、意见处理、作者回应及实际改稿的Review接口。
+- 版本/范围绑定的决定，写作方无权自行修改审核。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：能识别关键事实/解释/教学错误，也能接受条件充分的合格稿和合理未决。
+- [ ] 反向：预泄缺陷答案、作者自签、全拒稿、错审强迫造新结论及旧Review冒充新审不能通过。
+- [ ] 衔接：改稿按实际影响回负责模块，W32消费有效Review，能力验证与本篇放行分别保存。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：关键未核保持待审/受限，分歧回原件与定义；内容能力另由真实例及新例验。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w32"></a>
+## W32｜连续文章、卷首与审后变更承接
+
+顺序：33/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W31](#w31)、[W23](#w23)、[W26](#w26)。
+
+前置尚未验收：[W23](#w23)、[W26](#w26)、[W31](#w31)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T10](TECHNICAL_TRACE.md#t10)、[T03](TECHNICAL_TRACE.md#t03)。
+
+逐项逻辑：T10.L01、T10.L02、T10.L03、T03.L03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.5](CANONICAL_SYSTEM_SPEC_V5.md#th-13-5)、[§13.6](CANONICAL_SYSTEM_SPEC_V5.md#th-13-6)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：有效稿件/Review、当期取舍与重要更新、实际使用的可读格式。
+
+**交付物**：
+
+- Article/Edition源与实际读者稿、标题/图表/卷首/目录及来源索引。
+- 审后差异、纯呈现承接或语义返审记录；当期文件冻结指针。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：正文、标题、卷首和结尾强度一致，整刊互补/重要更新有据，实际使用文档可读。
+- [ ] 反向：单字改意、漏限定、卷首新因果、脚注/单位丢失须返核；纯版式不强制全篇重研。
+- [ ] 衔接：语义新增回W27/W31，纯呈现核实际文件后保留原Review承接；正式多格式渲染到W49。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：先修负责层的具体缺陷，不以文件生成当出版/交付；未验格式不标通过。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w33"></a>
+## W33｜原文档案、双模式查询与知识复用
+
+顺序：34/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W16](#w16)、[W32](#w32)。
+
+前置尚未验收：[W13](#w13)、[W16](#w16)、[W32](#w32)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T11](TECHNICAL_TRACE.md#t11)。
+
+逐项逻辑：T11.L01、T11.L02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
+
+**输入**：原稿/判断/知识/背景的实际版本、三时间、权限和当前限制。
+
+**交付物**：
+
+- 当前查询、KNOWN_TO_SYSTEM_AS_OF及PUBLICLY_AVAILABLE_AS_OF接口。
+- 完整原稿取回、按需知识/背景/机构变化/TransmissionLink及可重建索引。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：两种历史语义给出各自正确结果，原话与后来说明分开；当前采用回权威版本核本题条件。
+- [ ] 反向：后来公开/后来补录不得污染旧截面；摘要/缓存/命中不能代替原文或绕过当前限制。
+- [ ] 衔接：同一档案支撑W39/W40/W52；机构前后变化和跨域每一环有实际材料，不独立建雷达产品。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：历史取不回标范围不足，不用现稿补造；索引可重建但不是第二事实源。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w34"></a>
+## W34｜更正影响、限制采用与有限恢复
+
+顺序：35/59；阶段：2；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W33](#w33)、[W25](#w25)、[W31](#w31)、[W15](#w15)。
+
+前置尚未验收：[W15](#w15)、[W25](#w25)、[W31](#w31)、[W33](#w33)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T11](TECHNICAL_TRACE.md#t11)、[T01](TECHNICAL_TRACE.md#t01)。
+
+逐项逻辑：T11.L03、T01.L02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§16.6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-2)、[§16.6.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-3)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
+
+**输入**：真实更正或明示测试副本、直接/传递用途及其他仍有效支持。
+
+**交付物**：
+
+- 先限制已知关键用途、依赖追查、漏依赖/误限制与补核记录。
+- 维持/缩小/撤回/未决及按范围恢复的当前指向。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：受影响采用先失效再复核；有效剩余支持和无关稿件能保留，历史原稿仍可回放。
+- [ ] 反向：仅改源数字却旧批准可用、一改全撤/全过、漏依赖和缓存绕过限制均须被检出。
+- [ ] 衔接：W15/W31/W32/W33采用时核限制；恢复绑定真实补证/Review，W40验完整链。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：关系不全执行限定查找并报告未覆盖，限制相关用途而非伪称完整影响图。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w35"></a>
+## W35｜必要时的原文任务视图与分段装载
+
+顺序：36/59；阶段：2；类型：条件能力。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W14](#w14)、[W17](#w17)、[W27](#w27)。
+
+前置尚未验收：[W14](#w14)、[W17](#w17)、[W27](#w27)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T01](TECHNICAL_TRACE.md#t01)、[T13](TECHNICAL_TRACE.md#t13)、[R07](TECHNICAL_TRACE.md#r07)。
+
+逐项逻辑：T01.L01、T13.L03、R07.F03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-1)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：实际上下文瓶颈证据、任务所需原文/材料依赖及配置限制。
+
+**交付物**：
+
+- 确需时的原文单元提取、清单/哈希/实际提供范围、分段及重接产物。
+- 无瓶颈时的NOT_APPLICABLE依据和已验证人工定位办法。
+
+**条件项**：仅第二阶段出现经记录的上下文/装载需要时实现；无需要可有据不适用，不能跳过输入完整性。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：保留关键否定/例外/表注及跨段依赖；准备、实际装载、内容理解分别核。
+- [ ] 反向：只传摘要、缺必需依赖、过期任务视图和字符数冒称容量足够不能通过。
+- [ ] 衔接：从W33取真实中间产物，用W15核采用，W36核R07全稿连接与中断重接。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：先人工定位或补原文/拆分，仍不足停止受影响任务；不为清单先建规则平台。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w36"></a>
+## W36｜最小深度主题闭环与中断重接
+
+顺序：37/59；阶段：2；类型：路线集成验收。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W22](#w22)、[W32](#w32)、[W33](#w33)、[W18](#w18)。
+
+前置尚未验收：[W18](#w18)、[W22](#w22)、[W32](#w32)、[W33](#w33)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[R01](TECHNICAL_TRACE.md#r01)、[R07](TECHNICAL_TRACE.md#r07)、[T01](TECHNICAL_TRACE.md#t01)、[T09](TECHNICAL_TRACE.md#t09)、[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)。
+
+逐项逻辑：R01.F01、R01.F02、R01.F03、R01.F04、R01.F05、R07.F01、R07.F02、R07.F03、R07.F04。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§11](CANONICAL_SYSTEM_SPEC_V5.md#th-11)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：冻结合法真实案例、当前实现、配置、有效原文/材料及实际中间产物。
+
+**交付物**：
+
+- R01最小可重跑内部闭环和R07规则变化/分段/中断重接的集成证据。
+- 实际跨模块输入/输出/决定链与质量/主要投入。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：从独立发现到真实读者稿可回放；人工职责明确；恢复只重做实际失效部分。
+- [ ] 反向：越步、自报通过、缺依赖、过期关联/视图、只用聊天摘要恢复均被拦在相应用途。
+- [ ] 衔接：理论→T/R→工作包→代码/真实产物/检查可来回定位；W35有据不适用时仍验人工装载和重接。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：定位具体交接/内容缺陷后返责任包，不因维护测试通过就认研究能力合格。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w37"></a>
+## W37｜精选、首次事实、进展及更正分支
+
+顺序：38/59；阶段：2；类型：路线集成验收。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W23](#w23)、[W26](#w26)、[W31](#w31)、[W32](#w32)、[W34](#w34)。
+
+前置尚未验收：[W23](#w23)、[W26](#w26)、[W31](#w31)、[W32](#w32)、[W34](#w34)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[R03](TECHNICAL_TRACE.md#r03)、[T03](TECHNICAL_TRACE.md#t03)、[T04](TECHNICAL_TRACE.md#t04)、[T09](TECHNICAL_TRACE.md#t09)、[T10](TECHNICAL_TRACE.md#t10)。
+
+逐项逻辑：R03.F01、R03.F02、R03.F03、R03.F04。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：真实对应稿型及实际旧稿/无旧稿依据、许可、适用责任和整刊。
+
+**交付物**：
+
+- R03四种分支路由、对应产物/审核与整刊责任的集成记录。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：各型完成实际适用职责；更正定位旧原句，新事实明确无旧文，必要背景和限制充分。
+- [ ] 反向：短稿强套全部B1/B2/C、深稿仅改标签、全刊短讯化或借无旧稿伪造前刊均失败。
+- [ ] 衔接：CORRECTION连W34/W40，研究改型回W23；有效短稿可入刊，不误等不适用工序。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：按稿型/价值重新选择，未完成研究继续保留而非因路由成功标为完成。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w38"></a>
+## W38｜定向补证、解释变化与回S8
+
+顺序：39/59；阶段：2；类型：路线集成验收。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W25](#w25)、[W27](#w27)、[W23](#w23)、[W31](#w31)。
+
+前置尚未验收：[W23](#w23)、[W25](#w25)、[W27](#w27)、[W31](#w31)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[R04](TECHNICAL_TRACE.md#r04)、[T03](TECHNICAL_TRACE.md#t03)、[T04](TECHNICAL_TRACE.md#t04)、[T05](TECHNICAL_TRACE.md#t05)。
+
+逐项逻辑：R04.F01、R04.F02、R04.F03、R04.F04。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：实际缺环/反证、可区分新材料、原解释与原选择。
+
+**交付物**：
+
+- R04补证请求→真实取得→支持变化→相关交接复核→必要S8复选的完整链。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：新增材料可维持、削弱或无法区分解释，分别有实际依据和主要投入。
+- [ ] 反向：同源堆叠算新验证、固定材料评测禁止真实补证、无新依据无限重试均失败。
+- [ ] 衔接：问题/对象/价值/类型实变确实回T03，未变只重核相关推理；能有据继续、有限交付或暂停。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：按缺陷回W25/W27/W23，停止无新增价值动作，不自动全篇重写。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w39"></a>
+## W39｜真实跨周接续与长期专题入刊
+
+顺序：40/59；阶段：2；类型：路线集成验收。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W33](#w33)、[W27](#w27)、[W23](#w23)、[W36](#w36)。
+
+前置尚未验收：[W23](#w23)、[W27](#w27)、[W33](#w33)、[W36](#w36)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[R02](TECHNICAL_TRACE.md#r02)、[T03](TECHNICAL_TRACE.md#t03)、[T05](TECHNICAL_TRACE.md#t05)、[T11](TECHNICAL_TRACE.md#t11)。
+
+逐项逻辑：R02.F01、R02.F02、R02.F03、R02.F04。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)、[§16.5](CANONICAL_SYSTEM_SPEC_V5.md#th-16-5)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
+
+**输入**：同一主题至少两个真实不同周截面、旧原话/缺口及新公开材料。
+
+**交付物**：
+
+- R02跨周演变、背景/知识版本、暂停/重开与新的研究结果。
+- CURRENT_WEEK或LONG_TERM_FEATURE逐项刊登依据及重新审核。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：Theme独立延续、旧刊原话可找回，新材料/复查确实改变或检验原判断。
+- [ ] 反向：模拟两周、现稿回填历史、COVER占本期名额、沉没投入强发及未熟长期题自动短稿均不通过。
+- [ ] 衔接：历史查询走W33，补证走W38，更正走W40，成熟后T03重核本期价值而非自动刊登。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：未到真实第二周保持待验；材料不足暂停并保留下一触发，不伪造自然时间。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w40"></a>
+## W40｜更正、当前采用与历史回放集成
+
+顺序：41/59；阶段：2；类型：路线集成验收。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W34](#w34)、[W39](#w39)、[W31](#w31)、[W32](#w32)。
+
+前置尚未验收：[W31](#w31)、[W32](#w32)、[W34](#w34)、[W39](#w39)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[R05](TECHNICAL_TRACE.md#r05)、[T11](TECHNICAL_TRACE.md#t11)、[T09](TECHNICAL_TRACE.md#t09)、[T10](TECHNICAL_TRACE.md#t10)。
+
+逐项逻辑：R05.F01、R05.F02、R05.F03、R05.F04。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§16.6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-2)、[§16.6.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-3)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
+
+**输入**：真实跨周档案、明示更正测试副本、具体依赖及有其他支持/无关稿对照。
+
+**交付物**：
+
+- R05完整影响链、采用前拒绝/恢复、历史原话与后来更正分离的证据。
+- 找到/遗漏/误限制的实际结果及覆盖限制。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：先限制关键用途，再补核并按范围恢复；当前复用和两类as-of查询各得正确结果。
+- [ ] 反向：旧缓存或旧PASS绕过限制、全恢复、漏依赖/误限及测试更正冒充自然更正均失败。
+- [ ] 衔接：覆盖Evidence→Claim→B1/B2/C→Review→Article/Edition及实际查询用途；相关修改回对应内容审核。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：补依赖和真实核查；未覆盖范围保持限制，不以登记条目数当链路通过。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w41"></a>
+## W41｜六份真实跨领域案例与投入联合验收
+
+顺序：42/59；阶段：2；类型：真实案例与能力验收。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W36](#w36)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[W40](#w40)。
+
+前置尚未验收：[W36](#w36)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[W40](#w40)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[R01](TECHNICAL_TRACE.md#r01)、[R02](TECHNICAL_TRACE.md#r02)、[R03](TECHNICAL_TRACE.md#r03)、[R04](TECHNICAL_TRACE.md#r04)、[R05](TECHNICAL_TRACE.md#r05)、[R07](TECHNICAL_TRACE.md#r07)、[T09](TECHNICAL_TRACE.md#t09)、[T13](TECHNICAL_TRACE.md#t13)。
+
+逐项逻辑：本项为综合验收，按所列T/R及本卡检查。。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)、[§16.5](CANONICAL_SYSTEM_SPEC_V5.md#th-16-5)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：至少六份真实、合法、跨领域完整深度案例，第一阶段合格案例可计入。
+
+**交付物**：
+
+- 逐例A/B1/B2/C适用产物、独立Review、权利/知识关系、配置/失败/返工与主要投入。
+- 六案例覆盖清单及第二阶段全部实际缺口；不预填自然周和案例通过。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：包含非金融、非创业、非中美重大题；至少一例机构前后变化、一例逐环跨域传导，均有真实依据。
+- [ ] 反向：模拟凑六例、只数来源/角色、只报最后成功费用、字符数冒充Token及跨币种直接相加均不通过。
+- [ ] 衔接：与同题真实基线对照具体理解/教学增益；成本未知如实列缺口，阶段门按§19.2/19.7核实际范围。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：缺哪例/哪责任就补对应真实研究；不为数量挑无价值新闻，不以代码绿灯越过G02。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="g02"></a>
+## G02｜第二阶段门：研究闭环、跨周与六例
+
+顺序：43/59；阶段：2；类型：阶段门。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W14](#w14)、[W15](#w15)、[W16](#w16)、[W17](#w17)、[W18](#w18)、[W19](#w19)、[W20](#w20)、[W21](#w21)、[W22](#w22)、[W23](#w23)、[W24](#w24)、[W25](#w25)、[W26](#w26)、[W27](#w27)、[W28](#w28)、[W29](#w29)、[W30](#w30)、[W31](#w31)、[W32](#w32)、[W33](#w33)、[W34](#w34)、[W35](#w35)、[W36](#w36)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[W40](#w40)、[W41](#w41)。
+
+前置尚未验收：[W13](#w13)、[W14](#w14)、[W15](#w15)、[W16](#w16)、[W17](#w17)、[W18](#w18)、[W19](#w19)、[W20](#w20)、[W21](#w21)、[W22](#w22)、[W23](#w23)、[W24](#w24)、[W25](#w25)、[W26](#w26)、[W27](#w27)、[W28](#w28)、[W29](#w29)、[W30](#w30)、[W31](#w31)、[W32](#w32)、[W33](#w33)、[W34](#w34)、[W35](#w35)、[W36](#w36)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[W40](#w40)、[W41](#w41)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[R01](TECHNICAL_TRACE.md#r01)、[R02](TECHNICAL_TRACE.md#r02)、[R03](TECHNICAL_TRACE.md#r03)、[R04](TECHNICAL_TRACE.md#r04)、[R05](TECHNICAL_TRACE.md#r05)、[R07](TECHNICAL_TRACE.md#r07)、[T01](TECHNICAL_TRACE.md#t01)、[T02](TECHNICAL_TRACE.md#t02)、[T03](TECHNICAL_TRACE.md#t03)、[T04](TECHNICAL_TRACE.md#t04)、[T05](TECHNICAL_TRACE.md#t05)、[T06](TECHNICAL_TRACE.md#t06)、[T07](TECHNICAL_TRACE.md#t07)、[T08](TECHNICAL_TRACE.md#t08)、[T09](TECHNICAL_TRACE.md#t09)、[T10](TECHNICAL_TRACE.md#t10)、[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)。
+
+逐项逻辑：本项为综合验收，按所列T/R及本卡检查。。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§1.3](CANONICAL_SYSTEM_SPEC_V5.md#th-1-3)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§8.8.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8-3)、[§9](CANONICAL_SYSTEM_SPEC_V5.md#th-9)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§11](CANONICAL_SYSTEM_SPEC_V5.md#th-11)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)、[§16.5](CANONICAL_SYSTEM_SPEC_V5.md#th-16-5)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：W13—W41实际实现和研究证据；W35仅在确有上下文需要时适用。
+
+**交付物**：
+
+- 最小可重跑L1—L6、配置有限准入、真实跨周/查询/复用/纠错与六案例证据。
+- 实际能力范围、主要投入/失败/缺项和进入第三阶段的决定。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 内容与证据：至少两个真实不同周截面；两类as-of、背景/知识复用、来源/许可/译文变化及更正依赖按范围恢复均有证据。
+- [ ] 范围与质量：至少六份真实合法跨领域深度案例，含原定领域/地区覆盖、机构变化与逐环跨域案例，逐例独立审稿。
+- [ ] 禁止的捷径：模拟不能凑真实案例/周截面；控制器检查、内容质量、模型能力及成本证据分别报告，条件任务有据不适用。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：保留实际证据与未过项，退回相应工作包修订；不能以后阶段工具或维护检查替代本阶段质量门。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w42"></a>
+## W42｜按题接入必要专业原始资料
+
+顺序：44/59；阶段：3；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[G02](#g02)。
+
+前置尚未验收：[G02](#g02)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T04](TECHNICAL_TRACE.md#t04)、[T05](TECHNICAL_TRACE.md#t05)、[T13](TECHNICAL_TRACE.md#t13)。
+
+逐项逻辑：T04.L01、T04.L02、T05.L02、T13.L01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.8](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：第二阶段真实案卷暴露的专业缺口、对应原始数据/披露/合同/政策/科技医学等材料。
+
+**交付物**：
+
+- 只针对实际需要的专业适配与资料版本/权限、单位/口径/数据期。
+- 对旧解释遗漏条件或例外的真实核对及修订。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：资料确实补到某个决定性条件，来源、单位、方法、时点与使用权可回查。
+- [ ] 反向：预印本当临床效果、机构措辞当权限改变、融资当收入、口径不兼容直接比较不得通过。
+- [ ] 衔接：缺口经T05进入实际B1/B2/Review，仍用共享证据/采用接口，不另起专业事实库。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：无材料或无权使用则收窄/待研，候选工具不因成熟或免费就直接成为内容结论。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w43"></a>
+## W43｜专业深度专题与方法实际增益
+
+顺序：45/59；阶段：3；类型：真实案例与能力验收。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W42](#w42)。
+
+前置尚未验收：[W42](#w42)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T05](TECHNICAL_TRACE.md#t05)、[T06](TECHNICAL_TRACE.md#t06)、[T07](TECHNICAL_TRACE.md#t07)、[T08](TECHNICAL_TRACE.md#t08)、[T09](TECHNICAL_TRACE.md#t09)。
+
+逐项逻辑：T05.L02、T06.L02、T07.L02、T08.L02、T09.L02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§1.3](CANONICAL_SYSTEM_SPEC_V5.md#th-1-3)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§8.8](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8)、[§8.8.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8-3)、[§9](CANONICAL_SYSTEM_SPEC_V5.md#th-9)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)、[§10.1](CANONICAL_SYSTEM_SPEC_V5.md#th-10-1)、[§10.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-10-2-1)、[§11](CANONICAL_SYSTEM_SPEC_V5.md#th-11)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-2)、[§15.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-3)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：专业材料、必要方法、竞争解释及可比的既有案卷/基线。
+
+**交付物**：
+
+- 真实专业深度专题、前后判断/教学差异与独立核验。
+- 专业条件/反例/传导使稿件具体改善的段落及投入。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：解释与教学比普通摘要多出的必要过程可查；前提失配会撤销或修正方法。
+- [ ] 反向：加术语/资料量却无实际作用、强求原创、忽略其他世界领域或把相关当收益传导均不合格。
+- [ ] 衔接：仍走T01/T04/T09/T10当前版本链，重要新材料重新检查受影响内容及整刊。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：回真实材料/方法/讲解定位问题，必要时简化工具，不以新角色掩盖内容浅。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w44"></a>
+## W44｜必要时的专业分工比较
+
+顺序：46/59；阶段：3；类型：条件能力。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W43](#w43)。
+
+前置尚未验收：[W43](#w43)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T09](TECHNICAL_TRACE.md#t09)、[T13](TECHNICAL_TRACE.md#t13)。
+
+逐项逻辑：T09.L01、T09.L02、T09.L03、T13.L02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-1)、[§15.2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-2)、[§15.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-3)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：明确的专业审核瓶颈、同一固定真实样本、原有独立审核基线与实际配置。
+
+**交付物**：
+
+- 确需时专业分角色/多Agent对照；漏检/误拒/争议/中文质量、时间与用量/费用。
+- 无瓶颈或无增益时的简化/不适用依据，保留独立核查职责。
+
+**条件项**：只有真实专业瓶颈需要时比较；用户此轮仅授权工作清单，未授权现在启动多Agent。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：实际提升关键识错与正确放行能力才保留复杂编排；人工帮助和条件差异公开记。
+- [ ] 反向：角色数/多数投票/分数上升不能代替回源；全拒稿、泄露缺陷答案、隐去失败轮次均不通过。
+- [ ] 衔接：专业意见仍由T09按原件收口，写作模型无权自签PASS；不新增一组永久生产线。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：无明确增益就用更简单的独立审稿，未验职责保持受限。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w45"></a>
+## W45｜新例复核与有限能力范围更新
+
+顺序：47/59；阶段：3；类型：真实案例与能力验收。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W43](#w43)。
+
+前置尚未验收：[W43](#w43)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T09](TECHNICAL_TRACE.md#t09)、[T13](TECHNICAL_TRACE.md#t13)、[T01](TECHNICAL_TRACE.md#t01)。
+
+逐项逻辑：T09.L01、T09.L03、T13.L01、T01.L02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-1)、[§15.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2-3)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：专业专题与另留未调试新例、实际配置和必要的新任务范围。
+
+**交付物**：
+
+- 新例的漏检/误拒/未核、配置变化复验、有限准入与简化决定。
+- 本阶段质量/主要投入/返工及仍未覆盖的范围。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：新条件能说明哪些知识可迁移、哪些须重查；范围更新有真实证据且绑定实际配置。
+- [ ] 反向：把调试例最好一次或一次稿件PASS当跨领域通用能力、把旧模型记录套到新配置均失败。
+- [ ] 衔接：W44如被触发必须先完成并核证；否则有据不适用；G03只放行本次实际证明范围。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：新例失败定位相应能力并限制用途，退内容/研究修订，不强求全领域能力声明。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="g03"></a>
+## G03｜第三阶段门：专业增益与有限能力
+
+顺序：48/59；阶段：3；类型：阶段门。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W42](#w42)、[W43](#w43)、[W44](#w44)、[W45](#w45)。
+
+前置尚未验收：[W42](#w42)、[W43](#w43)、[W44](#w44)、[W45](#w45)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T01](TECHNICAL_TRACE.md#t01)、[T04](TECHNICAL_TRACE.md#t04)、[T05](TECHNICAL_TRACE.md#t05)、[T06](TECHNICAL_TRACE.md#t06)、[T07](TECHNICAL_TRACE.md#t07)、[T08](TECHNICAL_TRACE.md#t08)、[T09](TECHNICAL_TRACE.md#t09)、[T13](TECHNICAL_TRACE.md#t13)。
+
+逐项逻辑：本项为综合验收，按所列T/R及本卡检查。。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§1.3](CANONICAL_SYSTEM_SPEC_V5.md#th-1-3)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§8.8.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8-3)、[§9](CANONICAL_SYSTEM_SPEC_V5.md#th-9)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)、[§11](CANONICAL_SYSTEM_SPEC_V5.md#th-11)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：W42—W45实际专业专题、新例及需要时的分工比较。
+
+**交付物**：
+
+- 专业资料/方法带来实际质量增益及来源/单位/口径/时点/权限可追溯专题。
+- 复杂分工保留/简化及配置有限准入决定。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 内容与证据：真实专题证明专业条件及商业/财务等适用传导，比普通摘要多出的解释/教学可核。
+- [ ] 范围与质量：需要专业分工时同固定样本比较漏检/误报/中文质量/时间/Token和金额；无增益即简化，有据不适用保留独立审稿。
+- [ ] 禁止的捷径：新例与失败/未验范围如实记录；专业专题不挤掉九领域价值标准，不凭角色数越过内容门。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：保留实际证据与未过项，退回相应工作包修订；不能以后阶段工具或维护检查替代本阶段质量门。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w46"></a>
+## W46｜生产参数与私有持久环境落实
+
+顺序：49/59；阶段：4；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[G03](#g03)。
+
+前置尚未验收：[G03](#g03)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T01](TECHNICAL_TRACE.md#t01)、[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)、[R08](TECHNICAL_TRACE.md#r08)。
+
+逐项逻辑：R08.F01、T13.L01、T11.L01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
+
+**输入**：已过阶段门的内容链、实际宿主/存储/备份位置及运行授权。
+
+**交付物**：
+
+- 周界/时区/截点/出刊参数、服务/预算/渠道开关及变更记录。
+- 私有持久存储、访问范围、版本迁移与真实可恢复数据边界。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：未定项逐项落实到最高说明/实际配置，真实研究档案与公开规范目录分离，密钥不入档。
+- [ ] 反向：自动套用日报时区、邮箱、密钥、预算或将未知参数当默认许可均失败。
+- [ ] 衔接：W47—W55只消费本步明确配置；未获外发/付费授权仍可按允许范围离线预演。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：缺必需参数停止依赖它的操作，继续无依赖的离线修复；不擅自部署或购买。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w47"></a>
+## W47｜生产触发、增量与任务身份
+
+顺序：50/59；阶段：4；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W46](#w46)、[W20](#w20)、[W21](#w21)、[W18](#w18)。
+
+前置尚未验收：[W18](#w18)、[W20](#w20)、[W21](#w21)、[W46](#w46)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T13](TECHNICAL_TRACE.md#t13)、[T01](TECHNICAL_TRACE.md#t01)、[T02](TECHNICAL_TRACE.md#t02)、[R08](TECHNICAL_TRACE.md#r08)。
+
+逐项逻辑：R08.F02、T13.L03、T01.L02、T02.L01。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-4-1)、[§4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-4-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：已确定调度/区间、获准来源和同一期号/范围的任务身份。
+
+**交付物**：
+
+- 触发与增量游标、原子认领/去重、运行任务及重叠窗口处理。
+- NC-043中任务级重入证据，不与操作/出版/交付身份混用。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：同一任务重复触发不重复启动有效执行；合法新周/新范围能独立运行，断源保留覆盖缺口。
+- [ ] 反向：重复触发增加费用/重置游标、跨实例同时认领、遗漏迟到更新及旧限制绕过均失败。
+- [ ] 衔接：接已验R01/R03，重启用W48恢复；发现与研究/出版/交付开关分别生效。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：先查任务事实/锁状态和有效检查点，不盲目重跑全部或修改日报启动器。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w48"></a>
+## W48｜生产恢复、预算结算与故障告警
+
+顺序：51/59；阶段：4；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W47](#w47)、[W18](#w18)、[W17](#w17)、[W33](#w33)。
+
+前置尚未验收：[W17](#w17)、[W18](#w18)、[W33](#w33)、[W47](#w47)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T13](TECHNICAL_TRACE.md#t13)、[T01](TECHNICAL_TRACE.md#t01)、[T11](TECHNICAL_TRACE.md#t11)、[R07](TECHNICAL_TRACE.md#r07)、[R08](TECHNICAL_TRACE.md#r08)。
+
+逐项逻辑：T13.L01、T13.L02、T13.L03、R07.F02、R08.F02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§17.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-1)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：真实有效检查点、操作/用量/额度与并发任务状态。
+
+**交付物**：
+
+- 断源/模型故障/截断/中断恢复、有限重试及可核告警。
+- 跨任务预算预留/结算/未知账单、重启对账与操作级幂等证据。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：只恢复仍有效范围；已完成操作不会重复计费/重复提交；未知费用与真实已知金额分开。
+- [ ] 反向：崩溃丢预留、超预算重试、任务ID当所有操作ID、模型伪造回执或清除限制均失败。
+- [ ] 衔接：W15核恢复采用，W49核版本冻结，故障注入与内容/主要投入结果一同交W55。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：未知先查询/对账，必要时保持受阻；保留已有有效产物，不自动扩大资源。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w49"></a>
+## W49｜正式阅读格式、审后锁定与出版身份
+
+顺序：52/59；阶段：4；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W46](#w46)、[W32](#w32)、[W48](#w48)。
+
+前置尚未验收：[W32](#w32)、[W46](#w46)、[W48](#w48)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T10](TECHNICAL_TRACE.md#t10)、[T09](TECHNICAL_TRACE.md#t09)、[T11](TECHNICAL_TRACE.md#t11)、[R08](TECHNICAL_TRACE.md#r08)。
+
+逐项逻辑：T10.L01、T10.L02、T10.L03、R08.F03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.5](CANONICAL_SYSTEM_SPEC_V5.md#th-13-5)、[§13.6](CANONICAL_SYSTEM_SPEC_V5.md#th-13-6)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
+
+**输入**：有效终稿/Review、已确定实际输出格式及出版版本。
+
+**交付物**：
+
+- 只消费定稿的正式渲染、实际文件检查、源/文件/Review对应和冻结身份。
+- NC-043中出版版本与纯重渲染的区别，未审语义变化返审。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：每个实际使用格式查看实际文件，图文/单位/脚注/链接正确，能回冻结终稿。
+- [ ] 反向：渲染擅自改写、仅凭哈希放行、换一个字改意及重渲染当新交付许可均失败。
+- [ ] 衔接：新命题回研究/审核，纯版式可有据承接；交W50的是核过的具体文件和原授权范围。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：修具体格式/内容缺陷，未生成/未查看格式标未验；文件生成不推定已交付。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w50"></a>
+## W50｜授权交付、回执与重复投递防护
+
+顺序：53/59；阶段：4；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W49](#w49)、[W48](#w48)。
+
+前置尚未验收：[W48](#w48)、[W49](#w49)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T13](TECHNICAL_TRACE.md#t13)、[T10](TECHNICAL_TRACE.md#t10)、[T11](TECHNICAL_TRACE.md#t11)、[R08](TECHNICAL_TRACE.md#r08)。
+
+逐项逻辑：R08.F01、R08.F03、R08.F04、T13.L02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
+
+**输入**：具体刊物/文件版本、渠道/对象及明确交付授权；未授权用隔离测试端。
+
+**交付物**：
+
+- 独立交付身份、发送/查询适配与真实ACCEPTED/CONFIRMED/UNKNOWN记录。
+- NC-043中接受后超时、重试/重渲染/换版本与重复投递的核查证据。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：回执指向实际定稿/渠道，服务商接受与确认到达分开；相同交付身份不重复发送。
+- [ ] 反向：未知直接重发、ACCEPTED冒充已收到、重渲染重新授权或换渠道绕过许可均失败。
+- [ ] 衔接：先查询/人工核真实服务结果再决定后续；与W47任务、W17操作、W49出版身份分别关联。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：未知保持UNKNOWN并查证；实际外发仍按明确授权，离线成功不冒充真实送达。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w51"></a>
+## W51｜私有归档、备份与真实恢复
+
+顺序：54/59；阶段：4；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W46](#w46)、[W48](#w48)、[W49](#w49)。
+
+前置尚未验收：[W46](#w46)、[W48](#w48)、[W49](#w49)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)。
+
+逐项逻辑：T11.L01、T11.L02、T11.L03、T13.L03。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§16.6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-2)、[§16.6.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-3)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：允许保存的真实档案、引用关系、当前限制与备份/恢复目标。
+
+**交付物**：
+
+- 实际备份及隔离恢复结果、全文/索引/审核/判断/许可/限制的一致性核对。
+- 密钥/受限原作排除规则的实际检查和已验恢复范围。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：恢复后可找回完整原稿/历史原话，当前限制仍生效，索引可从权威记录重建。
+- [ ] 反向：仅有压缩包无恢复、恢复遗漏限制/版本关系、用无权材料证明完整性均失败。
+- [ ] 衔接：恢复环境重跑当前/双as-of查询和采用检查，W55使用实际恢复记录。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：按缺项修备份/恢复链；无法取回范围如实报告，不把空壳索引当历史完整。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w52"></a>
+## W52｜年度双输入与旧判断审计
+
+顺序：55/59；阶段：4；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W51](#w51)、[W39](#w39)、[W40](#w40)。
+
+前置尚未验收：[W39](#w39)、[W40](#w40)、[W51](#w51)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T12](TECHNICAL_TRACE.md#t12)、[R06](TECHNICAL_TRACE.md#r06)、[T11](TECHNICAL_TRACE.md#t11)、[T04](TECHNICAL_TRACE.md#t04)。
+
+逐项逻辑：T12.L01、R06.F01、R06.F02。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-2-3)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§14](CANONICAL_SYSTEM_SPEC_V5.md#th-14)、[§14.1](CANONICAL_SYSTEM_SPEC_V5.md#th-14-1)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
+
+**输入**：实际周刊/缺期/原判断、独立年度原件和后续结果；先明示缩区间。
+
+**交付物**：
+
+- A01—A07年度范围/双输入、时间线、可比指标、漏题和旧判断/数据修订表。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：独立回查不复制周刊，历史当时所知、当时公开却漏用、事后信息分别保留。
+- [ ] 反向：伪造52期、合订冒充年报、年末资料回写成年初已知及不可比数据直接对比均失败。
+- [ ] 衔接：复用W33双模式历史和W40纠错，新增资料按当前用途许可交W53研究。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：缺期/缺资料明确缩范围，不能从短期材料推定全年能力或成本。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w53"></a>
+## W53｜年度新综合、教学与重新独审
+
+顺序：56/59；阶段：4；类型：代码与接口工作包。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W52](#w52)、[W43](#w43)、[W49](#w49)。
+
+前置尚未验收：[W43](#w43)、[W49](#w49)、[W52](#w52)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[T12](TECHNICAL_TRACE.md#t12)、[R06](TECHNICAL_TRACE.md#r06)、[T05](TECHNICAL_TRACE.md#t05)、[T09](TECHNICAL_TRACE.md#t09)、[T10](TECHNICAL_TRACE.md#t10)。
+
+逐项逻辑：T12.L02、T12.L03、R06.F03、R06.F04。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-2-3)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.8.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8-3)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§14](CANONICAL_SYSTEM_SPEC_V5.md#th-14)、[§14.1](CANONICAL_SYSTEM_SPEC_V5.md#th-14-1)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。原定义/例外仍须回原文读取。
+
+**输入**：年度双输入、当前有效旧知识、补漏及新的跨题问题。
+
+**交付物**：
+
+- A08—A12年度新研判/知识综合/未来条件稿及全新Review。
+- 允许年度用途的原作/中文材料、实际成品与归档指针。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：年度认识由新的可核连接产生，旧判断原话保留；独立审核和成品核对绑定当次新稿。
+- [ ] 反向：旧周刊PASS直接批准新综合、重收材料不核许可或仅拼接旧文均不通过。
+- [ ] 衔接：T12调用同一T03—T10，不建年报事实库；新证据回实际研究/审核，交W54集成验。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：缺新研究退对应案卷/取证，缩区间成果明确标示，不宣称全年年报通过。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w54"></a>
+## W54｜R06年度缩区间完整回放
+
+顺序：57/59；阶段：4；类型：路线集成验收。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W52](#w52)、[W53](#w53)。
+
+前置尚未验收：[W52](#w52)、[W53](#w53)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[R06](TECHNICAL_TRACE.md#r06)、[T12](TECHNICAL_TRACE.md#t12)、[T11](TECHNICAL_TRACE.md#t11)、[T09](TECHNICAL_TRACE.md#t09)、[T10](TECHNICAL_TRACE.md#t10)。
+
+逐项逻辑：R06.F01、R06.F02、R06.F03、R06.F04。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-2-3)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§14](CANONICAL_SYSTEM_SPEC_V5.md#th-14)、[§14.1](CANONICAL_SYSTEM_SPEC_V5.md#th-14-1)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
+
+**输入**：实际可用周刊和独立原件、缩区间年报稿/Review/实际文件。
+
+**交付物**：
+
+- R06从双输入到漏题/旧判断审计、年度新综合/独审/成品归档的全链证据。
+- 实际区间、未覆盖全年部分及许可/费用/质量限制。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：任一重要年度结论能回两路材料与新研究，旧原话和事后修订可分别取回。
+- [ ] 反向：只合订、无独立回查、遗漏旧错误/缺期、短演练冒称全年验证均失败。
+- [ ] 衔接：与R05更正/当前复用链一致，实际年报文件也经W49核对；全年另凭全年真实资料验。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：按缺口回W52/53，不为赶阶段门伪造年度范围。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="w55"></a>
+## W55｜连续离线周刊与生产故障集成验收
+
+顺序：58/59；阶段：4；类型：路线集成验收。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W54](#w54)。
+
+前置尚未验收：[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W54](#w54)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[R08](TECHNICAL_TRACE.md#r08)、[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)、[R05](TECHNICAL_TRACE.md#r05)、[R07](TECHNICAL_TRACE.md#r07)、[T01](TECHNICAL_TRACE.md#t01)、[T10](TECHNICAL_TRACE.md#t10)、[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)。
+
+逐项逻辑：R08.F01、R08.F02、R08.F03、R08.F04。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：获准小规模来源、已验内容链、实际配置及隔离故障/交付测试环境。
+
+**交付物**：
+
+- 连续多次完整离线周刊的质量/成本/失败记录和实际刊次清单。
+- 断源、超预算、重复触发、模型故障、审后修改、接受后超时、重启/备份恢复的真实结果。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 正向：每个刊次内容/版本/出版文件可回查；故障后保持有限采用、预算和幂等边界。
+- [ ] 反向：一次成功当连续稳定、离线当真实送达、恢复丢限制、重复操作/发送或未知当成功均失败。
+- [ ] 衔接：R01/R03内容、R05当前限制、R07恢复和R08交付衔接共同通过；至少覆盖一个恢复后的完整刊次。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：按具体故障回相应包并重验受影响范围，正式外发/自动发行仍需实际明确授权。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+<a id="g04"></a>
+## G04｜第四阶段门：生产离线验收与年度回放
+
+顺序：59/59；阶段：4；类型：阶段门。
+
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W46](#w46)、[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W52](#w52)、[W53](#w53)、[W54](#w54)、[W55](#w55)。
+
+前置尚未验收：[W46](#w46)、[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W52](#w52)、[W53](#w53)、[W54](#w54)、[W55](#w55)。仅供执行者核对，生成器不代为验收阶段。
+
+责任模块/路线：[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)、[R05](TECHNICAL_TRACE.md#r05)、[R06](TECHNICAL_TRACE.md#r06)、[R07](TECHNICAL_TRACE.md#r07)、[R08](TECHNICAL_TRACE.md#r08)、[T01](TECHNICAL_TRACE.md#t01)、[T02](TECHNICAL_TRACE.md#t02)、[T04](TECHNICAL_TRACE.md#t04)、[T05](TECHNICAL_TRACE.md#t05)、[T09](TECHNICAL_TRACE.md#t09)、[T10](TECHNICAL_TRACE.md#t10)、[T11](TECHNICAL_TRACE.md#t11)、[T12](TECHNICAL_TRACE.md#t12)、[T13](TECHNICAL_TRACE.md#t13)。
+
+逐项逻辑：本项为综合验收，按所列T/R及本卡检查。。
+
+理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-2-3)、[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§14](CANONICAL_SYSTEM_SPEC_V5.md#th-14)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
+
+**输入**：W46—W55实际持久环境、连续离线刊次、故障/恢复和缩区间年度证据。
+
+**交付物**：
+
+- 生产运行已验范围、实际质量/投入/故障/回执/备份恢复结论。
+- 年度双输入回放与全年未验范围；自动发行/外发/费用的实际授权状态。
+
+**验收清单**（另核Q01—Q07）：
+
+- [ ] 内容与证据：连续多次完整离线周刊及原定断源/超预算/重复/模型/审后改稿/未知回执/恢复场景均有实际结果。
+- [ ] 范围与质量：年报双输入、漏报/纠错、旧判断时点与年度新综合成立；短演练明确不是全年验证。
+- [ ] 禁止的捷径：阶段通过不自动打开外发、收费或自动发行；具体预算/渠道获另行明确授权且相应运行验收通过才启用。
+- [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
+
+**不通过时**：保留实际证据与未过项，退回相应工作包修订；不能以后阶段工具或维护检查替代本阶段质量门。
+
+关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
+
+实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+
+## 13个功能模块的验收清单
+
+以下逐项取自§25既有逻辑的启用条件、输出和限制，不另写一套模块规则。按本次阶段/稿型/允许用途验收，相关工作包提交实际证据；不要求先完成未来全部增强才能制作第一份样刊。
+
+<a id="module-t01"></a>
+### T01｜规范与交接控制
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t01)。
+
+- 第1阶段承接：[W01](#w01)。
+- 第2阶段承接：[W13](#w13)、[W14](#w14)、[W15](#w15)、[W16](#w16)、[W18](#w18)、[W31](#w31)、[W34](#w34)、[W35](#w35)、[W36](#w36)。
+- 第3阶段承接：[W45](#w45)。
+- 第4阶段承接：[W46](#w46)、[W47](#w47)、[W48](#w48)、[W55](#w55)。
+
+- [ ] T01.L01 准备当前任务：条件=本次职责和采用用途明确；实际输出=实际提供范围与缺口；限制=不以准备清单或模型自称已读代替实际输入。
+- [ ] T01.L02 核对采用资格：条件=实际依赖匹配且未过期；实际输出=允许性质/用途及相应步骤决定；限制=候选可以按候选性质交接；不得升格为已证事实。
+- [ ] T01.L03 记录决定并交接：条件=相应责任核查已完成；实际输出=绑定版本的采用记录或退回对象；限制=本模块的文档关联检查不替代研究放行程序。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t02"></a>
+### T02｜全球发现与候选归并
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t02)。
+
+- 第1阶段承接：[W02](#w02)。
+- 第2阶段承接：[W20](#w20)、[W21](#w21)、[W22](#w22)。
+- 第4阶段承接：[W47](#w47)。
+
+- [ ] T02.L01 取得合法轻量线索：条件=实际访问和本用途允许；实际输出=候选、原始日期及取得状态；限制=候选来源登记不等于生产许可；不恢复全库探测。
+- [ ] T02.L02 归并并保留探索：条件=同事件、同源或不确定分别可核；实际输出=归并建议、探索候选与缺口；限制=不同网址/语言不是独立证据；模糊归并须人工核。
+- [ ] T02.L03 作池外参照检查：条件=抽查范围和截点明确；实际输出=发现/筛选/合理舍弃的区分及处理；限制=小样本不能宣称全球召回率或零遗漏。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t03"></a>
+### T03｜选题、复选与整刊计划
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t03)。
+
+- 第1阶段承接：[W02](#w02)、[W03](#w03)、[W05](#w05)、[W12](#w12)。
+- 第2阶段承接：[W22](#w22)、[W23](#w23)、[W26](#w26)、[W32](#w32)、[W37](#w37)、[W38](#w38)、[W39](#w39)。
+
+- [ ] T03.L01 初选并给取证计划：条件=真实日期及基本价值成立；实际输出=S0—S7问题、类型及材料需求；限制=重要性、当前可知程度和本期呈现分别决定。
+- [ ] T03.L02 查证后S8复选：条件=足以开展注明范围的工作；实际输出=COVER/REVISE/WATCH/DROP及理由；限制=不要求先完成原因研究才准许开始研究；COVER不等于PASS。
+- [ ] T03.L03 复核成熟稿的本期价值：条件=CURRENT_WEEK或合格长期专题依据成立；实际输出=当期组合取舍或跨周接续；限制=长期题失去深度且无当周新增，不自动降为精选刊登。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t04"></a>
+### T04｜原作、证据与中文材料
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t04)。
+
+- 第1阶段承接：[W04](#w04)、[W05](#w05)、[W07](#w07)。
+- 第2阶段承接：[W13](#w13)、[W24](#w24)、[W25](#w25)、[W26](#w26)、[W37](#w37)、[W38](#w38)。
+- 第3阶段承接：[W42](#w42)。
+- 第4阶段承接：[W52](#w52)。
+
+- [ ] T04.L01 核用途并取具体版本：条件=访问、处理、保存和拟用范围有依据；实际输出=取得回执、版本、范围和许可记录；限制=只有链接或HTTP成功时不得填已核正文/全文。
+- [ ] T04.L02 核主张和支持范围：条件=相关上下文和专业条件实际可核；实际输出=Evidence/Claim支持、反证及缺口；限制=计算须核实际输入与执行；同源材料不算多证。
+- [ ] T04.L03 制作入选中文并核更新：条件=入选且相应用途允许；实际输出=节选译文/独立导引及定稿更新结果；限制=S8后制作；影响结论的截点后材料须更新截点重审或调整安排。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t05"></a>
+### T05｜问题界定与联合研究组织
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t05)。
+
+- 第1阶段承接：[W06](#w06)、[W07](#w07)。
+- 第2阶段承接：[W16](#w16)、[W25](#w25)、[W27](#w27)、[W38](#w38)、[W39](#w39)。
+- 第3阶段承接：[W42](#w42)、[W43](#w43)。
+- 第4阶段承接：[W53](#w53)。
+
+- [ ] T05.L01 固定事实、问题和边界：条件=核心事实可支持开展本题；实际输出=M01—M03与问题完成标准；限制=研究准入不等于本题原因已经证明。
+- [ ] T05.L02 共同查条件与竞争解释：条件=方法前提与本题条件相称；实际输出=M04—M09过程/数量/反证及支持范围；限制=新材料可迫使改题；形成和检验材料分开。
+- [ ] T05.L03 决定有限交付或补研：条件=对应问题的完成标准与停止理由可核；实际输出=有范围的研究成果和下一取证/停止决定；限制=合格未知允许；不会、缺证、超预算不叫不适用。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t06"></a>
+### T06｜顾问B1本案研判
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t06)。
+
+- 第1阶段承接：[W08](#w08)。
+- 第2阶段承接：[W28](#w28)。
+- 第3阶段承接：[W43](#w43)。
+
+- [ ] T06.L01 核主体与现实处境：条件=权限、资源、行动和范围可核；实际输出=有据的处境/约束地图；限制=公开表态、执行、结果和未知动机分开。
+- [ ] T06.L02 形成有限判断：条件=判断强度与实际支持相称；实际输出=M10本案结论及相关含义；限制=无实际机会或决策问题不强配投资/创业建议。
+- [ ] T06.L03 交可审阅研判：条件=相应前提和限制随文保留；实际输出=B1贡献与可改变判断的材料；限制=不以新观点数量或通用建议代替本案理解。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t07"></a>
+### T07｜帝师B2知识研究与教学
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t07)。
+
+- 第1阶段承接：[W06](#w06)、[W09](#w09)。
+- 第2阶段承接：[W27](#w27)、[W29](#w29)。
+- 第3阶段承接：[W43](#w43)。
+
+- [ ] T07.L01 提出材料中的知识问题：条件=知识对理解本题有明确作用；实际输出=必要概念、专业/历史资料需求；限制=不只接顾问定好的结论；不诊断读者掌握状态。
+- [ ] T07.L02 由具体到过程再到认识：条件=命题性质与依据对应；实际输出=M11连续讲解、必要基础与反例；限制=认识未形成回研究，解释已有依据但不清楚回教学。
+- [ ] T07.L03 核迁移并形成读者稿：条件=当前用途、条件和不同场景可核；实际输出=知识贡献、迁移查证步骤及必要回顾；限制=教学复用不算独立验证；去掉术语仍须有清楚过程。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t08"></a>
+### T08｜条件推演与事前检验准备
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t08)。
+
+- 第1阶段承接：[W10](#w10)。
+- 第2阶段承接：[W30](#w30)。
+- 第3阶段承接：[W43](#w43)。
+
+- [ ] T08.L01 判断可推演到哪里：条件=路径连接和条件有相称依据；实际输出=情景适用范围或缺失区分材料；限制=不凑路径、概率或固定题数。
+- [ ] T08.L02 写条件和中间传导：条件=各路径有实质可辨的过程；实际输出=C条件路径与开放问题；限制=未来路径不补成当前事实；不向读者索取答案。
+- [ ] T08.L03 保存事前复查条件：条件=时间/版本及可反驳条件明确；实际输出=M12当期记录及后续重开触发；限制=不等未来发生才出刊；后来结果须另核机制。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t09"></a>
+### T09｜独立审稿与具体内容放行
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t09)。
+
+- 第1阶段承接：[W11](#w11)。
+- 第2阶段承接：[W19](#w19)、[W31](#w31)、[W36](#w36)、[W37](#w37)、[W40](#w40)、[W41](#w41)。
+- 第3阶段承接：[W43](#w43)、[W44](#w44)、[W45](#w45)。
+- 第4阶段承接：[W49](#w49)、[W53](#w53)、[W54](#w54)。
+
+- [ ] T09.L01 固定被审对象并独立查验：条件=核查所需资料实际取得；实际输出=独立疑点、支持核对和未核范围；限制=不能只审案卷；作者自评/预定PASS不是答案。
+- [ ] T09.L02 核判断、教学及修订：条件=对应职责/适用性及支持关系可核；实际输出=实际修订处理、合理争议及剩余限制；限制=既验漏检也验误拒；不以多数投票判真伪。
+- [ ] T09.L03 对实际版本作决定：条件=硬门和相应稿型责任达到；实际输出=Review的决定、版本与允许范围；限制=缺资源如实待审；CURRENT_BINDING不等于内容PASS。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t10"></a>
+### T10｜成稿、整刊与实际阅读文件
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t10)。
+
+- 第1阶段承接：[W12](#w12)。
+- 第2阶段承接：[W32](#w32)、[W37](#w37)、[W40](#w40)。
+- 第4阶段承接：[W49](#w49)、[W50](#w50)、[W53](#w53)、[W54](#w54)、[W55](#w55)。
+
+- [ ] T10.L01 核当期取舍和重要更新：条件=足以影响结论的更新已处理；实际输出=整刊顺序与选题/更新决定；限制=不能把初选或单篇通过当整刊已合格。
+- [ ] T10.L02 组织连续稿及卷首：条件=重要新概括有研究/审核支持；实际输出=整刊源和审后变更承接；限制=即使一字改意也按影响返审；纯呈现改版不重做无关研究。
+- [ ] T10.L03 核实际文件与冻结归档：条件=呈现完整且版本对应；实际输出=Edition、文件检查与出版决定；限制=文件生成不等于内容已审、获准交付或确认到达。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t11"></a>
+### T11｜共享档案、历史查询与纠错
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t11)。
+
+- 第1阶段承接：[W01](#w01)、[W12](#w12)。
+- 第2阶段承接：[W13](#w13)、[W16](#w16)、[W17](#w17)、[W33](#w33)、[W34](#w34)、[W36](#w36)、[W39](#w39)、[W40](#w40)。
+- 第4阶段承接：[W46](#w46)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W52](#w52)、[W54](#w54)、[W55](#w55)。
+
+- [ ] T11.L01 保存版本与引用用途：条件=可留内容、时间与版本明确；实际输出=不可无痕覆盖的原文及关联；限制=保存权不足保留允许定位；不得借不可变性保留无权全文。
+- [ ] T11.L02 区分当前采用与历史回放：条件=当前限制已核或as-of模式明确；实际输出=可用范围或当时原话及后来说明；限制=索引命中不等于可正式采用；后来补录不能污染旧截点。
+- [ ] T11.L03 追更正并按范围恢复：条件=先限制已知关键用途，再完成相关复核；实际输出=影响/漏依赖/误限、重审及当前指向；限制=不一改全撤或全过；测试副本不冒称自然更正。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t12"></a>
+### T12｜年报双输入组织
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t12)。
+
+- 第4阶段承接：[W52](#w52)、[W53](#w53)、[W54](#w54)。
+
+- [ ] T12.L01 固定双输入与年度范围：条件=两路来源和知识截点可核；实际输出=A01—A07时间线、旧判断/修订及漏题审计；限制=不能伪造52期或以合订代独立回查。
+- [ ] T12.L02 作年度新研究和知识综合：条件=新旧依据和现时用途分别核过；实际输出=A08—A11年度顾问/帝师/未来条件稿；限制=年末新资料不回写成年初已知；旧周刊PASS不批准新综合。
+- [ ] T12.L03 核年报成品及许可：条件=当次权限和实际文件对应；实际输出=A12年报版本、索引与归档；限制=短期演练不证明全年质量、覆盖或费用。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+<a id="module-t13"></a>
+### T13｜工具、模型、投入及运行支撑
+
+设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t13)。
+
+- 第1阶段承接：[W01](#w01)。
+- 第2阶段承接：[W17](#w17)、[W18](#w18)、[W19](#w19)、[W35](#w35)、[W36](#w36)、[W41](#w41)。
+- 第3阶段承接：[W42](#w42)、[W44](#w44)、[W45](#w45)。
+- 第4阶段承接：[W46](#w46)、[W47](#w47)、[W48](#w48)、[W50](#w50)、[W51](#w51)、[W55](#w55)。
+
+- [ ] T13.L01 核调用边界：条件=获准且范围相称，或明确受控试用；实际输出=本次可调用范围及限制；限制=未知预算不当无限授权；能力可用不等于可付费/外发。
+- [ ] T13.L02 执行并记录真实结果：条件=实际请求与操作可确认；实际输出=真实输出/错误、用量/估计及失败记录；限制=不由模型补造版本、费用、页码、成功回执。
+- [ ] T13.L03 按原因恢复或停止：条件=新信息价值与重试原因可核；实际输出=有限重试/恢复/停止及复验任务；限制=文档关联检查未实现生产重入、预算预留或恢复控制。
+- [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
+
+
+## 功能模块及路线反向索引
+
+| T/R | 工作包/阶段门 |
+|---|---|
+| [R01](TECHNICAL_TRACE.md#r01) | [W02](#w02)、[W03](#w03)、[W06](#w06)、[W11](#w11)、[W12](#w12)、[G01](#g01)、[W36](#w36)、[W41](#w41)、[G02](#g02)、[W55](#w55)、[G04](#g04) |
+| [R02](TECHNICAL_TRACE.md#r02) | [W39](#w39)、[W41](#w41)、[G02](#g02) |
+| [R03](TECHNICAL_TRACE.md#r03) | [W05](#w05)、[W11](#w11)、[W12](#w12)、[G01](#g01)、[W37](#w37)、[W41](#w41)、[G02](#g02)、[W55](#w55)、[G04](#g04) |
+| [R04](TECHNICAL_TRACE.md#r04) | [W04](#w04)、[W07](#w07)、[G01](#g01)、[W25](#w25)、[W27](#w27)、[W38](#w38)、[W41](#w41)、[G02](#g02) |
+| [R05](TECHNICAL_TRACE.md#r05) | [W40](#w40)、[W41](#w41)、[G02](#g02)、[W55](#w55)、[G04](#g04) |
+| [R06](TECHNICAL_TRACE.md#r06) | [W52](#w52)、[W53](#w53)、[W54](#w54)、[G04](#g04) |
+| [R07](TECHNICAL_TRACE.md#r07) | [W01](#w01)、[G01](#g01)、[W14](#w14)、[W35](#w35)、[W36](#w36)、[W41](#w41)、[G02](#g02)、[W48](#w48)、[W55](#w55)、[G04](#g04) |
+| [R08](TECHNICAL_TRACE.md#r08) | [W46](#w46)、[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W55](#w55)、[G04](#g04) |
+| [T01](TECHNICAL_TRACE.md#t01) | [W01](#w01)、[G01](#g01)、[W13](#w13)、[W14](#w14)、[W15](#w15)、[W16](#w16)、[W18](#w18)、[W31](#w31)、[W34](#w34)、[W35](#w35)、[W36](#w36)、[G02](#g02)、[W45](#w45)、[G03](#g03)、[W46](#w46)、[W47](#w47)、[W48](#w48)、[W55](#w55)、[G04](#g04) |
+| [T02](TECHNICAL_TRACE.md#t02) | [W02](#w02)、[G01](#g01)、[W20](#w20)、[W21](#w21)、[W22](#w22)、[G02](#g02)、[W47](#w47)、[G04](#g04) |
+| [T03](TECHNICAL_TRACE.md#t03) | [W02](#w02)、[W03](#w03)、[W05](#w05)、[W12](#w12)、[G01](#g01)、[W22](#w22)、[W23](#w23)、[W26](#w26)、[W32](#w32)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[G02](#g02) |
+| [T04](TECHNICAL_TRACE.md#t04) | [W04](#w04)、[W05](#w05)、[W07](#w07)、[G01](#g01)、[W13](#w13)、[W24](#w24)、[W25](#w25)、[W26](#w26)、[W37](#w37)、[W38](#w38)、[G02](#g02)、[W42](#w42)、[G03](#g03)、[W52](#w52)、[G04](#g04) |
+| [T05](TECHNICAL_TRACE.md#t05) | [W06](#w06)、[W07](#w07)、[G01](#g01)、[W16](#w16)、[W25](#w25)、[W27](#w27)、[W38](#w38)、[W39](#w39)、[G02](#g02)、[W42](#w42)、[W43](#w43)、[G03](#g03)、[W53](#w53)、[G04](#g04) |
+| [T06](TECHNICAL_TRACE.md#t06) | [W08](#w08)、[G01](#g01)、[W28](#w28)、[G02](#g02)、[W43](#w43)、[G03](#g03) |
+| [T07](TECHNICAL_TRACE.md#t07) | [W06](#w06)、[W09](#w09)、[G01](#g01)、[W27](#w27)、[W29](#w29)、[G02](#g02)、[W43](#w43)、[G03](#g03) |
+| [T08](TECHNICAL_TRACE.md#t08) | [W10](#w10)、[G01](#g01)、[W30](#w30)、[G02](#g02)、[W43](#w43)、[G03](#g03) |
+| [T09](TECHNICAL_TRACE.md#t09) | [W11](#w11)、[G01](#g01)、[W19](#w19)、[W31](#w31)、[W36](#w36)、[W37](#w37)、[W40](#w40)、[W41](#w41)、[G02](#g02)、[W43](#w43)、[W44](#w44)、[W45](#w45)、[G03](#g03)、[W49](#w49)、[W53](#w53)、[W54](#w54)、[G04](#g04) |
+| [T10](TECHNICAL_TRACE.md#t10) | [W12](#w12)、[G01](#g01)、[W32](#w32)、[W37](#w37)、[W40](#w40)、[G02](#g02)、[W49](#w49)、[W50](#w50)、[W53](#w53)、[W54](#w54)、[W55](#w55)、[G04](#g04) |
+| [T11](TECHNICAL_TRACE.md#t11) | [W01](#w01)、[W12](#w12)、[G01](#g01)、[W13](#w13)、[W16](#w16)、[W17](#w17)、[W33](#w33)、[W34](#w34)、[W36](#w36)、[W39](#w39)、[W40](#w40)、[G02](#g02)、[W46](#w46)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W52](#w52)、[W54](#w54)、[W55](#w55)、[G04](#g04) |
+| [T12](TECHNICAL_TRACE.md#t12) | [W52](#w52)、[W53](#w53)、[W54](#w54)、[G04](#g04) |
+| [T13](TECHNICAL_TRACE.md#t13) | [W01](#w01)、[G01](#g01)、[W17](#w17)、[W18](#w18)、[W19](#w19)、[W35](#w35)、[W36](#w36)、[W41](#w41)、[G02](#g02)、[W42](#w42)、[W44](#w44)、[W45](#w45)、[G03](#g03)、[W46](#w46)、[W47](#w47)、[W48](#w48)、[W50](#w50)、[W51](#w51)、[W55](#w55)、[G04](#g04) |
+
+## 72项逻辑覆盖索引
+
+| 逻辑ID | 对应工作包 |
+|---|---|
+| R01.F01 | [W02](#w02)、[W36](#w36) |
+| R01.F02 | [W03](#w03)、[W36](#w36) |
+| R01.F03 | [W06](#w06)、[W36](#w36) |
+| R01.F04 | [W11](#w11)、[W36](#w36) |
+| R01.F05 | [W12](#w12)、[W36](#w36) |
+| R02.F01 | [W39](#w39) |
+| R02.F02 | [W39](#w39) |
+| R02.F03 | [W39](#w39) |
+| R02.F04 | [W39](#w39) |
+| R03.F01 | [W05](#w05)、[W37](#w37) |
+| R03.F02 | [W05](#w05)、[W37](#w37) |
+| R03.F03 | [W11](#w11)、[W37](#w37) |
+| R03.F04 | [W12](#w12)、[W37](#w37) |
+| R04.F01 | [W04](#w04)、[W25](#w25)、[W38](#w38) |
+| R04.F02 | [W04](#w04)、[W25](#w25)、[W38](#w38) |
+| R04.F03 | [W07](#w07)、[W25](#w25)、[W38](#w38) |
+| R04.F04 | [W07](#w07)、[W27](#w27)、[W38](#w38) |
+| R05.F01 | [W40](#w40) |
+| R05.F02 | [W40](#w40) |
+| R05.F03 | [W40](#w40) |
+| R05.F04 | [W40](#w40) |
+| R06.F01 | [W52](#w52)、[W54](#w54) |
+| R06.F02 | [W52](#w52)、[W54](#w54) |
+| R06.F03 | [W53](#w53)、[W54](#w54) |
+| R06.F04 | [W53](#w53)、[W54](#w54) |
+| R07.F01 | [W01](#w01)、[W14](#w14)、[W36](#w36) |
+| R07.F02 | [W36](#w36)、[W48](#w48) |
+| R07.F03 | [W35](#w35)、[W36](#w36) |
+| R07.F04 | [W36](#w36) |
+| R08.F01 | [W46](#w46)、[W50](#w50)、[W55](#w55) |
+| R08.F02 | [W47](#w47)、[W48](#w48)、[W55](#w55) |
+| R08.F03 | [W49](#w49)、[W50](#w50)、[W55](#w55) |
+| R08.F04 | [W50](#w50)、[W55](#w55) |
+| T01.L01 | [W01](#w01)、[W13](#w13)、[W14](#w14)、[W35](#w35) |
+| T01.L02 | [W15](#w15)、[W16](#w16)、[W18](#w18)、[W31](#w31)、[W34](#w34)、[W45](#w45)、[W47](#w47) |
+| T01.L03 | [W15](#w15) |
+| T02.L01 | [W02](#w02)、[W20](#w20)、[W47](#w47) |
+| T02.L02 | [W02](#w02)、[W21](#w21) |
+| T02.L03 | [W02](#w02)、[W22](#w22) |
+| T03.L01 | [W03](#w03)、[W23](#w23) |
+| T03.L02 | [W05](#w05)、[W23](#w23)、[W26](#w26) |
+| T03.L03 | [W12](#w12)、[W22](#w22)、[W23](#w23)、[W32](#w32) |
+| T04.L01 | [W04](#w04)、[W13](#w13)、[W24](#w24)、[W42](#w42) |
+| T04.L02 | [W04](#w04)、[W25](#w25)、[W42](#w42) |
+| T04.L03 | [W05](#w05)、[W26](#w26) |
+| T05.L01 | [W06](#w06)、[W16](#w16)、[W27](#w27) |
+| T05.L02 | [W07](#w07)、[W16](#w16)、[W27](#w27)、[W42](#w42)、[W43](#w43) |
+| T05.L03 | [W07](#w07)、[W27](#w27) |
+| T06.L01 | [W08](#w08)、[W28](#w28) |
+| T06.L02 | [W08](#w08)、[W28](#w28)、[W43](#w43) |
+| T06.L03 | [W08](#w08)、[W28](#w28) |
+| T07.L01 | [W06](#w06)、[W27](#w27)、[W29](#w29) |
+| T07.L02 | [W09](#w09)、[W29](#w29)、[W43](#w43) |
+| T07.L03 | [W09](#w09)、[W29](#w29) |
+| T08.L01 | [W10](#w10)、[W30](#w30) |
+| T08.L02 | [W10](#w10)、[W30](#w30)、[W43](#w43) |
+| T08.L03 | [W10](#w10)、[W30](#w30) |
+| T09.L01 | [W11](#w11)、[W19](#w19)、[W31](#w31)、[W44](#w44)、[W45](#w45) |
+| T09.L02 | [W11](#w11)、[W31](#w31)、[W43](#w43)、[W44](#w44) |
+| T09.L03 | [W11](#w11)、[W31](#w31)、[W44](#w44)、[W45](#w45) |
+| T10.L01 | [W12](#w12)、[W32](#w32)、[W49](#w49) |
+| T10.L02 | [W12](#w12)、[W32](#w32)、[W49](#w49) |
+| T10.L03 | [W12](#w12)、[W32](#w32)、[W49](#w49) |
+| T11.L01 | [W01](#w01)、[W13](#w13)、[W16](#w16)、[W17](#w17)、[W33](#w33)、[W46](#w46)、[W51](#w51) |
+| T11.L02 | [W33](#w33)、[W51](#w51) |
+| T11.L03 | [W34](#w34)、[W51](#w51) |
+| T12.L01 | [W52](#w52) |
+| T12.L02 | [W53](#w53) |
+| T12.L03 | [W53](#w53) |
+| T13.L01 | [W18](#w18)、[W19](#w19)、[W42](#w42)、[W45](#w45)、[W46](#w46)、[W48](#w48) |
+| T13.L02 | [W17](#w17)、[W19](#w19)、[W44](#w44)、[W48](#w48)、[W50](#w50) |
+| T13.L03 | [W17](#w17)、[W18](#w18)、[W35](#w35)、[W47](#w47)、[W48](#w48)、[W51](#w51) |

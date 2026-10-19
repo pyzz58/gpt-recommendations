@@ -99,7 +99,7 @@ class TechnicalTraceTests(unittest.TestCase):
                 self.assertEqual(before, self.outputs())
 
     def test_new_root_theory_cannot_be_silently_ignored(self):
-        self.change(lambda s: s + "\n## 26. 未分类的新理论\n\n新增约束。\n")
+        self.change(lambda s: s + "\n## 27. 未分类的新理论\n\n新增约束。\n")
         with self.assertRaisesRegex(ValueError, "Unclassified"):
             self.current()
 
