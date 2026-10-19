@@ -5,12 +5,16 @@
     "README.md",
     "AGENTS.md",
     "runtime_contract.json",
-    "问题.md"
+    "问题.md",
+    "technical_trace.json",
+    "TECHNICAL_TRACE.md"
   ],
   "manual_code_files": [
     "tools/source_probe.py",
     "tools/sync_spec.py",
-    "tests/test_spec_sync.py"
+    "tests/test_spec_sync.py",
+    "tools/technical_trace.py",
+    "tests/test_technical_trace.py"
   ],
   "data_files": [
     "SOURCE_REGISTRY.json",
@@ -27,5 +31,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "6d2e287928bbf7c429fcd670c21baee5d2c8dafc928c24aebe2af5b8c5f146f3"
+  "spec_sha256": "b7ddc0b85e2fa52926fb7e9adff5276b4b87c511ae2b66065ffc0a96244206e0"
 }

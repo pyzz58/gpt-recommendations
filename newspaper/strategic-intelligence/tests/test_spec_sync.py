@@ -36,7 +36,7 @@ class SynchronizationTests(unittest.TestCase):
 
     def data_hashes(self):
         return {str(p.relative_to(self.root)): hashlib.sha256(p.read_bytes()).hexdigest()
-                for p in self.root.rglob("*.json") if p.name != "runtime_contract.json"}
+                for p in self.root.rglob("*.json") if p.name not in sync.OUTPUTS}
 
     def test_prose_change_invalidates_outputs_and_preserves_evidence(self):
         before = self.data_hashes()

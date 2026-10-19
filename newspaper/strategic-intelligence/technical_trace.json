@@ -1,0 +1,5549 @@
+{
+  "schema_version": 1,
+  "spec_sha256": "b7ddc0b85e2fa52926fb7e9adff5276b4b87c511ae2b66065ffc0a96244206e0",
+  "meaning": "Binding freshness only; never content approval, implementation verification or execution permission.",
+  "review_required": [],
+  "global_refs": [
+    "th-0",
+    "th-1",
+    "th-2",
+    "th-6",
+    "th-18",
+    "th-19-2",
+    "th-20",
+    "th-24"
+  ],
+  "nodes": [
+    {
+      "id": "R01",
+      "design_anchor": "tech-r01",
+      "owner": "对应流程中注明的L层/技术模块责任",
+      "phase": "沿§19.2原四阶段；文档关联现可检查",
+      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "intent": "当周深度主题到周刊",
+      "theory_refs": [
+        "th-2-1",
+        "th-5-2",
+        "th-7-4",
+        "th-8-2",
+        "th-9-1",
+        "th-13",
+        "th-15-2"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T13"
+      ],
+      "validation": "按§25.5原路线与理论定义作真实流程/正反验收；当前检查不代替内容或运行通过。",
+      "logic": [
+        {
+          "id": "R01.F01",
+          "executor": "T02",
+          "action": "发现与初筛",
+          "input": "原始来源和时期",
+          "condition": "有合法真实线索",
+          "output": "候选/血缘交T03",
+          "success_to": [
+            "T03"
+          ],
+          "failure_to": [
+            "T02"
+          ],
+          "theory_refs": [
+            "th-4",
+            "th-5-2"
+          ],
+          "limit": "池外抽查另有范围"
+        },
+        {
+          "id": "R01.F02",
+          "executor": "T03",
+          "action": "初选、取证与S8",
+          "input": "S7计划与T04实际包",
+          "condition": "四硬门和有边界研究输入成立",
+          "output": "研究准入与稿型",
+          "success_to": [
+            "T04",
+            "T05"
+          ],
+          "failure_to": [
+            "T04",
+            "T03"
+          ],
+          "theory_refs": [
+            "th-5-2",
+            "th-7-4"
+          ],
+          "limit": "不在S8前要求已完成原因解释"
+        },
+        {
+          "id": "R01.F03",
+          "executor": "T05",
+          "action": "联合研究与中文接续",
+          "input": "入选原作/中文和同一案卷",
+          "condition": "M依赖、实际专业条件与未知明确",
+          "output": "B1/B2及C和复查准备",
+          "success_to": [
+            "T06",
+            "T07",
+            "T08"
+          ],
+          "failure_to": [
+            "T04",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-8-2",
+            "th-9-1",
+            "th-10",
+            "th-11"
+          ],
+          "limit": "帝师从问题期参与，不只接终稿"
+        },
+        {
+          "id": "R01.F04",
+          "executor": "T09",
+          "action": "核实际读者稿",
+          "input": "真实全文、证据/方法和版本",
+          "condition": "独立检查和问题处理完成",
+          "output": "注明范围的Review",
+          "success_to": [
+            "T10"
+          ],
+          "failure_to": [
+            "T04",
+            "T05",
+            "T07"
+          ],
+          "theory_refs": [
+            "th-15-2",
+            "th-13-7"
+          ],
+          "limit": "绑定版本；不从字段齐全自签PASS"
+        },
+        {
+          "id": "R01.F05",
+          "executor": "T10",
+          "action": "核整刊与实际文件",
+          "input": "专题、卷首、S6取舍和更新",
+          "condition": "新综合已审、呈现对应",
+          "output": "完整刊物或明确未达门",
+          "success_to": [
+            "T11"
+          ],
+          "failure_to": [
+            "T03",
+            "T09"
+          ],
+          "theory_refs": [
+            "th-5-5",
+            "th-13-7"
+          ],
+          "limit": "单篇通过不等于完整样刊通过"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "e9c28aaaea3597e34c5e033c399b4ad9e0be507277a28c50d0ef76c3511c7eff",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-10": "b0d6c1e133245b6da0dd47114607e54aad24e763fe6ffe6b9507cbadd355915a",
+          "th-11": "fec43a59d64cc7575667e2ed4098059f40436a0645577272625a5b76e960bc9e",
+          "th-13": "1eb737bb401a1d95ab58bd23a8daa239a47866f8c14e2f47895fa7683da67c25",
+          "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
+          "th-15-2": "91a87d6d39d228e19648897a7955dfb23f3ea204cb13a8cce648c68db1caedd1",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-4": "e6ea367cd4ec7d32c2405e8fe8f8afb763854d86f5834e1932fdd01ec125bcfe",
+          "th-5-2": "1611ce202dc40f205f4599fa2cff22a2f7addce6ecd3a1f843fab285dd69aadd",
+          "th-5-5": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-7-4": "23be12c2d3de2673b1da2aef57d8ecf4fdccec2183568685c340b88f379a7b9b",
+          "th-8-2": "4017c32033cbf77ead54a831694c4595a585f6c336cdc01140ad93c6d2990a66",
+          "th-9-1": "67e830495614adfc932ffd0d97034ba57893eba3e6b98028ade6f54cb9d3fadc"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T02": "18474f1b90ba49d5fe03607f3cd6d2ec89295c5b44314e58eba3a508625817d2",
+          "T03": "45b811e6eaa0587c6379fc04905f87a03d4af38d696111a7ea4900b5890ecf90",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+          "T06": "d7de3f9726254bb490a4f30948bae598ec65af2a66eb9ce299612ed75b3ce869",
+          "T07": "45e29d35629b529b6b30248aea222b1141fdf5c591611ebee05fc8bfffc44f43",
+          "T08": "2bbf5182b135219ab36d5c138aab4d00920f27727aed76c69155401fca9c10a3",
+          "T09": "c0936c4882a676f928dc4ee5c98a962b9f167d5f3dc9367892205b78accdff43",
+          "T10": "88207f03380e0d4a5e678b04947b9de18a59c55f2ae5bb82c80a23b3334dbe9b",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e",
+          "T13": "7b7ab84dffe7b40ea03f063d81041a46d063f8051b300993d7d0ef791a157013"
+        }
+      },
+      "basis_sha256": "8a40cbd29e6633163d35823d90f1853daf4a0561915120ece79c4bbd7fe7da8c",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "R02",
+      "design_anchor": "tech-r02",
+      "owner": "对应流程中注明的L层/技术模块责任",
+      "phase": "沿§19.2原四阶段；文档关联现可检查",
+      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "intent": "跨周研究与长期专题",
+      "theory_refs": [
+        "th-2-1",
+        "th-2-2",
+        "th-8-4-2",
+        "th-16-4",
+        "th-16-5"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11"
+      ],
+      "validation": "按§25.5原路线与理论定义作真实流程/正反验收；当前检查不代替内容或运行通过。",
+      "logic": [
+        {
+          "id": "R02.F01",
+          "executor": "T03",
+          "action": "给予研究准入",
+          "input": "长期问题和关键取证",
+          "condition": "仍重要且足以开始有边界研究",
+          "output": "Theme问题及S8研究决定",
+          "success_to": [
+            "T05"
+          ],
+          "failure_to": [
+            "T04",
+            "T03"
+          ],
+          "theory_refs": [
+            "th-2-1",
+            "th-5-2"
+          ],
+          "limit": "研究准入不占本期名额"
+        },
+        {
+          "id": "R02.F02",
+          "executor": "T11",
+          "action": "保存未决与接续",
+          "input": "有效中间产物、限制和下一动作",
+          "condition": "真实进展/触发可核",
+          "output": "背景版本与合理重开条件",
+          "success_to": [
+            "T05"
+          ],
+          "failure_to": [
+            "T11"
+          ],
+          "theory_refs": [
+            "th-2-2",
+            "th-16-5"
+          ],
+          "limit": "不每周重跑全部历史题"
+        },
+        {
+          "id": "R02.F03",
+          "executor": "T05",
+          "action": "新材料下继续或收口",
+          "input": "具体新观察或到期问题",
+          "condition": "下一动作有辨别价值且获准",
+          "output": "成熟研究、有限成果或有据暂停",
+          "success_to": [
+            "T03"
+          ],
+          "failure_to": [
+            "T04",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-8-4-2",
+            "th-16-4"
+          ],
+          "limit": "停止不冒称原问题解决"
+        },
+        {
+          "id": "R02.F04",
+          "executor": "T03",
+          "action": "重新核本期资格",
+          "input": "实际贡献、当前重要性和新鲜度",
+          "condition": "当周新增或合格长期DEEP_THEME",
+          "output": "本期取舍与类型",
+          "success_to": [
+            "T09",
+            "T10"
+          ],
+          "failure_to": [
+            "T05",
+            "T11"
+          ],
+          "theory_refs": [
+            "th-2-1",
+            "th-13-1"
+          ],
+          "limit": "长期失去深度且无新增，不自动改精选发出"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "4c0f6801c87e539780ccca05ee11d9548bb3d58ca30ce95745db12364cee8ec1",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-13-1": "81c01e69aa6dd8b711c236607a4c0d58e81c821859de565e28b4def7e05fd8b7",
+          "th-16-4": "c8df2f15abb51d4cc040f400ea77c8138c7a04c9e18a1340fc6c894702f85b13",
+          "th-16-5": "20d16983a4cd12097d1760ec5da376dd9290e1b90adf28089fe5eab5bda011af",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-2-2": "4e093d43b92cf009f2ec806a7f02430c03c551fc1da3e7c118696404c53eb939",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-5-2": "1611ce202dc40f205f4599fa2cff22a2f7addce6ecd3a1f843fab285dd69aadd",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-8-4-2": "906eb9adb90d079276c6fa9279b18f929d5d914e190f15713e726b86f0974797"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T03": "45b811e6eaa0587c6379fc04905f87a03d4af38d696111a7ea4900b5890ecf90",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+          "T06": "d7de3f9726254bb490a4f30948bae598ec65af2a66eb9ce299612ed75b3ce869",
+          "T07": "45e29d35629b529b6b30248aea222b1141fdf5c591611ebee05fc8bfffc44f43",
+          "T08": "2bbf5182b135219ab36d5c138aab4d00920f27727aed76c69155401fca9c10a3",
+          "T09": "c0936c4882a676f928dc4ee5c98a962b9f167d5f3dc9367892205b78accdff43",
+          "T10": "88207f03380e0d4a5e678b04947b9de18a59c55f2ae5bb82c80a23b3334dbe9b",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e"
+        }
+      },
+      "basis_sha256": "b47e853139b7cce127184ae7615a169b19890c88c5af79430d7d381d328016db",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "R03",
+      "design_anchor": "tech-r03",
+      "owner": "对应流程中注明的L层/技术模块责任",
+      "phase": "沿§19.2原四阶段；文档关联现可检查",
+      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "intent": "精选/首次事实/进展/更正分支",
+      "theory_refs": [
+        "th-2-1",
+        "th-7-3",
+        "th-13-1",
+        "th-18-1"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T03",
+        "T04",
+        "T09",
+        "T10",
+        "T11"
+      ],
+      "validation": "按§25.5原路线与理论定义作真实流程/正反验收；当前检查不代替内容或运行通过。",
+      "logic": [
+        {
+          "id": "R03.F01",
+          "executor": "T03",
+          "action": "确定具体稿型",
+          "input": "原作价值、事实和旧文关系",
+          "condition": "publication_basis及update_kind准确",
+          "output": "当前要交的内容责任",
+          "success_to": [
+            "T04"
+          ],
+          "failure_to": [
+            "T03"
+          ],
+          "theory_refs": [
+            "th-13-1",
+            "th-2-1"
+          ],
+          "limit": "首次事实无旧文如实说明"
+        },
+        {
+          "id": "R03.F02",
+          "executor": "T04",
+          "action": "查证、S8后制作中文",
+          "input": "实际原件、权利及阅读范围",
+          "condition": "相应事实和中文方案可核",
+          "output": "精选/事实稿及局限",
+          "success_to": [
+            "T09"
+          ],
+          "failure_to": [
+            "T04",
+            "T03"
+          ],
+          "theory_refs": [
+            "th-7-3",
+            "th-6-2"
+          ],
+          "limit": "不强配完整课程"
+        },
+        {
+          "id": "R03.F03",
+          "executor": "T09",
+          "action": "按真实职责审核",
+          "input": "该稿全文和必要依据",
+          "condition": "事实/权限/表达责任达到",
+          "output": "有效审核或具体返工",
+          "success_to": [
+            "T10"
+          ],
+          "failure_to": [
+            "T04"
+          ],
+          "theory_refs": [
+            "th-18-1",
+            "th-15-2"
+          ],
+          "limit": "不因缺不相关历史而误拒"
+        },
+        {
+          "id": "R03.F04",
+          "executor": "T10",
+          "action": "与整刊深度一起核",
+          "input": "合格短稿及其他当期稿件",
+          "condition": "全刊仍达到使命且更正依赖已处理",
+          "output": "入刊/暂缓及原稿归档",
+          "success_to": [
+            "T11"
+          ],
+          "failure_to": [
+            "T03",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-13-1",
+            "th-5-5",
+            "th-16-6"
+          ],
+          "limit": "更正转R05；不能全刊短讯化绕过深度"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "c999c9e91219c3aa46c0653c6d743b5f78220cb2597f860816b7edd6eba4ad87",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-13-1": "81c01e69aa6dd8b711c236607a4c0d58e81c821859de565e28b4def7e05fd8b7",
+          "th-15-2": "91a87d6d39d228e19648897a7955dfb23f3ea204cb13a8cce648c68db1caedd1",
+          "th-16-6": "46b6c25ff2c2c77ee686727ec17fedf269649aab1f0f9e3c12b8802848a6c52e",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-18-1": "9bbed19cf85004d8ac9f704ad61534e52acf785902fe1b4207f87562f50926e8",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-5-5": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
+          "th-7-3": "6386bed87759f65634d02c7c2376c30bd5fe96e511124f96660778714a1ae773"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T03": "45b811e6eaa0587c6379fc04905f87a03d4af38d696111a7ea4900b5890ecf90",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T09": "c0936c4882a676f928dc4ee5c98a962b9f167d5f3dc9367892205b78accdff43",
+          "T10": "88207f03380e0d4a5e678b04947b9de18a59c55f2ae5bb82c80a23b3334dbe9b",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e"
+        }
+      },
+      "basis_sha256": "840a56a2fbc9793f331314e2b8638c6dacb516bf90498ada5768de1a1b58f3c3",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "R04",
+      "design_anchor": "tech-r04",
+      "owner": "对应流程中注明的L层/技术模块责任",
+      "phase": "沿§19.2原四阶段；文档关联现可检查",
+      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "intent": "定向补证与复选",
+      "theory_refs": [
+        "th-6-2",
+        "th-7-4",
+        "th-8-3-4",
+        "th-8-4-2"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T09",
+        "T11",
+        "T13"
+      ],
+      "validation": "按§25.5原路线与理论定义作真实流程/正反验收；当前检查不代替内容或运行通过。",
+      "logic": [
+        {
+          "id": "R04.F01",
+          "executor": "T05",
+          "action": "定位具体缺环",
+          "input": "主张、专业条件或审稿疑点",
+          "condition": "必要性和预期辨别作用明确",
+          "output": "带版本的补证问题",
+          "success_to": [
+            "T04"
+          ],
+          "failure_to": [
+            "T05"
+          ],
+          "theory_refs": [
+            "th-7-4",
+            "th-8-3-4"
+          ],
+          "limit": "不只说多找来源"
+        },
+        {
+          "id": "R04.F02",
+          "executor": "T04",
+          "action": "取得并核新依据",
+          "input": "原件/方法/比较材料路径",
+          "condition": "相应用途允许且实际核对",
+          "output": "实际补证/限制及支持范围",
+          "success_to": [
+            "T05"
+          ],
+          "failure_to": [
+            "T04"
+          ],
+          "theory_refs": [
+            "th-6-2",
+            "th-7-4"
+          ],
+          "limit": "补到材料不自动升置信度"
+        },
+        {
+          "id": "R04.F03",
+          "executor": "T05",
+          "action": "对照原解释与依赖",
+          "input": "旧/新材料和问题版本",
+          "condition": "支持、反对或仍不可区分已说明",
+          "output": "维持/收窄/修订及采用限制",
+          "success_to": [
+            "T03",
+            "T06",
+            "T07"
+          ],
+          "failure_to": [
+            "T04",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-7-4",
+            "th-8-4-2"
+          ],
+          "limit": "只重核实际受影响部分"
+        },
+        {
+          "id": "R04.F04",
+          "executor": "T03",
+          "action": "必要时回S8",
+          "input": "对象/价值/范围/类型变化",
+          "condition": "相应刊登依据与投入已重核",
+          "output": "继续、改型或暂停接续",
+          "success_to": [
+            "T05",
+            "T09"
+          ],
+          "failure_to": [
+            "T11"
+          ],
+          "theory_refs": [
+            "th-7-4",
+            "th-13-1",
+            "th-19-7"
+          ],
+          "limit": "冻结评测不禁止真实补证；比较条件变化另记"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "af053addf08dc179915ca5254c3e9edd336f0ec459c88612414a204e07c04b06",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-13-1": "81c01e69aa6dd8b711c236607a4c0d58e81c821859de565e28b4def7e05fd8b7",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-19-7": "37d2009fd59bb8dfbc0a4508478775ca6b0c805b3c76c66cd2985a9e17506985",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
+          "th-7-4": "23be12c2d3de2673b1da2aef57d8ecf4fdccec2183568685c340b88f379a7b9b",
+          "th-8-3-4": "303cae93b63455f3ac18748f5dbb38fff29485d7d16bf00d91e7f69bfb5b0a5c",
+          "th-8-4-2": "906eb9adb90d079276c6fa9279b18f929d5d914e190f15713e726b86f0974797"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T03": "45b811e6eaa0587c6379fc04905f87a03d4af38d696111a7ea4900b5890ecf90",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+          "T06": "d7de3f9726254bb490a4f30948bae598ec65af2a66eb9ce299612ed75b3ce869",
+          "T07": "45e29d35629b529b6b30248aea222b1141fdf5c591611ebee05fc8bfffc44f43",
+          "T09": "c0936c4882a676f928dc4ee5c98a962b9f167d5f3dc9367892205b78accdff43",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e",
+          "T13": "7b7ab84dffe7b40ea03f063d81041a46d063f8051b300993d7d0ef791a157013"
+        }
+      },
+      "basis_sha256": "581c073b4a847ad5b40330b743fe5f8f99e34f353c70ab7d41b2637dc6585923",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "R05",
+      "design_anchor": "tech-r05",
+      "owner": "对应流程中注明的L层/技术模块责任",
+      "phase": "沿§19.2原四阶段；文档关联现可检查",
+      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "intent": "更正、复用与历史隔离",
+      "theory_refs": [
+        "th-10-6",
+        "th-16-3",
+        "th-16-6",
+        "th-13-7"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12"
+      ],
+      "validation": "按§25.5原路线与理论定义作真实流程/正反验收；当前检查不代替内容或运行通过。",
+      "logic": [
+        {
+          "id": "R05.F01",
+          "executor": "T11",
+          "action": "先限制已知关键用途",
+          "input": "旧新版本、变化和实际用途",
+          "condition": "有证据说明相关支持可能失效",
+          "output": "受限范围及未确定事项",
+          "success_to": [
+            "T04",
+            "T05"
+          ],
+          "failure_to": [
+            "T11"
+          ],
+          "theory_refs": [
+            "th-16-6",
+            "th-16-6-1"
+          ],
+          "limit": "不等全链查完才限制；疑点不直接判全假"
+        },
+        {
+          "id": "R05.F02",
+          "executor": "T11",
+          "action": "追直接与传递依赖",
+          "input": "真实引用用途和剩余支持",
+          "condition": "限定检索范围和不相关对照明确",
+          "output": "实际影响/漏检/误限清单",
+          "success_to": [
+            "T04",
+            "T05"
+          ],
+          "failure_to": [
+            "T11"
+          ],
+          "theory_refs": [
+            "th-16-6-2",
+            "th-16-6-3"
+          ],
+          "limit": "图关系不全时如实留未覆盖"
+        },
+        {
+          "id": "R05.F03",
+          "executor": "T09",
+          "action": "核修复及恢复范围",
+          "input": "新依据、修订和受影响上下文",
+          "condition": "事实/解释/教学及呈现责任达到",
+          "output": "新审核、维持/缩小/撤回/未决",
+          "success_to": [
+            "T10",
+            "T11"
+          ],
+          "failure_to": [
+            "T04",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-15-2",
+            "th-16-6-2",
+            "th-13-7"
+          ],
+          "limit": "不能只改状态或旧Review哈希"
+        },
+        {
+          "id": "R05.F04",
+          "executor": "T11",
+          "action": "区分当前采用与历史请求",
+          "input": "具体用途及as-of模式",
+          "condition": "新稿核现时限制，旧文返回当时版本",
+          "output": "有效指向与另列的更正",
+          "success_to": [
+            "T05",
+            "T12"
+          ],
+          "failure_to": [
+            "T11"
+          ],
+          "theory_refs": [
+            "th-16-3",
+            "th-16-6-1"
+          ],
+          "limit": "后补资料不得进入旧判断实际依据"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "c8f2455e761cfc86d23ebaa8797067adde845a6c443f742ad8173c1800dfe5fc",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-10-6": "4ce88fffbec1d4fe516eecc7174ddca9ddde37ecd6de418e1332611e46052ed3",
+          "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
+          "th-15-2": "91a87d6d39d228e19648897a7955dfb23f3ea204cb13a8cce648c68db1caedd1",
+          "th-16-3": "001f2a72d853172ac4413bae16b847bbae839059e4ac878e88a5e72b27a2907b",
+          "th-16-6": "46b6c25ff2c2c77ee686727ec17fedf269649aab1f0f9e3c12b8802848a6c52e",
+          "th-16-6-1": "3ffc6634d62e305abb827b7aa644b74129c8754b690c4e8636d930a904f5b2b3",
+          "th-16-6-2": "ac7f33122cf51f032ca18004b1122647562369a9db50ac38a0a491542a7d96e8",
+          "th-16-6-3": "04d9605c44f9086491f20f6bb6e3d7c84fe05c71b4be9a87a7afda4f98342f48",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+          "T06": "d7de3f9726254bb490a4f30948bae598ec65af2a66eb9ce299612ed75b3ce869",
+          "T07": "45e29d35629b529b6b30248aea222b1141fdf5c591611ebee05fc8bfffc44f43",
+          "T08": "2bbf5182b135219ab36d5c138aab4d00920f27727aed76c69155401fca9c10a3",
+          "T09": "c0936c4882a676f928dc4ee5c98a962b9f167d5f3dc9367892205b78accdff43",
+          "T10": "88207f03380e0d4a5e678b04947b9de18a59c55f2ae5bb82c80a23b3334dbe9b",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e",
+          "T12": "21f3a6bb018923be3276af89c43478717fe0795ebcad5a912a9096f580a845b8"
+        }
+      },
+      "basis_sha256": "6f5ffa499b16f8a7c792abf839214e94ac7b2b557bfd697578e31fc50b56d76d",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "R06",
+      "design_anchor": "tech-r06",
+      "owner": "对应流程中注明的L层/技术模块责任",
+      "phase": "沿§19.2原四阶段；文档关联现可检查",
+      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "intent": "年报双输入",
+      "theory_refs": [
+        "th-14",
+        "th-16-3",
+        "th-16-6"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "validation": "按§25.5原路线与理论定义作真实流程/正反验收；当前检查不代替内容或运行通过。",
+      "logic": [
+        {
+          "id": "R06.F01",
+          "executor": "T12",
+          "action": "固定两路年度材料",
+          "input": "实际周刊/缺期与独立原件",
+          "condition": "报告年、资料截点和覆盖明确",
+          "output": "A01—A03输入及旧原话",
+          "success_to": [
+            "T12"
+          ],
+          "failure_to": [
+            "T04",
+            "T11"
+          ],
+          "theory_refs": [
+            "th-14-1",
+            "th-16-3"
+          ],
+          "limit": "只读周刊不合格"
+        },
+        {
+          "id": "R06.F02",
+          "executor": "T12",
+          "action": "核时间线、指标和旧判断",
+          "input": "可比口径、新结果和原先条件",
+          "condition": "后见信息与当时依据隔离",
+          "output": "A04—A07补漏/纠错/未决",
+          "success_to": [
+            "T05"
+          ],
+          "failure_to": [
+            "T04",
+            "T11"
+          ],
+          "theory_refs": [
+            "th-14-1",
+            "th-16-4"
+          ],
+          "limit": "不按结果倒填当时知识"
+        },
+        {
+          "id": "R06.F03",
+          "executor": "T05",
+          "action": "年度新研究与教学",
+          "input": "年度事实、边界和有效旧知识",
+          "condition": "当前支持及跨题连接可核",
+          "output": "A08—A11顾问/帝师及条件路径",
+          "success_to": [
+            "T09"
+          ],
+          "failure_to": [
+            "T04",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-14",
+            "th-16-6-1"
+          ],
+          "limit": "旧周刊批准不覆盖新综合"
+        },
+        {
+          "id": "R06.F04",
+          "executor": "T10",
+          "action": "审核后制作年报",
+          "input": "新Review、重收权限与实际文件",
+          "condition": "A12版本和呈现对应",
+          "output": "年报、索引和归档",
+          "success_to": [
+            "T11"
+          ],
+          "failure_to": [
+            "T09",
+            "T04"
+          ],
+          "theory_refs": [
+            "th-14-1",
+            "th-13-7"
+          ],
+          "limit": "缩区间演练不冒称全年能力"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "5a6ec05d1e3556ce3a922a2e73d1ca8988eea0fe1b075d658b3113b92629a474",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
+          "th-14": "e0c58a02e466a358ab56bdebd623e476ba2b436df1ce14c791be49e17cabd093",
+          "th-14-1": "5f86f19d79f0d228984619a01209eb49321ad6097d5ddaf37f3aefd41a52d9d7",
+          "th-16-3": "001f2a72d853172ac4413bae16b847bbae839059e4ac878e88a5e72b27a2907b",
+          "th-16-4": "c8df2f15abb51d4cc040f400ea77c8138c7a04c9e18a1340fc6c894702f85b13",
+          "th-16-6": "46b6c25ff2c2c77ee686727ec17fedf269649aab1f0f9e3c12b8802848a6c52e",
+          "th-16-6-1": "3ffc6634d62e305abb827b7aa644b74129c8754b690c4e8636d930a904f5b2b3",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T02": "18474f1b90ba49d5fe03607f3cd6d2ec89295c5b44314e58eba3a508625817d2",
+          "T03": "45b811e6eaa0587c6379fc04905f87a03d4af38d696111a7ea4900b5890ecf90",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+          "T06": "d7de3f9726254bb490a4f30948bae598ec65af2a66eb9ce299612ed75b3ce869",
+          "T07": "45e29d35629b529b6b30248aea222b1141fdf5c591611ebee05fc8bfffc44f43",
+          "T08": "2bbf5182b135219ab36d5c138aab4d00920f27727aed76c69155401fca9c10a3",
+          "T09": "c0936c4882a676f928dc4ee5c98a962b9f167d5f3dc9367892205b78accdff43",
+          "T10": "88207f03380e0d4a5e678b04947b9de18a59c55f2ae5bb82c80a23b3334dbe9b",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e",
+          "T12": "21f3a6bb018923be3276af89c43478717fe0795ebcad5a912a9096f580a845b8",
+          "T13": "7b7ab84dffe7b40ea03f063d81041a46d063f8051b300993d7d0ef791a157013"
+        }
+      },
+      "basis_sha256": "bd6a3c29c8d5c31238470c860b54dfcdeffdc6e436540864d53ecf4a6e100b50",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "R07",
+      "design_anchor": "tech-r07",
+      "owner": "对应流程中注明的L层/技术模块责任",
+      "phase": "沿§19.2原四阶段；文档关联现可检查",
+      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "intent": "规范变更与中断重接",
+      "theory_refs": [
+        "th-8-2-4",
+        "th-17-2-4",
+        "th-20-3",
+        "th-24-6-1"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T04",
+        "T05",
+        "T09",
+        "T10",
+        "T11",
+        "T13"
+      ],
+      "validation": "按§25.5原路线与理论定义作真实流程/正反验收；当前检查不代替内容或运行通过。",
+      "logic": [
+        {
+          "id": "R07.F01",
+          "executor": "T01",
+          "action": "核最新规则与技术关联",
+          "input": "最新最高说明和任务ID",
+          "condition": "关联/派生无缺失且本节点未过期",
+          "output": "当前原文与影响/待复核节点",
+          "success_to": [
+            "T11"
+          ],
+          "failure_to": [
+            "T01"
+          ],
+          "theory_refs": [
+            "th-20-3",
+            "th-24-6-1"
+          ],
+          "limit": "机械关联不是语义重设计；待复核不能自清"
+        },
+        {
+          "id": "R07.F02",
+          "executor": "T11",
+          "action": "取回实际有效产物",
+          "input": "前步原稿、证据、决定和限制",
+          "condition": "版本及采用范围能重建",
+          "output": "本次可接续输入及缺口",
+          "success_to": [
+            "T01"
+          ],
+          "failure_to": [
+            "T04",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-8-2-4",
+            "th-16-6-1"
+          ],
+          "limit": "聊天摘要不是已完成证明"
+        },
+        {
+          "id": "R07.F03",
+          "executor": "T13",
+          "action": "组织必要分段和实际提供",
+          "input": "当前全局/局部原文和关键证据",
+          "condition": "必要定义、注释和跨段依赖齐备",
+          "output": "真实提供范围与中间产物",
+          "success_to": [
+            "T05"
+          ],
+          "failure_to": [
+            "T01"
+          ],
+          "theory_refs": [
+            "th-24-6-1",
+            "th-17-2"
+          ],
+          "limit": "不能用字符统计证明已装载或理解"
+        },
+        {
+          "id": "R07.F04",
+          "executor": "T09",
+          "action": "核重接后的相关连接",
+          "input": "跨段原句/证据及最终稿",
+          "condition": "影响范围、语义与必要讲解已核",
+          "output": "恢复后的有限有效版本",
+          "success_to": [
+            "T10",
+            "T11"
+          ],
+          "failure_to": [
+            "T05",
+            "T04"
+          ],
+          "theory_refs": [
+            "th-13-7",
+            "th-24-6-1"
+          ],
+          "limit": "生产故障恢复仍需第四阶段验证"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "21d380b31695630a034707c1dc5decf0efe4b716e9db2e141f0e0843a79eb8ab",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
+          "th-16-6-1": "3ffc6634d62e305abb827b7aa644b74129c8754b690c4e8636d930a904f5b2b3",
+          "th-17-2": "56e60d9db8816b87c68b9ea41202158d2bf7a680b03bfc888f001354922a44b8",
+          "th-17-2-4": "e1613178427d9bf2dd89c6e30ae2e5cb03de96afd67f23400139f1747f5c697a",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-20-3": "dee00f46215b4853e9cfb5dcd7713a809e17a1768ca6955a0f1e7e502ebfa56b",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-24-6-1": "41c6c529c18dc84fa3f73f5ee19a59890f65f3ae86180f97234712c66ff4ff1b",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-8-2-4": "19a1b9ea713b92f524e203e65ad77b2c09560535fd6aa0c00c16119f2a27c86d"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+          "T09": "c0936c4882a676f928dc4ee5c98a962b9f167d5f3dc9367892205b78accdff43",
+          "T10": "88207f03380e0d4a5e678b04947b9de18a59c55f2ae5bb82c80a23b3334dbe9b",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e",
+          "T13": "7b7ab84dffe7b40ea03f063d81041a46d063f8051b300993d7d0ef791a157013"
+        }
+      },
+      "basis_sha256": "65b1a498cd63089deab8c6a15bdbee8cbf80e3b4912c7746bb04fa2514aaadeb",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "R08",
+      "design_anchor": "tech-r08",
+      "owner": "对应流程中注明的L层/技术模块责任",
+      "phase": "沿§19.2原四阶段；文档关联现可检查",
+      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "intent": "生产启动与授权交付",
+      "theory_refs": [
+        "th-0",
+        "th-19-1",
+        "th-19-2",
+        "th-13-7",
+        "th-22-4"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T03",
+        "T04",
+        "T05",
+        "T09",
+        "T10",
+        "T11",
+        "T13"
+      ],
+      "validation": "按§25.5原路线与理论定义作真实流程/正反验收；当前检查不代替内容或运行通过。",
+      "logic": [
+        {
+          "id": "R08.F01",
+          "executor": "T01",
+          "action": "核阶段与运行授权",
+          "input": "已验范围、具体参数和开关",
+          "condition": "前三阶段门与本次运行权限具备",
+          "output": "可启动范围或停止原因",
+          "success_to": [
+            "T13"
+          ],
+          "failure_to": [
+            "T01"
+          ],
+          "theory_refs": [
+            "th-19-2",
+            "th-22-4"
+          ],
+          "limit": "当前只实现文档关联，不启生产任务"
+        },
+        {
+          "id": "R08.F02",
+          "executor": "T13",
+          "action": "按有效任务版本运行",
+          "input": "任务身份、已有产物和当前规范",
+          "condition": "重入/恢复及资源边界实际可核",
+          "output": "真实执行、失败和恢复记录",
+          "success_to": [
+            "T10"
+          ],
+          "failure_to": [
+            "T13"
+          ],
+          "theory_refs": [
+            "th-19-1",
+            "th-19-7"
+          ],
+          "limit": "任务重入与费用预留仍有待实现问题"
+        },
+        {
+          "id": "R08.F03",
+          "executor": "T10",
+          "action": "锁定经过核对的交付文件",
+          "input": "Edition、有效审核和真实文件",
+          "condition": "实际内容与呈现对应且获准交付",
+          "output": "目标刊次/文件版本/幂等标识",
+          "success_to": [
+            "T13"
+          ],
+          "failure_to": [
+            "T09",
+            "T10"
+          ],
+          "theory_refs": [
+            "th-13-7",
+            "th-22-4"
+          ],
+          "limit": "新版本不自动授予再次外发"
+        },
+        {
+          "id": "R08.F04",
+          "executor": "T13",
+          "action": "查真实回执并归档",
+          "input": "实际交付尝试和服务商结果",
+          "condition": "状态有可核依据",
+          "output": "ACCEPTED/CONFIRMED/FAILED/UNKNOWN",
+          "success_to": [
+            "T11"
+          ],
+          "failure_to": [
+            "T13"
+          ],
+          "theory_refs": [
+            "th-22-4",
+            "th-19-1"
+          ],
+          "limit": "UNKNOWN不盲目重发；送达与服务商接受不同"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "3f889e59db62d3c0df18f3d4c863c068440cd892646f8ea3b16e16f8a754c899",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-1": "3c5d27d9ff6433fcffd7b9185b809482c54bf49277e0802ceb058c9efd1d0b57",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-19-7": "37d2009fd59bb8dfbc0a4508478775ca6b0c805b3c76c66cd2985a9e17506985",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T03": "45b811e6eaa0587c6379fc04905f87a03d4af38d696111a7ea4900b5890ecf90",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+          "T09": "c0936c4882a676f928dc4ee5c98a962b9f167d5f3dc9367892205b78accdff43",
+          "T10": "88207f03380e0d4a5e678b04947b9de18a59c55f2ae5bb82c80a23b3334dbe9b",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e",
+          "T13": "7b7ab84dffe7b40ea03f063d81041a46d063f8051b300993d7d0ef791a157013"
+        }
+      },
+      "basis_sha256": "664f72faa156edfb66786e4746fbe60a11c6353e10e4cdb0d8e8abfdd97aea69",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T01",
+      "design_anchor": "tech-t01",
+      "owner": "执行者组织；未来执行层维护决定",
+      "phase": "人工定位先行；第二阶段控制器",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "规范与交接控制",
+      "theory_refs": [
+        "th-0",
+        "th-8-2-3",
+        "th-8-2-4",
+        "th-20",
+        "th-21",
+        "th-22-4",
+        "th-23",
+        "th-24"
+      ],
+      "design_dependencies": [],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T01.L01",
+          "executor": "T01",
+          "action": "准备当前任务",
+          "input": "问题/M步骤、规范与实际材料",
+          "condition": "本次职责和采用用途明确",
+          "output": "实际提供范围与缺口",
+          "success_to": [
+            "T01"
+          ],
+          "failure_to": [
+            "T05"
+          ],
+          "theory_refs": [
+            "th-24-6-1",
+            "th-8-2-1"
+          ],
+          "limit": "不以准备清单或模型自称已读代替实际输入"
+        },
+        {
+          "id": "T01.L02",
+          "executor": "T01",
+          "action": "核对采用资格",
+          "input": "前步产物、版本、真实核对与当前限制",
+          "condition": "实际依赖匹配且未过期",
+          "output": "允许性质/用途及相应步骤决定",
+          "success_to": [
+            "T01"
+          ],
+          "failure_to": [
+            "T04",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-8-2-4",
+            "th-16-6-1"
+          ],
+          "limit": "候选可以按候选性质交接；不得升格为已证事实"
+        },
+        {
+          "id": "T01.L03",
+          "executor": "T01",
+          "action": "记录决定并交接",
+          "input": "检查依据、缺口与本步产物",
+          "condition": "相应责任核查已完成",
+          "output": "绑定版本的采用记录或退回对象",
+          "success_to": [
+            "T03",
+            "T05",
+            "T09",
+            "T10"
+          ],
+          "failure_to": [
+            "T01"
+          ],
+          "theory_refs": [
+            "th-8-2-3",
+            "th-8-2-4"
+          ],
+          "limit": "本模块的文档关联检查不替代研究放行程序"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "3c7d417e196976c38490e6a47fec9020f0edd1365cd223235a08a36c7792e10f",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-16-6-1": "3ffc6634d62e305abb827b7aa644b74129c8754b690c4e8636d930a904f5b2b3",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-21": "386ce86f2f982fc025f78fbc52dec967175ba47cf66e1312f96266b7fa0698e0",
+          "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
+          "th-23": "2560efd910883f759add3d4b12d7be2fa6e1e3e66e6cc3bbff716aa1a670a081",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-24-6-1": "41c6c529c18dc84fa3f73f5ee19a59890f65f3ae86180f97234712c66ff4ff1b",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-8-2-1": "a0ebae25928e42057b41578e635f2f0e82d56cba9582c6f9a3ed9c9a21ad529f",
+          "th-8-2-3": "1c787ea43af69eed5eaadab8c9402ad429734090b0cbfa9613ea6c52e70f7de3",
+          "th-8-2-4": "19a1b9ea713b92f524e203e65ad77b2c09560535fd6aa0c00c16119f2a27c86d"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {}
+      },
+      "basis_sha256": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T02",
+      "design_anchor": "tech-t02",
+      "owner": "L1发现职责",
+      "phase": "第一阶段人工取样；第四阶段生产增量",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "全球发现与候选归并",
+      "theory_refs": [
+        "th-3",
+        "th-4",
+        "th-6-1",
+        "th-23-1"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T13"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T02.L01",
+          "executor": "T02",
+          "action": "取得合法轻量线索",
+          "input": "获准来源、时期与待查问题",
+          "condition": "实际访问和本用途允许",
+          "output": "候选、原始日期及取得状态",
+          "success_to": [
+            "T02"
+          ],
+          "failure_to": [
+            "T13"
+          ],
+          "theory_refs": [
+            "th-4-1",
+            "th-4-2",
+            "th-23-1"
+          ],
+          "limit": "候选来源登记不等于生产许可；不恢复全库探测"
+        },
+        {
+          "id": "T02.L02",
+          "executor": "T02",
+          "action": "归并并保留探索",
+          "input": "线索及原发/转引血缘",
+          "condition": "同事件、同源或不确定分别可核",
+          "output": "归并建议、探索候选与缺口",
+          "success_to": [
+            "T03"
+          ],
+          "failure_to": [
+            "T02"
+          ],
+          "theory_refs": [
+            "th-4-2",
+            "th-4-3",
+            "th-6-1"
+          ],
+          "limit": "不同网址/语言不是独立证据；模糊归并须人工核"
+        },
+        {
+          "id": "T02.L03",
+          "executor": "T02",
+          "action": "作池外参照检查",
+          "input": "独立于入选清单的原始入口",
+          "condition": "抽查范围和截点明确",
+          "output": "发现/筛选/合理舍弃的区分及处理",
+          "success_to": [
+            "T03"
+          ],
+          "failure_to": [
+            "T02"
+          ],
+          "theory_refs": [
+            "th-4-4",
+            "th-18"
+          ],
+          "limit": "小样本不能宣称全球召回率或零遗漏"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "c773d37659f613c91e6891f84cd8670be8e8c17eac031cd2a74892d8ad92dbb5",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-23-1": "842f844567b289b3c8a797805cfc323bab96ea8ba2e67784a2e54388fee2ddc7",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-3": "9aa6d95fd01aabad258fc42f76d07c19c3c3d3bfbe96bd55a7b24350c6438869",
+          "th-4": "e6ea367cd4ec7d32c2405e8fe8f8afb763854d86f5834e1932fdd01ec125bcfe",
+          "th-4-1": "f9026cc097948e519049857380febfbd9e1d2d4fb736306f360842d45643f4cb",
+          "th-4-2": "0af6ec9ff1f8bb8f7022e8539a812a60857cb1dacbdd0e5c6137c3f44bdb7940",
+          "th-4-3": "fc482d40ff43889d4b08355366896f2719277c6a551d08b23e7f141afa9c6ff7",
+          "th-4-4": "8becb121e5c2787999ea26803f62190d39f53b58b0ae54324f79e8e785def994",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-6-1": "e28e2d995663b8e6a77b7944dc4f752475cbf12ac1b90f8eb61603c7cfdb49f9"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T13": "7b7ab84dffe7b40ea03f063d81041a46d063f8051b300993d7d0ef791a157013"
+        }
+      },
+      "basis_sha256": "18474f1b90ba49d5fe03607f3cd6d2ec89295c5b44314e58eba3a508625817d2",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T03",
+      "design_anchor": "tech-t03",
+      "owner": "L2编辑决定",
+      "phase": "第一阶段人工；第二阶段记录和接口",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "选题、复选与整刊计划",
+      "theory_refs": [
+        "th-2-1",
+        "th-2-2",
+        "th-5",
+        "th-7-4",
+        "th-13-1"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T02",
+        "T04",
+        "T11"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T03.L01",
+          "executor": "T03",
+          "action": "初选并给取证计划",
+          "input": "候选、价值依据和旧背景",
+          "condition": "真实日期及基本价值成立",
+          "output": "S0—S7问题、类型及材料需求",
+          "success_to": [
+            "T04"
+          ],
+          "failure_to": [
+            "T02"
+          ],
+          "theory_refs": [
+            "th-5-2",
+            "th-5-4",
+            "th-8-5"
+          ],
+          "limit": "重要性、当前可知程度和本期呈现分别决定"
+        },
+        {
+          "id": "T03.L02",
+          "executor": "T03",
+          "action": "查证后S8复选",
+          "input": "T04实际证据/权利/A方案",
+          "condition": "足以开展注明范围的工作",
+          "output": "COVER/REVISE/WATCH/DROP及理由",
+          "success_to": [
+            "T05",
+            "T04"
+          ],
+          "failure_to": [
+            "T04"
+          ],
+          "theory_refs": [
+            "th-5-2",
+            "th-7-4"
+          ],
+          "limit": "不要求先完成原因研究才准许开始研究；COVER不等于PASS"
+        },
+        {
+          "id": "T03.L03",
+          "executor": "T03",
+          "action": "复核成熟稿的本期价值",
+          "input": "实际成稿贡献、当周重要事项",
+          "condition": "CURRENT_WEEK或合格长期专题依据成立",
+          "output": "当期组合取舍或跨周接续",
+          "success_to": [
+            "T09",
+            "T10"
+          ],
+          "failure_to": [
+            "T05"
+          ],
+          "theory_refs": [
+            "th-2-1",
+            "th-5-5",
+            "th-13-1"
+          ],
+          "limit": "长期题失去深度且无当周新增，不自动降为精选刊登"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "75ff3ab9331206c20740efbc70637a3f9eea5506b3c6c5c464312ee44f0362c6",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-13-1": "81c01e69aa6dd8b711c236607a4c0d58e81c821859de565e28b4def7e05fd8b7",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-2-2": "4e093d43b92cf009f2ec806a7f02430c03c551fc1da3e7c118696404c53eb939",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-5": "c1aee06d68af70fd93c977d0f557a45461ab9d813399c341fb8233f695041d5a",
+          "th-5-2": "1611ce202dc40f205f4599fa2cff22a2f7addce6ecd3a1f843fab285dd69aadd",
+          "th-5-4": "4278863064983744c4dc2775723c692a27f0030227c1633b9db27934a49cb100",
+          "th-5-5": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-7-4": "23be12c2d3de2673b1da2aef57d8ecf4fdccec2183568685c340b88f379a7b9b",
+          "th-8-5": "59619951eb1ac3a07e446946ab2081cb23dbc32722d258ffb365781a9e57ada7"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T02": "18474f1b90ba49d5fe03607f3cd6d2ec89295c5b44314e58eba3a508625817d2",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e"
+        }
+      },
+      "basis_sha256": "45b811e6eaa0587c6379fc04905f87a03d4af38d696111a7ea4900b5890ecf90",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T04",
+      "design_anchor": "tech-t04",
+      "owner": "L3取证/中文核对",
+      "phase": "第一阶段实际回源；第二阶段适配",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "原作、证据与中文材料",
+      "theory_refs": [
+        "th-2-1",
+        "th-6",
+        "th-7",
+        "th-8-3-4"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T13",
+        "T11"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T04.L01",
+          "executor": "T04",
+          "action": "核用途并取具体版本",
+          "input": "S7/补证请求与具体作品",
+          "condition": "访问、处理、保存和拟用范围有依据",
+          "output": "取得回执、版本、范围和许可记录",
+          "success_to": [
+            "T04"
+          ],
+          "failure_to": [
+            "T03"
+          ],
+          "theory_refs": [
+            "th-6",
+            "th-6-2"
+          ],
+          "limit": "只有链接或HTTP成功时不得填已核正文/全文"
+        },
+        {
+          "id": "T04.L02",
+          "executor": "T04",
+          "action": "核主张和支持范围",
+          "input": "原段/原表、主张与计算输入",
+          "condition": "相关上下文和专业条件实际可核",
+          "output": "Evidence/Claim支持、反证及缺口",
+          "success_to": [
+            "T03",
+            "T05",
+            "T09"
+          ],
+          "failure_to": [
+            "T04"
+          ],
+          "theory_refs": [
+            "th-6-2",
+            "th-7-4",
+            "th-8-3-4"
+          ],
+          "limit": "计算须核实际输入与执行；同源材料不算多证"
+        },
+        {
+          "id": "T04.L03",
+          "executor": "T04",
+          "action": "制作入选中文并核更新",
+          "input": "S8选用范围与当前原作版本",
+          "condition": "入选且相应用途允许",
+          "output": "节选译文/独立导引及定稿更新结果",
+          "success_to": [
+            "T05",
+            "T09"
+          ],
+          "failure_to": [
+            "T04",
+            "T03"
+          ],
+          "theory_refs": [
+            "th-7-3",
+            "th-2-1",
+            "th-13-7"
+          ],
+          "limit": "S8后制作；影响结论的截点后材料须更新截点重审或调整安排"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "bf14e03e4c5cf019deba03a974d20d605dd2b58a07f613fa950736491e6cda43",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
+          "th-7": "972e0d9adbc8a66c8dc251eba3cba1625ab028e5787e05ee0bd2ca31d3436087",
+          "th-7-3": "6386bed87759f65634d02c7c2376c30bd5fe96e511124f96660778714a1ae773",
+          "th-7-4": "23be12c2d3de2673b1da2aef57d8ecf4fdccec2183568685c340b88f379a7b9b",
+          "th-8-3-4": "303cae93b63455f3ac18748f5dbb38fff29485d7d16bf00d91e7f69bfb5b0a5c"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e",
+          "T13": "7b7ab84dffe7b40ea03f063d81041a46d063f8051b300993d7d0ef791a157013"
+        }
+      },
+      "basis_sha256": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T05",
+      "design_anchor": "tech-t05",
+      "owner": "L4联合研究组织；B1/B2从早期参与",
+      "phase": "第一阶段分步研究；第二阶段可重跑组织",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "问题界定与联合研究组织",
+      "theory_refs": [
+        "th-8",
+        "th-9-1",
+        "th-12",
+        "th-16-1",
+        "th-16-2"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T03",
+        "T04",
+        "T11"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T05.L01",
+          "executor": "T05",
+          "action": "固定事实、问题和边界",
+          "input": "已核材料、主/子问题及基线",
+          "condition": "核心事实可支持开展本题",
+          "output": "M01—M03与问题完成标准",
+          "success_to": [
+            "T06",
+            "T07"
+          ],
+          "failure_to": [
+            "T04",
+            "T03"
+          ],
+          "theory_refs": [
+            "th-8-2",
+            "th-8-5"
+          ],
+          "limit": "研究准入不等于本题原因已经证明"
+        },
+        {
+          "id": "T05.L02",
+          "executor": "T05",
+          "action": "共同查条件与竞争解释",
+          "input": "B1事件问题、B2知识问题和专业资料",
+          "condition": "方法前提与本题条件相称",
+          "output": "M04—M09过程/数量/反证及支持范围",
+          "success_to": [
+            "T06",
+            "T07",
+            "T08"
+          ],
+          "failure_to": [
+            "T04",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-8-3-4",
+            "th-8-8",
+            "th-9-1"
+          ],
+          "limit": "新材料可迫使改题；形成和检验材料分开"
+        },
+        {
+          "id": "T05.L03",
+          "executor": "T05",
+          "action": "决定有限交付或补研",
+          "input": "实际支持、未知及必要未做工作",
+          "condition": "对应问题的完成标准与停止理由可核",
+          "output": "有范围的研究成果和下一取证/停止决定",
+          "success_to": [
+            "T06",
+            "T07",
+            "T09"
+          ],
+          "failure_to": [
+            "T04",
+            "T03"
+          ],
+          "theory_refs": [
+            "th-8-4-1",
+            "th-8-4-2"
+          ],
+          "limit": "合格未知允许；不会、缺证、超预算不叫不适用"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "71de7b2ecd8de8ee90fccb0f6817aa4ad637a509bfadcc2eb1b3f3c8549d3a9c",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-12": "b80dedec20a6e39c51fa2111a3a7ed21b51021936ecb8a6282e98041f4f584d0",
+          "th-16-1": "379e6ee94c09f3f29ca3452d5f9e171e3a7c0849268622f08a53c409fd880925",
+          "th-16-2": "996744a5044f12ab55eb77c75ec43472d09105fa51ffe9e5cc6cde7fe2003e79",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-8": "57ce6575d98b1f8b7fb33767e28c0fc2245da28079d227ce9df01678de59d418",
+          "th-8-2": "4017c32033cbf77ead54a831694c4595a585f6c336cdc01140ad93c6d2990a66",
+          "th-8-3-4": "303cae93b63455f3ac18748f5dbb38fff29485d7d16bf00d91e7f69bfb5b0a5c",
+          "th-8-4-1": "dbb74d063b86f8c4cd9ce03b681216b9005e793d69d1a8ae6d6778ad15d08a1c",
+          "th-8-4-2": "906eb9adb90d079276c6fa9279b18f929d5d914e190f15713e726b86f0974797",
+          "th-8-5": "59619951eb1ac3a07e446946ab2081cb23dbc32722d258ffb365781a9e57ada7",
+          "th-8-8": "ecf75eae6e9a07eb60e63713a023bd438e75ee1d9cbe16001edc337888deb22d",
+          "th-9-1": "67e830495614adfc932ffd0d97034ba57893eba3e6b98028ade6f54cb9d3fadc"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T03": "45b811e6eaa0587c6379fc04905f87a03d4af38d696111a7ea4900b5890ecf90",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e"
+        }
+      },
+      "basis_sha256": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T06",
+      "design_anchor": "tech-t06",
+      "owner": "L4顾问职责",
+      "phase": "第一阶段真实研判；后续按任务验证",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "顾问B1本案研判",
+      "theory_refs": [
+        "th-1-3",
+        "th-8-4-1",
+        "th-9",
+        "th-16-1",
+        "th-16-2"
+      ],
+      "design_dependencies": [
+        "T05"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T06.L01",
+          "executor": "T06",
+          "action": "核主体与现实处境",
+          "input": "同一问题/截点的事实和解释",
+          "condition": "权限、资源、行动和范围可核",
+          "output": "有据的处境/约束地图",
+          "success_to": [
+            "T06"
+          ],
+          "failure_to": [
+            "T04",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-9",
+            "th-8-7"
+          ],
+          "limit": "公开表态、执行、结果和未知动机分开"
+        },
+        {
+          "id": "T06.L02",
+          "executor": "T06",
+          "action": "形成有限判断",
+          "input": "机制比较、中间过程与最强反证",
+          "condition": "判断强度与实际支持相称",
+          "output": "M10本案结论及相关含义",
+          "success_to": [
+            "T07",
+            "T08"
+          ],
+          "failure_to": [
+            "T05"
+          ],
+          "theory_refs": [
+            "th-8-4-1",
+            "th-8-8",
+            "th-9-1"
+          ],
+          "limit": "无实际机会或决策问题不强配投资/创业建议"
+        },
+        {
+          "id": "T06.L03",
+          "executor": "T06",
+          "action": "交可审阅研判",
+          "input": "实际段落、主张及未知",
+          "condition": "相应前提和限制随文保留",
+          "output": "B1贡献与可改变判断的材料",
+          "success_to": [
+            "T09"
+          ],
+          "failure_to": [
+            "T05"
+          ],
+          "theory_refs": [
+            "th-9",
+            "th-19-5-1"
+          ],
+          "limit": "不以新观点数量或通用建议代替本案理解"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "e21105a448b8cfa7b4c056105ea082056fab6ca1217d047384fd6ad01d8f35c5",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-1-3": "487cd3e63ccfec0b96726c0c7778536f8c55c23945764d0a804a7b4675a2022b",
+          "th-16-1": "379e6ee94c09f3f29ca3452d5f9e171e3a7c0849268622f08a53c409fd880925",
+          "th-16-2": "996744a5044f12ab55eb77c75ec43472d09105fa51ffe9e5cc6cde7fe2003e79",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-8-4-1": "dbb74d063b86f8c4cd9ce03b681216b9005e793d69d1a8ae6d6778ad15d08a1c",
+          "th-8-7": "21760aa13ceb70c03357d189607b8319dffd72a97854e4e576c5d030581cd609",
+          "th-8-8": "ecf75eae6e9a07eb60e63713a023bd438e75ee1d9cbe16001edc337888deb22d",
+          "th-9": "a23f9913024d2af7a9595099b781370e825b750f48f72a70ade1a634dcc68443",
+          "th-9-1": "67e830495614adfc932ffd0d97034ba57893eba3e6b98028ade6f54cb9d3fadc"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e"
+        }
+      },
+      "basis_sha256": "d7de3f9726254bb490a4f30948bae598ec65af2a66eb9ce299612ed75b3ce869",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T07",
+      "design_anchor": "tech-t07",
+      "owner": "L4帝师职责；从M02参与",
+      "phase": "第一阶段真实教学；后续按任务验证",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "帝师B2知识研究与教学",
+      "theory_refs": [
+        "th-8-4-1",
+        "th-9-1",
+        "th-10"
+      ],
+      "design_dependencies": [
+        "T05",
+        "T11"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T07.L01",
+          "executor": "T07",
+          "action": "提出材料中的知识问题",
+          "input": "真实材料和共享解释/疑问",
+          "condition": "知识对理解本题有明确作用",
+          "output": "必要概念、专业/历史资料需求",
+          "success_to": [
+            "T05",
+            "T04"
+          ],
+          "failure_to": [
+            "T07"
+          ],
+          "theory_refs": [
+            "th-9-1",
+            "th-10-1"
+          ],
+          "limit": "不只接顾问定好的结论；不诊断读者掌握状态"
+        },
+        {
+          "id": "T07.L02",
+          "executor": "T07",
+          "action": "由具体到过程再到认识",
+          "input": "已核知识、事实、案例和边界",
+          "condition": "命题性质与依据对应",
+          "output": "M11连续讲解、必要基础与反例",
+          "success_to": [
+            "T07"
+          ],
+          "failure_to": [
+            "T05",
+            "T04"
+          ],
+          "theory_refs": [
+            "th-10-1",
+            "th-10-2-1",
+            "th-8-4-1"
+          ],
+          "limit": "认识未形成回研究，解释已有依据但不清楚回教学"
+        },
+        {
+          "id": "T07.L03",
+          "executor": "T07",
+          "action": "核迁移并形成读者稿",
+          "input": "实际讲解和旧卡具体版本",
+          "condition": "当前用途、条件和不同场景可核",
+          "output": "知识贡献、迁移查证步骤及必要回顾",
+          "success_to": [
+            "T09",
+            "T08"
+          ],
+          "failure_to": [
+            "T07",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-10-5",
+            "th-10-6",
+            "th-10-7",
+            "th-19-5-1"
+          ],
+          "limit": "教学复用不算独立验证；去掉术语仍须有清楚过程"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "9f181d9d237e0b2071975e2860ef5d25e1f98cfedf3ed622307e1931c0ddc201",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-10": "b0d6c1e133245b6da0dd47114607e54aad24e763fe6ffe6b9507cbadd355915a",
+          "th-10-1": "44c369f457c16be68be726ee681b2d6bdfcf5af60f3a8795d21629f0e3127bee",
+          "th-10-2-1": "e3eb9da1ddd2b1b310ed867243e27cd9affc911ef10a020365e84e0f59cc6f2b",
+          "th-10-5": "c344234121ea70db61dfa7dc71d45b8a7d0e3e37f4548418bd5bb0cf9d2bc22e",
+          "th-10-6": "4ce88fffbec1d4fe516eecc7174ddca9ddde37ecd6de418e1332611e46052ed3",
+          "th-10-7": "8bdfd19891e3ab142e8861f544c73cd60b0162af0cc1e96be0b1a4adaa75a757",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-8-4-1": "dbb74d063b86f8c4cd9ce03b681216b9005e793d69d1a8ae6d6778ad15d08a1c",
+          "th-9-1": "67e830495614adfc932ffd0d97034ba57893eba3e6b98028ade6f54cb9d3fadc"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e"
+        }
+      },
+      "basis_sha256": "45e29d35629b529b6b30248aea222b1141fdf5c591611ebee05fc8bfffc44f43",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T08",
+      "design_anchor": "tech-t08",
+      "owner": "L4的C与M12准备",
+      "phase": "当期保存条件；真实结果后来再核",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "条件推演与事前检验准备",
+      "theory_refs": [
+        "th-11",
+        "th-8-8-3",
+        "th-16-4"
+      ],
+      "design_dependencies": [
+        "T05",
+        "T06",
+        "T07",
+        "T11"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T08.L01",
+          "executor": "T08",
+          "action": "判断可推演到哪里",
+          "input": "B1/B2的有效成果和未知",
+          "condition": "路径连接和条件有相称依据",
+          "output": "情景适用范围或缺失区分材料",
+          "success_to": [
+            "T08"
+          ],
+          "failure_to": [
+            "T05"
+          ],
+          "theory_refs": [
+            "th-11",
+            "th-8-4-2"
+          ],
+          "limit": "不凑路径、概率或固定题数"
+        },
+        {
+          "id": "T08.L02",
+          "executor": "T08",
+          "action": "写条件和中间传导",
+          "input": "真实起点、主体、条件及时滞",
+          "condition": "各路径有实质可辨的过程",
+          "output": "C条件路径与开放问题",
+          "success_to": [
+            "T09"
+          ],
+          "failure_to": [
+            "T05"
+          ],
+          "theory_refs": [
+            "th-11",
+            "th-8-8"
+          ],
+          "limit": "未来路径不补成当前事实；不向读者索取答案"
+        },
+        {
+          "id": "T08.L03",
+          "executor": "T08",
+          "action": "保存事前复查条件",
+          "input": "原判断、原证据与观察窗口",
+          "condition": "时间/版本及可反驳条件明确",
+          "output": "M12当期记录及后续重开触发",
+          "success_to": [
+            "T11"
+          ],
+          "failure_to": [
+            "T08"
+          ],
+          "theory_refs": [
+            "th-16-3",
+            "th-16-4",
+            "th-8-8-3"
+          ],
+          "limit": "不等未来发生才出刊；后来结果须另核机制"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "aa53fcec5499efb9fc610f3970c32de76dc46ce69bb069bddab43c04d08e01fc",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-11": "fec43a59d64cc7575667e2ed4098059f40436a0645577272625a5b76e960bc9e",
+          "th-16-3": "001f2a72d853172ac4413bae16b847bbae839059e4ac878e88a5e72b27a2907b",
+          "th-16-4": "c8df2f15abb51d4cc040f400ea77c8138c7a04c9e18a1340fc6c894702f85b13",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-8-4-2": "906eb9adb90d079276c6fa9279b18f929d5d914e190f15713e726b86f0974797",
+          "th-8-8": "ecf75eae6e9a07eb60e63713a023bd438e75ee1d9cbe16001edc337888deb22d",
+          "th-8-8-3": "c10fa170f2627bc5e29a89fe84f156927bd7b779c48f88dc8c2072cf75640378"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+          "T06": "d7de3f9726254bb490a4f30948bae598ec65af2a66eb9ce299612ed75b3ce869",
+          "T07": "45e29d35629b529b6b30248aea222b1141fdf5c591611ebee05fc8bfffc44f43",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e"
+        }
+      },
+      "basis_sha256": "2bbf5182b135219ab36d5c138aab4d00920f27727aed76c69155401fca9c10a3",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T09",
+      "design_anchor": "tech-t09",
+      "owner": "L5独立核查；不自签",
+      "phase": "第一阶段实际核查；第二阶段能力配置验证",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "独立审稿与具体内容放行",
+      "theory_refs": [
+        "th-13-7",
+        "th-15",
+        "th-18",
+        "th-19-5-1"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T09.L01",
+          "executor": "T09",
+          "action": "固定被审对象并独立查验",
+          "input": "实际读者稿、原件、方法和版本",
+          "condition": "核查所需资料实际取得",
+          "output": "独立疑点、支持核对和未核范围",
+          "success_to": [
+            "T09"
+          ],
+          "failure_to": [
+            "T04"
+          ],
+          "theory_refs": [
+            "th-15-2-1",
+            "th-6-2",
+            "th-13-7"
+          ],
+          "limit": "不能只审案卷；作者自评/预定PASS不是答案"
+        },
+        {
+          "id": "T09.L02",
+          "executor": "T09",
+          "action": "核判断、教学及修订",
+          "input": "具体意见、反证、作者回应和改稿",
+          "condition": "对应职责/适用性及支持关系可核",
+          "output": "实际修订处理、合理争议及剩余限制",
+          "success_to": [
+            "T09"
+          ],
+          "failure_to": [
+            "T05",
+            "T07",
+            "T04"
+          ],
+          "theory_refs": [
+            "th-15-2-2",
+            "th-15-2-3",
+            "th-18-1"
+          ],
+          "limit": "既验漏检也验误拒；不以多数投票判真伪"
+        },
+        {
+          "id": "T09.L03",
+          "executor": "T09",
+          "action": "对实际版本作决定",
+          "input": "核查依据和意见闭环",
+          "condition": "硬门和相应稿型责任达到",
+          "output": "Review的决定、版本与允许范围",
+          "success_to": [
+            "T10"
+          ],
+          "failure_to": [
+            "T05",
+            "T04"
+          ],
+          "theory_refs": [
+            "th-15-2-3",
+            "th-8-2-4"
+          ],
+          "limit": "缺资源如实待审；CURRENT_BINDING不等于内容PASS"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "0fa086fd5c200dcaa0a11a4990421fca06102fc9e7d2edff65a926ce29e81c54",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
+          "th-15": "7ce156e802d4435b67dd009f2c431e1bf07acfee99316b92f182cbcb04723d28",
+          "th-15-2-1": "75a7b72775c883a2ce20b508d46fce8d9b39d4bd3705cde18085984e38879c60",
+          "th-15-2-2": "fee850c26a734585af024b25f6078bec54af165c166a87fb30336b69b1813d98",
+          "th-15-2-3": "6ee1ebb36a0a2941b26dfce65c3253c2c23b6686cc068078071e68c70c46daf8",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-18-1": "9bbed19cf85004d8ac9f704ad61534e52acf785902fe1b4207f87562f50926e8",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
+          "th-8-2-4": "19a1b9ea713b92f524e203e65ad77b2c09560535fd6aa0c00c16119f2a27c86d"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+          "T06": "d7de3f9726254bb490a4f30948bae598ec65af2a66eb9ce299612ed75b3ce869",
+          "T07": "45e29d35629b529b6b30248aea222b1141fdf5c591611ebee05fc8bfffc44f43",
+          "T08": "2bbf5182b135219ab36d5c138aab4d00920f27727aed76c69155401fca9c10a3"
+        }
+      },
+      "basis_sha256": "c0936c4882a676f928dc4ee5c98a962b9f167d5f3dc9367892205b78accdff43",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T10",
+      "design_anchor": "tech-t10",
+      "owner": "L6主编/呈现；新命题回L4/L5",
+      "phase": "第一阶段实际格式；第四阶段正式渲染/交付",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "成稿、整刊与实际阅读文件",
+      "theory_refs": [
+        "th-2-1",
+        "th-5-5",
+        "th-13",
+        "th-19-1",
+        "th-22-4"
+      ],
+      "design_dependencies": [
+        "T03",
+        "T04",
+        "T09",
+        "T11"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T10.L01",
+          "executor": "T10",
+          "action": "核当期取舍和重要更新",
+          "input": "实际稿件、当期选择和截点",
+          "condition": "足以影响结论的更新已处理",
+          "output": "整刊顺序与选题/更新决定",
+          "success_to": [
+            "T10"
+          ],
+          "failure_to": [
+            "T03",
+            "T04"
+          ],
+          "theory_refs": [
+            "th-2-1",
+            "th-5-5"
+          ],
+          "limit": "不能把初选或单篇通过当整刊已合格"
+        },
+        {
+          "id": "T10.L02",
+          "executor": "T10",
+          "action": "组织连续稿及卷首",
+          "input": "已核主题、标题、图表和教学",
+          "condition": "重要新概括有研究/审核支持",
+          "output": "整刊源和审后变更承接",
+          "success_to": [
+            "T09",
+            "T10"
+          ],
+          "failure_to": [
+            "T05",
+            "T07"
+          ],
+          "theory_refs": [
+            "th-13-5",
+            "th-13-6",
+            "th-13-7"
+          ],
+          "limit": "即使一字改意也按影响返审；纯呈现改版不重做无关研究"
+        },
+        {
+          "id": "T10.L03",
+          "executor": "T10",
+          "action": "核实际文件与冻结归档",
+          "input": "有效Review、整刊源和真实文件",
+          "condition": "呈现完整且版本对应",
+          "output": "Edition、文件检查与出版决定",
+          "success_to": [
+            "T11"
+          ],
+          "failure_to": [
+            "T10",
+            "T09"
+          ],
+          "theory_refs": [
+            "th-13-7",
+            "th-22-4"
+          ],
+          "limit": "文件生成不等于内容已审、获准交付或确认到达"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "aa06c64fd32d269b47d9b6f5e1327c8c73cc0b79c4017608879d95b5f762bd55",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-13": "1eb737bb401a1d95ab58bd23a8daa239a47866f8c14e2f47895fa7683da67c25",
+          "th-13-5": "46d25fa4a27fba32ab646692e3b6871d66c5b69a65ec5cf4d5ea9642625711b0",
+          "th-13-6": "11d79459375b2ee201450738849bf39c817ccf88e55304339b881f4fc2b0c661",
+          "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-1": "3c5d27d9ff6433fcffd7b9185b809482c54bf49277e0802ceb058c9efd1d0b57",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-5-5": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T03": "45b811e6eaa0587c6379fc04905f87a03d4af38d696111a7ea4900b5890ecf90",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T09": "c0936c4882a676f928dc4ee5c98a962b9f167d5f3dc9367892205b78accdff43",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e"
+        }
+      },
+      "basis_sha256": "88207f03380e0d4a5e678b04947b9de18a59c55f2ae5bb82c80a23b3334dbe9b",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T11",
+      "design_anchor": "tech-t11",
+      "owner": "六层共享档案职责",
+      "phase": "第一篇保存；第二阶段跨周；第四阶段持久恢复",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "共享档案、历史查询与纠错",
+      "theory_refs": [
+        "th-10-5",
+        "th-10-6",
+        "th-10-7",
+        "th-16",
+        "th-23-3",
+        "th-24-5"
+      ],
+      "design_dependencies": [
+        "T01",
+        "T13"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T11.L01",
+          "executor": "T11",
+          "action": "保存版本与引用用途",
+          "input": "真实原稿、材料范围、审核和权限",
+          "condition": "可留内容、时间与版本明确",
+          "output": "不可无痕覆盖的原文及关联",
+          "success_to": [
+            "T11"
+          ],
+          "failure_to": [
+            "T04"
+          ],
+          "theory_refs": [
+            "th-16-3",
+            "th-24-5",
+            "th-6"
+          ],
+          "limit": "保存权不足保留允许定位；不得借不可变性保留无权全文"
+        },
+        {
+          "id": "T11.L02",
+          "executor": "T11",
+          "action": "区分当前采用与历史回放",
+          "input": "具体对象/版本和检索用途",
+          "condition": "当前限制已核或as-of模式明确",
+          "output": "可用范围或当时原话及后来说明",
+          "success_to": [
+            "T05",
+            "T12"
+          ],
+          "failure_to": [
+            "T11"
+          ],
+          "theory_refs": [
+            "th-16-3",
+            "th-16-6-1"
+          ],
+          "limit": "索引命中不等于可正式采用；后来补录不能污染旧截点"
+        },
+        {
+          "id": "T11.L03",
+          "executor": "T11",
+          "action": "追更正并按范围恢复",
+          "input": "变化、实际依赖和剩余支持",
+          "condition": "先限制已知关键用途，再完成相关复核",
+          "output": "影响/漏依赖/误限、重审及当前指向",
+          "success_to": [
+            "T09",
+            "T10"
+          ],
+          "failure_to": [
+            "T04",
+            "T05"
+          ],
+          "theory_refs": [
+            "th-16-6",
+            "th-16-6-2",
+            "th-16-6-3"
+          ],
+          "limit": "不一改全撤或全过；测试副本不冒称自然更正"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "fad5d3a3d8a44ae426c3339d87a131e705c3ec6f88d79736d8f8302c1759a62a",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-10-5": "c344234121ea70db61dfa7dc71d45b8a7d0e3e37f4548418bd5bb0cf9d2bc22e",
+          "th-10-6": "4ce88fffbec1d4fe516eecc7174ddca9ddde37ecd6de418e1332611e46052ed3",
+          "th-10-7": "8bdfd19891e3ab142e8861f544c73cd60b0162af0cc1e96be0b1a4adaa75a757",
+          "th-16": "28c82a33ea9e04904fcfab5a24e7945a117a6fe689e361dab2f17c9af7395a6e",
+          "th-16-3": "001f2a72d853172ac4413bae16b847bbae839059e4ac878e88a5e72b27a2907b",
+          "th-16-6": "46b6c25ff2c2c77ee686727ec17fedf269649aab1f0f9e3c12b8802848a6c52e",
+          "th-16-6-1": "3ffc6634d62e305abb827b7aa644b74129c8754b690c4e8636d930a904f5b2b3",
+          "th-16-6-2": "ac7f33122cf51f032ca18004b1122647562369a9db50ac38a0a491542a7d96e8",
+          "th-16-6-3": "04d9605c44f9086491f20f6bb6e3d7c84fe05c71b4be9a87a7afda4f98342f48",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-23-3": "2cff81751a78a83139bbd7b8ecefcb133c56c58446a4a81d8cb47bf4bb2528bb",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-24-5": "882315791d1cf274d392adf4cd37ee87dced97415c15004318499248bd0e06e5",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7",
+          "T13": "7b7ab84dffe7b40ea03f063d81041a46d063f8051b300993d7d0ef791a157013"
+        }
+      },
+      "basis_sha256": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T12",
+      "design_anchor": "tech-t12",
+      "owner": "年度A01—A12组织；复用六层",
+      "phase": "第四阶段缩区间演练；全年另验",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "年报双输入组织",
+      "theory_refs": [
+        "th-2-3",
+        "th-14",
+        "th-16-3",
+        "th-16-6"
+      ],
+      "design_dependencies": [
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T12.L01",
+          "executor": "T12",
+          "action": "固定双输入与年度范围",
+          "input": "真实周刊、缺期和独立年度材料",
+          "condition": "两路来源和知识截点可核",
+          "output": "A01—A07时间线、旧判断/修订及漏题审计",
+          "success_to": [
+            "T12"
+          ],
+          "failure_to": [
+            "T04",
+            "T11"
+          ],
+          "theory_refs": [
+            "th-14-1",
+            "th-16-3"
+          ],
+          "limit": "不能伪造52期或以合订代独立回查"
+        },
+        {
+          "id": "T12.L02",
+          "executor": "T12",
+          "action": "作年度新研究和知识综合",
+          "input": "年度过程、旧解释与新检验证据",
+          "condition": "新旧依据和现时用途分别核过",
+          "output": "A08—A11年度顾问/帝师/未来条件稿",
+          "success_to": [
+            "T09"
+          ],
+          "failure_to": [
+            "T05",
+            "T04"
+          ],
+          "theory_refs": [
+            "th-14",
+            "th-16-6-1",
+            "th-8-8-3"
+          ],
+          "limit": "年末新资料不回写成年初已知；旧周刊PASS不批准新综合"
+        },
+        {
+          "id": "T12.L03",
+          "executor": "T12",
+          "action": "核年报成品及许可",
+          "input": "新Review、年度源及重收材料用途",
+          "condition": "当次权限和实际文件对应",
+          "output": "A12年报版本、索引与归档",
+          "success_to": [
+            "T10",
+            "T11"
+          ],
+          "failure_to": [
+            "T09",
+            "T04"
+          ],
+          "theory_refs": [
+            "th-14-1",
+            "th-13-7"
+          ],
+          "limit": "短期演练不证明全年质量、覆盖或费用"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "61e7ae660e17c884a292257c2a0e414f9e1454b1e9cda5701b1990bceb2e6842",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
+          "th-14": "e0c58a02e466a358ab56bdebd623e476ba2b436df1ce14c791be49e17cabd093",
+          "th-14-1": "5f86f19d79f0d228984619a01209eb49321ad6097d5ddaf37f3aefd41a52d9d7",
+          "th-16-3": "001f2a72d853172ac4413bae16b847bbae839059e4ac878e88a5e72b27a2907b",
+          "th-16-6": "46b6c25ff2c2c77ee686727ec17fedf269649aab1f0f9e3c12b8802848a6c52e",
+          "th-16-6-1": "3ffc6634d62e305abb827b7aa644b74129c8754b690c4e8636d930a904f5b2b3",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-2-3": "3e49ce680c1b5093c7e48307117d09610ce9bf95662e9042eaffc269a4101a7a",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-8-8-3": "c10fa170f2627bc5e29a89fe84f156927bd7b779c48f88dc8c2072cf75640378"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T02": "18474f1b90ba49d5fe03607f3cd6d2ec89295c5b44314e58eba3a508625817d2",
+          "T03": "45b811e6eaa0587c6379fc04905f87a03d4af38d696111a7ea4900b5890ecf90",
+          "T04": "e009f200f2476f747c500fd09cf04e1d86db043a9e1496071a4d393aa922247a",
+          "T05": "e61148064bdcd0f67adf172c47801ba255e1314eacb47a5837a7db28b586320e",
+          "T06": "d7de3f9726254bb490a4f30948bae598ec65af2a66eb9ce299612ed75b3ce869",
+          "T07": "45e29d35629b529b6b30248aea222b1141fdf5c591611ebee05fc8bfffc44f43",
+          "T08": "2bbf5182b135219ab36d5c138aab4d00920f27727aed76c69155401fca9c10a3",
+          "T09": "c0936c4882a676f928dc4ee5c98a962b9f167d5f3dc9367892205b78accdff43",
+          "T10": "88207f03380e0d4a5e678b04947b9de18a59c55f2ae5bb82c80a23b3334dbe9b",
+          "T11": "de7bdd99b4ccbb0e1466d529322a9bcc1c6d27fe92cdbd2f666dfc668a78791e"
+        }
+      },
+      "basis_sha256": "21f3a6bb018923be3276af89c43478717fe0795ebcad5a912a9096f580a845b8",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    },
+    {
+      "id": "T13",
+      "design_anchor": "tech-t13",
+      "owner": "实际工具执行与配置记录；不替内容裁决",
+      "phase": "受控使用先行；二/三/四阶段逐步验证",
+      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "intent": "工具、模型、投入及运行支撑",
+      "theory_refs": [
+        "th-17",
+        "th-19",
+        "th-22"
+      ],
+      "design_dependencies": [
+        "T01"
+      ],
+      "validation": "按本模块§25.4原文及所指理论作真实正反验收；本次仅核关联/标注，不授予内容、模型或生产资格。",
+      "logic": [
+        {
+          "id": "T13.L01",
+          "executor": "T13",
+          "action": "核调用边界",
+          "input": "实际任务、配置、材料用途和资源",
+          "condition": "获准且范围相称，或明确受控试用",
+          "output": "本次可调用范围及限制",
+          "success_to": [
+            "T13"
+          ],
+          "failure_to": [
+            "T01"
+          ],
+          "theory_refs": [
+            "th-17-2",
+            "th-6",
+            "th-19-2"
+          ],
+          "limit": "未知预算不当无限授权；能力可用不等于可付费/外发"
+        },
+        {
+          "id": "T13.L02",
+          "executor": "T13",
+          "action": "执行并记录真实结果",
+          "input": "允许的操作、输入与工具",
+          "condition": "实际请求与操作可确认",
+          "output": "真实输出/错误、用量/估计及失败记录",
+          "success_to": [
+            "T04",
+            "T05",
+            "T09"
+          ],
+          "failure_to": [
+            "T13"
+          ],
+          "theory_refs": [
+            "th-6-2",
+            "th-17-2-1",
+            "th-19-7"
+          ],
+          "limit": "不由模型补造版本、费用、页码、成功回执"
+        },
+        {
+          "id": "T13.L03",
+          "executor": "T13",
+          "action": "按原因恢复或停止",
+          "input": "失败、有效产物和剩余允许资源",
+          "condition": "新信息价值与重试原因可核",
+          "output": "有限重试/恢复/停止及复验任务",
+          "success_to": [
+            "T01",
+            "T11"
+          ],
+          "failure_to": [
+            "T13"
+          ],
+          "theory_refs": [
+            "th-17-2-4",
+            "th-19-7",
+            "th-24-6-1"
+          ],
+          "limit": "文档关联检查未实现生产重入、预算预留或恢复控制"
+        }
+      ],
+      "current_binding": {
+        "design_sha256": "7e06b87d40fd68372b7b25f46421865c064fd677e9becb2ac11c5b3c562a7d2d",
+        "sources": {
+          "th-0": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+          "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+          "th-17": "d14d9ed29f4351a66c480aacfeb468cd86821e0b3d5ec53c84ebb1dcab391307",
+          "th-17-2": "56e60d9db8816b87c68b9ea41202158d2bf7a680b03bfc888f001354922a44b8",
+          "th-17-2-1": "a65c5b7c3c7e2de5d75c6236337e03cbf497e09b042a641da7c0a793e060b9b2",
+          "th-17-2-4": "e1613178427d9bf2dd89c6e30ae2e5cb03de96afd67f23400139f1747f5c697a",
+          "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+          "th-19": "f504b402c65b82f08ca1a19a4a0b85a55f01341df0017f1da142f1b0e3cc6427",
+          "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+          "th-19-7": "37d2009fd59bb8dfbc0a4508478775ca6b0c805b3c76c66cd2985a9e17506985",
+          "th-2": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+          "th-20": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+          "th-22": "21029159c81ae3ef0a44a85630d52b89cca0cc0bebc1a5ba86910a60c87fd89b",
+          "th-24": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+          "th-24-6-1": "41c6c529c18dc84fa3f73f5ee19a59890f65f3ae86180f97234712c66ff4ff1b",
+          "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+          "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33"
+        },
+        "shared_context": {
+          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
+          "tech-shared-25-10": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020",
+          "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
+          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
+          "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
+          "tech-shared-25-8": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1",
+          "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+        },
+        "dependencies": {
+          "T01": "cc83ec37bb51d668ee066f826a27541df059899d7856dd42072e92517d39d6e7"
+        }
+      },
+      "basis_sha256": "7b7ab84dffe7b40ea03f063d81041a46d063f8051b300993d7d0ef791a157013",
+      "binding_status": "CURRENT_BINDING",
+      "changed_theory_refs": [],
+      "design_changed": false,
+      "changed_dependencies": [],
+      "unreviewed_dependencies": [],
+      "changed_shared_context": []
+    }
+  ],
+  "theory_to_technical": {
+    "th-0": {
+      "section": "0",
+      "title": "效力、定义与阅读方式",
+      "sha256": "8b8ad89c6136b6eac89c82ea03578e084a360e6af010eca66006af4a26c15357",
+      "direct_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-1": {
+      "section": "1",
+      "title": "最高理念：把真实世界变成可独立运用的知识",
+      "sha256": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
+      "direct_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-1-3": {
+      "section": "1.3",
+      "title": "顾问与帝师是核心价值，知识范围保持开放",
+      "sha256": "487cd3e63ccfec0b96726c0c7778536f8c55c23945764d0a804a7b4675a2022b",
+      "direct_nodes": [
+        "T06"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T06",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-10": {
+      "section": "10",
+      "title": "帝师 B2：像老师一样从现实讲清可迁移的世界知识",
+      "sha256": "b0d6c1e133245b6da0dd47114607e54aad24e763fe6ffe6b9507cbadd355915a",
+      "direct_nodes": [
+        "R01",
+        "T07"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-10-1": {
+      "section": "10.1",
+      "title": "选择教什么，而不是先套课程",
+      "sha256": "44c369f457c16be68be726ee681b2d6bdfcf5af60f3a8795d21629f0e3127bee",
+      "direct_nodes": [
+        "T07"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-10-2-1": {
+      "section": "10.2.1",
+      "title": "连续讲解的实际展开：每次抽象都接得回具体材料",
+      "sha256": "e3eb9da1ddd2b1b310ed867243e27cd9affc911ef10a020365e84e0f59cc6f2b",
+      "direct_nodes": [
+        "T07"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-10-5": {
+      "section": "10.5",
+      "title": "可复用知识卡：服务写作与查阅，不记录读者表现",
+      "sha256": "c344234121ea70db61dfa7dc71d45b8a7d0e3e37f4548418bd5bb0cf9d2bc22e",
+      "direct_nodes": [
+        "T07",
+        "T11"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    "th-10-6": {
+      "section": "10.6",
+      "title": "轻量编辑知识地图",
+      "sha256": "4ce88fffbec1d4fe516eecc7174ddca9ddde37ecd6de418e1332611e46052ed3",
+      "direct_nodes": [
+        "R05",
+        "T07",
+        "T11"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    "th-10-7": {
+      "section": "10.7",
+      "title": "同一知识的回顾、巩固与多种现实表现",
+      "sha256": "8bdfd19891e3ab142e8861f544c73cd60b0162af0cc1e96be0b1a4adaa75a757",
+      "direct_nodes": [
+        "T07",
+        "T11"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    "th-11": {
+      "section": "11",
+      "title": "C 事件推演与开放性思考",
+      "sha256": "fec43a59d64cc7575667e2ed4098059f40436a0645577272625a5b76e960bc9e",
+      "direct_nodes": [
+        "R01",
+        "T08"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-12": {
+      "section": "12",
+      "title": "九领域研究与教学的实际专业动作",
+      "sha256": "b80dedec20a6e39c51fa2111a3a7ed21b51021936ecb8a6282e98041f4f584d0",
+      "direct_nodes": [
+        "T05"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-13": {
+      "section": "13",
+      "title": "周刊完整杂志：讲一件事，形成连续论证",
+      "sha256": "1eb737bb401a1d95ab58bd23a8daa239a47866f8c14e2f47895fa7683da67c25",
+      "direct_nodes": [
+        "R01",
+        "T10"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-13-1": {
+      "section": "13.1",
+      "title": "三种内容形态及深度责任",
+      "sha256": "81c01e69aa6dd8b711c236607a4c0d58e81c821859de565e28b4def7e05fd8b7",
+      "direct_nodes": [
+        "R02",
+        "R03",
+        "R04",
+        "T03"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-13-5": {
+      "section": "13.5",
+      "title": "卷首与整刊综合：规律、逻辑及其现实表现",
+      "sha256": "46d25fa4a27fba32ab646692e3b6871d66c5b69a65ec5cf4d5ea9642625711b0",
+      "direct_nodes": [
+        "T10"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-13-6": {
+      "section": "13.6",
+      "title": "连贯文章的编辑方法与阅读投入",
+      "sha256": "11d79459375b2ee201450738849bf39c817ccf88e55304339b881f4fc2b0c661",
+      "direct_nodes": [
+        "T10"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-13-7": {
+      "section": "13.7",
+      "title": "从案卷到读者成品：意思保真、改稿重审与版本对应",
+      "sha256": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
+      "direct_nodes": [
+        "R01",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T04",
+        "T09",
+        "T10",
+        "T12"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-14": {
+      "section": "14",
+      "title": "年报：以周刊为骨架贯通年度现实过程与规律检验",
+      "sha256": "e0c58a02e466a358ab56bdebd623e476ba2b436df1ce14c791be49e17cabd093",
+      "direct_nodes": [
+        "R06",
+        "T12"
+      ],
+      "potentially_affected_nodes": [
+        "R05",
+        "R06",
+        "T12"
+      ]
+    },
+    "th-14-1": {
+      "section": "14.1",
+      "title": "年度十二道动作（每步实际产物）",
+      "sha256": "5f86f19d79f0d228984619a01209eb49321ad6097d5ddaf37f3aefd41a52d9d7",
+      "direct_nodes": [
+        "R06",
+        "T12"
+      ],
+      "potentially_affected_nodes": [
+        "R05",
+        "R06",
+        "T12"
+      ]
+    },
+    "th-15": {
+      "section": "15",
+      "title": "整体六层架构、交接和实际返工",
+      "sha256": "7ce156e802d4435b67dd009f2c431e1bf07acfee99316b92f182cbcb04723d28",
+      "direct_nodes": [
+        "T09"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-15-2": {
+      "section": "15.2",
+      "title": "独立审稿怎样核查、验证能力和决定放行",
+      "sha256": "91a87d6d39d228e19648897a7955dfb23f3ea204cb13a8cce648c68db1caedd1",
+      "direct_nodes": [
+        "R01",
+        "R03",
+        "R05"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R03",
+        "R05"
+      ]
+    },
+    "th-15-2-1": {
+      "section": "15.2.1",
+      "title": "独立体现在哪里，实际怎样审",
+      "sha256": "75a7b72775c883a2ce20b508d46fce8d9b39d4bd3705cde18085984e38879c60",
+      "direct_nodes": [
+        "T09"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-15-2-2": {
+      "section": "15.2.2",
+      "title": "怎样验证审稿者会识错，也会正确放行",
+      "sha256": "fee850c26a734585af024b25f6078bec54af165c166a87fb30336b69b1813d98",
+      "direct_nodes": [
+        "T09"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-15-2-3": {
+      "section": "15.2.3",
+      "title": "分歧怎样收口，什么条件下可以PASS",
+      "sha256": "6ee1ebb36a0a2941b26dfce65c3253c2c23b6686cc068078071e68c70c46daf8",
+      "direct_nodes": [
+        "T09"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-16": {
+      "section": "16",
+      "title": "资料与记忆：为周刊报道和年报复盘而保存",
+      "sha256": "28c82a33ea9e04904fcfab5a24e7945a117a6fe689e361dab2f17c9af7395a6e",
+      "direct_nodes": [
+        "T11"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    "th-16-1": {
+      "section": "16.1",
+      "title": "机构与关键人物：观察其可证的公开变化",
+      "sha256": "379e6ee94c09f3f29ca3452d5f9e171e3a7c0849268622f08a53c409fd880925",
+      "direct_nodes": [
+        "T05",
+        "T06"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-16-2": {
+      "section": "16.2",
+      "title": "跨领域关联：逐环证明传导，保留不成立的路径",
+      "sha256": "996744a5044f12ab55eb77c75ec43472d09105fa51ffe9e5cc6cde7fe2003e79",
+      "direct_nodes": [
+        "T05",
+        "T06"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-16-3": {
+      "section": "16.3",
+      "title": "三种必辨时间、原判断版本与历史截面检索",
+      "sha256": "001f2a72d853172ac4413bae16b847bbae839059e4ac878e88a5e72b27a2907b",
+      "direct_nodes": [
+        "R05",
+        "R06",
+        "T08",
+        "T11",
+        "T12"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    "th-16-4": {
+      "section": "16.4",
+      "title": "旧题重开、现实检验与错因分类",
+      "sha256": "c8df2f15abb51d4cc040f400ea77c8138c7a04c9e18a1340fc6c894702f85b13",
+      "direct_nodes": [
+        "R02",
+        "R06",
+        "T08"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-16-5": {
+      "section": "16.5",
+      "title": "长期主题的结构背景与研究接续",
+      "sha256": "20d16983a4cd12097d1760ec5da376dd9290e1b90adf28089fe5eab5bda011af",
+      "direct_nodes": [
+        "R02"
+      ],
+      "potentially_affected_nodes": [
+        "R02"
+      ]
+    },
+    "th-16-6": {
+      "section": "16.6",
+      "title": "证据更正后的依赖追查与有限重审",
+      "sha256": "46b6c25ff2c2c77ee686727ec17fedf269649aab1f0f9e3c12b8802848a6c52e",
+      "direct_nodes": [
+        "R03",
+        "R05",
+        "R06",
+        "T11",
+        "T12"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    "th-16-6-1": {
+      "section": "16.6.1",
+      "title": "当前复用与历史回放分别核",
+      "sha256": "3ffc6634d62e305abb827b7aa644b74129c8754b690c4e8636d930a904f5b2b3",
+      "direct_nodes": [
+        "R05",
+        "R06",
+        "R07",
+        "T01",
+        "T11",
+        "T12"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-16-6-2": {
+      "section": "16.6.2",
+      "title": "影响分类与恢复采用",
+      "sha256": "ac7f33122cf51f032ca18004b1122647562369a9db50ac38a0a491542a7d96e8",
+      "direct_nodes": [
+        "R05",
+        "T11"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    "th-16-6-3": {
+      "section": "16.6.3",
+      "title": "更正演练的顺序、对照与证明范围",
+      "sha256": "04d9605c44f9086491f20f6bb6e3d7c84fe05c71b4be9a87a7afda4f98342f48",
+      "direct_nodes": [
+        "R05",
+        "T11"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    "th-17": {
+      "section": "17",
+      "title": "开源工具与 LLM 的职责边界",
+      "sha256": "d14d9ed29f4351a66c480aacfeb468cd86821e0b3d5ec53c84ebb1dcab391307",
+      "direct_nodes": [
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-17-2": {
+      "section": "17.2",
+      "title": "实际模型按任务准入：配置、验证、使用范围与复验",
+      "sha256": "56e60d9db8816b87c68b9ea41202158d2bf7a680b03bfc888f001354922a44b8",
+      "direct_nodes": [
+        "R07",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-17-2-1": {
+      "section": "17.2.1",
+      "title": "先固定任务和实际配置",
+      "sha256": "a65c5b7c3c7e2de5d75c6236337e03cbf497e09b042a641da7c0a793e060b9b2",
+      "direct_nodes": [
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-17-2-4": {
+      "section": "17.2.4",
+      "title": "使用决定、执行前核对与变更复验",
+      "sha256": "e1613178427d9bf2dd89c6e30ae2e5cb03de96afd67f23400139f1747f5c697a",
+      "direct_nodes": [
+        "R07",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-18": {
+      "section": "18",
+      "title": "审稿、硬规则与对照实例",
+      "sha256": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
+      "direct_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-18-1": {
+      "section": "18.1",
+      "title": "按题判定质量，不适用项与可选评分怎样处理",
+      "sha256": "9bbed19cf85004d8ac9f704ad61534e52acf785902fe1b4207f87562f50926e8",
+      "direct_nodes": [
+        "R03",
+        "T09"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-19": {
+      "section": "19",
+      "title": "工程施工、运行边界与阶段验收",
+      "sha256": "f504b402c65b82f08ca1a19a4a0b85a55f01341df0017f1da142f1b0e3cc6427",
+      "direct_nodes": [
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-19-1": {
+      "section": "19.1",
+      "title": "最小系统和连续性",
+      "sha256": "3c5d27d9ff6433fcffd7b9185b809482c54bf49277e0802ceb058c9efd1d0b57",
+      "direct_nodes": [
+        "R08",
+        "T10"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-19-2": {
+      "section": "19.2",
+      "title": "唯一施工顺序：四阶段及阶段门",
+      "sha256": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
+      "direct_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-19-5-1": {
+      "section": "19.5.1",
+      "title": "深度成果怎样判、真实参照怎样建立",
+      "sha256": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
+      "direct_nodes": [
+        "T06",
+        "T07",
+        "T09"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-19-7": {
+      "section": "19.7",
+      "title": "质量增益、实际投入与返工负担怎样共同验收",
+      "sha256": "37d2009fd59bb8dfbc0a4508478775ca6b0c805b3c76c66cd2985a9e17506985",
+      "direct_nodes": [
+        "R04",
+        "R08",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-2": {
+      "section": "2",
+      "title": "产品边界与本周/本年时间逻辑",
+      "sha256": "e70a8d1662c5713908239294740fb9795c663cb3fecf3b551499c90a97898d97",
+      "direct_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-2-1": {
+      "section": "2.1",
+      "title": "周刊的两种选题依据：当周变化为主，长期重大专题有据入选",
+      "sha256": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+      "direct_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "T03",
+        "T04",
+        "T10"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-2-2": {
+      "section": "2.2",
+      "title": "出版按周，研究按问题跨周推进",
+      "sha256": "4e093d43b92cf009f2ec806a7f02430c03c551fc1da3e7c118696404c53eb939",
+      "direct_nodes": [
+        "R02",
+        "T03"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-2-3": {
+      "section": "2.3",
+      "title": "年报的年度范围",
+      "sha256": "3e49ce680c1b5093c7e48307117d09610ce9bf95662e9042eaffc269a4101a7a",
+      "direct_nodes": [
+        "T12"
+      ],
+      "potentially_affected_nodes": [
+        "R05",
+        "R06",
+        "T12"
+      ]
+    },
+    "th-20": {
+      "section": "20",
+      "title": "唯一规范的版本治理与执行状态",
+      "sha256": "3c5ca8cea2c53f38767410d747c16dafc842f3a8bbb3703be76c7605d41a8ec1",
+      "direct_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-20-3": {
+      "section": "20.3",
+      "title": "规则变更怎样落实到实际检查",
+      "sha256": "dee00f46215b4853e9cfb5dcd7713a809e17a1768ca6955a0f1e7e502ebfa56b",
+      "direct_nodes": [
+        "R07"
+      ],
+      "potentially_affected_nodes": [
+        "R07"
+      ]
+    },
+    "th-21": {
+      "section": "21",
+      "title": "换人、换模型、换电脑后的首轮交接演练",
+      "sha256": "386ce86f2f982fc025f78fbc52dec967175ba47cf66e1312f96266b7fa0698e0",
+      "direct_nodes": [
+        "T01"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-22": {
+      "section": "22",
+      "title": "内置制作模板与接口：只在本文件维护",
+      "sha256": "21029159c81ae3ef0a44a85630d52b89cca0cc0bebc1a5ba86910a60c87fd89b",
+      "direct_nodes": [
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-22-4": {
+      "section": "22.4",
+      "title": "执行记录、状态与失败接口",
+      "sha256": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
+      "direct_nodes": [
+        "R08",
+        "T01",
+        "T10"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-23": {
+      "section": "23",
+      "title": "来源实况、现行待办与迁移记录",
+      "sha256": "2560efd910883f759add3d4b12d7be2fa6e1e3e66e6cc3bbff716aa1a670a081",
+      "direct_nodes": [
+        "T01"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-23-1": {
+      "section": "23.1",
+      "title": "来源记录的准确含义与当前操作边界",
+      "sha256": "842f844567b289b3c8a797805cfc323bab96ea8ba2e67784a2e54388fee2ddc7",
+      "direct_nodes": [
+        "T02"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-23-3": {
+      "section": "23.3",
+      "title": "文件整合与历史回查",
+      "sha256": "2cff81751a78a83139bbd7b8ecefcb133c56c58446a4a81d8cb47bf4bb2528bb",
+      "direct_nodes": [
+        "T11"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    "th-24": {
+      "section": "24",
+      "title": "单一维护源与必要文件的自动同步",
+      "sha256": "dfb1b64a2cf4fce32c3bbda49e72cb8185632d3e92ad634068535eb998c720cc",
+      "direct_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-24-5": {
+      "section": "24.5",
+      "title": "单一规则源与多期研究成果的存放边界",
+      "sha256": "882315791d1cf274d392adf4cd37ee87dced97415c15004318499248bd0e06e5",
+      "direct_nodes": [
+        "T11"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    "th-24-6-1": {
+      "section": "24.6.1",
+      "title": "实际装载、原文依赖、分段与恢复",
+      "sha256": "41c6c529c18dc84fa3f73f5ee19a59890f65f3ae86180f97234712c66ff4ff1b",
+      "direct_nodes": [
+        "R07",
+        "T01",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-3": {
+      "section": "3",
+      "title": "领域覆盖与资源分配：广泛认识世界居中",
+      "sha256": "9aa6d95fd01aabad258fc42f76d07c19c3c3d3bfbe96bd55a7b24350c6438869",
+      "direct_nodes": [
+        "T02"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-4": {
+      "section": "4",
+      "title": "L1 全球持续发现：轻量索引、成本控制与防漏",
+      "sha256": "e6ea367cd4ec7d32c2405e8fe8f8afb763854d86f5834e1932fdd01ec125bcfe",
+      "direct_nodes": [
+        "R01",
+        "T02"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-4-1": {
+      "section": "4.1",
+      "title": "输入与运行",
+      "sha256": "f9026cc097948e519049857380febfbd9e1d2d4fb736306f360842d45643f4cb",
+      "direct_nodes": [
+        "T02"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-4-2": {
+      "section": "4.2",
+      "title": "轻量候选卡（L1唯一必交）",
+      "sha256": "0af6ec9ff1f8bb8f7022e8539a812a60857cb1dacbdd0e5c6137c3f44bdb7940",
+      "direct_nodes": [
+        "T02"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-4-3": {
+      "section": "4.3",
+      "title": "接口和失败",
+      "sha256": "fc482d40ff43889d4b08355366896f2719277c6a551d08b23e7f141afa9c6ff7",
+      "direct_nodes": [
+        "T02"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-4-4": {
+      "section": "4.4",
+      "title": "在候选池之外检查发现遗漏",
+      "sha256": "8becb121e5c2787999ea26803f62190d39f53b58b0ae54324f79e8e785def994",
+      "direct_nodes": [
+        "T02"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-5": {
+      "section": "5",
+      "title": "L2 严格编辑筛选：S0—S8、第二把尺子",
+      "sha256": "c1aee06d68af70fd93c977d0f557a45461ab9d813399c341fb8233f695041d5a",
+      "direct_nodes": [
+        "T03"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-5-2": {
+      "section": "5.2",
+      "title": "九道工序及准确时序",
+      "sha256": "1611ce202dc40f205f4599fa2cff22a2f7addce6ecd3a1f843fab285dd69aadd",
+      "direct_nodes": [
+        "R01",
+        "R02",
+        "T03"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-5-4": {
+      "section": "5.4",
+      "title": "现实重要性、当前可知程度与研究投入分别决定",
+      "sha256": "4278863064983744c4dc2775723c692a27f0030227c1633b9db27934a49cb100",
+      "direct_nodes": [
+        "T03"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-5-5": {
+      "section": "5.5",
+      "title": "整刊选择：单篇价值、内容互补与阅读投入",
+      "sha256": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
+      "direct_nodes": [
+        "R01",
+        "R03",
+        "T03",
+        "T10"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-6": {
+      "section": "6",
+      "title": "来源宇宙、接入与证据权利",
+      "sha256": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
+      "direct_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-6-1": {
+      "section": "6.1",
+      "title": "逐主张评估证据：可靠、独立、相关与足够",
+      "sha256": "e28e2d995663b8e6a77b7944dc4f752475cbf12ac1b90f8eb61603c7cfdb49f9",
+      "direct_nodes": [
+        "T02"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-6-2": {
+      "section": "6.2",
+      "title": "让研究记录对应实际取证：取得、核对与支持分别留据",
+      "sha256": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
+      "direct_nodes": [
+        "R03",
+        "R04",
+        "T04",
+        "T09",
+        "T13"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-7": {
+      "section": "7",
+      "title": "L3 原作精选 A：围绕问题组织真实材料",
+      "sha256": "972e0d9adbc8a66c8dc251eba3cba1625ab028e5787e05ee0bd2ca31d3436087",
+      "direct_nodes": [
+        "T04"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-7-3": {
+      "section": "7.3",
+      "title": "按类型核真与分阶段交付",
+      "sha256": "6386bed87759f65634d02c7c2376c30bd5fe96e511124f96660778714a1ae773",
+      "direct_nodes": [
+        "R03",
+        "T04"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-7-4": {
+      "section": "7.4",
+      "title": "选材怎样供给研究所需证据：适足性、补证与复选",
+      "sha256": "23be12c2d3de2673b1da2aef57d8ecf4fdccec2183568685c340b88f379a7b9b",
+      "direct_nodes": [
+        "R01",
+        "R04",
+        "T03",
+        "T04"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-8": {
+      "section": "8",
+      "title": "L4 联合顾问—帝师：七问、三门、双向返工",
+      "sha256": "57ce6575d98b1f8b7fb33767e28c0fc2245da28079d227ce9df01678de59d418",
+      "direct_nodes": [
+        "T05"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-8-2": {
+      "section": "8.2",
+      "title": "统一递进研究协议：从现象到问题、结构、机制与验证",
+      "sha256": "4017c32033cbf77ead54a831694c4595a585f6c336cdc01140ad93c6d2990a66",
+      "direct_nodes": [
+        "R01",
+        "T05"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-8-2-1": {
+      "section": "8.2.1",
+      "title": "连续约束的含义、入口与执行次序",
+      "sha256": "a0ebae25928e42057b41578e635f2f0e82d56cba9582c6f9a3ed9c9a21ad529f",
+      "direct_nodes": [
+        "T01"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-8-2-3": {
+      "section": "8.2.3",
+      "title": "校验、放行、返工与停止",
+      "sha256": "1c787ea43af69eed5eaadab8c9402ad429734090b0cbfa9613ea6c52e70f7de3",
+      "direct_nodes": [
+        "T01"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-8-2-4": {
+      "section": "8.2.4",
+      "title": "关键交接的实际判定：使下一步使用范围受约束",
+      "sha256": "19a1b9ea713b92f524e203e65ad77b2c09560535fd6aa0c00c16119f2a27c86d",
+      "direct_nodes": [
+        "R07",
+        "T01",
+        "T09"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ]
+    },
+    "th-8-3-4": {
+      "section": "8.3.4",
+      "title": "必要专业知识怎样发现、核对并进入解释",
+      "sha256": "303cae93b63455f3ac18748f5dbb38fff29485d7d16bf00d91e7f69bfb5b0a5c",
+      "direct_nodes": [
+        "R04",
+        "T04",
+        "T05"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-8-4-1": {
+      "section": "8.4.1",
+      "title": "从本案解释推进到可迁移认识：顾问帝师的共同研究成果",
+      "sha256": "dbb74d063b86f8c4cd9ce03b681216b9005e793d69d1a8ae6d6778ad15d08a1c",
+      "direct_nodes": [
+        "T05",
+        "T06",
+        "T07"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-8-4-2": {
+      "section": "8.4.2",
+      "title": "未知、不适用、未完成及停止/改型怎样判",
+      "sha256": "906eb9adb90d079276c6fa9279b18f929d5d914e190f15713e726b86f0974797",
+      "direct_nodes": [
+        "R02",
+        "R04",
+        "T05",
+        "T08"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-8-5": {
+      "section": "8.5",
+      "title": "问题发现：从真实差异追到可研究的问题",
+      "sha256": "59619951eb1ac3a07e446946ab2081cb23dbc32722d258ffb365781a9e57ada7",
+      "direct_nodes": [
+        "T03",
+        "T05"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T03",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-8-7": {
+      "section": "8.7",
+      "title": "从制度、资源、博弈到社会心理的联合分析",
+      "sha256": "21760aa13ceb70c03357d189607b8319dffd72a97854e4e576c5d030581cd609",
+      "direct_nodes": [
+        "T06"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T06",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-8-8": {
+      "section": "8.8",
+      "title": "逻辑、证据、数量与动态过程的合并检验",
+      "sha256": "ecf75eae6e9a07eb60e63713a023bd438e75ee1d9cbe16001edc337888deb22d",
+      "direct_nodes": [
+        "T05",
+        "T06",
+        "T08"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-8-8-3": {
+      "section": "8.8.3",
+      "title": "将形成解释的材料与检验解释的材料分开",
+      "sha256": "c10fa170f2627bc5e29a89fe84f156927bd7b779c48f88dc8c2072cf75640378",
+      "direct_nodes": [
+        "T08",
+        "T12"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-9": {
+      "section": "9",
+      "title": "顾问 B1：研究事情本身、判断影响与可能的机会风险",
+      "sha256": "a23f9913024d2af7a9595099b781370e825b750f48f72a70ade1a634dcc68443",
+      "direct_nodes": [
+        "T06"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T06",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    },
+    "th-9-1": {
+      "section": "9.1",
+      "title": "顾问与帝师共同研究，各自承担明确成果",
+      "sha256": "67e830495614adfc932ffd0d97034ba57893eba3e6b98028ade6f54cb9d3fadc",
+      "direct_nodes": [
+        "R01",
+        "T05",
+        "T06",
+        "T07"
+      ],
+      "potentially_affected_nodes": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T12"
+      ]
+    }
+  },
+  "shared_design_sources": {
+    "tech-shared-25-1": {
+      "section": "25.1",
+      "title": "本章的设计范围、依据与效力",
+      "sha256": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225"
+    },
+    "tech-shared-25-10": {
+      "section": "25.10",
+      "title": "理论修订怎样自动传到模块、路线与逻辑",
+      "sha256": "a2d5f481dcde00c2e901ff7e3948cd0f3ed75cb11c38e198085615e71f36e020"
+    },
+    "tech-shared-25-2": {
+      "section": "25.2",
+      "title": "理论要求怎样导出总体技术路线",
+      "sha256": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed"
+    },
+    "tech-shared-25-3": {
+      "section": "25.3",
+      "title": "总体架构与应用形态",
+      "sha256": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be"
+    },
+    "tech-shared-25-6": {
+      "section": "25.6",
+      "title": "共享数据、模块接口与控制边界",
+      "sha256": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb"
+    },
+    "tech-shared-25-7": {
+      "section": "25.7",
+      "title": "原有四阶段怎样落实到这套框架",
+      "sha256": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce"
+    },
+    "tech-shared-25-8": {
+      "section": "25.8",
+      "title": "通用技术复用路线与尚待确定的实施参数",
+      "sha256": "05ef638958200c0ed3082e1029c0eae466ef045eb4887bd0dfc2bd0c134ef3a1"
+    },
+    "tech-shared-25-9": {
+      "section": "25.9",
+      "title": "本章的设计核对与后续实现验收边界",
+      "sha256": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
+    }
+  }
+}

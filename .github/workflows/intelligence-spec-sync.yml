@@ -30,6 +30,8 @@ jobs:
         run: python3 newspaper/strategic-intelligence/tools/sync_spec.py --check
       - name: Test drift and failure handling
         run: python3 -m unittest discover -s newspaper/strategic-intelligence/tests -v
+      - name: Refuse stale technical bindings
+        run: python3 newspaper/strategic-intelligence/tools/sync_spec.py --check-technical
 
   synchronize:
     if: github.event_name == 'push'
@@ -50,7 +52,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add -- newspaper/strategic-intelligence/README.md newspaper/strategic-intelligence/AGENTS.md newspaper/strategic-intelligence/runtime_contract.json 'newspaper/strategic-intelligence/问题.md'
+          git add -- newspaper/strategic-intelligence/README.md newspaper/strategic-intelligence/AGENTS.md newspaper/strategic-intelligence/runtime_contract.json 'newspaper/strategic-intelligence/问题.md' newspaper/strategic-intelligence/technical_trace.json newspaper/strategic-intelligence/TECHNICAL_TRACE.md
           if git diff --cached --quiet; then
             exit 0
           fi
@@ -58,3 +60,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'docs(intelligence): synchronize canonical projections'
           git push origin HEAD:main
+      - name: Refuse stale technical bindings after preserving generated impact views
+        run: python3 newspaper/strategic-intelligence/tools/sync_spec.py --check-technical

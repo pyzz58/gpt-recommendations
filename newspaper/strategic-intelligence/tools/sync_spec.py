@@ -4,14 +4,19 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 from pathlib import Path, PurePosixPath
 import re
 import sys
 
 SPEC = "CANONICAL_SYSTEM_SPEC_V5.md"
-OUTPUTS = ("README.md", "AGENTS.md", "runtime_contract.json", "问题.md")
+OUTPUTS = ("README.md", "AGENTS.md", "runtime_contract.json", "问题.md",
+           "technical_trace.json", "TECHNICAL_TRACE.md")
 ROOT = Path(__file__).resolve().parents[1]
+_trace_spec = importlib.util.spec_from_file_location("technical_trace", ROOT / "tools/technical_trace.py")
+trace = importlib.util.module_from_spec(_trace_spec)
+_trace_spec.loader.exec_module(trace)
 
 
 def block(text: str, name: str) -> str:
@@ -63,7 +68,7 @@ def projected(root: Path) -> dict[str, bytes]:
         raise ValueError("Default delay is below minimum delay")
     relative_name(probe["default_output"])
     result = {}
-    for filename in (name for name in OUTPUTS if name != "runtime_contract.json"):
+    for filename in ("README.md", "AGENTS.md", "问题.md"):
         body = block(text, f"GENERATED {filename}")
         body = body.replace("{{SPEC_FILE}}", SPEC).replace("{{SPEC_SHA256}}", digest)
         if filename == "问题.md":
@@ -81,6 +86,7 @@ def projected(root: Path) -> dict[str, bytes]:
         result[filename] = body.encode("utf-8")
     contract["spec_sha256"] = digest
     result[OUTPUTS[2]] = (json.dumps(contract, ensure_ascii=False, indent=2, allow_nan=False) + "\n").encode("utf-8")
+    result.update(trace.project(text, digest))
     return result
 
 
@@ -139,20 +145,40 @@ def assert_current(root: Path = ROOT) -> dict:
     return json.loads((root / OUTPUTS[2]).read_text(encoding="utf-8"))
 
 
+def assert_technical_current(root: Path = ROOT, node_ids=None) -> dict:
+    """Check binding freshness only; never authorize research/publication."""
+    assert_current(root)
+    result = json.loads((root / "technical_trace.json").read_text(encoding="utf-8"))
+    errors = trace.pending_errors(result, node_ids)
+    if errors:
+        raise ValueError("\n".join(errors))
+    return result
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     modes = p.add_mutually_exclusive_group(required=True)
     modes.add_argument("--write", action="store_true")
     modes.add_argument("--check", action="store_true")
+    modes.add_argument("--check-technical", action="store_true")
+    p.add_argument("--node", action="append", help="T/R ID to check; repeat to select several")
     args = p.parse_args()
     try:
-        errors = synchronize(write=args.write)
+        if args.node and not args.check_technical:
+            raise ValueError("--node requires --check-technical")
+        if args.check_technical:
+            assert_technical_current(node_ids=args.node)
+            errors = []
+        else:
+            errors = synchronize(write=args.write)
     except (ValueError, KeyError, OSError, TypeError) as exc:
         errors = [str(exc)]
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1
     print("Canonical projections synchronized; inventory and links checked.")
+    if args.check_technical:
+        print("Technical bindings match reviewed versions; implementation/content/authorization not verified.")
     return 0
 
 

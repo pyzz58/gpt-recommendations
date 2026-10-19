@@ -6,4 +6,6 @@
 
 规则变更直接修改该说明书，按§20.3核对实际检查、验证或未实施缺口，再运行 `python tools/sync_spec.py --write` 和 `python tools/sync_spec.py --check`（从本目录执行）。文件同步不表示研究能力通过。不要从Git旧文件恢复已被替代的规范。
 
-本文件自动生成，请勿手工修改。规范SHA-256：`6d2e287928bbf7c429fcd670c21baee5d2c8dafc928c24aebe2af5b8c5f146f3`
+正式采用模块/路线前，另按主说明§25.10核对应T/R节点的理论/设计关联；可用`python tools/sync_spec.py --check-technical --node T07`等明确选择。过期时先修订/复核相关设计及真实实现，不允许只刷新指纹使其通过；修复工作本身可以继续。关联一致不代表内容、模型或生产能力通过。
+
+本文件自动生成，请勿手工修改。规范SHA-256：`b7ddc0b85e2fa52926fb7e9adff5276b4b87c511ae2b66065ffc0a96244206e0`
