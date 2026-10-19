@@ -8,7 +8,7 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`6d2b0aae18e0b5ac5f1eb691a82c9fc54ea292c0e156012ec8ab5f5143e35ba4`。
+当前规范SHA-256：`1707b54d17e436b3bbe13713e6bbe94274fcfcfac9c3bf604ec1a3b66d3f6248`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
@@ -161,7 +161,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W02-ACCEPTANCE-20261020-001", "artifact_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#W02-交付与验收.md", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#01-discovery/CandidateIndex-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#01-discovery/CandidateIndex-v002.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#02-lineage/SourceLineage-v002.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#02-lineage/EventClusterProposal-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#03-reference/ReferenceComparison-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#03-reference/CoverageGap-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#05-handoff/W03-input-v001.json"], "validation_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#04-validation/W02-content-check-v001.md (RV-W02-CONTENT-20261020/M01—M10)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w02-20261020 (W02-ACCEPTANCE-20261020-001；原三项实际人工正反核对)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w02-20261020 (RV-W02-PERSISTENCE-20261020；独立私有回读22文件/21清单/冻结主池一致)"], "reviewer": "Codex本轮实际执行者/档案核对；不是L5独立审稿或用户读后认可", "result": "ACCEPTED", "scope": "仅SI-WEEKLY-2026-W42的W02手工L1交付；输入df660635/951b7953a2aa，主池18条先冻结后查10参照，最终26候选（19比较/7待核）、35来源/12关系、7类缺口；私有包SHA-256 07ac9781ed44ac96d0001ec7632bd0e1b21f80b1f7a8b5e665ffcf294c788b72，回读相符；回溯同人路径独立检查，不是盲测/全球覆盖/原件事实PASS/自动采集；W03尚无入选/筛选差异，G01/生产均未验"}]
+实际证据：[{"record_id": "W02-ACCEPTANCE-20261020-001", "artifact_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#W02-交付与验收.md", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#01-discovery/CandidateIndex-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#01-discovery/CandidateIndex-v002.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#02-lineage/SourceLineage-v002.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#02-lineage/EventClusterProposal-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#03-reference/ReferenceComparison-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#03-reference/CoverageGap-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#05-handoff/W03-input-v001.json"], "validation_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#04-validation/W02-content-check-v001.md (RV-W02-CONTENT-20261020/M01—M10)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w02-20261020 (W02-ACCEPTANCE-20261020-001；原三项实际人工正反核对)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w02-20261020 (RV-W02-PERSISTENCE-20261020；独立私有回读22文件/21清单/冻结主池一致)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w02-20261020 (RV-W02-PERSISTENCE-20261020-002；修正两处工作卡链接/保存版本1再次回读；研究JSON原字节不变)"], "reviewer": "Codex本轮实际执行者/档案核对；不是L5独立审稿或用户读后认可", "result": "ACCEPTED", "scope": "仅SI-WEEKLY-2026-W42的W02手工L1交付；输入df660635/951b7953a2aa，主池18条先冻结后查10参照，最终26候选（19比较/7待核）、35来源/12关系、7类缺口；私有包当前保存版本1 SHA-256 60fdf68840fd41b7965293c8d8a485651b53a279948ca9688355542a8524955c，回读相符；回溯同人路径独立检查，不是盲测/全球覆盖/原件事实PASS/自动采集；W03尚无入选/筛选差异，G01/生产均未验"}]
 
 <a id="w03"></a>
 ## W03｜初选与有边界的取证计划
