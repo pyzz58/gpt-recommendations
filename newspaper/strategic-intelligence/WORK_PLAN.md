@@ -8,11 +8,11 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`951b7953a2aa9227db013a3dfbec1a06ded53a880249c0df177cf9a6e45e1ca4`。
+当前规范SHA-256：`6d2b0aae18e0b5ac5f1eb691a82c9fc54ea292c0e156012ec8ab5f5143e35ba4`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
-验收通过：1；有据不适用：0；其余按下表实际状态。
+验收通过：2；有据不适用：0；其余按下表实际状态。
 
 ## 四阶段与数量
 
@@ -34,7 +34,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 顺序 | 工作包/阶段门 | 类型 | T/R | 前置工作包 | 实际进度 / 关联 |
 |---:|---|---|---|---|---|
 | 1 | [W01 固定样刊任务与第一篇档案](#w01) | 人工内容验证 | T01/T11/T13/R07 | 无 | 验收通过 / CURRENT_BINDING |
-| 2 | [W02 人工发现、归并与池外参照](#w02) | 人工内容验证 | T02/T03/R01 | [W01](#w01) | 待开始 / CURRENT_BINDING |
+| 2 | [W02 人工发现、归并与池外参照](#w02) | 人工内容验证 | T02/T03/R01 | [W01](#w01) | 验收通过 / CURRENT_BINDING |
 | 3 | [W03 初选与有边界的取证计划](#w03) | 人工内容验证 | T03/R01 | [W02](#w02) | 待开始 / CURRENT_BINDING |
 | 4 | [W04 真实原件、许可与主张支持核对](#w04) | 人工内容验证 | T04/R04 | [W03](#w03) | 待开始 / CURRENT_BINDING |
 | 5 | [W05 S8复选与入选中文材料](#w05) | 人工内容验证 | T03/T04/R03 | [W04](#w04) | 待开始 / CURRENT_BINDING |
@@ -133,7 +133,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：2/59；阶段：1；类型：人工内容验证。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W01](#w01)。
+进度：**验收通过**；关联：CURRENT_BINDING；前置：[W01](#w01)。
 
 前置尚未验收：无。仅供执行者核对，生成器不代为验收阶段。
 
@@ -161,7 +161,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W02-ACCEPTANCE-20261020-001", "artifact_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#W02-交付与验收.md", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#01-discovery/CandidateIndex-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#01-discovery/CandidateIndex-v002.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#02-lineage/SourceLineage-v002.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#02-lineage/EventClusterProposal-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#03-reference/ReferenceComparison-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#03-reference/CoverageGap-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#05-handoff/W03-input-v001.json"], "validation_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#04-validation/W02-content-check-v001.md (RV-W02-CONTENT-20261020/M01—M10)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w02-20261020 (W02-ACCEPTANCE-20261020-001；原三项实际人工正反核对)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w02-20261020 (RV-W02-PERSISTENCE-20261020；独立私有回读22文件/21清单/冻结主池一致)"], "reviewer": "Codex本轮实际执行者/档案核对；不是L5独立审稿或用户读后认可", "result": "ACCEPTED", "scope": "仅SI-WEEKLY-2026-W42的W02手工L1交付；输入df660635/951b7953a2aa，主池18条先冻结后查10参照，最终26候选（19比较/7待核）、35来源/12关系、7类缺口；私有包SHA-256 07ac9781ed44ac96d0001ec7632bd0e1b21f80b1f7a8b5e665ffcf294c788b72，回读相符；回溯同人路径独立检查，不是盲测/全球覆盖/原件事实PASS/自动采集；W03尚无入选/筛选差异，G01/生产均未验"}]
 
 <a id="w03"></a>
 ## W03｜初选与有边界的取证计划
@@ -170,7 +170,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 进度：**待开始**；关联：CURRENT_BINDING；前置：[W02](#w02)。
 
-前置尚未验收：[W02](#w02)。仅供执行者核对，生成器不代为验收阶段。
+前置尚未验收：无。仅供执行者核对，生成器不代为验收阶段。
 
 责任模块/路线：[T03](TECHNICAL_TRACE.md#t03)、[R01](TECHNICAL_TRACE.md#r01)。
 
@@ -520,7 +520,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 进度：**待开始**；关联：CURRENT_BINDING；前置：[W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12)。
 
-前置尚未验收：[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12)。仅供执行者核对，生成器不代为验收阶段。
+前置尚未验收：[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12)。仅供执行者核对，生成器不代为验收阶段。
 
 责任模块/路线：[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)、[R04](TECHNICAL_TRACE.md#r04)、[R07](TECHNICAL_TRACE.md#r07)、[T01](TECHNICAL_TRACE.md#t01)、[T02](TECHNICAL_TRACE.md#t02)、[T03](TECHNICAL_TRACE.md#t03)、[T04](TECHNICAL_TRACE.md#t04)、[T05](TECHNICAL_TRACE.md#t05)、[T06](TECHNICAL_TRACE.md#t06)、[T07](TECHNICAL_TRACE.md#t07)、[T08](TECHNICAL_TRACE.md#t08)、[T09](TECHNICAL_TRACE.md#t09)、[T10](TECHNICAL_TRACE.md#t10)、[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)。
 

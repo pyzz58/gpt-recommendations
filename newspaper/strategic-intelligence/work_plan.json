@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "951b7953a2aa9227db013a3dfbec1a06ded53a880249c0df177cf9a6e45e1ca4",
+  "spec_sha256": "6d2b0aae18e0b5ac5f1eb691a82c9fc54ea292c0e156012ec8ab5f5143e35ba4",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -169,8 +169,30 @@
       ],
       "failure_action": "断源留SOURCE_UNAVAILABLE和覆盖缺口，转其他获准来源；不声称全球零漏题。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "ACCEPTED",
+      "evidence": [
+        {
+          "record_id": "W02-ACCEPTANCE-20261020-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#W02-交付与验收.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#01-discovery/CandidateIndex-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#01-discovery/CandidateIndex-v002.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#02-lineage/SourceLineage-v002.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#02-lineage/EventClusterProposal-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#03-reference/ReferenceComparison-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#03-reference/CoverageGap-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#05-handoff/W03-input-v001.json"
+          ],
+          "validation_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W02-v01.zip#04-validation/W02-content-check-v001.md (RV-W02-CONTENT-20261020/M01—M10)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w02-20261020 (W02-ACCEPTANCE-20261020-001；原三项实际人工正反核对)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w02-20261020 (RV-W02-PERSISTENCE-20261020；独立私有回读22文件/21清单/冻结主池一致)"
+          ],
+          "reviewer": "Codex本轮实际执行者/档案核对；不是L5独立审稿或用户读后认可",
+          "result": "ACCEPTED",
+          "scope": "仅SI-WEEKLY-2026-W42的W02手工L1交付；输入df660635/951b7953a2aa，主池18条先冻结后查10参照，最终26候选（19比较/7待核）、35来源/12关系、7类缺口；私有包SHA-256 07ac9781ed44ac96d0001ec7632bd0e1b21f80b1f7a8b5e665ffcf294c788b72，回读相符；回溯同人路径独立检查，不是盲测/全球覆盖/原件事实PASS/自动采集；W03尚无入选/筛选差异，G01/生产均未验"
+        }
+      ],
       "reviewed_basis_sha256": "305c683723cbe10c0b7a552b447dba688b1cea1911f3cac7e9248aa58fa6a904",
       "order": 2,
       "work_type": "人工内容验证",
@@ -282,9 +304,7 @@
       "plan_basis_changed": false,
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
-      "pending_completion_dependencies": [
-        "W02"
-      ],
+      "pending_completion_dependencies": [],
       "theory_refs": [
         "th-0",
         "th-1",
@@ -1181,7 +1201,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W02",
         "W03",
         "W04",
         "W05",
