@@ -1,6 +1,6 @@
 # 内参系统 V5｜唯一现行完整架构基线
 
-> 状态：**唯一权威、完整、自足的 V5 产品与架构施工说明书；软件、样刊及生产效果尚未验证**。制定于 2026-10-14、修订于 2026-10-20（新西兰时间；本次对照理论核查20个官方项目并确定§25.14复用/整合方向，将实现归并为六个共享单元，补充§25.13.5只设周开始时间、健康长任务跨job/跨周持续至合格完成的规则，逐包更新复用和验收，13模块/8路线/72逻辑及55包/59步保留，尚未安装业务依赖或启动生产；此前按用户补充确认GitHub Actions每周自动运行，新增§25.13的启动/运行/漏跑恢复六职责及验收，同步细化T13/R08和W46—W48/W55，55包/59步保持，尚未启生产任务；此前新增§26开发工作清单：55小工作包与4阶段门、共59步，逐包交付/验收并关联13模块/8路线/72逻辑；本轮只制定清单与机械维护，未开始业务开发或通过实际阶段门；此前按用户要求补足§25.10—25.12的理论变更自动关联、稳定编号和72项逻辑标注，接入文档维护程序，并在§23.2.4登记NC-039—044技术复审问题；本轮只实现文档关联维护，不扩张为研究生产能力；此前已新增§25整体技术路线与13模块/8路线框架；此前按用户要求已完成NC-025—038全部十四项说明书修复，明确交接、取证、深度、审稿、专业/模型、停止与评分责任，补足任务上下文的实际装载、原文依赖、分段和中断恢复，建立规则变更到实际检查、未覆盖范围与重验的关联办法，补足按问题检验材料适足性、定向补证、版本复核及整刊防偏，落实最终读者稿意思保真、按影响重审和实际成品对应，补足跨期纠错、采用前有效范围核对、恢复与历史隔离，并明确质量增益、实际投入及返工负担的联合验收；本轮说明书修复收口，后续接续原有OPEN的真实研究与运行验收；完整权威原文与全局约束保留，视图生成器仍待按需要实现，逐项标记完成；程序与内容实际验收仍待执行；此前已复核14项问题的建议方案，修正评分折算、交接证明范围与纠错演练次序等，并保留待验证状态；此前依用户要求新增自动派生的《问题.md》统一入口，集中登记14项审查问题、建议方案、理由及验收办法，后续说明书修复按问题顺序推进；已落实顾问帝师主动发现并检验深层机制、从本案形成可迁移认识及正式杂志无固定篇幅上限；此前已融入用户认可的教学展开及不同能力模型的连续约束设计：M01—M12交接、原典到操作的约束组合、逐步校验与返工、顾问和帝师分别交付；原有跨周研究、知识纠错与单一原文治理继续适用；自动研究控制器和实际模型能力仍待验证），适用 `newspaper/strategic-intelligence/`。接手者直接从本文件理解使命、产品、栏目、六层流程、数据、审稿、四阶段施工与验收。实施不得以模型提示词、局部模板、代码现状或方便施工为由删减本说明书的要求。
+> 状态：**唯一权威、完整、自足的 V5 产品与架构施工说明书；软件、样刊及生产效果尚未验证**。制定于 2026-10-14、修订于 2026-10-20（新西兰时间；本次依据用户开始开发指令完成W01样刊任务准备和初始人工私有档案，固定真实周/资料截点，实际保存并回读核对，W01按准备范围验收，正文/独审/生产仍待后续；此前对照理论核查20个官方项目并确定§25.14复用/整合方向，将实现归并为六个共享单元，补充§25.13.5只设周开始时间、健康长任务跨job/跨周持续至合格完成的规则，逐包更新复用和验收，13模块/8路线/72逻辑及55包/59步保留，尚未安装业务依赖或启动生产；此前按用户补充确认GitHub Actions每周自动运行，新增§25.13的启动/运行/漏跑恢复六职责及验收，同步细化T13/R08和W46—W48/W55，55包/59步保持，尚未启生产任务；此前新增§26开发工作清单：55小工作包与4阶段门、共59步，逐包交付/验收并关联13模块/8路线/72逻辑；本轮只制定清单与机械维护，未开始业务开发或通过实际阶段门；此前按用户要求补足§25.10—25.12的理论变更自动关联、稳定编号和72项逻辑标注，接入文档维护程序，并在§23.2.4登记NC-039—044技术复审问题；本轮只实现文档关联维护，不扩张为研究生产能力；此前已新增§25整体技术路线与13模块/8路线框架；此前按用户要求已完成NC-025—038全部十四项说明书修复，明确交接、取证、深度、审稿、专业/模型、停止与评分责任，补足任务上下文的实际装载、原文依赖、分段和中断恢复，建立规则变更到实际检查、未覆盖范围与重验的关联办法，补足按问题检验材料适足性、定向补证、版本复核及整刊防偏，落实最终读者稿意思保真、按影响重审和实际成品对应，补足跨期纠错、采用前有效范围核对、恢复与历史隔离，并明确质量增益、实际投入及返工负担的联合验收；本轮说明书修复收口，后续接续原有OPEN的真实研究与运行验收；完整权威原文与全局约束保留，视图生成器仍待按需要实现，逐项标记完成；程序与内容实际验收仍待执行；此前已复核14项问题的建议方案，修正评分折算、交接证明范围与纠错演练次序等，并保留待验证状态；此前依用户要求新增自动派生的《问题.md》统一入口，集中登记14项审查问题、建议方案、理由及验收办法，后续说明书修复按问题顺序推进；已落实顾问帝师主动发现并检验深层机制、从本案形成可迁移认识及正式杂志无固定篇幅上限；此前已融入用户认可的教学展开及不同能力模型的连续约束设计：M01—M12交接、原典到操作的约束组合、逐步校验与返工、顾问和帝师分别交付；原有跨周研究、知识纠错与单一原文治理继续适用；自动研究控制器和实际模型能力仍待验证），适用 `newspaper/strategic-intelligence/`。接手者直接从本文件理解使命、产品、栏目、六层流程、数据、审稿、四阶段施工与验收。实施不得以模型提示词、局部模板、代码现状或方便施工为由删减本说明书的要求。
 
 <a id="th-0"></a>
 ## 0. 效力、定义与阅读方式
@@ -2861,6 +2861,36 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
 理论—设计与工作包的复核基线只在人工核对本次选型/共享接口/长任务变更及保留职责后显式更新；日常生成继续只报影响/过期，不自动认可基线或代码/内容完成。完整B1/B2与独审责任、四阶段/质量门、现有日报隔离和原授权边界均保持；未实施周任务/外发或费用动作。
 
 **实际维护验证**：既有50项维护测试全部通过（16.159秒）；同步/登记/链接、技术关联与工作清单严格检查均通过。变更后首次生成确实将21个T/R和59项清单标为待复核，未自动改基线/业务进度；本次逐项设计对应核对后显式记录基线，再检查通过。新§25.14已纳入共享设计依赖，72逻辑全覆盖、原阶段/前置/旧验收保留，59项仍NOT_STARTED且业务证据为空。只改唯一原文及八份派生物，未改业务代码/来源/旧审计、未创建或启用intelligence-weekly.yml，未验证实际组件组合、自然周长任务/补跑或送达；远端提交/CI以实际Git与Actions记录为准。
+
+
+<a id="run-w01-20261020"></a>
+#### 23.2.7 2026-10-20 W01首份样刊任务与初始人工档案实际验收
+
+**本次指令和范围**：用户明确“开始，开始按照开发清单，一项项，一步步的做，先做第一步”。本轮只执行W01人工准备，未启动W02或研究/生产代码建设。W01从NOT_STARTED进入按实际准备范围ACCEPTED，其余58个W/G状态与证据保持。W01不是首篇成稿、独审或G01阶段门。
+
+**当前任务与实际输入**：任务ID为`SI-WEEKLY-2026-W42`，首篇槽位为`ART-SI-WEEKLY-2026-W42-001`。样刊取最近已结束的完整本地自然周：2026-10-12 00:00+13:00至2026-10-19 00:00+13:00前，时区Pacific/Auckland；截点为2026-10-19 00:00+13:00（2026-10-18 11:00 UTC）。实际制作发生在10月20日本轮，不声称截点前系统已启动或已知这些材料。该周/截点仅用于首份离线样刊，不是批准的生产周历/固定发送钟点；九领域初始机会和原§2准入不改。输入规范固定Git提交f793d407307736387ae1cb28d6a443e719d4a90c，SHA-256 `110e3c821eda6e198acfc6a7cfedc4732f09e519665f029fe2dbf16a4e1c11e1`，当时W01依据`dd296eaae922b114eca4ecdfe090c724061ffc83efec36db746348dde850d125`；实际关联检查通过。
+
+**已落实的初始私有位置**：本轮选择用户现有本人私有文件档案作第一阶段人工保存，已保存`/新闻/SI-WEEKLY-2026-W42-W01-v01.zip`。这落实§24.5首次制作前的**初始人工档案**位置，未新增分享/向他人发送，未把正文/原件放入公开仓库。公开规范只留此非敏感定位、内容哈希和验收范围，真实任务卡/材料/详细记录在该私有包；后续可按此精确文件名取回。GitHub Actions可访问的私有生产库/文件存储、独立观察、备份与长期恢复仍未落实/验收，由W46/W48/W51和NC-045承接；本轮不关闭原OPEN事项。
+
+**实际交付**：00-task保存任务卡和JSON（范围/截点、规范/工作卡/逻辑指纹、工具/材料用途和资源限制）；01-materials保存一份真实公开IMF报告入口的元信息/原站定位/极短原文及实际取得范围；02-article建立首篇材料/原话/完整稿/审核/更正目录及空的正文/Review版本索引；03-versions记录版本身份；04-validation保存Q01—Q07、本卡正反/衔接核对和显著测试副本；05-handoff将同一任务ID、首篇槽位及缺口交W02—W12，尚未执行下一包。
+
+**材料和权限边界**：IMF入口的发布/新闻发布活动日期为2026-10-13，只知日且未提供原始时区/时分，未填假午夜；报告所述统计信息截点2026-10-01另存。取得/记录时间在本轮，晚于样刊截点；只保存元信息、定位和限定短引文，未保存全文或图表、未声称已核报告正文/预测。当前可变入口的历史内容版本仍未核，归档样本尚未成为全球候选池、选题批准或S8入选。全文/译文使用权及历史原件核对交W04/W05；许可页打开失败和同名其它机构的错误搜索结果如实记，未借其条款放行。
+
+**实际验收记录 W01-ACCEPTANCE-20261020-001**：
+
+| 对照项 | 实际方法和结果 | 结论/证明范围 |
+|---|---|---|
+| W01第1项、Q01—Q03 | 实际打开任务卡、材料元信息/短原文和首篇索引；可回固定规范/工作卡，三时间、材料版本和后续稿件位置清楚；正文/审核索引确为空 | PASS：准备交付可打开/定位；没有冒充已经成稿或审稿 |
+| W01第2项、Q04—Q05 | N01用真实晚取得材料与截点比较，识别系统当时未知及历史正文未核；N02用明确临时目录副本识别未持久；N03仅摘要无原作定位/原话副本识别缺失原文 | PASS：本次人工核对；不声称自动as-of/采用控制器已能拦错 |
+| W01第3项、Q04/Q06 | W02输入文件保存同一任务ID/首篇槽位；在显著非新闻的版本副本中追加v002后重读v001并比哈希，旧句保持 | PASS：该人工版本动作及可接续输入；真实稿件/自动防覆盖未验 |
+| 持久保存/回读、Q03/Q06 | 私有保存成功后按确切文件身份独立回读ZIP；压缩完整性通过，ZIP哈希与上传前一致，逐一核15个清单文件及空正文/审核目录，两个版本副本仍可取回；验证于2026-10-19T20:49:15+00:00 | PASS：本次初始人工档案的写入/取回；不等于多年留存、独立备份/灾难恢复或Actions访问通过 |
+| Q07 | 使用当前会话/公开只读/本地文件和现有私有保存；未另配/调用收费模型API，未动日报；会话/搜索等Token与账单未返回，记未知 | 没有把未知填0，没有新增预算/收费/调度/邮箱授权 |
+
+**私有包实际身份**：20230字节；SHA-256 `d0feedf3f468ac7b139765f91d73d4005327236cb1e7fb72774268c0ab246f44`。内容核对记录RV-W01-CONTENT-20261020在包内`04-validation/W01-content-check-v001.md`；写入/回读记录RV-W01-PERSISTENCE-20261020在本节及W01.evidence关联。这些是本轮实际动作/结果；不是L5独立内容审稿，未编额外审稿者、正文、PASS或用户读后认可。
+
+**关联和接续**：§26.1只将制定清单时“未开始”改为有日期的历史描述，以反映用户本轮开始指令，工作包定义/验收/前置和技术方法未改；对这一共同上下文状态澄清作显式对应复核，保留W01执行时原规范/依据及允许承接范围。进度/证据按§26.3记录，不以同步自动认可完成。下一步是W02人工发现、归并与池外参照；仍须实际取得全球候选和预定独立参照，不能把一份归档样本当整刊覆盖或首篇已入选。
+
+**维护验证补记**：本地50项既有维护测试通过（15.872秒），同步/登记/链接、技术与工作清单严格关联检查通过；唯一ACCEPTED为W01，W02的W01前置已满足而W02本身仍NOT_STARTED。只更新唯一原文和八份派生文件，没有新增业务代码或生产工作流。维护结果与上面的实际私有保存/回读及人工检查分别证明，远端提交/CI以实际记录为准。
 
 <!-- END ISSUE_LEDGER -->
 
@@ -6622,7 +6652,7 @@ SQLAlchemy版本条件范围见[官方版本检查说明](https://docs.sqlalchem
 | 第三阶段：专业能力 | W42—W45，共4包 | G03 | 5 | 按题专业资料与方法的真实增益、需要时比较专业分工、新例和有限准入 |
 | 第四阶段：生产体系 | W46—W55，共10包 | G04 | 11 | 实际持久环境、触发/恢复/预算/渲染/授权交付/备份及年度双输入回放 |
 
-**从哪里开始**：当前样刊与研究能力仍待§19验收，先从W01准备，按W02—W12形成真实作品并通过G01，才进入W13的研究代码建设。已有文档同步、关联维护和本清单生成是规范维护能力，不能抵作G01，也不能把W14的研究入口、W15控制器或W34纠错标成已完成。本次任务只完成清单及其机械维护，不启动55包的实际研究/生产开发。
+**从哪里开始**：当前样刊与研究能力仍待§19验收，先从W01准备，按W02—W12形成真实作品并通过G01，才进入W13的研究代码建设。已有文档同步、关联维护和本清单生成是规范维护能力，不能抵作G01，也不能把W14的研究入口、W15控制器或W34纠错标成已完成。2026-10-19制定清单时只完成清单及机械维护；2026-10-20用户已要求逐包开始，按本章实际进度/证据推进。W01准备完成不代替其后的样刊内容、研究代码或生产验收。
 
 顺序号是便于对照的一个可行次序，`depends_on`才是明确的工作交付依赖，同一阶段独立项可并行实施。这些是建设工作交付依赖，不要求每篇稿件在运行时重走所有已验收工作包，短稿仍按R03判断适用责任；后阶段的小范围研究/准备依§19.2原边界，阶段验收、扩容和正式运行不得跨门。G01—G04是§19.2原四阶段门的索引，不增加第五阶段。T/R的design_dependencies仍只表达设计变更影响，不能拿来自动生成工作启动条件。合法补证/返工循环按R04/R05/R07执行，原工作包改为需返工并关联实际缺陷，不在清单前置图里制造循环。
 
@@ -6764,9 +6794,26 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       ],
       "failure_action": "缺宿主时先保留临时草稿并标限制；缺必要权限停止相应用途，不创建生产调度。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
-      "reviewed_basis_sha256": "dd296eaae922b114eca4ecdfe090c724061ffc83efec36db746348dde850d125",
+      "progress": "ACCEPTED",
+      "evidence": [
+        {
+          "record_id": "W01-ACCEPTANCE-20261020-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W01-v01.zip#00-task/task-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W01-v01.zip#02-article/ART-SI-WEEKLY-2026-W42-001/archive-index-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W01-v01.zip#05-handoff/W02-input-v001.json"
+          ],
+          "validation_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W01-v01.zip#04-validation/W01-content-check-v001.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W01-v01.zip#04-validation/negative-cases-v001.json",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w01-20261020 (RV-W01-PERSISTENCE-20261020；独立私有回读/15文件哈希相符)"
+          ],
+          "reviewer": "Codex：实际文件/原话定位/三时间/人工正反与私有保存回读核对；非L5内容审稿",
+          "result": "ACCEPTED：W01首份样刊任务与初始人工私有档案已逐项核对",
+          "scope": "仅任务SI-WEEKLY-2026-W42及首篇档案准备；输入规范f793d407/110e3c821eda，私有包SHA-256 d0feedf3f468ac7b139765f91d73d4005327236cb1e7fb72774268c0ab246f44；正文/Review/全球覆盖/生产和长期恢复均未验，不代G01或W02以后工作"
+        }
+      ],
+      "reviewed_basis_sha256": "6c5a6ef1f8b9620d2b96c5559527087e3886b6a204026020266d981a84af4bcc",
       "order": 1,
       "work_type": "人工内容验证"
     },
@@ -6803,7 +6850,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "de1f3561fd077c01b294f669d59e9f295eed80900c7dba9618d82c6f38434bc1",
+      "reviewed_basis_sha256": "305c683723cbe10c0b7a552b447dba688b1cea1911f3cac7e9248aa58fa6a904",
       "order": 2,
       "work_type": "人工内容验证"
     },
@@ -6837,7 +6884,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "5f59981a478cd00c5a064d6ee83461bbf5caca8697776e4be1d35354d6a0a662",
+      "reviewed_basis_sha256": "52a3dfeba110569520fdb567ca8b26195b1b9f744d49079b753c95952015d9cf",
       "order": 3,
       "work_type": "人工内容验证"
     },
@@ -6873,7 +6920,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "a413f2b37dbf98e8e8bd0483d44da03be71c3b91b030e26ee07ee067bb9a176b",
+      "reviewed_basis_sha256": "f39ec665f58b4d150ee5abc50c5d593b110c6a425f28f5fb11ba3c128a5cd1a3",
       "order": 4,
       "work_type": "人工内容验证"
     },
@@ -6910,7 +6957,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "8d6fed476ab99957fb5b176b43a7e19f9e7333f4840434a8a35d93df50ed87c1",
+      "reviewed_basis_sha256": "dedc1c014b99cee9a214d49fbe8257f64e1a3b9c87aa93a0c183abbdf4117816",
       "order": 5,
       "work_type": "人工内容验证"
     },
@@ -6946,7 +6993,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "e03177230ba42c8f8a4d6a86b1512b956e9a8e146238d33ea9716128ed66282d",
+      "reviewed_basis_sha256": "abae01d2627571430cb2f9e25b484212ba2823133cdb3e22640cfe0c66407b8c",
       "order": 6,
       "work_type": "人工内容验证"
     },
@@ -6983,7 +7030,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "203148495e5cfee82a054161ef3323ba5578be7b204bb1c459cfb7a6dfe562bc",
+      "reviewed_basis_sha256": "3a921ec4a60031f93d172b9769d4dabb3e186c5846f431e0971135faf09a625d",
       "order": 7,
       "work_type": "人工内容验证"
     },
@@ -7017,7 +7064,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "3a953aa3df5a326c6acc74bcadb065cf893322cc12001e9795eace6d76442f82",
+      "reviewed_basis_sha256": "08880929af6c0fb53a4fb3a3db550814a528624d43989f07468c7d768c4dc93d",
       "order": 8,
       "work_type": "人工内容验证"
     },
@@ -7050,7 +7097,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "4dfa65d3f8dfa01450bbf421d89ef604ee864218914a3b4fc897155bb2cbb521",
+      "reviewed_basis_sha256": "4cc41ad9a169faa5d37e8941bf8619fe22290568e410ce412a1284f96222eb18",
       "order": 9,
       "work_type": "人工内容验证"
     },
@@ -7085,7 +7132,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "0fe588e60240e803114feb58e081c800352963cfca0d2ca48b5af762fdaa0c77",
+      "reviewed_basis_sha256": "636f2e3467132a892046e77a8c13a1e45ba770cb37c8d1de61bc613a8ece25f6",
       "order": 10,
       "work_type": "人工内容验证"
     },
@@ -7125,7 +7172,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "16c0043d5ca914c19c0141c0cefa206190ce6c9916bcc76fa70b30b2f1ace2a2",
+      "reviewed_basis_sha256": "c790429bf05a9b5b5d32f0b7350286b0659c1bde15941383df9b7fc4dd90bd7f",
       "order": 11,
       "work_type": "人工内容验证"
     },
@@ -7166,7 +7213,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "c749eef2304a483a0672284cdd660806951b5ce418fc59aa43f326d481c07599",
+      "reviewed_basis_sha256": "d7b9e54f4cd5322d9823ae54ec8fa6705fb00512b54003c3c908cb12b5e4fef6",
       "order": 12,
       "work_type": "人工内容验证"
     },
@@ -7222,7 +7269,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "656166aba932b9b6f3203cef2d366a4b5ee914b3c8486469f71fcbe8279c112d",
+      "reviewed_basis_sha256": "0634550f459ecd9f656ed9f2c9b55b79a22c6e7aa31731b975c77b31ac17bf55",
       "order": 13,
       "work_type": "阶段门"
     },
@@ -7260,7 +7307,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "afc82ca7c2b9ffad87af0681fe5963d93edbb4cbf3444c1d57ff79f8729e3023",
+      "reviewed_basis_sha256": "8419d8107536939a2ea059797ad997d6598a7dfe99f97bbcf41979671df8d4b5",
       "order": 14,
       "work_type": "代码与接口工作包"
     },
@@ -7296,7 +7343,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "5333e2d8f20fe703cc9814d6a94697e0ecf7be03eb63ac4ce0be2b08bf12dc6d",
+      "reviewed_basis_sha256": "54e01ad1dbf59aa0fd825d5a0b42a68506eeefe5501938ebe23a8db7001343bc",
       "order": 15,
       "work_type": "代码与接口工作包"
     },
@@ -7331,7 +7378,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "474c5f600fe56a5b5d5b20a9ad2a74b7eb4658c2e701f12499197021e1d2b160",
+      "reviewed_basis_sha256": "b2e5cdebaa2050b3cea0dc927b93ec010c23072c07efd1a6fbec53069388d102",
       "order": 16,
       "work_type": "代码与接口工作包"
     },
@@ -7371,7 +7418,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "d039c2877ba43aaf5c1eafcfc9162a7c767f0337e4e297bc4b63041e0aef3441",
+      "reviewed_basis_sha256": "0e87ea7c9cf2d659fe2fc7323728644ad939f31b078d610679022ea47d133b2d",
       "order": 17,
       "work_type": "代码与接口工作包"
     },
@@ -7409,7 +7456,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "2d893cb15a3c60b3a501c349671fe40fa7719950b69aff569eb9939706c335e3",
+      "reviewed_basis_sha256": "be1bf09bbf1dd8186a559d6ed630c9bd40593bcf748efc5800b9734ac5db4aec",
       "order": 18,
       "work_type": "代码与接口工作包"
     },
@@ -7447,7 +7494,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "08cd531ac76b0e66c50153295d40d890970cd042db335986d671e3d391e2a3bd",
+      "reviewed_basis_sha256": "2c0f0cc58283340e06ceb54594a3f48d283337bc4f2d6052e902ad8ad4f2e515",
       "order": 19,
       "work_type": "代码与接口工作包"
     },
@@ -7484,7 +7531,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "3076144a3d21a1fc24bcb4d2b7cff0f39c7fea07b7187ac080570a650d7ef694",
+      "reviewed_basis_sha256": "67ffdcdee6117153b9eef5798edc77d2f79789d1fc00b18c76de6144931ce2f4",
       "order": 20,
       "work_type": "代码与接口工作包"
     },
@@ -7518,7 +7565,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "47dcd50f4b861916e6cd748f85116552231cf544572b78ae4e1d32e2480569d9",
+      "reviewed_basis_sha256": "90a9ab4122912884fedb13d9ed3a4d8c445df7b72383855d650c9e07931a9626",
       "order": 21,
       "work_type": "代码与接口工作包"
     },
@@ -7552,7 +7599,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "ca2aa758fb91d3aa6fde283288ced9037752eee8773a47ca59f11dfadf407a00",
+      "reviewed_basis_sha256": "7b5ccfc4729e448b6ee23984575dfdc98c2f78fb3702cb561f9527bb73c8c697",
       "order": 22,
       "work_type": "代码与接口工作包"
     },
@@ -7588,7 +7635,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "13718fd2e8f75c407bdce91ffba2ffc2caa4ff9789a0b876b287933986141465",
+      "reviewed_basis_sha256": "9299b1fa69e21405456920f0efff804df22afda25f146c7ba6424c2a1848af94",
       "order": 23,
       "work_type": "代码与接口工作包"
     },
@@ -7625,7 +7672,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "21cdf9d0d146af137f41129adb4b371cf6f117bc9683883eaf8d0ac788a26a73",
+      "reviewed_basis_sha256": "f1649db725ea1634993893edfc09e1ff55373170fd38be515a10a5dc6e67c6da",
       "order": 24,
       "work_type": "代码与接口工作包"
     },
@@ -7661,7 +7708,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "ca468fa2b66f02615dc45dbd33e2861c9c9250e72dce1d51811c36d4aa536496",
+      "reviewed_basis_sha256": "ae5bc3db0c31c1e46dd08840d5745cd228d46139278e074f072409f3a0f3e523",
       "order": 25,
       "work_type": "代码与接口工作包"
     },
@@ -7701,7 +7748,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "79dc40987c7ad97c7f631cbe55870f6832a46c1a13564d9b21933d95e24c5e78",
+      "reviewed_basis_sha256": "0cc19411ccd2622603283a500b93022c45fcdfb82387efb7f9fe49b666d42011",
       "order": 26,
       "work_type": "代码与接口工作包"
     },
@@ -7739,7 +7786,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "8ab786a61a4008fa73769488c2a80a8dd5e4a3c112e8fffb62247944e00bbe58",
+      "reviewed_basis_sha256": "29974e646cf366d6fb5f077a77775bd9c304e63dab07d86110b1b7d4e1d3ffdc",
       "order": 27,
       "work_type": "代码与接口工作包"
     },
@@ -7781,7 +7828,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "0cbd5909d04f7f0f15f02792e53c44e8cf270241179d5a34f2593d25ff8c1857",
+      "reviewed_basis_sha256": "c7dd46267fb098984fc15f068f5aa43fceb4607aaa3c17bf4eeb7d37b81ad206",
       "order": 28,
       "work_type": "代码与接口工作包"
     },
@@ -7816,7 +7863,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "02a8aaa7b85c2c4cb53bb9b241e73501cb24ee118b527a47889694ba6e235351",
+      "reviewed_basis_sha256": "9d89ba2ee10c98cbd3c67f8f68dcbc62d6c38fabacfc49a040942816b09f12fa",
       "order": 29,
       "work_type": "代码与接口工作包"
     },
@@ -7852,7 +7899,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "4831a1bd632e8af1346547fb97053d3642721764cdef8baa33c9a7f0a801133f",
+      "reviewed_basis_sha256": "f6dfdf8f55905a2cc9f2ea584b989bc04f21ddb64c2ca20435eceee51eceec90",
       "order": 30,
       "work_type": "代码与接口工作包"
     },
@@ -7889,7 +7936,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "918e855fd367420ed188e786e0884918a361fe4f49181dc17fe332b0aa9b72d0",
+      "reviewed_basis_sha256": "47a5e3424a01610ec04270f82b9b74a0c069e726c87fb289ad660697fc024ea9",
       "order": 31,
       "work_type": "代码与接口工作包"
     },
@@ -7931,7 +7978,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "59a803e3e177447a3b97701a236c04851d2385fa65c225cfcba83c10d572527b",
+      "reviewed_basis_sha256": "637316e9a4d0705137e28d7877b0a46a56edb4aa980794092a27580f81f57bd9",
       "order": 32,
       "work_type": "代码与接口工作包"
     },
@@ -7971,7 +8018,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "007d53bdc1d65ba2c10bd26ff56a66987b27905b488c25d7cce20abf15f47874",
+      "reviewed_basis_sha256": "35a341515fd054c22bad064f767628522537fb22577ab2d4adb2495f9e988555",
       "order": 33,
       "work_type": "代码与接口工作包"
     },
@@ -8008,7 +8055,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "b4564adb4ad3086697f3814c54f507d27cad8a57ab91b885395c9739750b6a4c",
+      "reviewed_basis_sha256": "8e07daea61946ff413dc120bea270ee3a536a5eabbede1b386004311f40c6b51",
       "order": 34,
       "work_type": "代码与接口工作包"
     },
@@ -8047,7 +8094,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "b16a1aa8854ab6f71373b87f4428f357b5b56eab5ff50439b26fd9420f698834",
+      "reviewed_basis_sha256": "6a8d7dd28ea59076a1262a60c4c6e604ff9c8aaeceb5c246be97450f95684e12",
       "order": 35,
       "work_type": "代码与接口工作包"
     },
@@ -8087,7 +8134,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": "仅第二阶段出现经记录的上下文/装载需要时实现；无需要可有据不适用，不能跳过输入完整性。",
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "c83a72268a8f8ccfb20b162124364836dd635e3526d45be2fb643314e4cb5f77",
+      "reviewed_basis_sha256": "b0c14a3fc84eb47d96e1a7cb5f08fbb829725e48c56ea04d8fe48e1e35739d40",
       "order": 36,
       "work_type": "条件能力"
     },
@@ -8137,7 +8184,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "0b056efde32cc0c13d8243a015b61cd59407e3e42f822260926c0e335f5fdf51",
+      "reviewed_basis_sha256": "b714fe5ee6ada956ac4f71a0ef1a5841f8e82263e6930f1f334499abb948f4df",
       "order": 37,
       "work_type": "路线集成验收"
     },
@@ -8179,7 +8226,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "fd79e0515cf83a12be9aab1b223cc007f1cdcaeeececd66d288d5cb3698e90cf",
+      "reviewed_basis_sha256": "57f01b2345f7484cac1864a314f47e2c385dd620101520fbaa121e281382a154",
       "order": 38,
       "work_type": "路线集成验收"
     },
@@ -8221,7 +8268,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "4230410a4923442d33c90b48ddc021b79a09a35d0a833089b113e36cb1141f7d",
+      "reviewed_basis_sha256": "e7f619ec8cadf59643c2afa415928d89eedee6dae82bf1f162e8f76085d874da",
       "order": 39,
       "work_type": "路线集成验收"
     },
@@ -8262,7 +8309,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "cbb1965618c30d6a5c1ad3110795f04e69795ac4fe57660492d5b4f88c60f569",
+      "reviewed_basis_sha256": "0ccbc52e497f7e97b1dd2bdbae895ad14f63ee4650a249bf4bf5a8be5577a83e",
       "order": 40,
       "work_type": "路线集成验收"
     },
@@ -8303,7 +8350,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "1ad7368de780ad023170e73af06b16c23a10cadaaf2d5e937dd5b45a5e5d43e1",
+      "reviewed_basis_sha256": "e9ca143a1d8f75a9de28ddf1d18108c16ef7adeffc628532ec6f93ecaafc8e6d",
       "order": 41,
       "work_type": "路线集成验收"
     },
@@ -8344,7 +8391,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "0c879b0f9ecd524a37cb42df570a036cef006c419b7be0bf6b2fc306aa16df78",
+      "reviewed_basis_sha256": "51098424835f6e181d65b2316336f5ad4102737f02c398e193f8bb1e761d67d5",
       "order": 42,
       "work_type": "真实案例与能力验收"
     },
@@ -8419,7 +8466,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "a5b960a97c35182ac0974c7f4a4083176c1ba6404a66312eddce596cb622f9e1",
+      "reviewed_basis_sha256": "df05d35a0b80a7b448150ee0e42e10feca90d8c5f2f4e949896b80cf13bbfb73",
       "order": 43,
       "work_type": "阶段门"
     },
@@ -8458,7 +8505,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "5639b8eab47f891209fa3c18376fa51b8a2cd0da278461f613e80023fd5eb9ba",
+      "reviewed_basis_sha256": "501002635eaccf272ee759fb6161570848ac6ce0b47b00033243cd06ac7fdbc6",
       "order": 44,
       "work_type": "代码与接口工作包"
     },
@@ -8500,7 +8547,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "c4d6c005ad6deed26f74bb92a3acff6ea08862e201ca8d39d223fe3b63471b04",
+      "reviewed_basis_sha256": "88515c01320949f4a4924699b2216f70e2757236cd0f58ca096ba2479890fb3f",
       "order": 45,
       "work_type": "真实案例与能力验收"
     },
@@ -8538,7 +8585,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": "只有真实专业瓶颈需要时比较；用户此轮仅授权工作清单，未授权现在启动多Agent。",
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "2f74fc8fb7a1252b0cfae0ea9d01d2ca3da3320b5b9bff726bb30361b52db8e0",
+      "reviewed_basis_sha256": "d37227ff886ea862a266f7bae64924cb7903ecc3505c8c9db65bfd992984bf89",
       "order": 46,
       "work_type": "条件能力"
     },
@@ -8577,7 +8624,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "1da3bd50daab4b61458df54fda8c447e04b1e0bde456c1e3d5161cc624eeb027",
+      "reviewed_basis_sha256": "c54035a0aaf10c83ecd19eb7dbde5ecf73621a0439a2dd78893a1362f1bf9196",
       "order": 47,
       "work_type": "真实案例与能力验收"
     },
@@ -8617,7 +8664,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "ba472217eba8b01eecd905bb7a3b25685479a8226f82ef497a2bb368b3a2bdc7",
+      "reviewed_basis_sha256": "cbd88e8c577839d615170f281208bd9b10b5fca0bf10a300806a66d8b0538a60",
       "order": 48,
       "work_type": "阶段门"
     },
@@ -8659,7 +8706,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "795dde7632e1e66acda5fb5e56f9cf361998708254638f4ccdfafd70f3d1dc11",
+      "reviewed_basis_sha256": "aa061a74c24b0e0bb27303e059e479634e73fa8775a105e04970ee8d099a3349",
       "order": 49,
       "work_type": "代码与接口工作包"
     },
@@ -8704,7 +8751,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "bae41144d2d8caa091248fca63dc57090df677f017a7f987686ae495d1a6800d",
+      "reviewed_basis_sha256": "9221a4233d298f5448907b9af657a19a92694a606f9c3b50127ab7cebd70cda5",
       "order": 50,
       "work_type": "代码与接口工作包"
     },
@@ -8752,7 +8799,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "094ba90ba626e6222ec23342bf86528b05608ff4afa4239bf505fd1a26102b61",
+      "reviewed_basis_sha256": "06d0665a49f4768792578069a661c35b2af4d6c6b705c3f3423667ebcc164822",
       "order": 51,
       "work_type": "代码与接口工作包"
     },
@@ -8794,7 +8841,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "2b3f9f1a646b49afa4f96eb28e9a2669587529b2fd0e65b61d04d82afa7e7556",
+      "reviewed_basis_sha256": "a4de78742d77a191c95d54c63826c4026a4e89ca51ee9b5c4d0e65453829310c",
       "order": 52,
       "work_type": "代码与接口工作包"
     },
@@ -8835,7 +8882,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "13e25862ea5401c60f245eef18541d377f8ef16ca8ad48189718e1ef5751a72a",
+      "reviewed_basis_sha256": "0cc818db805460b5411c32cb85b233c35283964de8595ee81d308e8623b5c2c8",
       "order": 53,
       "work_type": "代码与接口工作包"
     },
@@ -8875,7 +8922,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "3189dce1d7af9c2a9ca5f5c3bbdf6ffa9d621a1df420a3a224e4e8831c8852eb",
+      "reviewed_basis_sha256": "6b6ac35619602f7e3f5548334df413175168f9eb9f9f2cef2282bd27062bdffc",
       "order": 54,
       "work_type": "代码与接口工作包"
     },
@@ -8915,7 +8962,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "877de3517b1eb8f6ecc1eb02bcd8b205991e311d7d5530b914ca78ad1f386633",
+      "reviewed_basis_sha256": "c251a9faba8037ab5af8f21f9b98c574493f3fbe260e91503f1acdac4295186b",
       "order": 55,
       "work_type": "代码与接口工作包"
     },
@@ -8958,7 +9005,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "a03dd015c3ca6faa5f98421320faf8aaa518fb24896ebaa483fd2c0af4ae1f98",
+      "reviewed_basis_sha256": "1e188edb505cd225a1a8d11aa1b9a4baef69fb5bbb90d44db599acd7f34ce589",
       "order": 56,
       "work_type": "代码与接口工作包"
     },
@@ -9000,7 +9047,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "6ba8c085ed158d59915945d9f95b45b807eb29ccdcfd17ef3a044ef15a086d8c",
+      "reviewed_basis_sha256": "4fc52e8b60e5e7af4f955faddb436ebe9b2422c23bc4c63ea91a09b02f53b85d",
       "order": 57,
       "work_type": "路线集成验收"
     },
@@ -9055,7 +9102,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "dd137142db5b43ac669f4edb0163061900975682e1c9fbcc64fc487762da1cec",
+      "reviewed_basis_sha256": "1fdf33c105f705ce4b8052767022fcf27575181510296dc1446d02128a83c562",
       "order": 58,
       "work_type": "路线集成验收"
     },
@@ -9111,7 +9158,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "4a4a2c9b07d2d0eb0281d7a43c8f5a4ca69d4b6680b215ae76d790856c08b33a",
+      "reviewed_basis_sha256": "7352f8a47ea21b017546889f3964dbb87b5cb1cd6e609e729bd791591b0e7268",
       "order": 59,
       "work_type": "阶段门"
     }
