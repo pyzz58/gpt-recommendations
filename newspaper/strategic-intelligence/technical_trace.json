@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "1a4c7ee9130965c43572358e3fa0bb4def3ad8ac5aa5edfaed172037012ef89d",
+  "spec_sha256": "110e3c821eda6e198acfc6a7cfedc4732f09e519665f029fe2dbf16a4e1c11e1",
   "meaning": "Binding freshness only; never content approval, implementation verification or execution permission.",
   "review_required": [],
   "global_refs": [
@@ -19,7 +19,7 @@
       "design_anchor": "tech-r01",
       "owner": "对应流程中注明的L层/技术模块责任",
       "phase": "沿§19.2原四阶段；文档关联现可检查",
-      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "implementation": "C01—C05共用主题闭环，六单元适配尚未实现；理论职责与真实成刊仍待验",
       "intent": "当周深度主题到周刊",
       "theory_refs": [
         "th-2-1",
@@ -153,9 +153,9 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "e9c28aaaea3597e34c5e033c399b4ad9e0be507277a28c50d0ef76c3511c7eff",
+        "design_sha256": "c63978db9fc8d482f62c08d7a1b68dfa5c8d22377652ec210b38968551cb5301",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-10": "b0d6c1e133245b6da0dd47114607e54aad24e763fe6ffe6b9507cbadd355915a",
           "th-11": "fec43a59d64cc7575667e2ed4098059f40436a0645577272625a5b76e960bc9e",
@@ -164,8 +164,8 @@
           "th-15-2": "91a87d6d39d228e19648897a7955dfb23f3ea204cb13a8cce648c68db1caedd1",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
-          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
+          "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-4": "e6ea367cd4ec7d32c2405e8fe8f8afb763854d86f5834e1932fdd01ec125bcfe",
@@ -177,32 +177,33 @@
           "th-9-1": "67e830495614adfc932ffd0d97034ba57893eba3e6b98028ade6f54cb9d3fadc"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T02": "4a605a5c643d2bd59f04b6f003c2f17d7750a48241f21dbde7ca86393912bddc",
-          "T03": "21e288659be85342eb3f77a9c7f49bfcf32d0e5ae1af039182618942e94155ce",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
-          "T06": "abeba3e9d4ae5e7ac4d74366d0276f3355f018c49931979e92ddb99b2c1acfc7",
-          "T07": "a2175344fa38cb20e8c98060999946abdab97ec34a390b5b2de76a74922d00d6",
-          "T08": "2da17a010546efc7c2b03e3639c7910de58bf1f4737c46beaa33d16f07b9df6d",
-          "T09": "13b7a056a1ad0fbd59aa0e6f01a7d7a4c2f833a511d288153746db607b4d21b9",
-          "T10": "8f72d809f00def65c71cb5943cd138d77f3511acb4ee75e2fc4c3aac1ec0315a",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc",
-          "T13": "be4ce7ac29721ed02c008bcc2099082f5174f3a182f261e68942abca772f5925"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T02": "0f0e53de347fd20827f3b2434e59dbac76c245956f33e8ffe3e49929eb8015f4",
+          "T03": "12dae33738621e3feab9e551b94bb1698409bffb29b7fbc129e656fb34aa3ee7",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
+          "T06": "c09dde35c097433a1736fb26a94063650e19b31f6f682ff2926511f2edca5faf",
+          "T07": "e4b470deb401265eae12479afc39dab144b52c40de0f909f40963224f68647a8",
+          "T08": "8f3fda3766b6d39ac6eff99c329a40909b62a79c3371851d1b51a2fd7fbc8c9f",
+          "T09": "1d5a893668d7dad417ef68e5ec2c63d8cbedf9596ace2d6fa6e936b834a79b4f",
+          "T10": "892ef9065c8fbaee0d3c004ab87767c0580696d9e6fba4d82905babe9ba3fa1c",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a",
+          "T13": "c100e28c65c90d77d21ac947a4f2e9fe0d015d7b11c6d35f4f94f2cb3b9ba045"
         }
       },
-      "basis_sha256": "046c390422a8c213075dca8a87938df4ba27d88d10bf6b3ed46ccc4bec1529ce",
+      "basis_sha256": "6415e07e181b5e59f20d282ec0bcf02f4f5f166d3890b1f6c9aa0899cf0e4098",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -215,7 +216,7 @@
       "design_anchor": "tech-r02",
       "owner": "对应流程中注明的L层/技术模块责任",
       "phase": "沿§19.2原四阶段；文档关联现可检查",
-      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "implementation": "共用C02 Theme/版本与C03/C04跨周接续；实际成熟/入刊未实现验收",
       "intent": "跨周研究与长期专题",
       "theory_refs": [
         "th-2-1",
@@ -320,17 +321,17 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "4c0f6801c87e539780ccca05ee11d9548bb3d58ca30ce95745db12364cee8ec1",
+        "design_sha256": "7fd2557a40f524e594495f2e53d549dc683df46dba2829cdc87679a6daf4f5b6",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-13-1": "81c01e69aa6dd8b711c236607a4c0d58e81c821859de565e28b4def7e05fd8b7",
           "th-16-4": "c8df2f15abb51d4cc040f400ea77c8138c7a04c9e18a1340fc6c894702f85b13",
           "th-16-5": "20d16983a4cd12097d1760ec5da376dd9290e1b90adf28089fe5eab5bda011af",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
-          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
+          "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-2-2": "4e093d43b92cf009f2ec806a7f02430c03c551fc1da3e7c118696404c53eb939",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
@@ -339,30 +340,31 @@
           "th-8-4-2": "906eb9adb90d079276c6fa9279b18f929d5d914e190f15713e726b86f0974797"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T03": "21e288659be85342eb3f77a9c7f49bfcf32d0e5ae1af039182618942e94155ce",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
-          "T06": "abeba3e9d4ae5e7ac4d74366d0276f3355f018c49931979e92ddb99b2c1acfc7",
-          "T07": "a2175344fa38cb20e8c98060999946abdab97ec34a390b5b2de76a74922d00d6",
-          "T08": "2da17a010546efc7c2b03e3639c7910de58bf1f4737c46beaa33d16f07b9df6d",
-          "T09": "13b7a056a1ad0fbd59aa0e6f01a7d7a4c2f833a511d288153746db607b4d21b9",
-          "T10": "8f72d809f00def65c71cb5943cd138d77f3511acb4ee75e2fc4c3aac1ec0315a",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T03": "12dae33738621e3feab9e551b94bb1698409bffb29b7fbc129e656fb34aa3ee7",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
+          "T06": "c09dde35c097433a1736fb26a94063650e19b31f6f682ff2926511f2edca5faf",
+          "T07": "e4b470deb401265eae12479afc39dab144b52c40de0f909f40963224f68647a8",
+          "T08": "8f3fda3766b6d39ac6eff99c329a40909b62a79c3371851d1b51a2fd7fbc8c9f",
+          "T09": "1d5a893668d7dad417ef68e5ec2c63d8cbedf9596ace2d6fa6e936b834a79b4f",
+          "T10": "892ef9065c8fbaee0d3c004ab87767c0580696d9e6fba4d82905babe9ba3fa1c",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a"
         }
       },
-      "basis_sha256": "af1dd4e303087c7d9a2dcc62a2ef63bf7139851efb1948675ca2066de334bde2",
+      "basis_sha256": "966773228c93a3a0b265399bd2bff69e77c86b48cc5ee9254bdffd20c94c0ced",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -375,7 +377,7 @@
       "design_anchor": "tech-r03",
       "owner": "对应流程中注明的L层/技术模块责任",
       "phase": "沿§19.2原四阶段；文档关联现可检查",
-      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "implementation": "共用C01/C02/C04/C05处理不同稿型，不为短稿另建流水线；业务路线未实现",
       "intent": "精选/首次事实/进展/更正分支",
       "theory_refs": [
         "th-2-1",
@@ -474,9 +476,9 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "c999c9e91219c3aa46c0653c6d743b5f78220cb2597f860816b7edd6eba4ad87",
+        "design_sha256": "9aa3954a2830a7a18138ea68fc07b25378f18f9b7687eb1124ded7d26554b050",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-13-1": "81c01e69aa6dd8b711c236607a4c0d58e81c821859de565e28b4def7e05fd8b7",
           "th-15-2": "91a87d6d39d228e19648897a7955dfb23f3ea204cb13a8cce648c68db1caedd1",
@@ -484,8 +486,8 @@
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-18-1": "9bbed19cf85004d8ac9f704ad61534e52acf785902fe1b4207f87562f50926e8",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
-          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
+          "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-5-5": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
@@ -494,26 +496,27 @@
           "th-7-3": "6386bed87759f65634d02c7c2376c30bd5fe96e511124f96660778714a1ae773"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T03": "21e288659be85342eb3f77a9c7f49bfcf32d0e5ae1af039182618942e94155ce",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T09": "13b7a056a1ad0fbd59aa0e6f01a7d7a4c2f833a511d288153746db607b4d21b9",
-          "T10": "8f72d809f00def65c71cb5943cd138d77f3511acb4ee75e2fc4c3aac1ec0315a",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T03": "12dae33738621e3feab9e551b94bb1698409bffb29b7fbc129e656fb34aa3ee7",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T09": "1d5a893668d7dad417ef68e5ec2c63d8cbedf9596ace2d6fa6e936b834a79b4f",
+          "T10": "892ef9065c8fbaee0d3c004ab87767c0580696d9e6fba4d82905babe9ba3fa1c",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a"
         }
       },
-      "basis_sha256": "4e39dccf6a4ddfccff1c4e3357909c288b3b06f1e3371afab41599429f514a70",
+      "basis_sha256": "47c013c8bc8e8dcd5d6feed1935b7982ee1916f4e94c6781124a6ef314425a8e",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -526,7 +529,7 @@
       "design_anchor": "tech-r04",
       "owner": "对应流程中注明的L层/技术模块责任",
       "phase": "沿§19.2原四阶段；文档关联现可检查",
-      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "implementation": "C04发定向缺口，C03路由C01/C02与编辑复选；条件研究适配须实测，路线未实现",
       "intent": "定向补证与复选",
       "theory_refs": [
         "th-6-2",
@@ -630,15 +633,15 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "af053addf08dc179915ca5254c3e9edd336f0ec459c88612414a204e07c04b06",
+        "design_sha256": "592b701ab61b985f425ec28f90c29b199bc5364dfaf33bd2051430e8a0240202",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-13-1": "81c01e69aa6dd8b711c236607a4c0d58e81c821859de565e28b4def7e05fd8b7",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-19-7": "37d2009fd59bb8dfbc0a4508478775ca6b0c805b3c76c66cd2985a9e17506985",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
@@ -648,29 +651,30 @@
           "th-8-4-2": "906eb9adb90d079276c6fa9279b18f929d5d914e190f15713e726b86f0974797"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T03": "21e288659be85342eb3f77a9c7f49bfcf32d0e5ae1af039182618942e94155ce",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
-          "T06": "abeba3e9d4ae5e7ac4d74366d0276f3355f018c49931979e92ddb99b2c1acfc7",
-          "T07": "a2175344fa38cb20e8c98060999946abdab97ec34a390b5b2de76a74922d00d6",
-          "T09": "13b7a056a1ad0fbd59aa0e6f01a7d7a4c2f833a511d288153746db607b4d21b9",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc",
-          "T13": "be4ce7ac29721ed02c008bcc2099082f5174f3a182f261e68942abca772f5925"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T03": "12dae33738621e3feab9e551b94bb1698409bffb29b7fbc129e656fb34aa3ee7",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
+          "T06": "c09dde35c097433a1736fb26a94063650e19b31f6f682ff2926511f2edca5faf",
+          "T07": "e4b470deb401265eae12479afc39dab144b52c40de0f909f40963224f68647a8",
+          "T09": "1d5a893668d7dad417ef68e5ec2c63d8cbedf9596ace2d6fa6e936b834a79b4f",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a",
+          "T13": "c100e28c65c90d77d21ac947a4f2e9fe0d015d7b11c6d35f4f94f2cb3b9ba045"
         }
       },
-      "basis_sha256": "ea713873b9797704de0429250812a9353b243e7a17d001f4550f006b0e614757",
+      "basis_sha256": "f294d786243e3c3cc160d5cad646422fd22fcbb5431841e8f631d7686b92e43d",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -683,7 +687,7 @@
       "design_anchor": "tech-r05",
       "owner": "对应流程中注明的L层/技术模块责任",
       "phase": "沿§19.2原四阶段；文档关联现可检查",
-      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "implementation": "C02同一版本/依赖/限制+C03受控恢复；当前复用与历史回放分别验，业务路线未实现",
       "intent": "更正、复用与历史隔离",
       "theory_refs": [
         "th-10-6",
@@ -789,9 +793,9 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "c8f2455e761cfc86d23ebaa8797067adde845a6c443f742ad8173c1800dfe5fc",
+        "design_sha256": "bb84aedee04623b6a126ec8b0afdeeb255b0e5a41e0cf0d677818cb78e58c0d7",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-10-6": "4ce88fffbec1d4fe516eecc7174ddca9ddde37ecd6de418e1332611e46052ed3",
           "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
@@ -803,36 +807,37 @@
           "th-16-6-3": "04d9605c44f9086491f20f6bb6e3d7c84fe05c71b4be9a87a7afda4f98342f48",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
-          "T06": "abeba3e9d4ae5e7ac4d74366d0276f3355f018c49931979e92ddb99b2c1acfc7",
-          "T07": "a2175344fa38cb20e8c98060999946abdab97ec34a390b5b2de76a74922d00d6",
-          "T08": "2da17a010546efc7c2b03e3639c7910de58bf1f4737c46beaa33d16f07b9df6d",
-          "T09": "13b7a056a1ad0fbd59aa0e6f01a7d7a4c2f833a511d288153746db607b4d21b9",
-          "T10": "8f72d809f00def65c71cb5943cd138d77f3511acb4ee75e2fc4c3aac1ec0315a",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc",
-          "T12": "c4695cdee7e7604f4e7fd1ed7f4aa57fc91ab19f379f3d00cc1ca84737a8d99a"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
+          "T06": "c09dde35c097433a1736fb26a94063650e19b31f6f682ff2926511f2edca5faf",
+          "T07": "e4b470deb401265eae12479afc39dab144b52c40de0f909f40963224f68647a8",
+          "T08": "8f3fda3766b6d39ac6eff99c329a40909b62a79c3371851d1b51a2fd7fbc8c9f",
+          "T09": "1d5a893668d7dad417ef68e5ec2c63d8cbedf9596ace2d6fa6e936b834a79b4f",
+          "T10": "892ef9065c8fbaee0d3c004ab87767c0580696d9e6fba4d82905babe9ba3fa1c",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a",
+          "T12": "c3c5806d69584319195d201695086f9979bdeabdfef8aa2528d05489c66b440d"
         }
       },
-      "basis_sha256": "0f7d132908463c6523ba9ed14aa7b24f11ac2d72bd16810ecbc7027ca8b02001",
+      "basis_sha256": "4553dbee720a8a9fb4575b34741ad0acc5a3f8aa6431c4509c148b512d3f4d6b",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -845,7 +850,7 @@
       "design_anchor": "tech-r06",
       "owner": "对应流程中注明的L层/技术模块责任",
       "phase": "沿§19.2原四阶段；文档关联现可检查",
-      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "implementation": "T12组织双输入并共用C01—C05，无年度存储/研究/渲染分叉；年度业务未实现",
       "intent": "年报双输入",
       "theory_refs": [
         "th-14",
@@ -951,9 +956,9 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "5a6ec05d1e3556ce3a922a2e73d1ca8988eea0fe1b075d658b3113b92629a474",
+        "design_sha256": "c0fd4b769945a5c66be81dbd39dea22634efbf2ef2a65dc0a189523e404f4aec",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
           "th-14": "e0c58a02e466a358ab56bdebd623e476ba2b436df1ce14c791be49e17cabd093",
@@ -964,39 +969,40 @@
           "th-16-6-1": "3ffc6634d62e305abb827b7aa644b74129c8754b690c4e8636d930a904f5b2b3",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T02": "4a605a5c643d2bd59f04b6f003c2f17d7750a48241f21dbde7ca86393912bddc",
-          "T03": "21e288659be85342eb3f77a9c7f49bfcf32d0e5ae1af039182618942e94155ce",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
-          "T06": "abeba3e9d4ae5e7ac4d74366d0276f3355f018c49931979e92ddb99b2c1acfc7",
-          "T07": "a2175344fa38cb20e8c98060999946abdab97ec34a390b5b2de76a74922d00d6",
-          "T08": "2da17a010546efc7c2b03e3639c7910de58bf1f4737c46beaa33d16f07b9df6d",
-          "T09": "13b7a056a1ad0fbd59aa0e6f01a7d7a4c2f833a511d288153746db607b4d21b9",
-          "T10": "8f72d809f00def65c71cb5943cd138d77f3511acb4ee75e2fc4c3aac1ec0315a",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc",
-          "T12": "c4695cdee7e7604f4e7fd1ed7f4aa57fc91ab19f379f3d00cc1ca84737a8d99a",
-          "T13": "be4ce7ac29721ed02c008bcc2099082f5174f3a182f261e68942abca772f5925"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T02": "0f0e53de347fd20827f3b2434e59dbac76c245956f33e8ffe3e49929eb8015f4",
+          "T03": "12dae33738621e3feab9e551b94bb1698409bffb29b7fbc129e656fb34aa3ee7",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
+          "T06": "c09dde35c097433a1736fb26a94063650e19b31f6f682ff2926511f2edca5faf",
+          "T07": "e4b470deb401265eae12479afc39dab144b52c40de0f909f40963224f68647a8",
+          "T08": "8f3fda3766b6d39ac6eff99c329a40909b62a79c3371851d1b51a2fd7fbc8c9f",
+          "T09": "1d5a893668d7dad417ef68e5ec2c63d8cbedf9596ace2d6fa6e936b834a79b4f",
+          "T10": "892ef9065c8fbaee0d3c004ab87767c0580696d9e6fba4d82905babe9ba3fa1c",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a",
+          "T12": "c3c5806d69584319195d201695086f9979bdeabdfef8aa2528d05489c66b440d",
+          "T13": "c100e28c65c90d77d21ac947a4f2e9fe0d015d7b11c6d35f4f94f2cb3b9ba045"
         }
       },
-      "basis_sha256": "39cc8eaeb93ee6f512faa3b3e98ec457b0aa851ffad264150b06a8670055a5d4",
+      "basis_sha256": "8110318f87f702b754d24138d53a51ba689dd5483ab1ba95c8dec96b3fa8f1ff",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1009,7 +1015,7 @@
       "design_anchor": "tech-r07",
       "owner": "对应流程中注明的L层/技术模块责任",
       "phase": "沿§19.2原四阶段；文档关联现可检查",
-      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "implementation": "已有文档关联维护继续；研究任务原文装载/分段与C03持久恢复仍待实现，不由摘要恢复",
       "intent": "规范变更与中断重接",
       "theory_refs": [
         "th-8-2-4",
@@ -1109,9 +1115,9 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "21d380b31695630a034707c1dc5decf0efe4b716e9db2e141f0e0843a79eb8ab",
+        "design_sha256": "2ccbaced816ec717f6414d17a55631a2910b825244e5666a8ac336e951b07268",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
           "th-16-6-1": "3ffc6634d62e305abb827b7aa644b74129c8754b690c4e8636d930a904f5b2b3",
@@ -1119,7 +1125,7 @@
           "th-17-2-4": "e1613178427d9bf2dd89c6e30ae2e5cb03de96afd67f23400139f1747f5c697a",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-20-3": "dee00f46215b4853e9cfb5dcd7713a809e17a1768ca6955a0f1e7e502ebfa56b",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
@@ -1128,27 +1134,28 @@
           "th-8-2-4": "19a1b9ea713b92f524e203e65ad77b2c09560535fd6aa0c00c16119f2a27c86d"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
-          "T09": "13b7a056a1ad0fbd59aa0e6f01a7d7a4c2f833a511d288153746db607b4d21b9",
-          "T10": "8f72d809f00def65c71cb5943cd138d77f3511acb4ee75e2fc4c3aac1ec0315a",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc",
-          "T13": "be4ce7ac29721ed02c008bcc2099082f5174f3a182f261e68942abca772f5925"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
+          "T09": "1d5a893668d7dad417ef68e5ec2c63d8cbedf9596ace2d6fa6e936b834a79b4f",
+          "T10": "892ef9065c8fbaee0d3c004ab87767c0580696d9e6fba4d82905babe9ba3fa1c",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a",
+          "T13": "c100e28c65c90d77d21ac947a4f2e9fe0d015d7b11c6d35f4f94f2cb3b9ba045"
         }
       },
-      "basis_sha256": "afadef3b93fa64c9e353ef71fcabcaa630408a460a5e077feba643e1b57aa4f7",
+      "basis_sha256": "3b14cbbed5999bb5b00ec3f0f0ffdf046ad07903a9734c0f31defe0c4e431d4e",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1161,7 +1168,7 @@
       "design_anchor": "tech-r08",
       "owner": "对应流程中注明的L层/技术模块责任",
       "phase": "沿§19.2原四阶段；文档关联现可检查",
-      "implementation": "研究/生产路线未实现；此处为可追溯设计标注",
+      "implementation": "C06 Actions只设周开始+C03长任务续跑+C02期号/回执+C05文件；生产/已授权交付待实现",
       "intent": "GitHub每周自动启动、完整运行与授权交付",
       "theory_refs": [
         "th-0",
@@ -1186,7 +1193,7 @@
           "id": "R08.F01",
           "executor": "T01",
           "action": "核阶段与运行授权",
-          "input": "已验范围、GitHub周历/期次、具体参数和运行/交付分开开关",
+          "input": "已验范围、GitHub周启动/资料期次、具体参数和运行/交付分开开关",
           "condition": "前三阶段门与本次运行权限具备",
           "output": "可启动范围或停止原因",
           "success_to": [
@@ -1204,10 +1211,10 @@
         {
           "id": "R08.F02",
           "executor": "T13",
-          "action": "每周触发后认领期号并运行完整内容链",
+          "action": "周开始认领期号并持续/续跑完整内容链",
           "input": "计划期号、schedule/dispatch/续跑事件、实际Run、已有有效产物和当前规范",
-          "condition": "认领/输入/能力/权限/资源有效，健康运行不抢占，已完成期不重复执行",
-          "output": "真实开始/进展/结束、内容/实际文件与归档结果；漏跑/未完成及恢复记录",
+          "condition": "认领/输入/能力/权限/资源有效；健康前期不抢占，新期持久排队，已完成期不重复执行",
+          "output": "真实开始/进展/跨job续跑/合格内容文件与归档；积压/漏跑/受阻及恢复事实",
           "success_to": [
             "T10"
           ],
@@ -1218,14 +1225,14 @@
             "th-19-1",
             "th-19-7"
           ],
-          "limit": "无主Run也须被独立观察；迟到按原期号，真实恢复/长任务拆分待验；GitHub绿灯不等于成品或送达"
+          "limit": "只设周开始，无固定完成/停止/发送时刻；跨job/跨周同一期恢复；图退出/维护绿灯不证明成品或送达"
         },
         {
           "id": "R08.F03",
           "executor": "T10",
           "action": "锁定经过核对的交付文件",
           "input": "Edition、有效审核和真实文件",
-          "condition": "实际内容与呈现对应且获准交付",
+          "condition": "实际内容/文件检查合格且已有交付授权，完成事件后立即接交付",
           "output": "目标刊次/文件版本/幂等标识",
           "success_to": [
             "T13"
@@ -1238,7 +1245,7 @@
             "th-13-7",
             "th-22-4"
           ],
-          "limit": "新版本不自动授予再次外发"
+          "limit": "不另等待发送钟点；未获交付授权仍可归档，版本变更不自动授予再次外发"
         },
         {
           "id": "R08.F04",
@@ -1261,44 +1268,45 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "e893b178347b35ffca4f9160c5f339b275e4fbe0fdcc700e38ae1674ceda3a89",
+        "design_sha256": "d4f0a4110f4b4b193dafa6c823c2a7ce6f19ae81822736b8862ddc6bf90ada31",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
-          "th-19-1": "c41ed236e8c03024033dac37a38b031c71a0ff7e83f2fb223f611cfe0e29d73a",
+          "th-19-1": "e7bcd608db6930c3a9b3efaa6551999407a9902da8eba01a7dbd1e40a83315df",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-19-7": "37d2009fd59bb8dfbc0a4508478775ca6b0c805b3c76c66cd2985a9e17506985",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T03": "21e288659be85342eb3f77a9c7f49bfcf32d0e5ae1af039182618942e94155ce",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
-          "T09": "13b7a056a1ad0fbd59aa0e6f01a7d7a4c2f833a511d288153746db607b4d21b9",
-          "T10": "8f72d809f00def65c71cb5943cd138d77f3511acb4ee75e2fc4c3aac1ec0315a",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc",
-          "T13": "be4ce7ac29721ed02c008bcc2099082f5174f3a182f261e68942abca772f5925"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T03": "12dae33738621e3feab9e551b94bb1698409bffb29b7fbc129e656fb34aa3ee7",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
+          "T09": "1d5a893668d7dad417ef68e5ec2c63d8cbedf9596ace2d6fa6e936b834a79b4f",
+          "T10": "892ef9065c8fbaee0d3c004ab87767c0580696d9e6fba4d82905babe9ba3fa1c",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a",
+          "T13": "c100e28c65c90d77d21ac947a4f2e9fe0d015d7b11c6d35f4f94f2cb3b9ba045"
         }
       },
-      "basis_sha256": "797bf56361c0e5329be48f468fdf3af6fc4a767a4f92accbe7b7294edd836aac",
+      "basis_sha256": "ac45a0a5feea42f8efefdfda6eca5d7094f3013c11e568800b55e953acf86e83",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1311,7 +1319,7 @@
       "design_anchor": "tech-t01",
       "owner": "执行者组织；未来执行层维护决定",
       "phase": "人工定位先行；第二阶段控制器",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C02权威决定/版本+C03 LangGraph交接；域内采用边界自行实现；研究控制未实现，维护能力另报",
       "intent": "规范与交接控制",
       "theory_refs": [
         "th-0",
@@ -1389,14 +1397,14 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "29c56660e3598fa6d63f96760509bb5398d8709406c4e714ec254b049b4cda32",
+        "design_sha256": "6088517c640cadc5399f05732b25a78c396ee5e70430c8730d3c4b98c10f2496",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-16-6-1": "3ffc6634d62e305abb827b7aa644b74129c8754b690c4e8636d930a904f5b2b3",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-21": "386ce86f2f982fc025f78fbc52dec967175ba47cf66e1312f96266b7fa0698e0",
           "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
@@ -1409,19 +1417,20 @@
           "th-8-2-4": "19a1b9ea713b92f524e203e65ad77b2c09560535fd6aa0c00c16119f2a27c86d"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {}
       },
-      "basis_sha256": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
+      "basis_sha256": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1434,7 +1443,7 @@
       "design_anchor": "tech-t02",
       "owner": "L1发现职责",
       "phase": "第一阶段人工取样；第四阶段生产增量",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C01 feedparser/Trafilatura共享入口+C02候选；血缘/归并/覆盖薄适配待实现",
       "intent": "全球发现与候选归并",
       "theory_refs": [
         "th-3",
@@ -1509,13 +1518,13 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "c773d37659f613c91e6891f84cd8670be8e8c17eac031cd2a74892d8ad92dbb5",
+        "design_sha256": "aebd36c808dc8f20cc92b94fd3fed240c96349ca926f7c9adb5ff1b16337c8cd",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-23-1": "842f844567b289b3c8a797805cfc323bab96ea8ba2e67784a2e54388fee2ddc7",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
@@ -1529,22 +1538,23 @@
           "th-6-1": "e28e2d995663b8e6a77b7944dc4f752475cbf12ac1b90f8eb61603c7cfdb49f9"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T13": "be4ce7ac29721ed02c008bcc2099082f5174f3a182f261e68942abca772f5925"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T13": "c100e28c65c90d77d21ac947a4f2e9fe0d015d7b11c6d35f4f94f2cb3b9ba045"
         }
       },
-      "basis_sha256": "4a605a5c643d2bd59f04b6f003c2f17d7750a48241f21dbde7ca86393912bddc",
+      "basis_sha256": "0f0e53de347fd20827f3b2434e59dbac76c245956f33e8ffe3e49929eb8015f4",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1557,7 +1567,7 @@
       "design_anchor": "tech-t03",
       "owner": "L2编辑决定",
       "phase": "第一阶段人工；第二阶段记录和接口",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C04编辑任务+C02决定+C03 S依赖；价值/刊登规则待实现，不用分数自动拼刊",
       "intent": "选题、复选与整刊计划",
       "theory_refs": [
         "th-2-1",
@@ -1637,15 +1647,15 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "75ff3ab9331206c20740efbc70637a3f9eea5506b3c6c5c464312ee44f0362c6",
+        "design_sha256": "b4fd352dc28c25f9b7b36247ebd2ad07b43471bad581c40b9789b2b66ce67571",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-13-1": "81c01e69aa6dd8b711c236607a4c0d58e81c821859de565e28b4def7e05fd8b7",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
-          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
+          "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-2-2": "4e093d43b92cf009f2ec806a7f02430c03c551fc1da3e7c118696404c53eb939",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
@@ -1658,24 +1668,25 @@
           "th-8-5": "59619951eb1ac3a07e446946ab2081cb23dbc32722d258ffb365781a9e57ada7"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T02": "4a605a5c643d2bd59f04b6f003c2f17d7750a48241f21dbde7ca86393912bddc",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T02": "0f0e53de347fd20827f3b2434e59dbac76c245956f33e8ffe3e49929eb8015f4",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a"
         }
       },
-      "basis_sha256": "21e288659be85342eb3f77a9c7f49bfcf32d0e5ae1af039182618942e94155ce",
+      "basis_sha256": "12dae33738621e3feab9e551b94bb1698409bffb29b7fbc129e656fb34aa3ee7",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1688,7 +1699,7 @@
       "design_anchor": "tech-t04",
       "owner": "L3取证/中文核对",
       "phase": "第一阶段实际回源；第二阶段适配",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C01网页/Feed与按需Docling+C02权利/支持；共用翻译适配待实现，提取不代核真",
       "intent": "原作、证据与中文材料",
       "theory_refs": [
         "th-2-1",
@@ -1768,15 +1779,15 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "bf14e03e4c5cf019deba03a974d20d605dd2b58a07f613fa950736491e6cda43",
+        "design_sha256": "6f65545b49ac934ff668df00990fccdf9e87d63a98eab4952aabf6f09e4ca3b2",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
-          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
+          "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
@@ -1787,23 +1798,24 @@
           "th-8-3-4": "303cae93b63455f3ac18748f5dbb38fff29485d7d16bf00d91e7f69bfb5b0a5c"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc",
-          "T13": "be4ce7ac29721ed02c008bcc2099082f5174f3a182f261e68942abca772f5925"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a",
+          "T13": "c100e28c65c90d77d21ac947a4f2e9fe0d015d7b11c6d35f4f94f2cb3b9ba045"
         }
       },
-      "basis_sha256": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
+      "basis_sha256": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1816,7 +1828,7 @@
       "design_anchor": "tech-t05",
       "owner": "L4联合研究组织；B1/B2从早期参与",
       "phase": "第一阶段分步研究；第二阶段可重跑组织",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C03 LangGraph/官方检查点+C04共同研究函数；M依赖/本刊采用规则待实现，不接第二完整研究链",
       "intent": "问题界定与联合研究组织",
       "theory_refs": [
         "th-8",
@@ -1901,16 +1913,16 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "71de7b2ecd8de8ee90fccb0f6817aa4ad637a509bfadcc2eb1b3f3c8549d3a9c",
+        "design_sha256": "0d6b4d8378d53b17e46f47609e614d133bb58a3fb322a960051a05eed4011db5",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-12": "b80dedec20a6e39c51fa2111a3a7ed21b51021936ecb8a6282e98041f4f584d0",
           "th-16-1": "379e6ee94c09f3f29ca3452d5f9e171e3a7c0849268622f08a53c409fd880925",
           "th-16-2": "996744a5044f12ab55eb77c75ec43472d09105fa51ffe9e5cc6cde7fe2003e79",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
@@ -1924,24 +1936,25 @@
           "th-9-1": "67e830495614adfc932ffd0d97034ba57893eba3e6b98028ade6f54cb9d3fadc"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T03": "21e288659be85342eb3f77a9c7f49bfcf32d0e5ae1af039182618942e94155ce",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T03": "12dae33738621e3feab9e551b94bb1698409bffb29b7fbc129e656fb34aa3ee7",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a"
         }
       },
-      "basis_sha256": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
+      "basis_sha256": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1954,7 +1967,7 @@
       "design_anchor": "tech-t06",
       "owner": "L4顾问职责",
       "phase": "第一阶段真实研判；后续按任务验证",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C04 B1任务共用C02/C03和模型接口；实际顾问贡献待内容验收",
       "intent": "顾问B1本案研判",
       "theory_refs": [
         "th-1-3",
@@ -2030,9 +2043,9 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "e21105a448b8cfa7b4c056105ea082056fab6ca1217d047384fd6ad01d8f35c5",
+        "design_sha256": "a8057165873413dc407e9da07e4260eb5c241371766cb935658f1a704429c93b",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-1-3": "487cd3e63ccfec0b96726c0c7778536f8c55c23945764d0a804a7b4675a2022b",
           "th-16-1": "379e6ee94c09f3f29ca3452d5f9e171e3a7c0849268622f08a53c409fd880925",
@@ -2040,7 +2053,7 @@
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
@@ -2051,21 +2064,22 @@
           "th-9-1": "67e830495614adfc932ffd0d97034ba57893eba3e6b98028ade6f54cb9d3fadc"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990"
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd"
         }
       },
-      "basis_sha256": "abeba3e9d4ae5e7ac4d74366d0276f3355f018c49931979e92ddb99b2c1acfc7",
+      "basis_sha256": "c09dde35c097433a1736fb26a94063650e19b31f6f682ff2926511f2edca5faf",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2078,7 +2092,7 @@
       "design_anchor": "tech-t07",
       "owner": "L4帝师职责；从M02参与",
       "phase": "第一阶段真实教学；后续按任务验证",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C04 B2任务共用C02/C03和模型接口；主动知识研究/自足教学仍待独立验收",
       "intent": "帝师B2知识研究与教学",
       "theory_refs": [
         "th-8-4-1",
@@ -2157,9 +2171,9 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "9f181d9d237e0b2071975e2860ef5d25e1f98cfedf3ed622307e1931c0ddc201",
+        "design_sha256": "988db3bae6624dcf77780d39d733d12e5aaefdfd97415db8f87c082328eb6813",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-10": "b0d6c1e133245b6da0dd47114607e54aad24e763fe6ffe6b9507cbadd355915a",
           "th-10-1": "44c369f457c16be68be726ee681b2d6bdfcf5af60f3a8795d21629f0e3127bee",
@@ -2170,7 +2184,7 @@
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
@@ -2178,22 +2192,23 @@
           "th-9-1": "67e830495614adfc932ffd0d97034ba57893eba3e6b98028ade6f54cb9d3fadc"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc"
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a"
         }
       },
-      "basis_sha256": "a2175344fa38cb20e8c98060999946abdab97ec34a390b5b2de76a74922d00d6",
+      "basis_sha256": "e4b470deb401265eae12479afc39dab144b52c40de0f909f40963224f68647a8",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2206,7 +2221,7 @@
       "design_anchor": "tech-t08",
       "owner": "L4的C与M12准备",
       "phase": "当期保存条件；真实结果后来再核",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C04条件任务+C02 ThesisVersion/Theme；无独立预测平台，真实成果待验",
       "intent": "条件推演与事前检验准备",
       "theory_refs": [
         "th-11",
@@ -2281,16 +2296,16 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "aa53fcec5499efb9fc610f3970c32de76dc46ce69bb069bddab43c04d08e01fc",
+        "design_sha256": "6d85cb0a28e323f8b8d9009b8b9a03f4010b1c8776efab04953f8b511589b7fc",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-11": "fec43a59d64cc7575667e2ed4098059f40436a0645577272625a5b76e960bc9e",
           "th-16-3": "001f2a72d853172ac4413bae16b847bbae839059e4ac878e88a5e72b27a2907b",
           "th-16-4": "c8df2f15abb51d4cc040f400ea77c8138c7a04c9e18a1340fc6c894702f85b13",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
@@ -2299,24 +2314,25 @@
           "th-8-8-3": "c10fa170f2627bc5e29a89fe84f156927bd7b779c48f88dc8c2072cf75640378"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
-          "T06": "abeba3e9d4ae5e7ac4d74366d0276f3355f018c49931979e92ddb99b2c1acfc7",
-          "T07": "a2175344fa38cb20e8c98060999946abdab97ec34a390b5b2de76a74922d00d6",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc"
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
+          "T06": "c09dde35c097433a1736fb26a94063650e19b31f6f682ff2926511f2edca5faf",
+          "T07": "e4b470deb401265eae12479afc39dab144b52c40de0f909f40963224f68647a8",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a"
         }
       },
-      "basis_sha256": "2da17a010546efc7c2b03e3639c7910de58bf1f4737c46beaa33d16f07b9df6d",
+      "basis_sha256": "8f3fda3766b6d39ac6eff99c329a40909b62a79c3371851d1b51a2fd7fbc8c9f",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2329,7 +2345,7 @@
       "design_anchor": "tech-t09",
       "owner": "L5独立核查；不自签",
       "phase": "第一阶段实际核查；第二阶段能力配置验证",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C04独立核查+C01回源+C02版本+C03返工；作者与审稿决定分离，业务能力未实现",
       "intent": "独立审稿与具体内容放行",
       "theory_refs": [
         "th-13-7",
@@ -2411,9 +2427,9 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "0fa086fd5c200dcaa0a11a4990421fca06102fc9e7d2edff65a926ce29e81c54",
+        "design_sha256": "28e37818d1238cd8f0daee811f3d522929e0df71c50752b0f16e142b915717c0",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
           "th-15": "7ce156e802d4435b67dd009f2c431e1bf07acfee99316b92f182cbcb04723d28",
@@ -2424,7 +2440,7 @@
           "th-18-1": "9bbed19cf85004d8ac9f704ad61534e52acf785902fe1b4207f87562f50926e8",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8",
@@ -2432,26 +2448,27 @@
           "th-8-2-4": "19a1b9ea713b92f524e203e65ad77b2c09560535fd6aa0c00c16119f2a27c86d"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
-          "T06": "abeba3e9d4ae5e7ac4d74366d0276f3355f018c49931979e92ddb99b2c1acfc7",
-          "T07": "a2175344fa38cb20e8c98060999946abdab97ec34a390b5b2de76a74922d00d6",
-          "T08": "2da17a010546efc7c2b03e3639c7910de58bf1f4737c46beaa33d16f07b9df6d"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
+          "T06": "c09dde35c097433a1736fb26a94063650e19b31f6f682ff2926511f2edca5faf",
+          "T07": "e4b470deb401265eae12479afc39dab144b52c40de0f909f40963224f68647a8",
+          "T08": "8f3fda3766b6d39ac6eff99c329a40909b62a79c3371851d1b51a2fd7fbc8c9f"
         }
       },
-      "basis_sha256": "13b7a056a1ad0fbd59aa0e6f01a7d7a4c2f833a511d288153746db607b4d21b9",
+      "basis_sha256": "1d5a893668d7dad417ef68e5ec2c63d8cbedf9596ace2d6fa6e936b834a79b4f",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2464,7 +2481,7 @@
       "design_anchor": "tech-t10",
       "owner": "L6主编/呈现；新命题回L4/L5",
       "phase": "第一阶段实际格式；第四阶段正式渲染/交付",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C05 Jinja+第四阶段WeasyPrint，复用年度呈现；内容/实际文件对应未实现验收",
       "intent": "成稿、整刊与实际阅读文件",
       "theory_refs": [
         "th-2-1",
@@ -2545,19 +2562,19 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "aa06c64fd32d269b47d9b6f5e1327c8c73cc0b79c4017608879d95b5f762bd55",
+        "design_sha256": "0a04520cb175e00af6fdc0c49dddfe37330dd3fe0bd74cab5d0385db8b667649",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-13": "1eb737bb401a1d95ab58bd23a8daa239a47866f8c14e2f47895fa7683da67c25",
           "th-13-5": "46d25fa4a27fba32ab646692e3b6871d66c5b69a65ec5cf4d5ea9642625711b0",
           "th-13-6": "11d79459375b2ee201450738849bf39c817ccf88e55304339b881f4fc2b0c661",
           "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
-          "th-19-1": "c41ed236e8c03024033dac37a38b031c71a0ff7e83f2fb223f611cfe0e29d73a",
+          "th-19-1": "e7bcd608db6930c3a9b3efaa6551999407a9902da8eba01a7dbd1e40a83315df",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
-          "th-2-1": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
+          "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
@@ -2565,24 +2582,25 @@
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T03": "21e288659be85342eb3f77a9c7f49bfcf32d0e5ae1af039182618942e94155ce",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T09": "13b7a056a1ad0fbd59aa0e6f01a7d7a4c2f833a511d288153746db607b4d21b9",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc"
+          "T03": "12dae33738621e3feab9e551b94bb1698409bffb29b7fbc129e656fb34aa3ee7",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T09": "1d5a893668d7dad417ef68e5ec2c63d8cbedf9596ace2d6fa6e936b834a79b4f",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a"
         }
       },
-      "basis_sha256": "8f72d809f00def65c71cb5943cd138d77f3511acb4ee75e2fc4c3aac1ec0315a",
+      "basis_sha256": "892ef9065c8fbaee0d3c004ab87767c0580696d9e6fba4d82905babe9ba3fa1c",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2595,7 +2613,7 @@
       "design_anchor": "tech-t11",
       "owner": "六层共享档案职责",
       "phase": "第一篇保存；第二阶段跨周；第四阶段持久恢复",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C02 Pydantic/SQLAlchemy+私有版本文件；共享依赖/双as-of/纠错待实现，图检查点不是事实库",
       "intent": "共享档案、历史查询与纠错",
       "theory_refs": [
         "th-10-5",
@@ -2675,9 +2693,9 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "fad5d3a3d8a44ae426c3339d87a131e705c3ec6f88d79736d8f8302c1759a62a",
+        "design_sha256": "7e5cc4f60feb155733950b24617dad833e08a3b5d412c4251c927e990f3af9cb",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-10-5": "c344234121ea70db61dfa7dc71d45b8a7d0e3e37f4548418bd5bb0cf9d2bc22e",
           "th-10-6": "4ce88fffbec1d4fe516eecc7174ddca9ddde37ecd6de418e1332611e46052ed3",
@@ -2690,7 +2708,7 @@
           "th-16-6-3": "04d9605c44f9086491f20f6bb6e3d7c84fe05c71b4be9a87a7afda4f98342f48",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-23-3": "2cff81751a78a83139bbd7b8ecefcb133c56c58446a4a81d8cb47bf4bb2528bb",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
@@ -2698,22 +2716,23 @@
           "th-6": "f0f5632e4ff80affc47ef6b631a95d0bdc0945e65fd054088398a1e48c734ea8"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9",
-          "T13": "be4ce7ac29721ed02c008bcc2099082f5174f3a182f261e68942abca772f5925"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132",
+          "T13": "c100e28c65c90d77d21ac947a4f2e9fe0d015d7b11c6d35f4f94f2cb3b9ba045"
         }
       },
-      "basis_sha256": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc",
+      "basis_sha256": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2726,7 +2745,7 @@
       "design_anchor": "tech-t12",
       "owner": "年度A01—A12组织；复用六层",
       "phase": "第四阶段缩区间演练；全年另验",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "年度双输入/A工序只组织C01—C05现有能力；无第二套引擎，年度成果待实现验收",
       "intent": "年报双输入组织",
       "theory_refs": [
         "th-2-3",
@@ -2812,9 +2831,9 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "61e7ae660e17c884a292257c2a0e414f9e1454b1e9cda5701b1990bceb2e6842",
+        "design_sha256": "9b1eb6d141c8526cc4a13dab4d0b48679dc8d954878b4c94132369ebbbb93c03",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
           "th-13-7": "83d60e085c8edd2847096edfaae04541d17c8b18505b8b12a550ceae8b801311",
           "th-14": "e0c58a02e466a358ab56bdebd623e476ba2b436df1ce14c791be49e17cabd093",
@@ -2824,7 +2843,7 @@
           "th-16-6-1": "3ffc6634d62e305abb827b7aa644b74129c8754b690c4e8636d930a904f5b2b3",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-2-3": "3e49ce680c1b5093c7e48307117d09610ce9bf95662e9042eaffc269a4101a7a",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
@@ -2832,30 +2851,31 @@
           "th-8-8-3": "c10fa170f2627bc5e29a89fe84f156927bd7b779c48f88dc8c2072cf75640378"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T02": "4a605a5c643d2bd59f04b6f003c2f17d7750a48241f21dbde7ca86393912bddc",
-          "T03": "21e288659be85342eb3f77a9c7f49bfcf32d0e5ae1af039182618942e94155ce",
-          "T04": "9806d80699464511eebfaf360b1aa73555cc22df8fcb82e7f92ea3682935f035",
-          "T05": "e46436c7e8b4c3961bcfba71870392119e632cc3581e88a979e4edbaf0280990",
-          "T06": "abeba3e9d4ae5e7ac4d74366d0276f3355f018c49931979e92ddb99b2c1acfc7",
-          "T07": "a2175344fa38cb20e8c98060999946abdab97ec34a390b5b2de76a74922d00d6",
-          "T08": "2da17a010546efc7c2b03e3639c7910de58bf1f4737c46beaa33d16f07b9df6d",
-          "T09": "13b7a056a1ad0fbd59aa0e6f01a7d7a4c2f833a511d288153746db607b4d21b9",
-          "T10": "8f72d809f00def65c71cb5943cd138d77f3511acb4ee75e2fc4c3aac1ec0315a",
-          "T11": "af9ea376ae8e4bf3d1225b8ff8906c912900851aef7afe6f89eac1abeeb2fdcc"
+          "T02": "0f0e53de347fd20827f3b2434e59dbac76c245956f33e8ffe3e49929eb8015f4",
+          "T03": "12dae33738621e3feab9e551b94bb1698409bffb29b7fbc129e656fb34aa3ee7",
+          "T04": "3d2ca34929e1b6e0d528579219b344a5879d9cfe29bd0f2895edddc29e3d4a93",
+          "T05": "ccf1b337e3fdad19af8f5a2decaa0c5f72456be365ab989e73ecad18bfa454dd",
+          "T06": "c09dde35c097433a1736fb26a94063650e19b31f6f682ff2926511f2edca5faf",
+          "T07": "e4b470deb401265eae12479afc39dab144b52c40de0f909f40963224f68647a8",
+          "T08": "8f3fda3766b6d39ac6eff99c329a40909b62a79c3371851d1b51a2fd7fbc8c9f",
+          "T09": "1d5a893668d7dad417ef68e5ec2c63d8cbedf9596ace2d6fa6e936b834a79b4f",
+          "T10": "892ef9065c8fbaee0d3c004ab87767c0580696d9e6fba4d82905babe9ba3fa1c",
+          "T11": "0fad7eb33531234eda4c344efa16ed04067f37dc07b1da93078d0590916d100a"
         }
       },
-      "basis_sha256": "c4695cdee7e7604f4e7fd1ed7f4aa57fc91ab19f379f3d00cc1ca84737a8d99a",
+      "basis_sha256": "c3c5806d69584319195d201695086f9979bdeabdfef8aa2528d05489c66b440d",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2868,7 +2888,7 @@
       "design_anchor": "tech-t13",
       "owner": "实际工具执行与配置记录；不替内容裁决",
       "phase": "受控使用先行；二/三/四阶段逐步验证",
-      "implementation": "研究/生产模块未实现；已有文档维护能力另行报告",
+      "implementation": "C03 LangGraph/检查点/单一重试预算+C06 Actions/uv；只设开始/健康长任务续跑，实际周运行未实现",
       "intent": "模型、工具、投入及GitHub每周自动运行支撑",
       "theory_refs": [
         "th-17",
@@ -2925,10 +2945,10 @@
         {
           "id": "T13.L03",
           "executor": "T13",
-          "action": "核每周进展并按原因恢复或停止",
-          "input": "预登记应运行期次、实际Run/进展/失败、有效产物及剩余允许资源",
-          "condition": "先查真实运行/认领/限制，恢复原因及次数/窗口/预算有据",
-          "output": "漏跑/未完成诊断、同一期号有限补跑/恢复/停止及告警记录",
+          "action": "核健康进展、同一期续跑或有界故障恢复",
+          "input": "预登记期次/积压、Run/真实进展或未知、持久检查点/有效产物和剩余允许资源",
+          "condition": "区分健康长任务/排队与真实故障/受阻；同一期thread及认领/版本有效，故障恢复次数和预算有据",
+          "output": "健康持续/跨job续跑、真实积压/漏跑/受阻及有限恢复/告警记录",
           "success_to": [
             "T01",
             "T11"
@@ -2941,23 +2961,23 @@
             "th-19-7",
             "th-24-6-1"
           ],
-          "limit": "独立观察/持久检查点/业务原子认领须实测；不把cron或绿灯当整刊完成，不无限补跑或重复外发"
+          "limit": "只设开始，不以总耗时或钟点无成品强停/重启；原生检查点/副作用须验；重试一处主控，不重复费用/交付"
         }
       ],
       "current_binding": {
-        "design_sha256": "657cb77159d51b1711c53bfb9ee3e1f48563c492a170986b67f2459904639fa7",
+        "design_sha256": "c5987bc0779ee10f07f0dfa6c5dba282be4a5dbe81c1846db4552348cf9e9032",
         "sources": {
-          "th-0": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+          "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
-          "th-17": "d14d9ed29f4351a66c480aacfeb468cd86821e0b3d5ec53c84ebb1dcab391307",
+          "th-17": "447eee9ba3b4087d050b61bb4a554d9bacef951ab56b4e69444a61bb32cf2d44",
           "th-17-2": "56e60d9db8816b87c68b9ea41202158d2bf7a680b03bfc888f001354922a44b8",
           "th-17-2-1": "a65c5b7c3c7e2de5d75c6236337e03cbf497e09b042a641da7c0a793e060b9b2",
           "th-17-2-4": "e1613178427d9bf2dd89c6e30ae2e5cb03de96afd67f23400139f1747f5c697a",
           "th-18": "c697167f34b3b61cb78c417e0bf0634cbd5b554b486cd8bb421ff56879468226",
-          "th-19": "1eb32a1b5a7d1bdf244f8e8bdc8ea1d86aec7b22d6508ef2e4f0731bc2f5487e",
+          "th-19": "bd056692a37f775ea10a6fea4c80ede7ca294b788bfe3c022fa5fdec4e186b0d",
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-19-7": "37d2009fd59bb8dfbc0a4508478775ca6b0c805b3c76c66cd2985a9e17506985",
-          "th-2": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+          "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-22": "21029159c81ae3ef0a44a85630d52b89cca0cc0bebc1a5ba86910a60c87fd89b",
           "th-24": "be3e92fc5786cb8dfc5088b07b6090e7ff6eec286cb991b871db98528cb7a786",
@@ -2966,21 +2986,22 @@
           "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33"
         },
         "shared_context": {
-          "tech-shared-25-1": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225",
-          "tech-shared-25-10": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200",
-          "tech-shared-25-13": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9",
+          "tech-shared-25-1": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e",
+          "tech-shared-25-10": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043",
+          "tech-shared-25-13": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797",
+          "tech-shared-25-14": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1",
           "tech-shared-25-2": "d087ac9b04349b229bc71e87fa9aa4877d3f7323260437c9a27cac2fec4e56ed",
-          "tech-shared-25-3": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be",
+          "tech-shared-25-3": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19",
           "tech-shared-25-6": "783a58a801a7ea3f9c9bbcf4287cd9190ae3120e6b43af02a2eb14f4c55a8cbb",
           "tech-shared-25-7": "43a5c18760f5911a3d4f264b86718b28b68bcbba8bc9142ec7c2236dc8eb65ce",
-          "tech-shared-25-8": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af",
+          "tech-shared-25-8": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17",
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "61e0567709905109ec56c51bb83801ce756c8486f69c11524a03b132ace9eae9"
+          "T01": "74edda9d92372cf520dfc9b4a1e7d3f918961ff233b359fe80837c32ba71a132"
         }
       },
-      "basis_sha256": "be4ce7ac29721ed02c008bcc2099082f5174f3a182f261e68942abca772f5925",
+      "basis_sha256": "c100e28c65c90d77d21ac947a4f2e9fe0d015d7b11c6d35f4f94f2cb3b9ba045",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2993,7 +3014,7 @@
     "th-0": {
       "section": "0",
       "title": "效力、定义与阅读方式",
-      "sha256": "7827648a2d8ffd1ec85a4c00ad449525e3d3d4130e636aa340153f0329dff26c",
+      "sha256": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
       "direct_nodes": [
         "R01",
         "R02",
@@ -3846,7 +3867,7 @@
     "th-17": {
       "section": "17",
       "title": "开源工具与 LLM 的职责边界",
-      "sha256": "d14d9ed29f4351a66c480aacfeb468cd86821e0b3d5ec53c84ebb1dcab391307",
+      "sha256": "447eee9ba3b4087d050b61bb4a554d9bacef951ab56b4e69444a61bb32cf2d44",
       "direct_nodes": [
         "T13"
       ],
@@ -4041,7 +4062,7 @@
     "th-19": {
       "section": "19",
       "title": "工程施工、运行边界与阶段验收",
-      "sha256": "1eb32a1b5a7d1bdf244f8e8bdc8ea1d86aec7b22d6508ef2e4f0731bc2f5487e",
+      "sha256": "bd056692a37f775ea10a6fea4c80ede7ca294b788bfe3c022fa5fdec4e186b0d",
       "direct_nodes": [
         "T13"
       ],
@@ -4071,7 +4092,7 @@
     "th-19-1": {
       "section": "19.1",
       "title": "最小系统和连续性",
-      "sha256": "c41ed236e8c03024033dac37a38b031c71a0ff7e83f2fb223f611cfe0e29d73a",
+      "sha256": "e7bcd608db6930c3a9b3efaa6551999407a9902da8eba01a7dbd1e40a83315df",
       "direct_nodes": [
         "R08",
         "T10"
@@ -4200,7 +4221,7 @@
     "th-2": {
       "section": "2",
       "title": "产品边界与本周/本年时间逻辑",
-      "sha256": "a3cd5486db223114fcc5918d97ce53eb510c07391c7f56fc5ed2676413113bc9",
+      "sha256": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
       "direct_nodes": [
         "R01",
         "R02",
@@ -4251,7 +4272,7 @@
     "th-2-1": {
       "section": "2.1",
       "title": "周刊的两种选题依据：当周变化为主，长期重大专题有据入选",
-      "sha256": "786a7bf75ee3a56c78b6e799877cf85754990c4c3cb08dcd21d056665b6dc802",
+      "sha256": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
       "direct_nodes": [
         "R01",
         "R02",
@@ -5529,17 +5550,22 @@
     "tech-shared-25-1": {
       "section": "25.1",
       "title": "本章的设计范围、依据与效力",
-      "sha256": "0bd7e9d2a3e5bf94bf0723b47d6e2f44255da60f575d85bdd3179d3ccd71a225"
+      "sha256": "4a9180d56b9dfc8c9b8d5b3016b9021326618d4d414e63f20e633e111366b46e"
     },
     "tech-shared-25-10": {
       "section": "25.10",
       "title": "理论修订怎样自动传到模块、路线与逻辑",
-      "sha256": "ec767385dcebff7429785616e1ffa87d568875be51e4009c21b3ddbeabaf9200"
+      "sha256": "eea0dd47863ff475ca613df1fcd13776a2283357cb8d791e5abd4b2742184043"
     },
     "tech-shared-25-13": {
       "section": "25.13",
       "title": "GitHub Actions每周自动启动、完整运行与漏跑恢复",
-      "sha256": "85708d2afc20e3a0722abfae7a67ac18c8e9122214bc6da8017fb8cec782b4f9"
+      "sha256": "967e37ce354959917a797a66dedf0aa30db0cdbe4674eec47a8a56162600e797"
+    },
+    "tech-shared-25-14": {
+      "section": "25.14",
+      "title": "成熟项目优先的复用、整合与精简方案",
+      "sha256": "e22ae1d62b791a1b2612df04904023393755b307c6429114eb972de7b0835bc1"
     },
     "tech-shared-25-2": {
       "section": "25.2",
@@ -5549,7 +5575,7 @@
     "tech-shared-25-3": {
       "section": "25.3",
       "title": "总体架构与应用形态",
-      "sha256": "7b83b7d727fc361ca2db94dd2e031e02c0e1d02aa833e2a9d25b712e9550f4be"
+      "sha256": "bb953c97163a34af259c641821383fb1432d215242ff45599e948a383e7c6c19"
     },
     "tech-shared-25-6": {
       "section": "25.6",
@@ -5564,7 +5590,7 @@
     "tech-shared-25-8": {
       "section": "25.8",
       "title": "通用技术复用路线与尚待确定的实施参数",
-      "sha256": "33d77cb389aaa5d613488e8175660777de49c8d42db3bc7cc28dd9edcd02f6af"
+      "sha256": "6e9fe2f690e6b7e8940f66ee5a584213a2351e2f8c0c1adf8092ff4bbef61f17"
     },
     "tech-shared-25-9": {
       "section": "25.9",

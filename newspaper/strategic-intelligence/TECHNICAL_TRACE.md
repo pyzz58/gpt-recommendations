@@ -5,39 +5,39 @@
 **CURRENT_BINDING仅表示本次关联版本一致；不证明方案正确、程序已实现、内容已审或获准运行。**
 理论或设计/依赖改变会变为REVIEW_REQUIRED；重新生成只刷新事实，不自动改写技术正文或批准新基线。
 
-当前规范SHA-256：`1a4c7ee9130965c43572358e3fa0bb4def3ad8ac5aa5edfaed172037012ef89d`。
+当前规范SHA-256：`110e3c821eda6e198acfc6a7cfedc4732f09e519665f029fe2dbf16a4e1c11e1`。
 
 需复核节点：无；仅限关联新鲜度检查。
 
 | 节点 | 设计原文 | 关联状态 | 责任/阶段 | 实现范围 |
 |---|---|---|---|---|
-| [R01](#r01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r01) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 研究/生产路线未实现；此处为可追溯设计标注 |
-| [R02](#r02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r02) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 研究/生产路线未实现；此处为可追溯设计标注 |
-| [R03](#r03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r03) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 研究/生产路线未实现；此处为可追溯设计标注 |
-| [R04](#r04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r04) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 研究/生产路线未实现；此处为可追溯设计标注 |
-| [R05](#r05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r05) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 研究/生产路线未实现；此处为可追溯设计标注 |
-| [R06](#r06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r06) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 研究/生产路线未实现；此处为可追溯设计标注 |
-| [R07](#r07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r07) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 研究/生产路线未实现；此处为可追溯设计标注 |
-| [R08](#r08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r08) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 研究/生产路线未实现；此处为可追溯设计标注 |
-| [T01](#t01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t01) | CURRENT_BINDING | 执行者组织；未来执行层维护决定；人工定位先行；第二阶段控制器 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T02](#t02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t02) | CURRENT_BINDING | L1发现职责；第一阶段人工取样；第四阶段生产增量 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T03](#t03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t03) | CURRENT_BINDING | L2编辑决定；第一阶段人工；第二阶段记录和接口 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T04](#t04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t04) | CURRENT_BINDING | L3取证/中文核对；第一阶段实际回源；第二阶段适配 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T05](#t05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t05) | CURRENT_BINDING | L4联合研究组织；B1/B2从早期参与；第一阶段分步研究；第二阶段可重跑组织 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T06](#t06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t06) | CURRENT_BINDING | L4顾问职责；第一阶段真实研判；后续按任务验证 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T07](#t07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t07) | CURRENT_BINDING | L4帝师职责；从M02参与；第一阶段真实教学；后续按任务验证 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T08](#t08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t08) | CURRENT_BINDING | L4的C与M12准备；当期保存条件；真实结果后来再核 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T09](#t09) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t09) | CURRENT_BINDING | L5独立核查；不自签；第一阶段实际核查；第二阶段能力配置验证 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T10](#t10) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t10) | CURRENT_BINDING | L6主编/呈现；新命题回L4/L5；第一阶段实际格式；第四阶段正式渲染/交付 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T11](#t11) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t11) | CURRENT_BINDING | 六层共享档案职责；第一篇保存；第二阶段跨周；第四阶段持久恢复 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T12](#t12) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t12) | CURRENT_BINDING | 年度A01—A12组织；复用六层；第四阶段缩区间演练；全年另验 | 研究/生产模块未实现；已有文档维护能力另行报告 |
-| [T13](#t13) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t13) | CURRENT_BINDING | 实际工具执行与配置记录；不替内容裁决；受控使用先行；二/三/四阶段逐步验证 | 研究/生产模块未实现；已有文档维护能力另行报告 |
+| [R01](#r01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r01) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | C01—C05共用主题闭环，六单元适配尚未实现；理论职责与真实成刊仍待验 |
+| [R02](#r02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r02) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 共用C02 Theme/版本与C03/C04跨周接续；实际成熟/入刊未实现验收 |
+| [R03](#r03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r03) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 共用C01/C02/C04/C05处理不同稿型，不为短稿另建流水线；业务路线未实现 |
+| [R04](#r04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r04) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | C04发定向缺口，C03路由C01/C02与编辑复选；条件研究适配须实测，路线未实现 |
+| [R05](#r05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r05) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | C02同一版本/依赖/限制+C03受控恢复；当前复用与历史回放分别验，业务路线未实现 |
+| [R06](#r06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r06) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | T12组织双输入并共用C01—C05，无年度存储/研究/渲染分叉；年度业务未实现 |
+| [R07](#r07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r07) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 已有文档关联维护继续；研究任务原文装载/分段与C03持久恢复仍待实现，不由摘要恢复 |
+| [R08](#r08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r08) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | C06 Actions只设周开始+C03长任务续跑+C02期号/回执+C05文件；生产/已授权交付待实现 |
+| [T01](#t01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t01) | CURRENT_BINDING | 执行者组织；未来执行层维护决定；人工定位先行；第二阶段控制器 | C02权威决定/版本+C03 LangGraph交接；域内采用边界自行实现；研究控制未实现，维护能力另报 |
+| [T02](#t02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t02) | CURRENT_BINDING | L1发现职责；第一阶段人工取样；第四阶段生产增量 | C01 feedparser/Trafilatura共享入口+C02候选；血缘/归并/覆盖薄适配待实现 |
+| [T03](#t03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t03) | CURRENT_BINDING | L2编辑决定；第一阶段人工；第二阶段记录和接口 | C04编辑任务+C02决定+C03 S依赖；价值/刊登规则待实现，不用分数自动拼刊 |
+| [T04](#t04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t04) | CURRENT_BINDING | L3取证/中文核对；第一阶段实际回源；第二阶段适配 | C01网页/Feed与按需Docling+C02权利/支持；共用翻译适配待实现，提取不代核真 |
+| [T05](#t05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t05) | CURRENT_BINDING | L4联合研究组织；B1/B2从早期参与；第一阶段分步研究；第二阶段可重跑组织 | C03 LangGraph/官方检查点+C04共同研究函数；M依赖/本刊采用规则待实现，不接第二完整研究链 |
+| [T06](#t06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t06) | CURRENT_BINDING | L4顾问职责；第一阶段真实研判；后续按任务验证 | C04 B1任务共用C02/C03和模型接口；实际顾问贡献待内容验收 |
+| [T07](#t07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t07) | CURRENT_BINDING | L4帝师职责；从M02参与；第一阶段真实教学；后续按任务验证 | C04 B2任务共用C02/C03和模型接口；主动知识研究/自足教学仍待独立验收 |
+| [T08](#t08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t08) | CURRENT_BINDING | L4的C与M12准备；当期保存条件；真实结果后来再核 | C04条件任务+C02 ThesisVersion/Theme；无独立预测平台，真实成果待验 |
+| [T09](#t09) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t09) | CURRENT_BINDING | L5独立核查；不自签；第一阶段实际核查；第二阶段能力配置验证 | C04独立核查+C01回源+C02版本+C03返工；作者与审稿决定分离，业务能力未实现 |
+| [T10](#t10) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t10) | CURRENT_BINDING | L6主编/呈现；新命题回L4/L5；第一阶段实际格式；第四阶段正式渲染/交付 | C05 Jinja+第四阶段WeasyPrint，复用年度呈现；内容/实际文件对应未实现验收 |
+| [T11](#t11) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t11) | CURRENT_BINDING | 六层共享档案职责；第一篇保存；第二阶段跨周；第四阶段持久恢复 | C02 Pydantic/SQLAlchemy+私有版本文件；共享依赖/双as-of/纠错待实现，图检查点不是事实库 |
+| [T12](#t12) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t12) | CURRENT_BINDING | 年度A01—A12组织；复用六层；第四阶段缩区间演练；全年另验 | 年度双输入/A工序只组织C01—C05现有能力；无第二套引擎，年度成果待实现验收 |
+| [T13](#t13) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t13) | CURRENT_BINDING | 实际工具执行与配置记录；不替内容裁决；受控使用先行；二/三/四阶段逐步验证 | C03 LangGraph/检查点/单一重试预算+C06 Actions/uv；只设开始/健康长任务续跑，实际周运行未实现 |
 
 ## R01
 
 设计目的：当周深度主题到周刊
 
-责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：研究/生产路线未实现；此处为可追溯设计标注。
+责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：C01—C05共用主题闭环，六单元适配尚未实现；理论职责与真实成刊仍待验。
 
 理论出处：[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -59,7 +59,7 @@
 
 设计目的：跨周研究与长期专题
 
-责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：研究/生产路线未实现；此处为可追溯设计标注。
+责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：共用C02 Theme/版本与C03/C04跨周接续；实际成熟/入刊未实现验收。
 
 理论出处：[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)、[§16.5](CANONICAL_SYSTEM_SPEC_V5.md#th-16-5)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -80,7 +80,7 @@
 
 设计目的：精选/首次事实/进展/更正分支
 
-责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：研究/生产路线未实现；此处为可追溯设计标注。
+责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：共用C01/C02/C04/C05处理不同稿型，不为短稿另建流水线；业务路线未实现。
 
 理论出处：[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -101,7 +101,7 @@
 
 设计目的：定向补证与复选
 
-责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：研究/生产路线未实现；此处为可追溯设计标注。
+责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：C04发定向缺口，C03路由C01/C02与编辑复选；条件研究适配须实测，路线未实现。
 
 理论出处：[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -122,7 +122,7 @@
 
 设计目的：更正、复用与历史隔离
 
-责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：研究/生产路线未实现；此处为可追溯设计标注。
+责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：C02同一版本/依赖/限制+C03受控恢复；当前复用与历史回放分别验，业务路线未实现。
 
 理论出处：[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -143,7 +143,7 @@
 
 设计目的：年报双输入
 
-责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：研究/生产路线未实现；此处为可追溯设计标注。
+责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：T12组织双输入并共用C01—C05，无年度存储/研究/渲染分叉；年度业务未实现。
 
 理论出处：[§14](CANONICAL_SYSTEM_SPEC_V5.md#th-14)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -164,7 +164,7 @@
 
 设计目的：规范变更与中断重接
 
-责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：研究/生产路线未实现；此处为可追溯设计标注。
+责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：已有文档关联维护继续；研究任务原文装载/分段与C03持久恢复仍待实现，不由摘要恢复。
 
 理论出处：[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -185,7 +185,7 @@
 
 设计目的：GitHub每周自动启动、完整运行与授权交付
 
-责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：研究/生产路线未实现；此处为可追溯设计标注。
+责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：C06 Actions只设周开始+C03长任务续跑+C02期号/回执+C05文件；生产/已授权交付待实现。
 
 理论出处：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -195,9 +195,9 @@
 
 | 逻辑编号/动作 | 输入与启用条件 | 输出 | 成功去向/失败去向 | 理论与限制 |
 |---|---|---|---|---|
-| R08.F01 / T01 核阶段与运行授权 | 已验范围、GitHub周历/期次、具体参数和运行/交付分开开关；条件：前三阶段门与本次运行权限具备 | 可启动范围或停止原因 | 成功：T13；失败：T01 | [§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)；当前只实现文档关联，不启生产任务 |
-| R08.F02 / T13 每周触发后认领期号并运行完整内容链 | 计划期号、schedule/dispatch/续跑事件、实际Run、已有有效产物和当前规范；条件：认领/输入/能力/权限/资源有效，健康运行不抢占，已完成期不重复执行 | 真实开始/进展/结束、内容/实际文件与归档结果；漏跑/未完成及恢复记录 | 成功：T10；失败：T13 | [§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)；无主Run也须被独立观察；迟到按原期号，真实恢复/长任务拆分待验；GitHub绿灯不等于成品或送达 |
-| R08.F03 / T10 锁定经过核对的交付文件 | Edition、有效审核和真实文件；条件：实际内容与呈现对应且获准交付 | 目标刊次/文件版本/幂等标识 | 成功：T13；失败：T09/T10 | [§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)；新版本不自动授予再次外发 |
+| R08.F01 / T01 核阶段与运行授权 | 已验范围、GitHub周启动/资料期次、具体参数和运行/交付分开开关；条件：前三阶段门与本次运行权限具备 | 可启动范围或停止原因 | 成功：T13；失败：T01 | [§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)；当前只实现文档关联，不启生产任务 |
+| R08.F02 / T13 周开始认领期号并持续/续跑完整内容链 | 计划期号、schedule/dispatch/续跑事件、实际Run、已有有效产物和当前规范；条件：认领/输入/能力/权限/资源有效；健康前期不抢占，新期持久排队，已完成期不重复执行 | 真实开始/进展/跨job续跑/合格内容文件与归档；积压/漏跑/受阻及恢复事实 | 成功：T10；失败：T13 | [§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)；只设周开始，无固定完成/停止/发送时刻；跨job/跨周同一期恢复；图退出/维护绿灯不证明成品或送达 |
+| R08.F03 / T10 锁定经过核对的交付文件 | Edition、有效审核和真实文件；条件：实际内容/文件检查合格且已有交付授权，完成事件后立即接交付 | 目标刊次/文件版本/幂等标识 | 成功：T13；失败：T09/T10 | [§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)；不另等待发送钟点；未获交付授权仍可归档，版本变更不自动授予再次外发 |
 | R08.F04 / T13 查真实回执并归档 | 实际交付尝试和服务商结果；条件：状态有可核依据 | ACCEPTED/CONFIRMED/FAILED/UNKNOWN | 成功：T11；失败：T13 | [§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)；UNKNOWN不盲目重发；送达与服务商接受不同 |
 
 验收：按§25.13/W47/W48/W55核自然schedule、无Run漏跑、重复/跨周/夏令时/中断/平台故障与完整成果；手动/维护成功不代验周运行。
@@ -206,7 +206,7 @@
 
 设计目的：规范与交接控制
 
-责任：执行者组织；未来执行层维护决定；阶段：人工定位先行；第二阶段控制器；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：执行者组织；未来执行层维护决定；阶段：人工定位先行；第二阶段控制器；实现：C02权威决定/版本+C03 LangGraph交接；域内采用边界自行实现；研究控制未实现，维护能力另报。
 
 理论出处：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -226,7 +226,7 @@
 
 设计目的：全球发现与候选归并
 
-责任：L1发现职责；阶段：第一阶段人工取样；第四阶段生产增量；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：L1发现职责；阶段：第一阶段人工取样；第四阶段生产增量；实现：C01 feedparser/Trafilatura共享入口+C02候选；血缘/归并/覆盖薄适配待实现。
 
 理论出处：[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -246,7 +246,7 @@
 
 设计目的：选题、复选与整刊计划
 
-责任：L2编辑决定；阶段：第一阶段人工；第二阶段记录和接口；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：L2编辑决定；阶段：第一阶段人工；第二阶段记录和接口；实现：C04编辑任务+C02决定+C03 S依赖；价值/刊登规则待实现，不用分数自动拼刊。
 
 理论出处：[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -266,7 +266,7 @@
 
 设计目的：原作、证据与中文材料
 
-责任：L3取证/中文核对；阶段：第一阶段实际回源；第二阶段适配；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：L3取证/中文核对；阶段：第一阶段实际回源；第二阶段适配；实现：C01网页/Feed与按需Docling+C02权利/支持；共用翻译适配待实现，提取不代核真。
 
 理论出处：[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -286,7 +286,7 @@
 
 设计目的：问题界定与联合研究组织
 
-责任：L4联合研究组织；B1/B2从早期参与；阶段：第一阶段分步研究；第二阶段可重跑组织；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：L4联合研究组织；B1/B2从早期参与；阶段：第一阶段分步研究；第二阶段可重跑组织；实现：C03 LangGraph/官方检查点+C04共同研究函数；M依赖/本刊采用规则待实现，不接第二完整研究链。
 
 理论出处：[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -306,7 +306,7 @@
 
 设计目的：顾问B1本案研判
 
-责任：L4顾问职责；阶段：第一阶段真实研判；后续按任务验证；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：L4顾问职责；阶段：第一阶段真实研判；后续按任务验证；实现：C04 B1任务共用C02/C03和模型接口；实际顾问贡献待内容验收。
 
 理论出处：[§1.3](CANONICAL_SYSTEM_SPEC_V5.md#th-1-3)、[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§9](CANONICAL_SYSTEM_SPEC_V5.md#th-9)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -326,7 +326,7 @@
 
 设计目的：帝师B2知识研究与教学
 
-责任：L4帝师职责；从M02参与；阶段：第一阶段真实教学；后续按任务验证；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：L4帝师职责；从M02参与；阶段：第一阶段真实教学；后续按任务验证；实现：C04 B2任务共用C02/C03和模型接口；主动知识研究/自足教学仍待独立验收。
 
 理论出处：[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -346,7 +346,7 @@
 
 设计目的：条件推演与事前检验准备
 
-责任：L4的C与M12准备；阶段：当期保存条件；真实结果后来再核；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：L4的C与M12准备；阶段：当期保存条件；真实结果后来再核；实现：C04条件任务+C02 ThesisVersion/Theme；无独立预测平台，真实成果待验。
 
 理论出处：[§11](CANONICAL_SYSTEM_SPEC_V5.md#th-11)、[§8.8.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-8-3)、[§16.4](CANONICAL_SYSTEM_SPEC_V5.md#th-16-4)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -366,7 +366,7 @@
 
 设计目的：独立审稿与具体内容放行
 
-责任：L5独立核查；不自签；阶段：第一阶段实际核查；第二阶段能力配置验证；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：L5独立核查；不自签；阶段：第一阶段实际核查；第二阶段能力配置验证；实现：C04独立核查+C01回源+C02版本+C03返工；作者与审稿决定分离，业务能力未实现。
 
 理论出处：[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -386,7 +386,7 @@
 
 设计目的：成稿、整刊与实际阅读文件
 
-责任：L6主编/呈现；新命题回L4/L5；阶段：第一阶段实际格式；第四阶段正式渲染/交付；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：L6主编/呈现；新命题回L4/L5；阶段：第一阶段实际格式；第四阶段正式渲染/交付；实现：C05 Jinja+第四阶段WeasyPrint，复用年度呈现；内容/实际文件对应未实现验收。
 
 理论出处：[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -406,7 +406,7 @@
 
 设计目的：共享档案、历史查询与纠错
 
-责任：六层共享档案职责；阶段：第一篇保存；第二阶段跨周；第四阶段持久恢复；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：六层共享档案职责；阶段：第一篇保存；第二阶段跨周；第四阶段持久恢复；实现：C02 Pydantic/SQLAlchemy+私有版本文件；共享依赖/双as-of/纠错待实现，图检查点不是事实库。
 
 理论出处：[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -426,7 +426,7 @@
 
 设计目的：年报双输入组织
 
-责任：年度A01—A12组织；复用六层；阶段：第四阶段缩区间演练；全年另验；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：年度A01—A12组织；复用六层；阶段：第四阶段缩区间演练；全年另验；实现：年度双输入/A工序只组织C01—C05现有能力；无第二套引擎，年度成果待实现验收。
 
 理论出处：[§2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-2-3)、[§14](CANONICAL_SYSTEM_SPEC_V5.md#th-14)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -446,7 +446,7 @@
 
 设计目的：模型、工具、投入及GitHub每周自动运行支撑
 
-责任：实际工具执行与配置记录；不替内容裁决；阶段：受控使用先行；二/三/四阶段逐步验证；实现：研究/生产模块未实现；已有文档维护能力另行报告。
+责任：实际工具执行与配置记录；不替内容裁决；阶段：受控使用先行；二/三/四阶段逐步验证；实现：C03 LangGraph/检查点/单一重试预算+C06 Actions/uv；只设开始/健康长任务续跑，实际周运行未实现。
 
 理论出处：[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -458,7 +458,7 @@
 |---|---|---|---|---|
 | T13.L01 / T13 核调用边界 | 实际任务、配置、材料用途和资源；条件：获准且范围相称，或明确受控试用 | 本次可调用范围及限制 | 成功：T13；失败：T01 | [§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)；未知预算不当无限授权；能力可用不等于可付费/外发 |
 | T13.L02 / T13 执行并记录真实结果 | 允许的操作、输入与工具；条件：实际请求与操作可确认 | 真实输出/错误、用量/估计及失败记录 | 成功：T04/T05/T09；失败：T13 | [§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§17.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-1)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)；不由模型补造版本、费用、页码、成功回执 |
-| T13.L03 / T13 核每周进展并按原因恢复或停止 | 预登记应运行期次、实际Run/进展/失败、有效产物及剩余允许资源；条件：先查真实运行/认领/限制，恢复原因及次数/窗口/预算有据 | 漏跑/未完成诊断、同一期号有限补跑/恢复/停止及告警记录 | 成功：T01/T11；失败：T13 | [§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)；独立观察/持久检查点/业务原子认领须实测；不把cron或绿灯当整刊完成，不无限补跑或重复外发 |
+| T13.L03 / T13 核健康进展、同一期续跑或有界故障恢复 | 预登记期次/积压、Run/真实进展或未知、持久检查点/有效产物和剩余允许资源；条件：区分健康长任务/排队与真实故障/受阻；同一期thread及认领/版本有效，故障恢复次数和预算有据 | 健康持续/跨job续跑、真实积压/漏跑/受阻及有限恢复/告警记录 | 成功：T01/T11；失败：T13 | [§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)；只设开始，不以总耗时或钟点无成品强停/重启；原生检查点/副作用须验；重试一处主控，不重复费用/交付 |
 
 验收：按§25.13及原§19核每周真实触发、完整内容执行、独立漏跑/进展检查、有界补跑/恢复与权限/费用；当前均未实现，不以维护CI代验。
 
@@ -471,6 +471,7 @@
 | [tech-shared-25-1 / §25.1](CANONICAL_SYSTEM_SPEC_V5.md#tech-shared-25-1) | 本章的设计范围、依据与效力 |
 | [tech-shared-25-10 / §25.10](CANONICAL_SYSTEM_SPEC_V5.md#tech-shared-25-10) | 理论修订怎样自动传到模块、路线与逻辑 |
 | [tech-shared-25-13 / §25.13](CANONICAL_SYSTEM_SPEC_V5.md#tech-shared-25-13) | GitHub Actions每周自动启动、完整运行与漏跑恢复 |
+| [tech-shared-25-14 / §25.14](CANONICAL_SYSTEM_SPEC_V5.md#tech-shared-25-14) | 成熟项目优先的复用、整合与精简方案 |
 | [tech-shared-25-2 / §25.2](CANONICAL_SYSTEM_SPEC_V5.md#tech-shared-25-2) | 理论要求怎样导出总体技术路线 |
 | [tech-shared-25-3 / §25.3](CANONICAL_SYSTEM_SPEC_V5.md#tech-shared-25-3) | 总体架构与应用形态 |
 | [tech-shared-25-6 / §25.6](CANONICAL_SYSTEM_SPEC_V5.md#tech-shared-25-6) | 共享数据、模块接口与控制边界 |
