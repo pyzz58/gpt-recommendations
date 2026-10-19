@@ -8,7 +8,7 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`898a90a4f04db5f2b5f71289bfcd1f8e725b8e448fbf7aa6b566b93978da7715`。
+当前规范SHA-256：`1a4c7ee9130965c43572358e3fa0bb4def3ad8ac5aa5edfaed172037012ef89d`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
@@ -81,16 +81,16 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 46 | [W44 必要时的专业分工比较](#w44) | 条件能力 | T09/T13 | [W43](#w43) | 待开始 / CURRENT_BINDING |
 | 47 | [W45 新例复核与有限能力范围更新](#w45) | 真实案例与能力验收 | T09/T13/T01 | [W43](#w43) | 待开始 / CURRENT_BINDING |
 | 48 | [G03 第三阶段门：专业增益与有限能力](#g03) | 阶段门 | T01/T04/T05/T06/T07/T08/T09/T13 | [W42](#w42)、[W43](#w43)、[W44](#w44)、[W45](#w45) | 待开始 / CURRENT_BINDING |
-| 49 | [W46 生产参数与私有持久环境落实](#w46) | 代码与接口工作包 | T01/T11/T13/R08 | [G03](#g03) | 待开始 / CURRENT_BINDING |
-| 50 | [W47 生产触发、增量与任务身份](#w47) | 代码与接口工作包 | T13/T01/T02/R08 | [W46](#w46)、[W20](#w20)、[W21](#w21)、[W18](#w18) | 待开始 / CURRENT_BINDING |
-| 51 | [W48 生产恢复、预算结算与故障告警](#w48) | 代码与接口工作包 | T13/T01/T11/R07/R08 | [W47](#w47)、[W18](#w18)、[W17](#w17)、[W33](#w33) | 待开始 / CURRENT_BINDING |
+| 49 | [W46 GitHub周运行参数与私有持久环境落实](#w46) | 代码与接口工作包 | T01/T11/T13/R08 | [G03](#g03) | 待开始 / CURRENT_BINDING |
+| 50 | [W47 每周schedule入口、期号认领与完整运行](#w47) | 代码与接口工作包 | T13/T01/T02/R08 | [W46](#w46)、[W20](#w20)、[W21](#w21)、[W18](#w18) | 待开始 / CURRENT_BINDING |
+| 51 | [W48 独立漏跑检查、有界补跑与运行恢复](#w48) | 代码与接口工作包 | T13/T01/T11/R07/R08 | [W47](#w47)、[W18](#w18)、[W17](#w17)、[W33](#w33) | 待开始 / CURRENT_BINDING |
 | 52 | [W49 正式阅读格式、审后锁定与出版身份](#w49) | 代码与接口工作包 | T10/T09/T11/R08 | [W46](#w46)、[W32](#w32)、[W48](#w48) | 待开始 / CURRENT_BINDING |
 | 53 | [W50 授权交付、回执与重复投递防护](#w50) | 代码与接口工作包 | T13/T10/T11/R08 | [W49](#w49)、[W48](#w48) | 待开始 / CURRENT_BINDING |
 | 54 | [W51 私有归档、备份与真实恢复](#w51) | 代码与接口工作包 | T11/T13 | [W46](#w46)、[W48](#w48)、[W49](#w49) | 待开始 / CURRENT_BINDING |
 | 55 | [W52 年度双输入与旧判断审计](#w52) | 代码与接口工作包 | T12/R06/T11/T04 | [W51](#w51)、[W39](#w39)、[W40](#w40) | 待开始 / CURRENT_BINDING |
 | 56 | [W53 年度新综合、教学与重新独审](#w53) | 代码与接口工作包 | T12/R06/T05/T09/T10 | [W52](#w52)、[W43](#w43)、[W49](#w49) | 待开始 / CURRENT_BINDING |
 | 57 | [W54 R06年度缩区间完整回放](#w54) | 路线集成验收 | R06/T12/T11/T09/T10 | [W52](#w52)、[W53](#w53) | 待开始 / CURRENT_BINDING |
-| 58 | [W55 连续离线周刊与生产故障集成验收](#w55) | 路线集成验收 | R08/R01/R03/R05/R07/T01/T10/T11/T13 | [W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W54](#w54) | 待开始 / CURRENT_BINDING |
+| 58 | [W55 每周自然触发、连续周刊与漏跑故障验收](#w55) | 路线集成验收 | R08/R01/R03/R05/R07/T01/T10/T11/T13 | [W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W54](#w54) | 待开始 / CURRENT_BINDING |
 | 59 | [G04 第四阶段门：生产离线验收与年度回放](#g04) | 阶段门 | R01/R03/R05/R06/R07/R08/T01/T02/T04/T05/T09/T10/T11/T12/T13 | [W46](#w46)、[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W52](#w52)、[W53](#w53)、[W54](#w54)、[W55](#w55) | 待开始 / CURRENT_BINDING |
 
 <a id="w01"></a>
@@ -1771,7 +1771,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
 
 <a id="w46"></a>
-## W46｜生产参数与私有持久环境落实
+## W46｜GitHub周运行参数与私有持久环境落实
 
 顺序：49/59；阶段：4；类型：代码与接口工作包。
 
@@ -1785,18 +1785,21 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
 
-**输入**：已过阶段门的内容链、实际宿主/存储/备份位置及运行授权。
+**输入**：已过阶段门的内容链；用户确认GitHub Actions每周自动执行；具体周历、私有档案及独立观察/告警参数待落实。
 
 **交付物**：
 
 - 周界/时区/截点/出刊参数、服务/预算/渠道开关及变更记录。
 - 私有持久存储、访问范围、版本迁移与真实可恢复数据边界。
+- GitHub默认分支/运行入口/周历、时区与夏令时、期号/截点、延迟/无进展阈值、有限补跑及实际平台时限的明确配置。
+- 主任务之外的独立漏跑/进展观察与告警位置/最低权限；未落实时标保障范围受限。
 
 **验收清单**（另核Q01—Q07）：
 
-- [ ] 正向：未定项逐项落实到最高说明/实际配置，真实研究档案与公开规范目录分离，密钥不入档。
+- [ ] 正向：明确GitHub每周运行目标与全部实际未定参数；研究档案/锁/检查点持久且私有，runner临时文件不作唯一原件，密钥不入档。
 - [ ] 反向：自动套用日报时区、邮箱、密钥、预算或将未知参数当默认许可均失败。
 - [ ] 衔接：W47—W55只消费本步明确配置；未获外发/付费授权仍可按允许范围离线预演。
+- [ ] 核默认分支/工作流启用、实际权限/额度/时区及独立观察可达性；不把GitHub托管任务环境当永久服务器。
 - [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
 
 **不通过时**：缺必需参数停止依赖它的操作，继续无依赖的离线修复；不擅自部署或购买。
@@ -1806,7 +1809,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
 
 <a id="w47"></a>
-## W47｜生产触发、增量与任务身份
+## W47｜每周schedule入口、期号认领与完整运行
 
 顺序：50/59；阶段：4；类型：代码与接口工作包。
 
@@ -1820,18 +1823,20 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-4-1)、[§4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-4-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
 
-**输入**：已确定调度/区间、获准来源和同一期号/范围的任务身份。
+**输入**：已确认周历/区间/时区、获准来源、真实业务入口、持久应运行期次与最小预算门。
 
 **交付物**：
 
-- 触发与增量游标、原子认领/去重、运行任务及重叠窗口处理。
-- NC-043中任务级重入证据，不与操作/出版/交付身份混用。
+- 拟建独立intelligence-weekly.yml生产入口的实际实现：schedule、受控workflow_dispatch/恢复均走同一业务入口；当前未创建。
+- 预登记期次、原子认领/去重、Run关联、源增量游标及完整R01/R03实际运行结果。
+- §25.13 T13.AUTO01/AUTO02/AUTO03与NC-043任务级重入证据；不与操作/出版/交付身份混用。
 
 **验收清单**（另核Q01—Q07）：
 
-- [ ] 正向：同一任务重复触发不重复启动有效执行；合法新周/新范围能独立运行，断源保留覆盖缺口。
-- [ ] 反向：重复触发增加费用/重置游标、跨实例同时认领、遗漏迟到更新及旧限制绕过均失败。
-- [ ] 衔接：接已验R01/R03，重启用W48恢复；发现与研究/出版/交付开关分别生效。
+- [ ] 正向：无用户电脑/聊天/日报/人工dispatch参与也能从真实schedule自动启动并完成已验内容链或留下真实受阻原因；同一期号重复事件只登记空操作。
+- [ ] 反向：无主Run、假入口/echo/只跑维护、忽略失败、错默认分支/禁用、延迟跨周重建期号、同一期多次费用/成品均失败。
+- [ ] 衔接：与W48独立观察/恢复、W49成品、W51档案衔接；健康运行不被补跑取消，不同周不被并发队列静默挤掉。
+- [ ] 业务期号取固定资料周界/时区而非Run ID或晚到实际日期；夏令时、只改触发时间/代码及重复dispatch对照通过。
 - [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
 
 **不通过时**：先查任务事实/锁状态和有效检查点，不盲目重跑全部或修改日报启动器。
@@ -1841,7 +1846,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
 
 <a id="w48"></a>
-## W48｜生产恢复、预算结算与故障告警
+## W48｜独立漏跑检查、有界补跑与运行恢复
 
 顺序：51/59；阶段：4；类型：代码与接口工作包。
 
@@ -1855,18 +1860,21 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§17.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-1)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
 
-**输入**：真实有效检查点、操作/用量/额度与并发任务状态。
+**输入**：预登记应运行期次、真实Run/开始/进展/结束与成品、持久认领/检查点、操作/用量/额度和独立观察入口。
 
 **交付物**：
 
-- 断源/模型故障/截断/中断恢复、有限重试及可核告警。
-- 跨任务预算预留/结算/未知账单、重启对账与操作级幂等证据。
+- §25.13 T13.AUTO04/AUTO05/AUTO06：真实进展、持久检查点、独立漏跑/卡住观察、有界dispatch/恢复及已获准告警。
+- 跨任务预算预留/结算/未知账单、重启对账、旧持有者迟到写入防护及操作幂等证据。
+- 无主Run/被禁用/凭据失效/排队/进展停滞/runner结束/平台故障的区分诊断，实际保障范围与未完成记录。
 
 **验收清单**（另核Q01—Q07）：
 
-- [ ] 正向：只恢复仍有效范围；已完成操作不会重复计费/重复提交；未知费用与真实已知金额分开。
-- [ ] 反向：崩溃丢预留、超预算重试、任务ID当所有操作ID、模型伪造回执或清除限制均失败。
-- [ ] 衔接：W15核恢复采用，W49核版本冻结，故障注入与内容/主要投入结果一同交W55。
+- [ ] 正向：主任务根本未启动时仍能发现缺期；健康排队/运行与失效分别判断，已完成期不补跑，未完成期按相同业务身份及有效检查点有界恢复。
+- [ ] 反向：仅依赖主任务内部自检、虚假更新时间、独立观察失联未发现、未知费用无限重试、旧运行迟到覆盖/重复提交/外发均失败。
+- [ ] 衔接：W15核当前采用，W47核认领，W49/W50核成品/回执，W51核新runner取回与恢复；完整故障链交W55验。
+- [ ] 当前runner/job时限前保存有效检查点并受控续跑；硬故障按最近持久版本恢复，仍服从质量/权限/预算，不能无限常驻。
+- [ ] GitHub不可用/观察器缺权限时如实未补跑并从已获准独立通道告警；只有GitHub自身备用cron时不得冒称独立兜底通过。
 - [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
 
 **不通过时**：未知先查询/对账，必要时保持受阻；保留已有有效产物，不自动扩大资源。
@@ -2085,7 +2093,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
 
 <a id="w55"></a>
-## W55｜连续离线周刊与生产故障集成验收
+## W55｜每周自然触发、连续周刊与漏跑故障验收
 
 顺序：58/59；阶段：4；类型：路线集成验收。
 
@@ -2099,18 +2107,23 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
 
-**输入**：获准小规模来源、已验内容链、实际配置及隔离故障/交付测试环境。
+**输入**：获准来源、已验内容链、实际GitHub周历/生产入口、独立观察/持久档案及隔离故障/交付测试环境。
 
 **交付物**：
 
 - 连续多次完整离线周刊的质量/成本/失败记录和实际刊次清单。
 - 断源、超预算、重复触发、模型故障、审后修改、接受后超时、重启/备份恢复的真实结果。
+- 按§25.13逐项留真实schedule事件/Run与业务期号；临时试验有测试期号、到期失效和试后清理证据，真实每周自然触发另列。
+- 无主Run、工作流被禁用/凭据失效、排队/无进展、跨周/夏令时、重复补跑、硬中断/续跑与GitHub/独立观察故障矩阵。
 
 **验收清单**（另核Q01—Q07）：
 
 - [ ] 正向：每个刊次内容/版本/出版文件可回查；故障后保持有限采用、预算和幂等边界。
 - [ ] 反向：一次成功当连续稳定、离线当真实送达、恢复丢限制、重复操作/发送或未知当成功均失败。
 - [ ] 衔接：R01/R03内容、R05当前限制、R07恢复和R08交付衔接共同通过；至少覆盖一个恢复后的完整刊次。
+- [ ] 必须有真实schedule自然触发的完整链证据，区别临时schedule、workflow_dispatch、人工执行与规范CI；后者不能代验每周启动。
+- [ ] 独立观察先发现漏跑再同一期号补跑，健康/已完成任务不重复执行；故障时如实告警/未完成，无重复主要调用费用或投递。
+- [ ] 连续预演/真实周运行与实际成品/持久原稿一一对应，未自然经过的周/未覆盖平台故障明确待验，不用模拟充数。
 - [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
 
 **不通过时**：按具体故障回相应包并重验受影响范围，正式外发/自动发行仍需实际明确授权。
@@ -2134,7 +2147,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-2-3)、[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§5.2](CANONICAL_SYSTEM_SPEC_V5.md#th-5-2)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§7.3](CANONICAL_SYSTEM_SPEC_V5.md#th-7-3)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§8.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§14](CANONICAL_SYSTEM_SPEC_V5.md#th-14)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§15.2](CANONICAL_SYSTEM_SPEC_V5.md#th-15-2)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§18.1](CANONICAL_SYSTEM_SPEC_V5.md#th-18-1)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
 
-**输入**：W46—W55实际持久环境、连续离线刊次、故障/恢复和缩区间年度证据。
+**输入**：W46—W55实际GitHub周运行、私有档案/独立观察、连续离线刊次、自然schedule/漏跑/恢复及年度缩区间证据。
 
 **交付物**：
 
@@ -2146,6 +2159,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - [ ] 内容与证据：连续多次完整离线周刊及原定断源/超预算/重复/模型/审后改稿/未知回执/恢复场景均有实际结果。
 - [ ] 范围与质量：年报双输入、漏报/纠错、旧判断时点与年度新综合成立；短演练明确不是全年验证。
 - [ ] 禁止的捷径：阶段通过不自动打开外发、收费或自动发行；具体预算/渠道获另行明确授权且相应运行验收通过才启用。
+- [ ] 每周schedule自动触发、完整业务链、无Run漏跑的独立检测/同一期补跑及平台失效告警均有实际结果；手动成功、维护CI或cron存在不代验。用户已确认周运行方向，实际启用仍按已落实配置和运行验收；外发/自动发行/费用沿原明确授权。
 - [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
 
 **不通过时**：保留实际证据与未过项，退回相应工作包修订；不能以后阶段工具或维护检查替代本阶段质量门。
@@ -2328,7 +2342,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
 
 <a id="module-t13"></a>
-### T13｜工具、模型、投入及运行支撑
+### T13｜模型、工具、投入及GitHub每周自动运行支撑
 
 设计及完整逻辑：[技术关联](TECHNICAL_TRACE.md#t13)。
 
@@ -2339,7 +2353,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 - [ ] T13.L01 核调用边界：条件=获准且范围相称，或明确受控试用；实际输出=本次可调用范围及限制；限制=未知预算不当无限授权；能力可用不等于可付费/外发。
 - [ ] T13.L02 执行并记录真实结果：条件=实际请求与操作可确认；实际输出=真实输出/错误、用量/估计及失败记录；限制=不由模型补造版本、费用、页码、成功回执。
-- [ ] T13.L03 按原因恢复或停止：条件=新信息价值与重试原因可核；实际输出=有限重试/恢复/停止及复验任务；限制=文档关联检查未实现生产重入、预算预留或恢复控制。
+- [ ] T13.L03 核每周进展并按原因恢复或停止：条件=先查真实运行/认领/限制，恢复原因及次数/窗口/预算有据；实际输出=漏跑/未完成诊断、同一期号有限补跑/恢复/停止及告警记录；限制=独立观察/持久检查点/业务原子认领须实测；不把cron或绿灯当整刊完成，不无限补跑或重复外发。
 - [ ] 所列适用工作包的实际证据与本次模块版本一致；记录已实现/未实现、通过/失败/未验范围，按原逻辑去向返工。
 
 
