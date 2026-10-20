@@ -159,6 +159,20 @@ def _snapshot(base, state, meeting, audiovisual,
             _actual(state, name, sid)
     source_inventory = film.inventory(
         base, source_digest=state["source_digest"])
+    # Stable cast/prop names are not evidence of cross-clip consistency.
+    # Require complete explicit tracked handoff when the same entity appears
+    # across at least one adjacent cut. Otherwise be candid about no media.
+    shared = []
+    shots_by_id = {sh["id"]: sh for sh in base["shots"]}
+    for left, right in zip(state["shot_ids"], state["shot_ids"][1:]):
+        one, two = shots_by_id[left], shots_by_id[right]
+        left_ids = set(one.get("character_ids", []) + one.get("prop_ids", []))
+        right_ids = set(two.get("character_ids", []) + two.get("prop_ids", []))
+        shared.append({
+            "from_shot": left, "to_shot": right,
+            "shared_known_entity_ids": sorted(left_ids & right_ids),
+        })
+    requires_tracks = any(edge["shared_known_entity_ids"] for edge in shared)
     report = _report(base, state)
     return ({
         "source_digest": state["source_digest"],
@@ -173,6 +187,9 @@ def _snapshot(base, state, meeting, audiovisual,
         "real_complete_entity_track_report_digest": (
             team.fingerprint(report) if report is not None else None),
         "real_complete_entity_track_coverage": report is not None,
+        "declared_adjacent_shared_entities": shared,
+        "explicit_track_review_required": requires_tracks,
+        "missing_required_track_report": requires_tracks and report is None,
     }, source_inventory, report)
 
 
@@ -358,7 +375,11 @@ def validate(base, state, meeting, audiovisual, review, *,
         "explicit_entity_track_report_available": report is not None,
         "actual_existing_entity_track_findings": issue_codes,
         "actual_existing_entity_track_blockers": blockers,
-        "visual_rework_required": bool(changed) or bool(blockers),
+        "visual_rework_required": (
+            bool(changed) or bool(blockers) or
+            snap["missing_required_track_report"]),
+        "same_entity_cross_cut_tracking_missing": (
+            snap["missing_required_track_report"]),
         "actual_media_visual_identity_verified": False,
         "actual_lighting_geometry_verified": False,
         "ready_to_certify_or_publish": False,
