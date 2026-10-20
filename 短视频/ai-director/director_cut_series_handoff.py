@@ -309,32 +309,36 @@ def series_from_selected_cut(original_handoff, original_dossier,
                 "difference_s": round(current_budget-before_budget, 4),
                 "director_reconfirmation_required": True,
             })
-    # Do not silently claim a 3x80s director cut if the reviewed script yields
-    # 3x86s; the distinct actor/dossier/beat timings are the new truth.
-    new_series = series.build_per_episode_crew(
-        final_handoff, final_dossier, final_breakdown)
+    # If the writer changes the selected episode timing, no new crew may be
+    # handed out: the real director must re-select a truthful new cut FIRST.
+    # This prevents consumers from reading a planning-only warning but then
+    # accidentally dispatching the attached, unreviewed production packets.
+    new_series = None
     absolute = []
-    for episode in new_series["episodes"]:
-        epbase = episode["authoritative_episode_base"]
-        try:
-            card = evidence.build_card(epbase)
-            timeline = final_timeline.compile_final_timeline(epbase, card)
-        except (evidence.ClosingCardError,
-                final_timeline.SeriesTimelineError):
-            raise CutSeriesHandoffError(
-                "CUT_SERIES_FINAL_ABSOLUTE_EDITOR_TIMELINE_REJECTED") from None
-        _need(timeline is not None and
-              timeline["fits_90_second_budget"] is True and
-              timeline["last_card_is_final_segment"] is True and
-              timeline["actual_final_media_verified"] is False,
-              "CUT_SERIES_FALSE_COMPLETE_EPISODE_BUDGET")
-        absolute.append({
-            "episode_id": episode["episode_id"],
-            "final_duration_s": timeline["planned_final_duration_s"],
-            "final_absolute_editor_timeline_digest":
-                team.fingerprint(timeline),
-            "media_verified": False,
-        })
+    if not drift:
+        new_series = series.build_per_episode_crew(
+            final_handoff, final_dossier, final_breakdown)
+        for episode in new_series["episodes"]:
+            epbase = episode["authoritative_episode_base"]
+            try:
+                card = evidence.build_card(epbase)
+                timeline = final_timeline.compile_final_timeline(epbase, card)
+            except (evidence.ClosingCardError,
+                    final_timeline.SeriesTimelineError):
+                raise CutSeriesHandoffError(
+                    "CUT_SERIES_FINAL_ABSOLUTE_EDITOR_TIMELINE_REJECTED") from None
+            _need(timeline is not None and
+                  timeline["fits_90_second_budget"] is True and
+                  timeline["last_card_is_final_segment"] is True and
+                  timeline["actual_final_media_verified"] is False,
+                  "CUT_SERIES_FALSE_COMPLETE_EPISODE_BUDGET")
+            absolute.append({
+                "episode_id": episode["episode_id"],
+                "final_duration_s": timeline["planned_final_duration_s"],
+                "final_absolute_editor_timeline_digest":
+                    team.fingerprint(timeline),
+                "media_verified": False,
+            })
     return {
         "kind": "source_review_bound_selected_director_cut_series_preview",
         "version": VERSION,
@@ -355,11 +359,17 @@ def series_from_selected_cut(original_handoff, original_dossier,
         "absolute_final_editor_timeline_receipts": absolute,
         "director_cut_budget_drift": drift,
         "must_reopen_director_selection_if_budget_drift": bool(drift),
-        "new_team_state_pristine_and_unapproved": all(
-            all(task["status"] == "pending" and task["revision"] == 0
-                and task["deliverable"] is None
-                for task in episode["crew"]["tasks"].values())
-            for episode in new_series["episodes"]),
+        "new_team_state_pristine_and_unapproved": (
+            new_series is not None and all(
+                all(task["status"] == "pending" and task["revision"] == 0
+                    and task["deliverable"] is None
+                    for task in episode["crew"]["tasks"].values())
+                for episode in new_series["episodes"])),
+        "new_crew_packets_withheld_until_director_reconfirms": bool(drift),
+        "next_step": (
+            "return_to_director_cut_comparison_for_new_screenplay"
+            if drift else
+            "fresh_crew_planning_requires_separate_real_director_review"),
         "old_crews_not_migrated_to_new_script": True,
         "new_source_structural_review_does_not_prove_author_identity": True,
         "all_screenplay_beat_revisions_need_real_editorial_review": is_rewrite,
