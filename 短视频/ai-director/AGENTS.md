@@ -1,3 +1,15 @@
+## QO-D03 × QO-D09：总导演整集声画节奏与观众注意力（2026-10-20；暂不测试）
+
+新增 `director_episode_rhythm.py`，并接入 `director_creative_integration` 以及现有 `agent_role_contracts` 的声音、剪辑和总导演最终回执校验。它仍是**同一总导演**对整部作品的时间、观众信息、情绪弧线、母题和声画对位的创作判断，而不是第二套专业剪辑/时间线引擎；既有 `director_montage_editor_conform`、`director_media_otio_export`、`director_editorial_montage` 和最后依据页预算保持唯一后期工程权威。
+
+每镜有锁定秒数内的具体注意力节拍，每一真实剪口**只做一次总导演取舍、两种剪法及其艺术成本**，详细到表演停顿、声音/沉默进入时刻、切点前后观众认知；不得机械“三秒一切”、擅改台词/事实、拉长或裁去原剧情。J/L-cut 与转场实际把柄未知时只能为候选，不能虚构音轨或片段已生成。若必须更改剧本结构或时间预算，只能通过QO-D12提出来源锁定、未派发的返工/编剧提案，不能直接更新旧base或旧视频工程。
+
+新base**显式**选择 `director_rhythm_mode={kind:'director_episode_rhythm_required',before_sound_and_edit:true}` 时还必须已启用 `director_integrated_creative_mode`；声音与剪辑部门缺 `rhythm_pre_plan`、且总导演自身计划存在明确应返工事项时不可派发；`director_final` 缺真实sound/edit交付之后形成的 `rhythm_post_plan` 不可进入完整终审。制作前版本不绑定正常后续专业交稿，制作后绑定真实声音/剪辑交付摘要和revision，严格禁止串稿。旧项目未显式启用不改变既有兼容性。
+
+**QO-D05/D07 同步更新**：第20号规范的同一总导演跨镜审查为一剪口一工作单、内含八项专业判断和两套影片手法；实体角色/道具缺事件track不构成“外观已验证”，同场摄影轴线和主光源明确变化须解释为有意断裂或返工。新的QO-D03/D09详尽规定见 `skills/21-director-whole-episode-attention-rhythm-and-sonic-arc.md`。这批都在 Draft PR #67；用户持续要求“先不测试”，本轮无新单元、媒体生成、付费API和真人盲审，不合并main。JSON及Markdown质量账状态均为`in_progress`。
+
+---
+
 ## QO-D16｜同一总导演对真实专业冲突的艺术仲裁与终审阻断（2026-10-14，暂不测试）
 
 新增 `director_conflict_arbitration.py`，专门补上原 `director_delivery_review.py`（QO-D16）只会记录两专业冲突和一条 `director_resolution`、却无法真实比较摄影/表演/声音/剪辑方案及其艺术代价的问题。仲裁不是新导演Agent：必须先有**两个实际交稿的专业部门**和 QO-D16 当前版本的真正冲突记录，同时用 QO-D10 制作后全片艺术自评保护好的独特镜头，逐冲突公平解释双方专业依据、观众失去的叙事因果、两种不同视听路线上观众收益与艺术成本，并指定专业岗位修改、原导演锁稿修订、编剧故事返修或媒体待验之一。其引文必须存在于真正岗位交付的**文字值**中，不能仅凭 JSON 字段名冒充证据。
