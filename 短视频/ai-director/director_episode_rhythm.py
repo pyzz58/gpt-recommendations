@@ -367,6 +367,15 @@ def validate(base, state, meeting, audiovisual, rhythm, *,
     _need(isinstance(joins, list) and len(joins) == cut_count,
           "RHYTHM_EVERY_ACTUAL_CUT_REQUIRED_ONCE")
     revision_requests, media_questions, unknown_audio = [], [], []
+    shot_revision_requests = [
+        {"shot_id": row["shot_id"], "owner": row["owner"],
+         "reason": row["exact_revision_instruction"]}
+        for row in plans if row["decision"] in (
+            "director_redesign_required", "specialist_revision_required",
+            "screenwriter_change_required")]
+    shot_media_questions = [
+        row["shot_id"] for row in plans
+        if row["decision"] == "defer_until_real_media"]
     for i, row in enumerate(joins):
         _shape(row, SEAM, "RHYTHM_SEAM_SHAPE")
         before, after = state["shot_ids"][i:i+2]
@@ -456,16 +465,17 @@ def validate(base, state, meeting, audiovisual, rhythm, *,
         "number_of_original_shots": len(plans),
         "real_cut_boundaries": cut_count,
         "proposed_revisions": revision_requests,
+        "proposed_shot_revisions": shot_revision_requests,
         "unresolved_media_cut_choices": media_questions,
+        "unresolved_media_shot_choices": shot_media_questions,
         "possible_j_l_cut_media_handle_dependencies": unknown_audio,
         "source_total_duration_unchanged": True,
         "same_episode_sound_edit_deliveries_verified": (
             phase == "after_sound_and_edit_design"),
         "has_unresolved_director_or_editor_decisions": bool(
-            revision_requests or media_questions or any(
-                r["decision"] not in (
-                    "keep_as_directed", "defer_until_real_media")
-                for r in plans)),
+            revision_requests or shot_revision_requests),
+        "media_only_questions_require_separate_real_review": bool(
+            media_questions or shot_media_questions or unknown_audio),
         "real_media_or_human_aesthetic_quality_verified": False,
         "no_model_or_paid_media_calls": True,
         "may_render_or_publish": False,
@@ -483,6 +493,9 @@ def departmental_context(base, state, meeting, audiovisual, rhythm, task_id,
     _need(proof["phase"] == "before_specialists" or
           task_id in ("quality_review", "director_final"),
           "RHYTHM_POST_CREW_REPORT_NOT_NEW_SOUND_EDIT_PROMPT")
+    if task_id in ("sound", "editing_animation"):
+        _need(not proof["has_unresolved_director_or_editor_decisions"],
+              "RHYTHM_DIRECTOR_OR_WRITER_REVISION_BLOCKS_SPECIALIST_WORK")
     return {
         "kind": "source_locked_director_rhythm_for_existing_crew",
         "plan_digest": proof["plan_digest"],
