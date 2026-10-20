@@ -24,6 +24,7 @@ import director_visual_language as visual_language
 import director_artistic_methods as artistic_methods
 import director_action_rescue as action_rescue
 import director_creative_integration as creative_gates
+import director_episode_rhythm as rhythm_arc
 
 CONTRACT_VERSION = "1.0"
 MAX_CONTEXT_CHARS = 220_000
@@ -442,17 +443,50 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
     return schema
 
 
+def _director_rhythm_specialist_gate(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, rhythm_pre_plan, rhythm_post_plan):
+    """One director's optional sourced timing guidance, no second scheduler."""
+    setting = base.get("director_rhythm_mode")
+    desired = {"kind": "director_episode_rhythm_required",
+               "before_sound_and_edit": True}
+    if setting is not None and setting != desired:
+        raise ValueError("CREW_RHYTHM_MODE_INVALID")
+    required = setting is not None
+    if required and base.get("director_integrated_creative_mode") != creative_gates.MODE:
+        raise ValueError("CREW_RHYTHM_REQUIRES_SAME_DIRECTOR_INTEGRATION")
+    if rhythm_pre_plan is not None and task_id not in (
+            "sound", "editing_animation"):
+        raise ValueError("CREW_PRE_RHYTHM_ONLY_FOR_SOUND_AND_EDITOR")
+    if rhythm_post_plan is not None and task_id != "director_final":
+        raise ValueError("CREW_POST_RHYTHM_ONLY_FOR_DIRECTOR_FINAL")
+    if required and task_id in ("sound", "editing_animation"):
+        if rhythm_pre_plan is None:
+            raise ValueError("CREW_SOUND_EDIT_RHYTHM_REQUIRED")
+    if required and task_id == "director_final" and rhythm_post_plan is None:
+        raise ValueError("CREW_FINAL_RHYTHM_FROM_REAL_SOUND_EDIT_REQUIRED")
+    if rhythm_pre_plan is None:
+        return None
+    if department_command is None or audiovisual_plan is None:
+        raise ValueError("CREW_RHYTHM_REQUIRES_LOCKED_DIRECTOR_VISION")
+    return rhythm_arc.departmental_context(
+        base, state, department_command, audiovisual_plan,
+        rhythm_pre_plan, task_id,
+        artistic_method_plan=artistic_method_plan)
+
+
 def _director_final_creative_safeguard(
         base, state, task_id, department_command, audiovisual_plan,
         artistic_method_plan, holistic_post_critique,
         action_rescue_post_plan, department_delivery_review,
-        artistic_arbitration_plan, visual_continuity_review):
+        artistic_arbitration_plan, visual_continuity_review,
+        rhythm_post_plan):
     """One authoritative final director review; unchanged legacy routes."""
     required = creative_gates.check_mode(base)
     supplied = any(item is not None for item in (
         holistic_post_critique, action_rescue_post_plan,
         department_delivery_review, artistic_arbitration_plan,
-        visual_continuity_review))
+        visual_continuity_review, rhythm_post_plan))
     if task_id != "director_final":
         if supplied:
             raise ValueError("CREW_POST_DIRECTOR_EVIDENCE_ONLY_FOR_FINAL")
@@ -468,7 +502,8 @@ def _director_final_creative_safeguard(
             department_delivery_review,
             artistic_method_plan=artistic_method_plan,
             arbitration_plan=artistic_arbitration_plan,
-            visual_continuity_review=visual_continuity_review)
+            visual_continuity_review=visual_continuity_review,
+            rhythm_post_plan=rhythm_post_plan)
     return None
 
 
@@ -481,7 +516,8 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                         action_rescue_post_plan=None,
                         department_delivery_review=None,
                         artistic_arbitration_plan=None,
-                        visual_continuity_review=None):
+                        visual_continuity_review=None,
+                        rhythm_pre_plan=None, rhythm_post_plan=None):
     """Build private messages in memory; never return a public or saved artifact.
 
     For source-locked teams, include the FIRST real director/editor vision.
@@ -616,11 +652,17 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 base, state, department_command, audiovisual_plan,
                 holistic_critique, action_rescue_plan, task_id,
                 artistic_method_plan=artistic_method_plan))
+    rhythm_guidance = _director_rhythm_specialist_gate(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, rhythm_pre_plan, rhythm_post_plan)
+    if rhythm_guidance is not None:
+        request["one_director_source_locked_episode_rhythm"] = rhythm_guidance
     final_creative_review = _director_final_creative_safeguard(
         base, state, task_id, department_command, audiovisual_plan,
         artistic_method_plan, holistic_post_critique,
         action_rescue_post_plan, department_delivery_review,
-        artistic_arbitration_plan, visual_continuity_review)
+        artistic_arbitration_plan, visual_continuity_review,
+        rhythm_post_plan)
     if final_creative_review is not None:
         request["same_director_final_review_of_actual_crew_conflicts"] = (
             final_creative_review)
@@ -759,7 +801,8 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
                          action_rescue_post_plan=None,
                          department_delivery_review=None,
                          artistic_arbitration_plan=None,
-                         visual_continuity_review=None):
+                         visual_continuity_review=None,
+                         rhythm_pre_plan=None, rhythm_post_plan=None):
     """Strict provider-agnostic parsing + specialist craft preflight.
 
     Return a new parsed object, never a fixed/normalized one. Refuse invalid
@@ -840,11 +883,15 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
             base, state, department_command, audiovisual_plan,
             holistic_critique, action_rescue_plan, task_id,
             artistic_method_plan=artistic_method_plan)
+    _director_rhythm_specialist_gate(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, rhythm_pre_plan, rhythm_post_plan)
     final_creative_review = _director_final_creative_safeguard(
         base, state, task_id, department_command, audiovisual_plan,
         artistic_method_plan, holistic_post_critique,
         action_rescue_post_plan, department_delivery_review,
-        artistic_arbitration_plan, visual_continuity_review)
+        artistic_arbitration_plan, visual_continuity_review,
+        rhythm_post_plan)
     if task_id not in team.ready(state):
         raise ValueError("CREW_TASK_NOT_READY")
     payload = parse_strict_json(raw)
@@ -1059,7 +1106,8 @@ def submit_role_output(base, state, task_id, raw, *, source_text=None,
                        action_rescue_post_plan=None,
                        department_delivery_review=None,
                        artistic_arbitration_plan=None,
-                       visual_continuity_review=None):
+                       visual_continuity_review=None,
+                       rhythm_pre_plan=None, rhythm_post_plan=None):
     """Offline transition from a *provided* strict JSON response to a new ledger.
 
     No model invocation; caller must arrange private transport separately.
@@ -1076,5 +1124,7 @@ def submit_role_output(base, state, task_id, raw, *, source_text=None,
                                    action_rescue_post_plan=action_rescue_post_plan,
                                    department_delivery_review=department_delivery_review,
                                    artistic_arbitration_plan=artistic_arbitration_plan,
-                                   visual_continuity_review=visual_continuity_review)
+                                   visual_continuity_review=visual_continuity_review,
+                                   rhythm_pre_plan=rhythm_pre_plan,
+                                   rhythm_post_plan=rhythm_post_plan)
     return team.submit(state, team.packet(state, task_id), payload)
