@@ -776,13 +776,13 @@
       "stage": "now_director",
       "department": "director",
       "priority": "P0",
-      "status": "partially_addressed",
+      "status": "in_progress",
       "title": "演员/服装/道具/场景跨镜一致性",
-      "observed_in": "film_continuity.py; asset_reference_manifest.py; director_v2.py",
+      "observed_in": "film_continuity.py; asset_reference_manifest.py; director_v2.py; director_visual_continuity.py; director_creative_integration.final_director_role_gate; skills/20-director-visual-world-cross-shot-continuity.md",
       "problem": "已有ID、道具状态和参考卡结构，但未以真实视频验证身份、手部动作与方位保持",
       "root_cause": "文本ID与资产摘要不证明视觉像同一个人",
-      "solution": "导演维护角色/道具/场景bible+分镜状态转移；实际照片参考与授权；选择首尾帧/参考图及失败重制策略，完成跨镜实测",
-      "acceptance": "至少两人物+手机/门的跨镜公开视频试镜，评价脸/服装/道具/光源/左右关系，失败镜头可定位修正",
+      "solution": "导演维护角色/道具/场景bible+分镜状态转移；实际照片参考与授权；选择首尾帧/参考图及失败重制策略，完成跨镜实测；2026-10-20第一版新增同一导演多镜状态复审，对实际完成的acting/camera_art/editing交付与既有film_continuity逐镜事件报告做来源和修订锁定。相邻剪口共享已声明人物/道具但缺完整track时标成真实审查缺口，不得用同名ID冒充同脸同道具；导演按观众可见人物选择、左右手道具交接、轴线、光源及必要跳时说明风险，版本化QO-D12只产未发送定点返工。严格终审在多镜项目需要跨镜复审；不作实际人脸或生成画面通过声明。",
+      "acceptance": "至少两人物+手机/门的跨镜公开视频试镜，评价脸/服装/道具/光源/左右关系，失败镜头可定位修正；暂不测试。本模块文本/事件状态不能证明实际脸、服装、空间和镜头连续；后续需按原验收安排真实双人物、道具/门空间短片与人工专业核验。",
       "ai_video_constraint": "跨clip身份与布景漂移是AI关键风险；摘要和相同seed不等于视觉锁定",
       "depends_on": [
         "QO-D02",
@@ -794,9 +794,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
-        "commit_sha": "",
-        "automated_test": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/67",
+        "commit_sha": "4ba20fb9c69691c2fce489aabefd5661a8d19507",
+        "automated_test": "2026-10-20用户持续要求暂不测试，本轮未主动运行测试/视频生成/真人艺术审片，PR保持Draft未合并。",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -808,6 +808,12 @@
           "status": "partially_addressed",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-20",
+          "status": "in_progress",
+          "note": "已编码跨镜实体状态源锁、交稿版本锁、明确共享道具/人物却缺track则阻断终审；未做真人影片验收或单元测试。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/67"
         }
       ]
     },
@@ -859,13 +865,13 @@
       "stage": "now_director",
       "department": "director",
       "priority": "P0",
-      "status": "partially_addressed",
+      "status": "in_progress",
       "title": "导演级镜头语言与视觉连续性",
-      "observed_in": "agent_role_contracts camera_art; director_v2; director_workbook.py",
+      "observed_in": "agent_role_contracts camera_art; director_v2; director_workbook.py; director_visual_continuity.py; director_creative_integration.postproduction_assessment; skills/20-director-visual-world-cross-shot-continuity.md",
       "problem": "有景别焦距灯光字段，但经常是填模板而非可解释的摄影选择；轴线和转场缺真实审片",
       "root_cause": "结构要求与视觉因果质量没有建立直接验收",
-      "solution": "以人物视线/动机触发镜头，检查机位关系、连续运动、构图重心、光源世界观与色彩语法；导演需能阐明每镜选择的叙事原因",
-      "acceptance": "公开短片方案盲评优于机械镜头列表；镜间轴线/光源违例静态阻断；真实视频另审",
+      "solution": "以人物视线/动机触发镜头，检查机位关系、连续运动、构图重心、光源世界观与色彩语法；导演需能阐明每镜选择的叙事原因；2026-10-20将原导演视听母题与实际摄影美术/表演/剪辑交稿进行相邻剪口的完整导演复审：每个剪口一份裁决，内部逐项核查8类演员/空间/视线轴线/镜头动机/光线/色彩/切点关系，使用真实专业交稿原句，提出两种不同视听方案与艺术代价；有意越轴/闪回/荒诞跳切可以保留但需写明如何引导观众，不以机械匹配牺牲思想/人物表现。确定问题形成指定专业的QO-D12未派发定点返工，严格最终审查不得跳过；仍无真实帧验证。",
+      "acceptance": "公开短片方案盲评优于机械镜头列表；镜间轴线/光源违例静态阻断；真实视频另审；本轮暂不运行测试；后续需公开跨轴/光源跳变反例、真实剪辑连续性和专业盲评，才能认为达到导演级视听质量。",
       "ai_video_constraint": "镜头机位复杂度要可由目标AI模型产生或有转后期替代",
       "depends_on": [
         "QO-D03",
@@ -875,9 +881,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
-        "commit_sha": "",
-        "automated_test": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/67",
+        "commit_sha": "4ba20fb9c69691c2fce489aabefd5661a8d19507",
+        "automated_test": "2026-10-20用户持续要求暂不测试，本轮未主动运行测试/视频生成/真人艺术审片，PR保持Draft未合并。",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -889,6 +895,12 @@
           "status": "partially_addressed",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-20",
+          "status": "in_progress",
+          "note": "建立同一导演对实际相邻镜头的八维度艺术复审和两种具体镜头解决方案，接入旧终审门槛；不冒称真实画面通过。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/67"
         }
       ]
     },
