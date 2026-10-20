@@ -77,7 +77,7 @@ QO-D14原方案：creative_analysis_request()
 `series.validate_breakdown`可确认新稿每集实际不超过90秒，然而这不等于原导演选择的80秒版本还存在。新模块比较**每一集原导演cut候选所报总秒数**与编剧新稿分集总秒数，返回`director_cut_budget_drift`：
 
 - 0秒偏离：纸面符合该项预算，但仍不代表真实镜头时码/导演艺术质量已审；
-- 有偏离：明确报告原定目标和新稿实际总秒数、`must_reopen_director_selection_if_budget_drift=true`，明确只是一份新稿规划预览；不能让旧“导演批准80秒”字段被冒用为“87秒新版也已批准”。需要总导演重新对比创作方案和实际时长。
+- 有偏离：明确报告原定目标和新稿实际总秒数、`must_reopen_director_selection_if_budget_drift=true`，且**不创建任何可供后续派发的新专业团队工作包**（`episodes_built_from_new_authoritative_script=None`、`new_crew_packets_withheld_until_director_reconfirms=true`）；不能让旧“导演批准80秒”字段被冒用为“87秒新版也已批准”。必须由总导演重新对比创作方案和实际时长，产生新的版本化剪辑选择。
 - 新集数/跨集分段/片头预算/片尾引用卡不同：不再属于先前导演选定的作品构型，不能在当前cut之下通过，必须重新提交真正的导演剪辑选择。
 
 这里特别保留 **两种或更多不同集数、不同压缩尺度的方案**；绝不机械要求10分钟稿必须三集，导演可因人物逻辑选择更长版本，判断不能由代码奖励更短时长。
