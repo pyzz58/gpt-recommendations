@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "07fc73a576856dc680201a1d312611d439a2e99debe95df10cdf738c57717de1",
+  "spec_sha256": "b97d8354425516ce002d993bca3d0fbe56c24d3fad2a88a425ecbb89951ee10f",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -482,8 +482,32 @@
       ],
       "failure_action": "材料、价值或类型实变回S8；无许可则合法导引；不得靠改型逃避整刊深度。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "ACCEPTED",
+      "evidence": [
+        {
+          "record_id": "W05-ACCEPTANCE-20261020-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#W05-交付与验收.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#01-selection/S8Decisions-v002.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#01-selection/CandidateDisposition-v002.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#03-reader/ReaderMaterialIndex-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#04-source-map/SourceMap-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#04-source-map/ActualUseRights-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#05-coverage/ReferenceEditorialComparison-v002.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#05-coverage/CoverageGap-v003.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#07-handoff/W06-input-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#07-handoff/R03-input-v001.json"
+          ],
+          "validation_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#06-validation/W05-manual-check-v001.md (RV-W05-CONTENT-20261020；本卡三项/Q01—Q07，8正向/10显著过强句/3衔接)",
+            "private:/新闻/SI-WEEKLY-2026-W42-W05-v01.zip#06-validation/W05-structure-check-v001.json (实际SHA/锚点/引用/去向及算术)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w05-20261020 (RV-W05-PERSISTENCE-20261020；41文件40清单实际保存回读)"
+          ],
+          "reviewer": "同一Codex实际S8/制作/回源检查；非独立L5、盲审、专家或用户认可",
+          "result": "ACCEPTED",
+          "scope": "仅W05人工S8及入选中文A：7实质复选5COVER2WATCH、19仅接续，1深度研究/3首次事实/1公开部分精选导引，5真实中文与19段原文对应、10局部观察、9实际用途权利，10参照/7开放覆盖缺口；回溯材料历史正文未证，正式收费表/独立效果/合同履约/国家原通告等缺口保留。私有版本0/121892字节/dfef666078dc8e5c46c2c3cba4e53cb7a141080005a49fbd4b01e3be51f95f0f、41文件40清单实际回读一致；未通过L5/整刊/G01或生产验收，W06尚未开始。"
+        }
+      ],
       "reviewed_basis_sha256": "dedc1c014b99cee9a214d49fbe8257f64e1a3b9c87aa93a0c183abbdf4117816",
       "order": 5,
       "work_type": "人工内容验证",
@@ -592,9 +616,7 @@
       "plan_basis_changed": false,
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
-      "pending_completion_dependencies": [
-        "W05"
-      ],
+      "pending_completion_dependencies": [],
       "theory_refs": [
         "th-0",
         "th-1",
@@ -1245,7 +1267,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W05",
         "W06",
         "W07",
         "W08",
