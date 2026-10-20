@@ -19,6 +19,7 @@ import director_revision_lineage as lineage
 import director_delivery_review as crew_delivery
 import director_conflict_arbitration as conflict_arbitration
 import director_visual_continuity as visual_continuity
+import director_episode_rhythm as episode_rhythm
 
 VERSION = "director-integrated-creative-gates-v1"
 MODE = {"kind": "director_integrated_creative_review_required",
@@ -168,7 +169,8 @@ def postproduction_assessment(base, state, meeting, audiovisual,
                               holistic_post, rescue_post, *,
                               artistic_method_plan=None,
                               delivery_review=None, arbitration_plan=None,
-                              visual_continuity_review=None):
+                              visual_continuity_review=None,
+                              rhythm_post_plan=None):
     """Evaluate real crew *designs*, including genuine inter-role disagreements.
 
     QO-D16 and QO-D16 arbitration are optional for old callers, but a missing
@@ -204,6 +206,13 @@ def postproduction_assessment(base, state, meeting, audiovisual,
         visual_proof = visual_continuity.validate(
             base, state, meeting, audiovisual, visual_continuity_review,
             artistic_method_plan=artistic_method_plan)
+    rhythm_proof = None
+    if rhythm_post_plan is not None:
+        rhythm_proof = episode_rhythm.validate(
+            base, state, meeting, audiovisual, rhythm_post_plan,
+            artistic_method_plan=artistic_method_plan)
+        _need(rhythm_proof["phase"] == "after_sound_and_edit_design",
+              "INTEGRATED_RHYTHM_NOT_ACTUAL_SOUND_EDIT_REVIEW")
     action_blocked = [
         x["shot_id"] for x in rescue_post["shots"]
         if x["decision"] in (
@@ -218,6 +227,14 @@ def postproduction_assessment(base, state, meeting, audiovisual,
         else "resolve_director_or_specialist_revisions" if (
             action_blocked or creative_revisions or
             crew_proof["requested_revisions"])
+        else "complete_episode_rhythm_and_sound_edit_review"
+        if (base.get("director_rhythm_mode") ==
+            {"kind": "director_episode_rhythm_required",
+             "before_sound_and_edit": True} and rhythm_proof is None)
+        else "resolve_episode_rhythm_edits_or_screenwriter_issues"
+        if rhythm_proof is not None and (
+            rhythm_proof["proposed_revisions"] or
+            rhythm_proof["has_unresolved_director_or_editor_decisions"])
         else "complete_cross_shot_visual_continuity_review"
         if (len(state["shot_ids"]) > 1 and visual_proof is None)
         else "resolve_visual_continuity_and_axis_light_blockers"
@@ -243,6 +260,11 @@ def postproduction_assessment(base, state, meeting, audiovisual,
             arbitration_proof["arbitration_digest"]
             if arbitration_proof else None),
         "unresolved_professional_conflicts": deepcopy(conflicts),
+        "episode_rhythm_post_review_digest": (
+            rhythm_proof["plan_digest"] if rhythm_proof else None),
+        "episode_rhythm_revisions": (
+            rhythm_proof["proposed_revisions"] if rhythm_proof else None),
+        "original_editor_conform_and_media_review_still_required": True,
         "cross_shot_visual_review_digest": (
             visual_proof["review_digest"] if visual_proof else None),
         "cross_shot_visual_revisions": (
@@ -333,7 +355,8 @@ def make_lineage_change_from_finding(
 def final_director_role_gate(
         base, state, meeting, audiovisual, holistic_post, rescue_post,
         delivery_review, *, arbitration_plan=None,
-        artistic_method_plan=None, visual_continuity_review=None):
+        artistic_method_plan=None, visual_continuity_review=None,
+        rhythm_post_plan=None):
     """Give the ORIGINAL final-director task verified post-crew review evidence.
 
     Without real QO-D16 review, 'no conflict' is unknowable. If conflicts are
@@ -352,7 +375,8 @@ def final_director_role_gate(
         artistic_method_plan=artistic_method_plan,
         delivery_review=delivery_review,
         arbitration_plan=arbitration_plan,
-        visual_continuity_review=visual_continuity_review)
+        visual_continuity_review=visual_continuity_review,
+        rhythm_post_plan=rhythm_post_plan)
     _need(result["qod16_conflict_count"] is not None,
           "INTEGRATED_FINAL_NO_DELIVERY_EVIDENCE")
     _need(not result["qod16_conflict_count"] or
@@ -368,6 +392,8 @@ def final_director_role_gate(
         "physical_action_review_digest": result["action_rescue_digest"],
         "cross_shot_visual_review_digest": (
             result["cross_shot_visual_review_digest"]),
+        "episode_rhythm_review_digest": (
+            result["episode_rhythm_post_review_digest"]),
         "cross_shot_visual_continuity_still_not_verified_in_media": True,
         "director_next_step": result["next_director_step"],
         "ready_for_user_review_candidate_only": (
