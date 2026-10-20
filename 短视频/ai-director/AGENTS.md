@@ -1,3 +1,15 @@
+## QO-D14→QO-D13｜长文案重大剪辑后的正式编剧交接与最终分集（2026-10-21，暂不测试）
+
+`director_creative_cut.py` 已具备**至少两种真实不同导演cut**、逐原剧本beat保留/压缩/删减、艺术损失与节奏方案及未派发编剧返修单；`screenplay_series_delivery.py` 已具备一份**审核后的正式剧本**完整分集、≤90秒各集与附加时间预算以及原十岗位专业团队。**不要重新制造压缩引擎、第二导演或第二编剧。** 本轮新增`director_cut_series_handoff.py`并由原`screenplay_series_delivery.selected_director_cut_series_preview`调用，填补从原导演选中的重大压缩cut→原编剧改成新完整版→经既有`screenplay_director_handoff`结构化审稿→新稿的正式分集和干净十岗位建立之间的最后版本交接。
+
+每个原beat都必须审计来源：retain须未变原动作/对白/旁白/时长；condense可合并但全部新beat有明确原始归属；omit不得暗中复活；不能凭空加入新角色/事实或改变旧导演选的故事顺序和集间断点。**短≠好**：新稿如经过编剧重写变成不同集数、分段或附加预算，须重新进行真正的导演cut选择。特别关键：若新稿集时长与原选中目标（例如3集各80秒）有任何偏差，虽然可能仍小于90秒，**必须暂缓任何新专业团队工作包**，要求总导演重新确认创作版本，不能警告后直接交给制作。经审稿且无偏差才用既有`series.build_per_episode_crew`启动全新pending十岗位，不迁移旧导演锁、媒体或作者授权。
+
+每集片头/回顾/桥/片尾与可选来源卡仍使用原`series_final_timeline.compile_final_timeline`独立核验；**来源卡只可不出现或精确1.8秒且为真正末页**，不允许导演草稿写1秒却拿1.8秒真实预算通过，也不允许90秒剧情外加片尾。所有来源哈希、各稿beat映射和真实审稿状态严格绑定，但审核表的格式完整≠真人作者身份/许可已认证。专业规范`skills/22-director-creative-cut-to-approved-series-handoff.md`列出长稿自然多集与重大压缩的两方案对照、出错阻断及人工审片验收。
+
+仅代码与规范、质量总账 JSON/Markdown 登记为`in_progress`；用户持续要求暂不测试，本轮无新单元/CI主动触发、无真实视频、无收费模型、无正式真人审批或主分支合并。所有旧有合成测试历史照实保留，不能充作这一轮实际艺术质量验收。
+
+---
+
 ## QO-D03 × QO-D09：总导演整集声画节奏与观众注意力（2026-10-20；暂不测试）
 
 新增 `director_episode_rhythm.py`，并接入 `director_creative_integration` 以及现有 `agent_role_contracts` 的声音、剪辑和总导演最终回执校验。它仍是**同一总导演**对整部作品的时间、观众信息、情绪弧线、母题和声画对位的创作判断，而不是第二套专业剪辑/时间线引擎；既有 `director_montage_editor_conform`、`director_media_otio_export`、`director_editorial_montage` 和最后依据页预算保持唯一后期工程权威。
