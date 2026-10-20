@@ -588,13 +588,13 @@
       "stage": "now_director",
       "department": "director",
       "priority": "P0",
-      "status": "partially_addressed",
+      "status": "in_progress",
       "title": "导演以完成剧本为唯一剧情权威",
-      "observed_in": "screenplay_director_handoff.director_request; agent_role_contracts.build_role_messages",
+      "observed_in": "screenplay_director_handoff.director_request; agent_role_contracts.build_role_messages; director_screenplay_authority.py; agent_role_contracts.build_role_messages/validate_role_output; skills/23-one-screenplay-authority-and-director-shot-coverage.md",
       "problem": "已由角色提示禁止总导演和旧 script_edit 重写剧情，但模型执行尚无验证",
       "root_cause": "依赖提示约束，未有输出差异强约束和真实模型反例",
-      "solution": "核对总导演视听阐释而非改写人物/情节/台词；编剧返修单由编剧回改；字段/文字差异跨版本审计",
-      "acceptance": "故意诱导导演改剧情/人物对白的公开测试被阻断，返修单返回编剧；不阻断导演合理提供视听建议",
+      "solution": "核对总导演视听阐释而非改写人物/情节/台词；编剧返修单由编剧回改；字段/文字差异跨版本审计；2026-10-21新增长剧本source-hash与base版本绑定的正式剧情权威检查，向真实十角色私有请求注入source beat/角色/道具/论点与文本digest；在实际角色输出校验中拒绝嵌套的replacement_screenplay/rewritten_dialogue/approved_story_changes等越权改写键。声音专业dialogue按权威剧本speaker及每字原句核验，允许一个原台词细分多个timed cue但必须拼接恰好一致、不重排不加台词，原旁白仍由原校验器审。所有自由文本中的隐含叙事变更无法用静态字段证明忠实，需专业导演/编剧审查；不因源字段校验否定导演合法视听自由。",
+      "acceptance": "故意诱导导演改剧情/人物对白的公开测试被阻断，返修单返回编剧；不阻断导演合理提供视听建议；待将来使用公开虚构对白、误改speaker、对白额外cue/删字、越权approved_script以及新旧source混淆等反例回归，并进行真正编剧内容与独立艺术核查。本轮新代码未测试。",
       "ai_video_constraint": "短片导演可以决定剪辑与视听结构，不得暗改故事内容",
       "depends_on": [
         "QO-W09"
@@ -603,9 +603,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/67",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "2026-10-21本轮QO-D01源剧本权威审计与QO-D02合镜实体信息修复尚未运行新单元/真实媒体/人工编剧审查（用户要求暂不测试）；先前QO-D02公开合成测试历史不代表本次改动已验收。",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -617,6 +617,12 @@
           "status": "partially_addressed",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-21",
+          "status": "in_progress",
+          "note": "正式剧本source hash/角色/道具/引用锁进入原十岗实际私有消息与回执；真实声音对白speaker和完整文本的顺序硬核查，拒绝显式源剧情覆盖字段；自然语言隐式改剧情仍留真人编剧反审。尚未运行新测试。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/67"
         }
       ]
     },
@@ -627,11 +633,11 @@
       "priority": "P0",
       "status": "in_progress",
       "title": "场次与分镜解耦：一场可多镜，一镜可多节拍",
-      "observed_in": "screenplay_adaptation.compile_reviewable_shot_plan; director_v2.py; director_shot_coverage.py; screenplay_series_delivery.episode_director_request",
+      "observed_in": "screenplay_adaptation.compile_reviewable_shot_plan; director_v2.py; director_shot_coverage.py; screenplay_series_delivery.episode_director_request; director_shot_coverage.reblock_episode; director_screenplay_authority.snapshot; skills/23-one-screenplay-authority-and-director-shot-coverage.md",
       "problem": "现有编剧节拍编译为同数 text_card 占位；总导演受 shot_id 不增不减约束，缺自由选择覆盖镜头的通路",
       "root_cause": "使用原稿来源slot当成物理镜头且十岗位锁镜头数",
-      "solution": "创建 scene/beat/coverage shot 三层，导演拆镜/合镜/插入/反打/空镜，结构调整有来源和剪辑锁版本；第一阶段已用导演source_spans覆盖图开放一beat多镜/同场相邻多beat合镜，保持作者稿、音画原字和秒数，并重建十角色专业状态；无cue的对白拆镜与跨场蒙太奇保留下一阶段，不默改。",
-      "acceptance": "公开对话场：1场->多镜；蒙太奇场：多事件->多镜；重排后来源/台词/时长不丢且所有专业位置重绑定",
+      "solution": "创建 scene/beat/coverage shot 三层，导演拆镜/合镜/插入/反打/空镜，结构调整有来源和剪辑锁版本；第一阶段已用导演source_spans覆盖图开放一beat多镜/同场相邻多beat合镜，保持作者稿、音画原字和秒数，并重建十角色专业状态；无cue的对白拆镜与跨场蒙太奇保留下一阶段，不默改。；2026-10-21静态检查发现现有合镜重block时只汇总角色/论点但漏汇总源beat的prop_ids，speaker_character_ids只沿用第一beat，后续道具/台词制作可能丢第二节拍的物件或角色身份。已修复为每个物理合镜汇总全部covered beat的角色/道具/事实和说话人ID绑定、同speaker不同角色则阻断；新增covered_beat_source_records持有每beat原来源/实体/引用并在重建十岗位前逐项核验、旁白与对白原文顺序仍绝不变化。保留原scene/beat/shot三层与cue-aware对白跨镜机制、不新建第二分镜引擎、绝不以镜头数量作为艺术质量标准。",
+      "acceptance": "公开对话场：1场->多镜；蒙太奇场：多事件->多镜；重排后来源/台词/时长不丢且所有专业位置重绑定；待之后运行公开合镜（不同beat有不同道具和说话人）、无cue的对白非法拆镜、含cue合法反打、来源beat缺失/重复、实体ID丢失、跨场不当一物理镜等反例；也需要真实AI视频身份/口型与专业导演审片，本轮不主动测试。",
       "ai_video_constraint": "不同视频生成工具可单镜、多镜头或插帧；不能按原文句子数限制镜头数",
       "depends_on": [
         "QO-D01"
@@ -642,9 +648,9 @@
       "owner": "director",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/48",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/67",
         "commit_sha": "",
-        "automated_test": "tests/test_director_shot_coverage.py — public synthetic multi-shot/single-shot source spans, immutable dialogue, runtime, reblocked director model request, stale/invalid scene/speech rejection",
+        "automated_test": "tests/test_director_shot_coverage.py — public synthetic multi-shot/single-shot source spans, immutable dialogue, runtime, reblocked director model request, stale/invalid scene/speech rejection；2026-10-21本轮QO-D01源剧本权威审计与QO-D02合镜实体信息修复尚未运行新单元/真实媒体/人工编剧审查（用户要求暂不测试）；先前QO-D02公开合成测试历史不代表本次改动已验收。",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -674,6 +680,12 @@
           "status": "in_progress",
           "note": "职业导演QO-D02首轮：新增导演独立镜头覆盖选择、合法分镜和合镜、精确来源时段/台词/总时长验证，实际原十岗团队按新版镜头重建；真人审片、含台词反打和跨时空蒙太奇未完成。",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/48"
+        },
+        {
+          "date": "2026-10-21",
+          "status": "in_progress",
+          "note": "修复导演合镜丢道具和后续beat真实speaker映射的生产数据bug；新物理镜头同时保留每beat原始来源证明、人物/道具/论点全集，原剧本对白及旁白均维持原字顺序，重新建全pending十岗；未运行新测试。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/67"
         }
       ]
     },
