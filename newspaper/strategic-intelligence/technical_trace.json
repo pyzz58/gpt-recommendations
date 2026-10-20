@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "fcb66f0e90853afbcf01ab7983f7f7e2aec13247ae3772994d7dfdeca21587fc",
+  "spec_sha256": "07fc73a576856dc680201a1d312611d439a2e99debe95df10cdf738c57717de1",
   "meaning": "Binding freshness only; never content approval, implementation verification or execution permission.",
   "review_required": [],
   "global_refs": [

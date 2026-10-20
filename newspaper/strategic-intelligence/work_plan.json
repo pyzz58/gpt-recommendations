@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "fcb66f0e90853afbcf01ab7983f7f7e2aec13247ae3772994d7dfdeca21587fc",
+  "spec_sha256": "07fc73a576856dc680201a1d312611d439a2e99debe95df10cdf738c57717de1",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -383,8 +383,31 @@
       ],
       "failure_action": "按缺口补证、收窄或暂停；权限不足改允许定位/导引，不伪造原文或日志。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "ACCEPTED",
+      "evidence": [
+        {
+          "record_id": "W04-ACCEPTANCE-20261020-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W04-v01.zip#W04-交付与验收.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W04-v01.zip#02-sources/SelectedSourcePacket-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W04-v01.zip#03-rights/RightsRecord-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W04-v01.zip#04-evidence/EvidencePacket-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W04-v01.zip#04-evidence/ClaimRegister-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W04-v01.zip#04-evidence/Calculations-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W04-v01.zip#05-scope/ReadingScopePlan-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W04-v01.zip#05-scope/FactLimitations-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W04-v01.zip#07-handoff/W05-input-v001.json"
+          ],
+          "validation_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W04-v01.zip#06-validation/W04-manual-check-v001.md (RV-W04-CONTENT-20261020；原三项及Q01—Q07/衔接)",
+            "private:/新闻/SI-WEEKLY-2026-W42-W04-v01.zip#06-validation/W04-structure-check-v001.json (实际ID/引用/10动作覆盖与计算)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w04-20261020 (RV-W04-PERSISTENCE-20261020；26文件/25清单实际保存回读)"
+          ],
+          "reviewer": "Codex同一执行者实际回源/运算/L3检查；不是盲审、独立L5或用户认可",
+          "result": "ACCEPTED",
+          "scope": "仅W04手工S8前证据包：19文档/指针、21支持关系、9权限、3真实计算及10限制，IEA关键页实际核；不是19原件全齐，正式收费表/MoU/国家原通告等未取，历史正文未证；私有版本0/81521字节/1887d65c97b563230f409dfb878c1758375f3226fdc0dd11a62a7ad4efbdb0b5、26文件25清单回读一致。无S8/COVER/读者正文/Review/G01或生产验收，W05尚未开始"
+        }
+      ],
       "reviewed_basis_sha256": "f39ec665f58b4d150ee5abc50c5d593b110c6a425f28f5fb11ba3c128a5cd1a3",
       "order": 4,
       "work_type": "人工内容验证",
@@ -487,9 +510,7 @@
       "plan_basis_changed": false,
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
-      "pending_completion_dependencies": [
-        "W04"
-      ],
+      "pending_completion_dependencies": [],
       "theory_refs": [
         "th-0",
         "th-1",
@@ -1224,7 +1245,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W04",
         "W05",
         "W06",
         "W07",
