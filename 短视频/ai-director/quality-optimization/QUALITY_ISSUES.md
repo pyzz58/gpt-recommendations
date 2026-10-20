@@ -210,31 +210,31 @@
 
 ### QO-D01 · 导演以完成剧本为唯一剧情权威
 
-- 状态：partially_addressed；优先级：P0；阶段：now_director；负责人：director
-- 发现位置：screenplay_director_handoff.director_request; agent_role_contracts.build_role_messages
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：screenplay_director_handoff.director_request; agent_role_contracts.build_role_messages; director_screenplay_authority.py; agent_role_contracts.build_role_messages/validate_role_output; skills/23-one-screenplay-authority-and-director-shot-coverage.md
 - 问题：已由角色提示禁止总导演和旧 script_edit 重写剧情，但模型执行尚无验证
 - 根因：依赖提示约束，未有输出差异强约束和真实模型反例
-- 方案：核对总导演视听阐释而非改写人物/情节/台词；编剧返修单由编剧回改；字段/文字差异跨版本审计
-- 完成验收：故意诱导导演改剧情/人物对白的公开测试被阻断，返修单返回编剧；不阻断导演合理提供视听建议
+- 方案：核对总导演视听阐释而非改写人物/情节/台词；编剧返修单由编剧回改；字段/文字差异跨版本审计；2026-10-21新增长剧本source-hash与base版本绑定的正式剧情权威检查，向真实十角色私有请求注入source beat/角色/道具/论点与文本digest；在实际角色输出校验中拒绝嵌套的replacement_screenplay/rewritten_dialogue/approved_story_changes等越权改写键。声音专业dialogue按权威剧本speaker及每字原句核验，允许一个原台词细分多个timed cue但必须拼接恰好一致、不重排不加台词，原旁白仍由原校验器审。所有自由文本中的隐含叙事变更无法用静态字段证明忠实，需专业导演/编剧审查；不因源字段校验否定导演合法视听自由。
+- 完成验收：故意诱导导演改剧情/人物对白的公开测试被阻断，返修单返回编剧；不阻断导演合理提供视听建议；待将来使用公开虚构对白、误改speaker、对白额外cue/删字、越权approved_script以及新旧source混淆等反例回归，并进行真正编剧内容与独立艺术核查。本轮新代码未测试。
 - AI 视频适配：短片导演可以决定剪辑与视听结构，不得暗改故事内容
 - 依赖：QO-W09
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:partially_addressed
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/67；回归 2026-10-21本轮QO-D01源剧本权威审计与QO-D02合镜实体信息修复尚未运行新单元/真实媒体/人工编剧审查（用户要求暂不测试）；先前QO-D02公开合成测试历史不代表本次改动已验收。；独立审核 未完成；真实媒体 未完成
+- 状态历史：2026-10-13:partially_addressed → 2026-10-21:in_progress
 
 ### QO-D02 · 场次与分镜解耦：一场可多镜，一镜可多节拍
 
 - 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
-- 发现位置：screenplay_adaptation.compile_reviewable_shot_plan; director_v2.py; director_shot_coverage.py; screenplay_series_delivery.episode_director_request
+- 发现位置：screenplay_adaptation.compile_reviewable_shot_plan; director_v2.py; director_shot_coverage.py; screenplay_series_delivery.episode_director_request; director_shot_coverage.reblock_episode; director_screenplay_authority.snapshot; skills/23-one-screenplay-authority-and-director-shot-coverage.md
 - 问题：现有编剧节拍编译为同数 text_card 占位；总导演受 shot_id 不增不减约束，缺自由选择覆盖镜头的通路
 - 根因：使用原稿来源slot当成物理镜头且十岗位锁镜头数
-- 方案：创建 scene/beat/coverage shot 三层，导演拆镜/合镜/插入/反打/空镜，结构调整有来源和剪辑锁版本；第一阶段已用导演source_spans覆盖图开放一beat多镜/同场相邻多beat合镜，保持作者稿、音画原字和秒数，并重建十角色专业状态；无cue的对白拆镜与跨场蒙太奇保留下一阶段，不默改。
-- 完成验收：公开对话场：1场->多镜；蒙太奇场：多事件->多镜；重排后来源/台词/时长不丢且所有专业位置重绑定
+- 方案：创建 scene/beat/coverage shot 三层，导演拆镜/合镜/插入/反打/空镜，结构调整有来源和剪辑锁版本；第一阶段已用导演source_spans覆盖图开放一beat多镜/同场相邻多beat合镜，保持作者稿、音画原字和秒数，并重建十角色专业状态；无cue的对白拆镜与跨场蒙太奇保留下一阶段，不默改。；2026-10-21静态检查发现现有合镜重block时只汇总角色/论点但漏汇总源beat的prop_ids，speaker_character_ids只沿用第一beat，后续道具/台词制作可能丢第二节拍的物件或角色身份。已修复为每个物理合镜汇总全部covered beat的角色/道具/事实和说话人ID绑定、同speaker不同角色则阻断；新增covered_beat_source_records持有每beat原来源/实体/引用并在重建十岗位前逐项核验、旁白与对白原文顺序仍绝不变化。保留原scene/beat/shot三层与cue-aware对白跨镜机制、不新建第二分镜引擎、绝不以镜头数量作为艺术质量标准。
+- 完成验收：公开对话场：1场->多镜；蒙太奇场：多事件->多镜；重排后来源/台词/时长不丢且所有专业位置重绑定；待之后运行公开合镜（不同beat有不同道具和说话人）、无cue的对白非法拆镜、含cue合法反打、来源beat缺失/重复、实体ID丢失、跨场不当一物理镜等反例；也需要真实AI视频身份/口型与专业导演审片，本轮不主动测试。
 - AI 视频适配：不同视频生成工具可单镜、多镜头或插帧；不能按原文句子数限制镜头数
 - 依赖：QO-D01
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/19
-- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/48；回归 tests/test_director_shot_coverage.py — public synthetic multi-shot/single-shot source spans, immutable dialogue, runtime, reblocked director model request, stale/invalid scene/speech rejection；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/67；回归 tests/test_director_shot_coverage.py — public synthetic multi-shot/single-shot source spans, immutable dialogue, runtime, reblocked director model request, stale/invalid scene/speech rejection；2026-10-21本轮QO-D01源剧本权威审计与QO-D02合镜实体信息修复尚未运行新单元/真实媒体/人工编剧审查（用户要求暂不测试）；先前QO-D02公开合成测试历史不代表本次改动已验收。；独立审核 未完成；真实媒体 未完成
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-21:in_progress
 
 ### QO-D03 · 导演视听母题、情绪弧线与视觉叙事
 
