@@ -239,16 +239,16 @@
 ### QO-D03 · 导演视听母题、情绪弧线与视觉叙事
 
 - 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
-- 发现位置：agent_role_contracts director_brief/director_lock; director_workbook.py
+- 发现位置：agent_role_contracts director_brief/director_lock; director_workbook.py; director_episode_rhythm.py; director_creative_integration.postproduction_assessment; skills/21-director-whole-episode-attention-rhythm-and-sonic-arc.md
 - 问题：规范强调填完情绪/摄影字段，但多场图灵示范仍有翻书光标等通用意象，无法证明每镜有不可替代的故事功能
 - 根因：缺影像叙事的盲评和主动比较备选构想
-- 方案：建立导演 treatment：核心视听母题、场景对照关系、开场/收束视觉呼应、动作触发镜头、声画冲突；给出被否决方案与原因；已新增 director_visual_language：要求逐镜编写观众认知变化、画面事件、摄影静动和声音/沉默的具体理由、错位剪切的代价、AI失败时如何保留意图，并注入现有全部部门模型请求；要独立观众实测才算质量达标
-- 完成验收：盲评能将空泛镜头与主题驱动镜头区分；每镜存在理由可以被回溯；观众不依赖旁白也能理解至少部分情绪/事实变化
+- 方案：建立导演 treatment：核心视听母题、场景对照关系、开场/收束视觉呼应、动作触发镜头、声画冲突；给出被否决方案与原因；已新增 director_visual_language：要求逐镜编写观众认知变化、画面事件、摄影静动和声音/沉默的具体理由、错位剪切的代价、AI失败时如何保留意图，并注入现有全部部门模型请求；要独立观众实测才算质量达标；2026-10-20增设唯一总导演整集节奏/观众信息与情绪弧线规划：明确开头注意力、人物停顿、声音与沉默、视觉母题、收尾回环、拒绝机械三秒剪辑的理由。逐镜锁定原时长并划分最多六段有因果的注意力节拍，逐剪口比较两套声画方式及代价，制作后真实声/剪交稿须引用原文字值。导演修改与编剧返修改为QO-D12版本化未派发提案，原专业岗位接收源锁导演决策。
+- 完成验收：盲评能将空泛镜头与主题驱动镜头区分；每镜存在理由可以被回溯；观众不依赖旁白也能理解至少部分情绪/事实变化；本轮只编写源码和规范，不主动运行艺术盲评/媒体或回归测试。低价值的空泛B-roll、音乐提前泄露悬念、人物心理沉默变机械转场需以后公开例子和独立导演观众评估。
 - AI 视频适配：高质量不等于强制复杂动作；在单片可生成前提下优先视觉叙事
 - 依赖：QO-D02
 - 历史问题：无
-- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/31；回归 tests/test_director_audiovisual_delivery.py — visual and sound causal reasoning, distinct shot decisions, cross-shot boundary, version binding and real role-prompt injection；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-13:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/67；回归 tests/test_director_audiovisual_delivery.py — visual and sound causal reasoning, distinct shot decisions, cross-shot boundary, version binding and real role-prompt injection；QO-D03/D09整集节奏第一版2026-10-20未主动运行任何新测试（按用户要求）；已有QO-D09历史839项合成剪辑CI通过不代表本模块通过或真实影片艺术质量达标。；独立审核 未完成；真实媒体 未完成
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-20:in_progress
 
 ### QO-D04 · 模型能力适配、片段时长与路由决策
 
@@ -266,17 +266,17 @@
 
 ### QO-D05 · 演员/服装/道具/场景跨镜一致性
 
-- 状态：partially_addressed；优先级：P0；阶段：now_director；负责人：director
-- 发现位置：film_continuity.py; asset_reference_manifest.py; director_v2.py
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：film_continuity.py; asset_reference_manifest.py; director_v2.py; director_visual_continuity.py; director_creative_integration.final_director_role_gate; skills/20-director-visual-world-cross-shot-continuity.md
 - 问题：已有ID、道具状态和参考卡结构，但未以真实视频验证身份、手部动作与方位保持
 - 根因：文本ID与资产摘要不证明视觉像同一个人
-- 方案：导演维护角色/道具/场景bible+分镜状态转移；实际照片参考与授权；选择首尾帧/参考图及失败重制策略，完成跨镜实测
-- 完成验收：至少两人物+手机/门的跨镜公开视频试镜，评价脸/服装/道具/光源/左右关系，失败镜头可定位修正
+- 方案：导演维护角色/道具/场景bible+分镜状态转移；实际照片参考与授权；选择首尾帧/参考图及失败重制策略，完成跨镜实测；2026-10-20第一版新增同一导演多镜状态复审，对实际完成的acting/camera_art/editing交付与既有film_continuity逐镜事件报告做来源和修订锁定。相邻剪口共享已声明人物/道具但缺完整track时标成真实审查缺口，不得用同名ID冒充同脸同道具；导演按观众可见人物选择、左右手道具交接、轴线、光源及必要跳时说明风险，版本化QO-D12只产未发送定点返工。严格终审在多镜项目需要跨镜复审；不作实际人脸或生成画面通过声明。
+- 完成验收：至少两人物+手机/门的跨镜公开视频试镜，评价脸/服装/道具/光源/左右关系，失败镜头可定位修正；暂不测试。本模块文本/事件状态不能证明实际脸、服装、空间和镜头连续；后续需按原验收安排真实双人物、道具/门空间短片与人工专业核验。
 - AI 视频适配：跨clip身份与布景漂移是AI关键风险；摘要和相同seed不等于视觉锁定
 - 依赖：QO-D02, QO-D04
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/2
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:partially_addressed
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/67；回归 2026-10-20用户持续要求暂不测试，本轮未主动运行测试/视频生成/真人艺术审片，PR保持Draft未合并。；独立审核 未完成；真实媒体 未完成
+- 状态历史：2026-10-13:partially_addressed → 2026-10-20:in_progress
 
 ### QO-D06 · 多动作可拍性与模型失败降级
 
@@ -294,17 +294,17 @@
 
 ### QO-D07 · 导演级镜头语言与视觉连续性
 
-- 状态：partially_addressed；优先级：P0；阶段：now_director；负责人：director
-- 发现位置：agent_role_contracts camera_art; director_v2; director_workbook.py
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：agent_role_contracts camera_art; director_v2; director_workbook.py; director_visual_continuity.py; director_creative_integration.postproduction_assessment; skills/20-director-visual-world-cross-shot-continuity.md
 - 问题：有景别焦距灯光字段，但经常是填模板而非可解释的摄影选择；轴线和转场缺真实审片
 - 根因：结构要求与视觉因果质量没有建立直接验收
-- 方案：以人物视线/动机触发镜头，检查机位关系、连续运动、构图重心、光源世界观与色彩语法；导演需能阐明每镜选择的叙事原因
-- 完成验收：公开短片方案盲评优于机械镜头列表；镜间轴线/光源违例静态阻断；真实视频另审
+- 方案：以人物视线/动机触发镜头，检查机位关系、连续运动、构图重心、光源世界观与色彩语法；导演需能阐明每镜选择的叙事原因；2026-10-20将原导演视听母题与实际摄影美术/表演/剪辑交稿进行相邻剪口的完整导演复审：每个剪口一份裁决，内部逐项核查8类演员/空间/视线轴线/镜头动机/光线/色彩/切点关系，使用真实专业交稿原句，提出两种不同视听方案与艺术代价；有意越轴/闪回/荒诞跳切可以保留但需写明如何引导观众，不以机械匹配牺牲思想/人物表现。确定问题形成指定专业的QO-D12未派发定点返工，严格最终审查不得跳过；仍无真实帧验证。
+- 完成验收：公开短片方案盲评优于机械镜头列表；镜间轴线/光源违例静态阻断；真实视频另审；本轮暂不运行测试；后续需公开跨轴/光源跳变反例、真实剪辑连续性和专业盲评，才能认为达到导演级视听质量。
 - AI 视频适配：镜头机位复杂度要可由目标AI模型产生或有转后期替代
 - 依赖：QO-D03, QO-D05
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:partially_addressed
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/67；回归 2026-10-20用户持续要求暂不测试，本轮未主动运行测试/视频生成/真人艺术审片，PR保持Draft未合并。；独立审核 未完成；真实媒体 未完成
+- 状态历史：2026-10-13:partially_addressed → 2026-10-20:in_progress
 
 ### QO-D08 · 导演与音效/台词/字幕精确对齐
 
@@ -323,16 +323,16 @@
 ### QO-D09 · 剪辑节奏、过渡桥与镜头版本选择
 
 - 状态：in_progress；优先级：P1；阶段：now_director；负责人：director
-- 发现位置：agent_role_contracts editing_animation; director_timeline.py; production_delivery.py; director_editorial_montage.py; director_shot_coverage.py; director_montage_editor_conform.py; director_media_otio_export.py; director_picture_render_smoke.py
+- 发现位置：agent_role_contracts editing_animation; director_timeline.py; production_delivery.py; director_editorial_montage.py; director_shot_coverage.py; director_montage_editor_conform.py; director_media_otio_export.py; director_picture_render_smoke.py; director_episode_rhythm.py; agent_role_contracts.build_role_messages/validate_role_output/submit_role_output; skills/21-director-whole-episode-attention-rhythm-and-sonic-arc.md
 - 问题：有J/L cut、转场字段但未以真实影像验证行为连续和情绪节奏；不可默认长镜头一镜过
 - 根因：缺由真实媒体帧/音轨回写的编辑视角审计
-- 方案：导演审查每个镜头的入点/出点/情绪换挡/声画桥；备选剪辑与失败因果；逐镜选择最佳 take，避免盲目复拍整片；首版实现独立 editorial montage：镜头序列必须逐镜连续、逐切点绑定剧本场次和时间来源、保留演员/道具出入状态指纹，保留真实媒体与艺术审核门槛。；第二阶段新增帧级后期合成工作单，依照QO-D13全片时间预算输出画面源入出帧、逐剪口剪辑指令、可选QO-D19声音/字幕绝对帧和清晰的媒体/转场阻断条目；不以未渲染资源冒称导出成片。；第三阶段采用 Academy Software Foundation OpenTimelineIO 原生 JSON，将离线导演剪辑工单绑定本地真实媒体，要求SHA-256全字节校验与FFprobe核验视频实际帧率/帧数；检查剪入剪出与可用转场余量，缺素材保持Gap；源锁定字幕生成SRT候选。不允许用文件元数据代替视觉/音频/艺术审查。；第四阶段将OTIO本地原生读回与FFmpeg实际纯色视频解码组合成可复现实验，并核对不同颜色镜头的真实像素和剪口帧。禁止原配音/字幕或非硬切转场被静默转为静音/硬切。
-- 完成验收：公开合成方案能量化错误切点；真实2+段小样有可验证片段版本与切点，比对导演剪辑意图；新增跨场次/倒叙与伪造时间线的公开离线回归，需GitHub CI核验。；明确fps严格落帧，含片头/片尾/证据页且最后一页不被移位，复杂过渡的素材把柄与J/L音轨未有实证时不得误渲染；实际NLE导入和媒体验收另行验证。；本地合成视频的实际FFprobe/SHA/OTIO序列化回读证明工程正确性；仍须不同真实剪辑软件独立导入与转场、文字、口型和版权媒体验收。；CI必须真实安装ffmpeg/ffprobe并执行样本，不能因依赖缺失跳过后仍算通过；Kdenlive 25.04+ 原生OTIO GUI导入需独立验证，旧独立适配器已弃用。
+- 方案：导演审查每个镜头的入点/出点/情绪换挡/声画桥；备选剪辑与失败因果；逐镜选择最佳 take，避免盲目复拍整片；首版实现独立 editorial montage：镜头序列必须逐镜连续、逐切点绑定剧本场次和时间来源、保留演员/道具出入状态指纹，保留真实媒体与艺术审核门槛。；第二阶段新增帧级后期合成工作单，依照QO-D13全片时间预算输出画面源入出帧、逐剪口剪辑指令、可选QO-D19声音/字幕绝对帧和清晰的媒体/转场阻断条目；不以未渲染资源冒称导出成片。；第三阶段采用 Academy Software Foundation OpenTimelineIO 原生 JSON，将离线导演剪辑工单绑定本地真实媒体，要求SHA-256全字节校验与FFprobe核验视频实际帧率/帧数；检查剪入剪出与可用转场余量，缺素材保持Gap；源锁定字幕生成SRT候选。不允许用文件元数据代替视觉/音频/艺术审查。；第四阶段将OTIO本地原生读回与FFmpeg实际纯色视频解码组合成可复现实验，并核对不同颜色镜头的真实像素和剪口帧。禁止原配音/字幕或非硬切转场被静默转为静音/硬切。；2026-10-20对现有帧级工单/OTIO/剪辑管线只新增上游总导演节奏判断，不重建编辑引擎。每镜时间段必须无间断覆盖原绝对时长，每一剪口必须保持锁定边界，提出两套不同剪法及观众代价；J/L-cut只有实媒资把柄时才可能实施。制作后来源锁定真实sound/edit的revision与交付原句，既有总导演终审可选择独立严格mode要求节奏计划，阻断已确认返工、分离实际媒体待核问题。无需重新生成整片，改时长/改情节只能进入QO-D12原DAG/编剧审批。
+- 完成验收：公开合成方案能量化错误切点；真实2+段小样有可验证片段版本与切点，比对导演剪辑意图；新增跨场次/倒叙与伪造时间线的公开离线回归，需GitHub CI核验。；明确fps严格落帧，含片头/片尾/证据页且最后一页不被移位，复杂过渡的素材把柄与J/L音轨未有实证时不得误渲染；实际NLE导入和媒体验收另行验证。；本地合成视频的实际FFprobe/SHA/OTIO序列化回读证明工程正确性；仍须不同真实剪辑软件独立导入与转场、文字、口型和版权媒体验收。；CI必须真实安装ffmpeg/ffprobe并执行样本，不能因依赖缺失跳过后仍算通过；Kdenlive 25.04+ 原生OTIO GUI导入需独立验证，旧独立适配器已弃用。；已完成的历史合成FFmpeg/OTIO/839项测试记录继续保留，不能作为本轮新增整片节奏审片的自动验收。后续仍需真实音视频、J/L音频把柄、Kdenlive/NLE、最后证据页和独立节奏盲评；本轮暂不测试。
 - AI 视频适配：AI片段几秒钟产生，需留头尾缓冲，部分转场后期解决
 - 依赖：QO-D02, QO-D08
 - 历史问题：无
-- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/57；回归 Prior PR #56 run 38519560054 had FFmpeg media test SKIPS (not valid actual media evidence), corrected in PR #57. Full FFmpeg-enabled GitHub Actions runs 38520561503 and 38520595560: 839/839 unit tests PASS; logs explicitly show real ffprobe, native OTIO re-import and decoded red/green/blue 90-frame picture order tests executed (not skipped).；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-14:in_progress → 2026-10-14:in_progress → 2026-10-14:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/67；回归 Prior PR #56 run 38519560054 had FFmpeg media test SKIPS (not valid actual media evidence), corrected in PR #57. Full FFmpeg-enabled GitHub Actions runs 38520561503 and 38520595560: 839/839 unit tests PASS; logs explicitly show real ffprobe, native OTIO re-import and decoded red/green/blue 90-frame picture order tests executed (not skipped).；QO-D03/D09整集节奏第一版2026-10-20未主动运行任何新测试（按用户要求）；已有QO-D09历史839项合成剪辑CI通过不代表本模块通过或真实影片艺术质量达标。；独立审核 未完成；真实媒体 未完成
+- 状态历史：2026-10-13:confirmed_open → 2026-10-13:confirmed_open → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-14:in_progress → 2026-10-14:in_progress → 2026-10-14:in_progress → 2026-10-20:in_progress
 
 ### QO-D10 · 专业导演审片标准：不是字段全就是好片
 
