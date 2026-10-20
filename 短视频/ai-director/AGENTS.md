@@ -1,3 +1,13 @@
+## QO-D01 × QO-D02｜正式剧本唯一剧情权威与导演镜头覆盖（2026-10-21；暂不测试）
+
+本轮静态代码审查发现**明确生产信息缺失**：原 `director_shot_coverage.reblock_episode` 支持一场多镜、一个节拍多镜和同场多beat合为一镜，但合镜仅汇总人物与claim，`prop_ids`和`source_adaptation.speaker_character_ids`仍停留在第一来源beat，第二个情节的道具及说话人身份可能丢失。已修复为合并**全部beat**的角色/道具/来源事实ID与speaker→稳定角色ID对应；同speaker发生不同角色绑定时拒绝。同时每个新物理shot新增`covered_beat_source_records`列出每原beat准确的来源对象、角色、道具、论点引用，重建十岗之前逐项核对旧原稿，旁白与对白仍逐字逐句按原顺序存在且只播放一次。不创建第二导演/第二分镜算法，跨场蒙太奇仍作为独立物理镜头的剪辑关系；合法有对白反打仍须原`director_speech_cues`精确逐句cue与后续媒体口型验证。
+
+新增 `director_screenplay_authority.py`（QO-D01）：`screenplay_handoff_mode`存在时，核验原编剧正式剧本SHA-256与原十岗ledger source及base digest，向**真实原十岗模型私有请求**注入source beat/人物道具事实/对白旁白摘要的只读剧情权威上下文；实际`agent_role_contracts.validate_role_output`对嵌套的显式剧情覆盖键（如`rewritten_dialogue`/`approved_story_changes`）拒绝，对声音专业`speech.dialogue`的speaker、每字原句、顺序逐项核验（支持同一原句拆成多个顺序不变cue），原`voiceover`仍由原校验代码负责。不使用简单关键词搜索导演的自由创作描述，不因没有原文学原词就禁止独创摄影与演员指导；**开放文字的隐性剧情变化不能通过哈希、schema自动完全识别，仍需编剧反审与总导演审片**。必须改原正式故事、事实、原台词则走QO-D12给编剧重写全稿并按作者审稿流程重新启动全pending专业团队，不得用“拍摄更容易”的借口直接改源。
+
+全面专业验收清单与权限表见`skills/23-one-screenplay-authority-and-director-shot-coverage.md`。QO-D01提升至`in_progress`，QO-D02保留`in_progress`，本轮两份JSON/Markdown质量账已同步。**用户持续要求先不测试**，没有主动触发单元/CI/真实媒体/收费模型/真人编剧审片，无主分支合并，全部代码仍位于统一Draft PR #67，绝不能宣称艺术通过或真实作者身份已认证。
+
+---
+
 ## QO-D14→QO-D13｜长文案重大剪辑后的正式编剧交接与最终分集（2026-10-21，暂不测试）
 
 `director_creative_cut.py` 已具备**至少两种真实不同导演cut**、逐原剧本beat保留/压缩/删减、艺术损失与节奏方案及未派发编剧返修单；`screenplay_series_delivery.py` 已具备一份**审核后的正式剧本**完整分集、≤90秒各集与附加时间预算以及原十岗位专业团队。**不要重新制造压缩引擎、第二导演或第二编剧。** 本轮新增`director_cut_series_handoff.py`并由原`screenplay_series_delivery.selected_director_cut_series_preview`调用，填补从原导演选中的重大压缩cut→原编剧改成新完整版→经既有`screenplay_director_handoff`结构化审稿→新稿的正式分集和干净十岗位建立之间的最后版本交接。
