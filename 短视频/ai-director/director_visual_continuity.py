@@ -170,8 +170,8 @@ def _camera_declared_anchor_conflicts(base, state):
             ("screen_axis", "eyeline_and_screen_axis"),
             ("key_light_position", "light_source_and_time_of_day"),
         ):
-            if a[field] is not None and b[field] is not None and
-                    a[field] != b[field]:
+            if (a[field] is not None and b[field] is not None and
+                    a[field] != b[field]):
                 findings.append({
                     "from_shot": left, "to_shot": right, "lens": lens,
                     "declared_property": field, "before": a[field],
