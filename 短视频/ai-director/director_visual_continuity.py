@@ -137,6 +137,50 @@ def _report(base, state):
         base, tracks, source_digest=state["source_digest"])
 
 
+def _camera_declared_anchor_conflicts(base, state):
+    """Only compare EXPLICIT structural camera/art anchors in the same scene.
+
+    Opposite axes or changed lights are human-review signals, not evidence
+    that an artistic jump, passage of time or move is intrinsically wrong.
+    """
+    by_id = {shot["id"]: shot for shot in base["shots"]}
+    findings = []
+    for left, right in zip(state["shot_ids"], state["shot_ids"][1:]):
+        if (by_id[left].get("scene_id") is None or
+                by_id[left].get("scene_id") !=
+                by_id[right].get("scene_id")):
+            continue
+        cameras = (_actual(state, "camera_art", left),
+                   _actual(state, "camera_art", right))
+        def metadata(item):
+            cam = item.get("camera")
+            art = item.get("art")
+            geometry = art.get("scene_geometry") if isinstance(art, dict) else None
+            geometry = geometry if isinstance(geometry, dict) else {}
+            cam = cam if isinstance(cam, dict) else {}
+            axis = cam.get("screen_axis") or geometry.get("camera_axis")
+            light = geometry.get("key_light_position")
+            return {
+                "screen_axis": axis if isinstance(axis, str) and axis.strip() else None,
+                "key_light_position": (light if isinstance(light, str) and
+                                       light.strip() else None),
+            }
+        a, b = map(metadata, cameras)
+        for field, lens in (
+            ("screen_axis", "eyeline_and_screen_axis"),
+            ("key_light_position", "light_source_and_time_of_day"),
+        ):
+            if a[field] is not None and b[field] is not None and
+                    a[field] != b[field]:
+                findings.append({
+                    "from_shot": left, "to_shot": right, "lens": lens,
+                    "declared_property": field, "before": a[field],
+                    "after": b[field],
+                    "still_requires_director_artistic_judgment": True,
+                })
+    return findings
+
+
 def _snapshot(base, state, meeting, audiovisual,
               artistic_method_plan=None):
     _need(len(state["shot_ids"]) >= 2,
@@ -173,6 +217,7 @@ def _snapshot(base, state, meeting, audiovisual,
         })
     requires_tracks = any(edge["shared_known_entity_ids"] for edge in shared)
     report = _report(base, state)
+    camera_anchor_findings = _camera_declared_anchor_conflicts(base, state)
     return ({
         "source_digest": state["source_digest"],
         "episode_base_digest": state["base_digest"],
@@ -189,6 +234,7 @@ def _snapshot(base, state, meeting, audiovisual,
         "declared_adjacent_shared_entities": shared,
         "explicit_track_review_required": requires_tracks,
         "missing_required_track_report": requires_tracks and report is None,
+        "actual_declared_axis_or_light_differences": camera_anchor_findings,
     }, source_inventory, report)
 
 
@@ -342,6 +388,10 @@ def validate(base, state, meeting, audiovisual, review, *,
             a["filmic_technique"].strip().casefold() !=
             b["filmic_technique"].strip().casefold(),
             "VISUAL_ALTERNATIVES_NOT_DISTINCT")
+        mandatory_review = {
+            r["lens"] for r in snap["actual_declared_axis_or_light_differences"]
+            if r["from_shot"] == eid[0] and r["to_shot"] == eid[1]
+        }
         for lens, finding in zip(LENSES, lens_rows):
             _shape(finding, LENS_ENTRY, "VISUAL_LENS_FINDING_SHAPE")
             _need(finding["lens"] == lens and
@@ -352,6 +402,11 @@ def validate(base, state, meeting, audiovisual, review, *,
                   "VISUAL_LENS_ORDER_OR_OWNER")
             _text(finding["director_craft_judgment"],
                   "VISUAL_LENS_NO_INDIVIDUAL_JUDGMENT")
+            if lens in mandatory_review:
+                _need(finding["outcome"] in (
+                    "revision_required",
+                    "deliberate_discontinuity_requires_review"),
+                    "VISUAL_DECLARED_CAMERA_AXIS_OR_LIGHT_CHANGE_NOT_ADDRESSED")
             if finding["outcome"] == "revision_required":
                 _need(finding["owner"] != "none",
                       "VISUAL_REVISION_NO_RESPONSIBLE_DEPARTMENT")
@@ -386,6 +441,8 @@ def validate(base, state, meeting, audiovisual, review, *,
         "explicit_entity_track_report_available": report is not None,
         "actual_existing_entity_track_findings": issue_codes,
         "actual_existing_entity_track_blockers": blockers,
+        "actual_declared_axis_or_light_review_signals": deepcopy(
+            snap["actual_declared_axis_or_light_differences"]),
         "visual_rework_required": (
             bool(changed) or bool(blockers) or
             snap["missing_required_track_report"]),
