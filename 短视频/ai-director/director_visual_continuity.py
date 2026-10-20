@@ -49,7 +49,7 @@ INTERVENTION = {
     "editing_animation": "editing_or_animation",
 }
 FIELDS = (
-    "from_shot_id", "to_shot_id", "lens", "outcome",
+    "from_shot_id", "to_shot_id", "lens_findings",
     "source_design_quote", "source_design_shot_id",
     "actual_department_quotes", "audience_before", "audience_after",
     "essential_invariant", "camera_axis_and_eyeline",
@@ -57,16 +57,15 @@ FIELDS = (
     "purpose_of_matching_or_breaking_continuity",
     "visual_motif_evolution", "why_generic_coverage_would_fail",
     "alternative_a", "alternative_b", "director_choice_and_cost",
-    "owner", "exact_rework_if_needed", "how_to_check_actual_frames",
+    "how_to_check_actual_frames",
 )
 ALTERNATIVE = (
     "filmic_technique", "audience_benefit",
     "creative_tradeoff", "required_departments",
 )
 QUOTE_FIELDS = ("department", "shot_id", "exact_excerpt")
-COVERAGE = (
-    "from_shot_id", "to_shot_id", "lens",
-)
+LENS_ENTRY = ("lens", "outcome", "director_craft_judgment",
+              "owner", "specific_rework_instruction")
 LIMITATIONS = {
     "real_video_seen": False,
     "face_or_costume_identity_verified": False,
@@ -217,7 +216,7 @@ def request(base, state, meeting, audiovisual, *,
                 "目光方向、道具从哪只手换到哪只手、空间左右关系、"
                 "一天内光源与时间关系、画面视觉母题的演变，"
                 "都必须服务观众理解与心理体验。"
-                "对每一对邻镜给出8种不同的具体电影专业观察，"
+                "对每一对邻镜只生成一份综合导演决策，内含8种不同的专业观察，"
                 "标明镜头引用与真实演员/摄影/剪辑交稿的原句。"
                 "如果实际记录缺同框身份/材质/光线实测数据，"
                 "明确说未知，不得把文字相同认作真人脸、服装和光源实测通过。"
@@ -226,7 +225,7 @@ def request(base, state, meeting, audiovisual, *,
                 "会有意被迷惑、以及何时如何重新建立方向。"
                 "禁止要求纪录片必须连贯到掩盖真实事实，"
                 "也不为统一风格抹除人物真实情绪与特殊视听句法。"
-                "每项至少给两种不同拍摄或剪辑取舍及艺术代价，"
+                "每一剪口提出两种不同的拍摄/剪辑取舍及艺术代价，"
                 "明确是总导演原指令错、表演站位错、摄影与光线错、"
                 "还是剪辑桥错。真正改变故事/事实/对白另交编剧，"
                 "不能让本模块私自重写剧本。"
@@ -246,6 +245,7 @@ def request(base, state, meeting, audiovisual, *,
                     "version", "snapshot", "whole_film_visual_world",
                     "edge_judgments", "limitations"],
                 "required_edge_fields": list(FIELDS),
+                "required_lens_fields": list(LENS_ENTRY),
                 "required_authored_quote_fields": list(QUOTE_FIELDS),
                 "required_alternative_fields": list(ALTERNATIVE),
                 "outcomes": sorted(OUTCOMES),
@@ -275,20 +275,21 @@ def validate(base, state, meeting, audiovisual, review, *,
         state["shot_ids"], state["shot_ids"][1:])]
     entries = review["edge_judgments"]
     _need(isinstance(entries, list) and
-          len(entries) == len(edges) * len(LENSES),
+          len(entries) == len(edges),
           "VISUAL_INCOMPLETE_ALL_EDGES_AND_LENSES")
     changed = []
     pending = []
     deliberate = []
     for i, row in enumerate(entries):
         _shape(row, FIELDS, "VISUAL_EDGE_SHAPE")
-        eid = edges[i // len(LENSES)]
-        lens = LENSES[i % len(LENSES)]
+        eid = edges[i]
         _need(row["from_shot_id"] == eid[0] and
-              row["to_shot_id"] == eid[1] and row["lens"] == lens,
-              "VISUAL_EDGE_ORDER_OR_LENS_CHANGED")
-        _need(row["outcome"] in OUTCOMES,
-              "VISUAL_EDGE_VERDICT_INVALID")
+              row["to_shot_id"] == eid[1],
+              "VISUAL_EDGE_ORDER_CHANGED")
+        lens_rows = row["lens_findings"]
+        _need(isinstance(lens_rows, list) and
+              len(lens_rows) == len(LENSES),
+              "VISUAL_MISSING_CAMERA_AND_CONTINUITY_LENSES")
         quote = row["source_design_quote"]
         _need(isinstance(quote, str) and 8 <= len(quote) <= 240 and
               row["source_design_shot_id"] in eid,
@@ -322,8 +323,7 @@ def validate(base, state, meeting, audiovisual, review, *,
             "camera_axis_and_eyeline", "world_lighting_and_geometry",
             "character_prop_state", "purpose_of_matching_or_breaking_continuity",
             "visual_motif_evolution", "why_generic_coverage_would_fail",
-            "director_choice_and_cost", "exact_rework_if_needed",
-            "how_to_check_actual_frames",
+            "director_choice_and_cost", "how_to_check_actual_frames",
         ):
             _text(row[k], "VISUAL_EMPTY_FILMING_REASON")
         a = row["alternative_a"]
@@ -342,22 +342,33 @@ def validate(base, state, meeting, audiovisual, review, *,
             a["filmic_technique"].strip().casefold() !=
             b["filmic_technique"].strip().casefold(),
             "VISUAL_ALTERNATIVES_NOT_DISTINCT")
-        _need(row["owner"] in OWNERS,
-              "VISUAL_UNKNOWN_REVISION_OWNER")
-        if row["outcome"] == "revision_required":
-            _need(row["owner"] != "none",
-                  "VISUAL_REVISION_NO_RESPONSIBLE_DEPARTMENT")
-            changed.append({"from_shot":eid[0],"to_shot":eid[1],
-                            "lens":lens,"owner":row["owner"]})
-        elif row["outcome"] == "deliberate_discontinuity_requires_review":
-            deliberate.append({"from_shot":eid[0],"to_shot":eid[1],
-                               "lens":lens})
-        else:
-            _need(row["owner"] == "none",
-                  "VISUAL_NONREVISION_MUST_NOT_PREAUTHORIZE_CREW")
-        if row["outcome"] == "unverifiable_without_real_media":
-            pending.append({"from_shot":eid[0],"to_shot":eid[1],
-                            "lens":lens})
+        for lens, finding in zip(LENSES, lens_rows):
+            _shape(finding, LENS_ENTRY, "VISUAL_LENS_FINDING_SHAPE")
+            _need(finding["lens"] == lens and
+                  isinstance(finding["outcome"], str) and
+                  finding["outcome"] in OUTCOMES and
+                  isinstance(finding["owner"], str) and
+                  finding["owner"] in OWNERS,
+                  "VISUAL_LENS_ORDER_OR_OWNER")
+            _text(finding["director_craft_judgment"],
+                  "VISUAL_LENS_NO_INDIVIDUAL_JUDGMENT")
+            if finding["outcome"] == "revision_required":
+                _need(finding["owner"] != "none",
+                      "VISUAL_REVISION_NO_RESPONSIBLE_DEPARTMENT")
+                _text(finding["specific_rework_instruction"],
+                      "VISUAL_MISSING_SPECIFIC_REPAIR")
+                changed.append({"from_shot":eid[0], "to_shot":eid[1],
+                                "lens":lens, "owner":finding["owner"]})
+            else:
+                _need(finding["owner"] == "none" and
+                      finding["specific_rework_instruction"] == "",
+                      "VISUAL_NONREVISION_MUST_NOT_PREAUTHORIZE_CREW")
+            if finding["outcome"] == "deliberate_discontinuity_requires_review":
+                deliberate.append({"from_shot":eid[0], "to_shot":eid[1],
+                                   "lens":lens})
+            if finding["outcome"] == "unverifiable_without_real_media":
+                pending.append({"from_shot":eid[0], "to_shot":eid[1],
+                                "lens":lens})
     issue_codes = [i["code"] for i in report["issues"]] if report else []
     blockers = [
         i["code"] for i in report["issues"]
@@ -396,11 +407,13 @@ def propose_rework(base, state, meeting, audiovisual, review, *,
         base, state, meeting, audiovisual, review,
         artistic_method_plan=artistic_method_plan)
     row = next((x for x in review["edge_judgments"]
-                if x["from_shot_id"] == from_shot_id and
-                x["lens"] == lens), None)
-    _need(row is not None and row["outcome"] == "revision_required",
+                if x["from_shot_id"] == from_shot_id), None)
+    finding = next((x for x in row["lens_findings"]
+                    if x["lens"] == lens), None) if row else None
+    _need(finding is not None and
+          finding["outcome"] == "revision_required",
           "VISUAL_NO_ACTUAL_DIRECTOR_REWORK_DECISION")
-    owner = row["owner"]
+    owner = finding["owner"]
     _need(owner in INTERVENTION, "VISUAL_UNKNOWN_REVISION_OWNER")
     _text(what_must_remain_unchanged,
           "VISUAL_UNSPECIFIED_ARTISTIC_PRESERVATION")
@@ -413,7 +426,7 @@ def propose_rework(base, state, meeting, audiovisual, review, *,
         observed_defect_or_creative_opportunity=(
             row["essential_invariant"]+"; "+row["purpose_of_matching_or_breaking_continuity"]),
         viewer_or_story_consequence=row["audience_after"],
-        proposed_change_in_own_words=row["exact_rework_if_needed"],
+        proposed_change_in_own_words=finding["specific_rework_instruction"],
         what_must_remain_unchanged=what_must_remain_unchanged,
         alternative_and_artistic_cost=(
             row["alternative_a"]["filmic_technique"]+" | Cost: "+
