@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "1707b54d17e436b3bbe13713e6bbe94274fcfcfac9c3bf604ec1a3b66d3f6248",
+  "spec_sha256": "fcb66f0e90853afbcf01ab7983f7f7e2aec13247ae3772994d7dfdeca21587fc",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -278,8 +278,32 @@
       ],
       "failure_action": "无价值则DROP/降优先；重要但未熟则WATCH并留下具体接续条件。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "ACCEPTED",
+      "evidence": [
+        {
+          "record_id": "W03-ACCEPTANCE-20261020-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W03-v01.zip#W03-交付与验收.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W03-v01.zip#01-editorial/TopicDecisions-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W03-v01.zip#01-editorial/AccessObservations-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W03-v01.zip#01-editorial/整刊比较与投入决定.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W03-v01.zip#02-research/ResearchPlans-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W03-v01.zip#02-research/W04-priority-and-return-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W03-v01.zip#03-coverage/ReferenceEditorialComparison-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W03-v01.zip#03-coverage/CoverageGap-v002.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W03-v01.zip#05-handoff/W04-input-v001.json"
+          ],
+          "validation_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W03-v01.zip#04-validation/W03-content-check-v001.md (RV-W03-CONTENT-20261020/M01—M12)",
+            "private:/新闻/SI-WEEKLY-2026-W42-W03-v01.zip#04-validation/W03-structure-check-v001.json (实际ID/状态/计划字段与输入字节检查)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w03-20261020 (W03-ACCEPTANCE-20261020-001；原三项验收与Q01—Q07)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w03-20261020 (RV-W03-PERSISTENCE-20261020；实际保存及28文件/27项清单回读)"
+          ],
+          "reviewer": "Codex同一实际执行者人工编辑/本包检查，已见W02与草稿；不是独立L5、盲审或用户认可",
+          "result": "ACCEPTED",
+          "scope": "仅SI-WEEKLY-2026-W42的W03人工初选与S7计划；26卡/3拟取证/16WATCH/7待核，3计划10取证动作，10参照与7类缺口；私有保存版本0/113611字节/SHA-256 5916f2834267bc2cca90a6d028e0efc886fc0785817ea2e81abf3fc58f440c3e，28文件/27清单回读相符；全部晚取得/历史正文未证；无S8/COVER/Review、正文、G01或生产实现，W04尚未开始"
+        }
+      ],
       "reviewed_basis_sha256": "52a3dfeba110569520fdb567ca8b26195b1b9f744d49079b753c95952015d9cf",
       "order": 3,
       "work_type": "人工内容验证",
@@ -386,9 +410,7 @@
       "plan_basis_changed": false,
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
-      "pending_completion_dependencies": [
-        "W03"
-      ],
+      "pending_completion_dependencies": [],
       "theory_refs": [
         "th-0",
         "th-1",
@@ -1202,7 +1224,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W03",
         "W04",
         "W05",
         "W06",
