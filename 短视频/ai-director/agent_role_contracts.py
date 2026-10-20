@@ -25,6 +25,7 @@ import director_artistic_methods as artistic_methods
 import director_action_rescue as action_rescue
 import director_creative_integration as creative_gates
 import director_episode_rhythm as rhythm_arc
+import director_screenplay_authority as story_authority
 
 CONTRACT_VERSION = "1.0"
 MAX_CONTEXT_CHARS = 220_000
@@ -666,6 +667,11 @@ def build_role_messages(base, state, task_id, *, source_text=None,
     if final_creative_review is not None:
         request["same_director_final_review_of_actual_crew_conflicts"] = (
             final_creative_review)
+    # No creative role is permitted to silently replace the reviewed
+    # screenplay. This is a source-bound craft contract, not a second writer.
+    story_lock = story_authority.snapshot(base, state)
+    if story_lock is not None:
+        request["sole_reviewed_screenplay_story_authority"] = story_lock
     if reference_manifest is not None:
         # The manifest contains HASHES AND VERSIONS, never pictures, paths,
         # signed URLs, licences or purported human identity approval.
@@ -1066,6 +1072,10 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
         execution_output_schema(base, state, task_id,
                                 editorial_handoff=editorial_handoff),
         payload)
+    # New QO-D01 guard: exact dialogue (including reblocked multi-beat
+    # sound cues) and no explicit source-override fields, not an aesthetic
+    # test of the narrative prose.
+    story_authority.validate_role(base, state, task_id, payload)
     # Re-run original ledger's source-aware safety gate for QA/director only.
     executor._enforce_base_audit(state, base, task_id, payload)
     if editorial_handoff is not None:
