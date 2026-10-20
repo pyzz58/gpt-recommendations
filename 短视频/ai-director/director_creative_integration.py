@@ -18,6 +18,7 @@ import director_action_rescue as action
 import director_revision_lineage as lineage
 import director_delivery_review as crew_delivery
 import director_conflict_arbitration as conflict_arbitration
+import director_visual_continuity as visual_continuity
 
 VERSION = "director-integrated-creative-gates-v1"
 MODE = {"kind": "director_integrated_creative_review_required",
@@ -166,7 +167,8 @@ def departmental_context(base, state, meeting, audiovisual, holistic, rescue,
 def postproduction_assessment(base, state, meeting, audiovisual,
                               holistic_post, rescue_post, *,
                               artistic_method_plan=None,
-                              delivery_review=None, arbitration_plan=None):
+                              delivery_review=None, arbitration_plan=None,
+                              visual_continuity_review=None):
     """Evaluate real crew *designs*, including genuine inter-role disagreements.
 
     QO-D16 and QO-D16 arbitration are optional for old callers, but a missing
@@ -195,6 +197,13 @@ def postproduction_assessment(base, state, meeting, audiovisual,
                 artistic_method_plan=artistic_method_plan)
         _need(conflicts or arbitration_plan is None,
               "INTEGRATED_ARBITRATION_CANNOT_INVENT_CONFLICT")
+    # Even coherent individual designs may contradict along the actual cut.
+    # Absence of a cross-shot review is NOT evidence of visual continuity.
+    visual_proof = None
+    if visual_continuity_review is not None:
+        visual_proof = visual_continuity.validate(
+            base, state, meeting, audiovisual, visual_continuity_review,
+            artistic_method_plan=artistic_method_plan)
     action_blocked = [
         x["shot_id"] for x in rescue_post["shots"]
         if x["decision"] in (
@@ -209,6 +218,11 @@ def postproduction_assessment(base, state, meeting, audiovisual,
         else "resolve_director_or_specialist_revisions" if (
             action_blocked or creative_revisions or
             crew_proof["requested_revisions"])
+        else "complete_cross_shot_visual_continuity_review"
+        if (len(state["shot_ids"]) > 1 and visual_proof is None)
+        else "resolve_visual_continuity_and_axis_light_blockers"
+        if (visual_proof is not None and
+            visual_proof["visual_rework_required"])
         else "continue_in_separate_real_media_and_independent_human_review"
         if crew_proof["can_enter_real_media_review"]
         else "complete_unsubmitted_specialist_deliveries")
@@ -229,6 +243,15 @@ def postproduction_assessment(base, state, meeting, audiovisual,
             arbitration_proof["arbitration_digest"]
             if arbitration_proof else None),
         "unresolved_professional_conflicts": deepcopy(conflicts),
+        "cross_shot_visual_review_digest": (
+            visual_proof["review_digest"] if visual_proof else None),
+        "cross_shot_visual_revisions": (
+            visual_proof["localized_visual_revisions"]
+            if visual_proof else None),
+        "cross_shot_known_track_blockers": (
+            visual_proof["actual_existing_entity_track_blockers"]
+            if visual_proof else None),
+        "cross_shot_real_media_still_unverified": True,
         "next_director_step": review_next_step,
         "director_lock_or_screenplay_changes_must_invalidate_prior_plans": True,
         "arbitration_does_not_make_old_conflicts_disappear": True,
@@ -310,7 +333,7 @@ def make_lineage_change_from_finding(
 def final_director_role_gate(
         base, state, meeting, audiovisual, holistic_post, rescue_post,
         delivery_review, *, arbitration_plan=None,
-        artistic_method_plan=None):
+        artistic_method_plan=None, visual_continuity_review=None):
     """Give the ORIGINAL final-director task verified post-crew review evidence.
 
     Without real QO-D16 review, 'no conflict' is unknowable. If conflicts are
@@ -322,11 +345,14 @@ def final_director_role_gate(
     _need(delivery_review is not None and holistic_post is not None and
           rescue_post is not None,
           "INTEGRATED_FINAL_CANNOT_SKIP_ACTUAL_CREW_REVIEW")
+    _need(len(state["shot_ids"]) < 2 or visual_continuity_review is not None,
+          "INTEGRATED_FINAL_CROSS_SHOT_VISUAL_REVIEW_REQUIRED")
     result = postproduction_assessment(
         base, state, meeting, audiovisual, holistic_post, rescue_post,
         artistic_method_plan=artistic_method_plan,
         delivery_review=delivery_review,
-        arbitration_plan=arbitration_plan)
+        arbitration_plan=arbitration_plan,
+        visual_continuity_review=visual_continuity_review)
     _need(result["qod16_conflict_count"] is not None,
           "INTEGRATED_FINAL_NO_DELIVERY_EVIDENCE")
     _need(not result["qod16_conflict_count"] or
@@ -340,6 +366,9 @@ def final_director_role_gate(
         "actual_conflict_count": result["qod16_conflict_count"],
         "whole_film_review_digest": result["holistic_critique_digest"],
         "physical_action_review_digest": result["action_rescue_digest"],
+        "cross_shot_visual_review_digest": (
+            result["cross_shot_visual_review_digest"]),
+        "cross_shot_visual_continuity_still_not_verified_in_media": True,
         "director_next_step": result["next_director_step"],
         "ready_for_user_review_candidate_only": (
             result["next_director_step"] ==
