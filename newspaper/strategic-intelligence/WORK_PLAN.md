@@ -8,11 +8,11 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`b97d8354425516ce002d993bca3d0fbe56c24d3fad2a88a425ecbb89951ee10f`。
+当前规范SHA-256：`c263e07069a937ec5b9bae83ce3159bf07d97fbf1a9fcf6c97d319091eb1debe`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
-验收通过：5；有据不适用：0；其余按下表实际状态。
+验收通过：6；有据不适用：0；其余按下表实际状态。
 
 ## 四阶段与数量
 
@@ -38,7 +38,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 3 | [W03 初选与有边界的取证计划](#w03) | 人工内容验证 | T03/R01 | [W02](#w02) | 验收通过 / CURRENT_BINDING |
 | 4 | [W04 真实原件、许可与主张支持核对](#w04) | 人工内容验证 | T04/R04 | [W03](#w03) | 验收通过 / CURRENT_BINDING |
 | 5 | [W05 S8复选与入选中文材料](#w05) | 人工内容验证 | T03/T04/R03 | [W04](#w04) | 验收通过 / CURRENT_BINDING |
-| 6 | [W06 联合界定事实、问题与完成边界](#w06) | 人工内容验证 | T05/T07/R01 | [W05](#w05) | 待开始 / CURRENT_BINDING |
+| 6 | [W06 联合界定事实、问题与完成边界](#w06) | 人工内容验证 | T05/T07/R01 | [W05](#w05) | 验收通过 / CURRENT_BINDING |
 | 7 | [W07 竞争解释、专业前提与真实方法应用](#w07) | 人工内容验证 | T05/T04/R04 | [W06](#w06) | 待开始 / CURRENT_BINDING |
 | 8 | [W08 顾问B1真实成稿与增益对照](#w08) | 人工内容验证 | T06 | [W07](#w07) | 待开始 / CURRENT_BINDING |
 | 9 | [W09 帝师B2主动研究与自足讲解](#w09) | 人工内容验证 | T07 | [W07](#w07) | 待开始 / CURRENT_BINDING |
@@ -273,7 +273,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：6/59；阶段：1；类型：人工内容验证。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W05](#w05)。
+进度：**验收通过**；关联：CURRENT_BINDING；前置：[W05](#w05)。
 
 前置尚未验收：无。仅供执行者核对，生成器不代为验收阶段。
 
@@ -301,7 +301,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W06-ACCEPTANCE-20261021-001", "artifact_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#W06-交付与验收.md", "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#M01-M03-联合事实与问题案卷.md", "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#01-facts/M01-FactBoundary-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#02-problem/M02-JointQuestions-v003.json", "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#03-boundary/M03-ScopeConcepts-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#04-completion/CompletionAndReturns-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#07-handoff/W07-W10-input-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#07-handoff/SharedDossierIndex-v001.json"], "validation_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#06-validation/W06-manual-check-v001.md (RV-W06-CONTENT-20261021；8正向/10显著模拟反向/4衔接，本卡三项及Q01—Q07)", "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#06-validation/W06-structure-check-v001.json (31项结构/字节/引用/状态/算术)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w06-20261021 (RV-W06-PERSISTENCE-20261021；30文件29清单实际保存回读)"], "reviewer": "同一Codex实际顾问/帝师问题研究与回原作核查；非第二模型、独立L5、专家、盲审或用户认可", "result": "ACCEPTED", "scope": "仅W06人工M01—M03：同案卷D06-v001/P01-Q-v003，8事实、7子问完成标准、4顾问/5帝师早期问题，5层结果/6知识用途，关键原件及机制/结果缺口与不同返工去向保留。回溯历史正文未证，阶段联系为公司报告非独立因果；READY不是子问全解/L5或B1/B2/C完成。私有版本0/85952字节/59f1f24d7e5325023ab425f85f3dbb69db19465a903f83b6b8a5c3536f83188c、30文件29清单实际回读一致；W07—W10仍未开始。"}]
 
 <a id="w07"></a>
 ## W07｜竞争解释、专业前提与真实方法应用
@@ -310,7 +310,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 进度：**待开始**；关联：CURRENT_BINDING；前置：[W06](#w06)。
 
-前置尚未验收：[W06](#w06)。仅供执行者核对，生成器不代为验收阶段。
+前置尚未验收：无。仅供执行者核对，生成器不代为验收阶段。
 
 责任模块/路线：[T05](TECHNICAL_TRACE.md#t05)、[T04](TECHNICAL_TRACE.md#t04)、[R04](TECHNICAL_TRACE.md#r04)。
 
@@ -520,7 +520,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 进度：**待开始**；关联：CURRENT_BINDING；前置：[W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12)。
 
-前置尚未验收：[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12)。仅供执行者核对，生成器不代为验收阶段。
+前置尚未验收：[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12)。仅供执行者核对，生成器不代为验收阶段。
 
 责任模块/路线：[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)、[R04](TECHNICAL_TRACE.md#r04)、[R07](TECHNICAL_TRACE.md#r07)、[T01](TECHNICAL_TRACE.md#t01)、[T02](TECHNICAL_TRACE.md#t02)、[T03](TECHNICAL_TRACE.md#t03)、[T04](TECHNICAL_TRACE.md#t04)、[T05](TECHNICAL_TRACE.md#t05)、[T06](TECHNICAL_TRACE.md#t06)、[T07](TECHNICAL_TRACE.md#t07)、[T08](TECHNICAL_TRACE.md#t08)、[T09](TECHNICAL_TRACE.md#t09)、[T10](TECHNICAL_TRACE.md#t10)、[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)。
 

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "b97d8354425516ce002d993bca3d0fbe56c24d3fad2a88a425ecbb89951ee10f",
+  "spec_sha256": "c263e07069a937ec5b9bae83ce3159bf07d97fbf1a9fcf6c97d319091eb1debe",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -588,8 +588,30 @@
       ],
       "failure_action": "事实缺口回W04，选题实变回W03/W05；保留不依赖缺口的探索性质。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "ACCEPTED",
+      "evidence": [
+        {
+          "record_id": "W06-ACCEPTANCE-20261021-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#W06-交付与验收.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#M01-M03-联合事实与问题案卷.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#01-facts/M01-FactBoundary-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#02-problem/M02-JointQuestions-v003.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#03-boundary/M03-ScopeConcepts-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#04-completion/CompletionAndReturns-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#07-handoff/W07-W10-input-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#07-handoff/SharedDossierIndex-v001.json"
+          ],
+          "validation_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#06-validation/W06-manual-check-v001.md (RV-W06-CONTENT-20261021；8正向/10显著模拟反向/4衔接，本卡三项及Q01—Q07)",
+            "private:/新闻/SI-WEEKLY-2026-W42-W06-v01.zip#06-validation/W06-structure-check-v001.json (31项结构/字节/引用/状态/算术)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w06-20261021 (RV-W06-PERSISTENCE-20261021；30文件29清单实际保存回读)"
+          ],
+          "reviewer": "同一Codex实际顾问/帝师问题研究与回原作核查；非第二模型、独立L5、专家、盲审或用户认可",
+          "result": "ACCEPTED",
+          "scope": "仅W06人工M01—M03：同案卷D06-v001/P01-Q-v003，8事实、7子问完成标准、4顾问/5帝师早期问题，5层结果/6知识用途，关键原件及机制/结果缺口与不同返工去向保留。回溯历史正文未证，阶段联系为公司报告非独立因果；READY不是子问全解/L5或B1/B2/C完成。私有版本0/85952字节/59f1f24d7e5325023ab425f85f3dbb69db19465a903f83b6b8a5c3536f83188c、30文件29清单实际回读一致；W07—W10仍未开始。"
+        }
+      ],
       "reviewed_basis_sha256": "abae01d2627571430cb2f9e25b484212ba2823133cdb3e22640cfe0c66407b8c",
       "order": 6,
       "work_type": "人工内容验证",
@@ -703,9 +725,7 @@
       "plan_basis_changed": false,
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
-      "pending_completion_dependencies": [
-        "W06"
-      ],
+      "pending_completion_dependencies": [],
       "theory_refs": [
         "th-0",
         "th-1",
@@ -1267,7 +1287,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W06",
         "W07",
         "W08",
         "W09",
