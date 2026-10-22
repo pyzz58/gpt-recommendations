@@ -107,5 +107,13 @@
     "logic_items_unchanged": 72,
     "work_definitions_and_dependencies_unchanged": 59,
     "reason": "registry/private placement/progress wording; actual code/tests and limitations reviewed; not module or stage acceptance"
+  },
+  "workflow_entry_failure": {
+    "run_id": 39852891825,
+    "observed": "completed failure; zero jobs",
+    "identified_constraint": "GitHub contexts availability excludes runner from jobs.<job_id>.env",
+    "constraint_source": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability",
+    "fix": "fixed private temporary venv path in job env; runtime code unchanged",
+    "new_ci_result": "PENDING; not prefilled"
   }
 }

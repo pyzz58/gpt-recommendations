@@ -10,4 +10,4 @@
 
 实际开发按[工作清单](WORK_PLAN.md)及主说明§26逐包推进：先核实际前置和阶段，读原理论及T/R逻辑，再交付并记录正向/反向/衔接结果。清单/进度只改主说明WORK_PLAN块；可用`python tools/sync_spec.py --check-work-plan --work W28`核对应W/G关联，该检查不验实际完成或批准阶段。
 
-本文件自动生成，请勿手工修改。规范SHA-256：`198c6449c40cd428ba7465f9e2f5ed8fb5ff0a73e9d3acadf6072ca955397f53`
+本文件自动生成，请勿手工修改。规范SHA-256：`71c000a2a6b870035eb46b7a2df7d2bb571bd24d4f0ac710ca8231fa6d5e70d3`
