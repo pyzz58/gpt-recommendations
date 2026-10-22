@@ -8,11 +8,11 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`46eeda837e7c9a0efba94e4363589305a87b3ec9f9d32ea5f553731e4a7e38e1`。
+当前规范SHA-256：`c2c53d0532f23c6ce20b569a4c6afb6fa576713f9e00304ed9d3c725b3f39bdc`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
-验收通过：8；有据不适用：0；其余按下表实际状态。
+验收通过：9；有据不适用：0；其余按下表实际状态。
 
 ## 四阶段与数量
 
@@ -41,7 +41,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 6 | [W06 联合界定事实、问题与完成边界](#w06) | 人工内容验证 | T05/T07/R01 | [W05](#w05) | 验收通过 / CURRENT_BINDING |
 | 7 | [W07 竞争解释、专业前提与真实方法应用](#w07) | 人工内容验证 | T05/T04/R04 | [W06](#w06) | 验收通过 / CURRENT_BINDING |
 | 8 | [W08 顾问B1真实成稿与增益对照](#w08) | 人工内容验证 | T06 | [W07](#w07) | 验收通过 / CURRENT_BINDING |
-| 9 | [W09 帝师B2主动研究与自足讲解](#w09) | 人工内容验证 | T07 | [W07](#w07) | 待开始 / CURRENT_BINDING |
+| 9 | [W09 帝师B2主动研究与自足讲解](#w09) | 人工内容验证 | T07 | [W07](#w07) | 验收通过 / CURRENT_BINDING |
 | 10 | [W10 条件推演与事前复查准备](#w10) | 人工内容验证 | T08 | [W08](#w08)、[W09](#w09) | 待开始 / CURRENT_BINDING |
 | 11 | [W11 独立审稿、改稿与真实版本放行](#w11) | 人工内容验证 | T09/R01/R03 | [W08](#w08)、[W09](#w09)、[W10](#w10) | 待开始 / CURRENT_BINDING |
 | 12 | [W12 完整同周样刊与实际阅读验收](#w12) | 人工内容验证 | T03/T10/T11/R01/R03 | [W11](#w11) | 待开始 / CURRENT_BINDING |
@@ -378,7 +378,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：9/59；阶段：1；类型：人工内容验证。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W07](#w07)。
+进度：**验收通过**；关联：CURRENT_BINDING；前置：[W07](#w07)。
 
 前置尚未验收：无。仅供执行者核对，生成器不代为验收阶段。
 
@@ -406,7 +406,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W09-ACCEPTANCE-20261022-001", "artifact_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W09-B2-v002.md", "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#W09-交付与验收.md", "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#01-reader/B1-数据中心承诺与风险-v003.md", "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#02-knowledge/KnowledgeQuestions-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#02-knowledge/KnowledgeClaims-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#02-knowledge/Calculations-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#02-knowledge/ConceptRegister-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#03-comparison/教学贡献与双向互校.md", "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#03-comparison/MutualReview-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#04-handoff/W10-W11-input-v001.json"], "validation_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#05-validation/W09-content-review-v001.json (RV-W09-CONTENT-20261022；6正向/8显著模拟反向/4衔接)", "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#05-validation/W09-structure-check-v001.json (RV-W09-STRUCTURE-20261022；245项结构/字节/引用/算术)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w09-20261022 (RV-W09-PERSISTENCE-20261022；正文及91文件90清单实际保存回读)"], "reviewer": "同一Codex实际知识原文/全文/计算与顾问帝师互校、正反及衔接；非独立L5、盲审、专家或用户认可", "result": "ACCEPTED", "scope": "仅W09 M11人工教学及互校：B2-v002/B1-v003/D09/P01-Q-v003，22段/9知识主张/5计算/3人工概念登记/4对照，B1两段澄清和B2三段真实修订；所有假设非真实案例/独立验证/学习测量。项目原因/个案责任/净回收与账单未决。私有包版本0/255422字节/2c6c06c704443286f082da46858d47e8ce945bef2f5127a2fa7876edebfeb072和单独正文实际回读；W10、独审、整刊/G01和生产未完成。"}]
 
 <a id="w10"></a>
 ## W10｜条件推演与事前复查准备
@@ -415,7 +415,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 进度：**待开始**；关联：CURRENT_BINDING；前置：[W08](#w08)、[W09](#w09)。
 
-前置尚未验收：[W09](#w09)。仅供执行者核对，生成器不代为验收阶段。
+前置尚未验收：无。仅供执行者核对，生成器不代为验收阶段。
 
 责任模块/路线：[T08](TECHNICAL_TRACE.md#t08)。
 
@@ -450,7 +450,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 进度：**待开始**；关联：CURRENT_BINDING；前置：[W08](#w08)、[W09](#w09)、[W10](#w10)。
 
-前置尚未验收：[W09](#w09)、[W10](#w10)。仅供执行者核对，生成器不代为验收阶段。
+前置尚未验收：[W10](#w10)。仅供执行者核对，生成器不代为验收阶段。
 
 责任模块/路线：[T09](TECHNICAL_TRACE.md#t09)、[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)。
 
@@ -520,7 +520,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 进度：**待开始**；关联：CURRENT_BINDING；前置：[W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12)。
 
-前置尚未验收：[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12)。仅供执行者核对，生成器不代为验收阶段。
+前置尚未验收：[W10](#w10)、[W11](#w11)、[W12](#w12)。仅供执行者核对，生成器不代为验收阶段。
 
 责任模块/路线：[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)、[R04](TECHNICAL_TRACE.md#r04)、[R07](TECHNICAL_TRACE.md#r07)、[T01](TECHNICAL_TRACE.md#t01)、[T02](TECHNICAL_TRACE.md#t02)、[T03](TECHNICAL_TRACE.md#t03)、[T04](TECHNICAL_TRACE.md#t04)、[T05](TECHNICAL_TRACE.md#t05)、[T06](TECHNICAL_TRACE.md#t06)、[T07](TECHNICAL_TRACE.md#t07)、[T08](TECHNICAL_TRACE.md#t08)、[T09](TECHNICAL_TRACE.md#t09)、[T10](TECHNICAL_TRACE.md#t10)、[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)。
 

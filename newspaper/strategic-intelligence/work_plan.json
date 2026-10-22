@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "46eeda837e7c9a0efba94e4363589305a87b3ec9f9d32ea5f553731e4a7e38e1",
+  "spec_sha256": "c2c53d0532f23c6ce20b569a4c6afb6fa576713f9e00304ed9d3c725b3f39bdc",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -899,8 +899,32 @@
       ],
       "failure_action": "按原因补知识研究或重写连接；不靠字数、卡数或用户已掌握的宣称验收。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "ACCEPTED",
+      "evidence": [
+        {
+          "record_id": "W09-ACCEPTANCE-20261022-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-B2-v002.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#W09-交付与验收.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#01-reader/B1-数据中心承诺与风险-v003.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#02-knowledge/KnowledgeQuestions-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#02-knowledge/KnowledgeClaims-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#02-knowledge/Calculations-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#02-knowledge/ConceptRegister-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#03-comparison/教学贡献与双向互校.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#03-comparison/MutualReview-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#04-handoff/W10-W11-input-v001.json"
+          ],
+          "validation_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#05-validation/W09-content-review-v001.json (RV-W09-CONTENT-20261022；6正向/8显著模拟反向/4衔接)",
+            "private:/新闻/SI-WEEKLY-2026-W42-W09-v01.zip#05-validation/W09-structure-check-v001.json (RV-W09-STRUCTURE-20261022；245项结构/字节/引用/算术)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w09-20261022 (RV-W09-PERSISTENCE-20261022；正文及91文件90清单实际保存回读)"
+          ],
+          "reviewer": "同一Codex实际知识原文/全文/计算与顾问帝师互校、正反及衔接；非独立L5、盲审、专家或用户认可",
+          "result": "ACCEPTED",
+          "scope": "仅W09 M11人工教学及互校：B2-v002/B1-v003/D09/P01-Q-v003，22段/9知识主张/5计算/3人工概念登记/4对照，B1两段澄清和B2三段真实修订；所有假设非真实案例/独立验证/学习测量。项目原因/个案责任/净回收与账单未决。私有包版本0/255422字节/2c6c06c704443286f082da46858d47e8ce945bef2f5127a2fa7876edebfeb072和单独正文实际回读；W10、独审、整刊/G01和生产未完成。"
+        }
+      ],
       "reviewed_basis_sha256": "4cc41ad9a169faa5d37e8941bf8619fe22290568e410ce412a1284f96222eb18",
       "order": 9,
       "work_type": "人工内容验证",
@@ -1002,9 +1026,7 @@
       "plan_basis_changed": false,
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
-      "pending_completion_dependencies": [
-        "W09"
-      ],
+      "pending_completion_dependencies": [],
       "theory_refs": [
         "th-0",
         "th-1",
@@ -1087,7 +1109,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W09",
         "W10"
       ],
       "theory_refs": [
@@ -1326,7 +1347,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W09",
         "W10",
         "W11",
         "W12"
