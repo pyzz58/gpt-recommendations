@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "34ad2c2ae5d0165f747e1ea8ebe5baafcc1826c472b3b70c47d76c268005148b",
+  "spec_sha256": "46eeda837e7c9a0efba94e4363589305a87b3ec9f9d32ea5f553731e4a7e38e1",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -803,8 +803,30 @@
       ],
       "failure_action": "无理解增益先回研究；确应改型则由W05重新核本期依据和整刊责任。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "ACCEPTED",
+      "evidence": [
+        {
+          "record_id": "W08-ACCEPTANCE-20261022-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W08-B1-v002.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W08-v01.zip#W08-交付与验收.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W08-v01.zip#01-reader/B1-数据中心承诺与风险-v001.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W08-v01.zip#02-analysis/JudgmentRegister-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W08-v01.zip#02-analysis/ActorsAndChoices-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W08-v01.zip#02-analysis/DossierRevision-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W08-v01.zip#03-comparison/顾问增益与实际改稿对照.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W08-v01.zip#04-handoff/W09-W11-input-v001.json"
+          ],
+          "validation_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W08-v01.zip#05-validation/W08-content-review-v001.json (RV-W08-CONTENT-20261022；6正向/8显著模拟反向/4衔接)",
+            "private:/新闻/SI-WEEKLY-2026-W42-W08-v01.zip#05-validation/W08-structure-check-v001.json (RV-W08-STRUCTURE-20261022；182项结构/字节/引用/算术)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w08-20261022 (RV-W08-PERSISTENCE-20261022；正文及71文件70清单实际保存回读)"
+          ],
+          "reviewer": "同一Codex作者实际原件核对/全文阅读/改稿/正反及衔接检查；非独立L5、盲审、领域专家或用户认可",
+          "result": "ACCEPTED",
+          "scope": "仅W08 M10人工成稿及增益对照：B1-v002/D08-v001/P01-Q-v003，16段实稿/8判断/6主体/6对照，真实v001保留及4段修订。期限表述差异与来源路径定向回核；具体适用期限/项目原因/实际费用效果未决。私有包版本0/193067字节/c1fc86eab5e9d2d6c6f1393ab22fc367d371b5de707cfcd01bcf1dbc4787672c及单独正文实际回读。W09双向成稿互校、独立审稿、G01和生产未完成。"
+        }
+      ],
       "reviewed_basis_sha256": "08880929af6c0fb53a4fb3a3db550814a528624d43989f07468c7d768c4dc93d",
       "order": 8,
       "work_type": "人工内容验证",
@@ -981,7 +1003,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W08",
         "W09"
       ],
       "theory_refs": [
@@ -1066,7 +1087,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W08",
         "W09",
         "W10"
       ],
@@ -1306,7 +1326,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W08",
         "W09",
         "W10",
         "W11",
