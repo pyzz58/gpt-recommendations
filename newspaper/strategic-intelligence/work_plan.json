@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "8e646f437aac35cd150435045df2ba851736d70d5490208592d85fbc4faaa5ea",
+  "spec_sha256": "3def5bae168c43c361d3a0d8c4f4afa19baa30fd2dd9f5fe196840e436b99459",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -1101,8 +1101,30 @@
       ],
       "failure_action": "关键未核保留待审/阻止相应用途；分歧回材料，不因流程走完提前盖章。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "ACCEPTED",
+      "evidence": [
+        {
+          "record_id": "W11-ACCEPTANCE-20261023-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W11-专题全文-v001.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W11-v01.zip#W11-交付与验收.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W11-v01.zip#01-review/InitialInquiry-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W11-v01.zip#01-review/SourceVerificationAndFindings-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W11-v01.zip#03-revision/AuthorResponse-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W11-v01.zip#04-recheck/RevisionRecheck-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W11-v01.zip#05-decision/Review-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W11-v01.zip#06-handoff/W12-input-v001.json"
+          ],
+          "validation_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W11-v01.zip#05-decision/Review-v001.json (RV-W11-CONTENT-20261023-001；首轮REVISE后修订/回源复核，PASS仅本专题单篇内容)",
+            "private:/新闻/SI-WEEKLY-2026-W42-W11-v01.zip#09-validation/StructureCheck-v001.json (RV-W11-STRUCTURE-20261023；138项身份/时序/版本/结构)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w11-20261023 (RV-W11-PERSISTENCE-20261023；139文件138清单及独立全文实际回读)"
+          ],
+          "reviewer": "本次Codex同一执行者参与前序写作，明确非盲；另行固定疑点并回原件/方法/实际演算/全文及diff核查。无第二人/模型/专家，无盲测或通用准入。",
+          "result": "ACCEPTED",
+          "scope": "仅W11第一阶段人工内容核查：8初始疑点/8实际意见、2修订要求、11来源范围与8算术；A02/B1-v004/B2-v003/C-v002及真实全文绑定RV-W11-CONTENT-20261023-001。139文件包版本0/415640字节/97611a22175d0bfa2d09f578a4bc9bb5f6e6690052815903d9fe9cc3b94b459e与全文回读相符。PASS只交W12内容使用，个案/原因/工程/净回收未知、原M12时间保留；视觉/完整样刊/G01、通用能力及生产未验。"
+        }
+      ],
       "reviewed_basis_sha256": "c790429bf05a9b5b5d32f0b7350286b0659c1bde15941383df9b7fc4dd90bd7f",
       "order": 11,
       "work_type": "人工内容验证",
@@ -1226,9 +1248,7 @@
       "plan_basis_changed": false,
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
-      "pending_completion_dependencies": [
-        "W11"
-      ],
+      "pending_completion_dependencies": [],
       "theory_refs": [
         "th-0",
         "th-1",
@@ -1368,7 +1388,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W11",
         "W12"
       ],
       "theory_refs": [
