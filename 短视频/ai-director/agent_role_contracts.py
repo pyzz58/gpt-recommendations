@@ -466,12 +466,18 @@ def _director_provider_and_speech_custody(
     if speech_mode is not None and speech_mode != required_speech:
         raise ValueError("CREW_SPEECH_PICTURE_MODE_INVALID")
     if provider_capability_plan is not None:
-        if task_id not in ("ai_technical", "director_final"):
+        if task_id not in ("sound", "editing_animation",
+                           "ai_technical", "director_final"):
             raise ValueError("CREW_PROVIDER_PLAN_WRONG_ROLE")
         if provider_mode is None:
             raise ValueError("CREW_PROVIDER_PLAN_REQUIRES_EXPLICIT_MODE")
-        selected = video_capabilities.crew_context(
-            base, state, provider_capability_plan, task_id)
+        if task_id in ("ai_technical", "director_final"):
+            selected = video_capabilities.crew_context(
+                base, state, provider_capability_plan, task_id)
+        else:
+            # Sound/edit can inspect native audio compatibility without
+            # receiving the whole vendor execution work order.
+            video_capabilities.validate(base, state, provider_capability_plan)
     elif provider_mode is not None and task_id in ("ai_technical", "director_final"):
         raise ValueError("CREW_NO_DIRECTOR_CHOSEN_PROVIDER_CHANNEL")
     if speech_picture_plan is not None:
@@ -485,6 +491,11 @@ def _director_provider_and_speech_custody(
     elif speech_mode is not None and task_id in (
             "sound", "editing_animation", "ai_technical", "director_final"):
         raise ValueError("CREW_DIRECTOR_SOURCE_EXACT_SPEECH_PLAN_REQUIRED")
+    if speech_picture_plan is not None and any(
+            cue["audio_implementation"] == "native_dialogue_candidate"
+            for cue in speech_picture_plan["audio"]):
+        if provider_capability_plan is None:
+            raise ValueError("CREW_NATIVE_SPEECH_NEEDS_REAL_CAPABILITY_SELECTION")
     if provider_capability_plan is not None and speech_picture_plan is not None:
         by_shot = {row["shot_id"]: row for row in provider_capability_plan["shots"]}
         for cue in speech_picture_plan["audio"]:
