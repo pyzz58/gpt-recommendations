@@ -1,0 +1,111 @@
+{
+  "record_id": "RUN-W13-ARCHIVE-20261023-001",
+  "checked_at": "2026-10-22T20:45:07.558090+00:00",
+  "work_id": "W13",
+  "result": "OFFLINE_CODE_CHECK_PASS",
+  "package_acceptance": "AWAITING_REVIEW; G01 not accepted",
+  "implementation": "Pydantic contracts + SQLAlchemy Core/SQLite + private immutable version files + offline CLI",
+  "baseline_spec_sha256": "3def5bae168c43c361d3a0d8c4f4afa19baa30fd2dd9f5fe196840e436b99459",
+  "input_kind": "实际本刊自有W11文件；外部收费表只保留定位；不新写文章",
+  "originals": {
+    "TASK-W13-v001": {
+      "sha256": "8ece656fa684d7e3a969546c42277b434389a931a60fbaa661e9b8f0038c71d5",
+      "bytes": 3510,
+      "ordinal": 1,
+      "kind": "Task"
+    },
+    "DOS-W13-v001": {
+      "sha256": "0e30236d86a7dc328886cebe08725c3c9db92729699202dad2eea07c956f3cf9",
+      "bytes": 1637,
+      "ordinal": 1,
+      "kind": "ResearchDossier"
+    },
+    "ARTICLE-A01": {
+      "sha256": "d1f70a5216d14af7fdee9b64d89dfb200b2b2b1d23ed983fa9e2018edafe6ec2",
+      "bytes": 4354,
+      "ordinal": 1,
+      "kind": "Article"
+    },
+    "ARTICLE-A02": {
+      "sha256": "ff4f462d25f7f33bea3e8f31695acf8c32644c1e194b4dfec1a69b5f29f7200f",
+      "bytes": 5065,
+      "ordinal": 2,
+      "kind": "Article"
+    },
+    "ARTICLE-W13-FULL-v001": {
+      "sha256": "dbfc7e4f906027883917172e40559fbbf0222717fff0d5046bcd74d5863a3f7c",
+      "bytes": 43048,
+      "ordinal": 1,
+      "kind": "Article"
+    },
+    "REVIEW-W13-v001": {
+      "sha256": "138335cde02ff9920b23f57e3a4d0b04e57771020e4a2ebe3ff9a598229806c4",
+      "bytes": 9415,
+      "ordinal": 1,
+      "kind": "Review"
+    }
+  },
+  "shared_source_versions": 1,
+  "source_referrers": 4,
+  "pointer_body_refused": true,
+  "new_connection_exact_readback": true,
+  "migration": {
+    "type": "explicit v1-compatible test copy",
+    "from": 1,
+    "to": 2,
+    "unchanged_originals": 6,
+    "index_records": 7
+  },
+  "synthetic_runtime_tests": {
+    "tests": 30,
+    "result": "PASS",
+    "cases": "追加/原稿取回、严格字段/枚举、悬空引用、单一版本共享、原件/索引区别、重复/失配/并发父版本、撤权/删除失败、事务回滚、损坏/链接、迁移/未来schema、CLI"
+  },
+  "environment": {
+    "pydantic": "2.14.1",
+    "pydantic-core": "2.50.1",
+    "sqlalchemy": "2.1.6"
+  },
+  "failures_fixed": [
+    {
+      "kind": "package index configuration",
+      "cause": "一次显式包源URL误缺/simple，已在pyproject统一官方simple地址，lock/sync实际成功"
+    },
+    {
+      "kind": "test fixture permission identity",
+      "cause": "测试指针和自有正文误复用同一rights_id；接口正确拒绝，已给两者独立ID"
+    },
+    {
+      "kind": "test fixture clock",
+      "cause": "fixture created_at在实际UTC记录时间之后，错误比较两者；改以调用前后真实时钟核系统recorded_at"
+    }
+  ],
+  "limits": [
+    "权限字段校验不能证明人工授权判断或事实真伪",
+    "仅本地开发档案/合成并发与明示迁移副本，未做生产宿主/备份/硬故障恢复",
+    "文件与DB跨进程崩溃仍可能有无索引孤立文件；API不把它当已提交正文，完整恢复归W51",
+    "撤回仅处理本档案掌握的副本，不能证明外部下载/备份已全部删除",
+    "现有T01/T04/T05/T09/T10对象在测试中复用这一接口，相关业务模块尚未端到端实现",
+    "W12/G01及后续阶段不因此通过；无模型、抓取、发信、交易或生产调度"
+  ],
+  "paid_api_calls": false,
+  "production_enabled": false,
+  "final_code_recheck_at": "2026-10-22T20:51:50.597840+00:00",
+  "privacy_boundary": "API rejects public source directory, unrelated nonempty directories and unrelated database schema",
+  "code_sha256": {
+    "intelligence/archive.py": "ca6edf0ca801f7ba003347f9dbaf5264c978a68cc2c3b48d294725c517d0ffdb",
+    "intelligence/__init__.py": "217488a0e4bc8ae970c488e32f0d660f10eeba46e8a4d918167f7f13a62403fe",
+    "intelligence/contracts.py": "35aa4ebeed6191df93357579bc84a6316b00ae5d2813a56064c08e3cfc5eed81",
+    "intelligence/__main__.py": "ae4f8888b06211e79a003642d0b5361293ebdffafef7c0f3a5206a25c5d6b586",
+    "tests_runtime/test_archive.py": "b7d5b5ae94d35cab2af7711d017ef5fe6b1be3d6aa498900b6dab101fda65bca",
+    "pyproject.toml": "76bdbdfc75398748038d8d41ac6a2b543d4643d3ba83cffbe8056427daa128f7",
+    "uv.lock": "83b61f42400360658b4d1d316e6bcd17630fe54da30a76a59e5db0873707a7e4"
+  },
+  "binding_impact_review": {
+    "only_changed_theory": "th-24",
+    "technical_designs_unchanged": 21,
+    "logic_items_unchanged": 72,
+    "work_definitions_and_dependencies_unchanged": 59,
+    "reason": "registry/private placement/progress wording; actual code/tests and limitations reviewed; not module or stage acceptance"
+  }
+}

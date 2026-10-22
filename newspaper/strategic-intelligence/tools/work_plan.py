@@ -201,6 +201,7 @@ def report(plan):
              '当前规范SHA-256：' + chr(96) + plan['spec_sha256'] + chr(96) + '。', '',
              '清单需复核：' + ('、'.join(plan['review_required']) or '无；仅限清单关联新鲜度。'), '',
              '验收通过：' + str(sum(w['progress'] == 'ACCEPTED' for w in plan['items'])) + '；有据不适用：' + str(sum(w['progress'] == 'NOT_APPLICABLE' for w in plan['items'])) + '；其余按下表实际状态。', '',
+             '**交付类型分开统计**：第一阶段人工准备/内容验证已验收' + str(sum(w['phase'] == 1 and w['kind'] == 'WORK' and w['progress'] == 'ACCEPTED' for w in plan['items'])) + '包；代码与接口工作包已验收' + str(sum(w['work_type'] == '代码与接口工作包' and w['progress'] == 'ACCEPTED' for w in plan['items'])) + '包、进行中/待验收' + str(sum(w['work_type'] == '代码与接口工作包' and w['progress'] in ('IN_PROGRESS', 'AWAITING_REVIEW') for w in plan['items'])) + '包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。', '',
              '## 四阶段与数量', '', '| 阶段 | 小工作包 | 阶段门 | 对照步骤数 | 主要交付 |', '|---|---:|---|---:|---|']
     summaries = {1: '人工真实专题→完整同周样刊；内容验证先行', 2: '最小研究代码→真实跨周/纠错→六例',
                  3: '按题专业能力与有据增益，必要时比较分工', 4: '生产离线预演、恢复/交付及年度双输入回放'}
