@@ -252,17 +252,17 @@
 
 ### QO-D04 · 模型能力适配、片段时长与路由决策
 
-- 状态：partially_addressed；优先级：P0；阶段：now_director；负责人：director
-- 发现位置：seedance_adapter.py; video_workflow.py; director_shootability.py
+- 状态：in_progress；优先级：P0；阶段：now_director；负责人：director
+- 发现位置：seedance_adapter.py; video_workflow.py; director_shootability.py; director_provider_capabilities.py; agent_role_contracts._director_provider_and_speech_custody; skills/24-director-model-capability-and-dialogue-visual-sync.md
 - 问题：当前 Seedance single_take 4–15s 为保守自限；不同模型时长/参考/多镜/音频能力不一
 - 根因：缺有来源日期与接口版本的 capability registry 和语义编译边界
-- 方案：建立模型/版本/渠道能力表（clip时长、比例、首尾帧、参考、内生音频、多镜、价格/区域待核）；导演先给意图，技术岗位按注册表拆解；超能力范围拒绝而非假造支持
-- 完成验收：Runway/Veo/Kling/Seedance 的公开能力配置和反例单元测试；真实目标供应商用其官方API文档单独认证；任意clip符合目标provider约束
+- 方案：建立模型/版本/渠道能力表（clip时长、比例、首尾帧、参考、内生音频、多镜、价格/区域待核）；导演先给意图，技术岗位按注册表拆解；超能力范围拒绝而非假造支持；2026-10-22新增按视频模型版本与真实API渠道隔离的离线能力注册表，只将现有seedance_adapter在volcengine/byteplus已经约束的4–15秒720p竖屏single_take子集视为「仓库适配器能力」；官方Gemini Veo3.1按Google渠道文档登记4/6/8秒及分辨率/参考图8秒条件；Runway Gen4.5按Cloudflare Workers AI渠道登记2–10秒，不冒充Runway直连接口。Kling3等无本地完整官方渠道校验的模型禁止生成可执行厂商工单。导演逐镜指定不可牺牲的情节与表演、源镜头时长、候选route与替代方案代价，必须符合确切catalogue摘要、导演锁、base/source。实际AI技术岗位generation.route与导演路线不符拒绝结果；真实付费/账号/版权/区域与画面生成不在本模块认证。
+- 完成验收：Runway/Veo/Kling/Seedance 的公开能力配置和反例单元测试；真实目标供应商用其官方API文档单独认证；任意clip符合目标provider约束；2026-10-22此次只编写源代码及专业说明，未主动运行单元、官方实际账号/供应商API或视频生成。后续需用不同渠道4/6/8秒、2–10秒、现有Seedance适配器4–15秒、错误画幅/超时/不支持的参考图/多镜/原生音频与来源版本变更的公开反例，及真正官方API认证；不能把注册表推断当成供应商实时保证。
 - AI 视频适配：Runway4.5 2–10s、Veo3.1 4/6/8s、Kling3多shot、Seedance2多模态不能混成统一上限
 - 依赖：QO-D02
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/3
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:partially_addressed
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/67；回归 2026-10-22仅静态源代码审核/编写，按用户指示未运行新单元、真实供应商API、视频音画ASR或人审；尚不能声明艺术或技术通过验收。；独立审核 未完成；真实媒体 未完成
+- 状态历史：2026-10-13:partially_addressed → 2026-10-22:in_progress
 
 ### QO-D05 · 演员/服装/道具/场景跨镜一致性
 
@@ -308,17 +308,17 @@
 
 ### QO-D08 · 导演与音效/台词/字幕精确对齐
 
-- 状态：partially_addressed；优先级：P1；阶段：now_director；负责人：director
-- 发现位置：agent_role_contracts sound; production_delivery; video_workflow
+- 状态：in_progress；优先级：P1；阶段：now_director；负责人：director
+- 发现位置：agent_role_contracts sound; production_delivery; video_workflow; director_voice_picture_sync.py; agent_role_contracts._director_provider_and_speech_custody; skills/24-director-model-capability-and-dialogue-visual-sync.md
 - 问题：已传精确speech与 onscreen/offscreen，但生成后真实语音文字、口型和字幕时间码未核对
 - 根因：预算和时码是计划，缺实际声音解码/ASR与人工语音核验
-- 方案：按导演意图为每镜决定原生声音或后期配音；保存逐句人声、口型与字幕对应；拒绝无准确信息的错字成片
-- 完成验收：两人镜头至少一名说话另一人闭口；真实音视频逐句人工核验，错字有局部修复路径
+- 方案：按导演意图为每镜决定原生声音或后期配音；保存逐句人声、口型与字幕对应；拒绝无准确信息的错字成片；2026-10-22复用已有QO-D19来源锁定的编剧对白与字幕绝对cue表，新增逐句语音speaker→源角色ID→具体导演物理shot/画面切段的嘴型与字幕责任绑定。对on-camera/off-camera/narration严格隔离口型目标，其他可见角色不得无依据同步开口，声轨不许丢原词、变更speaker和起止时间，字幕不许增删改字或误绑定片段。原生对白候选必须由QO-D04明确对应ai_video模型与原生音频渠道能力；在原声音/剪辑/AI技术/总导演的实际工作入口提供相关清单。新增按原cue逐项记录真人实片核查的结构化审阅表，但模块不能自行ASR、读媒体字节、认证真人或宣称真实口型已经通过，发布许可继续为否。
+- 完成验收：两人镜头至少一名说话另一人闭口；真实音视频逐句人工核验，错字有局部修复路径；2026-10-22未主动运行新单元、音视频生成、ASR、真实字幕渲染或真人声画审听。后续必须使用两人同框一人口播另一人闭嘴、镜头反打画外对白、对白跨多镜只播一次、实际错字错speaker/字幕漂移/J-L声桥实际音轨把柄等公开场景及真实媒体哈希/人工审查验收；结构化审稿表不能充当真实媒体质量通过。
 - AI 视频适配：原生声音未必可控；优先选后期配音/画外声避免错误口型
 - 依赖：QO-D04, QO-D05
 - 历史问题：https://github.com/pyzz58/gpt-recommendations/issues/3
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:partially_addressed
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/67；回归 2026-10-22仅静态源代码审核/编写，按用户指示未运行新单元、真实供应商API、视频音画ASR或人审；尚不能声明艺术或技术通过验收。；独立审核 未完成；真实媒体 未完成
+- 状态历史：2026-10-13:partially_addressed → 2026-10-22:in_progress
 
 ### QO-D09 · 剪辑节奏、过渡桥与镜头版本选择
 
