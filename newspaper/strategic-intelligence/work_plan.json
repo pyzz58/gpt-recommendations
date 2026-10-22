@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "c2c53d0532f23c6ce20b569a4c6afb6fa576713f9e00304ed9d3c725b3f39bdc",
+  "spec_sha256": "8e646f437aac35cd150435045df2ba851736d70d5490208592d85fbc4faaa5ea",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -999,8 +999,31 @@
       ],
       "failure_action": "传导缺环回W07，区分材料不足保留可辨别条件，不强造确定预测。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "ACCEPTED",
+      "evidence": [
+        {
+          "record_id": "W10-ACCEPTANCE-20261022-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W10-C-v001.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#W10-交付与验收.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#02-scenarios/ConditionalPaths-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#03-theses/FormationEvidence-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#03-theses/M12-Preparation-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#04-archive/SI-WEEKLY-2026-W42/02-article/ART-SI-WEEKLY-2026-W42-001/archive-index-W10-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#04-archive/SI-WEEKLY-2026-W42/02-article/ART-SI-WEEKLY-2026-W42-001/theses/TH-SI-W42-POWER-C10-ENGINEERING-001-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#04-archive/SI-WEEKLY-2026-W42/02-article/ART-SI-WEEKLY-2026-W42-001/theses/TH-SI-W42-POWER-C10-RECOVERY-001-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#05-handoff/W11-input-v001.json"
+          ],
+          "validation_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#06-validation/W10-content-review-v001.json (RV-W10-CONTENT-20261022；6正向/8显著模拟反向/6时间分类/4衔接)",
+            "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#06-validation/W10-structure-check-v001.json (RV-W10-STRUCTURE-20261022；267项字节/身份/引用/原话/时间/档案)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w10-20261022 (RV-W10-PERSISTENCE-20261022；正文及113文件112清单实际保存回读)"
+          ],
+          "reviewer": "同一Codex实际原文/正文/原档案与时间边界、正反/衔接检查；非独立L5、盲审、专家或用户认可",
+          "result": "ACCEPTED",
+          "scope": "仅W10人工C/M12准备：C-v001/D10/P01，2条件路径/2Thesis及原W01同任务槽位的实际追加；原话形成10月22日非18日预测，窗口为有理由事件触发，无新未来结果/点预测命中率/自动查询。113文件包版本0/310331字节/dacafff28e5f1be7855a5934008991b3eeedf99bf277aa154bdaf2e531eab100及单独正文真实回读。个案原因/责任/工程/净回收和账单未决，独立W11、整刊/G01及生产未完成。"
+        }
+      ],
       "reviewed_basis_sha256": "636f2e3467132a892046e77a8c13a1e45ba770cb37c8d1de61bc613a8ece25f6",
       "order": 10,
       "work_type": "人工内容验证",
@@ -1108,9 +1131,7 @@
       "plan_basis_changed": false,
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
-      "pending_completion_dependencies": [
-        "W10"
-      ],
+      "pending_completion_dependencies": [],
       "theory_refs": [
         "th-0",
         "th-1",
@@ -1347,7 +1368,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W10",
         "W11",
         "W12"
       ],

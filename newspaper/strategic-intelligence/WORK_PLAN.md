@@ -8,11 +8,11 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`c2c53d0532f23c6ce20b569a4c6afb6fa576713f9e00304ed9d3c725b3f39bdc`。
+当前规范SHA-256：`8e646f437aac35cd150435045df2ba851736d70d5490208592d85fbc4faaa5ea`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
-验收通过：9；有据不适用：0；其余按下表实际状态。
+验收通过：10；有据不适用：0；其余按下表实际状态。
 
 ## 四阶段与数量
 
@@ -42,7 +42,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 7 | [W07 竞争解释、专业前提与真实方法应用](#w07) | 人工内容验证 | T05/T04/R04 | [W06](#w06) | 验收通过 / CURRENT_BINDING |
 | 8 | [W08 顾问B1真实成稿与增益对照](#w08) | 人工内容验证 | T06 | [W07](#w07) | 验收通过 / CURRENT_BINDING |
 | 9 | [W09 帝师B2主动研究与自足讲解](#w09) | 人工内容验证 | T07 | [W07](#w07) | 验收通过 / CURRENT_BINDING |
-| 10 | [W10 条件推演与事前复查准备](#w10) | 人工内容验证 | T08 | [W08](#w08)、[W09](#w09) | 待开始 / CURRENT_BINDING |
+| 10 | [W10 条件推演与事前复查准备](#w10) | 人工内容验证 | T08 | [W08](#w08)、[W09](#w09) | 验收通过 / CURRENT_BINDING |
 | 11 | [W11 独立审稿、改稿与真实版本放行](#w11) | 人工内容验证 | T09/R01/R03 | [W08](#w08)、[W09](#w09)、[W10](#w10) | 待开始 / CURRENT_BINDING |
 | 12 | [W12 完整同周样刊与实际阅读验收](#w12) | 人工内容验证 | T03/T10/T11/R01/R03 | [W11](#w11) | 待开始 / CURRENT_BINDING |
 | 13 | [G01 第一阶段门：真实专题及完整同周样刊](#g01) | 阶段门 | R01/R03/R04/R07/T01/T02/T03/T04/T05/T06/T07/T08/T09/T10/T11/T13 | [W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12) | 待开始 / CURRENT_BINDING |
@@ -413,7 +413,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：10/59；阶段：1；类型：人工内容验证。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W08](#w08)、[W09](#w09)。
+进度：**验收通过**；关联：CURRENT_BINDING；前置：[W08](#w08)、[W09](#w09)。
 
 前置尚未验收：无。仅供执行者核对，生成器不代为验收阶段。
 
@@ -441,7 +441,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W10-ACCEPTANCE-20261022-001", "artifact_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W10-C-v001.md", "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#W10-交付与验收.md", "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#02-scenarios/ConditionalPaths-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#03-theses/FormationEvidence-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#03-theses/M12-Preparation-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#04-archive/SI-WEEKLY-2026-W42/02-article/ART-SI-WEEKLY-2026-W42-001/archive-index-W10-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#04-archive/SI-WEEKLY-2026-W42/02-article/ART-SI-WEEKLY-2026-W42-001/theses/TH-SI-W42-POWER-C10-ENGINEERING-001-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#04-archive/SI-WEEKLY-2026-W42/02-article/ART-SI-WEEKLY-2026-W42-001/theses/TH-SI-W42-POWER-C10-RECOVERY-001-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#05-handoff/W11-input-v001.json"], "validation_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#06-validation/W10-content-review-v001.json (RV-W10-CONTENT-20261022；6正向/8显著模拟反向/6时间分类/4衔接)", "private:/新闻/SI-WEEKLY-2026-W42-W10-v01.zip#06-validation/W10-structure-check-v001.json (RV-W10-STRUCTURE-20261022；267项字节/身份/引用/原话/时间/档案)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w10-20261022 (RV-W10-PERSISTENCE-20261022；正文及113文件112清单实际保存回读)"], "reviewer": "同一Codex实际原文/正文/原档案与时间边界、正反/衔接检查；非独立L5、盲审、专家或用户认可", "result": "ACCEPTED", "scope": "仅W10人工C/M12准备：C-v001/D10/P01，2条件路径/2Thesis及原W01同任务槽位的实际追加；原话形成10月22日非18日预测，窗口为有理由事件触发，无新未来结果/点预测命中率/自动查询。113文件包版本0/310331字节/dacafff28e5f1be7855a5934008991b3eeedf99bf277aa154bdaf2e531eab100及单独正文真实回读。个案原因/责任/工程/净回收和账单未决，独立W11、整刊/G01及生产未完成。"}]
 
 <a id="w11"></a>
 ## W11｜独立审稿、改稿与真实版本放行
@@ -450,7 +450,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 进度：**待开始**；关联：CURRENT_BINDING；前置：[W08](#w08)、[W09](#w09)、[W10](#w10)。
 
-前置尚未验收：[W10](#w10)。仅供执行者核对，生成器不代为验收阶段。
+前置尚未验收：无。仅供执行者核对，生成器不代为验收阶段。
 
 责任模块/路线：[T09](TECHNICAL_TRACE.md#t09)、[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)。
 
@@ -520,7 +520,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 进度：**待开始**；关联：CURRENT_BINDING；前置：[W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12)。
 
-前置尚未验收：[W10](#w10)、[W11](#w11)、[W12](#w12)。仅供执行者核对，生成器不代为验收阶段。
+前置尚未验收：[W11](#w11)、[W12](#w12)。仅供执行者核对，生成器不代为验收阶段。
 
 责任模块/路线：[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)、[R04](TECHNICAL_TRACE.md#r04)、[R07](TECHNICAL_TRACE.md#r07)、[T01](TECHNICAL_TRACE.md#t01)、[T02](TECHNICAL_TRACE.md#t02)、[T03](TECHNICAL_TRACE.md#t03)、[T04](TECHNICAL_TRACE.md#t04)、[T05](TECHNICAL_TRACE.md#t05)、[T06](TECHNICAL_TRACE.md#t06)、[T07](TECHNICAL_TRACE.md#t07)、[T08](TECHNICAL_TRACE.md#t08)、[T09](TECHNICAL_TRACE.md#t09)、[T10](TECHNICAL_TRACE.md#t10)、[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)。
 
