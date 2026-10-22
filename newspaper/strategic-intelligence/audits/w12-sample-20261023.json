@@ -1,0 +1,62 @@
+{
+  "record_id": "W12-SAMPLE-20261023-001",
+  "recorded_at": "2026-10-22T21:24:33.069240+00:00",
+  "scope": "第一阶段完整回溯样刊及用户阅读待验；流程纠正，不新增后阶段代码",
+  "user_correction": "我没有说先完成代码，我是咨询你，你按照流程一步步做，不要跳",
+  "execution_error": "将咨询误记成优先编码授权；已经在现行最高说明及原记录纠正",
+  "work_states": {
+    "W12": "AWAITING_REVIEW",
+    "G01": "NOT_STARTED",
+    "W13": "BLOCKED",
+    "W14": "NOT_STARTED"
+  },
+  "dependencies_changed": false,
+  "new_business_code": false,
+  "T_R_designs_and_72_logic_unchanged": true,
+  "all_59_card_definitions_and_review_bases_unchanged": true,
+  "reviewed_binding_fingerprints_refreshed": false,
+  "spec_input_sha256": "71c000a2a6b870035eb46b7a2df7d2bb571bd24d4f0ac710ca8231fa6d5e70d3",
+  "spec_output_sha256": "6c7ebb9e4af760f93d2eae09f2d3caf0b5e718430cb74e6c100f464cd4ab1255",
+  "article_inherited_sha256": "dbfc7e4f906027883917172e40559fbbf0222717fff0d5046bcd74d5863a3f7c",
+  "pdf": {
+    "private_ref": "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.pdf",
+    "bytes": 202423,
+    "pages": 21,
+    "sha256": "393f7c58eb6f7ab1656819a0fd78386b6aa133d65816f52ee4ce98e79fba801e"
+  },
+  "package": {
+    "private_ref": "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip",
+    "bytes": 834992,
+    "files": 214,
+    "manifest_entries": 213,
+    "sha256": "ea8e9259948e4061490b4cf40cbe64f5e1c52d194358d80ece33fd0297bbbaf9"
+  },
+  "actual_checks": {
+    "article_blocks_correspond": 86,
+    "toc_entries": 8,
+    "named_toc_links": 16,
+    "direct_internal_links": 4,
+    "external_links": 35,
+    "links_total": 55,
+    "calculations": 5,
+    "visual_pages_viewed": 21,
+    "explicit_negative_copies": 4,
+    "positive_presentation_control": 1,
+    "all_zip_manifest_bytes_verified": true,
+    "pdf_identical_to_archived_reader": true
+  },
+  "actual_failures_corrected": [
+    "初版算法列拆开25,000及短表跨页，已加宽/整表分页并重核",
+    "初版清单误排嵌套manifest，实际断言失败后修为只排本包根清单，重建并核全部214文件"
+  ],
+  "source_recheck_scope": "原站所用范围：WHO16日、Africa CDC17日、中国/美国CPI正文及总行、IEA公开OMR；当前DCT入口不代历史/项目结果",
+  "review_scope": "RV-W12-EDITION-CONTENT-20261023-001仅有限人工样刊内容采用；当前同一执行者、非盲，未作另一模型/专家或通用准入",
+  "seven_coverage_gaps_retained": true,
+  "user_reading_received": false,
+  "G01_or_W13_acceptance": false,
+  "persistence": "two actual successful write receipts, version0; local ZIP exact readback; no repeated remote download claimed",
+  "actual_tokens": null,
+  "actual_amount": null,
+  "new_paid_api_calls": 0,
+  "production_schedule_or_external_delivery": false
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "71c000a2a6b870035eb46b7a2df7d2bb571bd24d4f0ac710ca8231fa6d5e70d3",
+  "spec_sha256": "6c7ebb9e4af760f93d2eae09f2d3caf0b5e718430cb74e6c100f464cd4ab1255",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -1218,8 +1218,25 @@
       ],
       "failure_action": "未达内容或阅读要求继续修订，明确未验格式；本步不自动发信或转入生产。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "AWAITING_REVIEW",
+      "evidence": [
+        {
+          "record_id": "W12-SAMPLE-20261023-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.pdf",
+            "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#04-edition/Edition-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#05-audit/Review-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#08-handoff/UserReading-v001.json"
+          ],
+          "validation_refs": [
+            "audits/w12-sample-20261023.json",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w12-sample-20261023"
+          ],
+          "reviewer": "当前执行者实际原站/算术/稿件与21页呈现核查；同一执行者非盲，用户实际阅读意见未取得",
+          "result": "AWAITING_REVIEW",
+          "scope": "仅第一阶段W12完整回溯样刊制作与有限内容/呈现检查，21页/86块/55链接/5计算、四个明确边界副本及一合格呈现对照；214文件包和PDF已保存。用户实际阅读及第一阶段门待验；不等于全球完整覆盖、当前行情/疫情、业务模块或生产完成。"
+        }
+      ],
       "reviewed_basis_sha256": "408c39459f8394ae69adcacf80618f1a0f637f40bdb5e705704568e149ee3a53",
       "order": 12,
       "work_type": "人工内容验证",
@@ -1486,7 +1503,7 @@
       ],
       "failure_action": "缺宿主/权限则停止依赖操作；开发先小型持久关系库/版本文件，复用成熟接口，不另造事实库或高级索引。",
       "conditional": null,
-      "progress": "AWAITING_REVIEW",
+      "progress": "BLOCKED",
       "evidence": [
         {
           "record_id": "W13-CODE-20261023-001",
@@ -1506,6 +1523,21 @@
           "reviewer": "当前执行者实际编码、安装和离线测试；非内容/用户/阶段门批准",
           "result": "AWAITING_REVIEW",
           "scope": "W13代码已实现并离线测试；Pydantic/SQLAlchemy单应用共享合同、SQLite事务/私有版本文件、正文取回/索引重建/撤权/迁移和CLI。W12/G01未完成，故不记整包ACCEPTED；相邻业务消费者、完整研究/生产恢复及其他模块尚未验。"
+        },
+        {
+          "record_id": "W13-ORDER-CORRECTION-20261023-001",
+          "artifact_refs": [
+            "intelligence/contracts.py",
+            "intelligence/archive.py",
+            "intelligence/__main__.py"
+          ],
+          "validation_refs": [
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w12-sample-20261023",
+            "audits/w12-sample-20261023.json"
+          ],
+          "reviewer": "用户当前澄清及执行者实际依赖核对；不是阶段批准",
+          "result": "BLOCKED",
+          "scope": "纠正把咨询误读成优先编码授权；提前代码及原测试历史保留，W13后续暂停。W12/G01未过，先回W12与G01，过门再按原W13卡复核；未更改G01依赖，不启动W14。"
         }
       ],
       "reviewed_basis_sha256": "43d2adcc578d3dccc525945ed0c5169a8817dc79ea42bae07a474d275e2e1083",

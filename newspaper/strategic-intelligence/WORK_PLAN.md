@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`71c000a2a6b870035eb46b7a2df7d2bb571bd24d4f0ac710ca8231fa6d5e70d3`。
+当前规范SHA-256：`6c7ebb9e4af760f93d2eae09f2d3caf0b5e718430cb74e6c100f464cd4ab1255`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收1包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收0包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -46,9 +46,9 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 9 | [W09 帝师B2主动研究与自足讲解](#w09) | 人工内容验证 | T07 | [W07](#w07) | 验收通过 / CURRENT_BINDING |
 | 10 | [W10 条件推演与事前复查准备](#w10) | 人工内容验证 | T08 | [W08](#w08)、[W09](#w09) | 验收通过 / CURRENT_BINDING |
 | 11 | [W11 独立审稿、改稿与真实版本放行](#w11) | 人工内容验证 | T09/R01/R03 | [W08](#w08)、[W09](#w09)、[W10](#w10) | 验收通过 / CURRENT_BINDING |
-| 12 | [W12 完整同周样刊与实际阅读验收](#w12) | 人工内容验证 | T03/T10/T11/R01/R03 | [W11](#w11) | 待开始 / CURRENT_BINDING |
+| 12 | [W12 完整同周样刊与实际阅读验收](#w12) | 人工内容验证 | T03/T10/T11/R01/R03 | [W11](#w11) | 待验收 / CURRENT_BINDING |
 | 13 | [G01 第一阶段门：真实专题及完整同周样刊](#g01) | 阶段门 | R01/R03/R04/R07/T01/T02/T03/T04/T05/T06/T07/T08/T09/T10/T11/T13 | [W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12) | 待开始 / CURRENT_BINDING |
-| 14 | [W13 共享对象、版本与档案基础接口](#w13) | 代码与接口工作包 | T11/T01/T04 | [G01](#g01) | 待验收 / CURRENT_BINDING |
+| 14 | [W13 共享对象、版本与档案基础接口](#w13) | 代码与接口工作包 | T11/T01/T04 | [G01](#g01) | 受阻 / CURRENT_BINDING |
 | 15 | [W14 当前规范与任务输入准备接口](#w14) | 代码与接口工作包 | T01/R07 | [W13](#w13) | 待开始 / CURRENT_BINDING |
 | 16 | [W15 采用检查与权威决定接口](#w15) | 代码与接口工作包 | T01 | [W14](#w14) | 待开始 / CURRENT_BINDING |
 | 17 | [W16 共享研究修订与并发提交边界](#w16) | 代码与接口工作包 | T05/T01/T11 | [W13](#w13)、[W15](#w15) | 待开始 / CURRENT_BINDING |
@@ -485,7 +485,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：12/59；阶段：1；类型：人工内容验证。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W11](#w11)。
+进度：**待验收**；关联：CURRENT_BINDING；前置：[W11](#w11)。
 
 前置尚未验收：无。仅供执行者核对，生成器不代为验收阶段。
 
@@ -513,7 +513,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W12-SAMPLE-20261023-001", "artifact_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W12-v01.pdf", "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#04-edition/Edition-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#05-audit/Review-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#08-handoff/UserReading-v001.json"], "validation_refs": ["audits/w12-sample-20261023.json", "CANONICAL_SYSTEM_SPEC_V5.md#run-w12-sample-20261023"], "reviewer": "当前执行者实际原站/算术/稿件与21页呈现核查；同一执行者非盲，用户实际阅读意见未取得", "result": "AWAITING_REVIEW", "scope": "仅第一阶段W12完整回溯样刊制作与有限内容/呈现检查，21页/86块/55链接/5计算、四个明确边界副本及一合格呈现对照；214文件包和PDF已保存。用户实际阅读及第一阶段门待验；不等于全球完整覆盖、当前行情/疫情、业务模块或生产完成。"}]
 
 <a id="g01"></a>
 ## G01｜第一阶段门：真实专题及完整同周样刊
@@ -555,7 +555,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：14/59；阶段：2；类型：代码与接口工作包。
 
-进度：**待验收**；关联：CURRENT_BINDING；前置：[G01](#g01)。
+进度：**受阻**；关联：CURRENT_BINDING；前置：[G01](#g01)。
 
 前置尚未验收：[G01](#g01)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -585,7 +585,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W13-CODE-20261023-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "intelligence/__main__.py", "pyproject.toml", "uv.lock", ".github/workflows/strategic-intelligence-runtime.yml (repository root)"], "validation_refs": ["tests_runtime/test_archive.py (30 actual passing runtime tests)", "audits/w13-archive-20261023.json (6 owned originals, pointer/shared references, restart readback and explicit migration copy)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w13-code-20261023"], "reviewer": "当前执行者实际编码、安装和离线测试；非内容/用户/阶段门批准", "result": "AWAITING_REVIEW", "scope": "W13代码已实现并离线测试；Pydantic/SQLAlchemy单应用共享合同、SQLite事务/私有版本文件、正文取回/索引重建/撤权/迁移和CLI。W12/G01未完成，故不记整包ACCEPTED；相邻业务消费者、完整研究/生产恢复及其他模块尚未验。"}]
+实际证据：[{"record_id": "W13-CODE-20261023-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "intelligence/__main__.py", "pyproject.toml", "uv.lock", ".github/workflows/strategic-intelligence-runtime.yml (repository root)"], "validation_refs": ["tests_runtime/test_archive.py (30 actual passing runtime tests)", "audits/w13-archive-20261023.json (6 owned originals, pointer/shared references, restart readback and explicit migration copy)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w13-code-20261023"], "reviewer": "当前执行者实际编码、安装和离线测试；非内容/用户/阶段门批准", "result": "AWAITING_REVIEW", "scope": "W13代码已实现并离线测试；Pydantic/SQLAlchemy单应用共享合同、SQLite事务/私有版本文件、正文取回/索引重建/撤权/迁移和CLI。W12/G01未完成，故不记整包ACCEPTED；相邻业务消费者、完整研究/生产恢复及其他模块尚未验。"}, {"record_id": "W13-ORDER-CORRECTION-20261023-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "intelligence/__main__.py"], "validation_refs": ["CANONICAL_SYSTEM_SPEC_V5.md#run-w12-sample-20261023", "audits/w12-sample-20261023.json"], "reviewer": "用户当前澄清及执行者实际依赖核对；不是阶段批准", "result": "BLOCKED", "scope": "纠正把咨询误读成优先编码授权；提前代码及原测试历史保留，W13后续暂停。W12/G01未过，先回W12与G01，过门再按原W13卡复核；未更改G01依赖，不启动W14。"}]
 
 <a id="w14"></a>
 ## W14｜当前规范与任务输入准备接口
