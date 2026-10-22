@@ -82,7 +82,8 @@ UNCERTIFIED = frozenset({
 })
 PLAN_FIELDS = (
     "version", "source_digest", "base_digest",
-    "director_lock_digest", "shots", "rights_and_budget_verified",
+    "director_lock_digest", "registry_digest", "shots",
+    "rights_and_budget_verified",
     "actual_provider_media_tested", "human_operator_approval_authenticated",
 )
 SHOT_FIELDS = (
@@ -205,6 +206,7 @@ def validate(base, state, plan):
           plan["source_digest"] == state.get("source_digest") and
           plan["base_digest"] == state["base_digest"] and
           plan["director_lock_digest"] == lock and
+          plan["registry_digest"] == team.fingerprint(catalogue()) and
           plan["rights_and_budget_verified"] is False and
           plan["actual_provider_media_tested"] is False and
           plan["human_operator_approval_authenticated"] is False,
@@ -225,6 +227,7 @@ def validate(base, state, plan):
         "kind": "review_required_director_first_provider_preflight",
         "version": VERSION,
         "capability_registry_as_of": SOURCES_AS_OF,
+        "capability_registry_digest": team.fingerprint(catalogue()),
         "plan_digest": team.fingerprint(plan),
         "locked_director_revision_digest": lock,
         "planned_shots": decisions,
