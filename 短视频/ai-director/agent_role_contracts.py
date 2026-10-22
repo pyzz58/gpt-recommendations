@@ -25,6 +25,8 @@ import director_artistic_methods as artistic_methods
 import director_action_rescue as action_rescue
 import director_creative_integration as creative_gates
 import director_episode_rhythm as rhythm_arc
+import director_provider_capabilities as video_capabilities
+import director_voice_picture_sync as voice_picture
 import director_screenplay_authority as story_authority
 
 CONTRACT_VERSION = "1.0"
@@ -444,6 +446,57 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
     return schema
 
 
+def _director_provider_and_speech_custody(
+        base, state, task_id, provider_capability_plan, speech_picture_plan):
+    """One source-locked original-profession context, no new agents or API.
+
+    Neither an official model spec nor a planned subtitle can authenticate
+    the provider account, a native voice transcript, or an actual lip sync.
+    """
+    selected = None
+    speech = None
+    provider_mode = base.get("director_provider_capability_mode")
+    speech_mode = base.get("director_speech_picture_mode")
+    required_provider = {"kind": "director_model_channel_capability_required",
+                         "before_ai_technical": True}
+    required_speech = {"kind": "director_source_exact_speech_picture_required",
+                       "before_sound_and_edit": True}
+    if provider_mode is not None and provider_mode != required_provider:
+        raise ValueError("CREW_PROVIDER_CAPABILITY_MODE_INVALID")
+    if speech_mode is not None and speech_mode != required_speech:
+        raise ValueError("CREW_SPEECH_PICTURE_MODE_INVALID")
+    if provider_capability_plan is not None:
+        if task_id not in ("ai_technical", "director_final"):
+            raise ValueError("CREW_PROVIDER_PLAN_WRONG_ROLE")
+        if provider_mode is None:
+            raise ValueError("CREW_PROVIDER_PLAN_REQUIRES_EXPLICIT_MODE")
+        selected = video_capabilities.crew_context(
+            base, state, provider_capability_plan, task_id)
+    elif provider_mode is not None and task_id in ("ai_technical", "director_final"):
+        raise ValueError("CREW_NO_DIRECTOR_CHOSEN_PROVIDER_CHANNEL")
+    if speech_picture_plan is not None:
+        if task_id not in ("sound", "editing_animation", "ai_technical",
+                           "director_final"):
+            raise ValueError("CREW_SPEECH_PICTURE_PLAN_WRONG_ROLE")
+        if speech_mode is None:
+            raise ValueError("CREW_SPEECH_PICTURE_REQUIRES_EXPLICIT_MODE")
+        speech = voice_picture.build_role_context(
+            base, state, speech_picture_plan, task_id)
+    elif speech_mode is not None and task_id in (
+            "sound", "editing_animation", "ai_technical", "director_final"):
+        raise ValueError("CREW_DIRECTOR_SOURCE_EXACT_SPEECH_PLAN_REQUIRED")
+    if provider_capability_plan is not None and speech_picture_plan is not None:
+        by_shot = {row["shot_id"]: row for row in provider_capability_plan["shots"]}
+        for cue in speech_picture_plan["audio"]:
+            if cue["audio_implementation"] == "native_dialogue_candidate":
+                for fragment in cue["picture_segments"]:
+                    video = by_shot[fragment["director_shot_id"]]
+                    if (video["preferred_route"] != "ai_video" or
+                            video["audio_route"] != "native_dialogue_candidate"):
+                        raise ValueError("CREW_NATIVE_DIALOGUE_WRONG_VIDEO_ROUTE")
+    return selected, speech
+
+
 def _director_rhythm_specialist_gate(
         base, state, task_id, department_command, audiovisual_plan,
         artistic_method_plan, rhythm_pre_plan, rhythm_post_plan):
@@ -518,7 +571,8 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                         department_delivery_review=None,
                         artistic_arbitration_plan=None,
                         visual_continuity_review=None,
-                        rhythm_pre_plan=None, rhythm_post_plan=None):
+                        rhythm_pre_plan=None, rhythm_post_plan=None,
+                        provider_capability_plan=None, speech_picture_plan=None):
     """Build private messages in memory; never return a public or saved artifact.
 
     For source-locked teams, include the FIRST real director/editor vision.
@@ -653,6 +707,12 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 base, state, department_command, audiovisual_plan,
                 holistic_critique, action_rescue_plan, task_id,
                 artistic_method_plan=artistic_method_plan))
+    provider_choice, exact_speech = _director_provider_and_speech_custody(
+        base, state, task_id, provider_capability_plan, speech_picture_plan)
+    if provider_choice is not None:
+        request["director_model_channel_preflight_only"] = provider_choice
+    if exact_speech is not None:
+        request["director_exact_audio_picture_cue_work_order"] = exact_speech
     rhythm_guidance = _director_rhythm_specialist_gate(
         base, state, task_id, department_command, audiovisual_plan,
         artistic_method_plan, rhythm_pre_plan, rhythm_post_plan)
@@ -808,7 +868,8 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
                          department_delivery_review=None,
                          artistic_arbitration_plan=None,
                          visual_continuity_review=None,
-                         rhythm_pre_plan=None, rhythm_post_plan=None):
+                         rhythm_pre_plan=None, rhythm_post_plan=None,
+                         provider_capability_plan=None, speech_picture_plan=None):
     """Strict provider-agnostic parsing + specialist craft preflight.
 
     Return a new parsed object, never a fixed/normalized one. Refuse invalid
@@ -889,6 +950,8 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
             base, state, department_command, audiovisual_plan,
             holistic_critique, action_rescue_plan, task_id,
             artistic_method_plan=artistic_method_plan)
+    _director_provider_and_speech_custody(
+        base, state, task_id, provider_capability_plan, speech_picture_plan)
     _director_rhythm_specialist_gate(
         base, state, task_id, department_command, audiovisual_plan,
         artistic_method_plan, rhythm_pre_plan, rhythm_post_plan)
@@ -1072,6 +1135,15 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
         execution_output_schema(base, state, task_id,
                                 editorial_handoff=editorial_handoff),
         payload)
+    if task_id == "ai_technical" and provider_capability_plan is not None:
+        video_capabilities.validate_technical_delivery(
+            base, state, provider_capability_plan, payload)
+    if task_id == "director_final" and provider_capability_plan is not None:
+        tech = state["tasks"]["ai_technical"]
+        if tech["status"] != "completed":
+            raise ValueError("CREW_DIRECTOR_FINAL_MISSING_REAL_AI_TECH_DELIVERY")
+        video_capabilities.validate_technical_delivery(
+            base, state, provider_capability_plan, tech["deliverable"])
     # New QO-D01 guard: exact dialogue (including reblocked multi-beat
     # sound cues) and no explicit source-override fields, not an aesthetic
     # test of the narrative prose.
@@ -1117,7 +1189,8 @@ def submit_role_output(base, state, task_id, raw, *, source_text=None,
                        department_delivery_review=None,
                        artistic_arbitration_plan=None,
                        visual_continuity_review=None,
-                       rhythm_pre_plan=None, rhythm_post_plan=None):
+                       rhythm_pre_plan=None, rhythm_post_plan=None,
+                       provider_capability_plan=None, speech_picture_plan=None):
     """Offline transition from a *provided* strict JSON response to a new ledger.
 
     No model invocation; caller must arrange private transport separately.
@@ -1136,5 +1209,7 @@ def submit_role_output(base, state, task_id, raw, *, source_text=None,
                                    artistic_arbitration_plan=artistic_arbitration_plan,
                                    visual_continuity_review=visual_continuity_review,
                                    rhythm_pre_plan=rhythm_pre_plan,
-                                   rhythm_post_plan=rhythm_post_plan)
+                                   rhythm_post_plan=rhythm_post_plan,
+                                   provider_capability_plan=provider_capability_plan,
+                                   speech_picture_plan=speech_picture_plan)
     return team.submit(state, team.packet(state, task_id), payload)
