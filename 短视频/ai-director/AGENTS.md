@@ -1,3 +1,17 @@
+## QO-D04 × QO-D08｜模型版本/接入渠道能力 + 真实对白声画源锁（2026-10-22；暂不测试）
+
+本轮新增`director_provider_capabilities.py`和`director_voice_picture_sync.py`，严格保持**同一个总导演**负责创作取舍、原`ai_technical`负责生产可行性与原`sound/editing_animation`负责声音剪辑。第24号专业规范见`skills/24-director-model-capability-and-dialogue-visual-sync.md`。不另起技术调度器、音轨合成服务，不修改原有真实`seedance_adapter.py`、`video_workflow.py`、帧级工单、OTIO或收费视频网关。
+
+**D04**：`director_provider_capabilities.catalogue()`按指定渠道+具体model版本及证据URL登记能力，并由`registry_digest`锁定。现有volcengine/byteplus Seedance2.5 4–15秒竖屏720p仅是本仓库已实现的适配器保守子集；Google Gemini API Veo3.1 Preview采用官方4/6/8秒及高清/参考图要求8秒的条件；Runway4.5数据专指Cloudflare Workers AI渠道2–10秒，不能冒充Runway直连；尚缺可信渠道核查的Kling3、Seedance2.0等默认UNKNOWN并阻断生产方案。所有渠道仍需实际账号、地区、价格、额度、媒体、来源权单独认证。总导演选`shot_id`、不可牺牲的演员行为/原文事实与候选技术路线，程序核对源base/导演锁、shot原时长及渠道能力；超时/多镜头/参照能力未知不自动缩短或拍摄。原`ai_technical.generation.route`必须与总导演计划一致，不能静默技术降级。**本模块绝不直接发送API。**
+
+**D08**：严格复用原QO-D19`director_editor_cue_sheet`的源剧本每一cue（原speaker、对白/旁白文字、绝对时间和跨分镜picture_segments），将每段画面指明谁有口型权、哪位人物应保持不说话；反打镜画外声不得错误驱动反应者嘴型；旁白不要求演员对口型；字幕按原`text_exact`及剪辑秒数绑定。导演可选原生声音**候选**或后期配音，原生候选必须同时提供对应`ai_video`渠道的真实能力证据，禁止声音部门推测支持。媒体审看记录只是一份按cue填报的声明，**不读取媒体、不做ASR、不认证用户或口型，无任何自动发布或媒体通过的权限**。
+
+`agent_role_contracts.build_role_messages/validate_role_output/submit_role_output`已在原岗位入口增加两个**显式模式才生效**的可选参数`provider_capability_plan`/`speech_picture_plan`：D04针对AI技术及总导演（声音剪辑可参考原生对白支持性但不能操作视频API），D08针对声音、剪辑、AI技术和最终导演。旧项目没有对应`director_provider_capability_mode`/`director_speech_picture_mode`时保留旧合同；新模式缺真实专业输入则fail-closed。来源或注册表变更使旧计划失效，无收费、外发或真人许可自动生成。
+
+**质量状态**：QO-D04、QO-D08从`partially_addressed`更新为`in_progress`；本轮代码/规范/JSON/Markdown质量账位于Draft PR #67，用户持续要求**先不测试**，无新单元/CI、真实音视频/官方账号调用/付费Seedance任务、人工声画盲评与主分支合并。过去的合成测试成果不能当成此次音画艺术真实验收。
+
+---
+
 ## QO-D01 × QO-D02｜正式剧本唯一剧情权威与导演镜头覆盖（2026-10-21；暂不测试）
 
 本轮静态代码审查发现**明确生产信息缺失**：原 `director_shot_coverage.reblock_episode` 支持一场多镜、一个节拍多镜和同场多beat合为一镜，但合镜仅汇总人物与claim，`prop_ids`和`source_adaptation.speaker_character_ids`仍停留在第一来源beat，第二个情节的道具及说话人身份可能丢失。已修复为合并**全部beat**的角色/道具/来源事实ID与speaker→稳定角色ID对应；同speaker发生不同角色绑定时拒绝。同时每个新物理shot新增`covered_beat_source_records`列出每原beat准确的来源对象、角色、道具、论点引用，重建十岗之前逐项核对旧原稿，旁白与对白仍逐字逐句按原顺序存在且只播放一次。不创建第二导演/第二分镜算法，跨场蒙太奇仍作为独立物理镜头的剪辑关系；合法有对白反打仍须原`director_speech_cues`精确逐句cue与后续媒体口型验证。
