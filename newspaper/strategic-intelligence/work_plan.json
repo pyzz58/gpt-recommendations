@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "c263e07069a937ec5b9bae83ce3159bf07d97fbf1a9fcf6c97d319091eb1debe",
+  "spec_sha256": "34ad2c2ae5d0165f747e1ea8ebe5baafcc1826c472b3b70c47d76c268005148b",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -697,8 +697,31 @@
       ],
       "failure_action": "按有价值新动作补研；无新增信息或获准资源受限时记录未完成与下一触发，不无限检索。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "ACCEPTED",
+      "evidence": [
+        {
+          "record_id": "W07-ACCEPTANCE-20261022-001",
+          "artifact_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W07-v01.zip#W07-交付与验收.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W07-v01.zip#M04-M09-竞争解释与风险机制研究.md",
+            "private:/新闻/SI-WEEKLY-2026-W42-W07-v01.zip#01-sources/SourcePacket-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W07-v01.zip#01-sources/VersionAndLineage-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W07-v01.zip#02-research/MethodUse-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W07-v01.zip#02-research/M07-CompetingExplanations-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W07-v01.zip#02-research/M08-M09-ProcessCounterevidence-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W07-v01.zip#04-completion/RevisionAndReturns-v001.json",
+            "private:/新闻/SI-WEEKLY-2026-W42-W07-v01.zip#05-handoff/W08-W09-input-v001.json"
+          ],
+          "validation_refs": [
+            "private:/新闻/SI-WEEKLY-2026-W42-W07-v01.zip#06-validation/W07-content-check-v001.json (RV-W07-CONTENT-20261022；8正向/12显著模拟反向/4衔接)",
+            "private:/新闻/SI-WEEKLY-2026-W42-W07-v01.zip#06-validation/W07-structure-check-v001.json (RV-W07-STRUCTURE-20261022；122项结构/身份/输入/来源字节/引用/算术)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w07-20261022 (RV-W07-PERSISTENCE-20261022；55文件54清单实际保存回读)"
+          ],
+          "reviewer": "同一Codex人工专业取证/页图与方法核对/内容正反和衔接检查；非独立L5、专家、盲审或用户认可",
+          "result": "ACCEPTED",
+          "scope": "仅W07 M04—M09有限研究：D07-v001/P01-Q-v003，原版及修订DCT/说明函等8文书身份、12主张、3竞争解释/6观察、4方法、5风险链/5计算。前提失配的强信号应用撤销，项目原因/实际费用保护未决；历史正文仍未证。私有版本0/144798字节/784cff6707c1c2c6d5721f15a40a4168c819e7fb81ba378b62a8432d9e8a4d99、55文件/54清单实际回读。W08/W09实稿、独审、G01及生产未完成。"
+        }
+      ],
       "reviewed_basis_sha256": "3a921ec4a60031f93d172b9769d4dabb3e186c5846f431e0971135faf09a625d",
       "order": 7,
       "work_type": "人工内容验证",
@@ -806,9 +829,7 @@
       "plan_basis_changed": false,
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
-      "pending_completion_dependencies": [
-        "W07"
-      ],
+      "pending_completion_dependencies": [],
       "theory_refs": [
         "th-0",
         "th-1",
@@ -882,9 +903,7 @@
       "plan_basis_changed": false,
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
-      "pending_completion_dependencies": [
-        "W07"
-      ],
+      "pending_completion_dependencies": [],
       "theory_refs": [
         "th-0",
         "th-1",
@@ -1287,7 +1306,6 @@
       "pending_technical_nodes": [],
       "pending_binding_dependencies": [],
       "pending_completion_dependencies": [
-        "W07",
         "W08",
         "W09",
         "W10",
