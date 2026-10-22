@@ -8,7 +8,7 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`6c7ebb9e4af760f93d2eae09f2d3caf0b5e718430cb74e6c100f464cd4ab1255`。
+当前规范SHA-256：`5790c972846bde35a955984c285d7bfcbfae1bf6a1557a47ae43b90dd0e908a0`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
@@ -513,7 +513,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W12-SAMPLE-20261023-001", "artifact_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W12-v01.pdf", "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#04-edition/Edition-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#05-audit/Review-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#08-handoff/UserReading-v001.json"], "validation_refs": ["audits/w12-sample-20261023.json", "CANONICAL_SYSTEM_SPEC_V5.md#run-w12-sample-20261023"], "reviewer": "当前执行者实际原站/算术/稿件与21页呈现核查；同一执行者非盲，用户实际阅读意见未取得", "result": "AWAITING_REVIEW", "scope": "仅第一阶段W12完整回溯样刊制作与有限内容/呈现检查，21页/86块/55链接/5计算、四个明确边界副本及一合格呈现对照；214文件包和PDF已保存。用户实际阅读及第一阶段门待验；不等于全球完整覆盖、当前行情/疫情、业务模块或生产完成。"}]
+实际证据：[{"record_id": "W12-SAMPLE-20261023-001", "artifact_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W12-v01.pdf", "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#04-edition/Edition-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#05-audit/Review-v001.json", "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#08-handoff/UserReading-v001.json"], "validation_refs": ["audits/w12-sample-20261023.json", "CANONICAL_SYSTEM_SPEC_V5.md#run-w12-sample-20261023"], "reviewer": "当前执行者实际原站/算术/稿件与21页呈现核查；同一执行者非盲，用户实际阅读意见未取得", "result": "AWAITING_REVIEW", "scope": "仅第一阶段W12完整回溯样刊制作与有限内容/呈现检查，21页/86块/55链接/5计算、四个明确边界副本及一合格呈现对照；214文件包和PDF已保存。用户实际阅读及第一阶段门待验；不等于全球完整覆盖、当前行情/疫情、业务模块或生产完成。"}, {"record_id": "W12-SAVED-READBACK-20261023-001", "artifact_refs": ["private:/新闻/SI-WEEKLY-2026-W42-W12-v01.pdf (actual stored SHA-256 1297b17353ba7c411b92b0ff8302e1ea0606639f143950b6f496680f59f52047)", "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#02-reader/完整样刊-v001.pdf (original render SHA-256 393f7c58eb6f7ab1656819a0fd78386b6aa133d65816f52ee4ce98e79fba801e)"], "validation_refs": ["audits/w12-saved-readback-20261023.json", "CANONICAL_SYSTEM_SPEC_V5.md#run-w12-saved-readback-20261023"], "reviewer": "当前执行者实际取回已保存版本，逐页文本/像素/链接核对；非用户阅读意见或阶段批准", "result": "AWAITING_REVIEW", "scope": "原PDF与独立存储PDF字节不相同，分别保留身份；21页文本、像素和55链接及8项目录一致，承接原有限内容/呈现检查。保存ZIP与原包逐字节相同，214文件/213项清单核过；用户实际阅读仍待，W12/G01未过，不继续W13/W14。"}]
 
 <a id="g01"></a>
 ## G01｜第一阶段门：真实专题及完整同周样刊

@@ -19,10 +19,11 @@
   "spec_output_sha256": "6c7ebb9e4af760f93d2eae09f2d3caf0b5e718430cb74e6c100f464cd4ab1255",
   "article_inherited_sha256": "dbfc7e4f906027883917172e40559fbbf0222717fff0d5046bcd74d5863a3f7c",
   "pdf": {
-    "private_ref": "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.pdf",
+    "private_ref": "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip#02-reader/完整样刊-v001.pdf",
     "bytes": 202423,
     "pages": 21,
-    "sha256": "393f7c58eb6f7ab1656819a0fd78386b6aa133d65816f52ee4ce98e79fba801e"
+    "sha256": "393f7c58eb6f7ab1656819a0fd78386b6aa133d65816f52ee4ce98e79fba801e",
+    "identity_role": "ORIGINAL_RENDERED_PDF, retained inside the unchanged ZIP"
   },
   "package": {
     "private_ref": "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.zip",
@@ -58,5 +59,14 @@
   "actual_tokens": null,
   "actual_amount": null,
   "new_paid_api_calls": 0,
-  "production_schedule_or_external_delivery": false
+  "production_schedule_or_external_delivery": false,
+  "stored_pdf": {
+    "private_ref": "private:/新闻/SI-WEEKLY-2026-W42-W12-v01.pdf",
+    "bytes": 227422,
+    "sha256": "1297b17353ba7c411b92b0ff8302e1ea0606639f143950b6f496680f59f52047",
+    "c2pa_bytes_present": true,
+    "embedded_files": 1,
+    "signature_authenticity": "NOT_VERIFIED_NOT_NEEDED_FOR_THIS_CONTENT_MAPPING"
+  },
+  "actual_saved_readback_ref": "audits/w12-saved-readback-20261023.json"
 }
