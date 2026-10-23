@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`a6598b4f64b6b028383bd8004a2d6bff6a2e14b1096d0ea52994aa71f63b5541`。
+当前规范SHA-256：`2495d1058a8c33e5d9f89e06be6a52628457a5b8c3e31a79ff0c75ad824f8669`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收1包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收2包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -49,7 +49,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 12 | [W12 完整同周样刊与实际阅读验收](#w12) | 人工内容验证 | T03/T10/T11/R01/R03 | [W11](#w11) | 待验收 / CURRENT_BINDING |
 | 13 | [G01 第一阶段门：真实专题及完整同周样刊](#g01) | 阶段门 | R01/R03/R04/R07/T01/T02/T03/T04/T05/T06/T07/T08/T09/T10/T11/T13 | [W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12) | 待开始 / CURRENT_BINDING |
 | 14 | [W13 共享对象、版本与档案基础接口](#w13) | 代码与接口工作包 | T11/T01/T04 | [G01](#g01) | 待验收 / CURRENT_BINDING |
-| 15 | [W14 当前规范与任务输入准备接口](#w14) | 代码与接口工作包 | T01/R07 | [W13](#w13) | 待开始 / CURRENT_BINDING |
+| 15 | [W14 当前规范与任务输入准备接口](#w14) | 代码与接口工作包 | T01/R07 | [W13](#w13) | 待验收 / CURRENT_BINDING |
 | 16 | [W15 采用检查与权威决定接口](#w15) | 代码与接口工作包 | T01 | [W14](#w14) | 待开始 / CURRENT_BINDING |
 | 17 | [W16 共享研究修订与并发提交边界](#w16) | 代码与接口工作包 | T05/T01/T11 | [W13](#w13)、[W15](#w15) | 待开始 / CURRENT_BINDING |
 | 18 | [W17 工具适配器与真实操作身份](#w17) | 代码与接口工作包 | T13/T11 | [W13](#w13)、[W15](#w15) | 待开始 / CURRENT_BINDING |
@@ -592,7 +592,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：15/59；阶段：2；类型：代码与接口工作包。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W13](#w13)。
+进度：**待验收**；关联：CURRENT_BINDING；前置：[W13](#w13)。
 
 前置尚未验收：[W13](#w13)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -622,7 +622,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W14-PREPARATION-20261024-001", "artifact_refs": ["intelligence/preparation.py", "intelligence/__main__.py", "pyproject.toml (optional workflow)", "uv.lock", ".github/workflows/strategic-intelligence-runtime.yml (repository root)"], "validation_refs": ["tests_runtime/test_preparation.py (14 actual passing W14 tests; 55 total runtime tests)", "audits/w14-preparation-20261024.json (actual private test copy: 4 owned files, 1 pointer, full current source, graph and CLI recheck)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w14-preparation-20261024"], "reviewer": "当前执行者实际代码/接口正反与真实文件检查；非模型接收/理解、内容批准、用户阅读或阶段门验收", "result": "AWAITING_REVIEW", "scope": "W13提交及CI通过后，按用户样刊后置/继续指令逐包准备W14；LangGraph原生节点共用既有维护/W13，完整当前原文基线与任务/实际材料分隔，缺口/过期/漏条款/伪回执/撤权重核和私有CLI已验。55项运行测试及实际四份自有文件/一来源定位接口衔接通过；未做选择性精简或模型容量/质量验证。W12/G01及W13正式前置未通过，整包不记ACCEPTED；W15采用决定尚未开始。"}]
 
 <a id="w15"></a>
 ## W15｜采用检查与权威决定接口

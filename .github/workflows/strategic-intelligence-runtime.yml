@@ -29,10 +29,10 @@ jobs:
           python-version: '3.12'
       - name: Install tested uv version
         run: python -m pip install --disable-pip-version-check uv==0.12.23
-      - name: Rebuild locked minimal environment
-        run: uv sync --locked
-      - name: Verify actual archive transactions and CLI
-        run: uv run --locked python -m unittest discover -s tests_runtime -v
+      - name: Rebuild locked archive and workflow environment
+        run: uv sync --locked --extra workflow
+      - name: Verify archive and task preparation interfaces
+        run: uv run --locked --extra workflow python -m unittest discover -s tests_runtime -v
       - name: Verify canonical projections
         run: python tools/sync_spec.py --check
       - name: Verify technical and work-plan correspondence

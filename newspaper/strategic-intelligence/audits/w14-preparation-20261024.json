@@ -1,0 +1,126 @@
+{
+  "record_id": "RUN-W14-PREPARATION-20261024-FINAL",
+  "work_id": "W14",
+  "checked_at": "2026-10-23T19:46:56.976413+00:00",
+  "result": "OFFLINE_PREPARATION_INTERFACE_CHECK_PASS",
+  "spec_sha256": "2495d1058a8c33e5d9f89e06be6a52628457a5b8c3e31a79ff0c75ad824f8669",
+  "canonical_input_bytes": 1068903,
+  "method": "PROGRAM_FULL_CANONICAL; no selective extraction or summary",
+  "actual_owned_input_versions": [
+    {
+      "label": "DOSSIER",
+      "kind": "ResearchDossier",
+      "version_id": "W14-INPUT-DOSSIER-v001",
+      "sha256": "0e30236d86a7dc328886cebe08725c3c9db92729699202dad2eea07c956f3cf9",
+      "bytes": 1637,
+      "declared_nature": "既有研究案卷，有限人工核查及未决保留"
+    },
+    {
+      "label": "ARTICLE",
+      "kind": "Article",
+      "version_id": "W14-INPUT-ARTICLE-v001",
+      "sha256": "dbfc7e4f906027883917172e40559fbbf0222717fff0d5046bcd74d5863a3f7c",
+      "bytes": 43048,
+      "declared_nature": "既有自有全文；不生成新稿或提高判断强度"
+    },
+    {
+      "label": "REVIEW",
+      "kind": "Review",
+      "version_id": "W14-INPUT-REVIEW-v001",
+      "sha256": "138335cde02ff9920b23f57e3a4d0b04e57771020e4a2ebe3ff9a598229806c4",
+      "bytes": 9415,
+      "declared_nature": "历史有限Review参照；本轮不触发新内容批准"
+    },
+    {
+      "label": "EDITION",
+      "kind": "Edition",
+      "version_id": "W14-INPUT-EDITION-v001",
+      "sha256": "c11dd657b8b95ef0736a79c53d9e49a8e7e1130d3c272925c48abdcfd6019f81",
+      "bytes": 1353,
+      "declared_nature": "既有样刊版本元数据；用户实际阅读未验"
+    }
+  ],
+  "pointer_inputs": 1,
+  "total_material_inputs": 5,
+  "executed_nodes": [
+    "check_current",
+    "supply_inputs",
+    "handoff_inputs"
+  ],
+  "input_bundle_sha256": "a9ddac8b8aa028f76b1ec137b21dd1fb596ad678164f6e94309acc2ba2ba6128",
+  "input_bundle_bytes": 1211240,
+  "input_bundle_mode": "0600",
+  "actual_cli_prepare_and_recheck": true,
+  "original_private_archive_unchanged_files": 7,
+  "full_canonical_exact_bytes": true,
+  "omitted_negation_or_exception_denied": true,
+  "missing_original_repair_branch_and_exact_version_recovery": true,
+  "stale_spec_blocks_material_loading": true,
+  "withdrawn_copy_recheck_denied": true,
+  "unaffected_materials_retained": 4,
+  "historical_bundle_unchanged": true,
+  "synthetic_runtime_tests": {
+    "tests": 55,
+    "new_W14_tests": 14,
+    "result": "PASS"
+  },
+  "registration_impact_review": {
+    "changed_theory_units": [
+      "th-24",
+      "th-24-3"
+    ],
+    "cause": "Only register W14 preparation source and runtime test; no policy text changed",
+    "designs_reviewed_unchanged": 21,
+    "logic_items_reviewed_unchanged": 72,
+    "work_definitions_dependencies_and_progress_unchanged": 59,
+    "scope": "Registration impact review only; runtime tests, model reception, content approval and stage acceptance are separate"
+  },
+  "code_sha256": {
+    "intelligence/preparation.py": "10d13ecb1f3b281c31bd385b932dbbe3aabce09aea68dc5a25e43c8a96b35c06",
+    "intelligence/__main__.py": "eb02d6352656271047089fefe53580245af212942999cda67cc0450dea8c158e",
+    "tests_runtime/test_preparation.py": "27b2187534474b8368211501fac255dea45e6b28ef81b33e029edb4fbcc0759b",
+    "pyproject.toml": "d224015a55482374448eca59861da24b73012bd360a93cc5ac65ebdb3fd4407e",
+    "uv.lock": "42a822433a6db4e63a9c0ce8c14b9258ea05b2a8b4520883c5e41e86906e5f8b"
+  },
+  "environment": {
+    "pydantic": "2.14.1",
+    "sqlalchemy": "2.1.6",
+    "langgraph": "1.2.16",
+    "langgraph-checkpoint": "4.3.0",
+    "langchain-core": "1.7.0",
+    "langsmith": "0.14.12"
+  },
+  "primary_sources": [
+    "https://docs.langchain.com/oss/python/langgraph/graph-api",
+    "https://reference.langchain.com/python/langgraph/graph/state/StateGraph",
+    "https://pypi.org/project/langgraph/"
+  ],
+  "development_failures_fixed": [
+    "登记脚本初次误用TECHNICAL_TRACE块名而失败；实际维护入口拒绝未登记源码，改用既有TECHNICAL_BINDINGS并逐差异复核登记影响后通过",
+    "理论过期测试初次把变更插在锚点和标题之间，造成定位缺失而非预期的理论过期；改在标题后改变测试副本正文，实际过期检查拒用且测试通过"
+  ],
+  "limits": [
+    "本轮是离线代码准备；W12阅读后置、G01未过，W13/W14均不记正式ACCEPTED",
+    "完整原文基线未作选择性摘取；实际模型上下文容量、接收/理解和分段质量没有测试",
+    "request.instructions来自调用者本次指令；Task版本只提供元数据归属，材料性质/限制仍是声明，采用资格归W15",
+    "材料命令只作为数据保存；未验证任意模型都能抵抗提示注入或正确理解规范",
+    "当前是指定本地规范根的检查快照，不声称永久最新、远端仓库同步锁或跨所有输入的原子采用",
+    "私有测试副本/输入包是本地开发验证，未验长期宿主、检查点恢复、生产出刊或外部交付"
+  ],
+  "provided_to_model": false,
+  "model_receive_scope": "NOT_ATTEMPTED",
+  "paid_api_calls": false,
+  "production_enabled": false,
+  "maintenance_tests": {
+    "tests": 50,
+    "result": "PASS",
+    "actual_log_sha256": "34061713b75a0ef9de3c4db4f59b1aa3a25fa7108953ee3b1ab26feeb43497a4"
+  },
+  "license_metadata_checked": {
+    "langgraph": "MIT",
+    "langgraph-checkpoint": "MIT",
+    "langchain-core": "MIT",
+    "langsmith": "MIT"
+  },
+  "final_local_checks_at": "2026-10-23T19:48:32.773565+00:00"
+}

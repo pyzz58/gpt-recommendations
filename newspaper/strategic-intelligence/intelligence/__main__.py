@@ -5,17 +5,22 @@ uv run --locked python -m intelligence --root /private/archive put --metadata re
 uv run --locked python -m intelligence --root /private/archive get VERSION --body-output recovered.md
 uv run --locked python -m intelligence schema --contract reference-read
 uv run --locked python -m intelligence --root /private/archive read-reference --request request.json --body-output material.bin
+uv run --locked --extra workflow python -m intelligence --root /private/archive prepare --request preparation.json --output /private/prepared.json
+uv run --locked --extra workflow python -m intelligence --root /private/archive verify-preparation /private/prepared.json
 
 The schema command defaults to VersionSubmission. read-reference checks a
 committed owner/reference, exact target kind/body identity and declared purpose;
 its stdout contains metadata only. get is local recovery, not a downstream-use
 grant. Consumer labels do not authenticate a caller or approve content.
+W14 prepares separate canonical/task/material fields, with no model invocation.
 created_at/source times come from input; recorded_at is assigned at commit.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -31,7 +36,7 @@ def main(argv=None) -> int:
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("init")
     schema = commands.add_parser("schema")
-    schema.add_argument("--contract", choices=("version", "reference-read"), default="version")
+    schema.add_argument("--contract", choices=("version", "reference-read", "preparation"), default="version")
     put = commands.add_parser("put")
     put.add_argument("--metadata", required=True, type=Path)
     put.add_argument("--body", type=Path)
@@ -41,6 +46,13 @@ def main(argv=None) -> int:
     read = commands.add_parser("read-reference")
     read.add_argument("--request", required=True, type=Path)
     read.add_argument("--body-output", type=Path, help="Create a new file; never overwrite")
+    prepare = commands.add_parser("prepare", help="Offline W14 input bundle; requires the workflow extra")
+    prepare.add_argument("--request", required=True, type=Path)
+    prepare.add_argument("--output", required=True, type=Path, help="New private file outside the public source directory")
+    prepare.add_argument("--spec-root", type=Path, default=Path(__file__).resolve().parents[1])
+    verify = commands.add_parser("verify-preparation", help="Recheck current inputs; does not approve content")
+    verify.add_argument("bundle", type=Path)
+    verify.add_argument("--spec-root", type=Path, default=Path(__file__).resolve().parents[1])
     commands.add_parser("rebuild-index")
     find = commands.add_parser("find")
     find.add_argument("title")
@@ -49,7 +61,11 @@ def main(argv=None) -> int:
     revoke.add_argument("--reason", required=True)
     args = parser.parse_args(argv)
     if args.command == "schema":
-        contract = ReferenceReadRequest if args.contract == "reference-read" else VersionSubmission
+        if args.contract == "preparation":
+            from .preparation import PreparationRequest
+            contract = PreparationRequest
+        else:
+            contract = ReferenceReadRequest if args.contract == "reference-read" else VersionSubmission
         print(json.dumps(contract.model_json_schema(), ensure_ascii=False, indent=2))
         return 0
     if args.root is None:
@@ -77,6 +93,29 @@ def main(argv=None) -> int:
                     with args.body_output.open("xb") as output:
                         output.write(material.body)
                 result = material.model_dump(mode="json", exclude={"body"})
+            elif args.command in ("prepare", "verify-preparation"):
+                from .preparation import PreparedTask, PreparationRequest, prepare_task, verify_prepared_task
+                if args.command == "prepare":
+                    if args.output.resolve().is_relative_to(Path(__file__).resolve().parents[1]) or args.output.resolve().is_relative_to(args.spec_root.resolve()):
+                        raise ValueError("Prepared inputs must remain outside the public source directory")
+                    request = PreparationRequest.model_validate_json(args.request.read_bytes())
+                    prepared = prepare_task(request, archive, args.spec_root)
+                    raw = (prepared.model_dump_json(indent=2)+"\n").encode()
+                    descriptor = os.open(args.output, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+                    with os.fdopen(descriptor, "wb") as output:
+                        output.write(raw)
+                    output_identity = {"output_sha256": hashlib.sha256(raw).hexdigest(), "output_bytes": len(raw)}
+                else:
+                    supplied = PreparedTask.model_validate_json(args.bundle.read_bytes())
+                    prepared = verify_prepared_task(supplied, archive, args.spec_root)
+                    output_identity = {"verification": "CURRENT_INPUTS_RECHECKED"}
+                result = {"preparation_id": prepared.request.preparation_id,
+                    "spec_sha256": prepared.request.spec_sha256, "input_complete": prepared.input_complete,
+                    "handoff": prepared.handoff, "provided_materials": len(prepared.materials),
+                    "gaps": [gap.model_dump(mode="json") for gap in prepared.gaps],
+                    "executed_nodes": prepared.executed_nodes, "provided_to_model": False, **output_identity}
+                print(json.dumps(result, ensure_ascii=False))
+                return 0 if prepared.input_complete else 3
             elif args.command == "find":
                 result = {"navigation_only": True, "matches": archive.find(args.title)}
             elif args.command == "rebuild-index":
