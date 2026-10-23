@@ -1,0 +1,133 @@
+{
+  "record_id": "RUN-W13-REFERENCE-READ-20261023-001",
+  "work_id": "W13",
+  "checked_at": "2026-10-22T22:32:22.750509+00:00",
+  "result": "OFFLINE_INTERFACE_CHECK_PASS",
+  "authorization": "用户：样刊最后再说，继续进行下一步；恢复离线代码准备，不代签W12/G01",
+  "baseline_spec_sha256": "5790c972846bde35a955984c285d7bfcbfae1bf6a1557a47ae43b90dd0e908a0",
+  "database_schema": 2,
+  "version_submission_schema": 1,
+  "implementation": "Purpose-aware committed-reference reads share the existing private-body loader and SQLite transaction",
+  "owned_original_body": {
+    "sha256": "dbfc7e4f906027883917172e40559fbbf0222717fff0d5046bcd74d5863a3f7c",
+    "bytes": 43048
+  },
+  "actual_contract_consumers": [
+    {
+      "consumer": "T01",
+      "owner_kind": "Task",
+      "owner_version_id": "REFERENCE-OWNER-T01-v001",
+      "owner_input_sha256": "8ece656fa684d7e3a969546c42277b434389a931a60fbaa661e9b8f0038c71d5",
+      "owner_bytes": 3510,
+      "target_version_id": "ARTICLE-W13-FULL-v002",
+      "body_sha256": "dbfc7e4f906027883917172e40559fbbf0222717fff0d5046bcd74d5863a3f7c",
+      "body_bytes": 43048,
+      "recorded_at": "2026-10-22T22:32:22.122906+00:00",
+      "checked_uses": [
+        "MODEL_PROCESS",
+        "TRANSLATE"
+      ]
+    },
+    {
+      "consumer": "T04",
+      "owner_kind": "ResearchDossier",
+      "owner_version_id": "REFERENCE-OWNER-T04-v001",
+      "owner_input_sha256": "0e30236d86a7dc328886cebe08725c3c9db92729699202dad2eea07c956f3cf9",
+      "owner_bytes": 1637,
+      "target_version_id": "ARTICLE-W13-FULL-v002",
+      "body_sha256": "dbfc7e4f906027883917172e40559fbbf0222717fff0d5046bcd74d5863a3f7c",
+      "body_bytes": 43048,
+      "recorded_at": "2026-10-22T22:32:22.133773+00:00",
+      "checked_uses": [
+        "MODEL_PROCESS",
+        "TRANSLATE"
+      ]
+    },
+    {
+      "consumer": "T05",
+      "owner_kind": "Article",
+      "owner_version_id": "REFERENCE-OWNER-T05-v001",
+      "owner_input_sha256": "ff4f462d25f7f33bea3e8f31695acf8c32644c1e194b4dfec1a69b5f29f7200f",
+      "owner_bytes": 5065,
+      "target_version_id": "ARTICLE-W13-FULL-v002",
+      "body_sha256": "dbfc7e4f906027883917172e40559fbbf0222717fff0d5046bcd74d5863a3f7c",
+      "body_bytes": 43048,
+      "recorded_at": "2026-10-22T22:32:22.141828+00:00",
+      "checked_uses": [
+        "MODEL_PROCESS",
+        "TRANSLATE"
+      ]
+    },
+    {
+      "consumer": "T09",
+      "owner_kind": "Review",
+      "owner_version_id": "REFERENCE-OWNER-T09-v001",
+      "owner_input_sha256": "138335cde02ff9920b23f57e3a4d0b04e57771020e4a2ebe3ff9a598229806c4",
+      "owner_bytes": 9415,
+      "target_version_id": "ARTICLE-W13-FULL-v002",
+      "body_sha256": "dbfc7e4f906027883917172e40559fbbf0222717fff0d5046bcd74d5863a3f7c",
+      "body_bytes": 43048,
+      "recorded_at": "2026-10-22T22:32:22.150999+00:00",
+      "checked_uses": [
+        "MODEL_PROCESS",
+        "TRANSLATE"
+      ]
+    },
+    {
+      "consumer": "T10",
+      "owner_kind": "Edition",
+      "owner_version_id": "REFERENCE-OWNER-T10-v001",
+      "owner_input_sha256": "c11dd657b8b95ef0736a79c53d9e49a8e7e1130d3c272925c48abdcfd6019f81",
+      "owner_bytes": 1353,
+      "target_version_id": "ARTICLE-W13-FULL-v002",
+      "body_sha256": "dbfc7e4f906027883917172e40559fbbf0222717fff0d5046bcd74d5863a3f7c",
+      "body_bytes": 43048,
+      "recorded_at": "2026-10-22T22:32:22.162330+00:00",
+      "checked_uses": [
+        "MODEL_PROCESS",
+        "TRANSLATE"
+      ]
+    }
+  ],
+  "shared_target_versions": 1,
+  "shared_target_referrers": 5,
+  "stored_original_unchanged": true,
+  "existing_private_archive_unchanged_files": 7,
+  "storage_only_processing_denied": true,
+  "wrong_kind_denied": true,
+  "wrong_body_identity_denied": true,
+  "external_pointer_metadata_only": true,
+  "actual_cli_exact_body_and_metadata_only_stdout": true,
+  "withdrawal_copy_denies_processing_and_translation": true,
+  "withdrawal_copy_preserves_index_and_previous_grant": true,
+  "new_connection_recheck": true,
+  "synthetic_runtime_tests": {
+    "tests": 41,
+    "result": "PASS",
+    "new_tests": 11
+  },
+  "code_sha256": {
+    "intelligence/contracts.py": "af0f9271f00717d4b945497880f073308c0ce9b89ce0e8c852a41b2ce87ca9d6",
+    "intelligence/archive.py": "9019f7dac13fbacca87819234ed44c402413cad13797857d05fe0b2f047c3bd4",
+    "intelligence/__main__.py": "ed7501888d8b5d6f9be126d36b0df1e54cab0eaf8292e539124d2310309770f3",
+    "tests_runtime/test_archive.py": "880ec36ea87da4f24a1b2652b86bf306a2c4272594ef095fe40cdc1937782f47"
+  },
+  "environment": {
+    "pydantic": "2.14.1",
+    "pydantic-core": "2.50.1",
+    "sqlalchemy": "2.1.6"
+  },
+  "limits": [
+    "五个consumer标记与真实自有文件完成接口合同衔接，不是五个业务模块端到端完成",
+    "consumer/用途/规范哈希由调用者声明，不是身份认证、出网隔离或W14现行规范检查",
+    "只校验已登记权限和实际字节；不证明授权判断正确、模型已读懂、事实成立、内容获批或阶段通过",
+    "返回的副本与外部/备份不由本档案撤回控制；真实交付和宿主恢复另包实现",
+    "已存Review/Edition仅作为真实输入文件，不触发原稿或样刊新批准"
+  ],
+  "work_progress": "W13 AWAITING_REVIEW; W12 reading deferred, G01 NOT_STARTED, W14 NOT_STARTED",
+  "paid_api_calls": false,
+  "external_model_calls": false,
+  "production_enabled": false,
+  "normative_and_card_definitions_unchanged": true,
+  "spec_output_sha256": "a6598b4f64b6b028383bd8004a2d6bff6a2e14b1096d0ea52994aa71f63b5541"
+}

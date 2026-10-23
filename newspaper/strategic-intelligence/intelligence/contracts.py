@@ -8,7 +8,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from enum import Enum
 import re
-from typing import Annotated, Self
+from typing import Annotated, Literal, Self
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, StringConstraints, field_serializer, model_validator
 
@@ -186,6 +186,41 @@ class StoredVersion(Contract):
     body_sha256: Digest | None
     body_bytes: int | None = Field(ge=0)
     body_retention_revoked: bool
+
+
+class ReferenceReadRequest(Contract):
+    """A caller-declared use of an already committed, exact version reference.
+
+    consumer is a routing label, not an authenticated role. spec_sha256 records
+    the caller's declared basis; checking the current spec belongs to W14.
+    """
+
+    schema_version: int = Field(default=1, ge=1, le=1)
+    request_id: Identifier
+    spec_sha256: Digest
+    created_at: AwareDatetime
+    consumer: Literal["T01", "T04", "T05", "T09", "T10"]
+    owner_version_id: Identifier
+    reference: VersionReference
+    expected_kind: ObjectKind
+    intended_use: MaterialUse
+    expected_body_sha256: Digest | None = None
+
+
+class ReferencedMaterial(Contract):
+    """A retrieval receipt, not proof of reading, truth or content approval.
+
+    INDEX returns metadata only. Binary originals roundtrip without assuming
+    UTF-8; command-line receipts omit body bytes entirely.
+    """
+
+    model_config = ConfigDict(ser_json_bytes="base64", val_json_bytes="base64")
+
+    request: ReferenceReadRequest
+    owner: StoredVersion
+    version: StoredVersion
+    recorded_at: AwareDatetime
+    body: bytes | None
 
 
 class RevocationResult(Contract):

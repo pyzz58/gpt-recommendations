@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "5790c972846bde35a955984c285d7bfcbfae1bf6a1557a47ae43b90dd0e908a0",
+  "spec_sha256": "a6598b4f64b6b028383bd8004a2d6bff6a2e14b1096d0ea52994aa71f63b5541",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -1517,7 +1517,7 @@
       ],
       "failure_action": "缺宿主/权限则停止依赖操作；开发先小型持久关系库/版本文件，复用成熟接口，不另造事实库或高级索引。",
       "conditional": null,
-      "progress": "BLOCKED",
+      "progress": "AWAITING_REVIEW",
       "evidence": [
         {
           "record_id": "W13-CODE-20261023-001",
@@ -1552,6 +1552,22 @@
           "reviewer": "用户当前澄清及执行者实际依赖核对；不是阶段批准",
           "result": "BLOCKED",
           "scope": "纠正把咨询误读成优先编码授权；提前代码及原测试历史保留，W13后续暂停。W12/G01未过，先回W12与G01，过门再按原W13卡复核；未更改G01依赖，不启动W14。"
+        },
+        {
+          "record_id": "W13-REFERENCE-READ-20261023-001",
+          "artifact_refs": [
+            "intelligence/contracts.py",
+            "intelligence/archive.py",
+            "intelligence/__main__.py"
+          ],
+          "validation_refs": [
+            "tests_runtime/test_archive.py (41 actual passing runtime tests; 11 added)",
+            "audits/w13-reference-read-20261023.json (explicit private test copy, 5 actual owned-file consumers, shared original bytes, CLI and withdrawal)",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w13-reference-read-20261023"
+          ],
+          "reviewer": "当前用户明确样刊后置与继续指令；执行者实际编码/离线接口检查，非用户阅读、内容或阶段批准",
+          "result": "AWAITING_REVIEW",
+          "scope": "按用户本次明确指令恢复W13小范围代码准备；补已提交引用归属、固定版本/类型/正文哈希、独立用途与撤权检查，共用唯一正文后端。41项运行测试和五类既有自有文件在明示副本的真实接口衔接通过；原私有档案7文件保持。样刊阅读后置但W12/G01未过，G01依赖保留，整包不记ACCEPTED；相邻业务模块/现行规范输入/权威采用/生产仍另包验。"
         }
       ],
       "reviewed_basis_sha256": "43d2adcc578d3dccc525945ed0c5169a8817dc79ea42bae07a474d275e2e1083",

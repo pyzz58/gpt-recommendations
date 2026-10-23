@@ -22,7 +22,7 @@ from sqlalchemy.exc import IntegrityError
 from intelligence.archive import (Archive, ArchiveError, BodyUnavailable, Conflict, CorruptArchive,
                                   MissingVersion, PermissionDenied, navigation, versions)
 from intelligence.contracts import (DataPeriod, MaterialUse, ObjectKind, Precision,
-    ReferenceUse, Representation, RightsBasis, RightsGrant, SourceTimes, TimePoint,
+    ReferencedMaterial, ReferenceReadRequest, ReferenceUse, Representation, RightsBasis, RightsGrant, SourceTimes, TimePoint,
     VersionReference, VersionSubmission)
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,10 +30,10 @@ AT = datetime(2026, 10, 23, 0, 0, tzinfo=timezone.utc)
 BODY = "公开合成测试稿：1 MW持续1小时为1 MWh。\n".encode()
 
 
-def grant(rights_id=None, pointer=False):
+def grant(rights_id=None, pointer=False, extra_uses=()):
     return RightsGrant(rights_id=rights_id or ('RIGHTS-POINTER' if pointer else 'RIGHTS-OWN'),
         basis=RightsBasis.POINTER_ONLY if pointer else RightsBasis.OWN_WORK,
-        allowed_uses=frozenset({MaterialUse.INDEX} if pointer else {MaterialUse.INDEX,MaterialUse.STORE_BODY}),
+        allowed_uses=frozenset({MaterialUse.INDEX} if pointer else {MaterialUse.INDEX,MaterialUse.STORE_BODY,*extra_uses}),
         evidence="Explicit synthetic fixture authored for these tests", checked_by="test fixture", checked_at=AT)
 
 
@@ -45,6 +45,15 @@ def submission(version="DOC-v001", *, object_id="DOC", parent=None, kind=ObjectK
         rights=rights or grant(pointer=pointer), references=refs,
         representation=Representation.POINTER_ONLY if pointer else Representation.FULL_BODY,
         source_locator="https://example.invalid/original" if pointer else None)
+
+
+def read_request(**changes):
+    values = dict(request_id="READ-1", spec_sha256="a"*64, created_at=AT,
+        consumer="T01", owner_version_id="OWNER-v001",
+        reference=VersionReference(target_version_id="DOC-v001",use=ReferenceUse.SOURCE,locator="section 2"),
+        expected_kind=ObjectKind.DOCUMENT, intended_use=MaterialUse.STORE_BODY,
+        expected_body_sha256=hashlib.sha256(BODY).hexdigest())
+    return ReferenceReadRequest(**{**values,**changes})
 
 
 class ContractTests(unittest.TestCase):
@@ -302,8 +311,154 @@ class ArchiveTests(unittest.TestCase):
         self.archive.append(submission(),body)
         self.assertEqual(self.archive.read_body('DOC-v001'),body)
 
+    def reference_fixture(self, *, rights=None, pointer=False, body=BODY):
+        target=submission(rights=rights,pointer=pointer)
+        self.archive.append(target,None if pointer else body)
+        self.archive.append(submission('OWNER-v001',object_id='OWNER',kind=ObjectKind.TASK,
+            refs=(read_request().reference,)),b'owned reference record')
+        return target
+
+    def test_reference_consumers_share_the_pinned_original_after_revision(self):
+        rights=grant('RIGHTS-PROCESS',extra_uses=(MaterialUse.MODEL_PROCESS,))
+        self.reference_fixture(rights=rights)
+        self.archive.append(submission('DOC-v002',parent='DOC-v001',rights=rights),b'newer original')
+        for consumer in ('T01','T04','T05','T09','T10'):
+            before=datetime.now(timezone.utc)
+            result=self.archive.read_reference(read_request(consumer=consumer,intended_use=MaterialUse.MODEL_PROCESS))
+            self.assertEqual(result.body,BODY)
+            self.assertEqual(result.version.submission.version_id,'DOC-v001')
+            self.assertEqual(result.owner.submission.version_id,'OWNER-v001')
+            self.assertEqual(result.request.consumer,consumer)
+            self.assertGreaterEqual(result.recorded_at,before)
+            self.assertLessEqual(result.recorded_at,datetime.now(timezone.utc))
+        with self.archive.engine.connect() as c:
+            self.assertEqual(c.execute(select(versions.c.version_id).where(versions.c.version_id=='DOC-v001')).all(),[('DOC-v001',)])
+
+    def test_reference_cannot_invent_owner_target_use_or_locator(self):
+        self.reference_fixture()
+        self.archive.append(submission('OTHER-v001',object_id='OTHER'),BODY)
+        request=read_request()
+        for change in ({'target_version_id':'OTHER-v001'},{'use':ReferenceUse.BASIS},{'locator':'unrecorded page'}):
+            forged=request.reference.model_copy(update=change)
+            with self.subTest(change=change),self.assertRaises(Conflict):
+                self.archive.read_reference(read_request(reference=forged))
+        with self.assertRaises(Conflict):
+            self.archive.read_reference(read_request(owner_version_id='OTHER-v001'))
+        with self.assertRaises(MissingVersion):
+            self.archive.read_reference(read_request(owner_version_id='MISSING'))
+
+    def test_reference_checks_kind_and_digest_and_ignores_navigation_substitutes(self):
+        self.reference_fixture()
+        for change in ({'expected_kind':ObjectKind.SOURCE},{'expected_body_sha256':'b'*64}):
+            with self.subTest(change=change),self.assertRaises(Conflict):
+                self.archive.read_reference(read_request(**change))
+        with self.archive.engine.begin() as c:
+            c.execute(text("UPDATE navigation_index SET title='fake body',kind='Source'"))
+        self.assertEqual(self.archive.read_reference(read_request()).body,BODY)
+        path=next((self.root/'bodies').glob(hashlib.sha256(b'DOC-v001').hexdigest()+'.bin'))
+        path.write_bytes(b'corrupt')
+        with self.assertRaises(CorruptArchive):self.archive.read_reference(read_request())
+        path.unlink()
+        with self.assertRaises(BodyUnavailable):self.archive.read_reference(read_request())
+
+    def test_retention_does_not_authorize_processing_translation_or_delivery(self):
+        self.reference_fixture()
+        self.assertEqual(self.archive.read_body('DOC-v001'),BODY)
+        self.assertEqual(self.archive.read_reference(read_request()).body,BODY)
+        for purpose in (MaterialUse.MODEL_PROCESS,MaterialUse.TRANSLATE,MaterialUse.PRIVATE_DELIVERY):
+            with self.subTest(purpose=purpose),self.assertRaises(PermissionDenied):
+                self.archive.read_reference(read_request(intended_use=purpose))
+
+    def test_explicit_purpose_grants_allow_exact_bytes(self):
+        purposes=(MaterialUse.MODEL_PROCESS,MaterialUse.TRANSLATE,MaterialUse.PRIVATE_DELIVERY)
+        self.reference_fixture(rights=grant('RIGHTS-USES',extra_uses=purposes))
+        for purpose in purposes:
+            self.assertEqual(self.archive.read_reference(read_request(intended_use=purpose)).body,BODY)
+
+    def test_pointer_metadata_is_not_substituted_for_body(self):
+        self.reference_fixture(pointer=True)
+        metadata=self.archive.read_reference(read_request(intended_use=MaterialUse.INDEX,expected_body_sha256=None))
+        self.assertIsNone(metadata.body)
+        self.assertEqual(metadata.version.submission.representation,Representation.POINTER_ONLY)
+        with self.assertRaises(PermissionDenied):
+            self.archive.read_reference(read_request(intended_use=MaterialUse.MODEL_PROCESS,expected_body_sha256=None))
+
+    def test_processing_permission_cannot_create_an_unretained_original(self):
+        self.reference_fixture(pointer=True,rights=grant('RIGHTS-PROCESS',extra_uses=(MaterialUse.MODEL_PROCESS,)))
+        with self.assertRaises(BodyUnavailable):
+            self.archive.read_reference(read_request(intended_use=MaterialUse.MODEL_PROCESS,expected_body_sha256=None))
+
+    def test_reference_withdrawal_blocks_body_even_when_purge_fails(self):
+        self.reference_fixture(rights=grant('RIGHTS-PROCESS',extra_uses=(MaterialUse.MODEL_PROCESS,MaterialUse.TRANSLATE)))
+        original=Path.unlink
+        def deny(path,*args,**kwargs):
+            if path.suffix=='.bin':raise OSError('simulated disk denial')
+            return original(path,*args,**kwargs)
+        with patch.object(Path,'unlink',deny):
+            result=self.archive.revoke_body_retention('RIGHTS-PROCESS','test withdrawal with failed purge')
+        self.assertEqual(result.failed_versions,('DOC-v001',))
+        for purpose in (MaterialUse.STORE_BODY,MaterialUse.MODEL_PROCESS,MaterialUse.TRANSLATE):
+            with self.subTest(purpose=purpose),self.assertRaises(PermissionDenied):
+                self.archive.read_reference(read_request(intended_use=purpose))
+        metadata=self.archive.read_reference(read_request(intended_use=MaterialUse.INDEX))
+        self.assertIsNone(metadata.body)
+        self.assertTrue(metadata.version.body_retention_revoked)
+        self.assertEqual(self.archive.revoke_body_retention('RIGHTS-PROCESS','retry').failed_versions,())
+
+    def test_reference_request_cannot_bypass_strict_contract(self):
+        self.reference_fixture()
+        original=json.loads(read_request().model_dump_json())
+        for change in ({'consumer':'T99'},{'schema_version':'1'},{'intended_use':'UNKNOWN'},
+                       {'approval':'PASS'},{'created_at':'2026-10-23T00:00:00'}):
+            with self.subTest(change=change),self.assertRaises(ValidationError):
+                ReferenceReadRequest.model_validate_json(json.dumps({**original,**change}))
+        with self.assertRaises(ValidationError):
+            self.archive.read_reference(read_request().model_copy(update={'schema_version':'1'}))
+        with self.assertRaises(TypeError):self.archive.read_reference(original)
+
+    def test_reference_binary_receipt_roundtrips_without_utf8_assumption(self):
+        binary=b'%PDF-1.7\x00\xff\r\nowned binary fixture'
+        self.reference_fixture(body=binary)
+        result=self.archive.read_reference(read_request(expected_body_sha256=hashlib.sha256(binary).hexdigest()))
+        restored=ReferencedMaterial.model_validate_json(result.model_dump_json())
+        self.assertEqual(restored.body,binary)
+        self.assertTrue(ReferencedMaterial.model_config['extra']=='forbid')
+
 
 class CliTests(unittest.TestCase):
+    def test_cli_reference_schema_and_metadata_only_output_boundaries(self):
+        schema=subprocess.run([sys.executable,'-m','intelligence','schema','--contract','reference-read'],
+            cwd=ROOT,capture_output=True,text=True)
+        self.assertEqual(schema.returncode,0,schema.stderr)
+        self.assertEqual(json.loads(schema.stdout)['title'],'ReferenceReadRequest')
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);request_file=root/'request.json';out=root/'retrieved.bin'
+            with Archive(root/'archive') as archive:
+                archive.append(submission(),BODY)
+                archive.append(submission('OWNER-v001',object_id='OWNER',kind=ObjectKind.TASK,
+                    refs=(read_request().reference,)),b'owned reference record')
+            command=[sys.executable,'-m','intelligence','--root',str(root/'archive'),
+                'read-reference','--request',str(request_file)]
+            request_file.write_text(read_request(intended_use=MaterialUse.MODEL_PROCESS).model_dump_json())
+            denied=subprocess.run(command+['--body-output',str(out)],cwd=ROOT,capture_output=True,text=True)
+            self.assertEqual(denied.returncode,2)
+            self.assertEqual(json.loads(denied.stderr)['error'],'PermissionDenied')
+            self.assertFalse(out.exists());self.assertEqual(denied.stdout,'')
+            request_file.write_text(read_request(intended_use=MaterialUse.INDEX).model_dump_json())
+            index=subprocess.run(command,cwd=ROOT,capture_output=True,text=True)
+            self.assertEqual(index.returncode,0,index.stderr)
+            self.assertNotIn('body',json.loads(index.stdout))
+            no_body=subprocess.run(command+['--body-output',str(out)],cwd=ROOT,capture_output=True,text=True)
+            self.assertEqual(no_body.returncode,2);self.assertFalse(out.exists())
+            request_file.write_text(read_request().model_dump_json())
+            fetched=subprocess.run(command+['--body-output',str(out)],cwd=ROOT,capture_output=True,text=True)
+            self.assertEqual(fetched.returncode,0,fetched.stderr)
+            self.assertEqual(out.read_bytes(),BODY)
+            self.assertNotIn('body',json.loads(fetched.stdout))
+            self.assertNotIn(BODY.decode().strip(),fetched.stdout)
+            again=subprocess.run(command+['--body-output',str(out)],cwd=ROOT,capture_output=True,text=True)
+            self.assertEqual(again.returncode,2);self.assertEqual(out.read_bytes(),BODY)
+
     def test_cli_import_retrieve_and_refuse_overwrite(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp);meta=root/'record.json';body=root/'body.md';out=root/'restored.md'

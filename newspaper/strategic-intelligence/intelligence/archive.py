@@ -23,8 +23,8 @@ from sqlalchemy import (Column, ForeignKey, Integer, MetaData, String, Table, Te
 from sqlalchemy.engine import Connection, URL
 from sqlalchemy.exc import IntegrityError
 
-from .contracts import (MaterialUse, Representation, RevocationResult,
-                        StoredVersion, VersionSubmission)
+from .contracts import (MaterialUse, ReferencedMaterial, ReferenceReadRequest,
+                        Representation, RevocationResult, StoredVersion, VersionSubmission)
 
 CURRENT_SCHEMA = 2
 metadata = MetaData()
@@ -88,7 +88,9 @@ class Archive:
     """Local archive. Constructing an instance creates or migrates its schema.
 
     append(submission, body) -> StoredVersion; get(version_id) -> metadata;
-    read_body(version_id) -> original bytes; referrers/rebuild_index -> navigation.
+    read_body(version_id) -> local retention recovery only;
+    read_reference(request) -> bytes/metadata checked for the declared use;
+    referrers/rebuild_index -> navigation.
     No method approves research, overwrites a version or changes a source time.
     """
 
@@ -269,34 +271,76 @@ class Archive:
 
     def get(self, version_id: str) -> StoredVersion:
         with self.engine.connect() as c:
-            row = self._row(c, version_id)
-            sub = VersionSubmission.model_validate_json(row["record"])
-            revoked = bool(c.execute(select(revocations.c.rights_id).where(revocations.c.rights_id == row["rights_id"])).first())
-            return StoredVersion(submission=sub, ordinal=row["ordinal"],
-                recorded_at=datetime.fromisoformat(row["recorded_at"]), body_sha256=row["body_sha256"],
-                body_bytes=row["body_bytes"], body_retention_revoked=revoked)
+            return self._stored(c, self._row(c, version_id))
+
+    @staticmethod
+    def _stored(c: Connection, row) -> StoredVersion:
+        sub = VersionSubmission.model_validate_json(row["record"])
+        if (sub.version_id, sub.object_id, sub.parent_version_id, sub.rights.rights_id) != (
+                row["version_id"], row["object_id"], row["parent_version_id"], row["rights_id"]):
+            raise CorruptArchive("Version record identity mismatch")
+        revoked = bool(c.execute(select(revocations.c.rights_id).where(revocations.c.rights_id == row["rights_id"])).first())
+        return StoredVersion(submission=sub, ordinal=row["ordinal"],
+            recorded_at=datetime.fromisoformat(row["recorded_at"]), body_sha256=row["body_sha256"],
+            body_bytes=row["body_bytes"], body_retention_revoked=revoked)
 
     def read_body(self, version_id: str) -> bytes:
+        """Recover retained bytes locally; does not authorize another purpose.
+
+        Model processing, translation and delivery consumers use read_reference.
+        This local Python API is not a host-file or outbound-network sandbox.
+        """
         # Serialize permission checks and reads with revocation within this API.
         with self._write() as c:
             row = self._row(c, version_id)
-            sub = VersionSubmission.model_validate_json(row["record"])
-            if c.execute(select(revocations.c.rights_id).where(revocations.c.rights_id == row["rights_id"])).first():
-                raise PermissionDenied("Body retention was withdrawn")
-            if not row["body_path"] or MaterialUse.STORE_BODY not in sub.rights.allowed_uses:
-                raise BodyUnavailable("Pointer/index only; original body was not retained")
-            p = self._body_path(row["body_path"])
-            try:
-                descriptor = os.open(p, os.O_RDONLY | os.O_NOFOLLOW)
-                with os.fdopen(descriptor, "rb") as stream:
-                    if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
-                        raise CorruptArchive("Body is not a regular file")
-                    body = stream.read()
-            except FileNotFoundError as exc:
-                raise BodyUnavailable("Retained original file is missing; index is not a substitute") from exc
-            if len(body) != row["body_bytes"] or hashlib.sha256(body).hexdigest() != row["body_sha256"]:
-                raise CorruptArchive("Original body does not match its committed identity")
-            return body
+            return self._read_body(row, self._stored(c, row))
+
+    def _read_body(self, row, stored: StoredVersion) -> bytes:
+        # Shared by local recovery and purpose-aware reads, under the same lock.
+        if stored.body_retention_revoked:
+            raise PermissionDenied("Body retention was withdrawn")
+        if not row["body_path"] or MaterialUse.STORE_BODY not in stored.submission.rights.allowed_uses:
+            raise BodyUnavailable("Pointer/index only; original body was not retained")
+        p = self._body_path(row["body_path"])
+        try:
+            descriptor = os.open(p, os.O_RDONLY | os.O_NOFOLLOW)
+            with os.fdopen(descriptor, "rb") as stream:
+                if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
+                    raise CorruptArchive("Body is not a regular file")
+                body = stream.read()
+        except FileNotFoundError as exc:
+            raise BodyUnavailable("Retained original file is missing; index is not a substitute") from exc
+        if len(body) != row["body_bytes"] or hashlib.sha256(body).hexdigest() != row["body_sha256"]:
+            raise CorruptArchive("Original body does not match its committed identity")
+        return body
+
+    def read_reference(self, request: ReferenceReadRequest) -> ReferencedMaterial:
+        """Resolve an owner's recorded reference without changing version/use.
+
+        A retained body is not a grant to process, translate or deliver it.
+        INDEX returns metadata, including withdrawal status, without reading a
+        body. A receipt records retrieval only, not semantic adoption or approval.
+        """
+        if not isinstance(request, ReferenceReadRequest):
+            raise TypeError("read_reference requires a ReferenceReadRequest contract")
+        req = ReferenceReadRequest.model_validate_json(request.model_dump_json(warnings=False))
+        with self._write() as c:
+            owner = self._stored(c, self._row(c, req.owner_version_id))
+            if req.reference not in owner.submission.references:
+                raise Conflict("Requested reference is not committed by the owner version")
+            row = self._row(c, req.reference.target_version_id)
+            target = self._stored(c, row)
+            if target.submission.kind is not req.expected_kind:
+                raise Conflict("Referenced version has a different object kind")
+            if req.expected_body_sha256 is not None and req.expected_body_sha256 != target.body_sha256:
+                raise Conflict("Referenced body has a different committed identity")
+            body = None
+            if req.intended_use is not MaterialUse.INDEX:
+                if req.intended_use not in target.submission.rights.allowed_uses:
+                    raise PermissionDenied(f"Recorded grant does not allow {req.intended_use.value}")
+                body = self._read_body(row, target)
+            return ReferencedMaterial(request=req, owner=owner, version=target,
+                recorded_at=datetime.now(timezone.utc), body=body)
 
     def referrers(self, target_version_id: str) -> list[dict]:
         with self.engine.connect() as c:

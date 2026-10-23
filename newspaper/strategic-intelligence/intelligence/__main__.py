@@ -3,8 +3,13 @@
 uv run --locked python -m intelligence --root /private/archive init
 uv run --locked python -m intelligence --root /private/archive put --metadata record.json --body draft.md
 uv run --locked python -m intelligence --root /private/archive get VERSION --body-output recovered.md
+uv run --locked python -m intelligence schema --contract reference-read
+uv run --locked python -m intelligence --root /private/archive read-reference --request request.json --body-output material.bin
 
-Metadata uses VersionSubmission's JSON schema (the `schema` subcommand).
+The schema command defaults to VersionSubmission. read-reference checks a
+committed owner/reference, exact target kind/body identity and declared purpose;
+its stdout contains metadata only. get is local recovery, not a downstream-use
+grant. Consumer labels do not authenticate a caller or approve content.
 created_at/source times come from input; recorded_at is assigned at commit.
 """
 from __future__ import annotations
@@ -16,8 +21,8 @@ import sys
 
 from pydantic import ValidationError
 
-from .archive import Archive, ArchiveError
-from .contracts import VersionSubmission
+from .archive import Archive, ArchiveError, BodyUnavailable
+from .contracts import ReferenceReadRequest, VersionSubmission
 
 
 def main(argv=None) -> int:
@@ -25,13 +30,17 @@ def main(argv=None) -> int:
     parser.add_argument("--root", type=Path, help="Explicit private archive directory")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("init")
-    commands.add_parser("schema")
+    schema = commands.add_parser("schema")
+    schema.add_argument("--contract", choices=("version", "reference-read"), default="version")
     put = commands.add_parser("put")
     put.add_argument("--metadata", required=True, type=Path)
     put.add_argument("--body", type=Path)
     get = commands.add_parser("get")
     get.add_argument("version_id")
     get.add_argument("--body-output", type=Path, help="Create a new file; never overwrite")
+    read = commands.add_parser("read-reference")
+    read.add_argument("--request", required=True, type=Path)
+    read.add_argument("--body-output", type=Path, help="Create a new file; never overwrite")
     commands.add_parser("rebuild-index")
     find = commands.add_parser("find")
     find.add_argument("title")
@@ -40,7 +49,8 @@ def main(argv=None) -> int:
     revoke.add_argument("--reason", required=True)
     args = parser.parse_args(argv)
     if args.command == "schema":
-        print(json.dumps(VersionSubmission.model_json_schema(), ensure_ascii=False, indent=2))
+        contract = ReferenceReadRequest if args.contract == "reference-read" else VersionSubmission
+        print(json.dumps(contract.model_json_schema(), ensure_ascii=False, indent=2))
         return 0
     if args.root is None:
         parser.error("--root is required for archive operations")
@@ -58,6 +68,15 @@ def main(argv=None) -> int:
                     with args.body_output.open("xb") as output:
                         output.write(body)
                 result = stored.model_dump(mode="json")
+            elif args.command == "read-reference":
+                request = ReferenceReadRequest.model_validate_json(args.request.read_bytes())
+                material = archive.read_reference(request)
+                if args.body_output:
+                    if material.body is None:
+                        raise BodyUnavailable("INDEX returns metadata only; no body output can be created")
+                    with args.body_output.open("xb") as output:
+                        output.write(material.body)
+                result = material.model_dump(mode="json", exclude={"body"})
             elif args.command == "find":
                 result = {"navigation_only": True, "matches": archive.find(args.title)}
             elif args.command == "rebuild-index":
