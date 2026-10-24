@@ -19,7 +19,8 @@ class TechnicalTraceTests(unittest.TestCase):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         self.root = Path(temp.name) / "intelligence"
-        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns("__pycache__"))
+        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns(
+            "__pycache__", "*.pyc", ".venv", ".pytest_cache", ".mypy_cache", ".ruff_cache"))
         self.assertEqual(sync.synchronize(self.root, write=True), [])
         # These isolated fixtures start at a known correspondence baseline even
         # when production correctly has pending theory changes. Never change ROOT.

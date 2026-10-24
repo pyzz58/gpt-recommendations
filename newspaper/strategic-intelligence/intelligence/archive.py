@@ -23,10 +23,11 @@ from sqlalchemy import (Column, ForeignKey, Integer, MetaData, String, Table, Te
 from sqlalchemy.engine import Connection, URL
 from sqlalchemy.exc import IntegrityError
 
-from .contracts import (MaterialUse, ReferencedMaterial, ReferenceReadRequest,
-                        Representation, RevocationResult, StoredVersion, VersionSubmission)
+from .contracts import (MaterialUse, PermissionState, ReferencedMaterial, ReferenceReadRequest,
+                        Representation, RevocationResult, RightsGrant, Scope, ScopeMode, StoredVersion,
+                        UseContext, UsePermission, ValidityMode, VersionSubmission)
 
-CURRENT_SCHEMA = 2
+CURRENT_SCHEMA = 3
 metadata = MetaData()
 schema_info = Table("schema_info", metadata, Column("id", Integer, primary_key=True),
                     Column("version", Integer, nullable=False))
@@ -50,6 +51,10 @@ references = Table("version_references", metadata,
 revocations = Table("body_retention_revocations", metadata,
     Column("rights_id", String, ForeignKey("rights_grants.rights_id"), primary_key=True),
     Column("reason", Text, nullable=False), Column("recorded_at", String, nullable=False))
+use_revocations = Table("rights_use_revocations", metadata,
+    Column("rights_id", String, ForeignKey("rights_grants.rights_id"), primary_key=True),
+    Column("use", String, primary_key=True),
+    Column("reason", Text, nullable=False), Column("recorded_at", String, nullable=False))
 navigation = Table("navigation_index", metadata,
     Column("version_id", String, ForeignKey("versions.version_id"), primary_key=True),
     Column("object_id", String, nullable=False), Column("kind", String, nullable=False),
@@ -58,6 +63,10 @@ navigation = Table("navigation_index", metadata,
 
 class ArchiveError(Exception):
     """A known storage boundary failure; never a factual or content decision."""
+
+
+class PrivatePathError(ArchiveError):
+    """Private bytes cannot be written inside any Git worktree."""
 
 
 class Conflict(ArchiveError):
@@ -84,6 +93,29 @@ def canonical(value) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
 
 
+def require_private_output_path(path: str | Path) -> Path:
+    """Resolve a private output path and reject every enclosing Git worktree.
+
+    A normal repository has a ``.git`` directory; linked worktrees and
+    submodules use a ``.git`` file. Checking the real existing prefix also
+    catches non-existent descendants and symlink aliases. A bare repository
+    without a worktree marker is outside this worktree boundary.
+    """
+    requested = Path(path).expanduser().absolute()
+    if os.path.lexists(requested) and requested.is_symlink():
+        raise PrivatePathError(f"Private output cannot be an existing symlink: {requested}")
+    resolved = requested.resolve(strict=False)
+    cursor = resolved if resolved.is_dir() else resolved.parent
+    for ancestor in (cursor, *cursor.parents):
+        marker = ancestor/".git"
+        if os.path.lexists(marker):
+            raise PrivatePathError(
+                f"Private output must be outside every Git worktree: {resolved}; "
+                f"worktree marker: {marker}. Existing data was not modified; "
+                "move it to an explicitly private location before retrying.")
+    return resolved
+
+
 class Archive:
     """Local archive. Constructing an instance creates or migrates its schema.
 
@@ -95,9 +127,7 @@ class Archive:
     """
 
     def __init__(self, root: str | Path):
-        requested = Path(root).absolute()
-        if requested.is_symlink():
-            raise ArchiveError("Archive root cannot be a symlink")
+        requested = require_private_output_path(root)
         if requested.resolve().is_relative_to(Path(__file__).resolve().parents[1]):
             raise ArchiveError("Private archive must be outside the public source directory")
         if requested.exists() and any(requested.iterdir()) and not (requested/"archive.sqlite3").is_file():
@@ -169,8 +199,13 @@ class Archive:
                 navigation.create(c, checkfirst=False)
                 self._rebuild_index(c)
                 c.execute(update(schema_info).where(schema_info.c.id == 1).values(version=2))
+                current = 2
+            if current == 2:
+                use_revocations.create(c, checkfirst=True)
+                c.execute(update(schema_info).where(schema_info.c.id == 1).values(version=3))
             # Defend accidental bulk updates, not just the append API.
-            for name in ("objects", "rights_grants", "versions", "version_references", "body_retention_revocations"):
+            for name in ("objects", "rights_grants", "versions", "version_references",
+                         "body_retention_revocations", "rights_use_revocations"):
                 for action in ("UPDATE", "DELETE"):
                     c.exec_driver_sql(f"CREATE TRIGGER IF NOT EXISTS immutable_{name}_{action.lower()} "
                         f"BEFORE {action} ON {name} BEGIN SELECT RAISE(ABORT, 'append-only record'); END")
@@ -231,8 +266,12 @@ class Archive:
                 known_grant = c.execute(select(grants.c.record).where(grants.c.rights_id == sub.rights.rights_id)).scalar_one_or_none()
                 if known_grant is not None and known_grant != grant:
                     raise Conflict("Rights ID cannot be redefined; record a new checked grant")
-                revoked = c.execute(select(revocations.c.rights_id).where(revocations.c.rights_id == sub.rights.rights_id)).first()
-                if body is not None and revoked:
+                globally_revoked = c.execute(select(revocations.c.rights_id).where(
+                    revocations.c.rights_id == sub.rights.rights_id)).first()
+                storage_revoked = c.execute(select(use_revocations.c.rights_id).where(
+                    use_revocations.c.rights_id == sub.rights.rights_id,
+                    use_revocations.c.use == MaterialUse.STORE_BODY.value)).first()
+                if body is not None and (globally_revoked or storage_revoked):
                     raise PermissionDenied("Body retention grant was withdrawn")
                 if not obj:
                     c.execute(insert(objects).values(object_id=sub.object_id, kind=sub.kind.value))
@@ -273,13 +312,24 @@ class Archive:
         with self.engine.connect() as c:
             return self._stored(c, self._row(c, version_id))
 
+    def latest(self, object_id: str) -> StoredVersion | None:
+        """Return the latest committed version of one stable object ID."""
+        with self.engine.connect() as c:
+            row = c.execute(select(versions).where(versions.c.object_id == object_id)
+                            .order_by(versions.c.ordinal.desc()).limit(1)).mappings().first()
+            return self._stored(c, row) if row is not None else None
+
     @staticmethod
     def _stored(c: Connection, row) -> StoredVersion:
         sub = VersionSubmission.model_validate_json(row["record"])
         if (sub.version_id, sub.object_id, sub.parent_version_id, sub.rights.rights_id) != (
                 row["version_id"], row["object_id"], row["parent_version_id"], row["rights_id"]):
             raise CorruptArchive("Version record identity mismatch")
-        revoked = bool(c.execute(select(revocations.c.rights_id).where(revocations.c.rights_id == row["rights_id"])).first())
+        revoked = bool(c.execute(select(revocations.c.rights_id).where(
+            revocations.c.rights_id == row["rights_id"])).first())
+        revoked = revoked or bool(c.execute(select(use_revocations.c.rights_id).where(
+            use_revocations.c.rights_id == row["rights_id"],
+            use_revocations.c.use == MaterialUse.STORE_BODY.value)).first())
         return StoredVersion(submission=sub, ordinal=row["ordinal"],
             recorded_at=datetime.fromisoformat(row["recorded_at"]), body_sha256=row["body_sha256"],
             body_bytes=row["body_bytes"], body_retention_revoked=revoked)
@@ -293,7 +343,9 @@ class Archive:
         # Serialize permission checks and reads with revocation within this API.
         with self._write() as c:
             row = self._row(c, version_id)
-            return self._read_body(row, self._stored(c, row))
+            stored = self._stored(c, row)
+            self._check_use(c, stored, MaterialUse.STORE_BODY, None)
+            return self._read_body(row, stored)
 
     def _read_body(self, row, stored: StoredVersion) -> bytes:
         # Shared by local recovery and purpose-aware reads, under the same lock.
@@ -313,6 +365,73 @@ class Archive:
         if len(body) != row["body_bytes"] or hashlib.sha256(body).hexdigest() != row["body_sha256"]:
             raise CorruptArchive("Original body does not match its committed identity")
         return body
+
+    @staticmethod
+    def _permission(grant: RightsGrant, use: MaterialUse) -> UsePermission | None:
+        return next((item for item in grant.permissions if item.use is use), None)
+
+    @staticmethod
+    def _scope_has(scope: Scope, value: str | None, label: str) -> None:
+        if scope.mode is ScopeMode.ANY:
+            return
+        if scope.mode is ScopeMode.UNKNOWN:
+            raise PermissionDenied(f"{label} scope is unknown: {scope.reason}")
+        if not value or value.casefold() not in {item.casefold() for item in scope.values}:
+            raise PermissionDenied(f"{label} is not covered by the recorded permission")
+
+    def _revoked_uses(self, c: Connection, rights_id: str) -> set[MaterialUse]:
+        return {MaterialUse(row["use"]) for row in c.execute(
+            select(use_revocations).where(use_revocations.c.rights_id == rights_id)).mappings()}
+
+    def _check_use(self, c: Connection, stored: StoredVersion, use: MaterialUse,
+                   context: UseContext | None) -> tuple[str, ...]:
+        """Check recorded rights for one concrete use, never content truth."""
+        grant = stored.submission.rights
+        if use is MaterialUse.INDEX:
+            return ()
+        if use not in grant.allowed_uses:
+            raise PermissionDenied(f"Recorded grant does not allow {use.value}")
+        if use in self._revoked_uses(c, grant.rights_id):
+            raise PermissionDenied(f"Recorded permission for {use.value} was withdrawn")
+        item = self._permission(grant, use)
+        if item is None:
+            # Legacy local recovery remains available for the coarse local uses
+            # already recorded. Missing structured fields never authorize a new
+            # model, translation or delivery use.
+            if use in (MaterialUse.STORE_BODY,):
+                return ()
+            raise PermissionDenied(f"No structured permission was recorded for {use.value}")
+        if item.state is PermissionState.UNKNOWN:
+            raise PermissionDenied(f"Permission for {use.value} is unresolved")
+        if item.state is PermissionState.DENIED:
+            raise PermissionDenied(f"Permission for {use.value} is explicitly denied")
+        if item.validity is ValidityMode.UNKNOWN:
+            raise PermissionDenied(f"Validity for {use.value} is unknown")
+        at = context.at if context else datetime.now(timezone.utc)
+        if item.validity is ValidityMode.BOUNDED:
+            if item.effective_from is not None and at < item.effective_from:
+                raise PermissionDenied(f"Permission for {use.value} is not yet effective")
+            if item.effective_until is not None and at >= item.effective_until:
+                raise PermissionDenied(f"Permission for {use.value} has expired")
+        self._scope_has(item.territories, context.territory if context else None, "Territory")
+        self._scope_has(item.providers, context.provider if context else None, "Provider")
+        if item.content_scope.mode is ScopeMode.UNKNOWN:
+            raise PermissionDenied(f"Content scope is unknown: {item.content_scope.reason}")
+        if item.content_scope.mode is ScopeMode.LIST:
+            if not context or not context.content:
+                raise PermissionDenied("Content coverage requires the selected content labels")
+            allowed_content = {value.casefold() for value in item.content_scope.values}
+            if any(value.casefold() not in allowed_content for value in context.content):
+                raise PermissionDenied("Selected content is not covered by the recorded permission")
+        if item.excluded_content:
+            if not context or not context.content:
+                raise PermissionDenied("Excluded third-party content requires an explicit selection")
+            excluded = {value.casefold() for value in item.excluded_content}
+            if any(value.casefold() in excluded for value in context.content):
+                raise PermissionDenied("Selected third-party content is excluded from the permission")
+        if item.conditions and item.conditions_satisfied is not True:
+            raise PermissionDenied("Permission conditions were not confirmed as satisfied")
+        return item.attribution_requirements
 
     def read_reference(self, request: ReferenceReadRequest) -> ReferencedMaterial:
         """Resolve an owner's recorded reference without changing version/use.
@@ -335,12 +454,13 @@ class Archive:
             if req.expected_body_sha256 is not None and req.expected_body_sha256 != target.body_sha256:
                 raise Conflict("Referenced body has a different committed identity")
             body = None
+            attribution = ()
             if req.intended_use is not MaterialUse.INDEX:
-                if req.intended_use not in target.submission.rights.allowed_uses:
-                    raise PermissionDenied(f"Recorded grant does not allow {req.intended_use.value}")
+                attribution = self._check_use(c, target, req.intended_use, req.use_context)
                 body = self._read_body(row, target)
             return ReferencedMaterial(request=req, owner=owner, version=target,
-                recorded_at=datetime.now(timezone.utc), body=body)
+                recorded_at=datetime.now(timezone.utc), body=body,
+                required_attribution=attribution)
 
     def referrers(self, target_version_id: str) -> list[dict]:
         with self.engine.connect() as c:
@@ -376,7 +496,9 @@ class Archive:
             raise ValueError("Revocation needs a concrete reason")
         # Commit denial before deletion. A deletion failure must never re-enable access.
         with self._write() as c:
-            if not c.execute(select(grants.c.rights_id).where(grants.c.rights_id == rights_id)).first():
+            grant_record = c.execute(select(grants.c.record).where(
+                grants.c.rights_id == rights_id)).scalar_one_or_none()
+            if grant_record is None:
                 raise ArchiveError("Unknown rights ID")
             old = c.execute(select(revocations).where(revocations.c.rights_id == rights_id)).mappings().first()
             recorded_at = datetime.fromisoformat(old["recorded_at"]) if old else datetime.now(timezone.utc)
@@ -391,5 +513,56 @@ class Archive:
                     purged.append(row["version_id"])
                 except (OSError, ArchiveError):
                     failed.append(row["version_id"])
-        return RevocationResult(rights_id=rights_id, affected_versions=tuple(r["version_id"] for r in rows),
+        revoked_uses = tuple(sorted(RightsGrant.model_validate_json(grant_record).allowed_uses, key=lambda item: item.value))
+        return RevocationResult(rights_id=rights_id, revoked_uses=revoked_uses,
+            affected_versions=tuple(r["version_id"] for r in rows),
             purged_versions=tuple(purged), failed_versions=tuple(failed), recorded_at=recorded_at)
+
+    def revoke_rights(self, rights_id: str, uses: tuple[MaterialUse, ...],
+                      reason: str) -> RevocationResult:
+        """Withdraw selected uses while preserving unrelated uses and history.
+
+        INDEX is retained as the minimum audit/navigation pointer. STORE_BODY
+        revocation also removes retained bodies because no later use can then
+        recover them. Other use revocations leave the stored body untouched.
+        """
+        if not isinstance(reason, str) or not reason.strip():
+            raise ValueError("Revocation needs a concrete reason")
+        selected = tuple(dict.fromkeys(uses))
+        if not selected:
+            raise ValueError("Select at least one use to revoke")
+        if MaterialUse.INDEX in selected:
+            raise ValueError("The minimal index/pointer record cannot be partially revoked")
+        with self._write() as c:
+            grant_record = c.execute(select(grants.c.record).where(
+                grants.c.rights_id == rights_id)).scalar_one_or_none()
+            if grant_record is None:
+                raise ArchiveError("Unknown rights ID")
+            grant = RightsGrant.model_validate_json(grant_record)
+            if any(use not in grant.allowed_uses for use in selected):
+                raise ArchiveError("Cannot revoke a use that the grant did not authorize")
+            now = datetime.now(timezone.utc)
+            existing = {MaterialUse(row["use"]): datetime.fromisoformat(row["recorded_at"])
+                        for row in c.execute(select(use_revocations).where(
+                            use_revocations.c.rights_id == rights_id)).mappings()}
+            for use in selected:
+                if use not in existing:
+                    c.execute(insert(use_revocations).values(
+                        rights_id=rights_id, use=use.value, reason=reason.strip(),
+                        recorded_at=now.isoformat()))
+                    existing[use] = now
+            rows = list(c.execute(select(versions.c.version_id, versions.c.body_path).where(
+                versions.c.rights_id == rights_id)).mappings())
+        purged, failed = [], []
+        if MaterialUse.STORE_BODY in selected:
+            for row in rows:
+                if row["body_path"]:
+                    try:
+                        self._body_path(row["body_path"]).unlink(missing_ok=True)
+                        purged.append(row["version_id"])
+                    except (OSError, ArchiveError):
+                        failed.append(row["version_id"])
+        return RevocationResult(rights_id=rights_id, revoked_uses=selected,
+            affected_versions=tuple(row["version_id"] for row in rows),
+            purged_versions=tuple(purged), failed_versions=tuple(failed),
+            recorded_at=max(existing[use] for use in selected))

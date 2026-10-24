@@ -15,8 +15,9 @@ from unittest.mock import patch
 from pydantic import ValidationError
 
 from intelligence.archive import Archive
-from intelligence.contracts import (MaterialUse,ObjectKind,ReferenceReadRequest,ReferenceUse,
-    Representation,RightsBasis,RightsGrant,VersionReference,VersionSubmission)
+from intelligence.contracts import (MaterialUse,ObjectKind,PermissionState,ReferenceReadRequest,
+    ReferenceUse,Representation,RightsBasis,RightsGrant,Scope,ScopeMode,UseContext,UsePermission,
+    ValidityMode,VersionReference,VersionSubmission)
 from intelligence.preparation import (GLOBAL_ANCHORS,MaterialNeed,PreparationError,
     PreparationRequest,PreparedTask,maintenance,prepare_task,verify_prepared_task)
 
@@ -30,18 +31,23 @@ class PreparationTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
         self.base=Path(self.temp.name);self.source=self.base/'source'
-        shutil.copytree(PROJECT,self.source,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
+        shutil.copytree(PROJECT,self.source,ignore=shutil.ignore_patterns(
+            '__pycache__','*.pyc','.venv','.pytest_cache','.mypy_cache','.ruff_cache'))
         self.spec=(self.source/maintenance.SPEC).read_bytes();self.sha=digest(self.spec)
         self.archive=Archive(self.base/'archive');self.addCleanup(self.archive.close)
         self.rights=RightsGrant(rights_id='RIGHTS-OWN',basis=RightsBasis.OWN_WORK,
             allowed_uses=frozenset({MaterialUse.INDEX,MaterialUse.STORE_BODY,MaterialUse.MODEL_PROCESS}),
-            evidence='Explicit synthetic fixture authored for this test',checked_by='test fixture',checked_at=AT)
+            evidence='Explicit synthetic fixture authored for this test',checked_by='test fixture',checked_at=AT,
+            permissions=(UsePermission(use=MaterialUse.MODEL_PROCESS,state=PermissionState.ALLOWED,
+                validity=ValidityMode.OPEN_ENDED,territories=Scope(mode=ScopeMode.ANY),
+                providers=Scope(mode=ScopeMode.ANY),content_scope=Scope(mode=ScopeMode.ANY)),))
         self.ref=VersionReference(target_version_id='SOURCE-v001',use=ReferenceUse.SOURCE,locator='entire synthetic fixture')
         self.archive.append(self.version('SOURCE','SOURCE-v001',ObjectKind.DOCUMENT),BODY)
         self.archive.append(self.version('TASK','TASK-v001',ObjectKind.TASK,refs=(self.ref,)),b'owned task record')
         self.need=MaterialNeed(input_id='EVIDENCE-1',read=ReferenceReadRequest(request_id='READ-1',
             spec_sha256=self.sha,created_at=AT,consumer='T01',owner_version_id='TASK-v001',reference=self.ref,
-            expected_kind=ObjectKind.DOCUMENT,intended_use=MaterialUse.MODEL_PROCESS,expected_body_sha256=digest(BODY)),
+            expected_kind=ObjectKind.DOCUMENT,intended_use=MaterialUse.MODEL_PROCESS,expected_body_sha256=digest(BODY),
+            use_context=UseContext(at=AT)),
             purpose_in_task='Inspect the explicit input boundary',declared_nature='unverified source text',
             declared_limits=('Synthetic fixture; not factual support or permission beyond this test',))
         self.request=PreparationRequest(preparation_id='PREP-1',spec_sha256=self.sha,created_at=AT,
@@ -236,6 +242,12 @@ class PreparationTests(unittest.TestCase):
         self.assertEqual(json.loads(incomplete.stdout)['handoff'],'REPAIR_INPUTS')
         blocked=run(cmd[:-1]+[str(self.source/'not-allowed.json')])
         self.assertEqual(blocked.returncode,2);self.assertFalse((self.source/'not-allowed.json').exists())
+        repo=PROJECT.parents[1]
+        for relative in ('private-prepared.json','newspaper/private-prepared.json'):
+            blocked_repo=run(cmd[:-1]+[str(repo/relative)])
+            self.assertEqual(blocked_repo.returncode,2)
+            self.assertEqual(json.loads(blocked_repo.stderr)['error'],'PrivatePathError')
+            self.assertFalse((repo/relative).exists())
 
 
 if __name__=='__main__':unittest.main()

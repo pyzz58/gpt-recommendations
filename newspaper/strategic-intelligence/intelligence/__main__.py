@@ -7,6 +7,9 @@ uv run --locked python -m intelligence schema --contract reference-read
 uv run --locked python -m intelligence --root /private/archive read-reference --request request.json --body-output material.bin
 uv run --locked --extra workflow python -m intelligence --root /private/archive prepare --request preparation.json --output /private/prepared.json
 uv run --locked --extra workflow python -m intelligence --root /private/archive verify-preparation /private/prepared.json
+uv run --locked python -m intelligence --root /private/archive submit-step --record submission.json --rights journal-rights.json
+uv run --locked python -m intelligence --root /private/archive decide-step --record decision.json --rights journal-rights.json
+uv run --locked python -m intelligence --root /private/archive current-decision W15 M01
 
 The schema command defaults to VersionSubmission. read-reference checks a
 committed owner/reference, exact target kind/body identity and declared purpose;
@@ -18,6 +21,7 @@ created_at/source times come from input; recorded_at is assigned at commit.
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
@@ -26,8 +30,8 @@ import sys
 
 from pydantic import ValidationError
 
-from .archive import Archive, ArchiveError, BodyUnavailable
-from .contracts import ReferenceReadRequest, VersionSubmission
+from .archive import Archive, ArchiveError, BodyUnavailable, require_private_output_path
+from .contracts import MaterialUse, ReferenceReadRequest, RightsBasis, RightsGrant, VersionSubmission
 
 
 def main(argv=None) -> int:
@@ -36,7 +40,9 @@ def main(argv=None) -> int:
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("init")
     schema = commands.add_parser("schema")
-    schema.add_argument("--contract", choices=("version", "reference-read", "preparation"), default="version")
+    schema.add_argument("--contract",
+        choices=("version", "reference-read", "preparation", "step-submission", "adoption-decision"),
+        default="version")
     put = commands.add_parser("put")
     put.add_argument("--metadata", required=True, type=Path)
     put.add_argument("--body", type=Path)
@@ -53,17 +59,37 @@ def main(argv=None) -> int:
     verify = commands.add_parser("verify-preparation", help="Recheck current inputs; does not approve content")
     verify.add_argument("bundle", type=Path)
     verify.add_argument("--spec-root", type=Path, default=Path(__file__).resolve().parents[1])
+    submit_step = commands.add_parser("submit-step", help="Record a producer submission without an adoption decision")
+    submit_step.add_argument("--record", required=True, type=Path)
+    submit_step.add_argument("--rights", required=True, type=Path)
+    decide_step = commands.add_parser("decide-step", help="Record an authoritative decision after exact checks")
+    decide_step.add_argument("--record", required=True, type=Path)
+    decide_step.add_argument("--rights", required=True, type=Path)
+    current_decision = commands.add_parser("current-decision")
+    current_decision.add_argument("work_id")
+    current_decision.add_argument("step_id")
     commands.add_parser("rebuild-index")
     find = commands.add_parser("find")
     find.add_argument("title")
     revoke = commands.add_parser("revoke")
     revoke.add_argument("rights_id")
     revoke.add_argument("--reason", required=True)
+    revoke_use = commands.add_parser("revoke-use", help="Withdraw selected uses while retaining unrelated history")
+    revoke_use.add_argument("rights_id")
+    revoke_use.add_argument("--use", action="append", required=True,
+        choices=[item.value for item in MaterialUse if item is not MaterialUse.INDEX])
+    revoke_use.add_argument("--reason", required=True)
     args = parser.parse_args(argv)
     if args.command == "schema":
         if args.contract == "preparation":
             from .preparation import PreparationRequest
             contract = PreparationRequest
+        elif args.contract == "step-submission":
+            from .adoption import StepSubmission
+            contract = StepSubmission
+        elif args.contract == "adoption-decision":
+            from .adoption import AdoptionDecision
+            contract = AdoptionDecision
         else:
             contract = ReferenceReadRequest if args.contract == "reference-read" else VersionSubmission
         print(json.dumps(contract.model_json_schema(), ensure_ascii=False, indent=2))
@@ -80,6 +106,7 @@ def main(argv=None) -> int:
             elif args.command == "get":
                 stored = archive.get(args.version_id)
                 if args.body_output:
+                    require_private_output_path(args.body_output)
                     body = archive.read_body(args.version_id)
                     with args.body_output.open("xb") as output:
                         output.write(body)
@@ -88,6 +115,7 @@ def main(argv=None) -> int:
                 request = ReferenceReadRequest.model_validate_json(args.request.read_bytes())
                 material = archive.read_reference(request)
                 if args.body_output:
+                    require_private_output_path(args.body_output)
                     if material.body is None:
                         raise BodyUnavailable("INDEX returns metadata only; no body output can be created")
                     with args.body_output.open("xb") as output:
@@ -96,6 +124,7 @@ def main(argv=None) -> int:
             elif args.command in ("prepare", "verify-preparation"):
                 from .preparation import PreparedTask, PreparationRequest, prepare_task, verify_prepared_task
                 if args.command == "prepare":
+                    require_private_output_path(args.output)
                     if args.output.resolve().is_relative_to(Path(__file__).resolve().parents[1]) or args.output.resolve().is_relative_to(args.spec_root.resolve()):
                         raise ValueError("Prepared inputs must remain outside the public source directory")
                     request = PreparationRequest.model_validate_json(args.request.read_bytes())
@@ -116,12 +145,46 @@ def main(argv=None) -> int:
                     "executed_nodes": prepared.executed_nodes, "provided_to_model": False, **output_identity}
                 print(json.dumps(result, ensure_ascii=False))
                 return 0 if prepared.input_complete else 3
+            elif args.command in ("submit-step", "decide-step"):
+                from .adoption import AdoptionController, DecisionRequest, StepSubmission
+                controller = AdoptionController(archive,
+                    RightsGrant.model_validate_json(args.rights.read_bytes()))
+                if args.command == "submit-step":
+                    submitted = controller.submit(StepSubmission.model_validate_json(args.record.read_bytes()))
+                    result = {"submission_id": submitted.submission.version_id,
+                              "kind": submitted.submission.kind.value,
+                              "adoption": "NOT_DECIDED"}
+                else:
+                    decided = controller.decide(DecisionRequest.model_validate_json(args.record.read_bytes()))
+                    decision = controller.load(decided.submission.version_id)
+                    result = {"decision_id": decision.decision_id, "state": decision.state.value,
+                              "allowed_scope": decision.allowed_scope,
+                              "publication_authorized": False}
+                print(json.dumps(result, ensure_ascii=False))
+                return 0
+            elif args.command == "current-decision":
+                from .adoption import AdoptionController
+                rights = RightsGrant(rights_id="RIGHTS-CURRENT-QUERY",basis=RightsBasis.OWN_WORK,
+                    allowed_uses=frozenset({MaterialUse.INDEX}),evidence="Read-only query selector",
+                    checked_by="CLI query",checked_at=datetime.now(timezone.utc))
+                decision = AdoptionController(archive,rights).current(args.work_id,args.step_id)
+                print(json.dumps(
+                    {"state": decision.state.value if decision else "PENDING",
+                     "decision": decision.model_dump(mode="json") if decision else None},
+                    ensure_ascii=False))
+                return 0
             elif args.command == "find":
                 result = {"navigation_only": True, "matches": archive.find(args.title)}
             elif args.command == "rebuild-index":
                 result = {"navigation_only": True, "indexed_versions": archive.rebuild_index()}
-            else:
+            elif args.command == "revoke":
                 revoked = archive.revoke_body_retention(args.rights_id, args.reason)
+                result = revoked.model_dump(mode="json")
+                print(json.dumps(result, ensure_ascii=False))
+                return 3 if revoked.failed_versions else 0
+            else:
+                revoked = archive.revoke_rights(
+                    args.rights_id, tuple(MaterialUse(value) for value in args.use), args.reason)
                 result = revoked.model_dump(mode="json")
                 print(json.dumps(result, ensure_ascii=False))
                 return 3 if revoked.failed_versions else 0

@@ -5,7 +5,7 @@
 **CURRENT_BINDING仅表示本次关联版本一致；不证明方案正确、程序已实现、内容已审或获准运行。**
 理论或设计/依赖改变会变为REVIEW_REQUIRED；重新生成只刷新事实，不自动改写技术正文或批准新基线。
 
-当前规范SHA-256：`3fa2fa90545d3c3b3e70031ab0fba4a38cce23706053c3a250a6ff36e6355f32`。
+当前规范SHA-256：`cbc3739b78040afb5acb377d4b5052ad7f98b74a2e8b983b1cf320544241ef71`。
 
 需复核节点：无；仅限关联新鲜度检查。
 
@@ -19,11 +19,11 @@
 | [R06](#r06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r06) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | T12组织双输入并共用C01—C05，无年度存储/研究/渲染分叉；年度业务未实现 |
 | [R07](#r07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r07) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 已有文档关联维护继续；研究任务原文装载/分段与C03持久恢复仍待实现，不由摘要恢复 |
 | [R08](#r08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r08) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | C06 Actions只设周开始+C03长任务续跑+C02期号/回执+C05文件；生产/已授权交付待实现 |
-| [T01](#t01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t01) | CURRENT_BINDING | 执行者组织；未来执行层维护决定；人工定位先行；第二阶段控制器 | C02权威决定/版本+C03 LangGraph交接；域内采用边界自行实现；研究控制未实现，维护能力另报 |
+| [T01](#t01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t01) | CURRENT_BINDING | 执行者组织；未来执行层维护决定；人工定位先行；第二阶段控制器 | C02提交/Review/AdoptionDecision追加版本与W15分离决定接口已离线实现；身份认证、完整研究图、LangGraph持久恢复和端到端采用仍未实现 |
 | [T02](#t02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t02) | CURRENT_BINDING | L1发现职责；第一阶段人工取样；第四阶段生产增量 | C01 feedparser/Trafilatura共享入口+C02候选；血缘/归并/覆盖薄适配待实现 |
 | [T03](#t03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t03) | CURRENT_BINDING | L2编辑决定；第一阶段人工；第二阶段记录和接口 | C04编辑任务+C02决定+C03 S依赖；价值/刊登规则待实现，不用分数自动拼刊 |
 | [T04](#t04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t04) | CURRENT_BINDING | L3取证/中文核对；第一阶段实际回源；第二阶段适配 | C01网页/Feed与按需Docling+C02权利/支持；共用翻译适配待实现，提取不代核真 |
-| [T05](#t05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t05) | CURRENT_BINDING | L4联合研究组织；B1/B2从早期参与；第一阶段分步研究；第二阶段可重跑组织 | C03 LangGraph/官方检查点+C04共同研究函数；M依赖/本刊采用规则待实现，不接第二完整研究链 |
+| [T05](#t05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t05) | CURRENT_BINDING | L4联合研究组织；B1/B2从早期参与；第一阶段分步研究；第二阶段可重跑组织 | W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；C03完整M图、C04研究函数及真实模型内容仍待实现 |
 | [T06](#t06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t06) | CURRENT_BINDING | L4顾问职责；第一阶段真实研判；后续按任务验证 | C04 B1任务共用C02/C03和模型接口；实际顾问贡献待内容验收 |
 | [T07](#t07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t07) | CURRENT_BINDING | L4帝师职责；从M02参与；第一阶段真实教学；后续按任务验证 | C04 B2任务共用C02/C03和模型接口；主动知识研究/自足教学仍待独立验收 |
 | [T08](#t08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t08) | CURRENT_BINDING | L4的C与M12准备；当期保存条件；真实结果后来再核 | C04条件任务+C02 ThesisVersion/Theme；无独立预测平台，真实成果待验 |
@@ -206,7 +206,7 @@
 
 设计目的：规范与交接控制
 
-责任：执行者组织；未来执行层维护决定；阶段：人工定位先行；第二阶段控制器；实现：C02权威决定/版本+C03 LangGraph交接；域内采用边界自行实现；研究控制未实现，维护能力另报。
+责任：执行者组织；未来执行层维护决定；阶段：人工定位先行；第二阶段控制器；实现：C02提交/Review/AdoptionDecision追加版本与W15分离决定接口已离线实现；身份认证、完整研究图、LangGraph持久恢复和端到端采用仍未实现。
 
 理论出处：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -286,7 +286,7 @@
 
 设计目的：问题界定与联合研究组织
 
-责任：L4联合研究组织；B1/B2从早期参与；阶段：第一阶段分步研究；第二阶段可重跑组织；实现：C03 LangGraph/官方检查点+C04共同研究函数；M依赖/本刊采用规则待实现，不接第二完整研究链。
+责任：L4联合研究组织；B1/B2从早期参与；阶段：第一阶段分步研究；第二阶段可重跑组织；实现：W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；C03完整M图、C04研究函数及真实模型内容仍待实现。
 
 理论出处：[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 

@@ -27,7 +27,8 @@ class SynchronizationTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name) / "intelligence"
-        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns("__pycache__"))
+        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns(
+            "__pycache__", "*.pyc", ".venv", ".pytest_cache", ".mypy_cache", ".ruff_cache"))
         self.assertEqual(sync.synchronize(self.root, write=True), [])
 
     def change_spec(self, transform):
@@ -92,6 +93,20 @@ class SynchronizationTests(unittest.TestCase):
         p.write_text("do not delete", encoding="utf-8")
         self.assertTrue(sync.synchronize(self.root, write=True))
         self.assertEqual(p.read_text(), "do not delete")
+
+    def test_local_environment_is_ignored_but_unknown_files_still_block(self):
+        venv = self.root / ".venv"
+        cache = self.root / ".pytest_cache"
+        venv.mkdir()
+        cache.mkdir()
+        (venv / "pyvenv.cfg").write_text("home = /synthetic")
+        (venv / "marker.txt").write_text("local environment")
+        (cache / "state").write_text("local cache")
+        self.assertEqual(sync.synchronize(self.root), [])
+        unknown = self.root / ".unregistered_rule"
+        unknown.write_text("must remain visible")
+        self.assertTrue(sync.synchronize(self.root))
+        self.assertEqual(unknown.read_text(), "must remain visible")
 
     def test_duplicate_blocks_rejected(self):
         self.change_spec(lambda s: s + "\n<!-- BEGIN MACHINE_CONTRACT -->\n")

@@ -35,35 +35,102 @@ class ObjectKind(str, Enum):
     CONCEPT = "Concept"
     METHOD_USE = "MethodUse"
     BACKGROUND = "Background"
+    STEP_SUBMISSION = "StepSubmission"
+    ADOPTION_DECISION = "AdoptionDecision"
+    RESEARCH_REVISION = "ResearchRevision"
+    ARTIFACT_LINK = "ResearchArtifactLink"
+    RESEARCH_COMMIT = "ResearchCommit"
 
 
 class Precision(str, Enum):
     UNKNOWN = "UNKNOWN"
     DATE = "DATE"
     INSTANT = "INSTANT"
+    DATE_RANGE = "DATE_RANGE"
+    INSTANT_RANGE = "INSTANT_RANGE"
+    PARTIAL_RANGE = "PARTIAL_RANGE"
 
 
 class TimePoint(Contract):
     precision: Precision = Precision.UNKNOWN
     value: NonBlank | None = None
+    start_value: NonBlank | None = None
+    end_value: NonBlank | None = None
+    endpoint_precision: Precision | None = None
+    start_inclusive: bool = True
+    end_inclusive: bool = True
+    source_timezone: NonBlank | None = None
+    provenance: NonBlank | None = None
+    uncertainty: NonBlank | None = None
     reason: NonBlank | None = None
 
     @model_validator(mode="after")
     def coherent(self) -> Self:
         if self.precision is Precision.UNKNOWN:
-            if self.value is not None or not self.reason:
+            if any(x is not None for x in (self.value, self.start_value, self.end_value)) or not self.reason:
                 raise ValueError("Unknown time needs a reason and cannot have a value")
-        elif self.value is None:
-            raise ValueError("Known time needs a value")
-        elif self.precision is Precision.DATE:
-            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", self.value):
-                raise ValueError("DATE precision requires YYYY-MM-DD, not an invented midnight")
-            date.fromisoformat(self.value)
+        elif self.precision in (Precision.DATE, Precision.INSTANT):
+            if (self.value is None or self.start_value is not None or self.end_value is not None
+                    or self.endpoint_precision is not None):
+                raise ValueError("A point time needs exactly one value")
+            if self.precision is Precision.DATE:
+                self._validate_date(self.value)
+            else:
+                self._validate_instant(self.value)
         else:
-            parsed = datetime.fromisoformat(self.value.replace("Z", "+00:00"))
-            if parsed.tzinfo is None or parsed.utcoffset() is None:
-                raise ValueError("INSTANT requires an explicit UTC offset")
+            if self.value is not None:
+                raise ValueError("A range cannot contain a point value")
+            if self.start_value is None and self.end_value is None:
+                raise ValueError("A range needs at least one endpoint")
+            if self.precision is Precision.PARTIAL_RANGE:
+                if not self.reason:
+                    raise ValueError("A partial range needs an unknown-endpoint reason")
+                if self.endpoint_precision not in (Precision.DATE, Precision.INSTANT):
+                    raise ValueError("A partial range needs DATE or INSTANT endpoint precision")
+            elif self.start_value is None or self.end_value is None:
+                raise ValueError("A complete range needs both endpoints")
+            elif self.endpoint_precision is not None:
+                raise ValueError("Complete range precision is defined by its range type")
+            if self.precision is Precision.DATE_RANGE:
+                if self.start_value is not None:
+                    self._validate_date(self.start_value)
+                if self.end_value is not None:
+                    self._validate_date(self.end_value)
+                if (self.start_value is not None and self.end_value is not None
+                        and self.end_value < self.start_value):
+                    raise ValueError("Date range endpoints are inverted")
+            elif self.precision is Precision.INSTANT_RANGE:
+                start = self._validate_instant(self.start_value) if self.start_value is not None else None
+                end = self._validate_instant(self.end_value) if self.end_value is not None else None
+                if start is not None and end is not None and end < start:
+                    raise ValueError("Instant range endpoints are inverted")
+            elif self.precision is Precision.PARTIAL_RANGE:
+                if self.endpoint_precision is Precision.DATE:
+                    for endpoint in (self.start_value, self.end_value):
+                        if endpoint is not None:
+                            self._validate_date(endpoint)
+                    if (self.start_value is not None and self.end_value is not None
+                            and self.end_value < self.start_value):
+                        raise ValueError("Date range endpoints are inverted")
+                else:
+                    start = self._validate_instant(self.start_value) if self.start_value else None
+                    end = self._validate_instant(self.end_value) if self.end_value else None
+                    if start is not None and end is not None and end < start:
+                        raise ValueError("Instant range endpoints are inverted")
         return self
+
+    @staticmethod
+    def _validate_date(value: str) -> None:
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+            raise ValueError("DATE precision requires YYYY-MM-DD, not an invented midnight")
+        date.fromisoformat(value)
+
+    @staticmethod
+    def _validate_instant(value: str) -> datetime:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if parsed.tzinfo is None or parsed.utcoffset() is None:
+            raise ValueError("INSTANT requires an explicit UTC offset")
+        return parsed
 
 
 def unknown_time() -> TimePoint:
@@ -73,6 +140,9 @@ def unknown_time() -> TimePoint:
 class DataPeriod(Contract):
     start: AwareDatetime
     end_exclusive: AwareDatetime
+    source_timezone: NonBlank | None = None
+    provenance: NonBlank | None = None
+    uncertainty: NonBlank | None = None
 
     @model_validator(mode="after")
     def ordered(self) -> Self:
@@ -103,6 +173,82 @@ class RightsBasis(str, Enum):
     POINTER_ONLY = "POINTER_ONLY"
 
 
+class ScopeMode(str, Enum):
+    ANY = "ANY"
+    LIST = "LIST"
+    UNKNOWN = "UNKNOWN"
+
+
+class Scope(Contract):
+    """An explicit scope; omitted values never mean unrestricted access."""
+
+    mode: ScopeMode = ScopeMode.UNKNOWN
+    values: tuple[NonBlank, ...] = ()
+    reason: NonBlank | None = None
+
+    @model_validator(mode="after")
+    def coherent(self) -> Self:
+        if len(self.values) != len({value.casefold() for value in self.values}):
+            raise ValueError("Duplicate scope value")
+        if self.mode is ScopeMode.LIST:
+            if not self.values:
+                raise ValueError("LIST scope needs at least one value")
+        elif self.values:
+            raise ValueError("Only LIST scope may contain values")
+        if self.mode is ScopeMode.UNKNOWN and not self.reason:
+            raise ValueError("UNKNOWN scope needs a reason")
+        return self
+
+
+class PermissionState(str, Enum):
+    ALLOWED = "ALLOWED"
+    DENIED = "DENIED"
+    UNKNOWN = "UNKNOWN"
+
+
+class ValidityMode(str, Enum):
+    OPEN_ENDED = "OPEN_ENDED"
+    BOUNDED = "BOUNDED"
+    UNKNOWN = "UNKNOWN"
+
+
+class UsePermission(Contract):
+    use: MaterialUse
+    state: PermissionState = PermissionState.UNKNOWN
+    validity: ValidityMode = ValidityMode.UNKNOWN
+    effective_from: AwareDatetime | None = None
+    effective_until: AwareDatetime | None = None
+    territories: Scope = Field(default_factory=lambda: Scope(reason="Territory not reviewed"))
+    providers: Scope = Field(default_factory=lambda: Scope(reason="Provider not reviewed"))
+    content_scope: Scope = Field(default_factory=lambda: Scope(reason="Covered content not reviewed"))
+    excluded_content: tuple[NonBlank, ...] = ()
+    conditions: tuple[NonBlank, ...] = ()
+    conditions_satisfied: bool | None = None
+    attribution_requirements: tuple[NonBlank, ...] = ()
+
+    @model_validator(mode="after")
+    def coherent(self) -> Self:
+        if self.validity is ValidityMode.UNKNOWN:
+            if self.effective_from is not None or self.effective_until is not None:
+                raise ValueError("Unknown validity cannot carry effective dates")
+        elif self.validity is ValidityMode.OPEN_ENDED:
+            if self.effective_from is not None or self.effective_until is not None:
+                raise ValueError("Open-ended validity has no term dates")
+        elif self.effective_from is None and self.effective_until is None:
+            raise ValueError("Bounded validity needs an effective boundary")
+        if self.effective_from is not None and self.effective_until is not None:
+            if self.effective_until <= self.effective_from:
+                raise ValueError("Permission validity is inverted")
+        if self.conditions and self.conditions_satisfied is None:
+            # This is allowed for recording an unresolved condition; evaluation denies it.
+            pass
+        if len(self.excluded_content) != len(set(self.excluded_content)):
+            raise ValueError("Duplicate excluded content")
+        if len(self.attribution_requirements) != len(set(self.attribution_requirements)):
+            raise ValueError("Duplicate attribution requirement")
+        return self
+
+
 class RightsGrant(Contract):
     rights_id: Identifier
     basis: RightsBasis
@@ -110,6 +256,12 @@ class RightsGrant(Contract):
     evidence: NonBlank
     checked_by: NonBlank
     checked_at: AwareDatetime
+    work_title: NonBlank | None = None
+    source_locator: NonBlank | None = None
+    terms_url: NonBlank | None = None
+    terms_version: NonBlank | None = None
+    grantor: NonBlank | None = None
+    permissions: tuple[UsePermission, ...] = ()
 
     @field_serializer("allowed_uses")
     def sorted_uses(self, value: frozenset[MaterialUse]) -> list[str]:
@@ -121,6 +273,12 @@ class RightsGrant(Contract):
             raise ValueError("This archive requires explicit permission to retain the minimal index")
         if self.basis is RightsBasis.POINTER_ONLY and self.allowed_uses != frozenset({MaterialUse.INDEX}):
             raise ValueError("Pointer-only permission cannot authorize body storage or processing")
+        uses = [item.use for item in self.permissions]
+        if len(uses) != len(set(uses)):
+            raise ValueError("Duplicate structured permission for one use")
+        if any(item.state is PermissionState.ALLOWED and item.use not in self.allowed_uses
+               for item in self.permissions):
+            raise ValueError("A structured ALLOWED use must also be in allowed_uses")
         return self
 
 
@@ -147,7 +305,7 @@ class Representation(str, Enum):
 
 
 class VersionSubmission(Contract):
-    schema_version: int = Field(default=1, ge=1, le=1)
+    schema_version: int = Field(default=2, ge=1, le=2)
     object_id: Identifier
     kind: ObjectKind
     version_id: Identifier
@@ -195,7 +353,7 @@ class ReferenceReadRequest(Contract):
     the caller's declared basis; checking the current spec belongs to W14.
     """
 
-    schema_version: int = Field(default=1, ge=1, le=1)
+    schema_version: int = Field(default=2, ge=1, le=2)
     request_id: Identifier
     spec_sha256: Digest
     created_at: AwareDatetime
@@ -205,6 +363,20 @@ class ReferenceReadRequest(Contract):
     expected_kind: ObjectKind
     intended_use: MaterialUse
     expected_body_sha256: Digest | None = None
+    use_context: UseContext | None = None
+
+
+class UseContext(Contract):
+    """Facts available at a specific downstream-use check.
+
+    Provider and territory values are caller-declared execution context. W13
+    checks them against recorded terms; it does not authenticate the caller.
+    """
+
+    at: AwareDatetime
+    provider: NonBlank | None = None
+    territory: NonBlank | None = None
+    content: tuple[NonBlank, ...] = ()
 
 
 class ReferencedMaterial(Contract):
@@ -221,10 +393,12 @@ class ReferencedMaterial(Contract):
     version: StoredVersion
     recorded_at: AwareDatetime
     body: bytes | None
+    required_attribution: tuple[NonBlank, ...] = ()
 
 
 class RevocationResult(Contract):
     rights_id: Identifier
+    revoked_uses: tuple[MaterialUse, ...] = ()
     affected_versions: tuple[Identifier, ...]
     purged_versions: tuple[Identifier, ...]
     failed_versions: tuple[Identifier, ...]

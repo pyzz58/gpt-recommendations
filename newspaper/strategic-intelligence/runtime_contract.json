@@ -25,7 +25,11 @@
     "intelligence/__main__.py",
     "tests_runtime/test_archive.py",
     "intelligence/preparation.py",
-    "tests_runtime/test_preparation.py"
+    "tests_runtime/test_preparation.py",
+    "intelligence/adoption.py",
+    "tests_runtime/test_adoption.py",
+    "intelligence/research.py",
+    "tests_runtime/test_research.py"
   ],
   "data_files": [
     "SOURCE_REGISTRY.json",
@@ -44,5 +48,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "3fa2fa90545d3c3b3e70031ab0fba4a38cce23706053c3a250a6ff36e6355f32"
+  "spec_sha256": "cbc3739b78040afb5acb377d4b5052ad7f98b74a2e8b983b1cf320544241ef71"
 }
