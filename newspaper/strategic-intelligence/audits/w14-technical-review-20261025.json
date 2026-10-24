@@ -1,0 +1,608 @@
+{
+  "record_id": "W14-TECHNICAL-REVIEW-20261025-001",
+  "work_id": "W14",
+  "checked_at": "2026-10-24T23:18:40.857046+00:00",
+  "review_complete": true,
+  "result": "TECHNICAL_CHECKS_PASS_FORMAL_PRECONDITION_PENDING",
+  "progress": "AWAITING_REVIEW",
+  "source_commit": "a69475cb4013c54b2eb373160bcc55a6c18bd604",
+  "review_input_spec_sha256": "2495d1058a8c33e5d9f89e06be6a52628457a5b8c3e31a79ff0c75ad824f8669",
+  "reviewer": "Codex current execution: code reading, actual local checks, output comparison; not independent content review",
+  "rule_refs": [
+    "§26.2 Q01-Q07",
+    "§26.3",
+    "§19.2",
+    "§8.2.3-8.2.4",
+    "§24.5-24.6.1",
+    "T01.L01",
+    "R07.F01",
+    "W14"
+  ],
+  "q_checks": [
+    {
+      "id": "Q01",
+      "result": "PASS_OFFLINE_SCOPE",
+      "actual": "Current source/technical/work-card binding and actual implementation inspected",
+      "limits": "Full work acceptance is distinct"
+    },
+    {
+      "id": "Q02",
+      "result": "FORMAL_PRECONDITION_PENDING",
+      "actual": "Actual local owned-file inputs read through exact W13 references; formal W13/W12/G01 states inspected",
+      "limits": "W13 AWAITING_REVIEW, W12 AWAITING_REVIEW, G01 NOT_STARTED; cannot ACCEPT W14"
+    },
+    {
+      "id": "Q03",
+      "result": "PASS_OFFLINE_DELIVERABLES",
+      "actual": "Graph, shared archive, strict preparation contract, CLI and locked optional dependencies inspected and executed",
+      "limits": "No model invocation or adoption controller"
+    },
+    {
+      "id": "Q04",
+      "result": "PASS_PRODUCER_BOUNDARY",
+      "actual": "Existing runtime suite plus ten explicit positive/negative/recovery probes; additional two regression cases",
+      "limits": "W15 consumer absent; no end-to-end W15 adoption claim"
+    },
+    {
+      "id": "Q05",
+      "result": "PASS_RECORDED_FAILURE_BOUNDARY",
+      "actual": "Required gaps, exact-version repair, one-grant withdrawal, unaffected inputs and unchanged history checked",
+      "limits": "Deliberate local faults, not natural source correction or production restore"
+    },
+    {
+      "id": "Q06",
+      "result": "PASS_SCOPED_TECHNICAL_REVIEW",
+      "actual": "Current Codex reviewer inspected source and outputs; actual commands and logs below",
+      "limits": "No fictitious separate reviewer, content L5 or user reading acceptance"
+    },
+    {
+      "id": "Q07",
+      "result": "PASS_RECORDED_SCOPE",
+      "actual": "Actual local runtime durations and explicit grants/permissions recorded; no research model API/deployment/delivery",
+      "limits": "Conversation/backend token use and monetary totals not supplied"
+    }
+  ],
+  "w14_deliverables": [
+    {
+      "id": "D1",
+      "result": "PASS_OFFLINE",
+      "actual": "Current full canonical source, task metadata/instructions, actual input versions, declared limits and required/optional gaps"
+    },
+    {
+      "id": "D2",
+      "result": "PASS_OFFLINE",
+      "actual": "Existing assert_work_plan_current and assert_technical_current called at graph research preparation entry"
+    },
+    {
+      "id": "D3",
+      "result": "PASS_OFFLINE",
+      "actual": "Native StateGraph nodes/conditional edges and shared W13 archive; no parallel generic workflow framework"
+    }
+  ],
+  "w14_card_checks": [
+    {
+      "id": "A1",
+      "result": "PASS_OFFLINE",
+      "actual": "Current T/R identity, full exact source, separate task/material fields; current technical task in a declared new test wrapper"
+    },
+    {
+      "id": "A2",
+      "result": "PASS_MECHANICAL_SCOPE",
+      "actual": "Stale source/views, omitted rule text, forged receipts, material-command isolation and invented model reception checked",
+      "limits": "No arbitrary-model semantic or prompt-injection guarantee"
+    },
+    {
+      "id": "A3",
+      "result": "PASS_PRODUCER_CONTRACT",
+      "actual": "PreparedTask carries exact input versions, declared nature/limits and gaps; handoff=W15_INPUT_CHECK",
+      "limits": "W15 consumer implementation not started"
+    },
+    {
+      "id": "A4",
+      "result": "PASS_OFFLINE",
+      "actual": "Actual graph consumes checked current source/material versions; missing required input takes repair_inputs and exact-version repair succeeds"
+    }
+  ],
+  "baseline_runs": [
+    {
+      "name": "runtime",
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "--extra",
+        "workflow",
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests_runtime",
+        "-v"
+      ],
+      "started_at": "2026-10-24T23:13:12.827381+00:00",
+      "duration_seconds": 25.663,
+      "exit_code": 0,
+      "log_sha256": "f84920d74c1268cda43613a72455be551ebff08baf3b397e1001ee94ee42e588",
+      "test_count": 55
+    },
+    {
+      "name": "maintenance",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "started_at": "2026-10-24T23:13:38.490764+00:00",
+      "duration_seconds": 27.684,
+      "exit_code": 0,
+      "log_sha256": "b32eb4d7e81b2725ee7b5409de78e5640fbd4d267c4664800715e61b7be03bed",
+      "test_count": 50
+    }
+  ],
+  "baseline_probe": {
+    "started_at": "2026-10-24T23:15:20.292427+00:00",
+    "finished_at": "2026-10-24T23:15:27.694469+00:00",
+    "duration_seconds": 7.402,
+    "input_spec_sha256": "2495d1058a8c33e5d9f89e06be6a52628457a5b8c3e31a79ff0c75ad824f8669",
+    "canonical_input_bytes": 1068903,
+    "source_commit": "a69475cb4013c54b2eb373160bcc55a6c18bd604",
+    "probe_script_sha256": "68ac4059110695b940026f64e7837846412e2326c13d83a1e9d8fdbdd7f62bdc",
+    "actual_repository_inputs": [
+      {
+        "path": "intelligence/preparation.py",
+        "version_id": "W14-REVIEW-INPUT-1-v001",
+        "sha256": "10d13ecb1f3b281c31bd385b932dbbe3aabce09aea68dc5a25e43c8a96b35c06",
+        "bytes": 10976
+      },
+      {
+        "path": "intelligence/contracts.py",
+        "version_id": "W14-REVIEW-INPUT-2-v001",
+        "sha256": "af0f9271f00717d4b945497880f073308c0ce9b89ce0e8c852a41b2ce87ca9d6",
+        "bytes": 7645
+      },
+      {
+        "path": "audits/w13-reference-read-20261023.json",
+        "version_id": "W14-REVIEW-INPUT-3-v001",
+        "sha256": "ed20172e338fa3560682669f6023016fab1cf673e614aaff2595dd146e3ce7f7",
+        "bytes": 5548
+      },
+      {
+        "path": "audits/w14-preparation-20261024.json",
+        "version_id": "W14-REVIEW-INPUT-4-v001",
+        "sha256": "43c230254261e0a4317a353dfa10141ba5d8d4c9d9300dd72910489c015bda69",
+        "bytes": 5493
+      }
+    ],
+    "new_task_wrapper": "W14-REVIEW-TASK-v001",
+    "pointer_only_url": "https://docs.langchain.com/oss/python/langgraph/graph-api",
+    "private_original_research_archive_accessed": false,
+    "external_model_calls": 0,
+    "production_enabled": false,
+    "cases": [
+      {
+        "id": "A01",
+        "result": "PASS",
+        "expected": "Exact current source plus four actual owned files and one pointer",
+        "actual": {
+          "nodes": [
+            "check_current",
+            "supply_inputs",
+            "handoff_inputs"
+          ],
+          "material_count": 5,
+          "full_source_bytes": 1068903
+        },
+        "scope": "Offline input preparation",
+        "duration_seconds": 0.333
+      },
+      {
+        "id": "A02",
+        "result": "PASS",
+        "expected": "Separate rules, task and material data; no authority promotion",
+        "actual": "Input fields/limitations preserved; W15 handoff only, no READY/PASS or model receipt",
+        "scope": "W15 producer contract only, consumer implementation absent",
+        "duration_seconds": 0.2978
+      },
+      {
+        "id": "A03",
+        "result": "PASS",
+        "expected": "Actual CLI persists and verifies the bundle; refuses overwrite",
+        "actual": {
+          "prepare_exit": 0,
+          "recheck_exit": 0,
+          "overwrite_exit": 2,
+          "mode": "0600",
+          "bundle_sha256": "5aa1a19813362b04d2d3eef4b0aa3f947922bf0333bf3aea356b68f01e156cdd",
+          "bundle_bytes": 1175912
+        },
+        "scope": "Temporary local test copy, no persistence-host or recovery claim",
+        "duration_seconds": 4.139
+      },
+      {
+        "id": "A04",
+        "result": "PASS",
+        "expected": "Required body loss and exact-version repair",
+        "actual": "Missing required original blocked; four unaffected inputs retained; exact version restored",
+        "scope": "Deliberate file fault in dedicated test archive",
+        "duration_seconds": 0.5518
+      },
+      {
+        "id": "A05",
+        "result": "PASS",
+        "expected": "Independent per-use permission checks",
+        "actual": "STORE_BODY/MODEL_PROCESS grant did not grant TRANSLATE",
+        "scope": "Recorded grant checks, not external rights authentication",
+        "duration_seconds": 0.2661
+      },
+      {
+        "id": "A06",
+        "result": "PASS",
+        "expected": "Task specification mismatch is a required input gap",
+        "actual": "Wrong task specification rejected before material loading",
+        "scope": "Deliberate new test version, no historical record changed",
+        "duration_seconds": 0.2556
+      },
+      {
+        "id": "A07",
+        "result": "PASS",
+        "expected": "Actual source change invalidates previous preparation",
+        "actual": "Old input bundle rejected after source change; original history unchanged; restore reverified",
+        "scope": "Test-source snapshot, not a remote synchronization or atomicity guarantee",
+        "duration_seconds": 0.3674
+      },
+      {
+        "id": "A08",
+        "result": "PASS",
+        "expected": "W14 cannot be marked ACCEPTED while W13 is unaccepted",
+        "actual": "Cannot accept work before its dependencies: W14",
+        "scope": "Maintenance acceptance-dependency guard, not runtime adoption controller",
+        "duration_seconds": 0.2129
+      },
+      {
+        "id": "A09",
+        "result": "PASS",
+        "expected": "Removing a recorded material limitation invalidates the receipt",
+        "actual": "Removed material limitation rejected by actual input recheck",
+        "scope": "Mechanical preservation only; semantic correctness not inferred",
+        "duration_seconds": 0.3161
+      },
+      {
+        "id": "A10",
+        "result": "PASS",
+        "expected": "Current withdrawal checked without rewriting history or removing unrelated inputs",
+        "actual": "Single withdrawn input rejected; four unaffected inputs retained; historical bundle unchanged",
+        "scope": "Local archive revocation test copy, not production backups",
+        "duration_seconds": 0.5927
+      }
+    ],
+    "result": "PASS"
+  },
+  "new_regression_tests": [
+    "test_task_specification_mismatch_stops_before_material_loading",
+    "test_recheck_preserves_material_limits_and_cannot_invent_model_reception"
+  ],
+  "original_private_research_archive_accessed": false,
+  "prior_private_input_evidence": "audits/w14-preparation-20261024.json; historical reported checks retained, not claimed to have been re-executed against original private W11/W12 archive",
+  "test_input_scope": "Exact existing owned repository files; new explicit test-task/permission wrappers; one external pointer without fetching its remote body",
+  "final_checks": [
+    {
+      "name": "projection",
+      "command": [
+        "python3",
+        "tools/sync_spec.py",
+        "--check"
+      ],
+      "started_at": "2026-10-24T23:19:05.492789+00:00",
+      "duration_seconds": 0.169,
+      "exit_code": 0,
+      "log_sha256": "ed0d0c0bdacf3296b86eff64688b5996d014529c21b55237c8cfad7b526d8463",
+      "test_count": null
+    },
+    {
+      "name": "technical",
+      "command": [
+        "python3",
+        "tools/sync_spec.py",
+        "--check-technical"
+      ],
+      "started_at": "2026-10-24T23:19:05.661822+00:00",
+      "duration_seconds": 0.178,
+      "exit_code": 0,
+      "log_sha256": "7938304c749444b698a7201b678d073b83efabb9377226bbfda2c2a06b46ac7e",
+      "test_count": null
+    },
+    {
+      "name": "workplan",
+      "command": [
+        "python3",
+        "tools/sync_spec.py",
+        "--check-work-plan"
+      ],
+      "started_at": "2026-10-24T23:19:05.839809+00:00",
+      "duration_seconds": 0.166,
+      "exit_code": 0,
+      "log_sha256": "2ab04cc0e2267ebb42387334076cc957eab5f02989b96fd8daae3146be310d39",
+      "test_count": null
+    },
+    {
+      "name": "actual-input-probe",
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "--extra",
+        "workflow",
+        "python",
+        "<task-workspace>/w14-acceptance-evidence/probe.py"
+      ],
+      "started_at": "2026-10-24T23:19:06.005812+00:00",
+      "duration_seconds": 7.853,
+      "exit_code": 0,
+      "log_sha256": "fa987db98f8ce3c060f08c134291aef6601d7fd63e813879bbec1ee29d4003f1",
+      "test_count": null,
+      "command_path_note": "Only the transient workspace prefix has been replaced; probe script identity is recorded in final_probe"
+    },
+    {
+      "name": "runtime",
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "--extra",
+        "workflow",
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests_runtime",
+        "-v"
+      ],
+      "started_at": "2026-10-24T23:19:05.491405+00:00",
+      "duration_seconds": 18.507,
+      "exit_code": 0,
+      "log_sha256": "fcb1b771148bef9953fca76221b2683192a9ecf32890775c48f7da510cd7a48e",
+      "test_count": 57
+    },
+    {
+      "name": "maintenance",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "started_at": "2026-10-24T23:19:05.492032+00:00",
+      "duration_seconds": 27.394,
+      "exit_code": 0,
+      "log_sha256": "a3e37588373c7f39252afa9d0eac2a1f400da34a925c9188373a2f757db4f973",
+      "test_count": 50
+    }
+  ],
+  "formal_acceptance": false,
+  "pending_formal_dependencies": [
+    "W12 actual user reading",
+    "G01 phase gate",
+    "W13 formal acceptance"
+  ],
+  "runtime_model_reception": "NOT_ATTEMPTED",
+  "external_research_model_api_calls": 0,
+  "api_spend": {
+    "additional_research_model_calls": 0,
+    "currency": null,
+    "total_conversation_or_tool_cost": "UNKNOWN_NOT_PROVIDED"
+  },
+  "production_enabled": false,
+  "w15_started": false,
+  "original_ci_evidence": [
+    {
+      "commit": "a69475cb4013c54b2eb373160bcc55a6c18bd604",
+      "run_id": 40014463023,
+      "result": "success"
+    },
+    {
+      "commit": "a69475cb4013c54b2eb373160bcc55a6c18bd604",
+      "run_id": 40014463041,
+      "result": "success"
+    }
+  ],
+  "allowed_next_scope": "Only existing-authorized limited preparation under §19.2; no stage acceptance, expansion or production",
+  "no_new_business_logic_defect_found": true,
+  "reproduction": {
+    "runtime": "uv run --locked --extra workflow python -m unittest discover -s tests_runtime -v",
+    "maintenance": "python3 -m unittest discover -s tests -v",
+    "probe": "For each recorded A01-A10 case, use a new explicit private test archive, current spec snapshot and the listed original file bytes; perform expected/actual steps without changing historical artifacts"
+  },
+  "final_probe": {
+    "started_at": "2026-10-24T23:19:06.867251+00:00",
+    "finished_at": "2026-10-24T23:19:13.681828+00:00",
+    "duration_seconds": 6.815,
+    "input_spec_sha256": "3fa2fa90545d3c3b3e70031ab0fba4a38cce23706053c3a250a6ff36e6355f32",
+    "canonical_input_bytes": 1075443,
+    "source_commit": "a69475cb4013c54b2eb373160bcc55a6c18bd604",
+    "probe_script_sha256": "68ac4059110695b940026f64e7837846412e2326c13d83a1e9d8fdbdd7f62bdc",
+    "actual_repository_inputs": [
+      {
+        "path": "intelligence/preparation.py",
+        "version_id": "W14-REVIEW-INPUT-1-v001",
+        "sha256": "10d13ecb1f3b281c31bd385b932dbbe3aabce09aea68dc5a25e43c8a96b35c06",
+        "bytes": 10976
+      },
+      {
+        "path": "intelligence/contracts.py",
+        "version_id": "W14-REVIEW-INPUT-2-v001",
+        "sha256": "af0f9271f00717d4b945497880f073308c0ce9b89ce0e8c852a41b2ce87ca9d6",
+        "bytes": 7645
+      },
+      {
+        "path": "audits/w13-reference-read-20261023.json",
+        "version_id": "W14-REVIEW-INPUT-3-v001",
+        "sha256": "ed20172e338fa3560682669f6023016fab1cf673e614aaff2595dd146e3ce7f7",
+        "bytes": 5548
+      },
+      {
+        "path": "audits/w14-preparation-20261024.json",
+        "version_id": "W14-REVIEW-INPUT-4-v001",
+        "sha256": "43c230254261e0a4317a353dfa10141ba5d8d4c9d9300dd72910489c015bda69",
+        "bytes": 5493
+      }
+    ],
+    "new_task_wrapper": "W14-REVIEW-TASK-v001",
+    "pointer_only_url": "https://docs.langchain.com/oss/python/langgraph/graph-api",
+    "private_original_research_archive_accessed": false,
+    "external_model_calls": 0,
+    "production_enabled": false,
+    "cases": [
+      {
+        "id": "A01",
+        "result": "PASS",
+        "expected": "Exact current source plus four actual owned files and one pointer",
+        "actual": {
+          "nodes": [
+            "check_current",
+            "supply_inputs",
+            "handoff_inputs"
+          ],
+          "material_count": 5,
+          "full_source_bytes": 1075443
+        },
+        "scope": "Offline input preparation",
+        "duration_seconds": 0.316
+      },
+      {
+        "id": "A02",
+        "result": "PASS",
+        "expected": "Separate rules, task and material data; no authority promotion",
+        "actual": "Input fields/limitations preserved; W15 handoff only, no READY/PASS or model receipt",
+        "scope": "W15 producer contract only, consumer implementation absent",
+        "duration_seconds": 0.2707
+      },
+      {
+        "id": "A03",
+        "result": "PASS",
+        "expected": "Actual CLI persists and verifies the bundle; refuses overwrite",
+        "actual": {
+          "prepare_exit": 0,
+          "recheck_exit": 0,
+          "overwrite_exit": 2,
+          "mode": "0600",
+          "bundle_sha256": "042275a88faf676cc36c1cdbb0d6e209859bcebc44d417cf8b4a2b83c35612e8",
+          "bundle_bytes": 1182525
+        },
+        "scope": "Temporary local test copy, no persistence-host or recovery claim",
+        "duration_seconds": 3.861
+      },
+      {
+        "id": "A04",
+        "result": "PASS",
+        "expected": "Required body loss and exact-version repair",
+        "actual": "Missing required original blocked; four unaffected inputs retained; exact version restored",
+        "scope": "Deliberate file fault in dedicated test archive",
+        "duration_seconds": 0.4809
+      },
+      {
+        "id": "A05",
+        "result": "PASS",
+        "expected": "Independent per-use permission checks",
+        "actual": "STORE_BODY/MODEL_PROCESS grant did not grant TRANSLATE",
+        "scope": "Recorded grant checks, not external rights authentication",
+        "duration_seconds": 0.2517
+      },
+      {
+        "id": "A06",
+        "result": "PASS",
+        "expected": "Task specification mismatch is a required input gap",
+        "actual": "Wrong task specification rejected before material loading",
+        "scope": "Deliberate new test version, no historical record changed",
+        "duration_seconds": 0.253
+      },
+      {
+        "id": "A07",
+        "result": "PASS",
+        "expected": "Actual source change invalidates previous preparation",
+        "actual": "Old input bundle rejected after source change; original history unchanged; restore reverified",
+        "scope": "Test-source snapshot, not a remote synchronization or atomicity guarantee",
+        "duration_seconds": 0.3348
+      },
+      {
+        "id": "A08",
+        "result": "PASS",
+        "expected": "W14 cannot be marked ACCEPTED while W13 is unaccepted",
+        "actual": "Cannot accept work before its dependencies: W14",
+        "scope": "Maintenance acceptance-dependency guard, not runtime adoption controller",
+        "duration_seconds": 0.2008
+      },
+      {
+        "id": "A09",
+        "result": "PASS",
+        "expected": "Removing a recorded material limitation invalidates the receipt",
+        "actual": "Removed material limitation rejected by actual input recheck",
+        "scope": "Mechanical preservation only; semantic correctness not inferred",
+        "duration_seconds": 0.2593
+      },
+      {
+        "id": "A10",
+        "result": "PASS",
+        "expected": "Current withdrawal checked without rewriting history or removing unrelated inputs",
+        "actual": "Single withdrawn input rejected; four unaffected inputs retained; historical bundle unchanged",
+        "scope": "Local archive revocation test copy, not production backups",
+        "duration_seconds": 0.5152
+      }
+    ],
+    "result": "PASS"
+  },
+  "final_revision_spec_sha256": "3fa2fa90545d3c3b3e70031ab0fba4a38cce23706053c3a250a6ff36e6355f32",
+  "environment": {
+    "python": "Python 3.12.14",
+    "uv": "uv 0.13.4 (x86_64-unknown-linux-gnu)",
+    "dependency_versions": {
+      "pydantic": "2.14.1",
+      "sqlalchemy": "2.1.6",
+      "langgraph": "1.2.16",
+      "langgraph-checkpoint": "4.3.0",
+      "langchain-core": "1.7.0",
+      "langsmith": "0.14.12"
+    }
+  },
+  "code_sha256": {
+    "intelligence/preparation.py": "10d13ecb1f3b281c31bd385b932dbbe3aabce09aea68dc5a25e43c8a96b35c06",
+    "intelligence/archive.py": "9019f7dac13fbacca87819234ed44c402413cad13797857d05fe0b2f047c3bd4",
+    "intelligence/contracts.py": "af0f9271f00717d4b945497880f073308c0ce9b89ce0e8c852a41b2ce87ca9d6",
+    "intelligence/__main__.py": "eb02d6352656271047089fefe53580245af212942999cda67cc0450dea8c158e",
+    "tests_runtime/test_preparation.py": "7bcd1862d831b46d605907149d81352c19e3f158cc512a896d1c6173a094e855",
+    "pyproject.toml": "d224015a55482374448eca59861da24b73012bd360a93cc5ac65ebdb3fd4407e",
+    "uv.lock": "42a822433a6db4e63a9c0ce8c14b9258ea05b2a8b4520883c5e41e86906e5f8b"
+  },
+  "previous_implementation_and_lock_hashes_unchanged": true,
+  "work_statuses": {
+    "W12": "AWAITING_REVIEW",
+    "G01": "NOT_STARTED",
+    "W13": "AWAITING_REVIEW",
+    "W14": "AWAITING_REVIEW",
+    "W15": "NOT_STARTED"
+  },
+  "all_59_work_basis_fingerprints_unchanged": true,
+  "all_work_dependencies_unchanged": true,
+  "all_progress_states_unchanged": true,
+  "w14_runtime_test_count": 16,
+  "total_runtime_test_count": 57,
+  "maintenance_test_count": 50,
+  "all_21_technical_nodes_current": true,
+  "review_attempts": [
+    {
+      "action": "Draft local audit-recording helper",
+      "result": "SyntaxError before any repository write",
+      "resolution": "Removed extra closing parenthesis; next execution succeeded; no business-code failure"
+    }
+  ],
+  "completed_at": "2026-10-24T23:20:37.449962+00:00",
+  "cost_scope_note": "Measured durations cover the listed local commands only; review/model/tool totals and hosting spend are not supplied."
+}
