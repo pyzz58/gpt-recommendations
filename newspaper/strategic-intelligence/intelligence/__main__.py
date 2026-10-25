@@ -10,6 +10,7 @@ uv run --locked --extra workflow python -m intelligence --root /private/archive 
 uv run --locked python -m intelligence --root /private/archive submit-step --record submission.json --rights journal-rights.json
 uv run --locked python -m intelligence --root /private/archive decide-step --record decision.json --rights journal-rights.json
 uv run --locked python -m intelligence --root /private/archive current-decision W15 M01
+uv run --locked python -m intelligence --root /private/archive operation-summary LOGICAL-OP-1
 
 The schema command defaults to VersionSubmission. read-reference checks a
 committed owner/reference, exact target kind/body identity and declared purpose;
@@ -41,7 +42,8 @@ def main(argv=None) -> int:
     commands.add_parser("init")
     schema = commands.add_parser("schema")
     schema.add_argument("--contract",
-        choices=("version", "reference-read", "preparation", "step-submission", "adoption-decision"),
+        choices=("version", "reference-read", "preparation", "step-submission",
+                 "adoption-decision", "operation-request", "tool-response"),
         default="version")
     put = commands.add_parser("put")
     put.add_argument("--metadata", required=True, type=Path)
@@ -68,6 +70,8 @@ def main(argv=None) -> int:
     current_decision = commands.add_parser("current-decision")
     current_decision.add_argument("work_id")
     current_decision.add_argument("step_id")
+    operation_summary = commands.add_parser("operation-summary")
+    operation_summary.add_argument("idempotency_key")
     commands.add_parser("rebuild-index")
     find = commands.add_parser("find")
     find.add_argument("title")
@@ -90,6 +94,12 @@ def main(argv=None) -> int:
         elif args.contract == "adoption-decision":
             from .adoption import AdoptionDecision
             contract = AdoptionDecision
+        elif args.contract == "operation-request":
+            from .operations import OperationRequest
+            contract = OperationRequest
+        elif args.contract == "tool-response":
+            from .operations import ToolResponse
+            contract = ToolResponse
         else:
             contract = ReferenceReadRequest if args.contract == "reference-read" else VersionSubmission
         print(json.dumps(contract.model_json_schema(), ensure_ascii=False, indent=2))
@@ -172,6 +182,15 @@ def main(argv=None) -> int:
                     {"state": decision.state.value if decision else "PENDING",
                      "decision": decision.model_dump(mode="json") if decision else None},
                     ensure_ascii=False))
+                return 0
+            elif args.command == "operation-summary":
+                from dataclasses import asdict
+                from .operations import OperationJournal
+                rights = RightsGrant(rights_id="RIGHTS-OPERATION-QUERY",basis=RightsBasis.OWN_WORK,
+                    allowed_uses=frozenset({MaterialUse.INDEX}),evidence="Read-only query selector",
+                    checked_by="CLI query",checked_at=datetime.now(timezone.utc))
+                summary = OperationJournal(archive,rights).summary(args.idempotency_key)
+                print(json.dumps(asdict(summary), ensure_ascii=False, default=str))
                 return 0
             elif args.command == "find":
                 result = {"navigation_only": True, "matches": archive.find(args.title)}

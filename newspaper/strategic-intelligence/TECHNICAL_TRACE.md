@@ -5,7 +5,7 @@
 **CURRENT_BINDING仅表示本次关联版本一致；不证明方案正确、程序已实现、内容已审或获准运行。**
 理论或设计/依赖改变会变为REVIEW_REQUIRED；重新生成只刷新事实，不自动改写技术正文或批准新基线。
 
-当前规范SHA-256：`cbc3739b78040afb5acb377d4b5052ad7f98b74a2e8b983b1cf320544241ef71`。
+当前规范SHA-256：`5e2d92481ab017a04218fe7553d1aad5d21e5543f6ed41c50342b189961c28aa`。
 
 需复核节点：无；仅限关联新鲜度检查。
 
@@ -31,7 +31,7 @@
 | [T10](#t10) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t10) | CURRENT_BINDING | L6主编/呈现；新命题回L4/L5；第一阶段实际格式；第四阶段正式渲染/交付 | C05 Jinja+第四阶段WeasyPrint，复用年度呈现；内容/实际文件对应未实现验收 |
 | [T11](#t11) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t11) | CURRENT_BINDING | 六层共享档案职责；第一篇保存；第二阶段跨周；第四阶段持久恢复 | C02 Pydantic/SQLAlchemy+私有版本文件；共享依赖/双as-of/纠错待实现，图检查点不是事实库 |
 | [T12](#t12) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t12) | CURRENT_BINDING | 年度A01—A12组织；复用六层；第四阶段缩区间演练；全年另验 | 年度双输入/A工序只组织C01—C05现有能力；无第二套引擎，年度成果待实现验收 |
-| [T13](#t13) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t13) | CURRENT_BINDING | 实际工具执行与配置记录；不替内容裁决；受控使用先行；二/三/四阶段逐步验证 | C03 LangGraph/检查点/单一重试预算+C06 Actions/uv；只设开始/健康长任务续跑，实际周运行未实现 |
+| [T13](#t13) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t13) | CURRENT_BINDING | 实际工具执行与配置记录；不替内容裁决；受控使用先行；二/三/四阶段逐步验证 | W17 OperationRequest/Receipt、Adapter返回校验、UNKNOWN对账与逻辑操作累计已离线实现；W18预算/许可门禁、真实第三方适配和Actions周运行未实现 |
 
 ## R01
 
@@ -446,7 +446,7 @@
 
 设计目的：模型、工具、投入及GitHub每周自动运行支撑
 
-责任：实际工具执行与配置记录；不替内容裁决；阶段：受控使用先行；二/三/四阶段逐步验证；实现：C03 LangGraph/检查点/单一重试预算+C06 Actions/uv；只设开始/健康长任务续跑，实际周运行未实现。
+责任：实际工具执行与配置记录；不替内容裁决；阶段：受控使用先行；二/三/四阶段逐步验证；实现：W17 OperationRequest/Receipt、Adapter返回校验、UNKNOWN对账与逻辑操作累计已离线实现；W18预算/许可门禁、真实第三方适配和Actions周运行未实现。
 
 理论出处：[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 

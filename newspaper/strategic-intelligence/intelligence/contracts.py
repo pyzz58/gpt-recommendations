@@ -40,6 +40,8 @@ class ObjectKind(str, Enum):
     RESEARCH_REVISION = "ResearchRevision"
     ARTIFACT_LINK = "ResearchArtifactLink"
     RESEARCH_COMMIT = "ResearchCommit"
+    OPERATION_REQUEST = "OperationRequest"
+    OPERATION_RECEIPT = "OperationReceipt"
 
 
 class Precision(str, Enum):

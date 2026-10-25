@@ -29,7 +29,9 @@
     "intelligence/adoption.py",
     "tests_runtime/test_adoption.py",
     "intelligence/research.py",
-    "tests_runtime/test_research.py"
+    "tests_runtime/test_research.py",
+    "intelligence/operations.py",
+    "tests_runtime/test_operations.py"
   ],
   "data_files": [
     "SOURCE_REGISTRY.json",
@@ -48,5 +50,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "cbc3739b78040afb5acb377d4b5052ad7f98b74a2e8b983b1cf320544241ef71"
+  "spec_sha256": "5e2d92481ab017a04218fe7553d1aad5d21e5543f6ed41c50342b189961c28aa"
 }

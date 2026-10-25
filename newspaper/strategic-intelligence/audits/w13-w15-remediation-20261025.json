@@ -85,7 +85,7 @@
     }
   },
   "verification": {
-    "runtime_tests": 79,
+    "runtime_tests": 85,
     "runtime_result": "PASS",
     "maintenance_tests": 52,
     "maintenance_result": "PASS",
@@ -93,11 +93,11 @@
     "technical_binding": "PASS_FOR_CURRENT_DESIGN_ONLY",
     "work_plan_binding": "PASS_FOR_CURRENT_DESIGN_ONLY",
     "source_hashes": {
-      "intelligence/contracts.py": "051cda391e41f860ef3036407ed420cac3416340d34556e7649f9495ee45b644",
-      "intelligence/archive.py": "c7568ed053a4096b59354b4450be5403dbd107b7311405db949bbd449aed3daa",
+      "intelligence/contracts.py": "c4fae8506133984b4f135379bc31ec3ae179fbd641181c955c2459ea0df81aba",
+      "intelligence/archive.py": "b9915263e235e693df9f64a2204472c8ade0146ee7f542bdb3134f5676b48fcb",
       "intelligence/adoption.py": "c0a16f764e0bda24c87c4bb7050d6f15267b8a6304af17831c22af47e5255d9e",
       "intelligence/preparation.py": "10d13ecb1f3b281c31bd385b932dbbe3aabce09aea68dc5a25e43c8a96b35c06",
-      "intelligence/__main__.py": "80a10e0b6e3a5efa1fe59963834d3780612fa5108b1df852027d4d5dfb792d65",
+      "intelligence/__main__.py": "2baad07b723043faba5d2784936aa7d4fd0475c8d63bed6151100e64c32895a9",
       "tests_runtime/test_archive.py": "e492e74376042890b7f5ba61bdc3b4b4fcf65301e0d3083bc2ca371230b31fc8",
       "tests_runtime/test_adoption.py": "75f7125b5f44c39f6642c807063d819006f73751d771a31ff0bd57982976886c",
       "tests_runtime/test_preparation.py": "3f51ef98ec3e409243781e7a22f2f259e4f51587d01f607fa9b6e42549ae6e45",

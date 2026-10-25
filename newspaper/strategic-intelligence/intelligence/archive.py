@@ -319,6 +319,13 @@ class Archive:
                             .order_by(versions.c.ordinal.desc()).limit(1)).mappings().first()
             return self._stored(c, row) if row is not None else None
 
+    def history(self, object_id: str) -> tuple[StoredVersion, ...]:
+        """Return immutable committed versions in append order."""
+        with self.engine.connect() as c:
+            rows = c.execute(select(versions).where(versions.c.object_id == object_id)
+                             .order_by(versions.c.ordinal)).mappings().all()
+            return tuple(self._stored(c, row) for row in rows)
+
     @staticmethod
     def _stored(c: Connection, row) -> StoredVersion:
         sub = VersionSubmission.model_validate_json(row["record"])
