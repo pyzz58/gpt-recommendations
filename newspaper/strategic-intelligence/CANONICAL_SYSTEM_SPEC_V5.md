@@ -1,6 +1,6 @@
 # 内参系统 V5｜唯一现行完整架构基线
 
-> 状态：**唯一权威、完整、自足的 V5 产品与架构施工说明书；软件、样刊及生产效果尚未验证**。制定于2026-10-14，修订于2026-10-26（Pacific/Auckland）。PR #76独立核查确认原W15—W17机械边界存在可复现缺陷；本轮先修复F01/F02/F10的正文保存、部分内容字节与私有导出权限，随后返工W15的F03—F05：Review精确覆盖、Task决定链隔离和必要依赖递归失效。实际95项运行测试、52项维护测试及文档/技术/清单检查通过。W12仍待用户实际阅读，G01—G04均未通过；W13/W14/W15为`IN_PROGRESS`，W16/W17为`RETURNED`，W18未开始；F06—F09/F11仍按后续模块返工。未调用真实研究模型或供应商、未启用生产或外发。此前施工沿革保留在Git和§23.2，不覆盖历史证据。
+> 状态：**唯一权威、完整、自足的 V5 产品与架构施工说明书；软件、样刊及生产效果尚未验证**。制定于2026-10-14，修订于2026-10-26（Pacific/Auckland）。PR #76独立核查确认原W15—W17机械边界存在可复现缺陷；本轮先修复F01/F02/F10的正文保存、部分内容字节与私有导出权限，随后完成W15的F03—F05和W16的F06/F09：Review精确覆盖、Task决定链隔离、必要依赖递归失效、作品真实依据/兼容复核及修订-CAS提交。实际99项运行测试、52项维护测试及文档/技术/清单检查通过。W12仍待用户实际阅读，G01—G04均未通过；W13/W14/W15/W16为`IN_PROGRESS`，W17为`RETURNED`，W18未开始；F07/F08/F11仍待W17返工。未调用真实研究模型或供应商、未启用生产或外发。此前施工沿革保留在Git和§23.2，不覆盖历史证据。
 
 <a id="th-0"></a>
 ## 0. 效力、定义与阅读方式
@@ -3407,7 +3407,9 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
 <a id="nc-059"></a>
 ##### NC-059｜F06：W16旧成果仅重贴新修订即可有效
 
-**状态**：OPEN。发现并复现于2026-10-26；W16已退回。新旧ArtifactLink可只替换revision标签，未比较作品原依据/截点/限制与当前修订。修复须保存实际依赖并在提交时核兼容性，允许显式无关变化承接，关键证据变化须复核/重做。至少覆盖关键变化拒绝与无关变化通过。
+**状态**：VERIFIED（仅离线W16修订/组合接口）。发现并复现于2026-10-26。原新旧ArtifactLink可只替换revision标签，未比较作品原依据、问题、证据、截点、限制与当前修订。
+
+**修复与验收**：ResearchRevision schema 2结构化区分问题、证据、知识截点、限制与普通输入，未列入noncritical的输入默认关键。ArtifactLink/Commit保存实际非修订引用basis且必须与作品引用集合一致；作品须引用精确目标修订及其全部输入。旧作品只能在变更完整列举后通过带精确Review的ArtifactCompatibility承接，新增/移除关键输入仍要求重建；无关非关键材料变更可显式通过。回归覆盖旧稿仅换标签拒绝、关键证据变更拒绝、无关背景通过及is_current复核。
 
 <a id="nc-060"></a>
 ##### NC-060｜F07：W17对账未绑定原供应商请求与查询证据
@@ -3422,7 +3424,9 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
 <a id="nc-062"></a>
 ##### NC-062｜F09：W16修订检查与组合提交非原子
 
-**状态**：OPEN。发现并复现于2026-10-26；W16已退回。commit先核R1当前，另一连接提交R2后仍返回C1成功；虽随后`is_current(C1)`为false，但提交调用本身违反比较边界。修复须在同一事务内核期望revision与期望commit后写入。
+**状态**：VERIFIED（仅离线W16修订/组合接口）。发现并复现于2026-10-26。原commit先核R1当前，另一连接提交R2后仍返回C1成功；虽随后`is_current(C1)`为false，但提交调用本身违反比较边界。
+
+**修复与验收**：Archive受保护的追加入口在`BEGIN IMMEDIATE`内比较期望当前对象/版本；ResearchCommit同一事务同时核期望ResearchRevision与期望上一ResearchCommit后写入。检查后revision变化则明确Conflict，失败不留下新组合或正文；并发提交仍只有一个当前组合。确定性交错回归实际通过。
 
 <a id="nc-063"></a>
 ##### NC-063｜F10：私有正文导出受umask影响为0644
@@ -3436,7 +3440,7 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
 
 **状态**：OPEN。发现并复现于2026-10-26；W17已退回。Adapter已返回provider ID、实际费用、用量和超限内部重试后，控制器转UNKNOWN却把观测值改为null/0/未知。修复须分离“结果不可采用”与“已观测事实”，保留原回执、违规原因和可核对账；停止采用但不丢证据。
 
-**当前状态与验证边界**：F01、F02、F10及W15的F03—F05已修复；完整运行测试为95项（W13共享接口56项、W15采用接口12项），52项维护测试通过。F06—F09及F11保持OPEN；W15恢复`IN_PROGRESS`但整包不ACCEPTED，W16/W17仍`RETURNED`，W18保持`NOT_STARTED`。W12阅读后置，G01—G04仍未通过。后续须先核W15交接，再依次返工W16、W17；不得因共享层修复、W15局部修复或测试数量增加自动恢复后续模块。没有调用真实模型/供应商，没有生产、付费、邮件或日报变更。
+**当前状态与验证边界**：F01、F02、F10及W15的F03—F05、W16的F06/F09已修复；完整运行测试为99项（W13共享接口56项、W15采用接口12项、W16修订接口9项），52项维护测试通过。F07、F08及F11保持OPEN；W15/W16恢复`IN_PROGRESS`但整包不ACCEPTED，W17仍`RETURNED`，W18保持`NOT_STARTED`。W12阅读后置，G01—G04仍未通过。后续须先核W15/W16交接，再返工W17；不得因共享层或局部模块修复、测试数量增加自动恢复后续模块。没有调用真实模型/供应商，没有生产、付费、邮件或日报变更。
 
 <!-- END ISSUE_LEDGER -->
 
@@ -8460,7 +8464,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       ],
       "failure_action": "冲突保留两版并补核；未实现并发能力时禁用并发写入，不能静默最后写入者获胜。",
       "conditional": null,
-      "progress": "RETURNED",
+      "progress": "IN_PROGRESS",
       "evidence": [
         {
           "record_id": "W16-REVISION-20261025-001",
@@ -8492,6 +8496,23 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准",
           "result": "RETURNED",
           "scope": "旧作品仅重贴新revision可被认作当前成果，且revision检查与commit写入存在确定并发窗口，均已复现。原组合接口不得继续依赖；须先修复NC-059/062并验证关键/无关变化与revision/commit交错。"
+        },
+        {
+          "record_id": "W16-PR76-REMEDIATION-20261026-001",
+          "artifact_refs": [
+            "intelligence/research.py",
+            "intelligence/archive.py",
+            "intelligence/contracts.py",
+            "tests_runtime/test_research.py",
+            "audits/pr76-review-remediation-w16-20261026.json"
+          ],
+          "validation_refs": [
+            "tests_runtime/test_research.py (9 actual passing W16 tests)",
+            "audits/pr76-review-remediation-w16-20261026.json"
+          ],
+          "reviewer": "当前执行者实际离线研究修订、作品引用、兼容Review、SQLite条件写和并发交错检查；非独立L5、真实研究内容或阶段批准",
+          "result": "IN_PROGRESS",
+          "scope": "F06/F09已修复离线范围：修订结构化区分问题/证据/截点/限制，非critical以外默认关键；ArtifactLink保存并核对作品实际basis，旧作品仅在完整列举非关键增删并经精确Review兼容后沿用，关键变化须重建；Archive写事务同时核期望revision和上一commit，检查后换修订返回Conflict。重建、关键拒绝、无关通过、revision/commit交错及并发提交均有回归。W13/W15正式前置未过，真实W27—W32、模型内容与生产恢复未验，W16整包不ACCEPTED。"
         }
       ],
       "reviewed_basis_sha256": "f3f2897f6696c242d92c938e8b734f00efa7c773fd813e14994611cde32664ef",

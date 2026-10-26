@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`f576a772edb5d6eb041c143e3a0aa7e19987ea5fc5e2caa774b02be705accd54`。
+当前规范SHA-256：`2d6afceb5308300193b945ea60b31741c71532af4066681f25b9feb33aec719f`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收3包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收4包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -51,7 +51,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 14 | [W13 共享对象、版本与档案基础接口](#w13) | 代码与接口工作包 | T11/T01/T04 | [G01](#g01) | 进行中 / CURRENT_BINDING |
 | 15 | [W14 当前规范与任务输入准备接口](#w14) | 代码与接口工作包 | T01/R07 | [W13](#w13) | 进行中 / CURRENT_BINDING |
 | 16 | [W15 采用检查与权威决定接口](#w15) | 代码与接口工作包 | T01 | [W14](#w14) | 进行中 / CURRENT_BINDING |
-| 17 | [W16 共享研究修订与并发提交边界](#w16) | 代码与接口工作包 | T05/T01/T11 | [W13](#w13)、[W15](#w15) | 需返工 / CURRENT_BINDING |
+| 17 | [W16 共享研究修订与并发提交边界](#w16) | 代码与接口工作包 | T05/T01/T11 | [W13](#w13)、[W15](#w15) | 进行中 / CURRENT_BINDING |
 | 18 | [W17 工具适配器与真实操作身份](#w17) | 代码与接口工作包 | T13/T11 | [W13](#w13)、[W15](#w15) | 需返工 / CURRENT_BINDING |
 | 19 | [W18 调用前权限、预算与能力核验](#w18) | 代码与接口工作包 | T13/T01 | [W17](#w17)、[W15](#w15) | 待开始 / CURRENT_BINDING |
 | 20 | [W19 模型任务配置与有限准入证据](#w19) | 代码与接口工作包 | T13/T09 | [W18](#w18) | 待开始 / CURRENT_BINDING |
@@ -681,7 +681,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：17/59；阶段：2；类型：代码与接口工作包。
 
-进度：**需返工**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W15](#w15)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W15](#w15)。
 
 前置尚未验收：[W13](#w13)、[W15](#w15)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -713,7 +713,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W16-REVISION-20261025-001", "artifact_refs": ["intelligence/research.py", "intelligence/contracts.py", "tests_runtime/test_research.py", "audits/w16-revision-20261025.json"], "validation_refs": ["tests_runtime/test_research.py (5 actual passing W16 tests)", "audits/w16-revision-20261025.json"], "reviewer": "当前执行者实际SQLite并发、版本绑定和正反检查；非独立L5、模型或阶段批准", "result": "IN_PROGRESS", "scope": "同一Theme修订追加、ArtifactLink精确修订绑定、单条ResearchCommit组合同步；B1新/B2旧、跨规范、旧持有者并发修订/提交及新修订使旧组合失效均验证。未接通W27—W32真实任务、Review换证据、模型内容或阶段门；W13/W15正式前置未过，不ACCEPTED。"}, {"record_id": "W16-PR76-REVIEW-RETURN-20261026-001", "artifact_refs": ["intelligence/research.py", "tests_runtime/test_research.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["Codex-PR76-Review-20261025: F06/F09 reproduced", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准", "result": "RETURNED", "scope": "旧作品仅重贴新revision可被认作当前成果，且revision检查与commit写入存在确定并发窗口，均已复现。原组合接口不得继续依赖；须先修复NC-059/062并验证关键/无关变化与revision/commit交错。"}]
+实际证据：[{"record_id": "W16-REVISION-20261025-001", "artifact_refs": ["intelligence/research.py", "intelligence/contracts.py", "tests_runtime/test_research.py", "audits/w16-revision-20261025.json"], "validation_refs": ["tests_runtime/test_research.py (5 actual passing W16 tests)", "audits/w16-revision-20261025.json"], "reviewer": "当前执行者实际SQLite并发、版本绑定和正反检查；非独立L5、模型或阶段批准", "result": "IN_PROGRESS", "scope": "同一Theme修订追加、ArtifactLink精确修订绑定、单条ResearchCommit组合同步；B1新/B2旧、跨规范、旧持有者并发修订/提交及新修订使旧组合失效均验证。未接通W27—W32真实任务、Review换证据、模型内容或阶段门；W13/W15正式前置未过，不ACCEPTED。"}, {"record_id": "W16-PR76-REVIEW-RETURN-20261026-001", "artifact_refs": ["intelligence/research.py", "tests_runtime/test_research.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["Codex-PR76-Review-20261025: F06/F09 reproduced", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准", "result": "RETURNED", "scope": "旧作品仅重贴新revision可被认作当前成果，且revision检查与commit写入存在确定并发窗口，均已复现。原组合接口不得继续依赖；须先修复NC-059/062并验证关键/无关变化与revision/commit交错。"}, {"record_id": "W16-PR76-REMEDIATION-20261026-001", "artifact_refs": ["intelligence/research.py", "intelligence/archive.py", "intelligence/contracts.py", "tests_runtime/test_research.py", "audits/pr76-review-remediation-w16-20261026.json"], "validation_refs": ["tests_runtime/test_research.py (9 actual passing W16 tests)", "audits/pr76-review-remediation-w16-20261026.json"], "reviewer": "当前执行者实际离线研究修订、作品引用、兼容Review、SQLite条件写和并发交错检查；非独立L5、真实研究内容或阶段批准", "result": "IN_PROGRESS", "scope": "F06/F09已修复离线范围：修订结构化区分问题/证据/截点/限制，非critical以外默认关键；ArtifactLink保存并核对作品实际basis，旧作品仅在完整列举非关键增删并经精确Review兼容后沿用，关键变化须重建；Archive写事务同时核期望revision和上一commit，检查后换修订返回Conflict。重建、关键拒绝、无关通过、revision/commit交错及并发提交均有回归。W13/W15正式前置未过，真实W27—W32、模型内容与生产恢复未验，W16整包不ACCEPTED。"}]
 
 <a id="w17"></a>
 ## W17｜工具适配器与真实操作身份

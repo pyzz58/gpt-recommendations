@@ -263,7 +263,8 @@ class Archive:
             raise
 
     def append(self, submission: VersionSubmission, body: bytes | None = None,
-               storage_context: UseContext | None = None) -> StoredVersion:
+               storage_context: UseContext | None = None,
+               expected_current: dict[str, str | None] | None = None) -> StoredVersion:
         if not isinstance(submission, VersionSubmission):
             raise TypeError("append requires a VersionSubmission contract")
         # model_construct/model_copy must not bypass the public input contract.
@@ -279,6 +280,16 @@ class Archive:
         created_file = False
         try:
             with self._write() as c:
+                for expected_object_id, expected_version_id in (expected_current or {}).items():
+                    row = c.execute(
+                        select(versions.c.version_id)
+                        .where(versions.c.object_id == expected_object_id)
+                        .order_by(versions.c.ordinal.desc())
+                        .limit(1)).scalar_one_or_none()
+                    if row != expected_version_id:
+                        raise Conflict(
+                            f"Current version changed for {expected_object_id}: "
+                            f"expected {expected_version_id}, found {row}")
                 if c.execute(select(versions.c.version_id).where(versions.c.version_id == sub.version_id)).first():
                     raise Conflict("Version ID is already committed")
                 obj = c.execute(select(objects).where(objects.c.object_id == sub.object_id)).mappings().first()

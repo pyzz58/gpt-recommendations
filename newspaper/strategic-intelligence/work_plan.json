@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "f576a772edb5d6eb041c143e3a0aa7e19987ea5fc5e2caa774b02be705accd54",
+  "spec_sha256": "2d6afceb5308300193b945ea60b31741c71532af4066681f25b9feb33aec719f",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -1984,7 +1984,7 @@
       ],
       "failure_action": "冲突保留两版并补核；未实现并发能力时禁用并发写入，不能静默最后写入者获胜。",
       "conditional": null,
-      "progress": "RETURNED",
+      "progress": "IN_PROGRESS",
       "evidence": [
         {
           "record_id": "W16-REVISION-20261025-001",
@@ -2016,6 +2016,23 @@
           "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准",
           "result": "RETURNED",
           "scope": "旧作品仅重贴新revision可被认作当前成果，且revision检查与commit写入存在确定并发窗口，均已复现。原组合接口不得继续依赖；须先修复NC-059/062并验证关键/无关变化与revision/commit交错。"
+        },
+        {
+          "record_id": "W16-PR76-REMEDIATION-20261026-001",
+          "artifact_refs": [
+            "intelligence/research.py",
+            "intelligence/archive.py",
+            "intelligence/contracts.py",
+            "tests_runtime/test_research.py",
+            "audits/pr76-review-remediation-w16-20261026.json"
+          ],
+          "validation_refs": [
+            "tests_runtime/test_research.py (9 actual passing W16 tests)",
+            "audits/pr76-review-remediation-w16-20261026.json"
+          ],
+          "reviewer": "当前执行者实际离线研究修订、作品引用、兼容Review、SQLite条件写和并发交错检查；非独立L5、真实研究内容或阶段批准",
+          "result": "IN_PROGRESS",
+          "scope": "F06/F09已修复离线范围：修订结构化区分问题/证据/截点/限制，非critical以外默认关键；ArtifactLink保存并核对作品实际basis，旧作品仅在完整列举非关键增删并经精确Review兼容后沿用，关键变化须重建；Archive写事务同时核期望revision和上一commit，检查后换修订返回Conflict。重建、关键拒绝、无关通过、revision/commit交错及并发提交均有回归。W13/W15正式前置未过，真实W27—W32、模型内容与生产恢复未验，W16整包不ACCEPTED。"
         }
       ],
       "reviewed_basis_sha256": "f3f2897f6696c242d92c938e8b734f00efa7c773fd813e14994611cde32664ef",
