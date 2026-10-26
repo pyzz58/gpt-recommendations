@@ -2,6 +2,7 @@
   "record_id": "W17-OPERATIONS-20261025-001",
   "checked_at": "2026-10-25T13:04:39+13:00",
   "work_id": "W17",
+  "superseded_by_review": "Codex-PR76-Review-20261025: F07/F08/F11 reproduced; current work state RETURNED",
   "source_main_commit": "a69475cb4013c54b2eb373160bcc55a6c18bd604",
   "implementation": [
     "OperationRequest records task, step, run, logical idempotency key, exact attempt, tool and request-byte digest",

@@ -42,6 +42,7 @@ class ObjectKind(str, Enum):
     RESEARCH_COMMIT = "ResearchCommit"
     OPERATION_REQUEST = "OperationRequest"
     OPERATION_RECEIPT = "OperationReceipt"
+    MATERIAL_SELECTION = "MaterialSelection"
 
 
 class Precision(str, Enum):
@@ -365,6 +366,7 @@ class ReferenceReadRequest(Contract):
     expected_kind: ObjectKind
     intended_use: MaterialUse
     expected_body_sha256: Digest | None = None
+    expected_selected_body_sha256: Digest | None = None
     use_context: UseContext | None = None
 
 
@@ -379,6 +381,7 @@ class UseContext(Contract):
     provider: NonBlank | None = None
     territory: NonBlank | None = None
     content: tuple[NonBlank, ...] = ()
+    selected_version_id: Identifier | None = None
 
 
 class ReferencedMaterial(Contract):
@@ -393,6 +396,7 @@ class ReferencedMaterial(Contract):
     request: ReferenceReadRequest
     owner: StoredVersion
     version: StoredVersion
+    selected_version: StoredVersion | None = None
     recorded_at: AwareDatetime
     body: bytes | None
     required_attribution: tuple[NonBlank, ...] = ()

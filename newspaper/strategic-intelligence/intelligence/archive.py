@@ -23,9 +23,10 @@ from sqlalchemy import (Column, ForeignKey, Integer, MetaData, String, Table, Te
 from sqlalchemy.engine import Connection, URL
 from sqlalchemy.exc import IntegrityError
 
-from .contracts import (MaterialUse, PermissionState, ReferencedMaterial, ReferenceReadRequest,
-                        Representation, RevocationResult, RightsGrant, Scope, ScopeMode, StoredVersion,
-                        UseContext, UsePermission, ValidityMode, VersionSubmission)
+from .contracts import (MaterialUse, ObjectKind, PermissionState, ReferenceReadRequest, ReferenceUse,
+                        ReferencedMaterial, Representation, RevocationResult, RightsGrant, Scope,
+                        ScopeMode, StoredVersion, UseContext, UsePermission, ValidityMode,
+                        VersionSubmission)
 
 CURRENT_SCHEMA = 3
 metadata = MetaData()
@@ -114,6 +115,32 @@ def require_private_output_path(path: str | Path) -> Path:
                 f"worktree marker: {marker}. Existing data was not modified; "
                 "move it to an explicitly private location before retrying.")
     return resolved
+
+
+def write_private_bytes(path: str | Path, data: bytes) -> Path:
+    """Create one new private file atomically with mode 0600."""
+    if type(data) is not bytes:
+        raise TypeError("Private output requires exact bytes")
+    target = require_private_output_path(path)
+    created = False
+    try:
+        descriptor = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+        created = True
+        try:
+            os.fchmod(descriptor, 0o600)
+            with os.fdopen(descriptor, "wb") as stream:
+                descriptor = -1
+                stream.write(data)
+                stream.flush()
+                os.fsync(stream.fileno())
+        finally:
+            if descriptor >= 0:
+                os.close(descriptor)
+    except BaseException:
+        if created:
+            target.unlink(missing_ok=True)
+        raise
+    return target
 
 
 class Archive:
@@ -235,7 +262,8 @@ class Archive:
             p.unlink(missing_ok=True)
             raise
 
-    def append(self, submission: VersionSubmission, body: bytes | None = None) -> StoredVersion:
+    def append(self, submission: VersionSubmission, body: bytes | None = None,
+               storage_context: UseContext | None = None) -> StoredVersion:
         if not isinstance(submission, VersionSubmission):
             raise TypeError("append requires a VersionSubmission contract")
         # model_construct/model_copy must not bypass the public input contract.
@@ -266,6 +294,12 @@ class Archive:
                 known_grant = c.execute(select(grants.c.record).where(grants.c.rights_id == sub.rights.rights_id)).scalar_one_or_none()
                 if known_grant is not None and known_grant != grant:
                     raise Conflict("Rights ID cannot be redefined; record a new checked grant")
+                recorded_at = datetime.now(timezone.utc)
+                if body is not None:
+                    self._check_grant_use(
+                        c, sub.rights, MaterialUse.STORE_BODY,
+                        storage_context or UseContext(at=recorded_at),
+                        legacy_local=False, require_full_content=True)
                 globally_revoked = c.execute(select(revocations.c.rights_id).where(
                     revocations.c.rights_id == sub.rights.rights_id)).first()
                 storage_revoked = c.execute(select(use_revocations.c.rights_id).where(
@@ -278,7 +312,6 @@ class Archive:
                 if known_grant is None:
                     c.execute(insert(grants).values(rights_id=sub.rights.rights_id, record=grant))
                 ordinal = latest["ordinal"] + 1 if latest else 1
-                recorded_at = datetime.now(timezone.utc)
                 if body is not None:
                     body_path = "bodies/" + hashlib.sha256(sub.version_id.encode()).hexdigest() + ".bin"
                     self._write_body(body_path, body)
@@ -390,10 +423,13 @@ class Archive:
         return {MaterialUse(row["use"]) for row in c.execute(
             select(use_revocations).where(use_revocations.c.rights_id == rights_id)).mappings()}
 
-    def _check_use(self, c: Connection, stored: StoredVersion, use: MaterialUse,
-                   context: UseContext | None) -> tuple[str, ...]:
-        """Check recorded rights for one concrete use, never content truth."""
-        grant = stored.submission.rights
+    @staticmethod
+    def _requires_selection(item: UsePermission) -> bool:
+        return item.content_scope.mode is not ScopeMode.ANY or bool(item.excluded_content)
+
+    def _check_grant_use(self, c: Connection, grant: RightsGrant, use: MaterialUse,
+                         context: UseContext | None, *, legacy_local: bool = False,
+                         require_full_content: bool = False) -> tuple[str, ...]:
         if use is MaterialUse.INDEX:
             return ()
         if use not in grant.allowed_uses:
@@ -405,7 +441,7 @@ class Archive:
             # Legacy local recovery remains available for the coarse local uses
             # already recorded. Missing structured fields never authorize a new
             # model, translation or delivery use.
-            if use in (MaterialUse.STORE_BODY,):
+            if use is MaterialUse.STORE_BODY and legacy_local:
                 return ()
             raise PermissionDenied(f"No structured permission was recorded for {use.value}")
         if item.state is PermissionState.UNKNOWN:
@@ -424,6 +460,8 @@ class Archive:
         self._scope_has(item.providers, context.provider if context else None, "Provider")
         if item.content_scope.mode is ScopeMode.UNKNOWN:
             raise PermissionDenied(f"Content scope is unknown: {item.content_scope.reason}")
+        if require_full_content and self._requires_selection(item):
+            raise PermissionDenied("A partial-content permission cannot authorize this full body")
         if item.content_scope.mode is ScopeMode.LIST:
             if not context or not context.content:
                 raise PermissionDenied("Content coverage requires the selected content labels")
@@ -439,6 +477,14 @@ class Archive:
         if item.conditions and item.conditions_satisfied is not True:
             raise PermissionDenied("Permission conditions were not confirmed as satisfied")
         return item.attribution_requirements
+
+    def _check_use(self, c: Connection, stored: StoredVersion, use: MaterialUse,
+                   context: UseContext | None) -> tuple[str, ...]:
+        """Check recorded rights for one concrete use, never content truth."""
+        return self._check_grant_use(
+            c, stored.submission.rights, use, context,
+            legacy_local=(stored.submission.schema_version == 1 and use is MaterialUse.STORE_BODY),
+            require_full_content=(use is MaterialUse.STORE_BODY))
 
     def read_reference(self, request: ReferenceReadRequest) -> ReferencedMaterial:
         """Resolve an owner's recorded reference without changing version/use.
@@ -462,11 +508,49 @@ class Archive:
                 raise Conflict("Referenced body has a different committed identity")
             body = None
             attribution = ()
+            selected = None
             if req.intended_use is not MaterialUse.INDEX:
                 attribution = self._check_use(c, target, req.intended_use, req.use_context)
-                body = self._read_body(row, target)
+                # A model/translation/delivery read also depends on current
+                # permission to retain the exact body it will receive.
+                storage_at = req.use_context.at if req.use_context else datetime.now(timezone.utc)
+                self._check_use(c, target, MaterialUse.STORE_BODY, UseContext(at=storage_at))
+                permission = self._permission(target.submission.rights, req.intended_use)
+                needs_selection = permission is not None and self._requires_selection(permission)
+                selected_id = req.use_context.selected_version_id if req.use_context else None
+                if needs_selection or selected_id is not None:
+                    if not selected_id:
+                        raise PermissionDenied("Partial content permission requires an approved selected-version ID")
+                    selected_row = self._row(c, selected_id)
+                    selected = self._stored(c, selected_row)
+                    if selected.submission.kind is not ObjectKind.MATERIAL_SELECTION:
+                        raise PermissionDenied("Selected content is not an approved material-selection version")
+                    if selected.submission.representation is not Representation.FULL_BODY:
+                        raise PermissionDenied("Selected material has no retained body")
+                    if selected.submission.version_id == target.submission.version_id:
+                        raise PermissionDenied("Selected content cannot be the same full-body version")
+                    if not any(ref.target_version_id == target.submission.version_id
+                               and ref.use in (ReferenceUse.SUPPORT, ReferenceUse.BASIS)
+                               for ref in selected.submission.references):
+                        raise PermissionDenied("Selected material does not reference its original version")
+                    selected_attribution = self._check_use(
+                        c, selected, req.intended_use, req.use_context)
+                    attribution = tuple(dict.fromkeys((*attribution, *selected_attribution)))
+                    selected_permission = self._permission(
+                        selected.submission.rights, req.intended_use)
+                    if selected_permission is None or self._requires_selection(selected_permission):
+                        raise PermissionDenied("Selected material's own permission still requires narrowing")
+                    self._check_use(c, selected, MaterialUse.STORE_BODY, UseContext(at=storage_at))
+                    if (req.expected_selected_body_sha256 is not None
+                            and req.expected_selected_body_sha256 != selected.body_sha256):
+                        raise Conflict("Selected body has a different committed identity")
+                    if selected.body_sha256 == target.body_sha256:
+                        raise PermissionDenied("Selected content is byte-identical to the excluded full body")
+                    body = self._read_body(selected_row, selected)
+                else:
+                    body = self._read_body(row, target)
             return ReferencedMaterial(request=req, owner=owner, version=target,
-                recorded_at=datetime.now(timezone.utc), body=body,
+                selected_version=selected, recorded_at=datetime.now(timezone.utc), body=body,
                 required_attribution=attribution)
 
     def referrers(self, target_version_id: str) -> list[dict]:

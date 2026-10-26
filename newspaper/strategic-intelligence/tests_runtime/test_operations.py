@@ -10,8 +10,9 @@ import tempfile
 import unittest
 
 from intelligence.archive import Archive, Conflict
-from intelligence.contracts import (MaterialUse, ObjectKind, Representation, RightsBasis,
-                                    RightsGrant, VersionSubmission)
+from intelligence.contracts import (MaterialUse, ObjectKind, PermissionState, Representation,
+                                    RightsBasis, RightsGrant, Scope, ScopeMode, UsePermission,
+                                    ValidityMode, VersionSubmission)
 from intelligence.operations import (AdapterDescriptor, AdapterReturn, CostObservation,
                                      ObservationKind, OperationError, OperationJournal,
                                      OperationKind, OperationRequest, OperationStatus,
@@ -47,7 +48,10 @@ class OperationJournalTests(unittest.TestCase):
         self.archive=Archive(Path(self.temp.name)/"archive");self.addCleanup(self.archive.close)
         self.rights=RightsGrant(rights_id="RIGHTS-OPERATIONS",basis=RightsBasis.OWN_WORK,
             allowed_uses=frozenset({MaterialUse.INDEX,MaterialUse.STORE_BODY}),
-            evidence="Owned synthetic operation journal",checked_by="test fixture",checked_at=AT)
+            evidence="Owned synthetic operation journal",checked_by="test fixture",checked_at=AT,
+            permissions=(UsePermission(use=MaterialUse.STORE_BODY,state=PermissionState.ALLOWED,
+                validity=ValidityMode.OPEN_ENDED,territories=Scope(mode=ScopeMode.ANY),
+                providers=Scope(mode=ScopeMode.ANY),content_scope=Scope(mode=ScopeMode.ANY)),))
         self.journal=OperationJournal(self.archive,self.rights)
         self.task=self.archive.append(VersionSubmission(
             object_id="TASK-1",version_id="TASK-1-v001",kind=ObjectKind.TASK,title="Task",

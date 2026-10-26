@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`5e2d92481ab017a04218fe7553d1aad5d21e5543f6ed41c50342b189961c28aa`。
+当前规范SHA-256：`a4d24c94e2e4af7fb9a14730d15411ec0b8439bc7035a49a5bb8239c496bc749`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收5包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收2包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -50,9 +50,9 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 13 | [G01 第一阶段门：真实专题及完整同周样刊](#g01) | 阶段门 | R01/R03/R04/R07/T01/T02/T03/T04/T05/T06/T07/T08/T09/T10/T11/T13 | [W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12) | 待开始 / CURRENT_BINDING |
 | 14 | [W13 共享对象、版本与档案基础接口](#w13) | 代码与接口工作包 | T11/T01/T04 | [G01](#g01) | 进行中 / CURRENT_BINDING |
 | 15 | [W14 当前规范与任务输入准备接口](#w14) | 代码与接口工作包 | T01/R07 | [W13](#w13) | 进行中 / CURRENT_BINDING |
-| 16 | [W15 采用检查与权威决定接口](#w15) | 代码与接口工作包 | T01 | [W14](#w14) | 进行中 / CURRENT_BINDING |
-| 17 | [W16 共享研究修订与并发提交边界](#w16) | 代码与接口工作包 | T05/T01/T11 | [W13](#w13)、[W15](#w15) | 进行中 / CURRENT_BINDING |
-| 18 | [W17 工具适配器与真实操作身份](#w17) | 代码与接口工作包 | T13/T11 | [W13](#w13)、[W15](#w15) | 进行中 / CURRENT_BINDING |
+| 16 | [W15 采用检查与权威决定接口](#w15) | 代码与接口工作包 | T01 | [W14](#w14) | 需返工 / CURRENT_BINDING |
+| 17 | [W16 共享研究修订与并发提交边界](#w16) | 代码与接口工作包 | T05/T01/T11 | [W13](#w13)、[W15](#w15) | 需返工 / CURRENT_BINDING |
+| 18 | [W17 工具适配器与真实操作身份](#w17) | 代码与接口工作包 | T13/T11 | [W13](#w13)、[W15](#w15) | 需返工 / CURRENT_BINDING |
 | 19 | [W18 调用前权限、预算与能力核验](#w18) | 代码与接口工作包 | T13/T01 | [W17](#w17)、[W15](#w15) | 待开始 / CURRENT_BINDING |
 | 20 | [W19 模型任务配置与有限准入证据](#w19) | 代码与接口工作包 | T13/T09 | [W18](#w18) | 待开始 / CURRENT_BINDING |
 | 21 | [W20 少量来源适配与候选输入](#w20) | 代码与接口工作包 | T02 | [W17](#w17)、[W18](#w18) | 待开始 / CURRENT_BINDING |
@@ -571,14 +571,16 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 - 单应用内的对象ID、追加式版本、三时间/事件区间/数据期和引用用途接口。
 - 原稿/允许材料/定位与可重建索引的存取；按用途执行的权利、期限、地域、供应商、内容例外、条件、署名及部分撤权接口。
-- 仓库外私有输出边界、最小接口说明及旧JSON/旧数据库兼容迁移样例。
+- 仓库外私有输出边界、部分授权的独立MaterialSelection、最小接口说明及旧JSON/旧数据库兼容迁移样例。
 - C02优先Pydantic字段合同与SQLAlchemy Core事务/查询，私有版本正文接口只实现一次；C06用uv锁最小兼容组合，重型可选依赖分开。
 
 **验收清单**（另核Q01—Q07）：
 
 - [ ] 正向：同一材料被多题引用仍只有一个权威版本；可完整取回原稿、审核及原判断。
 - [ ] 反向：重复ID、悬空版本、无权全文写入或索引冒充事实原件均被识别；到期、未生效、地域/供应商/内容范围不匹配和未知条件均停止对应用途。
-- [ ] 衔接：不同用途可有不同期限和撤权；未知或旧合同缺项不扩成通配授权，部分撤权保留无关用途及历史，STORE_BODY撤回使正文不可继续读取。
+- [ ] 衔接：新正文写入前须有当前有效、条件已满足且覆盖完整内容的STORE_BODY结构化许可；失败不留下正文文件。后续读取同时核目标用途与当前保存许可。
+- [ ] 部分内容或第三方排除权限不得返回原完整正文；只能返回引用原版本、具有独立有效全内容许可且字节哈希不同的MaterialSelection。
+- [ ] 不同用途可有不同期限和撤权；未知或旧合同缺项不扩成通配授权，部分撤权保留无关用途及历史，STORE_BODY撤回使正文不可继续读取。
 - [ ] 事件区间保留端点精度/语义、时区、出处与不确定性；旧JSON可读且不推定未知时区、午夜或更广许可。
 - [ ] 档案、正文导出和准备包均拒绝整个Git工作树及符号链接别名，仓库外私有目录可用且不覆盖已有文件。
 - [ ] T01/T04/T05/T09/T10通过同一接口引用真实版本，接口测试使用明示合法副本。
@@ -589,7 +591,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W13-CODE-20261023-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "intelligence/__main__.py", "pyproject.toml", "uv.lock", ".github/workflows/strategic-intelligence-runtime.yml (repository root)"], "validation_refs": ["tests_runtime/test_archive.py (30 actual passing runtime tests)", "audits/w13-archive-20261023.json (6 owned originals, pointer/shared references, restart readback and explicit migration copy)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w13-code-20261023"], "reviewer": "当前执行者实际编码、安装和离线测试；非内容/用户/阶段门批准", "result": "AWAITING_REVIEW", "scope": "W13代码已实现并离线测试；Pydantic/SQLAlchemy单应用共享合同、SQLite事务/私有版本文件、正文取回/索引重建/撤权/迁移和CLI。W12/G01未完成，故不记整包ACCEPTED；相邻业务消费者、完整研究/生产恢复及其他模块尚未验。"}, {"record_id": "W13-ORDER-CORRECTION-20261023-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "intelligence/__main__.py"], "validation_refs": ["CANONICAL_SYSTEM_SPEC_V5.md#run-w12-sample-20261023", "audits/w12-sample-20261023.json"], "reviewer": "用户当前澄清及执行者实际依赖核对；不是阶段批准", "result": "BLOCKED", "scope": "纠正把咨询误读成优先编码授权；提前代码及原测试历史保留，W13后续暂停。W12/G01未过，先回W12与G01，过门再按原W13卡复核；未更改G01依赖，不启动W14。"}, {"record_id": "W13-REFERENCE-READ-20261023-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "intelligence/__main__.py"], "validation_refs": ["tests_runtime/test_archive.py (41 actual passing runtime tests; 11 added)", "audits/w13-reference-read-20261023.json (explicit private test copy, 5 actual owned-file consumers, shared original bytes, CLI and withdrawal)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w13-reference-read-20261023"], "reviewer": "当前用户明确样刊后置与继续指令；执行者实际编码/离线接口检查，非用户阅读、内容或阶段批准", "result": "AWAITING_REVIEW", "scope": "按用户本次明确指令恢复W13小范围代码准备；补已提交引用归属、固定版本/类型/正文哈希、独立用途与撤权检查，共用唯一正文后端。41项运行测试和五类既有自有文件在明示副本的真实接口衔接通过；原私有档案7文件保持。样刊阅读后置但W12/G01未过，G01依赖保留，整包不记ACCEPTED；相邻业务模块/现行规范输入/权威采用/生产仍另包验。"}, {"record_id": "W13-REMEDIATION-20261025-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "intelligence/__main__.py", "tests_runtime/test_archive.py", "audits/w13-w15-remediation-20261025.json"], "validation_refs": ["tests_runtime/test_archive.py (52 actual passing archive/contract/CLI tests)", "audits/w13-w15-remediation-20261025.json"], "reviewer": "当前执行者实际代码、正反、兼容读取和Git工作树边界检查；非法律审查、独立L5、用户阅读或阶段批准", "result": "IN_PROGRESS", "scope": "修复七项审核缺口中W13所属私有输出边界、逐用途权利/期限/地域/供应商/内容例外/条件/署名、部分撤权、事件区间及旧JSON兼容。schema升级到3但旧v1记录可读且不扩权；52项W13运行测试通过。W12/G01前置未过，整包不ACCEPTED；真实许可判断、跨周as-of、生产恢复及W17/W18身份/调用上下文仍待。"}]
+实际证据：[{"record_id": "W13-CODE-20261023-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "intelligence/__main__.py", "pyproject.toml", "uv.lock", ".github/workflows/strategic-intelligence-runtime.yml (repository root)"], "validation_refs": ["tests_runtime/test_archive.py (30 actual passing runtime tests)", "audits/w13-archive-20261023.json (6 owned originals, pointer/shared references, restart readback and explicit migration copy)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w13-code-20261023"], "reviewer": "当前执行者实际编码、安装和离线测试；非内容/用户/阶段门批准", "result": "AWAITING_REVIEW", "scope": "W13代码已实现并离线测试；Pydantic/SQLAlchemy单应用共享合同、SQLite事务/私有版本文件、正文取回/索引重建/撤权/迁移和CLI。W12/G01未完成，故不记整包ACCEPTED；相邻业务消费者、完整研究/生产恢复及其他模块尚未验。"}, {"record_id": "W13-ORDER-CORRECTION-20261023-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "intelligence/__main__.py"], "validation_refs": ["CANONICAL_SYSTEM_SPEC_V5.md#run-w12-sample-20261023", "audits/w12-sample-20261023.json"], "reviewer": "用户当前澄清及执行者实际依赖核对；不是阶段批准", "result": "BLOCKED", "scope": "纠正把咨询误读成优先编码授权；提前代码及原测试历史保留，W13后续暂停。W12/G01未过，先回W12与G01，过门再按原W13卡复核；未更改G01依赖，不启动W14。"}, {"record_id": "W13-REFERENCE-READ-20261023-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "intelligence/__main__.py"], "validation_refs": ["tests_runtime/test_archive.py (41 actual passing runtime tests; 11 added)", "audits/w13-reference-read-20261023.json (explicit private test copy, 5 actual owned-file consumers, shared original bytes, CLI and withdrawal)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w13-reference-read-20261023"], "reviewer": "当前用户明确样刊后置与继续指令；执行者实际编码/离线接口检查，非用户阅读、内容或阶段批准", "result": "AWAITING_REVIEW", "scope": "按用户本次明确指令恢复W13小范围代码准备；补已提交引用归属、固定版本/类型/正文哈希、独立用途与撤权检查，共用唯一正文后端。41项运行测试和五类既有自有文件在明示副本的真实接口衔接通过；原私有档案7文件保持。样刊阅读后置但W12/G01未过，G01依赖保留，整包不记ACCEPTED；相邻业务模块/现行规范输入/权威采用/生产仍另包验。"}, {"record_id": "W13-REMEDIATION-20261025-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "intelligence/__main__.py", "tests_runtime/test_archive.py", "audits/w13-w15-remediation-20261025.json"], "validation_refs": ["tests_runtime/test_archive.py (52 actual passing archive/contract/CLI tests)", "audits/w13-w15-remediation-20261025.json"], "reviewer": "当前执行者实际代码、正反、兼容读取和Git工作树边界检查；非法律审查、独立L5、用户阅读或阶段批准", "result": "IN_PROGRESS", "scope": "修复七项审核缺口中W13所属私有输出边界、逐用途权利/期限/地域/供应商/内容例外/条件/署名、部分撤权、事件区间及旧JSON兼容。schema升级到3但旧v1记录可读且不扩权；52项W13运行测试通过。W12/G01前置未过，整包不ACCEPTED；真实许可判断、跨周as-of、生产恢复及W17/W18身份/调用上下文仍待。"}, {"record_id": "W13-PR76-STORAGE-SELECTION-20261026-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/archive.py", "tests_runtime/test_archive.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["tests_runtime/test_archive.py (56 archive/contract/CLI tests passing after storage and selection regressions)", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "当前执行者实际复现PR #76 F01/F02/F10、核对修复后正反与兼容读取；非真实许可判断或阶段批准", "result": "IN_PROGRESS", "scope": "F01/F02已修复离线共享边界：新正文仅在显式、当时有效、条件确认且全内容覆盖的STORE_BODY许可下写入；后续读取复核保存许可；部分授权只能返回独立MaterialSelection的精确字节，原完整正文或字节相同重贴均拒绝。旧schema1正文保留本地恢复读取，但新写入不能用旧缺项绕过。G01未过，W13仍非ACCEPTED。"}]
 
 <a id="w14"></a>
 ## W14｜当前规范与任务输入准备接口
@@ -622,20 +624,21 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - [ ] 图节点实际消费当前规范/证据版本，缺依赖进入既有返工分支；底座能运行不证明规范正确装载。
 - [ ] 材料读取携带真实用途及可用的供应商/地域/内容上下文；权利未知、范围不符或旧合同缺项时进入缺口而非补成许可。
 - [ ] 本地环境和缓存存在时维护检查无假失败，但未登记规则、缺失源码、过期视图和真实关联漂移仍阻断；所有私有输出遵守仓库外边界。
+- [ ] get、read-reference与准备包均以O_EXCL/NOFOLLOW直接创建0600新文件；宽松umask、已存在文件、符号链接和仓库内路径均不得产生或覆盖私有输出。
 - [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
 
 **不通过时**：补原文/实际材料或停止受影响部分；不依赖缺口的修复/探索可继续。
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W14-PREPARATION-20261024-001", "artifact_refs": ["intelligence/preparation.py", "intelligence/__main__.py", "pyproject.toml (optional workflow)", "uv.lock", ".github/workflows/strategic-intelligence-runtime.yml (repository root)"], "validation_refs": ["tests_runtime/test_preparation.py (14 actual passing W14 tests; 55 total runtime tests)", "audits/w14-preparation-20261024.json (actual private test copy: 4 owned files, 1 pointer, full current source, graph and CLI recheck)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w14-preparation-20261024"], "reviewer": "当前执行者实际代码/接口正反与真实文件检查；非模型接收/理解、内容批准、用户阅读或阶段门验收", "result": "AWAITING_REVIEW", "scope": "W13提交及CI通过后，按用户样刊后置/继续指令逐包准备W14；LangGraph原生节点共用既有维护/W13，完整当前原文基线与任务/实际材料分隔，缺口/过期/漏条款/伪回执/撤权重核和私有CLI已验。55项运行测试及实际四份自有文件/一来源定位接口衔接通过；未做选择性精简或模型容量/质量验证。W12/G01及W13正式前置未通过，整包不记ACCEPTED；W15采用决定尚未开始。"}, {"record_id": "W14-TECHNICAL-REVIEW-20261025-001", "artifact_refs": ["intelligence/preparation.py", "intelligence/__main__.py", "tests_runtime/test_preparation.py"], "validation_refs": ["audits/w14-technical-review-20261025.json", "CANONICAL_SYSTEM_SPEC_V5.md#run-w14-technical-review-20261025"], "reviewer": "本次执行者Codex实际逐项技术复核；不冒称独立内容L5、用户阅读或阶段批准", "result": "AWAITING_REVIEW", "scope": "W14本卡及Q01—Q07逐项检查已执行：离线输入准备、正反/返工、实际仓库文件测试包装、W13共用和W15生产端合同检查通过；补两项回归，命令/结果及限制见审计。Q02正式前置W13及W12/G01未过，故整包仍待验，不记ACCEPTED；未运行W15消费者、模型或生产。"}, {"record_id": "W14-REMEDIATION-20261025-002", "artifact_refs": ["intelligence/preparation.py", "intelligence/__main__.py", "tests_runtime/test_preparation.py", "audits/w13-w15-remediation-20261025.json"], "validation_refs": ["tests_runtime/test_preparation.py (16 actual passing W14 tests; 74 total runtime)", "audits/w13-w15-remediation-20261025.json"], "reviewer": "当前执行者实际接口、输入合法性、权利上下文和仓库外输出检查；非模型接收/理解、独立内容或阶段批准", "result": "IN_PROGRESS", "scope": "W14继承PR #75两项回归，改用仓库外统一私有输出边界及可执行权利上下文；旧规范/漏条款/伪回执/撤权仍阻断。W13/W12/G01正式前置未过，不ACCEPTED；完整规范容纳与模型质量未验。"}]
+实际证据：[{"record_id": "W14-PREPARATION-20261024-001", "artifact_refs": ["intelligence/preparation.py", "intelligence/__main__.py", "pyproject.toml (optional workflow)", "uv.lock", ".github/workflows/strategic-intelligence-runtime.yml (repository root)"], "validation_refs": ["tests_runtime/test_preparation.py (14 actual passing W14 tests; 55 total runtime tests)", "audits/w14-preparation-20261024.json (actual private test copy: 4 owned files, 1 pointer, full current source, graph and CLI recheck)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w14-preparation-20261024"], "reviewer": "当前执行者实际代码/接口正反与真实文件检查；非模型接收/理解、内容批准、用户阅读或阶段门验收", "result": "AWAITING_REVIEW", "scope": "W13提交及CI通过后，按用户样刊后置/继续指令逐包准备W14；LangGraph原生节点共用既有维护/W13，完整当前原文基线与任务/实际材料分隔，缺口/过期/漏条款/伪回执/撤权重核和私有CLI已验。55项运行测试及实际四份自有文件/一来源定位接口衔接通过；未做选择性精简或模型容量/质量验证。W12/G01及W13正式前置未通过，整包不记ACCEPTED；W15采用决定尚未开始。"}, {"record_id": "W14-TECHNICAL-REVIEW-20261025-001", "artifact_refs": ["intelligence/preparation.py", "intelligence/__main__.py", "tests_runtime/test_preparation.py"], "validation_refs": ["audits/w14-technical-review-20261025.json", "CANONICAL_SYSTEM_SPEC_V5.md#run-w14-technical-review-20261025"], "reviewer": "本次执行者Codex实际逐项技术复核；不冒称独立内容L5、用户阅读或阶段批准", "result": "AWAITING_REVIEW", "scope": "W14本卡及Q01—Q07逐项检查已执行：离线输入准备、正反/返工、实际仓库文件测试包装、W13共用和W15生产端合同检查通过；补两项回归，命令/结果及限制见审计。Q02正式前置W13及W12/G01未过，故整包仍待验，不记ACCEPTED；未运行W15消费者、模型或生产。"}, {"record_id": "W14-REMEDIATION-20261025-002", "artifact_refs": ["intelligence/preparation.py", "intelligence/__main__.py", "tests_runtime/test_preparation.py", "audits/w13-w15-remediation-20261025.json"], "validation_refs": ["tests_runtime/test_preparation.py (16 actual passing W14 tests; 74 total runtime)", "audits/w13-w15-remediation-20261025.json"], "reviewer": "当前执行者实际接口、输入合法性、权利上下文和仓库外输出检查；非模型接收/理解、独立内容或阶段批准", "result": "IN_PROGRESS", "scope": "W14继承PR #75两项回归，改用仓库外统一私有输出边界及可执行权利上下文；旧规范/漏条款/伪回执/撤权仍阻断。W13/W12/G01正式前置未过，不ACCEPTED；完整规范容纳与模型质量未验。"}, {"record_id": "W14-PR76-PRIVATE-EXPORT-20261026-001", "artifact_refs": ["intelligence/archive.py", "intelligence/__main__.py", "tests_runtime/test_archive.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["tests_runtime/test_archive.py (get/read-reference/prepare direct 0600 creation under umask 022)", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "当前执行者实际宽松umask、拒覆盖/路径/权限和仓库外成功对照；非用户或阶段批准", "result": "IN_PROGRESS", "scope": "F10已修复：get、read-reference和准备包统一调用O_EXCL/NOFOLLOW直接创建0600文件，不再先按umask创建后chmod；宽松umask下正文和准备包均为0600，既有文件不覆盖、仓库内路径与符号链接仍拒绝。W13/W12/G01正式前置未过，整包不ACCEPTED。"}]
 
 <a id="w15"></a>
 ## W15｜采用检查与权威决定接口
 
 顺序：16/59；阶段：2；类型：代码与接口工作包。
 
-进度：**进行中**；关联：CURRENT_BINDING；前置：[W14](#w14)。
+进度：**需返工**；关联：CURRENT_BINDING；前置：[W14](#w14)。
 
 前置尚未验收：[W14](#w14)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -660,6 +663,9 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - [ ] 反向：写作职责自签READY/PASS、同一生产者署名、过期决定、跳步、缺Review或必输版本时无法正式采用；补齐后可按原版本继续。
 - [ ] 衔接：决定绑定精确Task/主体/Review/输入/依赖版本与采用范围；上游版本或依赖变化不再满足当前采用，有据合格产物仍在范围内可继续。
 - [ ] NOT_APPLICABLE须有实际Review与理由；CHECKER角色、READY范围、期限和依赖分别核，不以字段合法或全部拒稿代替。
+- [ ] Review须以结构化引用实际覆盖当前主体/任务/用途；合法多主体Review显式列明覆盖，另一主体或版本不可授权当前决定。
+- [ ] 权威决定链以稳定Task执行身份、步骤和必要作用域隔离；两个并行主题/期号不得互相覆盖同一work/step状态。
+- [ ] 当前授权递归核必要依赖链：任一必要上游失效即不得采用下游历史READY；独立无关分支保留。主体/必输版本按用途撤回时也阻止采用，补核恢复后重新有效。
 - [ ] 同一提交/采用接口覆盖M步骤和Review；任何图结束/next为空、字段合法、作者输出不得自变内容PASS或出版授权。
 - [ ] 结构采用不认证调用者身份、不核内容真伪；W17身份/权限及W31内容审稿仍须实际验收，阶段门与真实研究图未通过。
 - [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
@@ -668,14 +674,14 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W15-ADOPTION-20261025-001", "artifact_refs": ["intelligence/adoption.py", "intelligence/contracts.py", "intelligence/__main__.py", "tests_runtime/test_adoption.py", "audits/w13-w15-remediation-20261025.json"], "validation_refs": ["tests_runtime/test_adoption.py (6 actual passing W15 tests)", "audits/w13-w15-remediation-20261025.json"], "reviewer": "当前执行者实际离线接口与正反/衔接检查；非独立L5、身份认证、真实模型或阶段批准", "result": "IN_PROGRESS", "scope": "实现并持久追加StepSubmission/AdoptionDecision；单独提交不改变当前决定，README范围、精确Task/主体/Review/输入/依赖绑定、生产者自签拒绝、依赖过期、PENDING/READY/RETURN/BLOCKED/NOT_APPLICABLE与CLI已离线验证。checker身份、内容真伪、完整M图、模型执行和出版/交付未验；W14正式前置未过，整包不ACCEPTED。"}]
+实际证据：[{"record_id": "W15-ADOPTION-20261025-001", "artifact_refs": ["intelligence/adoption.py", "intelligence/contracts.py", "intelligence/__main__.py", "tests_runtime/test_adoption.py", "audits/w13-w15-remediation-20261025.json"], "validation_refs": ["tests_runtime/test_adoption.py (6 actual passing W15 tests)", "audits/w13-w15-remediation-20261025.json"], "reviewer": "当前执行者实际离线接口与正反/衔接检查；非独立L5、身份认证、真实模型或阶段批准", "result": "IN_PROGRESS", "scope": "实现并持久追加StepSubmission/AdoptionDecision；单独提交不改变当前决定，README范围、精确Task/主体/Review/输入/依赖绑定、生产者自签拒绝、依赖过期、PENDING/READY/RETURN/BLOCKED/NOT_APPLICABLE与CLI已离线验证。checker身份、内容真伪、完整M图、模型执行和出版/交付未验；W14正式前置未过，整包不ACCEPTED。"}, {"record_id": "W15-PR76-REVIEW-RETURN-20261026-001", "artifact_refs": ["intelligence/adoption.py", "tests_runtime/test_adoption.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["Codex-PR76-Review-20261025: F03/F04/F05 reproduced", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准", "result": "RETURNED", "scope": "Review未绑定被审主体、不同Task共用决定键、传递依赖及主体撤回未传播均实际复现。原有限接口保留为历史，不得继续依赖；须先修复NC-056—058并补两任务/三层依赖/独立分支/恢复用例。"}]
 
 <a id="w16"></a>
 ## W16｜共享研究修订与并发提交边界
 
 顺序：17/59；阶段：2；类型：代码与接口工作包。
 
-进度：**进行中**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W15](#w15)。
+进度：**需返工**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W15](#w15)。
 
 前置尚未验收：[W13](#w13)、[W15](#w15)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -697,7 +703,9 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 - [ ] 正向：B1/B2共用同一有效研究截面，更新能定位失效输出；顺序执行也记录明确基线。
 - [ ] 反向：以B1新版本拼B2旧版本、审核期间换证据及两个写入丢失更新均被拒绝或明确重核。
-- [ ] 衔接：W27—W32提交均带所基于修订；受影响作品回责任模块，历史稿不覆盖。
+- [ ] 衔接：ArtifactLink/Commit须核作品原有依据、问题、证据版本/知识截点/限制与当前修订兼容；只换revision标签无效，无影响变化可留显式兼容复核继续。
+- [ ] 期望当前ResearchRevision与期望上一Commit须在同一受控事务/CAS边界内核验并写入；检查后revision变化时提交冲突，不返回看似成功的最新旧组合。
+- [ ] W27—W32提交均带所基于修订；受影响作品回责任模块，历史稿不覆盖。
 - [ ] 实际数据库验顺序/并发/批量路径；ORM版本计数不自动覆盖批量写入，旧持有者不能覆盖新修订。
 - [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
 
@@ -705,14 +713,14 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W16-REVISION-20261025-001", "artifact_refs": ["intelligence/research.py", "intelligence/contracts.py", "tests_runtime/test_research.py", "audits/w16-revision-20261025.json"], "validation_refs": ["tests_runtime/test_research.py (5 actual passing W16 tests)", "audits/w16-revision-20261025.json"], "reviewer": "当前执行者实际SQLite并发、版本绑定和正反检查；非独立L5、模型或阶段批准", "result": "IN_PROGRESS", "scope": "同一Theme修订追加、ArtifactLink精确修订绑定、单条ResearchCommit组合同步；B1新/B2旧、跨规范、旧持有者并发修订/提交及新修订使旧组合失效均验证。未接通W27—W32真实任务、Review换证据、模型内容或阶段门；W13/W15正式前置未过，不ACCEPTED。"}]
+实际证据：[{"record_id": "W16-REVISION-20261025-001", "artifact_refs": ["intelligence/research.py", "intelligence/contracts.py", "tests_runtime/test_research.py", "audits/w16-revision-20261025.json"], "validation_refs": ["tests_runtime/test_research.py (5 actual passing W16 tests)", "audits/w16-revision-20261025.json"], "reviewer": "当前执行者实际SQLite并发、版本绑定和正反检查；非独立L5、模型或阶段批准", "result": "IN_PROGRESS", "scope": "同一Theme修订追加、ArtifactLink精确修订绑定、单条ResearchCommit组合同步；B1新/B2旧、跨规范、旧持有者并发修订/提交及新修订使旧组合失效均验证。未接通W27—W32真实任务、Review换证据、模型内容或阶段门；W13/W15正式前置未过，不ACCEPTED。"}, {"record_id": "W16-PR76-REVIEW-RETURN-20261026-001", "artifact_refs": ["intelligence/research.py", "tests_runtime/test_research.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["Codex-PR76-Review-20261025: F06/F09 reproduced", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准", "result": "RETURNED", "scope": "旧作品仅重贴新revision可被认作当前成果，且revision检查与commit写入存在确定并发窗口，均已复现。原组合接口不得继续依赖；须先修复NC-059/062并验证关键/无关变化与revision/commit交错。"}]
 
 <a id="w17"></a>
 ## W17｜工具适配器与真实操作身份
 
 顺序：18/59；阶段：2；类型：代码与接口工作包。
 
-进度：**进行中**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W15](#w15)。
+进度：**需返工**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W15](#w15)。
 
 前置尚未验收：[W13](#w13)、[W15](#w15)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -737,13 +745,16 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - [ ] 反向：请求已受理但超时不直接当未执行；模型不能补造成功、版本、页码或费用；不重复计同次操作。
 - [ ] 衔接：W18控制调用前许可和预算，W24—W31使用同一适配器，恢复交W48；当前仅验已实现范围。
 - [ ] 同一操作恢复保留身份/回执/累计费用；图replay会重执行后续节点，不能冒充外部副作用安全恢复；SDK重试受总控。
+- [ ] UNKNOWN对账须绑定原operation、已知provider_request_id及真实查询证据；不同供应商请求或证据身份不符时继续UNKNOWN并禁止重试。
+- [ ] 对账的状态检查、预期回执版本和写入须为同一事务/CAS；旧UNKNOWN调用不得覆盖已SUCCEEDED终态，终态成功不得开放再次执行。
+- [ ] Adapter违规时只停止采用其结果，仍保留已返回的provider ID、费用、用量、内部重试与违规原因；不得降为null/0/UNKNOWN或重复计费。
 - [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
 
 **不通过时**：先核可查询的真实结果，再决定有限重试/停止；保持未知，禁止无限自动换模型求PASS。
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W17-OPERATIONS-20261025-001", "artifact_refs": ["intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "intelligence/__main__.py", "tests_runtime/test_operations.py", "audits/w17-operations-20261025.json"], "validation_refs": ["tests_runtime/test_operations.py (6 actual passing W17 tests)", "audits/w17-operations-20261025.json"], "reviewer": "当前执行者实际离线适配器、SQLite回执、重试/UNKNOWN与累计费用检查；非真实供应商、独立L5或阶段批准", "result": "IN_PROGRESS", "scope": "OperationRequest/Receipt持久追加、Adapter描述及字节结果校验；重复成功不再调用，仅FAILED可按原上限绑定重试，UNKNOWN先对账，内建重试超限转UNKNOWN，逻辑操作累计可用。W18授权/预算、真实第三方适配、模型内容及生产恢复未验；W13/W15正式前置未过，不ACCEPTED。"}]
+实际证据：[{"record_id": "W17-OPERATIONS-20261025-001", "artifact_refs": ["intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "intelligence/__main__.py", "tests_runtime/test_operations.py", "audits/w17-operations-20261025.json"], "validation_refs": ["tests_runtime/test_operations.py (6 actual passing W17 tests)", "audits/w17-operations-20261025.json"], "reviewer": "当前执行者实际离线适配器、SQLite回执、重试/UNKNOWN与累计费用检查；非真实供应商、独立L5或阶段批准", "result": "IN_PROGRESS", "scope": "OperationRequest/Receipt持久追加、Adapter描述及字节结果校验；重复成功不再调用，仅FAILED可按原上限绑定重试，UNKNOWN先对账，内建重试超限转UNKNOWN，逻辑操作累计可用。W18授权/预算、真实第三方适配、模型内容及生产恢复未验；W13/W15正式前置未过，不ACCEPTED。"}, {"record_id": "W17-PR76-REVIEW-RETURN-20261026-001", "artifact_refs": ["intelligence/operations.py", "tests_runtime/test_operations.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["Codex-PR76-Review-20261025: F07/F08/F11 reproduced", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准", "result": "RETURNED", "scope": "错误供应商请求可对账、旧对账可把成功改为失败并开放重试、Adapter违规时丢失已观测事实，均已复现。原接口不得继续依赖；须先修复NC-060/061/064并补回执CAS交错与观测保留。"}]
 
 <a id="w18"></a>
 ## W18｜调用前权限、预算与能力核验

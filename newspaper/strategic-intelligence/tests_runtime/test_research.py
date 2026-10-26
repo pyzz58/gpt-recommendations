@@ -6,8 +6,9 @@ import tempfile
 import unittest
 
 from intelligence.archive import Archive, Conflict
-from intelligence.contracts import (MaterialUse, ObjectKind, Representation, RightsBasis,
-                                    RightsGrant, VersionSubmission)
+from intelligence.contracts import (MaterialUse, ObjectKind, PermissionState, Representation,
+                                    RightsBasis, RightsGrant, Scope, ScopeMode, UsePermission,
+                                    ValidityMode, VersionSubmission)
 from intelligence.research import (ArtifactLink, ResearchCommitRequest, ResearchError,
                                    ResearchRevision, ResearchRevisionController, ResearchRole)
 
@@ -22,7 +23,10 @@ class ResearchRevisionTests(unittest.TestCase):
         self.archive=Archive(Path(self.temp.name)/"archive");self.addCleanup(self.archive.close)
         self.rights=RightsGrant(rights_id="RIGHTS-RESEARCH",basis=RightsBasis.OWN_WORK,
             allowed_uses=frozenset({MaterialUse.INDEX,MaterialUse.STORE_BODY}),
-            evidence="Owned synthetic research journal",checked_by="test fixture",checked_at=AT)
+            evidence="Owned synthetic research journal",checked_by="test fixture",checked_at=AT,
+            permissions=(UsePermission(use=MaterialUse.STORE_BODY,state=PermissionState.ALLOWED,
+                validity=ValidityMode.OPEN_ENDED,territories=Scope(mode=ScopeMode.ANY),
+                providers=Scope(mode=ScopeMode.ANY),content_scope=Scope(mode=ScopeMode.ANY)),))
         self.controller=ResearchRevisionController(self.archive,self.rights)
         self.artifact("ADVISER-1","ADVISER-1-v001")
         self.artifact("TEACHER-1","TEACHER-1-v001")

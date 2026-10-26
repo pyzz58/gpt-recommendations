@@ -13,8 +13,9 @@ from intelligence.adoption import (AdoptionController, AdoptionError, CheckerRol
                                    DecisionRequest, DependencyDecision, StepState,
                                    StepSubmission)
 from intelligence.archive import Archive
-from intelligence.contracts import (MaterialUse, ObjectKind, Representation, RightsBasis,
-                                    RightsGrant, VersionSubmission)
+from intelligence.contracts import (MaterialUse, ObjectKind, PermissionState, Representation,
+                                    RightsBasis, RightsGrant, Scope, ScopeMode, UsePermission,
+                                    ValidityMode, VersionSubmission)
 
 AT=datetime(2026,10,25,0,0,tzinfo=timezone.utc)
 SPEC="a"*64
@@ -28,7 +29,10 @@ class AdoptionTests(unittest.TestCase):
         self.archive=Archive(Path(self.temp.name)/"archive");self.addCleanup(self.archive.close)
         self.rights=RightsGrant(rights_id="RIGHTS-INTERNAL",basis=RightsBasis.OWN_WORK,
             allowed_uses=frozenset({MaterialUse.INDEX,MaterialUse.STORE_BODY}),
-            evidence="Owned synthetic journal fixture",checked_by="test fixture",checked_at=AT)
+            evidence="Owned synthetic journal fixture",checked_by="test fixture",checked_at=AT,
+            permissions=(UsePermission(use=MaterialUse.STORE_BODY,state=PermissionState.ALLOWED,
+                validity=ValidityMode.OPEN_ENDED,territories=Scope(mode=ScopeMode.ANY),
+                providers=Scope(mode=ScopeMode.ANY),content_scope=Scope(mode=ScopeMode.ANY)),))
         self.controller=AdoptionController(self.archive,self.rights)
         self.append_record("TASK-W15","TASK-W15-v001",ObjectKind.TASK)
         self.append_record("ARTICLE-1","ARTICLE-1-v001",ObjectKind.ARTICLE)

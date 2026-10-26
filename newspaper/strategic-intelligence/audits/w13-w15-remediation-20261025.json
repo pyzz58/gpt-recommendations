@@ -5,6 +5,10 @@
   "inherited_pr": 75,
   "inherited_pr_head": "b433ed3008e3d098e4835a371c50b2e23d473a41",
   "scope": "Offline W13/W14 defect remediation, W35 dependency repair and initial W15 adoption journal",
+  "superseded_current_scope": {
+    "record": "audits/pr76-review-remediation-step1-20261026.json",
+    "reason": "Independent PR #76 probes reproduced storage admission, content-selection byte leakage and CLI file-mode defects in this historical implementation."
+  },
   "changes": {
     "private_output_boundary": {
       "result": "VERIFIED_OFFLINE",

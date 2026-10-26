@@ -38,7 +38,10 @@ class PreparationTests(unittest.TestCase):
         self.rights=RightsGrant(rights_id='RIGHTS-OWN',basis=RightsBasis.OWN_WORK,
             allowed_uses=frozenset({MaterialUse.INDEX,MaterialUse.STORE_BODY,MaterialUse.MODEL_PROCESS}),
             evidence='Explicit synthetic fixture authored for this test',checked_by='test fixture',checked_at=AT,
-            permissions=(UsePermission(use=MaterialUse.MODEL_PROCESS,state=PermissionState.ALLOWED,
+            permissions=(UsePermission(use=MaterialUse.STORE_BODY,state=PermissionState.ALLOWED,
+                validity=ValidityMode.OPEN_ENDED,territories=Scope(mode=ScopeMode.ANY),
+                providers=Scope(mode=ScopeMode.ANY),content_scope=Scope(mode=ScopeMode.ANY)),
+                UsePermission(use=MaterialUse.MODEL_PROCESS,state=PermissionState.ALLOWED,
                 validity=ValidityMode.OPEN_ENDED,territories=Scope(mode=ScopeMode.ANY),
                 providers=Scope(mode=ScopeMode.ANY),content_scope=Scope(mode=ScopeMode.ANY)),))
         self.ref=VersionReference(target_version_id='SOURCE-v001',use=ReferenceUse.SOURCE,locator='entire synthetic fixture')

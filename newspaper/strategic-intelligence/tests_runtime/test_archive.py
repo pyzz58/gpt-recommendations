@@ -4,7 +4,7 @@ These exercise real SQLite transactions and private files. They do not certify
 content, legal permission assessments, natural historical changes or production.
 """
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -46,11 +46,14 @@ def permission(use, *, state=PermissionState.ALLOWED, validity=ValidityMode.OPEN
 
 
 def grant(rights_id=None, pointer=False, extra_uses=(), permissions=None, **metadata):
+    structured = list(permissions) if permissions is not None else [permission(use) for use in extra_uses]
+    if not pointer and not any(item.use is MaterialUse.STORE_BODY for item in structured):
+        structured.insert(0, permission(MaterialUse.STORE_BODY))
     return RightsGrant(rights_id=rights_id or ('RIGHTS-POINTER' if pointer else 'RIGHTS-OWN'),
         basis=RightsBasis.POINTER_ONLY if pointer else RightsBasis.OWN_WORK,
         allowed_uses=frozenset({MaterialUse.INDEX} if pointer else {MaterialUse.INDEX,MaterialUse.STORE_BODY,*extra_uses}),
         evidence="Explicit synthetic fixture authored for these tests", checked_by="test fixture", checked_at=AT,
-        permissions=tuple(permissions) if permissions is not None else tuple(permission(use) for use in extra_uses),
+        permissions=tuple(structured),
         **metadata)
 
 
@@ -234,6 +237,106 @@ class ArchiveTests(unittest.TestCase):
             with Archive(outside/'archive') as archive:
                 self.assertEqual(archive.schema_version(),3)
             self.assertEqual((outside/'archive').stat().st_mode & 0o777,0o700)
+
+    def test_full_body_admission_requires_explicit_active_storage_permission(self):
+        now=datetime.now(timezone.utc)
+        missing=RightsGrant(rights_id='RIGHTS-NO-STORAGE',basis=RightsBasis.OWN_WORK,
+            allowed_uses=frozenset({MaterialUse.INDEX,MaterialUse.STORE_BODY}),
+            evidence='Owned audit fixture with no structured storage term',
+            checked_by='test fixture',checked_at=now,permissions=())
+        cases=(
+            ('DENIED',permission(MaterialUse.STORE_BODY,state=PermissionState.DENIED)),
+            ('EXPIRED',permission(MaterialUse.STORE_BODY,validity=ValidityMode.BOUNDED,
+                effective_until=now-timedelta(seconds=1))),
+            ('UNCONFIRMED',permission(MaterialUse.STORE_BODY,
+                conditions=('written approval required',))),
+        )
+        for label,item in cases:
+            rights=grant(f'RIGHTS-{label}',permissions=(item,))
+            with self.subTest(label=label),self.assertRaises(PermissionDenied):
+                self.archive.append(submission(f'{label}-v001',object_id=label,rights=rights),BODY)
+            self.assertEqual(list((self.root/'bodies').iterdir()),[])
+        with self.assertRaises(PermissionDenied):
+            self.archive.append(submission('MISSING-v001',object_id='MISSING',rights=missing),BODY)
+        with self.assertRaises(PermissionDenied):
+            self.archive.append(submission('MISSING-v1-v001',object_id='MISSING-V1',
+                rights=missing).model_copy(update={'schema_version':1}),BODY)
+        self.assertEqual(list((self.root/'bodies').iterdir()),[])
+
+    def test_old_schema_one_body_remains_readable_without_widening_new_writes(self):
+        self.archive.append(submission(),BODY)
+        self.archive.close()
+        with sqlite3.connect(self.root/'archive.sqlite3') as c:
+            c.execute('DROP TRIGGER immutable_versions_update')
+            record=json.loads(c.execute("SELECT record FROM versions WHERE version_id='DOC-v001'").fetchone()[0])
+            record['schema_version']=1
+            record['rights']['permissions']=[]
+            c.execute('UPDATE versions SET record=? WHERE version_id=?',(json.dumps(record),'DOC-v001'))
+        with Archive(self.root) as legacy:
+            self.assertEqual(legacy.read_body('DOC-v001'),BODY)
+
+    def test_model_read_requires_current_storage_permission(self):
+        now=datetime.now(timezone.utc)
+        storage=permission(MaterialUse.STORE_BODY,validity=ValidityMode.BOUNDED,
+            effective_until=now+timedelta(seconds=30))
+        model=permission(MaterialUse.MODEL_PROCESS)
+        rights=grant('RIGHTS-STORAGE-EXPIRY',extra_uses=(MaterialUse.MODEL_PROCESS,),
+            permissions=(storage,model))
+        self.reference_fixture(rights=rights)
+        request=read_request(intended_use=MaterialUse.MODEL_PROCESS,
+            use_context=UseContext(at=now+timedelta(minutes=1),
+                provider='fixture-provider',territory='NZ',content=('synthetic body',)))
+        with self.assertRaisesRegex(PermissionDenied,'expired'):
+            self.archive.read_reference(request)
+
+    def test_partial_content_returns_only_explicitly_authorized_selection(self):
+        storage=permission(MaterialUse.STORE_BODY)
+        model=permission(MaterialUse.MODEL_PROCESS,
+            content_scope=Scope(mode=ScopeMode.LIST,values=('approved-text','excluded-photo')),
+            excluded_content=('excluded-photo',))
+        mixed=b'OWNED APPROVED TEXT\nOWNED SYNTHETIC EXCLUDED PHOTO BYTES\n'
+        self.archive.append(submission(rights=grant('RIGHTS-MIXED',
+            extra_uses=(MaterialUse.MODEL_PROCESS,),permissions=(storage,model))),mixed)
+        owner=self.archive.append(submission('OWNER-v001',object_id='OWNER',kind=ObjectKind.TASK,
+            refs=(read_request().reference,)),BODY)
+        self.assertEqual(owner.submission.version_id,'OWNER-v001')
+        request=read_request(intended_use=MaterialUse.MODEL_PROCESS,
+            expected_body_sha256=hashlib.sha256(mixed).hexdigest(),
+            use_context=UseContext(at=AT,provider='fixture-provider',territory='NZ',
+                content=('approved-text',)))
+        with self.assertRaisesRegex(PermissionDenied,'selected-version'):
+            self.archive.read_reference(request)
+        selected_body=b'OWNED APPROVED TEXT\n'
+        selected_rights=grant('RIGHTS-SELECTED',extra_uses=(MaterialUse.MODEL_PROCESS,))
+        selected=self.archive.append(VersionSubmission(
+            object_id='SELECTED',version_id='SELECTED-v001',kind=ObjectKind.MATERIAL_SELECTION,
+            title='Approved owned excerpt',spec_sha256='a'*64,created_at=AT,rights=selected_rights,
+            representation=Representation.FULL_BODY,
+            references=(VersionReference(target_version_id='DOC-v001',use=ReferenceUse.SUPPORT,
+                locator='approved-text'),)),selected_body)
+        approved=read_request(intended_use=MaterialUse.MODEL_PROCESS,
+            expected_body_sha256=hashlib.sha256(mixed).hexdigest(),
+            expected_selected_body_sha256=hashlib.sha256(selected_body).hexdigest(),
+            use_context=UseContext(at=AT,provider='fixture-provider',territory='NZ',
+                content=('approved-text',),selected_version_id='SELECTED-v001'))
+        material=self.archive.read_reference(approved)
+        self.assertEqual(material.body,selected_body)
+        self.assertNotIn(b'EXCLUDED PHOTO BYTES',material.body)
+        self.assertEqual(material.selected_version.submission.version_id,selected.submission.version_id)
+        same_rights=grant('RIGHTS-SELECTED-SAME',extra_uses=(MaterialUse.MODEL_PROCESS,))
+        self.archive.append(VersionSubmission(
+            object_id='SELECTED-SAME',version_id='SELECTED-SAME-v001',
+            kind=ObjectKind.MATERIAL_SELECTION,title='Relabelled excluded bytes',
+            spec_sha256='a'*64,created_at=AT,rights=same_rights,
+            representation=Representation.FULL_BODY,
+            references=(VersionReference(target_version_id='DOC-v001',use=ReferenceUse.SUPPORT,
+                locator='attempted relabel'),)),mixed)
+        with self.assertRaisesRegex(PermissionDenied,'byte-identical'):
+            self.archive.read_reference(read_request(
+                intended_use=MaterialUse.MODEL_PROCESS,
+                expected_body_sha256=hashlib.sha256(mixed).hexdigest(),
+                use_context=UseContext(at=AT,provider='fixture-provider',territory='NZ',
+                    content=('approved-text',),selected_version_id='SELECTED-SAME-v001')))
 
     def test_unrelated_nonempty_directory_is_not_modified(self):
         target=Path(self.temp.name)/'unrelated';target.mkdir();(target/'keep.txt').write_text('keep')
@@ -489,8 +592,6 @@ class ArchiveTests(unittest.TestCase):
             effective_from=AT-timedelta(days=1),effective_until=AT+timedelta(days=1),
             territories=Scope(mode=ScopeMode.LIST,values=("NZ",)),
             providers=Scope(mode=ScopeMode.LIST,values=("provider-a",)),
-            content_scope=Scope(mode=ScopeMode.LIST,values=("approved","third-party-photo")),
-            excluded_content=("third-party-photo",),
             conditions=("Private analysis only",),conditions_satisfied=True,
             attribution_requirements=("Cite the original publisher",))
         translate=permission(MaterialUse.TRANSLATE,validity=ValidityMode.BOUNDED,
@@ -510,8 +611,6 @@ class ArchiveTests(unittest.TestCase):
         denials=[
             UseContext(at=AT,provider="provider-b",territory="NZ",content=("approved",)),
             UseContext(at=AT,provider="provider-a",territory="AU",content=("approved",)),
-            UseContext(at=AT,provider="provider-a",territory="NZ",content=("outside-scope",)),
-            UseContext(at=AT,provider="provider-a",territory="NZ",content=("third-party-photo",)),
             UseContext(at=AT-timedelta(days=2),provider="provider-a",territory="NZ",content=("approved",)),
             UseContext(at=AT+timedelta(days=2),provider="provider-a",territory="NZ",content=("approved",)),
         ]
@@ -654,9 +753,10 @@ class CliTests(unittest.TestCase):
             no_body=subprocess.run(command+['--body-output',str(out)],cwd=ROOT,capture_output=True,text=True)
             self.assertEqual(no_body.returncode,2);self.assertFalse(out.exists())
             request_file.write_text(read_request().model_dump_json())
-            fetched=subprocess.run(command+['--body-output',str(out)],cwd=ROOT,capture_output=True,text=True)
+            fetched=subprocess.run(command+['--body-output',str(out)],cwd=ROOT,capture_output=True,text=True,umask=0o022)
             self.assertEqual(fetched.returncode,0,fetched.stderr)
             self.assertEqual(out.read_bytes(),BODY)
+            self.assertEqual(out.stat().st_mode & 0o777,0o600)
             self.assertNotIn('body',json.loads(fetched.stdout))
             self.assertNotIn(BODY.decode().strip(),fetched.stdout)
             again=subprocess.run(command+['--body-output',str(out)],cwd=ROOT,capture_output=True,text=True)
@@ -669,8 +769,9 @@ class CliTests(unittest.TestCase):
             prefix=[sys.executable,'-m','intelligence','--root',str(root/'archive')]
             put=subprocess.run(prefix+['put','--metadata',str(meta),'--body',str(body)],cwd=ROOT,capture_output=True,text=True)
             self.assertEqual(put.returncode,0,put.stderr)
-            get=subprocess.run(prefix+['get','DOC-v001','--body-output',str(out)],cwd=ROOT,capture_output=True,text=True)
+            get=subprocess.run(prefix+['get','DOC-v001','--body-output',str(out)],cwd=ROOT,capture_output=True,text=True,umask=0o022)
             self.assertEqual(get.returncode,0,get.stderr);self.assertEqual(out.read_bytes(),BODY)
+            self.assertEqual(out.stat().st_mode & 0o777,0o600)
             again=subprocess.run(prefix+['get','DOC-v001','--body-output',str(out)],cwd=ROOT,capture_output=True,text=True)
             self.assertEqual(again.returncode,2);self.assertEqual(out.read_bytes(),BODY)
 

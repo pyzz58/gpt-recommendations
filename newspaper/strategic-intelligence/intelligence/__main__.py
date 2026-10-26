@@ -25,13 +25,12 @@ import argparse
 from datetime import datetime, timezone
 import hashlib
 import json
-import os
 from pathlib import Path
 import sys
 
 from pydantic import ValidationError
 
-from .archive import Archive, ArchiveError, BodyUnavailable, require_private_output_path
+from .archive import Archive, ArchiveError, BodyUnavailable, write_private_bytes
 from .contracts import MaterialUse, ReferenceReadRequest, RightsBasis, RightsGrant, VersionSubmission
 
 
@@ -116,33 +115,26 @@ def main(argv=None) -> int:
             elif args.command == "get":
                 stored = archive.get(args.version_id)
                 if args.body_output:
-                    require_private_output_path(args.body_output)
                     body = archive.read_body(args.version_id)
-                    with args.body_output.open("xb") as output:
-                        output.write(body)
+                    write_private_bytes(args.body_output, body)
                 result = stored.model_dump(mode="json")
             elif args.command == "read-reference":
                 request = ReferenceReadRequest.model_validate_json(args.request.read_bytes())
                 material = archive.read_reference(request)
                 if args.body_output:
-                    require_private_output_path(args.body_output)
                     if material.body is None:
                         raise BodyUnavailable("INDEX returns metadata only; no body output can be created")
-                    with args.body_output.open("xb") as output:
-                        output.write(material.body)
+                    write_private_bytes(args.body_output, material.body)
                 result = material.model_dump(mode="json", exclude={"body"})
             elif args.command in ("prepare", "verify-preparation"):
                 from .preparation import PreparedTask, PreparationRequest, prepare_task, verify_prepared_task
                 if args.command == "prepare":
-                    require_private_output_path(args.output)
                     if args.output.resolve().is_relative_to(Path(__file__).resolve().parents[1]) or args.output.resolve().is_relative_to(args.spec_root.resolve()):
                         raise ValueError("Prepared inputs must remain outside the public source directory")
                     request = PreparationRequest.model_validate_json(args.request.read_bytes())
                     prepared = prepare_task(request, archive, args.spec_root)
                     raw = (prepared.model_dump_json(indent=2)+"\n").encode()
-                    descriptor = os.open(args.output, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
-                    with os.fdopen(descriptor, "wb") as output:
-                        output.write(raw)
+                    write_private_bytes(args.output, raw)
                     output_identity = {"output_sha256": hashlib.sha256(raw).hexdigest(), "output_bytes": len(raw)}
                 else:
                     supplied = PreparedTask.model_validate_json(args.bundle.read_bytes())

@@ -2,6 +2,7 @@
   "record_id": "W16-REVISION-20261025-001",
   "checked_at": "2026-10-25T12:56:14+13:00",
   "work_id": "W16",
+  "superseded_by_review": "Codex-PR76-Review-20261025: F06/F09 reproduced; current work state RETURNED",
   "source_main_commit": "a69475cb4013c54b2eb373160bcc55a6c18bd604",
   "implementation": [
     "ResearchRevision appends one current revision per Theme with exact expected parent",
