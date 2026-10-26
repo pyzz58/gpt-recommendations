@@ -5,7 +5,7 @@
 **CURRENT_BINDING仅表示本次关联版本一致；不证明方案正确、程序已实现、内容已审或获准运行。**
 理论或设计/依赖改变会变为REVIEW_REQUIRED；重新生成只刷新事实，不自动改写技术正文或批准新基线。
 
-当前规范SHA-256：`9a6ae6030737ab12df50303a7485a66dd5391846b32e72efc0e7352bbb80bbb7`。
+当前规范SHA-256：`d3e8a3152114f29253ec9b015ec94655d92d11a7c328fa4c5c33ec2a9facc1f6`。
 
 需复核节点：无；仅限关联新鲜度检查。
 
@@ -27,7 +27,7 @@
 | [T06](#t06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t06) | CURRENT_BINDING | L4顾问职责；第一阶段真实研判；后续按任务验证 | C04 B1任务共用C02/C03和模型接口；实际顾问贡献待内容验收 |
 | [T07](#t07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t07) | CURRENT_BINDING | L4帝师职责；从M02参与；第一阶段真实教学；后续按任务验证 | C04 B2任务共用C02/C03和模型接口；主动知识研究/自足教学仍待独立验收 |
 | [T08](#t08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t08) | CURRENT_BINDING | L4的C与M12准备；当期保存条件；真实结果后来再核 | C04条件任务+C02 ThesisVersion/Theme；无独立预测平台，真实成果待验 |
-| [T09](#t09) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t09) | CURRENT_BINDING | L5独立核查；不自签；第一阶段实际核查；第二阶段能力配置验证 | C04独立核查+C01回源+C02版本+C03返工；作者与审稿决定分离，业务能力未实现 |
+| [T09](#t09) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t09) | CURRENT_BINDING | L5独立核查；不自签；第一阶段实际核查；第二阶段能力配置验证 | C04独立核查+C01回源+C02版本+C03返工；W19已离线实现模型/任务配置身份、给定材料/检索/约束增益验证记录和有限使用准入，作者与审稿决定分离。真实审稿能力、模型调用与业务闭环未实现 |
 | [T10](#t10) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t10) | CURRENT_BINDING | L6主编/呈现；新命题回L4/L5；第一阶段实际格式；第四阶段正式渲染/交付 | C05 Jinja+第四阶段WeasyPrint，复用年度呈现；内容/实际文件对应未实现验收 |
 | [T11](#t11) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t11) | CURRENT_BINDING | 六层共享档案职责；第一篇保存；第二阶段跨周；第四阶段持久恢复 | C02 Pydantic/SQLAlchemy+私有版本文件；共享依赖/双as-of/纠错待实现，图检查点不是事实库 |
 | [T12](#t12) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t12) | CURRENT_BINDING | 年度A01—A12组织；复用六层；第四阶段缩区间演练；全年另验 | 年度双输入/A工序只组织C01—C05现有能力；无第二套引擎，年度成果待实现验收 |
@@ -366,7 +366,7 @@
 
 设计目的：独立审稿与具体内容放行
 
-责任：L5独立核查；不自签；阶段：第一阶段实际核查；第二阶段能力配置验证；实现：C04独立核查+C01回源+C02版本+C03返工；作者与审稿决定分离，业务能力未实现。
+责任：L5独立核查；不自签；阶段：第一阶段实际核查；第二阶段能力配置验证；实现：C04独立核查+C01回源+C02版本+C03返工；W19已离线实现模型/任务配置身份、给定材料/检索/约束增益验证记录和有限使用准入，作者与审稿决定分离。真实审稿能力、模型调用与业务闭环未实现。
 
 理论出处：[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 

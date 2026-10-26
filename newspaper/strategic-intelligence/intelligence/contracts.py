@@ -47,6 +47,9 @@ class ObjectKind(str, Enum):
     CAPABILITY_ADMISSION = "CapabilityAdmission"
     BUDGET_ENVELOPE = "BudgetEnvelope"
     BUDGET_EVENT = "BudgetEvent"
+    MODEL_TASK_CONFIGURATION = "ModelTaskConfiguration"
+    MODEL_VALIDATION = "ModelValidation"
+    MODEL_USE_ADMISSION = "ModelUseAdmission"
     MATERIAL_SELECTION = "MaterialSelection"
 
 

@@ -33,7 +33,9 @@
     "intelligence/operations.py",
     "tests_runtime/test_operations.py",
     "intelligence/gating.py",
-    "tests_runtime/test_gating.py"
+    "tests_runtime/test_gating.py",
+    "intelligence/model_admission.py",
+    "tests_runtime/test_model_admission.py"
   ],
   "data_files": [
     "SOURCE_REGISTRY.json",
@@ -52,5 +54,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "9a6ae6030737ab12df50303a7485a66dd5391846b32e72efc0e7352bbb80bbb7"
+  "spec_sha256": "d3e8a3152114f29253ec9b015ec94655d92d11a7c328fa4c5c33ec2a9facc1f6"
 }
