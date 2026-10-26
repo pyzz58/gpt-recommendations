@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "7fc2691744a4d16701db21c327e53e9b9c4769a468396b73e1df40d5fe2cc8df",
+  "spec_sha256": "9a6ae6030737ab12df50303a7485a66dd5391846b32e72efc0e7352bbb80bbb7",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -82,10 +82,10 @@
           "scope": "仅任务SI-WEEKLY-2026-W42及首篇档案准备；输入规范f793d407/110e3c821eda，私有包SHA-256 d0feedf3f468ac7b139765f91d73d4005327236cb1e7fb72774268c0ab246f44；正文/Review/全球覆盖/生产和长期恢复均未验，不代G01或W02以后工作"
         }
       ],
-      "reviewed_basis_sha256": "c550f3f1a6c4845d4086c35ea2050fe6589cf6b66e55eb3a5295055667aeba50",
+      "reviewed_basis_sha256": "f8fa0a49e57935c96d4fa0f5c81da91b5219979a96178f5863e222a2f9361a85",
       "order": 1,
       "work_type": "人工内容验证",
-      "basis_sha256": "c550f3f1a6c4845d4086c35ea2050fe6589cf6b66e55eb3a5295055667aeba50",
+      "basis_sha256": "f8fa0a49e57935c96d4fa0f5c81da91b5219979a96178f5863e222a2f9361a85",
       "current_basis": {
         "definition": "169f17dfb4ccc4d994854e04a5ea61042ea151f0263bdb2eb7eea823847459df",
         "context": {
@@ -93,13 +93,13 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R07": "a0f535d354066986b50ebbc88f06b78073a0bdbdc65c537d38a85741a669cb38",
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R07": "c37b0c9998ce64096428938ae6e89d07700d80a360e56e24b0b4a633f2144149",
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {}
       },
@@ -194,10 +194,10 @@
           "scope": "仅SI-WEEKLY-2026-W42的W02手工L1交付；输入df660635/951b7953a2aa，主池18条先冻结后查10参照，最终26候选（19比较/7待核）、35来源/12关系、7类缺口；私有包当前保存版本1 SHA-256 60fdf68840fd41b7965293c8d8a485651b53a279948ca9688355542a8524955c，回读相符；回溯同人路径独立检查，不是盲测/全球覆盖/原件事实PASS/自动采集；W03尚无入选/筛选差异，G01/生产均未验"
         }
       ],
-      "reviewed_basis_sha256": "8e023bd83ecc4a3a917f94f22e477e45599f371accee7387b1d86aed8360ade5",
+      "reviewed_basis_sha256": "d82928889b5b14840591d9ccd3108057f06968241621dbf5c0ad2403ec255ca9",
       "order": 2,
       "work_type": "人工内容验证",
-      "basis_sha256": "8e023bd83ecc4a3a917f94f22e477e45599f371accee7387b1d86aed8360ade5",
+      "basis_sha256": "d82928889b5b14840591d9ccd3108057f06968241621dbf5c0ad2403ec255ca9",
       "current_basis": {
         "definition": "11619770f361bc91dbc6c3ac2146737b70aca2df25ed52350b85ebaf3e673bf3",
         "context": {
@@ -205,15 +205,15 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R01": "d12a51e857b9e9500e68bae072987de298d5cf574ea03df6aae3c3e62c5a32ce",
-          "T02": "e1dc7e25f498cca4ddd28e07f9bc1919fef3c756456d51375575e89cb8d24887",
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7"
+          "R01": "3e6ddf9952775909f9685cb3873f745bcfa97694b207b9654fa72ce02f4d3921",
+          "T02": "5815678ab62390f86597d2fa02528fdf4c8ad164dcc7baf3ce3fae65d403e770",
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e"
         },
         "dependencies": {
-          "W01": "c550f3f1a6c4845d4086c35ea2050fe6589cf6b66e55eb3a5295055667aeba50"
+          "W01": "f8fa0a49e57935c96d4fa0f5c81da91b5219979a96178f5863e222a2f9361a85"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -304,10 +304,10 @@
           "scope": "仅SI-WEEKLY-2026-W42的W03人工初选与S7计划；26卡/3拟取证/16WATCH/7待核，3计划10取证动作，10参照与7类缺口；私有保存版本0/113611字节/SHA-256 5916f2834267bc2cca90a6d028e0efc886fc0785817ea2e81abf3fc58f440c3e，28文件/27清单回读相符；全部晚取得/历史正文未证；无S8/COVER/Review、正文、G01或生产实现，W04尚未开始"
         }
       ],
-      "reviewed_basis_sha256": "80a23fbb09113bcb13fb52a5500276801c23c9a6bf180cb0ec765e7830b2f352",
+      "reviewed_basis_sha256": "1a20af1893dca95179afac44b133f2c94dac548b38c0dd7d69f3fdbceada0fad",
       "order": 3,
       "work_type": "人工内容验证",
-      "basis_sha256": "80a23fbb09113bcb13fb52a5500276801c23c9a6bf180cb0ec765e7830b2f352",
+      "basis_sha256": "1a20af1893dca95179afac44b133f2c94dac548b38c0dd7d69f3fdbceada0fad",
       "current_basis": {
         "definition": "d62aba46d032405906f3c36c3438ac70075672cdc39faefbe04064ce23fae5e6",
         "context": {
@@ -315,14 +315,14 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R01": "d12a51e857b9e9500e68bae072987de298d5cf574ea03df6aae3c3e62c5a32ce",
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7"
+          "R01": "3e6ddf9952775909f9685cb3873f745bcfa97694b207b9654fa72ce02f4d3921",
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e"
         },
         "dependencies": {
-          "W02": "8e023bd83ecc4a3a917f94f22e477e45599f371accee7387b1d86aed8360ade5"
+          "W02": "d82928889b5b14840591d9ccd3108057f06968241621dbf5c0ad2403ec255ca9"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -408,10 +408,10 @@
           "scope": "仅W04手工S8前证据包：19文档/指针、21支持关系、9权限、3真实计算及10限制，IEA关键页实际核；不是19原件全齐，正式收费表/MoU/国家原通告等未取，历史正文未证；私有版本0/81521字节/1887d65c97b563230f409dfb878c1758375f3226fdc0dd11a62a7ad4efbdb0b5、26文件25清单回读一致。无S8/COVER/读者正文/Review/G01或生产验收，W05尚未开始"
         }
       ],
-      "reviewed_basis_sha256": "17558861301562a25a03315b5bf0b0146be3c83685e2005b0ec1061d73299b61",
+      "reviewed_basis_sha256": "be636696d3249405361cd582f358a6bb3a5af38fdd7b0453eb99c48a7c4601d0",
       "order": 4,
       "work_type": "人工内容验证",
-      "basis_sha256": "17558861301562a25a03315b5bf0b0146be3c83685e2005b0ec1061d73299b61",
+      "basis_sha256": "be636696d3249405361cd582f358a6bb3a5af38fdd7b0453eb99c48a7c4601d0",
       "current_basis": {
         "definition": "8537b676c0cc906390c48370a5791c87449966542648573b6b8dc81e8be0ac78",
         "context": {
@@ -419,14 +419,14 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R04": "d3aa0424d9694815729ec47ead66dca98bcb9898251d4b96cdf65f83287daa47",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef"
+          "R04": "b3326c19ca5f72f566048e0a501a05b34167c061dff63b8a04b349325a07f909",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09"
         },
         "dependencies": {
-          "W03": "80a23fbb09113bcb13fb52a5500276801c23c9a6bf180cb0ec765e7830b2f352"
+          "W03": "1a20af1893dca95179afac44b133f2c94dac548b38c0dd7d69f3fdbceada0fad"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -508,10 +508,10 @@
           "scope": "仅W05人工S8及入选中文A：7实质复选5COVER2WATCH、19仅接续，1深度研究/3首次事实/1公开部分精选导引，5真实中文与19段原文对应、10局部观察、9实际用途权利，10参照/7开放覆盖缺口；回溯材料历史正文未证，正式收费表/独立效果/合同履约/国家原通告等缺口保留。私有版本0/121892字节/dfef666078dc8e5c46c2c3cba4e53cb7a141080005a49fbd4b01e3be51f95f0f、41文件40清单实际回读一致；未通过L5/整刊/G01或生产验收，W06尚未开始。"
         }
       ],
-      "reviewed_basis_sha256": "a655e023be5bfc2cae842eaa648d0aaad2ef688e042f5743d3f8322d096f5790",
+      "reviewed_basis_sha256": "40563763cc62a8bdbfc67a76a3845b95a390da94afd1746245011596a76b5ffa",
       "order": 5,
       "work_type": "人工内容验证",
-      "basis_sha256": "a655e023be5bfc2cae842eaa648d0aaad2ef688e042f5743d3f8322d096f5790",
+      "basis_sha256": "40563763cc62a8bdbfc67a76a3845b95a390da94afd1746245011596a76b5ffa",
       "current_basis": {
         "definition": "53f1772ee3c5fbd85ec0aead32eaffb5456a9b4a883a21ffb6354525c463d5c3",
         "context": {
@@ -519,15 +519,15 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R03": "4a077de37bcc5735770b34d0275952dd8838e2f37cf6b8a4b4fb6e0942bf320a",
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef"
+          "R03": "10d027f92cfa875eb0e3c18e3c51c0fb0102c9d31febdeefcf9c785ced216f89",
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09"
         },
         "dependencies": {
-          "W04": "17558861301562a25a03315b5bf0b0146be3c83685e2005b0ec1061d73299b61"
+          "W04": "be636696d3249405361cd582f358a6bb3a5af38fdd7b0453eb99c48a7c4601d0"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -612,10 +612,10 @@
           "scope": "仅W06人工M01—M03：同案卷D06-v001/P01-Q-v003，8事实、7子问完成标准、4顾问/5帝师早期问题，5层结果/6知识用途，关键原件及机制/结果缺口与不同返工去向保留。回溯历史正文未证，阶段联系为公司报告非独立因果；READY不是子问全解/L5或B1/B2/C完成。私有版本0/85952字节/59f1f24d7e5325023ab425f85f3dbb69db19465a903f83b6b8a5c3536f83188c、30文件29清单实际回读一致；W07—W10仍未开始。"
         }
       ],
-      "reviewed_basis_sha256": "2ee1ba47cf6de1808b76296f0335c4930201bcb266465b5167be2d0bbdd14c7e",
+      "reviewed_basis_sha256": "8020d614f561e3ba7b46fec8449d9de0f0ed48e1de8f73c97780f9cc02bdb539",
       "order": 6,
       "work_type": "人工内容验证",
-      "basis_sha256": "2ee1ba47cf6de1808b76296f0335c4930201bcb266465b5167be2d0bbdd14c7e",
+      "basis_sha256": "8020d614f561e3ba7b46fec8449d9de0f0ed48e1de8f73c97780f9cc02bdb539",
       "current_basis": {
         "definition": "9ef20fcfb0ee5f861b478f1e6a70f404a91871f1cd8098abf21180fcfd11b47b",
         "context": {
@@ -623,15 +623,15 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R01": "d12a51e857b9e9500e68bae072987de298d5cf574ea03df6aae3c3e62c5a32ce",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c",
-          "T07": "e1ffd62b08a95d3bc49ead53f61bc904ca32622cc9e63ec31a46359393c8328f"
+          "R01": "3e6ddf9952775909f9685cb3873f745bcfa97694b207b9654fa72ce02f4d3921",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc",
+          "T07": "82b886f0fcf58f27a8accedb817e83dd909928028ed7cc06ce3bb94312091a76"
         },
         "dependencies": {
-          "W05": "a655e023be5bfc2cae842eaa648d0aaad2ef688e042f5743d3f8322d096f5790"
+          "W05": "40563763cc62a8bdbfc67a76a3845b95a390da94afd1746245011596a76b5ffa"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -722,10 +722,10 @@
           "scope": "仅W07 M04—M09有限研究：D07-v001/P01-Q-v003，原版及修订DCT/说明函等8文书身份、12主张、3竞争解释/6观察、4方法、5风险链/5计算。前提失配的强信号应用撤销，项目原因/实际费用保护未决；历史正文仍未证。私有版本0/144798字节/784cff6707c1c2c6d5721f15a40a4168c819e7fb81ba378b62a8432d9e8a4d99、55文件/54清单实际回读。W08/W09实稿、独审、G01及生产未完成。"
         }
       ],
-      "reviewed_basis_sha256": "0924225423db17516fe32870294454ca40e93aec19c5a0e5e1896ca95a94466f",
+      "reviewed_basis_sha256": "85418bdfd259f40f659dc0d33e249a885fd8a2ae03d03e9b0eb75422d8a0e826",
       "order": 7,
       "work_type": "人工内容验证",
-      "basis_sha256": "0924225423db17516fe32870294454ca40e93aec19c5a0e5e1896ca95a94466f",
+      "basis_sha256": "85418bdfd259f40f659dc0d33e249a885fd8a2ae03d03e9b0eb75422d8a0e826",
       "current_basis": {
         "definition": "790e791ec75a0dbb3454c26f0f37fc0384e333f293036bf35fae68b579dab764",
         "context": {
@@ -733,15 +733,15 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R04": "d3aa0424d9694815729ec47ead66dca98bcb9898251d4b96cdf65f83287daa47",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c"
+          "R04": "b3326c19ca5f72f566048e0a501a05b34167c061dff63b8a04b349325a07f909",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc"
         },
         "dependencies": {
-          "W06": "2ee1ba47cf6de1808b76296f0335c4930201bcb266465b5167be2d0bbdd14c7e"
+          "W06": "8020d614f561e3ba7b46fec8449d9de0f0ed48e1de8f73c97780f9cc02bdb539"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -827,10 +827,10 @@
           "scope": "仅W08 M10人工成稿及增益对照：B1-v002/D08-v001/P01-Q-v003，16段实稿/8判断/6主体/6对照，真实v001保留及4段修订。期限表述差异与来源路径定向回核；具体适用期限/项目原因/实际费用效果未决。私有包版本0/193067字节/c1fc86eab5e9d2d6c6f1393ab22fc367d371b5de707cfcd01bcf1dbc4787672c及单独正文实际回读。W09双向成稿互校、独立审稿、G01和生产未完成。"
         }
       ],
-      "reviewed_basis_sha256": "69b7b95ced31c13b2543c6b495da63975f9919b1c25d954a1a39e0419553e592",
+      "reviewed_basis_sha256": "645ce71449d6a00327740dbea1786ec8d7c6749c26b6c9a9db6a34cfe82decf3",
       "order": 8,
       "work_type": "人工内容验证",
-      "basis_sha256": "69b7b95ced31c13b2543c6b495da63975f9919b1c25d954a1a39e0419553e592",
+      "basis_sha256": "645ce71449d6a00327740dbea1786ec8d7c6749c26b6c9a9db6a34cfe82decf3",
       "current_basis": {
         "definition": "8e5f8c6014473949746e980475dc2e14e081f33428dfff6472a5b4e3b71725a4",
         "context": {
@@ -838,13 +838,13 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T06": "bee48a27f942bdae918387703159f51c8fde9937c8574c534b9b214b3adab569"
+          "T06": "8a7862badf59dec1d0a996d92f85013811268cf95351394215e663bb9f3fc6b5"
         },
         "dependencies": {
-          "W07": "0924225423db17516fe32870294454ca40e93aec19c5a0e5e1896ca95a94466f"
+          "W07": "85418bdfd259f40f659dc0d33e249a885fd8a2ae03d03e9b0eb75422d8a0e826"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -925,10 +925,10 @@
           "scope": "仅W09 M11人工教学及互校：B2-v002/B1-v003/D09/P01-Q-v003，22段/9知识主张/5计算/3人工概念登记/4对照，B1两段澄清和B2三段真实修订；所有假设非真实案例/独立验证/学习测量。项目原因/个案责任/净回收与账单未决。私有包版本0/255422字节/2c6c06c704443286f082da46858d47e8ce945bef2f5127a2fa7876edebfeb072和单独正文实际回读；W10、独审、整刊/G01和生产未完成。"
         }
       ],
-      "reviewed_basis_sha256": "be24b0a729177decc03e9b2f04c7d48f19a5c503fec8fb69c5984a55947312b9",
+      "reviewed_basis_sha256": "40d8f81b70c70db8b355819c442735d51d786c9808f4cfb3b45cc974b15e15c4",
       "order": 9,
       "work_type": "人工内容验证",
-      "basis_sha256": "be24b0a729177decc03e9b2f04c7d48f19a5c503fec8fb69c5984a55947312b9",
+      "basis_sha256": "40d8f81b70c70db8b355819c442735d51d786c9808f4cfb3b45cc974b15e15c4",
       "current_basis": {
         "definition": "50953c44467afa17cfbdefa3a26a99e09e63eaba4e80b8f1e7fe1a3c3456b841",
         "context": {
@@ -936,13 +936,13 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T07": "e1ffd62b08a95d3bc49ead53f61bc904ca32622cc9e63ec31a46359393c8328f"
+          "T07": "82b886f0fcf58f27a8accedb817e83dd909928028ed7cc06ce3bb94312091a76"
         },
         "dependencies": {
-          "W07": "0924225423db17516fe32870294454ca40e93aec19c5a0e5e1896ca95a94466f"
+          "W07": "85418bdfd259f40f659dc0d33e249a885fd8a2ae03d03e9b0eb75422d8a0e826"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -1024,10 +1024,10 @@
           "scope": "仅W10人工C/M12准备：C-v001/D10/P01，2条件路径/2Thesis及原W01同任务槽位的实际追加；原话形成10月22日非18日预测，窗口为有理由事件触发，无新未来结果/点预测命中率/自动查询。113文件包版本0/310331字节/dacafff28e5f1be7855a5934008991b3eeedf99bf277aa154bdaf2e531eab100及单独正文真实回读。个案原因/责任/工程/净回收和账单未决，独立W11、整刊/G01及生产未完成。"
         }
       ],
-      "reviewed_basis_sha256": "cc044fbc57096f6b18293b937b825656ee58b637ade5f01839c4135f20dbb706",
+      "reviewed_basis_sha256": "f80775bba7c66d03fe81a8e902d18794a4a33c76fa68bad04ee4f41c67761f1f",
       "order": 10,
       "work_type": "人工内容验证",
-      "basis_sha256": "cc044fbc57096f6b18293b937b825656ee58b637ade5f01839c4135f20dbb706",
+      "basis_sha256": "f80775bba7c66d03fe81a8e902d18794a4a33c76fa68bad04ee4f41c67761f1f",
       "current_basis": {
         "definition": "1d1a5e76b3542bcedb181bb21409ee66bff095072cafc1b688d2db85e896e481",
         "context": {
@@ -1035,14 +1035,14 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T08": "1aad6a5e8a91b602da4e2bca796f22b707ea4b07d84a693b412fb9f8223ffb99"
+          "T08": "8c0c309a164522c7ae63c9b02b3bafe39cde2570328791013c457990153597c5"
         },
         "dependencies": {
-          "W08": "69b7b95ced31c13b2543c6b495da63975f9919b1c25d954a1a39e0419553e592",
-          "W09": "be24b0a729177decc03e9b2f04c7d48f19a5c503fec8fb69c5984a55947312b9"
+          "W08": "645ce71449d6a00327740dbea1786ec8d7c6749c26b6c9a9db6a34cfe82decf3",
+          "W09": "40d8f81b70c70db8b355819c442735d51d786c9808f4cfb3b45cc974b15e15c4"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -1125,10 +1125,10 @@
           "scope": "仅W11第一阶段人工内容核查：8初始疑点/8实际意见、2修订要求、11来源范围与8算术；A02/B1-v004/B2-v003/C-v002及真实全文绑定RV-W11-CONTENT-20261023-001。139文件包版本0/415640字节/97611a22175d0bfa2d09f578a4bc9bb5f6e6690052815903d9fe9cc3b94b459e与全文回读相符。PASS只交W12内容使用，个案/原因/工程/净回收未知、原M12时间保留；视觉/完整样刊/G01、通用能力及生产未验。"
         }
       ],
-      "reviewed_basis_sha256": "991593f882e3e1c653f2210477a8c0ad6990723e523c7d871100200faaf845b2",
+      "reviewed_basis_sha256": "3379453fb5902ec6b9e6d9979756d20588fe4eb0957a42e1032c5ffd0660d634",
       "order": 11,
       "work_type": "人工内容验证",
-      "basis_sha256": "991593f882e3e1c653f2210477a8c0ad6990723e523c7d871100200faaf845b2",
+      "basis_sha256": "3379453fb5902ec6b9e6d9979756d20588fe4eb0957a42e1032c5ffd0660d634",
       "current_basis": {
         "definition": "44b0fa20817150908a3c735109c044fec1f1e70408eee581aa792b5aa2d8ce7d",
         "context": {
@@ -1136,17 +1136,17 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R01": "d12a51e857b9e9500e68bae072987de298d5cf574ea03df6aae3c3e62c5a32ce",
-          "R03": "4a077de37bcc5735770b34d0275952dd8838e2f37cf6b8a4b4fb6e0942bf320a",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6"
+          "R01": "3e6ddf9952775909f9685cb3873f745bcfa97694b207b9654fa72ce02f4d3921",
+          "R03": "10d027f92cfa875eb0e3c18e3c51c0fb0102c9d31febdeefcf9c785ced216f89",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d"
         },
         "dependencies": {
-          "W08": "69b7b95ced31c13b2543c6b495da63975f9919b1c25d954a1a39e0419553e592",
-          "W09": "be24b0a729177decc03e9b2f04c7d48f19a5c503fec8fb69c5984a55947312b9",
-          "W10": "cc044fbc57096f6b18293b937b825656ee58b637ade5f01839c4135f20dbb706"
+          "W08": "645ce71449d6a00327740dbea1786ec8d7c6749c26b6c9a9db6a34cfe82decf3",
+          "W09": "40d8f81b70c70db8b355819c442735d51d786c9808f4cfb3b45cc974b15e15c4",
+          "W10": "f80775bba7c66d03fe81a8e902d18794a4a33c76fa68bad04ee4f41c67761f1f"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -1251,10 +1251,10 @@
           "scope": "原PDF与独立存储PDF字节不相同，分别保留身份；21页文本、像素和55链接及8项目录一致，承接原有限内容/呈现检查。保存ZIP与原包逐字节相同，214文件/213项清单核过；用户实际阅读仍待，W12/G01未过，不继续W13/W14。"
         }
       ],
-      "reviewed_basis_sha256": "ebb8ac1fbbeb690d129588d0a4420eb817e2810fe9138a1729a954725c5dbd19",
+      "reviewed_basis_sha256": "eb6597e337efcfaf9348dbb01476e2cb6b1c54ffe45110a58238933190d203be",
       "order": 12,
       "work_type": "人工内容验证",
-      "basis_sha256": "ebb8ac1fbbeb690d129588d0a4420eb817e2810fe9138a1729a954725c5dbd19",
+      "basis_sha256": "eb6597e337efcfaf9348dbb01476e2cb6b1c54ffe45110a58238933190d203be",
       "current_basis": {
         "definition": "fa1dc4b606ebf4b1a635b761f005d55614264be2456b672d4d32586d47d90a6e",
         "context": {
@@ -1262,17 +1262,17 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R01": "d12a51e857b9e9500e68bae072987de298d5cf574ea03df6aae3c3e62c5a32ce",
-          "R03": "4a077de37bcc5735770b34d0275952dd8838e2f37cf6b8a4b4fb6e0942bf320a",
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587"
+          "R01": "3e6ddf9952775909f9685cb3873f745bcfa97694b207b9654fa72ce02f4d3921",
+          "R03": "10d027f92cfa875eb0e3c18e3c51c0fb0102c9d31febdeefcf9c785ced216f89",
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684"
         },
         "dependencies": {
-          "W11": "991593f882e3e1c653f2210477a8c0ad6990723e523c7d871100200faaf845b2"
+          "W11": "3379453fb5902ec6b9e6d9979756d20588fe4eb0957a42e1032c5ffd0660d634"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -1368,10 +1368,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "90610531216be2bbb2c07cdff160bfcc104d5da5e3fdcf6351732454d17e6d57",
+      "reviewed_basis_sha256": "d0e7535d955a9338d6ce448d58254aef24fe37292afdf60cb0501b8bfe00d0df",
       "order": 13,
       "work_type": "阶段门",
-      "basis_sha256": "90610531216be2bbb2c07cdff160bfcc104d5da5e3fdcf6351732454d17e6d57",
+      "basis_sha256": "d0e7535d955a9338d6ce448d58254aef24fe37292afdf60cb0501b8bfe00d0df",
       "current_basis": {
         "definition": "fa296a9521c9997bf1008a3e35cbc869ccf88c78d4194339a6b5367705cad18d",
         "context": {
@@ -1379,39 +1379,39 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R01": "d12a51e857b9e9500e68bae072987de298d5cf574ea03df6aae3c3e62c5a32ce",
-          "R03": "4a077de37bcc5735770b34d0275952dd8838e2f37cf6b8a4b4fb6e0942bf320a",
-          "R04": "d3aa0424d9694815729ec47ead66dca98bcb9898251d4b96cdf65f83287daa47",
-          "R07": "a0f535d354066986b50ebbc88f06b78073a0bdbdc65c537d38a85741a669cb38",
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T02": "e1dc7e25f498cca4ddd28e07f9bc1919fef3c756456d51375575e89cb8d24887",
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c",
-          "T06": "bee48a27f942bdae918387703159f51c8fde9937c8574c534b9b214b3adab569",
-          "T07": "e1ffd62b08a95d3bc49ead53f61bc904ca32622cc9e63ec31a46359393c8328f",
-          "T08": "1aad6a5e8a91b602da4e2bca796f22b707ea4b07d84a693b412fb9f8223ffb99",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R01": "3e6ddf9952775909f9685cb3873f745bcfa97694b207b9654fa72ce02f4d3921",
+          "R03": "10d027f92cfa875eb0e3c18e3c51c0fb0102c9d31febdeefcf9c785ced216f89",
+          "R04": "b3326c19ca5f72f566048e0a501a05b34167c061dff63b8a04b349325a07f909",
+          "R07": "c37b0c9998ce64096428938ae6e89d07700d80a360e56e24b0b4a633f2144149",
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T02": "5815678ab62390f86597d2fa02528fdf4c8ad164dcc7baf3ce3fae65d403e770",
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc",
+          "T06": "8a7862badf59dec1d0a996d92f85013811268cf95351394215e663bb9f3fc6b5",
+          "T07": "82b886f0fcf58f27a8accedb817e83dd909928028ed7cc06ce3bb94312091a76",
+          "T08": "8c0c309a164522c7ae63c9b02b3bafe39cde2570328791013c457990153597c5",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W01": "c550f3f1a6c4845d4086c35ea2050fe6589cf6b66e55eb3a5295055667aeba50",
-          "W02": "8e023bd83ecc4a3a917f94f22e477e45599f371accee7387b1d86aed8360ade5",
-          "W03": "80a23fbb09113bcb13fb52a5500276801c23c9a6bf180cb0ec765e7830b2f352",
-          "W04": "17558861301562a25a03315b5bf0b0146be3c83685e2005b0ec1061d73299b61",
-          "W05": "a655e023be5bfc2cae842eaa648d0aaad2ef688e042f5743d3f8322d096f5790",
-          "W06": "2ee1ba47cf6de1808b76296f0335c4930201bcb266465b5167be2d0bbdd14c7e",
-          "W07": "0924225423db17516fe32870294454ca40e93aec19c5a0e5e1896ca95a94466f",
-          "W08": "69b7b95ced31c13b2543c6b495da63975f9919b1c25d954a1a39e0419553e592",
-          "W09": "be24b0a729177decc03e9b2f04c7d48f19a5c503fec8fb69c5984a55947312b9",
-          "W10": "cc044fbc57096f6b18293b937b825656ee58b637ade5f01839c4135f20dbb706",
-          "W11": "991593f882e3e1c653f2210477a8c0ad6990723e523c7d871100200faaf845b2",
-          "W12": "ebb8ac1fbbeb690d129588d0a4420eb817e2810fe9138a1729a954725c5dbd19"
+          "W01": "f8fa0a49e57935c96d4fa0f5c81da91b5219979a96178f5863e222a2f9361a85",
+          "W02": "d82928889b5b14840591d9ccd3108057f06968241621dbf5c0ad2403ec255ca9",
+          "W03": "1a20af1893dca95179afac44b133f2c94dac548b38c0dd7d69f3fdbceada0fad",
+          "W04": "be636696d3249405361cd582f358a6bb3a5af38fdd7b0453eb99c48a7c4601d0",
+          "W05": "40563763cc62a8bdbfc67a76a3845b95a390da94afd1746245011596a76b5ffa",
+          "W06": "8020d614f561e3ba7b46fec8449d9de0f0ed48e1de8f73c97780f9cc02bdb539",
+          "W07": "85418bdfd259f40f659dc0d33e249a885fd8a2ae03d03e9b0eb75422d8a0e826",
+          "W08": "645ce71449d6a00327740dbea1786ec8d7c6749c26b6c9a9db6a34cfe82decf3",
+          "W09": "40d8f81b70c70db8b355819c442735d51d786c9808f4cfb3b45cc974b15e15c4",
+          "W10": "f80775bba7c66d03fe81a8e902d18794a4a33c76fa68bad04ee4f41c67761f1f",
+          "W11": "3379453fb5902ec6b9e6d9979756d20588fe4eb0957a42e1032c5ffd0660d634",
+          "W12": "eb6597e337efcfaf9348dbb01476e2cb6b1c54ffe45110a58238933190d203be"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -1609,10 +1609,10 @@
           "scope": "F01/F02已修复离线共享边界：新正文仅在显式、当时有效、条件确认且全内容覆盖的STORE_BODY许可下写入；后续读取复核保存许可；部分授权只能返回独立MaterialSelection的精确字节，原完整正文或字节相同重贴均拒绝。旧schema1正文保留本地恢复读取，但新写入不能用旧缺项绕过。G01未过，W13仍非ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "8d621d4354874ffdc7c3632a99c90d3a4137824c9f2b3108cffd4ee6ff3c0ed6",
+      "reviewed_basis_sha256": "99bfddcbe32b351eaffee5ba2a768c7c506cbea0880271f1453155c1e1e6ae88",
       "order": 14,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "8d621d4354874ffdc7c3632a99c90d3a4137824c9f2b3108cffd4ee6ff3c0ed6",
+      "basis_sha256": "99bfddcbe32b351eaffee5ba2a768c7c506cbea0880271f1453155c1e1e6ae88",
       "current_basis": {
         "definition": "8c765f55c4dbba0732ffb65a1ac5b1640569d215ed8f480285504407cbf60ed8",
         "context": {
@@ -1620,15 +1620,15 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587"
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684"
         },
         "dependencies": {
-          "G01": "90610531216be2bbb2c07cdff160bfcc104d5da5e3fdcf6351732454d17e6d57"
+          "G01": "d0e7535d955a9338d6ce448d58254aef24fe37292afdf60cb0501b8bfe00d0df"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -1768,10 +1768,10 @@
           "scope": "F10已修复：get、read-reference和准备包统一调用O_EXCL/NOFOLLOW直接创建0600文件，不再先按umask创建后chmod；宽松umask下正文和准备包均为0600，既有文件不覆盖、仓库内路径与符号链接仍拒绝。W13/W12/G01正式前置未过，整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "8c34160e23354fc06b0a624719133395b4b34b1789bcc7ec904e394c412819d6",
+      "reviewed_basis_sha256": "52867aa84e1b4c801897c2e441e3b70640cf2fcb665e66b51f1c6a166699f55d",
       "order": 15,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "8c34160e23354fc06b0a624719133395b4b34b1789bcc7ec904e394c412819d6",
+      "basis_sha256": "52867aa84e1b4c801897c2e441e3b70640cf2fcb665e66b51f1c6a166699f55d",
       "current_basis": {
         "definition": "1265c8b2bc47bf362db1ddb63f1d2139510f688c01f87ca4873ba311452432fa",
         "context": {
@@ -1779,14 +1779,14 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R07": "a0f535d354066986b50ebbc88f06b78073a0bdbdc65c537d38a85741a669cb38",
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c"
+          "R07": "c37b0c9998ce64096428938ae6e89d07700d80a360e56e24b0b4a633f2144149",
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132"
         },
         "dependencies": {
-          "W13": "8d621d4354874ffdc7c3632a99c90d3a4137824c9f2b3108cffd4ee6ff3c0ed6"
+          "W13": "99bfddcbe32b351eaffee5ba2a768c7c506cbea0880271f1453155c1e1e6ae88"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -1904,10 +1904,10 @@
           "scope": "F03—F05已修复离线范围：ReviewCoverage结构化绑定精确Task/主体/用途并支持多主体；决定与提交按稳定Task对象隔离，CLI显式按Task查询且旧共享槽只读筛选；当前采用递归核必要依赖、状态、期限、Task/主体最新版本及主体/Review/必输版本撤回。A→B→C、独立分支、两Task、主体撤回、新Task版本和检查后恢复均通过。W14/G01正式前置未过，调用者身份、真实L5、内容真伪、完整M图和生产仍未验，W15整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "9cd726a4a2e762e8d91448d21014f2dc1d0e9bf405a1e93d8bd2ad63452e361c",
+      "reviewed_basis_sha256": "ebb1732b2b8ef56b0c4f28eefcfefc8ebeddb8499d4012f6ae5e24bd52f34e9c",
       "order": 16,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "9cd726a4a2e762e8d91448d21014f2dc1d0e9bf405a1e93d8bd2ad63452e361c",
+      "basis_sha256": "ebb1732b2b8ef56b0c4f28eefcfefc8ebeddb8499d4012f6ae5e24bd52f34e9c",
       "current_basis": {
         "definition": "e57c49b5ce89da3247ae02479be9126afeca86182b6c210bb0faf56e3ad0da7c",
         "context": {
@@ -1915,13 +1915,13 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c"
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132"
         },
         "dependencies": {
-          "W14": "8c34160e23354fc06b0a624719133395b4b34b1789bcc7ec904e394c412819d6"
+          "W14": "52867aa84e1b4c801897c2e441e3b70640cf2fcb665e66b51f1c6a166699f55d"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -2035,10 +2035,10 @@
           "scope": "F06/F09已修复离线范围：修订结构化区分问题/证据/截点/限制，非critical以外默认关键；ArtifactLink保存并核对作品实际basis，旧作品仅在完整列举非关键增删并经精确Review兼容后沿用，关键变化须重建；Archive写事务同时核期望revision和上一commit，检查后换修订返回Conflict。重建、关键拒绝、无关通过、revision/commit交错及并发提交均有回归。W13/W15正式前置未过，真实W27—W32、模型内容与生产恢复未验，W16整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "f3f2897f6696c242d92c938e8b734f00efa7c773fd813e14994611cde32664ef",
+      "reviewed_basis_sha256": "98ff314772be4675aab6e04d07cd1530c135bde602ec5b6967ef2bdef65e40c8",
       "order": 17,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "f3f2897f6696c242d92c938e8b734f00efa7c773fd813e14994611cde32664ef",
+      "basis_sha256": "98ff314772be4675aab6e04d07cd1530c135bde602ec5b6967ef2bdef65e40c8",
       "current_basis": {
         "definition": "84b9a143d340c1bb6e2723963d3553071ad2a0d9f5d14918640fc0ce31b31094",
         "context": {
@@ -2046,16 +2046,16 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587"
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684"
         },
         "dependencies": {
-          "W13": "8d621d4354874ffdc7c3632a99c90d3a4137824c9f2b3108cffd4ee6ff3c0ed6",
-          "W15": "9cd726a4a2e762e8d91448d21014f2dc1d0e9bf405a1e93d8bd2ad63452e361c"
+          "W13": "99bfddcbe32b351eaffee5ba2a768c7c506cbea0880271f1453155c1e1e6ae88",
+          "W15": "ebb1732b2b8ef56b0c4f28eefcfefc8ebeddb8499d4012f6ae5e24bd52f34e9c"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -2188,10 +2188,10 @@
           "scope": "F07/F08/F11已修复离线范围：UNKNOWN对账绑定原operation、原回执版本、已知provider ID及引用operation的Evidence；不同查询ID须带同版本ProviderRequestMapping。对账以expected-current CAS写回，不覆盖并发成功，失败/失败只留一个当前回执。Adapter违规结果不采用但保留provider ID、实际费用、用量、内部重试、观察状态/结果哈希和违规原因，汇总继续计费。W18授权/预算、真实供应商认证与生产恢复未验，W17整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "986f35a4be9a67d36686c472751c111b9e37c9d0cff8be4b9ba61e955e65639f",
+      "reviewed_basis_sha256": "686becae7a0503789ec964a1174d49ef36ad3f432239d90b643c3dbd746ff61b",
       "order": 18,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "986f35a4be9a67d36686c472751c111b9e37c9d0cff8be4b9ba61e955e65639f",
+      "basis_sha256": "686becae7a0503789ec964a1174d49ef36ad3f432239d90b643c3dbd746ff61b",
       "current_basis": {
         "definition": "b3b1e59d2ed144b8a5f1ea0f2dc3d447607d923a17b0d5e716cd431d017ba8c6",
         "context": {
@@ -2199,15 +2199,15 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W13": "8d621d4354874ffdc7c3632a99c90d3a4137824c9f2b3108cffd4ee6ff3c0ed6",
-          "W15": "9cd726a4a2e762e8d91448d21014f2dc1d0e9bf405a1e93d8bd2ad63452e361c"
+          "W13": "99bfddcbe32b351eaffee5ba2a768c7c506cbea0880271f1453155c1e1e6ae88",
+          "W15": "ebb1732b2b8ef56b0c4f28eefcfefc8ebeddb8499d4012f6ae5e24bd52f34e9c"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -2276,12 +2276,31 @@
       ],
       "failure_action": "不足/未知按实际已授权范围停止或受控处理；无授权不新增收费；关内容任务不妨碍离线修复。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
-      "reviewed_basis_sha256": "60bdec1bc758e5b3dccf6689f12e45ada58cc704d778d095b7e85d4d47a9630e",
+      "progress": "IN_PROGRESS",
+      "evidence": [
+        {
+          "record_id": "W18-PRECALL-GATE-20261026-001",
+          "artifact_refs": [
+            "intelligence/gating.py",
+            "intelligence/operations.py",
+            "intelligence/archive.py",
+            "intelligence/contracts.py",
+            "tests_runtime/test_gating.py",
+            "audits/pr76-review-remediation-w18-20261026.json"
+          ],
+          "validation_refs": [
+            "tests_runtime/test_gating.py (8 actual passing W18 tests)",
+            "audits/pr76-review-remediation-w18-20261026.json"
+          ],
+          "reviewer": "当前执行者实际离线能力准入、材料用途、预算CAS、Adapter调用前拒绝和合成回执检查；非真实供应商、独立L5或阶段批准",
+          "result": "IN_PROGRESS",
+          "scope": "W18离线门禁：CapabilityAdmission精确绑定Task/步骤/供应商/工具/配置/操作/材料/地域/期限/Review和重试；BudgetEnvelope与追加预算事件在执行前预留、执行后按实际/估计结算，未知费用保留，默认并发预留1并由expected-current保护。材料用途/外发/配置/重试不足均在Adapter调用前拒绝；受控试用显式标记人工复核。真实供应商认证/账单、生产预算/W48恢复仍未验，整包不ACCEPTED。"
+        }
+      ],
+      "reviewed_basis_sha256": "05f2b200f8e10cba92b974f76b00ca307a3c3c3525e41cab39fa8408d47606cf",
       "order": 19,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "60bdec1bc758e5b3dccf6689f12e45ada58cc704d778d095b7e85d4d47a9630e",
+      "basis_sha256": "05f2b200f8e10cba92b974f76b00ca307a3c3c3525e41cab39fa8408d47606cf",
       "current_basis": {
         "definition": "9c18707de965725e76c4d99d9518d56ae702bda3abbd9cc00324864eafefe824",
         "context": {
@@ -2289,15 +2308,15 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W15": "9cd726a4a2e762e8d91448d21014f2dc1d0e9bf405a1e93d8bd2ad63452e361c",
-          "W17": "986f35a4be9a67d36686c472751c111b9e37c9d0cff8be4b9ba61e955e65639f"
+          "W15": "ebb1732b2b8ef56b0c4f28eefcfefc8ebeddb8499d4012f6ae5e24bd52f34e9c",
+          "W17": "686becae7a0503789ec964a1174d49ef36ad3f432239d90b643c3dbd746ff61b"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -2365,10 +2384,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "6a6a1a26489d8cda26160c25935c5f15bb108694ea7f15834443304c038aba25",
+      "reviewed_basis_sha256": "054958e5e6f4e1440e4477ac562fa325ecbf053470b69ab9a6f087844b1bc549",
       "order": 20,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "6a6a1a26489d8cda26160c25935c5f15bb108694ea7f15834443304c038aba25",
+      "basis_sha256": "054958e5e6f4e1440e4477ac562fa325ecbf053470b69ab9a6f087844b1bc549",
       "current_basis": {
         "definition": "0564eabe6d2ce82573b3a94212e673d637b6698d344cab2a1e9991193148d759",
         "context": {
@@ -2376,14 +2395,14 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W18": "60bdec1bc758e5b3dccf6689f12e45ada58cc704d778d095b7e85d4d47a9630e"
+          "W18": "05f2b200f8e10cba92b974f76b00ca307a3c3c3525e41cab39fa8408d47606cf"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -2445,10 +2464,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "bc001538374de7b3fb2bea97d0ed9c7e9a82f65ae8ff5f387eaab6fcea1a962d",
+      "reviewed_basis_sha256": "277b8dce6711db5ceb9b2665e39e5838ff2f4b72156588e4573d6cb3393e7d09",
       "order": 21,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "bc001538374de7b3fb2bea97d0ed9c7e9a82f65ae8ff5f387eaab6fcea1a962d",
+      "basis_sha256": "277b8dce6711db5ceb9b2665e39e5838ff2f4b72156588e4573d6cb3393e7d09",
       "current_basis": {
         "definition": "cd7963a9e3cb324ef6a07a9cd4fe6e31b9fc49b07164f337c253988e7ae52f2c",
         "context": {
@@ -2456,14 +2475,14 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T02": "e1dc7e25f498cca4ddd28e07f9bc1919fef3c756456d51375575e89cb8d24887"
+          "T02": "5815678ab62390f86597d2fa02528fdf4c8ad164dcc7baf3ce3fae65d403e770"
         },
         "dependencies": {
-          "W17": "986f35a4be9a67d36686c472751c111b9e37c9d0cff8be4b9ba61e955e65639f",
-          "W18": "60bdec1bc758e5b3dccf6689f12e45ada58cc704d778d095b7e85d4d47a9630e"
+          "W17": "686becae7a0503789ec964a1174d49ef36ad3f432239d90b643c3dbd746ff61b",
+          "W18": "05f2b200f8e10cba92b974f76b00ca307a3c3c3525e41cab39fa8408d47606cf"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -2521,10 +2540,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "1cbc9546da68d87ebc7b24ddfc2071bde815286cd436f62a67f89b8bb4001348",
+      "reviewed_basis_sha256": "3377ba769d98cb5a7f609017d97a52f56623faf10a7bc3548e091fe9225684fc",
       "order": 22,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "1cbc9546da68d87ebc7b24ddfc2071bde815286cd436f62a67f89b8bb4001348",
+      "basis_sha256": "3377ba769d98cb5a7f609017d97a52f56623faf10a7bc3548e091fe9225684fc",
       "current_basis": {
         "definition": "7f5f21dd1f26e6ffadca5180a86e95e2b22f097219ccd8ffeb4c287551ee15e9",
         "context": {
@@ -2532,14 +2551,14 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T02": "e1dc7e25f498cca4ddd28e07f9bc1919fef3c756456d51375575e89cb8d24887"
+          "T02": "5815678ab62390f86597d2fa02528fdf4c8ad164dcc7baf3ce3fae65d403e770"
         },
         "dependencies": {
-          "W13": "8d621d4354874ffdc7c3632a99c90d3a4137824c9f2b3108cffd4ee6ff3c0ed6",
-          "W20": "bc001538374de7b3fb2bea97d0ed9c7e9a82f65ae8ff5f387eaab6fcea1a962d"
+          "W13": "99bfddcbe32b351eaffee5ba2a768c7c506cbea0880271f1453155c1e1e6ae88",
+          "W20": "277b8dce6711db5ceb9b2665e39e5838ff2f4b72156588e4573d6cb3393e7d09"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -2599,10 +2618,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "ea8163db338d6f7a2f85b31e136167439045d2e04b210d77a374b1bee59fcf20",
+      "reviewed_basis_sha256": "77c3b8a650882c728f503de65af3f781f6a736fdd6dc792b1a5797a6d36b2fb9",
       "order": 23,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "ea8163db338d6f7a2f85b31e136167439045d2e04b210d77a374b1bee59fcf20",
+      "basis_sha256": "77c3b8a650882c728f503de65af3f781f6a736fdd6dc792b1a5797a6d36b2fb9",
       "current_basis": {
         "definition": "fb7b6b7232345157c10a77341897bed87b8765c9e51aa707c88c39366b2bcfdf",
         "context": {
@@ -2610,15 +2629,15 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T02": "e1dc7e25f498cca4ddd28e07f9bc1919fef3c756456d51375575e89cb8d24887",
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7"
+          "T02": "5815678ab62390f86597d2fa02528fdf4c8ad164dcc7baf3ce3fae65d403e770",
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e"
         },
         "dependencies": {
-          "W20": "bc001538374de7b3fb2bea97d0ed9c7e9a82f65ae8ff5f387eaab6fcea1a962d",
-          "W21": "1cbc9546da68d87ebc7b24ddfc2071bde815286cd436f62a67f89b8bb4001348"
+          "W20": "277b8dce6711db5ceb9b2665e39e5838ff2f4b72156588e4573d6cb3393e7d09",
+          "W21": "3377ba769d98cb5a7f609017d97a52f56623faf10a7bc3548e091fe9225684fc"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -2684,10 +2703,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "53145f2e7fe6f4bec68783faf2c44e9346542aa765a86c7556473d233c62f9a5",
+      "reviewed_basis_sha256": "43423c771ce40548c26f77cb900b1ed07f2d54fc99e09dc72268248ea2c29a49",
       "order": 24,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "53145f2e7fe6f4bec68783faf2c44e9346542aa765a86c7556473d233c62f9a5",
+      "basis_sha256": "43423c771ce40548c26f77cb900b1ed07f2d54fc99e09dc72268248ea2c29a49",
       "current_basis": {
         "definition": "f3ce1303bc5ee74d38ea7654105657b05406aed03b41dc0180979958b1774b44",
         "context": {
@@ -2695,14 +2714,14 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7"
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e"
         },
         "dependencies": {
-          "W15": "9cd726a4a2e762e8d91448d21014f2dc1d0e9bf405a1e93d8bd2ad63452e361c",
-          "W21": "1cbc9546da68d87ebc7b24ddfc2071bde815286cd436f62a67f89b8bb4001348"
+          "W15": "ebb1732b2b8ef56b0c4f28eefcfefc8ebeddb8499d4012f6ae5e24bd52f34e9c",
+          "W21": "3377ba769d98cb5a7f609017d97a52f56623faf10a7bc3548e091fe9225684fc"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -2765,10 +2784,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "d86b86059dad6e876b2e2af9fa7df58f0da6e8978b559f880e988805f0c532fb",
+      "reviewed_basis_sha256": "7c21345cf21543779e9594e4961c66ceb56e8d283b774f2b11bcd26979a16e10",
       "order": 25,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "d86b86059dad6e876b2e2af9fa7df58f0da6e8978b559f880e988805f0c532fb",
+      "basis_sha256": "7c21345cf21543779e9594e4961c66ceb56e8d283b774f2b11bcd26979a16e10",
       "current_basis": {
         "definition": "76797f378fde8063b5405ae29fbf42fdaace01594e63d861680760948cd2beaf",
         "context": {
@@ -2776,16 +2795,16 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef"
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09"
         },
         "dependencies": {
-          "W13": "8d621d4354874ffdc7c3632a99c90d3a4137824c9f2b3108cffd4ee6ff3c0ed6",
-          "W17": "986f35a4be9a67d36686c472751c111b9e37c9d0cff8be4b9ba61e955e65639f",
-          "W18": "60bdec1bc758e5b3dccf6689f12e45ada58cc704d778d095b7e85d4d47a9630e",
-          "W23": "53145f2e7fe6f4bec68783faf2c44e9346542aa765a86c7556473d233c62f9a5"
+          "W13": "99bfddcbe32b351eaffee5ba2a768c7c506cbea0880271f1453155c1e1e6ae88",
+          "W17": "686becae7a0503789ec964a1174d49ef36ad3f432239d90b643c3dbd746ff61b",
+          "W18": "05f2b200f8e10cba92b974f76b00ca307a3c3c3525e41cab39fa8408d47606cf",
+          "W23": "43423c771ce40548c26f77cb900b1ed07f2d54fc99e09dc72268248ea2c29a49"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -2849,10 +2868,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "74078ab918310cf298fff20ec44434a00d4ba5760465d38e609cae9adc189aef",
+      "reviewed_basis_sha256": "2840f477d8194a30c0bf575228f0aeb4def1aec941eb67ee7b10633b2371b7a4",
       "order": 26,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "74078ab918310cf298fff20ec44434a00d4ba5760465d38e609cae9adc189aef",
+      "basis_sha256": "2840f477d8194a30c0bf575228f0aeb4def1aec941eb67ee7b10633b2371b7a4",
       "current_basis": {
         "definition": "ab7c3a33409a1a2d06a4ba53abbae1327742867f4a90151e126aa18239f1754f",
         "context": {
@@ -2860,16 +2879,16 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R04": "d3aa0424d9694815729ec47ead66dca98bcb9898251d4b96cdf65f83287daa47",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c"
+          "R04": "b3326c19ca5f72f566048e0a501a05b34167c061dff63b8a04b349325a07f909",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc"
         },
         "dependencies": {
-          "W16": "f3f2897f6696c242d92c938e8b734f00efa7c773fd813e14994611cde32664ef",
-          "W24": "d86b86059dad6e876b2e2af9fa7df58f0da6e8978b559f880e988805f0c532fb"
+          "W16": "98ff314772be4675aab6e04d07cd1530c135bde602ec5b6967ef2bdef65e40c8",
+          "W24": "7c21345cf21543779e9594e4961c66ceb56e8d283b774f2b11bcd26979a16e10"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -2936,10 +2955,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "2cd8bad2747459406a26c34726645ee96f6e776f32e431b8e66d2269b09b6983",
+      "reviewed_basis_sha256": "1197e5a2e50935c775f4698fd6ec0c7594cb79bf18beafff63ac363c0d145331",
       "order": 27,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "2cd8bad2747459406a26c34726645ee96f6e776f32e431b8e66d2269b09b6983",
+      "basis_sha256": "1197e5a2e50935c775f4698fd6ec0c7594cb79bf18beafff63ac363c0d145331",
       "current_basis": {
         "definition": "36b093508f7b8fb9c5cb39adad120159bec865d0c4a10082a2b106a762145ced",
         "context": {
@@ -2947,16 +2966,16 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef"
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09"
         },
         "dependencies": {
-          "W23": "53145f2e7fe6f4bec68783faf2c44e9346542aa765a86c7556473d233c62f9a5",
-          "W24": "d86b86059dad6e876b2e2af9fa7df58f0da6e8978b559f880e988805f0c532fb",
-          "W25": "74078ab918310cf298fff20ec44434a00d4ba5760465d38e609cae9adc189aef"
+          "W23": "43423c771ce40548c26f77cb900b1ed07f2d54fc99e09dc72268248ea2c29a49",
+          "W24": "7c21345cf21543779e9594e4961c66ceb56e8d283b774f2b11bcd26979a16e10",
+          "W25": "2840f477d8194a30c0bf575228f0aeb4def1aec941eb67ee7b10633b2371b7a4"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -3027,10 +3046,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "9ba67d3ffded4afe2458376ab720608504591caabde9ee6d878e594a38e778c8",
+      "reviewed_basis_sha256": "df95a3d6766ad4ef4821d3042fcf0a2fd6a3dad33033b0676b4c37282e1e1dc2",
       "order": 28,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "9ba67d3ffded4afe2458376ab720608504591caabde9ee6d878e594a38e778c8",
+      "basis_sha256": "df95a3d6766ad4ef4821d3042fcf0a2fd6a3dad33033b0676b4c37282e1e1dc2",
       "current_basis": {
         "definition": "3a6d2c1d71161e232b2ae172170b10cd3530c7da3422cb74f2e0a94567999608",
         "context": {
@@ -3038,17 +3057,17 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R04": "d3aa0424d9694815729ec47ead66dca98bcb9898251d4b96cdf65f83287daa47",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c",
-          "T07": "e1ffd62b08a95d3bc49ead53f61bc904ca32622cc9e63ec31a46359393c8328f"
+          "R04": "b3326c19ca5f72f566048e0a501a05b34167c061dff63b8a04b349325a07f909",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc",
+          "T07": "82b886f0fcf58f27a8accedb817e83dd909928028ed7cc06ce3bb94312091a76"
         },
         "dependencies": {
-          "W16": "f3f2897f6696c242d92c938e8b734f00efa7c773fd813e14994611cde32664ef",
-          "W19": "6a6a1a26489d8cda26160c25935c5f15bb108694ea7f15834443304c038aba25",
-          "W25": "74078ab918310cf298fff20ec44434a00d4ba5760465d38e609cae9adc189aef"
+          "W16": "98ff314772be4675aab6e04d07cd1530c135bde602ec5b6967ef2bdef65e40c8",
+          "W19": "054958e5e6f4e1440e4477ac562fa325ecbf053470b69ab9a6f087844b1bc549",
+          "W25": "2840f477d8194a30c0bf575228f0aeb4def1aec941eb67ee7b10633b2371b7a4"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -3119,10 +3138,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "51ea16ba9d717e96c352fe0b22b956d085de238dc7f20af9aaa51ce849ff4c8d",
+      "reviewed_basis_sha256": "9a11cd32414feedb39ac2091dfb5290e674d94ce0f7d7d03f50301534c69a1c3",
       "order": 29,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "51ea16ba9d717e96c352fe0b22b956d085de238dc7f20af9aaa51ce849ff4c8d",
+      "basis_sha256": "9a11cd32414feedb39ac2091dfb5290e674d94ce0f7d7d03f50301534c69a1c3",
       "current_basis": {
         "definition": "4ec5bd226aa22cd288830b25eb83aa29aea71dd7415e770339eaed683d7fe63b",
         "context": {
@@ -3130,13 +3149,13 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T06": "bee48a27f942bdae918387703159f51c8fde9937c8574c534b9b214b3adab569"
+          "T06": "8a7862badf59dec1d0a996d92f85013811268cf95351394215e663bb9f3fc6b5"
         },
         "dependencies": {
-          "W27": "9ba67d3ffded4afe2458376ab720608504591caabde9ee6d878e594a38e778c8"
+          "W27": "df95a3d6766ad4ef4821d3042fcf0a2fd6a3dad33033b0676b4c37282e1e1dc2"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -3198,10 +3217,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "09d1050acc64320f04cc1f1e7b5a232151fa206f40b99e5a003dc6ee965d45cb",
+      "reviewed_basis_sha256": "bd97ec753e25460df16c3f80dd81a61bc06e381addbf8dd04d4799e7252407d1",
       "order": 30,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "09d1050acc64320f04cc1f1e7b5a232151fa206f40b99e5a003dc6ee965d45cb",
+      "basis_sha256": "bd97ec753e25460df16c3f80dd81a61bc06e381addbf8dd04d4799e7252407d1",
       "current_basis": {
         "definition": "216847d3d3f2ad7e39525a1072abe48cd94db8c1f3d9dd9a8561f9c3331d4925",
         "context": {
@@ -3209,13 +3228,13 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T07": "e1ffd62b08a95d3bc49ead53f61bc904ca32622cc9e63ec31a46359393c8328f"
+          "T07": "82b886f0fcf58f27a8accedb817e83dd909928028ed7cc06ce3bb94312091a76"
         },
         "dependencies": {
-          "W27": "9ba67d3ffded4afe2458376ab720608504591caabde9ee6d878e594a38e778c8"
+          "W27": "df95a3d6766ad4ef4821d3042fcf0a2fd6a3dad33033b0676b4c37282e1e1dc2"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -3278,10 +3297,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "b8b8b976f40d3b80d3ee93c29caed12483e16196c6d5f10fa010a183d263b391",
+      "reviewed_basis_sha256": "e37a16c5b14ee10d10728a9c33260e756c633632ad515006e729e06caa672801",
       "order": 31,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "b8b8b976f40d3b80d3ee93c29caed12483e16196c6d5f10fa010a183d263b391",
+      "basis_sha256": "e37a16c5b14ee10d10728a9c33260e756c633632ad515006e729e06caa672801",
       "current_basis": {
         "definition": "0e702189c1299e9c9ddb1dd12e2fe0f053c562cedd48375d06228b93a8d99ceb",
         "context": {
@@ -3289,14 +3308,14 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T08": "1aad6a5e8a91b602da4e2bca796f22b707ea4b07d84a693b412fb9f8223ffb99"
+          "T08": "8c0c309a164522c7ae63c9b02b3bafe39cde2570328791013c457990153597c5"
         },
         "dependencies": {
-          "W28": "51ea16ba9d717e96c352fe0b22b956d085de238dc7f20af9aaa51ce849ff4c8d",
-          "W29": "09d1050acc64320f04cc1f1e7b5a232151fa206f40b99e5a003dc6ee965d45cb"
+          "W28": "9a11cd32414feedb39ac2091dfb5290e674d94ce0f7d7d03f50301534c69a1c3",
+          "W29": "bd97ec753e25460df16c3f80dd81a61bc06e381addbf8dd04d4799e7252407d1"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -3362,10 +3381,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "ea085e50e53b16ab79bd0e4676e27152b537c9671af3aed7dd7634fa8ee1d990",
+      "reviewed_basis_sha256": "f375e9976e305bc7a333b1a7e12caa95d6c69bd18c40760e94df381001ee0ecb",
       "order": 32,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "ea085e50e53b16ab79bd0e4676e27152b537c9671af3aed7dd7634fa8ee1d990",
+      "basis_sha256": "f375e9976e305bc7a333b1a7e12caa95d6c69bd18c40760e94df381001ee0ecb",
       "current_basis": {
         "definition": "ef6398175ef03375ce919c16073963a046092049c0d190fc023828ae7a73a25d",
         "context": {
@@ -3373,18 +3392,18 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6"
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d"
         },
         "dependencies": {
-          "W15": "9cd726a4a2e762e8d91448d21014f2dc1d0e9bf405a1e93d8bd2ad63452e361c",
-          "W19": "6a6a1a26489d8cda26160c25935c5f15bb108694ea7f15834443304c038aba25",
-          "W28": "51ea16ba9d717e96c352fe0b22b956d085de238dc7f20af9aaa51ce849ff4c8d",
-          "W29": "09d1050acc64320f04cc1f1e7b5a232151fa206f40b99e5a003dc6ee965d45cb",
-          "W30": "b8b8b976f40d3b80d3ee93c29caed12483e16196c6d5f10fa010a183d263b391"
+          "W15": "ebb1732b2b8ef56b0c4f28eefcfefc8ebeddb8499d4012f6ae5e24bd52f34e9c",
+          "W19": "054958e5e6f4e1440e4477ac562fa325ecbf053470b69ab9a6f087844b1bc549",
+          "W28": "9a11cd32414feedb39ac2091dfb5290e674d94ce0f7d7d03f50301534c69a1c3",
+          "W29": "bd97ec753e25460df16c3f80dd81a61bc06e381addbf8dd04d4799e7252407d1",
+          "W30": "e37a16c5b14ee10d10728a9c33260e756c633632ad515006e729e06caa672801"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -3459,10 +3478,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "72f11ccb7f57784e3750330ad71df069e8701951bff325e05286c22e92e876bd",
+      "reviewed_basis_sha256": "eec0f5dba241983293dd0cc750f8c7d8bd715787e1d3c4d0ec42877fff9fb770",
       "order": 33,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "72f11ccb7f57784e3750330ad71df069e8701951bff325e05286c22e92e876bd",
+      "basis_sha256": "eec0f5dba241983293dd0cc750f8c7d8bd715787e1d3c4d0ec42877fff9fb770",
       "current_basis": {
         "definition": "590afa40f3aabbdb32ace5a989cfd37ca53ee553ff6b26dd0b0b38a356faf718",
         "context": {
@@ -3470,16 +3489,16 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239"
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b"
         },
         "dependencies": {
-          "W23": "53145f2e7fe6f4bec68783faf2c44e9346542aa765a86c7556473d233c62f9a5",
-          "W26": "2cd8bad2747459406a26c34726645ee96f6e776f32e431b8e66d2269b09b6983",
-          "W31": "ea085e50e53b16ab79bd0e4676e27152b537c9671af3aed7dd7634fa8ee1d990"
+          "W23": "43423c771ce40548c26f77cb900b1ed07f2d54fc99e09dc72268248ea2c29a49",
+          "W26": "1197e5a2e50935c775f4698fd6ec0c7594cb79bf18beafff63ac363c0d145331",
+          "W31": "f375e9976e305bc7a333b1a7e12caa95d6c69bd18c40760e94df381001ee0ecb"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -3547,10 +3566,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "d8b4a13ee85ba606eb28e60f50ade9fb8a6606c3627c0a5da924ae8ecb7d65ac",
+      "reviewed_basis_sha256": "e35e09853a074232b594019ee266f6ae1dc642ebd42264529d27d3eec9817cd8",
       "order": 34,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "d8b4a13ee85ba606eb28e60f50ade9fb8a6606c3627c0a5da924ae8ecb7d65ac",
+      "basis_sha256": "e35e09853a074232b594019ee266f6ae1dc642ebd42264529d27d3eec9817cd8",
       "current_basis": {
         "definition": "f33fb373fd47412bf8e4eaaf8a3baa1babafd034d186dde83d41fed6facb6dbd",
         "context": {
@@ -3558,15 +3577,15 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587"
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684"
         },
         "dependencies": {
-          "W13": "8d621d4354874ffdc7c3632a99c90d3a4137824c9f2b3108cffd4ee6ff3c0ed6",
-          "W16": "f3f2897f6696c242d92c938e8b734f00efa7c773fd813e14994611cde32664ef",
-          "W32": "72f11ccb7f57784e3750330ad71df069e8701951bff325e05286c22e92e876bd"
+          "W13": "99bfddcbe32b351eaffee5ba2a768c7c506cbea0880271f1453155c1e1e6ae88",
+          "W16": "98ff314772be4675aab6e04d07cd1530c135bde602ec5b6967ef2bdef65e40c8",
+          "W32": "eec0f5dba241983293dd0cc750f8c7d8bd715787e1d3c4d0ec42877fff9fb770"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -3632,10 +3651,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "ad3e3691cf3ec3e4b97722f78b7cd661dd3c161ca5d4aca2f1c5e0e935757520",
+      "reviewed_basis_sha256": "e23191bd94ccd3bee6dc1594840c580126fd94f549dfc21c529be2b14c8e9718",
       "order": 35,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "ad3e3691cf3ec3e4b97722f78b7cd661dd3c161ca5d4aca2f1c5e0e935757520",
+      "basis_sha256": "e23191bd94ccd3bee6dc1594840c580126fd94f549dfc21c529be2b14c8e9718",
       "current_basis": {
         "definition": "1cd41b5532dbed642d4a3fec173327cd2914eee129b1129e2b7b53ea3848e251",
         "context": {
@@ -3643,17 +3662,17 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587"
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684"
         },
         "dependencies": {
-          "W15": "9cd726a4a2e762e8d91448d21014f2dc1d0e9bf405a1e93d8bd2ad63452e361c",
-          "W25": "74078ab918310cf298fff20ec44434a00d4ba5760465d38e609cae9adc189aef",
-          "W31": "ea085e50e53b16ab79bd0e4676e27152b537c9671af3aed7dd7634fa8ee1d990",
-          "W33": "d8b4a13ee85ba606eb28e60f50ade9fb8a6606c3627c0a5da924ae8ecb7d65ac"
+          "W15": "ebb1732b2b8ef56b0c4f28eefcfefc8ebeddb8499d4012f6ae5e24bd52f34e9c",
+          "W25": "2840f477d8194a30c0bf575228f0aeb4def1aec941eb67ee7b10633b2371b7a4",
+          "W31": "f375e9976e305bc7a333b1a7e12caa95d6c69bd18c40760e94df381001ee0ecb",
+          "W33": "e35e09853a074232b594019ee266f6ae1dc642ebd42264529d27d3eec9817cd8"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -3728,10 +3747,10 @@
       "conditional": "仅第二阶段出现经RunLog记录的真实上下文/装载受阻时启用；无受阻依据可有据不适用，不能跳过输入完整性，也不得因W27未完成本身自动启动。",
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "25306ae788aeb6fb9f8fd96b2a9f6fabce23ffd49544afbdaa79e6f222909865",
+      "reviewed_basis_sha256": "9e05ea88daa92d5a4ef82202d8d658fb8a22b641686f277da0f950f78e93052a",
       "order": 36,
       "work_type": "条件能力",
-      "basis_sha256": "25306ae788aeb6fb9f8fd96b2a9f6fabce23ffd49544afbdaa79e6f222909865",
+      "basis_sha256": "9e05ea88daa92d5a4ef82202d8d658fb8a22b641686f277da0f950f78e93052a",
       "current_basis": {
         "definition": "28ef4a4d0c484387b9f6ab804d87d72a6e69bd30d7f2d11f96809e85cfc998ea",
         "context": {
@@ -3739,16 +3758,16 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R07": "a0f535d354066986b50ebbc88f06b78073a0bdbdc65c537d38a85741a669cb38",
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R07": "c37b0c9998ce64096428938ae6e89d07700d80a360e56e24b0b4a633f2144149",
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W14": "8c34160e23354fc06b0a624719133395b4b34b1789bcc7ec904e394c412819d6",
-          "W17": "986f35a4be9a67d36686c472751c111b9e37c9d0cff8be4b9ba61e955e65639f"
+          "W14": "52867aa84e1b4c801897c2e441e3b70640cf2fcb665e66b51f1c6a166699f55d",
+          "W17": "686becae7a0503789ec964a1174d49ef36ad3f432239d90b643c3dbd746ff61b"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -3830,10 +3849,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "2efe7faf86f4654d60dfae05427771106a8b077d54eedcafa9aa0ebd479af2e2",
+      "reviewed_basis_sha256": "afea9d22c56d836948bc3e9c87d8f55c146efc84779fff69ccd9defe0754a903",
       "order": 37,
       "work_type": "路线集成验收",
-      "basis_sha256": "2efe7faf86f4654d60dfae05427771106a8b077d54eedcafa9aa0ebd479af2e2",
+      "basis_sha256": "afea9d22c56d836948bc3e9c87d8f55c146efc84779fff69ccd9defe0754a903",
       "current_basis": {
         "definition": "58f823c2ed45ab50e6eb874084288b0abb3458ea9d94e589ef79d145f73a7d46",
         "context": {
@@ -3841,21 +3860,21 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R01": "d12a51e857b9e9500e68bae072987de298d5cf574ea03df6aae3c3e62c5a32ce",
-          "R07": "a0f535d354066986b50ebbc88f06b78073a0bdbdc65c537d38a85741a669cb38",
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R01": "3e6ddf9952775909f9685cb3873f745bcfa97694b207b9654fa72ce02f4d3921",
+          "R07": "c37b0c9998ce64096428938ae6e89d07700d80a360e56e24b0b4a633f2144149",
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W18": "60bdec1bc758e5b3dccf6689f12e45ada58cc704d778d095b7e85d4d47a9630e",
-          "W22": "ea8163db338d6f7a2f85b31e136167439045d2e04b210d77a374b1bee59fcf20",
-          "W32": "72f11ccb7f57784e3750330ad71df069e8701951bff325e05286c22e92e876bd",
-          "W33": "d8b4a13ee85ba606eb28e60f50ade9fb8a6606c3627c0a5da924ae8ecb7d65ac"
+          "W18": "05f2b200f8e10cba92b974f76b00ca307a3c3c3525e41cab39fa8408d47606cf",
+          "W22": "77c3b8a650882c728f503de65af3f781f6a736fdd6dc792b1a5797a6d36b2fb9",
+          "W32": "eec0f5dba241983293dd0cc750f8c7d8bd715787e1d3c4d0ec42877fff9fb770",
+          "W33": "e35e09853a074232b594019ee266f6ae1dc642ebd42264529d27d3eec9817cd8"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -3950,10 +3969,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "ca4c94f39f8b487a3a3a672884d9d41258435772a2a265fd5bcb6407e00499f6",
+      "reviewed_basis_sha256": "3f9e0f49f5d36958c3fef9cf707623073ff5001f13bfaf85e1a78a23e602baaf",
       "order": 38,
       "work_type": "路线集成验收",
-      "basis_sha256": "ca4c94f39f8b487a3a3a672884d9d41258435772a2a265fd5bcb6407e00499f6",
+      "basis_sha256": "3f9e0f49f5d36958c3fef9cf707623073ff5001f13bfaf85e1a78a23e602baaf",
       "current_basis": {
         "definition": "066779948bdca1c43bf4d6b23cb589643bdb52adacfb9e1f81d8cf493384f535",
         "context": {
@@ -3961,21 +3980,21 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R03": "4a077de37bcc5735770b34d0275952dd8838e2f37cf6b8a4b4fb6e0942bf320a",
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239"
+          "R03": "10d027f92cfa875eb0e3c18e3c51c0fb0102c9d31febdeefcf9c785ced216f89",
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b"
         },
         "dependencies": {
-          "W23": "53145f2e7fe6f4bec68783faf2c44e9346542aa765a86c7556473d233c62f9a5",
-          "W26": "2cd8bad2747459406a26c34726645ee96f6e776f32e431b8e66d2269b09b6983",
-          "W31": "ea085e50e53b16ab79bd0e4676e27152b537c9671af3aed7dd7634fa8ee1d990",
-          "W32": "72f11ccb7f57784e3750330ad71df069e8701951bff325e05286c22e92e876bd",
-          "W34": "ad3e3691cf3ec3e4b97722f78b7cd661dd3c161ca5d4aca2f1c5e0e935757520"
+          "W23": "43423c771ce40548c26f77cb900b1ed07f2d54fc99e09dc72268248ea2c29a49",
+          "W26": "1197e5a2e50935c775f4698fd6ec0c7594cb79bf18beafff63ac363c0d145331",
+          "W31": "f375e9976e305bc7a333b1a7e12caa95d6c69bd18c40760e94df381001ee0ecb",
+          "W32": "eec0f5dba241983293dd0cc750f8c7d8bd715787e1d3c4d0ec42877fff9fb770",
+          "W34": "e23191bd94ccd3bee6dc1594840c580126fd94f549dfc21c529be2b14c8e9718"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -4057,10 +4076,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "eecbd3ffb038bfb3f55ef26fb3ded4eedfff16beb89c57087415f059d1339659",
+      "reviewed_basis_sha256": "668a6b50580f4ef83f89dabad38e453f9a300439b8be9d8af0832f0ff8f7c1f9",
       "order": 39,
       "work_type": "路线集成验收",
-      "basis_sha256": "eecbd3ffb038bfb3f55ef26fb3ded4eedfff16beb89c57087415f059d1339659",
+      "basis_sha256": "668a6b50580f4ef83f89dabad38e453f9a300439b8be9d8af0832f0ff8f7c1f9",
       "current_basis": {
         "definition": "68fb44d114a8a0868330c5aac1ee9d44b5120fa7e9ed1d8700545875643f12a5",
         "context": {
@@ -4068,19 +4087,19 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R04": "d3aa0424d9694815729ec47ead66dca98bcb9898251d4b96cdf65f83287daa47",
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c"
+          "R04": "b3326c19ca5f72f566048e0a501a05b34167c061dff63b8a04b349325a07f909",
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc"
         },
         "dependencies": {
-          "W23": "53145f2e7fe6f4bec68783faf2c44e9346542aa765a86c7556473d233c62f9a5",
-          "W25": "74078ab918310cf298fff20ec44434a00d4ba5760465d38e609cae9adc189aef",
-          "W27": "9ba67d3ffded4afe2458376ab720608504591caabde9ee6d878e594a38e778c8",
-          "W31": "ea085e50e53b16ab79bd0e4676e27152b537c9671af3aed7dd7634fa8ee1d990"
+          "W23": "43423c771ce40548c26f77cb900b1ed07f2d54fc99e09dc72268248ea2c29a49",
+          "W25": "2840f477d8194a30c0bf575228f0aeb4def1aec941eb67ee7b10633b2371b7a4",
+          "W27": "df95a3d6766ad4ef4821d3042fcf0a2fd6a3dad33033b0676b4c37282e1e1dc2",
+          "W31": "f375e9976e305bc7a333b1a7e12caa95d6c69bd18c40760e94df381001ee0ecb"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -4156,10 +4175,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "a94053fd0f07458433012c763fb696ed114c21ac9194a919db1a12cb896c5f75",
+      "reviewed_basis_sha256": "33811d9b95acb18973f44c24df0871bbca1329d9df1c3c524b6fd4f697c7b67a",
       "order": 40,
       "work_type": "路线集成验收",
-      "basis_sha256": "a94053fd0f07458433012c763fb696ed114c21ac9194a919db1a12cb896c5f75",
+      "basis_sha256": "33811d9b95acb18973f44c24df0871bbca1329d9df1c3c524b6fd4f697c7b67a",
       "current_basis": {
         "definition": "095beae3293dd40e48a6e3daf87a0f82001df3da92741e185a72bc719cddc9c3",
         "context": {
@@ -4167,19 +4186,19 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R02": "94d3d23809022379395fe755840f0dbf7fba5417769fafd7851b0d6185cd0f60",
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587"
+          "R02": "72461608acd074ee5330056fa40300eaccf10dedd981ac63b848d981ca48d95f",
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684"
         },
         "dependencies": {
-          "W23": "53145f2e7fe6f4bec68783faf2c44e9346542aa765a86c7556473d233c62f9a5",
-          "W27": "9ba67d3ffded4afe2458376ab720608504591caabde9ee6d878e594a38e778c8",
-          "W33": "d8b4a13ee85ba606eb28e60f50ade9fb8a6606c3627c0a5da924ae8ecb7d65ac",
-          "W36": "2efe7faf86f4654d60dfae05427771106a8b077d54eedcafa9aa0ebd479af2e2"
+          "W23": "43423c771ce40548c26f77cb900b1ed07f2d54fc99e09dc72268248ea2c29a49",
+          "W27": "df95a3d6766ad4ef4821d3042fcf0a2fd6a3dad33033b0676b4c37282e1e1dc2",
+          "W33": "e35e09853a074232b594019ee266f6ae1dc642ebd42264529d27d3eec9817cd8",
+          "W36": "afea9d22c56d836948bc3e9c87d8f55c146efc84779fff69ccd9defe0754a903"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -4260,10 +4279,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "d6c7fd50c8d0508939d58f77b5cf20e9fd71af0303a9afcd8160cfb07436ef14",
+      "reviewed_basis_sha256": "0d0a677b7b0ffdc6213d4e277b49f8b117c9b6c3884efaff89ccd909dc8da018",
       "order": 41,
       "work_type": "路线集成验收",
-      "basis_sha256": "d6c7fd50c8d0508939d58f77b5cf20e9fd71af0303a9afcd8160cfb07436ef14",
+      "basis_sha256": "0d0a677b7b0ffdc6213d4e277b49f8b117c9b6c3884efaff89ccd909dc8da018",
       "current_basis": {
         "definition": "fbd3eeeb901e3e8cc0c06cf0c85ed4c4300c692555f5837a20427f70bf746484",
         "context": {
@@ -4271,19 +4290,19 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R05": "d5d84a0f59a2d01284cda61ca031c33b26c474bb73a3c817a2f5b65af45c43b0",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587"
+          "R05": "1495bfa4e486db60252ac04090342fc9b06e68b6aa76a82bf61bba02e9e3c1da",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684"
         },
         "dependencies": {
-          "W31": "ea085e50e53b16ab79bd0e4676e27152b537c9671af3aed7dd7634fa8ee1d990",
-          "W32": "72f11ccb7f57784e3750330ad71df069e8701951bff325e05286c22e92e876bd",
-          "W34": "ad3e3691cf3ec3e4b97722f78b7cd661dd3c161ca5d4aca2f1c5e0e935757520",
-          "W39": "a94053fd0f07458433012c763fb696ed114c21ac9194a919db1a12cb896c5f75"
+          "W31": "f375e9976e305bc7a333b1a7e12caa95d6c69bd18c40760e94df381001ee0ecb",
+          "W32": "eec0f5dba241983293dd0cc750f8c7d8bd715787e1d3c4d0ec42877fff9fb770",
+          "W34": "e23191bd94ccd3bee6dc1594840c580126fd94f549dfc21c529be2b14c8e9718",
+          "W39": "33811d9b95acb18973f44c24df0871bbca1329d9df1c3c524b6fd4f697c7b67a"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -4364,10 +4383,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "ae1041d67f26b8d4d2458938ace355b1ef7c0009031c9e76eab5d58c6aa8ee6a",
+      "reviewed_basis_sha256": "87c0096fb9f4bf19bf88d8090c437c4a92f374065103fbd37f540895c56e3906",
       "order": 42,
       "work_type": "真实案例与能力验收",
-      "basis_sha256": "ae1041d67f26b8d4d2458938ace355b1ef7c0009031c9e76eab5d58c6aa8ee6a",
+      "basis_sha256": "87c0096fb9f4bf19bf88d8090c437c4a92f374065103fbd37f540895c56e3906",
       "current_basis": {
         "definition": "065a48f12211bcd4148c3c66c813230e40b4adbd8d9273fbdefd28ceaf22b8c5",
         "context": {
@@ -4375,24 +4394,24 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R01": "d12a51e857b9e9500e68bae072987de298d5cf574ea03df6aae3c3e62c5a32ce",
-          "R02": "94d3d23809022379395fe755840f0dbf7fba5417769fafd7851b0d6185cd0f60",
-          "R03": "4a077de37bcc5735770b34d0275952dd8838e2f37cf6b8a4b4fb6e0942bf320a",
-          "R04": "d3aa0424d9694815729ec47ead66dca98bcb9898251d4b96cdf65f83287daa47",
-          "R05": "d5d84a0f59a2d01284cda61ca031c33b26c474bb73a3c817a2f5b65af45c43b0",
-          "R07": "a0f535d354066986b50ebbc88f06b78073a0bdbdc65c537d38a85741a669cb38",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R01": "3e6ddf9952775909f9685cb3873f745bcfa97694b207b9654fa72ce02f4d3921",
+          "R02": "72461608acd074ee5330056fa40300eaccf10dedd981ac63b848d981ca48d95f",
+          "R03": "10d027f92cfa875eb0e3c18e3c51c0fb0102c9d31febdeefcf9c785ced216f89",
+          "R04": "b3326c19ca5f72f566048e0a501a05b34167c061dff63b8a04b349325a07f909",
+          "R05": "1495bfa4e486db60252ac04090342fc9b06e68b6aa76a82bf61bba02e9e3c1da",
+          "R07": "c37b0c9998ce64096428938ae6e89d07700d80a360e56e24b0b4a633f2144149",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W36": "2efe7faf86f4654d60dfae05427771106a8b077d54eedcafa9aa0ebd479af2e2",
-          "W37": "ca4c94f39f8b487a3a3a672884d9d41258435772a2a265fd5bcb6407e00499f6",
-          "W38": "eecbd3ffb038bfb3f55ef26fb3ded4eedfff16beb89c57087415f059d1339659",
-          "W39": "a94053fd0f07458433012c763fb696ed114c21ac9194a919db1a12cb896c5f75",
-          "W40": "d6c7fd50c8d0508939d58f77b5cf20e9fd71af0303a9afcd8160cfb07436ef14"
+          "W36": "afea9d22c56d836948bc3e9c87d8f55c146efc84779fff69ccd9defe0754a903",
+          "W37": "3f9e0f49f5d36958c3fef9cf707623073ff5001f13bfaf85e1a78a23e602baaf",
+          "W38": "668a6b50580f4ef83f89dabad38e453f9a300439b8be9d8af0832f0ff8f7c1f9",
+          "W39": "33811d9b95acb18973f44c24df0871bbca1329d9df1c3c524b6fd4f697c7b67a",
+          "W40": "0d0a677b7b0ffdc6213d4e277b49f8b117c9b6c3884efaff89ccd909dc8da018"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -4517,10 +4536,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "8e7b7553041f00d535782501cb877d7b29adbc38f056687645146433eeeac613",
+      "reviewed_basis_sha256": "5f6749b14d18e643e13630aca63d2821fb202757bde8339e16c9831a4225663d",
       "order": 43,
       "work_type": "阶段门",
-      "basis_sha256": "8e7b7553041f00d535782501cb877d7b29adbc38f056687645146433eeeac613",
+      "basis_sha256": "5f6749b14d18e643e13630aca63d2821fb202757bde8339e16c9831a4225663d",
       "current_basis": {
         "definition": "0b114004aa584858abec2af654000b5cda3c9e6108984a6e4ba0afc66891b6ea",
         "context": {
@@ -4528,58 +4547,58 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R01": "d12a51e857b9e9500e68bae072987de298d5cf574ea03df6aae3c3e62c5a32ce",
-          "R02": "94d3d23809022379395fe755840f0dbf7fba5417769fafd7851b0d6185cd0f60",
-          "R03": "4a077de37bcc5735770b34d0275952dd8838e2f37cf6b8a4b4fb6e0942bf320a",
-          "R04": "d3aa0424d9694815729ec47ead66dca98bcb9898251d4b96cdf65f83287daa47",
-          "R05": "d5d84a0f59a2d01284cda61ca031c33b26c474bb73a3c817a2f5b65af45c43b0",
-          "R07": "a0f535d354066986b50ebbc88f06b78073a0bdbdc65c537d38a85741a669cb38",
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T02": "e1dc7e25f498cca4ddd28e07f9bc1919fef3c756456d51375575e89cb8d24887",
-          "T03": "c6575709a583db7868f0068b598a035588c6ea0df407ecd85ebd45ee793c8ba7",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c",
-          "T06": "bee48a27f942bdae918387703159f51c8fde9937c8574c534b9b214b3adab569",
-          "T07": "e1ffd62b08a95d3bc49ead53f61bc904ca32622cc9e63ec31a46359393c8328f",
-          "T08": "1aad6a5e8a91b602da4e2bca796f22b707ea4b07d84a693b412fb9f8223ffb99",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R01": "3e6ddf9952775909f9685cb3873f745bcfa97694b207b9654fa72ce02f4d3921",
+          "R02": "72461608acd074ee5330056fa40300eaccf10dedd981ac63b848d981ca48d95f",
+          "R03": "10d027f92cfa875eb0e3c18e3c51c0fb0102c9d31febdeefcf9c785ced216f89",
+          "R04": "b3326c19ca5f72f566048e0a501a05b34167c061dff63b8a04b349325a07f909",
+          "R05": "1495bfa4e486db60252ac04090342fc9b06e68b6aa76a82bf61bba02e9e3c1da",
+          "R07": "c37b0c9998ce64096428938ae6e89d07700d80a360e56e24b0b4a633f2144149",
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T02": "5815678ab62390f86597d2fa02528fdf4c8ad164dcc7baf3ce3fae65d403e770",
+          "T03": "091037b6aca124b1d0c1913fa15b1eac4d33ecc7b675e0b755063c529d722d1e",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc",
+          "T06": "8a7862badf59dec1d0a996d92f85013811268cf95351394215e663bb9f3fc6b5",
+          "T07": "82b886f0fcf58f27a8accedb817e83dd909928028ed7cc06ce3bb94312091a76",
+          "T08": "8c0c309a164522c7ae63c9b02b3bafe39cde2570328791013c457990153597c5",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W13": "8d621d4354874ffdc7c3632a99c90d3a4137824c9f2b3108cffd4ee6ff3c0ed6",
-          "W14": "8c34160e23354fc06b0a624719133395b4b34b1789bcc7ec904e394c412819d6",
-          "W15": "9cd726a4a2e762e8d91448d21014f2dc1d0e9bf405a1e93d8bd2ad63452e361c",
-          "W16": "f3f2897f6696c242d92c938e8b734f00efa7c773fd813e14994611cde32664ef",
-          "W17": "986f35a4be9a67d36686c472751c111b9e37c9d0cff8be4b9ba61e955e65639f",
-          "W18": "60bdec1bc758e5b3dccf6689f12e45ada58cc704d778d095b7e85d4d47a9630e",
-          "W19": "6a6a1a26489d8cda26160c25935c5f15bb108694ea7f15834443304c038aba25",
-          "W20": "bc001538374de7b3fb2bea97d0ed9c7e9a82f65ae8ff5f387eaab6fcea1a962d",
-          "W21": "1cbc9546da68d87ebc7b24ddfc2071bde815286cd436f62a67f89b8bb4001348",
-          "W22": "ea8163db338d6f7a2f85b31e136167439045d2e04b210d77a374b1bee59fcf20",
-          "W23": "53145f2e7fe6f4bec68783faf2c44e9346542aa765a86c7556473d233c62f9a5",
-          "W24": "d86b86059dad6e876b2e2af9fa7df58f0da6e8978b559f880e988805f0c532fb",
-          "W25": "74078ab918310cf298fff20ec44434a00d4ba5760465d38e609cae9adc189aef",
-          "W26": "2cd8bad2747459406a26c34726645ee96f6e776f32e431b8e66d2269b09b6983",
-          "W27": "9ba67d3ffded4afe2458376ab720608504591caabde9ee6d878e594a38e778c8",
-          "W28": "51ea16ba9d717e96c352fe0b22b956d085de238dc7f20af9aaa51ce849ff4c8d",
-          "W29": "09d1050acc64320f04cc1f1e7b5a232151fa206f40b99e5a003dc6ee965d45cb",
-          "W30": "b8b8b976f40d3b80d3ee93c29caed12483e16196c6d5f10fa010a183d263b391",
-          "W31": "ea085e50e53b16ab79bd0e4676e27152b537c9671af3aed7dd7634fa8ee1d990",
-          "W32": "72f11ccb7f57784e3750330ad71df069e8701951bff325e05286c22e92e876bd",
-          "W33": "d8b4a13ee85ba606eb28e60f50ade9fb8a6606c3627c0a5da924ae8ecb7d65ac",
-          "W34": "ad3e3691cf3ec3e4b97722f78b7cd661dd3c161ca5d4aca2f1c5e0e935757520",
-          "W35": "25306ae788aeb6fb9f8fd96b2a9f6fabce23ffd49544afbdaa79e6f222909865",
-          "W36": "2efe7faf86f4654d60dfae05427771106a8b077d54eedcafa9aa0ebd479af2e2",
-          "W37": "ca4c94f39f8b487a3a3a672884d9d41258435772a2a265fd5bcb6407e00499f6",
-          "W38": "eecbd3ffb038bfb3f55ef26fb3ded4eedfff16beb89c57087415f059d1339659",
-          "W39": "a94053fd0f07458433012c763fb696ed114c21ac9194a919db1a12cb896c5f75",
-          "W40": "d6c7fd50c8d0508939d58f77b5cf20e9fd71af0303a9afcd8160cfb07436ef14",
-          "W41": "ae1041d67f26b8d4d2458938ace355b1ef7c0009031c9e76eab5d58c6aa8ee6a"
+          "W13": "99bfddcbe32b351eaffee5ba2a768c7c506cbea0880271f1453155c1e1e6ae88",
+          "W14": "52867aa84e1b4c801897c2e441e3b70640cf2fcb665e66b51f1c6a166699f55d",
+          "W15": "ebb1732b2b8ef56b0c4f28eefcfefc8ebeddb8499d4012f6ae5e24bd52f34e9c",
+          "W16": "98ff314772be4675aab6e04d07cd1530c135bde602ec5b6967ef2bdef65e40c8",
+          "W17": "686becae7a0503789ec964a1174d49ef36ad3f432239d90b643c3dbd746ff61b",
+          "W18": "05f2b200f8e10cba92b974f76b00ca307a3c3c3525e41cab39fa8408d47606cf",
+          "W19": "054958e5e6f4e1440e4477ac562fa325ecbf053470b69ab9a6f087844b1bc549",
+          "W20": "277b8dce6711db5ceb9b2665e39e5838ff2f4b72156588e4573d6cb3393e7d09",
+          "W21": "3377ba769d98cb5a7f609017d97a52f56623faf10a7bc3548e091fe9225684fc",
+          "W22": "77c3b8a650882c728f503de65af3f781f6a736fdd6dc792b1a5797a6d36b2fb9",
+          "W23": "43423c771ce40548c26f77cb900b1ed07f2d54fc99e09dc72268248ea2c29a49",
+          "W24": "7c21345cf21543779e9594e4961c66ceb56e8d283b774f2b11bcd26979a16e10",
+          "W25": "2840f477d8194a30c0bf575228f0aeb4def1aec941eb67ee7b10633b2371b7a4",
+          "W26": "1197e5a2e50935c775f4698fd6ec0c7594cb79bf18beafff63ac363c0d145331",
+          "W27": "df95a3d6766ad4ef4821d3042fcf0a2fd6a3dad33033b0676b4c37282e1e1dc2",
+          "W28": "9a11cd32414feedb39ac2091dfb5290e674d94ce0f7d7d03f50301534c69a1c3",
+          "W29": "bd97ec753e25460df16c3f80dd81a61bc06e381addbf8dd04d4799e7252407d1",
+          "W30": "e37a16c5b14ee10d10728a9c33260e756c633632ad515006e729e06caa672801",
+          "W31": "f375e9976e305bc7a333b1a7e12caa95d6c69bd18c40760e94df381001ee0ecb",
+          "W32": "eec0f5dba241983293dd0cc750f8c7d8bd715787e1d3c4d0ec42877fff9fb770",
+          "W33": "e35e09853a074232b594019ee266f6ae1dc642ebd42264529d27d3eec9817cd8",
+          "W34": "e23191bd94ccd3bee6dc1594840c580126fd94f549dfc21c529be2b14c8e9718",
+          "W35": "9e05ea88daa92d5a4ef82202d8d658fb8a22b641686f277da0f950f78e93052a",
+          "W36": "afea9d22c56d836948bc3e9c87d8f55c146efc84779fff69ccd9defe0754a903",
+          "W37": "3f9e0f49f5d36958c3fef9cf707623073ff5001f13bfaf85e1a78a23e602baaf",
+          "W38": "668a6b50580f4ef83f89dabad38e453f9a300439b8be9d8af0832f0ff8f7c1f9",
+          "W39": "33811d9b95acb18973f44c24df0871bbca1329d9df1c3c524b6fd4f697c7b67a",
+          "W40": "0d0a677b7b0ffdc6213d4e277b49f8b117c9b6c3884efaff89ccd909dc8da018",
+          "W41": "87c0096fb9f4bf19bf88d8090c437c4a92f374065103fbd37f540895c56e3906"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -4719,10 +4738,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "7ed69f32307919619d6743992e34d8051f1353be2ffa0d29c57369113d979c32",
+      "reviewed_basis_sha256": "d76dceb46b948a760ebabcf5dd6c88e267be18c6a3595991f9c81b7db948ed04",
       "order": 44,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "7ed69f32307919619d6743992e34d8051f1353be2ffa0d29c57369113d979c32",
+      "basis_sha256": "d76dceb46b948a760ebabcf5dd6c88e267be18c6a3595991f9c81b7db948ed04",
       "current_basis": {
         "definition": "92ac40ec6e19350f6a1ab2e2b5b56a6e4be0990f8351d30385a403f05f081263",
         "context": {
@@ -4730,15 +4749,15 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "G02": "8e7b7553041f00d535782501cb877d7b29adbc38f056687645146433eeeac613"
+          "G02": "5f6749b14d18e643e13630aca63d2821fb202757bde8339e16c9831a4225663d"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -4812,10 +4831,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "5b24fdb3be8a4e7dd43d353ba92d3e6723f64be6ae2d749d1dcaaee1b834e82d",
+      "reviewed_basis_sha256": "61c77c348e5f0609a0a3a623b46b164737c1a39f94b5f0de2085c40da595c186",
       "order": 45,
       "work_type": "真实案例与能力验收",
-      "basis_sha256": "5b24fdb3be8a4e7dd43d353ba92d3e6723f64be6ae2d749d1dcaaee1b834e82d",
+      "basis_sha256": "61c77c348e5f0609a0a3a623b46b164737c1a39f94b5f0de2085c40da595c186",
       "current_basis": {
         "definition": "6f835efb4e0266285723ef63f605495b0b4948082d2291295bea75eea9266aae",
         "context": {
@@ -4823,17 +4842,17 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c",
-          "T06": "bee48a27f942bdae918387703159f51c8fde9937c8574c534b9b214b3adab569",
-          "T07": "e1ffd62b08a95d3bc49ead53f61bc904ca32622cc9e63ec31a46359393c8328f",
-          "T08": "1aad6a5e8a91b602da4e2bca796f22b707ea4b07d84a693b412fb9f8223ffb99",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6"
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc",
+          "T06": "8a7862badf59dec1d0a996d92f85013811268cf95351394215e663bb9f3fc6b5",
+          "T07": "82b886f0fcf58f27a8accedb817e83dd909928028ed7cc06ce3bb94312091a76",
+          "T08": "8c0c309a164522c7ae63c9b02b3bafe39cde2570328791013c457990153597c5",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d"
         },
         "dependencies": {
-          "W42": "7ed69f32307919619d6743992e34d8051f1353be2ffa0d29c57369113d979c32"
+          "W42": "d76dceb46b948a760ebabcf5dd6c88e267be18c6a3595991f9c81b7db948ed04"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -4910,10 +4929,10 @@
       "conditional": "只有真实专业瓶颈需要时比较；用户此轮仅授权工作清单，未授权现在启动多Agent。",
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "a17e7451482119e38bc300ca50869274ac82ba0b2ba2880c90c32b81238172ad",
+      "reviewed_basis_sha256": "1ec8da2044b81bf5fc86f8338568dbc6364346cce0973dc087566499577f284a",
       "order": 46,
       "work_type": "条件能力",
-      "basis_sha256": "a17e7451482119e38bc300ca50869274ac82ba0b2ba2880c90c32b81238172ad",
+      "basis_sha256": "1ec8da2044b81bf5fc86f8338568dbc6364346cce0973dc087566499577f284a",
       "current_basis": {
         "definition": "dc9488d7334fd91e085a909fa282cfda7b520d7ddd21a8af154918c81dbb9a76",
         "context": {
@@ -4921,14 +4940,14 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W43": "5b24fdb3be8a4e7dd43d353ba92d3e6723f64be6ae2d749d1dcaaee1b834e82d"
+          "W43": "61c77c348e5f0609a0a3a623b46b164737c1a39f94b5f0de2085c40da595c186"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -4998,10 +5017,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "d277112e05ee5a431b114470230abccfde058d62f9f4daa5d81b008c2621c8f6",
+      "reviewed_basis_sha256": "7f2afcd879c4e0c7c9971e2c09ebe8eb52611ce85e1d3ebeaf86f3d7b725a0da",
       "order": 47,
       "work_type": "真实案例与能力验收",
-      "basis_sha256": "d277112e05ee5a431b114470230abccfde058d62f9f4daa5d81b008c2621c8f6",
+      "basis_sha256": "7f2afcd879c4e0c7c9971e2c09ebe8eb52611ce85e1d3ebeaf86f3d7b725a0da",
       "current_basis": {
         "definition": "6c4937ed7f66dce7b6c30da13e663a98666c75e8131fa847fd28a0c1afd2c686",
         "context": {
@@ -5009,15 +5028,15 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W43": "5b24fdb3be8a4e7dd43d353ba92d3e6723f64be6ae2d749d1dcaaee1b834e82d"
+          "W43": "61c77c348e5f0609a0a3a623b46b164737c1a39f94b5f0de2085c40da595c186"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -5090,10 +5109,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "a07b694b7b981f922db11a048727ebc5f3d20e67356b045051ccffa7983b8aee",
+      "reviewed_basis_sha256": "cd375fc31bebb5d9a6403a734bf00cf7455cd728ca34fb7c873db9983c2f64c7",
       "order": 48,
       "work_type": "阶段门",
-      "basis_sha256": "a07b694b7b981f922db11a048727ebc5f3d20e67356b045051ccffa7983b8aee",
+      "basis_sha256": "cd375fc31bebb5d9a6403a734bf00cf7455cd728ca34fb7c873db9983c2f64c7",
       "current_basis": {
         "definition": "e046dfe11f71a9b9ac25e1ce547899a2be56783f017afb930c7b70670fa46a54",
         "context": {
@@ -5101,23 +5120,23 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c",
-          "T06": "bee48a27f942bdae918387703159f51c8fde9937c8574c534b9b214b3adab569",
-          "T07": "e1ffd62b08a95d3bc49ead53f61bc904ca32622cc9e63ec31a46359393c8328f",
-          "T08": "1aad6a5e8a91b602da4e2bca796f22b707ea4b07d84a693b412fb9f8223ffb99",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc",
+          "T06": "8a7862badf59dec1d0a996d92f85013811268cf95351394215e663bb9f3fc6b5",
+          "T07": "82b886f0fcf58f27a8accedb817e83dd909928028ed7cc06ce3bb94312091a76",
+          "T08": "8c0c309a164522c7ae63c9b02b3bafe39cde2570328791013c457990153597c5",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W42": "7ed69f32307919619d6743992e34d8051f1353be2ffa0d29c57369113d979c32",
-          "W43": "5b24fdb3be8a4e7dd43d353ba92d3e6723f64be6ae2d749d1dcaaee1b834e82d",
-          "W44": "a17e7451482119e38bc300ca50869274ac82ba0b2ba2880c90c32b81238172ad",
-          "W45": "d277112e05ee5a431b114470230abccfde058d62f9f4daa5d81b008c2621c8f6"
+          "W42": "d76dceb46b948a760ebabcf5dd6c88e267be18c6a3595991f9c81b7db948ed04",
+          "W43": "61c77c348e5f0609a0a3a623b46b164737c1a39f94b5f0de2085c40da595c186",
+          "W44": "1ec8da2044b81bf5fc86f8338568dbc6364346cce0973dc087566499577f284a",
+          "W45": "7f2afcd879c4e0c7c9971e2c09ebe8eb52611ce85e1d3ebeaf86f3d7b725a0da"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -5205,10 +5224,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "4c09b5e3d39b35cb13ffdece832ebb78966799577e1464e8b2c755dae655a2b7",
+      "reviewed_basis_sha256": "a895e01bbfea2f9f5cdac79dc87a3abcbb8a5fe61e3db050e870abbc81edff99",
       "order": 49,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "4c09b5e3d39b35cb13ffdece832ebb78966799577e1464e8b2c755dae655a2b7",
+      "basis_sha256": "a895e01bbfea2f9f5cdac79dc87a3abcbb8a5fe61e3db050e870abbc81edff99",
       "current_basis": {
         "definition": "7396e25eb997e1646425fdbcec9ebf04e6c8cccd4f60943f37e4a560400b64e0",
         "context": {
@@ -5216,16 +5235,16 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R08": "732eadfb0a57269aa299361c829252fc575f074fa45a20768afb13f34cbe4460",
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R08": "a6b133211c998a2f02419d30fe84f199c8f200acb7981394a5f8e66208fe3de3",
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "G03": "a07b694b7b981f922db11a048727ebc5f3d20e67356b045051ccffa7983b8aee"
+          "G03": "cd375fc31bebb5d9a6403a734bf00cf7455cd728ca34fb7c873db9983c2f64c7"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -5305,10 +5324,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "f1c70c8fd703f73b0ff762322f309987a3a809d53843517cbebeab13f50e720a",
+      "reviewed_basis_sha256": "03f9595a7edb456f4b812336a2dae99198b6a5a14b89840d98117b78399648aa",
       "order": 50,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "f1c70c8fd703f73b0ff762322f309987a3a809d53843517cbebeab13f50e720a",
+      "basis_sha256": "03f9595a7edb456f4b812336a2dae99198b6a5a14b89840d98117b78399648aa",
       "current_basis": {
         "definition": "0af91cf2c1fb4fcc417dbca6fc5c439ae479c3677071a2b29480e8e36a8727ba",
         "context": {
@@ -5316,19 +5335,19 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R08": "732eadfb0a57269aa299361c829252fc575f074fa45a20768afb13f34cbe4460",
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T02": "e1dc7e25f498cca4ddd28e07f9bc1919fef3c756456d51375575e89cb8d24887",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R08": "a6b133211c998a2f02419d30fe84f199c8f200acb7981394a5f8e66208fe3de3",
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T02": "5815678ab62390f86597d2fa02528fdf4c8ad164dcc7baf3ce3fae65d403e770",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W18": "60bdec1bc758e5b3dccf6689f12e45ada58cc704d778d095b7e85d4d47a9630e",
-          "W20": "bc001538374de7b3fb2bea97d0ed9c7e9a82f65ae8ff5f387eaab6fcea1a962d",
-          "W21": "1cbc9546da68d87ebc7b24ddfc2071bde815286cd436f62a67f89b8bb4001348",
-          "W46": "4c09b5e3d39b35cb13ffdece832ebb78966799577e1464e8b2c755dae655a2b7"
+          "W18": "05f2b200f8e10cba92b974f76b00ca307a3c3c3525e41cab39fa8408d47606cf",
+          "W20": "277b8dce6711db5ceb9b2665e39e5838ff2f4b72156588e4573d6cb3393e7d09",
+          "W21": "3377ba769d98cb5a7f609017d97a52f56623faf10a7bc3548e091fe9225684fc",
+          "W46": "a895e01bbfea2f9f5cdac79dc87a3abcbb8a5fe61e3db050e870abbc81edff99"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -5416,10 +5435,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "9c273d86cfb4b2d678822e459f3f041f62667479bc707e28ab5e3fc4fefa7581",
+      "reviewed_basis_sha256": "54574e59e9a2f2ae3eced391a9832ad4c4760b7b5aece8876a77489a09b4ec3a",
       "order": 51,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "9c273d86cfb4b2d678822e459f3f041f62667479bc707e28ab5e3fc4fefa7581",
+      "basis_sha256": "54574e59e9a2f2ae3eced391a9832ad4c4760b7b5aece8876a77489a09b4ec3a",
       "current_basis": {
         "definition": "5c902f4de2de27386bd50352e0676522950799cf0ec7a2fa2bf8fa1678e7be72",
         "context": {
@@ -5427,20 +5446,20 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R07": "a0f535d354066986b50ebbc88f06b78073a0bdbdc65c537d38a85741a669cb38",
-          "R08": "732eadfb0a57269aa299361c829252fc575f074fa45a20768afb13f34cbe4460",
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R07": "c37b0c9998ce64096428938ae6e89d07700d80a360e56e24b0b4a633f2144149",
+          "R08": "a6b133211c998a2f02419d30fe84f199c8f200acb7981394a5f8e66208fe3de3",
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W17": "986f35a4be9a67d36686c472751c111b9e37c9d0cff8be4b9ba61e955e65639f",
-          "W18": "60bdec1bc758e5b3dccf6689f12e45ada58cc704d778d095b7e85d4d47a9630e",
-          "W33": "d8b4a13ee85ba606eb28e60f50ade9fb8a6606c3627c0a5da924ae8ecb7d65ac",
-          "W47": "f1c70c8fd703f73b0ff762322f309987a3a809d53843517cbebeab13f50e720a"
+          "W17": "686becae7a0503789ec964a1174d49ef36ad3f432239d90b643c3dbd746ff61b",
+          "W18": "05f2b200f8e10cba92b974f76b00ca307a3c3c3525e41cab39fa8408d47606cf",
+          "W33": "e35e09853a074232b594019ee266f6ae1dc642ebd42264529d27d3eec9817cd8",
+          "W47": "03f9595a7edb456f4b812336a2dae99198b6a5a14b89840d98117b78399648aa"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -5526,10 +5545,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "900bc9d950b7e2120c3fedd80065a0f5916b9d109404141568fa3539e67cab7a",
+      "reviewed_basis_sha256": "8be2ede69020de89aa22c33965000e3489cebcf114c7e489ff9557582cd494a9",
       "order": 52,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "900bc9d950b7e2120c3fedd80065a0f5916b9d109404141568fa3539e67cab7a",
+      "basis_sha256": "8be2ede69020de89aa22c33965000e3489cebcf114c7e489ff9557582cd494a9",
       "current_basis": {
         "definition": "ee34b9dc0734b4d914f867ab440ff9524b50cbbd145b336800e27ac0b1981f95",
         "context": {
@@ -5537,18 +5556,18 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R08": "732eadfb0a57269aa299361c829252fc575f074fa45a20768afb13f34cbe4460",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587"
+          "R08": "a6b133211c998a2f02419d30fe84f199c8f200acb7981394a5f8e66208fe3de3",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684"
         },
         "dependencies": {
-          "W32": "72f11ccb7f57784e3750330ad71df069e8701951bff325e05286c22e92e876bd",
-          "W46": "4c09b5e3d39b35cb13ffdece832ebb78966799577e1464e8b2c755dae655a2b7",
-          "W48": "9c273d86cfb4b2d678822e459f3f041f62667479bc707e28ab5e3fc4fefa7581"
+          "W32": "eec0f5dba241983293dd0cc750f8c7d8bd715787e1d3c4d0ec42877fff9fb770",
+          "W46": "a895e01bbfea2f9f5cdac79dc87a3abcbb8a5fe61e3db050e870abbc81edff99",
+          "W48": "54574e59e9a2f2ae3eced391a9832ad4c4760b7b5aece8876a77489a09b4ec3a"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -5624,10 +5643,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "955adc1cd341400b5f5c3de2dfcf679d048a21eebac6b1e606e4dcd41e51d518",
+      "reviewed_basis_sha256": "640ed1a4e9060b0b7f8b4c217a71b8d65bbc82294430759a30eac7a988ef072b",
       "order": 53,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "955adc1cd341400b5f5c3de2dfcf679d048a21eebac6b1e606e4dcd41e51d518",
+      "basis_sha256": "640ed1a4e9060b0b7f8b4c217a71b8d65bbc82294430759a30eac7a988ef072b",
       "current_basis": {
         "definition": "33d6039d2c3dbc8a90eae0dcc0973452328ab503b08dfc59ac898d3a52928910",
         "context": {
@@ -5635,17 +5654,17 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R08": "732eadfb0a57269aa299361c829252fc575f074fa45a20768afb13f34cbe4460",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R08": "a6b133211c998a2f02419d30fe84f199c8f200acb7981394a5f8e66208fe3de3",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W48": "9c273d86cfb4b2d678822e459f3f041f62667479bc707e28ab5e3fc4fefa7581",
-          "W49": "900bc9d950b7e2120c3fedd80065a0f5916b9d109404141568fa3539e67cab7a"
+          "W48": "54574e59e9a2f2ae3eced391a9832ad4c4760b7b5aece8876a77489a09b4ec3a",
+          "W49": "8be2ede69020de89aa22c33965000e3489cebcf114c7e489ff9557582cd494a9"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -5721,10 +5740,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "b19dc8f6fefd09d4865845135f05b90129de1b91e95620a25525b3e42fc42870",
+      "reviewed_basis_sha256": "bcc9aeeb9b9daf5ddd7b87d0db3bd53e6a8ab23fde4b911c33430198572d0048",
       "order": 54,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "b19dc8f6fefd09d4865845135f05b90129de1b91e95620a25525b3e42fc42870",
+      "basis_sha256": "bcc9aeeb9b9daf5ddd7b87d0db3bd53e6a8ab23fde4b911c33430198572d0048",
       "current_basis": {
         "definition": "99cd7d8f5c957adb5a07c9f25bbe7fb136bdbc9e967e95cd79af601f3c5f2904",
         "context": {
@@ -5732,16 +5751,16 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W46": "4c09b5e3d39b35cb13ffdece832ebb78966799577e1464e8b2c755dae655a2b7",
-          "W48": "9c273d86cfb4b2d678822e459f3f041f62667479bc707e28ab5e3fc4fefa7581",
-          "W49": "900bc9d950b7e2120c3fedd80065a0f5916b9d109404141568fa3539e67cab7a"
+          "W46": "a895e01bbfea2f9f5cdac79dc87a3abcbb8a5fe61e3db050e870abbc81edff99",
+          "W48": "54574e59e9a2f2ae3eced391a9832ad4c4760b7b5aece8876a77489a09b4ec3a",
+          "W49": "8be2ede69020de89aa22c33965000e3489cebcf114c7e489ff9557582cd494a9"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -5817,10 +5836,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "57404f8c227bed9417e8f1db448016580a3b666224ba97be028a2420a6415d08",
+      "reviewed_basis_sha256": "1a2873a54da824381005988ad430df4b57f141313e143a3c04428acff1d19adb",
       "order": 55,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "57404f8c227bed9417e8f1db448016580a3b666224ba97be028a2420a6415d08",
+      "basis_sha256": "1a2873a54da824381005988ad430df4b57f141313e143a3c04428acff1d19adb",
       "current_basis": {
         "definition": "4138e3c7162bbdd8f0b526d3d267f055f80d65e6cb1629b41efa87612db37a22",
         "context": {
@@ -5828,18 +5847,18 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R06": "64c6d06f3104a222b643033d3068e57a7f3e0a0984cfa9c98700a1b119f48b0e",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T12": "eb8e2368eac03e50f1186ee3bdaf088145babe55be716bf0a4a03fdeec082062"
+          "R06": "bac2626a694e5fbf7aa8b14337586b903e3f226b2474e86906c3e9ce133b2df5",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T12": "03e26e6349a003c8718826894f748dce851f9868d4d18ad43bf19d8572d782da"
         },
         "dependencies": {
-          "W39": "a94053fd0f07458433012c763fb696ed114c21ac9194a919db1a12cb896c5f75",
-          "W40": "d6c7fd50c8d0508939d58f77b5cf20e9fd71af0303a9afcd8160cfb07436ef14",
-          "W51": "b19dc8f6fefd09d4865845135f05b90129de1b91e95620a25525b3e42fc42870"
+          "W39": "33811d9b95acb18973f44c24df0871bbca1329d9df1c3c524b6fd4f697c7b67a",
+          "W40": "0d0a677b7b0ffdc6213d4e277b49f8b117c9b6c3884efaff89ccd909dc8da018",
+          "W51": "bcc9aeeb9b9daf5ddd7b87d0db3bd53e6a8ab23fde4b911c33430198572d0048"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -5916,10 +5935,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "d8672cd857562fbd310725193d59fb8f82cb102ad9b55970864c955402aa0b15",
+      "reviewed_basis_sha256": "7a1dc62aa643355748e03972c2faae296c58e0199ccd1c336c05fb33bb8686f3",
       "order": 56,
       "work_type": "代码与接口工作包",
-      "basis_sha256": "d8672cd857562fbd310725193d59fb8f82cb102ad9b55970864c955402aa0b15",
+      "basis_sha256": "7a1dc62aa643355748e03972c2faae296c58e0199ccd1c336c05fb33bb8686f3",
       "current_basis": {
         "definition": "3f2a9277abbb0fc1cbcd2e95496fce64ad30ea7f0d3c85729841025fd9eea082",
         "context": {
@@ -5927,19 +5946,19 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R06": "64c6d06f3104a222b643033d3068e57a7f3e0a0984cfa9c98700a1b119f48b0e",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239",
-          "T12": "eb8e2368eac03e50f1186ee3bdaf088145babe55be716bf0a4a03fdeec082062"
+          "R06": "bac2626a694e5fbf7aa8b14337586b903e3f226b2474e86906c3e9ce133b2df5",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b",
+          "T12": "03e26e6349a003c8718826894f748dce851f9868d4d18ad43bf19d8572d782da"
         },
         "dependencies": {
-          "W43": "5b24fdb3be8a4e7dd43d353ba92d3e6723f64be6ae2d749d1dcaaee1b834e82d",
-          "W49": "900bc9d950b7e2120c3fedd80065a0f5916b9d109404141568fa3539e67cab7a",
-          "W52": "57404f8c227bed9417e8f1db448016580a3b666224ba97be028a2420a6415d08"
+          "W43": "61c77c348e5f0609a0a3a623b46b164737c1a39f94b5f0de2085c40da595c186",
+          "W49": "8be2ede69020de89aa22c33965000e3489cebcf114c7e489ff9557582cd494a9",
+          "W52": "1a2873a54da824381005988ad430df4b57f141313e143a3c04428acff1d19adb"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -6020,10 +6039,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "3b5cb2159444a25d9c39f43b36d2e85ee09c2ae5ec843fb8605c2ef93bb85c31",
+      "reviewed_basis_sha256": "572b36a6338bfc53f52f40f6521e1bca823a985eb30c34fc55a9be2e12dccd53",
       "order": 57,
       "work_type": "路线集成验收",
-      "basis_sha256": "3b5cb2159444a25d9c39f43b36d2e85ee09c2ae5ec843fb8605c2ef93bb85c31",
+      "basis_sha256": "572b36a6338bfc53f52f40f6521e1bca823a985eb30c34fc55a9be2e12dccd53",
       "current_basis": {
         "definition": "324b7e8401db0ae602678661e5b75eea54fae775b523ff3cb407a17a88a8d12b",
         "context": {
@@ -6031,18 +6050,18 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R06": "64c6d06f3104a222b643033d3068e57a7f3e0a0984cfa9c98700a1b119f48b0e",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T12": "eb8e2368eac03e50f1186ee3bdaf088145babe55be716bf0a4a03fdeec082062"
+          "R06": "bac2626a694e5fbf7aa8b14337586b903e3f226b2474e86906c3e9ce133b2df5",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T12": "03e26e6349a003c8718826894f748dce851f9868d4d18ad43bf19d8572d782da"
         },
         "dependencies": {
-          "W52": "57404f8c227bed9417e8f1db448016580a3b666224ba97be028a2420a6415d08",
-          "W53": "d8672cd857562fbd310725193d59fb8f82cb102ad9b55970864c955402aa0b15"
+          "W52": "1a2873a54da824381005988ad430df4b57f141313e143a3c04428acff1d19adb",
+          "W53": "7a1dc62aa643355748e03972c2faae296c58e0199ccd1c336c05fb33bb8686f3"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -6136,10 +6155,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "86f18ed1f0a9363e728c07ad179d53b31cbbad3ac9e8053de4ccccfa104e3047",
+      "reviewed_basis_sha256": "d171d75278528fbdc3815040d61a76fadc0b97f7694ddcd7de97c5133b93fadd",
       "order": 58,
       "work_type": "路线集成验收",
-      "basis_sha256": "86f18ed1f0a9363e728c07ad179d53b31cbbad3ac9e8053de4ccccfa104e3047",
+      "basis_sha256": "d171d75278528fbdc3815040d61a76fadc0b97f7694ddcd7de97c5133b93fadd",
       "current_basis": {
         "definition": "73fd6cf81bf758b79ab0e53fd85fd436a98d216bce1ca9f87d63a396401728aa",
         "context": {
@@ -6147,26 +6166,26 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R01": "d12a51e857b9e9500e68bae072987de298d5cf574ea03df6aae3c3e62c5a32ce",
-          "R03": "4a077de37bcc5735770b34d0275952dd8838e2f37cf6b8a4b4fb6e0942bf320a",
-          "R05": "d5d84a0f59a2d01284cda61ca031c33b26c474bb73a3c817a2f5b65af45c43b0",
-          "R07": "a0f535d354066986b50ebbc88f06b78073a0bdbdc65c537d38a85741a669cb38",
-          "R08": "732eadfb0a57269aa299361c829252fc575f074fa45a20768afb13f34cbe4460",
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R01": "3e6ddf9952775909f9685cb3873f745bcfa97694b207b9654fa72ce02f4d3921",
+          "R03": "10d027f92cfa875eb0e3c18e3c51c0fb0102c9d31febdeefcf9c785ced216f89",
+          "R05": "1495bfa4e486db60252ac04090342fc9b06e68b6aa76a82bf61bba02e9e3c1da",
+          "R07": "c37b0c9998ce64096428938ae6e89d07700d80a360e56e24b0b4a633f2144149",
+          "R08": "a6b133211c998a2f02419d30fe84f199c8f200acb7981394a5f8e66208fe3de3",
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W47": "f1c70c8fd703f73b0ff762322f309987a3a809d53843517cbebeab13f50e720a",
-          "W48": "9c273d86cfb4b2d678822e459f3f041f62667479bc707e28ab5e3fc4fefa7581",
-          "W49": "900bc9d950b7e2120c3fedd80065a0f5916b9d109404141568fa3539e67cab7a",
-          "W50": "955adc1cd341400b5f5c3de2dfcf679d048a21eebac6b1e606e4dcd41e51d518",
-          "W51": "b19dc8f6fefd09d4865845135f05b90129de1b91e95620a25525b3e42fc42870",
-          "W54": "3b5cb2159444a25d9c39f43b36d2e85ee09c2ae5ec843fb8605c2ef93bb85c31"
+          "W47": "03f9595a7edb456f4b812336a2dae99198b6a5a14b89840d98117b78399648aa",
+          "W48": "54574e59e9a2f2ae3eced391a9832ad4c4760b7b5aece8876a77489a09b4ec3a",
+          "W49": "8be2ede69020de89aa22c33965000e3489cebcf114c7e489ff9557582cd494a9",
+          "W50": "640ed1a4e9060b0b7f8b4c217a71b8d65bbc82294430759a30eac7a988ef072b",
+          "W51": "bcc9aeeb9b9daf5ddd7b87d0db3bd53e6a8ab23fde4b911c33430198572d0048",
+          "W54": "572b36a6338bfc53f52f40f6521e1bca823a985eb30c34fc55a9be2e12dccd53"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -6277,10 +6296,10 @@
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "a07c1f9e8067dd15a52298afe9eaa0d9630dc70e2a9e0b2fe1ac0164087a5c8d",
+      "reviewed_basis_sha256": "022ddff7f70bbda13afbff27f4945d5600c14e0c26a56ebd586134a76bd4f4a9",
       "order": 59,
       "work_type": "阶段门",
-      "basis_sha256": "a07c1f9e8067dd15a52298afe9eaa0d9630dc70e2a9e0b2fe1ac0164087a5c8d",
+      "basis_sha256": "022ddff7f70bbda13afbff27f4945d5600c14e0c26a56ebd586134a76bd4f4a9",
       "current_basis": {
         "definition": "b41665c91cacdf931f5d1b60a45b2ac84efedeb9c08b43a2a359ac810cd3a9f2",
         "context": {
@@ -6288,36 +6307,36 @@
           "tech-work-26-2": "9e685dd4cf3dabfc498a940b7c3c4287012873680cda6473121db38844de607e",
           "tech-work-26-3": "a52191ad86b3b78cb803e51eb22841a6b5159e769fcadfa3d0e5c9fef9cd8e2a",
           "tech-work-26-4": "d73ef42591e7836800f3190c4f58a590233fc923f5dba845700ea5fd2d9280a8",
-          "tech-work-26-5": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+          "tech-work-26-5": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
         },
         "technical": {
-          "R01": "d12a51e857b9e9500e68bae072987de298d5cf574ea03df6aae3c3e62c5a32ce",
-          "R03": "4a077de37bcc5735770b34d0275952dd8838e2f37cf6b8a4b4fb6e0942bf320a",
-          "R05": "d5d84a0f59a2d01284cda61ca031c33b26c474bb73a3c817a2f5b65af45c43b0",
-          "R06": "64c6d06f3104a222b643033d3068e57a7f3e0a0984cfa9c98700a1b119f48b0e",
-          "R07": "a0f535d354066986b50ebbc88f06b78073a0bdbdc65c537d38a85741a669cb38",
-          "R08": "732eadfb0a57269aa299361c829252fc575f074fa45a20768afb13f34cbe4460",
-          "T01": "cd9aa77f993ba79ac6fadb7bb959b24a20e10c3724d64c5a384b9ee8b4a3b31c",
-          "T02": "e1dc7e25f498cca4ddd28e07f9bc1919fef3c756456d51375575e89cb8d24887",
-          "T04": "43245f1495f86852351b2888093e3aff4b5d47375f56bf20ae3116f8a2190bef",
-          "T05": "5dd987feb2ebd5448d8a3ef5c1b3411be3f34e92bb4a039a0f3fc670c3d6154c",
-          "T09": "1c060a043b86175eaa2110e0ee15882296c895a933b33ab5da08abaca5fb51e6",
-          "T10": "a92f73fc8d4368271bba0c86d4240a2e11501400393edea679c7cbea5c30b239",
-          "T11": "3be31dda244e0aec21c56c77b4e2bd2d555d517d5b256866761e165be8672587",
-          "T12": "eb8e2368eac03e50f1186ee3bdaf088145babe55be716bf0a4a03fdeec082062",
-          "T13": "7a4959c9b98c232ac8f61fe8a3c3030a0400b35cb5ae2c123519afeae0e8e87d"
+          "R01": "3e6ddf9952775909f9685cb3873f745bcfa97694b207b9654fa72ce02f4d3921",
+          "R03": "10d027f92cfa875eb0e3c18e3c51c0fb0102c9d31febdeefcf9c785ced216f89",
+          "R05": "1495bfa4e486db60252ac04090342fc9b06e68b6aa76a82bf61bba02e9e3c1da",
+          "R06": "bac2626a694e5fbf7aa8b14337586b903e3f226b2474e86906c3e9ce133b2df5",
+          "R07": "c37b0c9998ce64096428938ae6e89d07700d80a360e56e24b0b4a633f2144149",
+          "R08": "a6b133211c998a2f02419d30fe84f199c8f200acb7981394a5f8e66208fe3de3",
+          "T01": "4ee43af835b669250bac3fd184a8f936aba45dcd90b2ca64654893efa0c7f132",
+          "T02": "5815678ab62390f86597d2fa02528fdf4c8ad164dcc7baf3ce3fae65d403e770",
+          "T04": "cb055549465b3c593f92f23e1c158009de004082ec0c11f2f28e95f32d690d09",
+          "T05": "447717989135bee1d2f4b830d87bbd0ff424ccf450071ce1a6c3d6b1efe30cbc",
+          "T09": "466420f898abbbb29d0c9a8de02eebf5a1701fc7f3b22e46f8936cac06a13e4d",
+          "T10": "63cfc41a11319fc6dc7938cea558fa9eac44f6e4fbd3c71875c11d4f023b906b",
+          "T11": "c33c60ae38452fd9a86c38b71d93165279b6b17c6b3ae791fd9ae42ebac4c684",
+          "T12": "03e26e6349a003c8718826894f748dce851f9868d4d18ad43bf19d8572d782da",
+          "T13": "46de7113f5f1910d83a07ae591ba9760e760ffd587c0330952225a175ef3b619"
         },
         "dependencies": {
-          "W46": "4c09b5e3d39b35cb13ffdece832ebb78966799577e1464e8b2c755dae655a2b7",
-          "W47": "f1c70c8fd703f73b0ff762322f309987a3a809d53843517cbebeab13f50e720a",
-          "W48": "9c273d86cfb4b2d678822e459f3f041f62667479bc707e28ab5e3fc4fefa7581",
-          "W49": "900bc9d950b7e2120c3fedd80065a0f5916b9d109404141568fa3539e67cab7a",
-          "W50": "955adc1cd341400b5f5c3de2dfcf679d048a21eebac6b1e606e4dcd41e51d518",
-          "W51": "b19dc8f6fefd09d4865845135f05b90129de1b91e95620a25525b3e42fc42870",
-          "W52": "57404f8c227bed9417e8f1db448016580a3b666224ba97be028a2420a6415d08",
-          "W53": "d8672cd857562fbd310725193d59fb8f82cb102ad9b55970864c955402aa0b15",
-          "W54": "3b5cb2159444a25d9c39f43b36d2e85ee09c2ae5ec843fb8605c2ef93bb85c31",
-          "W55": "86f18ed1f0a9363e728c07ad179d53b31cbbad3ac9e8053de4ccccfa104e3047"
+          "W46": "a895e01bbfea2f9f5cdac79dc87a3abcbb8a5fe61e3db050e870abbc81edff99",
+          "W47": "03f9595a7edb456f4b812336a2dae99198b6a5a14b89840d98117b78399648aa",
+          "W48": "54574e59e9a2f2ae3eced391a9832ad4c4760b7b5aece8876a77489a09b4ec3a",
+          "W49": "8be2ede69020de89aa22c33965000e3489cebcf114c7e489ff9557582cd494a9",
+          "W50": "640ed1a4e9060b0b7f8b4c217a71b8d65bbc82294430759a30eac7a988ef072b",
+          "W51": "bcc9aeeb9b9daf5ddd7b87d0db3bd53e6a8ab23fde4b911c33430198572d0048",
+          "W52": "1a2873a54da824381005988ad430df4b57f141313e143a3c04428acff1d19adb",
+          "W53": "7a1dc62aa643355748e03972c2faae296c58e0199ccd1c336c05fb33bb8686f3",
+          "W54": "572b36a6338bfc53f52f40f6521e1bca823a985eb30c34fc55a9be2e12dccd53",
+          "W55": "d171d75278528fbdc3815040d61a76fadc0b97f7694ddcd7de97c5133b93fadd"
         }
       },
       "binding_status": "CURRENT_BINDING",
@@ -6418,7 +6437,7 @@
     "tech-work-26-5": {
       "section": "26.5",
       "title": "实施缺口、问题接续与未定参数",
-      "sha256": "12ea227d4aa2eb569bacf63c3dfae2e471d4ee3d6383ec988b428492ec7ff2e6"
+      "sha256": "e6bfb44315190d9e65492ee6d6b302f1b5484e8efede8eca7557a44a5cae4561"
     }
   },
   "technical_coverage": {
@@ -9705,7 +9724,7 @@
     "th-24": {
       "section": "24",
       "title": "单一维护源与必要文件的自动同步",
-      "sha256": "34e85ffd68d997b56a95f0386db372ad0f19b38b53ce7d2d4b46a2bbc287957a",
+      "sha256": "e70dc7fc157dcdad41e741c89656ec8c13aaa19dc5c974ab25a286e0d328e623",
       "direct_nodes": [
         "R01",
         "R02",

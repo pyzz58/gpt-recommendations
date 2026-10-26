@@ -113,7 +113,7 @@ class OperationJournalTests(unittest.TestCase):
             b"Owned synthetic provider query evidence\n")
 
     def test_success_records_exact_request_identity_and_actual_receipt(self):
-        run=self.journal.run(self.request(),FakeAdapter(self.success_return()),BODY)
+        run=self.journal._execute_adapter(self.request(),FakeAdapter(self.success_return()),BODY)
         self.assertEqual(run.response_body,RESULT)
         receipt=self.journal.receipt("OP-1")
         self.assertEqual(receipt.status,OperationStatus.SUCCEEDED)
@@ -126,22 +126,22 @@ class OperationJournalTests(unittest.TestCase):
 
     def test_duplicate_success_is_not_invoked_again(self):
         adapter=FakeAdapter(self.success_return())
-        self.journal.run(self.request(),adapter,BODY)
+        self.journal._execute_adapter(self.request(),adapter,BODY)
         with self.assertRaisesRegex(OperationError,"Retry does not bind"):
-            self.journal.run(self.request("OP-2"),adapter,BODY)
+            self.journal._execute_adapter(self.request("OP-2"),adapter,BODY)
         self.assertEqual(adapter.calls,1)
 
     def test_unknown_timeout_blocks_automatic_retry_until_reconciled(self):
         adapter=FakeAdapter(error=ToolAdapterError("provider accepted then timed out",
             provider_request_id="PROVIDER-REQ-UNKNOWN"))
-        run=self.journal.run(self.request(),adapter,BODY)
+        run=self.journal._execute_adapter(self.request(),adapter,BODY)
         receipt=self.journal.receipt("OP-1")
         self.assertEqual(run.receipt.submission.version_id,"RESULT-OP-1")
         self.assertEqual(receipt.status,OperationStatus.UNKNOWN)
         self.assertEqual(receipt.provider_request_id,"PROVIDER-REQ-UNKNOWN")
         self.assertEqual(self.journal.summary("LOGICAL-OP-1").unknown_cost_attempts,1)
         with self.assertRaisesRegex(OperationError,"must be reconciled"):
-            self.journal.run(self.request("OP-2",attempt=2,max_attempts=2,
+            self.journal._execute_adapter(self.request("OP-2",attempt=2,max_attempts=2,
                 retry="OP-1",expected="OP-1"),FakeAdapter(self.success_return()),BODY)
         self.assertEqual(adapter.calls,1)
 
@@ -151,10 +151,10 @@ class OperationJournalTests(unittest.TestCase):
                 amount=Decimal("0.01"),currency="USD",basis="Provider rejected request"),
             error_code="INVALID_INPUT",error_message="Rejected",observed_internal_retries=0,
             started_at=AT+timedelta(seconds=1),ended_at=AT+timedelta(seconds=2))
-        self.journal.run(self.request(max_attempts=2),FakeAdapter(failed),BODY)
+        self.journal._execute_adapter(self.request(max_attempts=2),FakeAdapter(failed),BODY)
         retry=self.request("OP-2",attempt=2,max_attempts=2,retry="OP-1",expected="OP-1")
         second_adapter=FakeAdapter(self.success_return())
-        self.journal.run(retry,second_adapter,BODY)
+        self.journal._execute_adapter(retry,second_adapter,BODY)
         self.assertEqual(second_adapter.calls,1)
         self.assertEqual(self.journal.receipt("OP-2").status,OperationStatus.SUCCEEDED)
         summary=self.journal.summary("LOGICAL-OP-1")
@@ -168,22 +168,22 @@ class OperationJournalTests(unittest.TestCase):
         self.assertEqual(query.returncode,0,query.stderr)
         self.assertEqual(json.loads(query.stdout)["operation_ids"],["OP-1","OP-2"])
         with self.assertRaises(Exception):
-            self.journal.run(self.request("OP-3",attempt=2,max_attempts=2,
+            self.journal._execute_adapter(self.request("OP-3",attempt=2,max_attempts=2,
                 retry="OP-1",expected="OP-1",digest_value="b"*64),second_adapter,b"different")
 
     def test_payload_tool_version_and_internal_retry_mismatch_are_bounded(self):
         adapter=FakeAdapter(self.success_return())
         with self.assertRaisesRegex(OperationError,"request digest"):
-            self.journal.run(self.request(digest_value="b"*64),adapter,b"different")
+            self.journal._execute_adapter(self.request(digest_value="b"*64),adapter,b"different")
         self.assertEqual(adapter.calls,0)
         with self.assertRaisesRegex(OperationError,"tool version|Adapter identity"):
-            self.journal.run(self.request(tool_version="9.9.9"),adapter,BODY)
+            self.journal._execute_adapter(self.request(tool_version="9.9.9"),adapter,BODY)
         self.assertEqual(adapter.calls,0)
         with self.assertRaisesRegex(OperationError,"Adapter identity"):
-            self.journal.run(self.request(provider_id="different-provider"),adapter,BODY)
+            self.journal._execute_adapter(self.request(provider_id="different-provider"),adapter,BODY)
         self.assertEqual(adapter.calls,0)
         over=OperationJournal(self.archive,self.rights)
-        run=over.run(self.request("OP-OVER"),FakeAdapter(self.success_return(retries=2)),BODY)
+        run=over._execute_adapter(self.request("OP-OVER"),FakeAdapter(self.success_return(retries=2)),BODY)
         self.assertEqual(run.receipt.submission.version_id,"RESULT-OP-OVER")
         self.assertIsNone(run.response_body)
         receipt=over.receipt("OP-OVER")
@@ -201,7 +201,7 @@ class OperationJournalTests(unittest.TestCase):
         self.assertEqual(summary.unknown_cost_attempts,0)
 
     def test_provider_reconciliation_resolves_unknown_without_erasing_history(self):
-        self.journal.run(self.request(),FakeAdapter(error=ToolAdapterError(
+        self.journal._execute_adapter(self.request(),FakeAdapter(error=ToolAdapterError(
             "timeout",provider_request_id="PROVIDER-REQ-UNKNOWN")),BODY)
         self.assertEqual(self.journal.receipt("OP-1").status,OperationStatus.UNKNOWN)
         self.query_evidence("OP-1","QUERY-OP-1-v001")
@@ -220,7 +220,7 @@ class OperationJournalTests(unittest.TestCase):
                 evidence_version_ids=("QUERY-OP-1-v001",),recorded_at=AT+timedelta(minutes=4))
 
     def test_reconciliation_rejects_wrong_provider_and_nonquery_evidence(self):
-        self.journal.run(self.request(),FakeAdapter(error=ToolAdapterError(
+        self.journal._execute_adapter(self.request(),FakeAdapter(error=ToolAdapterError(
             "timeout",provider_request_id="PROVIDER-A")),BODY)
         self.query_evidence("OP-1","QUERY-OP-1-v001")
         with self.assertRaisesRegex(OperationError,"checked mapping"):
@@ -243,7 +243,7 @@ class OperationJournalTests(unittest.TestCase):
                 retry="OP-1",expected="OP-1"))
 
     def test_checked_provider_mapping_allows_distinct_query_id_and_keeps_original(self):
-        self.journal.run(self.request(),FakeAdapter(error=ToolAdapterError(
+        self.journal._execute_adapter(self.request(),FakeAdapter(error=ToolAdapterError(
             "timeout",provider_request_id="PROVIDER-A")),BODY)
         self.query_evidence("OP-1","QUERY-OP-1-v001")
         mapping=ProviderRequestMapping(mapping_id="MAP-OP-1",operation_id="OP-1",
@@ -266,7 +266,7 @@ class OperationJournalTests(unittest.TestCase):
         self.assertEqual(receipt.provider_mapping_id,"MAP-OP-1")
 
     def test_stale_success_reconciliation_cannot_be_overwritten_by_failure(self):
-        self.journal.run(self.request(max_attempts=2),FakeAdapter(error=ToolAdapterError(
+        self.journal._execute_adapter(self.request(max_attempts=2),FakeAdapter(error=ToolAdapterError(
             "timeout",provider_request_id="PROVIDER-REQ-UNKNOWN")),BODY)
         self.query_evidence("OP-1","QUERY-OP-1-v001")
         original_load=self.journal._load_receipt_record
@@ -296,7 +296,7 @@ class OperationJournalTests(unittest.TestCase):
                 retry="OP-1",expected="OP-1"))
 
     def test_concurrent_failure_reconciliations_leave_one_current_failure(self):
-        self.journal.run(self.request(max_attempts=2),FakeAdapter(error=ToolAdapterError(
+        self.journal._execute_adapter(self.request(max_attempts=2),FakeAdapter(error=ToolAdapterError(
             "timeout",provider_request_id="PROVIDER-REQ-UNKNOWN")),BODY)
         self.query_evidence("OP-1","QUERY-OP-1-v001")
         original_load=self.journal._load_receipt_record

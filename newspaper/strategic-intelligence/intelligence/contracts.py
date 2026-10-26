@@ -44,6 +44,9 @@ class ObjectKind(str, Enum):
     OPERATION_REQUEST = "OperationRequest"
     OPERATION_RECEIPT = "OperationReceipt"
     PROVIDER_REQUEST_MAPPING = "ProviderRequestMapping"
+    CAPABILITY_ADMISSION = "CapabilityAdmission"
+    BUDGET_ENVELOPE = "BudgetEnvelope"
+    BUDGET_EVENT = "BudgetEvent"
     MATERIAL_SELECTION = "MaterialSelection"
 
 

@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`7fc2691744a4d16701db21c327e53e9b9c4769a468396b73e1df40d5fe2cc8df`。
+当前规范SHA-256：`9a6ae6030737ab12df50303a7485a66dd5391846b32e72efc0e7352bbb80bbb7`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收5包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收6包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -53,7 +53,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 16 | [W15 采用检查与权威决定接口](#w15) | 代码与接口工作包 | T01 | [W14](#w14) | 进行中 / CURRENT_BINDING |
 | 17 | [W16 共享研究修订与并发提交边界](#w16) | 代码与接口工作包 | T05/T01/T11 | [W13](#w13)、[W15](#w15) | 进行中 / CURRENT_BINDING |
 | 18 | [W17 工具适配器与真实操作身份](#w17) | 代码与接口工作包 | T13/T11 | [W13](#w13)、[W15](#w15) | 进行中 / CURRENT_BINDING |
-| 19 | [W18 调用前权限、预算与能力核验](#w18) | 代码与接口工作包 | T13/T01 | [W17](#w17)、[W15](#w15) | 待开始 / CURRENT_BINDING |
+| 19 | [W18 调用前权限、预算与能力核验](#w18) | 代码与接口工作包 | T13/T01 | [W17](#w17)、[W15](#w15) | 进行中 / CURRENT_BINDING |
 | 20 | [W19 模型任务配置与有限准入证据](#w19) | 代码与接口工作包 | T13/T09 | [W18](#w18) | 待开始 / CURRENT_BINDING |
 | 21 | [W20 少量来源适配与候选输入](#w20) | 代码与接口工作包 | T02 | [W17](#w17)、[W18](#w18) | 待开始 / CURRENT_BINDING |
 | 22 | [W21 事件归并、血缘与探索队列](#w21) | 代码与接口工作包 | T02 | [W20](#w20)、[W13](#w13) | 待开始 / CURRENT_BINDING |
@@ -761,7 +761,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：19/59；阶段：2；类型：代码与接口工作包。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W17](#w17)、[W15](#w15)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W17](#w17)、[W15](#w15)。
 
 前置尚未验收：[W15](#w15)、[W17](#w17)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -791,7 +791,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W18-PRECALL-GATE-20261026-001", "artifact_refs": ["intelligence/gating.py", "intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "tests_runtime/test_gating.py", "audits/pr76-review-remediation-w18-20261026.json"], "validation_refs": ["tests_runtime/test_gating.py (8 actual passing W18 tests)", "audits/pr76-review-remediation-w18-20261026.json"], "reviewer": "当前执行者实际离线能力准入、材料用途、预算CAS、Adapter调用前拒绝和合成回执检查；非真实供应商、独立L5或阶段批准", "result": "IN_PROGRESS", "scope": "W18离线门禁：CapabilityAdmission精确绑定Task/步骤/供应商/工具/配置/操作/材料/地域/期限/Review和重试；BudgetEnvelope与追加预算事件在执行前预留、执行后按实际/估计结算，未知费用保留，默认并发预留1并由expected-current保护。材料用途/外发/配置/重试不足均在Adapter调用前拒绝；受控试用显式标记人工复核。真实供应商认证/账单、生产预算/W48恢复仍未验，整包不ACCEPTED。"}]
 
 <a id="w19"></a>
 ## W19｜模型任务配置与有限准入证据

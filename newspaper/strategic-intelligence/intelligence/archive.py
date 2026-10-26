@@ -413,6 +413,28 @@ class Archive:
             self._check_use(c, stored, MaterialUse.STORE_BODY, None)
             return self._read_body(row, stored)
 
+    def check_version_use(self, version_id: str, intended_use: MaterialUse,
+                          context: UseContext) -> tuple[str, ...]:
+        """Check one exact committed version without returning its bytes."""
+        if not isinstance(intended_use, MaterialUse):
+            raise TypeError("check_version_use requires a MaterialUse")
+        if not isinstance(context, UseContext):
+            raise TypeError("check_version_use requires a UseContext")
+        checked_context = UseContext.model_validate_json(
+            context.model_dump_json(warnings=False))
+        with self._write() as c:
+            stored = self._stored(c, self._row(c, version_id))
+            attribution = self._check_use(c, stored, intended_use, checked_context)
+            if intended_use is not MaterialUse.INDEX:
+                self._check_use(
+                    c, stored, MaterialUse.STORE_BODY,
+                    UseContext(at=checked_context.at))
+                permission = self._permission(stored.submission.rights, intended_use)
+                if permission is not None and self._requires_selection(permission):
+                    raise PermissionDenied(
+                        "A partial-content permission requires an exact MaterialSelection input")
+            return attribution
+
     def _read_body(self, row, stored: StoredVersion) -> bytes:
         # Shared by local recovery and purpose-aware reads, under the same lock.
         if stored.body_retention_revoked:

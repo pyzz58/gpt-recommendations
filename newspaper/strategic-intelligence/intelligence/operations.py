@@ -17,8 +17,8 @@ from typing import Literal, Protocol
 from pydantic import AwareDatetime, Field, model_validator
 
 from .archive import Archive, ArchiveError, Conflict, canonical
-from .contracts import (Contract, Digest, Identifier, NonBlank, ObjectKind, ReferenceUse,
-                        Representation, RightsGrant, SourceTimes, StoredVersion,
+from .contracts import (Contract, Digest, Identifier, MaterialUse, NonBlank, ObjectKind,
+                        ReferenceUse, Representation, RightsGrant, SourceTimes, StoredVersion,
                         VersionReference, VersionSubmission)
 
 
@@ -67,7 +67,7 @@ class UsageObservation(Contract):
 
 
 class OperationRequest(Contract):
-    schema_version: int = Field(default=1, ge=1, le=1)
+    schema_version: int = Field(default=2, ge=1, le=2)
     operation_id: Identifier
     idempotency_key: Identifier
     run_id: Identifier
@@ -80,6 +80,7 @@ class OperationRequest(Contract):
     provider_id: NonBlank
     configuration_sha256: Digest
     request_sha256: Digest
+    material_use: MaterialUse | None = None
     input_version_ids: tuple[Identifier, ...] = ()
     attempt_number: int = Field(default=1, ge=1)
     max_attempts: int = Field(default=1, ge=1)
@@ -588,8 +589,9 @@ class OperationJournal:
                     previous_stored.submission.version_id,
             })
 
-    def run(self, request: OperationRequest, adapter: OperationAdapter,
-            payload: bytes) -> OperationRun:
+    def _execute_adapter(self, request: OperationRequest, adapter: OperationAdapter,
+                         payload: bytes) -> OperationRun:
+        """Low-level adapter execution; production callers use PreCallGate."""
         if not isinstance(payload, bytes):
             raise TypeError("Tool payload must be exact bytes")
         if hashlib.sha256(payload).hexdigest() != request.request_sha256:
