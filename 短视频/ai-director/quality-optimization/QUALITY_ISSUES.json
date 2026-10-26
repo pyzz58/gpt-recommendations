@@ -411,7 +411,7 @@
       "opened_on": "2026-10-13",
       "evidence": {
         "implementation_pr": "",
-        "commit_sha": "",
+        "commit_sha": "450df9bc81200280f7056e5cdb6f4b8a691e689b",
         "automated_test": "tests/test_local_director.py::test_prepare_is_offline_and_refuses_overwrite; tests/test_director_v2.py::test_long_script_compact_credit_examples; tests/test_director_v2.py::test_credits_reject_legacy_five_seconds_even_with_matching_timeline",
         "independent_review": "",
         "media_validation": "",
@@ -1152,7 +1152,7 @@
       "opened_on": "2026-10-13",
       "evidence": {
         "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/42",
-        "commit_sha": "",
+        "commit_sha": "450df9bc81200280f7056e5cdb6f4b8a691e689b",
         "automated_test": "tests/test_screenplay_series_delivery.py and tests/test_series_final_timeline.py; explicit intro/recap/bridge/outro/card absolute timeline, forged planned seconds, fake missing source, 90+1.8 overflow, optional last credit page; GitHub Actions 791/791 passed on precursor commit; tests/test_local_director.py::test_prepare_is_offline_and_refuses_overwrite; tests/test_local_director.py::test_series_allows_more_than_three_episodes; tests/test_local_director.py::test_series_rejects_missing_or_over_90_second_episode; tests/test_director_v2.py::test_long_script_compact_credit_examples; tests/test_director_v2.py::test_credits_reject_legacy_five_seconds_even_with_matching_timeline",
         "independent_review": "",
         "media_validation": "",
@@ -1463,7 +1463,7 @@
       "opened_on": "2026-10-13",
       "evidence": {
         "implementation_pr": "",
-        "commit_sha": "",
+        "commit_sha": "450df9bc81200280f7056e5cdb6f4b8a691e689b",
         "automated_test": "tests/test_f01_acting_baseline.py::test_public_fixture_is_synthetic_and_contains_no_private_paths; tests/test_f01_acting_baseline.py::test_fixture_satisfies_only_current_structural_acting_minimum; tests/test_f01_acting_baseline.py::test_current_schema_lacks_professional_causal_fields",
         "independent_review": "",
         "media_validation": "",
