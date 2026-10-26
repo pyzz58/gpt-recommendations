@@ -43,6 +43,7 @@ class ObjectKind(str, Enum):
     RESEARCH_COMMIT = "ResearchCommit"
     OPERATION_REQUEST = "OperationRequest"
     OPERATION_RECEIPT = "OperationReceipt"
+    PROVIDER_REQUEST_MAPPING = "ProviderRequestMapping"
     MATERIAL_SELECTION = "MaterialSelection"
 
 

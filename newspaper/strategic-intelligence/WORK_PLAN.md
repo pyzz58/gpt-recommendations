@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`2d6afceb5308300193b945ea60b31741c71532af4066681f25b9feb33aec719f`。
+当前规范SHA-256：`7fc2691744a4d16701db21c327e53e9b9c4769a468396b73e1df40d5fe2cc8df`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收4包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收5包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -52,7 +52,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 15 | [W14 当前规范与任务输入准备接口](#w14) | 代码与接口工作包 | T01/R07 | [W13](#w13) | 进行中 / CURRENT_BINDING |
 | 16 | [W15 采用检查与权威决定接口](#w15) | 代码与接口工作包 | T01 | [W14](#w14) | 进行中 / CURRENT_BINDING |
 | 17 | [W16 共享研究修订与并发提交边界](#w16) | 代码与接口工作包 | T05/T01/T11 | [W13](#w13)、[W15](#w15) | 进行中 / CURRENT_BINDING |
-| 18 | [W17 工具适配器与真实操作身份](#w17) | 代码与接口工作包 | T13/T11 | [W13](#w13)、[W15](#w15) | 需返工 / CURRENT_BINDING |
+| 18 | [W17 工具适配器与真实操作身份](#w17) | 代码与接口工作包 | T13/T11 | [W13](#w13)、[W15](#w15) | 进行中 / CURRENT_BINDING |
 | 19 | [W18 调用前权限、预算与能力核验](#w18) | 代码与接口工作包 | T13/T01 | [W17](#w17)、[W15](#w15) | 待开始 / CURRENT_BINDING |
 | 20 | [W19 模型任务配置与有限准入证据](#w19) | 代码与接口工作包 | T13/T09 | [W18](#w18) | 待开始 / CURRENT_BINDING |
 | 21 | [W20 少量来源适配与候选输入](#w20) | 代码与接口工作包 | T02 | [W17](#w17)、[W18](#w18) | 待开始 / CURRENT_BINDING |
@@ -720,7 +720,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：18/59；阶段：2；类型：代码与接口工作包。
 
-进度：**需返工**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W15](#w15)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W15](#w15)。
 
 前置尚未验收：[W13](#w13)、[W15](#w15)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -754,7 +754,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W17-OPERATIONS-20261025-001", "artifact_refs": ["intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "intelligence/__main__.py", "tests_runtime/test_operations.py", "audits/w17-operations-20261025.json"], "validation_refs": ["tests_runtime/test_operations.py (6 actual passing W17 tests)", "audits/w17-operations-20261025.json"], "reviewer": "当前执行者实际离线适配器、SQLite回执、重试/UNKNOWN与累计费用检查；非真实供应商、独立L5或阶段批准", "result": "IN_PROGRESS", "scope": "OperationRequest/Receipt持久追加、Adapter描述及字节结果校验；重复成功不再调用，仅FAILED可按原上限绑定重试，UNKNOWN先对账，内建重试超限转UNKNOWN，逻辑操作累计可用。W18授权/预算、真实第三方适配、模型内容及生产恢复未验；W13/W15正式前置未过，不ACCEPTED。"}, {"record_id": "W17-PR76-REVIEW-RETURN-20261026-001", "artifact_refs": ["intelligence/operations.py", "tests_runtime/test_operations.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["Codex-PR76-Review-20261025: F07/F08/F11 reproduced", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准", "result": "RETURNED", "scope": "错误供应商请求可对账、旧对账可把成功改为失败并开放重试、Adapter违规时丢失已观测事实，均已复现。原接口不得继续依赖；须先修复NC-060/061/064并补回执CAS交错与观测保留。"}]
+实际证据：[{"record_id": "W17-OPERATIONS-20261025-001", "artifact_refs": ["intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "intelligence/__main__.py", "tests_runtime/test_operations.py", "audits/w17-operations-20261025.json"], "validation_refs": ["tests_runtime/test_operations.py (6 actual passing W17 tests)", "audits/w17-operations-20261025.json"], "reviewer": "当前执行者实际离线适配器、SQLite回执、重试/UNKNOWN与累计费用检查；非真实供应商、独立L5或阶段批准", "result": "IN_PROGRESS", "scope": "OperationRequest/Receipt持久追加、Adapter描述及字节结果校验；重复成功不再调用，仅FAILED可按原上限绑定重试，UNKNOWN先对账，内建重试超限转UNKNOWN，逻辑操作累计可用。W18授权/预算、真实第三方适配、模型内容及生产恢复未验；W13/W15正式前置未过，不ACCEPTED。"}, {"record_id": "W17-PR76-REVIEW-RETURN-20261026-001", "artifact_refs": ["intelligence/operations.py", "tests_runtime/test_operations.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["Codex-PR76-Review-20261025: F07/F08/F11 reproduced", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准", "result": "RETURNED", "scope": "错误供应商请求可对账、旧对账可把成功改为失败并开放重试、Adapter违规时丢失已观测事实，均已复现。原接口不得继续依赖；须先修复NC-060/061/064并补回执CAS交错与观测保留。"}, {"record_id": "W17-PR76-REMEDIATION-20261026-001", "artifact_refs": ["intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "tests_runtime/test_operations.py", "audits/pr76-review-remediation-w17-20261026.json"], "validation_refs": ["tests_runtime/test_operations.py (10 actual passing W17 tests)", "audits/pr76-review-remediation-w17-20261026.json"], "reviewer": "当前执行者实际离线供应商对账身份、回执CAS、Adapter违规观测和累计费用检查；非真实供应商、独立认证或阶段批准", "result": "IN_PROGRESS", "scope": "F07/F08/F11已修复离线范围：UNKNOWN对账绑定原operation、原回执版本、已知provider ID及引用operation的Evidence；不同查询ID须带同版本ProviderRequestMapping。对账以expected-current CAS写回，不覆盖并发成功，失败/失败只留一个当前回执。Adapter违规结果不采用但保留provider ID、实际费用、用量、内部重试、观察状态/结果哈希和违规原因，汇总继续计费。W18授权/预算、真实供应商认证与生产恢复未验，W17整包不ACCEPTED。"}]
 
 <a id="w18"></a>
 ## W18｜调用前权限、预算与能力核验

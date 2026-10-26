@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from enum import Enum
 import hashlib
-from typing import Protocol
+from typing import Literal, Protocol
 
 from pydantic import AwareDatetime, Field, model_validator
 
@@ -110,10 +110,14 @@ class AdapterDescriptor(Contract):
 
 
 class ToolResponse(Contract):
-    schema_version: int = Field(default=1, ge=1, le=1)
+    schema_version: int = Field(default=2, ge=1, le=2)
     status: OperationStatus
+    observed_status: OperationStatus | None = None
     provider_request_id: NonBlank | None = None
     result_sha256: Digest | None = None
+    observed_result_sha256: Digest | None = None
+    result_adopted: bool = True
+    adapter_violation: NonBlank | None = None
     usage: tuple[UsageObservation, ...] = ()
     cost: CostObservation
     error_code: NonBlank | None = None
@@ -126,11 +130,21 @@ class ToolResponse(Contract):
     def coherent(self) -> Self:
         if self.ended_at < self.started_at:
             raise ValueError("Tool response ends before it starts")
-        if self.status is OperationStatus.SUCCEEDED:
-            if self.error_code is not None:
-                raise ValueError("Successful response cannot carry an error code")
-            if self.result_sha256 is None:
-                raise ValueError("Successful response needs an actual result digest")
+        if self.result_adopted:
+            if self.adapter_violation is not None:
+                raise ValueError("Adopted response cannot carry an adapter violation")
+            if self.status is OperationStatus.SUCCEEDED:
+                if self.error_code is not None:
+                    raise ValueError("Successful response cannot carry an error code")
+                if self.result_sha256 is None:
+                    raise ValueError("Successful response needs an actual result digest")
+        else:
+            if self.status is not OperationStatus.UNKNOWN:
+                raise ValueError("A non-adopted adapter result must remain UNKNOWN")
+            if self.observed_status is None or self.adapter_violation is None:
+                raise ValueError("A non-adopted result needs observed status and violation")
+            if self.result_sha256 is not None:
+                raise ValueError("A non-adopted result cannot claim an adopted result digest")
         if self.status is OperationStatus.FAILED and self.result_sha256 is not None:
             raise ValueError("Failed response cannot claim a result body")
         if self.status is OperationStatus.UNKNOWN and self.result_sha256 is not None:
@@ -139,11 +153,16 @@ class ToolResponse(Contract):
 
 
 class OperationReceipt(Contract):
-    schema_version: int = Field(default=1, ge=1, le=1)
+    schema_version: int = Field(default=2, ge=1, le=2)
     operation_id: Identifier
     status: OperationStatus
+    observed_status: OperationStatus | None = None
     provider_request_id: NonBlank | None = None
+    original_provider_request_id: NonBlank | None = None
     result_sha256: Digest | None = None
+    observed_result_sha256: Digest | None = None
+    result_adopted: bool = True
+    adapter_violation: NonBlank | None = None
     usage: tuple[UsageObservation, ...] = ()
     cost: CostObservation
     error_code: NonBlank | None = None
@@ -154,6 +173,8 @@ class OperationReceipt(Contract):
     ended_at: AwareDatetime
     recorded_at: AwareDatetime
     source: ObservationSource
+    reconciled_from_receipt_id: Identifier | None = None
+    provider_mapping_id: Identifier | None = None
 
     @model_validator(mode="after")
     def coherent(self) -> Self:
@@ -161,17 +182,49 @@ class OperationReceipt(Contract):
             raise ValueError("Operation timestamps are out of order")
         if len(self.evidence_refs) != len(set(self.evidence_refs)):
             raise ValueError("Duplicate receipt evidence")
-        if self.status is OperationStatus.SUCCEEDED:
-            if self.result_sha256 is None or self.error_code is not None:
-                raise ValueError("Successful receipt needs a result and no error code")
-        elif self.result_sha256 is not None:
-            raise ValueError("Non-successful receipt cannot claim a result body")
+        if self.result_adopted:
+            if self.adapter_violation is not None:
+                raise ValueError("Adopted receipt cannot carry an adapter violation")
+            if self.status is OperationStatus.SUCCEEDED:
+                if self.result_sha256 is None or self.error_code is not None:
+                    raise ValueError("Successful receipt needs a result and no error code")
+            elif self.result_sha256 is not None:
+                raise ValueError("Non-successful receipt cannot claim a result body")
+        else:
+            if self.status is not OperationStatus.UNKNOWN:
+                raise ValueError("A non-adopted receipt must remain UNKNOWN")
+            if self.observed_status is None or self.adapter_violation is None:
+                raise ValueError("A non-adopted receipt needs observed status and violation")
+            if self.result_sha256 is not None:
+                raise ValueError("A non-adopted receipt cannot claim an adopted result digest")
         return self
 
 
 class ObservationSource(str, Enum):
     ADAPTER = "ADAPTER"
     PROVIDER_RECONCILIATION = "PROVIDER_RECONCILIATION"
+
+
+class ProviderRequestMapping(Contract):
+    schema_version: Literal[1] = 1
+    mapping_id: Identifier
+    operation_id: Identifier
+    expected_receipt_version_id: Identifier
+    original_provider_request_id: NonBlank
+    query_provider_request_id: NonBlank
+    evidence_version_ids: tuple[Identifier, ...]
+    reason: NonBlank
+    created_at: AwareDatetime
+
+    @model_validator(mode="after")
+    def coherent(self) -> Self:
+        if self.original_provider_request_id == self.query_provider_request_id:
+            raise ValueError("A provider request mapping must change the query identity")
+        if not self.evidence_version_ids:
+            raise ValueError("Provider request mapping needs query evidence")
+        if len(self.evidence_version_ids) != len(set(self.evidence_version_ids)):
+            raise ValueError("Duplicate provider mapping evidence")
+        return self
 
 
 @dataclass(frozen=True)
@@ -243,7 +296,8 @@ class OperationJournal:
     def _receipt_object(operation_id: str) -> str:
         return f"RECEIPT-{operation_id}"
 
-    def _load_receipt(self, operation_id: str) -> OperationReceipt | None:
+    def _load_receipt_record(
+            self, operation_id: str) -> tuple[StoredVersion, OperationReceipt] | None:
         stored = self.archive.latest(self._receipt_object(operation_id))
         if stored is None:
             return None
@@ -252,7 +306,80 @@ class OperationJournal:
         receipt = OperationReceipt.model_validate_json(self.archive.read_body(stored.submission.version_id))
         if receipt.operation_id != operation_id:
             raise OperationError("Operation receipt identity mismatch")
-        return receipt
+        return stored, receipt
+
+    def _load_receipt(self, operation_id: str) -> OperationReceipt | None:
+        record = self._load_receipt_record(operation_id)
+        return None if record is None else record[1]
+
+    def _query_evidence(self, operation_id: str,
+                        evidence_version_ids: tuple[str, ...]) -> None:
+        if not evidence_version_ids or len(evidence_version_ids) != len(set(evidence_version_ids)):
+            raise OperationError("Reconciliation needs at least one unique evidence version")
+        for version_id in evidence_version_ids:
+            stored = self.archive.get(version_id)
+            if stored.submission.kind is not ObjectKind.EVIDENCE:
+                raise OperationError("Reconciliation evidence must be an Evidence version")
+            if stored.body_retention_revoked:
+                raise OperationError("Reconciliation evidence was withdrawn")
+            if not any(
+                    item.target_version_id == operation_id
+                    and item.use is ReferenceUse.REVIEW_OF
+                    for item in stored.submission.references):
+                raise OperationError(
+                    "Reconciliation evidence does not reference the exact operation")
+
+    def append_provider_mapping(
+            self, mapping: ProviderRequestMapping) -> StoredVersion:
+        if not isinstance(mapping, ProviderRequestMapping):
+            raise TypeError("append_provider_mapping requires ProviderRequestMapping")
+        mapping = ProviderRequestMapping.model_validate_json(
+            mapping.model_dump_json(warnings=False))
+        record = self._load_receipt_record(mapping.operation_id)
+        if record is None:
+            raise OperationError("Provider mapping has no original receipt")
+        stored, receipt = record
+        if stored.submission.version_id != mapping.expected_receipt_version_id:
+            raise Conflict("Provider mapping targets a stale UNKNOWN receipt")
+        if receipt.status is not OperationStatus.UNKNOWN:
+            raise OperationError("Provider mapping requires a current UNKNOWN receipt")
+        if receipt.provider_request_id != mapping.original_provider_request_id:
+            raise OperationError("Provider mapping changes the original provider request ID")
+        self._query_evidence(mapping.operation_id, mapping.evidence_version_ids)
+        operation = self.archive.get(mapping.operation_id)
+        if operation.submission.kind is not ObjectKind.OPERATION_REQUEST:
+            raise OperationError("Provider mapping target is not an operation request")
+        references = [
+            VersionReference(target_version_id=mapping.operation_id,
+                             use=ReferenceUse.REVIEW_OF, locator="exact operation attempt"),
+            VersionReference(target_version_id=stored.submission.version_id,
+                             use=ReferenceUse.BASIS, locator="expected UNKNOWN receipt"),
+            *(
+                VersionReference(target_version_id=version_id,
+                                 use=ReferenceUse.SUPPORT,
+                                 locator=f"mapping evidence {index}")
+                for index, version_id in enumerate(mapping.evidence_version_ids)
+            ),
+        ]
+        submission = VersionSubmission(
+            schema_version=2, object_id=f"PROVIDER-MAP-{mapping.mapping_id}",
+            kind=ObjectKind.PROVIDER_REQUEST_MAPPING, version_id=mapping.mapping_id,
+            title=f"provider request mapping {mapping.operation_id}",
+            spec_sha256=operation.submission.spec_sha256, created_at=mapping.created_at,
+            source_times=SourceTimes(), rights=self.rights,
+            representation=Representation.FULL_BODY, references=tuple(references))
+        return self.archive.append(
+            submission, canonical(mapping.model_dump(mode="json")).encode())
+
+    def load_provider_mapping(self, mapping_id: str) -> ProviderRequestMapping:
+        stored = self.archive.get(mapping_id)
+        if stored.submission.kind is not ObjectKind.PROVIDER_REQUEST_MAPPING:
+            raise OperationError("Requested version is not a provider request mapping")
+        mapping = ProviderRequestMapping.model_validate_json(
+            self.archive.read_body(mapping_id))
+        if mapping.mapping_id != mapping_id:
+            raise OperationError("Provider request mapping identity mismatch")
+        return mapping
 
     def begin(self, request: OperationRequest) -> StoredVersion:
         if not isinstance(request, OperationRequest):
@@ -322,8 +449,13 @@ class OperationJournal:
             raise Conflict("Operation already has a receipt; reconcile instead of overwriting")
         receipt = OperationReceipt(
             operation_id=operation_id, status=response.status,
+            observed_status=response.observed_status,
             provider_request_id=response.provider_request_id,
+            original_provider_request_id=response.provider_request_id,
             result_sha256=response.result_sha256, usage=response.usage, cost=response.cost,
+            observed_result_sha256=response.observed_result_sha256,
+            result_adopted=response.result_adopted,
+            adapter_violation=response.adapter_violation,
             error_code=response.error_code, error_message=response.error_message,
             observed_internal_retries=response.observed_internal_retries,
             evidence_refs=(),
@@ -338,7 +470,9 @@ class OperationJournal:
             references=(VersionReference(target_version_id=operation_id,
                                           use=ReferenceUse.REVIEW_OF,
                                           locator="exact operation attempt"),))
-        return self.archive.append(submission, canonical(receipt.model_dump(mode="json")).encode())
+        return self.archive.append(
+            submission, canonical(receipt.model_dump(mode="json")).encode(),
+            expected_current={self._receipt_object(operation_id): None})
 
     def receipt(self, operation_id: str) -> OperationReceipt | None:
         return self._load_receipt(operation_id)
@@ -375,26 +509,59 @@ class OperationJournal:
     def reconcile_unknown(self, operation_id: str, response: ToolResponse, *,
                           reconciliation_id: Identifier,
                           evidence_version_ids: tuple[Identifier, ...],
-                          recorded_at: datetime) -> StoredVersion:
+                          recorded_at: datetime,
+                          provider_mapping_id: Identifier | None = None) -> StoredVersion:
         """Append provider-query evidence resolving or preserving an UNKNOWN result."""
-        previous = self._load_receipt(operation_id)
+        if not isinstance(response, ToolResponse):
+            raise TypeError("reconcile_unknown requires a ToolResponse")
+        response = ToolResponse.model_validate_json(
+            response.model_dump_json(warnings=False))
+        record = self._load_receipt_record(operation_id)
+        if record is None:
+            raise OperationError("Only an UNKNOWN operation can be reconciled")
+        previous_stored, previous = record
         if previous is None or previous.status is not OperationStatus.UNKNOWN:
             raise OperationError("Only an UNKNOWN operation can be reconciled")
-        if not evidence_version_ids or len(evidence_version_ids) != len(set(evidence_version_ids)):
-            raise OperationError("Reconciliation needs at least one unique evidence version")
-        for version_id in evidence_version_ids:
-            self.archive.get(version_id)
+        if not previous.provider_request_id:
+            raise OperationError("UNKNOWN receipt has no known original provider request ID")
+        if not response.provider_request_id:
+            raise OperationError("Reconciliation response has no provider request ID")
+        self._query_evidence(operation_id, evidence_version_ids)
         operation = self.archive.get(operation_id)
-        current = self.archive.latest(self._receipt_object(operation_id))
+        mapping = None
+        if response.provider_request_id == previous.provider_request_id:
+            if provider_mapping_id is not None:
+                raise OperationError("A mapping is not needed when provider request IDs match")
+        else:
+            if provider_mapping_id is None:
+                raise OperationError("Different provider request IDs need an explicit checked mapping")
+            mapping = self.load_provider_mapping(provider_mapping_id)
+            if (mapping.operation_id != operation_id
+                    or mapping.expected_receipt_version_id
+                    != previous_stored.submission.version_id
+                    or mapping.original_provider_request_id
+                    != previous.provider_request_id
+                    or mapping.query_provider_request_id
+                    != response.provider_request_id):
+                raise OperationError("Provider request mapping does not bind this reconciliation")
+            if not set(mapping.evidence_version_ids) <= set(evidence_version_ids):
+                raise OperationError("Reconciliation must carry the mapping's query evidence")
         receipt = OperationReceipt(
             operation_id=operation_id, status=response.status,
+            observed_status=response.observed_status,
             provider_request_id=response.provider_request_id,
+            original_provider_request_id=previous.provider_request_id,
             result_sha256=response.result_sha256, usage=response.usage, cost=response.cost,
+            observed_result_sha256=response.observed_result_sha256,
+            result_adopted=response.result_adopted,
+            adapter_violation=response.adapter_violation,
             error_code=response.error_code, error_message=response.error_message,
             observed_internal_retries=response.observed_internal_retries,
             evidence_refs=evidence_version_ids, started_at=response.started_at,
             ended_at=response.ended_at, recorded_at=recorded_at,
-            source=ObservationSource.PROVIDER_RECONCILIATION)
+            source=ObservationSource.PROVIDER_RECONCILIATION,
+            reconciled_from_receipt_id=previous_stored.submission.version_id,
+            provider_mapping_id=provider_mapping_id)
         references = [
             VersionReference(target_version_id=operation_id, use=ReferenceUse.REVIEW_OF,
                              locator="exact operation attempt"),
@@ -402,15 +569,24 @@ class OperationJournal:
                                locator=f"reconciliation evidence {index}")
               for index, version_id in enumerate(evidence_version_ids)),
         ]
+        if provider_mapping_id is not None:
+            references.append(VersionReference(
+                target_version_id=provider_mapping_id,
+                use=ReferenceUse.SUPPORT, locator="checked provider request mapping"))
         submission = VersionSubmission(
             schema_version=2, object_id=self._receipt_object(operation_id),
             kind=ObjectKind.OPERATION_RECEIPT, version_id=reconciliation_id,
-            parent_version_id=current.submission.version_id if current else None,
+            parent_version_id=previous_stored.submission.version_id,
             title=f"operation reconciliation {operation_id}",
             spec_sha256=operation.submission.spec_sha256, created_at=recorded_at,
             source_times=SourceTimes(), rights=self.rights,
             representation=Representation.FULL_BODY, references=tuple(references))
-        return self.archive.append(submission, canonical(receipt.model_dump(mode="json")).encode())
+        return self.archive.append(
+            submission, canonical(receipt.model_dump(mode="json")).encode(),
+            expected_current={
+                self._receipt_object(operation_id):
+                    previous_stored.submission.version_id,
+            })
 
     def run(self, request: OperationRequest, adapter: OperationAdapter,
             payload: bytes) -> OperationRun:
@@ -429,23 +605,56 @@ class OperationJournal:
             returned = adapter.invoke(request, payload)
             if not isinstance(returned, AdapterReturn):
                 raise OperationError("Adapter returned no typed invocation record")
+            violations = []
             if returned.observed_internal_retries > descriptor.max_internal_retries:
-                raise OperationError("Adapter exceeded its declared internal retry limit")
+                violations.append("Adapter exceeded its declared internal retry limit")
             if returned.status is OperationStatus.SUCCEEDED:
                 if returned.response_body is None:
-                    raise OperationError("Successful adapter return is missing exact response bytes")
-                result_sha256 = hashlib.sha256(returned.response_body).hexdigest()
+                    violations.append("Successful adapter return is missing exact response bytes")
+                if returned.error_code is not None:
+                    violations.append("Successful adapter return carries an error code")
             else:
                 if returned.response_body is not None:
-                    raise OperationError("Failed or unknown adapter return must not carry a result body")
-                result_sha256 = None
-            response = ToolResponse(status=returned.status,
-                provider_request_id=returned.provider_request_id, result_sha256=result_sha256,
-                usage=returned.usage, cost=returned.cost, error_code=returned.error_code,
-                error_message=returned.error_message,
-                observed_internal_retries=returned.observed_internal_retries,
-                started_at=returned.started_at, ended_at=returned.ended_at)
-            response_body = returned.response_body
+                    violations.append("Failed or unknown adapter return carries a result body")
+            observed_result_sha256 = (
+                hashlib.sha256(returned.response_body).hexdigest()
+                if returned.response_body is not None else None)
+            if violations:
+                response = ToolResponse(
+                    status=OperationStatus.UNKNOWN,
+                    observed_status=returned.status,
+                    provider_request_id=returned.provider_request_id,
+                    result_sha256=None,
+                    observed_result_sha256=observed_result_sha256,
+                    result_adopted=False,
+                    adapter_violation="; ".join(violations),
+                    usage=returned.usage,
+                    cost=returned.cost,
+                    error_code=returned.error_code,
+                    error_message=returned.error_message,
+                    observed_internal_retries=returned.observed_internal_retries,
+                    started_at=returned.started_at,
+                    ended_at=returned.ended_at)
+                response_body = None
+            else:
+                result_sha256 = (
+                    hashlib.sha256(returned.response_body).hexdigest()
+                    if returned.status is OperationStatus.SUCCEEDED else None)
+                response = ToolResponse(
+                    status=returned.status,
+                    observed_status=returned.status,
+                    provider_request_id=returned.provider_request_id,
+                    result_sha256=result_sha256,
+                    observed_result_sha256=observed_result_sha256,
+                    result_adopted=True,
+                    usage=returned.usage,
+                    cost=returned.cost,
+                    error_code=returned.error_code,
+                    error_message=returned.error_message,
+                    observed_internal_retries=returned.observed_internal_retries,
+                    started_at=returned.started_at,
+                    ended_at=returned.ended_at)
+                response_body = returned.response_body
         except Exception as exc:
             now = datetime.now(timezone.utc)
             provider_request_id = getattr(exc, "provider_request_id", None)

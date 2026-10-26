@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "2d6afceb5308300193b945ea60b31741c71532af4066681f25b9feb33aec719f",
+  "spec_sha256": "7fc2691744a4d16701db21c327e53e9b9c4769a468396b73e1df40d5fe2cc8df",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -2135,7 +2135,7 @@
       ],
       "failure_action": "先核可查询的真实结果，再决定有限重试/停止；保持未知，禁止无限自动换模型求PASS。",
       "conditional": null,
-      "progress": "RETURNED",
+      "progress": "IN_PROGRESS",
       "evidence": [
         {
           "record_id": "W17-OPERATIONS-20261025-001",
@@ -2169,6 +2169,23 @@
           "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准",
           "result": "RETURNED",
           "scope": "错误供应商请求可对账、旧对账可把成功改为失败并开放重试、Adapter违规时丢失已观测事实，均已复现。原接口不得继续依赖；须先修复NC-060/061/064并补回执CAS交错与观测保留。"
+        },
+        {
+          "record_id": "W17-PR76-REMEDIATION-20261026-001",
+          "artifact_refs": [
+            "intelligence/operations.py",
+            "intelligence/archive.py",
+            "intelligence/contracts.py",
+            "tests_runtime/test_operations.py",
+            "audits/pr76-review-remediation-w17-20261026.json"
+          ],
+          "validation_refs": [
+            "tests_runtime/test_operations.py (10 actual passing W17 tests)",
+            "audits/pr76-review-remediation-w17-20261026.json"
+          ],
+          "reviewer": "当前执行者实际离线供应商对账身份、回执CAS、Adapter违规观测和累计费用检查；非真实供应商、独立认证或阶段批准",
+          "result": "IN_PROGRESS",
+          "scope": "F07/F08/F11已修复离线范围：UNKNOWN对账绑定原operation、原回执版本、已知provider ID及引用operation的Evidence；不同查询ID须带同版本ProviderRequestMapping。对账以expected-current CAS写回，不覆盖并发成功，失败/失败只留一个当前回执。Adapter违规结果不采用但保留provider ID、实际费用、用量、内部重试、观察状态/结果哈希和违规原因，汇总继续计费。W18授权/预算、真实供应商认证与生产恢复未验，W17整包不ACCEPTED。"
         }
       ],
       "reviewed_basis_sha256": "986f35a4be9a67d36686c472751c111b9e37c9d0cff8be4b9ba61e955e65639f",

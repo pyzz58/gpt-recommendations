@@ -1,6 +1,6 @@
 # 内参系统 V5｜唯一现行完整架构基线
 
-> 状态：**唯一权威、完整、自足的 V5 产品与架构施工说明书；软件、样刊及生产效果尚未验证**。制定于2026-10-14，修订于2026-10-26（Pacific/Auckland）。PR #76独立核查确认原W15—W17机械边界存在可复现缺陷；本轮先修复F01/F02/F10的正文保存、部分内容字节与私有导出权限，随后完成W15的F03—F05和W16的F06/F09：Review精确覆盖、Task决定链隔离、必要依赖递归失效、作品真实依据/兼容复核及修订-CAS提交。实际99项运行测试、52项维护测试及文档/技术/清单检查通过。W12仍待用户实际阅读，G01—G04均未通过；W13/W14/W15/W16为`IN_PROGRESS`，W17为`RETURNED`，W18未开始；F07/F08/F11仍待W17返工。未调用真实研究模型或供应商、未启用生产或外发。此前施工沿革保留在Git和§23.2，不覆盖历史证据。
+> 状态：**唯一权威、完整、自足的 V5 产品与架构施工说明书；软件、样刊及生产效果尚未验证**。制定于2026-10-14，修订于2026-10-26（Pacific/Auckland）。PR #76独立核查确认原W15—W17机械边界存在可复现缺陷；本轮依次修复F01/F02/F10、W15的F03—F05、W16的F06/F09及W17的F07/F08/F11：正文用途与私有权限、Review精确覆盖、Task决定链隔离、必要依赖递归失效、作品真实依据/兼容复核、修订-CAS提交、供应商对账身份、回执CAS及Adapter观测保留。11项机械缺陷已按离线接口范围返工；实际103项运行测试、52项维护测试及文档/技术/清单检查通过。W12仍待用户实际阅读，G01—G04均未通过；W13—W17为`IN_PROGRESS`，W18未开始。局部返工通过不等于整包ACCEPTED。未调用真实研究模型或供应商、未启用生产或外发。此前施工沿革保留在Git和§23.2，不覆盖历史证据。
 
 <a id="th-0"></a>
 ## 0. 效力、定义与阅读方式
@@ -3414,12 +3414,16 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
 <a id="nc-060"></a>
 ##### NC-060｜F07：W17对账未绑定原供应商请求与查询证据
 
-**状态**：OPEN。发现并复现于2026-10-26；W17已退回。不同供应商请求的FAILED响应和普通Task版本可完成UNKNOWN对账并开放重试。修复须绑定原operation、已知provider request ID和真实查询证据；合法ID映射须有可核依据，否则保持UNKNOWN。
+**状态**：VERIFIED（仅离线W17操作接口）。发现并复现于2026-10-26。原不同供应商请求的FAILED响应和普通Task版本可完成UNKNOWN对账并开放重试。
+
+**修复与验收**：UNKNOWN对账取得原回执后要求已知provider_request_id；响应ID不同须有绑定同operation、原回执版本、原/新请求ID、查询证据和理由的ProviderRequestMapping。所有对账证据必须是引用精确operation的Evidence版本，Task或无关档案不能冒充查询。错误ID或证据不满足时原UNKNOWN保持不变并继续禁止重试；显式合法映射与同ID对账均通过。
 
 <a id="nc-061"></a>
 ##### NC-061｜F08：旧对账覆盖已确认成功
 
-**状态**：OPEN。发现并复现于2026-10-26；W17已退回。旧UNKNOWN调用在另一连接提交SUCCEEDED后仍可再写FAILED，历史变成`UNKNOWN→SUCCEEDED→FAILED`并开放第二次尝试。修复须让状态检查、预期回执版本与写入共享同一事务/CAS；终态成功不能被旧对账覆盖。
+**状态**：VERIFIED（仅离线W17操作接口）。发现并复现于2026-10-26。原旧UNKNOWN调用在另一连接提交SUCCEEDED后仍可再写FAILED，历史变成`UNKNOWN→SUCCEEDED→FAILED`并开放第二次尝试。
+
+**修复与验收**：初始回执以期望当前None条件写入；对账使用预先取得的精确回执版本作为parent及expected-current，在同一`BEGIN IMMEDIATE`事务内核验后追加，不再重取latest消除冲突。成功/失败及失败/失败交错均只有一个赢家，旧调用返回Conflict且不写正文；已成功终态保持并阻止第二次执行。
 
 <a id="nc-062"></a>
 ##### NC-062｜F09：W16修订检查与组合提交非原子
@@ -3438,9 +3442,11 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
 <a id="nc-064"></a>
 ##### NC-064｜F11：Adapter违规时丢弃真实观测
 
-**状态**：OPEN。发现并复现于2026-10-26；W17已退回。Adapter已返回provider ID、实际费用、用量和超限内部重试后，控制器转UNKNOWN却把观测值改为null/0/未知。修复须分离“结果不可采用”与“已观测事实”，保留原回执、违规原因和可核对账；停止采用但不丢证据。
+**状态**：VERIFIED（仅离线W17操作接口）。发现并复现于2026-10-26。原Adapter已返回provider ID、实际费用、用量和超限内部重试后，控制器转UNKNOWN却把观测值改为null/0/未知。
 
-**当前状态与验证边界**：F01、F02、F10及W15的F03—F05、W16的F06/F09已修复；完整运行测试为99项（W13共享接口56项、W15采用接口12项、W16修订接口9项），52项维护测试通过。F07、F08及F11保持OPEN；W15/W16恢复`IN_PROGRESS`但整包不ACCEPTED，W17仍`RETURNED`，W18保持`NOT_STARTED`。W12阅读后置，G01—G04仍未通过。后续须先核W15/W16交接，再返工W17；不得因共享层或局部模块修复、测试数量增加自动恢复后续模块。没有调用真实模型/供应商，没有生产、付费、邮件或日报变更。
+**修复与验收**：ToolResponse/OperationReceipt显式分开采用状态与观察事实，记录observed_status、observed_result_sha256、result_adopted和adapter_violation。内部重试超限等违规时结果不返回、状态保持UNKNOWN，但provider ID、实际/估计/未知费用、用量、内部重试、原始错误和起止时间全部保留；逻辑操作汇总继续计入已观测费用，不重复计费或降为未知。
+
+**当前状态与验证边界**：PR #76的F01—F11均已在对应离线接口范围修复；完整运行测试为103项（W13共享接口56项、W15采用接口12项、W16修订接口9项、W17操作接口10项），52项维护测试通过。W15—W17恢复`IN_PROGRESS`但整包不ACCEPTED，W18保持`NOT_STARTED`。W12阅读后置，G01—G04仍未通过。后续须先核W13—W17正式前置并继续W18；局部返工和测试数量不能替代真实模型、供应商、内容、生产或阶段验收。没有调用真实模型/供应商，没有生产、付费、邮件或日报变更。
 
 <!-- END ISSUE_LEDGER -->
 
@@ -8555,7 +8561,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       ],
       "failure_action": "先核可查询的真实结果，再决定有限重试/停止；保持未知，禁止无限自动换模型求PASS。",
       "conditional": null,
-      "progress": "RETURNED",
+      "progress": "IN_PROGRESS",
       "evidence": [
         {
           "record_id": "W17-OPERATIONS-20261025-001",
@@ -8589,6 +8595,23 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准",
           "result": "RETURNED",
           "scope": "错误供应商请求可对账、旧对账可把成功改为失败并开放重试、Adapter违规时丢失已观测事实，均已复现。原接口不得继续依赖；须先修复NC-060/061/064并补回执CAS交错与观测保留。"
+        },
+        {
+          "record_id": "W17-PR76-REMEDIATION-20261026-001",
+          "artifact_refs": [
+            "intelligence/operations.py",
+            "intelligence/archive.py",
+            "intelligence/contracts.py",
+            "tests_runtime/test_operations.py",
+            "audits/pr76-review-remediation-w17-20261026.json"
+          ],
+          "validation_refs": [
+            "tests_runtime/test_operations.py (10 actual passing W17 tests)",
+            "audits/pr76-review-remediation-w17-20261026.json"
+          ],
+          "reviewer": "当前执行者实际离线供应商对账身份、回执CAS、Adapter违规观测和累计费用检查；非真实供应商、独立认证或阶段批准",
+          "result": "IN_PROGRESS",
+          "scope": "F07/F08/F11已修复离线范围：UNKNOWN对账绑定原operation、原回执版本、已知provider ID及引用operation的Evidence；不同查询ID须带同版本ProviderRequestMapping。对账以expected-current CAS写回，不覆盖并发成功，失败/失败只留一个当前回执。Adapter违规结果不采用但保留provider ID、实际费用、用量、内部重试、观察状态/结果哈希和违规原因，汇总继续计费。W18授权/预算、真实供应商认证与生产恢复未验，W17整包不ACCEPTED。"
         }
       ],
       "reviewed_basis_sha256": "986f35a4be9a67d36686c472751c111b9e37c9d0cff8be4b9ba61e955e65639f",

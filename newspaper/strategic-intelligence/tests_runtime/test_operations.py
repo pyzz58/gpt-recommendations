@@ -8,15 +8,18 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from intelligence.archive import Archive, Conflict
-from intelligence.contracts import (MaterialUse, ObjectKind, PermissionState, Representation,
-                                    RightsBasis, RightsGrant, Scope, ScopeMode, UsePermission,
-                                    ValidityMode, VersionSubmission)
+from intelligence.contracts import (MaterialUse, ObjectKind, PermissionState, ReferenceUse,
+                                    Representation, RightsBasis, RightsGrant, Scope, ScopeMode,
+                                    UsePermission, ValidityMode, VersionReference,
+                                    VersionSubmission)
 from intelligence.operations import (AdapterDescriptor, AdapterReturn, CostObservation,
                                      ObservationKind, OperationError, OperationJournal,
                                      OperationKind, OperationRequest, OperationStatus,
-                                     ToolAdapterError, ToolResponse, UsageObservation)
+                                     ProviderRequestMapping, ToolAdapterError, ToolResponse,
+                                     UsageObservation)
 
 AT=datetime(2026,10,25,0,0,tzinfo=timezone.utc)
 SPEC="a"*64
@@ -64,8 +67,8 @@ class OperationJournalTests(unittest.TestCase):
 
     def request(self, operation_id="OP-1", *, attempt=1, max_attempts=1,
                 retry=None, expected=None, digest_value=None, tool_version="1.2.3",
-                provider_id="fixture-provider"):
-        return OperationRequest(operation_id=operation_id,idempotency_key="LOGICAL-OP-1",
+                provider_id="fixture-provider", key="LOGICAL-OP-1"):
+        return OperationRequest(operation_id=operation_id,idempotency_key=key,
             run_id="RUN-1",task_version_id="TASK-1-v001",step_id="T26",
             spec_sha256=SPEC,kind=OperationKind.SEARCH,tool_id="fixture-tool",
             tool_version=tool_version,provider_id=provider_id,
@@ -82,6 +85,32 @@ class OperationJournalTests(unittest.TestCase):
                 basis="Fixture provider response"),
             error_code=None,error_message=None,observed_internal_retries=retries,
             started_at=AT+timedelta(seconds=1),ended_at=AT+timedelta(seconds=2))
+
+    def failure_response(self, provider_request_id="PROVIDER-REQ-UNKNOWN"):
+        return ToolResponse(status=OperationStatus.FAILED,
+            provider_request_id=provider_request_id,
+            cost=CostObservation(kind=ObservationKind.ACTUAL,amount=Decimal("0.01"),
+                currency="USD",basis="Provider query failure response"),
+            error_code="PROVIDER-FAILED",error_message="Provider query reports failure",
+            started_at=AT+timedelta(seconds=1),ended_at=AT+timedelta(seconds=2))
+
+    def success_response(self, provider_request_id="PROVIDER-REQ-UNKNOWN"):
+        return ToolResponse(status=OperationStatus.SUCCEEDED,
+            provider_request_id=provider_request_id,
+            result_sha256=hashlib.sha256(RESULT).hexdigest(),
+            cost=CostObservation(kind=ObservationKind.ACTUAL,amount=Decimal("0.03"),
+                currency="USD",basis="Provider reconciliation"),
+            started_at=AT+timedelta(seconds=1),ended_at=AT+timedelta(seconds=2))
+
+    def query_evidence(self, operation_id, version_id):
+        return self.archive.append(VersionSubmission(
+            object_id="QUERY-"+version_id,version_id=version_id,
+            kind=ObjectKind.EVIDENCE,title="Provider query evidence",
+            spec_sha256=SPEC,created_at=AT,
+            rights=self.rights,representation=Representation.FULL_BODY,
+            references=(VersionReference(target_version_id=operation_id,
+                use=ReferenceUse.REVIEW_OF,locator="exact operation response"),)),
+            b"Owned synthetic provider query evidence\n")
 
     def test_success_records_exact_request_identity_and_actual_receipt(self):
         run=self.journal.run(self.request(),FakeAdapter(self.success_return()),BODY)
@@ -156,26 +185,145 @@ class OperationJournalTests(unittest.TestCase):
         over=OperationJournal(self.archive,self.rights)
         run=over.run(self.request("OP-OVER"),FakeAdapter(self.success_return(retries=2)),BODY)
         self.assertEqual(run.receipt.submission.version_id,"RESULT-OP-OVER")
-        self.assertEqual(over.receipt("OP-OVER").status,OperationStatus.UNKNOWN)
+        self.assertIsNone(run.response_body)
+        receipt=over.receipt("OP-OVER")
+        self.assertEqual(receipt.status,OperationStatus.UNKNOWN)
+        self.assertEqual(receipt.observed_status,OperationStatus.SUCCEEDED)
+        self.assertFalse(receipt.result_adopted)
+        self.assertIn("retry limit",receipt.adapter_violation)
+        self.assertEqual(receipt.provider_request_id,"PROVIDER-REQ-1")
+        self.assertEqual(receipt.observed_internal_retries,2)
+        self.assertEqual(receipt.cost.amount,Decimal("0.03"))
+        self.assertEqual(len(receipt.usage),1)
+        self.assertEqual(receipt.observed_result_sha256,hashlib.sha256(RESULT).hexdigest())
+        summary=over.summary("LOGICAL-OP-1")
+        self.assertEqual(summary.actual_cost_by_currency,{"USD":Decimal("0.03")})
+        self.assertEqual(summary.unknown_cost_attempts,0)
 
     def test_provider_reconciliation_resolves_unknown_without_erasing_history(self):
         self.journal.run(self.request(),FakeAdapter(error=ToolAdapterError(
             "timeout",provider_request_id="PROVIDER-REQ-UNKNOWN")),BODY)
         self.assertEqual(self.journal.receipt("OP-1").status,OperationStatus.UNKNOWN)
-        response=ToolResponse(status=OperationStatus.SUCCEEDED,provider_request_id="PROVIDER-REQ-UNKNOWN",
-            result_sha256=hashlib.sha256(RESULT).hexdigest(),
-            cost=CostObservation(kind=ObservationKind.ACTUAL,amount=Decimal("0.03"),currency="USD",
-                basis="Provider reconciliation"),
-            started_at=AT+timedelta(seconds=1),ended_at=AT+timedelta(seconds=2))
+        self.query_evidence("OP-1","QUERY-OP-1-v001")
+        response=self.success_response()
         self.journal.reconcile_unknown("OP-1",response,reconciliation_id="RECON-OP-1",
-            evidence_version_ids=("EVIDENCE-1-v001",),recorded_at=AT+timedelta(minutes=3))
+            evidence_version_ids=("QUERY-OP-1-v001",),recorded_at=AT+timedelta(minutes=3))
         current=self.journal.receipt("OP-1")
         self.assertEqual(current.status,OperationStatus.SUCCEEDED)
         self.assertEqual(current.source.value,"PROVIDER_RECONCILIATION")
-        self.assertEqual(current.evidence_refs,("EVIDENCE-1-v001",))
+        self.assertEqual(current.evidence_refs,("QUERY-OP-1-v001",))
+        self.assertEqual(current.provider_request_id,"PROVIDER-REQ-UNKNOWN")
+        self.assertEqual(current.original_provider_request_id,"PROVIDER-REQ-UNKNOWN")
+        self.assertEqual(current.reconciled_from_receipt_id,"RESULT-OP-1")
         with self.assertRaisesRegex(OperationError,"Only an UNKNOWN operation"):
             self.journal.reconcile_unknown("OP-1",response,reconciliation_id="RECON-OP-2",
-                evidence_version_ids=("EVIDENCE-1-v001",),recorded_at=AT+timedelta(minutes=4))
+                evidence_version_ids=("QUERY-OP-1-v001",),recorded_at=AT+timedelta(minutes=4))
+
+    def test_reconciliation_rejects_wrong_provider_and_nonquery_evidence(self):
+        self.journal.run(self.request(),FakeAdapter(error=ToolAdapterError(
+            "timeout",provider_request_id="PROVIDER-A")),BODY)
+        self.query_evidence("OP-1","QUERY-OP-1-v001")
+        with self.assertRaisesRegex(OperationError,"checked mapping"):
+            self.journal.reconcile_unknown("OP-1",
+                self.failure_response("PROVIDER-B"),
+                reconciliation_id="RECON-WRONG-PROVIDER",
+                evidence_version_ids=("QUERY-OP-1-v001",),
+                recorded_at=AT+timedelta(minutes=3))
+        with self.assertRaisesRegex(OperationError,"must be an Evidence"):
+            self.journal.reconcile_unknown("OP-1",
+                self.failure_response("PROVIDER-A"),
+                reconciliation_id="RECON-WRONG-EVIDENCE",
+                evidence_version_ids=("TASK-1-v001",),
+                recorded_at=AT+timedelta(minutes=3))
+        current=self.journal.receipt("OP-1")
+        self.assertEqual(current.status,OperationStatus.UNKNOWN)
+        self.assertEqual(current.provider_request_id,"PROVIDER-A")
+        with self.assertRaisesRegex(OperationError,"must be reconciled"):
+            self.journal.begin(self.request("OP-2",attempt=2,max_attempts=2,
+                retry="OP-1",expected="OP-1"))
+
+    def test_checked_provider_mapping_allows_distinct_query_id_and_keeps_original(self):
+        self.journal.run(self.request(),FakeAdapter(error=ToolAdapterError(
+            "timeout",provider_request_id="PROVIDER-A")),BODY)
+        self.query_evidence("OP-1","QUERY-OP-1-v001")
+        mapping=ProviderRequestMapping(mapping_id="MAP-OP-1",operation_id="OP-1",
+            expected_receipt_version_id="RESULT-OP-1",
+            original_provider_request_id="PROVIDER-A",
+            query_provider_request_id="PROVIDER-B",
+            evidence_version_ids=("QUERY-OP-1-v001",),
+            reason="Provider dashboard maps the retry query to the original request",
+            created_at=AT+timedelta(minutes=2))
+        self.journal.append_provider_mapping(mapping)
+        self.journal.reconcile_unknown("OP-1",self.success_response("PROVIDER-B"),
+            reconciliation_id="RECON-MAPPED",
+            evidence_version_ids=("QUERY-OP-1-v001",),
+            provider_mapping_id="MAP-OP-1",
+            recorded_at=AT+timedelta(minutes=3))
+        receipt=self.journal.receipt("OP-1")
+        self.assertEqual(receipt.status,OperationStatus.SUCCEEDED)
+        self.assertEqual(receipt.original_provider_request_id,"PROVIDER-A")
+        self.assertEqual(receipt.provider_request_id,"PROVIDER-B")
+        self.assertEqual(receipt.provider_mapping_id,"MAP-OP-1")
+
+    def test_stale_success_reconciliation_cannot_be_overwritten_by_failure(self):
+        self.journal.run(self.request(max_attempts=2),FakeAdapter(error=ToolAdapterError(
+            "timeout",provider_request_id="PROVIDER-REQ-UNKNOWN")),BODY)
+        self.query_evidence("OP-1","QUERY-OP-1-v001")
+        original_load=self.journal._load_receipt_record
+        injected=[]
+        def interleave(operation_id):
+            loaded=original_load(operation_id)
+            if operation_id=="OP-1" and not injected:
+                injected.append(True)
+                with Archive(self.archive.root) as other_archive:
+                    other=OperationJournal(other_archive,self.rights)
+                    other.reconcile_unknown("OP-1",self.success_response(),
+                        reconciliation_id="RECON-WINNER-SUCCESS",
+                        evidence_version_ids=("QUERY-OP-1-v001",),
+                        recorded_at=AT+timedelta(minutes=3))
+            return loaded
+        with patch.object(self.journal,"_load_receipt_record",side_effect=interleave):
+            with self.assertRaises(Conflict):
+                self.journal.reconcile_unknown("OP-1",self.failure_response(),
+                    reconciliation_id="RECON-STALE-FAILURE",
+                    evidence_version_ids=("QUERY-OP-1-v001",),
+                    recorded_at=AT+timedelta(minutes=4))
+        statuses=[json.loads(self.archive.read_body(item.submission.version_id))["status"]
+            for item in self.archive.history("RECEIPT-OP-1")]
+        self.assertEqual(statuses,["UNKNOWN","SUCCEEDED"])
+        with self.assertRaisesRegex(OperationError,"Only a failed operation"):
+            self.journal.begin(self.request("OP-2",attempt=2,max_attempts=2,
+                retry="OP-1",expected="OP-1"))
+
+    def test_concurrent_failure_reconciliations_leave_one_current_failure(self):
+        self.journal.run(self.request(max_attempts=2),FakeAdapter(error=ToolAdapterError(
+            "timeout",provider_request_id="PROVIDER-REQ-UNKNOWN")),BODY)
+        self.query_evidence("OP-1","QUERY-OP-1-v001")
+        original_load=self.journal._load_receipt_record
+        injected=[]
+        def interleave(operation_id):
+            loaded=original_load(operation_id)
+            if operation_id=="OP-1" and not injected:
+                injected.append(True)
+                with Archive(self.archive.root) as other_archive:
+                    other=OperationJournal(other_archive,self.rights)
+                    other.reconcile_unknown("OP-1",self.failure_response(),
+                        reconciliation_id="RECON-WINNER-FAILURE",
+                        evidence_version_ids=("QUERY-OP-1-v001",),
+                        recorded_at=AT+timedelta(minutes=3))
+            return loaded
+        with patch.object(self.journal,"_load_receipt_record",side_effect=interleave):
+            with self.assertRaises(Conflict):
+                self.journal.reconcile_unknown("OP-1",self.failure_response(),
+                    reconciliation_id="RECON-STALE-FAILURE",
+                    evidence_version_ids=("QUERY-OP-1-v001",),
+                    recorded_at=AT+timedelta(minutes=4))
+        statuses=[json.loads(self.archive.read_body(item.submission.version_id))["status"]
+            for item in self.archive.history("RECEIPT-OP-1")]
+        self.assertEqual(statuses,["UNKNOWN","FAILED"])
+        retry=self.journal.begin(self.request("OP-2",attempt=2,max_attempts=2,
+            retry="OP-1",expected="OP-1"))
+        self.assertEqual(retry.submission.version_id,"OP-2")
 
 
 if __name__=="__main__":
