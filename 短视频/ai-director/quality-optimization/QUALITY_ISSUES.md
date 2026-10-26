@@ -149,8 +149,8 @@
 - AI 视频适配：精准文字和文献页应在后期合成，不能让视频模型生成准确长文字
 - 依赖：QO-W01
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:partially_addressed
+- 修复证据：PR 未提供；回归 tests/test_local_director.py::test_prepare_is_offline_and_refuses_overwrite; tests/test_director_v2.py::test_long_script_compact_credit_examples; tests/test_director_v2.py::test_credits_reject_legacy_five_seconds_even_with_matching_timeline；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:partially_addressed → 2026-10-26:partially_addressed
 
 ### QO-W08 · 总时长/旁白/留白与片段时间分层
 
@@ -387,8 +387,8 @@
 - AI 视频适配：每集90秒≠单镜clip长度；含片头、片尾、复述及原稿有来源才可选的最后1–2秒资料页；不得机械均分或制造虚假悬念
 - 依赖：QO-W11
 - 历史问题：无
-- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/42；回归 tests/test_screenplay_series_delivery.py and tests/test_series_final_timeline.py; explicit intro/recap/bridge/outro/card absolute timeline, forged planned seconds, fake missing source, 90+1.8 overflow, optional last credit page; GitHub Actions 791/791 passed on precursor commit；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/42；回归 tests/test_screenplay_series_delivery.py and tests/test_series_final_timeline.py; explicit intro/recap/bridge/outro/card absolute timeline, forged planned seconds, fake missing source, 90+1.8 overflow, optional last credit page; GitHub Actions 791/791 passed on precursor commit; tests/test_local_director.py::test_prepare_is_offline_and_refuses_overwrite; tests/test_local_director.py::test_series_allows_more_than_three_episodes; tests/test_local_director.py::test_series_rejects_missing_or_over_90_second_episode; tests/test_director_v2.py::test_long_script_compact_credit_examples; tests/test_director_v2.py::test_credits_reject_legacy_five_seconds_even_with_matching_timeline；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-13:in_progress → 2026-10-26:in_progress
 
 ### QO-D14 · 总导演主动创意剪辑与重大压缩权
 
@@ -471,8 +471,8 @@
 - AI 视频适配：多主体交互及手部一致性需按片段限制设计
 - 依赖：QO-D04
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:audit_pending
+- 修复证据：PR 未提供；回归 tests/test_f01_acting_baseline.py::test_public_fixture_is_synthetic_and_contains_no_private_paths; tests/test_f01_acting_baseline.py::test_fixture_satisfies_only_current_structural_acting_minimum; tests/test_f01_acting_baseline.py::test_current_schema_lacks_professional_causal_fields；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:audit_pending → 2026-10-26:audit_pending
 
 ### QO-F02 · 摄影/灯光/美术世界观专业审计
 

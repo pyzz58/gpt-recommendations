@@ -1,4 +1,7 @@
 import copy
+from concurrent.futures import ThreadPoolExecutor
+import contextlib
+import io
 import json
 import os
 from pathlib import Path
@@ -12,6 +15,7 @@ import llm_budget
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import local_director as local
+import local_ui
 
 
 class LocalDirectorV03Tests(TestCase):
@@ -33,14 +37,51 @@ class LocalDirectorV03Tests(TestCase):
             src.write_text('长文案',encoding='utf-8')
             dest=Path(t)/'job'
             local.create_prepare(src,dest)
-            self.assertIn('Codex', (dest/'CODEX_TASK.md').read_text())
+            task=(dest/'CODEX_TASK.md').read_text(encoding='utf-8')
+            self.assertIn('Codex', task)
+            self.assertIn('自主决定集数', task)
+            self.assertIn('不超过90秒', task)
+            self.assertIn('1.8秒', task)
+            self.assertNotIn('1–3集结构', task)
+            self.assertNotIn('5秒研究', task)
             self.assertTrue((dest/'source.md').exists())
             with self.assertRaises(local.DirectorError):local.create_prepare(src,dest)
 
-    def test_series_disallows_unbounded_cost(self):
+    def test_ui_project_reservation_is_atomic_for_same_slug(self):
+        with tempfile.TemporaryDirectory() as t:
+            jobs = Path(t)/'jobs'
+            with ThreadPoolExecutor(max_workers=8) as pool:
+                reserved = list(pool.map(
+                    lambda _: local_ui.reserve_project_dir(jobs, 'same-slug'),
+                    range(8),
+                ))
+            self.assertEqual(len({item.name for item in reserved}), 8)
+            self.assertTrue(all(item.is_dir() for item in reserved))
+
+    def test_prepare_accepts_atomically_reserved_empty_project(self):
+        with tempfile.TemporaryDirectory() as t:
+            src = Path(t)/'source.md'
+            src.write_text('长文案', encoding='utf-8')
+            project = local_ui.reserve_project_dir(Path(t)/'jobs', 'reserved')
+            local.create_prepare(src, project)
+            self.assertTrue((project/'source.md').exists())
+
+    def test_series_allows_more_than_three_episodes(self):
         s=copy.deepcopy(self.series)
         s['episodes'] *= 4
-        with self.assertRaises(local.DirectorError):local.check_series(s)
+        self.assertEqual(len(local.check_series(s)['episodes']), 4)
+
+    def test_series_rejects_missing_or_over_90_second_episode(self):
+        s=copy.deepcopy(self.series)
+        s['episodes'][0]['target_seconds']=90.1
+        with self.assertRaisesRegex(local.DirectorError, '90秒'):
+            local.check_series(s)
+        s['episodes']=[]
+        with self.assertRaisesRegex(local.DirectorError, '至少需要一集'):
+            local.check_series(s)
+        s['episodes']=[copy.deepcopy(self.series['episodes'][0])]
+        s['episodes'][0]['target_seconds']=90
+        self.assertEqual(local.check_series(s)['episodes'][0]['target_seconds'], 90)
 
     def test_high_impact_claims_remain_unverified_even_with_url(self):
         p=copy.deepcopy(self.base)
@@ -66,6 +107,21 @@ class LocalDirectorV03Tests(TestCase):
                 with patch.object(local,'llm_json') as fn:
                     with self.assertRaises(local.DirectorError):local.run_job(args)
                     fn.assert_not_called()
+
+    def test_doctor_reports_capabilities_without_echoing_key(self):
+        with patch.dict(os.environ, {'AI_API_KEY': 'secret-test-key'}):
+            with patch.object(local, '_module_version', side_effect=lambda *a: '1.2.3'), \
+                 patch.object(local, '_command_version', side_effect=lambda c: f'{c} version 9'), \
+                 patch.object(local, '_ffmpeg_has_subtitle_filter', return_value=True):
+                output = io.StringIO()
+                with contextlib.redirect_stdout(output):
+                    local.print_doctor(local.doctor_report())
+        text = output.getvalue()
+        for label in ('基础离线', '模型输出 Schema', '图片解码', 'OTIO 交换',
+                      '媒体解码', '字幕烧录'):
+            self.assertIn(label, text)
+        self.assertIn('已提供(不会显示)', text)
+        self.assertNotIn('secret-test-key', text)
 
     def test_mocked_api_full_run_and_offline_review(self):
         with tempfile.TemporaryDirectory() as t:
@@ -112,7 +168,7 @@ class LocalDirectorV03Tests(TestCase):
     def test_reference_card_must_be_short_and_credible(self):
         p=copy.deepcopy(self.base)
         p['shots'].append({
-            'id':'S09','purpose':'sources','duration':5,'narration':'',
+            'id':'S09','purpose':'sources','duration':1.8,'narration':'',
             'visual_type':'text_card','claim_ids':['C01','C02']
         })
         p['references'] = [
@@ -121,13 +177,16 @@ class LocalDirectorV03Tests(TestCase):
             for cid in ('C01','C02')
         ]
         local.check_reference_card(p)
+        p['shots'][-1]['duration']=5
+        with self.assertRaisesRegex(local.DirectorError, '1.8秒'):
+            local.check_reference_card(p)
         p['shots'][-1]['duration']=10
         with self.assertRaises(local.DirectorError):local.check_reference_card(p)
 
 
     def test_source_card_rejects_missing_metadata_and_unverified_citation(self):
         p=copy.deepcopy(self.base)
-        p['shots'].append({'id':'S09','purpose':'sources','duration':5,'narration':'',
+        p['shots'].append({'id':'S09','purpose':'sources','duration':1.8,'narration':'',
                           'visual_type':'text_card','claim_ids':['C01','C02']})
         with self.assertRaisesRegex(local.DirectorError, 'references'):
             local.check_reference_card(p)
@@ -145,7 +204,7 @@ class LocalDirectorV03Tests(TestCase):
 
     def test_source_card_rejects_duplicate_and_missing_claim(self):
         p=copy.deepcopy(self.base)
-        p['shots'].append({'id':'S09','purpose':'sources','duration':5,'narration':'',
+        p['shots'].append({'id':'S09','purpose':'sources','duration':1.8,'narration':'',
                           'visual_type':'text_card','claim_ids':['C01','C01']})
         with self.assertRaisesRegex(local.DirectorError, '不重复'):
             local.check_reference_card(p)

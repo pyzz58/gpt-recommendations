@@ -394,6 +394,54 @@
       "test_evidence": "tests/test_seedance_adapter.py::test_updated_result_is_appended_and_download_uses_latest_url; tests/test_seedance_adapter.py::test_result_append_failure_preserves_previous_success_without_post_retry; tests/test_seedance_adapter.py::test_corrupt_or_unlinked_result_revision_blocks_download; tests/test_seedance_adapter.py::test_revision_from_different_task_is_rejected; tests/test_video_workflow.py::test_refresh_after_review_preserves_selected_media_and_review; tests/test_video_workflow.py::test_result_revision_gap_is_not_silently_ignored; tests/test_video_workflow.py::test_orphan_result_revision_is_not_prepared",
       "issue_url": "",
       "fix_commit": "8e130bf0e76fe221c936e7d1343ee8889207690e"
+    },
+    {
+      "id": "AUD-033",
+      "priority": "P1",
+      "domain": "private_storage_path_false_rejection",
+      "description": "私有目录检查曾拒绝所有含符号链接祖先的路径；macOS 的 /var→private/var 使默认临时目录全部被拒，33 项 Seedance 测试在 macOS 默认 TMPDIR 下失败。现改为解析到规范目标后检查 Git 工作树（.git 目录或 worktree 文件）、最终组件非链接、0700/owner 与打开后 inode 复核；合法系统别名可通过，根链接、Git 工作树和过宽权限仍拒绝。",
+      "source": "seedance_adapter._private_root",
+      "status": "investigate",
+      "evidence_type": "confirmed_code",
+      "test_evidence": "tests/test_seedance_adapter.py::test_private_root_accepts_system_style_ancestor_alias; tests/test_seedance_adapter.py::test_private_root_rejects_symlinked_root; tests/test_seedance_adapter.py::test_private_root_rejects_git_directory_and_worktree_file; tests/test_seedance_adapter.py::test_private_root_rejects_broad_permissions_and_missing_directory; tests/test_seedance_adapter.py::test_private_read_rejects_symlinked_file",
+      "issue_url": "",
+      "fix_commit": ""
+    },
+    {
+      "id": "AUD-034",
+      "priority": "P1",
+      "domain": "active_task_rule_drift",
+      "description": "当前 prepare 任务、系列/单集/导演 prompt、系列校验器、v0.2 来源卡校验器与三个公开示例仍使用旧的 1–3 集、30–180 秒、5 秒来源卡规则。现已统一为导演自主集数、每集最终≤90 秒、可选唯一下一页 1.8 秒（1–2 秒规则）；历史记录不机械删除。",
+      "source": "local_director.create_prepare/series_prompt/episode_prompt/direction_prompt/check_series/check_reference_card; director_v2.validate; examples/energy-trilogy",
+      "status": "investigate",
+      "evidence_type": "confirmed_code",
+      "test_evidence": "tests/test_local_director.py::test_prepare_is_offline_and_refuses_overwrite; tests/test_local_director.py::test_series_allows_more_than_three_episodes; tests/test_local_director.py::test_series_rejects_missing_or_over_90_second_episode; tests/test_director_v2.py::test_long_script_compact_credit_examples; tests/test_director_v2.py::test_credits_reject_legacy_five_seconds_even_with_matching_timeline",
+      "issue_url": "",
+      "fix_commit": ""
+    },
+    {
+      "id": "AUD-035",
+      "priority": "P2",
+      "domain": "local_ui_project_race",
+      "description": "本地 UI 曾用固定 .incoming_<slug>.md 临时名并在查重后创建项目；两个同 slug 请求可能互相覆盖或删除临时稿。现使用唯一临时文件、fsync 后调用 mkdir(exist_ok=False) 原子预留独立项目目录，失败时只清理仍为空的项目目录。",
+      "source": "local_ui.reserve_project_dir; local_ui.App.do_POST",
+      "status": "investigate",
+      "evidence_type": "confirmed_code",
+      "test_evidence": "tests/test_local_director.py::test_ui_project_reservation_is_atomic_for_same_slug; tests/test_local_director.py::test_prepare_accepts_atomically_reserved_empty_project",
+      "issue_url": "",
+      "fix_commit": ""
+    },
+    {
+      "id": "AUD-036",
+      "priority": "P2",
+      "domain": "doctor_capability_diagnostics",
+      "description": "doctor 只报告 Python 与 API Key 存在状态，无法区分 Schema、图片解码、OTIO、FFmpeg/FFprobe 与 libass 的能力缺失。现按能力输出可用/缺少、版本与适用阶段，不联网、不读取或回显密钥值；缺媒体依赖不会否定文字离线路径，但严格媒体 CI 仍必须显式安装。",
+      "source": "local_director.doctor_report/print_doctor",
+      "status": "investigate",
+      "evidence_type": "confirmed_code",
+      "test_evidence": "tests/test_local_director.py::test_doctor_reports_capabilities_without_echoing_key",
+      "issue_url": "",
+      "fix_commit": ""
     }
   ]
 }

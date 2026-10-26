@@ -21,7 +21,9 @@ from urllib.parse import urlsplit
 
 import director_v2
 import director_workbook
-from private_result_checkpoint import _atomic_create, _secure_dir, _fsync_folder
+from private_result_checkpoint import (
+    CheckpointError, _atomic_create, _secure_dir, _fsync_folder,
+)
 
 PROVIDERS = {
     "volcengine": ("ark.cn-beijing.volces.com", "doubao-seedance-2-5-260628",
@@ -162,12 +164,51 @@ def _packet(packet):
 
 
 def _private_root(path):
-    path = Path(path)
-    for p in (path, *path.parents):
-        _require(not p.is_symlink() and not (p / ".git").exists(), "PRIVATE_STORAGE_REQUIRED")
-    _secure_dir(path)
-    _require(path.stat().st_uid == os.geteuid(), "PRIVATE_STORAGE_OWNER")
-    return path
+    """Return a canonical private directory without rejecting system aliases.
+
+    macOS exposes /var as a symlink to private/var; rejecting every symlink
+    ancestor therefore rejects the normal tempfile location. The security
+    boundary is the canonical destination, not the spelling of its ancestors.
+    The caller-supplied final component still may not be a symlink, and the
+    canonical path may not be inside a Git worktree (where .git is a directory
+    or a worktree file). Re-checking after resolution narrows alias-swap races;
+    this is not a replacement for a private OS account or a full dir_fd design.
+    """
+    original = Path(path)
+    _require(not original.is_symlink(), "PRIVATE_STORAGE_REQUIRED")
+    try:
+        resolved = original.resolve(strict=True)
+    except (OSError, RuntimeError):
+        raise SeedanceError("PRIVATE_STORAGE_REQUIRED") from None
+    for p in (resolved, *resolved.parents):
+        if os.path.lexists(str(p / ".git")):
+            raise SeedanceError("PRIVATE_STORAGE_REQUIRED")
+    try:
+        # If an ancestor alias is swapped while resolving, refuse rather than
+        # silently using a different directory.
+        if original.resolve(strict=True) != resolved:
+            raise SeedanceError("PRIVATE_STORAGE_REQUIRED")
+        _secure_dir(resolved)
+    except CheckpointError:
+        raise SeedanceError("PRIVATE_STORAGE_REQUIRED") from None
+    except (OSError, RuntimeError):
+        raise SeedanceError("PRIVATE_STORAGE_REQUIRED") from None
+    stat_result = resolved.stat()
+    _require(stat_result.st_uid == os.geteuid(), "PRIVATE_STORAGE_OWNER")
+    # Final-component O_NOFOLLOW check. This narrows, but cannot eliminate,
+    # a race with a privileged attacker replacing an ancestor.
+    flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        fd = os.open(resolved, flags)
+    except OSError:
+        raise SeedanceError("PRIVATE_STORAGE_REQUIRED") from None
+    try:
+        opened = os.fstat(fd)
+    finally:
+        os.close(fd)
+    _require((opened.st_dev, opened.st_ino) == (stat_result.st_dev, stat_result.st_ino),
+             "PRIVATE_STORAGE_REQUIRED")
+    return resolved
 
 
 def _read(path):

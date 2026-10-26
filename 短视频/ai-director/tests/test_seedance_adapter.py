@@ -316,4 +316,46 @@ class SeedanceAdapterTests(unittest.TestCase):
         with self.assertRaisesRegex(api.SeedanceError, 'RESULT_MISMATCH'):
             api.download_result(private_dir=self.root)
 
+    def test_private_root_accepts_system_style_ancestor_alias(self):
+        real = self.root/'real'; real.mkdir(mode=0o700)
+        alias = self.root/'alias'; alias.symlink_to(real, target_is_directory=True)
+        vault = alias/'vault'; vault.mkdir(mode=0o700)
+        self.assertEqual(api._private_root(vault), (real/'vault').resolve())
+
+    def test_private_root_rejects_symlinked_root(self):
+        target = self.root/'target'; target.mkdir(mode=0o700)
+        link = self.root/'linked-vault'
+        link.symlink_to(target, target_is_directory=True)
+        with self.assertRaisesRegex(api.SeedanceError, 'PRIVATE_STORAGE_REQUIRED'):
+            api._private_root(link)
+
+    def test_private_root_rejects_git_directory_and_worktree_file(self):
+        repo = self.root/'repo-dir'; repo.mkdir()
+        (repo/'.git').mkdir()
+        (repo/'vault').mkdir(mode=0o700)
+        with self.assertRaisesRegex(api.SeedanceError, 'PRIVATE_STORAGE_REQUIRED'):
+            api._private_root(repo/'vault')
+        worktree = self.root/'worktree-file'; worktree.mkdir()
+        (worktree/'.git').write_text('gitdir: /synthetic/elsewhere\n', encoding='utf-8')
+        (worktree/'vault').mkdir(mode=0o700)
+        with self.assertRaisesRegex(api.SeedanceError, 'PRIVATE_STORAGE_REQUIRED'):
+            api._private_root(worktree/'vault')
+
+    def test_private_root_rejects_broad_permissions_and_missing_directory(self):
+        broad = self.root/'broad'; broad.mkdir(mode=0o700)
+        broad.chmod(0o755)
+        with self.assertRaisesRegex(api.SeedanceError, 'PRIVATE_STORAGE_REQUIRED'):
+            api._private_root(broad)
+        with self.assertRaisesRegex(api.SeedanceError, 'PRIVATE_STORAGE_REQUIRED'):
+            api._private_root(self.root/'does-not-exist')
+
+    def test_private_read_rejects_symlinked_file(self):
+        target = self.root/'target.json'
+        target.write_text('{}', encoding='utf-8')
+        target.chmod(0o600)
+        link = self.root/'linked.json'
+        link.symlink_to(target)
+        with self.assertRaisesRegex(api.SeedanceError, 'PRIVATE_RECORD_INVALID'):
+            api._read(link)
+
 if __name__ == '__main__': unittest.main()
