@@ -1,6 +1,6 @@
 # 内参系统 V5｜唯一现行完整架构基线
 
-> 状态：**唯一权威、完整、自足的 V5 产品与架构施工说明书；软件、样刊及生产效果尚未验证**。制定于2026-10-14，修订于2026-10-26（Pacific/Auckland）。PR #76独立核查确认原W15—W17机械边界存在可复现缺陷；本轮先修复F01/F02/F10的正文保存、部分内容字节与私有导出权限，W15—W17已标`RETURNED`，其余F03—F09/F11留待逐模块返工。实际89项运行测试、52项维护测试及文档/技术/清单检查通过。W12仍待用户实际阅读，G01—G04均未通过；W13/W14为`IN_PROGRESS`，W15—W17为`RETURNED`，W18未开始。未调用真实研究模型或供应商、未启用生产或外发。此前施工沿革保留在Git和§23.2，不覆盖历史证据。
+> 状态：**唯一权威、完整、自足的 V5 产品与架构施工说明书；软件、样刊及生产效果尚未验证**。制定于2026-10-14，修订于2026-10-26（Pacific/Auckland）。PR #76独立核查确认原W15—W17机械边界存在可复现缺陷；本轮先修复F01/F02/F10的正文保存、部分内容字节与私有导出权限，随后返工W15的F03—F05：Review精确覆盖、Task决定链隔离和必要依赖递归失效。实际95项运行测试、52项维护测试及文档/技术/清单检查通过。W12仍待用户实际阅读，G01—G04均未通过；W13/W14/W15为`IN_PROGRESS`，W16/W17为`RETURNED`，W18未开始；F06—F09/F11仍按后续模块返工。未调用真实研究模型或供应商、未启用生产或外发。此前施工沿革保留在Git和§23.2，不覆盖历史证据。
 
 <a id="th-0"></a>
 ## 0. 效力、定义与阅读方式
@@ -3386,17 +3386,23 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
 <a id="nc-056"></a>
 ##### NC-056｜F03：Review未覆盖被审主体版本
 
-**状态**：OPEN。发现并复现于2026-10-26；W15已退回。当前决定只核Review类型、规范与列为evidence，未核Review精确覆盖当前主体/任务/用途。另一篇稿件的Review可错误授权当前稿。修复须建立结构化审核覆盖关系并支持显式多主体审查；计划随W15返回项处理。
+**状态**：VERIFIED（仅离线W15采用接口）。发现并复现于2026-10-26。原决定只核Review类型、规范与列为evidence，未核Review精确覆盖当前主体/任务/用途；另一篇稿件的Review可错误授权当前稿。
+
+**修复与验收**：`VersionSubmission`新增仅可属于Review的结构化`ReviewCoverage`；每条显式列出精确task_version_id、subject_version_id及reviewed_scope，Archive拒绝悬空主体或非Task覆盖。W15决定须找到同时覆盖提交主体、精确Task版本和全部申报用途的条目，多主体Review须分别列明覆盖；无覆盖、他主体或错用途均不得授权。回归覆盖错主体、错用途和无覆盖拒绝及显式多主体通过。
 
 <a id="nc-057"></a>
 ##### NC-057｜F04：不同Task共用权威决定链
 
-**状态**：OPEN。发现并复现于2026-10-26；W15已退回。决定对象仅按work/step定位，导致两个并行主题或期号互相覆盖当前状态。修复须让Task执行身份进入稳定对象键，并同步提交、依赖查询及旧记录兼容；至少验两个任务并行。
+**状态**：VERIFIED（仅离线W15采用接口）。发现并复现于2026-10-26。原决定对象仅按work/step定位，导致两个并行主题或期号互相覆盖当前状态。
+
+**修复与验收**：StepSubmission与AdoptionDecision schema 2记录稳定Task对象ID；提交与决定对象键由Task对象、work和step确定性生成，CLI查询须显式给出Task对象。两个Task相同work/step的READY与RETURN互不覆盖。旧共享槽决定保留原字节，只按历史记录中的Task版本过滤查询，绝不跨Task借用最新记录；同步验证旧记录兼容。
 
 <a id="nc-058"></a>
 ##### NC-058｜F05：采用失效未传递且未核主体可用性
 
-**状态**：OPEN。发现并复现于2026-10-26；W15已退回。A→B→C中A RETURN后B失效，但C仍可授权；主体正文撤回后历史READY仍可authorizes。修复须递归核必要依赖链、环和用途相关可用性，无关分支保留，并验补核恢复。
+**状态**：VERIFIED（仅离线W15采用接口）。发现并复现于2026-10-26。原A→B→C中A RETURN后B失效但C仍可授权；主体正文撤回后历史READY仍可authorizes。
+
+**修复与验收**：当前采用递归核完整必要依赖链，逐项复核当前决定、READY/NOT_APPLICABLE、期限、精确规范/主体/Review覆盖、Task与主体最新版本以及Task、主体、Review、输入和evidence的撤权状态，依赖环明确失败。A失效使B、C失效，无依赖的独立D保持有效；上游修复后须为新决定链重新核B/C。主体撤回阻止授权，新主体版本和新Review经新决定后可恢复。回归覆盖A→B→C、独立分支、撤回及恢复。
 
 <a id="nc-059"></a>
 ##### NC-059｜F06：W16旧成果仅重贴新修订即可有效
@@ -3430,7 +3436,7 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
 
 **状态**：OPEN。发现并复现于2026-10-26；W17已退回。Adapter已返回provider ID、实际费用、用量和超限内部重试后，控制器转UNKNOWN却把观测值改为null/0/未知。修复须分离“结果不可采用”与“已观测事实”，保留原回执、违规原因和可核对账；停止采用但不丢证据。
 
-**当前状态与验证边界**：F01、F02、F10已修复并通过56项W13共享接口测试；F03—F09及F11保持OPEN。W15—W17由`IN_PROGRESS`改为`RETURNED`，W18保持`NOT_STARTED`；W12阅读后置，G01—G04仍未通过。后续必须依次完成W15、W16、W17返工并各自验收，不得因共享层修复或测试数量增加自动恢复后续模块。没有调用真实模型/供应商，没有生产、付费、邮件或日报变更。
+**当前状态与验证边界**：F01、F02、F10及W15的F03—F05已修复；完整运行测试为95项（W13共享接口56项、W15采用接口12项），52项维护测试通过。F06—F09及F11保持OPEN；W15恢复`IN_PROGRESS`但整包不ACCEPTED，W16/W17仍`RETURNED`，W18保持`NOT_STARTED`。W12阅读后置，G01—G04仍未通过。后续须先核W15交接，再依次返工W16、W17；不得因共享层修复、W15局部修复或测试数量增加自动恢复后续模块。没有调用真实模型/供应商，没有生产、付费、邮件或日报变更。
 
 <!-- END ISSUE_LEDGER -->
 
@@ -8361,7 +8367,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       ],
       "failure_action": "按具体原因退责任模块或待核，保留允许的探索和未受影响产物。",
       "conditional": null,
-      "progress": "RETURNED",
+      "progress": "IN_PROGRESS",
       "evidence": [
         {
           "record_id": "W15-ADOPTION-20261025-001",
@@ -8394,6 +8400,24 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准",
           "result": "RETURNED",
           "scope": "Review未绑定被审主体、不同Task共用决定键、传递依赖及主体撤回未传播均实际复现。原有限接口保留为历史，不得继续依赖；须先修复NC-056—058并补两任务/三层依赖/独立分支/恢复用例。"
+        },
+        {
+          "record_id": "W15-PR76-REMEDIATION-20261026-001",
+          "artifact_refs": [
+            "intelligence/contracts.py",
+            "intelligence/adoption.py",
+            "intelligence/archive.py",
+            "intelligence/__main__.py",
+            "tests_runtime/test_adoption.py",
+            "audits/pr76-review-remediation-w15-20261026.json"
+          ],
+          "validation_refs": [
+            "tests_runtime/test_adoption.py (12 actual passing W15 tests)",
+            "audits/pr76-review-remediation-w15-20261026.json"
+          ],
+          "reviewer": "当前执行者实际离线合同、SQLite记录、正反/衔接与旧记录兼容检查；非独立L5、调用者身份、内容真伪或阶段批准",
+          "result": "IN_PROGRESS",
+          "scope": "F03—F05已修复离线范围：ReviewCoverage结构化绑定精确Task/主体/用途并支持多主体；决定与提交按稳定Task对象隔离，CLI显式按Task查询且旧共享槽只读筛选；当前采用递归核必要依赖、状态、期限、Task/主体最新版本及主体/Review/必输版本撤回。A→B→C、独立分支、两Task、主体撤回、新Task版本和检查后恢复均通过。W14/G01正式前置未过，调用者身份、真实L5、内容真伪、完整M图和生产仍未验，W15整包不ACCEPTED。"
         }
       ],
       "reviewed_basis_sha256": "9cd726a4a2e762e8d91448d21014f2dc1d0e9bf405a1e93d8bd2ad63452e361c",

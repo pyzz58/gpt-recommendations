@@ -9,7 +9,7 @@ uv run --locked --extra workflow python -m intelligence --root /private/archive 
 uv run --locked --extra workflow python -m intelligence --root /private/archive verify-preparation /private/prepared.json
 uv run --locked python -m intelligence --root /private/archive submit-step --record submission.json --rights journal-rights.json
 uv run --locked python -m intelligence --root /private/archive decide-step --record decision.json --rights journal-rights.json
-uv run --locked python -m intelligence --root /private/archive current-decision W15 M01
+uv run --locked python -m intelligence --root /private/archive current-decision W15 M01 TASK-W15
 uv run --locked python -m intelligence --root /private/archive operation-summary LOGICAL-OP-1
 
 The schema command defaults to VersionSubmission. read-reference checks a
@@ -69,6 +69,8 @@ def main(argv=None) -> int:
     current_decision = commands.add_parser("current-decision")
     current_decision.add_argument("work_id")
     current_decision.add_argument("step_id")
+    current_decision.add_argument(
+        "task_object_id", help="Stable Task object ID used to isolate this decision chain")
     operation_summary = commands.add_parser("operation-summary")
     operation_summary.add_argument("idempotency_key")
     commands.add_parser("rebuild-index")
@@ -169,7 +171,8 @@ def main(argv=None) -> int:
                 rights = RightsGrant(rights_id="RIGHTS-CURRENT-QUERY",basis=RightsBasis.OWN_WORK,
                     allowed_uses=frozenset({MaterialUse.INDEX}),evidence="Read-only query selector",
                     checked_by="CLI query",checked_at=datetime.now(timezone.utc))
-                decision = AdoptionController(archive,rights).current(args.work_id,args.step_id)
+                decision = AdoptionController(archive,rights).current(
+                    args.work_id,args.step_id,args.task_object_id)
                 print(json.dumps(
                     {"state": decision.state.value if decision else "PENDING",
                      "decision": decision.model_dump(mode="json") if decision else None},

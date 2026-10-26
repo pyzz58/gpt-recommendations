@@ -302,6 +302,14 @@ class VersionReference(Contract):
     locator: NonBlank
 
 
+class ReviewCoverage(Contract):
+    """One exact task/subject/use range actually covered by a Review."""
+
+    task_version_id: Identifier
+    subject_version_id: Identifier
+    reviewed_scope: tuple[NonBlank, ...]
+
+
 class Representation(str, Enum):
     FULL_BODY = "FULL_BODY"
     POINTER_ONLY = "POINTER_ONLY"
@@ -323,6 +331,7 @@ class VersionSubmission(Contract):
     source_locator: NonBlank | None = None
     media_type: NonBlank = "text/markdown; charset=utf-8"
     references: tuple[VersionReference, ...] = ()
+    review_coverage: tuple[ReviewCoverage, ...] = ()
 
     @model_validator(mode="after")
     def consistent(self) -> Self:
@@ -337,6 +346,18 @@ class VersionSubmission(Contract):
             raise ValueError("Duplicate version reference")
         if any(r.target_version_id == self.version_id for r in self.references):
             raise ValueError("A version cannot reference itself")
+        if self.review_coverage and self.kind is not ObjectKind.REVIEW:
+            raise ValueError("Only a Review can declare review coverage")
+        coverage_keys = [(item.task_version_id, item.subject_version_id)
+                         for item in self.review_coverage]
+        if len(coverage_keys) != len(set(coverage_keys)):
+            raise ValueError("Duplicate Review coverage for one task/subject pair")
+        for item in self.review_coverage:
+            if item.task_version_id == item.subject_version_id:
+                raise ValueError("A Review task cannot also be its reviewed subject")
+            normalized = [value.casefold() for value in item.reviewed_scope]
+            if len(normalized) != len(set(normalized)):
+                raise ValueError("Duplicate reviewed scope")
         return self
 
 

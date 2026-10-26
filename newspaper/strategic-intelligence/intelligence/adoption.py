@@ -1,22 +1,26 @@
 """W15 minimal authoritative adoption journal.
 
-Producers submit version-bound results and proposed states. A separate checker
-request records a decision only after exact task, subject, dependency, evidence
-and review-version checks. This interface does not authenticate checker identity,
-judge content truth or authorize publication; W17 and W31 retain those duties.
+Producers submit version-bound results and proposed states. Reviews declare their
+exact task/subject/use coverage. A separate checker request records a decision
+only after exact task, subject, dependency, evidence and Review checks; decision
+chains are isolated by stable Task object and current authorization recursively
+checks required dependencies. This interface does not authenticate checker
+identity, judge content truth or authorize publication; W17 and W31 retain those
+duties.
 """
 from __future__ import annotations
 
 from datetime import datetime, timezone
 from enum import Enum
+import hashlib
 from typing import Literal
 
 from pydantic import AwareDatetime, Field, model_validator
 
 from .archive import Archive, ArchiveError, MissingVersion, canonical
 from .contracts import (Contract, Digest, Identifier, NonBlank, ObjectKind, ReferenceUse,
-                        Representation, RightsGrant, SourceTimes, StoredVersion,
-                        VersionReference, VersionSubmission)
+                        Representation, ReviewCoverage, RightsGrant, SourceTimes,
+                        StoredVersion, VersionReference, VersionSubmission)
 
 
 class StepState(str, Enum):
@@ -39,7 +43,7 @@ class DependencyDecision(Contract):
 
 
 class StepSubmission(Contract):
-    schema_version: Literal[1] = 1
+    schema_version: Literal[1, 2] = 2
     submission_id: Identifier
     work_id: Identifier
     step_id: Identifier
@@ -54,6 +58,7 @@ class StepSubmission(Contract):
     dependency_decisions: tuple[DependencyDecision, ...] = ()
     gaps: tuple[NonBlank, ...] = ()
     created_at: AwareDatetime
+    task_object_id: Identifier | None = None
 
     @model_validator(mode="after")
     def unique_bindings(self) -> Self:
@@ -95,7 +100,7 @@ class DecisionRequest(Contract):
 
 
 class AdoptionDecision(Contract):
-    schema_version: Literal[1] = 1
+    schema_version: Literal[1, 2] = 2
     decision_id: Identifier
     submission_version_id: Identifier
     work_id: Identifier
@@ -114,6 +119,7 @@ class AdoptionDecision(Contract):
     dependency_decisions: tuple[DependencyDecision, ...]
     decided_at: AwareDatetime
     expires_at: AwareDatetime | None = None
+    task_object_id: Identifier | None = None
 
 
 class AdoptionError(ArchiveError):
@@ -130,8 +136,21 @@ class AdoptionController:
         self.rights = rights
 
     @staticmethod
-    def _object_id(prefix: str, work_id: str, step_id: str) -> str:
+    def _legacy_object_id(prefix: str, work_id: str, step_id: str) -> str:
         return f"{prefix}-{work_id}-{step_id}"
+
+    @staticmethod
+    def _scoped_object_id(prefix: str, task_object_id: str, work_id: str, step_id: str) -> str:
+        identity = canonical([task_object_id, work_id, step_id]).encode()
+        return f"{prefix}-{hashlib.sha256(identity).hexdigest()[:32]}"
+
+    @staticmethod
+    def _scope_values(values: tuple[str, ...]) -> set[str]:
+        return {value.strip().casefold() for value in values}
+
+    @classmethod
+    def _scope_is_covered(cls, required: tuple[str, ...], covered: tuple[str, ...]) -> bool:
+        return cls._scope_values(required) <= cls._scope_values(covered)
 
     def _load_body(self, version_id: str, kind: ObjectKind) -> tuple[StoredVersion, bytes]:
         stored = self.archive.get(version_id)
@@ -153,13 +172,21 @@ class AdoptionController:
             raise AdoptionError("Submission owner is not a Task")
         if task.submission.spec_sha256 != record.spec_sha256:
             raise AdoptionError("Task and submission use different specifications")
+        if (record.task_object_id is not None
+                and record.task_object_id != task.submission.object_id):
+            raise AdoptionError("Submission task object identity does not match the exact Task version")
+        record = StepSubmission.model_validate_json(record.model_copy(update={
+            "schema_version": 2,
+            "task_object_id": task.submission.object_id,
+        }).model_dump_json())
         subject = self.archive.get(record.subject_version_id)
         if subject.submission.spec_sha256 != record.spec_sha256:
             raise AdoptionError("Subject uses a different specification")
         for version_id in (*record.input_version_ids, *record.evidence_version_ids):
             self.archive.get(version_id)
         self._validate_dependencies(record, record.created_at)
-        object_id = self._object_id("STEP", record.work_id, record.step_id)
+        object_id = self._scoped_object_id(
+            "STEP", record.task_object_id, record.work_id, record.step_id)
         latest = self.archive.latest(object_id)
         parent = latest.submission.version_id if latest else None
         references = [
@@ -195,6 +222,18 @@ class AdoptionController:
         submission = StepSubmission.model_validate_json(raw)
         if submission_stored.submission.version_id != submission.submission_id:
             raise AdoptionError("Step submission identity mismatch")
+        task = self.archive.get(submission.task_version_id)
+        if task.submission.kind is not ObjectKind.TASK:
+            raise AdoptionError("Submission owner is not a Task")
+        self._require_available(task, "Task")
+        self._require_latest(task, "Task")
+        if (submission.task_object_id is not None
+                and submission.task_object_id != task.submission.object_id):
+            raise AdoptionError("Submission task object identity does not match the exact Task version")
+        submission = StepSubmission.model_validate_json(submission.model_copy(update={
+            "schema_version": 2,
+            "task_object_id": task.submission.object_id,
+        }).model_dump_json())
         if request.checker_id.strip().casefold() == submission.producer_id.strip().casefold():
             raise AdoptionError("The producer cannot issue the authoritative decision")
         if request.review_version_id not in submission.evidence_version_ids:
@@ -206,14 +245,25 @@ class AdoptionController:
             raise AdoptionError("Review and submission use different specifications")
         if review.body_retention_revoked:
             raise AdoptionError("Review body was withdrawn")
-        task = self.archive.get(submission.task_version_id)
         if task.submission.spec_sha256 != submission.spec_sha256:
             raise AdoptionError("Task specification changed")
-        self.archive.get(submission.subject_version_id)
+        subject = self.archive.get(submission.subject_version_id)
+        if subject.submission.spec_sha256 != submission.spec_sha256:
+            raise AdoptionError("Subject specification changed")
+        self._require_available(subject, "Subject")
+        self._require_latest(subject, "Subject")
+        if request.state is StepState.READY and not self._scope_is_covered(
+                request.allowed_scope, submission.claimed_scope):
+            raise AdoptionError("Decision scope exceeds the submitted scope")
+        self._require_review_coverage(
+            review, submission, request.allowed_scope)
         for version_id in (*submission.input_version_ids, *submission.evidence_version_ids):
-            self.archive.get(version_id)
+            stored = self.archive.get(version_id)
+            if stored.body_retention_revoked:
+                raise AdoptionError(f"Required input or evidence was withdrawn: {version_id}")
         self._validate_dependencies(submission, request.decided_at)
-        object_id = self._object_id("DEC", submission.work_id, submission.step_id)
+        object_id = self._scoped_object_id(
+            "DEC", submission.task_object_id, submission.work_id, submission.step_id)
         latest = self.archive.latest(object_id)
         parent = latest.submission.version_id if latest else None
         decision = AdoptionDecision(
@@ -226,7 +276,8 @@ class AdoptionController:
             reason=request.reason, input_version_ids=submission.input_version_ids,
             evidence_version_ids=submission.evidence_version_ids,
             dependency_decisions=submission.dependency_decisions,
-            decided_at=request.decided_at, expires_at=request.expires_at)
+            decided_at=request.decided_at, expires_at=request.expires_at,
+            task_object_id=submission.task_object_id)
         references = (
             VersionReference(target_version_id=request.submission_version_id,
                              use=ReferenceUse.REVIEW_OF, locator="submitted step result"),
@@ -246,20 +297,143 @@ class AdoptionController:
             representation=Representation.FULL_BODY, references=references)
         return self.archive.append(version, canonical(decision.model_dump(mode="json")).encode())
 
-    def _validate_dependencies(self, submission: StepSubmission, at: datetime) -> None:
+    @staticmethod
+    def _review_covers(
+            review: StoredVersion, task_version_id: str, subject_version_id: str,
+            required_scope: tuple[str, ...]) -> bool:
+        entries = [
+            item for item in review.submission.review_coverage
+            if item.task_version_id == task_version_id
+            and item.subject_version_id == subject_version_id
+        ]
+        if not entries:
+            return False
+        covered = tuple(value for item in entries for value in item.reviewed_scope)
+        return AdoptionController._scope_is_covered(required_scope, covered)
+
+    def _require_review_coverage(
+            self, review: StoredVersion, submission: StepSubmission,
+            allowed_scope: tuple[str, ...] = ()) -> None:
+        required_scope = (*submission.claimed_scope, *allowed_scope)
+        if not self._review_covers(
+                review, submission.task_version_id, submission.subject_version_id,
+                required_scope):
+            raise AdoptionError(
+                "Review does not structurally cover this exact task, subject and use scope")
+
+    def _decision_task_object_id(self, decision: AdoptionDecision) -> str:
+        if decision.task_object_id is not None:
+            return decision.task_object_id
+        task = self.archive.get(decision.task_version_id)
+        if task.submission.kind is not ObjectKind.TASK:
+            raise AdoptionError("Decision task version is not a Task")
+        return task.submission.object_id
+
+    @staticmethod
+    def _decision_matches_submission(
+            decision: AdoptionDecision, submission: StepSubmission) -> bool:
+        return (
+            decision.submission_version_id == submission.submission_id
+            and decision.work_id == submission.work_id
+            and decision.step_id == submission.step_id
+            and decision.spec_sha256 == submission.spec_sha256
+            and decision.task_version_id == submission.task_version_id
+            and decision.subject_version_id == submission.subject_version_id
+            and decision.input_version_ids == submission.input_version_ids
+            and decision.evidence_version_ids == submission.evidence_version_ids
+            and decision.dependency_decisions == submission.dependency_decisions
+            and decision.task_object_id == submission.task_object_id
+        )
+
+    @staticmethod
+    def _require_available(stored: StoredVersion, label: str) -> None:
+        if stored.body_retention_revoked:
+            raise AdoptionError(f"{label} was withdrawn for current use")
+
+    def _require_latest(self, stored: StoredVersion, label: str) -> None:
+        latest = self.archive.latest(stored.submission.object_id)
+        if latest is None or latest.submission.version_id != stored.submission.version_id:
+            raise AdoptionError(f"{label} version was superseded")
+
+    def _validate_dependencies(
+            self, submission: StepSubmission, at: datetime,
+            trail: frozenset[str] = frozenset()) -> None:
         for dependency in submission.dependency_decisions:
             decision = self.load(dependency.decision_id)
-            current = self.current(decision.work_id, decision.step_id)
-            if current is None or current.decision_id != decision.decision_id:
-                raise AdoptionError("Dependency decision was superseded")
             if decision.spec_sha256 != submission.spec_sha256:
                 raise AdoptionError("Dependency decision uses a different specification")
             if decision.subject_version_id != dependency.expected_subject_version_id:
                 raise AdoptionError("Dependency decision binds a different subject version")
-            if decision.state not in (StepState.READY, StepState.NOT_APPLICABLE):
-                raise AdoptionError("Dependency has not been adopted")
-            if decision.expires_at is not None and at >= decision.expires_at:
-                raise AdoptionError("Dependency adoption has expired")
+            self._require_effective_decision(
+                decision, at, allow_not_applicable=True, trail=trail)
+
+    def _require_effective_decision(
+            self, decision: AdoptionDecision, at: datetime, *,
+            allow_not_applicable: bool, trail: frozenset[str]) -> None:
+        if decision.decision_id in trail:
+            raise AdoptionError("Adoption dependency cycle detected")
+        task_object_id = self._decision_task_object_id(decision)
+        if decision.task_object_id is None:
+            decision = AdoptionDecision.model_validate_json(decision.model_copy(update={
+                "schema_version": 2,
+                "task_object_id": task_object_id,
+            }).model_dump_json())
+        current = self.current(
+            decision.work_id, decision.step_id, task_object_id)
+        if current is None or current.decision_id != decision.decision_id:
+            raise AdoptionError("Dependency decision was superseded")
+        allowed_states = (
+            (StepState.READY, StepState.NOT_APPLICABLE)
+            if allow_not_applicable else (StepState.READY,)
+        )
+        if decision.state not in allowed_states:
+            raise AdoptionError("Dependency has not been adopted")
+        if decision.expires_at is not None and at >= decision.expires_at:
+            raise AdoptionError("Dependency adoption has expired")
+        stored_submission, raw = self._load_body(
+            decision.submission_version_id, ObjectKind.STEP_SUBMISSION)
+        submission = StepSubmission.model_validate_json(raw)
+        if stored_submission.submission.version_id != submission.submission_id:
+            raise AdoptionError("Step submission identity mismatch")
+        if submission.task_object_id is None:
+            task = self.archive.get(submission.task_version_id)
+            if task.submission.kind is not ObjectKind.TASK:
+                raise AdoptionError("Submission owner is not a Task")
+            submission = StepSubmission.model_validate_json(submission.model_copy(update={
+                "schema_version": 2,
+                "task_object_id": task.submission.object_id,
+            }).model_dump_json())
+        if not self._decision_matches_submission(decision, submission):
+            raise AdoptionError("Adoption decision no longer matches its submitted records")
+        if decision.review_version_id not in submission.evidence_version_ids:
+            raise AdoptionError("Decision Review is not declared submission evidence")
+        if decision.state is StepState.READY and not self._scope_is_covered(
+                decision.allowed_scope, submission.claimed_scope):
+            raise AdoptionError("Decision scope exceeds the submitted scope")
+        task = self.archive.get(submission.task_version_id)
+        subject = self.archive.get(submission.subject_version_id)
+        review = self.archive.get(decision.review_version_id)
+        if task.submission.kind is not ObjectKind.TASK:
+            raise AdoptionError("Submission owner is not a Task")
+        if task.submission.object_id != submission.task_object_id:
+            raise AdoptionError("Task object identity changed")
+        if review.submission.kind is not ObjectKind.REVIEW:
+            raise AdoptionError("Decision basis is not an archived Review")
+        if (task.submission.spec_sha256 != submission.spec_sha256
+                or subject.submission.spec_sha256 != submission.spec_sha256
+                or review.submission.spec_sha256 != submission.spec_sha256):
+            raise AdoptionError("Decision inputs use a different specification")
+        for stored, label in (
+                (task, "Task"), (subject, "Subject"), (review, "Review")):
+            self._require_available(stored, label)
+        self._require_latest(task, "Task")
+        self._require_latest(subject, "Subject")
+        self._require_review_coverage(review, submission, decision.allowed_scope)
+        for version_id in (*submission.input_version_ids, *submission.evidence_version_ids):
+            self._require_available(
+                self.archive.get(version_id), f"Required input or evidence {version_id}")
+        self._validate_dependencies(
+            submission, at, trail | frozenset({decision.decision_id}))
 
     def load(self, decision_id: str) -> AdoptionDecision:
         stored, raw = self._load_body(decision_id, ObjectKind.ADOPTION_DECISION)
@@ -267,52 +441,40 @@ class AdoptionController:
         self._parse_id(stored, decision.decision_id)
         return decision
 
-    def current(self, work_id: str, step_id: str) -> AdoptionDecision | None:
-        stored = self.archive.latest(self._object_id("DEC", work_id, step_id))
-        return None if stored is None else self.load(stored.submission.version_id)
+    def current(
+            self, work_id: str, step_id: str,
+            task_object_id: str) -> AdoptionDecision | None:
+        """Return one exact Task object's current decision record."""
+        stored = self.archive.latest(
+            self._scoped_object_id("DEC", task_object_id, work_id, step_id))
+        if stored is not None:
+            decision = self.load(stored.submission.version_id)
+            return (decision if self._decision_task_object_id(decision) == task_object_id
+                    else None)
+        # Schema-1 records lived in one shared slot. Read their history without
+        # ever borrowing the latest decision from a different Task.
+        legacy = self.archive.history(
+            self._legacy_object_id("DEC", work_id, step_id))
+        for stored in reversed(legacy):
+            decision = self.load(stored.submission.version_id)
+            if self._decision_task_object_id(decision) == task_object_id:
+                return decision
+        return None
 
-    def current_state(self, work_id: str, step_id: str) -> StepState:
-        decision = self.current(work_id, step_id)
+    def current_state(
+            self, work_id: str, step_id: str, task_object_id: str) -> StepState:
+        decision = self.current(work_id, step_id, task_object_id)
         return decision.state if decision is not None else StepState.PENDING
 
     def is_current(self, decision_id: str, at: AwareDatetime | None = None) -> bool:
         try:
-            return self._is_current(decision_id, at)
-        except (ArchiveError, ValueError):
+            decision = self.load(decision_id)
+            self._require_effective_decision(
+                decision, at or datetime.now(timezone.utc),
+                allow_not_applicable=False, trail=frozenset())
+            return True
+        except (ArchiveError, AdoptionError, ValueError):
             return False
-
-    def _is_current(self, decision_id: str, at: AwareDatetime | None = None) -> bool:
-        decision = self.load(decision_id)
-        current = self.current(decision.work_id, decision.step_id)
-        if current is None or current.decision_id != decision_id:
-            return False
-        instant = at or datetime.now(timezone.utc)
-        if decision.state is not StepState.READY:
-            return False
-        if decision.expires_at is not None and instant >= decision.expires_at:
-            return False
-        stored_submission, raw = self._load_body(
-            decision.submission_version_id, ObjectKind.STEP_SUBMISSION)
-        submission = StepSubmission.model_validate_json(raw)
-        if stored_submission.submission.version_id != submission.submission_id:
-            return False
-        if decision.review_version_id not in submission.evidence_version_ids:
-            return False
-        try:
-            self._validate_dependencies(submission, instant)
-        except (ArchiveError, ValueError):
-            return False
-        task = self.archive.get(decision.task_version_id)
-        subject = self.archive.get(decision.subject_version_id)
-        review = self.archive.get(decision.review_version_id)
-        if (task.submission.kind is not ObjectKind.TASK
-                or review.submission.kind is not ObjectKind.REVIEW
-                or task.submission.spec_sha256 != decision.spec_sha256
-                or subject.submission.spec_sha256 != decision.spec_sha256
-                or review.submission.spec_sha256 != decision.spec_sha256
-                or review.body_retention_revoked):
-            return False
-        return True
 
     def authorizes(self, decision_id: str, required_scope: tuple[str, ...],
                    at: AwareDatetime | None = None) -> bool:

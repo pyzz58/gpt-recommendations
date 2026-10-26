@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "a4d24c94e2e4af7fb9a14730d15411ec0b8439bc7035a49a5bb8239c496bc749",
+  "spec_sha256": "f576a772edb5d6eb041c143e3a0aa7e19987ea5fc5e2caa774b02be705accd54",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -1851,7 +1851,7 @@
       ],
       "failure_action": "按具体原因退责任模块或待核，保留允许的探索和未受影响产物。",
       "conditional": null,
-      "progress": "RETURNED",
+      "progress": "IN_PROGRESS",
       "evidence": [
         {
           "record_id": "W15-ADOPTION-20261025-001",
@@ -1884,6 +1884,24 @@
           "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准",
           "result": "RETURNED",
           "scope": "Review未绑定被审主体、不同Task共用决定键、传递依赖及主体撤回未传播均实际复现。原有限接口保留为历史，不得继续依赖；须先修复NC-056—058并补两任务/三层依赖/独立分支/恢复用例。"
+        },
+        {
+          "record_id": "W15-PR76-REMEDIATION-20261026-001",
+          "artifact_refs": [
+            "intelligence/contracts.py",
+            "intelligence/adoption.py",
+            "intelligence/archive.py",
+            "intelligence/__main__.py",
+            "tests_runtime/test_adoption.py",
+            "audits/pr76-review-remediation-w15-20261026.json"
+          ],
+          "validation_refs": [
+            "tests_runtime/test_adoption.py (12 actual passing W15 tests)",
+            "audits/pr76-review-remediation-w15-20261026.json"
+          ],
+          "reviewer": "当前执行者实际离线合同、SQLite记录、正反/衔接与旧记录兼容检查；非独立L5、调用者身份、内容真伪或阶段批准",
+          "result": "IN_PROGRESS",
+          "scope": "F03—F05已修复离线范围：ReviewCoverage结构化绑定精确Task/主体/用途并支持多主体；决定与提交按稳定Task对象隔离，CLI显式按Task查询且旧共享槽只读筛选；当前采用递归核必要依赖、状态、期限、Task/主体最新版本及主体/Review/必输版本撤回。A→B→C、独立分支、两Task、主体撤回、新Task版本和检查后恢复均通过。W14/G01正式前置未过，调用者身份、真实L5、内容真伪、完整M图和生产仍未验，W15整包不ACCEPTED。"
         }
       ],
       "reviewed_basis_sha256": "9cd726a4a2e762e8d91448d21014f2dc1d0e9bf405a1e93d8bd2ad63452e361c",

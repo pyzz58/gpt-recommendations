@@ -291,6 +291,21 @@ class Archive:
                 for ref in sub.references:
                     if not c.execute(select(versions.c.version_id).where(versions.c.version_id == ref.target_version_id)).first():
                         raise MissingVersion(ref.target_version_id)
+                for coverage in sub.review_coverage:
+                    for target_id in (
+                            coverage.task_version_id, coverage.subject_version_id):
+                        target = c.execute(
+                            select(versions.c.object_id)
+                            .where(versions.c.version_id == target_id)).first()
+                        if target is None:
+                            raise MissingVersion(target_id)
+                    covered_task = c.execute(
+                        select(objects.c.kind)
+                        .select_from(versions.join(
+                            objects, versions.c.object_id == objects.c.object_id))
+                        .where(versions.c.version_id == coverage.task_version_id)).scalar_one()
+                    if covered_task != ObjectKind.TASK.value:
+                        raise ArchiveError("Review coverage task version is not a Task")
                 known_grant = c.execute(select(grants.c.record).where(grants.c.rights_id == sub.rights.rights_id)).scalar_one_or_none()
                 if known_grant is not None and known_grant != grant:
                     raise Conflict("Rights ID cannot be redefined; record a new checked grant")

@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`a4d24c94e2e4af7fb9a14730d15411ec0b8439bc7035a49a5bb8239c496bc749`。
+当前规范SHA-256：`f576a772edb5d6eb041c143e3a0aa7e19987ea5fc5e2caa774b02be705accd54`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收2包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收3包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -50,7 +50,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 13 | [G01 第一阶段门：真实专题及完整同周样刊](#g01) | 阶段门 | R01/R03/R04/R07/T01/T02/T03/T04/T05/T06/T07/T08/T09/T10/T11/T13 | [W01](#w01)、[W02](#w02)、[W03](#w03)、[W04](#w04)、[W05](#w05)、[W06](#w06)、[W07](#w07)、[W08](#w08)、[W09](#w09)、[W10](#w10)、[W11](#w11)、[W12](#w12) | 待开始 / CURRENT_BINDING |
 | 14 | [W13 共享对象、版本与档案基础接口](#w13) | 代码与接口工作包 | T11/T01/T04 | [G01](#g01) | 进行中 / CURRENT_BINDING |
 | 15 | [W14 当前规范与任务输入准备接口](#w14) | 代码与接口工作包 | T01/R07 | [W13](#w13) | 进行中 / CURRENT_BINDING |
-| 16 | [W15 采用检查与权威决定接口](#w15) | 代码与接口工作包 | T01 | [W14](#w14) | 需返工 / CURRENT_BINDING |
+| 16 | [W15 采用检查与权威决定接口](#w15) | 代码与接口工作包 | T01 | [W14](#w14) | 进行中 / CURRENT_BINDING |
 | 17 | [W16 共享研究修订与并发提交边界](#w16) | 代码与接口工作包 | T05/T01/T11 | [W13](#w13)、[W15](#w15) | 需返工 / CURRENT_BINDING |
 | 18 | [W17 工具适配器与真实操作身份](#w17) | 代码与接口工作包 | T13/T11 | [W13](#w13)、[W15](#w15) | 需返工 / CURRENT_BINDING |
 | 19 | [W18 调用前权限、预算与能力核验](#w18) | 代码与接口工作包 | T13/T01 | [W17](#w17)、[W15](#w15) | 待开始 / CURRENT_BINDING |
@@ -638,7 +638,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：16/59；阶段：2；类型：代码与接口工作包。
 
-进度：**需返工**；关联：CURRENT_BINDING；前置：[W14](#w14)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W14](#w14)。
 
 前置尚未验收：[W14](#w14)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -674,7 +674,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W15-ADOPTION-20261025-001", "artifact_refs": ["intelligence/adoption.py", "intelligence/contracts.py", "intelligence/__main__.py", "tests_runtime/test_adoption.py", "audits/w13-w15-remediation-20261025.json"], "validation_refs": ["tests_runtime/test_adoption.py (6 actual passing W15 tests)", "audits/w13-w15-remediation-20261025.json"], "reviewer": "当前执行者实际离线接口与正反/衔接检查；非独立L5、身份认证、真实模型或阶段批准", "result": "IN_PROGRESS", "scope": "实现并持久追加StepSubmission/AdoptionDecision；单独提交不改变当前决定，README范围、精确Task/主体/Review/输入/依赖绑定、生产者自签拒绝、依赖过期、PENDING/READY/RETURN/BLOCKED/NOT_APPLICABLE与CLI已离线验证。checker身份、内容真伪、完整M图、模型执行和出版/交付未验；W14正式前置未过，整包不ACCEPTED。"}, {"record_id": "W15-PR76-REVIEW-RETURN-20261026-001", "artifact_refs": ["intelligence/adoption.py", "tests_runtime/test_adoption.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["Codex-PR76-Review-20261025: F03/F04/F05 reproduced", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准", "result": "RETURNED", "scope": "Review未绑定被审主体、不同Task共用决定键、传递依赖及主体撤回未传播均实际复现。原有限接口保留为历史，不得继续依赖；须先修复NC-056—058并补两任务/三层依赖/独立分支/恢复用例。"}]
+实际证据：[{"record_id": "W15-ADOPTION-20261025-001", "artifact_refs": ["intelligence/adoption.py", "intelligence/contracts.py", "intelligence/__main__.py", "tests_runtime/test_adoption.py", "audits/w13-w15-remediation-20261025.json"], "validation_refs": ["tests_runtime/test_adoption.py (6 actual passing W15 tests)", "audits/w13-w15-remediation-20261025.json"], "reviewer": "当前执行者实际离线接口与正反/衔接检查；非独立L5、身份认证、真实模型或阶段批准", "result": "IN_PROGRESS", "scope": "实现并持久追加StepSubmission/AdoptionDecision；单独提交不改变当前决定，README范围、精确Task/主体/Review/输入/依赖绑定、生产者自签拒绝、依赖过期、PENDING/READY/RETURN/BLOCKED/NOT_APPLICABLE与CLI已离线验证。checker身份、内容真伪、完整M图、模型执行和出版/交付未验；W14正式前置未过，整包不ACCEPTED。"}, {"record_id": "W15-PR76-REVIEW-RETURN-20261026-001", "artifact_refs": ["intelligence/adoption.py", "tests_runtime/test_adoption.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["Codex-PR76-Review-20261025: F03/F04/F05 reproduced", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准", "result": "RETURNED", "scope": "Review未绑定被审主体、不同Task共用决定键、传递依赖及主体撤回未传播均实际复现。原有限接口保留为历史，不得继续依赖；须先修复NC-056—058并补两任务/三层依赖/独立分支/恢复用例。"}, {"record_id": "W15-PR76-REMEDIATION-20261026-001", "artifact_refs": ["intelligence/contracts.py", "intelligence/adoption.py", "intelligence/archive.py", "intelligence/__main__.py", "tests_runtime/test_adoption.py", "audits/pr76-review-remediation-w15-20261026.json"], "validation_refs": ["tests_runtime/test_adoption.py (12 actual passing W15 tests)", "audits/pr76-review-remediation-w15-20261026.json"], "reviewer": "当前执行者实际离线合同、SQLite记录、正反/衔接与旧记录兼容检查；非独立L5、调用者身份、内容真伪或阶段批准", "result": "IN_PROGRESS", "scope": "F03—F05已修复离线范围：ReviewCoverage结构化绑定精确Task/主体/用途并支持多主体；决定与提交按稳定Task对象隔离，CLI显式按Task查询且旧共享槽只读筛选；当前采用递归核必要依赖、状态、期限、Task/主体最新版本及主体/Review/必输版本撤回。A→B→C、独立分支、两Task、主体撤回、新Task版本和检查后恢复均通过。W14/G01正式前置未过，调用者身份、真实L5、内容真伪、完整M图和生产仍未验，W15整包不ACCEPTED。"}]
 
 <a id="w16"></a>
 ## W16｜共享研究修订与并发提交边界
