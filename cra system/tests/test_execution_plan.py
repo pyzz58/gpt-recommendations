@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from execution_plan import next_task, validate_execution
 from traceability_lib import validate
+from implementation_plan import validate_implementation
 
 
 class TaskSelectionTests(unittest.TestCase):
@@ -84,6 +85,11 @@ class ExecutionContractTests(unittest.TestCase):
         errors = self.check(tasks)
         self.assertTrue(any("verified task missing deliverable" in error for error in errors))
         self.assertTrue(any("still has a to_implement command" in error for error in errors))
+
+    def test_task_design_reference_must_exist(self):
+        tasks = copy.deepcopy(self.tasks)
+        tasks[1]["design_refs"] = ["architecture/missing-by-design.md"]
+        self.assertTrue(any("missing/outside implementation reference" in e for e in validate_implementation(self.root, tasks)))
 
     def test_stale_task_card_is_rejected(self):
         path = self.root / self.tasks[1]["instruction_path"]

@@ -1,6 +1,8 @@
 """Code-ready task cards and deterministic next-task selection; no clinical operations."""
 from __future__ import annotations
 from pathlib import Path
+import json
+from task_evidence import record_errors
 
 
 def next_task(tasks: list[dict], track: str = "v1a") -> dict:
@@ -43,6 +45,10 @@ def render_execution_views(tasks: list[dict], module_map: dict) -> dict[str, str
             lines.append(f'| {tick}{item["path"]}{tick} | {item["kind"]} | {item["purpose"]} |')
         lines += ["", "以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。", "", "## 关键接口和数据约定", ""]
         lines += ["- " + value for value in task.get("contracts", [])]
+        lines += ["", "## 进入条件与交接", "", "阶段：" + task.get("phase_id", "未填写") + "；CI profile：" + task.get("verification_profile", "未填写"), ""]
+        lines += ["- 进入：" + x for x in task.get("entry_conditions", [])]
+        lines += ["- 交接：" + x for x in task.get("handoff_outputs", [])]
+        lines += ["", "技术输入：" + "、".join("[" + Path(p).name + "](../../" + p + ")" for p in task.get("design_refs", [])), ""]
         lines += ["", "## 实现步骤", ""]
         lines += [f"{index}. {value}" for index, value in enumerate(task.get("steps", []), 1)]
         lines += ["", "## 验证命令", "", "available表示当前已有入口；to_implement表示本任务必须先实现该入口，不能现在就声称已经运行。进入后续阶段使用合成数据和临时服务。", ""]
@@ -75,7 +81,7 @@ def render_execution_views(tasks: list[dict], module_map: dict) -> dict[str, str
         lines.append(f'| {task["id"]} | [{task["title"]}]({relative}) | {"、".join(task["depends_on"]) or "无"} | {task["track"]} | {task["status"]} |')
     lines += [
         "", "每张卡都列出临床目标、对应理论/模块、目标文件、接口、实现步骤、命令、完成标准和不包含范围。",
-        "目标文件在任务未实现前可以不存在；task标verified时必须确实存在，待实现命令不能继续保留为to_implement。", "",
+        "目标文件在未实现前可不存在；verified须有实际交付、可执行命令及绑定源码和任务专属CI的completion_evidence。完整阶段和交接见IMPLEMENTATION_PATH.md。", "",
         "当前选择命令：" + tick + "python3 tools/next_task.py" + tick + "。该工具只读计划，不运行开发、部署或外部操作。",
     ]
     views["plan/CODEX_TASKS.md"] = "\n".join(lines).rstrip() + "\n"
@@ -84,6 +90,7 @@ def render_execution_views(tasks: list[dict], module_map: dict) -> dict[str, str
 
 def validate_execution(root: Path, tasks: list[dict], module_map: dict, requirement_map: dict, scenario_map: dict) -> list[str]:
     errors = []
+    profiles = {p['task_id']: p for p in json.loads((root / 'plan/implementation.json').read_text(encoding='utf-8'))['verification_profiles']}
     required = ("track", "instruction_path", "clinical_goal", "deliverables", "contracts", "steps", "verification", "done_when", "not_in_scope", "scenario_ids")
     for task in tasks:
         tid = task["id"]
@@ -117,6 +124,7 @@ def validate_execution(root: Path, tasks: list[dict], module_map: dict, requirem
             if task["status"] == "verified" and check.get("availability") != "available":
                 errors.append(f"{tid}: verified task still has a to_implement command")
         if task["status"] == "verified":
+            errors.extend(record_errors(root, task, profiles.get(tid, {})))
             by_id = {item["id"]: item for item in tasks}
             if any(by_id.get(dep, {}).get("status") != "verified" for dep in task["depends_on"]):
                 errors.append(f"{tid}: verified task has unverified prerequisite")

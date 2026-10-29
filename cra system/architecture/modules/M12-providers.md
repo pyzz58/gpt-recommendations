@@ -1,6 +1,6 @@
 # M12 模型、OCR与检索接入
 
-版本：2；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/providers/`。
+版本：3；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/providers/`。
 
 ## 对应理论和任务
 
@@ -37,3 +37,7 @@
 RecognizeLab在W08即有实际适配实现与明确支持范围；W14增强格式。DisabledProvider仅支持内部演示/临时辅助，不满足核心自动能力完成。高低可信策略由结构/来源/实测决定，不能只信模型自报置信度。
 
 详细输入、状态、边界与开发阶段按[WORKFLOW_CONTRACTS](../WORKFLOW_CONTRACTS.md)。本节与旧实现方法不一致时采用本节；设计更新不等于功能已经完成。
+
+## v0.4技术实施补齐
+
+W03先探测兼容与资源，必要时隔离识别环境，W04/W08/W09实际provider评估。 实现契约见[LAB_AUTOMATION.md](../LAB_AUTOMATION.md)，当前任务的进入条件/交接见[完整实施路径](../../plan/IMPLEMENTATION_PATH.md)。理论和任务编号保持；本轮文档不是业务功能完成证据。

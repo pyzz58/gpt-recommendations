@@ -63,3 +63,7 @@ RuleVersion和ClinicalFact版本通过依赖表关联Assessment、ActionItem、D
 | ExtractionField | 原文/位置、原值、auto_extracted/user_corrected/unreadable/user_skipped、校验与复核状态 | M08，自动候选与人工核实分别保存 |
 
 缺口选择不是Issue整改；用户跳过后不自动催办。RuleVersion补充分支不会覆盖历史。具体状态和执行语义见[WORKFLOW_CONTRACTS](WORKFLOW_CONTRACTS.md)。
+
+## 6. v0.4执行细化
+
+ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping和共性规则包按[EXECUTION_CONTRACTS](EXECUTION_CONTRACTS.md)增量实现；字段与计算/来源状态由各模块拥有。provider原调用不保证绝不重复，保存attempt/request与费用，旧输入job输出不静默替代新事实。profile源文件绑定是工程证据，不存真实临床资料。

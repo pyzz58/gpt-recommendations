@@ -82,7 +82,8 @@ def main():
         return 1
     print(json.dumps({
         "purpose": "diagnostic_review_not_acceptance",
-        "reviewed_baseline": "60be8e67f4fa941a4663541351253296e5ee06a4",
+        "historical_reviewed_baseline": "60be8e67f4fa941a4663541351253296e5ee06a4",
+        "execution_commit": git(ROOT, "rev-parse", "HEAD"),
         "results": [manufactured_completion_probe(), dependency_phase_probe()],
         "real_tasks_modified": False,
         "external_services_called": False,

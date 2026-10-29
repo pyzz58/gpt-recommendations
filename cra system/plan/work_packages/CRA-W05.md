@@ -27,6 +27,7 @@
 | `backend/cra_app/subjects/api.py` | code | 时间线和阶段要求 |
 | `web/src/features/subjects/SubjectTimeline.tsx` | code | 患者时间线 |
 | `tests/integration/test_subjects.py` | test | 日期精度及分类断点 |
+| `backend/cra_app/subjects/context_import.py` | code | 患者锚点与允许结构化上下文导入 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -35,6 +36,16 @@
 - ClinicalFact区分原记录、CRA确认、他人答复和模型建议。
 - 计算输出采用的锚点和规则版本，未知起点不产生假日期。
 - 每项判断列needed_fact_keys/允许来源/受影响路径及可继续事项；CheckDecision保存对象/事项/期间范围，拒绝后not_checked_by_user，不重复追问。
+
+## 进入条件与交接
+
+阶段：P2；CI profile：CRA-W05
+
+- 进入：规则版本和三值逻辑可用，准备患者上下文合成表。
+- 交接：患者/锚点/分类断点及缺口拒绝/恢复契约，日期精度和来源保留。
+
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[WORKFLOW_CONTRACTS.md](../../architecture/WORKFLOW_CONTRACTS.md)
+
 
 ## 实现步骤
 

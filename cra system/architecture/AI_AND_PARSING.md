@@ -53,3 +53,7 @@ Provider只接收最小必要且已获准的资料；文档中的指令不获得
 list提取覆盖前置、触发、各分支、例外和后续动作；引用存在不证明含义完整。有限AST、三值逻辑和独立条件反例见WORKFLOW_CONTRACTS.md。未提供资料的分支标待完善，使用中修订并保存历史。
 
 缺数据用户拒绝补充后停止依赖路径与相关追问，不能后台猜测补全；自动读取、比较和医学支持各自按可用条件继续。不把跳过变成待整改Issue。支持格式的自动提取必须在首版主线验证，手动仅少量兜底；识别服务不可用的人工模式不代表核心功能验收通过。
+
+## 9. v0.4实施细节
+
+按[LAB_AUTOMATION](LAB_AUTOMATION.md)分开文字/表格结构/实例/比较并提前验证识别环境，按[EXECUTION_CONTRACTS](EXECUTION_CONTRACTS.md)共享输出和最低输入，按[VALIDATION_AND_RELEASE](VALIDATION_AND_RELEASE.md)执行实际provider/独立样本评估。检验实际源值和EDC独立提取，不能用EDC修正源读值后再声称一致。

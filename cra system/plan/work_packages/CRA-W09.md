@@ -28,6 +28,7 @@
 | `backend/cra_app/providers/case_analysis.py` | code | 受控分析provider |
 | `web/src/features/safety/AssessmentPanel.tsx` | code | 事实、分析、缺口和问题 |
 | `tests/integration/test_safety.py` | test | 判断维度与及时提醒 |
+| `backend/cra_app/providers/evaluate_cases.py` | code | 实际分析模型与独立预期的评估入口 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -36,6 +37,17 @@
 - 事实、系统候选、CRA核实及医学答复分别保存。
 - 分级、严重性、相关性、预期性、AESI/DLT等分开，缺条件标unknown。
 - 缺数据拒绝后停止相应依赖判断，仍给出已有事实和明确依据；不根据拒绝猜补病史或整体安全。
+- SafetyContext字段按评估维度声明required/optional/unknown；缺AE信息不能写未发生AE，检验一致不能写临床安全。
+
+## 进入条件与交接
+
+阶段：P4；CI profile：CRA-W09
+
+- 进入：自动比较结果、规则依据与已有安全上下文可用；缺项允许明确保留未知。
+- 交接：按项目标准区分医学维度的候选分析、具体问题及必要及时线索，不自动作最终医学结论。
+
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+
 
 ## 实现步骤
 
@@ -66,6 +78,12 @@ python3 -m unittest discover -s tests -v
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_safety.py
+```
+
+- [to_implement] 实际分析模型的事实/来源/条件与答复边界评估
+
+```bash
+uv run --frozen python -m cra_app.providers.evaluate_cases --dataset tests/fixtures/manifest.json
 ```
 
 ## 完成标准

@@ -35,6 +35,16 @@
 - 没有部署账户、凭证或授权时该步骤列阻塞，不能假装生产验证完成。
 - 实际环境证据与W13离线汇总分别记录；未满足核心自动用途条件不启动或宣称完整授权试用。
 
+## 进入条件与交接
+
+阶段：P7；CI profile：CRA-W15
+
+- 进入：W13工程验收已汇总，实际服务和资料范围获授权；试用范围要求的provider证据有效。
+- 交接：受控环境、恢复演练、实际试用、总时间和反馈及能力暂停恢复记录。
+
+技术输入：[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)
+
+
 ## 实现步骤
 
 1. 核对获准账户、身份、数据库、文件、模型与资料范围，密钥使用安全环境管理。

@@ -41,6 +41,16 @@
 - ScopeContext来自可信身份，读取和写入均必须携带授权范围。
 - 写命令有expected_revision及Idempotency-Key；业务写入与AuditEvent同一事务。
 
+## 进入条件与交接
+
+阶段：P1；CI profile：CRA-W01
+
+- 进入：W00已有证据，完成声明使用新的任务专属CI门槛。
+- 交接：数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。
+
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+
+
 ## 实现步骤
 
 1. 建立cra_app包和uv项目，锁定Python及依赖；保留cra_core示例和已有反例。
@@ -48,6 +58,7 @@
 3. 实现跨研究/中心约束及读取前鉴权；若用RLS，验证实际应用角色和表拥有者例外。
 4. 实现旧revision冲突、幂等重放、不同输入复用同键的冲突以及失败回滚。
 5. 在专属CI加入临时PostgreSQL和迁移/集成检查；真实数据库检查不能由SQLite代替。
+6. 按plan/implementation.json建立cra-w01专属CI job与migrate/test步骤。实际通过后生成绑定源码/规范指纹和GitHub run的completion_evidence，不能用自报文字完成任务。
 
 ## 验证命令
 

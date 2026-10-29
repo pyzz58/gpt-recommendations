@@ -1,8 +1,12 @@
 # CRA System
 
-技术执行基线 v0.3 · 2026-10-29 · 来源：Notion v0.14、GitHub指示及[用户八点澄清](theory/DECISIONS_20261029.md)。
+技术执行基线 v0.4 · 2026-10-29 · 来源：Notion v0.14、GitHub指示及[用户八点澄清](theory/DECISIONS_20261029.md)。
 
 本系统帮助CRA把项目要求、实际资料、监查问题和后续报告连起来。工作主线是：上次遗留问题 → 按模板选几项形成访前信 → 到中心核实整改及其正确性 → 逐受试者监查 → 报告 → 下次继续追踪。
+
+## 完整技术实施入口
+
+先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。当前实际编程仍从W01开始。
 
 ## 当前交付和实际状态
 
@@ -12,7 +16,7 @@
 
 首轮工程检查已在GitHub云端通过：22项单元测试、同步检查及合成流程示例。详见[验证记录](validation/BASELINE_STATUS.md)。这仅完成CRA-W00，不代表下列临床功能已实现。
 
-最新技术复核：[2026-10-29审查报告](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)。总体架构保留，已登记10项开放问题及修订/关闭标准；含云端复现的任务完成检查缺口。W01底座可推进，相关业务设计和完成声明需参考审查结果。[本轮澄清及设计响应](audit/USER_CLARIFICATION_RESPONSE_20261029.md)已将用户决定同步到对应区域；审查项未因改完文档而冒称实现或验证完成。
+历史v0.2技术复核：[2026-10-29审查报告](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)。总体架构保留，已登记10项开放问题及修订/关闭标准；含云端复现的任务完成检查缺口。最新[v0.4复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)补齐执行契约、自动检验路径、验证和源码绑定完成门槛；W01底座可推进，性能与真实用途证据仍待实现。[本轮澄清及设计响应](audit/USER_CLARIFICATION_RESPONSE_20261029.md)已将用户决定同步到对应区域；审查项未因改完文档而冒称实现或验证完成。
 
 ## 从哪里看
 

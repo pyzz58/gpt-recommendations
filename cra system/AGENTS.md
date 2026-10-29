@@ -39,3 +39,11 @@
 先读CODEX_START_HERE.md，再用python3 tools/next_task.py定位当前项，并读取对应plan/work_packages任务卡。默认V1A按顺序推进，阻塞或进行中的当前项不能自动跳过；支持格式自动读取在V1A/W08，复杂OCR增强和实际部署单独选路线。用户明确只要设计/审阅时遵守该范围，进入编程后交付实际代码，不用反复增加计划替代实现。
 
 plan/tasks.json是任务执行规范源，任务卡为生成视图。当前目标文件可以尚不存在；标verified前，目标产物必须实际存在、待实现命令已可运行、前置已完成，并保存实际证据。路径或接口合理调整后同步源清单和契约，不留第二份过时说明。只有基础工具、静态mock页面或文档不算业务功能完成。
+
+## v0.4实施和证据
+
+plan/implementation.json与tasks.json共同生成plan/IMPLEMENTATION_PATH.md及任务卡。每项必须读design_refs、entry_conditions和handoff_outputs；同一代码变更更新对应迁移、契约、消费者和验证。W03提早探测识别依赖/资源；W04/W08/W09的实际provider评估不能用静态mock替代。
+
+W01以后verified除实际交付还需completion_evidence绑定源码/规范、tested_commit、run_id和该任务专属CI job/步骤，CI从GitHub核实。生成器不执行JSON中的任意命令。已验证源码被修改时先标受影响任务/已验证依赖链为in_progress并留completion_history，实际重新测试后再恢复verified，避免旧证据阻断新测试循环。W00仅保留历史bootstrap特例。
+
+本轮设计请求只交设计及工程门槛修补；W01以后仍planned。下一轮实际编程从W01开始，不重复改写整套方案替代代码。临床使用只需要既定操作，不把工程证据流程变成CRA确认整改或PD上报的额外门槛。

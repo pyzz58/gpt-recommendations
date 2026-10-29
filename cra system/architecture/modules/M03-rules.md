@@ -1,6 +1,6 @@
 # M03 适用规则与分层list
 
-版本：2；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/rules/`。
+版本：3；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/rules/`。
 
 ## 对应理论和任务
 
@@ -37,3 +37,7 @@
 list含前提、触发、分支、例外、后续动作与完成方式，条件C→B、D→F可展开。有限AST和三值逻辑见WORKFLOW_CONTRACTS；真实引用不足以证明条件完整。手动VersionActivation按事件日解析，起始日含当天，中心范围和更正历史保留。用户可在使用中补充分支，不编造来源未提供的可能性。
 
 详细输入、状态、边界与开发阶段按[WORKFLOW_CONTRACTS](../WORKFLOW_CONTRACTS.md)。本节与旧实现方法不一致时采用本节；设计更新不等于功能已经完成。
+
+## v0.4技术实施补齐
+
+共性规则包、版本启用、完整分支和三值条件、实际提取评估。 实现契约见[EXECUTION_CONTRACTS.md](../EXECUTION_CONTRACTS.md)，当前任务的进入条件/交接见[完整实施路径](../../plan/IMPLEMENTATION_PATH.md)。理论和任务编号保持；本轮文档不是业务功能完成证据。

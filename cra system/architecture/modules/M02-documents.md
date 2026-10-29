@@ -1,6 +1,6 @@
 # M02 项目资料与原文定位
 
-版本：2；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/documents/`。
+版本：3；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/documents/`。
 
 ## 对应理论和任务
 
@@ -37,3 +37,7 @@
 允许记录用户手动开始使用信息并交M03管理区间，不能以上传日替代。上次报告/track作为W06遗留整理的来源；ISF/TMF可直接展示原目录作对照，不要求先全量结构化。
 
 详细输入、状态、边界与开发阶段按[WORKFLOW_CONTRACTS](../WORKFLOW_CONTRACTS.md)。本节与旧实现方法不一致时采用本节；设计更新不等于功能已经完成。
+
+## v0.4技术实施补齐
+
+来源覆盖、私有文件与异步job、历史文件及原目录接口。 实现契约见[EXECUTION_CONTRACTS.md](../EXECUTION_CONTRACTS.md)，当前任务的进入条件/交接见[完整实施路径](../../plan/IMPLEMENTATION_PATH.md)。理论和任务编号保持；本轮文档不是业务功能完成证据。

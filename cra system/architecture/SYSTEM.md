@@ -1,12 +1,12 @@
 # 系统架构与第一版实现路线
 
-状态：技术方案 v0.3；模块边界已设计，尚未实现完整应用。约束来源为[业务基线](../theory/BASELINE.md)和固定理论编号。
+状态：技术方案 v0.4；模块边界已设计，尚未实现完整应用。约束来源为[业务基线](../theory/BASELINE.md)和固定理论编号。
 
 逐项代码实施、依赖锁、目标文件和Codex执行约定见[IMPLEMENTATION_ROUTE](IMPLEMENTATION_ROUTE.md)及[任务卡](../plan/CODEX_TASKS.md)。
 
 ## 1. 推荐形态
 
-采用**模块化单体**：一套浏览器工作台、一套后端业务应用、同一代码包的异步worker、PostgreSQL和私有文件存储。14个模块是代码和职责边界，不是14台服务器或14个独立Agent。明确依赖和接口后，局部需求变化可以替换模块实现，避免过早引入分布式服务。
+采用**模块化单体**：一套浏览器工作台、一套后端业务应用、同一代码包的编排worker（OCR依赖不兼容时单独隔离provider环境）、PostgreSQL和私有文件存储。14个模块是代码和职责边界，不是14台服务器或14个独立Agent。明确依赖和接口后，局部需求变化可以替换模块实现，避免过早引入分布式服务。
 
 ```mermaid
 flowchart TD
@@ -32,7 +32,7 @@ M13是仓库中的理论同步工具，不属于临床运行时服务。M14是�
 | 业务核心 | 普通Python服务及类型对象 | 规则、事实、问题状态与模型分离；首批核心示例已放backend/cra_core |
 | 数据 | PostgreSQL 18 + SQLAlchemy 2.x + Alembic | 事务、版本、结构化关联、JSON字段和迁移；精确兼容版本在W01/W02验证并锁定 |
 | 文件 | 私有S3兼容对象存储接口 | DB保存版本和定位，文件保存原件及图像区域；云供应商待获准环境确定 |
-| 作业 | PostgreSQL持久化job表 + 同镜像worker | 作业幂等、租约和重试可追踪；V1不额外依赖Redis或复杂调度平台 |
+| 作业 | PostgreSQL持久化job表 + 应用编排worker | 作业幂等、租约和重试可追踪；V1不额外依赖Redis或复杂调度平台 |
 | 原文解析 | python-docx/受控OOXML解析、pdfplumber、openpyxl | 分别适配DOCX、文字PDF和Excel；扫描内容另接OCR，不伪装文本PDF可直接读 |
 | 图像 | 独立OCR接口，PaddleOCR作为优先评估候选 | 仅限检验报告；须以真实格式或获准样本验证，未选定部署和性能 |
 | 模型 | 服务端Provider接口 + 结构化输出校验 | 不绑定单一供应商；未配置时显式人工模式，业务数据不依赖供应商会话 |
@@ -72,3 +72,7 @@ V1A仍需资料候选提取、分层list、患者上下文、问题、检验比�
 ## 7. 本轮工作流契约
 
 [WORKFLOW_CONTRACTS](WORKFLOW_CONTRACTS.md)定义用户确认整改、缺口跳过、条件分支、版本启用日、简单目录及自动检验主线。模块与任务依此同步，历史v0.2审查保留为当时证据。
+
+## 8. 完整实施入口v0.4
+
+[EXECUTION_CONTRACTS](EXECUTION_CONTRACTS.md)细化共享输出和最低输入，[LAB_AUTOMATION](LAB_AUTOMATION.md)细化从文件到比较，[VALIDATION_AND_RELEASE](VALIDATION_AND_RELEASE.md)区分工程/provider/授权试用。[IMPLEMENTATION_PATH](../plan/IMPLEMENTATION_PATH.md)由任务源生成，新增进入条件、交接和任务专属CI。W03先探测识别运行环境，不把最低Python版本说明当完整依赖兼容证明。

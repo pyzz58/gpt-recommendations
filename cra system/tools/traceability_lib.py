@@ -7,6 +7,7 @@ import re
 import subprocess
 from pathlib import Path
 from execution_plan import render_execution_views, validate_execution
+from implementation_plan import render_implementation, validate_implementation
 
 VIEW_PATHS = ("theory/REQUIREMENTS.md", "traceability/INDEX.md", "plan/WORK_PLAN.md", "architecture/QUALITY.md")
 
@@ -76,6 +77,7 @@ def render_views(root: Path) -> dict[str, str]:
         parts.append(f'| {s["id"]} {s["title"]} | {"、".join(s["requirement_ids"])} | {s["expected"]} | {s["status"]} |')
     views = dict(zip(VIEW_PATHS, [requirement_view, index_view, plan_view, "\n".join(parts) + "\n"]))
     views.update(render_execution_views(tasks, module_map))
+    views['plan/IMPLEMENTATION_PATH.md'] = render_implementation(root, tasks)
     return views
 
 
@@ -127,6 +129,7 @@ def validate(root: Path, base_ref: str | None = None, check_views: bool = True) 
     tmap = unique_map(tasks, "task", errors)
     smap = unique_map(scenarios, "scenario", errors)
     errors.extend(validate_execution(root, tasks, mmap, rmap, smap))
+    errors.extend(validate_implementation(root, tasks))
     expected = {(r["id"], mid) for r in requirements for mid in r["modules"]}
     seen = set()
     for b in bindings:

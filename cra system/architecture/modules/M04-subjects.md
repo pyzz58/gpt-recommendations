@@ -1,6 +1,6 @@
 # M04 受试者事实与访视时间线
 
-版本：2；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/subjects/`。
+版本：3；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/subjects/`。
 
 ## 对应理论和任务
 
@@ -37,3 +37,7 @@
 缺关键事实显示所影响路径和可继续事项，用户可补充或拒绝；拒绝后CheckDecision记录对象/事项/期间范围，停止对应判断与追问，不猜日期，不阻断其他核查。用户可恢复；版本按事件时间解析。
 
 详细输入、状态、边界与开发阶段按[WORKFLOW_CONTRACTS](../WORKFLOW_CONTRACTS.md)。本节与旧实现方法不一致时采用本节；设计更新不等于功能已经完成。
+
+## v0.4技术实施补齐
+
+ContextImport/所需事实、日期精度、局部拒绝与恢复。 实现契约见[EXECUTION_CONTRACTS.md](../EXECUTION_CONTRACTS.md)，当前任务的进入条件/交接见[完整实施路径](../../plan/IMPLEMENTATION_PATH.md)。理论和任务编号保持；本轮文档不是业务功能完成证据。

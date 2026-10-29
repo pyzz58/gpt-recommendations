@@ -1,8 +1,11 @@
 # Codex开发入口
 
-本项目目录：`cra system`。技术执行版 v0.3，2026-10-29。
+本项目目录：`cra system`。技术执行版 v0.4，2026-10-29。
 
 ## 最新技术复核
+
+先读[第一性原理v0.4结论](audit/FIRST_PRINCIPLES_REVIEW_V04.md)、[完整实施路径](plan/IMPLEMENTATION_PATH.md)和当前任务的design_refs/entry_conditions/handoff_outputs。新增工程门槛已写入代码；首次真实W01正向交付及临床/节时证据尚待完成。原业务要求和任务编号保持。
+
 
 编码和宣称完成前阅读[audit/TECHNICAL_ROUTE_REVIEW_20261029.md](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)及[开放项](audit/findings.json)。本次八点澄清已修改14条理论及相应设计/任务，见[最新决定](theory/DECISIONS_20261029.md)；没有把业务任务标完成。W01基础实现可以推进；任务完成证据、历史导入、全输出约束和阶段契约等缺口须在相应功能交付前修订，不能因为基础CI绿色就忽略。
 
@@ -45,6 +48,10 @@ python3 tools/next_task.py
 
 先确认W00的已有证据，再完成W01的数据、权限、幂等、版本和审计事务。
 目标文件、接口、测试及完成标准以该任务卡为准。
+按plan/implementation.json的CRA-W01 profile在专属工作流真正建立cra-w01 job、
+migrate/test步骤，使用临时PostgreSQL执行。不要把profile清单写成已经执行。
+源码提交通过实际CI后，将tested_commit/run_id/subject_digest等结构证据记入
+completion_evidence，再做状态提交；自报文字、只有baseline或被跳过的job不能完成任务。
 未实现的命令先创建并验证，不得宣称已经运行。
 不要提前做OCR、报告界面或后续业务，不重新用计划代替编码。
 
@@ -60,7 +67,7 @@ python3 tools/next_task.py
 
 实际代码/迁移/接口及必要页面；有意义的单元与集成验证；可复现合成结果；真实执行证据；能力和阻塞说明。计划文件与代码路径有偏差时同步修订，不为维持旧文件名而牺牲合理实现。
 
-任务中的available是当前可运行入口；to_implement是本任务需要先实现的命令。目标文件清单是计划，verified时必须实际存在。不能用修改状态、增加文档或大量mock测试证明未完成功能。
+任务中的available是当前可运行入口；to_implement是本任务需要先实现的命令。目标文件清单是计划，verified时必须实际存在，且W01以后通过tools/task_evidence.py核对绑定源码和任务专属GitHub运行的结构证据。不能用修改状态、增加文档或大量mock测试证明未完成功能。
 
 ## 理论变更
 

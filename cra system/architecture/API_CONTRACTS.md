@@ -1,6 +1,6 @@
 # 接口与模块约定
 
-状态：设计草案，后续由FastAPI生成并校验OpenAPI。接口路径在实现时可细化，但固定理论、模块和任务编号不变。
+状态：v0.4设计契约，后续由FastAPI生成并校验OpenAPI。接口路径在实现时可细化，但固定理论、模块和任务编号不变。
 
 ## 1. 共同约定
 
@@ -61,3 +61,7 @@ ReportSnapshot：template_version、fact_revisions、rule_revisions、issue_revi
 ApplicableRule补充preconditions、trigger、branches、follow_up、completion、required_facts；branch含condition、target/actions和source_refs。规则三值逻辑、日期边界及分析型条款见WORKFLOW_CONTRACTS.md。
 
 所有结果保留使用的范围、资料/规则版本、source_refs、事实/候选/用户确认类别及unknowns。用户确认整改是实际用户动作，不能因未提供可选材料被拒绝。自动比较候选与人工核实分开；用户跳过的相关路径不能继续生成正常或异常判定。共享全输出契约的完整工程验证仍对应AUD-003开放项。
+
+## 6. v0.4执行契约
+
+共同回复采用[EXECUTION_CONTRACTS](EXECUTION_CONTRACTS.md)的OutputEnvelope，按用途提供政策版本、事实/候选/用户确认分类与unknowns/not_checked；临床/时间/模板最低输入按同文定义。CommonPolicySet使用实际原文而非模型记忆。自动检验端口支持范围、值类型和实测指标见[LAB_AUTOMATION](LAB_AUTOMATION.md)。

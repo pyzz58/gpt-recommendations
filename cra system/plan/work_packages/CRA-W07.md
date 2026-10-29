@@ -34,6 +34,17 @@
 
 - EDCSnapshot保留导出时间/范围、表单、原始行、映射版本和重复实例。
 - 本次未见返回not_seen_in_export，不直接判未录入。
+- ContextImport和检验Excel不混作一个必填大表；允许导入已授权结构化锚点/既有事实，保持来源与精度。
+
+## 进入条件与交接
+
+阶段：P3；CI profile：CRA-W07
+
+- 进入：患者映射及快照范围契约可用。
+- 交接：真实Excel输入、可复用列映射和不可变标准检验快照。
+
+技术输入：[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)
+
 
 ## 实现步骤
 

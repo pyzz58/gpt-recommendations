@@ -41,6 +41,16 @@
 - confirm-corrected按明确action_ids记录user_confirmation及服务器actor/time；不要求CRC回复、附件或说明，不能冒称AI独立验证。
 - confirm-reported只完成pd_reporting，其他待办各自保留；完整目录M10不是W06前置。
 
+## 进入条件与交接
+
+阶段：P3；CI profile：CRA-W06
+
+- 进入：事实、来源与规则接口可用，完整M10非前置。
+- 交接：历史文件整理→遗留提醒/展开→点击确认→下次接续，正式Query与草稿区分。
+
+技术输入：[WORKFLOW_CONTRACTS.md](../../architecture/WORKFLOW_CONTRACTS.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)
+
+
 ## 实现步骤
 
 1. 把cra_core示例约束吸收进持久服务，原有反例保留，不直接把示例当生产接口。

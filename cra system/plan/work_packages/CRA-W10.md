@@ -37,6 +37,16 @@
 - 交接引用原Issue；关闭记录项目组意见，系统不替其批准。
 - reference_only是可用基础对照模式，未识别目录范围不称全部核查合格；补件由用户点击确认即可。
 
+## 进入条件与交接
+
+阶段：P4；CI profile：CRA-W10
+
+- 进入：原目录文件与M06问题服务可用。
+- 交接：原目录直接对照及简单缺件状态，启动/关闭/交接复用已有资料和问题。
+
+技术输入：[WORKFLOW_CONTRACTS.md](../../architecture/WORKFLOW_CONTRACTS.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)
+
+
 ## 实现步骤
 
 1. 直接复用M02上传的原目录，提供reference_only对照和可选页/行/用户标注及简单状态；可识别部分再建立条目，不要求重录整本。

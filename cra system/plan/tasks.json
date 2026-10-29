@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "tasks": [
     {
       "id": "CRA-W00",
@@ -74,7 +74,19 @@
           "availability": "available",
           "purpose": "现有基础与反例检查"
         }
-      ]
+      ],
+      "phase_id": "P0",
+      "design_refs": [
+        "tools/task_evidence.py",
+        "architecture/VALIDATION_AND_RELEASE.md"
+      ],
+      "entry_conditions": [
+        "原工程基线有实际云端证据。"
+      ],
+      "handoff_outputs": [
+        "同步工具和完成证据门槛；不代表业务完成。"
+      ],
+      "verification_profile": "CRA-W00"
     },
     {
       "id": "CRA-W01",
@@ -167,7 +179,8 @@
         "只迁移当前所需研究、中心、授权、审计和幂等表，不提前为所有模块建立空表。",
         "实现跨研究/中心约束及读取前鉴权；若用RLS，验证实际应用角色和表拥有者例外。",
         "实现旧revision冲突、幂等重放、不同输入复用同键的冲突以及失败回滚。",
-        "在专属CI加入临时PostgreSQL和迁移/集成检查；真实数据库检查不能由SQLite代替。"
+        "在专属CI加入临时PostgreSQL和迁移/集成检查；真实数据库检查不能由SQLite代替。",
+        "按plan/implementation.json建立cra-w01专属CI job与migrate/test步骤。实际通过后生成绑定源码/规范指纹和GitHub run的completion_evidence，不能用自报文字完成任务。"
       ],
       "done_when": [
         "两中心合成数据不能跨范围读取。",
@@ -207,7 +220,19 @@
           "purpose": "权限、事务、幂等和并发",
           "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P1",
+      "design_refs": [
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/VALIDATION_AND_RELEASE.md"
+      ],
+      "entry_conditions": [
+        "W00已有证据，完成声明使用新的任务专属CI门槛。"
+      ],
+      "handoff_outputs": [
+        "数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。"
+      ],
+      "verification_profile": "CRA-W01"
     },
     {
       "id": "CRA-W02",
@@ -289,11 +314,17 @@
           "path": "web/src/api/generated.ts",
           "kind": "code",
           "purpose": "从契约生成的前端类型"
+        },
+        {
+          "path": "backend/cra_app/shared/output_contract.py",
+          "kind": "code",
+          "purpose": "共用输出范围、依据版本和事实/候选/用户确认类型"
         }
       ],
       "contracts": [
         "GET /api/v1/me/scopes以及/health/live、/health/ready、/capabilities。",
-        "生产模式不信任客户端自报的tenant、操作者或模拟身份头。"
+        "生产模式不信任客户端自报的tenant、操作者或模拟身份头。",
+        "OutputEnvelope按用途承载scope、purpose、policy_versions、claims、source_refs、unknowns/conflicts和输出状态，不能把不同用途共用一个医疗结论字段。"
       ],
       "steps": [
         "建立API统一错误和OpenAPI，把W01授权传入请求。",
@@ -352,7 +383,18 @@
           "purpose": "接口契约与前端类型一致",
           "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P1",
+      "design_refs": [
+        "architecture/EXECUTION_CONTRACTS.md"
+      ],
+      "entry_conditions": [
+        "W01迁移与隔离测试实际通过。"
+      ],
+      "handoff_outputs": [
+        "可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。"
+      ],
+      "verification_profile": "CRA-W02"
     },
     {
       "id": "CRA-W03",
@@ -427,6 +469,21 @@
           "path": "tests/integration/test_documents.py",
           "kind": "test",
           "purpose": "解析、覆盖、版本和作业"
+        },
+        {
+          "path": "validation/PROVIDER_FEASIBILITY.md",
+          "kind": "document",
+          "purpose": "OCR/模型适配安装与资源探测、授权范围和待验证项"
+        },
+        {
+          "path": "tests/fixtures/manifest.json",
+          "kind": "config",
+          "purpose": "合成资料及开发/独立评估分组和正确预期定位"
+        },
+        {
+          "path": "backend/cra_app/providers/probe.py",
+          "kind": "code",
+          "purpose": "仅合成资料的依赖/资源与候选输出探测入口"
         }
       ],
       "contracts": [
@@ -440,7 +497,9 @@
         "遍历DOCX的w:sdt、合并单元格、脚注和字符格式；PDF保留坐标，失败页如实显示。",
         "实现有限重试、幂等、资源预算及worker重新鉴权，不执行宏或文档内指令。",
         "界面展示版本、缺口和可回查原文，供规则提取复用。",
-        "保留历史监查报告/track的来源定位，供W06整理遗留；目录无需先全量结构化也能查看。"
+        "保留历史监查报告/track的来源定位，供W06整理遗留；目录无需先全量结构化也能查看。",
+        "及早用纯合成检验文件探测OCR的Python/运行库/CPU内存与定位输出，不在此实现完整核对；依赖冲突时隔离OCR适配运行环境，保留原业务接口。",
+        "建立docs/Excel/图片/模板的合成样本清单与预期，保留独立评估分组；不得把开发结果当独立验证。"
       ],
       "done_when": [
         "脚注和加粗等有意义格式不丢失。",
@@ -470,8 +529,25 @@
           "command": "uv run --frozen pytest -q tests/integration/test_documents.py",
           "purpose": "合成文档及作业",
           "availability": "to_implement"
+        },
+        {
+          "command": "uv run --frozen python -m cra_app.providers.probe --synthetic",
+          "purpose": "可安装、可运行的识别候选探测，不代表全格式准确性",
+          "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P2",
+      "design_refs": [
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/LAB_AUTOMATION.md"
+      ],
+      "entry_conditions": [
+        "API、私有文件接口和持久事务可用。"
+      ],
+      "handoff_outputs": [
+        "文件/锚点/作业接口，合成资料集和OCR依赖/资源可行性探测记录。"
+      ],
+      "verification_profile": "CRA-W03"
     },
     {
       "id": "CRA-W04",
@@ -545,13 +621,30 @@
           "path": "tests/integration/test_rules.py",
           "kind": "test",
           "purpose": "条件、适用性和变更"
+        },
+        {
+          "path": "backend/cra_app/rules/version_activation.py",
+          "kind": "code",
+          "purpose": "手动开始使用日及按事件时间选择版本"
+        },
+        {
+          "path": "backend/cra_app/providers/evaluate_rules.py",
+          "kind": "code",
+          "purpose": "实际提取器与独立条件预期的评估入口"
+        },
+        {
+          "path": "backend/cra_app/rules/common_policy.py",
+          "kind": "code",
+          "purpose": "共性规则包、官方效力与项目/中心启用日分别解析"
         }
       ],
       "contracts": [
         "ApplicableRule含summary、conditions、exceptions、children、source_refs、applicability、unknowns。",
         "条件计算返回true/false/unknown，unknown不当作正常；表达式不执行eval。",
         "RuleNode含preconditions/trigger/branches/exceptions/follow_up/completion/required_facts；有限AST及三值逻辑按WORKFLOW_CONTRACTS实现。",
-        "VersionActivation由用户输入开始使用日和范围，按事件时间解析，不用上传日或报告生成时间替代。"
+        "VersionActivation由用户输入开始使用日和范围，按事件时间解析，不用上传日或报告生成时间替代。",
+        "所有输出使用OutputEnvelope；条件完整性有独立预期，提取模型在开发验证环境完成实际调用，不能只用人工候选验收自动提取。",
+        "CommonPolicySet含共性原文/版本/法域/效力与取得状态，按适用范围装载；手动项目/中心启用日不覆写官方效力或批准条件。"
       ],
       "steps": [
         "保存关键摘要、完整条件/例外、子项和原文，全部绑定RuleVersion。",
@@ -595,8 +688,26 @@
           "command": "uv run --frozen pytest -q tests/integration/test_rules.py",
           "purpose": "脚注、边界、例外和更新关系",
           "availability": "to_implement"
+        },
+        {
+          "command": "uv run --frozen python -m cra_app.providers.evaluate_rules --dataset tests/fixtures/manifest.json",
+          "purpose": "实际规则提取与独立条件预期比较",
+          "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P2",
+      "design_refs": [
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/VALIDATION_AND_RELEASE.md"
+      ],
+      "entry_conditions": [
+        "已解析原文、处理覆盖及授权提取端口可用。"
+      ],
+      "handoff_outputs": [
+        "候选规则树、用户修正、版本启用解析及独立条件反例结果。"
+      ],
+      "verification_profile": "CRA-W04"
     },
     {
       "id": "CRA-W05",
@@ -651,6 +762,11 @@
           "path": "tests/integration/test_subjects.py",
           "kind": "test",
           "purpose": "日期精度及分类断点"
+        },
+        {
+          "path": "backend/cra_app/subjects/context_import.py",
+          "kind": "code",
+          "purpose": "患者锚点与允许结构化上下文导入"
         }
       ],
       "contracts": [
@@ -697,7 +813,19 @@
           "purpose": "锚点、日期缺失、修订及断点",
           "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P2",
+      "design_refs": [
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/WORKFLOW_CONTRACTS.md"
+      ],
+      "entry_conditions": [
+        "规则版本和三值逻辑可用，准备患者上下文合成表。"
+      ],
+      "handoff_outputs": [
+        "患者/锚点/分类断点及缺口拒绝/恢复契约，日期精度和来源保留。"
+      ],
+      "verification_profile": "CRA-W05"
     },
     {
       "id": "CRA-W06",
@@ -845,7 +973,19 @@
           "availability": "to_implement",
           "purpose": "遗留从文件接续，不靠预置JSON"
         }
-      ]
+      ],
+      "phase_id": "P3",
+      "design_refs": [
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/EXECUTION_CONTRACTS.md"
+      ],
+      "entry_conditions": [
+        "事实、来源与规则接口可用，完整M10非前置。"
+      ],
+      "handoff_outputs": [
+        "历史文件整理→遗留提醒/展开→点击确认→下次接续，正式Query与草稿区分。"
+      ],
+      "verification_profile": "CRA-W06"
     },
     {
       "id": "CRA-W07",
@@ -901,7 +1041,8 @@
       ],
       "contracts": [
         "EDCSnapshot保留导出时间/范围、表单、原始行、映射版本和重复实例。",
-        "本次未见返回not_seen_in_export，不直接判未录入。"
+        "本次未见返回not_seen_in_export，不直接判未录入。",
+        "ContextImport和检验Excel不混作一个必填大表；允许导入已授权结构化锚点/既有事实，保持来源与精度。"
       ],
       "steps": [
         "预览sheet/row/cell，分别保存原始字符串、公式及缓存，不执行宏。",
@@ -937,7 +1078,19 @@
           "purpose": "映射、范围、复导和公式",
           "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P3",
+      "design_refs": [
+        "architecture/LAB_AUTOMATION.md",
+        "architecture/EXECUTION_CONTRACTS.md"
+      ],
+      "entry_conditions": [
+        "患者映射及快照范围契约可用。"
+      ],
+      "handoff_outputs": [
+        "真实Excel输入、可复用列映射和不可变标准检验快照。"
+      ],
+      "verification_profile": "CRA-W07"
     },
     {
       "id": "CRA-W08",
@@ -1024,6 +1177,11 @@
           "path": "validation/LAB_AUTOMATION_SCOPE.md",
           "kind": "document",
           "purpose": "支持格式、实际provider证据、人工负担与限制"
+        },
+        {
+          "path": "backend/cra_app/providers/evaluate_labs.py",
+          "kind": "code",
+          "purpose": "实际文件识别/匹配/比较和人工负担评估入口"
         }
       ],
       "contracts": [
@@ -1082,8 +1240,26 @@
           "command": "uv run --frozen pytest -q tests/integration/test_recognition.py",
           "availability": "to_implement",
           "purpose": "检验文件实际自动读取与原核对管道"
+        },
+        {
+          "command": "uv run --frozen python -m cra_app.providers.evaluate_labs --dataset tests/fixtures/manifest.json",
+          "purpose": "实际识别到自动核对的独立样本评估",
+          "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P3",
+      "design_refs": [
+        "architecture/LAB_AUTOMATION.md",
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/VALIDATION_AND_RELEASE.md"
+      ],
+      "entry_conditions": [
+        "W06/W07通过；W03探测已给出可安装、可运行的识别候选，支持格式和代表性评估输入已确定。"
+      ],
+      "handoff_outputs": [
+        "自动源文件读取→匹配→比较→差异/未知与待办、实际provider证据、人工负担和支持范围。"
+      ],
+      "verification_profile": "CRA-W08"
     },
     {
       "id": "CRA-W09",
@@ -1148,12 +1324,18 @@
           "path": "tests/integration/test_safety.py",
           "kind": "test",
           "purpose": "判断维度与及时提醒"
+        },
+        {
+          "path": "backend/cra_app/providers/evaluate_cases.py",
+          "kind": "code",
+          "purpose": "实际分析模型与独立预期的评估入口"
         }
       ],
       "contracts": [
         "事实、系统候选、CRA核实及医学答复分别保存。",
         "分级、严重性、相关性、预期性、AESI/DLT等分开，缺条件标unknown。",
-        "缺数据拒绝后停止相应依赖判断，仍给出已有事实和明确依据；不根据拒绝猜补病史或整体安全。"
+        "缺数据拒绝后停止相应依赖判断，仍给出已有事实和明确依据；不根据拒绝猜补病史或整体安全。",
+        "SafetyContext字段按评估维度声明required/optional/unknown；缺AE信息不能写未发生AE，检验一致不能写临床安全。"
       ],
       "steps": [
         "先程序计算可确定条件，再由受限模型解释事实及合理候选原因。",
@@ -1192,8 +1374,25 @@
           "command": "uv run --frozen pytest -q tests/integration/test_safety.py",
           "purpose": "候选与确认、缺资料、假引用和提醒",
           "availability": "to_implement"
+        },
+        {
+          "command": "uv run --frozen python -m cra_app.providers.evaluate_cases --dataset tests/fixtures/manifest.json",
+          "purpose": "实际分析模型的事实/来源/条件与答复边界评估",
+          "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P4",
+      "design_refs": [
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/VALIDATION_AND_RELEASE.md"
+      ],
+      "entry_conditions": [
+        "自动比较结果、规则依据与已有安全上下文可用；缺项允许明确保留未知。"
+      ],
+      "handoff_outputs": [
+        "按项目标准区分医学维度的候选分析、具体问题及必要及时线索，不自动作最终医学结论。"
+      ],
+      "verification_profile": "CRA-W09"
     },
     {
       "id": "CRA-W10",
@@ -1298,7 +1497,19 @@
           "purpose": "目录新增、补齐和阶段复用",
           "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P4",
+      "design_refs": [
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/EXECUTION_CONTRACTS.md"
+      ],
+      "entry_conditions": [
+        "原目录文件与M06问题服务可用。"
+      ],
+      "handoff_outputs": [
+        "原目录直接对照及简单缺件状态，启动/关闭/交接复用已有资料和问题。"
+      ],
+      "verification_profile": "CRA-W10"
     },
     {
       "id": "CRA-W11",
@@ -1361,12 +1572,18 @@
           "path": "tests/integration/test_reports.py",
           "kind": "test",
           "purpose": "范围、文件和历史快照"
+        },
+        {
+          "path": "backend/cra_app/reports/template_mapping.py",
+          "kind": "code",
+          "purpose": "受支持DOCX/XLSX字段与循环区映射，不承诺任意模板自动完美还原"
         }
       ],
       "contracts": [
         "生成材料引用coverage以及事实/规则/问题版本；实际发送与签发独立。",
         "信件选几项不修改问题清单全集；签发后保存不可变内容与引用版本。",
-        "报告区分输出适用版本与历史事项使用依据；CRA确认写作用户确认，不写AI独立核验。跳过范围不润色为正常。"
+        "报告区分输出适用版本与历史事项使用依据；CRA确认写作用户确认，不写AI独立核验。跳过范围不润色为正常。",
+        "TemplateMapping标识支持字段/重复问题区/来源附注/必填未知；草稿可保留明确缺口，不能静默填无异常。"
       ],
       "steps": [
         "使用合成模板建立字段映射，留出替换用户实际模板的入口。",
@@ -1404,7 +1621,19 @@
           "purpose": "模板、快照、覆盖及实际文件",
           "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P4",
+      "design_refs": [
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/VALIDATION_AND_RELEASE.md"
+      ],
+      "entry_conditions": [
+        "问题/覆盖/分析事实接口可用，合成DOCX模板与Excel字段映射明确。"
+      ],
+      "handoff_outputs": [
+        "可打开的模板信件、监查报告、track及不可变快照，多份输出同一事实。"
+      ],
+      "verification_profile": "CRA-W11"
     },
     {
       "id": "CRA-W12",
@@ -1534,7 +1763,19 @@
           "purpose": "持久化和接续",
           "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P5",
+      "design_refs": [
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/VALIDATION_AND_RELEASE.md"
+      ],
+      "entry_conditions": [
+        "既有各模块服务及页面实际可用，完整场景使用真实API和临时PostgreSQL。"
+      ],
+      "handoff_outputs": [
+        "两次监查浏览器流程、刷新/重登/切中心/重试不丢状态，缺口和异常不混同。"
+      ],
+      "verification_profile": "CRA-W12"
     },
     {
       "id": "CRA-W13",
@@ -1586,6 +1827,11 @@
           "path": "validation/USE_CASE_VALIDATION.md",
           "kind": "document",
           "purpose": "按用途风险、独立样本、版本及暂停恢复策略"
+        },
+        {
+          "path": "tools/build_validation_report.py",
+          "kind": "code",
+          "purpose": "合成/获授权证据的去敏汇总，不虚构试用结果"
         }
       ],
       "contracts": [
@@ -1671,8 +1917,25 @@
           "command": "npm --prefix web run test:e2e -- --project=chromium",
           "purpose": "完整流程回归",
           "availability": "to_implement"
+        },
+        {
+          "command": "uv run --frozen python tools/build_validation_report.py --check",
+          "purpose": "逐用途能力/证据/风险和未达标项的汇总检查",
+          "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P5",
+      "design_refs": [
+        "architecture/VALIDATION_AND_RELEASE.md",
+        "architecture/LAB_AUTOMATION.md"
+      ],
+      "entry_conditions": [
+        "W12端到端通过，开发样例与独立评估已分离。"
+      ],
+      "handoff_outputs": [
+        "40场景实证、逐用途能力/风险记录、自动覆盖和总耗时、明确可试用范围与未达标结论。"
+      ],
+      "verification_profile": "CRA-W13"
     },
     {
       "id": "CRA-W14",
@@ -1773,7 +2036,19 @@
           "purpose": "接入后的整体流程",
           "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P6",
+      "design_refs": [
+        "architecture/LAB_AUTOMATION.md",
+        "architecture/VALIDATION_AND_RELEASE.md"
+      ],
+      "entry_conditions": [
+        "W08已有自动读取，当前范围的错误及负担记录可复用。"
+      ],
+      "handoff_outputs": [
+        "复杂格式新增SupportProfile和独立回归；既有业务数据不变。"
+      ],
+      "verification_profile": "CRA-W14"
     },
     {
       "id": "CRA-W15",
@@ -1872,7 +2147,19 @@
           "purpose": "反馈后对应仍完整",
           "availability": "to_implement"
         }
-      ]
+      ],
+      "phase_id": "P7",
+      "design_refs": [
+        "architecture/VALIDATION_AND_RELEASE.md",
+        "architecture/EXECUTION_CONTRACTS.md"
+      ],
+      "entry_conditions": [
+        "W13工程验收已汇总，实际服务和资料范围获授权；试用范围要求的provider证据有效。"
+      ],
+      "handoff_outputs": [
+        "受控环境、恢复演练、实际试用、总时间和反馈及能力暂停恢复记录。"
+      ],
+      "verification_profile": "CRA-W15"
     }
   ]
 }

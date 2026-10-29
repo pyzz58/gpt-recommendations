@@ -47,3 +47,9 @@ Notion v0.14为本轮来源，Git中整理后的条目是后续开发基线。�
 plan/tasks.json同时保存目标文件、步骤、接口、验证命令及完成标准；16份work_packages任务卡和CODEX_TASKS索引由同一渲染器生成并受CI检查。技术细化使用TECH记录，不伪造业务理论修订；真正改变业务含义仍按CRA-R的revision和CR机制处理。
 
 任务完成前允许计划路径不存在，但标verified时必须有实际交付文件、已可执行命令和已完成前置，并保留evidence。此检查不证明证据内容或实现语义一定正确，仍需按任务验收审查。下一项选择器只读计划，默认不跳过阻塞项，不自动启用复杂OCR增强或部署；首版支持格式自动读取属于V1A/W08，不是可跳过的核心功能。
+
+## 7. 完整实施路径及工程证据
+
+v0.4的阶段/里程碑/CI profile来自plan/implementation.json，逐项进入条件、技术输入和交接来自tasks.json，IMPLEMENTATION_PATH与任务卡由脚本生成并受同步检查。技术修订用TECH记录，临床含义不变不提高CRA-R修订号。
+
+源码完成声明与临床能力分开。W01以后结构证据和任务专属GitHub运行由task_evidence校验；源码/依赖/样本或验收变化使证据失效，按VALIDATION_AND_RELEASE先标重新验证、测试源码提交、再提交完成记录。只有状态更新不会产生证据循环。尚未实现的profile/job保持to_implement，不能据此假称功能完成。

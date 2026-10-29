@@ -8,6 +8,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: cra-system-${{ github.ref }}
   cancel-in-progress: true
@@ -36,6 +37,10 @@ jobs:
         env:
           PYTHONPATH: backend
         run: python3 -m cra_core.demo
+      - name: Verify task-specific completion evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/task_evidence.py
       - name: Show next development work package
         run: python3 tools/next_task.py
       - name: Diagnostic architecture review probes (not acceptance)

@@ -32,6 +32,16 @@
 
 - 固定CRA-R、M、CRA-W、CRA-S编号；变更有对应模块及影响记录。
 
+## 进入条件与交接
+
+阶段：P0；CI profile：CRA-W00
+
+- 进入：原工程基线有实际云端证据。
+- 交接：同步工具和完成证据门槛；不代表业务完成。
+
+技术输入：[task_evidence.py](../../tools/task_evidence.py)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+
+
 ## 实现步骤
 
 1. 保留已验证基线及编号，不重复建设另一套理论源。

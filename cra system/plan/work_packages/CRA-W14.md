@@ -34,6 +34,16 @@
 - RecognizeLab输出候选、图像区域及版本/失败，不直接写成已确认事实。
 - 确认或跳过后接M08现有服务，不另建比对系统。
 
+## 进入条件与交接
+
+阶段：P6；CI profile：CRA-W14
+
+- 进入：W08已有自动读取，当前范围的错误及负担记录可复用。
+- 交接：复杂格式新增SupportProfile和独立回归；既有业务数据不变。
+
+技术输入：[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+
+
 ## 实现步骤
 
 1. 在W08已有adapter和SupportProfile上评估复杂版式、图像质量及更多格式，重新核对许可/成本/授权条件。

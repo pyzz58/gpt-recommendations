@@ -33,6 +33,7 @@
 | `tests/api/test_platform.py` | test | API、身份和能力 |
 | `contracts/openapi.json` | config | 从实际API生成的接口契约 |
 | `web/src/api/generated.ts` | code | 从契约生成的前端类型 |
+| `backend/cra_app/shared/output_contract.py` | code | 共用输出范围、依据版本和事实/候选/用户确认类型 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -40,6 +41,17 @@
 
 - GET /api/v1/me/scopes以及/health/live、/health/ready、/capabilities。
 - 生产模式不信任客户端自报的tenant、操作者或模拟身份头。
+- OutputEnvelope按用途承载scope、purpose、policy_versions、claims、source_refs、unknowns/conflicts和输出状态，不能把不同用途共用一个医疗结论字段。
+
+## 进入条件与交接
+
+阶段：P1；CI profile：CRA-W02
+
+- 进入：W01迁移与隔离测试实际通过。
+- 交接：可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。
+
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)
+
 
 ## 实现步骤
 

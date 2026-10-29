@@ -33,6 +33,7 @@
 | `web/src/features/laboratory/RecognitionReview.tsx` | code | 集中复核低可信/歧义，不要求逐字段点击 |
 | `tests/integration/test_recognition.py` | test | 文件读取、关键错误、失败和跳过 |
 | `validation/LAB_AUTOMATION_SCOPE.md` | document | 支持格式、实际provider证据、人工负担与限制 |
+| `backend/cra_app/providers/evaluate_labs.py` | code | 实际文件识别/匹配/比较和人工负担评估入口 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -42,6 +43,16 @@
 - LabComparison返回match_status、field_results、unknowns及scope；自动候选与CRA核实状态分开。
 - 自动提取通过身份/结构校验后可比较，低可信/歧义集中复核，正常范围可批量确认；不得要求全量手抄或逐字段机械点击。
 - 手动为少量例外；用户拒绝缺失数据或不用管时执行有范围的CheckDecision，不反复追问，不计正常。
+
+## 进入条件与交接
+
+阶段：P3；CI profile：CRA-W08
+
+- 进入：W06/W07通过；W03探测已给出可安装、可运行的识别候选，支持格式和代表性评估输入已确定。
+- 交接：自动源文件读取→匹配→比较→差异/未知与待办、实际provider证据、人工负担和支持范围。
+
+技术输入：[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+
 
 ## 实现步骤
 
@@ -80,6 +91,12 @@ uv run --frozen pytest -q tests/integration/test_laboratory.py
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_recognition.py
+```
+
+- [to_implement] 实际识别到自动核对的独立样本评估
+
+```bash
+uv run --frozen python -m cra_app.providers.evaluate_labs --dataset tests/fixtures/manifest.json
 ```
 
 ## 完成标准

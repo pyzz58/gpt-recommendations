@@ -26,6 +26,6 @@
 | CRA-W15 | [配置受控云部署并开展授权试用](work_packages/CRA-W15.md) | CRA-W13 | deployment | planned |
 
 每张卡都列出临床目标、对应理论/模块、目标文件、接口、实现步骤、命令、完成标准和不包含范围。
-目标文件在任务未实现前可以不存在；task标verified时必须确实存在，待实现命令不能继续保留为to_implement。
+目标文件在未实现前可不存在；verified须有实际交付、可执行命令及绑定源码和任务专属CI的completion_evidence。完整阶段和交接见IMPLEMENTATION_PATH.md。
 
 当前选择命令：`python3 tools/next_task.py`。该工具只读计划，不运行开发、部署或外部操作。

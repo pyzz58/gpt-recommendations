@@ -28,6 +28,7 @@
 | `backend/cra_app/reports/api.py` | code | 草稿和导出接口 |
 | `web/src/features/reports/ReportPreview.tsx` | code | 报告预览 |
 | `tests/integration/test_reports.py` | test | 范围、文件和历史快照 |
+| `backend/cra_app/reports/template_mapping.py` | code | 受支持DOCX/XLSX字段与循环区映射，不承诺任意模板自动完美还原 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -36,6 +37,17 @@
 - 生成材料引用coverage以及事实/规则/问题版本；实际发送与签发独立。
 - 信件选几项不修改问题清单全集；签发后保存不可变内容与引用版本。
 - 报告区分输出适用版本与历史事项使用依据；CRA确认写作用户确认，不写AI独立核验。跳过范围不润色为正常。
+- TemplateMapping标识支持字段/重复问题区/来源附注/必填未知；草稿可保留明确缺口，不能静默填无异常。
+
+## 进入条件与交接
+
+阶段：P4；CI profile：CRA-W11
+
+- 进入：问题/覆盖/分析事实接口可用，合成DOCX模板与Excel字段映射明确。
+- 交接：可打开的模板信件、监查报告、track及不可变快照，多份输出同一事实。
+
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+
 
 ## 实现步骤
 

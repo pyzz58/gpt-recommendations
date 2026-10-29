@@ -1,6 +1,6 @@
 # M13 理论、技术与任务同步
 
-版本：1；状态：已设计，完整实现待工作包完成。计划代码位置：`tools/`。
+版本：2；状态：已设计，完整实现待工作包完成。计划代码位置：`tools/`。
 
 ## 对应理论和任务
 
@@ -31,3 +31,7 @@
 新增业务要求只增加理论条目和对应绑定；模块拆分保留旧ID及迁移关系。检查脚本本身要用反例验证防止假绿。
 
 理论变更先从固定编号定位到本文件，再确认是否改变配置、服务策略、供应商adapter或数据/API契约，按[同步规则](../../traceability/SYNC_POLICY.md)留下记录。
+
+## v0.4技术实施补齐
+
+新增implementation_plan生成/校验与task_evidence源码和GitHub专属job验证；不把工程元数据当临床认证。 实现契约见[VALIDATION_AND_RELEASE.md](../VALIDATION_AND_RELEASE.md)，当前任务的进入条件/交接见[完整实施路径](../../plan/IMPLEMENTATION_PATH.md)。理论和任务编号保持；本轮文档不是业务功能完成证据。

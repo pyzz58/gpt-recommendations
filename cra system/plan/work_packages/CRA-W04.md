@@ -29,6 +29,9 @@ list能直接显示具体要求、完整条件和例外，并可展开到原文�
 | `web/src/features/rules/RuleTree.tsx` | code | 四层list |
 | `web/src/features/rules/RuleConfirmation.tsx` | code | 用户增删改 |
 | `tests/integration/test_rules.py` | test | 条件、适用性和变更 |
+| `backend/cra_app/rules/version_activation.py` | code | 手动开始使用日及按事件时间选择版本 |
+| `backend/cra_app/providers/evaluate_rules.py` | code | 实际提取器与独立条件预期的评估入口 |
+| `backend/cra_app/rules/common_policy.py` | code | 共性规则包、官方效力与项目/中心启用日分别解析 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -38,6 +41,18 @@ list能直接显示具体要求、完整条件和例外，并可展开到原文�
 - 条件计算返回true/false/unknown，unknown不当作正常；表达式不执行eval。
 - RuleNode含preconditions/trigger/branches/exceptions/follow_up/completion/required_facts；有限AST及三值逻辑按WORKFLOW_CONTRACTS实现。
 - VersionActivation由用户输入开始使用日和范围，按事件时间解析，不用上传日或报告生成时间替代。
+- 所有输出使用OutputEnvelope；条件完整性有独立预期，提取模型在开发验证环境完成实际调用，不能只用人工候选验收自动提取。
+- CommonPolicySet含共性原文/版本/法域/效力与取得状态，按适用范围装载；手动项目/中心启用日不覆写官方效力或批准条件。
+
+## 进入条件与交接
+
+阶段：P2；CI profile：CRA-W04
+
+- 进入：已解析原文、处理覆盖及授权提取端口可用。
+- 交接：候选规则树、用户修正、版本启用解析及独立条件反例结果。
+
+技术输入：[WORKFLOW_CONTRACTS.md](../../architecture/WORKFLOW_CONTRACTS.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+
 
 ## 实现步骤
 
@@ -69,6 +84,12 @@ python3 -m unittest discover -s tests -v
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_rules.py
+```
+
+- [to_implement] 实际规则提取与独立条件预期比较
+
+```bash
+uv run --frozen python -m cra_app.providers.evaluate_rules --dataset tests/fixtures/manifest.json
 ```
 
 ## 完成标准

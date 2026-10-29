@@ -27,6 +27,7 @@
 | `validation/TIME_STUDY.md` | document | 总工作时间 |
 | `deploy/restore-check.md` | document | 恢复验证与缺口 |
 | `validation/USE_CASE_VALIDATION.md` | document | 按用途风险、独立样本、版本及暂停恢复策略 |
+| `tools/build_validation_report.py` | code | 合成/获授权证据的去敏汇总，不虚构试用结果 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -34,6 +35,16 @@
 
 - 工程检查、合成验证和真实授权试用分别报告。
 - 能力状态区分implemented/configured/validated/disabled，不能用整体绿色遮住关键缺口。
+
+## 进入条件与交接
+
+阶段：P5；CI profile：CRA-W13
+
+- 进入：W12端到端通过，开发样例与独立评估已分离。
+- 交接：40场景实证、逐用途能力/风险记录、自动覆盖和总耗时、明确可试用范围与未达标结论。
+
+技术输入：[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)
+
 
 ## 实现步骤
 
@@ -70,6 +81,12 @@ uv run --frozen pytest -q tests/acceptance/test_v1a.py
 
 ```bash
 npm --prefix web run test:e2e -- --project=chromium
+```
+
+- [to_implement] 逐用途能力/证据/风险和未达标项的汇总检查
+
+```bash
+uv run --frozen python tools/build_validation_report.py --check
 ```
 
 ## 完成标准

@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "version": "0.4",
+  "reviewed_commit": "cd3d36ecbdf57ae2f011c2b04e1174321624472b",
+  "theory_source": "theory/requirements.json",
+  "task_source": "plan/tasks.json",
+  "phases": [
+    {
+      "id": "P0",
+      "title": "工程基线与完成证据",
+      "task_ids": [
+        "CRA-W00"
+      ],
+      "clinical_result": "设计可追溯，未实现任务不能凭状态标记放行。"
+    },
+    {
+      "id": "P1",
+      "title": "可靠保存与工作台外壳",
+      "task_ids": [
+        "CRA-W01",
+        "CRA-W02"
+      ],
+      "clinical_result": "进入正确项目/中心，操作可保存和恢复。"
+    },
+    {
+      "id": "P2",
+      "title": "资料、条件清单与患者上下文",
+      "task_ids": [
+        "CRA-W03",
+        "CRA-W04",
+        "CRA-W05"
+      ],
+      "clinical_result": "规则可读、可展开、有版本，缺资料可局部跳过。"
+    },
+    {
+      "id": "P3",
+      "title": "遗留与自动检验核对",
+      "task_ids": [
+        "CRA-W06",
+        "CRA-W07",
+        "CRA-W08"
+      ],
+      "clinical_result": "旧问题接续与点击确认；检验源文件和Excel自动对照。"
+    },
+    {
+      "id": "P4",
+      "title": "异常支持、目录和材料",
+      "task_ids": [
+        "CRA-W09",
+        "CRA-W10",
+        "CRA-W11"
+      ],
+      "clinical_result": "具体异常问题、简单目录、四阶段清单和可用报告。"
+    },
+    {
+      "id": "P5",
+      "title": "全流程与独立验收",
+      "task_ids": [
+        "CRA-W12",
+        "CRA-W13"
+      ],
+      "clinical_result": "两次监查连续操作，明确错误、人工负担和总耗时。"
+    },
+    {
+      "id": "P6",
+      "title": "复杂检验格式增强",
+      "task_ids": [
+        "CRA-W14"
+      ],
+      "clinical_result": "扩大已有自动读取范围，不重建比对和历史。"
+    },
+    {
+      "id": "P7",
+      "title": "获授权环境和实际反馈",
+      "task_ids": [
+        "CRA-W15"
+      ],
+      "clinical_result": "在明确用途和资料范围内试用，记录反馈与暂停恢复。"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "CRA-MS01",
+      "after_tasks": [
+        "CRA-W01",
+        "CRA-W02"
+      ],
+      "proof": "合成两中心数据的API保存/重登/隔离及事务测试",
+      "label": "可靠工作台"
+    },
+    {
+      "id": "CRA-MS02",
+      "after_tasks": [
+        "CRA-W03",
+        "CRA-W04",
+        "CRA-W05"
+      ],
+      "proof": "文件→真实来源→条件分支list/版本启用→患者阶段和缺口选择；包含实际提取模型和OCR环境探测",
+      "label": "资料能成为可用list"
+    },
+    {
+      "id": "CRA-MS03",
+      "after_tasks": [
+        "CRA-W06"
+      ],
+      "proof": "旧报告/track→遗留提醒/展开→直接确认→未完事项保留，重复导入不复制",
+      "label": "遗留工作可接续"
+    },
+    {
+      "id": "CRA-MS04",
+      "after_tasks": [
+        "CRA-W07",
+        "CRA-W08"
+      ],
+      "proof": "检验文件+Excel→实际自动识别/匹配/比较→差异待办，自动覆盖和人工负担实测",
+      "label": "核心自动核对"
+    },
+    {
+      "id": "CRA-MS05",
+      "after_tasks": [
+        "CRA-W09",
+        "CRA-W10",
+        "CRA-W11"
+      ],
+      "proof": "异常依据/目录对照/阶段清单→模板DOCX报告及XLSX，历史快照不变",
+      "label": "监查结果可交付"
+    },
+    {
+      "id": "CRA-MS06",
+      "after_tasks": [
+        "CRA-W12",
+        "CRA-W13"
+      ],
+      "proof": "真实API浏览器连续两次监查、40场景/独立样本/全部耗时，给出限定范围结论",
+      "label": "第一版工程验收"
+    },
+    {
+      "id": "CRA-MS07",
+      "after_tasks": [
+        "CRA-W15"
+      ],
+      "proof": "获准环境、恢复演练、实际CRA操作与反馈，达到已声明用途的试用条件",
+      "label": "实际试用"
+    }
+  ],
+  "verification_profiles": [
+    {
+      "task_id": "CRA-W00",
+      "required_job": "baseline",
+      "required_steps": [
+        "Check theory and technical synchronization",
+        "Validate core behaviors and synchronization failures"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "historical_baseline",
+      "evidence_kind": "historical_bootstrap",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "tools/"
+      ]
+    },
+    {
+      "task_id": "CRA-W01",
+      "required_job": "cra-w01",
+      "required_steps": [
+        "migrate",
+        "test"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/governance/",
+        "pyproject.toml",
+        "uv.lock"
+      ]
+    },
+    {
+      "task_id": "CRA-W02",
+      "required_job": "cra-w02",
+      "required_steps": [
+        "api",
+        "typecheck",
+        "build",
+        "contracts"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/governance/",
+        "pyproject.toml",
+        "uv.lock"
+      ]
+    },
+    {
+      "task_id": "CRA-W03",
+      "required_job": "cra-w03",
+      "required_steps": [
+        "test",
+        "provider-probe"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/documents/",
+        "backend/cra_app/governance/",
+        "backend/cra_app/providers/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W04",
+      "required_job": "cra-w04",
+      "required_steps": [
+        "test",
+        "rule-provider-evaluation"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/rules/",
+        "backend/cra_app/governance/",
+        "backend/cra_app/documents/",
+        "backend/cra_app/providers/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W05",
+      "required_job": "cra-w05",
+      "required_steps": [
+        "test"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/subjects/",
+        "backend/cra_app/governance/",
+        "backend/cra_app/rules/",
+        "backend/cra_app/documents/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W06",
+      "required_job": "cra-w06",
+      "required_steps": [
+        "test"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/monitoring/",
+        "backend/cra_app/governance/",
+        "backend/cra_app/rules/",
+        "backend/cra_app/documents/",
+        "backend/cra_app/subjects/",
+        "backend/cra_app/issues/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W07",
+      "required_job": "cra-w07",
+      "required_steps": [
+        "test"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/edc_import/",
+        "backend/cra_app/governance/",
+        "backend/cra_app/subjects/",
+        "backend/cra_app/rules/",
+        "backend/cra_app/documents/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W08",
+      "required_job": "cra-w08",
+      "required_steps": [
+        "test",
+        "lab-provider-evaluation"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/laboratory/",
+        "backend/cra_app/governance/",
+        "backend/cra_app/rules/",
+        "backend/cra_app/documents/",
+        "backend/cra_app/subjects/",
+        "backend/cra_app/edc_import/",
+        "backend/cra_app/providers/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W09",
+      "required_job": "cra-w09",
+      "required_steps": [
+        "test",
+        "analysis-provider-evaluation"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/safety/",
+        "backend/cra_app/rules/",
+        "backend/cra_app/governance/",
+        "backend/cra_app/documents/",
+        "backend/cra_app/subjects/",
+        "backend/cra_app/issues/",
+        "backend/cra_app/providers/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W10",
+      "required_job": "cra-w10",
+      "required_steps": [
+        "test"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/monitoring/",
+        "backend/cra_app/governance/",
+        "backend/cra_app/rules/",
+        "backend/cra_app/documents/",
+        "backend/cra_app/subjects/",
+        "backend/cra_app/issues/",
+        "backend/cra_app/site_files/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W11",
+      "required_job": "cra-w11",
+      "required_steps": [
+        "test"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/reports/",
+        "backend/cra_app/governance/",
+        "backend/cra_app/rules/",
+        "backend/cra_app/documents/",
+        "backend/cra_app/subjects/",
+        "backend/cra_app/monitoring/",
+        "backend/cra_app/issues/",
+        "backend/cra_app/site_files/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W12",
+      "required_job": "cra-w12",
+      "required_steps": [
+        "e2e",
+        "persistence"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/monitoring/",
+        "backend/cra_app/governance/",
+        "backend/cra_app/rules/",
+        "backend/cra_app/documents/",
+        "backend/cra_app/subjects/",
+        "backend/cra_app/issues/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W13",
+      "required_job": "cra-w13",
+      "required_steps": [
+        "acceptance",
+        "capability-report"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W14",
+      "required_job": "cra-w14",
+      "required_steps": [
+        "test",
+        "lab-provider-evaluation"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/laboratory/",
+        "backend/cra_app/governance/",
+        "backend/cra_app/rules/",
+        "backend/cra_app/documents/",
+        "backend/cra_app/subjects/",
+        "backend/cra_app/edc_import/",
+        "backend/cra_app/providers/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    },
+    {
+      "task_id": "CRA-W15",
+      "required_job": "cra-w15",
+      "required_steps": [
+        "deployment-check",
+        "trial-record"
+      ],
+      "workflow_path": ".github/workflows/cra-system.yml",
+      "implementation_status": "to_implement",
+      "evidence_kind": "github_actions",
+      "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
+      "binding_paths": [
+        "backend/cra_app/governance/",
+        "pyproject.toml",
+        "uv.lock",
+        "tests/fixtures/"
+      ]
+    }
+  ],
+  "open_performance_questions": [
+    "代表性检验格式的关键字段/身份/日期错误及人工负担尚未验证。",
+    "规则前提/分支/例外提取的完整性尚未验证。",
+    "整体节时、授权环境和临床用途可靠性尚未验证。"
+  ]
+}
