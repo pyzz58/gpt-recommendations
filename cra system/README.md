@@ -1,6 +1,6 @@
 # CRA System
 
-技术设计基线 v0.1 · 2026-10-29 · 来源：已讨论确认的 Notion v0.14 及本轮 GitHub 指示。
+技术执行基线 v0.2 · 2026-10-29 · 来源：已讨论确认的 Notion v0.14 及本轮 GitHub 指示。
 
 本系统帮助CRA把项目要求、实际资料、监查问题和后续报告连起来。工作主线是：上次遗留问题 → 按模板选几项形成访前信 → 到中心核实整改及其正确性 → 逐受试者监查 → 报告 → 下次继续追踪。
 
@@ -16,6 +16,8 @@
 
 | 你想了解什么 | 入口 |
 | --- | --- |
+| 直接交给Codex从第一项编程 | [Codex开发入口](CODEX_START_HERE.md)及[逐项任务卡](plan/CODEX_TASKS.md) |
+| 实际技术路线和代码结构 | [实施路线](architecture/IMPLEMENTATION_ROUTE.md) |
 | 系统按临床工作怎样使用 | [第一版业务基线](theory/BASELINE.md) |
 | 每条理论到底要求什么 | [45条理论清单](theory/REQUIREMENTS.md) |
 | 某条理论对应哪块技术 | [理论—模块—任务—验收对照](traceability/INDEX.md) |

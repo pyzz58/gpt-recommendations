@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- |
 | CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
 | CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | planned |
-| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M14 | planned |
+| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | planned |
 | CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | planned |
 | CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | planned |
 | CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | planned |
@@ -21,13 +21,13 @@
 | CRA-W12 | 串联四阶段界面与一次完整监查 | CRA-W08、CRA-W09、CRA-W10、CRA-W11 | M05 | planned |
 | CRA-W13 | 完成V1A模拟验收与试用准备 | CRA-W12 | M14 | planned |
 | CRA-W14 | 增加检验照片OCR与识别复核 | CRA-W08 | M08、M12 | planned |
-| CRA-W15 | 配置受控云部署并开展授权试用 | CRA-W13 | M14 | planned |
+| CRA-W15 | 配置受控云部署并开展授权试用 | CRA-W13 | M01、M14 | planned |
 
 ## CRA-W00 建立技术基线与同步检查
 
 验收：45条理论、14个模块、任务与验收关联；基础检查及反例测试在GitHub Actions运行。
 
-对应理论：CRA-R035、CRA-R037、CRA-R039、CRA-R040、CRA-R044
+对应理论：CRA-R039、CRA-R040、CRA-R044
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/40803113112；验证提交 67290ee4ea6e8d235fe38dd9f654b26dec243dcd；同步检查、22项单元测试和合成监查示例均通过。仅代表本工作包工程基线。
 
@@ -35,19 +35,19 @@
 
 验收：PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。
 
-对应理论：CRA-R002、CRA-R035、CRA-R036、CRA-R037、CRA-R040、CRA-R044
+对应理论：CRA-R002、CRA-R036、CRA-R040
 
 ## CRA-W02 建立云上API和界面框架
 
 验收：在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。
 
-对应理论：CRA-R035、CRA-R037、CRA-R040、CRA-R044
+对应理论：CRA-R035、CRA-R036、CRA-R040
 
 ## CRA-W03 实现资料接收、解析和来源定位
 
 验收：DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。
 
-对应理论：CRA-R003、CRA-R004、CRA-R009、CRA-R024、CRA-R035、CRA-R036、CRA-R038
+对应理论：CRA-R003、CRA-R004、CRA-R009、CRA-R024、CRA-R036、CRA-R038
 
 ## CRA-W04 实现规则候选提取及分层list
 
@@ -65,7 +65,7 @@
 
 验收：访前选问题，到中心复核是否改对，普通新监查接续；PD上报与其他整改分别完成；Query期限有依据。
 
-对应理论：CRA-R001、CRA-R006、CRA-R009、CRA-R012、CRA-R017、CRA-R020、CRA-R021、CRA-R022、CRA-R023、CRA-R025、CRA-R026、CRA-R027、CRA-R028、CRA-R031、CRA-R032、CRA-R033、CRA-R037、CRA-R041、CRA-R043、CRA-R045
+对应理论：CRA-R001、CRA-R009、CRA-R012、CRA-R020、CRA-R021、CRA-R022、CRA-R023、CRA-R025、CRA-R026、CRA-R027、CRA-R028、CRA-R031、CRA-R041、CRA-R043、CRA-R045
 
 ## CRA-W07 实现EDC Excel检验快照导入
 
@@ -89,7 +89,7 @@
 
 验收：ISF/TMF缺件跨次带出；启动与关闭采用项目清单；交接直接复用遗留，不新增审批链。
 
-对应理论：CRA-R001、CRA-R003、CRA-R006、CRA-R012、CRA-R017、CRA-R024、CRA-R026、CRA-R028、CRA-R032、CRA-R033、CRA-R037、CRA-R045
+对应理论：CRA-R001、CRA-R003、CRA-R006、CRA-R024、CRA-R028、CRA-R032、CRA-R033、CRA-R045
 
 ## CRA-W11 实现访视信、报告和Excel导出
 
@@ -119,4 +119,4 @@
 
 验收：在获准环境配置身份、私有数据库/文件服务、备份恢复和模型；确认权限后以真实操作评价，记录风险与反馈。
 
-对应理论：CRA-R035、CRA-R037、CRA-R040、CRA-R044
+对应理论：CRA-R035、CRA-R036、CRA-R037、CRA-R040、CRA-R044

@@ -7,13 +7,15 @@
       "slug": "governance",
       "depends_on": [],
       "task_ids": [
-        "CRA-W01"
+        "CRA-W01",
+        "CRA-W02",
+        "CRA-W15"
       ],
       "scenarios": [
         "CRA-S01",
         "CRA-S02"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M01-governance.md",
       "planned_code_path": "backend/cra_app/governance/",

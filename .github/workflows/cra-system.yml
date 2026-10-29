@@ -36,3 +36,5 @@ jobs:
         env:
           PYTHONPATH: backend
         run: python3 -m cra_core.demo
+      - name: Show next development work package
+        run: python3 tools/next_task.py

@@ -1,6 +1,8 @@
 # 系统架构与第一版实现路线
 
-状态：技术方案 v0.1；模块边界已设计，尚未实现完整应用。约束来源为[业务基线](../theory/BASELINE.md)和固定理论编号。
+状态：技术方案 v0.2；模块边界已设计，尚未实现完整应用。约束来源为[业务基线](../theory/BASELINE.md)和固定理论编号。
+
+逐项代码实施、依赖锁、目标文件和Codex执行约定见[IMPLEMENTATION_ROUTE](IMPLEMENTATION_ROUTE.md)及[任务卡](../plan/CODEX_TASKS.md)。
 
 ## 1. 推荐形态
 

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "tasks": [
     {
       "id": "CRA-W00",
@@ -12,14 +12,68 @@
       "status": "verified",
       "acceptance": "45条理论、14个模块、任务与验收关联；基础检查及反例测试在GitHub Actions运行。",
       "requirement_ids": [
-        "CRA-R035",
-        "CRA-R037",
         "CRA-R039",
         "CRA-R040",
         "CRA-R044"
       ],
       "evidence": [
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/40803113112；验证提交 67290ee4ea6e8d235fe38dd9f654b26dec243dcd；同步检查、22项单元测试和合成监查示例均通过。仅代表本工作包工程基线。"
+      ],
+      "track": "baseline",
+      "instruction_path": "plan/work_packages/CRA-W00.md",
+      "clinical_goal": "维护理论和技术对应关系，以后能找到需要修改的模块。",
+      "deliverables": [
+        {
+          "path": "tools/check_traceability.py",
+          "kind": "code",
+          "purpose": "理论/技术同步检查"
+        },
+        {
+          "path": "tools/traceability_lib.py",
+          "kind": "code",
+          "purpose": "映射、指纹和生成视图"
+        },
+        {
+          "path": "tests/test_traceability.py",
+          "kind": "test",
+          "purpose": "漏同步拒绝案例"
+        },
+        {
+          "path": "validation/BASELINE_STATUS.md",
+          "kind": "document",
+          "purpose": "已有云端验证记录"
+        }
+      ],
+      "contracts": [
+        "固定CRA-R、M、CRA-W、CRA-S编号；变更有对应模块及影响记录。"
+      ],
+      "steps": [
+        "保留已验证基线及编号，不重复建设另一套理论源。",
+        "维护生成视图与执行任务卡；技术细化不冒充新增业务决定。",
+        "按证据区分设计、基础代码、完整业务实现和实际验证。"
+      ],
+      "done_when": [
+        "已有同步检查及反例测试通过，原验证记录可追溯。"
+      ],
+      "not_in_scope": [
+        "W00完成不代表数据库、界面或34个完整业务场景完成。"
+      ],
+      "scenario_ids": [
+        "CRA-S31",
+        "CRA-S32",
+        "CRA-S33"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        }
       ]
     },
     {
@@ -36,11 +90,123 @@
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
-        "CRA-R035",
         "CRA-R036",
-        "CRA-R037",
-        "CRA-R040",
-        "CRA-R044"
+        "CRA-R040"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W01.md",
+      "clinical_goal": "让各中心资料和每次修改可靠保存，并保留操作历史。",
+      "deliverables": [
+        {
+          "path": "pyproject.toml",
+          "kind": "config",
+          "purpose": "Python项目及开发依赖"
+        },
+        {
+          "path": "uv.lock",
+          "kind": "config",
+          "purpose": "精确依赖锁"
+        },
+        {
+          "path": ".python-version",
+          "kind": "config",
+          "purpose": "Python运行版本"
+        },
+        {
+          "path": "alembic.ini",
+          "kind": "config",
+          "purpose": "迁移配置"
+        },
+        {
+          "path": "migrations/env.py",
+          "kind": "migration",
+          "purpose": "迁移入口"
+        },
+        {
+          "path": "migrations/versions/0001_governance.py",
+          "kind": "migration",
+          "purpose": "最小权限与历史底座"
+        },
+        {
+          "path": "backend/cra_app/shared/db.py",
+          "kind": "code",
+          "purpose": "事务与会话"
+        },
+        {
+          "path": "backend/cra_app/shared/config.py",
+          "kind": "code",
+          "purpose": "环境配置"
+        },
+        {
+          "path": "backend/cra_app/governance/models.py",
+          "kind": "code",
+          "purpose": "研究、中心、授权、审计及幂等模型"
+        },
+        {
+          "path": "backend/cra_app/governance/service.py",
+          "kind": "code",
+          "purpose": "授权与版本化命令"
+        },
+        {
+          "path": "deploy/compose.dev.yml",
+          "kind": "config",
+          "purpose": "合成开发数据库"
+        },
+        {
+          "path": "tests/integration/test_governance.py",
+          "kind": "test",
+          "purpose": "真实PostgreSQL隔离与事务"
+        }
+      ],
+      "contracts": [
+        "ScopeContext来自可信身份，读取和写入均必须携带授权范围。",
+        "写命令有expected_revision及Idempotency-Key；业务写入与AuditEvent同一事务。"
+      ],
+      "steps": [
+        "建立cra_app包和uv项目，锁定Python及依赖；保留cra_core示例和已有反例。",
+        "只迁移当前所需研究、中心、授权、审计和幂等表，不提前为所有模块建立空表。",
+        "实现跨研究/中心约束及读取前鉴权；若用RLS，验证实际应用角色和表拥有者例外。",
+        "实现旧revision冲突、幂等重放、不同输入复用同键的冲突以及失败回滚。",
+        "在专属CI加入临时PostgreSQL和迁移/集成检查；真实数据库检查不能由SQLite代替。"
+      ],
+      "done_when": [
+        "两中心合成数据不能跨范围读取。",
+        "重复命令不重复写入，旧版本不能覆盖新值。",
+        "失败事务无半完成业务或审计记录，CI可复现。"
+      ],
+      "not_in_scope": [
+        "不实现全部未来业务表、OCR或报告页面。",
+        "测试身份不等于正式OIDC已经接入。"
+      ],
+      "scenario_ids": [
+        "CRA-S01"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv sync --frozen --group dev",
+          "purpose": "安装锁定依赖",
+          "availability": "to_implement"
+        },
+        {
+          "command": "uv run --frozen alembic upgrade head",
+          "purpose": "空库迁移",
+          "availability": "to_implement"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_governance.py",
+          "purpose": "权限、事务、幂等和并发",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -50,15 +216,142 @@
         "CRA-W01"
       ],
       "module_ids": [
+        "M01",
         "M14"
       ],
       "status": "planned",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
       "requirement_ids": [
         "CRA-R035",
-        "CRA-R037",
-        "CRA-R040",
-        "CRA-R044"
+        "CRA-R036",
+        "CRA-R040"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W02.md",
+      "clinical_goal": "在浏览器进入正确项目和中心，并看到真实可用能力。",
+      "deliverables": [
+        {
+          "path": "backend/cra_app/main.py",
+          "kind": "code",
+          "purpose": "FastAPI应用"
+        },
+        {
+          "path": "backend/cra_app/governance/identity.py",
+          "kind": "code",
+          "purpose": "可信身份适配"
+        },
+        {
+          "path": "backend/cra_app/governance/api.py",
+          "kind": "code",
+          "purpose": "身份及授权范围"
+        },
+        {
+          "path": "backend/cra_app/platform/api.py",
+          "kind": "code",
+          "purpose": "健康和能力接口"
+        },
+        {
+          "path": "web/package.json",
+          "kind": "config",
+          "purpose": "React/TypeScript/Vite和检查脚本"
+        },
+        {
+          "path": "web/package-lock.json",
+          "kind": "config",
+          "purpose": "前端锁"
+        },
+        {
+          "path": "web/src/main.tsx",
+          "kind": "code",
+          "purpose": "界面入口"
+        },
+        {
+          "path": "web/src/app/Router.tsx",
+          "kind": "code",
+          "purpose": "页面框架"
+        },
+        {
+          "path": "web/src/features/workspace/WorkspaceSelector.tsx",
+          "kind": "code",
+          "purpose": "项目/中心选择"
+        },
+        {
+          "path": "tests/api/test_platform.py",
+          "kind": "test",
+          "purpose": "API、身份和能力"
+        },
+        {
+          "path": "contracts/openapi.json",
+          "kind": "config",
+          "purpose": "从实际API生成的接口契约"
+        },
+        {
+          "path": "web/src/api/generated.ts",
+          "kind": "code",
+          "purpose": "从契约生成的前端类型"
+        }
+      ],
+      "contracts": [
+        "GET /api/v1/me/scopes以及/health/live、/health/ready、/capabilities。",
+        "生产模式不信任客户端自报的tenant、操作者或模拟身份头。"
+      ],
+      "steps": [
+        "建立API统一错误和OpenAPI，把W01授权传入请求。",
+        "身份通过可替换端口接入；无正式OIDC时，仅允许明确synthetic环境的合成演示，生产拒绝模拟模式。",
+        "建立React页面框架、项目/中心选择及错误状态；服务密钥只在后端。",
+        "配置Codespaces的Node、数据库及实际启动步骤，保持转发端口private。",
+        "增加typecheck/build/test脚本及CI，记录并锁定实际依赖版本。",
+        "从实际API生成contracts/openapi.json及前端类型，增加api:check，后续接口变化同步生成，禁止维护两套手写类型。"
+      ],
+      "done_when": [
+        "可选择授权项目/中心，刷新后上下文正确。",
+        "模型/OCR未配置时显示不可用，不显示自动完成。",
+        "实际验证Codespaces启动，未运行的部分明确记录。"
+      ],
+      "not_in_scope": [
+        "页面框架完成不代表受试者监查业务已完成。"
+      ],
+      "scenario_ids": [
+        "CRA-S01",
+        "CRA-S22",
+        "CRA-S33"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/api/test_platform.py",
+          "purpose": "API和身份",
+          "availability": "to_implement"
+        },
+        {
+          "command": "npm --prefix web ci",
+          "purpose": "安装前端锁定依赖",
+          "availability": "to_implement"
+        },
+        {
+          "command": "npm --prefix web run typecheck",
+          "purpose": "类型检查",
+          "availability": "to_implement"
+        },
+        {
+          "command": "npm --prefix web run build",
+          "purpose": "构建",
+          "availability": "to_implement"
+        },
+        {
+          "command": "npm --prefix web run api:check",
+          "purpose": "接口契约与前端类型一致",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -78,9 +371,104 @@
         "CRA-R004",
         "CRA-R009",
         "CRA-R024",
-        "CRA-R035",
         "CRA-R036",
         "CRA-R038"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W03.md",
+      "clinical_goal": "资料上传后能定位原文，知道哪些内容已读取、哪些仍缺失。",
+      "deliverables": [
+        {
+          "path": "backend/cra_app/documents/models.py",
+          "kind": "code",
+          "purpose": "文档版本、锚点和覆盖"
+        },
+        {
+          "path": "backend/cra_app/documents/service.py",
+          "kind": "code",
+          "purpose": "用途、上传和版本"
+        },
+        {
+          "path": "backend/cra_app/documents/parsers/docx.py",
+          "kind": "code",
+          "purpose": "完整OOXML解析"
+        },
+        {
+          "path": "backend/cra_app/documents/parsers/pdf.py",
+          "kind": "code",
+          "purpose": "文字PDF定位"
+        },
+        {
+          "path": "backend/cra_app/documents/api.py",
+          "kind": "code",
+          "purpose": "资料及原文接口"
+        },
+        {
+          "path": "backend/cra_app/providers/ports.py",
+          "kind": "code",
+          "purpose": "解析/提取/识别/分析端口"
+        },
+        {
+          "path": "backend/cra_app/providers/disabled.py",
+          "kind": "code",
+          "purpose": "未配置能力返回"
+        },
+        {
+          "path": "backend/cra_app/platform/jobs.py",
+          "kind": "code",
+          "purpose": "持久作业与重试"
+        },
+        {
+          "path": "web/src/features/documents/DocumentWorkspace.tsx",
+          "kind": "code",
+          "purpose": "资料与原文界面"
+        },
+        {
+          "path": "tests/integration/test_documents.py",
+          "kind": "test",
+          "purpose": "解析、覆盖、版本和作业"
+        }
+      ],
+      "contracts": [
+        "上传返回job_id；SourceAnchor包含文档版本及章节、节点、表格/脚注或坐标。",
+        "原文件私有，DocumentVersion不可覆盖；不把上传时间当业务生效日期。"
+      ],
+      "steps": [
+        "增加来源、锚点、覆盖、job/outbox迁移，文件经私有存储端口访问。",
+        "分别记录规则/事实用途和适用范围；文件哈希发现重复但不裁定替代关系。",
+        "遍历DOCX的w:sdt、合并单元格、脚注和字符格式；PDF保留坐标，失败页如实显示。",
+        "实现有限重试、幂等、资源预算及worker重新鉴权，不执行宏或文档内指令。",
+        "界面展示版本、缺口和可回查原文，供规则提取复用。"
+      ],
+      "done_when": [
+        "脚注和加粗等有意义格式不丢失。",
+        "解析失败、背景、未处理分别记录，不以条目多表示提取完整。",
+        "重试不重复建版本，越权资料不可读取。"
+      ],
+      "not_in_scope": [
+        "不把所有临床源文件纳入逐字段自动OCR。"
+      ],
+      "scenario_ids": [
+        "CRA-S02",
+        "CRA-S03",
+        "CRA-S04"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_documents.py",
+          "purpose": "合成文档及作业",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -110,6 +498,94 @@
         "CRA-R036",
         "CRA-R038",
         "CRA-R041"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W04.md",
+      "clinical_goal": "list能直接显示具体要求、完整条件和例外，并可展开到原文。",
+      "deliverables": [
+        {
+          "path": "backend/cra_app/rules/models.py",
+          "kind": "code",
+          "purpose": "规则树及不可变版本"
+        },
+        {
+          "path": "backend/cra_app/rules/service.py",
+          "kind": "code",
+          "purpose": "适用、确认、关系与影响"
+        },
+        {
+          "path": "backend/cra_app/rules/evaluator.py",
+          "kind": "code",
+          "purpose": "白名单条件解释"
+        },
+        {
+          "path": "backend/cra_app/rules/api.py",
+          "kind": "code",
+          "purpose": "候选、确认及适用查询"
+        },
+        {
+          "path": "backend/cra_app/providers/rule_extraction.py",
+          "kind": "code",
+          "purpose": "候选提取及来源校验"
+        },
+        {
+          "path": "web/src/features/rules/RuleTree.tsx",
+          "kind": "code",
+          "purpose": "四层list"
+        },
+        {
+          "path": "web/src/features/rules/RuleConfirmation.tsx",
+          "kind": "code",
+          "purpose": "用户增删改"
+        },
+        {
+          "path": "tests/integration/test_rules.py",
+          "kind": "test",
+          "purpose": "条件、适用性和变更"
+        }
+      ],
+      "contracts": [
+        "ApplicableRule含summary、conditions、exceptions、children、source_refs、applicability、unknowns。",
+        "条件计算返回true/false/unknown，unknown不当作正常；表达式不执行eval。"
+      ],
+      "steps": [
+        "保存关键摘要、完整条件/例外、子项和原文，全部绑定RuleVersion。",
+        "从结构化来源提取候选并校验真实锚点和数字；获准模型经provider接入，未配置显示人工路径。",
+        "实现用户确认增删改、明确规则用途文字自动纳入以及逐条变更关系。",
+        "实现且/或、边界、单位和日期条件白名单；综合医学判断保持分析型规则。",
+        "实现四层展开、处理覆盖、真实冲突及受影响对象提示，不取最新/更严自动裁决。"
+      ],
+      "done_when": [
+        "摘要、完整条件和原文一致，用户修正保留历史。",
+        "新版未提及旧条文不自动撤销；重复邮件不重复确认。",
+        "假锚点不能形成确定性规则，未配置模型不伪装自动提取。"
+      ],
+      "not_in_scope": [
+        "不硬编码真实方案数字或替项目组解释冲突。"
+      ],
+      "scenario_ids": [
+        "CRA-S04",
+        "CRA-S05",
+        "CRA-S06",
+        "CRA-S07",
+        "CRA-S25"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_rules.py",
+          "purpose": "脚注、边界、例外和更新关系",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -131,6 +607,81 @@
         "CRA-R034",
         "CRA-R041",
         "CRA-R045"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W05.md",
+      "clinical_goal": "识别当前患者阶段，并按不同资料类别接续核查位置。",
+      "deliverables": [
+        {
+          "path": "backend/cra_app/subjects/models.py",
+          "kind": "code",
+          "purpose": "患者、事实、访视与断点"
+        },
+        {
+          "path": "backend/cra_app/subjects/service.py",
+          "kind": "code",
+          "purpose": "事实复用和修订"
+        },
+        {
+          "path": "backend/cra_app/subjects/calendar.py",
+          "kind": "code",
+          "purpose": "锚点及窗口"
+        },
+        {
+          "path": "backend/cra_app/subjects/api.py",
+          "kind": "code",
+          "purpose": "时间线和阶段要求"
+        },
+        {
+          "path": "web/src/features/subjects/SubjectTimeline.tsx",
+          "kind": "code",
+          "purpose": "患者时间线"
+        },
+        {
+          "path": "tests/integration/test_subjects.py",
+          "kind": "test",
+          "purpose": "日期精度及分类断点"
+        }
+      ],
+      "contracts": [
+        "ClinicalFact区分原记录、CRA确认、他人答复和模型建议。",
+        "计算输出采用的锚点和规则版本，未知起点不产生假日期。"
+      ],
+      "steps": [
+        "增加患者、事实、访视实例和分类断点迁移，复用M03规则。",
+        "从授权结构化输入/EDC或人工记录获取事实，保留身份映射和来源。",
+        "分开计划和实际时间；date-only不补时分秒，窗口例外采用实际规则。",
+        "各资料类别分别保存正常范围简记和未核实范围，复用已确认信息。",
+        "事实修订只使关联判断待复核，保留旧事实及历史报告。"
+      ],
+      "done_when": [
+        "不同患者及类别断点不混用。",
+        "已确认信息不重复填写。",
+        "日期计算和未知结果均解释来源与版本。"
+      ],
+      "not_in_scope": [
+        "不把上传的局部资料称作完整病史。"
+      ],
+      "scenario_ids": [
+        "CRA-S08",
+        "CRA-S09"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_subjects.py",
+          "purpose": "锚点、日期缺失、修订及断点",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -147,10 +698,8 @@
       "acceptance": "访前选问题，到中心复核是否改对，普通新监查接续；PD上报与其他整改分别完成；Query期限有依据。",
       "requirement_ids": [
         "CRA-R001",
-        "CRA-R006",
         "CRA-R009",
         "CRA-R012",
-        "CRA-R017",
         "CRA-R020",
         "CRA-R021",
         "CRA-R022",
@@ -160,12 +709,106 @@
         "CRA-R027",
         "CRA-R028",
         "CRA-R031",
-        "CRA-R032",
-        "CRA-R033",
-        "CRA-R037",
         "CRA-R041",
         "CRA-R043",
         "CRA-R045"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W06.md",
+      "clinical_goal": "到中心先核实遗留问题是否改对，保留清楚的处理过程和剩余事项。",
+      "deliverables": [
+        {
+          "path": "backend/cra_app/issues/models.py",
+          "kind": "code",
+          "purpose": "问题、分项行动和历史"
+        },
+        {
+          "path": "backend/cra_app/issues/service.py",
+          "kind": "code",
+          "purpose": "PD上报与整改复核"
+        },
+        {
+          "path": "backend/cra_app/issues/deadlines.py",
+          "kind": "code",
+          "purpose": "有依据的Query期限"
+        },
+        {
+          "path": "backend/cra_app/issues/api.py",
+          "kind": "code",
+          "purpose": "问题与行动接口"
+        },
+        {
+          "path": "backend/cra_app/monitoring/service.py",
+          "kind": "code",
+          "purpose": "本次监查主线"
+        },
+        {
+          "path": "backend/cra_app/monitoring/api.py",
+          "kind": "code",
+          "purpose": "工作台与核查范围"
+        },
+        {
+          "path": "web/src/features/issues/CarryoverReview.tsx",
+          "kind": "code",
+          "purpose": "遗留复核底稿"
+        },
+        {
+          "path": "web/src/features/issues/PrevisitSelection.tsx",
+          "kind": "code",
+          "purpose": "访前选择几项"
+        },
+        {
+          "path": "tests/integration/test_issues.py",
+          "kind": "test",
+          "purpose": "分项完成、改错和跨次跟进"
+        }
+      ],
+      "contracts": [
+        "IssueView保留原问题、位置、建议及具体出处、实际修改、CRA复核和下一步。",
+        "confirm-reported只完成pd_reporting；CRC称已改与CRA确认正确分开。"
+      ],
+      "steps": [
+        "把cra_core示例约束吸收进持久服务，原有反例保留，不直接把示例当生产接口。",
+        "稳定问题编号下建立多个Action，允许事实不全先保存；回复、实际修改和复核均留历史。",
+        "用户说PD已上报即完成该上报任务，其他补件/数据更正单独处理，不额外强求回执。",
+        "区分草稿与正式Query，保存真实日期和期限来源；未知期限不生成超期天数。",
+        "到中心默认展示完整遗留，整改建议直接展开来源；访前勾选不删问题。",
+        "接续新患者监查和范围简记；未完项保留，不发明全局审批锁或阻断紧急事项。"
+      ],
+      "done_when": [
+        "PD上报已完成、数据更正仍待办可以同时呈现。",
+        "中心称已改但CRA核实错误时，原问题、原因及后续动作仍在。",
+        "选2项后完整遗留清单不变，第三次跟进仍为同一问题编号。"
+      ],
+      "not_in_scope": [
+        "本步保存选择和预览，最终模板化信件在W11完成。",
+        "不正式提交Query或自动外发。"
+      ],
+      "scenario_ids": [
+        "CRA-S10",
+        "CRA-S11",
+        "CRA-S14",
+        "CRA-S15",
+        "CRA-S16",
+        "CRA-S17",
+        "CRA-S27"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_issues.py",
+          "purpose": "分项行动及跨次历史",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -184,6 +827,80 @@
         "CRA-R014",
         "CRA-R015",
         "CRA-R034"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W07.md",
+      "clinical_goal": "可靠导入EDC检验Excel，并明确本次导出包含的记录范围。",
+      "deliverables": [
+        {
+          "path": "backend/cra_app/edc_import/models.py",
+          "kind": "code",
+          "purpose": "快照、映射和原始行"
+        },
+        {
+          "path": "backend/cra_app/edc_import/service.py",
+          "kind": "code",
+          "purpose": "预览与幂等确认"
+        },
+        {
+          "path": "backend/cra_app/edc_import/excel.py",
+          "kind": "code",
+          "purpose": "检验Excel解析"
+        },
+        {
+          "path": "backend/cra_app/edc_import/api.py",
+          "kind": "code",
+          "purpose": "导入接口"
+        },
+        {
+          "path": "web/src/features/edc/ImportPreview.tsx",
+          "kind": "code",
+          "purpose": "映射、实例和范围"
+        },
+        {
+          "path": "tests/integration/test_edc_import.py",
+          "kind": "test",
+          "purpose": "多sheet、公式及导出范围"
+        }
+      ],
+      "contracts": [
+        "EDCSnapshot保留导出时间/范围、表单、原始行、映射版本和重复实例。",
+        "本次未见返回not_seen_in_export，不直接判未录入。"
+      ],
+      "steps": [
+        "预览sheet/row/cell，分别保存原始字符串、公式及缓存，不执行宏。",
+        "复用已确认列映射，核实新患者/访视/重复实例歧义。",
+        "事务保存不可变快照和范围，重复导入幂等，更正版另建快照。",
+        "向M08提供标准检验记录，同时保留原值、单位、时间精度和原始定位。"
+      ],
+      "done_when": [
+        "同日初检/复查不被合并。",
+        "过滤导出不会产生虚假漏录结论。",
+        "标准字段可回到原Excel位置。"
+      ],
+      "not_in_scope": [
+        "不写回EDC，不扩展用药/样本自动核对。"
+      ],
+      "scenario_ids": [
+        "CRA-S18",
+        "CRA-S19"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_edc_import.py",
+          "purpose": "映射、范围、复导和公式",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -206,6 +923,89 @@
         "CRA-R034",
         "CRA-R035",
         "CRA-R038"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W08.md",
+      "clinical_goal": "人工确认源检验字段后，与EDC完成可解释的匹配、核对和差异记录。",
+      "deliverables": [
+        {
+          "path": "backend/cra_app/laboratory/models.py",
+          "kind": "code",
+          "purpose": "报告、确认、匹配和比较"
+        },
+        {
+          "path": "backend/cra_app/laboratory/matching.py",
+          "kind": "code",
+          "purpose": "对象和重复实例匹配"
+        },
+        {
+          "path": "backend/cra_app/laboratory/comparison.py",
+          "kind": "code",
+          "purpose": "Decimal与单位/逻辑比较"
+        },
+        {
+          "path": "backend/cra_app/laboratory/service.py",
+          "kind": "code",
+          "purpose": "确认、跳过及结果复用"
+        },
+        {
+          "path": "backend/cra_app/laboratory/api.py",
+          "kind": "code",
+          "purpose": "源字段和核对接口"
+        },
+        {
+          "path": "web/src/features/laboratory/LabComparison.tsx",
+          "kind": "code",
+          "purpose": "并排核查"
+        },
+        {
+          "path": "tests/integration/test_laboratory.py",
+          "kind": "test",
+          "purpose": "错配、单位、边界和跳过"
+        }
+      ],
+      "contracts": [
+        "LabComparison返回match_status、field_results、unknowns和scope。",
+        "手动补录标为用户提供；未确认识别和跳过不得视为已核实。"
+      ],
+      "steps": [
+        "先实现人工源字段确认及对应存储，OCR以后从同一接口进入。",
+        "匹配中心、患者、时间、项目、样本、访视、初检复查和报告修订；歧义不按数值近似挑选。",
+        "用Decimal及批准映射比较，保留大于小于等符号，未知单位不猜换算。",
+        "分别返回一致、差异、单位待核实、本次未见、无法识别和跳过，限定结论范围。",
+        "并排查看和记录差异，关联M06待办，不直接自动认定PD或临床安全。"
+      ],
+      "done_when": [
+        "初检、复查和修订不误配，多候选明确待核实。",
+        "带比较符结果不被猜成精确值。",
+        "OCR关闭仍可工作，用户跳过后不重复追问且报告不写正常。"
+      ],
+      "not_in_scope": [
+        "此步不宣称已有照片识别；由W14接入。"
+      ],
+      "scenario_ids": [
+        "CRA-S13",
+        "CRA-S19",
+        "CRA-S20",
+        "CRA-S21",
+        "CRA-S22"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_laboratory.py",
+          "purpose": "匹配、单位、精度及人工路径",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -232,6 +1032,88 @@
         "CRA-R036",
         "CRA-R038",
         "CRA-R042"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W09.md",
+      "clinical_goal": "异常出现后给CRA具体分析和核实问题，并保留研究者或医学答复。",
+      "deliverables": [
+        {
+          "path": "backend/cra_app/safety/models.py",
+          "kind": "code",
+          "purpose": "各判断维度和答复"
+        },
+        {
+          "path": "backend/cra_app/safety/service.py",
+          "kind": "code",
+          "purpose": "事实及规则分析"
+        },
+        {
+          "path": "backend/cra_app/safety/grounding.py",
+          "kind": "code",
+          "purpose": "引用与数字校验"
+        },
+        {
+          "path": "backend/cra_app/safety/api.py",
+          "kind": "code",
+          "purpose": "分析及答复接口"
+        },
+        {
+          "path": "backend/cra_app/providers/case_analysis.py",
+          "kind": "code",
+          "purpose": "受控分析provider"
+        },
+        {
+          "path": "web/src/features/safety/AssessmentPanel.tsx",
+          "kind": "code",
+          "purpose": "事实、分析、缺口和问题"
+        },
+        {
+          "path": "tests/integration/test_safety.py",
+          "kind": "test",
+          "purpose": "判断维度与及时提醒"
+        }
+      ],
+      "contracts": [
+        "事实、系统候选、CRA核实及医学答复分别保存。",
+        "分级、严重性、相关性、预期性、AESI/DLT等分开，缺条件标unknown。"
+      ],
+      "steps": [
+        "先程序计算可确定条件，再由受限模型解释事实及合理候选原因。",
+        "按项目实际版本展开AE及特殊标准，不因外部新版发布而自动替换。",
+        "验证数字、条件和来源；虚构引用不能成为确定性建议。",
+        "生成具体提问和必要及时提醒，分开事件、知悉和实际上报时间。",
+        "关联M06待办及后续答复，provider无权自行关闭行动。"
+      ],
+      "done_when": [
+        "分析给出具体应核实的问题，而非泛泛问医学。",
+        "候选判断不冒充研究者确认，不用分级替代SAE判断。",
+        "模拟provider与真实provider验证分开，缺凭证明示能力缺口。"
+      ],
+      "not_in_scope": [
+        "不自动作最终医学判断或无依据的临床处置。"
+      ],
+      "scenario_ids": [
+        "CRA-S23",
+        "CRA-S24",
+        "CRA-S25",
+        "CRA-S30"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_safety.py",
+          "purpose": "候选与确认、缺资料、假引用和提醒",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -251,15 +1133,90 @@
         "CRA-R001",
         "CRA-R003",
         "CRA-R006",
-        "CRA-R012",
-        "CRA-R017",
         "CRA-R024",
-        "CRA-R026",
         "CRA-R028",
         "CRA-R032",
         "CRA-R033",
-        "CRA-R037",
         "CRA-R045"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W10.md",
+      "clinical_goal": "跟进ISF/TMF缺件，提供启动、关闭和简洁交接清单。",
+      "deliverables": [
+        {
+          "path": "backend/cra_app/site_files/models.py",
+          "kind": "code",
+          "purpose": "目录和文件状态"
+        },
+        {
+          "path": "backend/cra_app/site_files/service.py",
+          "kind": "code",
+          "purpose": "缺件、更新及复核"
+        },
+        {
+          "path": "backend/cra_app/site_files/api.py",
+          "kind": "code",
+          "purpose": "目录接口"
+        },
+        {
+          "path": "backend/cra_app/monitoring/stages.py",
+          "kind": "code",
+          "purpose": "阶段策略"
+        },
+        {
+          "path": "web/src/features/site-files/DirectoryReview.tsx",
+          "kind": "code",
+          "purpose": "目录核查"
+        },
+        {
+          "path": "web/src/features/monitoring/StageChecklist.tsx",
+          "kind": "code",
+          "purpose": "分阶段清单"
+        },
+        {
+          "path": "tests/integration/test_site_files.py",
+          "kind": "test",
+          "purpose": "目录、阶段和交接"
+        }
+      ],
+      "contracts": [
+        "应有、已取得、已核实合格分别记录；目录更新保留旧缺件历史。",
+        "交接引用原Issue；关闭记录项目组意见，系统不替其批准。"
+      ],
+      "steps": [
+        "按用户目录建立版本化应有文件要求，与实际文件和中心范围对应。",
+        "显示上次缺件及新增变化，复用M06行动，不每次重复建问题。",
+        "按项目资料配置启动/关闭要求，保存具体来源与缺口。",
+        "无遗留简述；有遗留直接交代前因后果、现状及继续工作，不新造审批链。"
+      ],
+      "done_when": [
+        "核实补齐后保留历史，下次不重录整个目录。",
+        "启动/关闭采用项目要求，清单完成不等于中心获准关闭。",
+        "交接简洁且后续事项清楚。"
+      ],
+      "not_in_scope": [
+        "不扩为eTMF替代产品或复杂中心运营平台。"
+      ],
+      "scenario_ids": [
+        "CRA-S12",
+        "CRA-S26"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_site_files.py",
+          "purpose": "目录新增、补齐和阶段复用",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -284,6 +1241,87 @@
         "CRA-R030",
         "CRA-R031",
         "CRA-R043"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W11.md",
+      "clinical_goal": "一次记录生成访视信、报告和Excel，并保持事实与状态一致。",
+      "deliverables": [
+        {
+          "path": "backend/cra_app/reports/models.py",
+          "kind": "code",
+          "purpose": "模板、草稿和快照"
+        },
+        {
+          "path": "backend/cra_app/reports/service.py",
+          "kind": "code",
+          "purpose": "多份输出"
+        },
+        {
+          "path": "backend/cra_app/reports/docx_export.py",
+          "kind": "code",
+          "purpose": "DOCX模板导出"
+        },
+        {
+          "path": "backend/cra_app/reports/xlsx_export.py",
+          "kind": "code",
+          "purpose": "Excel track导出"
+        },
+        {
+          "path": "backend/cra_app/reports/api.py",
+          "kind": "code",
+          "purpose": "草稿和导出接口"
+        },
+        {
+          "path": "web/src/features/reports/ReportPreview.tsx",
+          "kind": "code",
+          "purpose": "报告预览"
+        },
+        {
+          "path": "tests/integration/test_reports.py",
+          "kind": "test",
+          "purpose": "范围、文件和历史快照"
+        }
+      ],
+      "contracts": [
+        "生成材料引用coverage以及事实/规则/问题版本；实际发送与签发独立。",
+        "信件选几项不修改问题清单全集；签发后保存不可变内容与引用版本。"
+      ],
+      "steps": [
+        "使用合成模板建立字段映射，留出替换用户实际模板的入口。",
+        "同一记录分别生成访前选取、上次问题处理、本次发现、访后事项及track。",
+        "校验报告措辞不超实际范围，未知不能润色为无异常；事实更正与文字修改分开。",
+        "实现不可变快照及有记录的修订，新进展只进入后续材料。",
+        "真正生成DOCX/XLSX并核对内容、表格及中文排版，不只创建导出按钮。"
+      ],
+      "done_when": [
+        "旧问题处理和新发现都按模板呈现，整改建议来源可回查。",
+        "后续行动变化不改写签发报告。",
+        "文档和track字段一致且实际文件可打开。"
+      ],
+      "not_in_scope": [
+        "不自动发信、签名、写回EDC，外部Excel双向同步未承诺。"
+      ],
+      "scenario_ids": [
+        "CRA-S27",
+        "CRA-S28",
+        "CRA-S29"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_reports.py",
+          "purpose": "模板、快照、覆盖及实际文件",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -311,6 +1349,104 @@
         "CRA-R033",
         "CRA-R037",
         "CRA-R045"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W12.md",
+      "clinical_goal": "CRA能连续完成一次监查，并在下一次按原问题继续跟进。",
+      "deliverables": [
+        {
+          "path": "web/src/pages/MonitoringVisitPage.tsx",
+          "kind": "code",
+          "purpose": "完整访视工作区"
+        },
+        {
+          "path": "web/src/pages/SubjectReviewPage.tsx",
+          "kind": "code",
+          "purpose": "患者和分层list"
+        },
+        {
+          "path": "web/src/pages/HandoverPage.tsx",
+          "kind": "code",
+          "purpose": "简洁交接"
+        },
+        {
+          "path": "web/playwright.config.ts",
+          "kind": "config",
+          "purpose": "实际API端到端配置"
+        },
+        {
+          "path": "web/tests/e2e/monitoring-flow.spec.ts",
+          "kind": "test",
+          "purpose": "两次监查完整路径"
+        },
+        {
+          "path": "tests/integration/test_visit_continuity.py",
+          "kind": "test",
+          "purpose": "刷新及重新登录接续"
+        }
+      ],
+      "contracts": [
+        "完整流程使用真实API和临时PostgreSQL，不能只以静态前端mock证明持久化。",
+        "界面以服务端事实为准，不维护第二套问题完成算法。"
+      ],
+      "steps": [
+        "串联已有服务和页面，保持现场先复核遗留再逐患者的常规顺序。",
+        "合成前次报告→访前选择→到中心核实→新检验核对→分析及报告→下次继续。",
+        "验证正常范围简记、异常详记、跳过和关键缺口追问，减少重复输入。",
+        "刷新、重新登录、切中心及重试后状态正确，紧急入口不被普通顺序挡住。",
+        "普通界面使用临床工作语言，必要技术详情放到来源或诊断详情中。"
+      ],
+      "done_when": [
+        "重开系统仍能找到同一问题的处理历史。",
+        "选2条保留全部问题、PD与更正分别完成、下次继续均在完整路径验证。",
+        "四阶段共享事实而不是四套数据库。"
+      ],
+      "not_in_scope": [
+        "浏览器演示成功不能称真实临床用途已经验证。"
+      ],
+      "scenario_ids": [
+        "CRA-S09",
+        "CRA-S10",
+        "CRA-S11",
+        "CRA-S12",
+        "CRA-S13",
+        "CRA-S14",
+        "CRA-S21",
+        "CRA-S27",
+        "CRA-S28",
+        "CRA-S29"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "npm --prefix web run typecheck",
+          "purpose": "界面类型",
+          "availability": "to_implement"
+        },
+        {
+          "command": "npm --prefix web run build",
+          "purpose": "界面构建",
+          "availability": "to_implement"
+        },
+        {
+          "command": "npm --prefix web run test:e2e -- --project=chromium",
+          "purpose": "真实API两次监查",
+          "availability": "to_implement"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_visit_continuity.py",
+          "purpose": "持久化和接续",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -329,6 +1465,112 @@
         "CRA-R037",
         "CRA-R040",
         "CRA-R044"
+      ],
+      "track": "v1a",
+      "instruction_path": "plan/work_packages/CRA-W13.md",
+      "clinical_goal": "明确第一版哪些功能可用、哪些需人工、哪些尚未验证。",
+      "deliverables": [
+        {
+          "path": "validation/V1A_ACCEPTANCE.md",
+          "kind": "document",
+          "purpose": "完整场景和能力限制"
+        },
+        {
+          "path": "validation/capability-manifest.json",
+          "kind": "config",
+          "purpose": "逐能力状态及证据"
+        },
+        {
+          "path": "tests/acceptance/test_v1a.py",
+          "kind": "test",
+          "purpose": "固定合成反例"
+        },
+        {
+          "path": "validation/TIME_STUDY.md",
+          "kind": "document",
+          "purpose": "总工作时间"
+        },
+        {
+          "path": "deploy/restore-check.md",
+          "kind": "document",
+          "purpose": "恢复验证与缺口"
+        }
+      ],
+      "contracts": [
+        "工程检查、合成验证和真实授权试用分别报告。",
+        "能力状态区分implemented/configured/validated/disabled，不能用整体绿色遮住关键缺口。"
+      ],
+      "steps": [
+        "为34场景登记真实证据、失败、修复及未覆盖用途，局部测试不当整场景完成。",
+        "统计关键遗漏、误配、误报、错误关闭及查找、录入、复核、报告和返工总时间。",
+        "检查权限、作业重试、历史、恢复及provider不可用路径。",
+        "给出V1A能力与限制；缺模型、资料或授权时如实说明，不能宣布完整自动试用就绪。"
+      ],
+      "done_when": [
+        "每项宣称具备的能力有证据或标未验证。",
+        "总时间有实测记录，不编造节时比例。",
+        "试用范围、人工步骤和实质缺口清楚。"
+      ],
+      "not_in_scope": [
+        "不以22项基础测试或单次成功代表整个系统成熟。"
+      ],
+      "scenario_ids": [
+        "CRA-S01",
+        "CRA-S02",
+        "CRA-S03",
+        "CRA-S04",
+        "CRA-S05",
+        "CRA-S06",
+        "CRA-S07",
+        "CRA-S08",
+        "CRA-S09",
+        "CRA-S10",
+        "CRA-S11",
+        "CRA-S12",
+        "CRA-S13",
+        "CRA-S14",
+        "CRA-S15",
+        "CRA-S16",
+        "CRA-S17",
+        "CRA-S18",
+        "CRA-S19",
+        "CRA-S20",
+        "CRA-S21",
+        "CRA-S22",
+        "CRA-S23",
+        "CRA-S24",
+        "CRA-S25",
+        "CRA-S26",
+        "CRA-S27",
+        "CRA-S28",
+        "CRA-S29",
+        "CRA-S30",
+        "CRA-S31",
+        "CRA-S32",
+        "CRA-S33",
+        "CRA-S34"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/acceptance/test_v1a.py",
+          "purpose": "固定验收反例",
+          "availability": "to_implement"
+        },
+        {
+          "command": "npm --prefix web run test:e2e -- --project=chromium",
+          "purpose": "完整流程回归",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -352,6 +1594,84 @@
         "CRA-R035",
         "CRA-R036",
         "CRA-R038"
+      ],
+      "track": "v1b",
+      "instruction_path": "plan/work_packages/CRA-W14.md",
+      "clinical_goal": "减少检验报告抄录，识别后继续复用原有核对和报告流程。",
+      "deliverables": [
+        {
+          "path": "backend/cra_app/providers/lab_ocr.py",
+          "kind": "code",
+          "purpose": "可替换OCR适配"
+        },
+        {
+          "path": "backend/cra_app/laboratory/recognition.py",
+          "kind": "code",
+          "purpose": "作业、图像区域和候选"
+        },
+        {
+          "path": "web/src/features/laboratory/RecognitionReview.tsx",
+          "kind": "code",
+          "purpose": "原图字段复核"
+        },
+        {
+          "path": "tests/integration/test_recognition.py",
+          "kind": "test",
+          "purpose": "误识别、失败和替换"
+        },
+        {
+          "path": "validation/OCR_EVALUATION.md",
+          "kind": "document",
+          "purpose": "字段错误和复核负担"
+        }
+      ],
+      "contracts": [
+        "RecognizeLab输出候选、图像区域及版本/失败，不直接写成已确认事实。",
+        "确认或跳过后接M08现有服务，不另建比对系统。"
+      ],
+      "steps": [
+        "评估候选OCR在合成或获准检验格式上的效果、许可、成本和部署。",
+        "保存图像位置、候选和识别状态，重点可复核小数点、单位、比较符和实例。",
+        "确认后进入原有比对，失败可补录或跳过并记住选择。",
+        "更换provider不覆盖已确认事实；以字段错误及总复核时间评价。"
+      ],
+      "done_when": [
+        "识别确实进入原比对服务，不重复建立问题和报告状态。",
+        "不支持格式明确提示，不预设未经验证的通用准确率。",
+        "人工确认和跳过路径保留，非检验源图不自动核对。"
+      ],
+      "not_in_scope": [
+        "默认V1A主线后做V1B，不扩展用药或样本OCR。"
+      ],
+      "scenario_ids": [
+        "CRA-S13",
+        "CRA-S19",
+        "CRA-S20",
+        "CRA-S21",
+        "CRA-S22",
+        "CRA-S30"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/integration/test_recognition.py",
+          "purpose": "识别及人工退化",
+          "availability": "to_implement"
+        },
+        {
+          "command": "npm --prefix web run test:e2e -- --project=chromium",
+          "purpose": "接入后的整体流程",
+          "availability": "to_implement"
+        }
       ]
     },
     {
@@ -361,15 +1681,94 @@
         "CRA-W13"
       ],
       "module_ids": [
+        "M01",
         "M14"
       ],
       "status": "planned",
       "acceptance": "在获准环境配置身份、私有数据库/文件服务、备份恢复和模型；确认权限后以真实操作评价，记录风险与反馈。",
       "requirement_ids": [
         "CRA-R035",
+        "CRA-R036",
         "CRA-R037",
         "CRA-R040",
         "CRA-R044"
+      ],
+      "track": "deployment",
+      "instruction_path": "plan/work_packages/CRA-W15.md",
+      "clinical_goal": "在获准环境实际试用，以真实CRA操作反馈增量完善。",
+      "deliverables": [
+        {
+          "path": "deploy/compose.runtime.yml",
+          "kind": "config",
+          "purpose": "核实后的运行配置"
+        },
+        {
+          "path": "deploy/RUNBOOK.md",
+          "kind": "document",
+          "purpose": "升级、回退和恢复"
+        },
+        {
+          "path": "deploy/env.schema.json",
+          "kind": "config",
+          "purpose": "配置要求，不含真实密钥"
+        },
+        {
+          "path": "validation/AUTHORIZED_TRIAL.md",
+          "kind": "document",
+          "purpose": "实际试用与限制"
+        },
+        {
+          "path": "validation/FEEDBACK_REGISTER.md",
+          "kind": "document",
+          "purpose": "反馈对应理论及代码"
+        }
+      ],
+      "contracts": [
+        "身份、数据库、文件和模型使用获准环境；公开GitHub仅存代码和合成材料。",
+        "没有部署账户、凭证或授权时该步骤列阻塞，不能假装生产验证完成。"
+      ],
+      "steps": [
+        "核对获准账户、身份、数据库、文件、模型与资料范围，密钥使用安全环境管理。",
+        "按锁定镜像和迁移部署，实测最小权限、TLS、备份恢复、审计和中心隔离。",
+        "按确定范围执行真实操作，记录总时间、问题及未覆盖用途。",
+        "反馈关联CRA-R/M/CRA-W及去标识场景，区分理论变化、资料缺口、代码错误和呈现问题。"
+      ],
+      "done_when": [
+        "具备实际环境、授权、恢复及试用证据，缺项如实列阻塞。",
+        "不把临时Codespaces当稳定临床托管。",
+        "反馈能定位到具体区域修改，而非重建全部系统。"
+      ],
+      "not_in_scope": [
+        "本轮设计不创建收费资源、上传真实资料或启用外部服务。"
+      ],
+      "scenario_ids": [
+        "CRA-S01",
+        "CRA-S02",
+        "CRA-S30",
+        "CRA-S33",
+        "CRA-S34"
+      ],
+      "verification": [
+        {
+          "command": "python3 tools/check_traceability.py",
+          "availability": "available",
+          "purpose": "理论/技术/任务卡同步"
+        },
+        {
+          "command": "python3 -m unittest discover -s tests -v",
+          "availability": "available",
+          "purpose": "现有基础与反例检查"
+        },
+        {
+          "command": "uv run --frozen pytest -q tests/acceptance/test_v1a.py",
+          "purpose": "部署前既定回归",
+          "availability": "to_implement"
+        },
+        {
+          "command": "python3 tools/check_traceability.py",
+          "purpose": "反馈后对应仍完整",
+          "availability": "to_implement"
+        }
       ]
     }
   ]

@@ -41,3 +41,9 @@ CR记录至少包含id、date、kind、requirement_fingerprints、module_reviews
 Notion v0.14为本轮来源，Git中整理后的条目是后续开发基线。当前没有配置Notion自动持续导入或写回；GitHub检查只能验证已导入Git的内容。不能声称修改Notion就会自动生成并验证新代码。
 
 后续若增加只读Notion差异导入，只应创建待审变更，保持来源版本、权限和原文范围；不自动覆盖已发布理论、项目规则或报告。现有Notion法规维护任务也不能被当作已经完成Git代码同步。
+
+## 6. 任务执行说明的同步
+
+plan/tasks.json同时保存目标文件、步骤、接口、验证命令及完成标准；16份work_packages任务卡和CODEX_TASKS索引由同一渲染器生成并受CI检查。技术细化使用TECH记录，不伪造业务理论修订；真正改变业务含义仍按CRA-R的revision和CR机制处理。
+
+任务完成前允许计划路径不存在，但标verified时必须有实际交付文件、已可执行命令和已完成前置，并保留evidence。此检查不证明证据内容或实现语义一定正确，仍需按任务验收审查。下一项选择器只读计划，默认不跳过阻塞项，不自动启用OCR增强或部署。

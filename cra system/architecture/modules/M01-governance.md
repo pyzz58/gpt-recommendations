@@ -1,12 +1,12 @@
 # M01 权限、研究范围与操作历史
 
-版本：1；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/governance/`。
+版本：2；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/governance/`。
 
 ## 对应理论和任务
 
 理论：CRA-R002、CRA-R036。完整内容及出处见[理论清单](../../theory/REQUIREMENTS.md)与[对照表](../../traceability/INDEX.md)。
 
-工作包：CRA-W01。验收场景：CRA-S01、CRA-S02。依赖模块：无。
+工作包：CRA-W01、CRA-W02、CRA-W15。验收场景：CRA-S01、CRA-S02。依赖模块：无。
 
 ## 输入、输出和负责的数据
 

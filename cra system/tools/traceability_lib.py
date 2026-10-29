@@ -6,6 +6,7 @@ import json
 import re
 import subprocess
 from pathlib import Path
+from execution_plan import render_execution_views, validate_execution
 
 VIEW_PATHS = ("theory/REQUIREMENTS.md", "traceability/INDEX.md", "plan/WORK_PLAN.md", "architecture/QUALITY.md")
 
@@ -73,7 +74,9 @@ def render_views(root: Path) -> dict[str, str]:
     ]
     for s in scenarios:
         parts.append(f'| {s["id"]} {s["title"]} | {"、".join(s["requirement_ids"])} | {s["expected"]} | {s["status"]} |')
-    return dict(zip(VIEW_PATHS, [requirement_view, index_view, plan_view, "\n".join(parts) + "\n"]))
+    views = dict(zip(VIEW_PATHS, [requirement_view, index_view, plan_view, "\n".join(parts) + "\n"]))
+    views.update(render_execution_views(tasks, module_map))
+    return views
 
 
 def safe_path(root: Path, relative: str) -> Path:
@@ -123,6 +126,7 @@ def validate(root: Path, base_ref: str | None = None, check_views: bool = True) 
     mmap = unique_map(modules, "module", errors)
     tmap = unique_map(tasks, "task", errors)
     smap = unique_map(scenarios, "scenario", errors)
+    errors.extend(validate_execution(root, tasks, mmap, rmap, smap))
     expected = {(r["id"], mid) for r in requirements for mid in r["modules"]}
     seen = set()
     for b in bindings:
