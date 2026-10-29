@@ -28,7 +28,7 @@ class EvidenceTests(unittest.TestCase):
             "done_when": ["synthetic function works"], "scenario_ids": [],
             "requirement_ids": [], "verification": [{"command": "synthetic test", "purpose": "provenance boundary", "availability": "available"}],
         }
-        self.profile = {"task_id": "CRA-W01", "required_job": "cra-w01", "required_steps": ["test"], "workflow_path": ".github/workflows/cra-system.yml"}
+        self.profile = {"task_id": "CRA-W01", "required_job": "cra-w01", "required_steps": ["test"], "workflow_path": ".github/workflows/cra-system.yml", "binding_paths": ["implementation.py"]}
         (self.root / "implementation.py").write_text("def add_one(value):\n    return value + 1\n")
         (self.root / "theory/requirements.json").write_text('{"requirements": []}')
         self.save_plan()

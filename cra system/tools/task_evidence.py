@@ -140,7 +140,7 @@ def verify(root, repository, get_json):
                 raise ValueError("tested source missing: " + relative)
             return value.stdout
         def paths(prefix):
-            result = subprocess.run(["git", "ls-tree", "-rz", "--name-only", sha, "--", "cra system/" + prefix], cwd=root, capture_output=True)
+            result = subprocess.run(["git", "ls-tree", "--full-tree", "-rz", "--name-only", sha, "--", "cra system/" + prefix], cwd=root, capture_output=True)
             if result.returncode:
                 raise ValueError("tested source listing unavailable")
             return [p.removeprefix("cra system/") for p in result.stdout.decode("utf-8").split(chr(0)) if p]
