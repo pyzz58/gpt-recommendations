@@ -36,7 +36,7 @@
         "traceability/manifest.json"
       ],
       "implementation_status": "documentation_ready",
-      "source_sha256": "8025af4122b4c0b0b63dca1eb72fc697647bcbc1348d34cfa9427eeb52b490e1"
+      "source_sha256": "c324b80fd97425bbed95898eb452245e3ce3fa455e26e142eececee94c71d473"
     },
     {
       "id": "RQ-002",
@@ -93,7 +93,7 @@
         "config/workflows"
       ],
       "implementation_status": "planned",
-      "source_sha256": "067d218dc30d4fd64bfeb2dec99e4eb23389865c85a3a67e0e8e5edf32271cc7"
+      "source_sha256": "1af0873eef54fd723342b8d3fc9f6fc3dff7ca8637b29391b94d20e2105809b7"
     },
     {
       "id": "RQ-004",
@@ -487,7 +487,7 @@
         "services/core/src/medical_one_person/domain/engagements"
       ],
       "implementation_status": "planned",
-      "source_sha256": "91c5bc5cf40a01adb895c5252bb6fea19a91fe7757fcc4ef2f7d5baa5fcd781a"
+      "source_sha256": "a613bec6f42f3c0517c46bcdc2f5defd3f028e6dab30dc2bcb4d5f8150a608ba"
     },
     {
       "id": "RQ-017",
@@ -704,7 +704,7 @@
         "tests/evaluation"
       ],
       "implementation_status": "planned",
-      "source_sha256": "b590ee6e9a5fe840ec50a8253a366985380b02edcd3a15a85a14819e8652e3f4"
+      "source_sha256": "917108c3a04aec5f21f738d470e11431936ee547004009427c35d9d47e9cd3f9"
     },
     {
       "id": "RQ-025",
@@ -852,7 +852,7 @@
         "services/core/src/medical_one_person/domain/artifacts"
       ],
       "implementation_status": "planned",
-      "source_sha256": "2cd169fc065e1c2d99b0b9ce8d179ca0eee5654179c1386605e2b8ae478628a7"
+      "source_sha256": "6e801d0490b108124c27f2765d69cf3783832216a1bb3dfc1eef676f3e2a51f8"
     },
     {
       "id": "RQ-030",
@@ -913,7 +913,7 @@
         "services/core/src/medical_one_person/domain/claims"
       ],
       "implementation_status": "planned",
-      "source_sha256": "8d38dff9f4122032b982ec20b7878706860c096e2a9ea1a56b6bdcbd73aa1fa6"
+      "source_sha256": "67e0d560027445aa778291df878f9be91e765119665891c53e7755f285fa8c27"
     },
     {
       "id": "RQ-032",
@@ -949,13 +949,53 @@
         "tests"
       ],
       "implementation_status": "planned",
-      "source_sha256": "faca80a7c3ed2c8f132b4d761a072f6e7e1d22d51572aa1d042baac448de241d"
+      "source_sha256": "079cae1e45be5f94965e6a4417edc3699ba6b247b5afb937092fcaf703ccbb43"
+    },
+    {
+      "id": "RQ-033",
+      "title": "第一阶段完整研发与现实外包协作模式验证",
+      "source_refs": [
+        "D-005",
+        "D-027",
+        "SEC:1",
+        "SEC:2",
+        "SEC:4.4",
+        "SEC:10.4",
+        "SEC:13"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-04",
+        "TR-08",
+        "TR-15",
+        "TR-19",
+        "TR-20",
+        "TR-25"
+      ],
+      "work_packages": [
+        "W16",
+        "W17",
+        "W21",
+        "W22",
+        "W23",
+        "W24"
+      ],
+      "acceptance_refs": [
+        "AT-033"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/engagements",
+        "services/core/src/medical_one_person/domain/phase_validations",
+        "tests/evaluation/phase_one"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "7415e1370fd1359d4502505a5396379dee3010a369ea70b7bf4f7dc61bdb08d0"
     }
   ],
-  "theory_version": "V0.5",
-  "roadmap_version": "V0.1",
-  "theory_sha256": "d638e0479c8d59437971095ed5b3f11999229a440b529282657cd4a564ae45e7",
-  "roadmap_sha256": "68d5822cae0169b61fff350965219488238acf38821c384df00ad17881a88aa4",
+  "theory_version": "V0.6",
+  "roadmap_version": "V0.2",
+  "theory_sha256": "7cedf89fd2822614a7a5b1b55f3e74a9c0ee0bd6dcb452402d38066fd28e04bf",
+  "roadmap_sha256": "6aaa8b36151b86d0357248f5c40e42a1cc4b67c915c2ec36dcda192eb202a19d",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1009,36 +1049,38 @@
     "D-024": "66912e0eb0579e9ff6b94028a63febe7efb27993ce8a44f9f9032579cf0f75b2",
     "D-025": "0aa4ef384a1940c74e04c71e4f5926d0f7b84f96bc62ad5882ade2b7ca44ddd7",
     "D-026": "e5aad2bb6808a0992686eb2052770b496fa6bd065781c2b88271dad12342a4ef",
-    "SEC:1": "e940bb5121ff6399381534f322994b6db5a1735210415f3d2ea9e913c16fe234",
-    "SEC:10": "82fa92af7c7628755609f9c8a24605867c14eab4c1617f14967602e6522d5c7e",
+    "D-027": "9e9a49eb7c9488fa174cfb7d6d781df19a2ff50f61f31f445c42ee9cf0cd69c0",
+    "SEC:1": "52e486d89ee01d3fbaa7ab6523701790d6521eb0ed0d4b938079630b0186d429",
+    "SEC:10": "ffbbb85feabab581eddd6981f9eebcddd3a4ee80f0e6a35eec7defb4942c4319",
     "SEC:10.1": "b7f0bfdb75b16ea23113b34fb6a81fb1cb51d83208bf3c01499468d731c960e6",
     "SEC:10.2": "cddc7d1745dca8b632358d8d12318ab818beec1eb04fa2f0b54325b43e0c1dcb",
     "SEC:10.3": "350f9d37ec1bac0249dfb6bd39ac0f096fbbf3ea6dfae074a406f75469c40331",
+    "SEC:10.4": "d2ac26adf518077951a0979f34c9baeda9756b0b7716eb323418d9adbc2b7b85",
     "SEC:11": "14c7f78c001ffce9fe052e7447b0df50cbc82d64d67380e27018dc2fb8af014c",
     "SEC:11.1": "9de1304d764cff1b144c533ca3ed90edd33b87c1fbeb4c3794120612efa50b5a",
     "SEC:11.2": "8cd41167da50422a1108e1aa2dddc9963bce9a412e3341ebb8c5fe58ef8b3571",
     "SEC:11.3": "ad540bc2eef2af648a67cc37082fbdf22606b33f31db3999c5c7b1963da8e0db",
     "SEC:11.4": "c8811de2ab0e62462148e6ada4977259b3220df8295cec923437862edb37051c",
     "SEC:12": "b3dae2aaee9061835a130037e69a5059af27b3057c344159bdf51a381827cbb2",
-    "SEC:13": "46aad7541589e8db0e94faec37e1a8a6e87efe566f3ae4024cb0bb26d8cb1277",
+    "SEC:13": "2f14a5f06fd9084562d38c3a1c191136c326912e1684052fed9aff486f1b53d4",
     "SEC:14": "596ec55d45d179638bb700975a3f8b65c44926d10c0e6f30ebd28a932d162773",
     "SEC:14.1": "ead0ff5cdc0cbaf1a289cce340ee2d76f2ea8a9128cbdb974befa0a111f76486",
     "SEC:14.2": "4147762299dec3a53c2ee856c49b2f954d097a8aabb1192088bcd385a6df4691",
     "SEC:14.3": "aee132f4d00beaf06dceb565686ecefac24972c4c140fb7aae712d68a043d1e0",
     "SEC:14.4": "90e44adec37f0a10287927a8ab167bf2c133abff6f62307866d92fb1ffe9a3f6",
-    "SEC:15": "3014d0b8a75d8123da8b0b0195d7dc5b69c2842e342bf851c540ece61e88dc59",
+    "SEC:15": "d55e08c5937bfbcdebf62b2db03535beb3f1c491a16a5b53d3507ec13ec60bde",
     "SEC:16": "9f6227eb98bd1eebc5f27aba11b6eb3cc76f600ff8e84312e3fa2639df27f812",
     "SEC:17": "cddc96517598615329e9f4d21b636727445c0bb70dee72d5c22e325b16bf18e0",
     "SEC:18": "1966fcb6011158392d5333e5e575a4afa056a1494b01ae0d047818604622c190",
-    "SEC:19": "5c74931af3dee078bdfe655498295e4fcf4124e00c6dbe33ff69c42edab60682",
-    "SEC:2": "4d9ea65b42096d04deaf19292bc4e3dab33ea014cb18d1b324f0836c4745e2a4",
-    "SEC:20": "6faf3cb37c6171cd76a954ba63b51d026dffc30a49800efcddb469b2454c751e",
+    "SEC:19": "4bbb51bbe65697eb8cebe7561899887b14d9eb1e32732cca2a99ee8db28bc9d2",
+    "SEC:2": "e06e1056a183b188c5a1c7cba131ab5e606ec7c617862e5166799ee2101b073d",
+    "SEC:20": "6bb8232d1887029e7dd727b680e5943d09bfa9ef2dd34e289d411e11b7838e40",
     "SEC:3": "1e5e735d84a3f6c2cb3d94f4d36853d010e75fa64f5781bc668e1412371981ee",
-    "SEC:4": "4b3ff7903f9df813d9815ad4bea3ba05e938f0fb523743335163c95c9ce95dc3",
+    "SEC:4": "cc6632d2b4f100a59fb85c92a6ebc0bfb75e7dad6b785e130be3b1236863baba",
     "SEC:4.1": "d5e130effdd09ce1dbfac7e64a1070f1360c2aa2e6ddee0442998b94c29c9857",
     "SEC:4.2": "9a75fe027909d0f6ffb1e6509bf02373f8279782dd2cac8231b3c18a66967da8",
     "SEC:4.3": "3c1a3c37eaf2069517941857a6d611b7702090331d0164c1d4035ec0c42f3b46",
-    "SEC:4.4": "0dbc18ff8921ec76dc4f7ed176304a6875008035f2fca431cfb29ab9176aae18",
+    "SEC:4.4": "8a41dae712e76d59e3c0e8d1572a04c503bdbd397e4e41dd3749c1860c8e9457",
     "SEC:4.5": "2b66db58b31a5e49681b9f24a919ef7cbc07879f03756dd604261798bc6bd4ee",
     "SEC:5": "3157c0b44483fbda7926a0037b59326fecc20abee61fc2ceb8ef586f4d0a4b66",
     "SEC:5.1": "787b21d22307e895df8d009afb4b817fba9894bc75042b7e406ee2739ba68ec3",
@@ -1059,8 +1101,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-10-29T10:28:54.436913+00:00",
-    "note": "首次核对思想V0.5与技术V0.1：逐章覆盖32需求、26岗位、24工作包和32验收；完整应用均为计划，本轮只交付文档追踪检查。",
+    "at": "2026-10-29T10:45:21.188243+00:00",
+    "note": "依据D-027核对第一阶段核心目标：更新思想V0.6与技术V0.2，补齐现实CDMO/CRO/SMO/中心实验室接口、覆盖数据、AT-033和W24主验证；应用与现实协作仍未执行。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   }
 }
