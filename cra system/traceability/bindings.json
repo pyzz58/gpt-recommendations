@@ -46,38 +46,38 @@
     {
       "requirement_id": "CRA-R005",
       "module_id": "M03",
-      "reviewed_revision": 1,
-      "reviewed_digest": "7380dacde1d4eb90bd9b3c8c34fc2a1a473109d99188630e16893e85088c03fa"
+      "reviewed_revision": 2,
+      "reviewed_digest": "cbafbe647ea5955c021187d5844076f7791d660d324dce2785da159d516debdd"
     },
     {
       "requirement_id": "CRA-R006",
       "module_id": "M03",
-      "reviewed_revision": 1,
-      "reviewed_digest": "ec979d16d7cc4f7a50ce20f350e18ccb6b09c44e59d693675edb967960739317"
+      "reviewed_revision": 2,
+      "reviewed_digest": "4187646f69e56212c747e977413022bec7e5e4dbb803967643b5f2c520cfcb2e"
     },
     {
       "requirement_id": "CRA-R006",
       "module_id": "M05",
-      "reviewed_revision": 1,
-      "reviewed_digest": "ec979d16d7cc4f7a50ce20f350e18ccb6b09c44e59d693675edb967960739317"
+      "reviewed_revision": 2,
+      "reviewed_digest": "4187646f69e56212c747e977413022bec7e5e4dbb803967643b5f2c520cfcb2e"
     },
     {
       "requirement_id": "CRA-R007",
       "module_id": "M03",
-      "reviewed_revision": 1,
-      "reviewed_digest": "6d05a52e6b34f51a52a8d81b317a2e440cd2fac6404d2cf2a31acbeb2648501d"
+      "reviewed_revision": 2,
+      "reviewed_digest": "831ebd442264324869834a48325ac3b5aff2948e64122928d6cae59e29dc0ec6"
     },
     {
       "requirement_id": "CRA-R007",
       "module_id": "M09",
-      "reviewed_revision": 1,
-      "reviewed_digest": "6d05a52e6b34f51a52a8d81b317a2e440cd2fac6404d2cf2a31acbeb2648501d"
+      "reviewed_revision": 2,
+      "reviewed_digest": "831ebd442264324869834a48325ac3b5aff2948e64122928d6cae59e29dc0ec6"
     },
     {
       "requirement_id": "CRA-R008",
       "module_id": "M03",
-      "reviewed_revision": 1,
-      "reviewed_digest": "fffd92591a307e1af62bf431b7cde1ac6a5bee081b7384ceeec9fdcf1de5c73a"
+      "reviewed_revision": 2,
+      "reviewed_digest": "5a683e682b906f12729e4206dd44f78a55a555856f53e124a64557a0819ecb0e"
     },
     {
       "requirement_id": "CRA-R009",
@@ -106,8 +106,8 @@
     {
       "requirement_id": "CRA-R010",
       "module_id": "M04",
-      "reviewed_revision": 1,
-      "reviewed_digest": "d822d774c312c411877409a86d12108a21e481ac0f229c81020d09949bcb41fa"
+      "reviewed_revision": 2,
+      "reviewed_digest": "afd9a814b752ef1ed195398790cdcdc166e79eba297afc8b1531d4e00b6741f9"
     },
     {
       "requirement_id": "CRA-R011",
@@ -136,14 +136,14 @@
     {
       "requirement_id": "CRA-R013",
       "module_id": "M07",
-      "reviewed_revision": 1,
-      "reviewed_digest": "6ca1eb728aa2aeca97f4f0922e519c357810702784870cde800e53c89d4167df"
+      "reviewed_revision": 2,
+      "reviewed_digest": "8410adb6a33bc0d3f960bc9c3cbf37704e14e1c22c6e6842c0fdcd562e41422f"
     },
     {
       "requirement_id": "CRA-R013",
       "module_id": "M08",
-      "reviewed_revision": 1,
-      "reviewed_digest": "6ca1eb728aa2aeca97f4f0922e519c357810702784870cde800e53c89d4167df"
+      "reviewed_revision": 2,
+      "reviewed_digest": "8410adb6a33bc0d3f960bc9c3cbf37704e14e1c22c6e6842c0fdcd562e41422f"
     },
     {
       "requirement_id": "CRA-R014",
@@ -178,14 +178,14 @@
     {
       "requirement_id": "CRA-R017",
       "module_id": "M05",
-      "reviewed_revision": 1,
-      "reviewed_digest": "9bf30c71a15635d891f29033c1deafc4d7f0cfd3945f74a51aad21860705dba5"
+      "reviewed_revision": 2,
+      "reviewed_digest": "a104a47b5ef3a0fca5efaa5fa4996656602465435a8f07acc824ddd0d41802bb"
     },
     {
       "requirement_id": "CRA-R017",
       "module_id": "M08",
-      "reviewed_revision": 1,
-      "reviewed_digest": "9bf30c71a15635d891f29033c1deafc4d7f0cfd3945f74a51aad21860705dba5"
+      "reviewed_revision": 2,
+      "reviewed_digest": "a104a47b5ef3a0fca5efaa5fa4996656602465435a8f07acc824ddd0d41802bb"
     },
     {
       "requirement_id": "CRA-R018",
@@ -244,14 +244,14 @@
     {
       "requirement_id": "CRA-R024",
       "module_id": "M02",
-      "reviewed_revision": 1,
-      "reviewed_digest": "ffacf68420c6da2a9a246e3269e20ca755acfcaf5ad389cc61b9f561c3802b76"
+      "reviewed_revision": 2,
+      "reviewed_digest": "26c9988d867e9be3c499c247cd3abbd17ea314d34b8e60e126799d6a11b035ce"
     },
     {
       "requirement_id": "CRA-R024",
       "module_id": "M10",
-      "reviewed_revision": 1,
-      "reviewed_digest": "ffacf68420c6da2a9a246e3269e20ca755acfcaf5ad389cc61b9f561c3802b76"
+      "reviewed_revision": 2,
+      "reviewed_digest": "26c9988d867e9be3c499c247cd3abbd17ea314d34b8e60e126799d6a11b035ce"
     },
     {
       "requirement_id": "CRA-R025",
@@ -268,26 +268,26 @@
     {
       "requirement_id": "CRA-R026",
       "module_id": "M05",
-      "reviewed_revision": 1,
-      "reviewed_digest": "ec8c8f79322fe38fd83327b577ea4201d385693f3aea64f29ee62ab2cc119188"
+      "reviewed_revision": 2,
+      "reviewed_digest": "b98afe3953f488c2d7daac8eade689b3adad1b562185a27d7d06a66b20953b5f"
     },
     {
       "requirement_id": "CRA-R026",
       "module_id": "M06",
-      "reviewed_revision": 1,
-      "reviewed_digest": "ec8c8f79322fe38fd83327b577ea4201d385693f3aea64f29ee62ab2cc119188"
+      "reviewed_revision": 2,
+      "reviewed_digest": "b98afe3953f488c2d7daac8eade689b3adad1b562185a27d7d06a66b20953b5f"
     },
     {
       "requirement_id": "CRA-R027",
       "module_id": "M06",
-      "reviewed_revision": 1,
-      "reviewed_digest": "33412f5a948cc2b66d73a41fbc9bc98bffb27b42d558ca88f5d814655e80da53"
+      "reviewed_revision": 2,
+      "reviewed_digest": "f5b569761885d59ffa69973f16d61d737bffb776034c07cb44e652a86203163a"
     },
     {
       "requirement_id": "CRA-R027",
       "module_id": "M11",
-      "reviewed_revision": 1,
-      "reviewed_digest": "33412f5a948cc2b66d73a41fbc9bc98bffb27b42d558ca88f5d814655e80da53"
+      "reviewed_revision": 2,
+      "reviewed_digest": "f5b569761885d59ffa69973f16d61d737bffb776034c07cb44e652a86203163a"
     },
     {
       "requirement_id": "CRA-R028",
@@ -316,14 +316,14 @@
     {
       "requirement_id": "CRA-R031",
       "module_id": "M06",
-      "reviewed_revision": 1,
-      "reviewed_digest": "d40dbca9a0bd6710ff789dc4d0e168f04dba77793a0202a33bcc2a92d3720238"
+      "reviewed_revision": 2,
+      "reviewed_digest": "7e93993e46e5e81fb9b2e9105e2f30bb6946a363998d77ea16691fba5786df8d"
     },
     {
       "requirement_id": "CRA-R031",
       "module_id": "M11",
-      "reviewed_revision": 1,
-      "reviewed_digest": "d40dbca9a0bd6710ff789dc4d0e168f04dba77793a0202a33bcc2a92d3720238"
+      "reviewed_revision": 2,
+      "reviewed_digest": "7e93993e46e5e81fb9b2e9105e2f30bb6946a363998d77ea16691fba5786df8d"
     },
     {
       "requirement_id": "CRA-R032",
@@ -370,20 +370,20 @@
     {
       "requirement_id": "CRA-R035",
       "module_id": "M08",
-      "reviewed_revision": 1,
-      "reviewed_digest": "1e52461bb1c0f0677d7061bf0ad484800bee55ff274f20d2b3c1ecda5c73cdb5"
+      "reviewed_revision": 2,
+      "reviewed_digest": "3c5ee1d18febb67dc527aff8b12ed598fa06d1a417af371bd02358ac8ecc660d"
     },
     {
       "requirement_id": "CRA-R035",
       "module_id": "M12",
-      "reviewed_revision": 1,
-      "reviewed_digest": "1e52461bb1c0f0677d7061bf0ad484800bee55ff274f20d2b3c1ecda5c73cdb5"
+      "reviewed_revision": 2,
+      "reviewed_digest": "3c5ee1d18febb67dc527aff8b12ed598fa06d1a417af371bd02358ac8ecc660d"
     },
     {
       "requirement_id": "CRA-R035",
       "module_id": "M14",
-      "reviewed_revision": 1,
-      "reviewed_digest": "1e52461bb1c0f0677d7061bf0ad484800bee55ff274f20d2b3c1ecda5c73cdb5"
+      "reviewed_revision": 2,
+      "reviewed_digest": "3c5ee1d18febb67dc527aff8b12ed598fa06d1a417af371bd02358ac8ecc660d"
     },
     {
       "requirement_id": "CRA-R036",
@@ -472,20 +472,20 @@
     {
       "requirement_id": "CRA-R044",
       "module_id": "M14",
-      "reviewed_revision": 1,
-      "reviewed_digest": "9c6f41efabc896eeb9adbd8fd245e7b45b5f0b191f4d48058a7f618a3872bf1c"
+      "reviewed_revision": 2,
+      "reviewed_digest": "ffd14fea356ccff0bc9fac5b367d309b4add7594dd71efbf29bdd047ccd293e7"
     },
     {
       "requirement_id": "CRA-R045",
       "module_id": "M04",
-      "reviewed_revision": 1,
-      "reviewed_digest": "5c5afd78110f873fc9f83d83c34cceb1e645df4e5d173f3e61bfb7a0ce6a1fa7"
+      "reviewed_revision": 2,
+      "reviewed_digest": "3f1accdfdddf6c70c45da70b33ea3b6ccab1282bc5e5cfd26ddb93cb7767e769"
     },
     {
       "requirement_id": "CRA-R045",
       "module_id": "M05",
-      "reviewed_revision": 1,
-      "reviewed_digest": "5c5afd78110f873fc9f83d83c34cceb1e645df4e5d173f3e61bfb7a0ce6a1fa7"
+      "reviewed_revision": 2,
+      "reviewed_digest": "3f1accdfdddf6c70c45da70b33ea3b6ccab1282bc5e5cfd26ddb93cb7767e769"
     }
   ]
 }

@@ -4,7 +4,7 @@
 
 | 编号 | 模块 | 负责什么代码区域 | 主要工作包 |
 | --- | --- | --- | --- |
-| M01 | [权限、研究范围与操作历史](modules/M01-governance.md) | `backend/cra_app/governance/` | CRA-W01 |
+| M01 | [权限、研究范围与操作历史](modules/M01-governance.md) | `backend/cra_app/governance/` | CRA-W01、CRA-W02、CRA-W15 |
 | M02 | [项目资料与原文定位](modules/M02-documents.md) | `backend/cra_app/documents/` | CRA-W03 |
 | M03 | [适用规则与分层list](modules/M03-rules.md) | `backend/cra_app/rules/` | CRA-W04 |
 | M04 | [受试者事实与访视时间线](modules/M04-subjects.md) | `backend/cra_app/subjects/` | CRA-W05 |
@@ -15,8 +15,10 @@
 | M09 | [AE、安全及方案偏离分析支持](modules/M09-safety.md) | `backend/cra_app/safety/` | CRA-W09 |
 | M10 | [ISF/TMF目录和中心资料](modules/M10-site_files.md) | `backend/cra_app/site_files/` | CRA-W10 |
 | M11 | [访视信、监查报告与Excel输出](modules/M11-reports.md) | `backend/cra_app/reports/` | CRA-W11 |
-| M12 | [模型、OCR与检索接入](modules/M12-providers.md) | `backend/cra_app/providers/` | CRA-W03、CRA-W04、CRA-W09、CRA-W14 |
+| M12 | [模型、OCR与检索接入](modules/M12-providers.md) | `backend/cra_app/providers/` | CRA-W03、CRA-W04、CRA-W08、CRA-W09、CRA-W14 |
 | M13 | [理论、技术与任务同步](modules/M13-traceability.md) | `tools/` | CRA-W00 |
 | M14 | [云上开发、部署和质量验证](modules/M14-platform.md) | `deploy/` | CRA-W00、CRA-W01、CRA-W02、CRA-W13、CRA-W15 |
 
-固定理论与各模块的多对多关系以[对照表](../traceability/INDEX.md)为准。目录下的实现路径属于计划，当前只有backend/cra_core中的小范围示例和tools同步检查真正有代码。
+固定理论与各模块的多对多关系以[对照表](../traceability/INDEX.md)为准。W08包含支持格式的核心自动检验读取，W14仅增强复杂格式。M05的M10目录状态集成在W10启用，W06可先查看原目录引用。具体契约见[WORKFLOW_CONTRACTS](WORKFLOW_CONTRACTS.md)。
+
+目录下的实现路径属于计划，当前只有backend/cra_core中的小范围示例和tools同步检查真正有代码。

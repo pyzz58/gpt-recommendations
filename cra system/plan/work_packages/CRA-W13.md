@@ -1,4 +1,4 @@
-# CRA-W13 完成V1A模拟验收与试用准备
+# CRA-W13 完成自动检验主线验收与试用准备
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
@@ -26,6 +26,7 @@
 | `tests/acceptance/test_v1a.py` | test | 固定合成反例 |
 | `validation/TIME_STUDY.md` | document | 总工作时间 |
 | `deploy/restore-check.md` | document | 恢复验证与缺口 |
+| `validation/USE_CASE_VALIDATION.md` | document | 按用途风险、独立样本、版本及暂停恢复策略 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -36,10 +37,12 @@
 
 ## 实现步骤
 
-1. 为34场景登记真实证据、失败、修复及未覆盖用途，局部测试不当整场景完成。
-2. 统计关键遗漏、误配、误报、错误关闭及查找、录入、复核、报告和返工总时间。
+1. 为40场景登记输入、正确预期/依据、样本来源及开发/独立评估划分，记录真实证据、失败和未覆盖用途；局部测试不当完整场景通过。
+2. 统计关键遗漏、错配、误报、错误关闭、自动读取可用比例、人工更正/补录比例，以及查找/导入/确认/核对/报告/返工总时间，与同一任务原流程比较。
 3. 检查权限、作业重试、历史、恢复及provider不可用路径。
 4. 给出V1A能力与限制；缺模型、资料或授权时如实说明，不能宣布完整自动试用就绪。
+5. 按用途记录错误后果、验证责任和能力暂停/恢复；发布验证职责不增加CRA每次监查审批。
+6. 区分离线汇总可完成与核心自动能力未达标，provider在W08/W09有明确验证落点，W15负责实际环境和获授权试用。
 
 ## 验证命令
 
@@ -71,13 +74,14 @@ npm --prefix web run test:e2e -- --project=chromium
 
 ## 完成标准
 
-原工作包验收：公布能力/缺口清单、反例结果、总耗时和恢复测试；模型未配置、未授权或关键功能失败不能宣称完整试用就绪。
+原工作包验收：逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。
 
 - 每项宣称具备的能力有证据或标未验证。
 - 总时间有实测记录，不编造节时比例。
 - 试用范围、人工步骤和实质缺口清楚。
+- 无实际识别证据的版本不得被称为实现核心减负；无法获得环境时如实列provider未验证和剩余工作。
 
-关联完整场景：CRA-S01、CRA-S02、CRA-S03、CRA-S04、CRA-S05、CRA-S06、CRA-S07、CRA-S08、CRA-S09、CRA-S10、CRA-S11、CRA-S12、CRA-S13、CRA-S14、CRA-S15、CRA-S16、CRA-S17、CRA-S18、CRA-S19、CRA-S20、CRA-S21、CRA-S22、CRA-S23、CRA-S24、CRA-S25、CRA-S26、CRA-S27、CRA-S28、CRA-S29、CRA-S30、CRA-S31、CRA-S32、CRA-S33、CRA-S34。局部测试通过不自动把全部场景标为verified。
+关联完整场景：CRA-S01、CRA-S02、CRA-S03、CRA-S04、CRA-S05、CRA-S06、CRA-S07、CRA-S08、CRA-S09、CRA-S10、CRA-S11、CRA-S12、CRA-S13、CRA-S14、CRA-S15、CRA-S16、CRA-S17、CRA-S18、CRA-S19、CRA-S20、CRA-S21、CRA-S22、CRA-S23、CRA-S24、CRA-S25、CRA-S26、CRA-S27、CRA-S28、CRA-S29、CRA-S30、CRA-S31、CRA-S32、CRA-S33、CRA-S34、CRA-S35、CRA-S36、CRA-S37、CRA-S38、CRA-S39、CRA-S40。局部测试通过不自动把全部场景标为verified。
 
 ## 本步不包含
 

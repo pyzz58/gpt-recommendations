@@ -112,7 +112,7 @@
         "CRA-R012",
         "CRA-R026"
       ],
-      "expected": "到中心默认展示全部待复核问题；常规顺序完成后进入新的受试者。",
+      "expected": "本次开始提醒完整未完遗留，点开显示问题/位置/整改来源与进展；用户确认后接续，未完项不消失。",
       "status": "planned",
       "evidence_paths": []
     },
@@ -164,13 +164,13 @@
     },
     {
       "id": "CRA-S15",
-      "title": "CRC称已改但实际改错",
+      "title": "CRA确认完成或认为仍未改好",
       "requirement_ids": [
         "CRA-R009",
         "CRA-R026",
         "CRA-R027"
       ],
-      "expected": "保留回复和原问题，CRA复核未通过时写清理由及后续动作，不能自动关闭。",
+      "expected": "用户直接点击确认即可完成对应整改，无须预录CRC回复/附件；用户认为仍错误则保留/重开与历史，不冒称AI独立验证。",
       "status": "planned",
       "evidence_paths": []
     },
@@ -236,7 +236,7 @@
         "CRA-R017",
         "CRA-R028"
       ],
-      "expected": "不再重复提示识别，但保存未核实范围且报告不写正常。",
+      "expected": "用户选择不管/拒绝补充后停止对应依赖路径和追问；保存未核查范围、不记正常、不作为整改催办，可主动恢复，其他核查继续。",
       "status": "planned",
       "evidence_paths": []
     },
@@ -247,7 +247,7 @@
         "CRA-R035",
         "CRA-R038"
       ],
-      "expected": "人工录入、list查阅和问题跟进继续；不伪装已完成自动识别。",
+      "expected": "既有问题与资料查阅仍可继续；少量失败可人工补录，但全量自动能力不可用时不能宣称核心自动核对验收完成。",
       "status": "planned",
       "evidence_paths": []
     },
@@ -294,7 +294,7 @@
         "CRA-R024",
         "CRA-R031"
       ],
-      "expected": "CRA核实后更新当前状态，保留历史；新目录要求单列新增。",
+      "expected": "直接打开上传ISF/TMF目录作对照，无需先重录整本；用户确认补齐即更新简单状态并保留历史，新增要求可继续提醒。",
       "status": "planned",
       "evidence_paths": []
     },
@@ -383,7 +383,83 @@
         "CRA-R044",
         "CRA-R045"
       ],
-      "expected": "记录漏检、错配、错误关闭及查阅/录入/复核/报告总时间；代码通过和临床试用分开。",
+      "expected": "独立代表性样本记录关键错误、自动可用及人工更正/补录比例、原流程与新流程总时间（含导入确认返工）；代码、provider和授权试用证据分开。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S35",
+      "title": "点击确认整改无额外门槛",
+      "requirement_ids": [
+        "CRA-R026",
+        "CRA-R027"
+      ],
+      "expected": "没有预录CRC回复、说明、修改位置或附件，CRA一次确认即可完成选定Action；自动记人/时间，其他动作不变，报告写用户确认。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S36",
+      "title": "缺锚点拒绝补充与恢复",
+      "requirement_ids": [
+        "CRA-R010",
+        "CRA-R017",
+        "CRA-R045"
+      ],
+      "expected": "缺实际输注日选择不补后，明确范围内时间窗路径not_checked_by_user且停止追问；身份已明确的数值核对继续，不猜日期。用户恢复后复用已有输入，不扩大到全部患者。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S37",
+      "title": "list前后条件与分支完整",
+      "requirement_ids": [
+        "CRA-R006",
+        "CRA-R007",
+        "CRA-R008"
+      ],
+      "expected": "独立合成规则C→B、D→F含前提/例外/后续；真实引文但丢前提/否定/且或/例外应被发现；unknown不默认走另一分支，使用中修订保留历史。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S38",
+      "title": "手动开始使用日与历史依据",
+      "requirement_ids": [
+        "CRA-R005",
+        "CRA-R011",
+        "CRA-R041"
+      ],
+      "expected": "用户设v3.0于2021-01-01启用，之前及当天分别取适用版本；上传日不代替启用日，新报告包含旧事件时仍用当时依据，旧签发快照不变，中心范围与日期更正可追溯。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S39",
+      "title": "文件自动读取与少量失败兜底",
+      "requirement_ids": [
+        "CRA-R013",
+        "CRA-R015",
+        "CRA-R016",
+        "CRA-R017",
+        "CRA-R035",
+        "CRA-R044",
+        "CRA-R045"
+      ],
+      "expected": "合成检验源文件与EDC Excel从上传自动提取/定位→匹配→一致性/逻辑差异→安全线索→报告，不依靠预制字段JSON；低可信集中复核、正常范围批量确认、少量补录或跳过；记录provider和人工负担，不能以大规模抄录验收。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S40",
+      "title": "历史报告和track接续遗留",
+      "requirement_ids": [
+        "CRA-R025",
+        "CRA-R026",
+        "CRA-R027",
+        "CRA-R031"
+      ],
+      "expected": "合成前次DOCX报告/XLSX track或问题文字自动整理，用户修正确认后在本次提醒/展开；原编号/位置/来源保留，缺项unknown，重复导入不复制，选信不删除完整清单。",
       "status": "planned",
       "evidence_paths": []
     }

@@ -26,11 +26,11 @@
 | CoverageRecord | 患者/类别/期间、查到哪里、未核实项、用户简记 | 不等同于所有字段正常 |
 | Issue | 稳定编号、事实、位置、发现/发生日期、依据、判断状态 | 同一问题跨报告引用，不逐次复制 |
 | ActionItem | issue_id、type、要求、完成依据、状态、责任/期限及其来源 | PD上报与EDC更正等各自完成 |
-| IssueHistory / Verification | 回复、修改前后、实际修改位置、核实结果、来源及时间 | 对方称完成和CRA已核实分开 |
+| IssueHistory / Verification | 用户确认、自动操作者/时间，可选回复/修改详情/说明 | 用户点击为完成依据，已有回复非前置；不冒称系统独立验证 |
 | QueryLink | 草稿/正式EDC、外部编号、实际创建时间、截止与依据、回复 | 未接入不能假装实时同步 |
 | DocumentRequirement / FileStatus | 目录版本、应有条目、适用范围、现状、缺口与位置 | 补齐后保留上次缺件历史 |
 | EDCSnapshot / ImportMapping | 导出范围、导出时间、表单/列、原始行定位、导入版本 | 公式/空白/未含表单区别保存 |
-| LabObservation / MatchDecision | 项目、样本、采样时间、初检复查、报告修订、值/单位/范围、图像位置、人工确认 | 允许一对多歧义；匹配确认后才比对 |
+| LabObservation / MatchDecision | 项目、样本、采样时间、初检复查、报告修订、值/单位/范围、图像位置、识别及用户修正状态 | 通过身份/结构校验后自动比较候选，歧义集中核实；不要求逐字段确认 |
 | Comparison / Assessment | 规则和事实版本、结果、未知条件、计算过程、候选解释及证据 | 数值一致不自动变为医学确认 |
 | Template / ReportDraft | 模板版本、字段映射、事实和问题引用、用户文字调整 | 文案调整与事实调整分开 |
 | ReportSnapshot / Export | 内容、范围、规则/事实版本、审核/签发等实际状态、文件摘要 | 签发后变化走新版本或修订记录 |
@@ -41,7 +41,7 @@
 
 核查覆盖回答“查了什么”；行动状态回答“问题处理到哪里”；交付状态回答“报告到了哪一步”。三者可同时为“已核查、整改未完、报告已提交”。
 
-ActionItem.type至少区分pd_reporting、edc_correction、document_supply、medical_clarification、query_followup、other。pd_reporting收到用户明确已上报即记完成并保存确认来源，日期/编号未知时不编造。需核实更正的任务，CRC说已改仅进入待核实；CRA验证通过才完成该任务。未通过或部分完成保留剩余动作。Issue可显示各行动聚合状态，不以一个通用closed布尔值替代。
+ActionItem.type至少区分pd_reporting、edc_correction、document_supply、medical_clarification、query_followup、other。pd_reporting收到用户明确已上报即记完成并保存确认来源，日期/编号未知时不编造。整改以CRA用户点击确认完成所选Action为准；系统保存user_confirmation、操作者和时间，不强制CRC回复、修改位置、说明、附件或另一次证明。已有回复可单独保留，用户认为未改好则继续或重开，剩余动作独立。Issue可显示各行动聚合状态，不以一个通用closed布尔值替代。
 
 报告或访视信的选取集合只是展示内容，不是问题清单全集。签发快照保存引用版本与内容摘要，后续状态更新不能改变快照。
 
@@ -50,3 +50,16 @@ ActionItem.type至少区分pd_reporting、edc_correction、document_supply、med
 RuleVersion和ClinicalFact版本通过依赖表关联Assessment、ActionItem、Draft。更正源报告可使具体比较结果待复核，不抹掉原事实和既往上报历史。需要新跟进时新增动作而非回改历史。
 
 数据库迁移采用先增加兼容字段/表、回填并核实、再切换读写；必要时保留旧字段至验证完成。迁移和恢复先用合成数据演练，签发报告、来源定位和问题编号不得丢失。模型输出JSON不是绕过这些数据约束的替代存储。
+
+## 5. 本轮新增或细化对象
+
+| 对象 | 最小约定 | 负责模块 |
+| --- | --- | --- |
+| VersionActivation | 文档版本、project/site范围、starts_on含当天/ends_before不含、actor、修订；临床事件时间选版本，报告另存输出规则版本 | M03，M02存资料元数据，M04/M11消费 |
+| CheckDecision | 明确对象/事项/期间或快照、缺失keys、受影响路径、declined_missing_data/unreadable_skip、actor/time、active/resumed | M04存事实缺口选择，M05管理覆盖，M08消费 |
+| CarryoverImport | 来源版本、条目定位/原编号、候选与原Issue映射、导入哈希/确认历史；缺项unknown | M06复用M02来源 |
+| DirectoryReference | 原目录版本、可选条目锚点、reference_only/structured状态、简要缺件/状态 | M10复用M02原文件 |
+| SupportProfile | 支持格式/图像条件、provider版本、验证范围、关键错误与限制 | M08/M12，M14保存评估证据 |
+| ExtractionField | 原文/位置、原值、auto_extracted/user_corrected/unreadable/user_skipped、校验与复核状态 | M08，自动候选与人工核实分别保存 |
+
+缺口选择不是Issue整改；用户跳过后不自动催办。RuleVersion补充分支不会覆盖历史。具体状态和执行语义见[WORKFLOW_CONTRACTS](WORKFLOW_CONTRACTS.md)。

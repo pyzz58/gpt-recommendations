@@ -1,4 +1,4 @@
-# CRA-W06 实现遗留整改和常规访视主线
+# CRA-W06 实现遗留整理、提醒与点击确认整改
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
@@ -7,7 +7,7 @@
 
 ## 临床工作目标
 
-到中心先核实遗留问题是否改对，保留清楚的处理过程和剩余事项。
+开始时不漏上次遗留，点开知道问题与处理办法，CRA沟通核查后一次点击记录完成。
 
 ## 对应理论和模块
 
@@ -30,22 +30,27 @@
 | `web/src/features/issues/CarryoverReview.tsx` | code | 遗留复核底稿 |
 | `web/src/features/issues/PrevisitSelection.tsx` | code | 访前选择几项 |
 | `tests/integration/test_issues.py` | test | 分项完成、改错和跨次跟进 |
+| `backend/cra_app/issues/carryover_import.py` | code | 历史报告/track/文字自动整理与幂等关联 |
+| `tests/integration/test_carryover_import.py` | test | 前次资料进入本次遗留与重复导入 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
 ## 关键接口和数据约定
 
-- IssueView保留原问题、位置、建议及具体出处、实际修改、CRA复核和下一步。
-- confirm-reported只完成pd_reporting；CRC称已改与CRA确认正确分开。
+- IssueView保留原问题、位置、建议及来源、已知进展、动作和历史；旧资料未载明项保持unknown。
+- confirm-corrected按明确action_ids记录user_confirmation及服务器actor/time；不要求CRC回复、附件或说明，不能冒称AI独立验证。
+- confirm-reported只完成pd_reporting，其他待办各自保留；完整目录M10不是W06前置。
 
 ## 实现步骤
 
 1. 把cra_core示例约束吸收进持久服务，原有反例保留，不直接把示例当生产接口。
-2. 稳定问题编号下建立多个Action，允许事实不全先保存；回复、实际修改和复核均留历史。
+2. 稳定问题编号下建立Action；信息不全可先保存。提供确认整改按钮，自动记人和时间，可选补充沟通/修改说明。
 3. 用户说PD已上报即完成该上报任务，其他补件/数据更正单独处理，不额外强求回执。
 4. 区分草稿与正式Query，保存真实日期和期限来源；未知期限不生成超期天数。
-5. 到中心默认展示完整遗留，整改建议直接展开来源；访前勾选不删问题。
+5. 本次开始展示完整遗留，单项可展开问题、位置、建议来源和已知进展；点击确认完成对应事项，访前勾选不删问题。
 6. 接续新患者监查和范围简记；未完项保留，不发明全局审批锁或阻断紧急事项。
+7. 复用W03解析历史DOCX报告/XLSX track或问题文字，预览整理、用户修正并确认导入，关联原编号/位置和幂等键，缺项不编造。
+8. W06只通过M02公开来源端口展示上传目录的对照引用；M10状态功能到W10启用，不先行冒称完成。
 
 ## 验证命令
 
@@ -69,15 +74,22 @@ python3 -m unittest discover -s tests -v
 uv run --frozen pytest -q tests/integration/test_issues.py
 ```
 
+- [to_implement] 遗留从文件接续，不靠预置JSON
+
+```bash
+uv run --frozen pytest -q tests/integration/test_carryover_import.py
+```
+
 ## 完成标准
 
-原工作包验收：访前选问题，到中心复核是否改对，普通新监查接续；PD上报与其他整改分别完成；Query期限有依据。
+原工作包验收：上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。
 
 - PD上报已完成、数据更正仍待办可以同时呈现。
-- 中心称已改但CRA核实错误时，原问题、原因及后续动作仍在。
+- 没有预录CRC回复、附件、说明也能点击确认整改；若用户指出仍未改好则保留/重开相应事项。
 - 选2项后完整遗留清单不变，第三次跟进仍为同一问题编号。
+- 从前次文件进入本次提醒和展开详情，重复导入不重复建问题；签发历史不变。
 
-关联完整场景：CRA-S10、CRA-S11、CRA-S14、CRA-S15、CRA-S16、CRA-S17、CRA-S27。局部测试通过不自动把全部场景标为verified。
+关联完整场景：CRA-S10、CRA-S11、CRA-S14、CRA-S15、CRA-S16、CRA-S17、CRA-S27、CRA-S35、CRA-S40。局部测试通过不自动把全部场景标为verified。
 
 ## 本步不包含
 

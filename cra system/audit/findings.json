@@ -34,7 +34,15 @@
       "closure": "本轮诊断能被改进后的门槛拒绝；真实最小W01运行成功证据可接受，且不强迫无关任务重复测试。",
       "verification": "reproduced_on_github_actions",
       "evidence_run": "https://github.com/pyzz58/gpt-recommendations/actions/runs/40812829876",
-      "reproduction_commit": "005338880abd296ab4fede226c32b629494c92f9"
+      "reproduction_commit": "005338880abd296ab4fede226c32b629494c92f9",
+      "response_date": "2026-10-29",
+      "response_status": "open_not_fixed",
+      "design_response": "任务证据校验尚未修复，保持开放。当前只调整内存示例，使CRA点击确认无需额外位置/回复；这与开发任务完成证据是两件事。",
+      "response_paths": [
+        "theory/DECISIONS_20261029.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "plan/tasks.json"
+      ]
     },
     {
       "id": "CRA-AUD-002",
@@ -67,7 +75,15 @@
       "problem": "资料解析与结构化问题服务分别存在，但没有指定把既有监查报告/Excel track解析、映射、确认并导入原问题的服务、接口和验收。合成预置问题不能代替首次真实接手。",
       "consequence": "用户首日可能仍要手工重建全部遗留，上次是什么、在哪里和怎么改难以可靠接续。",
       "recommendation": "在W06增加历史问题导入：复用W03解析，提供报告/track字段映射及确认，保留来源位置、原编号、实际整改和未知；无编号由用户核实关联，不编造处理历史。",
-      "closure": "从合成的前次DOCX报告和XLSX track进入本次访前信/现场复核，重复导入不重复建问题，旧记录缺项保留待补。"
+      "closure": "从合成的前次DOCX报告和XLSX track进入本次访前信/现场复核，重复导入不重复建问题，旧记录缺项保留待补。",
+      "response_date": "2026-10-29",
+      "response_status": "design_response_implementation_pending",
+      "design_response": "W06新增历史报告/track/文字整理接口、产物和验收场景S40，开始提醒及详情已有明确设计；真实实现与文件级验证仍待W06。",
+      "response_paths": [
+        "theory/DECISIONS_20261029.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "plan/tasks.json"
+      ]
     },
     {
       "id": "CRA-AUD-003",
@@ -102,7 +118,15 @@
       "problem": "目前主要要求各调用方校验来源/数值/范围，没有统一定义适用共性/项目/中心规则版本、未知和冲突、事实/推断类别及可发布状态的输出结构与责任。",
       "consequence": "模型分析、现场提示和报告可能分别采用不同检查，某一路径绕过共同底线而其他路径仍通过。",
       "recommendation": "定义共享OutputEnvelope和按用途校验策略，明确M01范围、M03适用性、业务模块语义及M11覆盖责任；所有模型和确定性结论都走相应检查。允许真实差异、未知和澄清草稿保存，不以输出校验阻止记录问题。",
-      "closure": "跨患者、过期/冲突依据、假引用、超覆盖措辞分别在所有适用输出路径被识别；合法缺口和真实偏离仍可记录。"
+      "closure": "跨患者、过期/冲突依据、假引用、超覆盖措辞分别在所有适用输出路径被识别；合法缺口和真实偏离仍可记录。",
+      "response_date": "2026-10-29",
+      "response_status": "design_response_implementation_pending",
+      "design_response": "补充版本启用、候选/用户确认、未知/跳过范围的共同约定；全输出统一契约及其跨路径验证仍需后续落实，不因用户点击简化而免除来源和适用性。",
+      "response_paths": [
+        "theory/DECISIONS_20261029.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "plan/tasks.json"
+      ]
     },
     {
       "id": "CRA-AUD-004",
@@ -135,7 +159,15 @@
       "problem": "45条已登记需求的映射完整，不证明原最高说明均被提取。按用途的风险记录、独立评估样本、专业审阅、上线后性能/事故监测及暂停回退尚无完整可验收任务。",
       "consequence": "可产出功能齐全的演示，但无法证明具体用途下的可靠性，也可能无法发现模型/规则更新后的退化。",
       "recommendation": "建立原最高说明→理论/控制→模块/任务/证据的覆盖表；在M14/W13/W15加入轻量UseCase/Risk/Validation/Release/Monitoring记录，限定具体用途。放在发布验证层，不增加每次监查或PD上报的审批。",
-      "closure": "关键用途均有错误后果、数据适用性、评估、相应职责和监测/暂停方法；覆盖遗漏明确标open，不能只以45/45自证。"
+      "closure": "关键用途均有错误后果、数据适用性、评估、相应职责和监测/暂停方法；覆盖遗漏明确标open，不能只以45/45自证。",
+      "response_date": "2026-10-29",
+      "response_status": "design_response_implementation_pending",
+      "design_response": "W13/W15加入按用途验证、独立样本及暂停恢复职责；原最高说明完整覆盖和真实执行证据仍开放，不增加每次监查审批。",
+      "response_paths": [
+        "theory/DECISIONS_20261029.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "plan/tasks.json"
+      ]
     },
     {
       "id": "CRA-AUD-005",
@@ -166,7 +198,15 @@
       "problem": "V1A写为完整可试用且模型须配置验证；同时各任务允许DisabledProvider/合成演示，实际模型和环境配置又主要在W15，而W15依赖W13。未定义W13何种能力等级可完成。",
       "consequence": "可能把人工演示当完整自动版，或在未部署与先验收之间形成流程性等待。不是已证明的运行时死锁，而是实施歧义。",
       "recommendation": "拆开code-complete、synthetic-validated、provider-validated、authorized-trial-ready等能力状态。W13可以完成明确范围的离线/合成验收；真实provider配置测试必须有具体落点；获准环境及实际试用由W15确认，不互相替代。",
-      "closure": "无模型时允许的功能、不能宣称的能力、W13和W15各自完成证据清楚，且无循环等待。"
+      "closure": "无模型时允许的功能、不能宣称的能力、W13和W15各自完成证据清楚，且无循环等待。",
+      "response_date": "2026-10-29",
+      "response_status": "design_response_implementation_pending",
+      "design_response": "明确W08支持格式的自动读取在主线，W13离线/provider证据与W15授权试用分别记录；无provider不能宣称核心自动版达标，实施证据待补。",
+      "response_paths": [
+        "theory/DECISIONS_20261029.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "plan/tasks.json"
+      ]
     },
     {
       "id": "CRA-AUD-006",
@@ -198,7 +238,15 @@
       "closure": "W06核心场景可独立运行，W10接入后不改已存问题/核查状态；依赖检查认识阶段能力。",
       "verification": "reproduced_on_github_actions",
       "evidence_run": "https://github.com/pyzz58/gpt-recommendations/actions/runs/40812829876",
-      "reproduction_commit": "005338880abd296ab4fede226c32b629494c92f9"
+      "reproduction_commit": "005338880abd296ab4fede226c32b629494c92f9",
+      "response_date": "2026-10-29",
+      "response_status": "design_response_implementation_pending",
+      "design_response": "M05硬依赖移除M10并列为W10可选集成；W06先用M02原目录引用。静态阶段边不再倒置，W06独立运行/W10接入证据仍待实现。",
+      "response_paths": [
+        "theory/DECISIONS_20261029.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "plan/tasks.json"
+      ]
     },
     {
       "id": "CRA-AUD-007",
@@ -235,7 +283,15 @@
       "problem": "笼统写EDC/源记录或人工输入，未给各项判断必须具备的事实和导入字段契约。检验导出未必含输注/治疗锚点；AE相关判断还需要相应历史/评价。实际模板也没有支持范围和映射规格。",
       "consequence": "模块有API仍可能缺少可用输入，只能反复追问，或无依据推断日期、范围和医学上下文。",
       "recommendation": "逐用途列required/optional facts、允许来源、身份/时间精度、缺失结果与一次性人工补充入口；补充ContextImport及TemplateMapping的最小schema与支持格式。仍不扩大非检验源数据OCR。",
-      "closure": "缺锚点/缺病史/缺模板字段的输入被明确处理；合成Excel、报告和模板能从文件进入完整流程，而非只预造JSON。"
+      "closure": "缺锚点/缺病史/缺模板字段的输入被明确处理；合成Excel、报告和模板能从文件进入完整流程，而非只预造JSON。",
+      "response_date": "2026-10-29",
+      "response_status": "design_response_implementation_pending",
+      "design_response": "补充按用途needed_fact_keys、缺口选择与输入拒绝后的路径跳过，版本和历史导入契约已具体化；完整安全上下文和实际模板支持验证仍待实现。",
+      "response_paths": [
+        "theory/DECISIONS_20261029.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "plan/tasks.json"
+      ]
     },
     {
       "id": "CRA-AUD-008",
@@ -265,7 +321,15 @@
       "problem": "现有校验重点为锚点存在、片段归属、数字可追溯；一条含且/或和例外的原文即使漏掉前提，仍可能引用真实原文并保留同一个数字。规则AST的最小语法和unknown运算亦未明确。",
       "consequence": "系统给出有出处但逻辑错误的清单；仅看摘要的用户不易发现漏条件。",
       "recommendation": "先定义有限Rule AST、单位/区间/时间精度和三值逻辑；用独立标注的合成/获准规则比较完整条件和例外；无法稳定结构化的保留人工分析型规则，不强行自动判定。",
-      "closure": "真实引文但漏前提、颠倒否定、丢例外、且改或等反例被识别；通过不只取决于引用存在。"
+      "closure": "真实引文但漏前提、颠倒否定、丢例外、且改或等反例被识别；通过不只取决于引用存在。",
+      "response_date": "2026-10-29",
+      "response_status": "design_response_implementation_pending",
+      "design_response": "给出条件分支字段、有限AST/三值逻辑及S37的真实引文错误语义反例；实际提取器与独立样本尚待W04/W09验证。",
+      "response_paths": [
+        "theory/DECISIONS_20261029.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "plan/tasks.json"
+      ]
     },
     {
       "id": "CRA-AUD-009",
@@ -301,7 +365,15 @@
       "problem": "场景有描述但没有完整输入/预期/依据/样本来源/独立评估划分；本轮30项是工程反例，不含真实格式或临床用途性能证据。",
       "consequence": "开发者可针对示例写对，换格式或项目后遗漏和误匹配仍未知；不能据此承诺可靠自动核查。",
       "recommendation": "尽早建立去标识获准或忠实合成的文档/Excel/图片/模板样本，区分开发和独立评估；按用途明确关键错误与复核标准。W13汇总，而非最后才第一次测试数据适用性。",
-      "closure": "样本和预期可复核，测试集分离，关键错误与总体表现分别记录，覆盖外用途清楚。"
+      "closure": "样本和预期可复核，测试集分离，关键错误与总体表现分别记录，覆盖外用途清楚。",
+      "response_date": "2026-10-29",
+      "response_status": "design_response_implementation_pending",
+      "design_response": "场景增至40，W08/W13要求代表性独立样本、输入/预期/来源及provider证据；仅增加计划不构成实际评估，仍开放。",
+      "response_paths": [
+        "theory/DECISIONS_20261029.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "plan/tasks.json"
+      ]
     },
     {
       "id": "CRA-AUD-010",
@@ -337,7 +409,16 @@
       "problem": "V1A先人工输入源字段，可能增加抄录和确认时间；完整价值串联主要在W12/W13。后置OCR是用户允许的分期，但不能因此认为最耗时的一致性核查目标已经达到。",
       "consequence": "系统功能按计划完成，用户反而多录入；较晚才发现匹配、模板或使用路径不适合。",
       "recommendation": "保留四模块范围与编号，增加早期可用里程碑和端到端小样；先验证遗留→选信→复核→报告及一个检验实例。测总时间，识别未就绪时如实将节时收益限定在规则查找、记录和报告。",
-      "closure": "同一任务原流程与新流程总耗时可比，计入导入/补录/复核/返工，用户实际操作反馈决定迭代。"
+      "closure": "同一任务原流程与新流程总耗时可比，计入导入/补录/复核/返工，用户实际操作反馈决定迭代。",
+      "response_date": "2026-10-29",
+      "response_status": "design_response_implementation_pending",
+      "design_response": "用户明确自动读取是核心，已取代人工V1A主线，W08交付自动、W14增强复杂格式；总耗时与人工负担必须实测，减负目标尚未被证明。",
+      "response_paths": [
+        "theory/DECISIONS_20261029.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "plan/tasks.json"
+      ]
     }
-  ]
+  ],
+  "latest_response": "audit/USER_CLARIFICATION_RESPONSE_20261029.md"
 }

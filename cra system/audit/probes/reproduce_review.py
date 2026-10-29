@@ -70,7 +70,7 @@ def dependency_phase_probe() -> dict:
                     "declared_dependency": dependency, "dependency_starts_at": first[dependency],
                 })
     return {
-        "finding_id": "CRA-AUD-006", "observation": "phase_dependency_requires_clarification",
+        "finding_id": "CRA-AUD-006", "observation": "phase_dependency_requires_clarification" if edges else "no_later_hard_dependency_found",
         "edges": edges, "meaning": "Not proof of a runtime cycle; distinguish hard dependencies from later optional capabilities.",
     }
 

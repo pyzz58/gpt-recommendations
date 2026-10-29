@@ -11,7 +11,7 @@ list能直接显示具体要求、完整条件和例外，并可展开到原文�
 
 ## 对应理论和模块
 
-理论：[CRA-R002](../../theory/REQUIREMENTS.md#cra-r002)、[CRA-R004](../../theory/REQUIREMENTS.md#cra-r004)、[CRA-R005](../../theory/REQUIREMENTS.md#cra-r005)、[CRA-R006](../../theory/REQUIREMENTS.md#cra-r006)、[CRA-R007](../../theory/REQUIREMENTS.md#cra-r007)、[CRA-R008](../../theory/REQUIREMENTS.md#cra-r008)、[CRA-R009](../../theory/REQUIREMENTS.md#cra-r009)、[CRA-R011](../../theory/REQUIREMENTS.md#cra-r011)、[CRA-R019](../../theory/REQUIREMENTS.md#cra-r019)、[CRA-R034](../../theory/REQUIREMENTS.md#cra-r034)、[CRA-R035](../../theory/REQUIREMENTS.md#cra-r035)、[CRA-R036](../../theory/REQUIREMENTS.md#cra-r036)、[CRA-R038](../../theory/REQUIREMENTS.md#cra-r038)、[CRA-R041](../../theory/REQUIREMENTS.md#cra-r041)
+理论：[CRA-R002](../../theory/REQUIREMENTS.md#cra-r002)、[CRA-R004](../../theory/REQUIREMENTS.md#cra-r004)、[CRA-R005](../../theory/REQUIREMENTS.md#cra-r005)、[CRA-R005](../../theory/REQUIREMENTS.md#cra-r005)、[CRA-R006](../../theory/REQUIREMENTS.md#cra-r006)、[CRA-R007](../../theory/REQUIREMENTS.md#cra-r007)、[CRA-R008](../../theory/REQUIREMENTS.md#cra-r008)、[CRA-R009](../../theory/REQUIREMENTS.md#cra-r009)、[CRA-R011](../../theory/REQUIREMENTS.md#cra-r011)、[CRA-R019](../../theory/REQUIREMENTS.md#cra-r019)、[CRA-R034](../../theory/REQUIREMENTS.md#cra-r034)、[CRA-R035](../../theory/REQUIREMENTS.md#cra-r035)、[CRA-R036](../../theory/REQUIREMENTS.md#cra-r036)、[CRA-R038](../../theory/REQUIREMENTS.md#cra-r038)、[CRA-R041](../../theory/REQUIREMENTS.md#cra-r041)
 
 模块：[M03](../../architecture/modules/M03-rules.md)、[M12](../../architecture/modules/M12-providers.md)
 
@@ -36,6 +36,8 @@ list能直接显示具体要求、完整条件和例外，并可展开到原文�
 
 - ApplicableRule含summary、conditions、exceptions、children、source_refs、applicability、unknowns。
 - 条件计算返回true/false/unknown，unknown不当作正常；表达式不执行eval。
+- RuleNode含preconditions/trigger/branches/exceptions/follow_up/completion/required_facts；有限AST及三值逻辑按WORKFLOW_CONTRACTS实现。
+- VersionActivation由用户输入开始使用日和范围，按事件时间解析，不用上传日或报告生成时间替代。
 
 ## 实现步骤
 
@@ -44,6 +46,8 @@ list能直接显示具体要求、完整条件和例外，并可展开到原文�
 3. 实现用户确认增删改、明确规则用途文字自动纳入以及逐条变更关系。
 4. 实现且/或、边界、单位和日期条件白名单；综合医学判断保持分析型规则。
 5. 实现四层展开、处理覆盖、真实冲突及受影响对象提示，不取最新/更严自动裁决。
+6. 完整保留前后置与分支；真实引文但漏前提/否定/例外的反例单独验证，无法结构化保留analysis_required。
+7. 实现手动启用日、同范围区间边界/冲突及影响预览；使用中补list产生新版本，不改旧报告。
 
 ## 验证命令
 
@@ -74,8 +78,9 @@ uv run --frozen pytest -q tests/integration/test_rules.py
 - 摘要、完整条件和原文一致，用户修正保留历史。
 - 新版未提及旧条文不自动撤销；重复邮件不重复确认。
 - 假锚点不能形成确定性规则，未配置模型不伪装自动提取。
+- 条件C走B、D走F且例外不丢；启用日当天采用新版本，历史事件依据不被覆盖。
 
-关联完整场景：CRA-S04、CRA-S05、CRA-S06、CRA-S07、CRA-S25。局部测试通过不自动把全部场景标为verified。
+关联完整场景：CRA-S04、CRA-S05、CRA-S06、CRA-S07、CRA-S25、CRA-S37、CRA-S38。局部测试通过不自动把全部场景标为verified。
 
 ## 本步不包含
 

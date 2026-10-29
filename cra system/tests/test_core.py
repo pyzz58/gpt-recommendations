@@ -38,6 +38,15 @@ class IssueTests(unittest.TestCase):
         verify_correction(action, True, "DEMO form/field", "DEMO-CRA")
         self.assertEqual(action.status, "completed")
 
+    def test_cra_click_can_complete_without_reply_location_or_attachment(self):
+        issue = self.issue()
+        action = issue.actions[1]
+        verify_correction(action, True, actor="DEMO-CRA")
+        self.assertEqual(action.status, "completed")
+        self.assertEqual(action.completion_basis["type"], "user_confirmation")
+        self.assertEqual(len(action.history), 1)
+        self.assertEqual(issue.actions[0].status, "open")
+
     def test_pd_does_not_require_extra_correction_gate(self):
         with self.assertRaises(ValueError):
             verify_correction(Action("A1", "pd_reporting"), True, "DEMO", "DEMO-CRA")

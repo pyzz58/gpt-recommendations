@@ -38,7 +38,7 @@
         "CRA-S03",
         "CRA-S04"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M02-documents.md",
       "planned_code_path": "backend/cra_app/documents/",
@@ -64,9 +64,11 @@
         "CRA-S04",
         "CRA-S05",
         "CRA-S06",
-        "CRA-S07"
+        "CRA-S07",
+        "CRA-S37",
+        "CRA-S38"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M03-rules.md",
       "planned_code_path": "backend/cra_app/rules/",
@@ -97,9 +99,11 @@
       ],
       "scenarios": [
         "CRA-S08",
-        "CRA-S09"
+        "CRA-S09",
+        "CRA-S36",
+        "CRA-S38"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M04-subjects.md",
       "planned_code_path": "backend/cra_app/subjects/",
@@ -121,8 +125,7 @@
         "M01",
         "M03",
         "M04",
-        "M06",
-        "M10"
+        "M06"
       ],
       "task_ids": [
         "CRA-W06",
@@ -133,9 +136,13 @@
         "CRA-S10",
         "CRA-S11",
         "CRA-S12",
-        "CRA-S13"
+        "CRA-S13",
+        "CRA-S35",
+        "CRA-S36",
+        "CRA-S39",
+        "CRA-S40"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M05-monitoring.md",
       "planned_code_path": "backend/cra_app/monitoring/",
@@ -150,6 +157,14 @@
         "CRA-R033",
         "CRA-R037",
         "CRA-R045"
+      ],
+      "optional_integrations": [
+        {
+          "module_id": "M10",
+          "enabled_from_task": "CRA-W10",
+          "port": "site_file_status",
+          "before_available": "Read M02 source reference or show not_provided; core monitoring remains usable."
+        }
       ]
     },
     {
@@ -168,9 +183,11 @@
         "CRA-S14",
         "CRA-S15",
         "CRA-S16",
-        "CRA-S17"
+        "CRA-S17",
+        "CRA-S35",
+        "CRA-S40"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M06-issues.md",
       "planned_code_path": "backend/cra_app/issues/",
@@ -204,7 +221,7 @@
         "CRA-S18",
         "CRA-S19"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M07-edc_import.md",
       "planned_code_path": "backend/cra_app/edc_import/",
@@ -234,9 +251,11 @@
         "CRA-S19",
         "CRA-S20",
         "CRA-S21",
-        "CRA-S22"
+        "CRA-S22",
+        "CRA-S36",
+        "CRA-S39"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M08-laboratory.md",
       "planned_code_path": "backend/cra_app/laboratory/",
@@ -268,7 +287,7 @@
         "CRA-S24",
         "CRA-S25"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M09-safety.md",
       "planned_code_path": "backend/cra_app/safety/",
@@ -297,7 +316,7 @@
       "scenarios": [
         "CRA-S26"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M10-site_files.md",
       "planned_code_path": "backend/cra_app/site_files/",
@@ -324,9 +343,11 @@
       "scenarios": [
         "CRA-S27",
         "CRA-S28",
-        "CRA-S29"
+        "CRA-S29",
+        "CRA-S38",
+        "CRA-S40"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M11-reports.md",
       "planned_code_path": "backend/cra_app/reports/",
@@ -352,15 +373,17 @@
       "task_ids": [
         "CRA-W03",
         "CRA-W04",
+        "CRA-W08",
         "CRA-W09",
         "CRA-W14"
       ],
       "scenarios": [
         "CRA-S02",
         "CRA-S22",
-        "CRA-S30"
+        "CRA-S30",
+        "CRA-S39"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M12-providers.md",
       "planned_code_path": "backend/cra_app/providers/",
@@ -406,9 +429,10 @@
       ],
       "scenarios": [
         "CRA-S33",
-        "CRA-S34"
+        "CRA-S34",
+        "CRA-S39"
       ],
-      "revision": 1,
+      "revision": 2,
       "status": "designed",
       "design_path": "architecture/modules/M14-platform.md",
       "planned_code_path": "deploy/",

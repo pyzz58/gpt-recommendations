@@ -18,11 +18,11 @@ API前缀/api/v1。身份来自获验证的OIDC会话，服务端推导授权范
 | M03 | POST /rule-changes/preview；POST /rule-changes/confirm | 条目级新增/修订/例外/撤销/冲突及影响预览；不是last-write-wins |
 | M04 | POST /facts/import；GET /subjects/{id}/timeline；GET /subjects/{id}/visit-requirements | 事实来源、时间、版本和范围→阶段要求与未知条件 |
 | M05 | POST /monitoring-visits；GET /monitoring-visits/{id}/workbench；POST /coverage | 阶段、患者及类别范围→引导与断点，正常范围可批量记 |
-| M06 | POST /issues；POST /issues/{id}/replies；POST /actions/{id}/verify | 原问题、位置、建议及出处、中心实际修改→分项行动历史与复核结果 |
+| M06 | POST /issues；POST /issues/{id}/replies；POST /actions/{id}/verify | 原问题、位置、建议及出处→分项行动及可选沟通历史；verify兼容记录不得成为点击完成的额外门槛 |
 | M06 | POST /actions/{id}/confirm-reported | 仅pd_reporting接受用户明确已上报；不强制额外回执，不完成其他类型行动 |
 | M06 | GET /issues/carryover；POST /query-links | 按实际类型和状态带出上次遗留；Query需真实编号/时间或明确为草稿 |
 | M07 | POST /edc-imports/preview；POST /edc-imports/{id}/confirm | Excel快照、列映射、实例及导出范围确认；返回行级定位和错误 |
-| M08 | POST /lab-reports；POST /lab-fields/{id}/confirm-or-skip | 人工/OCR候选及图像位置；不能把未确认识别结果直接当已核实源值 |
+| M08 | POST /lab-reports；POST /lab-fields/{id}/confirm-or-skip | 自动提取候选及源定位，结构/身份校验后可比较；低可信/歧义集中复核，候选不冒称CRA已核实 |
 | M08 | POST /lab-matches/preview；POST /lab-comparisons | 先核实对象和重复实例，再按批准单位/逻辑规则比对；歧义返回候选不自动挑最接近值 |
 | M09 | POST /assessments | 允许范围的事实、明确规则版本及上下文→候选分析、缺口、具体问题、引用，不直接改Action为完成 |
 | M10 | POST /document-directories；GET /site-file-status；POST /file-verifications | ISF/TMF目录版本及现状→待补及复核状态 |
@@ -46,3 +46,18 @@ ReportSnapshot：template_version、fact_revisions、rule_revisions、issue_revi
 ## 4. 异步操作
 
 长任务POST返回202及job_id。job保存输入版本/哈希、授权范围、任务类型、租约、重试次数及结果引用。相同幂等输入不重复扣费或创建多个发现。失败可从持久阶段重试；重试前复核权限与源版本，权限撤销后不得继续读取文件。完成通知只更新任务和待查看结果，不自动发送中心邮件或提交EDC。
+
+## 5. 用户澄清后的最小接口
+
+| 入口 | 契约 |
+| --- | --- |
+| POST /carryover-imports/preview；POST /carryover-imports/{id}/confirm | 上次报告/track/文字→可展开问题候选及未知；重复导入幂等，修正关联后保留原来源 |
+| POST /actions/confirm-corrected | 明确action_ids、expected_revision和幂等键；服务器取actor/time，optional_note可空，不要求CRC回复/附件；不代替PD已上报确认 |
+| POST /check-decisions；POST /check-decisions/{id}/resume | 显示对象/事项/期间、缺失项和受影响路径；用户拒绝后not_checked_by_user，抑制对应追问，其他判断继续；可主动恢复 |
+| POST /version-activations；POST /version-activations/{id}/preview-change | 用户输入starts_on、作用范围及资料版本；保存修订，影响预览不自动重判PD |
+| GET /directory-references/{id} | 直接查看原目录和简要状态；reference_only不要求先结构化全部目录 |
+| GET /lab-support-profiles；POST /lab-reports/{id}/recognize | 返回实际支持范围/验证等级；W08实际自动读取job输出候选、定位和错误，W14增强复用此入口 |
+
+ApplicableRule补充preconditions、trigger、branches、follow_up、completion、required_facts；branch含condition、target/actions和source_refs。规则三值逻辑、日期边界及分析型条款见WORKFLOW_CONTRACTS.md。
+
+所有结果保留使用的范围、资料/规则版本、source_refs、事实/候选/用户确认类别及unknowns。用户确认整改是实际用户动作，不能因未提供可选材料被拒绝。自动比较候选与人工核实分开；用户跳过的相关路径不能继续生成正常或异常判定。共享全输出契约的完整工程验证仍对应AUD-003开放项。

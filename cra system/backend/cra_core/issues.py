@@ -50,14 +50,17 @@ def record_reported_correction(action: Action, statement: str, actor: str) -> No
     action.history.append({"event": "reported_correction", "statement": statement, "actor": actor})
 
 
-def verify_correction(action: Action, correct: bool, location: str, actor: str, note: str = "") -> None:
+def verify_correction(action: Action, correct: bool, location: str = "", actor: str = "", note: str = "") -> None:
+    """Record the CRA's choice; location/note are optional, no separate proof gate.
+
+    The future API supplies actor and time from its trusted session/clock.
+    This in-memory example is not an independent source verification service.
+    """
     if action.kind == "pd_reporting":
         raise ValueError("PD reporting does not require this extra verification gate.")
-    if not location.strip() or not actor.strip():
-        raise ValueError("A verification location and actor are required.")
-    if not correct and not note.strip():
-        raise ValueError("Describe the remaining problem.")
-    result = {"event": "cra_verification", "correct": correct, "location": location, "actor": actor, "note": note}
+    if not actor.strip():
+        raise ValueError("The confirmation actor is required.")
+    result = {"event": "cra_verification", "type": "user_confirmation", "correct": correct, "location": location, "actor": actor, "note": note}
     action.history.append(result)
     action.status = "completed" if correct else "needs_correction"
     action.completion_basis = deepcopy(result) if correct else None

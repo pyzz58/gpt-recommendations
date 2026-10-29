@@ -1,12 +1,12 @@
 # M03 适用规则与分层list
 
-版本：1；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/rules/`。
+版本：2；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/rules/`。
 
 ## 对应理论和任务
 
 理论：CRA-R002、CRA-R004、CRA-R005、CRA-R006、CRA-R007、CRA-R008、CRA-R009、CRA-R011、CRA-R019、CRA-R034、CRA-R041。完整内容及出处见[理论清单](../../theory/REQUIREMENTS.md)与[对照表](../../traceability/INDEX.md)。
 
-工作包：CRA-W04。验收场景：CRA-S04、CRA-S05、CRA-S06、CRA-S07。依赖模块：M01、M02。
+工作包：CRA-W04。验收场景：CRA-S04、CRA-S05、CRA-S06、CRA-S07、CRA-S37、CRA-S38。依赖模块：M01、M02。
 
 ## 输入、输出和负责的数据
 
@@ -31,3 +31,9 @@
 大多数项目规定更新只生成新RuleVersion及影响清单；新增判定结构需更新AST、API、数据迁移和消费者。
 
 理论变更先从固定编号定位到本文件，再确认是否改变配置、服务策略、供应商adapter或数据/API契约，按[同步规则](../../traceability/SYNC_POLICY.md)留下记录。
+
+## 2026-10-29用户决定对应修订
+
+list含前提、触发、分支、例外、后续动作与完成方式，条件C→B、D→F可展开。有限AST和三值逻辑见WORKFLOW_CONTRACTS；真实引用不足以证明条件完整。手动VersionActivation按事件日解析，起始日含当天，中心范围和更正历史保留。用户可在使用中补充分支，不编造来源未提供的可能性。
+
+详细输入、状态、边界与开发阶段按[WORKFLOW_CONTRACTS](../WORKFLOW_CONTRACTS.md)。本节与旧实现方法不一致时采用本节；设计更新不等于功能已经完成。

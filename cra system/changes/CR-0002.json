@@ -1,0 +1,152 @@
+{
+  "id": "CR-0002",
+  "date": "2026-10-29",
+  "kind": "user_clarification",
+  "source": "用户针对八个实际监查场景的逐项确认；theory/DECISIONS_20261029.md",
+  "requirement_fingerprints": {
+    "CRA-R005": "cbafbe647ea5955c021187d5844076f7791d660d324dce2785da159d516debdd",
+    "CRA-R006": "4187646f69e56212c747e977413022bec7e5e4dbb803967643b5f2c520cfcb2e",
+    "CRA-R007": "831ebd442264324869834a48325ac3b5aff2948e64122928d6cae59e29dc0ec6",
+    "CRA-R008": "5a683e682b906f12729e4206dd44f78a55a555856f53e124a64557a0819ecb0e",
+    "CRA-R010": "afd9a814b752ef1ed195398790cdcdc166e79eba297afc8b1531d4e00b6741f9",
+    "CRA-R013": "8410adb6a33bc0d3f960bc9c3cbf37704e14e1c22c6e6842c0fdcd562e41422f",
+    "CRA-R017": "a104a47b5ef3a0fca5efaa5fa4996656602465435a8f07acc824ddd0d41802bb",
+    "CRA-R024": "26c9988d867e9be3c499c247cd3abbd17ea314d34b8e60e126799d6a11b035ce",
+    "CRA-R026": "b98afe3953f488c2d7daac8eade689b3adad1b562185a27d7d06a66b20953b5f",
+    "CRA-R027": "f5b569761885d59ffa69973f16d61d737bffb776034c07cb44e652a86203163a",
+    "CRA-R031": "7e93993e46e5e81fb9b2e9105e2f30bb6946a363998d77ea16691fba5786df8d",
+    "CRA-R035": "3c5ee1d18febb67dc527aff8b12ed598fa06d1a417af371bd02358ac8ecc660d",
+    "CRA-R044": "ffd14fea356ccff0bc9fac5b367d309b4add7594dd71efbf29bdd047ccd293e7",
+    "CRA-R045": "3f1accdfdddf6c70c45da70b33ea3b6ccab1282bc5e5cfd26ddb93cb7767e769"
+  },
+  "module_reviews": {
+    "M03": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M03-rules.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    },
+    "M05": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M05-monitoring.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    },
+    "M09": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M09-safety.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    },
+    "M04": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M04-subjects.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    },
+    "M07": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M07-edc_import.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    },
+    "M08": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M08-laboratory.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    },
+    "M02": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M02-documents.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    },
+    "M10": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M10-site_files.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    },
+    "M06": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M06-issues.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    },
+    "M11": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M11-reports.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    },
+    "M12": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M12-providers.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    },
+    "M14": {
+      "decision": "updated",
+      "reason": "按本轮用户决定修订遗留点击确认、缺口跳过、分支list/启用日、简单目录或核心自动核对的相关设计与任务；保留历史和明确未实现状态。",
+      "paths": [
+        "architecture/modules/M14-platform.md",
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md"
+      ]
+    }
+  },
+  "validation": [
+    "tools/check_traceability.py（含base-ref）",
+    "python3 -m unittest discover -s tests -v",
+    "PYTHONPATH=backend python3 -m cra_core.demo",
+    "audit/probes/reproduce_review.py（仅诊断，不是缺口修复验收）"
+  ],
+  "status": "prepared",
+  "scope_note": "理论/设计/任务同步及既有内存示例确认门槛调整；W01以后仍planned，真实自动识别/临床用途/总耗时尚待实现与验证。"
+}

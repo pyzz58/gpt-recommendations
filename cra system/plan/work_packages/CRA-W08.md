@@ -1,4 +1,4 @@
-# CRA-W08 实现人工录入检验与确定性核对
+# CRA-W08 实现检验源文件自动读取与EDC核对
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
@@ -7,13 +7,13 @@
 
 ## 临床工作目标
 
-人工确认源检验字段后，与EDC完成可解释的匹配、核对和差异记录。
+自动承担最耗时的检验抄读和对照，给出一致性/逻辑差异并把安全线索交给M09，减少CRA总工作量。
 
 ## 对应理论和模块
 
 理论：[CRA-R013](../../theory/REQUIREMENTS.md#cra-r013)、[CRA-R015](../../theory/REQUIREMENTS.md#cra-r015)、[CRA-R016](../../theory/REQUIREMENTS.md#cra-r016)、[CRA-R017](../../theory/REQUIREMENTS.md#cra-r017)、[CRA-R034](../../theory/REQUIREMENTS.md#cra-r034)、[CRA-R035](../../theory/REQUIREMENTS.md#cra-r035)、[CRA-R038](../../theory/REQUIREMENTS.md#cra-r038)
 
-模块：[M08](../../architecture/modules/M08-laboratory.md)
+模块：[M08](../../architecture/modules/M08-laboratory.md)、[M12](../../architecture/modules/M12-providers.md)
 
 先读对应模块设计及architecture/DATA_MODEL.md、API_CONTRACTS.md；实现接口变化时同步这些契约。
 
@@ -28,21 +28,31 @@
 | `backend/cra_app/laboratory/api.py` | code | 源字段和核对接口 |
 | `web/src/features/laboratory/LabComparison.tsx` | code | 并排核查 |
 | `tests/integration/test_laboratory.py` | test | 错配、单位、边界和跳过 |
+| `backend/cra_app/providers/lab_ocr.py` | code | 首版实际检验读取适配，可替换实现 |
+| `backend/cra_app/laboratory/recognition.py` | code | 自动作业、字段提取和源定位 |
+| `web/src/features/laboratory/RecognitionReview.tsx` | code | 集中复核低可信/歧义，不要求逐字段点击 |
+| `tests/integration/test_recognition.py` | test | 文件读取、关键错误、失败和跳过 |
+| `validation/LAB_AUTOMATION_SCOPE.md` | document | 支持格式、实际provider证据、人工负担与限制 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
 ## 关键接口和数据约定
 
-- LabComparison返回match_status、field_results、unknowns和scope。
-- 手动补录标为用户提供；未确认识别和跳过不得视为已核实。
+- RecognizeLab返回有原文/坐标的候选字段、provider版本、结构校验和失败，SupportProfile明确支持格式及评估范围。
+- LabComparison返回match_status、field_results、unknowns及scope；自动候选与CRA核实状态分开。
+- 自动提取通过身份/结构校验后可比较，低可信/歧义集中复核，正常范围可批量确认；不得要求全量手抄或逐字段机械点击。
+- 手动为少量例外；用户拒绝缺失数据或不用管时执行有范围的CheckDecision，不反复追问，不计正常。
 
 ## 实现步骤
 
-1. 先实现人工源字段确认及对应存储，OCR以后从同一接口进入。
+1. 实现源文件上传、识别job、实际RecognizeLab适配与候选字段/定位存储；先支持代表性明确格式，人工数据对象作为同管道的少量兜底。
 2. 匹配中心、患者、时间、项目、样本、访视、初检复查和报告修订；歧义不按数值近似挑选。
 3. 用Decimal及批准映射比较，保留大于小于等符号，未知单位不猜换算。
 4. 分别返回一致、差异、单位待核实、本次未见、无法识别和跳过，限定结论范围。
 5. 并排查看和记录差异，关联M06待办，不直接自动认定PD或临床安全。
+6. 评估候选OCR/多模态接入的格式效果与授权条件，不绑定未验证供应商；记录支持范围和关键字段错误。
+7. 集中展示低可信/歧义/差异，已通过校验字段自动比较候选；人工更正只重算相关结果。
+8. 明确code/synthetic/provider验证等级；provider缺失只记录接口/人工兜底，不得把W08核心自动能力标验证完成。
 
 ## 验证命令
 
@@ -66,19 +76,28 @@ python3 -m unittest discover -s tests -v
 uv run --frozen pytest -q tests/integration/test_laboratory.py
 ```
 
+- [to_implement] 检验文件实际自动读取与原核对管道
+
+```bash
+uv run --frozen pytest -q tests/integration/test_recognition.py
+```
+
 ## 完成标准
 
-原工作包验收：用户确认源检验字段后先匹配再核对；单位、初检复查、修订、跳过和歧义均有明确结果。
+原工作包验收：支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。
 
 - 初检、复查和修订不误配，多候选明确待核实。
 - 带比较符结果不被猜成精确值。
 - OCR关闭仍可工作，用户跳过后不重复追问且报告不写正常。
+- 真实可读的合成检验文件和EDC Excel从上传走入自动提取、匹配和差异记录；不是只预造字段JSON。
+- 自动支持范围、人工更正/补录比例及总复核负担有实际记录；未测项明确未验证。
 
-关联完整场景：CRA-S13、CRA-S19、CRA-S20、CRA-S21、CRA-S22。局部测试通过不自动把全部场景标为verified。
+关联完整场景：CRA-S13、CRA-S19、CRA-S20、CRA-S21、CRA-S22、CRA-S36、CRA-S39。局部测试通过不自动把全部场景标为verified。
 
 ## 本步不包含
 
-- 此步不宣称已有照片识别；由W14接入。
+- 不扩展用药/样本OCR；不宣称支持所有医院版式、模糊图像或最终医学安全判断。
+- W14只增强复杂格式，不能用于后置本任务第一次自动读取。
 
 ## 完成后必须记录
 

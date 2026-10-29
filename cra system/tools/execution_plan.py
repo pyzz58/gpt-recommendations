@@ -67,7 +67,7 @@ def render_execution_views(tasks: list[dict], module_map: dict) -> dict[str, str
         "# Codex逐项开发入口", "",
         "本页与16份任务卡均由plan/tasks.json生成，编号和状态沿用原计划。先读根目录CODEX_START_HERE.md。", "",
         "当前V1A默认下一项：" + (selected.get("task_id") or "本路线已完成") + "；状态：" + selected["state"] + "。", "",
-        "默认按V1A编号顺序推进，遇阻塞先说明，不自动跳项。V1B照片识别和获准部署分别选择对应路线，不混进普通下一项。", "",
+        "默认按V1A编号顺序推进，遇阻塞先说明，不自动跳项。V1A/W08必须包含支持格式的自动读取；V1B复杂格式增强和获准部署分别选择，不混进普通下一项。", "",
         "| 工作包 | 具体执行说明 | 前置 | 路线 | 状态 |", "| --- | --- | --- | --- | --- |",
     ]
     for task in tasks:

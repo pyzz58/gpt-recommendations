@@ -1,12 +1,12 @@
 # M12 模型、OCR与检索接入
 
-版本：1；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/providers/`。
+版本：2；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/providers/`。
 
 ## 对应理论和任务
 
 理论：CRA-R035、CRA-R036、CRA-R038。完整内容及出处见[理论清单](../../theory/REQUIREMENTS.md)与[对照表](../../traceability/INDEX.md)。
 
-工作包：CRA-W03、CRA-W04、CRA-W09、CRA-W14。验收场景：CRA-S02、CRA-S22、CRA-S30。依赖模块：M01、M02。
+工作包：CRA-W03、CRA-W04、CRA-W08、CRA-W09、CRA-W14。验收场景：CRA-S02、CRA-S22、CRA-S30、CRA-S39。依赖模块：M01、M02。
 
 ## 输入、输出和负责的数据
 
@@ -31,3 +31,9 @@
 添加供应商实现只改adapter及配置测试；输出契约变化才影响业务消费者。选择供应商和数据处理条件在实际接入前核实。
 
 理论变更先从固定编号定位到本文件，再确认是否改变配置、服务策略、供应商adapter或数据/API契约，按[同步规则](../../traceability/SYNC_POLICY.md)留下记录。
+
+## 2026-10-29用户决定对应修订
+
+RecognizeLab在W08即有实际适配实现与明确支持范围；W14增强格式。DisabledProvider仅支持内部演示/临时辅助，不满足核心自动能力完成。高低可信策略由结构/来源/实测决定，不能只信模型自报置信度。
+
+详细输入、状态、边界与开发阶段按[WORKFLOW_CONTRACTS](../WORKFLOW_CONTRACTS.md)。本节与旧实现方法不一致时采用本节；设计更新不等于功能已经完成。
