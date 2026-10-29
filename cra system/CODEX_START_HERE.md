@@ -1,6 +1,6 @@
 # Codex开发入口
 
-本项目目录：`cra system`。技术执行版 v0.4，2026-10-29。
+本项目目录：`cra system`。技术执行版 v0.5，2026-10-29。
 
 ## 最新技术复核
 
@@ -35,31 +35,7 @@ python3 tools/next_task.py
 
 ## 可直接交给Codex的首轮指令
 
-```text
-仓库：pyzz58/gpt-recommendations
-项目：cra system
-
-先读取该目录的AGENTS.md和CODEX_START_HERE.md，按其中顺序读取理论、
-架构、对应表和任务卡。核查实际分支状态，不假定文档中的计划已经实现。
-
-本轮实现CRA-W01，严格按plan/work_packages/CRA-W01.md编写实际代码。
-只在本项目及其专属GitHub工作流、Codespaces配置范围内修改，
-保留其他项目。使用合成数据，在GitHub云端验证。
-
-先确认W00的已有证据，再完成W01的数据、权限、幂等、版本和审计事务。
-目标文件、接口、测试及完成标准以该任务卡为准。
-按plan/implementation.json的CRA-W01 profile在专属工作流真正建立cra-w01 job、
-migrate/test步骤，使用临时PostgreSQL执行。不要把profile清单写成已经执行。
-源码提交通过实际CI后，将tested_commit/run_id/subject_digest等结构证据记入
-completion_evidence，再做状态提交；自报文字、只有baseline或被跳过的job不能完成任务。
-未实现的命令先创建并验证，不得宣称已经运行。
-不要提前做OCR、报告界面或后续业务，不重新用计划代替编码。
-
-完成后记录实际代码路径、迁移、测试命令、CI链接及剩余限制，
-更新tasks.json、生成视图并运行同步检查；只有实际达到验收才记verified。
-最后报告完成了什么、证据及下一项。若实质阻塞，说明具体缺口，
-继续能独立完成的本任务工作，不跳过当前项冒充完成。
-```
+使用[plan/CODEX_FIRST_MESSAGE.md](plan/CODEX_FIRST_MESSAGE.md)中的完整指令；先读[复用选择](architecture/REUSE_ASSESSMENT.md)。本轮仍只实现W01，成熟组件在相应任务接入，不因调研而跳到OCR或部署。
 
 后续用户说“继续”，先运行next_task并按实际状态接续；不得只机械把任务号加一。默认推进V1A。若用户指定其他工作包，先核实其依赖，说明未完成前置，不隐瞒或擅改理论。
 

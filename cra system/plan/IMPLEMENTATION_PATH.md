@@ -1,6 +1,6 @@
 # 完整技术实施路径
 
-技术执行版0.4。本页由plan/implementation.json与plan/tasks.json生成，任务卡是各项代码交付入口。设计完成不等于应用已实现。
+技术执行版0.5。本页由plan/implementation.json与plan/tasks.json生成，任务卡是各项代码交付入口。设计完成不等于应用已实现。
 
 先读[第一性原理复核](../audit/FIRST_PRINCIPLES_REVIEW_V04.md)、[总技术路线](../architecture/IMPLEMENTATION_ROUTE.md)和[Codex入口](../CODEX_START_HERE.md)。
 
@@ -41,7 +41,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。
 
-技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W01。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -53,7 +53,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。
 
-技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)
+技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W02。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -65,7 +65,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：文件/锚点/作业接口，合成资料集和OCR依赖/资源可行性探测记录。
 
-技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[LAB_AUTOMATION.md](../architecture/LAB_AUTOMATION.md)
+技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[LAB_AUTOMATION.md](../architecture/LAB_AUTOMATION.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W03。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -77,7 +77,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：候选规则树、用户修正、版本启用解析及独立条件反例结果。
 
-技术输入：[WORKFLOW_CONTRACTS.md](../architecture/WORKFLOW_CONTRACTS.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[WORKFLOW_CONTRACTS.md](../architecture/WORKFLOW_CONTRACTS.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W04。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -89,7 +89,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：患者/锚点/分类断点及缺口拒绝/恢复契约，日期精度和来源保留。
 
-技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[WORKFLOW_CONTRACTS.md](../architecture/WORKFLOW_CONTRACTS.md)
+技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[WORKFLOW_CONTRACTS.md](../architecture/WORKFLOW_CONTRACTS.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W05。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -101,7 +101,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：历史文件整理→遗留提醒/展开→点击确认→下次接续，正式Query与草稿区分。
 
-技术输入：[WORKFLOW_CONTRACTS.md](../architecture/WORKFLOW_CONTRACTS.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)
+技术输入：[WORKFLOW_CONTRACTS.md](../architecture/WORKFLOW_CONTRACTS.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W06。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -113,7 +113,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：真实Excel输入、可复用列映射和不可变标准检验快照。
 
-技术输入：[LAB_AUTOMATION.md](../architecture/LAB_AUTOMATION.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)
+技术输入：[LAB_AUTOMATION.md](../architecture/LAB_AUTOMATION.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W07。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -125,7 +125,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：自动源文件读取→匹配→比较→差异/未知与待办、实际provider证据、人工负担和支持范围。
 
-技术输入：[LAB_AUTOMATION.md](../architecture/LAB_AUTOMATION.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[LAB_AUTOMATION.md](../architecture/LAB_AUTOMATION.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W08。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -137,7 +137,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：按项目标准区分医学维度的候选分析、具体问题及必要及时线索，不自动作最终医学结论。
 
-技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W09。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -149,7 +149,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：原目录直接对照及简单缺件状态，启动/关闭/交接复用已有资料和问题。
 
-技术输入：[WORKFLOW_CONTRACTS.md](../architecture/WORKFLOW_CONTRACTS.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)
+技术输入：[WORKFLOW_CONTRACTS.md](../architecture/WORKFLOW_CONTRACTS.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W10。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -161,7 +161,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：可打开的模板信件、监查报告、track及不可变快照，多份输出同一事实。
 
-技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W11。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -173,7 +173,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：两次监查浏览器流程、刷新/重登/切中心/重试不丢状态，缺口和异常不混同。
 
-技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W12。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -185,7 +185,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：40场景实证、逐用途能力/风险记录、自动覆盖和总耗时、明确可试用范围与未达标结论。
 
-技术输入：[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)、[LAB_AUTOMATION.md](../architecture/LAB_AUTOMATION.md)
+技术输入：[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)、[LAB_AUTOMATION.md](../architecture/LAB_AUTOMATION.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W13。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -197,7 +197,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：复杂格式新增SupportProfile和独立回归；既有业务数据不变。
 
-技术输入：[LAB_AUTOMATION.md](../architecture/LAB_AUTOMATION.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[LAB_AUTOMATION.md](../architecture/LAB_AUTOMATION.md)、[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W14。具体代码目标、步骤、命令和完成标准见上方任务卡。
 
@@ -209,7 +209,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 交接产物：受控环境、恢复演练、实际试用、总时间和反馈及能力暂停恢复记录。
 
-技术输入：[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)
+技术输入：[VALIDATION_AND_RELEASE.md](../architecture/VALIDATION_AND_RELEASE.md)、[EXECUTION_CONTRACTS.md](../architecture/EXECUTION_CONTRACTS.md)、[REUSE_ASSESSMENT.md](../architecture/REUSE_ASSESSMENT.md)
 
 专属CI：CRA-W15。具体代码目标、步骤、命令和完成标准见上方任务卡。
 

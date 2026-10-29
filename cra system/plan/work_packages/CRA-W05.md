@@ -44,7 +44,7 @@
 - 进入：规则版本和三值逻辑可用，准备患者上下文合成表。
 - 交接：患者/锚点/分类断点及缺口拒绝/恢复契约，日期精度和来源保留。
 
-技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[WORKFLOW_CONTRACTS.md](../../architecture/WORKFLOW_CONTRACTS.md)
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[WORKFLOW_CONTRACTS.md](../../architecture/WORKFLOW_CONTRACTS.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤

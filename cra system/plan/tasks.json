@@ -180,7 +180,8 @@
         "实现跨研究/中心约束及读取前鉴权；若用RLS，验证实际应用角色和表拥有者例外。",
         "实现旧revision冲突、幂等重放、不同输入复用同键的冲突以及失败回滚。",
         "在专属CI加入临时PostgreSQL和迁移/集成检查；真实数据库检查不能由SQLite代替。",
-        "按plan/implementation.json建立cra-w01专属CI job与migrate/test步骤。实际通过后生成绑定源码/规范指纹和GitHub run的completion_evidence，不能用自报文字完成任务。"
+        "按plan/implementation.json建立cra-w01专属CI job与migrate/test步骤。实际通过后生成绑定源码/规范指纹和GitHub run的completion_evidence，不能用自报文字完成任务。",
+        "遵守复用清单：沿用SQLAlchemy/Alembic等已选基础组件，不整仓移植模板，不提前安装所有候选。锁文件与依赖台账区分研究HEAD和实际安装版本。"
       ],
       "done_when": [
         "两中心合成数据不能跨范围读取。",
@@ -224,7 +225,8 @@
       "phase_id": "P1",
       "design_refs": [
         "architecture/EXECUTION_CONTRACTS.md",
-        "architecture/VALIDATION_AND_RELEASE.md"
+        "architecture/VALIDATION_AND_RELEASE.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "W00已有证据，完成声明使用新的任务专属CI门槛。"
@@ -328,11 +330,12 @@
       ],
       "steps": [
         "建立API统一错误和OpenAPI，把W01授权传入请求。",
-        "身份通过可替换端口接入；无正式OIDC时，仅允许明确synthetic环境的合成演示，生产拒绝模拟模式。",
+        "身份优先通过Authlib的OIDC客户端接已有获准身份源；项目/中心授权仍用W01。无正式OIDC只允许synthetic合成演示，生产拒绝模拟模式；Keycloak仅在需要独立身份服务时后续评估。",
         "建立React页面框架、项目/中心选择及错误状态；服务密钥只在后端。",
         "配置Codespaces的Node、数据库及实际启动步骤，保持转发端口private。",
         "增加typecheck/build/test脚本及CI，记录并锁定实际依赖版本。",
-        "从实际API生成contracts/openapi.json及前端类型，增加api:check，后续接口变化同步生成，禁止维护两套手写类型。"
+        "从实际API生成contracts/openapi.json及前端类型，增加api:check，后续接口变化同步生成，禁止维护两套手写类型。",
+        "前端按AG Grid Community/React与React-PDF路线准备可复用边界，实际依赖在使用任务加入锁文件；不导入Enterprise，不以完整FastAPI模板覆盖当前SQLAlchemy/授权/证据设计。"
       ],
       "done_when": [
         "可选择授权项目/中心，刷新后上下文正确。",
@@ -386,7 +389,8 @@
       ],
       "phase_id": "P1",
       "design_refs": [
-        "architecture/EXECUTION_CONTRACTS.md"
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "W01迁移与隔离测试实际通过。"
@@ -484,22 +488,36 @@
           "path": "backend/cra_app/providers/probe.py",
           "kind": "code",
           "purpose": "仅合成资料的依赖/资源与候选输出探测入口"
+        },
+        {
+          "path": "backend/cra_app/documents/storage.py",
+          "kind": "code",
+          "purpose": "boto3私有文件薄适配，不暴露永久公开链接"
+        },
+        {
+          "path": "web/src/components/SourcePdfViewer.tsx",
+          "kind": "code",
+          "purpose": "React-PDF源文件展示及授权/定位边界"
         }
       ],
       "contracts": [
         "上传返回job_id；SourceAnchor包含文档版本及章节、节点、表格/脚注或坐标。",
         "原文件私有，DocumentVersion不可覆盖；不把上传时间当业务生效日期。",
-        "DocumentVersion分别保存发布时间、上传时间和用户手动的开始使用信息；实际适用区间由M03管理。目录可仅作原文件对照。"
+        "DocumentVersion分别保存发布时间、上传时间和用户手动的开始使用信息；实际适用区间由M03管理。目录可仅作原文件对照。",
+        "QueueAdapter封装Procrastinate，业务Job/授权/版本/Outbox不交给队列决定；S3 SDK不替代范围/保留/版本策略。"
       ],
       "steps": [
-        "增加来源、锚点、覆盖、job/outbox迁移，文件经私有存储端口访问。",
+        "增量迁移来源、锚点、覆盖、业务Job/Outbox；私有文件经boto3薄适配，通用队列/worker/锁/重试优先Procrastinate，不从头写队列引擎。",
         "分别记录规则/事实用途和适用范围；文件哈希发现重复但不裁定替代关系。",
         "遍历DOCX的w:sdt、合并单元格、脚注和字符格式；PDF保留坐标，失败页如实显示。",
         "实现有限重试、幂等、资源预算及worker重新鉴权，不执行宏或文档内指令。",
         "界面展示版本、缺口和可回查原文，供规则提取复用。",
         "保留历史监查报告/track的来源定位，供W06整理遗留；目录无需先全量结构化也能查看。",
         "及早用纯合成检验文件探测OCR的Python/运行库/CPU内存与定位输出，不在此实现完整核对；依赖冲突时隔离OCR适配运行环境，保留原业务接口。",
-        "建立docs/Excel/图片/模板的合成样本清单与预期，保留独立评估分组；不得把开发结果当独立验证。"
+        "建立docs/Excel/图片/模板的合成样本清单与预期，保留独立评估分组；不得把开发结果当独立验证。",
+        "核对Procrastinate所选发布版/驱动的入队事务能力；未经共享事务验证时使用业务写入+Outbox同事务，再relay入队并幂等处理。队列只传内部ID，worker重查授权和版本。",
+        "以相同少量纯合成样本比较PaddleOCR结构管道与Docling候选；记录精确定位/表格/条件覆盖、模型许可、运行兼容和负担，选合适的一个，不默认双装。",
+        "源PDF查看复用React-PDF并本地打包worker/字库，保留SourceRef页和坐标；不是用PDF查看器替代OCR或完整DOCX解析。"
       ],
       "done_when": [
         "脚注和加粗等有意义格式不丢失。",
@@ -539,7 +557,8 @@
       "phase_id": "P2",
       "design_refs": [
         "architecture/EXECUTION_CONTRACTS.md",
-        "architecture/LAB_AUTOMATION.md"
+        "architecture/LAB_AUTOMATION.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "API、私有文件接口和持久事务可用。"
@@ -699,7 +718,8 @@
       "design_refs": [
         "architecture/WORKFLOW_CONTRACTS.md",
         "architecture/EXECUTION_CONTRACTS.md",
-        "architecture/VALIDATION_AND_RELEASE.md"
+        "architecture/VALIDATION_AND_RELEASE.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "已解析原文、处理覆盖及授权提取端口可用。"
@@ -817,7 +837,8 @@
       "phase_id": "P2",
       "design_refs": [
         "architecture/EXECUTION_CONTRACTS.md",
-        "architecture/WORKFLOW_CONTRACTS.md"
+        "architecture/WORKFLOW_CONTRACTS.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "规则版本和三值逻辑可用，准备患者上下文合成表。"
@@ -977,7 +998,8 @@
       "phase_id": "P3",
       "design_refs": [
         "architecture/WORKFLOW_CONTRACTS.md",
-        "architecture/EXECUTION_CONTRACTS.md"
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "事实、来源与规则接口可用，完整M10非前置。"
@@ -1048,7 +1070,8 @@
         "预览sheet/row/cell，分别保存原始字符串、公式及缓存，不执行宏。",
         "复用已确认列映射，核实新患者/访视/重复实例歧义。",
         "事务保存不可变快照和范围，重复导入幂等，更正版另建快照。",
-        "向M08提供标准检验记录，同时保留原值、单位、时间精度和原始定位。"
+        "向M08提供标准检验记录，同时保留原值、单位、时间精度和原始定位。",
+        "导入预览复用AG Grid Community/React，数据与列映射由服务端保存；不依赖Enterprise Excel Export进行导入或track生成。"
       ],
       "done_when": [
         "同日初检/复查不被合并。",
@@ -1082,7 +1105,8 @@
       "phase_id": "P3",
       "design_refs": [
         "architecture/LAB_AUTOMATION.md",
-        "architecture/EXECUTION_CONTRACTS.md"
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "患者映射及快照范围契约可用。"
@@ -1191,14 +1215,15 @@
         "手动为少量例外；用户拒绝缺失数据或不用管时执行有范围的CheckDecision，不反复追问，不计正常。"
       ],
       "steps": [
-        "实现源文件上传、识别job、实际RecognizeLab适配与候选字段/定位存储；先支持代表性明确格式，人工数据对象作为同管道的少量兜底。",
+        "复用W03实测选择的PaddleOCR/结构识别适配器（或有证据更合适的Docling）接源文件→字段/坐标→原匹配比较服务，不自写OCR或表格结构引擎。",
         "匹配中心、患者、时间、项目、样本、访视、初检复查和报告修订；歧义不按数值近似挑选。",
         "用Decimal及批准映射比较，保留大于小于等符号，未知单位不猜换算。",
         "分别返回一致、差异、单位待核实、本次未见、无法识别和跳过，限定结论范围。",
         "并排查看和记录差异，关联M06待办，不直接自动认定PD或临床安全。",
         "评估候选OCR/多模态接入的格式效果与授权条件，不绑定未验证供应商；记录支持范围和关键字段错误。",
         "集中展示低可信/歧义/差异，已通过校验字段自动比较候选；人工更正只重算相关结果。",
-        "明确code/synthetic/provider验证等级；provider缺失只记录接口/人工兜底，不得把W08核心自动能力标验证完成。"
+        "明确code/synthetic/provider验证等级；provider缺失只记录接口/人工兜底，不得把W08核心自动能力标验证完成。",
+        "并排核对表格复用AG Grid Community，源PDF复用React-PDF；只定制匹配、差异展示与坐标映射，不用组件排序/编辑结果替代服务端事实。"
       ],
       "done_when": [
         "初检、复查和修订不误配，多候选明确待核实。",
@@ -1251,7 +1276,8 @@
       "design_refs": [
         "architecture/LAB_AUTOMATION.md",
         "architecture/EXECUTION_CONTRACTS.md",
-        "architecture/VALIDATION_AND_RELEASE.md"
+        "architecture/VALIDATION_AND_RELEASE.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "W06/W07通过；W03探测已给出可安装、可运行的识别候选，支持格式和代表性评估输入已确定。"
@@ -1384,7 +1410,8 @@
       "phase_id": "P4",
       "design_refs": [
         "architecture/EXECUTION_CONTRACTS.md",
-        "architecture/VALIDATION_AND_RELEASE.md"
+        "architecture/VALIDATION_AND_RELEASE.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "自动比较结果、规则依据与已有安全上下文可用；缺项允许明确保留未知。"
@@ -1501,7 +1528,8 @@
       "phase_id": "P4",
       "design_refs": [
         "architecture/WORKFLOW_CONTRACTS.md",
-        "architecture/EXECUTION_CONTRACTS.md"
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "原目录文件与M06问题服务可用。"
@@ -1583,10 +1611,11 @@
         "生成材料引用coverage以及事实/规则/问题版本；实际发送与签发独立。",
         "信件选几项不修改问题清单全集；签发后保存不可变内容与引用版本。",
         "报告区分输出适用版本与历史事项使用依据；CRA确认写作用户确认，不写AI独立核验。跳过范围不润色为正常。",
-        "TemplateMapping标识支持字段/重复问题区/来源附注/必填未知；草稿可保留明确缺口，不能静默填无异常。"
+        "TemplateMapping标识支持字段/重复问题区/来源附注/必填未知；草稿可保留明确缺口，不能静默填无异常。",
+        "docxtpl包许可为LGPL-2.1-only，保留依赖记录；模板只使用受控上下文/语法，不能因有Jinja能力开放任意代码/网络/文件访问。XlsxWriter仅全新Excel有明确需求时评估。"
       ],
       "steps": [
-        "使用合成模板建立字段映射，留出替换用户实际模板的入口。",
+        "以docxtpl渲染已映射DOCX模板，保留样式和重复问题区；openpyxl负责既有XLSX模板和track，不从零编写模板引擎。",
         "同一记录分别生成访前选取、上次问题处理、本次发现、访后事项及track。",
         "校验报告措辞不超实际范围，未知不能润色为无异常；事实更正与文字修改分开。",
         "实现不可变快照及有记录的修订，新进展只进入后续材料。",
@@ -1625,7 +1654,8 @@
       "phase_id": "P4",
       "design_refs": [
         "architecture/EXECUTION_CONTRACTS.md",
-        "architecture/VALIDATION_AND_RELEASE.md"
+        "architecture/VALIDATION_AND_RELEASE.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "问题/覆盖/分析事实接口可用，合成DOCX模板与Excel字段映射明确。"
@@ -1767,7 +1797,8 @@
       "phase_id": "P5",
       "design_refs": [
         "architecture/EXECUTION_CONTRACTS.md",
-        "architecture/VALIDATION_AND_RELEASE.md"
+        "architecture/VALIDATION_AND_RELEASE.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "既有各模块服务及页面实际可用，完整场景使用真实API和临时PostgreSQL。"
@@ -1927,7 +1958,8 @@
       "phase_id": "P5",
       "design_refs": [
         "architecture/VALIDATION_AND_RELEASE.md",
-        "architecture/LAB_AUTOMATION.md"
+        "architecture/LAB_AUTOMATION.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "W12端到端通过，开发样例与独立评估已分离。"
@@ -2040,7 +2072,8 @@
       "phase_id": "P6",
       "design_refs": [
         "architecture/LAB_AUTOMATION.md",
-        "architecture/VALIDATION_AND_RELEASE.md"
+        "architecture/VALIDATION_AND_RELEASE.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "W08已有自动读取，当前范围的错误及负担记录可复用。"
@@ -2109,7 +2142,8 @@
         "按锁定镜像和迁移部署，实测最小权限、TLS、备份恢复、审计和中心隔离。",
         "按确定范围执行真实操作，记录总时间、问题及未覆盖用途。",
         "反馈关联CRA-R/M/CRA-W及去标识场景，区分理论变化、资料缺口、代码错误和呈现问题。",
-        "监测实际格式下关键错误、人工负担、漂移及反馈；按用途暂停相关自动能力并保留事实/问题工作，修复验证后恢复。"
+        "监测实际格式下关键错误、人工负担、漂移及反馈；按用途暂停相关自动能力并保留事实/问题工作，修复验证后恢复。",
+        "沿用已验证boto3/队列/身份adapter；没有既有身份源时才按实际需要配置Keycloak，核对各包/模型/镜像许可与锁版本，不把可选基础设施变成默认前置。"
       ],
       "done_when": [
         "具备实际环境、授权、恢复及试用证据，缺项如实列阻塞。",
@@ -2151,7 +2185,8 @@
       "phase_id": "P7",
       "design_refs": [
         "architecture/VALIDATION_AND_RELEASE.md",
-        "architecture/EXECUTION_CONTRACTS.md"
+        "architecture/EXECUTION_CONTRACTS.md",
+        "architecture/REUSE_ASSESSMENT.md"
       ],
       "entry_conditions": [
         "W13工程验收已汇总，实际服务和资料范围获授权；试用范围要求的provider证据有效。"

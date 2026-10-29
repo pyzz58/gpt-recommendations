@@ -34,6 +34,8 @@
 | `validation/PROVIDER_FEASIBILITY.md` | document | OCR/模型适配安装与资源探测、授权范围和待验证项 |
 | `tests/fixtures/manifest.json` | config | 合成资料及开发/独立评估分组和正确预期定位 |
 | `backend/cra_app/providers/probe.py` | code | 仅合成资料的依赖/资源与候选输出探测入口 |
+| `backend/cra_app/documents/storage.py` | code | boto3私有文件薄适配，不暴露永久公开链接 |
+| `web/src/components/SourcePdfViewer.tsx` | code | React-PDF源文件展示及授权/定位边界 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -42,6 +44,7 @@
 - 上传返回job_id；SourceAnchor包含文档版本及章节、节点、表格/脚注或坐标。
 - 原文件私有，DocumentVersion不可覆盖；不把上传时间当业务生效日期。
 - DocumentVersion分别保存发布时间、上传时间和用户手动的开始使用信息；实际适用区间由M03管理。目录可仅作原文件对照。
+- QueueAdapter封装Procrastinate，业务Job/授权/版本/Outbox不交给队列决定；S3 SDK不替代范围/保留/版本策略。
 
 ## 进入条件与交接
 
@@ -50,12 +53,12 @@
 - 进入：API、私有文件接口和持久事务可用。
 - 交接：文件/锚点/作业接口，合成资料集和OCR依赖/资源可行性探测记录。
 
-技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤
 
-1. 增加来源、锚点、覆盖、job/outbox迁移，文件经私有存储端口访问。
+1. 增量迁移来源、锚点、覆盖、业务Job/Outbox；私有文件经boto3薄适配，通用队列/worker/锁/重试优先Procrastinate，不从头写队列引擎。
 2. 分别记录规则/事实用途和适用范围；文件哈希发现重复但不裁定替代关系。
 3. 遍历DOCX的w:sdt、合并单元格、脚注和字符格式；PDF保留坐标，失败页如实显示。
 4. 实现有限重试、幂等、资源预算及worker重新鉴权，不执行宏或文档内指令。
@@ -63,6 +66,9 @@
 6. 保留历史监查报告/track的来源定位，供W06整理遗留；目录无需先全量结构化也能查看。
 7. 及早用纯合成检验文件探测OCR的Python/运行库/CPU内存与定位输出，不在此实现完整核对；依赖冲突时隔离OCR适配运行环境，保留原业务接口。
 8. 建立docs/Excel/图片/模板的合成样本清单与预期，保留独立评估分组；不得把开发结果当独立验证。
+9. 核对Procrastinate所选发布版/驱动的入队事务能力；未经共享事务验证时使用业务写入+Outbox同事务，再relay入队并幂等处理。队列只传内部ID，worker重查授权和版本。
+10. 以相同少量纯合成样本比较PaddleOCR结构管道与Docling候选；记录精确定位/表格/条件覆盖、模型许可、运行兼容和负担，选合适的一个，不默认双装。
+11. 源PDF查看复用React-PDF并本地打包worker/字库，保留SourceRef页和坐标；不是用PDF查看器替代OCR或完整DOCX解析。
 
 ## 验证命令
 

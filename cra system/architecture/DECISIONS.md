@@ -18,3 +18,7 @@
 不采用隐藏供应商依赖、不把四业务模块做成四份独立问题库、不把任何新上传文件自动覆盖旧规则、不把所有遗留完成口径统一为一张复杂证明表。
 
 本轮补充：CRA点击确认整改即可；缺数据拒绝后跳过相关路径；list含前后条件及分支；手动设置开始使用日期；目录可先直接对照。这些取代旧设计中额外证明要求及人工主线口径，具体契约见WORKFLOW_CONTRACTS.md。
+
+## ADR-011 成熟组件优先（v0.5）
+
+优先直接依赖Procrastinate、docxtpl、AG Grid Community、React-PDF、Authlib和boto3；OCR/结构以PaddleOCR为首候选、Docling作有门槛对照。选型/未选理由、许可证和上游提交见REUSE_ASSESSMENT与reuse-catalog。当前研究不是运行验证，不整体复制模板、EDC或新建通用Agent平台替代临床服务。

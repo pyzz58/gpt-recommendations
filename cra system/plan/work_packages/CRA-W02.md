@@ -50,17 +50,18 @@
 - 进入：W01迁移与隔离测试实际通过。
 - 交接：可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。
 
-技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤
 
 1. 建立API统一错误和OpenAPI，把W01授权传入请求。
-2. 身份通过可替换端口接入；无正式OIDC时，仅允许明确synthetic环境的合成演示，生产拒绝模拟模式。
+2. 身份优先通过Authlib的OIDC客户端接已有获准身份源；项目/中心授权仍用W01。无正式OIDC只允许synthetic合成演示，生产拒绝模拟模式；Keycloak仅在需要独立身份服务时后续评估。
 3. 建立React页面框架、项目/中心选择及错误状态；服务密钥只在后端。
 4. 配置Codespaces的Node、数据库及实际启动步骤，保持转发端口private。
 5. 增加typecheck/build/test脚本及CI，记录并锁定实际依赖版本。
 6. 从实际API生成contracts/openapi.json及前端类型，增加api:check，后续接口变化同步生成，禁止维护两套手写类型。
+7. 前端按AG Grid Community/React与React-PDF路线准备可复用边界，实际依赖在使用任务加入锁文件；不导入Enterprise，不以完整FastAPI模板覆盖当前SQLAlchemy/授权/证据设计。
 
 ## 验证命令
 

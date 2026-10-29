@@ -1,6 +1,6 @@
 # 系统架构与第一版实现路线
 
-状态：技术方案 v0.4；模块边界已设计，尚未实现完整应用。约束来源为[业务基线](../theory/BASELINE.md)和固定理论编号。
+状态：技术方案 v0.5；模块边界已设计，尚未实现完整应用。约束来源为[业务基线](../theory/BASELINE.md)和固定理论编号。
 
 逐项代码实施、依赖锁、目标文件和Codex执行约定见[IMPLEMENTATION_ROUTE](IMPLEMENTATION_ROUTE.md)及[任务卡](../plan/CODEX_TASKS.md)。
 
@@ -32,7 +32,7 @@ M13是仓库中的理论同步工具，不属于临床运行时服务。M14是�
 | 业务核心 | 普通Python服务及类型对象 | 规则、事实、问题状态与模型分离；首批核心示例已放backend/cra_core |
 | 数据 | PostgreSQL 18 + SQLAlchemy 2.x + Alembic | 事务、版本、结构化关联、JSON字段和迁移；精确兼容版本在W01/W02验证并锁定 |
 | 文件 | 私有S3兼容对象存储接口 | DB保存版本和定位，文件保存原件及图像区域；云供应商待获准环境确定 |
-| 作业 | PostgreSQL持久化job表 + 应用编排worker | 作业幂等、租约和重试可追踪；V1不额外依赖Redis或复杂调度平台 |
+| 作业 | Procrastinate PostgreSQL队列 + 应用编排worker | 作业幂等、租约和重试可追踪；V1不额外依赖Redis或复杂调度平台 |
 | 原文解析 | python-docx/受控OOXML解析、pdfplumber、openpyxl | 分别适配DOCX、文字PDF和Excel；扫描内容另接OCR，不伪装文本PDF可直接读 |
 | 图像 | 独立OCR接口，PaddleOCR作为优先评估候选 | 仅限检验报告；须以真实格式或获准样本验证，未选定部署和性能 |
 | 模型 | 服务端Provider接口 + 结构化输出校验 | 不绑定单一供应商；未配置时显式人工模式，业务数据不依赖供应商会话 |
@@ -76,3 +76,7 @@ V1A仍需资料候选提取、分层list、患者上下文、问题、检验比�
 ## 8. 完整实施入口v0.4
 
 [EXECUTION_CONTRACTS](EXECUTION_CONTRACTS.md)细化共享输出和最低输入，[LAB_AUTOMATION](LAB_AUTOMATION.md)细化从文件到比较，[VALIDATION_AND_RELEASE](VALIDATION_AND_RELEASE.md)区分工程/provider/授权试用。[IMPLEMENTATION_PATH](../plan/IMPLEMENTATION_PATH.md)由任务源生成，新增进入条件、交接和任务专属CI。W03先探测识别运行环境，不把最低Python版本说明当完整依赖兼容证明。
+
+## 9. v0.5成熟组件
+
+按[REUSE_ASSESSMENT](REUSE_ASSESSMENT.md)直接复用通用能力：Procrastinate、docxtpl、AG Grid Community、React-PDF、Authlib、boto3；PaddleOCR结构优先候选、Docling对照。临床服务和最高说明不由组件替换，当前仍待对应任务安装和集成验证。

@@ -48,7 +48,7 @@
 - 进入：W00已有证据，完成声明使用新的任务专属CI门槛。
 - 交接：数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。
 
-技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤
@@ -59,6 +59,7 @@
 4. 实现旧revision冲突、幂等重放、不同输入复用同键的冲突以及失败回滚。
 5. 在专属CI加入临时PostgreSQL和迁移/集成检查；真实数据库检查不能由SQLite代替。
 6. 按plan/implementation.json建立cra-w01专属CI job与migrate/test步骤。实际通过后生成绑定源码/规范指纹和GitHub run的completion_evidence，不能用自报文字完成任务。
+7. 遵守复用清单：沿用SQLAlchemy/Alembic等已选基础组件，不整仓移植模板，不提前安装所有候选。锁文件与依赖台账区分研究HEAD和实际安装版本。
 
 ## 验证命令
 

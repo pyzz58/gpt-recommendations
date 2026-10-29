@@ -48,7 +48,7 @@
 - 进入：事实、来源与规则接口可用，完整M10非前置。
 - 交接：历史文件整理→遗留提醒/展开→点击确认→下次接续，正式Query与草稿区分。
 
-技术输入：[WORKFLOW_CONTRACTS.md](../../architecture/WORKFLOW_CONTRACTS.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)
+技术输入：[WORKFLOW_CONTRACTS.md](../../architecture/WORKFLOW_CONTRACTS.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤

@@ -15,7 +15,7 @@
         "CRA-S01",
         "CRA-S02"
       ],
-      "revision": 3,
+      "revision": 4,
       "status": "designed",
       "design_path": "architecture/modules/M01-governance.md",
       "planned_code_path": "backend/cra_app/governance/",
@@ -38,7 +38,7 @@
         "CRA-S03",
         "CRA-S04"
       ],
-      "revision": 3,
+      "revision": 4,
       "status": "designed",
       "design_path": "architecture/modules/M02-documents.md",
       "planned_code_path": "backend/cra_app/documents/",
@@ -142,7 +142,7 @@
         "CRA-S39",
         "CRA-S40"
       ],
-      "revision": 2,
+      "revision": 3,
       "status": "designed",
       "design_path": "architecture/modules/M05-monitoring.md",
       "planned_code_path": "backend/cra_app/monitoring/",
@@ -221,7 +221,7 @@
         "CRA-S18",
         "CRA-S19"
       ],
-      "revision": 3,
+      "revision": 4,
       "status": "designed",
       "design_path": "architecture/modules/M07-edc_import.md",
       "planned_code_path": "backend/cra_app/edc_import/",
@@ -255,7 +255,7 @@
         "CRA-S36",
         "CRA-S39"
       ],
-      "revision": 3,
+      "revision": 4,
       "status": "designed",
       "design_path": "architecture/modules/M08-laboratory.md",
       "planned_code_path": "backend/cra_app/laboratory/",
@@ -347,7 +347,7 @@
         "CRA-S38",
         "CRA-S40"
       ],
-      "revision": 3,
+      "revision": 4,
       "status": "designed",
       "design_path": "architecture/modules/M11-reports.md",
       "planned_code_path": "backend/cra_app/reports/",
@@ -383,7 +383,7 @@
         "CRA-S30",
         "CRA-S39"
       ],
-      "revision": 3,
+      "revision": 4,
       "status": "designed",
       "design_path": "architecture/modules/M12-providers.md",
       "planned_code_path": "backend/cra_app/providers/",
@@ -432,7 +432,7 @@
         "CRA-S34",
         "CRA-S39"
       ],
-      "revision": 3,
+      "revision": 4,
       "status": "designed",
       "design_path": "architecture/modules/M14-platform.md",
       "planned_code_path": "deploy/",

@@ -29,3 +29,7 @@
 | [GitHub测试产物](https://docs.github.com/en/actions/tutorials/store-and-share-data) | 可留合成报告和构建结果，产物完整性不等于业务正确性；真实资料不进公开产物 |
 
 原Notion最高说明本轮只读复核仍为v0.14（1.1—1.5），加上Git中用户八点澄清构成本轮业务依据。本轮不重新认定其中每项法规版本/效力日期；实际运行的共性规则包须取得并核对相应官方原文及适用范围，不以本技术文档代替法规判断。
+
+## v0.5开源来源核对
+
+2026-10-29新增[复用评估](REUSE_ASSESSMENT.md)和[14项目来源目录](reuse-catalog.json)，保存原仓库、不可变上游提交、许可证文件及部分发布快照。重点核对Procrastinate的PostgreSQL/connector/重试、docxtpl模板语法与LGPL-2.1-only、AG Grid按包MIT/商业边界、React-PDF worker、Authlib/Boto3及OCR/Docling代码与模型许可区别。调研提交不等于安装pin，当前没有安装或性能验证。

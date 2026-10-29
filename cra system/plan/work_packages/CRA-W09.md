@@ -46,7 +46,7 @@
 - 进入：自动比较结果、规则依据与已有安全上下文可用；缺项允许明确保留未知。
 - 交接：按项目标准区分医学维度的候选分析、具体问题及必要及时线索，不自动作最终医学结论。
 
-技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤

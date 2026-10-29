@@ -42,7 +42,7 @@ CRA能连续完成一次监查，并在下一次按原问题继续跟进。
 - 进入：既有各模块服务及页面实际可用，完整场景使用真实API和临时PostgreSQL。
 - 交接：两次监查浏览器流程、刷新/重登/切中心/重试不丢状态，缺口和异常不混同。
 
-技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤

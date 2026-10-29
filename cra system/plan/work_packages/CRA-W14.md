@@ -41,7 +41,7 @@
 - 进入：W08已有自动读取，当前范围的错误及负担记录可复用。
 - 交接：复杂格式新增SupportProfile和独立回归；既有业务数据不变。
 
-技术输入：[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤

@@ -1,6 +1,6 @@
 # M08 检验报告识别与一致性核对
 
-版本：3；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/laboratory/`。
+版本：4；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/laboratory/`。
 
 ## 对应理论和任务
 
@@ -41,3 +41,7 @@ W08包含支持格式的实际自动读取、提取/定位和EDC比较；W14只�
 ## v0.4技术实施补齐
 
 文字/图像/表格结构/实例匹配/比较完整管道，实际自动化及负担评估。 实现契约见[LAB_AUTOMATION.md](../LAB_AUTOMATION.md)，当前任务的进入条件/交接见[完整实施路径](../../plan/IMPLEMENTATION_PATH.md)。理论和任务编号保持；本轮文档不是业务功能完成证据。
+
+## v0.5成熟组件复用
+
+PaddleOCR/表格结构为首候选，Docling作对照；界面复用AG Grid Community和React-PDF，仅定制临床匹配、差异/未知和坐标适配。 具体上游、许可、替代范围和任务接法见[复用评估](../REUSE_ASSESSMENT.md)及[目录](../reuse-catalog.json)。本轮仅选型和来源核对，尚未安装/集成验证。

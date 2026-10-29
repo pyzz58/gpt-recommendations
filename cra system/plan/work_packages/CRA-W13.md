@@ -43,7 +43,7 @@
 - 进入：W12端到端通过，开发样例与独立评估已分离。
 - 交接：40场景实证、逐用途能力/风险记录、自动覆盖和总耗时、明确可试用范围与未达标结论。
 
-技术输入：[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)
+技术输入：[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤

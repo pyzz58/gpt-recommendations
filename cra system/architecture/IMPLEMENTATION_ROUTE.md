@@ -1,6 +1,6 @@
 # 技术路线与完整实施入口
 
-技术执行版v0.4，2026-10-29。业务来源为45条固定理论及用户八点澄清；本轮只补技术实现与验证方法，不新增临床流程。第一性原理核查见[复核结论](../audit/FIRST_PRINCIPLES_REVIEW_V04.md)，逐阶段执行见[完整实施路径](../plan/IMPLEMENTATION_PATH.md)，逐项源为plan/tasks.json。
+技术执行版v0.5，2026-10-29。业务来源为45条固定理论及用户八点澄清；本轮只补技术实现与验证方法，不新增临床流程。第一性原理核查见[复核结论](../audit/FIRST_PRINCIPLES_REVIEW_V04.md)，逐阶段执行见[完整实施路径](../plan/IMPLEMENTATION_PATH.md)，逐项源为plan/tasks.json。
 
 ## 1. 审核后的结论
 
@@ -12,13 +12,13 @@
 
 | 层 | 路线 | 实施落点 |
 | --- | --- | --- |
-| UI | React/TypeScript/Vite，分层list、来源抽屉、集中异常核对 | W02壳，各任务增量页面，W12全流程 |
+| UI | React/TypeScript/Vite；AG Grid Community核对表格、React-PDF源PDF，分层list和集中异常 | W02壳，各任务增量页面，W12全流程 |
 | API/核心 | Python3.13/FastAPI/Pydantic，普通业务服务，OpenAPI生成前端类型 | W01—W02底座，业务任务增量 |
 | 关系数据 | PostgreSQL18、SQLAlchemy2.x、Alembic；事务/版本/审计/范围约束 | W01和各任务增量迁移，精确版本验证后锁定 |
-| 文件 | 私有S3兼容接口；DB保存版本/哈希/定位，原文件不可变 | W03；W15核实实际服务和恢复 |
-| 作业 | PostgreSQL持久job＋应用编排worker，租约/幂等/有限重试 | W03；不承诺外部调用绝不重复计费 |
+| 文件 | boto3封装私有S3兼容接口；DB保存版本/哈希/定位，原文件不可变 | W03；W15核实实际服务和恢复 |
+| 作业 | Procrastinate复用PostgreSQL队列/worker/重试；业务Job/Outbox/授权/幂等保留 | W03；不承诺外部调用绝不重复计费 |
 | 原文/EDC | 受控OOXML、pdfplumber、openpyxl，保留结构与来源 | W03/W07 |
-| 检验图像 | OCR＋表格结构＋字段归属＋实例匹配；PaddleOCR优先评估，经RecognizeLab端口 | W03先探测，W08首批自动路径，W14复杂格式 |
+| 检验图像 | OCR＋表格结构＋字段归属＋实例匹配；PaddleOCR结构管道优先、Docling作对照，经RecognizeLab端口 | W03先探测，W08首批自动路径，W14复杂格式 |
 | 规则/分析 | ExtractRules/AnalyzeCase受限模型，程序执行日期数值和有限条件 | W04/W09；模型不直接改业务状态 |
 | 云工程 | GitHub/Codespaces/Actions，隔离项目范围、任务专属证据 | 现有W00增强，W01以后按profile |
 | 发布 | 获准私有运行环境、明确用途/版本/范围及恢复 | W13汇总，W15实际配置/试用 |
@@ -66,3 +66,9 @@ M13/M14是工程和平台职责，不是给CRA新增页面。业务模块通过�
 规则/模板/目录内容变化更新运行时版本；业务理论变化更新固定CRA-R及关联模块/任务；模型或OCR变化替换adapter和性能评估；数据/API变化更新迁移、契约和消费者。plan/implementation.json保存阶段/里程碑/CI要求，tasks.json保存逐项实现；可读实施路径与任务卡由脚本生成并校验，不形成另一份独立状态清单。
 
 保留原理论指纹机制及CR历史。本轮没有改45条业务理论，技术修订记录为changes/TECH-0004.md。任何支持范围或节时结论都跟实际版本和证据，未测不声明。
+
+## 7. 成熟组件直接复用v0.5
+
+[复用评估](REUSE_ASSESSMENT.md)与[来源目录](reuse-catalog.json)记录14个项目的不可变提交、许可、维护和替代范围。Word模板选docxtpl，身份客户端选Authlib；队列、表格、源PDF与S3按上述路线复用。方案/患者/匹配/用户确认等临床服务保留，不能由通用组件默认行为改变。
+
+本轮只改技术选择、适配和任务步骤，没有改45条理论，没有安装依赖或把W01以后标完成。现成组件在对应任务锁版本并通过相同业务验收，技术记录changes/TECH-0005.md；Codex第一段指令见plan/CODEX_FIRST_MESSAGE.md。

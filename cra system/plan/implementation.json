@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "0.4",
+  "version": "0.5",
   "reviewed_commit": "cd3d36ecbdf57ae2f011c2b04e1174321624472b",
   "theory_source": "theory/requirements.json",
   "task_source": "plan/tasks.json",

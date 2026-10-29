@@ -1,0 +1,553 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-29",
+  "reviewed_cra_commit": "99b300f00f20af22c88770f0fdad7618c3e43ee1",
+  "policy": "按包/adapter复用，固定理论/模块/任务编号；源审查不等于安装、集成或临床验证。已选工具在对应工作包核对稳定版本、依赖/模型许可和兼容性后锁定。",
+  "projects": [
+    {
+      "id": "CRA-OSS01",
+      "repository": "PaddlePaddle/PaddleOCR",
+      "url": "https://github.com/PaddlePaddle/PaddleOCR",
+      "reviewed_head": "dab3fe35379033fdcb2d0e9572fac0b36c9a9ebf",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-09-16T03:31:50Z",
+      "created_at": "2020-05-08T10:38:16Z",
+      "release_snapshot": {
+        "tag": "v3.7.0",
+        "published_at": "2026-06-11T12:09:14Z",
+        "url": "https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v3.7.0",
+        "prerelease": false
+      },
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_file_sha": "430edfa0cfcb59f15b7aa5457427d0faf2e40dac",
+      "license_note": "代码许可已读；模型/推理引擎及依赖分别核查，旧README版本徽标不是3.13兼容证明。",
+      "readme_path": "README.md",
+      "decision": "primary_candidate",
+      "module_ids": [
+        "M08",
+        "M12"
+      ],
+      "task_ids": [
+        "CRA-W03",
+        "CRA-W08",
+        "CRA-W14"
+      ],
+      "requirement_ids": [
+        "CRA-R013",
+        "CRA-R015",
+        "CRA-R016",
+        "CRA-R017",
+        "CRA-R035",
+        "CRA-R038",
+        "CRA-R044"
+      ],
+      "replaces": "检验图像文字及表格结构识别",
+      "retain": "source_ref、身份/初检复查匹配、单位/逻辑/安全规则及用户跳过由系统实现",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS02",
+      "repository": "docling-project/docling",
+      "url": "https://github.com/docling-project/docling",
+      "reviewed_head": "d518808da7520d2e6f865b8499582e641baa58aa",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-29T10:26:44Z",
+      "created_at": "2024-07-09T07:50:26Z",
+      "release_snapshot": {
+        "tag": "v2.144.0",
+        "published_at": "2026-10-28T12:03:10Z",
+        "url": "https://github.com/docling-project/docling/releases/tag/v2.144.0",
+        "prerelease": false
+      },
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "MIT",
+      "license_path": "LICENSE",
+      "license_file_sha": "6684a401bf0f700fd37104ab7c8da340036f7166",
+      "license_note": "代码MIT；原README要求按各模型原包核对模型许可。",
+      "readme_path": "README.md",
+      "decision": "benchmark_candidate",
+      "module_ids": [
+        "M02",
+        "M08",
+        "M12"
+      ],
+      "task_ids": [
+        "CRA-W03",
+        "CRA-W08"
+      ],
+      "requirement_ids": [
+        "CRA-R003",
+        "CRA-R006",
+        "CRA-R007",
+        "CRA-R009",
+        "CRA-R034",
+        "CRA-R038"
+      ],
+      "replaces": "PDF/扫描件结构化、OCR与表格解析候选",
+      "retain": "DOCX完整条件/脚注/格式与逻辑锚点不能凭转换成功宣称保留",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS03",
+      "repository": "procrastinate-org/procrastinate",
+      "url": "https://github.com/procrastinate-org/procrastinate",
+      "reviewed_head": "eb01282ab00bce9aafbfa6c54bb3782b97117316",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-26T02:01:15Z",
+      "created_at": "2019-02-14T11:30:10Z",
+      "release_snapshot": {
+        "tag": "3.10.0",
+        "published_at": "2026-09-23T21:00:35Z",
+        "url": "https://github.com/procrastinate-org/procrastinate/releases/tag/3.10.0",
+        "prerelease": false
+      },
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "MIT",
+      "license_path": "LICENSE.md",
+      "license_file_sha": "355e6e8dc911daadf63a9055133e5df5e9be8397",
+      "license_note": "代码LICENSE.md已读；当前发布/驱动兼容及SQLAlchemy事务接法需实测。",
+      "readme_path": "README.md",
+      "decision": "selected_pending_integration",
+      "module_ids": [
+        "M14",
+        "M02",
+        "M12"
+      ],
+      "task_ids": [
+        "CRA-W03"
+      ],
+      "requirement_ids": [
+        "CRA-R036",
+        "CRA-R040",
+        "CRA-R044"
+      ],
+      "replaces": "PostgreSQL后台队列的领取、锁、重试和worker",
+      "retain": "业务Job/授权/来源版本/幂等/审计/Outbox关系保持自己的契约",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS04",
+      "repository": "elapouya/python-docx-template",
+      "url": "https://github.com/elapouya/python-docx-template",
+      "reviewed_head": "1f143fbe86c19ecb28c3205d5f4b1547c7e2d7ad",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-07-07T12:13:00Z",
+      "created_at": "2015-03-12T12:52:14Z",
+      "release_snapshot": null,
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "LGPL-2.1-only",
+      "license_path": "LICENSE.txt",
+      "license_file_sha": "19e307187ac8b9abc086be686dc81b0f09523ef1",
+      "license_note": "LICENSE.txt为LGPL2.1，包元数据为LGPL-2.1-only；在依赖/发行记录保留并复核适用条件，不当MIT。",
+      "readme_path": "README.rst",
+      "decision": "selected_pending_integration",
+      "module_ids": [
+        "M11"
+      ],
+      "task_ids": [
+        "CRA-W11"
+      ],
+      "requirement_ids": [
+        "CRA-R029",
+        "CRA-R030",
+        "CRA-R043"
+      ],
+      "replaces": "按Word模板生成信件、监查报告和重复问题区",
+      "retain": "报告事实、覆盖、来源、状态与签发快照仍由M11管理",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS05",
+      "repository": "ag-grid/ag-grid",
+      "url": "https://github.com/ag-grid/ag-grid",
+      "reviewed_head": "dacb6eccb921b9b71d0c30810c571de1be3362e2",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-29T10:29:29Z",
+      "created_at": "2014-12-23T16:20:14Z",
+      "release_snapshot": {
+        "tag": "release-36.2.0",
+        "published_at": "2026-09-16T07:55:14Z",
+        "url": "https://github.com/ag-grid/ag-grid/releases/tag/release-36.2.0",
+        "prerelease": false
+      },
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "MIT (ag-grid-community/ag-grid-react only)",
+      "license_path": "LICENSE.txt",
+      "license_file_sha": "f1456e7c185b120949fb57793a98ee4d1f0d5ff8",
+      "license_note": "根许可分MIT和Commercial；仅Community/React包。Enterprise、Excel Export和高级功能不默认启用。",
+      "readme_path": "README.md",
+      "decision": "selected_community_only",
+      "module_ids": [
+        "M05",
+        "M07",
+        "M08"
+      ],
+      "task_ids": [
+        "CRA-W02",
+        "CRA-W07",
+        "CRA-W08",
+        "CRA-W12"
+      ],
+      "requirement_ids": [
+        "CRA-R012",
+        "CRA-R028",
+        "CRA-R045"
+      ],
+      "replaces": "核对表格的排序、筛选、虚拟滚动和自定义差异单元格",
+      "retain": "行匹配和医学/规则判断在服务端，Excel由后端生成",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS06",
+      "repository": "wojtekmaj/react-pdf",
+      "url": "https://github.com/wojtekmaj/react-pdf",
+      "reviewed_head": "edd590452c94db7200adbf369293ed51f9d66762",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-28T14:31:57Z",
+      "created_at": "2016-08-01T13:46:02Z",
+      "release_snapshot": {
+        "tag": "v11.0.0",
+        "published_at": "2026-09-10T16:44:23Z",
+        "url": "https://github.com/wojtekmaj/react-pdf/releases/tag/v11.0.0",
+        "prerelease": false
+      },
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "MIT",
+      "license_path": "LICENSE",
+      "license_file_sha": "221ef1882f800bc50756be5a8b390825b938220b",
+      "license_note": "react-pdf许可已读，传递依赖PDF.js另保留其许可；worker/字库本地打包并核对浏览器。",
+      "readme_path": "README.md",
+      "decision": "selected_pending_integration",
+      "module_ids": [
+        "M02",
+        "M08"
+      ],
+      "task_ids": [
+        "CRA-W03",
+        "CRA-W08"
+      ],
+      "requirement_ids": [
+        "CRA-R009",
+        "CRA-R013",
+        "CRA-R034"
+      ],
+      "replaces": "在CRA界面显示源PDF",
+      "retain": "SourceRef权限及坐标映射/高亮由薄适配实现",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS07",
+      "repository": "authlib/authlib",
+      "url": "https://github.com/authlib/authlib",
+      "reviewed_head": "72db57bdfa45fb8ae8d38bca7377068fa7438b78",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-26T06:21:09Z",
+      "created_at": "2017-10-27T06:52:26Z",
+      "release_snapshot": {
+        "tag": "v1.9.1",
+        "published_at": "2026-10-14T14:18:07Z",
+        "url": "https://github.com/authlib/authlib/releases/tag/v1.9.1",
+        "prerelease": false
+      },
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "BSD-3-Clause",
+      "license_path": "LICENSE",
+      "license_file_sha": "424419946c1b68036cfe419e339efa9bb6b9cbbb",
+      "license_note": "LICENSE已读；不把可选商业支持误当唯一使用条件。",
+      "readme_path": "README.md",
+      "decision": "selected_pending_integration",
+      "module_ids": [
+        "M01"
+      ],
+      "task_ids": [
+        "CRA-W02",
+        "CRA-W15"
+      ],
+      "requirement_ids": [
+        "CRA-R002",
+        "CRA-R036"
+      ],
+      "replaces": "OIDC/OAuth客户端与协议处理",
+      "retain": "授权研究/中心/盲态、审计、RLS和业务完成口径不是Authlib职责",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS08",
+      "repository": "keycloak/keycloak",
+      "url": "https://github.com/keycloak/keycloak",
+      "reviewed_head": "7a35df3e7d1cbf7c8cbe47e09252719da2dfacec",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-29T09:07:56Z",
+      "created_at": "2013-07-02T13:38:51Z",
+      "release_snapshot": {
+        "tag": "26.8.1",
+        "published_at": "2026-10-13T08:58:15Z",
+        "url": "https://github.com/keycloak/keycloak/releases/tag/26.8.1",
+        "prerelease": false
+      },
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "Apache-2.0",
+      "license_path": "LICENSE.txt",
+      "license_file_sha": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "license_note": "LICENSE.txt已读；不在W01就强行增加独立身份服务器。",
+      "readme_path": "README.md",
+      "decision": "conditional_infrastructure",
+      "module_ids": [
+        "M01",
+        "M14"
+      ],
+      "task_ids": [
+        "CRA-W15"
+      ],
+      "requirement_ids": [
+        "CRA-R002",
+        "CRA-R036",
+        "CRA-R040"
+      ],
+      "replaces": "没有既有身份平台时可用现成身份服务",
+      "retain": "本系统租户/中心权限和临床流程仍在应用层",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS09",
+      "repository": "fastapi/full-stack-fastapi-template",
+      "url": "https://github.com/fastapi/full-stack-fastapi-template",
+      "reviewed_head": "f4bcfaba7c85be3c6332cc74a20819f586dcdbc6",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-26T10:47:36Z",
+      "created_at": "2019-02-23T15:08:34Z",
+      "release_snapshot": null,
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "MIT",
+      "license_path": "LICENSE",
+      "license_file_sha": "f11987b50cfa15ae4f99d4c559137458c87d7a69",
+      "license_note": "LICENSE已读；若借鉴具体文件保留来源/许可，不复制整套模板替换规范。",
+      "readme_path": "README.md",
+      "decision": "reference_only",
+      "module_ids": [
+        "M14"
+      ],
+      "task_ids": [
+        "CRA-W01",
+        "CRA-W02"
+      ],
+      "requirement_ids": [
+        "CRA-R040"
+      ],
+      "replaces": "参考成熟应用外壳、构建/容器和测试布局",
+      "retain": "模板SQLModel/账号与当前SQLAlchemy、OIDC/范围、证据链不同，不整仓覆盖",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS10",
+      "repository": "gorules/zen",
+      "url": "https://github.com/gorules/zen",
+      "reviewed_head": "ec108e8069d9eb3154e1856310cc1e8b6bcf4276",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-28T10:43:53Z",
+      "created_at": "2023-03-29T20:06:38Z",
+      "release_snapshot": {
+        "tag": "go-v2.1.6",
+        "published_at": "2026-10-21T15:49:21Z",
+        "url": "https://github.com/gorules/zen/releases/tag/go-v2.1.6",
+        "prerelease": false
+      },
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "MIT",
+      "license_path": "LICENSE",
+      "license_file_sha": "ca6d24c65e30abba58f088862029c25a2890fd06",
+      "license_note": "LICENSE已读；monorepo最近release可为Go包，不能当Python绑定安装版本。",
+      "readme_path": "README.md",
+      "decision": "deferred",
+      "module_ids": [
+        "M03"
+      ],
+      "task_ids": [
+        "CRA-W04"
+      ],
+      "requirement_ids": [
+        "CRA-R006",
+        "CRA-R007",
+        "CRA-R011",
+        "CRA-R034"
+      ],
+      "replaces": "可视化决策表/JSON规则引擎的未来候选",
+      "retain": "三值未知、Decimal/单位、时间适用、原文来源和条件分支完整性仍需适配",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS11",
+      "repository": "microsoft/markitdown",
+      "url": "https://github.com/microsoft/markitdown",
+      "reviewed_head": "7482c092d9c0074a89803c9fdb63a969e7fe17fc",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-28T15:33:14Z",
+      "created_at": "2024-11-13T19:56:40Z",
+      "release_snapshot": null,
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "MIT",
+      "license_path": "LICENSE",
+      "license_file_sha": "9e841e7a26e4eb057b24511e7b92d42b257a80e5",
+      "license_note": "LICENSE已读；官方自述不是高保真文档转换工具，不能直接替代证据解析。",
+      "readme_path": "README.md",
+      "decision": "reference_only",
+      "module_ids": [
+        "M02"
+      ],
+      "task_ids": [
+        "CRA-W03"
+      ],
+      "requirement_ids": [
+        "CRA-R003",
+        "CRA-R007",
+        "CRA-R009"
+      ],
+      "replaces": "辅助把多种文件转换为Markdown",
+      "retain": "原文精确定位、脚注/格式语义和核查来源不能仅依赖Markdown",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS12",
+      "repository": "reliatec-gmbh/LibreClinica",
+      "url": "https://github.com/reliatec-gmbh/LibreClinica",
+      "reviewed_head": "8b6b7cf3cbe10be884bdd5c47f3de9ad1eb0321f",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-24T05:41:39Z",
+      "created_at": "2019-02-07T11:08:46Z",
+      "release_snapshot": null,
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "LGPL-3.0 (repository metadata)",
+      "license_path": null,
+      "license_file_sha": null,
+      "license_note": "本轮核对README/仓库许可元数据，未完成整套部署与依赖许可核查，不采纳为运行依赖。",
+      "readme_path": "README.md",
+      "decision": "not_selected",
+      "module_ids": [
+        "M07",
+        "M08"
+      ],
+      "task_ids": [
+        "CRA-W07",
+        "CRA-W08"
+      ],
+      "requirement_ids": [
+        "CRA-R013",
+        "CRA-R037"
+      ],
+      "replaces": "EDC/CDM平台可研究其字段或互操作格式",
+      "retain": "本系统消费既有EDC导出，不重建/替换EDC，不承诺整套符合CRA监查",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS13",
+      "repository": "boto/boto3",
+      "url": "https://github.com/boto/boto3",
+      "reviewed_head": "807ecf82324a46c9b75c9135c24205a4bd16bfab",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-28T19:16:59Z",
+      "created_at": "2014-10-03T21:38:03Z",
+      "release_snapshot": {
+        "tag": "0.0.14",
+        "published_at": "2015-04-09T19:29:21Z",
+        "url": "https://github.com/boto/boto3/releases/tag/0.0.14",
+        "prerelease": false
+      },
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_file_sha": "f433b1a53f5b830a205fd2df78e2b34974656c7b",
+      "license_note": "LICENSE已读；GitHub latest release字段可能停留早年，不据此安装，实际包版本以锁解析为准。",
+      "readme_path": "README.rst",
+      "decision": "selected_pending_integration",
+      "module_ids": [
+        "M02",
+        "M14"
+      ],
+      "task_ids": [
+        "CRA-W03",
+        "CRA-W15"
+      ],
+      "requirement_ids": [
+        "CRA-R003",
+        "CRA-R036",
+        "CRA-R040"
+      ],
+      "replaces": "S3对象存储访问、分段上传和有期限链接",
+      "retain": "临床文件私有性、范围鉴权/保留/版本和实际S3兼容性需本系统验证",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    },
+    {
+      "id": "CRA-OSS14",
+      "repository": "jmcnamara/XlsxWriter",
+      "url": "https://github.com/jmcnamara/XlsxWriter",
+      "reviewed_head": "af5927c110cf01571046a3138600f63b256ea89a",
+      "checked_on": "2026-10-29",
+      "archived": false,
+      "pushed_at": "2026-10-28T22:52:36Z",
+      "created_at": "2013-01-04T01:07:06Z",
+      "release_snapshot": null,
+      "release_snapshot_is_install_pin": false,
+      "license_summary": "BSD-2-Clause",
+      "license_path": "LICENSE.txt",
+      "license_file_sha": "9c654741b8e1aeabfb4eac1430e7bf589c66ff41",
+      "license_note": "LICENSE.txt已读；不是替换EDC导入器或既有模板修改器。",
+      "readme_path": "README.rst",
+      "decision": "conditional_optional",
+      "module_ids": [
+        "M11"
+      ],
+      "task_ids": [
+        "CRA-W11"
+      ],
+      "requirement_ids": [
+        "CRA-R029"
+      ],
+      "replaces": "需要复杂全新Excel导出时的可选写入器",
+      "retain": "不能读取或修改用户已有Excel模板；当前openpyxl仍为主路径",
+      "installed": false,
+      "integration_verified": false,
+      "clinical_performance_verified": false
+    }
+  ]
+}

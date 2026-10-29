@@ -51,12 +51,12 @@
 - 进入：W06/W07通过；W03探测已给出可安装、可运行的识别候选，支持格式和代表性评估输入已确定。
 - 交接：自动源文件读取→匹配→比较→差异/未知与待办、实际provider证据、人工负担和支持范围。
 
-技术输入：[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤
 
-1. 实现源文件上传、识别job、实际RecognizeLab适配与候选字段/定位存储；先支持代表性明确格式，人工数据对象作为同管道的少量兜底。
+1. 复用W03实测选择的PaddleOCR/结构识别适配器（或有证据更合适的Docling）接源文件→字段/坐标→原匹配比较服务，不自写OCR或表格结构引擎。
 2. 匹配中心、患者、时间、项目、样本、访视、初检复查和报告修订；歧义不按数值近似挑选。
 3. 用Decimal及批准映射比较，保留大于小于等符号，未知单位不猜换算。
 4. 分别返回一致、差异、单位待核实、本次未见、无法识别和跳过，限定结论范围。
@@ -64,6 +64,7 @@
 6. 评估候选OCR/多模态接入的格式效果与授权条件，不绑定未验证供应商；记录支持范围和关键字段错误。
 7. 集中展示低可信/歧义/差异，已通过校验字段自动比较候选；人工更正只重算相关结果。
 8. 明确code/synthetic/provider验证等级；provider缺失只记录接口/人工兜底，不得把W08核心自动能力标验证完成。
+9. 并排核对表格复用AG Grid Community，源PDF复用React-PDF；只定制匹配、差异展示与坐标映射，不用组件排序/编辑结果替代服务端事实。
 
 ## 验证命令
 

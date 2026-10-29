@@ -38,6 +38,7 @@
 - 信件选几项不修改问题清单全集；签发后保存不可变内容与引用版本。
 - 报告区分输出适用版本与历史事项使用依据；CRA确认写作用户确认，不写AI独立核验。跳过范围不润色为正常。
 - TemplateMapping标识支持字段/重复问题区/来源附注/必填未知；草稿可保留明确缺口，不能静默填无异常。
+- docxtpl包许可为LGPL-2.1-only，保留依赖记录；模板只使用受控上下文/语法，不能因有Jinja能力开放任意代码/网络/文件访问。XlsxWriter仅全新Excel有明确需求时评估。
 
 ## 进入条件与交接
 
@@ -46,12 +47,12 @@
 - 进入：问题/覆盖/分析事实接口可用，合成DOCX模板与Excel字段映射明确。
 - 交接：可打开的模板信件、监查报告、track及不可变快照，多份输出同一事实。
 
-技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)
+技术输入：[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤
 
-1. 使用合成模板建立字段映射，留出替换用户实际模板的入口。
+1. 以docxtpl渲染已映射DOCX模板，保留样式和重复问题区；openpyxl负责既有XLSX模板和track，不从零编写模板引擎。
 2. 同一记录分别生成访前选取、上次问题处理、本次发现、访后事项及track。
 3. 校验报告措辞不超实际范围，未知不能润色为无异常；事实更正与文字修改分开。
 4. 实现不可变快照及有记录的修订，新进展只进入后续材料。

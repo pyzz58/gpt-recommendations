@@ -43,7 +43,7 @@
 - 进入：患者映射及快照范围契约可用。
 - 交接：真实Excel输入、可复用列映射和不可变标准检验快照。
 
-技术输入：[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)
+技术输入：[LAB_AUTOMATION.md](../../architecture/LAB_AUTOMATION.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤
@@ -52,6 +52,7 @@
 2. 复用已确认列映射，核实新患者/访视/重复实例歧义。
 3. 事务保存不可变快照和范围，重复导入幂等，更正版另建快照。
 4. 向M08提供标准检验记录，同时保留原值、单位、时间精度和原始定位。
+5. 导入预览复用AG Grid Community/React，数据与列映射由服务端保存；不依赖Enterprise Excel Export进行导入或track生成。
 
 ## 验证命令
 

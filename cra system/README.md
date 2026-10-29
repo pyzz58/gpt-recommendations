@@ -1,6 +1,6 @@
 # CRA System
 
-技术执行基线 v0.4 · 2026-10-29 · 来源：Notion v0.14、GitHub指示及[用户八点澄清](theory/DECISIONS_20261029.md)。
+技术执行基线 v0.5 · 2026-10-29 · 来源：Notion v0.14、GitHub指示及[用户八点澄清](theory/DECISIONS_20261029.md)。
 
 本系统帮助CRA把项目要求、实际资料、监查问题和后续报告连起来。工作主线是：上次遗留问题 → 按模板选几项形成访前信 → 到中心核实整改及其正确性 → 逐受试者监查 → 报告 → 下次继续追踪。
 
@@ -65,3 +65,5 @@ Git中的 `theory/requirements.json` 是开发可执行基线；Notion是本次�
 当前没有运行时Notion自动同步凭证或任务。仅修改Notion而未导入Git的内容，CI无法凭空发现；维护人必须先导入，或者后续实现只读差异导入。系统不会自动替人决定新架构或静默改写已签发报告。
 
 最新v0.4工程验证：[40项测试及云端证据](validation/IMPLEMENTATION_V04_STATUS.md)。结构化完成声明的反例已被拒绝；W01及之后仍待实际编程和对应用途验证。
+
+开源复用修订v0.5：[14项目核对与替代边界](architecture/REUSE_ASSESSMENT.md)，[可直接发给Codex的第一段](plan/CODEX_FIRST_MESSAGE.md)。依赖选择已同步到任务；尚未安装、集成或做临床性能验证。

@@ -42,7 +42,7 @@
 - 进入：W13工程验收已汇总，实际服务和资料范围获授权；试用范围要求的provider证据有效。
 - 交接：受控环境、恢复演练、实际试用、总时间和反馈及能力暂停恢复记录。
 
-技术输入：[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)
+技术输入：[VALIDATION_AND_RELEASE.md](../../architecture/VALIDATION_AND_RELEASE.md)、[EXECUTION_CONTRACTS.md](../../architecture/EXECUTION_CONTRACTS.md)、[REUSE_ASSESSMENT.md](../../architecture/REUSE_ASSESSMENT.md)
 
 
 ## 实现步骤
@@ -52,6 +52,7 @@
 3. 按确定范围执行真实操作，记录总时间、问题及未覆盖用途。
 4. 反馈关联CRA-R/M/CRA-W及去标识场景，区分理论变化、资料缺口、代码错误和呈现问题。
 5. 监测实际格式下关键错误、人工负担、漂移及反馈；按用途暂停相关自动能力并保留事实/问题工作，修复验证后恢复。
+6. 沿用已验证boto3/队列/身份adapter；没有既有身份源时才按实际需要配置Keycloak，核对各包/模型/镜像许可与锁版本，不把可选基础设施变成默认前置。
 
 ## 验证命令
 
