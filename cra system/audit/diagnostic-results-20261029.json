@@ -1,0 +1,28 @@
+{
+  "reviewed_commit": "60be8e67f4fa941a4663541351253296e5ee06a4",
+  "reproduction_commit": "005338880abd296ab4fede226c32b629494c92f9",
+  "run_url": "https://github.com/pyzz58/gpt-recommendations/actions/runs/40812829876",
+  "date": "2026-10-29",
+  "existing_unit_tests": {
+    "count": 30,
+    "result": "passed"
+  },
+  "observations": [
+    {
+      "finding_id": "CRA-AUD-001",
+      "result": "accepted_unimplemented_task",
+      "validator_errors": [],
+      "application_commands_executed": false,
+      "real_tasks_modified": false
+    },
+    {
+      "finding_id": "CRA-AUD-006",
+      "result": "phase_dependency_requires_clarification",
+      "module": "M05",
+      "starts_at": "CRA-W06",
+      "dependency": "M10",
+      "dependency_starts_at": "CRA-W10"
+    }
+  ],
+  "interpretation": "Diagnostic success means observations were reproduced. Open findings are not fixed or clinically validated."
+}

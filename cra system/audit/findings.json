@@ -31,7 +31,10 @@
       "problem": "当前检查验证文件存在、命令availability标记和非空evidence，但不核验该功能命令确实运行成功及其提交版本；空文件加自报证据可能通过。",
       "consequence": "Codex可把尚未实现的工作包标verified，下一项选择器随之推进，工程CI绿色不证明该功能完成。",
       "recommendation": "保留现有结构检查，增加每任务必须通过的CI job/测试集合及绑定实现提交的机器证据。命令由受控CI运行，不能把tasks.json任意命令直接当可信脚本执行。仍保留人工语义审查。",
-      "closure": "本轮诊断能被改进后的门槛拒绝；真实最小W01运行成功证据可接受，且不强迫无关任务重复测试。"
+      "closure": "本轮诊断能被改进后的门槛拒绝；真实最小W01运行成功证据可接受，且不强迫无关任务重复测试。",
+      "verification": "reproduced_on_github_actions",
+      "evidence_run": "https://github.com/pyzz58/gpt-recommendations/actions/runs/40812829876",
+      "reproduction_commit": "005338880abd296ab4fede226c32b629494c92f9"
     },
     {
       "id": "CRA-AUD-002",
@@ -192,7 +195,10 @@
       "problem": "M05在W06开始，声明依赖M10；M10在W10才开始，而W10依赖W06。模块图与工作包图各自无环，但合在一起没有区分阶段可选依赖。",
       "consequence": "Codex可能提前做W10、用假服务冒充完成，或误认为无法开始W06。",
       "recommendation": "区分核心硬依赖与W10启用的可选中心文件能力，按阶段列出公开端口及未启用状态；W06不需要已实现全部M10。",
-      "closure": "W06核心场景可独立运行，W10接入后不改已存问题/核查状态；依赖检查认识阶段能力。"
+      "closure": "W06核心场景可独立运行，W10接入后不改已存问题/核查状态；依赖检查认识阶段能力。",
+      "verification": "reproduced_on_github_actions",
+      "evidence_run": "https://github.com/pyzz58/gpt-recommendations/actions/runs/40812829876",
+      "reproduction_commit": "005338880abd296ab4fede226c32b629494c92f9"
     },
     {
       "id": "CRA-AUD-007",
