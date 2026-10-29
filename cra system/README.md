@@ -63,3 +63,5 @@ PYTHONPATH=backend python3 -m cra_core.demo
 Git中的 `theory/requirements.json` 是开发可执行基线；Notion是本次临床讨论的来源。后续新增讨论先登记为变更，再在同一个提交/PR中更新对应理论与技术。GitHub检查会拦截漏映射、旧复核指纹、漏验收和缺少变更影响记录。
 
 当前没有运行时Notion自动同步凭证或任务。仅修改Notion而未导入Git的内容，CI无法凭空发现；维护人必须先导入，或者后续实现只读差异导入。系统不会自动替人决定新架构或静默改写已签发报告。
+
+最新v0.4工程验证：[40项测试及云端证据](validation/IMPLEMENTATION_V04_STATUS.md)。结构化完成声明的反例已被拒绝；W01及之后仍待实际编程和对应用途验证。

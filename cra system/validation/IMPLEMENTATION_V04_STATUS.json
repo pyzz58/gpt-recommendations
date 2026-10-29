@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-29",
+  "reviewed_commit": "cd3d36ecbdf57ae2f011c2b04e1174321624472b",
+  "implementation_commit": "70a09ea1898ac1f6cb3cdde7ce3cf26b4300b18f",
+  "run_id": 40856683422,
+  "job_id": 123389302472,
+  "run_url": "https://github.com/pyzz58/gpt-recommendations/actions/runs/40856683422",
+  "result": "success",
+  "engineering_unit_tests": 40,
+  "generated_views": 22,
+  "checks": {
+    "traceability": "passed",
+    "core_synthetic_example": "passed",
+    "completion_evidence_gate": "passed_with_zero_verified_business_tasks",
+    "manufactured_completion": "rejected_by_current_guard",
+    "later_hard_dependency_edges": [],
+    "next_task": "CRA-W01"
+  },
+  "limits": [
+    "正向源码/任务/测试绑定及GitHub元数据校验使用合成Git仓库和模拟API响应完成边界测试；尚无真实W01业务交付正向证据。",
+    "未运行实际检验OCR/模型或处理真实研究资料；40个完整临床业务场景仍planned。",
+    "W01—W15仍planned；本轮不是数据库/界面/自动识别/节时验收。"
+  ],
+  "scope": "仅cra system及专属工作流；并发其他项目修改保留。"
+}
