@@ -1,0 +1,70 @@
+{
+  "notice": "完全合成的工程示例，不是实际方案、病例或临床判断。",
+  "issues": [
+    {
+      "id": "DEMO-I001",
+      "finding": "合成示例：一项已要求上报事项仍有数据更正待办。",
+      "location": "DEMO-SITE/DEMO-SUBJECT/DEMO-V1/DEMO-EDC-FIELD",
+      "recommendation": "分别记录上报与更正；本示例不提供真实法规或方案整改条款。",
+      "source_refs": [
+        {
+          "kind": "synthetic",
+          "document": "DEMO-ONLY",
+          "anchor": "DEMO-CLAUSE-1"
+        }
+      ],
+      "actions": [
+        {
+          "id": "DEMO-A001",
+          "kind": "pd_reporting"
+        },
+        {
+          "id": "DEMO-A002",
+          "kind": "edc_correction"
+        }
+      ]
+    },
+    {
+      "id": "DEMO-I002",
+      "finding": "合成示例：目录文件待补。",
+      "location": "DEMO-DIRECTORY/ITEM-2",
+      "recommendation": "补充后由CRA核实；此处仅演示任务状态。",
+      "source_refs": [
+        {
+          "kind": "synthetic",
+          "document": "DEMO-DIRECTORY",
+          "anchor": "ITEM-2"
+        }
+      ],
+      "actions": [
+        {
+          "id": "DEMO-A003",
+          "kind": "document_supply"
+        }
+      ]
+    },
+    {
+      "id": "DEMO-I003",
+      "finding": "合成示例：Query待核实。",
+      "location": "DEMO-QUERY",
+      "recommendation": "查看实际日期和项目依据，不设置统一超期天数。",
+      "source_refs": [
+        {
+          "kind": "synthetic",
+          "document": "DEMO-ONLY",
+          "anchor": "DEMO-QUERY-CLAUSE"
+        }
+      ],
+      "actions": [
+        {
+          "id": "DEMO-A004",
+          "kind": "query_followup"
+        }
+      ]
+    }
+  ],
+  "selected_previsit_issue_ids": [
+    "DEMO-I001",
+    "DEMO-I002"
+  ]
+}

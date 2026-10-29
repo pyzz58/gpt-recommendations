@@ -1,0 +1,491 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {
+      "requirement_id": "CRA-R001",
+      "module_id": "M05",
+      "reviewed_revision": 1,
+      "reviewed_digest": "0108b35e095308bf8a2717d75a91f7ed436fde7d25c7ad269ff8501e868f202a"
+    },
+    {
+      "requirement_id": "CRA-R002",
+      "module_id": "M01",
+      "reviewed_revision": 1,
+      "reviewed_digest": "2e2280b27e87bcfcb921d1a03f890353eb3ad72c66aa29277371e2e209e63151"
+    },
+    {
+      "requirement_id": "CRA-R002",
+      "module_id": "M03",
+      "reviewed_revision": 1,
+      "reviewed_digest": "2e2280b27e87bcfcb921d1a03f890353eb3ad72c66aa29277371e2e209e63151"
+    },
+    {
+      "requirement_id": "CRA-R003",
+      "module_id": "M02",
+      "reviewed_revision": 1,
+      "reviewed_digest": "be08c2f3849e107f26fd5b4a47637b41fd0faa084a09c6308495cb0fb9bfc091"
+    },
+    {
+      "requirement_id": "CRA-R003",
+      "module_id": "M10",
+      "reviewed_revision": 1,
+      "reviewed_digest": "be08c2f3849e107f26fd5b4a47637b41fd0faa084a09c6308495cb0fb9bfc091"
+    },
+    {
+      "requirement_id": "CRA-R004",
+      "module_id": "M02",
+      "reviewed_revision": 1,
+      "reviewed_digest": "e48d072f323a357612943324bd0e47673e5b606bf7bf7981cdb5117bcf6e7a9e"
+    },
+    {
+      "requirement_id": "CRA-R004",
+      "module_id": "M03",
+      "reviewed_revision": 1,
+      "reviewed_digest": "e48d072f323a357612943324bd0e47673e5b606bf7bf7981cdb5117bcf6e7a9e"
+    },
+    {
+      "requirement_id": "CRA-R005",
+      "module_id": "M03",
+      "reviewed_revision": 1,
+      "reviewed_digest": "7380dacde1d4eb90bd9b3c8c34fc2a1a473109d99188630e16893e85088c03fa"
+    },
+    {
+      "requirement_id": "CRA-R006",
+      "module_id": "M03",
+      "reviewed_revision": 1,
+      "reviewed_digest": "ec979d16d7cc4f7a50ce20f350e18ccb6b09c44e59d693675edb967960739317"
+    },
+    {
+      "requirement_id": "CRA-R006",
+      "module_id": "M05",
+      "reviewed_revision": 1,
+      "reviewed_digest": "ec979d16d7cc4f7a50ce20f350e18ccb6b09c44e59d693675edb967960739317"
+    },
+    {
+      "requirement_id": "CRA-R007",
+      "module_id": "M03",
+      "reviewed_revision": 1,
+      "reviewed_digest": "6d05a52e6b34f51a52a8d81b317a2e440cd2fac6404d2cf2a31acbeb2648501d"
+    },
+    {
+      "requirement_id": "CRA-R007",
+      "module_id": "M09",
+      "reviewed_revision": 1,
+      "reviewed_digest": "6d05a52e6b34f51a52a8d81b317a2e440cd2fac6404d2cf2a31acbeb2648501d"
+    },
+    {
+      "requirement_id": "CRA-R008",
+      "module_id": "M03",
+      "reviewed_revision": 1,
+      "reviewed_digest": "fffd92591a307e1af62bf431b7cde1ac6a5bee081b7384ceeec9fdcf1de5c73a"
+    },
+    {
+      "requirement_id": "CRA-R009",
+      "module_id": "M02",
+      "reviewed_revision": 1,
+      "reviewed_digest": "e4818e35f2b1dcd42d6a35785c09de328f93473ec8aeac4c2755f970027d31ec"
+    },
+    {
+      "requirement_id": "CRA-R009",
+      "module_id": "M03",
+      "reviewed_revision": 1,
+      "reviewed_digest": "e4818e35f2b1dcd42d6a35785c09de328f93473ec8aeac4c2755f970027d31ec"
+    },
+    {
+      "requirement_id": "CRA-R009",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "e4818e35f2b1dcd42d6a35785c09de328f93473ec8aeac4c2755f970027d31ec"
+    },
+    {
+      "requirement_id": "CRA-R009",
+      "module_id": "M11",
+      "reviewed_revision": 1,
+      "reviewed_digest": "e4818e35f2b1dcd42d6a35785c09de328f93473ec8aeac4c2755f970027d31ec"
+    },
+    {
+      "requirement_id": "CRA-R010",
+      "module_id": "M04",
+      "reviewed_revision": 1,
+      "reviewed_digest": "d822d774c312c411877409a86d12108a21e481ac0f229c81020d09949bcb41fa"
+    },
+    {
+      "requirement_id": "CRA-R011",
+      "module_id": "M03",
+      "reviewed_revision": 1,
+      "reviewed_digest": "c5894aa4080b14e4901b8e84b6310625c1631afbe090f720d0d65535848230ef"
+    },
+    {
+      "requirement_id": "CRA-R011",
+      "module_id": "M04",
+      "reviewed_revision": 1,
+      "reviewed_digest": "c5894aa4080b14e4901b8e84b6310625c1631afbe090f720d0d65535848230ef"
+    },
+    {
+      "requirement_id": "CRA-R012",
+      "module_id": "M04",
+      "reviewed_revision": 1,
+      "reviewed_digest": "9fe71d395945a4444875f60b5b6fb713d3429591b4441ff8122893ba2ad3da00"
+    },
+    {
+      "requirement_id": "CRA-R012",
+      "module_id": "M05",
+      "reviewed_revision": 1,
+      "reviewed_digest": "9fe71d395945a4444875f60b5b6fb713d3429591b4441ff8122893ba2ad3da00"
+    },
+    {
+      "requirement_id": "CRA-R013",
+      "module_id": "M07",
+      "reviewed_revision": 1,
+      "reviewed_digest": "6ca1eb728aa2aeca97f4f0922e519c357810702784870cde800e53c89d4167df"
+    },
+    {
+      "requirement_id": "CRA-R013",
+      "module_id": "M08",
+      "reviewed_revision": 1,
+      "reviewed_digest": "6ca1eb728aa2aeca97f4f0922e519c357810702784870cde800e53c89d4167df"
+    },
+    {
+      "requirement_id": "CRA-R014",
+      "module_id": "M07",
+      "reviewed_revision": 1,
+      "reviewed_digest": "f3451a03e041b3f193d9ec687a7932f831123f480d9938a9a902d7ed48c9992a"
+    },
+    {
+      "requirement_id": "CRA-R015",
+      "module_id": "M07",
+      "reviewed_revision": 1,
+      "reviewed_digest": "a033e4d9b7d51f429f120f303ce4b6f62d3598bf8742ace80fdf19792c761bb7"
+    },
+    {
+      "requirement_id": "CRA-R015",
+      "module_id": "M08",
+      "reviewed_revision": 1,
+      "reviewed_digest": "a033e4d9b7d51f429f120f303ce4b6f62d3598bf8742ace80fdf19792c761bb7"
+    },
+    {
+      "requirement_id": "CRA-R016",
+      "module_id": "M08",
+      "reviewed_revision": 1,
+      "reviewed_digest": "4cee44637305ce1909993e3c7cc93760a4d8a1e7fd6eba6070aa101a4da30063"
+    },
+    {
+      "requirement_id": "CRA-R016",
+      "module_id": "M09",
+      "reviewed_revision": 1,
+      "reviewed_digest": "4cee44637305ce1909993e3c7cc93760a4d8a1e7fd6eba6070aa101a4da30063"
+    },
+    {
+      "requirement_id": "CRA-R017",
+      "module_id": "M05",
+      "reviewed_revision": 1,
+      "reviewed_digest": "9bf30c71a15635d891f29033c1deafc4d7f0cfd3945f74a51aad21860705dba5"
+    },
+    {
+      "requirement_id": "CRA-R017",
+      "module_id": "M08",
+      "reviewed_revision": 1,
+      "reviewed_digest": "9bf30c71a15635d891f29033c1deafc4d7f0cfd3945f74a51aad21860705dba5"
+    },
+    {
+      "requirement_id": "CRA-R018",
+      "module_id": "M09",
+      "reviewed_revision": 1,
+      "reviewed_digest": "416721f5589fa2d445cc43b9165cb871e1f8ca36ef06f97386d5d56dfa19a69f"
+    },
+    {
+      "requirement_id": "CRA-R019",
+      "module_id": "M03",
+      "reviewed_revision": 1,
+      "reviewed_digest": "cad85cdb1b7c5f7c0314601e66f30a7ed0d89f2cc37e3a7e4282b229cffd3b2e"
+    },
+    {
+      "requirement_id": "CRA-R019",
+      "module_id": "M09",
+      "reviewed_revision": 1,
+      "reviewed_digest": "cad85cdb1b7c5f7c0314601e66f30a7ed0d89f2cc37e3a7e4282b229cffd3b2e"
+    },
+    {
+      "requirement_id": "CRA-R020",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "223688bc829f8bcbabbf3e542cc775b1f39165826331d8acf0b9f84216d5065c"
+    },
+    {
+      "requirement_id": "CRA-R020",
+      "module_id": "M09",
+      "reviewed_revision": 1,
+      "reviewed_digest": "223688bc829f8bcbabbf3e542cc775b1f39165826331d8acf0b9f84216d5065c"
+    },
+    {
+      "requirement_id": "CRA-R021",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "09dc27f9757ce3333cc9b38768d2cb69219552193f2c2300fbc1221eb0ca2df4"
+    },
+    {
+      "requirement_id": "CRA-R022",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "3786a28f2b490f252d56ed2061977ade5e601c823b624bb0c9ea97d61d4f6ae9"
+    },
+    {
+      "requirement_id": "CRA-R022",
+      "module_id": "M11",
+      "reviewed_revision": 1,
+      "reviewed_digest": "3786a28f2b490f252d56ed2061977ade5e601c823b624bb0c9ea97d61d4f6ae9"
+    },
+    {
+      "requirement_id": "CRA-R023",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "ddeee33a2183ef98b01f71df64973f12c47770b451b7dd7cf658d0b8ab5f0d71"
+    },
+    {
+      "requirement_id": "CRA-R024",
+      "module_id": "M02",
+      "reviewed_revision": 1,
+      "reviewed_digest": "ffacf68420c6da2a9a246e3269e20ca755acfcaf5ad389cc61b9f561c3802b76"
+    },
+    {
+      "requirement_id": "CRA-R024",
+      "module_id": "M10",
+      "reviewed_revision": 1,
+      "reviewed_digest": "ffacf68420c6da2a9a246e3269e20ca755acfcaf5ad389cc61b9f561c3802b76"
+    },
+    {
+      "requirement_id": "CRA-R025",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "8ffb81c6168e8d2174eecbdbf4b9033675e4a9a27012d312cc3c2e9e8a5ea4f4"
+    },
+    {
+      "requirement_id": "CRA-R025",
+      "module_id": "M11",
+      "reviewed_revision": 1,
+      "reviewed_digest": "8ffb81c6168e8d2174eecbdbf4b9033675e4a9a27012d312cc3c2e9e8a5ea4f4"
+    },
+    {
+      "requirement_id": "CRA-R026",
+      "module_id": "M05",
+      "reviewed_revision": 1,
+      "reviewed_digest": "ec8c8f79322fe38fd83327b577ea4201d385693f3aea64f29ee62ab2cc119188"
+    },
+    {
+      "requirement_id": "CRA-R026",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "ec8c8f79322fe38fd83327b577ea4201d385693f3aea64f29ee62ab2cc119188"
+    },
+    {
+      "requirement_id": "CRA-R027",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "33412f5a948cc2b66d73a41fbc9bc98bffb27b42d558ca88f5d814655e80da53"
+    },
+    {
+      "requirement_id": "CRA-R027",
+      "module_id": "M11",
+      "reviewed_revision": 1,
+      "reviewed_digest": "33412f5a948cc2b66d73a41fbc9bc98bffb27b42d558ca88f5d814655e80da53"
+    },
+    {
+      "requirement_id": "CRA-R028",
+      "module_id": "M04",
+      "reviewed_revision": 1,
+      "reviewed_digest": "af2e0c07ac3c0b6384845413a86377ba195a2544b2d625207c43211a33736e36"
+    },
+    {
+      "requirement_id": "CRA-R028",
+      "module_id": "M05",
+      "reviewed_revision": 1,
+      "reviewed_digest": "af2e0c07ac3c0b6384845413a86377ba195a2544b2d625207c43211a33736e36"
+    },
+    {
+      "requirement_id": "CRA-R029",
+      "module_id": "M11",
+      "reviewed_revision": 1,
+      "reviewed_digest": "55e98be9c6f17666c115b0611683d396ddbf55b8e586291964f7213b1709a6b6"
+    },
+    {
+      "requirement_id": "CRA-R030",
+      "module_id": "M11",
+      "reviewed_revision": 1,
+      "reviewed_digest": "1ac69fb9d7493a9b4bb6da856094c8e3dcd3a63e9046fd8468d623fa089ca4e1"
+    },
+    {
+      "requirement_id": "CRA-R031",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "d40dbca9a0bd6710ff789dc4d0e168f04dba77793a0202a33bcc2a92d3720238"
+    },
+    {
+      "requirement_id": "CRA-R031",
+      "module_id": "M11",
+      "reviewed_revision": 1,
+      "reviewed_digest": "d40dbca9a0bd6710ff789dc4d0e168f04dba77793a0202a33bcc2a92d3720238"
+    },
+    {
+      "requirement_id": "CRA-R032",
+      "module_id": "M05",
+      "reviewed_revision": 1,
+      "reviewed_digest": "40701024a12d8655adb541cf00cb85b4ce54dfeea9958128c1e35efa663ca58d"
+    },
+    {
+      "requirement_id": "CRA-R033",
+      "module_id": "M05",
+      "reviewed_revision": 1,
+      "reviewed_digest": "55841bf240f482eda813f29d8ec19ed8eaa388f4b0a8acf6dcf1cd844b016d56"
+    },
+    {
+      "requirement_id": "CRA-R033",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "55841bf240f482eda813f29d8ec19ed8eaa388f4b0a8acf6dcf1cd844b016d56"
+    },
+    {
+      "requirement_id": "CRA-R034",
+      "module_id": "M03",
+      "reviewed_revision": 1,
+      "reviewed_digest": "8b38f695299690bc7cb7f8108f82c2a4f7df00d0c9b4ba4b491eaaeef06a0bd8"
+    },
+    {
+      "requirement_id": "CRA-R034",
+      "module_id": "M04",
+      "reviewed_revision": 1,
+      "reviewed_digest": "8b38f695299690bc7cb7f8108f82c2a4f7df00d0c9b4ba4b491eaaeef06a0bd8"
+    },
+    {
+      "requirement_id": "CRA-R034",
+      "module_id": "M07",
+      "reviewed_revision": 1,
+      "reviewed_digest": "8b38f695299690bc7cb7f8108f82c2a4f7df00d0c9b4ba4b491eaaeef06a0bd8"
+    },
+    {
+      "requirement_id": "CRA-R034",
+      "module_id": "M08",
+      "reviewed_revision": 1,
+      "reviewed_digest": "8b38f695299690bc7cb7f8108f82c2a4f7df00d0c9b4ba4b491eaaeef06a0bd8"
+    },
+    {
+      "requirement_id": "CRA-R035",
+      "module_id": "M08",
+      "reviewed_revision": 1,
+      "reviewed_digest": "1e52461bb1c0f0677d7061bf0ad484800bee55ff274f20d2b3c1ecda5c73cdb5"
+    },
+    {
+      "requirement_id": "CRA-R035",
+      "module_id": "M12",
+      "reviewed_revision": 1,
+      "reviewed_digest": "1e52461bb1c0f0677d7061bf0ad484800bee55ff274f20d2b3c1ecda5c73cdb5"
+    },
+    {
+      "requirement_id": "CRA-R035",
+      "module_id": "M14",
+      "reviewed_revision": 1,
+      "reviewed_digest": "1e52461bb1c0f0677d7061bf0ad484800bee55ff274f20d2b3c1ecda5c73cdb5"
+    },
+    {
+      "requirement_id": "CRA-R036",
+      "module_id": "M01",
+      "reviewed_revision": 1,
+      "reviewed_digest": "04ccf96dca39b738bc7684ec1d38d3675d6eea9469c7741049872f4977fa21e9"
+    },
+    {
+      "requirement_id": "CRA-R036",
+      "module_id": "M12",
+      "reviewed_revision": 1,
+      "reviewed_digest": "04ccf96dca39b738bc7684ec1d38d3675d6eea9469c7741049872f4977fa21e9"
+    },
+    {
+      "requirement_id": "CRA-R037",
+      "module_id": "M05",
+      "reviewed_revision": 1,
+      "reviewed_digest": "e4db0cd2df893fd9e49177a2f9bd38593d715ea59190e42434dd81e4711a84ef"
+    },
+    {
+      "requirement_id": "CRA-R037",
+      "module_id": "M14",
+      "reviewed_revision": 1,
+      "reviewed_digest": "e4db0cd2df893fd9e49177a2f9bd38593d715ea59190e42434dd81e4711a84ef"
+    },
+    {
+      "requirement_id": "CRA-R038",
+      "module_id": "M08",
+      "reviewed_revision": 1,
+      "reviewed_digest": "74ada007f3111da03d3363ca4bdfc9f3040ac55a7828a25feca6a776ddc86f2f"
+    },
+    {
+      "requirement_id": "CRA-R038",
+      "module_id": "M12",
+      "reviewed_revision": 1,
+      "reviewed_digest": "74ada007f3111da03d3363ca4bdfc9f3040ac55a7828a25feca6a776ddc86f2f"
+    },
+    {
+      "requirement_id": "CRA-R039",
+      "module_id": "M13",
+      "reviewed_revision": 1,
+      "reviewed_digest": "af94032c489850ff6da63bde5943f0e873a0b8c8a4209899aa919776259bedab"
+    },
+    {
+      "requirement_id": "CRA-R040",
+      "module_id": "M14",
+      "reviewed_revision": 1,
+      "reviewed_digest": "49645dd61fb538a4775723cfc2fa876a10f06b4019d63a049d3947f370db0d5c"
+    },
+    {
+      "requirement_id": "CRA-R041",
+      "module_id": "M03",
+      "reviewed_revision": 1,
+      "reviewed_digest": "50ede874d0c91f442b28afa85cfee7fa451ff1454c79f9cf1be782c18d94f7fa"
+    },
+    {
+      "requirement_id": "CRA-R041",
+      "module_id": "M04",
+      "reviewed_revision": 1,
+      "reviewed_digest": "50ede874d0c91f442b28afa85cfee7fa451ff1454c79f9cf1be782c18d94f7fa"
+    },
+    {
+      "requirement_id": "CRA-R041",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "50ede874d0c91f442b28afa85cfee7fa451ff1454c79f9cf1be782c18d94f7fa"
+    },
+    {
+      "requirement_id": "CRA-R042",
+      "module_id": "M09",
+      "reviewed_revision": 1,
+      "reviewed_digest": "f6f829b75bfda5a8496a74eda9f6561ca1b57f66020431ff99de5ca884b7ee57"
+    },
+    {
+      "requirement_id": "CRA-R043",
+      "module_id": "M06",
+      "reviewed_revision": 1,
+      "reviewed_digest": "7caa87835cdad75d141711406ca574a12202ba3aa324f4de56e9c0d5439a3b86"
+    },
+    {
+      "requirement_id": "CRA-R043",
+      "module_id": "M11",
+      "reviewed_revision": 1,
+      "reviewed_digest": "7caa87835cdad75d141711406ca574a12202ba3aa324f4de56e9c0d5439a3b86"
+    },
+    {
+      "requirement_id": "CRA-R044",
+      "module_id": "M14",
+      "reviewed_revision": 1,
+      "reviewed_digest": "9c6f41efabc896eeb9adbd8fd245e7b45b5f0b191f4d48058a7f618a3872bf1c"
+    },
+    {
+      "requirement_id": "CRA-R045",
+      "module_id": "M04",
+      "reviewed_revision": 1,
+      "reviewed_digest": "5c5afd78110f873fc9f83d83c34cceb1e645df4e5d173f3e61bfb7a0ce6a1fa7"
+    },
+    {
+      "requirement_id": "CRA-R045",
+      "module_id": "M05",
+      "reviewed_revision": 1,
+      "reviewed_digest": "5c5afd78110f873fc9f83d83c34cceb1e645df4e5d173f3e61bfb7a0ce6a1fa7"
+    }
+  ]
+}

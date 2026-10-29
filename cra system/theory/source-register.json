@@ -1,0 +1,29 @@
+{
+  "baseline_id": "CRA-V1-20261029",
+  "captured_on": "2026-10-29",
+  "sources": [
+    {
+      "id": "SRC-NOTION-MAIN",
+      "url": "https://app.notion.com/p/4070782f004581ea84f4e6ef46e5fc68",
+      "version": "v0.14",
+      "role": "业务需求讨论来源；已确认内容与候选建议区分"
+    },
+    {
+      "id": "SRC-NOTION-AE",
+      "url": "https://app.notion.com/p/4070782f0045810992c6f622c9535f58",
+      "role": "分层清单和AE示例的结构来源；不公开复制真实方案内容"
+    },
+    {
+      "id": "SRC-USER-GITHUB",
+      "date": "2026-10-29",
+      "role": "本轮要求完整技术框架、模块对应、未来同步及cra system云上目录"
+    }
+  ],
+  "public_repository_policy": "只存整理后的产品需求和合成示例，不含原始方案、IB、受试者或中心资料。",
+  "unresolved": [
+    "遗留问题未全部整改时本次新监查的具体现场安排",
+    "缺失项目资料所规定的具体内容和期限",
+    "部署环境及获准的模型/OCR供应商"
+  ],
+  "external_sync_status": "Notion变更需导入Git，本轮未配置Notion持续自动导入。"
+}

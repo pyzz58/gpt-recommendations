@@ -1,0 +1,421 @@
+{
+  "schema_version": 1,
+  "modules": [
+    {
+      "id": "M01",
+      "title": "权限、研究范围与操作历史",
+      "slug": "governance",
+      "depends_on": [],
+      "task_ids": [
+        "CRA-W01"
+      ],
+      "scenarios": [
+        "CRA-S01",
+        "CRA-S02"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M01-governance.md",
+      "planned_code_path": "backend/cra_app/governance/",
+      "requirement_ids": [
+        "CRA-R002",
+        "CRA-R036"
+      ]
+    },
+    {
+      "id": "M02",
+      "title": "项目资料与原文定位",
+      "slug": "documents",
+      "depends_on": [
+        "M01"
+      ],
+      "task_ids": [
+        "CRA-W03"
+      ],
+      "scenarios": [
+        "CRA-S03",
+        "CRA-S04"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M02-documents.md",
+      "planned_code_path": "backend/cra_app/documents/",
+      "requirement_ids": [
+        "CRA-R003",
+        "CRA-R004",
+        "CRA-R009",
+        "CRA-R024"
+      ]
+    },
+    {
+      "id": "M03",
+      "title": "适用规则与分层list",
+      "slug": "rules",
+      "depends_on": [
+        "M01",
+        "M02"
+      ],
+      "task_ids": [
+        "CRA-W04"
+      ],
+      "scenarios": [
+        "CRA-S04",
+        "CRA-S05",
+        "CRA-S06",
+        "CRA-S07"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M03-rules.md",
+      "planned_code_path": "backend/cra_app/rules/",
+      "requirement_ids": [
+        "CRA-R002",
+        "CRA-R004",
+        "CRA-R005",
+        "CRA-R006",
+        "CRA-R007",
+        "CRA-R008",
+        "CRA-R009",
+        "CRA-R011",
+        "CRA-R019",
+        "CRA-R034",
+        "CRA-R041"
+      ]
+    },
+    {
+      "id": "M04",
+      "title": "受试者事实与访视时间线",
+      "slug": "subjects",
+      "depends_on": [
+        "M01",
+        "M03"
+      ],
+      "task_ids": [
+        "CRA-W05"
+      ],
+      "scenarios": [
+        "CRA-S08",
+        "CRA-S09"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M04-subjects.md",
+      "planned_code_path": "backend/cra_app/subjects/",
+      "requirement_ids": [
+        "CRA-R010",
+        "CRA-R011",
+        "CRA-R012",
+        "CRA-R028",
+        "CRA-R034",
+        "CRA-R041",
+        "CRA-R045"
+      ]
+    },
+    {
+      "id": "M05",
+      "title": "四阶段监查工作台",
+      "slug": "monitoring",
+      "depends_on": [
+        "M01",
+        "M03",
+        "M04",
+        "M06",
+        "M10"
+      ],
+      "task_ids": [
+        "CRA-W06",
+        "CRA-W10",
+        "CRA-W12"
+      ],
+      "scenarios": [
+        "CRA-S10",
+        "CRA-S11",
+        "CRA-S12",
+        "CRA-S13"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M05-monitoring.md",
+      "planned_code_path": "backend/cra_app/monitoring/",
+      "requirement_ids": [
+        "CRA-R001",
+        "CRA-R006",
+        "CRA-R012",
+        "CRA-R017",
+        "CRA-R026",
+        "CRA-R028",
+        "CRA-R032",
+        "CRA-R033",
+        "CRA-R037",
+        "CRA-R045"
+      ]
+    },
+    {
+      "id": "M06",
+      "title": "遗留问题、整改、Query与PD跟进",
+      "slug": "issues",
+      "depends_on": [
+        "M01",
+        "M03",
+        "M04"
+      ],
+      "task_ids": [
+        "CRA-W06"
+      ],
+      "scenarios": [
+        "CRA-S14",
+        "CRA-S15",
+        "CRA-S16",
+        "CRA-S17"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M06-issues.md",
+      "planned_code_path": "backend/cra_app/issues/",
+      "requirement_ids": [
+        "CRA-R009",
+        "CRA-R020",
+        "CRA-R021",
+        "CRA-R022",
+        "CRA-R023",
+        "CRA-R025",
+        "CRA-R026",
+        "CRA-R027",
+        "CRA-R031",
+        "CRA-R033",
+        "CRA-R041",
+        "CRA-R043"
+      ]
+    },
+    {
+      "id": "M07",
+      "title": "EDC检验数据导入与范围",
+      "slug": "edc_import",
+      "depends_on": [
+        "M01",
+        "M04"
+      ],
+      "task_ids": [
+        "CRA-W07"
+      ],
+      "scenarios": [
+        "CRA-S18",
+        "CRA-S19"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M07-edc_import.md",
+      "planned_code_path": "backend/cra_app/edc_import/",
+      "requirement_ids": [
+        "CRA-R013",
+        "CRA-R014",
+        "CRA-R015",
+        "CRA-R034"
+      ]
+    },
+    {
+      "id": "M08",
+      "title": "检验报告识别与一致性核对",
+      "slug": "laboratory",
+      "depends_on": [
+        "M01",
+        "M03",
+        "M04",
+        "M07",
+        "M12"
+      ],
+      "task_ids": [
+        "CRA-W08",
+        "CRA-W14"
+      ],
+      "scenarios": [
+        "CRA-S19",
+        "CRA-S20",
+        "CRA-S21",
+        "CRA-S22"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M08-laboratory.md",
+      "planned_code_path": "backend/cra_app/laboratory/",
+      "requirement_ids": [
+        "CRA-R013",
+        "CRA-R015",
+        "CRA-R016",
+        "CRA-R017",
+        "CRA-R034",
+        "CRA-R035",
+        "CRA-R038"
+      ]
+    },
+    {
+      "id": "M09",
+      "title": "AE、安全及方案偏离分析支持",
+      "slug": "safety",
+      "depends_on": [
+        "M03",
+        "M04",
+        "M06",
+        "M12"
+      ],
+      "task_ids": [
+        "CRA-W09"
+      ],
+      "scenarios": [
+        "CRA-S23",
+        "CRA-S24",
+        "CRA-S25"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M09-safety.md",
+      "planned_code_path": "backend/cra_app/safety/",
+      "requirement_ids": [
+        "CRA-R007",
+        "CRA-R016",
+        "CRA-R018",
+        "CRA-R019",
+        "CRA-R020",
+        "CRA-R042"
+      ]
+    },
+    {
+      "id": "M10",
+      "title": "ISF/TMF目录和中心资料",
+      "slug": "site_files",
+      "depends_on": [
+        "M01",
+        "M02",
+        "M03",
+        "M06"
+      ],
+      "task_ids": [
+        "CRA-W10"
+      ],
+      "scenarios": [
+        "CRA-S26"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M10-site_files.md",
+      "planned_code_path": "backend/cra_app/site_files/",
+      "requirement_ids": [
+        "CRA-R003",
+        "CRA-R024"
+      ]
+    },
+    {
+      "id": "M11",
+      "title": "访视信、监查报告与Excel输出",
+      "slug": "reports",
+      "depends_on": [
+        "M01",
+        "M03",
+        "M04",
+        "M05",
+        "M06",
+        "M10"
+      ],
+      "task_ids": [
+        "CRA-W11"
+      ],
+      "scenarios": [
+        "CRA-S27",
+        "CRA-S28",
+        "CRA-S29"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M11-reports.md",
+      "planned_code_path": "backend/cra_app/reports/",
+      "requirement_ids": [
+        "CRA-R009",
+        "CRA-R022",
+        "CRA-R025",
+        "CRA-R027",
+        "CRA-R029",
+        "CRA-R030",
+        "CRA-R031",
+        "CRA-R043"
+      ]
+    },
+    {
+      "id": "M12",
+      "title": "模型、OCR与检索接入",
+      "slug": "providers",
+      "depends_on": [
+        "M01",
+        "M02"
+      ],
+      "task_ids": [
+        "CRA-W03",
+        "CRA-W04",
+        "CRA-W09",
+        "CRA-W14"
+      ],
+      "scenarios": [
+        "CRA-S02",
+        "CRA-S22",
+        "CRA-S30"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M12-providers.md",
+      "planned_code_path": "backend/cra_app/providers/",
+      "requirement_ids": [
+        "CRA-R035",
+        "CRA-R036",
+        "CRA-R038"
+      ]
+    },
+    {
+      "id": "M13",
+      "title": "理论、技术与任务同步",
+      "slug": "traceability",
+      "depends_on": [],
+      "task_ids": [
+        "CRA-W00"
+      ],
+      "scenarios": [
+        "CRA-S31",
+        "CRA-S32"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M13-traceability.md",
+      "planned_code_path": "tools/",
+      "requirement_ids": [
+        "CRA-R039"
+      ]
+    },
+    {
+      "id": "M14",
+      "title": "云上开发、部署和质量验证",
+      "slug": "platform",
+      "depends_on": [
+        "M13"
+      ],
+      "task_ids": [
+        "CRA-W00",
+        "CRA-W01",
+        "CRA-W02",
+        "CRA-W13",
+        "CRA-W15"
+      ],
+      "scenarios": [
+        "CRA-S33",
+        "CRA-S34"
+      ],
+      "revision": 1,
+      "status": "designed",
+      "design_path": "architecture/modules/M14-platform.md",
+      "planned_code_path": "deploy/",
+      "requirement_ids": [
+        "CRA-R035",
+        "CRA-R037",
+        "CRA-R040",
+        "CRA-R044"
+      ]
+    }
+  ]
+}

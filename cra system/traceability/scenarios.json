@@ -1,0 +1,391 @@
+{
+  "schema_version": 1,
+  "scenarios": [
+    {
+      "id": "CRA-S01",
+      "title": "跨研究或中心访问",
+      "requirement_ids": [
+        "CRA-R002",
+        "CRA-R036"
+      ],
+      "expected": "用户无权访问中心B时，列表、文件、检索和导出均不得包含B。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S02",
+      "title": "检索材料含伪指令",
+      "requirement_ids": [
+        "CRA-R036",
+        "CRA-R038"
+      ],
+      "expected": "源资料要求忽略系统限制时，只按文档内容处理，不能获得操作权限或外发资料。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S03",
+      "title": "资料未上传与适用缺件",
+      "requirement_ids": [
+        "CRA-R003",
+        "CRA-R024"
+      ],
+      "expected": "已上传方案而缺IB/目录，分别提示缺口，不臆造规则或文件。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S04",
+      "title": "文件更新和原文定位",
+      "requirement_ids": [
+        "CRA-R004",
+        "CRA-R005",
+        "CRA-R009",
+        "CRA-R041"
+      ],
+      "expected": "同一邮件复导、局部修订、例外及未再次提及条款分别处理；来源可精确回查。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S05",
+      "title": "脚注和完整条件",
+      "requirement_ids": [
+        "CRA-R006",
+        "CRA-R007",
+        "CRA-R008"
+      ],
+      "expected": "表格正文和脚注共同组成规则；用户修正候选后保留原提取及修改历史。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S06",
+      "title": "适用规则冲突",
+      "requirement_ids": [
+        "CRA-R002",
+        "CRA-R034"
+      ],
+      "expected": "不同角色并行要求与真正矛盾分别显示；真实冲突不由模型擅自覆盖。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S07",
+      "title": "标准版本变化",
+      "requirement_ids": [
+        "CRA-R019",
+        "CRA-R041"
+      ],
+      "expected": "外部标准发布新版不自动替换项目版本，历史事件不被无依据重判。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S08",
+      "title": "患者与锚点复用",
+      "requirement_ids": [
+        "CRA-R010",
+        "CRA-R011",
+        "CRA-R012"
+      ],
+      "expected": "实际治疗日期来自授权记录，计算访视时解释依据；切换患者不混用。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S09",
+      "title": "不同类别核查断点",
+      "requirement_ids": [
+        "CRA-R028",
+        "CRA-R045"
+      ],
+      "expected": "检验查至访视3而其他资料查至访视2，下一次分别接续，正常范围可一句话记。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S10",
+      "title": "先复核遗留再开始新监查",
+      "requirement_ids": [
+        "CRA-R001",
+        "CRA-R012",
+        "CRA-R026"
+      ],
+      "expected": "到中心默认展示全部待复核问题；常规顺序完成后进入新的受试者。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S11",
+      "title": "仍有遗留及紧急事项",
+      "requirement_ids": [
+        "CRA-R020",
+        "CRA-R026"
+      ],
+      "expected": "未完成项不消失，也不据此制造禁止所有操作的审批锁；紧急事项仍可记录和提示。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S12",
+      "title": "启动关闭与简洁交接",
+      "requirement_ids": [
+        "CRA-R001",
+        "CRA-R032",
+        "CRA-R033"
+      ],
+      "expected": "阶段清单取项目资料；无遗留可简述，有遗留直接说明前因后果与下一步。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S13",
+      "title": "自动范围不扩展",
+      "requirement_ids": [
+        "CRA-R013",
+        "CRA-R037"
+      ],
+      "expected": "用药/样本可人工记录，非检验图片不被送入自动核对。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S14",
+      "title": "PD已上报但更正待办未完",
+      "requirement_ids": [
+        "CRA-R021",
+        "CRA-R027",
+        "CRA-R031"
+      ],
+      "expected": "用户确认已上报即可完成上报任务，其余更正保持待办并带到下次。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S15",
+      "title": "CRC称已改但实际改错",
+      "requirement_ids": [
+        "CRA-R009",
+        "CRA-R026",
+        "CRA-R027"
+      ],
+      "expected": "保留回复和原问题，CRA复核未通过时写清理由及后续动作，不能自动关闭。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S16",
+      "title": "Query期限未知",
+      "requirement_ids": [
+        "CRA-R022",
+        "CRA-R023"
+      ],
+      "expected": "问题草稿不等于正式Query；无日期/依据不报超期天数。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S17",
+      "title": "三次跟进仍是一个问题",
+      "requirement_ids": [
+        "CRA-R028",
+        "CRA-R031"
+      ],
+      "expected": "相同问题编号跨次保留，部分行动完成不改写其他事项状态。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S18",
+      "title": "EDC导出排除了目标表单",
+      "requirement_ids": [
+        "CRA-R014",
+        "CRA-R034"
+      ],
+      "expected": "仅标本次导出未见，不能断言漏录，保留导出范围。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S19",
+      "title": "初检复查和修订误匹配",
+      "requirement_ids": [
+        "CRA-R015",
+        "CRA-R016"
+      ],
+      "expected": "数值相同但实例不同不比较；一对多候选由用户核实。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S20",
+      "title": "单位与参考范围缺失",
+      "requirement_ids": [
+        "CRA-R016",
+        "CRA-R034"
+      ],
+      "expected": "未验证单位换算或缺LLN/ULN时不自动给出可比/安全结论。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S21",
+      "title": "无法识别后用户跳过",
+      "requirement_ids": [
+        "CRA-R017",
+        "CRA-R028"
+      ],
+      "expected": "不再重复提示识别，但保存未核实范围且报告不写正常。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S22",
+      "title": "OCR或模型不可用",
+      "requirement_ids": [
+        "CRA-R035",
+        "CRA-R038"
+      ],
+      "expected": "人工录入、list查阅和问题跟进继续；不伪装已完成自动识别。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S23",
+      "title": "异常分析与医学确认",
+      "requirement_ids": [
+        "CRA-R018",
+        "CRA-R019",
+        "CRA-R042"
+      ],
+      "expected": "区分事实、候选解释与医学答复；严重性、分级等不相互替代。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S24",
+      "title": "安全时限锚点",
+      "requirement_ids": [
+        "CRA-R020",
+        "CRA-R042"
+      ],
+      "expected": "知悉日期未提供时追问关键缺口；提醒不等报告签发。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S25",
+      "title": "分析引用不可核实",
+      "requirement_ids": [
+        "CRA-R007",
+        "CRA-R009",
+        "CRA-R034"
+      ],
+      "expected": "模型虚构条款编号时，证据验证拒绝该确定性结论并保留待核实内容。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S26",
+      "title": "ISF/TMF上次缺件已补",
+      "requirement_ids": [
+        "CRA-R003",
+        "CRA-R024",
+        "CRA-R031"
+      ],
+      "expected": "CRA核实后更新当前状态，保留历史；新目录要求单列新增。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S27",
+      "title": "访视信只选两条",
+      "requirement_ids": [
+        "CRA-R025",
+        "CRA-R029",
+        "CRA-R043"
+      ],
+      "expected": "从三条遗留选两条生成草稿，三条完整清单和状态均保持。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S28",
+      "title": "已签发报告不可静默变化",
+      "requirement_ids": [
+        "CRA-R029",
+        "CRA-R030"
+      ],
+      "expected": "问题后续完成只更新新材料和track；签发快照及其事实版本不变。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S29",
+      "title": "报告超出核查覆盖",
+      "requirement_ids": [
+        "CRA-R028",
+        "CRA-R030",
+        "CRA-R034"
+      ],
+      "expected": "仅检查某些患者或字段时，报告不得生成全中心所有数据无异常。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S30",
+      "title": "供应商变更不改业务数据",
+      "requirement_ids": [
+        "CRA-R035",
+        "CRA-R036",
+        "CRA-R038"
+      ],
+      "expected": "替换provider后复用已确认字段，权限和输出校验仍有效；无凭证不调用外部服务。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S31",
+      "title": "理论单独更新",
+      "requirement_ids": [
+        "CRA-R039"
+      ],
+      "expected": "修改一条理论而不更新技术复核指纹，检查必须失败并显示编号和模块。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S32",
+      "title": "技术同步漏模块或旧变更记录冒用",
+      "requirement_ids": [
+        "CRA-R039"
+      ],
+      "expected": "一条理论对应两模块时缺一复核即失败；旧指纹的记录不能覆盖新变更。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S33",
+      "title": "云上检查与范围隔离",
+      "requirement_ids": [
+        "CRA-R040",
+        "CRA-R037"
+      ],
+      "expected": "GitHub Actions只检查本项目，开发入口使用Codespaces，不能改动其他项目文件。",
+      "status": "planned",
+      "evidence_paths": []
+    },
+    {
+      "id": "CRA-S34",
+      "title": "质量与总耗时",
+      "requirement_ids": [
+        "CRA-R044",
+        "CRA-R045"
+      ],
+      "expected": "记录漏检、错配、错误关闭及查阅/录入/复核/报告总时间；代码通过和临床试用分开。",
+      "status": "planned",
+      "evidence_paths": []
+    }
+  ]
+}
