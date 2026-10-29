@@ -38,3 +38,5 @@ jobs:
         run: python3 -m cra_core.demo
       - name: Show next development work package
         run: python3 tools/next_task.py
+      - name: Diagnostic architecture review probes (not acceptance)
+        run: python3 audit/probes/reproduce_review.py

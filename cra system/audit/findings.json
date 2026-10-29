@@ -1,0 +1,337 @@
+{
+  "review_date": "2026-10-29",
+  "reviewed_commit": "60be8e67f4fa941a4663541351253296e5ee06a4",
+  "scope": "CRA theory and v0.2 technical route",
+  "verdict": "Architecture can be retained; resolve specific execution and validation gaps before affected tasks.",
+  "findings": [
+    {
+      "id": "CRA-AUD-001",
+      "priority": "P1",
+      "kind": "验收机制缺口",
+      "status": "open",
+      "title": "任务完成标记可以绕过实际功能验证",
+      "theory": [
+        "CRA-R039",
+        "CRA-R044"
+      ],
+      "modules": [
+        "M13",
+        "M14"
+      ],
+      "tasks": [
+        "CRA-W00",
+        "CRA-W01",
+        "CRA-W13"
+      ],
+      "evidence": [
+        "tools/execution_plan.py:85-122",
+        "tools/traceability_lib.py:210-211",
+        ".github/workflows/cra-system.yml"
+      ],
+      "problem": "当前检查验证文件存在、命令availability标记和非空evidence，但不核验该功能命令确实运行成功及其提交版本；空文件加自报证据可能通过。",
+      "consequence": "Codex可把尚未实现的工作包标verified，下一项选择器随之推进，工程CI绿色不证明该功能完成。",
+      "recommendation": "保留现有结构检查，增加每任务必须通过的CI job/测试集合及绑定实现提交的机器证据。命令由受控CI运行，不能把tasks.json任意命令直接当可信脚本执行。仍保留人工语义审查。",
+      "closure": "本轮诊断能被改进后的门槛拒绝；真实最小W01运行成功证据可接受，且不强迫无关任务重复测试。"
+    },
+    {
+      "id": "CRA-AUD-002",
+      "priority": "P1",
+      "kind": "实际工作入口遗漏",
+      "status": "open",
+      "title": "上次报告和track如何成为遗留问题没有明确交付",
+      "theory": [
+        "CRA-R025",
+        "CRA-R026",
+        "CRA-R027",
+        "CRA-R031",
+        "CRA-R045"
+      ],
+      "modules": [
+        "M02",
+        "M06",
+        "M11"
+      ],
+      "tasks": [
+        "CRA-W03",
+        "CRA-W06",
+        "CRA-W12"
+      ],
+      "evidence": [
+        "theory/BASELINE.md:目标和工作顺序",
+        "plan/tasks.json:CRA-W06",
+        "architecture/modules/M06-issues.md"
+      ],
+      "problem": "资料解析与结构化问题服务分别存在，但没有指定把既有监查报告/Excel track解析、映射、确认并导入原问题的服务、接口和验收。合成预置问题不能代替首次真实接手。",
+      "consequence": "用户首日可能仍要手工重建全部遗留，上次是什么、在哪里和怎么改难以可靠接续。",
+      "recommendation": "在W06增加历史问题导入：复用W03解析，提供报告/track字段映射及确认，保留来源位置、原编号、实际整改和未知；无编号由用户核实关联，不编造处理历史。",
+      "closure": "从合成的前次DOCX报告和XLSX track进入本次访前信/现场复核，重复导入不重复建问题，旧记录缺项保留待补。"
+    },
+    {
+      "id": "CRA-AUD-003",
+      "priority": "P1",
+      "kind": "最高约束未完整落地",
+      "status": "open",
+      "title": "每一次输出的三层约束缺少统一可执行契约",
+      "theory": [
+        "CRA-R002",
+        "CRA-R009",
+        "CRA-R034",
+        "CRA-R036"
+      ],
+      "modules": [
+        "M01",
+        "M03",
+        "M09",
+        "M11",
+        "M12"
+      ],
+      "tasks": [
+        "CRA-W02",
+        "CRA-W04",
+        "CRA-W09",
+        "CRA-W11"
+      ],
+      "evidence": [
+        "Notion v0.14:1.4 每一次输出必须受约束",
+        "architecture/API_CONTRACTS.md:共同约定",
+        "architecture/modules/M12-providers.md"
+      ],
+      "problem": "目前主要要求各调用方校验来源/数值/范围，没有统一定义适用共性/项目/中心规则版本、未知和冲突、事实/推断类别及可发布状态的输出结构与责任。",
+      "consequence": "模型分析、现场提示和报告可能分别采用不同检查，某一路径绕过共同底线而其他路径仍通过。",
+      "recommendation": "定义共享OutputEnvelope和按用途校验策略，明确M01范围、M03适用性、业务模块语义及M11覆盖责任；所有模型和确定性结论都走相应检查。允许真实差异、未知和澄清草稿保存，不以输出校验阻止记录问题。",
+      "closure": "跨患者、过期/冲突依据、假引用、超覆盖措辞分别在所有适用输出路径被识别；合法缺口和真实偏离仍可记录。"
+    },
+    {
+      "id": "CRA-AUD-004",
+      "priority": "P1",
+      "kind": "最高说明覆盖不足",
+      "status": "open",
+      "title": "用途风险与全生命周期要求没有完整任务化",
+      "theory": [
+        "CRA-R036",
+        "CRA-R039",
+        "CRA-R044"
+      ],
+      "modules": [
+        "M09",
+        "M12",
+        "M13",
+        "M14"
+      ],
+      "tasks": [
+        "CRA-W04",
+        "CRA-W09",
+        "CRA-W13",
+        "CRA-W15"
+      ],
+      "evidence": [
+        "Notion v0.14:1.1 十项AI原则及原则落地规则",
+        "theory/source-register.json",
+        "plan/tasks.json:CRA-W13/CRA-W15"
+      ],
+      "problem": "45条已登记需求的映射完整，不证明原最高说明均被提取。按用途的风险记录、独立评估样本、专业审阅、上线后性能/事故监测及暂停回退尚无完整可验收任务。",
+      "consequence": "可产出功能齐全的演示，但无法证明具体用途下的可靠性，也可能无法发现模型/规则更新后的退化。",
+      "recommendation": "建立原最高说明→理论/控制→模块/任务/证据的覆盖表；在M14/W13/W15加入轻量UseCase/Risk/Validation/Release/Monitoring记录，限定具体用途。放在发布验证层，不增加每次监查或PD上报的审批。",
+      "closure": "关键用途均有错误后果、数据适用性、评估、相应职责和监测/暂停方法；覆盖遗漏明确标open，不能只以45/45自证。"
+    },
+    {
+      "id": "CRA-AUD-005",
+      "priority": "P1",
+      "kind": "阶段与验收语义不清",
+      "status": "open",
+      "title": "人工演示、自动能力和获准试用的完成边界混用",
+      "theory": [
+        "CRA-R035",
+        "CRA-R038",
+        "CRA-R040",
+        "CRA-R044"
+      ],
+      "modules": [
+        "M12",
+        "M14"
+      ],
+      "tasks": [
+        "CRA-W04",
+        "CRA-W09",
+        "CRA-W13",
+        "CRA-W15"
+      ],
+      "evidence": [
+        "architecture/SYSTEM.md:62-64",
+        "plan/tasks.json:CRA-W13/CRA-W15"
+      ],
+      "problem": "V1A写为完整可试用且模型须配置验证；同时各任务允许DisabledProvider/合成演示，实际模型和环境配置又主要在W15，而W15依赖W13。未定义W13何种能力等级可完成。",
+      "consequence": "可能把人工演示当完整自动版，或在未部署与先验收之间形成流程性等待。不是已证明的运行时死锁，而是实施歧义。",
+      "recommendation": "拆开code-complete、synthetic-validated、provider-validated、authorized-trial-ready等能力状态。W13可以完成明确范围的离线/合成验收；真实provider配置测试必须有具体落点；获准环境及实际试用由W15确认，不互相替代。",
+      "closure": "无模型时允许的功能、不能宣称的能力、W13和W15各自完成证据清楚，且无循环等待。"
+    },
+    {
+      "id": "CRA-AUD-006",
+      "priority": "P2",
+      "kind": "依赖描述歧义",
+      "status": "open",
+      "title": "M05声明依赖M10，但实现早于M10",
+      "theory": [
+        "CRA-R001",
+        "CRA-R026",
+        "CRA-R032",
+        "CRA-R033"
+      ],
+      "modules": [
+        "M05",
+        "M10"
+      ],
+      "tasks": [
+        "CRA-W06",
+        "CRA-W10"
+      ],
+      "evidence": [
+        "traceability/modules.json:M05 depends_on",
+        "plan/tasks.json:CRA-W06/CRA-W10"
+      ],
+      "problem": "M05在W06开始，声明依赖M10；M10在W10才开始，而W10依赖W06。模块图与工作包图各自无环，但合在一起没有区分阶段可选依赖。",
+      "consequence": "Codex可能提前做W10、用假服务冒充完成，或误认为无法开始W06。",
+      "recommendation": "区分核心硬依赖与W10启用的可选中心文件能力，按阶段列出公开端口及未启用状态；W06不需要已实现全部M10。",
+      "closure": "W06核心场景可独立运行，W10接入后不改已存问题/核查状态；依赖检查认识阶段能力。"
+    },
+    {
+      "id": "CRA-AUD-007",
+      "priority": "P2",
+      "kind": "输入契约不够具体",
+      "status": "open",
+      "title": "时间锚点、安全上下文与模板输入的最低要求未列清",
+      "theory": [
+        "CRA-R010",
+        "CRA-R011",
+        "CRA-R014",
+        "CRA-R018",
+        "CRA-R029",
+        "CRA-R034"
+      ],
+      "modules": [
+        "M02",
+        "M04",
+        "M07",
+        "M09",
+        "M11"
+      ],
+      "tasks": [
+        "CRA-W05",
+        "CRA-W07",
+        "CRA-W09",
+        "CRA-W11"
+      ],
+      "evidence": [
+        "architecture/DATA_MODEL.md",
+        "architecture/API_CONTRACTS.md",
+        "plan/tasks.json:CRA-W05/CRA-W07/CRA-W09/CRA-W11"
+      ],
+      "problem": "笼统写EDC/源记录或人工输入，未给各项判断必须具备的事实和导入字段契约。检验导出未必含输注/治疗锚点；AE相关判断还需要相应历史/评价。实际模板也没有支持范围和映射规格。",
+      "consequence": "模块有API仍可能缺少可用输入，只能反复追问，或无依据推断日期、范围和医学上下文。",
+      "recommendation": "逐用途列required/optional facts、允许来源、身份/时间精度、缺失结果与一次性人工补充入口；补充ContextImport及TemplateMapping的最小schema与支持格式。仍不扩大非检验源数据OCR。",
+      "closure": "缺锚点/缺病史/缺模板字段的输入被明确处理；合成Excel、报告和模板能从文件进入完整流程，而非只预造JSON。"
+    },
+    {
+      "id": "CRA-AUD-008",
+      "priority": "P2",
+      "kind": "推理和证据验证不足",
+      "status": "open",
+      "title": "真实引文和数字一致不足以证明规则提取正确",
+      "theory": [
+        "CRA-R006",
+        "CRA-R007",
+        "CRA-R008",
+        "CRA-R009"
+      ],
+      "modules": [
+        "M03",
+        "M09",
+        "M12"
+      ],
+      "tasks": [
+        "CRA-W04",
+        "CRA-W09"
+      ],
+      "evidence": [
+        "architecture/AI_AND_PARSING.md:21-23",
+        "plan/tasks.json:CRA-W04"
+      ],
+      "problem": "现有校验重点为锚点存在、片段归属、数字可追溯；一条含且/或和例外的原文即使漏掉前提，仍可能引用真实原文并保留同一个数字。规则AST的最小语法和unknown运算亦未明确。",
+      "consequence": "系统给出有出处但逻辑错误的清单；仅看摘要的用户不易发现漏条件。",
+      "recommendation": "先定义有限Rule AST、单位/区间/时间精度和三值逻辑；用独立标注的合成/获准规则比较完整条件和例外；无法稳定结构化的保留人工分析型规则，不强行自动判定。",
+      "closure": "真实引文但漏前提、颠倒否定、丢例外、且改或等反例被识别；通过不只取决于引用存在。"
+    },
+    {
+      "id": "CRA-AUD-009",
+      "priority": "P2",
+      "kind": "验证设计待补",
+      "status": "open",
+      "title": "34个场景尚缺代表性样本、评判依据和风险门槛",
+      "theory": [
+        "CRA-R007",
+        "CRA-R015",
+        "CRA-R019",
+        "CRA-R044"
+      ],
+      "modules": [
+        "M03",
+        "M08",
+        "M09",
+        "M14"
+      ],
+      "tasks": [
+        "CRA-W03",
+        "CRA-W04",
+        "CRA-W08",
+        "CRA-W09",
+        "CRA-W13",
+        "CRA-W14"
+      ],
+      "evidence": [
+        "traceability/scenarios.json",
+        "plan/tasks.json:CRA-W13/CRA-W14",
+        "Notion v0.14:1.1 原则8"
+      ],
+      "problem": "场景有描述但没有完整输入/预期/依据/样本来源/独立评估划分；本轮30项是工程反例，不含真实格式或临床用途性能证据。",
+      "consequence": "开发者可针对示例写对，换格式或项目后遗漏和误匹配仍未知；不能据此承诺可靠自动核查。",
+      "recommendation": "尽早建立去标识获准或忠实合成的文档/Excel/图片/模板样本，区分开发和独立评估；按用途明确关键错误与复核标准。W13汇总，而非最后才第一次测试数据适用性。",
+      "closure": "样本和预期可复核，测试集分离，关键错误与总体表现分别记录，覆盖外用途清楚。"
+    },
+    {
+      "id": "CRA-AUD-010",
+      "priority": "P2",
+      "kind": "价值与实施顺序风险",
+      "status": "open",
+      "title": "人工版能跑通不等于检验核对真正省时",
+      "theory": [
+        "CRA-R028",
+        "CRA-R035",
+        "CRA-R037",
+        "CRA-R044",
+        "CRA-R045"
+      ],
+      "modules": [
+        "M05",
+        "M08",
+        "M11",
+        "M14"
+      ],
+      "tasks": [
+        "CRA-W06",
+        "CRA-W08",
+        "CRA-W11",
+        "CRA-W12",
+        "CRA-W13",
+        "CRA-W14"
+      ],
+      "evidence": [
+        "architecture/SYSTEM.md:62-64",
+        "plan/tasks.json:CRA-W08/CRA-W12/CRA-W13/CRA-W14"
+      ],
+      "problem": "V1A先人工输入源字段，可能增加抄录和确认时间；完整价值串联主要在W12/W13。后置OCR是用户允许的分期，但不能因此认为最耗时的一致性核查目标已经达到。",
+      "consequence": "系统功能按计划完成，用户反而多录入；较晚才发现匹配、模板或使用路径不适合。",
+      "recommendation": "保留四模块范围与编号，增加早期可用里程碑和端到端小样；先验证遗留→选信→复核→报告及一个检验实例。测总时间，识别未就绪时如实将节时收益限定在规则查找、记录和报告。",
+      "closure": "同一任务原流程与新流程总耗时可比，计入导入/补录/复核/返工，用户实际操作反馈决定迭代。"
+    }
+  ]
+}
