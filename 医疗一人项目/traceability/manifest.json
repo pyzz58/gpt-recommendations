@@ -1,0 +1,1066 @@
+{
+  "schema_version": 1,
+  "theory_file": "最高思想.md",
+  "roadmap_file": "技术路线与实施路径.md",
+  "requirements": [
+    {
+      "id": "RQ-001",
+      "title": "统一思想与技术维护",
+      "source_refs": [
+        "D-001",
+        "D-002",
+        "D-010",
+        "D-011",
+        "D-012",
+        "D-025",
+        "D-026",
+        "SEC:14",
+        "SEC:15",
+        "SEC:20"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-02",
+        "TR-22",
+        "TR-25"
+      ],
+      "work_packages": [
+        "W00",
+        "W19"
+      ],
+      "acceptance_refs": [
+        "AT-001"
+      ],
+      "planned_paths": [
+        "tools/check_traceability.py",
+        "traceability/manifest.json"
+      ],
+      "implementation_status": "documentation_ready",
+      "source_sha256": "8025af4122b4c0b0b63dca1eb72fc697647bcbc1348d34cfa9427eeb52b490e1"
+    },
+    {
+      "id": "RQ-002",
+      "title": "有限预算与分阶段投入",
+      "source_refs": [
+        "D-004",
+        "D-005",
+        "SEC:9"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-03",
+        "TR-11",
+        "TR-12",
+        "TR-20",
+        "TR-21",
+        "TR-24"
+      ],
+      "work_packages": [
+        "W04",
+        "W20"
+      ],
+      "acceptance_refs": [
+        "AT-002"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/budgets"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "32b1ea0ec553bf09bed81e18f40368c70accce80c16a4c9127c4d0bac8af076b"
+    },
+    {
+      "id": "RQ-003",
+      "title": "宠物药初始路线及三领域比较",
+      "source_refs": [
+        "D-003",
+        "D-014",
+        "SEC:2",
+        "SEC:4.3"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-08",
+        "TR-11"
+      ],
+      "work_packages": [
+        "W09",
+        "W12"
+      ],
+      "acceptance_refs": [
+        "AT-003"
+      ],
+      "planned_paths": [
+        "config/workflows"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "067d218dc30d4fd64bfeb2dec99e4eb23389865c85a3a67e0e8e5edf32271cc7"
+    },
+    {
+      "id": "RQ-004",
+      "title": "完整专业职责",
+      "source_refs": [
+        "D-006",
+        "D-007",
+        "D-015",
+        "D-019",
+        "SEC:6",
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "A08",
+        "A09",
+        "A10",
+        "A11",
+        "A12",
+        "A13",
+        "A14",
+        "A15",
+        "A16",
+        "A17",
+        "A18",
+        "A19",
+        "A20",
+        "A21",
+        "A22",
+        "A23",
+        "A24",
+        "A25",
+        "A26"
+      ],
+      "technical_refs": [
+        "TR-03",
+        "TR-06"
+      ],
+      "work_packages": [
+        "W05"
+      ],
+      "acceptance_refs": [
+        "AT-004"
+      ],
+      "planned_paths": [
+        "config/agents"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "6bb385af2dbe56c747b82341b6fb3aadd30772e7bddfd88e39c718e41c3c4657"
+    },
+    {
+      "id": "RQ-005",
+      "title": "独立上下文及实际权限隔离",
+      "source_refs": [
+        "D-008",
+        "D-013",
+        "D-016",
+        "SEC:5.1",
+        "SEC:5.2"
+      ],
+      "technical_refs": [
+        "TR-03",
+        "TR-04",
+        "TR-06",
+        "TR-07",
+        "TR-13",
+        "TR-16",
+        "TR-18"
+      ],
+      "work_packages": [
+        "W03",
+        "W05",
+        "W20"
+      ],
+      "acceptance_refs": [
+        "AT-005"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/agents",
+        "services/core/src/medical_one_person/domain/policies"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "52d0b45c53b7e6ee08b8e03c754550c423f1b1c7a63be2b6002894a8c8be6abc"
+    },
+    {
+      "id": "RQ-006",
+      "title": "科学运营分工和独立意见",
+      "source_refs": [
+        "D-009",
+        "D-019",
+        "SEC:4.2",
+        "SEC:7.1",
+        "SEC:7.4"
+      ],
+      "technical_refs": [
+        "TR-06",
+        "TR-07",
+        "TR-08"
+      ],
+      "work_packages": [
+        "W05",
+        "W17"
+      ],
+      "acceptance_refs": [
+        "AT-006"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/agents",
+        "services/core/src/medical_one_person/domain/reviews"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "bf3c471354460d5d66520409685ee487fb01bdf69a443f201dffcfcb201cc0d6"
+    },
+    {
+      "id": "RQ-007",
+      "title": "多项目与真实工作界面",
+      "source_refs": [
+        "D-021",
+        "SEC:7.5"
+      ],
+      "technical_refs": [
+        "TR-04",
+        "TR-16",
+        "TR-17",
+        "TR-18",
+        "TR-21"
+      ],
+      "work_packages": [
+        "W02",
+        "W10",
+        "W21"
+      ],
+      "acceptance_refs": [
+        "AT-007"
+      ],
+      "planned_paths": [
+        "apps/web/src/features/projects",
+        "apps/web/src/features/agents"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "9bd6e5a1d92a2665e3ccbb8d2ab2173c8d8092332edf2a189bccec2b32a1ae80"
+    },
+    {
+      "id": "RQ-008",
+      "title": "线索到选择和研发反馈",
+      "source_refs": [
+        "D-014",
+        "D-022",
+        "SEC:7.6"
+      ],
+      "technical_refs": [
+        "TR-04",
+        "TR-05",
+        "TR-08",
+        "TR-17",
+        "TR-18"
+      ],
+      "work_packages": [
+        "W09",
+        "W11",
+        "W21"
+      ],
+      "acceptance_refs": [
+        "AT-008"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/workflows"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "028f6a5d4078e49fdded14c112439c0635b951d28b926900adebc44be6259211"
+    },
+    {
+      "id": "RQ-009",
+      "title": "任务交付依赖与接受合同",
+      "source_refs": [
+        "D-008",
+        "D-022",
+        "SEC:7.2",
+        "SEC:7.3"
+      ],
+      "technical_refs": [
+        "TR-04",
+        "TR-05",
+        "TR-08",
+        "TR-12",
+        "TR-17",
+        "TR-18"
+      ],
+      "work_packages": [
+        "W04",
+        "W11"
+      ],
+      "acceptance_refs": [
+        "AT-009"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/tasks"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "306867d2a3dd1a085c558163ff3d36a7e75ea1119a22f918cd7ed2cf61f5dd80"
+    },
+    {
+      "id": "RQ-010",
+      "title": "有界自动推进与停止分支",
+      "source_refs": [
+        "D-022",
+        "D-024",
+        "SEC:7.7"
+      ],
+      "technical_refs": [
+        "TR-05",
+        "TR-08",
+        "TR-12",
+        "TR-16",
+        "TR-18"
+      ],
+      "work_packages": [
+        "W11",
+        "W21"
+      ],
+      "acceptance_refs": [
+        "AT-010"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/workflows"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "c7197af14552c390cc545b1201fd52b18bea9926c1b779b26d2a61cd43c2a03b"
+    },
+    {
+      "id": "RQ-011",
+      "title": "专业来源与反证质量",
+      "source_refs": [
+        "D-018",
+        "D-024",
+        "SEC:11.3",
+        "SEC:11.4"
+      ],
+      "technical_refs": [
+        "TR-09",
+        "TR-10",
+        "TR-19"
+      ],
+      "work_packages": [
+        "W07",
+        "W08",
+        "W17"
+      ],
+      "acceptance_refs": [
+        "AT-011"
+      ],
+      "planned_paths": [
+        "config/source_policies",
+        "services/core/src/medical_one_person/infrastructure/sources"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "84343c325be8fb3b97982afd1d33eeb7aa2570913db564616d803bcf099819b0"
+    },
+    {
+      "id": "RQ-012",
+      "title": "长期本地知识与版本",
+      "source_refs": [
+        "D-017",
+        "SEC:11.1",
+        "SEC:11.2"
+      ],
+      "technical_refs": [
+        "TR-04",
+        "TR-07",
+        "TR-10",
+        "TR-16",
+        "TR-21"
+      ],
+      "work_packages": [
+        "W02",
+        "W08",
+        "W18"
+      ],
+      "acceptance_refs": [
+        "AT-012"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/knowledge"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "3247773d1a5ce65f7890a73c1c1a5901daea44671aa7d6b07f3804d9eabe4f61"
+    },
+    {
+      "id": "RQ-013",
+      "title": "内置技能及按岗授权",
+      "source_refs": [
+        "D-020",
+        "D-024",
+        "SEC:5.4"
+      ],
+      "technical_refs": [
+        "TR-13",
+        "TR-14",
+        "TR-18"
+      ],
+      "work_packages": [
+        "W06"
+      ],
+      "acceptance_refs": [
+        "AT-013"
+      ],
+      "planned_paths": [
+        "config/skills",
+        "services/core/src/medical_one_person/infrastructure/skills"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "61d5eadef7613f12a8e640b2c7b60213ef76552b4b99acf01cc72f2f51cfff1d"
+    },
+    {
+      "id": "RQ-014",
+      "title": "Office与PDF实际产物",
+      "source_refs": [
+        "D-020",
+        "D-024",
+        "SEC:5.4"
+      ],
+      "technical_refs": [
+        "TR-13",
+        "TR-14",
+        "TR-17"
+      ],
+      "work_packages": [
+        "W14",
+        "W21"
+      ],
+      "acceptance_refs": [
+        "AT-014"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/infrastructure/skills/documents"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "61d5eadef7613f12a8e640b2c7b60213ef76552b4b99acf01cc72f2f51cfff1d"
+    },
+    {
+      "id": "RQ-015",
+      "title": "邮件收发线程与真实状态",
+      "source_refs": [
+        "D-017",
+        "D-020",
+        "D-024",
+        "SEC:7.4",
+        "SEC:8"
+      ],
+      "technical_refs": [
+        "TR-13",
+        "TR-14",
+        "TR-16"
+      ],
+      "work_packages": [
+        "W15",
+        "W22"
+      ],
+      "acceptance_refs": [
+        "AT-015"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/infrastructure/mail"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "8b38a7fe527c231974d42953c5f0168a25e34cfce80c8ce21d56eb945eac19b5"
+    },
+    {
+      "id": "RQ-016",
+      "title": "外部实验与专家合作",
+      "source_refs": [
+        "D-006",
+        "D-009",
+        "SEC:4.4",
+        "SEC:8"
+      ],
+      "technical_refs": [
+        "TR-15",
+        "TR-16"
+      ],
+      "work_packages": [
+        "W16"
+      ],
+      "acceptance_refs": [
+        "AT-016"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/engagements"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "91c5bc5cf40a01adb895c5252bb6fea19a91fe7757fcc4ef2f7d5baa5fcd781a"
+    },
+    {
+      "id": "RQ-017",
+      "title": "统计数据与复现",
+      "source_refs": [
+        "D-015",
+        "SEC:6",
+        "SEC:11.1"
+      ],
+      "technical_refs": [
+        "TR-04",
+        "TR-06",
+        "TR-11",
+        "TR-15"
+      ],
+      "work_packages": [
+        "W13"
+      ],
+      "acceptance_refs": [
+        "AT-017"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/analyses"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "99bda49509e718065714b2854026de4301c5b3e6eb99a0263dc5aaafe614dcd8"
+    },
+    {
+      "id": "RQ-018",
+      "title": "适用注册证据与日期",
+      "source_refs": [
+        "D-015",
+        "SEC:4.3",
+        "SEC:11.3"
+      ],
+      "technical_refs": [
+        "TR-08",
+        "TR-09",
+        "TR-15"
+      ],
+      "work_packages": [
+        "W12",
+        "W16"
+      ],
+      "acceptance_refs": [
+        "AT-018"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/regulatory"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "b20406b432891bd2481af34c7e4ff9ba87a1b09b32f903131936c74cde60f6e8"
+    },
+    {
+      "id": "RQ-019",
+      "title": "专利法务与权益线索",
+      "source_refs": [
+        "D-015",
+        "SEC:6",
+        "SEC:10.3"
+      ],
+      "technical_refs": [
+        "TR-06",
+        "TR-09",
+        "TR-15"
+      ],
+      "work_packages": [
+        "W16"
+      ],
+      "acceptance_refs": [
+        "AT-019"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/legal"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "681165eb1c0e9a0051dd2ab63a81337b5ac2fecb73653423b5d9d46c80427b8e"
+    },
+    {
+      "id": "RQ-020",
+      "title": "预算报价费用口径",
+      "source_refs": [
+        "D-004",
+        "D-015",
+        "D-023",
+        "SEC:9",
+        "SEC:10.2"
+      ],
+      "technical_refs": [
+        "TR-04",
+        "TR-11",
+        "TR-12",
+        "TR-15",
+        "TR-17"
+      ],
+      "work_packages": [
+        "W04",
+        "W16"
+      ],
+      "acceptance_refs": [
+        "AT-020"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/finance"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "0e685b9af1bc373e8487d8b3544d189043baa84f911c5554062bb25964735fa5"
+    },
+    {
+      "id": "RQ-021",
+      "title": "需求商业假设与机会价值",
+      "source_refs": [
+        "D-014",
+        "SEC:4.1"
+      ],
+      "technical_refs": [
+        "TR-08",
+        "TR-09",
+        "TR-11",
+        "TR-15"
+      ],
+      "work_packages": [
+        "W09",
+        "W16"
+      ],
+      "acceptance_refs": [
+        "AT-021"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/opportunities"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "b9b687366a9fa1bf1d52f89373e1dcba0dc6f827cec5155c0d0efaeaefe0edfb"
+    },
+    {
+      "id": "RQ-022",
+      "title": "独立反证与阴性结果回流",
+      "source_refs": [
+        "D-019",
+        "D-024",
+        "SEC:7.7",
+        "SEC:10.1"
+      ],
+      "technical_refs": [
+        "TR-05",
+        "TR-06",
+        "TR-08",
+        "TR-12",
+        "TR-19"
+      ],
+      "work_packages": [
+        "W11",
+        "W17"
+      ],
+      "acceptance_refs": [
+        "AT-022"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/reviews"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "f2df1f1602f19e4d8825802e46a29b1d0d71fff2116167ced519540d9ec3c49b"
+    },
+    {
+      "id": "RQ-023",
+      "title": "断言与原始证据谱系",
+      "source_refs": [
+        "D-017",
+        "D-018",
+        "SEC:11.1",
+        "SEC:11.4"
+      ],
+      "technical_refs": [
+        "TR-04",
+        "TR-09",
+        "TR-10",
+        "TR-14",
+        "TR-18",
+        "TR-22"
+      ],
+      "work_packages": [
+        "W08",
+        "W14"
+      ],
+      "acceptance_refs": [
+        "AT-023"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/evidence"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "b28e9d8f9ca2d2a7cd84bf9d9f66d52616308ffa3b27364fc66f4ef3a43fb444"
+    },
+    {
+      "id": "RQ-024",
+      "title": "模式科学与项目的分层评价",
+      "source_refs": [
+        "D-005",
+        "SEC:10",
+        "SEC:12"
+      ],
+      "technical_refs": [
+        "TR-19",
+        "TR-24"
+      ],
+      "work_packages": [
+        "W17",
+        "W22"
+      ],
+      "acceptance_refs": [
+        "AT-024"
+      ],
+      "planned_paths": [
+        "tests/evaluation"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "b590ee6e9a5fe840ec50a8253a366985380b02edcd3a15a85a14819e8652e3f4"
+    },
+    {
+      "id": "RQ-025",
+      "title": "成熟组件许可及功能复用",
+      "source_refs": [
+        "D-020",
+        "SEC:5.5"
+      ],
+      "technical_refs": [
+        "TR-03",
+        "TR-13",
+        "TR-14",
+        "TR-23",
+        "TR-24"
+      ],
+      "work_packages": [
+        "W01",
+        "W06",
+        "W23"
+      ],
+      "acceptance_refs": [
+        "AT-025"
+      ],
+      "planned_paths": [
+        "deploy",
+        "config/skills"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "a1b19cfea44b3758c8dc52028b36dd0092eb6ecbcbdb43d4319cd3e2abe6570c"
+    },
+    {
+      "id": "RQ-026",
+      "title": "断网及恢复能力边界",
+      "source_refs": [
+        "D-017",
+        "SEC:11.2"
+      ],
+      "technical_refs": [
+        "TR-03",
+        "TR-10",
+        "TR-21"
+      ],
+      "work_packages": [
+        "W07",
+        "W18",
+        "W23"
+      ],
+      "acceptance_refs": [
+        "AT-026"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/infrastructure/backups"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "c724cd6064b423de8f2a5ee935e6422a9ec230902dbdbee9cc0449f1e20ac9ba"
+    },
+    {
+      "id": "RQ-027",
+      "title": "故障去重用量与限制",
+      "source_refs": [
+        "D-004",
+        "SEC:7.4",
+        "SEC:7.7"
+      ],
+      "technical_refs": [
+        "TR-05",
+        "TR-07",
+        "TR-12",
+        "TR-13",
+        "TR-16",
+        "TR-18",
+        "TR-21",
+        "TR-23"
+      ],
+      "work_packages": [
+        "W04",
+        "W18",
+        "W20"
+      ],
+      "acceptance_refs": [
+        "AT-027"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/worker"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "428f3e16accf91ea8aa2acde2d34c29162f7e07bfd7f82e4540abf34dbca881c"
+    },
+    {
+      "id": "RQ-028",
+      "title": "概率按事件证据表达",
+      "source_refs": [
+        "D-023",
+        "D-024",
+        "SEC:10.2"
+      ],
+      "technical_refs": [
+        "TR-09",
+        "TR-11",
+        "TR-24"
+      ],
+      "work_packages": [
+        "W09",
+        "W22"
+      ],
+      "acceptance_refs": [
+        "AT-028"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/estimates"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "43939a816f066b29da1802cd684e725ae314d529914dcbf415294ec6e34217d0"
+    },
+    {
+      "id": "RQ-029",
+      "title": "现实与模拟记录真实",
+      "source_refs": [
+        "D-012",
+        "SEC:11",
+        "SEC:12",
+        "SEC:19"
+      ],
+      "technical_refs": [
+        "TR-04",
+        "TR-05",
+        "TR-10",
+        "TR-12",
+        "TR-14",
+        "TR-15",
+        "TR-16",
+        "TR-17",
+        "TR-18"
+      ],
+      "work_packages": [
+        "W02",
+        "W15",
+        "W20",
+        "W21"
+      ],
+      "acceptance_refs": [
+        "AT-029"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/artifacts"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "2cd169fc065e1c2d99b0b9ce8d179ca0eee5654179c1386605e2b8ae478628a7"
+    },
+    {
+      "id": "RQ-030",
+      "title": "思想更新和运行版本迁移",
+      "source_refs": [
+        "D-026",
+        "SEC:14.4"
+      ],
+      "technical_refs": [
+        "TR-02",
+        "TR-22",
+        "TR-23",
+        "TR-25"
+      ],
+      "work_packages": [
+        "W19",
+        "W23"
+      ],
+      "acceptance_refs": [
+        "AT-030"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/domain/policy_bundles"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "86f57e7150f6fcd23cdf5bcac647513bc1a5f4c29339628d11fbabd9c495d5c2"
+    },
+    {
+      "id": "RQ-031",
+      "title": "科学能力及应用不夸大",
+      "source_refs": [
+        "D-009",
+        "SEC:1",
+        "SEC:3",
+        "SEC:18"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-07",
+        "TR-08",
+        "TR-09",
+        "TR-11",
+        "TR-15",
+        "TR-19",
+        "TR-24"
+      ],
+      "work_packages": [
+        "W09",
+        "W12",
+        "W17",
+        "W22"
+      ],
+      "acceptance_refs": [
+        "AT-031"
+      ],
+      "planned_paths": [
+        "tests/evaluation",
+        "services/core/src/medical_one_person/domain/claims"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "8d38dff9f4122032b982ec20b7878706860c096e2a9ea1a56b6bdcbd73aa1fa6"
+    },
+    {
+      "id": "RQ-032",
+      "title": "可执行开发顺序与交接",
+      "source_refs": [
+        "D-025",
+        "SEC:13",
+        "SEC:14.3"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-02",
+        "TR-03",
+        "TR-18",
+        "TR-20",
+        "TR-21",
+        "TR-22",
+        "TR-23",
+        "TR-24",
+        "TR-25"
+      ],
+      "work_packages": [
+        "W00",
+        "W01",
+        "W23"
+      ],
+      "acceptance_refs": [
+        "AT-032"
+      ],
+      "planned_paths": [
+        "services/core",
+        "apps/web",
+        "tests"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "faca80a7c3ed2c8f132b4d761a072f6e7e1d22d51572aa1d042baac448de241d"
+    }
+  ],
+  "theory_version": "V0.5",
+  "roadmap_version": "V0.1",
+  "theory_sha256": "d638e0479c8d59437971095ed5b3f11999229a440b529282657cd4a564ae45e7",
+  "roadmap_sha256": "68d5822cae0169b61fff350965219488238acf38821c384df00ad17881a88aa4",
+  "source_snapshots": {
+    "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
+    "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
+    "A03": "1ce693574072fdcc47ffd3c0babaa81d4411bf24e6d9c53a26b1600c68957a8c",
+    "A04": "d1eacfbf4bbd0e7673ca9f66fe140b970a75536340f352df1f16b21d3a6883ed",
+    "A05": "44362e35bd187aa79ef86ebf147588c8dfd396e7aba52bfc184bf36a46a40fdd",
+    "A06": "3b8cc270163d78a565eef7d223d09d19d84ea70e9dbdd1a46f1edf75349d280d",
+    "A07": "1cf317264afe6aeeead1407a649a24df66143088861d03244befbaeef51c978d",
+    "A08": "02420e57f550b0e16ccb5cdc47562d2fa7c0c7d345543dad9019ee591bc8b804",
+    "A09": "386ce222830ebbbc0da3f6bc614a382de192ae9572fd7854f6599ffbff867b55",
+    "A10": "8291798390d289e883332565a23103b058ce6d673f5706b3e5d73b6de73e63d9",
+    "A11": "e54aff3907f9f0ee0300d9a3ab24663b20ef491379975561ddfc2d5f5ebb1167",
+    "A12": "05061dd8ba941a89e67fd2ffeedfd56dbe47246954a7f0aa8d8905ebbe1574cd",
+    "A13": "9c98db8ee179798c6e29ac9d5d4566d9063640785f86c84a863417de4a29b48e",
+    "A14": "8136184a41f724d35c28d253d97108599d0308aa48c1e8e20069978e8b78b0e6",
+    "A15": "f88e67786350a3f80516c75d3ea8711e0f2d6f954259c2b1a31659875b29502e",
+    "A16": "985ece7bd137db8fc880bf7d387e2b0d0b674a8793badf9fef9c42ffe3d195c0",
+    "A17": "4d6f35838943b9c7c52a1b132c8ac3208b03a2cbd5ec36ed0827b61f3c29e4ed",
+    "A18": "6cf425c4aa297d1c9480a494643cb0d190f9c7b4ec6ce9856eef465f8e538423",
+    "A19": "07a4b9fb8b722d07f2f5024d9c15eb4b1c95301db19bf330b40722f80a44664d",
+    "A20": "56184b517aaceadaa92241dafaf11ceca123fdbba4e734b1ab16792c9be6c476",
+    "A21": "1b9725e197ceaf5a5b125c8b0587e62aff1f3afbdb462ea14066d903b2bd6a75",
+    "A22": "f21f9b25c932860b192ee05ef43b2e8f0dec44975e98c26c0519b19956eeea65",
+    "A23": "9e060927585968d601f8a11c2cfd154aa2ba89909be37a3b3ff2a6193c182870",
+    "A24": "d858336dccaf532d8cb4f9a2593251a64149187537a4a23499c2c4005f4e56b5",
+    "A25": "1f2d482118fede7e557e6b78277d8811b3f37e5548a2bb2db64fd1a016eaed56",
+    "A26": "cdb536e2986f483900a80966b9980ecd2fabd62c758200d36502e067b4f5fbee",
+    "D-001": "272d6edac4a0de2a8a83af19b5c78c72b517c649c2d6821e5422b61b784ac2ee",
+    "D-002": "896baf3a4fe1bc094171e1ba832f21f1a0439bfef7b17286586b5c15b4620218",
+    "D-003": "9cfe7096bc7e14e24042b8b1753ed7c14ec3489376ae9705c505a1000e100b64",
+    "D-004": "f9cfc407c969a631e33340fa8c6c7aae738957465416d0fc97344af33ad986d5",
+    "D-005": "0f5bdd1a40efe4ee78d9a3bdf9b5db17613d6738f93d386e84be320aaf424a02",
+    "D-006": "580c688514f12365f5ee0414444acdd41bd8272276fe39c76293bf0d607fcb6c",
+    "D-007": "aa2659e3250283201ed94fd6f125d59ed0a6b8cd02c936e42f140394281eccd1",
+    "D-008": "b87a5fdf8201eafe87f17e5e969653fe3031d2984c244e1383829d8fcf4f5b05",
+    "D-009": "a4d7c044a39efbfb7130a1c2d3cfa12a9c9f52dccec905897b3dbf60ed9a98a9",
+    "D-010": "f354dd04f8bb7d916d25558a9b5b2f799ffe56efca461c06fbdf14e49871fb9d",
+    "D-011": "b7a4dd5167feb0cae438a10673202496a1fc857ef62f3591aa2dff56bd8ccb47",
+    "D-012": "25f11df1977886957d5d44dac4c8448cf3fc94d34a1604feb76e20cf2d5699f8",
+    "D-013": "7a2cbbb51c5c3a539e69b543acdc9064fb2701f261d383f8c20c4fcaba079357",
+    "D-014": "3d304a3d343a3e6964cc6a4f7eaf8c0571fa4ed412680b9e115a641eb41f12a3",
+    "D-015": "a66a9914bd7f1f7671a49411910b58f0edcccd170e1d6675cf1103371a58bdb3",
+    "D-016": "1bc9aaecfdf5937b2f585b2cd7ad3021ce6ba7d9e69852fa0baf98cb6c16780b",
+    "D-017": "50038eb2c09ad2f25f1b3917f10031599bacd467fc4ac7eac460600b2026367f",
+    "D-018": "0ad82b5a0e3a2b4a730ac0f213e8549e39df681982f7a7f20c72f404825b0a9b",
+    "D-019": "a6620fb2ec1de1b1b396df5bf1008f5910666e7292b3a2a4e3e4b7beff13a66c",
+    "D-020": "94693ec4f8aa53dfe21fcbf37539e2f5edac690ee3450fd6ccefc490c7d2aff5",
+    "D-021": "4637116bd03b6c2e4b5f4f63f4a951c850a707280d5799c8ca9fb17709edf4ea",
+    "D-022": "cbc7d63d774f9d95fe7c40650ae1b6ada24c55ba5d5a12ed0a0c6b23d83d56e1",
+    "D-023": "29717893d54145ce8cee32aee0430f1c8e295ab4949fce858c5dff2652c9e074",
+    "D-024": "66912e0eb0579e9ff6b94028a63febe7efb27993ce8a44f9f9032579cf0f75b2",
+    "D-025": "0aa4ef384a1940c74e04c71e4f5926d0f7b84f96bc62ad5882ade2b7ca44ddd7",
+    "D-026": "e5aad2bb6808a0992686eb2052770b496fa6bd065781c2b88271dad12342a4ef",
+    "SEC:1": "e940bb5121ff6399381534f322994b6db5a1735210415f3d2ea9e913c16fe234",
+    "SEC:10": "82fa92af7c7628755609f9c8a24605867c14eab4c1617f14967602e6522d5c7e",
+    "SEC:10.1": "b7f0bfdb75b16ea23113b34fb6a81fb1cb51d83208bf3c01499468d731c960e6",
+    "SEC:10.2": "cddc7d1745dca8b632358d8d12318ab818beec1eb04fa2f0b54325b43e0c1dcb",
+    "SEC:10.3": "350f9d37ec1bac0249dfb6bd39ac0f096fbbf3ea6dfae074a406f75469c40331",
+    "SEC:11": "14c7f78c001ffce9fe052e7447b0df50cbc82d64d67380e27018dc2fb8af014c",
+    "SEC:11.1": "9de1304d764cff1b144c533ca3ed90edd33b87c1fbeb4c3794120612efa50b5a",
+    "SEC:11.2": "8cd41167da50422a1108e1aa2dddc9963bce9a412e3341ebb8c5fe58ef8b3571",
+    "SEC:11.3": "ad540bc2eef2af648a67cc37082fbdf22606b33f31db3999c5c7b1963da8e0db",
+    "SEC:11.4": "c8811de2ab0e62462148e6ada4977259b3220df8295cec923437862edb37051c",
+    "SEC:12": "b3dae2aaee9061835a130037e69a5059af27b3057c344159bdf51a381827cbb2",
+    "SEC:13": "46aad7541589e8db0e94faec37e1a8a6e87efe566f3ae4024cb0bb26d8cb1277",
+    "SEC:14": "596ec55d45d179638bb700975a3f8b65c44926d10c0e6f30ebd28a932d162773",
+    "SEC:14.1": "ead0ff5cdc0cbaf1a289cce340ee2d76f2ea8a9128cbdb974befa0a111f76486",
+    "SEC:14.2": "4147762299dec3a53c2ee856c49b2f954d097a8aabb1192088bcd385a6df4691",
+    "SEC:14.3": "aee132f4d00beaf06dceb565686ecefac24972c4c140fb7aae712d68a043d1e0",
+    "SEC:14.4": "90e44adec37f0a10287927a8ab167bf2c133abff6f62307866d92fb1ffe9a3f6",
+    "SEC:15": "3014d0b8a75d8123da8b0b0195d7dc5b69c2842e342bf851c540ece61e88dc59",
+    "SEC:16": "9f6227eb98bd1eebc5f27aba11b6eb3cc76f600ff8e84312e3fa2639df27f812",
+    "SEC:17": "cddc96517598615329e9f4d21b636727445c0bb70dee72d5c22e325b16bf18e0",
+    "SEC:18": "1966fcb6011158392d5333e5e575a4afa056a1494b01ae0d047818604622c190",
+    "SEC:19": "5c74931af3dee078bdfe655498295e4fcf4124e00c6dbe33ff69c42edab60682",
+    "SEC:2": "4d9ea65b42096d04deaf19292bc4e3dab33ea014cb18d1b324f0836c4745e2a4",
+    "SEC:20": "6faf3cb37c6171cd76a954ba63b51d026dffc30a49800efcddb469b2454c751e",
+    "SEC:3": "1e5e735d84a3f6c2cb3d94f4d36853d010e75fa64f5781bc668e1412371981ee",
+    "SEC:4": "4b3ff7903f9df813d9815ad4bea3ba05e938f0fb523743335163c95c9ce95dc3",
+    "SEC:4.1": "d5e130effdd09ce1dbfac7e64a1070f1360c2aa2e6ddee0442998b94c29c9857",
+    "SEC:4.2": "9a75fe027909d0f6ffb1e6509bf02373f8279782dd2cac8231b3c18a66967da8",
+    "SEC:4.3": "3c1a3c37eaf2069517941857a6d611b7702090331d0164c1d4035ec0c42f3b46",
+    "SEC:4.4": "0dbc18ff8921ec76dc4f7ed176304a6875008035f2fca431cfb29ab9176aae18",
+    "SEC:4.5": "2b66db58b31a5e49681b9f24a919ef7cbc07879f03756dd604261798bc6bd4ee",
+    "SEC:5": "3157c0b44483fbda7926a0037b59326fecc20abee61fc2ceb8ef586f4d0a4b66",
+    "SEC:5.1": "787b21d22307e895df8d009afb4b817fba9894bc75042b7e406ee2739ba68ec3",
+    "SEC:5.2": "b3b5f5873492af98d4c40a2911715f2f8037ba5ddccec0bcdbd65aac1e5e2251",
+    "SEC:5.3": "c787cf01a6cf8498f6e01680fac0440bb72e2e4757b1ee1611b88b6b2ca1b6b8",
+    "SEC:5.4": "56340844d3d684aff1bfdfd45052d08a9129a04d9c7e17691cf02edb16331b34",
+    "SEC:5.5": "474200e6183241dadaff84696f667debc58049f9e22fa365f369734ccb7f9236",
+    "SEC:6": "724995a27aee5fe2605a1e19d014f1f0fcadfb9bde6ea099f51280713a977c32",
+    "SEC:7": "c5ed6612914eb320c3c2be6ca117ff5db05efa301af59e7465ad70f4da8276d7",
+    "SEC:7.1": "0b1810176c2d472da56ac0b6125e26119a509df0c19b01313b45fbb9c167d273",
+    "SEC:7.2": "1d7ced9488874cf35b648aaa9eb946e229b092f5dd5711ab0a7f88b284a73e0e",
+    "SEC:7.3": "65931522fe34c22037453b8a8a17a0d7868a6d80894865e644de88b7e3c14404",
+    "SEC:7.4": "ac95ee2367364505f5a127dcc71d8410a052501e5674dab775a4d02cdc78eb7d",
+    "SEC:7.5": "446b6832c5b92709788309fb95e33003fac46cac107d022c485048b684e4b11f",
+    "SEC:7.6": "f95bb7d11ec7ce3519a0263323b8a461e3c4a5f837015bb286d5583f9526dc39",
+    "SEC:7.7": "2ba8f1202b2c502c411e2f162324d1f0330190ad3fb14370612bb5b470f55452",
+    "SEC:8": "4289c0b124d907a273d78e441ea509094e4f4e4a082ab2936da1636187532833",
+    "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
+  },
+  "last_sync": {
+    "at": "2026-10-29T10:28:54.436913+00:00",
+    "note": "首次核对思想V0.5与技术V0.1：逐章覆盖32需求、26岗位、24工作包和32验收；完整应用均为计划，本轮只交付文档追踪检查。",
+    "meaning": "Operator records semantic review; hashes only detect structural drift."
+  }
+}

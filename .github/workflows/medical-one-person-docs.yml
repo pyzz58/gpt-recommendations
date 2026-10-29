@@ -1,0 +1,34 @@
+name: Medical One Person - documentation consistency
+
+on:
+  push:
+    paths:
+      - '医疗一人项目/**'
+      - '.github/workflows/medical-one-person-docs.yml'
+  pull_request:
+    paths:
+      - '医疗一人项目/**'
+      - '.github/workflows/medical-one-person-docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: medical-one-person-docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  documentation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5, inspected 2026-10-29
+        with:
+          persist-credentials: false
+      - name: Check theory to engineering traceability
+        run: python3 '医疗一人项目/tools/check_traceability.py' check
+      - name: Test stale and missing mapping detection
+        run: python3 '医疗一人项目/tools/test_traceability.py'
+
