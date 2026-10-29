@@ -9,7 +9,7 @@
         "M13",
         "M14"
       ],
-      "status": "prepared",
+      "status": "verified",
       "acceptance": "45条理论、14个模块、任务与验收关联；基础检查及反例测试在GitHub Actions运行。",
       "requirement_ids": [
         "CRA-R035",
@@ -17,6 +17,9 @@
         "CRA-R039",
         "CRA-R040",
         "CRA-R044"
+      ],
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/40803113112；验证提交 67290ee4ea6e8d235fe38dd9f654b26dec243dcd；同步检查、22项单元测试和合成监查示例均通过。仅代表本工作包工程基线。"
       ]
     },
     {

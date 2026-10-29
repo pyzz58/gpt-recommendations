@@ -6,7 +6,7 @@
 
 | 工作包 | 内容 | 前置 | 模块 | 状态 |
 | --- | --- | --- | --- | --- |
-| CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | prepared |
+| CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
 | CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | planned |
 | CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M14 | planned |
 | CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | planned |
@@ -28,6 +28,8 @@
 验收：45条理论、14个模块、任务与验收关联；基础检查及反例测试在GitHub Actions运行。
 
 对应理论：CRA-R035、CRA-R037、CRA-R039、CRA-R040、CRA-R044
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/40803113112；验证提交 67290ee4ea6e8d235fe38dd9f654b26dec243dcd；同步检查、22项单元测试和合成监查示例均通过。仅代表本工作包工程基线。
 
 ## CRA-W01 建立数据、权限和历史记录底座
 
