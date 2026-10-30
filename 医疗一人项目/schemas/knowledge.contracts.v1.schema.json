@@ -1,0 +1,919 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:knowledge-contracts:v1",
+  "title": "Knowledge contracts v1",
+  "description": "Design contract derived from TR-10 and RQ-034; schema validation does not prove backend ACL, file ingestion or scientific validity.",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "contract": {
+          "const": "CreateUploadRequest"
+        },
+        "payload": {
+          "$ref": "#/$defs/CreateUploadRequest"
+        }
+      },
+      "required": [
+        "contract",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contract": {
+          "const": "CommitUploadRequest"
+        },
+        "payload": {
+          "$ref": "#/$defs/CommitUploadRequest"
+        }
+      },
+      "required": [
+        "contract",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contract": {
+          "const": "SearchRequest"
+        },
+        "payload": {
+          "$ref": "#/$defs/SearchRequest"
+        }
+      },
+      "required": [
+        "contract",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contract": {
+          "const": "PromoteVersionRequest"
+        },
+        "payload": {
+          "$ref": "#/$defs/PromoteVersionRequest"
+        }
+      },
+      "required": [
+        "contract",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contract": {
+          "const": "Citation"
+        },
+        "payload": {
+          "$ref": "#/$defs/Citation"
+        }
+      },
+      "required": [
+        "contract",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contract": {
+          "const": "DocumentVersionDescriptor"
+        },
+        "payload": {
+          "$ref": "#/$defs/DocumentVersionDescriptor"
+        }
+      },
+      "required": [
+        "contract",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contract": {
+          "const": "SearchResponse"
+        },
+        "payload": {
+          "$ref": "#/$defs/SearchResponse"
+        }
+      },
+      "required": [
+        "contract",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "contract": {
+          "const": "AgentContextPacket"
+        },
+        "payload": {
+          "$ref": "#/$defs/AgentContextPacket"
+        }
+      },
+      "required": [
+        "contract",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "CreateUploadRequest": {
+      "type": "object",
+      "properties": {
+        "library_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "file_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 104857600
+        },
+        "declared_media_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "document_kind": {
+          "enum": [
+            "literature",
+            "protocol",
+            "raw_data",
+            "report",
+            "quote",
+            "contract",
+            "email",
+            "method",
+            "regulatory",
+            "other"
+          ]
+        },
+        "confidentiality": {
+          "enum": [
+            "public",
+            "internal",
+            "confidential",
+            "restricted"
+          ]
+        },
+        "cloud_policy": {
+          "enum": [
+            "local_only",
+            "approved_excerpt"
+          ]
+        },
+        "client_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "document_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "expected_document_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "version_label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        }
+      },
+      "required": [
+        "library_id",
+        "file_name",
+        "byte_size",
+        "declared_media_type",
+        "document_kind",
+        "confidentiality",
+        "cloud_policy"
+      ],
+      "additionalProperties": false,
+      "dependentRequired": {
+        "document_id": [
+          "expected_document_revision"
+        ]
+      }
+    },
+    "CommitUploadRequest": {
+      "type": "object",
+      "properties": {
+        "client_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "client_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "SearchFilters": {
+      "type": "object",
+      "properties": {
+        "document_kinds": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "literature",
+              "protocol",
+              "raw_data",
+              "report",
+              "quote",
+              "contract",
+              "email",
+              "method",
+              "regulatory",
+              "other"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 20
+        },
+        "version_policy": {
+          "enum": [
+            "current",
+            "pinned",
+            "historical"
+          ]
+        },
+        "document_version_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 1,
+          "maxItems": 100
+        },
+        "include_low_quality": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "version_policy"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "version_policy": {
+                "const": "pinned"
+              }
+            },
+            "required": [
+              "version_policy"
+            ]
+          },
+          "then": {
+            "required": [
+              "document_version_ids"
+            ]
+          }
+        }
+      ]
+    },
+    "SearchRequest": {
+      "type": "object",
+      "properties": {
+        "library_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "minItems": 1,
+          "maxItems": 20,
+          "uniqueItems": true
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "filters": {
+          "$ref": "#/$defs/SearchFilters"
+        },
+        "top_k": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 40,
+          "default": 12
+        }
+      },
+      "required": [
+        "library_ids",
+        "query",
+        "filters",
+        "top_k"
+      ],
+      "additionalProperties": false
+    },
+    "PromoteVersionRequest": {
+      "type": "object",
+      "properties": {
+        "new_version_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "expected_document_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "impact_policy": {
+          "const": "mark_downstream_for_review"
+        }
+      },
+      "required": [
+        "new_version_id",
+        "expected_document_revision",
+        "reason",
+        "impact_policy"
+      ],
+      "additionalProperties": false
+    },
+    "PdfLocator": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "pdf"
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "printed_page": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 80
+        },
+        "bbox": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      },
+      "required": [
+        "kind",
+        "page"
+      ],
+      "additionalProperties": false
+    },
+    "DocxLocator": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "docx"
+        },
+        "heading_path": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "minItems": 0,
+          "maxItems": 20
+        },
+        "paragraph_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "paragraph_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "table_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        }
+      },
+      "required": [
+        "kind",
+        "heading_path",
+        "paragraph_start",
+        "paragraph_end"
+      ],
+      "additionalProperties": false
+    },
+    "SpreadsheetLocator": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "spreadsheet"
+        },
+        "sheet": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "cell_range": {
+          "type": "string",
+          "pattern": "^[A-Z]+[1-9][0-9]*(:[A-Z]+[1-9][0-9]*)?$"
+        },
+        "formula": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 10000
+        },
+        "displayed_value": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "kind",
+        "sheet",
+        "cell_range"
+      ],
+      "additionalProperties": false
+    },
+    "CsvLocator": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "csv"
+        },
+        "row_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "row_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "column_names": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "minItems": 1,
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "kind",
+        "row_start",
+        "row_end",
+        "column_names"
+      ],
+      "additionalProperties": false
+    },
+    "TextLocator": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "text"
+        },
+        "line_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "line_end": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "kind",
+        "line_start",
+        "line_end"
+      ],
+      "additionalProperties": false
+    },
+    "ImageLocator": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "image"
+        },
+        "bbox": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      },
+      "required": [
+        "kind",
+        "bbox"
+      ],
+      "additionalProperties": false
+    },
+    "EmailLocator": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "email"
+        },
+        "message_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "part_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "paragraph_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "paragraph_end": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "kind",
+        "message_id",
+        "part_id",
+        "paragraph_start",
+        "paragraph_end"
+      ],
+      "additionalProperties": false
+    },
+    "Citation": {
+      "type": "object",
+      "properties": {
+        "document_version_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "extraction_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "chunk_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "locator": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/PdfLocator"
+            },
+            {
+              "$ref": "#/$defs/DocxLocator"
+            },
+            {
+              "$ref": "#/$defs/SpreadsheetLocator"
+            },
+            {
+              "$ref": "#/$defs/CsvLocator"
+            },
+            {
+              "$ref": "#/$defs/TextLocator"
+            },
+            {
+              "$ref": "#/$defs/ImageLocator"
+            },
+            {
+              "$ref": "#/$defs/EmailLocator"
+            }
+          ]
+        },
+        "quoted_excerpt": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "evidence_status": {
+          "enum": [
+            "unreviewed",
+            "needs_review",
+            "reviewed_for_scope",
+            "disputed"
+          ]
+        },
+        "extraction_quality": {
+          "enum": [
+            "native",
+            "ocr_unreviewed",
+            "ocr_reviewed",
+            "partial"
+          ]
+        }
+      },
+      "required": [
+        "document_version_id",
+        "extraction_id",
+        "chunk_id",
+        "content_sha256",
+        "locator",
+        "quoted_excerpt",
+        "evidence_status",
+        "extraction_quality"
+      ],
+      "additionalProperties": false
+    },
+    "DocumentVersionDescriptor": {
+      "type": "object",
+      "properties": {
+        "document_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "version_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "library_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "version_label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "ingest_state": {
+          "enum": [
+            "stored",
+            "queued",
+            "extracting",
+            "indexing",
+            "ready",
+            "partial",
+            "failed"
+          ]
+        },
+        "evidence_status": {
+          "enum": [
+            "unreviewed",
+            "needs_review",
+            "reviewed_for_scope",
+            "disputed"
+          ]
+        },
+        "version_status": {
+          "enum": [
+            "current",
+            "historical",
+            "withdrawn"
+          ]
+        },
+        "access_state": {
+          "enum": [
+            "active",
+            "quarantined",
+            "trashed",
+            "purged"
+          ]
+        },
+        "data_origin": {
+          "enum": [
+            "user_upload",
+            "external_provider",
+            "agent_generated",
+            "demo",
+            "unknown"
+          ]
+        },
+        "source_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "uploaded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "cloud_policy": {
+          "enum": [
+            "local_only",
+            "approved_excerpt"
+          ]
+        },
+        "coverage_notes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 0,
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "document_id",
+        "version_id",
+        "library_id",
+        "version_label",
+        "content_sha256",
+        "byte_size",
+        "ingest_state",
+        "evidence_status",
+        "version_status",
+        "access_state",
+        "data_origin",
+        "source_at",
+        "uploaded_at",
+        "cloud_policy",
+        "coverage_notes"
+      ],
+      "additionalProperties": false
+    },
+    "SearchResponse": {
+      "type": "object",
+      "properties": {
+        "query_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "retrieval_snapshot_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "partial",
+            "no_matches"
+          ]
+        },
+        "hits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "minItems": 0,
+          "maxItems": 40
+        },
+        "total_returned": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 40
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 0,
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "query_id",
+        "retrieval_snapshot_id",
+        "status",
+        "hits",
+        "total_returned",
+        "warnings"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "no_matches"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "hits": {
+                "maxItems": 0
+              },
+              "total_returned": {
+                "const": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "AgentContextPacket": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "task_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "run_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "retrieval_snapshot_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "coverage_notes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "outbound_state": {
+          "enum": [
+            "local_only",
+            "approved_excerpt"
+          ]
+        },
+        "policy_bundle_id": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "project_id",
+        "task_id",
+        "run_id",
+        "retrieval_snapshot_id",
+        "citations",
+        "coverage_notes",
+        "outbound_state",
+        "policy_bundle_id"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
+

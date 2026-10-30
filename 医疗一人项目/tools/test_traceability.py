@@ -22,6 +22,10 @@ class TraceabilityTests(unittest.TestCase):
         (self.root / "traceability").mkdir()
         for name in ["最高思想.md", "技术路线与实施路径.md", "traceability/manifest.json"]:
             shutil.copyfile(self.project / name, self.root / name)
+        for item in self.manifest().get("supporting_artifacts", []):
+            target = self.root / item["path"]
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(self.project / item["path"], target)
 
     def manifest(self):
         return json.loads((self.root / "traceability/manifest.json").read_text())
@@ -94,6 +98,29 @@ class TraceabilityTests(unittest.TestCase):
             checker.refresh(self.root, "已进行同步审阅，故意保留死引用来验证不得刷新。")
         self.assertEqual(before, (self.root / "traceability/manifest.json").read_bytes())
 
+    def test_supporting_design_change_has_impact(self):
+        path = self.root / "design/knowledge-ui.svg"
+        path.write_text(path.read_text() + "\n<!-- changed design fixture -->\n")
+        self.assertTrue(any("supporting artifact fingerprint stale" in e for e in checker.validate(self.root)))
+        result = checker.impact(self.root)
+        self.assertIn("design/knowledge-ui.svg", result["changed_supporting_artifacts"])
+        self.assertIn("RQ-034", [r["requirement"] for r in result["affected"]])
+
+    def test_dead_contract_ref_cannot_be_refreshed(self):
+        path = self.root / "schemas/knowledge.contracts.v1.schema.json"
+        data = json.loads(path.read_text())
+        data["$defs"]["CreateUploadRequest"]["properties"]["broken"] = {"$ref": "#/$defs/MissingContract"}
+        path.write_text(json.dumps(data))
+        self.assertTrue(any("unresolved schema ref" in e for e in checker.validate(self.root)))
+        with self.assertRaises(ValueError):
+            checker.refresh(self.root, "验证合同中的无效引用，刷新不得隐藏该结构错误。")
+
+    def test_supporting_artifact_requires_known_requirement(self):
+        data = self.manifest()
+        data["supporting_artifacts"][0]["requirement_ids"] = ["RQ-999"]
+        self.write_manifest(data)
+        self.assertTrue(any("unmapped supporting artifact requirement" in e for e in checker.validate(self.root)))
+
     def test_refresh_requires_substantive_note(self):
         with self.assertRaises(ValueError):
             checker.refresh(self.root, "ok")
@@ -107,4 +134,5 @@ class TraceabilityTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
 

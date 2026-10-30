@@ -1,0 +1,263 @@
+{
+  "fixture_version": 1,
+  "mode": "synthetic_design_only",
+  "note": "所有标识和数据为合成样例，schema检查不代表应用上传/权限已实现。",
+  "cases": [
+    {
+      "name": "上传项目数据",
+      "valid": true,
+      "contract": "CreateUploadRequest",
+      "data": {
+        "library_id": "00000000-0000-4000-8000-000000000001",
+        "file_name": "central-lab-demo.xlsx",
+        "byte_size": 12000,
+        "declared_media_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "document_kind": "raw_data",
+        "confidentiality": "confidential",
+        "cloud_policy": "local_only"
+      }
+    },
+    {
+      "name": "提交上传",
+      "valid": true,
+      "contract": "CommitUploadRequest",
+      "data": {
+        "client_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    {
+      "name": "检索当前资料",
+      "valid": true,
+      "contract": "SearchRequest",
+      "data": {
+        "library_ids": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "query": "核查中心实验室交付中缺失的字段",
+        "filters": {
+          "version_policy": "current",
+          "include_low_quality": false
+        },
+        "top_k": 12
+      }
+    },
+    {
+      "name": "指定当前版本",
+      "valid": true,
+      "contract": "PromoteVersionRequest",
+      "data": {
+        "new_version_id": "00000000-0000-4000-8000-000000000002",
+        "expected_document_revision": 1,
+        "reason": "采用经接收核对的第二版交付；原版保留",
+        "impact_policy": "mark_downstream_for_review"
+      }
+    },
+    {
+      "name": "Excel引用",
+      "valid": true,
+      "contract": "Citation",
+      "data": {
+        "document_version_id": "00000000-0000-4000-8000-000000000002",
+        "extraction_id": "00000000-0000-4000-8000-000000000003",
+        "chunk_id": "00000000-0000-4000-8000-000000000004",
+        "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "locator": {
+          "kind": "spreadsheet",
+          "sheet": "Results",
+          "cell_range": "B2:D4"
+        },
+        "quoted_excerpt": "合成演示数据：用于验证定位，不代表真实实验结果。",
+        "evidence_status": "unreviewed",
+        "extraction_quality": "native"
+      }
+    },
+    {
+      "name": "原件可查但解析部分完成",
+      "valid": true,
+      "contract": "DocumentVersionDescriptor",
+      "data": {
+        "document_id": "00000000-0000-4000-8000-000000000005",
+        "version_id": "00000000-0000-4000-8000-000000000002",
+        "library_id": "00000000-0000-4000-8000-000000000001",
+        "version_label": "演示V1",
+        "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "byte_size": 12000,
+        "ingest_state": "partial",
+        "evidence_status": "needs_review",
+        "version_status": "current",
+        "access_state": "active",
+        "data_origin": "demo",
+        "source_at": null,
+        "uploaded_at": "2026-10-31T00:00:00Z",
+        "cloud_policy": "local_only",
+        "coverage_notes": [
+          "仅为合成合同测试；未发生真实外包交付"
+        ]
+      }
+    },
+    {
+      "name": "无命中如实返回",
+      "valid": true,
+      "contract": "SearchResponse",
+      "data": {
+        "query_id": "00000000-0000-4000-8000-000000000006",
+        "retrieval_snapshot_id": "00000000-0000-4000-8000-000000000007",
+        "status": "no_matches",
+        "hits": [],
+        "total_returned": 0,
+        "warnings": [
+          "当前授权范围内未检索到支持材料"
+        ]
+      }
+    },
+    {
+      "name": "Agent取得确定引用",
+      "valid": true,
+      "contract": "AgentContextPacket",
+      "data": {
+        "project_id": "00000000-0000-4000-8000-000000000008",
+        "task_id": "00000000-0000-4000-8000-000000000009",
+        "run_id": "00000000-0000-4000-8000-000000000010",
+        "retrieval_snapshot_id": "00000000-0000-4000-8000-000000000007",
+        "citations": [
+          {
+            "document_version_id": "00000000-0000-4000-8000-000000000002",
+            "extraction_id": "00000000-0000-4000-8000-000000000003",
+            "chunk_id": "00000000-0000-4000-8000-000000000004",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "locator": {
+              "kind": "spreadsheet",
+              "sheet": "Results",
+              "cell_range": "B2:D4"
+            },
+            "quoted_excerpt": "合成演示数据：用于验证定位，不代表真实实验结果。",
+            "evidence_status": "unreviewed",
+            "extraction_quality": "native"
+          }
+        ],
+        "coverage_notes": [
+          "仅阅读列明的演示片段"
+        ],
+        "outbound_state": "local_only",
+        "policy_bundle_id": "00000000-0000-4000-8000-000000000011"
+      }
+    },
+    {
+      "name": "禁止客户端自报管理员",
+      "valid": false,
+      "contract": "CreateUploadRequest",
+      "data": {
+        "library_id": "00000000-0000-4000-8000-000000000001",
+        "file_name": "central-lab-demo.xlsx",
+        "byte_size": 12000,
+        "declared_media_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "document_kind": "raw_data",
+        "confidentiality": "confidential",
+        "cloud_policy": "local_only",
+        "role_id": "admin"
+      }
+    },
+    {
+      "name": "拒绝不完整版本关联",
+      "valid": false,
+      "contract": "CreateUploadRequest",
+      "data": {
+        "library_id": "00000000-0000-4000-8000-000000000001",
+        "file_name": "central-lab-demo.xlsx",
+        "byte_size": 12000,
+        "declared_media_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "document_kind": "raw_data",
+        "confidentiality": "confidential",
+        "cloud_policy": "local_only",
+        "document_id": "00000000-0000-4000-8000-000000000005"
+      }
+    },
+    {
+      "name": "拒绝零字节",
+      "valid": false,
+      "contract": "CreateUploadRequest",
+      "data": {
+        "library_id": "00000000-0000-4000-8000-000000000001",
+        "file_name": "central-lab-demo.xlsx",
+        "byte_size": 0,
+        "declared_media_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "document_kind": "raw_data",
+        "confidentiality": "confidential",
+        "cloud_policy": "local_only"
+      }
+    },
+    {
+      "name": "拒绝超限检索",
+      "valid": false,
+      "contract": "SearchRequest",
+      "data": {
+        "library_ids": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "query": "test",
+        "filters": {
+          "version_policy": "current"
+        },
+        "top_k": 999
+      }
+    },
+    {
+      "name": "固定版本必须给版本号",
+      "valid": false,
+      "contract": "SearchRequest",
+      "data": {
+        "library_ids": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "query": "test",
+        "filters": {
+          "version_policy": "pinned"
+        },
+        "top_k": 12
+      }
+    },
+    {
+      "name": "引用必须有原文位置",
+      "valid": false,
+      "contract": "Citation",
+      "data": {
+        "document_version_id": "00000000-0000-4000-8000-000000000002",
+        "extraction_id": "00000000-0000-4000-8000-000000000003",
+        "chunk_id": "00000000-0000-4000-8000-000000000004",
+        "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "quoted_excerpt": "合成演示数据：用于验证定位，不代表真实实验结果。",
+        "evidence_status": "unreviewed",
+        "extraction_quality": "native"
+      }
+    },
+    {
+      "name": "空结果不能夹带命中",
+      "valid": false,
+      "contract": "SearchResponse",
+      "data": {
+        "query_id": "00000000-0000-4000-8000-000000000006",
+        "retrieval_snapshot_id": "00000000-0000-4000-8000-000000000007",
+        "status": "no_matches",
+        "hits": [
+          {
+            "document_version_id": "00000000-0000-4000-8000-000000000002",
+            "extraction_id": "00000000-0000-4000-8000-000000000003",
+            "chunk_id": "00000000-0000-4000-8000-000000000004",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "locator": {
+              "kind": "spreadsheet",
+              "sheet": "Results",
+              "cell_range": "B2:D4"
+            },
+            "quoted_excerpt": "合成演示数据：用于验证定位，不代表真实实验结果。",
+            "evidence_status": "unreviewed",
+            "extraction_quality": "native"
+          }
+        ],
+        "total_returned": 1,
+        "warnings": []
+      }
+    }
+  ]
+}
+

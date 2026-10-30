@@ -118,6 +118,35 @@ def validate(root, fingerprints=True):
             errors.append(rid + ": invalid implementation status")
         if fingerprints and not missing and r.get("source_sha256") != combined(refs, source_map):
             errors.append(rid + ": source fingerprint stale")
+    artifact_paths = set()
+    for item in m.get("supporting_artifacts", []):
+        name = item.get("path", "")
+        if name in artifact_paths:
+            errors.append("Duplicate supporting artifact: " + name)
+        artifact_paths.add(name)
+        if not item.get("requirement_ids") or set(item["requirement_ids"]) - set(ids):
+            errors.append(name + ": unmapped supporting artifact requirement")
+        try:
+            path = safe_file(root, name)
+            data = path.read_bytes()
+            if fingerprints and item.get("sha256") != digest(data):
+                errors.append(name + ": supporting artifact fingerprint stale")
+            if path.suffix == ".json":
+                value = json.loads(data)
+                if isinstance(value, dict) and "$defs" in value:
+                    def inspect_refs(node):
+                        if isinstance(node, dict):
+                            target = node.get("$ref", "")
+                            if target.startswith("#/$defs/") and target[len("#/$defs/"):] not in value["$defs"]:
+                                errors.append(name + ": unresolved schema ref " + target)
+                            for child in node.values():
+                                inspect_refs(child)
+                        elif isinstance(node, list):
+                            for child in node:
+                                inspect_refs(child)
+                    inspect_refs(value)
+        except (ValueError, KeyError, OSError, UnicodeError) as exc:
+            errors.append(name + ": invalid supporting artifact: " + str(exc))
     for key in source_map:
         if re.fullmatch(r"D-\d{3}|A\d{2}", key) and key not in covered_sources:
             errors.append("Unmapped theory identifier: " + key)
@@ -151,10 +180,18 @@ def impact(root):
     current = {key: digest(value) for key, value in sources(theory).items()}
     previous = m.get("source_snapshots", {})
     changed = {key for key in current.keys() | previous.keys() if current.get(key) != previous.get(key)}
-    affected = [r for r in m["requirements"] if changed.intersection(r["source_refs"])]
+    changed_artifacts = []
+    artifact_requirements = set()
+    for item in m.get("supporting_artifacts", []):
+        path = safe_file(root, item["path"])
+        if not path.is_file() or digest(path.read_bytes()) != item.get("sha256"):
+            changed_artifacts.append(item["path"])
+            artifact_requirements.update(item.get("requirement_ids", []))
+    affected = [r for r in m["requirements"] if changed.intersection(r["source_refs"]) or r["id"] in artifact_requirements]
     mapped = {key for r in m["requirements"] for key in r["source_refs"]}
     return {
         "changed_sources": sorted(changed),
+        "changed_supporting_artifacts": sorted(changed_artifacts),
         "affected": [{"requirement": r["id"], "technical": r["technical_refs"], "work_packages": r["work_packages"], "acceptance": r["acceptance_refs"]} for r in affected],
         "changes_without_direct_mapping": sorted(changed - mapped),
         "instruction": "Review semantics, update affected design/tasks/tests, then refresh. Detection is not automatic design repair.",
@@ -171,6 +208,8 @@ def refresh(root, note):
     m["theory_version"], m["roadmap_version"] = version(theory), version(roadmap)
     m["theory_sha256"], m["roadmap_sha256"] = digest(tb), digest(rb)
     m["source_snapshots"] = {key: digest(value) for key, value in sorted(source_map.items())}
+    for item in m.get("supporting_artifacts", []):
+        item["sha256"] = digest(safe_file(root, item["path"]).read_bytes())
     for r in m["requirements"]:
         r["source_sha256"] = combined(r["source_refs"], source_map)
     m["last_sync"] = {"at": datetime.now(timezone.utc).isoformat(), "note": note, "meaning": "Operator records semantic review; hashes only detect structural drift."}
@@ -200,4 +239,5 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
 

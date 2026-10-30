@@ -36,7 +36,7 @@
         "traceability/manifest.json"
       ],
       "implementation_status": "documentation_ready",
-      "source_sha256": "c324b80fd97425bbed95898eb452245e3ce3fa455e26e142eececee94c71d473"
+      "source_sha256": "2bdb686ca4c020215b829e8782a546998e9112f59db4c2ac862751d83212dec9"
     },
     {
       "id": "RQ-002",
@@ -852,7 +852,7 @@
         "services/core/src/medical_one_person/domain/artifacts"
       ],
       "implementation_status": "planned",
-      "source_sha256": "6e801d0490b108124c27f2765d69cf3783832216a1bb3dfc1eef676f3e2a51f8"
+      "source_sha256": "b38df088811199670c33f660d6cd7afa9eca9e963e5ee7f6e74a6d231577c6d8"
     },
     {
       "id": "RQ-030",
@@ -990,12 +990,56 @@
       ],
       "implementation_status": "planned",
       "source_sha256": "7415e1370fd1359d4502505a5396379dee3010a369ea70b7bf4f7dc61bdb08d0"
+    },
+    {
+      "id": "RQ-034",
+      "title": "电脑端用户上传资料知识库完整设计",
+      "source_refs": [
+        "D-017",
+        "D-028",
+        "SEC:11.1",
+        "SEC:11.2",
+        "SEC:11.4",
+        "SEC:11.5"
+      ],
+      "technical_refs": [
+        "TR-02",
+        "TR-04",
+        "TR-10",
+        "TR-13",
+        "TR-17",
+        "TR-18",
+        "TR-19",
+        "TR-20",
+        "TR-21",
+        "TR-25"
+      ],
+      "work_packages": [
+        "W07",
+        "W08",
+        "W10",
+        "W18",
+        "W21",
+        "W24"
+      ],
+      "acceptance_refs": [
+        "AT-034"
+      ],
+      "planned_paths": [
+        "schemas/knowledge.contracts.v1.schema.json",
+        "fixtures/knowledge-contract-examples.json",
+        "design/knowledge-ui.svg",
+        "apps/web/src/features/knowledge",
+        "services/core/src/medical_one_person/domain/knowledge"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "9dcba219e342a846330c0616f7366940e73f5fe794c44e6e4b63ae58c84ddd0f"
     }
   ],
-  "theory_version": "V0.6",
-  "roadmap_version": "V0.2",
-  "theory_sha256": "7cedf89fd2822614a7a5b1b55f3e74a9c0ee0bd6dcb452402d38066fd28e04bf",
-  "roadmap_sha256": "6aaa8b36151b86d0357248f5c40e42a1cc4b67c915c2ec36dcda192eb202a19d",
+  "theory_version": "V0.7",
+  "roadmap_version": "V0.3",
+  "theory_sha256": "989d8b1160297eb7bcd8446ade0ce4b2042ef1ccd93c7a4897eb2ac0d26aa8ff",
+  "roadmap_sha256": "1e1e03a63c6603456538e4e946ff40c92a880f74dbf92d67c9313864c6d2da12",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1050,17 +1094,19 @@
     "D-025": "0aa4ef384a1940c74e04c71e4f5926d0f7b84f96bc62ad5882ade2b7ca44ddd7",
     "D-026": "e5aad2bb6808a0992686eb2052770b496fa6bd065781c2b88271dad12342a4ef",
     "D-027": "9e9a49eb7c9488fa174cfb7d6d781df19a2ff50f61f31f445c42ee9cf0cd69c0",
+    "D-028": "f4e142e1da986403d7df1f47035b36d37ec47fb5420d87977b60826ccc8f3e0f",
     "SEC:1": "52e486d89ee01d3fbaa7ab6523701790d6521eb0ed0d4b938079630b0186d429",
     "SEC:10": "ffbbb85feabab581eddd6981f9eebcddd3a4ee80f0e6a35eec7defb4942c4319",
     "SEC:10.1": "b7f0bfdb75b16ea23113b34fb6a81fb1cb51d83208bf3c01499468d731c960e6",
     "SEC:10.2": "cddc7d1745dca8b632358d8d12318ab818beec1eb04fa2f0b54325b43e0c1dcb",
     "SEC:10.3": "350f9d37ec1bac0249dfb6bd39ac0f096fbbf3ea6dfae074a406f75469c40331",
     "SEC:10.4": "d2ac26adf518077951a0979f34c9baeda9756b0b7716eb323418d9adbc2b7b85",
-    "SEC:11": "14c7f78c001ffce9fe052e7447b0df50cbc82d64d67380e27018dc2fb8af014c",
+    "SEC:11": "4b69f553de8811c6499aca21761eb7a226ec8965ad8191a6e660ac045999b21a",
     "SEC:11.1": "9de1304d764cff1b144c533ca3ed90edd33b87c1fbeb4c3794120612efa50b5a",
     "SEC:11.2": "8cd41167da50422a1108e1aa2dddc9963bce9a412e3341ebb8c5fe58ef8b3571",
     "SEC:11.3": "ad540bc2eef2af648a67cc37082fbdf22606b33f31db3999c5c7b1963da8e0db",
     "SEC:11.4": "c8811de2ab0e62462148e6ada4977259b3220df8295cec923437862edb37051c",
+    "SEC:11.5": "d5a49fffe64408a8c8b014bfa9eebb53c52591d9639fa0670da10d654e87887b",
     "SEC:12": "b3dae2aaee9061835a130037e69a5059af27b3057c344159bdf51a381827cbb2",
     "SEC:13": "2f14a5f06fd9084562d38c3a1c191136c326912e1684052fed9aff486f1b53d4",
     "SEC:14": "596ec55d45d179638bb700975a3f8b65c44926d10c0e6f30ebd28a932d162773",
@@ -1068,13 +1114,13 @@
     "SEC:14.2": "4147762299dec3a53c2ee856c49b2f954d097a8aabb1192088bcd385a6df4691",
     "SEC:14.3": "aee132f4d00beaf06dceb565686ecefac24972c4c140fb7aae712d68a043d1e0",
     "SEC:14.4": "90e44adec37f0a10287927a8ab167bf2c133abff6f62307866d92fb1ffe9a3f6",
-    "SEC:15": "d55e08c5937bfbcdebf62b2db03535beb3f1c491a16a5b53d3507ec13ec60bde",
+    "SEC:15": "e31fff3881d030b3b79e4c4059466e208c8b5a5aedb8bf82e0890359dc96fdcd",
     "SEC:16": "9f6227eb98bd1eebc5f27aba11b6eb3cc76f600ff8e84312e3fa2639df27f812",
     "SEC:17": "cddc96517598615329e9f4d21b636727445c0bb70dee72d5c22e325b16bf18e0",
     "SEC:18": "1966fcb6011158392d5333e5e575a4afa056a1494b01ae0d047818604622c190",
-    "SEC:19": "4bbb51bbe65697eb8cebe7561899887b14d9eb1e32732cca2a99ee8db28bc9d2",
+    "SEC:19": "1228b502d91d9cbba611a9940ff731e39b5724267f2b3a3060d97d255968e849",
     "SEC:2": "e06e1056a183b188c5a1c7cba131ab5e606ec7c617862e5166799ee2101b073d",
-    "SEC:20": "6bb8232d1887029e7dd727b680e5943d09bfa9ef2dd34e289d411e11b7838e40",
+    "SEC:20": "53ccf7b684d88d868b1435a50fe99b17d4b17f7d16f594d1b892238c378b583d",
     "SEC:3": "1e5e735d84a3f6c2cb3d94f4d36853d010e75fa64f5781bc668e1412371981ee",
     "SEC:4": "cc6632d2b4f100a59fb85c92a6ebc0bfb75e7dad6b785e130be3b1236863baba",
     "SEC:4.1": "d5e130effdd09ce1dbfac7e64a1070f1360c2aa2e6ddee0442998b94c29c9857",
@@ -1101,8 +1147,31 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-10-29T10:45:21.188243+00:00",
-    "note": "依据D-027核对第一阶段核心目标：更新思想V0.6与技术V0.2，补齐现实CDMO/CRO/SMO/中心实验室接口、覆盖数据、AT-033和W24主验证；应用与现实协作仍未执行。",
+    "at": "2026-10-30T20:38:59.503917+00:00",
+    "note": "按D-028完成电脑端知识库设计并核对设计边界：思想V0.7、技术V0.3、RQ-034/AT-034、上传与检索合同/合成样例/界面草图纳入追踪；结构和同步已查，完整Schema验证器及应用仍待工作包实现。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
-  }
+  },
+  "supporting_artifacts": [
+    {
+      "path": "schemas/knowledge.contracts.v1.schema.json",
+      "requirement_ids": [
+        "RQ-034"
+      ],
+      "sha256": "950c1d73bc9780db56243cda27b485be52cf890417ee0a058fe98bb7330ff199"
+    },
+    {
+      "path": "fixtures/knowledge-contract-examples.json",
+      "requirement_ids": [
+        "RQ-034"
+      ],
+      "sha256": "a227238b531019af0f9a24adf4a0a7ecc6a38aab059f3330e88191a2b58493db"
+    },
+    {
+      "path": "design/knowledge-ui.svg",
+      "requirement_ids": [
+        "RQ-034"
+      ],
+      "sha256": "7cb8da29088dd9feac2793f8dbd131b0c5c6d9292a7b70f630c764f5af4abe9d"
+    }
+  ]
 }
