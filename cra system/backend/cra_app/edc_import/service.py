@@ -874,6 +874,7 @@ class EDCImportService:
             repeat_instance=repeat_instance,
             instance_key=instance_key,
             report_on=_parse_date(mapped_value("report_on")),
+            report_revision=mapped_value("report_revision"),
             specimen=mapped_value("specimen"),
             lower_limit=mapped_value("lower_limit"),
             upper_limit=mapped_value("upper_limit"),
@@ -1192,6 +1193,28 @@ class EDCImportService:
                 raise EDCNotFound("EDC snapshot was not found")
             self._authorize_read(scope, snapshot.study_id, snapshot.site_id)
             return self._snapshot_detail_in_session(session, snapshot)
+
+    def list_snapshots(
+        self,
+        scope: ScopeContext,
+        study_id: uuid.UUID,
+        site_id: uuid.UUID,
+    ) -> list[EDCSnapshot]:
+        self._authorize_read(scope, study_id, site_id)
+        with self.session_factory() as session:
+            return list(
+                session.scalars(
+                    select(EDCSnapshot)
+                    .where(
+                        EDCSnapshot.tenant_id == scope.tenant_id,
+                        EDCSnapshot.study_id == study_id,
+                        EDCSnapshot.site_id == site_id,
+                    )
+                    .order_by(
+                        EDCSnapshot.created_at.desc(), EDCSnapshot.id
+                    )
+                )
+            )
 
     def lookup(
         self,

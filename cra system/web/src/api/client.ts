@@ -45,10 +45,21 @@ export type CarryoverResponse =
 export type WorkbenchView = components["schemas"]["WorkbenchView"];
 export type EDCPreviewView = components["schemas"]["EDCPreviewView"];
 export type EDCSnapshotView = components["schemas"]["EDCSnapshotView"];
+export type EDCSnapshotSummaryView =
+  components["schemas"]["EDCSnapshotSummaryView"];
 export type EDCMappingProfileView =
   components["schemas"]["EDCMappingProfileView"];
 export type EDCSnapshotLookupView =
   components["schemas"]["EDCSnapshotLookupView"];
+export type LabReportView = components["schemas"]["LabReportView"];
+export type LabObservationView =
+  components["schemas"]["LabObservationView"];
+export type LabComparisonView =
+  components["schemas"]["LabComparisonView"];
+export type LabComparisonFieldView =
+  components["schemas"]["LabComparisonFieldView"];
+export type LabIssueLinkView =
+  components["schemas"]["LabIssueLinkView"];
 
 type ErrorEnvelope = {
   error?: {
@@ -995,6 +1006,15 @@ export function getEdcSnapshot(
   );
 }
 
+export function getEdcSnapshots(
+  studyId: string,
+  siteId: string
+): Promise<EDCSnapshotSummaryView[]> {
+  return request<EDCSnapshotSummaryView[]>(
+    `/api/v1/studies/${studyId}/edc-snapshots?site_id=${encodeURIComponent(siteId)}`
+  );
+}
+
 export function lookupEdcSnapshot(
   snapshotId: string,
   values: {
@@ -1014,6 +1034,190 @@ export function lookupEdcSnapshot(
         analyte: values.analyte,
         collected_on: values.collectedOn || null,
         instance_type: values.instanceType || null
+      })
+    }
+  );
+}
+
+export function getLabReports(
+  studyId: string,
+  siteId: string
+): Promise<LabReportView[]> {
+  return request<LabReportView[]>(
+    `/api/v1/studies/${studyId}/lab-reports?site_id=${encodeURIComponent(siteId)}`
+  );
+}
+
+export function createLabReport(values: {
+  studyId: string;
+  siteId: string;
+  title: string;
+  versionLabel: string;
+  file: File;
+}): Promise<LabReportView> {
+  const body = new FormData();
+  body.set("site_id", values.siteId);
+  body.set("title", values.title);
+  body.set("version_label", values.versionLabel);
+  body.set("file", values.file);
+  return request<LabReportView>(
+    `/api/v1/studies/${values.studyId}/lab-reports`,
+    {
+      method: "POST",
+      body,
+      headers: {
+        "Idempotency-Key": crypto.randomUUID(),
+        "X-CSRF-Token": csrfToken()
+      }
+    }
+  );
+}
+
+export function getLabReport(reportId: string): Promise<LabReportView> {
+  return request<LabReportView>(`/api/v1/lab-reports/${reportId}`);
+}
+
+export function reviewLabObservation(
+  report: LabReportView,
+  observationId: string,
+  values: {
+    action: "confirm" | "correct" | "skip";
+    correctedFields?: Record<string, unknown>;
+    note?: string;
+  }
+): Promise<LabReportView> {
+  return request<LabReportView>(
+    `/api/v1/lab-reports/${report.id}/observations/${observationId}/decision`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: report.revision,
+        idempotency_key: crypto.randomUUID(),
+        action: values.action,
+        corrected_fields: values.correctedFields ?? {},
+        note: values.note || null
+      })
+    }
+  );
+}
+
+export function batchConfirmLabObservations(
+  report: LabReportView,
+  observationIds: string[]
+): Promise<LabReportView> {
+  return request<LabReportView>(
+    `/api/v1/lab-reports/${report.id}/observations/batch-confirm`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: report.revision,
+        idempotency_key: crypto.randomUUID(),
+        observation_ids: observationIds,
+        note: "批量确认已通过结构、来源和实例校验的候选"
+      })
+    }
+  );
+}
+
+export function addManualLabObservation(
+  report: LabReportView,
+  values: {
+    subjectExternalId: string;
+    visitKey: string;
+    analyte: string;
+    specimen: string;
+    collectedOn: string;
+    collectedAt: string;
+    instanceType: string;
+    reportRevision: string;
+    valueRaw: string;
+    unitRaw: string;
+    lowerLimit: string;
+    upperLimit: string;
+    sourceNote: string;
+  }
+): Promise<LabReportView> {
+  return request<LabReportView>(
+    `/api/v1/lab-reports/${report.id}/observations`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: report.revision,
+        idempotency_key: crypto.randomUUID(),
+        subject_external_id: values.subjectExternalId,
+        visit_key: values.visitKey || null,
+        analyte_raw: values.analyte,
+        specimen: values.specimen || null,
+        collected_on: values.collectedOn,
+        collected_at: values.collectedAt
+          ? new Date(values.collectedAt).toISOString()
+          : null,
+        instance_type_raw: values.instanceType,
+        report_revision: values.reportRevision || null,
+        value_raw: values.valueRaw,
+        unit_raw: values.unitRaw || null,
+        lower_limit_raw: values.lowerLimit || null,
+        upper_limit_raw: values.upperLimit || null,
+        source_note: values.sourceNote
+      })
+    }
+  );
+}
+
+export function createLabComparison(values: {
+  reportId: string;
+  edcSnapshotId: string;
+}): Promise<LabComparisonView> {
+  return request<LabComparisonView>("/api/v1/lab-comparisons", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: crypto.randomUUID(),
+      report_id: values.reportId,
+      edc_snapshot_id: values.edcSnapshotId
+    })
+  });
+}
+
+export function getLabComparison(
+  comparisonId: string
+): Promise<LabComparisonView> {
+  return request<LabComparisonView>(
+    `/api/v1/lab-comparisons/${comparisonId}`
+  );
+}
+
+export function linkLabComparisonIssues(
+  comparisonId: string,
+  fieldIds: string[]
+): Promise<LabIssueLinkView> {
+  return request<LabIssueLinkView>(
+    `/api/v1/lab-comparisons/${comparisonId}/issues`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        idempotency_key: crypto.randomUUID(),
+        field_ids: fieldIds
       })
     }
   );

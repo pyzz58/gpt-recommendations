@@ -447,6 +447,125 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/lab-comparisons": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Lab Comparison */
+        post: operations["create_lab_comparison_api_v1_lab_comparisons_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/lab-comparisons/{comparison_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Lab Comparison */
+        get: operations["get_lab_comparison_api_v1_lab_comparisons__comparison_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/lab-comparisons/{comparison_id}/issues": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Link Lab Comparison Issues */
+        post: operations["link_lab_comparison_issues_api_v1_lab_comparisons__comparison_id__issues_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/lab-reports/{report_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Lab Report */
+        get: operations["get_lab_report_api_v1_lab_reports__report_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/lab-reports/{report_id}/observations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Manual Lab Observation */
+        post: operations["add_manual_lab_observation_api_v1_lab_reports__report_id__observations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/lab-reports/{report_id}/observations/batch-confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Batch Confirm Lab Observations */
+        post: operations["batch_confirm_lab_observations_api_v1_lab_reports__report_id__observations_batch_confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/lab-reports/{report_id}/observations/{observation_id}/decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Review Lab Observation */
+        post: operations["review_lab_observation_api_v1_lab_reports__report_id__observations__observation_id__decision_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me/scopes": {
         parameters: {
             query?: never;
@@ -669,6 +788,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/studies/{study_id}/edc-snapshots": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Edc Snapshots */
+        get: operations["list_edc_snapshots_api_v1_studies__study_id__edc_snapshots_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/studies/{study_id}/facts/import": {
         parameters: {
             query?: never;
@@ -715,6 +851,24 @@ export interface paths {
         put?: never;
         /** Create Issue */
         post: operations["create_issue_api_v1_studies__study_id__issues_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/studies/{study_id}/lab-reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Lab Reports */
+        get: operations["list_lab_reports_api_v1_studies__study_id__lab_reports_get"];
+        put?: never;
+        /** Create Lab Report */
+        post: operations["create_lab_report_api_v1_studies__study_id__lab_reports_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1198,6 +1352,17 @@ export interface components {
             rule_version_id: string;
             tree: components["schemas"]["RuleNode-Output"];
         };
+        /** BatchConfirmLabObservationsCommand */
+        BatchConfirmLabObservationsCommand: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Note */
+            note?: string | null;
+            /** Observation Ids */
+            observation_ids: string[];
+        };
         /** Body_add_document_version_api_v1_documents__document_id__versions_post */
         Body_add_document_version_api_v1_documents__document_id__versions_post: {
             /** Expected Revision */
@@ -1237,6 +1402,23 @@ export interface components {
             /** User Starts On */
             user_starts_on?: string | null;
             /** Version Label */
+            version_label: string;
+        };
+        /** Body_create_lab_report_api_v1_studies__study_id__lab_reports_post */
+        Body_create_lab_report_api_v1_studies__study_id__lab_reports_post: {
+            /** File */
+            file: string;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /** Title */
+            title: string;
+            /**
+             * Version Label
+             * @default v1
+             */
             version_label: string;
         };
         /** Body_import_fact_file_api_v1_studies__study_id__facts_import_file_post */
@@ -1888,6 +2070,27 @@ export interface components {
             /** Subject Id */
             subject_id?: string | null;
         };
+        /** CreateLabComparisonCommand */
+        CreateLabComparisonCommand: {
+            /**
+             * Edc Snapshot Id
+             * Format: uuid
+             */
+            edc_snapshot_id: string;
+            /**
+             * Expected Revision
+             * @default 0
+             * @constant
+             */
+            expected_revision: 0;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Report Id
+             * Format: uuid
+             */
+            report_id: string;
+        };
         /** CreateMonitoringVisitCommand */
         CreateMonitoringVisitCommand: {
             /**
@@ -2117,6 +2320,8 @@ export interface components {
             repeat_instance: string;
             /** Report On */
             report_on: string | null;
+            /** Report Revision */
+            report_revision: string | null;
             /**
              * Snapshot Row Id
              * Format: uuid
@@ -2383,6 +2588,49 @@ export interface components {
             row_number: number;
             /** Sheet Name */
             sheet_name: string;
+        };
+        /** EDCSnapshotSummaryView */
+        EDCSnapshotSummaryView: {
+            /**
+             * Absence Semantics
+             * @default not_seen_in_export
+             * @constant
+             */
+            absence_semantics: "not_seen_in_export";
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Export Completed At */
+            export_completed_at: string | null;
+            /** Export Scope */
+            export_scope: {
+                [key: string]: unknown;
+            };
+            /** Export Started At */
+            export_started_at: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Record Count */
+            record_count: number;
+            /** Row Count */
+            row_count: number;
+            /**
+             * Scope Status
+             * @enum {string}
+             */
+            scope_status: "declared" | "unknown";
+            /**
+             * Source Document Version Id
+             * Format: uuid
+             */
+            source_document_version_id: string;
+            /** Source Sha256 */
+            source_sha256: string;
         };
         /** EDCSnapshotView */
         EDCSnapshotView: {
@@ -2760,6 +3008,250 @@ export interface components {
              */
             updated_at: string;
         };
+        /** LabComparisonFieldView */
+        LabComparisonFieldView: {
+            /** Candidate Record Ids */
+            candidate_record_ids: string[];
+            /** Edc Record Id */
+            edc_record_id: string | null;
+            /** Edc Unit */
+            edc_unit: string | null;
+            /** Edc Value */
+            edc_value: string | null;
+            /** Field Results */
+            field_results: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Linked Issue Id */
+            linked_issue_id: string | null;
+            /** Match Status */
+            match_status: string;
+            /** Matched Identity */
+            matched_identity: {
+                [key: string]: unknown;
+            };
+            /**
+             * Observation Id
+             * Format: uuid
+             */
+            observation_id: string;
+            /** Ordinal */
+            ordinal: number;
+            /** Reason */
+            reason: string | null;
+            /** Result Status */
+            result_status: string;
+            /** Source Unit */
+            source_unit: string | null;
+            /** Source Value */
+            source_value: string | null;
+            /** Stale */
+            stale: boolean;
+            /** Unknowns */
+            unknowns: string[];
+        };
+        /** LabComparisonView */
+        LabComparisonView: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Edc Snapshot Id
+             * Format: uuid
+             */
+            edc_snapshot_id: string;
+            /** Fields */
+            fields: components["schemas"]["LabComparisonFieldView"][];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Input Digest */
+            input_digest: string;
+            /** Replayed */
+            replayed: boolean;
+            /** Report Current Revision */
+            report_current_revision: number;
+            /**
+             * Report Id
+             * Format: uuid
+             */
+            report_id: string;
+            /** Report Revision */
+            report_revision: number;
+            /** Revision */
+            revision: number;
+            /** Scope */
+            scope: {
+                [key: string]: unknown;
+            };
+            /** Snapshot Record Count */
+            snapshot_record_count: number;
+            /** Stale */
+            stale: boolean;
+            /** Stale Field Ids */
+            stale_field_ids: string[];
+            /** State */
+            state: string;
+            /** Unknowns */
+            unknowns: {
+                [key: string]: unknown;
+            }[];
+        };
+        /** LabIssueLinkView */
+        LabIssueLinkView: {
+            /**
+             * Comparison Id
+             * Format: uuid
+             */
+            comparison_id: string;
+            /** Issues */
+            issues: {
+                [key: string]: unknown;
+            }[];
+            /** Links */
+            links: {
+                [key: string]: string;
+            }[];
+        };
+        /** LabObservationView */
+        LabObservationView: {
+            /** Analyte */
+            analyte: string | null;
+            /** Collected At */
+            collected_at: string | null;
+            /** Collected On */
+            collected_on: string | null;
+            /** Extraction State */
+            extraction_state: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Instance Type */
+            instance_type: string;
+            /** Issues */
+            issues: string[];
+            /** Latest Decision */
+            latest_decision: string | null;
+            /** Latest Decision At */
+            latest_decision_at: string | null;
+            /** Lower Limit */
+            lower_limit: string | null;
+            /** Numeric Value */
+            numeric_value: string | null;
+            /** Operator */
+            operator: string | null;
+            /** Ordinal */
+            ordinal: number;
+            /** Precision */
+            precision: string;
+            /** Provider Confidence */
+            provider_confidence: string | null;
+            /** Repeat Instance */
+            repeat_instance: string | null;
+            /** Report On */
+            report_on: string | null;
+            /** Report Revision */
+            report_revision: string | null;
+            /** Source Ref */
+            source_ref: {
+                [key: string]: unknown;
+            };
+            /** Specimen */
+            specimen: string | null;
+            /** Subject External Id */
+            subject_external_id: string | null;
+            /** Timezone Status */
+            timezone_status: string;
+            /** Unit */
+            unit: string | null;
+            /** Upper Limit */
+            upper_limit: string | null;
+            /** Validation State */
+            validation_state: string;
+            /** Value Raw */
+            value_raw: string | null;
+            /** Value Type */
+            value_type: string;
+            /** Visit Key */
+            visit_key: string | null;
+        };
+        /** LabReportView */
+        LabReportView: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** File Format */
+            file_format: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Model Version */
+            model_version: string | null;
+            /** Observations */
+            observations: components["schemas"]["LabObservationView"][];
+            /** Observations Count */
+            observations_count: number;
+            /** Provider Name */
+            provider_name: string;
+            /** Provider Version */
+            provider_version: string;
+            /**
+             * Recognition Job Id
+             * Format: uuid
+             */
+            recognition_job_id: string;
+            /** Replayed */
+            replayed: boolean;
+            /** Revision */
+            revision: number;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Source Document Version Id
+             * Format: uuid
+             */
+            source_document_version_id: string;
+            /** Source Sha256 */
+            source_sha256: string;
+            /** State */
+            state: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+            /** Support Profile */
+            support_profile: {
+                [key: string]: unknown;
+            };
+            /** Warnings */
+            warnings: string[];
+        };
+        /** LinkLabIssuesCommand */
+        LinkLabIssuesCommand: {
+            /** Field Ids */
+            field_ids: string[];
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
         /** LiveResponse */
         LiveResponse: {
             /**
@@ -2773,6 +3265,44 @@ export interface components {
              * @constant
              */
             status: "ok";
+        };
+        /** ManualLabObservationCommand */
+        ManualLabObservationCommand: {
+            /** Analyte Raw */
+            analyte_raw: string;
+            /** Collected At */
+            collected_at?: string | null;
+            /**
+             * Collected On
+             * Format: date
+             */
+            collected_on: string;
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Instance Type Raw */
+            instance_type_raw: string;
+            /** Lower Limit Raw */
+            lower_limit_raw?: string | null;
+            /** Report On */
+            report_on?: string | null;
+            /** Report Revision */
+            report_revision?: string | null;
+            /** Source Note */
+            source_note: string;
+            /** Specimen */
+            specimen?: string | null;
+            /** Subject External Id */
+            subject_external_id: string;
+            /** Unit Raw */
+            unit_raw?: string | null;
+            /** Upper Limit Raw */
+            upper_limit_raw?: string | null;
+            /** Value Raw */
+            value_raw: string;
+            /** Visit Key */
+            visit_key?: string | null;
         };
         /** MapIdentifierResponse */
         MapIdentifierResponse: {
@@ -3142,6 +3672,24 @@ export interface components {
             job_id: string;
             /** Status */
             status: string;
+        };
+        /** ReviewLabObservationCommand */
+        ReviewLabObservationCommand: {
+            /**
+             * Action
+             * @enum {string}
+             */
+            action: "confirm" | "correct" | "skip";
+            /** Corrected Fields */
+            corrected_fields?: {
+                [key: string]: unknown;
+            };
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Note */
+            note?: string | null;
         };
         /** RuleBranch */
         "RuleBranch-Input": {
@@ -4718,6 +5266,252 @@ export interface operations {
             };
         };
     };
+    create_lab_comparison_api_v1_lab_comparisons_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateLabComparisonCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LabComparisonView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_lab_comparison_api_v1_lab_comparisons__comparison_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                comparison_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LabComparisonView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    link_lab_comparison_issues_api_v1_lab_comparisons__comparison_id__issues_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                comparison_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LinkLabIssuesCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LabIssueLinkView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_lab_report_api_v1_lab_reports__report_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                report_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LabReportView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_manual_lab_observation_api_v1_lab_reports__report_id__observations_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                report_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ManualLabObservationCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LabReportView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    batch_confirm_lab_observations_api_v1_lab_reports__report_id__observations_batch_confirm_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                report_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BatchConfirmLabObservationsCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LabReportView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    review_lab_observation_api_v1_lab_reports__report_id__observations__observation_id__decision_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                report_id: string;
+                observation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewLabObservationCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LabReportView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     get_my_scopes_api_v1_me_scopes_get: {
         parameters: {
             query?: never;
@@ -5193,6 +5987,39 @@ export interface operations {
             };
         };
     };
+    list_edc_snapshots_api_v1_studies__study_id__edc_snapshots_get: {
+        parameters: {
+            query: {
+                site_id: string;
+            };
+            header?: never;
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EDCSnapshotSummaryView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     import_facts_api_v1_studies__study_id__facts_import_post: {
         parameters: {
             query?: never;
@@ -5326,6 +6153,77 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["IssueView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_lab_reports_api_v1_studies__study_id__lab_reports_get: {
+        parameters: {
+            query: {
+                site_id: string;
+            };
+            header?: never;
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LabReportView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_lab_report_api_v1_studies__study_id__lab_reports_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_create_lab_report_api_v1_studies__study_id__lab_reports_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LabReportView"];
                 };
             };
             /** @description Validation Error */

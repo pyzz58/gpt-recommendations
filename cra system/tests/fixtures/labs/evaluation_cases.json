@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "source": "pure_synthetic",
+  "provider_input": "No expected values are supplied to the provider.",
+  "edc_artifact": "edc/artifacts/synthetic_edc_lab.xlsx",
+  "rows": [
+    {
+      "subject_external_id": "SYN-EDC-001",
+      "visit_key": "V1",
+      "analyte": "Hemoglobin",
+      "value_raw": "121",
+      "unit_raw": "g/L",
+      "collected_on": "2026-01-02",
+      "collected_time": "09:15",
+      "instance_type": "initial",
+      "specimen": "Blood",
+      "report_revision": "FINAL",
+      "lower_limit": "110",
+      "upper_limit": "160"
+    },
+    {
+      "subject_external_id": "SYN-EDC-001",
+      "visit_key": "V1",
+      "analyte": "Hemoglobin",
+      "value_raw": "119",
+      "unit_raw": "g/L",
+      "collected_on": "2026-01-02",
+      "collected_time": "09:45",
+      "instance_type": "repeat",
+      "specimen": "Blood",
+      "report_revision": "FINAL",
+      "lower_limit": "110",
+      "upper_limit": "160"
+    },
+    {
+      "subject_external_id": "SYN-EDC-001",
+      "visit_key": "V1",
+      "analyte": "Glucose",
+      "value_raw": "5.1",
+      "unit_raw": "mmol/L",
+      "collected_on": "2026-01-02",
+      "collected_time": "09:15",
+      "instance_type": "initial",
+      "specimen": "Blood",
+      "report_revision": "FINAL",
+      "lower_limit": "3.9",
+      "upper_limit": "5.5"
+    },
+    {
+      "subject_external_id": "SYN-EDC-001",
+      "visit_key": "V1",
+      "analyte": "ALT",
+      "value_raw": "32",
+      "unit_raw": "U/L",
+      "collected_on": "2026-01-02",
+      "collected_time": "09:15",
+      "instance_type": "initial",
+      "specimen": "Blood",
+      "report_revision": "FINAL",
+      "lower_limit": "0",
+      "upper_limit": "40"
+    },
+    {
+      "subject_external_id": "SYN-EDC-002",
+      "visit_key": "V2",
+      "analyte": "Creatinine",
+      "value_raw": "88",
+      "unit_raw": "umol/L",
+      "collected_on": "2026-01-02",
+      "collected_time": "09:15",
+      "instance_type": "initial",
+      "specimen": "Blood",
+      "report_revision": "FINAL",
+      "lower_limit": "50",
+      "upper_limit": "110"
+    }
+  ],
+  "required_key_checks": [
+    "subject",
+    "visit",
+    "analyte",
+    "collection day and time",
+    "initial versus repeat",
+    "numeric Decimal and operator",
+    "unit"
+  ]
+}

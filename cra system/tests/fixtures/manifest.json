@@ -151,6 +151,48 @@
         ],
         "evaluation_cases": "rules/evaluation_cases.json"
       }
+    },
+    {
+      "artifact_id": "LAB-REPORT-PDF-DEV",
+      "file": "labs/artifacts/synthetic_lab_report.pdf",
+      "format": "pdf",
+      "format_kind": "text_pdf",
+      "purpose": "laboratory",
+      "group": "development",
+      "sha256": "328e1c152dff2de90f1da2f46c3ffaeec379982549bc41c4bfa4cbc8b0feae13",
+      "expected_file": "labs/evaluation_cases.json",
+      "expected": {
+        "row_count": 5,
+        "contains": [
+          "SYN-EDC-001",
+          "Hemoglobin",
+          "Glucose",
+          "Initial",
+          "Repeat"
+        ],
+        "coordinates_present": true
+      }
+    },
+    {
+      "artifact_id": "LAB-REPORT-PNG-EVAL",
+      "file": "labs/artifacts/synthetic_lab_report_eval.png",
+      "format": "png",
+      "format_kind": "clear_printed_image",
+      "purpose": "laboratory",
+      "group": "evaluation",
+      "sha256": "0b1ea5c232f81cca270b8f825701b284d4d4c60e04bf667b897e84bd45da64d9",
+      "expected_file": "labs/evaluation_cases.json",
+      "expected": {
+        "row_count": 5,
+        "contains": [
+          "SYN-EDC-001",
+          "Hemoglobin",
+          "Glucose",
+          "Initial",
+          "Repeat"
+        ],
+        "coordinates_present": true
+      }
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W06、CRA-W07。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -82,19 +82,19 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 匹配、单位、精度及人工路径
+- [available] 匹配、单位、精度及人工路径
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_laboratory.py
 ```
 
-- [to_implement] 检验文件实际自动读取与原核对管道
+- [available] 检验文件实际自动读取与原核对管道
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_recognition.py
 ```
 
-- [to_implement] 实际识别到自动核对的独立样本评估
+- [available] 实际识别到自动核对的独立样本评估
 
 ```bash
 uv run --frozen python -m cra_app.providers.evaluate_labs --dataset tests/fixtures/manifest.json

@@ -53,3 +53,7 @@ W03先探测兼容与资源，必要时隔离识别环境，W04/W08/W09实际pro
 ## W04实现记录
 
 新增`AnchoredRuleExtractor`，实际消费W03解析锚点并只支持已声明的结构化规则语句子集。provider不读取评估预期，输出规则树与覆盖；域服务逐条校验锚点、引文归属、数字来源和条件完整性。独立评估组比较且/或、边界、例外、三值unknown，并用同引文反例检查漏前提、丢例外、否定颠倒和且改或。该实现不是通用LLM，也未在真实方案/IB上验证；自由文本保持analysis_required。
+
+## W08实现记录
+
+`RoutedLabProvider`把文字PDF和图像路由到可替换adapter：文字PDF由pdfplumber直接读取表格与cell bbox；清晰PNG/JPEG由Docling 2.145.0在隔离Python 3.12子进程读取，主应用不导入其依赖。每次报告识别创建持久`lab_recognition_jobs`记录，并保存provider/model版本、SupportProfile、源定位、失败和候选数量。独立合成PNG评估实际恢复5/5行、关键字段零错误且坐标齐全；文字PDF同样5/5。两格式比较均为3条自动一致、2条集中复核。该证据不覆盖真实版式、中文、模糊图像、生产资源/模型镜像或临床用途；详见`validation/LAB_AUTOMATION_SCOPE.md`。

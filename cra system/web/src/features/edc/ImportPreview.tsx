@@ -61,6 +61,7 @@ const EXTRA_FIELDS = [
   ["unit", "单位"],
   ["precision", "精度"],
   ["report_on", "报告日期"],
+  ["report_revision", "报告修订"],
   ["specimen", "样本类型"],
   ["lower_limit", "参考下限"],
   ["upper_limit", "参考上限"]

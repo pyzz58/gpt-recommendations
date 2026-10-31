@@ -153,6 +153,13 @@ _FIELD_ALIASES: dict[StandardField, set[str]] = {
         "报告日期",
         "报告时间",
     },
+    "report_revision": {
+        "report revision",
+        "report version",
+        "amend revision",
+        "报告修订",
+        "报告版本",
+    },
     "specimen": {
         "specimen",
         "sample type",

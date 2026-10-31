@@ -114,6 +114,18 @@ def _provider_capability(provider: str, capability: str) -> ProviderCapability:
 def capabilities(request: Request) -> CapabilityResponse:
     settings = request.app.state.settings
     identity_provider = request.app.state.identity_provider
+    ocr_capability = _provider_capability(settings.ocr_provider, "OCR")
+    if settings.ocr_provider.strip().lower() in {"docling", "auto"}:
+        ocr_capability = ProviderCapability(
+            provider="docling",
+            status="configured",
+            validated=True,
+            automatic_completion_allowed=False,
+            limitation=(
+                "validated only on the clear synthetic PNG evaluation set; "
+                "text PDF uses the separate local pdfplumber route"
+            ),
+        )
     return CapabilityResponse(
         environment=settings.environment,
         generated_at=datetime.now(UTC),
@@ -121,7 +133,7 @@ def capabilities(request: Request) -> CapabilityResponse:
         identity_configured=identity_provider.available,
         providers={
             "model": _provider_capability(settings.model_provider, "Model"),
-            "ocr": _provider_capability(settings.ocr_provider, "OCR"),
+            "ocr": ocr_capability,
             "rule_extractor": ProviderCapability(
                 provider="anchored-rule-subset",
                 status="configured",
@@ -172,7 +184,7 @@ def capabilities(request: Request) -> CapabilityResponse:
             ModuleCapability(
                 module_id="M08",
                 label="检验自动读取与核对",
-                status="not_implemented",
+                status="limited",
             ),
             ModuleCapability(
                 module_id="M11",

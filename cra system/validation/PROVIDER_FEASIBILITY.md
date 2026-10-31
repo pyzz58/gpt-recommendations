@@ -89,3 +89,15 @@ manual review burden and total time.
 - Package/model declarations were checked, but transitive dependencies and the
   final provider image still require a locked SBOM/licence review before W08.
 - No clinical performance, safety or time-saving claim is made.
+
+## W08 integration result
+
+Docling 2.145.0 is now used by the isolated `RoutedLabProvider` image/scan
+route. The main CPython 3.13 app does not import its dependency tree. A
+separate clear 3200 × 1800 synthetic PNG was added after this feasibility
+probe and recovered 5/5 laboratory rows with zero key-field errors, source
+coordinates, correct same-day initial/repeat separation and
+`not_seen_in_export`/unit-review behavior. Text PDFs use the independent
+pdfplumber route. Full results and limits are in
+`validation/LAB_AUTOMATION_SCOPE.md`; this remains synthetic/provider
+engineering evidence rather than clinical validation.

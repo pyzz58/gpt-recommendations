@@ -135,3 +135,17 @@ ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping�
 - `edc_lab_records`：从用户确认映射形成的一行一检验项目标准记录，保留受试者映射、访视、原始/数值/operator、单位、采样精度、初检/复查实例键、报告日期、参考上下限、身份/验证状态及来源位置；不可变。
 
 来源资料用途和类型新增强制值`edc_export`。预览范围未知或为过滤导出时仍可保存快照，但本次未见只表达`not_seen_in_export`；不创建EDC漏录事实。W07不进行M08对象匹配或报告结论，不写回EDC。
+
+## 12. W08实际检验读取与比较底座
+
+迁移`0007_laboratory_comparison`增加：
+
+- `lab_recognition_jobs`：项目/中心、M02源文档版本、操作者/身份来源、幂等摘要、queued/running/succeeded/failed、attempt、错误和输出摘要。
+- `lab_report_versions`：M02源文档版本、源哈希、文件格式、provider/model版本、SupportProfile、警告、状态、候选数量和对应识别Job；同一源版本只建立一份报告识别记录。
+- `lab_observations`：保留受试者外部ID、访视、项目原文/规范化、样本、采样精度、初检/复查、报告版本、结果原文/Decimal/operator、单位、参考范围、自动/复核状态、问题及原始页/表/行/字段bbox。来源候选和比较结果由数据库触发器禁止更新或删除。
+- `lab_observation_decisions`：confirm/correct/skip以append-only动作保存，含人工更正字段、说明、操作者和时间。有效字段由原候选叠加最新动作计算，更正不覆盖原识别结果。
+- `lab_comparisons`：绑定报告版本、EDC快照、当时报告revision、比较输入digest、scope和unknowns。
+- `lab_comparison_fields`：每项来源候选的match_status、result_status、候选EDC记录、两侧原文/单位、字段结果及原因；多候选保留ambiguous。
+- `lab_comparison_issue_links`：显式记录哪些比较字段由用户关联到哪个稳定Issue，不自动把差异变成PD或完成Action。
+
+`edc_lab_records`新增可选`report_revision`映射。OCR不可用时仍可保存源文件、人工候选和局部CheckDecision；自动候选、用户更正及比较结果分层存储。W08不创建报告正文、医学安全结论或EDC写回。

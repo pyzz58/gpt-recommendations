@@ -87,6 +87,20 @@ class EDCMappingProfileView(BaseModel):
     updated_at: datetime
 
 
+class EDCSnapshotSummaryView(BaseModel):
+    id: uuid.UUID
+    source_document_version_id: uuid.UUID
+    source_sha256: str
+    export_scope: dict[str, Any]
+    scope_status: Literal["declared", "unknown"]
+    export_started_at: datetime | None
+    export_completed_at: datetime | None
+    row_count: int
+    record_count: int
+    absence_semantics: Literal["not_seen_in_export"] = "not_seen_in_export"
+    created_at: datetime
+
+
 class EDCPreviewView(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -133,6 +147,7 @@ class EDCLabRecordView(BaseModel):
     repeat_instance: str
     instance_key: str
     report_on: date | None
+    report_revision: str | None
     specimen: str | None
     lower_limit: str | None
     upper_limit: str | None
@@ -384,6 +399,7 @@ def _snapshot_view(detail: SnapshotDetail) -> EDCSnapshotView:
                 repeat_instance=record.repeat_instance,
                 instance_key=record.instance_key,
                 report_on=record.report_on,
+                report_revision=record.report_revision,
                 specimen=record.specimen,
                 lower_limit=record.lower_limit,
                 upper_limit=record.upper_limit,
@@ -511,6 +527,35 @@ def get_edc_snapshot(
             scope_from_identity(identity), snapshot_id
         )
     )
+
+
+@router.get(
+    "/studies/{study_id}/edc-snapshots",
+    response_model=list[EDCSnapshotSummaryView],
+)
+def list_edc_snapshots(
+    study_id: uuid.UUID,
+    site_id: uuid.UUID,
+    request: Request,
+    identity: AuthenticatedIdentity = Depends(require_identity),
+) -> list[EDCSnapshotSummaryView]:
+    return [
+        EDCSnapshotSummaryView(
+            id=snapshot.id,
+            source_document_version_id=snapshot.source_document_version_id,
+            source_sha256=snapshot.source_sha256,
+            export_scope=snapshot.export_scope,
+            scope_status=snapshot.scope_status,
+            export_started_at=snapshot.export_started_at,
+            export_completed_at=snapshot.export_completed_at,
+            row_count=snapshot.row_count,
+            record_count=snapshot.record_count,
+            created_at=snapshot.created_at,
+        )
+        for snapshot in _service(request).list_snapshots(
+            scope_from_identity(identity), study_id, site_id
+        )
+    ]
 
 
 @router.post(

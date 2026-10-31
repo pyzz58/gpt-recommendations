@@ -98,7 +98,7 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
@@ -337,13 +337,7 @@
       "handoff_outputs": [
         "数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W01",
-        "run_id": 41189767787,
-        "tested_commit": "9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59",
-        "subject_digest": "183816f704d3f669954aaf24bd1a71a311dcc8410634d26af699cef0418d78f4"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W01"
     },
     {
@@ -356,7 +350,7 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
       "requirement_ids": [
         "CRA-R035",
@@ -612,13 +606,7 @@
       "handoff_outputs": [
         "可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W02",
-        "run_id": 41189767787,
-        "tested_commit": "9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59",
-        "subject_digest": "e7772f4727c070a186194da356446fc11c32fa6384d2651030d67e2d6c9481f7"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W02"
     },
     {
@@ -631,7 +619,7 @@
         "M02",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。",
       "requirement_ids": [
         "CRA-R003",
@@ -872,13 +860,7 @@
       "handoff_outputs": [
         "文件/锚点/作业接口，合成资料集和OCR依赖/资源可行性探测记录。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W03",
-        "run_id": 41189767787,
-        "tested_commit": "9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59",
-        "subject_digest": "9c4a2997db86c8e38bfe326d5d03d9f438d85197c1a0f8f6f05bf2ddef1d3c22"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W03"
     },
     {
@@ -891,7 +873,7 @@
         "M03",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。",
       "requirement_ids": [
         "CRA-R002",
@@ -1115,13 +1097,7 @@
       "handoff_outputs": [
         "候选规则树、用户修正、版本启用解析及独立条件反例结果。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W04",
-        "run_id": 41189767787,
-        "tested_commit": "9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59",
-        "subject_digest": "52e7d957f3d16a4284d22d730e543f4677dbef149e15a9726116d238aab5d4b6"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W04"
     },
     {
@@ -1133,7 +1109,7 @@
       "module_ids": [
         "M04"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。",
       "requirement_ids": [
         "CRA-R010",
@@ -1303,13 +1279,7 @@
       "handoff_outputs": [
         "患者/锚点/分类断点及缺口拒绝/恢复契约，日期精度和来源保留。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W05",
-        "run_id": 41189767787,
-        "tested_commit": "9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59",
-        "subject_digest": "ed16949b9771af1720ffb09d6d6a9c526117943677f3a673cc379c0588b966ad"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W05"
     },
     {
@@ -1322,7 +1292,7 @@
         "M05",
         "M06"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。",
       "requirement_ids": [
         "CRA-R001",
@@ -1509,13 +1479,7 @@
       "handoff_outputs": [
         "历史文件整理→遗留提醒/展开→点击确认→下次接续，正式Query与草稿区分。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W06",
-        "run_id": 41189767787,
-        "tested_commit": "9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59",
-        "subject_digest": "29aecbbff62cf1ea4bbcbd7cdf02949b293ef4156c49cdece7ff304ec5af44dc"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W06"
     },
     {
@@ -1527,7 +1491,7 @@
       "module_ids": [
         "M07"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。",
       "requirement_ids": [
         "CRA-R013",
@@ -1652,13 +1616,7 @@
       "handoff_outputs": [
         "真实Excel输入、可复用列映射和不可变标准检验快照。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W07",
-        "run_id": 41189767787,
-        "tested_commit": "9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59",
-        "subject_digest": "0841f1ac364c984ecc49549dd3444566a2f68edebf13ac2084f79471d3564e0b"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W07"
     },
     {
@@ -1672,7 +1630,7 @@
         "M08",
         "M12"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "acceptance": "支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。",
       "requirement_ids": [
         "CRA-R013",
@@ -1804,17 +1762,17 @@
         {
           "command": "uv run --frozen pytest -q tests/integration/test_laboratory.py",
           "purpose": "匹配、单位、精度及人工路径",
-          "availability": "to_implement"
+          "availability": "available"
         },
         {
           "command": "uv run --frozen pytest -q tests/integration/test_recognition.py",
-          "availability": "to_implement",
+          "availability": "available",
           "purpose": "检验文件实际自动读取与原核对管道"
         },
         {
           "command": "uv run --frozen python -m cra_app.providers.evaluate_labs --dataset tests/fixtures/manifest.json",
           "purpose": "实际识别到自动核对的独立样本评估",
-          "availability": "to_implement"
+          "availability": "available"
         }
       ],
       "phase_id": "P3",

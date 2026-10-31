@@ -534,6 +534,9 @@ class EDCLabRecord(Base):
     repeat_instance: Mapped[str] = mapped_column(String(128), nullable=False)
     instance_key: Mapped[str] = mapped_column(String(512), nullable=False)
     report_on: Mapped[date | None] = mapped_column(Date, nullable=True)
+    report_revision: Mapped[str | None] = mapped_column(
+        String(64), nullable=True
+    )
     specimen: Mapped[str | None] = mapped_column(String(128), nullable=True)
     lower_limit: Mapped[str | None] = mapped_column(String(128), nullable=True)
     upper_limit: Mapped[str | None] = mapped_column(String(128), nullable=True)

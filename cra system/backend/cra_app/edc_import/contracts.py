@@ -19,6 +19,7 @@ StandardField = Literal[
     "instance_type",
     "repeat_instance",
     "report_on",
+    "report_revision",
     "specimen",
     "lower_limit",
     "upper_limit",

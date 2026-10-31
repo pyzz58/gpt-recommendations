@@ -1,6 +1,6 @@
 # M08 检验报告识别与一致性核对
 
-版本：4；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/laboratory/`。
+版本：5；状态：W08已完成文字PDF与清晰合成PNG的实际读取、来源坐标、实例匹配、确定性比较、集中复核和范围跳过；真实医院版式、复杂扫描及临床用途仍待后续验证。代码位置：`backend/cra_app/laboratory/`。
 
 ## 对应理论和任务
 
@@ -45,3 +45,14 @@ W08包含支持格式的实际自动读取、提取/定位和EDC比较；W14只�
 ## v0.5成熟组件复用
 
 PaddleOCR/表格结构为首候选，Docling作对照；界面复用AG Grid Community和React-PDF，仅定制临床匹配、差异/未知和坐标适配。 具体上游、许可、替代范围和任务接法见[复用评估](../REUSE_ASSESSMENT.md)及[目录](../reuse-catalog.json)。本轮仅选型和来源核对，尚未安装/集成验证。
+
+## W08实际实现
+
+- 文字PDF由pdfplumber直接读取可定位表格；清晰PNG由Docling 2.145.0在隔离Python 3.12进程中读取，主应用仍为Python 3.13，不把provider依赖混入业务环境。
+- 每份报告创建持久`lab_recognition_jobs`记录并保存provider/model版本；识别候选保留源页、表格、行、字段cell bbox和原文。
+- 来源字段、CRA更正、确认和跳过分别追加保存。通过结构/身份/实例校验的候选可批量确认，低可信、歧义、差异和未知集中复核。
+- 先按中心、受试者、项目、采样日/可用时间、访视、样本和初检/复查实例匹配，再按Decimal、比较符和单位比较。多候选返回ambiguous，不按数值近似挑选。
+- 比较结果区分agreement、value_difference、logic_difference、unit_review、not_seen_in_export、not_comparable、unreadable和not_checked_by_user；不输出全局安全结论，也不自动判PD。
+- 差异可显式关联M06的`edc_correction`待办，保留比较范围、未知和来源；关联动作本身不完成问题。
+
+W08支持的合成范围、关键字段结果、耗时和限制见[LAB_AUTOMATION_SCOPE](../../validation/LAB_AUTOMATION_SCOPE.md)。该证据是synthetic/provider工程验证，不是真实临床性能或全版式支持。

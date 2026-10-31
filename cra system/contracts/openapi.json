@@ -672,6 +672,51 @@
         "title": "ApplicableRuleView",
         "type": "object"
       },
+      "BatchConfirmLabObservationsCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "observation_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 500,
+            "minItems": 1,
+            "title": "Observation Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "observation_ids"
+        ],
+        "title": "BatchConfirmLabObservationsCommand",
+        "type": "object"
+      },
       "Body_add_document_version_api_v1_documents__document_id__versions_post": {
         "properties": {
           "expected_revision": {
@@ -825,6 +870,36 @@
           "version_label"
         ],
         "title": "Body_create_document_api_v1_studies__study_id__documents_post",
+        "type": "object"
+      },
+      "Body_create_lab_report_api_v1_studies__study_id__lab_reports_post": {
+        "properties": {
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "type": "string"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "version_label": {
+            "default": "v1",
+            "title": "Version Label",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "site_id",
+          "title"
+        ],
+        "title": "Body_create_lab_report_api_v1_studies__study_id__lab_reports_post",
         "type": "object"
       },
       "Body_import_fact_file_api_v1_studies__study_id__facts_import_file_post": {
@@ -2782,6 +2857,40 @@
         "title": "CreateIssueCommand",
         "type": "object"
       },
+      "CreateLabComparisonCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "edc_snapshot_id": {
+            "format": "uuid",
+            "title": "Edc Snapshot Id",
+            "type": "string"
+          },
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "report_id": {
+            "format": "uuid",
+            "title": "Report Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "report_id",
+          "edc_snapshot_id"
+        ],
+        "title": "CreateLabComparisonCommand",
+        "type": "object"
+      },
       "CreateMonitoringVisitCommand": {
         "additionalProperties": false,
         "properties": {
@@ -3428,6 +3537,17 @@
             ],
             "title": "Report On"
           },
+          "report_revision": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Report Revision"
+          },
           "snapshot_row_id": {
             "format": "uuid",
             "title": "Snapshot Row Id",
@@ -3550,6 +3670,7 @@
           "repeat_instance",
           "instance_key",
           "report_on",
+          "report_revision",
           "specimen",
           "lower_limit",
           "upper_limit",
@@ -4017,6 +4138,7 @@
                 "instance_type",
                 "repeat_instance",
                 "report_on",
+                "report_revision",
                 "specimen",
                 "lower_limit",
                 "upper_limit"
@@ -4200,6 +4322,94 @@
           "row_hash"
         ],
         "title": "EDCSnapshotRowView",
+        "type": "object"
+      },
+      "EDCSnapshotSummaryView": {
+        "properties": {
+          "absence_semantics": {
+            "const": "not_seen_in_export",
+            "default": "not_seen_in_export",
+            "title": "Absence Semantics",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "export_completed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Export Completed At"
+          },
+          "export_scope": {
+            "additionalProperties": true,
+            "title": "Export Scope",
+            "type": "object"
+          },
+          "export_started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Export Started At"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "record_count": {
+            "title": "Record Count",
+            "type": "integer"
+          },
+          "row_count": {
+            "title": "Row Count",
+            "type": "integer"
+          },
+          "scope_status": {
+            "enum": [
+              "declared",
+              "unknown"
+            ],
+            "title": "Scope Status",
+            "type": "string"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "source_document_version_id",
+          "source_sha256",
+          "export_scope",
+          "scope_status",
+          "export_started_at",
+          "export_completed_at",
+          "row_count",
+          "record_count",
+          "created_at"
+        ],
+        "title": "EDCSnapshotSummaryView",
         "type": "object"
       },
       "EDCSnapshotView": {
@@ -5264,6 +5474,732 @@
         "title": "JobView",
         "type": "object"
       },
+      "LabComparisonFieldView": {
+        "properties": {
+          "candidate_record_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Candidate Record Ids",
+            "type": "array"
+          },
+          "edc_record_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Edc Record Id"
+          },
+          "edc_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Edc Unit"
+          },
+          "edc_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Edc Value"
+          },
+          "field_results": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Field Results",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "linked_issue_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Issue Id"
+          },
+          "match_status": {
+            "title": "Match Status",
+            "type": "string"
+          },
+          "matched_identity": {
+            "additionalProperties": true,
+            "title": "Matched Identity",
+            "type": "object"
+          },
+          "observation_id": {
+            "format": "uuid",
+            "title": "Observation Id",
+            "type": "string"
+          },
+          "ordinal": {
+            "title": "Ordinal",
+            "type": "integer"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "result_status": {
+            "title": "Result Status",
+            "type": "string"
+          },
+          "source_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Unit"
+          },
+          "source_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Value"
+          },
+          "stale": {
+            "title": "Stale",
+            "type": "boolean"
+          },
+          "unknowns": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Unknowns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "observation_id",
+          "edc_record_id",
+          "ordinal",
+          "match_status",
+          "result_status",
+          "matched_identity",
+          "candidate_record_ids",
+          "source_value",
+          "edc_value",
+          "source_unit",
+          "edc_unit",
+          "unknowns",
+          "reason",
+          "field_results",
+          "linked_issue_id",
+          "stale"
+        ],
+        "title": "LabComparisonFieldView",
+        "type": "object"
+      },
+      "LabComparisonView": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "edc_snapshot_id": {
+            "format": "uuid",
+            "title": "Edc Snapshot Id",
+            "type": "string"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/LabComparisonFieldView"
+            },
+            "title": "Fields",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "input_digest": {
+            "title": "Input Digest",
+            "type": "string"
+          },
+          "replayed": {
+            "title": "Replayed",
+            "type": "boolean"
+          },
+          "report_current_revision": {
+            "title": "Report Current Revision",
+            "type": "integer"
+          },
+          "report_id": {
+            "format": "uuid",
+            "title": "Report Id",
+            "type": "string"
+          },
+          "report_revision": {
+            "title": "Report Revision",
+            "type": "integer"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "scope": {
+            "additionalProperties": true,
+            "title": "Scope",
+            "type": "object"
+          },
+          "snapshot_record_count": {
+            "title": "Snapshot Record Count",
+            "type": "integer"
+          },
+          "stale": {
+            "title": "Stale",
+            "type": "boolean"
+          },
+          "stale_field_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Stale Field Ids",
+            "type": "array"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          },
+          "unknowns": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Unknowns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "report_id",
+          "edc_snapshot_id",
+          "report_revision",
+          "report_current_revision",
+          "snapshot_record_count",
+          "state",
+          "scope",
+          "unknowns",
+          "input_digest",
+          "revision",
+          "created_at",
+          "fields",
+          "stale",
+          "stale_field_ids",
+          "replayed"
+        ],
+        "title": "LabComparisonView",
+        "type": "object"
+      },
+      "LabIssueLinkView": {
+        "properties": {
+          "comparison_id": {
+            "format": "uuid",
+            "title": "Comparison Id",
+            "type": "string"
+          },
+          "issues": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "links": {
+            "items": {
+              "additionalProperties": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "title": "Links",
+            "type": "array"
+          }
+        },
+        "required": [
+          "comparison_id",
+          "links",
+          "issues"
+        ],
+        "title": "LabIssueLinkView",
+        "type": "object"
+      },
+      "LabObservationView": {
+        "additionalProperties": false,
+        "properties": {
+          "analyte": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Analyte"
+          },
+          "collected_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collected At"
+          },
+          "collected_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collected On"
+          },
+          "extraction_state": {
+            "title": "Extraction State",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "instance_type": {
+            "title": "Instance Type",
+            "type": "string"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "latest_decision": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Decision"
+          },
+          "latest_decision_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest Decision At"
+          },
+          "lower_limit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lower Limit"
+          },
+          "numeric_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Numeric Value"
+          },
+          "operator": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Operator"
+          },
+          "ordinal": {
+            "title": "Ordinal",
+            "type": "integer"
+          },
+          "precision": {
+            "title": "Precision",
+            "type": "string"
+          },
+          "provider_confidence": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Confidence"
+          },
+          "repeat_instance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Repeat Instance"
+          },
+          "report_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Report On"
+          },
+          "report_revision": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Report Revision"
+          },
+          "source_ref": {
+            "additionalProperties": true,
+            "title": "Source Ref",
+            "type": "object"
+          },
+          "specimen": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specimen"
+          },
+          "subject_external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject External Id"
+          },
+          "timezone_status": {
+            "title": "Timezone Status",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "upper_limit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Upper Limit"
+          },
+          "validation_state": {
+            "title": "Validation State",
+            "type": "string"
+          },
+          "value_raw": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value Raw"
+          },
+          "value_type": {
+            "title": "Value Type",
+            "type": "string"
+          },
+          "visit_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Visit Key"
+          }
+        },
+        "required": [
+          "id",
+          "ordinal",
+          "subject_external_id",
+          "visit_key",
+          "analyte",
+          "specimen",
+          "collected_on",
+          "collected_at",
+          "precision",
+          "timezone_status",
+          "instance_type",
+          "repeat_instance",
+          "report_on",
+          "report_revision",
+          "value_raw",
+          "value_type",
+          "operator",
+          "numeric_value",
+          "unit",
+          "lower_limit",
+          "upper_limit",
+          "extraction_state",
+          "validation_state",
+          "issues",
+          "source_ref",
+          "provider_confidence",
+          "latest_decision",
+          "latest_decision_at"
+        ],
+        "title": "LabObservationView",
+        "type": "object"
+      },
+      "LabReportView": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "file_format": {
+            "title": "File Format",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "model_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Version"
+          },
+          "observations": {
+            "items": {
+              "$ref": "#/components/schemas/LabObservationView"
+            },
+            "title": "Observations",
+            "type": "array"
+          },
+          "observations_count": {
+            "title": "Observations Count",
+            "type": "integer"
+          },
+          "provider_name": {
+            "title": "Provider Name",
+            "type": "string"
+          },
+          "provider_version": {
+            "title": "Provider Version",
+            "type": "string"
+          },
+          "recognition_job_id": {
+            "format": "uuid",
+            "title": "Recognition Job Id",
+            "type": "string"
+          },
+          "replayed": {
+            "title": "Replayed",
+            "type": "boolean"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          },
+          "support_profile": {
+            "additionalProperties": true,
+            "title": "Support Profile",
+            "type": "object"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "study_id",
+          "site_id",
+          "source_document_version_id",
+          "recognition_job_id",
+          "source_sha256",
+          "file_format",
+          "provider_name",
+          "provider_version",
+          "model_version",
+          "support_profile",
+          "warnings",
+          "state",
+          "observations_count",
+          "revision",
+          "created_at",
+          "observations",
+          "replayed"
+        ],
+        "title": "LabReportView",
+        "type": "object"
+      },
+      "LinkLabIssuesCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "field_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 200,
+            "minItems": 1,
+            "title": "Field Ids",
+            "type": "array"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "field_ids"
+        ],
+        "title": "LinkLabIssuesCommand",
+        "type": "object"
+      },
       "LiveResponse": {
         "additionalProperties": false,
         "properties": {
@@ -5280,6 +6216,165 @@
           }
         },
         "title": "LiveResponse",
+        "type": "object"
+      },
+      "ManualLabObservationCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "analyte_raw": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Analyte Raw",
+            "type": "string"
+          },
+          "collected_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collected At"
+          },
+          "collected_on": {
+            "format": "date",
+            "title": "Collected On",
+            "type": "string"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "instance_type_raw": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Instance Type Raw",
+            "type": "string"
+          },
+          "lower_limit_raw": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lower Limit Raw"
+          },
+          "report_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Report On"
+          },
+          "report_revision": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Report Revision"
+          },
+          "source_note": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Source Note",
+            "type": "string"
+          },
+          "specimen": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specimen"
+          },
+          "subject_external_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Subject External Id",
+            "type": "string"
+          },
+          "unit_raw": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Raw"
+          },
+          "upper_limit_raw": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Upper Limit Raw"
+          },
+          "value_raw": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Value Raw",
+            "type": "string"
+          },
+          "visit_key": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Visit Key"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "subject_external_id",
+          "analyte_raw",
+          "collected_on",
+          "instance_type_raw",
+          "value_raw",
+          "source_note"
+        ],
+        "title": "ManualLabObservationCommand",
         "type": "object"
       },
       "MapIdentifierResponse": {
@@ -6232,6 +7327,55 @@
           "status"
         ],
         "title": "RetryResponse",
+        "type": "object"
+      },
+      "ReviewLabObservationCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "enum": [
+              "confirm",
+              "correct",
+              "skip"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "corrected_fields": {
+            "additionalProperties": true,
+            "title": "Corrected Fields",
+            "type": "object"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "action"
+        ],
+        "title": "ReviewLabObservationCommand",
         "type": "object"
       },
       "RuleBranch-Input": {
@@ -9767,6 +10911,437 @@
         ]
       }
     },
+    "/api/v1/lab-comparisons": {
+      "post": {
+        "operationId": "create_lab_comparison_api_v1_lab_comparisons_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLabComparisonCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabComparisonView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Lab Comparison",
+        "tags": [
+          "laboratory"
+        ]
+      }
+    },
+    "/api/v1/lab-comparisons/{comparison_id}": {
+      "get": {
+        "operationId": "get_lab_comparison_api_v1_lab_comparisons__comparison_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "comparison_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Comparison Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabComparisonView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Lab Comparison",
+        "tags": [
+          "laboratory"
+        ]
+      }
+    },
+    "/api/v1/lab-comparisons/{comparison_id}/issues": {
+      "post": {
+        "operationId": "link_lab_comparison_issues_api_v1_lab_comparisons__comparison_id__issues_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "comparison_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Comparison Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkLabIssuesCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabIssueLinkView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Link Lab Comparison Issues",
+        "tags": [
+          "laboratory"
+        ]
+      }
+    },
+    "/api/v1/lab-reports/{report_id}": {
+      "get": {
+        "operationId": "get_lab_report_api_v1_lab_reports__report_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Report Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabReportView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Lab Report",
+        "tags": [
+          "laboratory"
+        ]
+      }
+    },
+    "/api/v1/lab-reports/{report_id}/observations": {
+      "post": {
+        "operationId": "add_manual_lab_observation_api_v1_lab_reports__report_id__observations_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Report Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualLabObservationCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabReportView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Add Manual Lab Observation",
+        "tags": [
+          "laboratory"
+        ]
+      }
+    },
+    "/api/v1/lab-reports/{report_id}/observations/batch-confirm": {
+      "post": {
+        "operationId": "batch_confirm_lab_observations_api_v1_lab_reports__report_id__observations_batch_confirm_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Report Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchConfirmLabObservationsCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabReportView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Batch Confirm Lab Observations",
+        "tags": [
+          "laboratory"
+        ]
+      }
+    },
+    "/api/v1/lab-reports/{report_id}/observations/{observation_id}/decision": {
+      "post": {
+        "operationId": "review_lab_observation_api_v1_lab_reports__report_id__observations__observation_id__decision_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Report Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "observation_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Observation Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewLabObservationCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabReportView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Review Lab Observation",
+        "tags": [
+          "laboratory"
+        ]
+      }
+    },
     "/api/v1/me/scopes": {
       "get": {
         "operationId": "get_my_scopes_api_v1_me_scopes_get",
@@ -10580,6 +12155,63 @@
         ]
       }
     },
+    "/api/v1/studies/{study_id}/edc-snapshots": {
+      "get": {
+        "operationId": "list_edc_snapshots_api_v1_studies__study_id__edc_snapshots_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Site Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EDCSnapshotSummaryView"
+                  },
+                  "title": "Response List Edc Snapshots Api V1 Studies  Study Id  Edc Snapshots Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Edc Snapshots",
+        "tags": [
+          "edc-import"
+        ]
+      }
+    },
     "/api/v1/studies/{study_id}/facts/import": {
       "post": {
         "operationId": "import_facts_api_v1_studies__study_id__facts_import_post",
@@ -10858,6 +12490,139 @@
         "summary": "Create Issue",
         "tags": [
           "issues"
+        ]
+      }
+    },
+    "/api/v1/studies/{study_id}/lab-reports": {
+      "get": {
+        "operationId": "list_lab_reports_api_v1_studies__study_id__lab_reports_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Site Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/LabReportView"
+                  },
+                  "title": "Response List Lab Reports Api V1 Studies  Study Id  Lab Reports Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Lab Reports",
+        "tags": [
+          "laboratory"
+        ]
+      },
+      "post": {
+        "operationId": "create_lab_report_api_v1_studies__study_id__lab_reports_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_lab_report_api_v1_studies__study_id__lab_reports_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabReportView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Lab Report",
+        "tags": [
+          "laboratory"
         ]
       }
     },

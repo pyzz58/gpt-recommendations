@@ -71,7 +71,7 @@
       "license_file_sha": "6684a401bf0f700fd37104ab7c8da340036f7166",
       "license_note": "代码MIT；原README要求按各模型原包核对模型许可。",
       "readme_path": "README.md",
-      "decision": "benchmark_candidate",
+      "decision": "selected_isolated_w08",
       "module_ids": [
         "M02",
         "M08",
@@ -92,7 +92,8 @@
       "replaces": "PDF/扫描件结构化、OCR与表格解析候选",
       "retain": "DOCX完整条件/脚注/格式与逻辑锚点不能凭转换成功宣称保留",
       "installed": false,
-      "integration_verified": false,
+      "integration_verified": true,
+      "isolated_runtime_verified": true,
       "clinical_performance_verified": false
     },
     {

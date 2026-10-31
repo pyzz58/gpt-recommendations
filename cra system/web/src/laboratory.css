@@ -1,0 +1,201 @@
+.lab-workspace,
+.lab-comparison {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(33, 53, 71, 0.13);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 50px rgba(28, 46, 63, 0.08);
+}
+
+.lab-upload-form,
+.comparison-form {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.2fr) minmax(110px, 0.6fr)
+    minmax(220px, 1.5fr) auto;
+  gap: 0.8rem;
+  align-items: end;
+  padding: 1rem;
+  border-radius: 0.9rem;
+  background: #f4f7f8;
+}
+
+.lab-upload-form label,
+.comparison-form label,
+.lab-review-form label,
+.manual-lab-form label {
+  display: grid;
+  gap: 0.35rem;
+  color: #52616d;
+  font-size: 0.83rem;
+}
+
+.lab-upload-form input,
+.lab-upload-form select,
+.comparison-form input,
+.comparison-form select,
+.lab-review-form input,
+.manual-lab-form input,
+.lab-report-picker select {
+  width: 100%;
+  min-height: 2.4rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #c9d3d9;
+  border-radius: 0.55rem;
+  background: white;
+  color: #1d2d38;
+}
+
+.lab-report-picker {
+  display: grid;
+  grid-template-columns: 150px minmax(220px, 520px);
+  gap: 0.8rem;
+  align-items: center;
+  margin: 1rem 0;
+  color: #52616d;
+  font-size: 0.85rem;
+}
+
+.lab-provider-strip,
+.comparison-scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 1rem 0;
+}
+
+.lab-provider-strip span,
+.comparison-scope span {
+  padding: 0.42rem 0.68rem;
+  border-radius: 999px;
+  background: #e8f1f3;
+  color: #31525c;
+  font-size: 0.78rem;
+}
+
+.recognition-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.85rem 0;
+}
+
+.muted-copy {
+  color: #667680;
+  font-size: 0.82rem;
+}
+
+.lab-grid {
+  width: 100%;
+  min-height: 180px;
+  margin: 1rem 0;
+}
+
+.lab-review-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+  gap: 1.1rem;
+  margin-top: 1rem;
+}
+
+.lab-source-panel,
+.lab-review-form,
+.comparison-detail {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid #d8e0e4;
+  border-radius: 0.9rem;
+  background: #fbfcfc;
+}
+
+.lab-source-image {
+  display: block;
+  width: 100%;
+  max-height: 680px;
+  object-fit: contain;
+  border: 1px solid #d2dce1;
+  border-radius: 0.6rem;
+  background: white;
+}
+
+.lab-critical-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.manual-lab-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  align-items: end;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px dashed #9aabb4;
+  border-radius: 0.9rem;
+  background: #f8fafb;
+}
+
+.manual-lab-form > div:first-child {
+  grid-column: 1 / -1;
+}
+
+.manual-source-note {
+  grid-column: span 2;
+}
+
+.comparison-detail h3 {
+  margin: 0.25rem 0 0.8rem;
+}
+
+.comparison-values {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0;
+}
+
+.comparison-values div {
+  padding: 0.7rem;
+  border-radius: 0.65rem;
+  background: #eef4f5;
+}
+
+.comparison-values dt {
+  color: #61737d;
+  font-size: 0.75rem;
+}
+
+.comparison-values dd {
+  margin: 0.25rem 0 0;
+  font-weight: 650;
+}
+
+.field-result-list {
+  margin: 0.9rem 0 0;
+  padding-left: 1.1rem;
+  color: #40515c;
+  font-size: 0.82rem;
+}
+
+.text-button.danger {
+  color: #a33d35;
+}
+
+@media (max-width: 980px) {
+  .lab-upload-form,
+  .comparison-form,
+  .manual-lab-form,
+  .lab-review-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .manual-source-note {
+    grid-column: auto;
+  }
+
+  .lab-report-picker {
+    grid-template-columns: 1fr;
+  }
+}
