@@ -7,6 +7,11 @@ evidence: run `41185363902`, tested commit
 `f97fb13fe4557f9aa5fecef838ce596c8571f0a8`, digest
 `956bdb247f4e6dac505398cab7c946911a0ee0e4121cab44aff0b0610df460b4`.
 
+Revalidated after W06 expanded shared API types and frontend navigation.
+Current evidence: run `41187245522`, tested commit
+`713440c1c32aaa738093f23a6fb92e6c68520421`, digest
+`65fc2226570aa882080c5e85b060e1ebeae96d1e3b32e8ad735ee1c9af45e0be`.
+
 This record covers extraction of source-anchored rule candidates, user
 confirmation, layered lists, item-level relations, manual activation windows
 and event-date applicability. It is synthetic engineering validation, not
@@ -88,4 +93,4 @@ v2 with E3, and selecting candidate v3 opened it read-only.
 - No real clinical document, external model, patient fact, OCR, report or EDC
   write-back was used. W04 does not add those workflows.
 
-Next task by dependency after W05: CRA-W06.
+Next task by dependency after W06: CRA-W07.

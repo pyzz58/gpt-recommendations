@@ -7,6 +7,11 @@ types. Current evidence: run `41185363902`, tested commit
 `f97fb13fe4557f9aa5fecef838ce596c8571f0a8`, digest
 `a5fdee24968259f12419f9d90b010cf29565e207ff9cb427336cbd1b01f123ca`.
 
+Revalidated after W06 added the issue/Query/monitoring routes and carryover
+workbench. Current evidence: run `41187245522`, tested commit
+`713440c1c32aaa738093f23a6fb92e6c68520421`, digest
+`34fd441ab9810d5efbdaf993a8161007afd6aac5992928a516db31fcb42cd4b4`.
+
 Revalidated after W03 added the document/PDF workbench and expanded the shared
 dependency lock. Current evidence: run `41181003025`, tested commit
 `b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb`, digest
@@ -81,4 +86,4 @@ retention were visually checked.
 - W02 has no subject monitoring, documents, rules, laboratory OCR/comparison,
   reports or real clinical trial data. Those remain W03 onward.
 
-Next task by dependency after W05: CRA-W06.
+Next task by dependency after W06: CRA-W07.

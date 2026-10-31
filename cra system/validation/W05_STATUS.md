@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W06 expanded the shared API, migration chain and frontend.
+Current evidence: run `41187245522`, tested commit
+`713440c1c32aaa738093f23a6fb92e6c68520421`, digest
+`e9609c19d578de58ce809d34ec571a0f91af076dd877a8adf42d5e62ff10cffb`.
+
 This record covers structured subject-context import, source-preserving patient
 facts, rule-driven visit timing, independent category checkpoints and local
 skip/recovery decisions. It is synthetic engineering validation, not
@@ -89,4 +94,4 @@ Browser checks with synthetic data showed:
   production deployment was used. No clinical-use or time-saving benefit is
   claimed.
 
-Next task by dependency: CRA-W06.
+Next task by dependency after W06: CRA-W07.

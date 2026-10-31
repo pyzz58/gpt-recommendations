@@ -2,19 +2,19 @@
 
 本页与16份任务卡均由plan/tasks.json生成，编号和状态沿用原计划。先读根目录CODEX_START_HERE.md。
 
-当前V1A默认下一项：CRA-W01；状态：in_progress。
+当前V1A默认下一项：CRA-W07；状态：ready。
 
 默认按V1A编号顺序推进，遇阻塞先说明，不自动跳项。V1A/W08必须包含支持格式的自动读取；V1B复杂格式增强和获准部署分别选择，不混进普通下一项。
 
 | 工作包 | 具体执行说明 | 前置 | 路线 | 状态 |
 | --- | --- | --- | --- | --- |
 | CRA-W00 | [建立技术基线与同步检查](work_packages/CRA-W00.md) | 无 | baseline | verified |
-| CRA-W01 | [建立数据、权限和历史记录底座](work_packages/CRA-W01.md) | CRA-W00 | v1a | in_progress |
-| CRA-W02 | [建立云上API和界面框架](work_packages/CRA-W02.md) | CRA-W01 | v1a | in_progress |
-| CRA-W03 | [实现资料接收、解析和来源定位](work_packages/CRA-W03.md) | CRA-W02 | v1a | in_progress |
-| CRA-W04 | [实现规则候选提取及分层list](work_packages/CRA-W04.md) | CRA-W03 | v1a | in_progress |
-| CRA-W05 | [实现患者事实、锚点与核查断点](work_packages/CRA-W05.md) | CRA-W04 | v1a | in_progress |
-| CRA-W06 | [实现遗留整理、提醒与点击确认整改](work_packages/CRA-W06.md) | CRA-W05 | v1a | in_progress |
+| CRA-W01 | [建立数据、权限和历史记录底座](work_packages/CRA-W01.md) | CRA-W00 | v1a | verified |
+| CRA-W02 | [建立云上API和界面框架](work_packages/CRA-W02.md) | CRA-W01 | v1a | verified |
+| CRA-W03 | [实现资料接收、解析和来源定位](work_packages/CRA-W03.md) | CRA-W02 | v1a | verified |
+| CRA-W04 | [实现规则候选提取及分层list](work_packages/CRA-W04.md) | CRA-W03 | v1a | verified |
+| CRA-W05 | [实现患者事实、锚点与核查断点](work_packages/CRA-W05.md) | CRA-W04 | v1a | verified |
+| CRA-W06 | [实现遗留整理、提醒与点击确认整改](work_packages/CRA-W06.md) | CRA-W05 | v1a | verified |
 | CRA-W07 | [实现EDC Excel检验快照导入](work_packages/CRA-W07.md) | CRA-W05 | v1a | planned |
 | CRA-W08 | [实现检验源文件自动读取与EDC核对](work_packages/CRA-W08.md) | CRA-W06、CRA-W07 | v1a | planned |
 | CRA-W09 | [实现有依据的AE及PD分析](work_packages/CRA-W09.md) | CRA-W04、CRA-W06、CRA-W08 | v1a | planned |

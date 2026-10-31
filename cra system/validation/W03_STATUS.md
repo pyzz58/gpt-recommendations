@@ -7,6 +7,11 @@ evidence: run `41185363902`, tested commit
 `f97fb13fe4557f9aa5fecef838ce596c8571f0a8`, digest
 `575cfc53bdd802a9dd10eb0fd3457ab6f0f70652c8a4239b294ad35190944498`.
 
+Revalidated after W06 began consuming W03 DOCX/XLSX source content through the
+public port. Current evidence: run `41187245522`, tested commit
+`713440c1c32aaa738093f23a6fb92e6c68520421`, digest
+`ef0484321e59b999e7219fd7a43f4b209d4853c8d4366540889b627d0cc25b16`.
+
 This record covers source document intake, immutable versions, deterministic
 DOCX/text-PDF/text parsing, private storage, parse jobs and source review. It is
 engineering/synthetic validation, not clinical-use or full-format validation.
@@ -83,4 +88,4 @@ Current evidence: run `41183652961`, tested commit
 - No real clinical document, model credential, EDC write-back or external
   provider run was used.
 
-Next task by dependency after W05: CRA-W06.
+Next task by dependency after W06: CRA-W07.
