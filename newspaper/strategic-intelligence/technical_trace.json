@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "6b7da8ea0804e5a5677c3f67beb9d674ae0b4e7a770a233e8fd32f475c15a0a0",
+  "spec_sha256": "64bce268dad3988ae2764595e320b1ff1060276c9adb9823e172483c61827be1",
   "meaning": "Binding freshness only; never content approval, implementation verification or execution permission.",
   "review_required": [],
   "global_refs": [
@@ -167,7 +167,7 @@
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-4": "e6ea367cd4ec7d32c2405e8fe8f8afb763854d86f5834e1932fdd01ec125bcfe",
           "th-5-2": "1611ce202dc40f205f4599fa2cff22a2f7addce6ecd3a1f843fab285dd69aadd",
           "th-5-5": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
@@ -189,21 +189,21 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T02": "79ca8e2806a28e7b79fca97fd100ff1acb0bc626c5cccac2b6931a3e586c5255",
-          "T03": "bccfcca101328b67229e1d5b1d2de280fca9f02992d9efc3d86c08a4557609f2",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
-          "T06": "6f844b2e8e660e5ee102592aee71f5480511c555fe7056c968698ea3c0d8e9d6",
-          "T07": "ef835c05996adea835446c23627dd0f59f5f807faa5543b1782f330d7554f698",
-          "T08": "3a6a4dc8e993caeb87cceb5044531f6a0d943d484807b0e2a359a3ec414a67ab",
-          "T09": "3c83e64436c5bfc6fef9f1f527f6bd2245312d9502fd483e3710eb4a0ad46dca",
-          "T10": "eea48891cb6d9f07c1b74d5c153a34651d29bc2124840be8fd7a0b370fa3a192",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b",
-          "T13": "9389b863eb5c73dddb26f6fc8cf08e45b6c511ac68999e6847dd44c142fb0213"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T02": "a09283dd3b9e728c3bcd4bdf07bbe71473affbfdd4499b579397982614fcdfc2",
+          "T03": "a56ac3397a497c275075b0595e3fca99f96ffee697b43556a922b249db4f47fb",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
+          "T06": "5130a8bce168bc56a50debb2d9997b15a2a7fc9cfc944ee0f54e7021c5dd26de",
+          "T07": "cec892ef66c0f920b378f954902531dfeccd12043bea53541b62984dafd4c0a1",
+          "T08": "39b5802ec6904a632ea515ea6189f8fbef81562ac97c391823183b7a10020392",
+          "T09": "f05571b34e27253d7a610fb236de1b63824ea79033625544916df7217013c030",
+          "T10": "56c70384decd83c048c80c92196d6d2df9ef6148ed51aaf0de05adcf374d8c5e",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4",
+          "T13": "1c4345ba828d24decf088a2914d607c70c9074c744257e203072a44547c52eb9"
         }
       },
-      "basis_sha256": "39699c37f9ab3e7667d2fe79283091b04f5aab0598c0f475f85ac9f1ea468843",
+      "basis_sha256": "59b34171fd322026eca8765bbbf897425c5cbd711077cbf676fa1c9f9df1b1c1",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -334,7 +334,7 @@
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-2-2": "4e093d43b92cf009f2ec806a7f02430c03c551fc1da3e7c118696404c53eb939",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-5-2": "1611ce202dc40f205f4599fa2cff22a2f7addce6ecd3a1f843fab285dd69aadd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-4-2": "906eb9adb90d079276c6fa9279b18f929d5d914e190f15713e726b86f0974797"
@@ -352,19 +352,19 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T03": "bccfcca101328b67229e1d5b1d2de280fca9f02992d9efc3d86c08a4557609f2",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
-          "T06": "6f844b2e8e660e5ee102592aee71f5480511c555fe7056c968698ea3c0d8e9d6",
-          "T07": "ef835c05996adea835446c23627dd0f59f5f807faa5543b1782f330d7554f698",
-          "T08": "3a6a4dc8e993caeb87cceb5044531f6a0d943d484807b0e2a359a3ec414a67ab",
-          "T09": "3c83e64436c5bfc6fef9f1f527f6bd2245312d9502fd483e3710eb4a0ad46dca",
-          "T10": "eea48891cb6d9f07c1b74d5c153a34651d29bc2124840be8fd7a0b370fa3a192",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T03": "a56ac3397a497c275075b0595e3fca99f96ffee697b43556a922b249db4f47fb",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
+          "T06": "5130a8bce168bc56a50debb2d9997b15a2a7fc9cfc944ee0f54e7021c5dd26de",
+          "T07": "cec892ef66c0f920b378f954902531dfeccd12043bea53541b62984dafd4c0a1",
+          "T08": "39b5802ec6904a632ea515ea6189f8fbef81562ac97c391823183b7a10020392",
+          "T09": "f05571b34e27253d7a610fb236de1b63824ea79033625544916df7217013c030",
+          "T10": "56c70384decd83c048c80c92196d6d2df9ef6148ed51aaf0de05adcf374d8c5e",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4"
         }
       },
-      "basis_sha256": "141988a5284ca0d01c094685311dc069a9a77c3b44d2718690666d42cfd88dbd",
+      "basis_sha256": "0dcd98eeed9f290ae94e3cfb8461e27a6b7414633ff3d9fd39b3eaaed6a1f5fe",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -489,7 +489,7 @@
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-5-5": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
@@ -508,15 +508,15 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T03": "bccfcca101328b67229e1d5b1d2de280fca9f02992d9efc3d86c08a4557609f2",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T09": "3c83e64436c5bfc6fef9f1f527f6bd2245312d9502fd483e3710eb4a0ad46dca",
-          "T10": "eea48891cb6d9f07c1b74d5c153a34651d29bc2124840be8fd7a0b370fa3a192",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T03": "a56ac3397a497c275075b0595e3fca99f96ffee697b43556a922b249db4f47fb",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T09": "f05571b34e27253d7a610fb236de1b63824ea79033625544916df7217013c030",
+          "T10": "56c70384decd83c048c80c92196d6d2df9ef6148ed51aaf0de05adcf374d8c5e",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4"
         }
       },
-      "basis_sha256": "d5019ac09cac7146c8cc9fa0da360124b859ff0b1f56e1492891870a1a07d169",
+      "basis_sha256": "ee8d2baf7c69d815f2c82229c7b4b6a9d847d3401677a70a70c21becaba32af9",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -529,7 +529,7 @@
       "design_anchor": "tech-r04",
       "owner": "对应流程中注明的L层/技术模块责任",
       "phase": "沿§19.2原四阶段；文档关联现可检查",
-      "implementation": "W25已离线实现定向缺口请求、实际SourceIntake/Evidence/Assessment结果、前后支持关系及对象变化回S8标记；C03真实路由、条件/专业条件回W27、外部检索适配及整条复选路线仍待实现",
+      "implementation": "W25已离线实现定向缺口请求、实际SourceIntake/Evidence/Assessment结果、前后支持关系及对象变化回S8标记；W38已离线实现补证影响路由：新增Evidence/独立根门槛、同源重复拒绝、新旧W16/W27续接、维持/增强/削弱/未决/来源暂停及必要W23当前后代S8复选，且不自动升强度；真实外部检索、条件适配器、内容复审和整条真实复选仍待实现",
       "intent": "定向补证与复选",
       "theory_refs": [
         "th-6-2",
@@ -633,7 +633,7 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "7e4978cca1cce7db2a273fa33e51dbff2e6ad202153657a43a06917fb785bd3e",
+        "design_sha256": "bed14441ef98f67fc90dbfa8e881eba513894330e328ddfacc0f74f96711db71",
         "sources": {
           "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
@@ -643,7 +643,7 @@
           "th-19-7": "37d2009fd59bb8dfbc0a4508478775ca6b0c805b3c76c66cd2985a9e17506985",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
           "th-7-4": "23be12c2d3de2673b1da2aef57d8ecf4fdccec2183568685c340b88f379a7b9b",
@@ -663,18 +663,18 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T03": "bccfcca101328b67229e1d5b1d2de280fca9f02992d9efc3d86c08a4557609f2",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
-          "T06": "6f844b2e8e660e5ee102592aee71f5480511c555fe7056c968698ea3c0d8e9d6",
-          "T07": "ef835c05996adea835446c23627dd0f59f5f807faa5543b1782f330d7554f698",
-          "T09": "3c83e64436c5bfc6fef9f1f527f6bd2245312d9502fd483e3710eb4a0ad46dca",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b",
-          "T13": "9389b863eb5c73dddb26f6fc8cf08e45b6c511ac68999e6847dd44c142fb0213"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T03": "a56ac3397a497c275075b0595e3fca99f96ffee697b43556a922b249db4f47fb",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
+          "T06": "5130a8bce168bc56a50debb2d9997b15a2a7fc9cfc944ee0f54e7021c5dd26de",
+          "T07": "cec892ef66c0f920b378f954902531dfeccd12043bea53541b62984dafd4c0a1",
+          "T09": "f05571b34e27253d7a610fb236de1b63824ea79033625544916df7217013c030",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4",
+          "T13": "1c4345ba828d24decf088a2914d607c70c9074c744257e203072a44547c52eb9"
         }
       },
-      "basis_sha256": "01abf326e9bd1ed2663ab66f86100205b53c82e42105701744f61f17b0861ae9",
+      "basis_sha256": "8a22b7844f398422e8a630c67cfba5dd7ca051df71aae5ef22fd05f5b6cec61b",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -809,7 +809,7 @@
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180"
         },
         "shared_context": {
@@ -825,19 +825,19 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
-          "T06": "6f844b2e8e660e5ee102592aee71f5480511c555fe7056c968698ea3c0d8e9d6",
-          "T07": "ef835c05996adea835446c23627dd0f59f5f807faa5543b1782f330d7554f698",
-          "T08": "3a6a4dc8e993caeb87cceb5044531f6a0d943d484807b0e2a359a3ec414a67ab",
-          "T09": "3c83e64436c5bfc6fef9f1f527f6bd2245312d9502fd483e3710eb4a0ad46dca",
-          "T10": "eea48891cb6d9f07c1b74d5c153a34651d29bc2124840be8fd7a0b370fa3a192",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b",
-          "T12": "3a3d6348f2f28753c5ad1772b352d260ceceb22adcca0238bface19d03910db9"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
+          "T06": "5130a8bce168bc56a50debb2d9997b15a2a7fc9cfc944ee0f54e7021c5dd26de",
+          "T07": "cec892ef66c0f920b378f954902531dfeccd12043bea53541b62984dafd4c0a1",
+          "T08": "39b5802ec6904a632ea515ea6189f8fbef81562ac97c391823183b7a10020392",
+          "T09": "f05571b34e27253d7a610fb236de1b63824ea79033625544916df7217013c030",
+          "T10": "56c70384decd83c048c80c92196d6d2df9ef6148ed51aaf0de05adcf374d8c5e",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4",
+          "T12": "3fb40e2b6aebd6ee2540b246d66689834bbaf50e4915c209bb8a016ea117bafe"
         }
       },
-      "basis_sha256": "94528cfac57bc41ec7087bcb04712fe6b874cf2e3a4f18d78b0928a15db3d365",
+      "basis_sha256": "ef304a080f00dff17ff3f947de69046e1d3d4bf0fadd8aa6470f6cb9c9ee84bc",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -971,7 +971,7 @@
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180"
         },
         "shared_context": {
@@ -987,22 +987,22 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T02": "79ca8e2806a28e7b79fca97fd100ff1acb0bc626c5cccac2b6931a3e586c5255",
-          "T03": "bccfcca101328b67229e1d5b1d2de280fca9f02992d9efc3d86c08a4557609f2",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
-          "T06": "6f844b2e8e660e5ee102592aee71f5480511c555fe7056c968698ea3c0d8e9d6",
-          "T07": "ef835c05996adea835446c23627dd0f59f5f807faa5543b1782f330d7554f698",
-          "T08": "3a6a4dc8e993caeb87cceb5044531f6a0d943d484807b0e2a359a3ec414a67ab",
-          "T09": "3c83e64436c5bfc6fef9f1f527f6bd2245312d9502fd483e3710eb4a0ad46dca",
-          "T10": "eea48891cb6d9f07c1b74d5c153a34651d29bc2124840be8fd7a0b370fa3a192",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b",
-          "T12": "3a3d6348f2f28753c5ad1772b352d260ceceb22adcca0238bface19d03910db9",
-          "T13": "9389b863eb5c73dddb26f6fc8cf08e45b6c511ac68999e6847dd44c142fb0213"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T02": "a09283dd3b9e728c3bcd4bdf07bbe71473affbfdd4499b579397982614fcdfc2",
+          "T03": "a56ac3397a497c275075b0595e3fca99f96ffee697b43556a922b249db4f47fb",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
+          "T06": "5130a8bce168bc56a50debb2d9997b15a2a7fc9cfc944ee0f54e7021c5dd26de",
+          "T07": "cec892ef66c0f920b378f954902531dfeccd12043bea53541b62984dafd4c0a1",
+          "T08": "39b5802ec6904a632ea515ea6189f8fbef81562ac97c391823183b7a10020392",
+          "T09": "f05571b34e27253d7a610fb236de1b63824ea79033625544916df7217013c030",
+          "T10": "56c70384decd83c048c80c92196d6d2df9ef6148ed51aaf0de05adcf374d8c5e",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4",
+          "T12": "3fb40e2b6aebd6ee2540b246d66689834bbaf50e4915c209bb8a016ea117bafe",
+          "T13": "1c4345ba828d24decf088a2914d607c70c9074c744257e203072a44547c52eb9"
         }
       },
-      "basis_sha256": "1caa1a82fd6a7a28c3b09d11ef7ddec6cd780e6d5d7ec7ea99003881f79e3a8a",
+      "basis_sha256": "273243c7b41eb4a8d4b538ddbe37fe0b9c587d604b6e1342bd7acb1a81eb543a",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1128,7 +1128,7 @@
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-20-3": "dee00f46215b4853e9cfb5dcd7713a809e17a1768ca6955a0f1e7e502ebfa56b",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-24-6-1": "a919ddc4780f7ffea8dd534773f6cd6f62f2f6cd2c552749e816c121720a0171",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-2-4": "fa6bfd9fc037d6695a5fb31cb31aac1b611549e767990235d1b0fd121da3f733"
@@ -1146,16 +1146,16 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
-          "T09": "3c83e64436c5bfc6fef9f1f527f6bd2245312d9502fd483e3710eb4a0ad46dca",
-          "T10": "eea48891cb6d9f07c1b74d5c153a34651d29bc2124840be8fd7a0b370fa3a192",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b",
-          "T13": "9389b863eb5c73dddb26f6fc8cf08e45b6c511ac68999e6847dd44c142fb0213"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
+          "T09": "f05571b34e27253d7a610fb236de1b63824ea79033625544916df7217013c030",
+          "T10": "56c70384decd83c048c80c92196d6d2df9ef6148ed51aaf0de05adcf374d8c5e",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4",
+          "T13": "1c4345ba828d24decf088a2914d607c70c9074c744257e203072a44547c52eb9"
         }
       },
-      "basis_sha256": "7144ef119a51830e40e75a230730d3e85e0fbbe4abc9c9a25b312aca48c809f7",
+      "basis_sha256": "03bbda0de59f1f3e4d490d8e05b772247814ce82b074a4e82dfb2f6629bd8923",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1280,7 +1280,7 @@
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180"
         },
         "shared_context": {
@@ -1296,17 +1296,17 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T03": "bccfcca101328b67229e1d5b1d2de280fca9f02992d9efc3d86c08a4557609f2",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
-          "T09": "3c83e64436c5bfc6fef9f1f527f6bd2245312d9502fd483e3710eb4a0ad46dca",
-          "T10": "eea48891cb6d9f07c1b74d5c153a34651d29bc2124840be8fd7a0b370fa3a192",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b",
-          "T13": "9389b863eb5c73dddb26f6fc8cf08e45b6c511ac68999e6847dd44c142fb0213"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T03": "a56ac3397a497c275075b0595e3fca99f96ffee697b43556a922b249db4f47fb",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
+          "T09": "f05571b34e27253d7a610fb236de1b63824ea79033625544916df7217013c030",
+          "T10": "56c70384decd83c048c80c92196d6d2df9ef6148ed51aaf0de05adcf374d8c5e",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4",
+          "T13": "1c4345ba828d24decf088a2914d607c70c9074c744257e203072a44547c52eb9"
         }
       },
-      "basis_sha256": "02cfefb78ac911582c2684bd928c031f840a86d502333d4b067527a5e364e140",
+      "basis_sha256": "b8b34909542445bcf597b9d382f1bdcd2f21b7877b2047c5138531df21df83f0",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1409,7 +1409,7 @@
           "th-21": "386ce86f2f982fc025f78fbc52dec967175ba47cf66e1312f96266b7fa0698e0",
           "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
           "th-23": "2560efd910883f759add3d4b12d7be2fa6e1e3e66e6cc3bbff716aa1a670a081",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-24-6-1": "a919ddc4780f7ffea8dd534773f6cd6f62f2f6cd2c552749e816c121720a0171",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-2-1": "a0ebae25928e42057b41578e635f2f0e82d56cba9582c6f9a3ed9c9a21ad529f",
@@ -1430,7 +1430,7 @@
         },
         "dependencies": {}
       },
-      "basis_sha256": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
+      "basis_sha256": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1527,7 +1527,7 @@
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-23-1": "842f844567b289b3c8a797805cfc323bab96ea8ba2e67784a2e54388fee2ddc7",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-3": "9aa6d95fd01aabad258fc42f76d07c19c3c3d3bfbe96bd55a7b24350c6438869",
           "th-4": "e6ea367cd4ec7d32c2405e8fe8f8afb763854d86f5834e1932fdd01ec125bcfe",
           "th-4-1": "f9026cc097948e519049857380febfbd9e1d2d4fb736306f360842d45643f4cb",
@@ -1550,11 +1550,11 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T13": "9389b863eb5c73dddb26f6fc8cf08e45b6c511ac68999e6847dd44c142fb0213"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T13": "1c4345ba828d24decf088a2914d607c70c9074c744257e203072a44547c52eb9"
         }
       },
-      "basis_sha256": "79ca8e2806a28e7b79fca97fd100ff1acb0bc626c5cccac2b6931a3e586c5255",
+      "basis_sha256": "a09283dd3b9e728c3bcd4bdf07bbe71473affbfdd4499b579397982614fcdfc2",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1567,7 +1567,7 @@
       "design_anchor": "tech-t03",
       "owner": "L2编辑决定",
       "phase": "第一阶段人工；第二阶段记录和接口",
-      "implementation": "C04编辑任务+C02决定+C03 S依赖；W22提供独立参照与覆盖缺口接口，W23已离线实现S0—S8前后决定、S8前置包的实对象绑定、研究准入与刊登准入分离及显式期次建议；W37再按SOURCE_SELECTION/INITIAL_FACT/FOLLOW_UP/CORRECTION绑定短稿实际前置并禁止改标签；分值不自动产生准入或拼刊，真实编辑取舍和W24—W26闭环待验",
+      "implementation": "C04编辑任务+C02决定+C03 S依赖；W22提供独立参照与覆盖缺口接口，W23已离线实现S0—S8前后决定、S8前置包的实对象绑定、研究准入与刊登准入分离及显式期次建议；W37再按SOURCE_SELECTION/INITIAL_FACT/FOLLOW_UP/CORRECTION绑定短稿实际前置并禁止改标签；W38把补证后的对象/范围变化送回当前后代S8决定并要求跨范围COVER使用新S8包；分值不自动产生准入或拼刊，真实编辑取舍和W24—W26闭环待验",
       "intent": "选题、复选与整刊计划",
       "theory_refs": [
         "th-2-1",
@@ -1647,7 +1647,7 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "18d8a0bb689a8a31e5b16e75ffbcd68de0c2399dff2f77050aa6261026c79c92",
+        "design_sha256": "eded4f71062e5d2d4635d0e01ff9d832dff36c53cd88a1349f595cd572aaccaa",
         "sources": {
           "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
@@ -1658,7 +1658,7 @@
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-2-2": "4e093d43b92cf009f2ec806a7f02430c03c551fc1da3e7c118696404c53eb939",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-5": "c1aee06d68af70fd93c977d0f557a45461ab9d813399c341fb8233f695041d5a",
           "th-5-2": "1611ce202dc40f205f4599fa2cff22a2f7addce6ecd3a1f843fab285dd69aadd",
           "th-5-4": "4278863064983744c4dc2775723c692a27f0030227c1633b9db27934a49cb100",
@@ -1680,13 +1680,13 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T02": "79ca8e2806a28e7b79fca97fd100ff1acb0bc626c5cccac2b6931a3e586c5255",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T02": "a09283dd3b9e728c3bcd4bdf07bbe71473affbfdd4499b579397982614fcdfc2",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4"
         }
       },
-      "basis_sha256": "bccfcca101328b67229e1d5b1d2de280fca9f02992d9efc3d86c08a4557609f2",
+      "basis_sha256": "a56ac3397a497c275075b0595e3fca99f96ffee697b43556a922b249db4f47fb",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1699,7 +1699,7 @@
       "design_anchor": "tech-t04",
       "owner": "L3取证/中文核对",
       "phase": "第一阶段实际回源；第二阶段适配",
-      "implementation": "C01已离线复用Trafilatura解析获准HTML字节，并支持纯文本定位；W24持久SOURCE_MATERIAL、SOURCE_STRUCTURE、SOURCE_INTAKE及RIGHTS_RECORD，正文保存、机器处理和后续翻译分别核权；W25已实现节点级Evidence、Claim—Evidence范围/反证/未知、来源血缘根计数、受控十进制计算及补证请求/结果接口；W26已实现S8后版本化入选中文、节选/全文/独立导读分流、源定位映射、关键元素检查及截点更新隔离。PDF/Docling/OCR及真实翻译质量仍未验收，语义支持仍须人工核查；提取/计算不代事实或因果核真",
+      "implementation": "C01已离线复用Trafilatura解析获准HTML字节，并支持纯文本定位；W24持久SOURCE_MATERIAL、SOURCE_STRUCTURE、SOURCE_INTAKE及RIGHTS_RECORD，正文保存、机器处理和后续翻译分别核权；W25已实现节点级Evidence、Claim—Evidence范围/反证/未知、来源血缘根计数、受控十进制计算及补证请求/结果接口；W38再要求增强结果出现新独立根、削弱结果有更弱关系或反证，并保持新增材料不自动升强度；W26已实现S8后版本化入选中文、节选/全文/独立导读分流、源定位映射、关键元素检查及截点更新隔离。PDF/Docling/OCR及真实翻译质量仍未验收，语义支持仍须人工核查；提取/计算不代事实或因果核真",
       "intent": "原作、证据与中文材料",
       "theory_refs": [
         "th-2-1",
@@ -1779,7 +1779,7 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "e4511141890db1ab4da8fa58ba8b2501c1748a85d864fd20cc925d760411a8af",
+        "design_sha256": "4fe7f8039ce21d32d82933e1c14d6c9aea1c37863c4cfe1f96dca1f65cfb9318",
         "sources": {
           "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
@@ -1789,7 +1789,7 @@
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
           "th-7": "972e0d9adbc8a66c8dc251eba3cba1625ab028e5787e05ee0bd2ca31d3436087",
@@ -1810,12 +1810,12 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b",
-          "T13": "9389b863eb5c73dddb26f6fc8cf08e45b6c511ac68999e6847dd44c142fb0213"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4",
+          "T13": "1c4345ba828d24decf088a2914d607c70c9074c744257e203072a44547c52eb9"
         }
       },
-      "basis_sha256": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
+      "basis_sha256": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -1828,7 +1828,7 @@
       "design_anchor": "tech-t05",
       "owner": "L4联合研究组织；B1/B2从早期参与",
       "phase": "第一阶段分步研究；第二阶段可重跑组织",
-      "implementation": "W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；W25缺口请求与真实补证结果可关联原SourceIntake、Evidence和前后Claim—Evidence评估；W27已离线实现W16修订绑定的M01—M12依赖图、Archive权威案卷快照、官方LangGraph InMemorySaver检查点、早期B1/B2问题、MethodUse积累、递归失效和M12有限收口。真实B1/B2内容、持久检查点后端、条件/专业资料完整分派及模型调用仍待实现",
+      "implementation": "W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；W25缺口请求与真实补证结果可关联原SourceIntake、Evidence和前后Claim—Evidence评估；W27已离线实现W16修订绑定的M01—M12依赖图、Archive权威案卷快照、官方LangGraph InMemorySaver检查点、早期B1/B2问题、MethodUse积累、递归失效和M12有限收口；W38再把补证结果绑定到新旧W16修订及新旧Dossier，并区分维持、增强、削弱、未决、暂停和回S8。真实B1/B2内容、持久检查点后端、条件/专业资料完整分派及模型调用仍待实现",
       "intent": "问题界定与联合研究组织",
       "theory_refs": [
         "th-8",
@@ -1913,7 +1913,7 @@
         }
       ],
       "current_binding": {
-        "design_sha256": "0b22e9075fcc88124f2125f8850ec3a122dbca501bc7238d3ed9ff3ce23ee404",
+        "design_sha256": "275bd1798f7994e2b27d40fa7574ac8159da8d109f4a840ad824ab687af5ab0e",
         "sources": {
           "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
@@ -1924,7 +1924,7 @@
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8": "91ab96c2bb995b85eb4631865a32948b315533bd82633cb6dec385cad49e9859",
           "th-8-2": "23869016701668cb160d16091d55588bee5e9f5713ad9e6e592568828aa81547",
@@ -1948,13 +1948,13 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T03": "bccfcca101328b67229e1d5b1d2de280fca9f02992d9efc3d86c08a4557609f2",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T03": "a56ac3397a497c275075b0595e3fca99f96ffee697b43556a922b249db4f47fb",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4"
         }
       },
-      "basis_sha256": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
+      "basis_sha256": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2055,7 +2055,7 @@
           "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-4-1": "dbb74d063b86f8c4cd9ce03b681216b9005e793d69d1a8ae6d6778ad15d08a1c",
           "th-8-7": "21760aa13ceb70c03357d189607b8319dffd72a97854e4e576c5d030581cd609",
@@ -2076,10 +2076,10 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339"
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073"
         }
       },
-      "basis_sha256": "6f844b2e8e660e5ee102592aee71f5480511c555fe7056c968698ea3c0d8e9d6",
+      "basis_sha256": "5130a8bce168bc56a50debb2d9997b15a2a7fc9cfc944ee0f54e7021c5dd26de",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2186,7 +2186,7 @@
           "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-4-1": "dbb74d063b86f8c4cd9ce03b681216b9005e793d69d1a8ae6d6778ad15d08a1c",
           "th-9-1": "67e830495614adfc932ffd0d97034ba57893eba3e6b98028ade6f54cb9d3fadc"
@@ -2204,11 +2204,11 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b"
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4"
         }
       },
-      "basis_sha256": "ef835c05996adea835446c23627dd0f59f5f807faa5543b1782f330d7554f698",
+      "basis_sha256": "cec892ef66c0f920b378f954902531dfeccd12043bea53541b62984dafd4c0a1",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2307,7 +2307,7 @@
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-4-2": "906eb9adb90d079276c6fa9279b18f929d5d914e190f15713e726b86f0974797",
           "th-8-8": "ecf75eae6e9a07eb60e63713a023bd438e75ee1d9cbe16001edc337888deb22d",
@@ -2326,13 +2326,13 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
-          "T06": "6f844b2e8e660e5ee102592aee71f5480511c555fe7056c968698ea3c0d8e9d6",
-          "T07": "ef835c05996adea835446c23627dd0f59f5f807faa5543b1782f330d7554f698",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b"
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
+          "T06": "5130a8bce168bc56a50debb2d9997b15a2a7fc9cfc944ee0f54e7021c5dd26de",
+          "T07": "cec892ef66c0f920b378f954902531dfeccd12043bea53541b62984dafd4c0a1",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4"
         }
       },
-      "basis_sha256": "3a6a4dc8e993caeb87cceb5044531f6a0d943d484807b0e2a359a3ec414a67ab",
+      "basis_sha256": "39b5802ec6904a632ea515ea6189f8fbef81562ac97c391823183b7a10020392",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2442,7 +2442,7 @@
           "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
           "th-8-2-4": "fa6bfd9fc037d6695a5fb31cb31aac1b611549e767990235d1b0fd121da3f733"
@@ -2460,15 +2460,15 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
-          "T06": "6f844b2e8e660e5ee102592aee71f5480511c555fe7056c968698ea3c0d8e9d6",
-          "T07": "ef835c05996adea835446c23627dd0f59f5f807faa5543b1782f330d7554f698",
-          "T08": "3a6a4dc8e993caeb87cceb5044531f6a0d943d484807b0e2a359a3ec414a67ab"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
+          "T06": "5130a8bce168bc56a50debb2d9997b15a2a7fc9cfc944ee0f54e7021c5dd26de",
+          "T07": "cec892ef66c0f920b378f954902531dfeccd12043bea53541b62984dafd4c0a1",
+          "T08": "39b5802ec6904a632ea515ea6189f8fbef81562ac97c391823183b7a10020392"
         }
       },
-      "basis_sha256": "3c83e64436c5bfc6fef9f1f527f6bd2245312d9502fd483e3710eb4a0ad46dca",
+      "basis_sha256": "f05571b34e27253d7a610fb236de1b63824ea79033625544916df7217013c030",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2577,7 +2577,7 @@
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-5-5": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180"
         },
@@ -2594,13 +2594,13 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T03": "bccfcca101328b67229e1d5b1d2de280fca9f02992d9efc3d86c08a4557609f2",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T09": "3c83e64436c5bfc6fef9f1f527f6bd2245312d9502fd483e3710eb4a0ad46dca",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b"
+          "T03": "a56ac3397a497c275075b0595e3fca99f96ffee697b43556a922b249db4f47fb",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T09": "f05571b34e27253d7a610fb236de1b63824ea79033625544916df7217013c030",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4"
         }
       },
-      "basis_sha256": "eea48891cb6d9f07c1b74d5c153a34651d29bc2124840be8fd7a0b370fa3a192",
+      "basis_sha256": "56c70384decd83c048c80c92196d6d2df9ef6148ed51aaf0de05adcf374d8c5e",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2711,7 +2711,7 @@
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-23-3": "2cff81751a78a83139bbd7b8ecefcb133c56c58446a4a81d8cb47bf4bb2528bb",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-24-5": "882315791d1cf274d392adf4cd37ee87dced97415c15004318499248bd0e06e5",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180"
         },
@@ -2728,11 +2728,11 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af",
-          "T13": "9389b863eb5c73dddb26f6fc8cf08e45b6c511ac68999e6847dd44c142fb0213"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc",
+          "T13": "1c4345ba828d24decf088a2914d607c70c9074c744257e203072a44547c52eb9"
         }
       },
-      "basis_sha256": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b",
+      "basis_sha256": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2846,7 +2846,7 @@
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-2-3": "3e49ce680c1b5093c7e48307117d09610ce9bf95662e9042eaffc269a4101a7a",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-8-3": "c10fa170f2627bc5e29a89fe84f156927bd7b779c48f88dc8c2072cf75640378"
         },
@@ -2863,19 +2863,19 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T02": "79ca8e2806a28e7b79fca97fd100ff1acb0bc626c5cccac2b6931a3e586c5255",
-          "T03": "bccfcca101328b67229e1d5b1d2de280fca9f02992d9efc3d86c08a4557609f2",
-          "T04": "6b5f73a3b4ba5e49cf54cde7279eef6556050820c9b31065ed0e0dffdae59f16",
-          "T05": "904618866c830796b8c2c082ae335876693f9dbd79c31fc1e6ae9d7eed792339",
-          "T06": "6f844b2e8e660e5ee102592aee71f5480511c555fe7056c968698ea3c0d8e9d6",
-          "T07": "ef835c05996adea835446c23627dd0f59f5f807faa5543b1782f330d7554f698",
-          "T08": "3a6a4dc8e993caeb87cceb5044531f6a0d943d484807b0e2a359a3ec414a67ab",
-          "T09": "3c83e64436c5bfc6fef9f1f527f6bd2245312d9502fd483e3710eb4a0ad46dca",
-          "T10": "eea48891cb6d9f07c1b74d5c153a34651d29bc2124840be8fd7a0b370fa3a192",
-          "T11": "b2425c4f5fc44536f398c137dac2b0e02cc2453191f2ba41e9e1a17eed66430b"
+          "T02": "a09283dd3b9e728c3bcd4bdf07bbe71473affbfdd4499b579397982614fcdfc2",
+          "T03": "a56ac3397a497c275075b0595e3fca99f96ffee697b43556a922b249db4f47fb",
+          "T04": "77901e86cffb871d09b83a99828fc6a582fb68b9565d37b9ffd65913db2f3e50",
+          "T05": "045a27eb5a58d3bc78ac2ec4baf34e548bad6a4e7ea4d5eba4b493e933d6b073",
+          "T06": "5130a8bce168bc56a50debb2d9997b15a2a7fc9cfc944ee0f54e7021c5dd26de",
+          "T07": "cec892ef66c0f920b378f954902531dfeccd12043bea53541b62984dafd4c0a1",
+          "T08": "39b5802ec6904a632ea515ea6189f8fbef81562ac97c391823183b7a10020392",
+          "T09": "f05571b34e27253d7a610fb236de1b63824ea79033625544916df7217013c030",
+          "T10": "56c70384decd83c048c80c92196d6d2df9ef6148ed51aaf0de05adcf374d8c5e",
+          "T11": "c911246f115f3b6c05188d23086cd821e4b519fe6b62f0edf54d7f4139c23aa4"
         }
       },
-      "basis_sha256": "3a3d6348f2f28753c5ad1772b352d260ceceb22adcca0238bface19d03910db9",
+      "basis_sha256": "3fb40e2b6aebd6ee2540b246d66689834bbaf50e4915c209bb8a016ea117bafe",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -2980,7 +2980,7 @@
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-22": "21029159c81ae3ef0a44a85630d52b89cca0cc0bebc1a5ba86910a60c87fd89b",
-          "th-24": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+          "th-24": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
           "th-24-6-1": "a919ddc4780f7ffea8dd534773f6cd6f62f2f6cd2c552749e816c121720a0171",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33"
@@ -2998,10 +2998,10 @@
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "a19a7ef8e2de0c3a8722138ecacd1c1806966eb36149e286312ef4909446c0af"
+          "T01": "45b8c1e67e63fe780dc8e90d78562650122ec85252beeb3b96d04bddd77450cc"
         }
       },
-      "basis_sha256": "9389b863eb5c73dddb26f6fc8cf08e45b6c511ac68999e6847dd44c142fb0213",
+      "basis_sha256": "1c4345ba828d24decf088a2914d607c70c9074c744257e203072a44547c52eb9",
       "binding_status": "CURRENT_BINDING",
       "changed_theory_refs": [],
       "design_changed": false,
@@ -4586,7 +4586,7 @@
     "th-24": {
       "section": "24",
       "title": "单一维护源与必要文件的自动同步",
-      "sha256": "2aa55061f275275bfb9b3c9b72dc390034983b852125d5d32e86bcf5e034b033",
+      "sha256": "0bb136fd39932b7a7af4bd403f6120dede9be6cdcb4471a9f3402b7cfea43dfd",
       "direct_nodes": [
         "R01",
         "R02",

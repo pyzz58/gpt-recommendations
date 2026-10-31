@@ -5,7 +5,7 @@
 **CURRENT_BINDING仅表示本次关联版本一致；不证明方案正确、程序已实现、内容已审或获准运行。**
 理论或设计/依赖改变会变为REVIEW_REQUIRED；重新生成只刷新事实，不自动改写技术正文或批准新基线。
 
-当前规范SHA-256：`6b7da8ea0804e5a5677c3f67beb9d674ae0b4e7a770a233e8fd32f475c15a0a0`。
+当前规范SHA-256：`64bce268dad3988ae2764595e320b1ff1060276c9adb9823e172483c61827be1`。
 
 需复核节点：无；仅限关联新鲜度检查。
 
@@ -14,16 +14,16 @@
 | [R01](#r01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r01) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | C01—C05共用主题闭环，六单元适配尚未实现；理论职责与真实成刊仍待验 |
 | [R02](#r02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r02) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 共用C02 Theme/版本与C03/C04跨周接续；实际成熟/入刊未实现验收 |
 | [R03](#r03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r03) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 共用C01/C02/C04/C05处理不同稿型，不为短稿另建流水线。W37已离线实现ArticleRoute共享记录、W26精选材料/W23决定准入绑定、首次事实/未刊Dossier后续进展/W34更正精确前置、短稿独立Review/W15及W32非封面placement与depth-feature角色约束；真实稿型内容、独立L5和整刊阅读仍待验 |
-| [R04](#r04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r04) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | W25已离线实现定向缺口请求、实际SourceIntake/Evidence/Assessment结果、前后支持关系及对象变化回S8标记；C03真实路由、条件/专业条件回W27、外部检索适配及整条复选路线仍待实现 |
+| [R04](#r04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r04) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | W25已离线实现定向缺口请求、实际SourceIntake/Evidence/Assessment结果、前后支持关系及对象变化回S8标记；W38已离线实现补证影响路由：新增Evidence/独立根门槛、同源重复拒绝、新旧W16/W27续接、维持/增强/削弱/未决/来源暂停及必要W23当前后代S8复选，且不自动升强度；真实外部检索、条件适配器、内容复审和整条真实复选仍待实现 |
 | [R05](#r05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r05) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | C02同一版本/依赖/限制+C03受控恢复；当前复用与历史回放分别验，业务路线未实现 |
 | [R06](#r06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r06) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | T12组织双输入并共用C01—C05，无年度存储/研究/渲染分叉；年度业务未实现 |
 | [R07](#r07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r07) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 已有文档关联维护继续；研究任务原文装载/分段与C03持久恢复仍待实现，不由摘要恢复 |
 | [R08](#r08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r08) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | C06 Actions只设周开始+C03长任务续跑+C02期号/回执+C05文件；生产/已授权交付待实现 |
 | [T01](#t01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t01) | CURRENT_BINDING | 执行者组织；未来执行层维护决定；人工定位先行；第二阶段控制器 | C02提交/Review/AdoptionDecision追加版本与W15分离决定接口已离线实现；W31将实际Article、B1/B2/C、独立疑点、作者回应和审稿结案绑定ReviewCoverage及W15决定；W34又将版本级Correction restriction 接入W15/W33当前使用检查，使旧READY在更正限制下失效，只有引用精确更正案卷与目标版本的新Review/新决定可按范围恢复，旧决定不自动复活。身份认证、通用审稿能力、完整读者成品、持久恢复和自动采用仍未实现 |
 | [T02](#t02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t02) | CURRENT_BINDING | L1发现职责；第一阶段人工取样；第四阶段生产增量 | W20已离线实现feedparser/Trafilatura/JSON API受控字节入口、CandidateIndex、取得元信息、字段/时间缺口和失败记录，并持久到C02；W21已实现强键事件归并提案、来源血缘/独立根、编辑歧义和探索队列；W22已实现预固定独立参照、范围限定的覆盖比较与七类缺口；W23已消费候选/事件簇/覆盖审计，保存S0—S8取舍。真实来源运行与T03真实内容复核仍待后续 |
-| [T03](#t03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t03) | CURRENT_BINDING | L2编辑决定；第一阶段人工；第二阶段记录和接口 | C04编辑任务+C02决定+C03 S依赖；W22提供独立参照与覆盖缺口接口，W23已离线实现S0—S8前后决定、S8前置包的实对象绑定、研究准入与刊登准入分离及显式期次建议；W37再按SOURCE_SELECTION/INITIAL_FACT/FOLLOW_UP/CORRECTION绑定短稿实际前置并禁止改标签；分值不自动产生准入或拼刊，真实编辑取舍和W24—W26闭环待验 |
-| [T04](#t04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t04) | CURRENT_BINDING | L3取证/中文核对；第一阶段实际回源；第二阶段适配 | C01已离线复用Trafilatura解析获准HTML字节，并支持纯文本定位；W24持久SOURCE_MATERIAL、SOURCE_STRUCTURE、SOURCE_INTAKE及RIGHTS_RECORD，正文保存、机器处理和后续翻译分别核权；W25已实现节点级Evidence、Claim—Evidence范围/反证/未知、来源血缘根计数、受控十进制计算及补证请求/结果接口；W26已实现S8后版本化入选中文、节选/全文/独立导读分流、源定位映射、关键元素检查及截点更新隔离。PDF/Docling/OCR及真实翻译质量仍未验收，语义支持仍须人工核查；提取/计算不代事实或因果核真 |
-| [T05](#t05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t05) | CURRENT_BINDING | L4联合研究组织；B1/B2从早期参与；第一阶段分步研究；第二阶段可重跑组织 | W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；W25缺口请求与真实补证结果可关联原SourceIntake、Evidence和前后Claim—Evidence评估；W27已离线实现W16修订绑定的M01—M12依赖图、Archive权威案卷快照、官方LangGraph InMemorySaver检查点、早期B1/B2问题、MethodUse积累、递归失效和M12有限收口。真实B1/B2内容、持久检查点后端、条件/专业资料完整分派及模型调用仍待实现 |
+| [T03](#t03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t03) | CURRENT_BINDING | L2编辑决定；第一阶段人工；第二阶段记录和接口 | C04编辑任务+C02决定+C03 S依赖；W22提供独立参照与覆盖缺口接口，W23已离线实现S0—S8前后决定、S8前置包的实对象绑定、研究准入与刊登准入分离及显式期次建议；W37再按SOURCE_SELECTION/INITIAL_FACT/FOLLOW_UP/CORRECTION绑定短稿实际前置并禁止改标签；W38把补证后的对象/范围变化送回当前后代S8决定并要求跨范围COVER使用新S8包；分值不自动产生准入或拼刊，真实编辑取舍和W24—W26闭环待验 |
+| [T04](#t04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t04) | CURRENT_BINDING | L3取证/中文核对；第一阶段实际回源；第二阶段适配 | C01已离线复用Trafilatura解析获准HTML字节，并支持纯文本定位；W24持久SOURCE_MATERIAL、SOURCE_STRUCTURE、SOURCE_INTAKE及RIGHTS_RECORD，正文保存、机器处理和后续翻译分别核权；W25已实现节点级Evidence、Claim—Evidence范围/反证/未知、来源血缘根计数、受控十进制计算及补证请求/结果接口；W38再要求增强结果出现新独立根、削弱结果有更弱关系或反证，并保持新增材料不自动升强度；W26已实现S8后版本化入选中文、节选/全文/独立导读分流、源定位映射、关键元素检查及截点更新隔离。PDF/Docling/OCR及真实翻译质量仍未验收，语义支持仍须人工核查；提取/计算不代事实或因果核真 |
+| [T05](#t05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t05) | CURRENT_BINDING | L4联合研究组织；B1/B2从早期参与；第一阶段分步研究；第二阶段可重跑组织 | W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；W25缺口请求与真实补证结果可关联原SourceIntake、Evidence和前后Claim—Evidence评估；W27已离线实现W16修订绑定的M01—M12依赖图、Archive权威案卷快照、官方LangGraph InMemorySaver检查点、早期B1/B2问题、MethodUse积累、递归失效和M12有限收口；W38再把补证结果绑定到新旧W16修订及新旧Dossier，并区分维持、增强、削弱、未决、暂停和回S8。真实B1/B2内容、持久检查点后端、条件/专业资料完整分派及模型调用仍待实现 |
 | [T06](#t06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t06) | CURRENT_BINDING | L4顾问职责；第一阶段真实研判；后续按任务验证 | W28已离线实现C04 B1的W27案卷/M09、当前W16修订、当前W25 Claim/Evidence/评估精确绑定，原作与本刊贡献分离、有界判断、仅真实决策给至少两个完整行动选项及M10记录；人工成果不得携带模型身份，模型成果另核W19准入、绑定全部输入的OperationRequest与成功OperationReceipt。实际顾问内容、独立审稿和真实任务增益仍待W12/W31及真实案例验收 |
 | [T07](#t07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t07) | CURRENT_BINDING | L4帝师职责；从M02参与；第一阶段真实教学；后续按任务验证 | W29已离线实现C04 B2的M02早期知识问题、当前W16修订、W25 Claim/Evidence/评估、MethodUse和按需Concept精确绑定；M11要求实际事实、必要基础、至少两段过程连接、边界/反例、知识总结与迁移条件段落，专业术语必须先解释后命名，必要回顾须有实际RECAP段落。可选B1只接受当前M10与B1版本且B2增益不得重标B1；人工成果禁止模型身份，模型成果另核W19 TEACHER准入、绑定全部输入的M11 OperationRequest与成功OperationReceipt。真实教学文字、内容审稿、读者效果、模型能力和阶段门仍未验收 |
 | [T08](#t08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t08) | CURRENT_BINDING | L4的C与M12准备；当期保存条件；真实结果后来再核 | W30已离线实现C04条件记录：必须接当前B1/M10与B2/M11的有效成果，精确保留原判断和教学命题；按MULTI_PATH、SINGLE_LIMITED或NOT_APPLICABLE保存可区分路径或如实停止理由。每条路径要求行动者/权限资源/决定/前置/中间状态/最小时滞/不确定性及两段以上Evidence连接；各路径须有不同分支条件和第一观察。记录观察窗口、支持/削弱/推翻条件、机制与替代解释检查、开放问题及W39/W40复查归属，不保存概率或将未来写成事实。M12以当期ReviewWindow和重开触发有限收口；原判断仅标记W33保存目标，实际W33档案、W31内容审、真实到期结果及阶段门仍待实现 |
@@ -101,7 +101,7 @@
 
 设计目的：定向补证与复选
 
-责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：W25已离线实现定向缺口请求、实际SourceIntake/Evidence/Assessment结果、前后支持关系及对象变化回S8标记；C03真实路由、条件/专业条件回W27、外部检索适配及整条复选路线仍待实现。
+责任：对应流程中注明的L层/技术模块责任；阶段：沿§19.2原四阶段；文档关联现可检查；实现：W25已离线实现定向缺口请求、实际SourceIntake/Evidence/Assessment结果、前后支持关系及对象变化回S8标记；W38已离线实现补证影响路由：新增Evidence/独立根门槛、同源重复拒绝、新旧W16/W27续接、维持/增强/削弱/未决/来源暂停及必要W23当前后代S8复选，且不自动升强度；真实外部检索、条件适配器、内容复审和整条真实复选仍待实现。
 
 理论出处：[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)、[§8.4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-2)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -246,7 +246,7 @@
 
 设计目的：选题、复选与整刊计划
 
-责任：L2编辑决定；阶段：第一阶段人工；第二阶段记录和接口；实现：C04编辑任务+C02决定+C03 S依赖；W22提供独立参照与覆盖缺口接口，W23已离线实现S0—S8前后决定、S8前置包的实对象绑定、研究准入与刊登准入分离及显式期次建议；W37再按SOURCE_SELECTION/INITIAL_FACT/FOLLOW_UP/CORRECTION绑定短稿实际前置并禁止改标签；分值不自动产生准入或拼刊，真实编辑取舍和W24—W26闭环待验。
+责任：L2编辑决定；阶段：第一阶段人工；第二阶段记录和接口；实现：C04编辑任务+C02决定+C03 S依赖；W22提供独立参照与覆盖缺口接口，W23已离线实现S0—S8前后决定、S8前置包的实对象绑定、研究准入与刊登准入分离及显式期次建议；W37再按SOURCE_SELECTION/INITIAL_FACT/FOLLOW_UP/CORRECTION绑定短稿实际前置并禁止改标签；W38把补证后的对象/范围变化送回当前后代S8决定并要求跨范围COVER使用新S8包；分值不自动产生准入或拼刊，真实编辑取舍和W24—W26闭环待验。
 
 理论出处：[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -266,7 +266,7 @@
 
 设计目的：原作、证据与中文材料
 
-责任：L3取证/中文核对；阶段：第一阶段实际回源；第二阶段适配；实现：C01已离线复用Trafilatura解析获准HTML字节，并支持纯文本定位；W24持久SOURCE_MATERIAL、SOURCE_STRUCTURE、SOURCE_INTAKE及RIGHTS_RECORD，正文保存、机器处理和后续翻译分别核权；W25已实现节点级Evidence、Claim—Evidence范围/反证/未知、来源血缘根计数、受控十进制计算及补证请求/结果接口；W26已实现S8后版本化入选中文、节选/全文/独立导读分流、源定位映射、关键元素检查及截点更新隔离。PDF/Docling/OCR及真实翻译质量仍未验收，语义支持仍须人工核查；提取/计算不代事实或因果核真。
+责任：L3取证/中文核对；阶段：第一阶段实际回源；第二阶段适配；实现：C01已离线复用Trafilatura解析获准HTML字节，并支持纯文本定位；W24持久SOURCE_MATERIAL、SOURCE_STRUCTURE、SOURCE_INTAKE及RIGHTS_RECORD，正文保存、机器处理和后续翻译分别核权；W25已实现节点级Evidence、Claim—Evidence范围/反证/未知、来源血缘根计数、受控十进制计算及补证请求/结果接口；W38再要求增强结果出现新独立根、削弱结果有更弱关系或反证，并保持新增材料不自动升强度；W26已实现S8后版本化入选中文、节选/全文/独立导读分流、源定位映射、关键元素检查及截点更新隔离。PDF/Docling/OCR及真实翻译质量仍未验收，语义支持仍须人工核查；提取/计算不代事实或因果核真。
 
 理论出处：[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§7](CANONICAL_SYSTEM_SPEC_V5.md#th-7)、[§8.3.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-3-4)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -286,7 +286,7 @@
 
 设计目的：问题界定与联合研究组织
 
-责任：L4联合研究组织；B1/B2从早期参与；阶段：第一阶段分步研究；第二阶段可重跑组织；实现：W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；W25缺口请求与真实补证结果可关联原SourceIntake、Evidence和前后Claim—Evidence评估；W27已离线实现W16修订绑定的M01—M12依赖图、Archive权威案卷快照、官方LangGraph InMemorySaver检查点、早期B1/B2问题、MethodUse积累、递归失效和M12有限收口。真实B1/B2内容、持久检查点后端、条件/专业资料完整分派及模型调用仍待实现。
+责任：L4联合研究组织；B1/B2从早期参与；阶段：第一阶段分步研究；第二阶段可重跑组织；实现：W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；W25缺口请求与真实补证结果可关联原SourceIntake、Evidence和前后Claim—Evidence评估；W27已离线实现W16修订绑定的M01—M12依赖图、Archive权威案卷快照、官方LangGraph InMemorySaver检查点、早期B1/B2问题、MethodUse积累、递归失效和M12有限收口；W38再把补证结果绑定到新旧W16修订及新旧Dossier，并区分维持、增强、削弱、未决、暂停和回S8。真实B1/B2内容、持久检查点后端、条件/专业资料完整分派及模型调用仍待实现。
 
 理论出处：[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 

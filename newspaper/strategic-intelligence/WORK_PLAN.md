@@ -8,7 +8,7 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`6b7da8ea0804e5a5677c3f67beb9d674ae0b4e7a770a233e8fd32f475c15a0a0`。
+当前规范SHA-256：`64bce268dad3988ae2764595e320b1ff1060276c9adb9823e172483c61827be1`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
@@ -73,7 +73,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 36 | [W35 必要时的原文任务视图与分段装载](#w35) | 条件能力 | T01/T13/R07 | [W14](#w14)、[W17](#w17) | 有据不适用 / CURRENT_BINDING |
 | 37 | [W36 最小深度主题闭环与中断重接](#w36) | 路线集成验收 | R01/R07/T01/T09/T11/T13 | [W22](#w22)、[W32](#w32)、[W33](#w33)、[W18](#w18) | 进行中 / CURRENT_BINDING |
 | 38 | [W37 精选、首次事实、进展及更正分支](#w37) | 路线集成验收 | R03/T03/T04/T09/T10 | [W23](#w23)、[W26](#w26)、[W31](#w31)、[W32](#w32)、[W34](#w34) | 进行中 / CURRENT_BINDING |
-| 39 | [W38 定向补证、解释变化与回S8](#w38) | 路线集成验收 | R04/T03/T04/T05 | [W25](#w25)、[W27](#w27)、[W23](#w23)、[W31](#w31) | 待开始 / CURRENT_BINDING |
+| 39 | [W38 定向补证、解释变化与回S8](#w38) | 路线集成验收 | R04/T03/T04/T05 | [W25](#w25)、[W27](#w27)、[W23](#w23)、[W31](#w31) | 进行中 / CURRENT_BINDING |
 | 40 | [W39 真实跨周接续与长期专题入刊](#w39) | 路线集成验收 | R02/T03/T05/T11 | [W33](#w33)、[W27](#w27)、[W23](#w23)、[W36](#w36) | 待开始 / CURRENT_BINDING |
 | 41 | [W40 更正、当前采用与历史回放集成](#w40) | 路线集成验收 | R05/T11/T09/T10 | [W34](#w34)、[W39](#w39)、[W31](#w31)、[W32](#w32) | 待开始 / CURRENT_BINDING |
 | 42 | [W41 六份真实跨领域案例与投入联合验收](#w41) | 真实案例与能力验收 | R01/R02/R03/R04/R05/R07/T09/T13 | [W36](#w36)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[W40](#w40) | 待开始 / CURRENT_BINDING |
@@ -1496,7 +1496,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：39/59；阶段：2；类型：路线集成验收。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W25](#w25)、[W27](#w27)、[W23](#w23)、[W31](#w31)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W25](#w25)、[W27](#w27)、[W23](#w23)、[W31](#w31)。
 
 前置尚未验收：[W23](#w23)、[W25](#w25)、[W27](#w27)、[W31](#w31)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -1525,7 +1525,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W38-SUPPLEMENT-ROUTE-20261031-001", "artifact_refs": ["intelligence/supplement_route.py", "intelligence/evidence.py", "intelligence/research.py", "intelligence/workflow.py", "intelligence/editorial.py", "tests_runtime/test_supplement_route.py", "audits/w38-supplement-route-20261031.json"], "validation_refs": ["tests_runtime/test_supplement_route.py (7 actual passing W38 tests)", "tests_runtime/test_evidence.py", "tests_runtime/test_workflow.py", "tests_runtime/test_editorial.py", "audits/w38-supplement-route-20261031.json"], "reviewer": "当前执行者实际离线检查W25补证请求/结果、独立根、W16/W27续接、W23 S8后代与暂停/重试边界；非真实外部检索、独立内容复审、生产恢复或阶段批准", "result": "IN_PROGRESS", "scope": "W38离线路线：SupplementRoute把W25请求/结果绑定目标Claim、原评估、基础与后续W16修订、基础与后续W27 Dossier及必要W23 S8决定。新增Evidence必须超出原评估；STRENGTHENED须同时有更强关系和新独立血缘根，同源重复不算；WEAKENED须有更弱关系或实际反证；NO_NEW/SOURCE_UNAVAILABLE保留UNRESOLVED/PAUSE并只允许新触发重试。对象/范围变化必须绑定当前后代S8决定，跨范围COVER还须新S8包。七项回归覆盖维持、增强、削弱、无法区分、来源不可用、同源重复及对象/范围回S8；成果固定automatic_strength_granted=false、content_review_required=true、publication_authorized=false。真实缺环、实际外部取得、条件补证器、W31真实复审及生产恢复未完成，整包IN_PROGRESS，不ACCEPTED。"}]
 
 <a id="w39"></a>
 ## W39｜真实跨周接续与长期专题入刊

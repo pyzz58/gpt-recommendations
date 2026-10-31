@@ -81,6 +81,7 @@ class ObjectKind(str, Enum):
     RESEARCH_ADMISSION = "ResearchAdmission"
     EDITION_PLACEMENT_PROPOSAL = "EditionPlacementProposal"
     ARTICLE_ROUTE = "ArticleRoute"
+    SUPPLEMENT_ROUTE = "SupplementRoute"
     MATERIAL_SELECTION = "MaterialSelection"
 
 
