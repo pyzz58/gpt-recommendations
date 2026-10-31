@@ -98,7 +98,7 @@
         "M01",
         "M14"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
@@ -106,7 +106,7 @@
         "CRA-R040"
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；W03依赖与契约变更后，cra-w01的migrate/test再次通过；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41183652961；W04增加迁移入口和共性规则配置后，cra-w01的migrate/test在PostgreSQL 18.6再次通过；被测提交f2bac7dcf527e7e54e6a5af27cb2663af862cccf。"
       ],
       "completion_history": [
         {
@@ -281,7 +281,13 @@
       "handoff_outputs": [
         "数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。"
       ],
-      "completion_evidence": null,
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W01",
+        "run_id": 41183652961,
+        "tested_commit": "f2bac7dcf527e7e54e6a5af27cb2663af862cccf",
+        "subject_digest": "a414762fe3ff30fe2512ac1ddff2ea69867cf4d1000efe20ae1a78cc2ff99ec9"
+      },
       "verification_profile": "CRA-W01"
     },
     {
@@ -294,7 +300,7 @@
         "M01",
         "M14"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
       "requirement_ids": [
         "CRA-R035",
@@ -302,7 +308,7 @@
         "CRA-R040"
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；W03资料界面和契约接入后，cra-w02的API、前端、构建、OpenAPI、运行时及devcontainer smoke全部再次通过；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41183652961；W04规则工作台接入后，cra-w02的API、6项前端测试、类型、构建、OpenAPI、运行时和devcontainer smoke全部再次通过；被测提交f2bac7dcf527e7e54e6a5af27cb2663af862cccf。"
       ],
       "completion_history": [
         {
@@ -494,7 +500,13 @@
       "handoff_outputs": [
         "可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。"
       ],
-      "completion_evidence": null,
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W02",
+        "run_id": 41183652961,
+        "tested_commit": "f2bac7dcf527e7e54e6a5af27cb2663af862cccf",
+        "subject_digest": "a131a0189d2a0d885ada8b9fc6899e07c4fb1b0ca0ae7ac57676c76e13a802f2"
+      },
       "verification_profile": "CRA-W02"
     },
     {
@@ -507,7 +519,7 @@
         "M02",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。",
       "requirement_ids": [
         "CRA-R003",
@@ -518,7 +530,7 @@
         "CRA-R038"
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；cra-w03的8项PostgreSQL/S3测试、隔离OCR候选探测、OpenAPI契约和前端测试/类型/构建全部成功；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41183652961；W04复用锚点后，cra-w03的8项PostgreSQL/S3测试、provider探测、契约和前端再次通过；被测提交f2bac7dcf527e7e54e6a5af27cb2663af862cccf。"
       ],
       "completion_history": [
         {
@@ -692,7 +704,13 @@
       "handoff_outputs": [
         "文件/锚点/作业接口，合成资料集和OCR依赖/资源可行性探测记录。"
       ],
-      "completion_evidence": null,
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W03",
+        "run_id": 41183652961,
+        "tested_commit": "f2bac7dcf527e7e54e6a5af27cb2663af862cccf",
+        "subject_digest": "3e1388a873201711177df48f560e6e179e586f57fe4e8368a68aee2e6f4a6352"
+      },
       "verification_profile": "CRA-W03"
     },
     {
@@ -705,7 +723,7 @@
         "M03",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。",
       "requirement_ids": [
         "CRA-R002",
@@ -722,6 +740,9 @@
         "CRA-R036",
         "CRA-R038",
         "CRA-R041"
+      ],
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41183652961；cra-w04的6项PostgreSQL 18.6集成测试、真实DOCX解析/规则provider独立评估、OpenAPI契约、6项前端测试、类型和生产构建全部成功；被测提交f2bac7dcf527e7e54e6a5af27cb2663af862cccf。浏览器实测2020-12-31采用v1、2021-01-01采用v2，历史候选只读；详见validation/W04_STATUS.md。"
       ],
       "track": "v1a",
       "instruction_path": "plan/work_packages/CRA-W04.md",
@@ -868,6 +889,13 @@
       "handoff_outputs": [
         "候选规则树、用户修正、版本启用解析及独立条件反例结果。"
       ],
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W04",
+        "run_id": 41183652961,
+        "tested_commit": "f2bac7dcf527e7e54e6a5af27cb2663af862cccf",
+        "subject_digest": "efa354456d6afc84e55a69947759597494ece5315fb50b35d054e11f12aca108"
+      },
       "verification_profile": "CRA-W04"
     },
     {

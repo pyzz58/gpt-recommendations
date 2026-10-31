@@ -7,6 +7,11 @@ dependency lock. Current evidence: run `41181003025`, tested commit
 `b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb`, digest
 `e2fd12d19f7946a7b35367960fa07e0d6f1f0f7e81d8132ae911fe3e7b525f78`.
 
+Revalidated after W04 added the rule workspace and expanded generated API
+types. Current evidence: run `41183652961`, tested commit
+`f2bac7dcf527e7e54e6a5af27cb2663af862cccf`, digest
+`a131a0189d2a0d885ada8b9fc6899e07c4fb1b0ca0ae7ac57676c76e13a802f2`.
+
 This record covers the engineering API and browser shell only. It is not
 clinical-use validation, and it does not implement later document, rule,
 subject, laboratory or report workflows.

@@ -56,6 +56,11 @@ migration upgrade/downgrade/re-upgrade, Alembic drift check and an actual browse
 review of authorization selection, document versions, anchors and PDF page/
 highlight rendering. The full local backend suite passed 60 tests.
 
+Revalidated after W04 reused source anchors and changed shared fixtures/API.
+Current evidence: run `41183652961`, tested commit
+`f2bac7dcf527e7e54e6a5af27cb2663af862cccf`, digest
+`3e1388a873201711177df48f560e6e179e586f57fe4e8368a68aee2e6f4a6352`.
+
 ## Remaining limits
 
 - Scanned PDFs, photographs and other non-text formats are retained privately

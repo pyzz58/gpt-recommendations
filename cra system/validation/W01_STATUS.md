@@ -14,6 +14,11 @@ synthetic storage configuration. Current evidence: run `41181003025`, tested
 commit `b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb`, digest
 `c9e4a400a314628a818104c2ca8c79fac86ec500d7c8504f8d50d99e3e78aea5`.
 
+Revalidated after W04 expanded the migration entrypoint and shared runtime
+configuration. Current evidence: run `41183652961`, tested commit
+`f2bac7dcf527e7e54e6a5af27cb2663af862cccf`, digest
+`a414762fe3ff30fe2512ac1ddff2ea69867cf4d1000efe20ae1a78cc2ff99ec9`.
+
 This record covers only the shared data, authorization, revision, idempotency
 and audit foundation. It is engineering and synthetic validation, not clinical
 use validation.
