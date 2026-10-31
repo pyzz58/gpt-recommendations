@@ -20,6 +20,12 @@ class TaskState(StrEnum):
     CANCELLED = "cancelled"
 
 
+class InputValidity(StrEnum):
+    CURRENT = "current"
+    STALE = "stale"
+    UNDER_REVIEW = "under_review"
+
+
 class JobState(StrEnum):
     PENDING = "pending"
     QUEUED = "queued"
@@ -45,6 +51,8 @@ class TaskSnapshot:
     state: TaskState
     revision: int
     mode: str
+    input_validity: InputValidity
+    input_snapshot_sha256: str | None
 
 
 @dataclass(frozen=True)

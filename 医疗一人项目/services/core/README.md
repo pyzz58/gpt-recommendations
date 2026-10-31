@@ -20,6 +20,12 @@ blocking; claim dispute propagation; append-oriented finding dispositions; and a
 synthetic seven-case regression fixture. These rules are not live independent
 agents, human expert reviews, complete scientific validation or evidence that
 unseen medical claims will be detected.
+W18 adds an offline-default network gate, project-scoped knowledge trash/restore,
+safe uncited-index rebuilds, AES-256-GCM project backups, isolated restore checks,
+and explicit task input validity/snapshot hashes. Knowledge current-version changes
+invalidate affected tasks and downstream work in the same transaction while
+retaining accepted task versions as history. Restore checks do not overwrite the
+active database and do not prove off-site or host-failure recovery.
 
 Run from the project root after creating an external PostgreSQL database:
 
@@ -38,7 +44,7 @@ preview validation. Set `MEDICAL_ONE_OFFICE_SOFFICE_PATH`,
 `MEDICAL_ONE_OFFICE_PDF_FONT_PATH`; the export runtime reports `unavailable`
 instead of silently generating broken previews. Real external scholarly access,
 live models, real email delivery, external side effects and a continuously running
-background worker remain unavailable. W14—W17 do not claim scientific validity,
+background worker remain unavailable. W14—W18 do not claim scientific validity,
 correct study design, regulatory applicability, complete typographic QA, real
 email delivery, human/non-mock independent review, complex statistical modelling,
 complete upload controls, deletion/recovery, real external verification, or

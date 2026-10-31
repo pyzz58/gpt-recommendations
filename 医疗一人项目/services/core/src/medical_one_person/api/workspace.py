@@ -25,6 +25,7 @@ from medical_one_person.application.project_views import (
 )
 from medical_one_person.application.projects import ProjectService
 from medical_one_person.application.sessions import AuthenticatedPrincipal
+from medical_one_person.application.tasks import TaskService
 from medical_one_person.domain.opportunities import (
     OpportunityCard,
     OpportunityStatus,
@@ -65,6 +66,12 @@ class SelectionView(BaseModel):
     status: OpportunityStatus
 
 
+class TaskInputRevisionRequest(BaseModel):
+    expected_revision: int = Field(ge=1)
+    input_version: str = Field(min_length=1, max_length=100)
+    input_refs: list[str] = Field(min_length=1, max_length=100)
+
+
 def build_workspace_router(
     session_factory: sessionmaker[Session],
     roles: dict[str, AgentRoleConfig],
@@ -72,6 +79,7 @@ def build_workspace_router(
 ) -> APIRouter:
     router = APIRouter(prefix="/api/v1", tags=["workspace"])
     projects = ProjectService(session_factory)
+    tasks = TaskService(session_factory)
     opportunities = OpportunityService(session_factory)
     reader = WorkspaceReader(session_factory, roles)
 
@@ -123,6 +131,28 @@ def build_workspace_router(
             actor_user_id=principal.user_id,
             project_id=project_id,
         )
+
+    @router.post("/projects/{project_id}/tasks/{task_id}/inputs")
+    def revise_task_inputs(
+        project_id: UUID,
+        task_id: UUID,
+        request: TaskInputRevisionRequest,
+        principal: AuthenticatedPrincipal = Depends(current_principal),
+    ) -> dict[str, str]:
+        revised = tasks.revise_inputs(
+            project_id=project_id,
+            task_id=task_id,
+            actor_user_id=principal.user_id,
+            expected_revision=request.expected_revision,
+            input_version=request.input_version,
+            input_refs=request.input_refs,
+        )
+        return {
+            "task_id": str(revised.id),
+            "state": revised.state.value,
+            "input_validity": revised.input_validity.value,
+            "input_snapshot_sha256": revised.input_snapshot_sha256 or "",
+        }
 
     @router.get("/projects/{project_id}/agents", response_model=list[AgentSceneView])
     def project_agents(

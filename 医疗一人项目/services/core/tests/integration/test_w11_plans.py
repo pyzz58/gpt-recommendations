@@ -14,6 +14,7 @@ from medical_one_person.application.errors import (
     ConflictingOperationError,
     PlanStateError,
     ReviewPolicyError,
+    TaskNotReadyError,
 )
 from medical_one_person.application.opportunities import OpportunityService
 from medical_one_person.application.plans import PlanService
@@ -220,6 +221,38 @@ def test_plan_dag_dispatch_independent_review_and_unlock(
         task_id=research.task_id,
     )
     assert research_task.state == TaskState.SUBMITTED
+
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        stored = session.get(Task, research.task_id)
+        assert stored is not None
+        stored.input_validity = "stale"
+    with pytest.raises(TaskNotReadyError, match="input validity"):
+        service.review_task(
+            project_id=project.id,
+            plan_id=submitted.id,
+            task_id=research.task_id,
+            actor_user_id=identity.owner_user_id,
+            expected_revision=research_task.revision,
+            reviewer_role="A25",
+            decision=ReviewDecision.ACCEPTED,
+            summary="失效输入不得通过。",
+            findings=[],
+            idempotency_key="w11-stale-input-review",
+        )
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        stored = session.get(Task, research.task_id)
+        assert stored is not None
+        stored.input_validity = "current"
 
     with pytest.raises(ReviewPolicyError):
         service.review_task(

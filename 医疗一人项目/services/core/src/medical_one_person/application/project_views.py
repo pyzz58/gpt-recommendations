@@ -107,6 +107,10 @@ class TaskView(BaseModel):
     revision: int
     input_version: str
     input_refs: list[str]
+    input_validity: str
+    input_snapshot_sha256: str | None
+    input_invalidated_at: datetime | None
+    input_invalidated_reason: str | None
     deliverable_schema: str
     acceptance_policy: str
     dependencies: list[UUID]
@@ -486,6 +490,10 @@ def _task_view(task: Task, dependencies: list[UUID]) -> TaskView:
         revision=task.revision,
         input_version=task.input_version,
         input_refs=task.input_refs,
+        input_validity=task.input_validity,
+        input_snapshot_sha256=task.input_snapshot_sha256,
+        input_invalidated_at=task.input_invalidated_at,
+        input_invalidated_reason=task.input_invalidated_reason,
         deliverable_schema=task.deliverable_schema,
         acceptance_policy=task.acceptance_policy,
         dependencies=sorted(dependencies, key=str),

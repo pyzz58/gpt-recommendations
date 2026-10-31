@@ -6,7 +6,8 @@ from uuid import UUID, uuid4
 from sqlalchemy import select
 from sqlalchemy.orm import Session, sessionmaker
 
-from medical_one_person.application.errors import LeaseConflictError
+from medical_one_person.application.errors import LeaseConflictError, TaskNotReadyError
+from medical_one_person.application.tasks import require_current_task_inputs
 from medical_one_person.domain.tasks import (
     AttemptState,
     JobClaim,
@@ -145,6 +146,14 @@ class JobQueue:
                 job.state = JobState.CANCELLED.value
                 job.last_error_code = "TASK_NOT_CLAIMABLE"
                 job.finished_at = now
+                return None
+            try:
+                require_current_task_inputs(task)
+            except TaskNotReadyError:
+                job.state = JobState.CANCELLED.value
+                job.last_error_code = "TASK_INPUT_STALE"
+                job.finished_at = now
+                job.updated_at = now
                 return None
 
             job.state = JobState.RUNNING.value
@@ -396,6 +405,12 @@ def _transition_task(
             task_revision=task.revision,
             state=task.state,
             input_version=task.input_version,
+            input_validity=task.input_validity,
+            input_snapshot=task.input_snapshot,
+            input_snapshot_sha256=task.input_snapshot_sha256,
+            input_invalidated_at=task.input_invalidated_at,
+            input_invalidated_reason=task.input_invalidated_reason,
+            input_invalidated_by=task.input_invalidated_by,
             role_version=task.role_version,
             created_at=now,
         )

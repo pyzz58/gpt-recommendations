@@ -361,6 +361,73 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/tasks/{task_id}/inputs": {
+      "post": {
+        "tags": [
+          "workspace"
+        ],
+        "summary": "Revise Task Inputs",
+        "operationId": "revise_task_inputs_api_v1_projects__project_id__tasks__task_id__inputs_post",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskInputRevisionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Revise Task Inputs Api V1 Projects  Project Id  Tasks  Task Id  Inputs Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/projects/{project_id}/agents": {
       "get": {
         "tags": [
@@ -13570,6 +13637,37 @@
         ],
         "title": "StatisticalPlanView"
       },
+      "TaskInputRevisionRequest": {
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Revision"
+          },
+          "input_version": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Input Version"
+          },
+          "input_refs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Input Refs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "expected_revision",
+          "input_version",
+          "input_refs"
+        ],
+        "title": "TaskInputRevisionRequest"
+      },
       "TaskReviewRequest": {
         "properties": {
           "expected_revision": {
@@ -13788,6 +13886,44 @@
             "type": "array",
             "title": "Input Refs"
           },
+          "input_validity": {
+            "type": "string",
+            "title": "Input Validity"
+          },
+          "input_snapshot_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Snapshot Sha256"
+          },
+          "input_invalidated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Invalidated At"
+          },
+          "input_invalidated_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Invalidated Reason"
+          },
           "deliverable_schema": {
             "type": "string",
             "title": "Deliverable Schema"
@@ -13827,6 +13963,10 @@
           "revision",
           "input_version",
           "input_refs",
+          "input_validity",
+          "input_snapshot_sha256",
+          "input_invalidated_at",
+          "input_invalidated_reason",
           "deliverable_schema",
           "acceptance_policy",
           "dependencies",

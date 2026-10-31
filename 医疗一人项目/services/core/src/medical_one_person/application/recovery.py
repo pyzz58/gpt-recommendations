@@ -339,9 +339,9 @@ class RecoveryService:
         _validate_passphrase(passphrase)
         request_hash = _digest({"project_id": str(project_id), "format": BACKUP_FORMAT})
         with self._session_factory.begin() as session:
+            session.connection(execution_options={"isolation_level": "REPEATABLE READ"})
             actor = _owner(session, actor_user_id)
             with _rls_context(session, actor_user_id):
-                session.connection(execution_options={"isolation_level": "REPEATABLE READ"})
                 project = _project(session, project_id, actor_user_id)
                 existing = session.scalar(
                     select(BackupSnapshot).where(

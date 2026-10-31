@@ -27,6 +27,8 @@ from medical_one_person.infrastructure.db.models import (
     ImpactReview,
     KnowledgeDocumentVersion,
     RetrievalSnapshot,
+    Task,
+    TaskVersion,
 )
 from medical_one_person.infrastructure.knowledge.parsers import DocumentParser
 from medical_one_person.infrastructure.knowledge.upload import UploadService
@@ -248,6 +250,12 @@ def test_search_snapshot_citation_claim_and_version_impact(
         snapshots = session.scalars(select(RetrievalSnapshot)).all()
         impact_rows = session.scalars(select(ImpactReview)).all()
         links = session.scalars(select(EvidenceLink)).all()
+        task_row = session.get(Task, task.id)
+        task_versions = session.scalars(
+            select(TaskVersion)
+            .where(TaskVersion.task_id == task.id)
+            .order_by(TaskVersion.task_revision)
+        ).all()
         versions = session.scalars(
             select(KnowledgeDocumentVersion).order_by(KnowledgeDocumentVersion.version_label)
         ).all()
@@ -256,6 +264,13 @@ def test_search_snapshot_citation_claim_and_version_impact(
     assert len(snapshots) == 3
     assert len(impact_rows) == 1
     assert len(links) == 1
+    assert task_row is not None
+    assert task_row.state == "needs_input"
+    assert task_row.input_validity == "stale"
+    assert task_row.input_invalidated_reason == (
+        f"KNOWLEDGE_CURRENT_VERSION_CHANGED:{second.version_id}"
+    )
+    assert [item.input_validity for item in task_versions] == ["current", "stale"]
     assert [version.version_status for version in versions] == [
         "historical",
         "current",

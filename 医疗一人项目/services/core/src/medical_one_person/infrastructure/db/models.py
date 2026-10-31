@@ -1816,6 +1816,7 @@ TASK_STATES = (
     "cancelled",
 )
 TASK_STATE_VALUES = ", ".join(f"'{value}'" for value in TASK_STATES)
+INPUT_VALIDITY_VALUES = "'current', 'stale', 'under_review'"
 JOB_STATE_VALUES = "'pending', 'queued', 'running', 'succeeded', 'failed', 'dead', 'cancelled'"
 ATTEMPT_STATE_VALUES = "'running', 'succeeded', 'failed', 'interrupted'"
 RESERVATION_STATE_VALUES = "'reserved', 'settled', 'released', 'uncertain'"
@@ -1832,11 +1833,16 @@ class Task(Base):
             name="task_same_workspace",
         ),
         CheckConstraint(f"state IN ({TASK_STATE_VALUES})", name="task_state"),
+        CheckConstraint(
+            f"input_validity IN ({INPUT_VALIDITY_VALUES})",
+            name="task_input_validity",
+        ),
         CheckConstraint("mode IN ('mock', 'live')", name="task_mode"),
         CheckConstraint("revision >= 1", name="task_revision_positive"),
         CheckConstraint("max_attempts >= 1", name="task_max_attempts_positive"),
         Index("ix_tasks_project_state", "project_id", "state"),
         Index("ix_tasks_assignee_state", "assignee_role", "state"),
+        Index("ix_tasks_project_input_validity", "project_id", "input_validity"),
     )
 
     id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True)
@@ -1849,6 +1855,17 @@ class Task(Base):
     role_version: Mapped[str] = mapped_column(String(100), nullable=False)
     input_version: Mapped[str] = mapped_column(String(100), nullable=False)
     input_refs: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
+    input_validity: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="current",
+        server_default="current",
+    )
+    input_snapshot: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    input_snapshot_sha256: Mapped[str | None] = mapped_column(String(64))
+    input_invalidated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    input_invalidated_reason: Mapped[str | None] = mapped_column(Text)
+    input_invalidated_by: Mapped[list[str]] = mapped_column(JSONB, nullable=False, default=list)
     goal: Mapped[str] = mapped_column(Text, nullable=False)
     deliverable_schema: Mapped[str] = mapped_column(String(100), nullable=False)
     acceptance_policy: Mapped[str] = mapped_column(String(100), nullable=False)
@@ -1893,6 +1910,10 @@ class TaskVersion(Base):
             ["tasks.workspace_id", "tasks.project_id", "tasks.id"],
             name="task_version_same_task",
         ),
+        CheckConstraint(
+            f"input_validity IN ({INPUT_VALIDITY_VALUES})",
+            name="task_version_input_validity",
+        ),
     )
 
     id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True)
@@ -1902,6 +1923,12 @@ class TaskVersion(Base):
     task_revision: Mapped[int] = mapped_column(Integer, nullable=False)
     state: Mapped[str] = mapped_column(String(30), nullable=False)
     input_version: Mapped[str] = mapped_column(String(100), nullable=False)
+    input_validity: Mapped[str] = mapped_column(String(20), nullable=False)
+    input_snapshot: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    input_snapshot_sha256: Mapped[str | None] = mapped_column(String(64))
+    input_invalidated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    input_invalidated_reason: Mapped[str | None] = mapped_column(Text)
+    input_invalidated_by: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
     role_version: Mapped[str] = mapped_column(String(100), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()

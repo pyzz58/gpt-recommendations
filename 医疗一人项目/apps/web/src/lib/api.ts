@@ -116,6 +116,10 @@ export type TaskView = {
   revision: number;
   input_version: string;
   input_refs: string[];
+  input_validity: "current" | "stale" | "under_review";
+  input_snapshot_sha256: string | null;
+  input_invalidated_at: string | null;
+  input_invalidated_reason: string | null;
   deliverable_schema: string;
   acceptance_policy: string;
   dependencies: string[];
@@ -1288,6 +1292,31 @@ export function fetchTasks(
   signal?: AbortSignal,
 ): Promise<TaskView[]> {
   return request<TaskView[]>(`/api/v1/projects/${projectId}/tasks`, { signal });
+}
+
+export function reviseTaskInputs(
+  projectId: string,
+  taskId: string,
+  payload: {
+    expected_revision: number;
+    input_version: string;
+    input_refs: string[];
+  },
+): Promise<{
+  task_id: string;
+  state: string;
+  input_validity: string;
+  input_snapshot_sha256: string;
+}> {
+  return request<{
+    task_id: string;
+    state: string;
+    input_validity: string;
+    input_snapshot_sha256: string;
+  }>(
+    `/api/v1/projects/${projectId}/tasks/${taskId}/inputs`,
+    { method: "POST", body: JSON.stringify(payload) },
+  );
 }
 
 export function fetchAgents(

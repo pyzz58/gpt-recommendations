@@ -1,4 +1,4 @@
-# W01—W17 直接依赖、来源与许可
+# W01—W18 直接依赖、来源与许可
 
 本表记录直接依赖。`pnpm-lock.yaml` 和 `services/core/uv.lock` 固定完整解析结果；
 `services/core/requirements.lock` 是容器安装使用的带哈希导出。没有复制第三方的
@@ -33,6 +33,7 @@
 | 模拟邮件/授权 | Python `3.12`标准库、Pydantic `2.14.2`、PostgreSQL JSONB/RLS | PSF / MIT / PostgreSQL License | W15 owner inbox、草稿、附件hash、发送授权、幂等账本和不确定核对 | 合成收件、64条策略、API/页面与浏览器；无真实邮箱或网络 |
 | 外部合作/专业记录 | Pydantic `2.14.2`、PostgreSQL JSONB/NUMERIC/RLS | MIT / PostgreSQL License | W16机构、专家、工作范围、报价、合同、交付、注册/专利/财务/商业台账 | 合成外部记录、73条策略、API/页面；无真实机构事实 |
 | 独立审计/合成评测 | Pydantic `2.14.2`、PostgreSQL JSONB/SHA-256/RLS、JSON Schema 2020-12 | MIT / PostgreSQL License / 本项目 | W17三类审计快照、A25/A26确定性规则、阻断/处置、7案合成回归与两个导出Schema | 98项核心测试、迁移往返、76条策略、API/页面；不证明科学能力 |
+| 离线/恢复 | cryptography `46.0.3`、cffi `2.1.1`、pycparser `3.12`、PostgreSQL 17.6 | Apache-2.0 OR BSD-3-Clause / MIT / BSD-3-Clause / PostgreSQL License | W18 AES-256-GCM备份、scrypt密钥派生、回收站、索引重建和输入失效 | mock/本地真实PostgreSQL、加密/篡改/错误口令与隔离恢复测试；活动DB重放和异地恢复未测 |
 | PyYAML / type stubs | PyPI `6.0.3` / `6.0.12.20261030` | MIT | 26岗YAML配置与类型检查 | 26岗加载 |
 | Uvicorn | PyPI `0.54.0` | BSD-3-Clause | ASGI 服务 | 服务启动 |
 | SQLAlchemy | PyPI `2.1.6` | MIT | PostgreSQL ORM、事务与行锁 | W02—W09真实数据库测试 |

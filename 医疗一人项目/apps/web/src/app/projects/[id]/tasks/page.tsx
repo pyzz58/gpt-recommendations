@@ -11,6 +11,7 @@ import {
   fetchTasks,
   notifyProjectChanged,
   pausePlan,
+  reviseTaskInputs,
   resumePlan,
   reviewTask,
   stopPlan,
@@ -243,6 +244,32 @@ export default function TasksPage() {
     setReviewerRole(node.reviewer_roles[0] ?? "A25");
     setReviewSummary("");
     setCriticalFinding(false);
+  }
+
+  async function reviseSelectedTaskInputs() {
+    if (!selectedTask) return;
+    const version = window.prompt(
+      "输入新版本编号（例如 knowledge-v2 或 evidence-bundle:2）：",
+      selectedTask.input_version,
+    );
+    if (!version?.trim()) return;
+    const refs = window.prompt(
+      "输入完整引用，使用分号或换行分隔：",
+      selectedTask.input_refs.join(";"),
+    );
+    if (!refs?.trim()) return;
+    await perform(
+      () =>
+        reviseTaskInputs(projectId, selectedTask.id, {
+          expected_revision: selectedTask.revision,
+          input_version: version.trim(),
+          input_refs: refs
+            .split(/[;；\n]/)
+            .map((item) => item.trim())
+            .filter(Boolean),
+        }),
+      "已保存新的输入快照；任务通过新的 TaskVersion 等待重新派发和验收。",
+    );
   }
 
   async function submitReview(event: React.FormEvent<HTMLFormElement>) {
@@ -519,7 +546,12 @@ export default function TasksPage() {
           <SectionHeader
             eyebrow={`${selectedTask.assignee_role} / ${selectedTask.task_type}`}
             title="任务详情"
-            aside={<StatusPill value={selectedTask.state} />}
+            aside={
+              <div className="cardTopline">
+                <StatusPill value={selectedTask.input_validity} />
+                <StatusPill value={selectedTask.state} />
+              </div>
+            }
           />
           <div className="detailGrid">
             <div>
@@ -529,11 +561,31 @@ export default function TasksPage() {
             <div>
               <h3>输入版本</h3>
               <p>{selectedTask.input_version}</p>
+              <p className="mutedText">
+                有效性：{selectedTask.input_validity} · 快照{" "}
+                {selectedTask.input_snapshot_sha256?.slice(0, 16) ?? "缺失"}
+              </p>
+              {selectedTask.input_invalidated_reason && (
+                <p className="warningBanner">
+                  {selectedTask.input_invalidated_reason}
+                </p>
+              )}
               <div className="referenceList">
                 {selectedTask.input_refs.map((item) => (
                   <code key={item}>{item}</code>
                 ))}
               </div>
+              {(selectedTask.input_validity !== "current" ||
+                selectedTask.state === "needs_input") && (
+                <button
+                  className="button secondary"
+                  disabled={busy}
+                  onClick={() => void reviseSelectedTaskInputs()}
+                  type="button"
+                >
+                  更新输入并创建新 TaskVersion
+                </button>
+              )}
             </div>
             <div>
               <h3>交付合同</h3>

@@ -12,6 +12,7 @@ from sqlalchemy import delete, func, or_, select
 from sqlalchemy.orm import Session, sessionmaker
 
 from medical_one_person.application.errors import NotFoundError, RevisionConflictError
+from medical_one_person.application.tasks import invalidate_task_inputs
 from medical_one_person.domain.knowledge.documents import IngestState
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.models import (
@@ -608,6 +609,9 @@ class KnowledgeVersionService:
             changed = session.get(KnowledgeDocumentVersion, version_id)
             if changed is None or changed.document_id != document.id:
                 raise NotFoundError("Document version not found")
+            session.scalar(
+                select(Project).where(Project.id == changed.project_id).with_for_update()
+            )
             previous_id = document.current_version_id
             if previous_id is None:
                 raise ValueError("Document has no current version")
@@ -661,12 +665,20 @@ class KnowledgeVersionService:
                             "state": "historical",
                         }
                     )
-            for task_id in task_ids:
+            invalidated_task_ids = invalidate_task_inputs(
+                session,
+                project_id=changed.project_id,
+                task_ids=sorted(task_ids, key=str),
+                actor_user_id=actor.id,
+                reason=f"KNOWLEDGE_CURRENT_VERSION_CHANGED:{changed.id}",
+                now=datetime.now(UTC),
+            )
+            for task_id in invalidated_task_ids:
                 affected.append(
                     {
                         "type": "task",
                         "id": str(task_id),
-                        "state": "needs_review",
+                        "state": "needs_input",
                     }
                 )
             impact = ImpactReview(

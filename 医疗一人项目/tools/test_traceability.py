@@ -2,8 +2,10 @@
 """Fault-oriented tests of documentation consistency, using isolated copies."""
 from __future__ import annotations
 import importlib.util
+import hashlib
 import json
 import shutil
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -22,10 +24,38 @@ class TraceabilityTests(unittest.TestCase):
         (self.root / "traceability").mkdir()
         for name in ["最高思想.md", "技术路线与实施路径.md", "traceability/manifest.json"]:
             shutil.copyfile(self.project / name, self.root / name)
+        shutil.copyfile(
+            self.project / "traceability/acceptance-records.json",
+            self.root / "traceability/acceptance-records.json",
+        )
         for item in self.manifest().get("supporting_artifacts", []):
             target = self.root / item["path"]
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(self.project / item["path"], target)
+        for requirement in self.manifest().get("requirements", []):
+            for name in requirement.get("implementation_paths", []):
+                source = self.project / name
+                target = self.root / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target)
+        subprocess.run(["git", "init"], cwd=self.root, check=True, capture_output=True)
+        subprocess.run(
+            ["git", "config", "user.email", "traceability@example.invalid"],
+            cwd=self.root,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Traceability Test"],
+            cwd=self.root,
+            check=True,
+        )
+        subprocess.run(["git", "add", "."], cwd=self.root, check=True)
+        subprocess.run(
+            ["git", "commit", "-m", "fixture baseline"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+        )
 
     def manifest(self):
         return json.loads((self.root / "traceability/manifest.json").read_text())
@@ -124,6 +154,96 @@ class TraceabilityTests(unittest.TestCase):
     def test_refresh_requires_substantive_note(self):
         with self.assertRaises(ValueError):
             checker.refresh(self.root, "ok")
+
+    def test_verified_requires_acceptance_record(self):
+        data = self.manifest()
+        requirement = next(item for item in data["requirements"] if item["id"] == "RQ-006")
+        requirement["implementation_status"] = "verified"
+        self.write_manifest(data)
+        self.assertTrue(
+            any(
+                "RQ-006: verified requires passed acceptance evidence" in error
+                for error in checker.validate(self.root)
+            )
+        )
+
+    def test_implemented_requires_tracked_git_path(self):
+        data = self.manifest()
+        requirement = next(item for item in data["requirements"] if item["id"] == "RQ-006")
+        requirement["implementation_paths"].append("services/not-tracked.py")
+        self.write_manifest(data)
+        self.assertTrue(
+            any(
+                "implementation path is not tracked by Git" in error
+                for error in checker.validate(self.root)
+            )
+        )
+
+    def test_acceptance_record_detects_post_verification_code_change(self):
+        path = "services/core/src/medical_one_person/agents/runner.py"
+        source_commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        file_sha256 = hashlib.sha256((self.root / path).read_bytes()).hexdigest()
+        evidence_path = self.root / "traceability/acceptance-records.json"
+        evidence = json.loads(evidence_path.read_text())
+        evidence["records"].append(
+            {
+                "id": "ACC-RQ-006-test",
+                "requirements": ["RQ-006"],
+                "work_packages": ["W05", "W17"],
+                "acceptance_refs": ["AT-006"],
+                "source_commit": source_commit,
+                "result": "passed",
+                "commands": [
+                    {
+                        "cwd": "services/core",
+                        "command": "pytest tests/integration/test_w05_agents.py",
+                        "mode": "mock+postgresql",
+                        "started_at": "2026-11-01T00:00:00Z",
+                        "finished_at": "2026-11-01T00:01:00Z",
+                        "exit_code": 0,
+                        "artifacts": [],
+                    }
+                ],
+                "validation_levels": {
+                    "mock": {"status": "passed", "evidence": ["pytest"]},
+                    "live": {"status": "not_run", "evidence": []},
+                    "human_expert": {"status": "not_run", "evidence": []},
+                    "real_outsourcing": {
+                        "status": "not_applicable",
+                        "evidence": [],
+                    },
+                },
+                "code_paths": [{"path": path, "sha256": file_sha256}],
+                "artifacts": [],
+                "uncovered": ["No live or human expert verification."],
+            }
+        )
+        evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
+        checker.refresh(
+            self.root,
+            "测试验收证据已写入，并刷新其派生指纹；真实验证仍只覆盖mock命令。",
+        )
+        data = self.manifest()
+        requirement = next(item for item in data["requirements"] if item["id"] == "RQ-006")
+        requirement["implementation_status"] = "verified"
+        self.write_manifest(data)
+        self.assertEqual(checker.validate(self.root), [])
+        (self.root / path).write_text(
+            (self.root / path).read_text(encoding="utf-8") + "\n# later change\n",
+            encoding="utf-8",
+        )
+        self.assertTrue(
+            any(
+                "implementation changed after tested source" in error
+                for error in checker.validate(self.root)
+            )
+        )
 
     def test_reviewed_rebaseline_passes_structural_check(self):
         self.mutate("最高思想.md", "| D-018 | 科学研究优先", "| D-018 | 科学研究应优先")

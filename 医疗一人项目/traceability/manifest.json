@@ -1,7 +1,8 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "theory_file": "最高思想.md",
   "roadmap_file": "技术路线与实施路径.md",
+  "acceptance_evidence_file": "traceability/acceptance-records.json",
   "requirements": [
     {
       "id": "RQ-001",
@@ -14,6 +15,7 @@
         "D-012",
         "D-025",
         "D-026",
+        "D-030",
         "SEC:14",
         "SEC:15",
         "SEC:20"
@@ -36,7 +38,7 @@
         "traceability/manifest.json"
       ],
       "implementation_status": "documentation_ready",
-      "source_sha256": "e5197682893329c4507954c08a52d0a325f9bed9650abd297584601c3c7025f0"
+      "source_sha256": "f469add438a69af590714fe5f62a9137a90e67374a290a1652c14cf52bcdb02b"
     },
     {
       "id": "RQ-002",
@@ -104,7 +106,7 @@
         "services/core/tests/integration/test_w12_workflow_service.py"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "5c1b4d8b0e04b8a61a5f07ae5645aed211bb3715da4e8c8ea912235a50ef169d"
+      "source_sha256": "1178380baad76d8e5f7964f8b0818fb2055dc85b08e6ffbe6c00eb00c41450a9"
     },
     {
       "id": "RQ-004",
@@ -235,6 +237,14 @@
         "services/core/tests/integration/test_w17_audit_service.py",
         "apps/web/src/app/projects/[id]/audits/page.tsx"
       ],
+      "implementation_paths": [
+        "services/core/src/medical_one_person/agents/runner.py",
+        "services/core/src/medical_one_person/domain/audits.py",
+        "services/core/src/medical_one_person/application/audits.py",
+        "services/core/src/medical_one_person/api/audits.py",
+        "services/core/tests/integration/test_w17_audit_service.py",
+        "apps/web/src/app/projects/[id]/audits/page.tsx"
+      ],
       "implementation_status": "implemented",
       "source_sha256": "bf3c471354460d5d66520409685ee487fb01bdf69a443f201dffcfcb201cc0d6"
     },
@@ -353,7 +363,9 @@
         "services/core/migrations/versions/c7296a4b69d8_w04_tasks_jobs_budgets.py",
         "services/core/migrations/versions/9ff9aac51d3e_w11_plans_dispatch_reviews.py",
         "services/core/migrations/versions/2fa7e200f2d9_w12_domain_workflows_assessments.py",
-        "services/core/tests/integration/test_w11_plans.py"
+        "services/core/tests/integration/test_w11_plans.py",
+        "services/core/migrations/versions/b2e7d4a9c310_w19_task_input_validity.py",
+        "services/core/tests/integration/test_w04_scheduling.py"
       ],
       "implementation_status": "in_progress",
       "source_sha256": "306867d2a3dd1a085c558163ff3d36a7e75ea1119a22f918cd7ed2cf61f5dd80"
@@ -424,6 +436,15 @@
         "fixtures/w17-audit-cases.json",
         "services/core/tests/unit/test_w17_audits.py"
       ],
+      "implementation_paths": [
+        "config/source_policies/catalog.yaml",
+        "schemas/source-policy.v1.schema.json",
+        "services/core/src/medical_one_person/infrastructure/sources/adapters.py",
+        "services/core/src/medical_one_person/domain/audits.py",
+        "services/core/src/medical_one_person/application/audits.py",
+        "fixtures/w17-audit-cases.json",
+        "services/core/tests/unit/test_w17_audits.py"
+      ],
       "implementation_status": "implemented",
       "source_sha256": "84343c325be8fb3b97982afd1d33eeb7aa2570913db564616d803bcf099819b0"
     },
@@ -455,7 +476,10 @@
         "services/core/src/medical_one_person/application/knowledge.py",
         "services/core/migrations/versions/bc959837d3ea_w08_knowledge_evidence_retrieval.py",
         "services/core/src/medical_one_person/domain/artifacts.py",
-        "services/core/src/medical_one_person/infrastructure/artifacts"
+        "services/core/src/medical_one_person/infrastructure/artifacts",
+        "services/core/src/medical_one_person/domain/recovery.py",
+        "services/core/src/medical_one_person/application/recovery.py",
+        "services/core/migrations/versions/a7c4e2f9b610_w18_recovery_and_backups.py"
       ],
       "implementation_status": "in_progress",
       "source_sha256": "3247773d1a5ce65f7890a73c1c1a5901daea44671aa7d6b07f3804d9eabe4f61"
@@ -799,6 +823,18 @@
         "apps/web/src/app/projects/[id]/audits/page.tsx",
         "docs/w17-handoff.md"
       ],
+      "implementation_paths": [
+        "services/core/src/medical_one_person/application/plans.py",
+        "services/core/src/medical_one_person/api/plans.py",
+        "apps/web/src/app/projects/[id]/tasks/page.tsx",
+        "services/core/tests/integration/test_w11_plans.py",
+        "services/core/src/medical_one_person/domain/audits.py",
+        "services/core/src/medical_one_person/application/audits.py",
+        "fixtures/w17-audit-cases.json",
+        "services/core/tests/integration/test_w17_audit_service.py",
+        "apps/web/src/app/projects/[id]/audits/page.tsx",
+        "docs/w17-handoff.md"
+      ],
       "implementation_status": "implemented",
       "source_sha256": "f2df1f1602f19e4d8825802e46a29b1d0d71fff2116167ced519540d9ec3c49b"
     },
@@ -1049,7 +1085,7 @@
         "apps/web/src/app/projects/[id]/external/page.tsx"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "9bd104f0f8e2eb455b7de6cf4096543837d20123224ed0b80cb727c1b3d0337a"
+      "source_sha256": "442398da3587ddf7a8a7762b5f70353f6d7bf95900a80fdbdf49abdc2fc73cfc"
     },
     {
       "id": "RQ-030",
@@ -1175,7 +1211,7 @@
         "services/core/tests/integration/test_w16_external_api.py"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "843b8cbda116dd6e909a41e742c22037909db61d04f4210edf06366de69c7312"
+      "source_sha256": "448f484ffd455755a617ac39566545126f92183112932dbd40375ed2a83dcdf2"
     },
     {
       "id": "RQ-033",
@@ -1212,10 +1248,11 @@
       "planned_paths": [
         "services/core/src/medical_one_person/domain/engagements",
         "services/core/src/medical_one_person/domain/phase_validations",
-        "tests/evaluation/phase_one"
+        "tests/evaluation/phase_one",
+        "docs/w24-pilot-charter.md"
       ],
       "implementation_status": "planned",
-      "source_sha256": "de2632d45ccf931dad46632a994aa12978ef320d7d8e316243eac610f286e0ea"
+      "source_sha256": "994770f60cdab4795bc0907847c88e2acf940b7b70fde35672b829cfc3bbfceb"
     },
     {
       "id": "RQ-034",
@@ -1265,16 +1302,22 @@
         "services/core/src/medical_one_person/application/knowledge_browser.py",
         "services/core/src/medical_one_person/domain/knowledge",
         "services/core/tests/integration/test_w10_ui_api.py",
-        "docs/w10-handoff.md"
+        "docs/w10-handoff.md",
+        "services/core/src/medical_one_person/domain/recovery.py",
+        "services/core/src/medical_one_person/application/recovery.py",
+        "services/core/migrations/versions/a7c4e2f9b610_w18_recovery_and_backups.py",
+        "apps/web/src/app/projects/[id]/recovery/page.tsx",
+        "services/core/tests/integration/test_w18_recovery_service.py",
+        "docs/w18-handoff.md"
       ],
       "implementation_status": "in_progress",
       "source_sha256": "9dcba219e342a846330c0616f7366940e73f5fe794c44e6e4b63ae58c84ddd0f"
     }
   ],
-  "theory_version": "V0.8",
-  "roadmap_version": "V1.10",
-  "theory_sha256": "d193c9d902e5d700d182f407b0a6f49035c0a884dfb1c3f5169ab703d0e89f86",
-  "roadmap_sha256": "4c148fcf14ec66a100e4ae87bce99e01caa65a56415d4de1122426e6714a1892",
+  "theory_version": "V0.9",
+  "roadmap_version": "V1.12",
+  "theory_sha256": "93da3c5140432607aabed9301d90d9f8a35e7d742a62f5211402878782aef6c6",
+  "roadmap_sha256": "1737d2d289401cc1167d8e1649f42f4c3851f4b037b20329f5c260e7cb9d52f4",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1331,6 +1374,7 @@
     "D-027": "9e9a49eb7c9488fa174cfb7d6d781df19a2ff50f61f31f445c42ee9cf0cd69c0",
     "D-028": "f4e142e1da986403d7df1f47035b36d37ec47fb5420d87977b60826ccc8f3e0f",
     "D-029": "1f465b7f09657ce31b196803d826acf826b5d57acc202ebf85ec411a797f212e",
+    "D-030": "b421323fd1dc529fd7156b5f9274f6c0fa24a8908c6b3f091335fa3ae08c4cb3",
     "SEC:1": "52e486d89ee01d3fbaa7ab6523701790d6521eb0ed0d4b938079630b0186d429",
     "SEC:10": "ffbbb85feabab581eddd6981f9eebcddd3a4ee80f0e6a35eec7defb4942c4319",
     "SEC:10.1": "b7f0bfdb75b16ea23113b34fb6a81fb1cb51d83208bf3c01499468d731c960e6",
@@ -1344,19 +1388,19 @@
     "SEC:11.4": "c8811de2ab0e62462148e6ada4977259b3220df8295cec923437862edb37051c",
     "SEC:11.5": "d5a49fffe64408a8c8b014bfa9eebb53c52591d9639fa0670da10d654e87887b",
     "SEC:12": "b3dae2aaee9061835a130037e69a5059af27b3057c344159bdf51a381827cbb2",
-    "SEC:13": "fce2c98d7dc94849f54ba692bee5c81290a7ebaff740cf4e1db08738dea5abdf",
+    "SEC:13": "6933a81ef6b82a4d4af27171067cc9b78c80263e40cdd88d882b4006ffbae22a",
     "SEC:14": "9bcb83a2fd093f1659724e91b9936940720ada238eb53ba28f28eae932bf84e5",
     "SEC:14.1": "ead0ff5cdc0cbaf1a289cce340ee2d76f2ea8a9128cbdb974befa0a111f76486",
     "SEC:14.2": "4147762299dec3a53c2ee856c49b2f954d097a8aabb1192088bcd385a6df4691",
     "SEC:14.3": "b6db822470a775dd4638ec3afc851d1a5ab36ef44ff6610e24f649e18704b9f0",
     "SEC:14.4": "90e44adec37f0a10287927a8ab167bf2c133abff6f62307866d92fb1ffe9a3f6",
-    "SEC:15": "2f207cefeba374e682f7bed7d598eeedaebabffb986e19b72e81423f345662ca",
+    "SEC:15": "30d2baa48fe74545b0c7d477e20d91a2ea74988552638c2c7f657b6053e874a7",
     "SEC:16": "9f6227eb98bd1eebc5f27aba11b6eb3cc76f600ff8e84312e3fa2639df27f812",
     "SEC:17": "cddc96517598615329e9f4d21b636727445c0bb70dee72d5c22e325b16bf18e0",
     "SEC:18": "1966fcb6011158392d5333e5e575a4afa056a1494b01ae0d047818604622c190",
-    "SEC:19": "b204c4ad768b1465421f18d028e2e849b2e995cb99d2b5209e00edca0fb53158",
-    "SEC:2": "835fe7e0d313915995fac71e1e14653fd28940b80f1035d2e59ed15582b80eb7",
-    "SEC:20": "4e3cb38ef69e41f45a89e90a3b4b1d1a8845ded3176118c50e5da8ef28075601",
+    "SEC:19": "88fc59c0071506a7255d95a29895912b7ab61bf04547dbfa28718c331deefcae",
+    "SEC:2": "5eb22249cfa663386cfe1f2597bb12a70ff9a6dc0cbcf13cea9ace3d7e9473d5",
+    "SEC:20": "84357f6dcc3badfd1bf8ac39119a5a376a27053c8b5ce1e44992d8e1e053ac9e",
     "SEC:3": "1e5e735d84a3f6c2cb3d94f4d36853d010e75fa64f5781bc668e1412371981ee",
     "SEC:4": "cc6632d2b4f100a59fb85c92a6ebc0bfb75e7dad6b785e130be3b1236863baba",
     "SEC:4.1": "d5e130effdd09ce1dbfac7e64a1070f1360c2aa2e6ddee0442998b94c29c9857",
@@ -1383,8 +1427,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-10-31T11:17:49.357983+00:00",
-    "note": "W17终验补充：项目内审计创建与finding处置以项目行锁串行化review/event账本；完整后端测试、Ruff和mypy复跑通过。W17仍为非mock independent audit和真人专家审查之前的状态。",
+    "at": "2026-10-31T21:22:09.564819+00:00",
+    "note": "最终源码提交前同步：V0.9/V1.12、完成证据合同、输入有效性、W18/W24文档和派生Schema已对齐；验收记录将在被测源码提交后写入。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -1414,7 +1458,7 @@
       "requirement_ids": [
         "RQ-032"
       ],
-      "sha256": "b6dbecc6a7ec998dbf041e0ad3d7296da8395cb55b9876b82705e2d4dc994c47"
+      "sha256": "ba6e6a3bf77c5f40c3f8325a4883de8c93f8f297708bb5ea3a17574a5658a67f"
     },
     {
       "path": "pnpm-lock.yaml",
@@ -1430,7 +1474,7 @@
         "RQ-025",
         "RQ-032"
       ],
-      "sha256": "04aad2204b30a04c152400fdc5df58e291bee512353ba71e822cbbe9ae4762d0"
+      "sha256": "d2e513065017a5ba27ae27579200c720f0bfd42fc945b6069e84fe943bf187b0"
     },
     {
       "path": "services/core/requirements.lock",
@@ -1438,7 +1482,7 @@
         "RQ-025",
         "RQ-032"
       ],
-      "sha256": "59ecd7d3a2bf7e65ef7554edd014001dba9eeec47258301b79f78be1ef0b1668"
+      "sha256": "63332bf5d02ec934800ff62c5a625eaa1ed3db8b22b67d1454f18e5877663a29"
     },
     {
       "path": "services/core/migrations/versions/12ee06c30409_w02_projects_sessions_artifacts_events.py",
@@ -1457,7 +1501,7 @@
         "RQ-029",
         "RQ-032"
       ],
-      "sha256": "d4f94cea73857af1c91d7378f3c56c35f57f99547dd11e9ad6b02e6a31581448"
+      "sha256": "b4cb7f9f7dfed0edcc921452c3c165bfcf0cfd3c76219afce3e6666965085210"
     },
     {
       "path": "services/core/migrations/versions/7994d0dd6e2c_w03_rls_tool_audit.py",
@@ -1472,7 +1516,7 @@
       "requirement_ids": [
         "RQ-005"
       ],
-      "sha256": "19fcf87075e03c213428c054fe848a9383049d70526074a45b9915e20691ad19"
+      "sha256": "167b700c1cd5c127b42c167abbfe65b5c5bced47e7dc17448cc1624bf1aa627f"
     },
     {
       "path": "docs/w03-handoff.md",
@@ -1481,7 +1525,7 @@
         "RQ-013",
         "RQ-032"
       ],
-      "sha256": "e2f4f7edb649e818a8804f1be5c1e9d7dcf955d468b99c0e2afe863b6c12c4a5"
+      "sha256": "32870b7ae3a3bc79b0790a194c988bfdd000d39246817496bc4c05d917356e15"
     },
     {
       "path": "services/core/migrations/versions/c7296a4b69d8_w04_tasks_jobs_budgets.py",
@@ -1500,7 +1544,7 @@
         "RQ-027",
         "RQ-032"
       ],
-      "sha256": "d28d458c3d7a2bb601e39e3877d48020b6fda6bf4f137db9890e115b51c11672"
+      "sha256": "4bf0e7fcd981d5463f4ea1dd88916e7aa2de186a5c292a6dc822303d41c03898"
     },
     {
       "path": "config/agents/roles.yaml",
@@ -1544,7 +1588,7 @@
         "RQ-006",
         "RQ-032"
       ],
-      "sha256": "802081854bfbd5937e8af95c1976f531f796468118d5c00e83a36be03e726540"
+      "sha256": "2ecf237698e5848f34b15c01046ba1a7ac33f17f0f42e01319899c16fc05ff46"
     },
     {
       "path": "config/skills/catalog.yaml",
@@ -1607,7 +1651,7 @@
         "RQ-025",
         "RQ-032"
       ],
-      "sha256": "51acc8856612659795c379b94307af20c3b90c06a745a015f51ea9eddb997d48"
+      "sha256": "e51c42972c689dbab5889fec2ecfcb758f3c07b5e974df349a9a4e1deedfbac4"
     },
     {
       "path": "config/source_policies/catalog.yaml",
@@ -1642,7 +1686,7 @@
         "RQ-032",
         "RQ-034"
       ],
-      "sha256": "e02298e43689c1cce33183eb239e9ca006780940412b19a426964203e7c1a02f"
+      "sha256": "15fa33f0ad8f656f356da012e5077afabfba1b0c7b63a8f787190cdc15d737aa"
     },
     {
       "path": "services/core/migrations/versions/bc959837d3ea_w08_knowledge_evidence_retrieval.py",
@@ -1661,7 +1705,7 @@
         "RQ-032",
         "RQ-034"
       ],
-      "sha256": "59165dac80b590147ff28dc645edc024eae0d4de0b0ac1ddbc9892f1d78b5331"
+      "sha256": "e3eaba5c16d57fa531fb387240e6f5173af1989e5ee9120c7aeb20f5eec6ab78"
     },
     {
       "path": "services/core/src/medical_one_person/domain/opportunities.py",
@@ -1748,7 +1792,7 @@
         "RQ-028",
         "RQ-031"
       ],
-      "sha256": "84ca454c03030325167b4d2ebe49c44b1ff2e0fecddf29c6b97e174fd95dcda4"
+      "sha256": "9636d70aae7751cc99a3b4b5fdcc9496f35b7d3d5147fd3c7b483881de7366c3"
     },
     {
       "path": "docs/w09-handoff.md",
@@ -1778,7 +1822,7 @@
         "RQ-020",
         "RQ-029"
       ],
-      "sha256": "8f145d275a67727fe9cd868ebe0dffc7de67d8d2a227d001a5ad36f07eeadd7b"
+      "sha256": "5c9ffcf722a9a2b3be371149187158cd556906f11571963a5e2c99d39519de64"
     },
     {
       "path": "services/core/src/medical_one_person/api/knowledge.py",
@@ -1795,7 +1839,7 @@
         "RQ-008",
         "RQ-029"
       ],
-      "sha256": "054fe30c4fe5176a345ad7e04213db7e1d0047b1d28ecfa58fb812b422a3db52"
+      "sha256": "4aac8bda6cac45d1800e7db93991efbcb5a15246730dd49906fa3718c59a2bc2"
     },
     {
       "path": "services/core/src/medical_one_person/application/knowledge_browser.py",
@@ -1803,7 +1847,7 @@
         "RQ-007",
         "RQ-034"
       ],
-      "sha256": "aa594ec862ac0093f58627ed497b0cb3e79bd47b614e8bc178c74283e9a6a612"
+      "sha256": "a75e65b7be61d549e809e5e49caece44c30474d7e1074bbe53efabb56dfdfe04"
     },
     {
       "path": "apps/web/src/lib/api.ts",
@@ -1813,7 +1857,7 @@
         "RQ-029",
         "RQ-034"
       ],
-      "sha256": "cd8a1e9d15c046a7dc50435fc04a7c589d645ec5fc24a3e4cff268138c9adc83"
+      "sha256": "1b4b8f825d56a0ff4fd240bb659575b7bc1c898955408125ae7c22f0d17bf296"
     },
     {
       "path": "apps/web/src/components/project-shell.tsx",
@@ -1821,7 +1865,7 @@
         "RQ-007",
         "RQ-029"
       ],
-      "sha256": "ce8fe8d07946a2fa019efdbda346b21e5ae33048c0c0a5f019f5ee414a032dc1"
+      "sha256": "80183f718da6a4daaae67fcb78615a6d3628fc26727e5653f394157e168e1fd9"
     },
     {
       "path": "apps/web/src/app/projects/page.tsx",
@@ -1887,7 +1931,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "c0ba641df6029b98ef9280489fc315aa25b3ec4a4425493a7a0ef642f1de8cf2"
+      "sha256": "6b382ca500225b21b059f04f1a33436400cd76e2bf35f133bf5fbb240fc46117"
     },
     {
       "path": "services/core/src/medical_one_person/application/plan_execution.py",
@@ -1926,7 +1970,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "b2ba9ebbf822b4fa3b1ecd19b3a3da6e6d58dc2867037f484dcfcc9d8cc8bb41"
+      "sha256": "c1983a04f07c2b7687ceca32792f8258cf233a33622530bf6835e228382bd1c2"
     },
     {
       "path": "services/core/tests/integration/test_w11_plans.py",
@@ -1936,7 +1980,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "be2812864032e74cd4bc0de5702e7586aeee73cd53d12a90497eb4c6252ab263"
+      "sha256": "bfc79b37abe254faf46bed9087c006e873c39bd0655b9d07ade2eab5f1937787"
     },
     {
       "path": "services/core/tests/integration/test_w11_plan_api.py",
@@ -2080,7 +2124,7 @@
         "RQ-018",
         "RQ-031"
       ],
-      "sha256": "6b5c1f911906afd7213391d39b6d144b2d0581aeb2a416362774e482edde17bd"
+      "sha256": "ce6d3996005604614122789ec1f75430897bdc959fa18bf30430d2e2e26f90d5"
     },
     {
       "path": "services/core/tests/integration/test_w12_workflow_api.py",
@@ -2197,7 +2241,7 @@
       "requirement_ids": [
         "RQ-017"
       ],
-      "sha256": "ce15820e8604b665a5dc4dc218ca99be8f06fce78693a4347083f5c67a2158a0"
+      "sha256": "70e18c87f59da532559abb6929abdb6e0b4155fcaa4b30729789afdf5a0d6a0e"
     },
     {
       "path": "services/core/tests/integration/test_w13_dataset_api.py",
@@ -2489,7 +2533,7 @@
         "RQ-024",
         "RQ-031"
       ],
-      "sha256": "39b6e7f4fdc8c6e7dacd6642633d62c8c7a129b7b41839cd930034ea4b108351"
+      "sha256": "93e11689d296a2b93c71cef78bf7581f309696c43b6975a74cc59c3af0099426"
     },
     {
       "path": "services/core/tests/integration/test_w17_audit_api.py",
@@ -2564,6 +2608,180 @@
         "RQ-031"
       ],
       "sha256": "b9cf9a57e0481845bde234e1d82b98e50fbe222230afc870420c86ad7a68ac37"
+    },
+    {
+      "path": "services/core/src/medical_one_person/domain/recovery.py",
+      "requirement_ids": [
+        "RQ-012",
+        "RQ-026",
+        "RQ-034"
+      ],
+      "sha256": "4e122b875b8a979965b82c7c5a39b73250feb57038295fa2ea0a2c44303e7009"
+    },
+    {
+      "path": "services/core/src/medical_one_person/application/recovery.py",
+      "requirement_ids": [
+        "RQ-012",
+        "RQ-026",
+        "RQ-027",
+        "RQ-034"
+      ],
+      "sha256": "904c0e923cedc01ac8731a45fb1e580f5ec402b566173e442a3cf283cc3b27ca"
+    },
+    {
+      "path": "services/core/src/medical_one_person/api/recovery.py",
+      "requirement_ids": [
+        "RQ-026",
+        "RQ-034"
+      ],
+      "sha256": "c867cfbcd1d9629eb4c78730b5fcf3359af7dab95276e545e24a17018765412f"
+    },
+    {
+      "path": "services/core/migrations/versions/a7c4e2f9b610_w18_recovery_and_backups.py",
+      "requirement_ids": [
+        "RQ-012",
+        "RQ-026",
+        "RQ-027"
+      ],
+      "sha256": "70b6bba9926dc6dea61d400682bbdd882f2cb43590652ec9324c24148c4b61a8"
+    },
+    {
+      "path": "services/core/tests/integration/test_w18_recovery_service.py",
+      "requirement_ids": [
+        "RQ-012",
+        "RQ-026",
+        "RQ-027",
+        "RQ-034"
+      ],
+      "sha256": "745fae72596cc9121108fa53a593f7ecfcb93b34fc6358a894839fad46e170f4"
+    },
+    {
+      "path": "services/core/tests/integration/test_w18_recovery_api.py",
+      "requirement_ids": [
+        "RQ-026",
+        "RQ-034"
+      ],
+      "sha256": "a5b7e85563fa893dcbcda9f91568105e816d18726672de7698f33726876e2048"
+    },
+    {
+      "path": "apps/web/src/app/projects/[id]/recovery/page.tsx",
+      "requirement_ids": [
+        "RQ-026",
+        "RQ-029",
+        "RQ-034"
+      ],
+      "sha256": "0f3376bae2aeddcc916262639ae140b645dfaef928f9b9a8895b3811a2f820c2"
+    },
+    {
+      "path": "docs/w18-handoff.md",
+      "requirement_ids": [
+        "RQ-012",
+        "RQ-026",
+        "RQ-027",
+        "RQ-032",
+        "RQ-034"
+      ],
+      "sha256": "ea736d32dd7a9322df3d96fbf4f5bc7d824ad94027bc49b6a281a76cf884e62a"
+    },
+    {
+      "path": "docs/w18-recovery-overview.png",
+      "requirement_ids": [
+        "RQ-026",
+        "RQ-034"
+      ],
+      "sha256": "08314df6bb239503e6b4d2bfaa0d261ef6d7e08e2fc55e9f1d692b8374c5a4c7"
+    },
+    {
+      "path": "docs/w18-recovery-trash.png",
+      "requirement_ids": [
+        "RQ-012",
+        "RQ-034"
+      ],
+      "sha256": "4b0b75e2dc6a01328966896fd99f050b0be6cbcfb3cd52d01eb3b29d6dbc6a83"
+    },
+    {
+      "path": "docs/w18-recovery-backup.png",
+      "requirement_ids": [
+        "RQ-026",
+        "RQ-027",
+        "RQ-034"
+      ],
+      "sha256": "ebc0b9756aed90078a6d661964ce6ed26fd8e8d60946510b085aba5ad731a23f"
+    },
+    {
+      "path": "services/core/migrations/versions/b2e7d4a9c310_w19_task_input_validity.py",
+      "requirement_ids": [
+        "RQ-009",
+        "RQ-012",
+        "RQ-030"
+      ],
+      "sha256": "8728551003964962d42bbb3c6a83177212d9b3d80f69b4d915ba7f3e6b69f8e1"
+    },
+    {
+      "path": "services/core/src/medical_one_person/application/tasks.py",
+      "requirement_ids": [
+        "RQ-009"
+      ],
+      "sha256": "05e252ab9db2559bc3d3dd187ba958ebef8fc70803b280d2a97fd5445747c8e2"
+    },
+    {
+      "path": "services/core/src/medical_one_person/application/scheduling.py",
+      "requirement_ids": [
+        "RQ-009",
+        "RQ-027"
+      ],
+      "sha256": "b4680e535fb6124a3c9a0d1e08621d7d1b019073c37c3735af99beecd994ed6a"
+    },
+    {
+      "path": "docs/w24-pilot-charter.md",
+      "requirement_ids": [
+        "RQ-016",
+        "RQ-022",
+        "RQ-024",
+        "RQ-029",
+        "RQ-033"
+      ],
+      "sha256": "d834893b857b5a18cf332dc31c56559983aa34ee55eee5322f8a37c41a98a638"
+    },
+    {
+      "path": "traceability/acceptance-records.json",
+      "requirement_ids": [
+        "RQ-001",
+        "RQ-002",
+        "RQ-003",
+        "RQ-004",
+        "RQ-005",
+        "RQ-006",
+        "RQ-007",
+        "RQ-008",
+        "RQ-009",
+        "RQ-010",
+        "RQ-011",
+        "RQ-012",
+        "RQ-013",
+        "RQ-014",
+        "RQ-015",
+        "RQ-016",
+        "RQ-017",
+        "RQ-018",
+        "RQ-019",
+        "RQ-020",
+        "RQ-021",
+        "RQ-022",
+        "RQ-023",
+        "RQ-024",
+        "RQ-025",
+        "RQ-026",
+        "RQ-027",
+        "RQ-028",
+        "RQ-029",
+        "RQ-030",
+        "RQ-031",
+        "RQ-032",
+        "RQ-033",
+        "RQ-034"
+      ],
+      "sha256": "246f867f77cfbe61fd392297925d4f498946eff28bcf3d66f62a6e22ed3c8209"
     }
   ]
 }

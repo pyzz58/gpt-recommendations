@@ -21,7 +21,7 @@ from medical_one_person.application.errors import (
 from medical_one_person.application.projects import ProjectService
 from medical_one_person.application.scheduling import JobQueue, OutboxDispatcher
 from medical_one_person.application.tasks import TaskService
-from medical_one_person.domain.tasks import TaskState
+from medical_one_person.domain.tasks import InputValidity, TaskState
 from medical_one_person.infrastructure.bootstrap import bootstrap_local_owner
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.models import (
@@ -31,6 +31,7 @@ from medical_one_person.infrastructure.db.models import (
     OutboxMessage,
     Task,
     TaskAttempt,
+    TaskVersion,
 )
 
 
@@ -93,6 +94,8 @@ def test_task_dependency_cycle_queue_dedup_and_no_auto_acceptance(
         dependencies=(upstream.id,),
     )
     assert upstream.state == TaskState.READY
+    assert upstream.input_validity == InputValidity.CURRENT
+    assert upstream.input_snapshot_sha256 is not None
     assert dependent.state == TaskState.NEEDS_INPUT
 
     duplicate = _task(
@@ -208,6 +211,90 @@ def test_upstream_change_reopens_ready_dependents(
         refreshed = session.get(Task, dependent.id)
         assert refreshed is not None
         assert refreshed.state == TaskState.NEEDS_INPUT.value
+        assert refreshed.input_validity == InputValidity.STALE.value
+        assert refreshed.input_invalidated_reason == f"UPSTREAM_TASK_CHANGED:{upstream.id}"
+        stale_revision = refreshed.revision
+    revised = tasks.revise_inputs(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+        task_id=dependent.id,
+        expected_revision=stale_revision,
+        input_version="input:v2",
+        input_refs=[f"fixture:{dependent.id}:v2"],
+    )
+    assert revised.state == TaskState.READY
+    assert revised.input_validity == InputValidity.CURRENT
+    assert revised.input_snapshot_sha256 != dependent.input_snapshot_sha256
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        versions = session.scalars(
+            select(TaskVersion)
+            .where(TaskVersion.task_id == dependent.id)
+            .order_by(TaskVersion.task_revision)
+        ).all()
+    assert [item.state for item in versions] == [
+        "ready",
+        "needs_input",
+        "ready",
+    ]
+    assert [item.input_validity for item in versions] == [
+        "current",
+        "stale",
+        "current",
+    ]
+
+
+def test_stale_input_is_cancelled_at_scheduler_claim(
+    session_factory: sessionmaker[Session],
+) -> None:
+    identity, project = _project(
+        session_factory,
+        name="输入失效调度项目",
+        idempotency_key="create-stale-scheduler-project",
+    )
+    tasks = TaskService(session_factory)
+    task = _task(
+        tasks,
+        actor_user_id=identity.owner_user_id,
+        project_id=project.id,
+        purpose="stale-claim",
+    )
+    queued = tasks.enqueue(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+        task_id=task.id,
+    )
+    assert queued.state == TaskState.QUEUED
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        stored = session.get(Task, task.id)
+        assert stored is not None
+        stored.input_validity = "stale"
+        stored.input_invalidated_reason = "SYNTHETIC_STALE_INPUT"
+    OutboxDispatcher(session_factory).dispatch_once(workspace_id=identity.workspace_id)
+    claim = JobQueue(session_factory).claim(
+        workspace_id=identity.workspace_id,
+        worker_id="stale-worker",
+    )
+    assert claim is None
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        job = session.scalar(select(Job).where(Job.task_id == task.id))
+        assert job is not None
+        assert job.state == "cancelled"
+        assert job.last_error_code == "TASK_INPUT_STALE"
 
 
 def test_budget_reservation_is_atomic_and_settlement_is_idempotent(

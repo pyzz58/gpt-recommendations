@@ -18,6 +18,10 @@ from medical_one_person.application.errors import (
     ReviewPolicyError,
     RevisionConflictError,
 )
+from medical_one_person.application.tasks import (
+    build_task_input_snapshot,
+    require_current_task_inputs,
+)
 from medical_one_person.domain.opportunities import Track
 from medical_one_person.domain.plans import (
     FindingSeverity,
@@ -221,6 +225,11 @@ class PlanService:
                         ]
                     )
                 )
+                input_snapshot, input_snapshot_sha256 = build_task_input_snapshot(
+                    node_spec.input_version,
+                    input_refs,
+                    captured_at=now,
+                )
                 task = Task(
                     id=task_id,
                     workspace_id=project.workspace_id,
@@ -239,6 +248,12 @@ class PlanService:
                     role_version=node_spec.role_version,
                     input_version=node_spec.input_version,
                     input_refs=input_refs,
+                    input_validity="current",
+                    input_snapshot=input_snapshot,
+                    input_snapshot_sha256=input_snapshot_sha256,
+                    input_invalidated_at=None,
+                    input_invalidated_reason=None,
+                    input_invalidated_by=[],
                     goal=node_spec.goal,
                     deliverable_schema=node_spec.deliverable_schema,
                     acceptance_policy=node_spec.acceptance_policy,
@@ -405,6 +420,7 @@ class PlanService:
                     TaskState.REWORK.value,
                 }:
                     continue
+                require_current_task_inputs(task)
                 dependencies = dependency_map.get(task.id, [])
                 if any(
                     tasks_by_id[dependency_id].state != TaskState.ACCEPTED.value
@@ -542,6 +558,7 @@ class PlanService:
                 raise RevisionConflictError("Task revision conflict")
             if task.state != TaskState.SUBMITTED.value:
                 raise PlanStateError("Only a submitted task can be reviewed")
+            require_current_task_inputs(task)
             _validate_reviewer(task, reviewer_role, self._roles)
             critical = any(item.severity == FindingSeverity.CRITICAL for item in findings)
             if critical and decision != ReviewDecision.CHANGES_REQUESTED:
@@ -1300,6 +1317,12 @@ def _append_task_version(session: Session, task: Task, now: datetime) -> None:
             task_revision=task.revision,
             state=task.state,
             input_version=task.input_version,
+            input_validity=task.input_validity,
+            input_snapshot=task.input_snapshot,
+            input_snapshot_sha256=task.input_snapshot_sha256,
+            input_invalidated_at=task.input_invalidated_at,
+            input_invalidated_reason=task.input_invalidated_reason,
+            input_invalidated_by=task.input_invalidated_by,
             role_version=task.role_version,
             created_at=now,
         )

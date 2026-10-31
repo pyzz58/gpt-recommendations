@@ -14,7 +14,7 @@ from medical_one_person.application.errors import (
     TaskDependencyError,
     TaskNotReadyError,
 )
-from medical_one_person.domain.tasks import TaskSnapshot, TaskState
+from medical_one_person.domain.tasks import InputValidity, TaskSnapshot, TaskState
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.models import (
     OutboxMessage,
@@ -81,6 +81,11 @@ class TaskService:
             }
         )
         now = datetime.now(UTC)
+        input_snapshot, input_snapshot_sha256 = build_task_input_snapshot(
+            input_version,
+            input_refs,
+            captured_at=now,
+        )
         with self._session_factory.begin() as session:
             actor = self._actor(session, actor_user_id)
             self._set_context(session, actor)
@@ -121,6 +126,12 @@ class TaskService:
                 role_version=role_version,
                 input_version=input_version,
                 input_refs=list(input_refs),
+                input_validity=InputValidity.CURRENT.value,
+                input_snapshot=input_snapshot,
+                input_snapshot_sha256=input_snapshot_sha256,
+                input_invalidated_at=None,
+                input_invalidated_reason=None,
+                input_invalidated_by=[],
                 goal=goal,
                 deliverable_schema=deliverable_schema,
                 acceptance_policy=acceptance_policy,
@@ -238,6 +249,7 @@ class TaskService:
             )
             if task is None:
                 raise NotFoundError("Task not found")
+            require_current_task_inputs(task)
             if task.state == TaskState.QUEUED.value:
                 return _task_snapshot(task)
             if task.state != TaskState.READY.value:
@@ -311,6 +323,7 @@ class TaskService:
                 raise TaskNotReadyError("Task revision conflict")
             if task.state != TaskState.RUNNING.value:
                 raise TaskNotReadyError("Only a running task can be submitted")
+            require_current_task_inputs(task)
             now = datetime.now(UTC)
             task.state = TaskState.SUBMITTED.value
             task.revision += 1
@@ -355,6 +368,7 @@ class TaskService:
                 raise TaskNotReadyError("Task revision conflict")
             if task.state != TaskState.RUNNING.value:
                 raise TaskNotReadyError("Only a running task can be submitted")
+            require_current_task_inputs(task)
             now = datetime.now(UTC)
             task.state = TaskState.SUBMITTED.value
             task.revision += 1
@@ -382,47 +396,106 @@ class TaskService:
             actor = self._actor(session, actor_user_id)
             self._set_context(session, actor)
             session.scalar(select(Project).where(Project.id == project_id).with_for_update())
-            frontier = [upstream_task_id]
-            visited: set[UUID] = set()
-            invalidated: list[UUID] = []
             now = datetime.now(UTC)
-            while frontier:
-                upstream_id = frontier.pop()
-                if upstream_id in visited:
-                    continue
-                visited.add(upstream_id)
-                dependents = session.scalars(
-                    select(Task)
-                    .join(TaskDependency, TaskDependency.task_id == Task.id)
-                    .where(
+            direct_dependents = list(
+                session.scalars(
+                    select(TaskDependency.task_id).where(
                         TaskDependency.project_id == project_id,
-                        TaskDependency.depends_on_task_id == upstream_id,
+                        TaskDependency.depends_on_task_id == upstream_task_id,
                     )
-                    .with_for_update()
                 ).all()
-                for dependent in dependents:
-                    frontier.append(dependent.id)
-                    if dependent.state in {
-                        TaskState.ACCEPTED.value,
-                        TaskState.CANCELLED.value,
-                    }:
-                        continue
-                    if dependent.state != TaskState.NEEDS_INPUT.value:
-                        dependent.state = TaskState.NEEDS_INPUT.value
-                        dependent.revision += 1
-                        dependent.updated_at = now
-                        self._append_version(session, dependent, now)
-                        self._append_event(
-                            session,
-                            dependent,
-                            actor.id,
-                            event_type="task.upstream_changed",
-                            payload={"upstream_task_id": str(upstream_id)},
-                            now=now,
-                        )
-                    invalidated.append(dependent.id)
+            )
+            invalidated = invalidate_task_inputs(
+                session,
+                project_id=project_id,
+                task_ids=direct_dependents,
+                actor_user_id=actor.id,
+                reason=f"UPSTREAM_TASK_CHANGED:{upstream_task_id}",
+                now=now,
+            )
             session.flush()
             return invalidated
+
+    def revise_inputs(
+        self,
+        *,
+        project_id: UUID,
+        actor_user_id: UUID,
+        task_id: UUID,
+        expected_revision: int,
+        input_version: str,
+        input_refs: Sequence[str],
+    ) -> TaskSnapshot:
+        if not input_version.strip() or not input_refs:
+            raise ValueError("Revised task inputs require a version and references")
+        now = datetime.now(UTC)
+        snapshot, snapshot_sha256 = build_task_input_snapshot(
+            input_version,
+            input_refs,
+            captured_at=now,
+        )
+        with self._session_factory.begin() as session:
+            actor = self._actor(session, actor_user_id)
+            self._set_context(session, actor)
+            session.scalar(select(Project).where(Project.id == project_id).with_for_update())
+            task = session.scalar(
+                select(Task)
+                .where(Task.id == task_id, Task.project_id == project_id)
+                .with_for_update()
+            )
+            if task is None:
+                raise NotFoundError("Task not found")
+            if task.revision != expected_revision:
+                raise TaskNotReadyError("Task revision conflict")
+            if task.state in {
+                TaskState.ACCEPTED.value,
+                TaskState.CANCELLED.value,
+                TaskState.RUNNING.value,
+                TaskState.SUBMITTED.value,
+            }:
+                raise TaskNotReadyError(
+                    "Accepted or in-flight task history is immutable; create a new task revision"
+                )
+            dependencies = session.scalars(
+                select(Task)
+                .join(TaskDependency, TaskDependency.depends_on_task_id == Task.id)
+                .where(TaskDependency.task_id == task.id)
+            ).all()
+            dependencies_current = all(
+                dependency.state == TaskState.ACCEPTED.value
+                and dependency.input_validity == InputValidity.CURRENT.value
+                for dependency in dependencies
+            )
+            task.input_version = input_version
+            task.input_refs = list(input_refs)
+            task.input_snapshot = snapshot
+            task.input_snapshot_sha256 = snapshot_sha256
+            task.input_validity = InputValidity.CURRENT.value
+            task.input_invalidated_at = None
+            task.input_invalidated_reason = None
+            task.input_invalidated_by = []
+            task.state = (
+                TaskState.READY.value
+                if dependencies_current
+                else TaskState.NEEDS_INPUT.value
+            )
+            task.revision += 1
+            task.updated_at = now
+            self._append_version(session, task, now)
+            self._append_event(
+                session,
+                task,
+                actor.id,
+                event_type="task.inputs_revised",
+                payload={
+                    "input_version": input_version,
+                    "input_snapshot_sha256": snapshot_sha256,
+                    "state": task.state,
+                },
+                now=now,
+            )
+            session.flush()
+            return _task_snapshot(task)
 
     @staticmethod
     def _actor(session: Session, actor_user_id: UUID) -> User:
@@ -523,6 +596,12 @@ class TaskService:
                 task_revision=task.revision,
                 state=task.state,
                 input_version=task.input_version,
+                input_validity=task.input_validity,
+                input_snapshot=task.input_snapshot,
+                input_snapshot_sha256=task.input_snapshot_sha256,
+                input_invalidated_at=task.input_invalidated_at,
+                input_invalidated_reason=task.input_invalidated_reason,
+                input_invalidated_by=task.input_invalidated_by,
                 role_version=task.role_version,
                 created_at=now,
             )
@@ -575,4 +654,93 @@ def _task_snapshot(task: Task) -> TaskSnapshot:
         state=TaskState(task.state),
         revision=task.revision,
         mode=task.mode,
+        input_validity=InputValidity(task.input_validity),
+        input_snapshot_sha256=task.input_snapshot_sha256,
     )
+
+
+def build_task_input_snapshot(
+    input_version: str,
+    input_refs: Sequence[str],
+    *,
+    captured_at: datetime,
+) -> tuple[dict[str, object], str]:
+    snapshot: dict[str, object] = {
+        "input_version": input_version,
+        "captured_at": captured_at.isoformat(),
+        "refs": [
+            {
+                "ref": ref,
+                "declared_version": input_version,
+                "ref_sha256": hashlib.sha256(ref.encode("utf-8")).hexdigest(),
+            }
+            for ref in input_refs
+        ],
+    }
+    return snapshot, _digest(snapshot)
+
+
+def require_current_task_inputs(task: Task) -> None:
+    if task.input_validity != InputValidity.CURRENT.value:
+        raise TaskNotReadyError(
+            f"Task input validity is {task.input_validity}; revise inputs before continuing"
+        )
+    if not task.input_snapshot_sha256 or _digest(task.input_snapshot) != task.input_snapshot_sha256:
+        raise TaskNotReadyError("Task input snapshot hash is missing or does not match")
+
+
+def invalidate_task_inputs(
+    session: Session,
+    *,
+    project_id: UUID,
+    task_ids: Sequence[UUID],
+    actor_user_id: UUID | None,
+    reason: str,
+    now: datetime,
+) -> list[UUID]:
+    frontier = list(dict.fromkeys(task_ids))
+    visited: set[UUID] = set()
+    invalidated: list[UUID] = []
+    while frontier:
+        current_id = frontier.pop(0)
+        if current_id in visited:
+            continue
+        visited.add(current_id)
+        task = session.scalar(
+            select(Task)
+            .where(Task.id == current_id, Task.project_id == project_id)
+            .with_for_update()
+        )
+        if task is None or task.state == TaskState.CANCELLED.value:
+            continue
+        if task.input_validity != InputValidity.STALE.value:
+            task.state = TaskState.NEEDS_INPUT.value
+            task.input_validity = InputValidity.STALE.value
+            task.input_invalidated_at = now
+            task.input_invalidated_reason = reason
+            task.input_invalidated_by = [reason]
+            task.revision += 1
+            task.updated_at = now
+            TaskService._append_version(session, task, now)
+            TaskService._append_event(
+                session,
+                task,
+                actor_user_id,
+                event_type="task.input_invalidated",
+                payload={
+                    "state": task.state,
+                    "input_validity": task.input_validity,
+                    "reason": reason,
+                },
+                now=now,
+            )
+            invalidated.append(task.id)
+        frontier.extend(
+            session.scalars(
+                select(TaskDependency.task_id).where(
+                    TaskDependency.project_id == project_id,
+                    TaskDependency.depends_on_task_id == task.id,
+                )
+            ).all()
+        )
+    return invalidated
