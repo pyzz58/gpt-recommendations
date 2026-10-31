@@ -18,7 +18,7 @@
 
 ## Featured field report (English)
 
-**[Trying to Replace the AI Assistant on a China-Market Samsung Galaxy S24](field-reports/china-galaxy-s24-third-party-ai-assistant/README.md)** — Real-device Android 16 / One UI 8.5 experiment: Samsung/Bixby side-key routing, \`power_button_long_press\` values 101 versus 5, failed \`VoiceInteractionSessionService\` binding, and a **working \`ACTION_ASSIST\` Activity-based side-key launch**. Cloud Chinese speech recognition ultimately returned HTTP 401, so this is an **experimental engineering report, not a finished assistant**. Includes architecture diagram, sanitized logs, rollback guidance, and platform references.
+**[Trying to Replace the AI Assistant on a China-Market Samsung Galaxy S24](field-reports/china-galaxy-s24-third-party-ai-assistant/README.md)** — Real-device Android 16 / One UI 8.5 experiment: Samsung/Bixby side-key routing, `power_button_long_press` values 101 versus 5, failed `VoiceInteractionSessionService` binding, and a **working `ACTION_ASSIST` Activity-based side-key launch**. Cloud Chinese speech recognition ultimately returned HTTP 401, so this is an **experimental engineering report, not a finished assistant**. Includes architecture diagram, sanitized logs, rollback guidance, and platform references.
 
 **Search terms:** Galaxy S24 China CHC, Samsung One UI 8.5, Android Assistant, Bixby, ACTION_ASSIST, side key, ADB, VoiceInteractionService, speech recognition.
 
