@@ -1427,8 +1427,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-10-31T21:22:09.564819+00:00",
-    "note": "最终源码提交前同步：V0.9/V1.12、完成证据合同、输入有效性、W18/W24文档和派生Schema已对齐；验收记录将在被测源码提交后写入。",
+    "at": "2026-10-31T21:25:35.377942+00:00",
+    "note": "最终证据重绑定：验收期间追踪自测隔离修正提交为6e69daa；W01-W18证据绑定该源码SHA，含检查器与自测文件hash。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -2733,6 +2733,28 @@
       "sha256": "b4680e535fb6124a3c9a0d1e08621d7d1b019073c37c3735af99beecd994ed6a"
     },
     {
+      "path": "docs/w01-w18-delivery-status.md",
+      "requirement_ids": [
+        "RQ-001",
+        "RQ-024",
+        "RQ-029",
+        "RQ-032",
+        "RQ-033"
+      ],
+      "sha256": "f747802b179bae8bc1b192a5796c0a1c229b2fc6c960200811dce7e75c2d457f"
+    },
+    {
+      "path": "docs/w01-w18-validation.md",
+      "requirement_ids": [
+        "RQ-001",
+        "RQ-024",
+        "RQ-029",
+        "RQ-032",
+        "RQ-033"
+      ],
+      "sha256": "e253c962bcb5263d00d5fb2053e73fd0075bde3ea8478d5bdb7c1bdcb149eb6f"
+    },
+    {
       "path": "docs/w24-pilot-charter.md",
       "requirement_ids": [
         "RQ-016",
@@ -2781,7 +2803,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "246f867f77cfbe61fd392297925d4f498946eff28bcf3d66f62a6e22ed3c8209"
+      "sha256": "bcf22fd4c3bece3dfd7494953d3ebe4d731187a40b41fba40223f0a7dabf5590"
     }
   ]
 }
