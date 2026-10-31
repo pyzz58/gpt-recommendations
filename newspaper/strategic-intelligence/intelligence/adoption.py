@@ -469,6 +469,13 @@ class AdoptionController:
     def is_current(self, decision_id: str, at: AwareDatetime | None = None) -> bool:
         try:
             decision = self.load(decision_id)
+            # W34 correction limits are shared with all downstream uses. Check
+            # them before the normal W15 dependency/version walk.
+            from .correction import is_version_restricted
+            if is_version_restricted(
+                    self.archive, decision.subject_version_id,
+                    decision.allowed_scope, decision.decision_id):
+                return False
             self._require_effective_decision(
                 decision, at or datetime.now(timezone.utc),
                 allow_not_applicable=False, trail=frozenset())

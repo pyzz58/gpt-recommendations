@@ -45,6 +45,8 @@ class ObjectKind(str, Enum):
     REVIEW_CASE = "ReviewCase"
     TRANSMISSION_LINK = "TransmissionLink"
     KNOWLEDGE_REUSE = "KnowledgeReuse"
+    CORRECTION_CASE = "CorrectionCase"
+    USE_RESTRICTION = "UseRestriction"
     ARTIFACT_LINK = "ResearchArtifactLink"
     ARTIFACT_COMPATIBILITY = "ResearchArtifactCompatibility"
     RESEARCH_COMMIT = "ResearchCommit"

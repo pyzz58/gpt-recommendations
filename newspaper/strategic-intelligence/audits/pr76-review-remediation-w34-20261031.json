@@ -1,0 +1,109 @@
+{
+  "record_id": "W34-CORRECTION-AUDIT-20261031-001",
+  "checked_at": "2026-10-31T22:48:22+13:00",
+  "reviewed_parent": "abc52be",
+  "spec_sha256": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f",
+  "implemented": {
+    "explicit_dependency_trace": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "correction starts from the exact changed version and walks Archive reverse references breadth-first within a declared depth",
+        "each edge records exact dependent/dependency versions, reference use, locator and depth; same-theme or textual similarity is never inferred as dependency",
+        "a replacement source correction must be a later version of the same object and the current object version; withdrawal/license changes can omit a replacement",
+        "requested adoption decisions must have subjects inside the explicit dependency closure"
+      ]
+    },
+    "restrict_before_review": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "active version-level UseRestriction records are appended for every explicitly affected version before the correction case is presented as ready for impact review",
+        "W15 is_current checks the active restriction for its exact subject before any READY adoption can be considered current",
+        "W33 blocks current body/reuse use under restriction while historical as-of body replay remains available under rights",
+        "an unrelated adoption/Article outside the explicit graph remains current and unrestricted",
+        "the correction case records the scope actually searched and a separate scope limitation rather than claiming a complete global dependency map"
+      ]
+    },
+    "version_impact": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "every explicit dependent must receive one MAINTAINED/NARROWED/RETRACTED/UNRESOLVED/NOT_AFFECTED classification",
+        "MAINTAINED needs remaining exact support; NARROWED needs both retained scope and remaining support",
+        "RETRACTED/UNRESOLVED cannot retain an approved scope",
+        "impact review records next owner, unsearched scope and assessor without automatically lifting any restriction"
+      ]
+    },
+    "bounded_recovery": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "recovery needs an archived Review that references both the exact target version and the exact assessed correction case",
+        "recovery scope cannot exceed the correction's original restriction scope",
+        "allowed new W15 decisions must be READY, bind the target and recovery Review, cover only recovered scope and differ from the blocked decisions",
+        "the correction record keeps old decision IDs and appends allowed new decision IDs; old READY decisions do not automatically revive",
+        "retracted content cannot be restored under the same version; a new version/review is required"
+      ]
+    }
+  },
+  "regressions": {
+    "w34_tests": 8,
+    "runtime_tests": 276,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS",
+    "compileall_result": "PASS",
+    "spec_check": "PASS",
+    "technical_check_T11": "PASS",
+    "work_plan_check_G01_W33_W34_W35": "PASS",
+    "uv_lock_check": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W34 card, T11.L03/T01.L02, registered implementation and sections 16.6/16.6.1-16.6.3/13.7 were reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W15, W25, W31, W33 and earlier packages remain IN_PROGRESS rather than ACCEPTED; only the authorized offline W34 interface scope was exercised",
+    "Q03": "PASS_OFFLINE: shared correction cases, dependency edges, use restrictions, impact classifications and review-bound recovery are implemented on the existing Archive",
+    "Q04": "PASS_OFFLINE: 8 W34 tests cover direct/transitive limits, unaffected branches, complete impact classification, old-review rejection, new-review/new-decision recovery, current-vs-historical body, wrong replacement identity, out-of-graph adoption and retracted same-version recovery rejection",
+    "Q05": "PASS_LIMITED_RECOVERY: only explicit affected versions are restricted; recovery is scope-bounded and Review-bound; old decisions remain blocked; incomplete graph scope stays explicit",
+    "Q06": "PASS_SCOPED_REVIEW: owned synthetic dependency graphs, Articles, Reviews and W15 decisions were used; no real natural correction, professional impact review, external cache audit or user impact was examined",
+    "Q07": "RECORDED_SCOPE: no real model, supplier/API, paid resource, production archive, publication, delivery or deployment was invoked; no content truth or residual support quality was measured"
+  },
+  "source_hashes": {
+    "intelligence/correction.py": "a8c06719d13bfcaef568166d90af5b9a558728704b7037db1beab0690954ceff",
+    "tests_runtime/test_correction.py": "c5edfda46139e44b3aa91566d64130f4ad18ab451b64679c083a1a5064e2987a",
+    "intelligence/adoption.py": "238285a63dd167939334d8b27d144e5f52677ed700986a14bfd514e8cb628c38",
+    "intelligence/history.py": "73820d286218792d99f7af5bbe4e389dde33e6e1f014f18cde3f3a5373baefcf",
+    "intelligence/contracts.py": "f4433cafdf340e13d7b6ca52bc2547f74906501f0bf594a82d1f8237288acefe",
+    "CANONICAL_SYSTEM_SPEC_V5.md": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "IN_PROGRESS",
+    "W21": "IN_PROGRESS",
+    "W22": "IN_PROGRESS",
+    "W23": "IN_PROGRESS",
+    "W24": "IN_PROGRESS",
+    "W25": "IN_PROGRESS",
+    "W26": "IN_PROGRESS",
+    "W27": "IN_PROGRESS",
+    "W28": "IN_PROGRESS",
+    "W29": "IN_PROGRESS",
+    "W30": "IN_PROGRESS",
+    "W31": "IN_PROGRESS",
+    "W32": "IN_PROGRESS",
+    "W33": "IN_PROGRESS",
+    "W34": "IN_PROGRESS",
+    "W35": "NOT_STARTED"
+  },
+  "limits": [
+    "No real natural correction or complete dependency graph was processed",
+    "Whether supporting evidence remains semantically sufficient, whether a scope should narrow and whether a Review is professionally sound remain for real content review",
+    "The dependency walk covers only explicit Archive references; external caches, out-of-archive copies and unknown consumers remain in the stated scope limitation",
+    "Use restriction records and W15 integration are append-only and multi-record; a partial failure can leave safe restrictions but cannot be described as one atomic correction transaction",
+    "The W15 recovery decisions in tests are synthetic and are not substituted for W31 content review",
+    "Current W33 body restrictions and historical replay were checked locally; real W39/W40/W52 consumers and long-term storage recovery remain pending",
+    "Formal prerequisites and G01-G04 remain unaccepted; W34 is IN_PROGRESS, not ACCEPTED"
+  ]
+}

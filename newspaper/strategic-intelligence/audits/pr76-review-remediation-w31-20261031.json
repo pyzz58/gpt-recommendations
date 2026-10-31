@@ -1,8 +1,8 @@
 {
   "record_id": "W31-EDITORIAL-REVIEW-AUDIT-20261031-001",
-  "checked_at": "2026-10-31T22:34:50+13:00",
+  "checked_at": "2026-10-31T22:48:22+13:00",
   "reviewed_parent": "6fc64bf",
-  "spec_sha256": "f0102ec6704115c480617cca914011b4e24a2b6fb08d7ff18606dcdb6f9bae1c",
+  "spec_sha256": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f",
   "implemented": {
     "fixed_reader_draft": {
       "status": "VERIFIED_OFFLINE",
@@ -57,7 +57,7 @@
   },
   "regressions": {
     "w31_tests": 17,
-    "runtime_tests": 268,
+    "runtime_tests": 276,
     "maintenance_tests": 52,
     "runtime_result": "PASS",
     "maintenance_result": "PASS",
@@ -78,16 +78,16 @@
   "source_hashes": {
     "intelligence/editorial_review.py": "f2c9c9036bd2eee0a782bab9a58b35e9177dd1dfcb522fb8568c685bb01ed06d",
     "tests_runtime/test_editorial_review.py": "3d149f6541bb88b6182406029dde8c27272a1e152c319ec5b52d5a85ea82fd73",
-    "intelligence/adoption.py": "95c7b97c146242f8227abb1c93048e73004b916ffb59025c7b9f64ea18cd9c85",
+    "intelligence/adoption.py": "238285a63dd167939334d8b27d144e5f52677ed700986a14bfd514e8cb628c38",
     "intelligence/prospective.py": "062d4d603f6ee43abf65d498997c1cbf27b0dc5c94326cad3831fa766a1ff8ae",
     "intelligence/advisor.py": "c33589d8e71c8bf31cba966fadc99d85564324e7c14fb5c2c20affa29e3bf1ea",
     "intelligence/teacher.py": "35363a04ce871932700a84312f344bc5a3b6685135010de418d6181bc43a607a",
-    "intelligence/contracts.py": "cc80f92efdb53c91b88770a1baae82f77a3a4d681b569a0b0cb82a02e8036a0b",
+    "intelligence/contracts.py": "f4433cafdf340e13d7b6ca52bc2547f74906501f0bf594a82d1f8237288acefe",
     "intelligence/research.py": "e091655d59cacf9300bad4441454409ac2469f825533e5b02bdeab29174e9b7d",
     "intelligence/model_admission.py": "8c5d0122523bf1b05d5996cf48836e3efae437392a16b4a9c6d9ecbf45dc3c63",
     "intelligence/operations.py": "a6e5416b604d38f9955762d03d82efd2b719417e7949702dd56285324a9fb7c6",
     "intelligence/workflow.py": "3151dc0398016fd025f57eac60ddcea5b198befe4989184f5bd32ad21cdbcb46",
-    "CANONICAL_SYSTEM_SPEC_V5.md": "f0102ec6704115c480617cca914011b4e24a2b6fb08d7ff18606dcdb6f9bae1c"
+    "CANONICAL_SYSTEM_SPEC_V5.md": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f"
   },
   "work_states": {
     "W13": "IN_PROGRESS",
@@ -110,7 +110,8 @@
     "W30": "IN_PROGRESS",
     "W31": "IN_PROGRESS",
     "W32": "IN_PROGRESS",
-    "W33": "IN_PROGRESS"
+    "W33": "IN_PROGRESS",
+    "W34": "IN_PROGRESS"
   },
   "limits": [
     "No real independent human or model review of an actual publication draft was performed",

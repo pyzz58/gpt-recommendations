@@ -5,7 +5,7 @@
 **CURRENT_BINDING仅表示本次关联版本一致；不证明方案正确、程序已实现、内容已审或获准运行。**
 理论或设计/依赖改变会变为REVIEW_REQUIRED；重新生成只刷新事实，不自动改写技术正文或批准新基线。
 
-当前规范SHA-256：`f0102ec6704115c480617cca914011b4e24a2b6fb08d7ff18606dcdb6f9bae1c`。
+当前规范SHA-256：`379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f`。
 
 需复核节点：无；仅限关联新鲜度检查。
 
@@ -19,7 +19,7 @@
 | [R06](#r06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r06) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | T12组织双输入并共用C01—C05，无年度存储/研究/渲染分叉；年度业务未实现 |
 | [R07](#r07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r07) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 已有文档关联维护继续；研究任务原文装载/分段与C03持久恢复仍待实现，不由摘要恢复 |
 | [R08](#r08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r08) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | C06 Actions只设周开始+C03长任务续跑+C02期号/回执+C05文件；生产/已授权交付待实现 |
-| [T01](#t01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t01) | CURRENT_BINDING | 执行者组织；未来执行层维护决定；人工定位先行；第二阶段控制器 | C02提交/Review/AdoptionDecision追加版本与W15分离决定接口已离线实现；W31已将实际Article读者稿、B1/B2/C精确成果、独立疑点、作者回应和审稿结案绑定到ReviewCoverage及W15决定，作者不能签发自己的审核，PASS/REVISE/BLOCK分别映射READY/RETURN/BLOCKED。身份认证、通用审稿能力认证、完整读者成品、持久恢复和自动采用仍未实现 |
+| [T01](#t01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t01) | CURRENT_BINDING | 执行者组织；未来执行层维护决定；人工定位先行；第二阶段控制器 | C02提交/Review/AdoptionDecision追加版本与W15分离决定接口已离线实现；W31将实际Article、B1/B2/C、独立疑点、作者回应和审稿结案绑定ReviewCoverage及W15决定；W34又将版本级Correction restriction 接入W15/W33当前使用检查，使旧READY在更正限制下失效，只有引用精确更正案卷与目标版本的新Review/新决定可按范围恢复，旧决定不自动复活。身份认证、通用审稿能力、完整读者成品、持久恢复和自动采用仍未实现 |
 | [T02](#t02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t02) | CURRENT_BINDING | L1发现职责；第一阶段人工取样；第四阶段生产增量 | W20已离线实现feedparser/Trafilatura/JSON API受控字节入口、CandidateIndex、取得元信息、字段/时间缺口和失败记录，并持久到C02；W21已实现强键事件归并提案、来源血缘/独立根、编辑歧义和探索队列；W22已实现预固定独立参照、范围限定的覆盖比较与七类缺口；W23已消费候选/事件簇/覆盖审计，保存S0—S8取舍。真实来源运行与T03真实内容复核仍待后续 |
 | [T03](#t03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t03) | CURRENT_BINDING | L2编辑决定；第一阶段人工；第二阶段记录和接口 | C04编辑任务+C02决定+C03 S依赖；W22提供独立参照与覆盖缺口接口，W23已离线实现S0—S8前后决定、S8前置包的实对象绑定、研究准入与刊登准入分离及显式期次建议；分值不自动产生准入或拼刊，真实编辑取舍和W24—W26闭环待验 |
 | [T04](#t04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t04) | CURRENT_BINDING | L3取证/中文核对；第一阶段实际回源；第二阶段适配 | C01已离线复用Trafilatura解析获准HTML字节，并支持纯文本定位；W24持久SOURCE_MATERIAL、SOURCE_STRUCTURE、SOURCE_INTAKE及RIGHTS_RECORD，正文保存、机器处理和后续翻译分别核权；W25已实现节点级Evidence、Claim—Evidence范围/反证/未知、来源血缘根计数、受控十进制计算及补证请求/结果接口；W26已实现S8后版本化入选中文、节选/全文/独立导读分流、源定位映射、关键元素检查及截点更新隔离。PDF/Docling/OCR及真实翻译质量仍未验收，语义支持仍须人工核查；提取/计算不代事实或因果核真 |
@@ -29,7 +29,7 @@
 | [T08](#t08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t08) | CURRENT_BINDING | L4的C与M12准备；当期保存条件；真实结果后来再核 | W30已离线实现C04条件记录：必须接当前B1/M10与B2/M11的有效成果，精确保留原判断和教学命题；按MULTI_PATH、SINGLE_LIMITED或NOT_APPLICABLE保存可区分路径或如实停止理由。每条路径要求行动者/权限资源/决定/前置/中间状态/最小时滞/不确定性及两段以上Evidence连接；各路径须有不同分支条件和第一观察。记录观察窗口、支持/削弱/推翻条件、机制与替代解释检查、开放问题及W39/W40复查归属，不保存概率或将未来写成事实。M12以当期ReviewWindow和重开触发有限收口；原判断仅标记W33保存目标，实际W33档案、W31内容审、真实到期结果及阶段门仍待实现 |
 | [T09](#t09) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t09) | CURRENT_BINDING | L5独立核查；不自签；第一阶段实际核查；第二阶段能力配置验证 | W31已离线实现C04独立核查+C01回源+C02版本+C03返工接口：先固定实际读者稿和审稿人逐条疑点，再由声明作者逐项回应并提交精确修订版本，最后由固定审稿人核每项closure并生成Review及W15决定。审稿引文须真实出现在原稿，重大问题可PASS解决、合理争议可保留、未核/未解决转REVISE，未解决critical转BLOCK；审稿者不得为作者/生产署名人，模型成果须独立W19 REVIEW准入和实际回执。真实内容识错/合理放行、盲测/新例、跨领域能力、模型调用和完整样刊仍未验收 |
 | [T10](#t10) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t10) | CURRENT_BINDING | L6主编/呈现；新命题回L4/L5；第一阶段实际格式；第四阶段正式渲染/交付 | W32已离线实现C05第一格式阶段：Edition来源只能组合当前W23 placement、安全的W26更新检查结论、精确PASS Review与当前W15采用的Article；封面和专题标题必须等于被审H1，正文直接来自被审全文字节，不提供第二研究正文。Jinja严格模板自动转义标题/正文/来源标签，拒绝非HTTPS链接和外部模板加载；生成HTML以0600私有文件保存并与Edition版本/hash/bytes绑定，重试和并发不覆写。整刊内容审、实际用户阅读、PDF/字体/分页/视觉呈现、W49正式渲染、出版与交付仍未验收 |
-| [T11](#t11) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t11) | CURRENT_BINDING | 六层共享档案职责；第一篇保存；第二阶段跨周；第四阶段持久恢复 | W33已离线实现同一Archive的CURRENT、KNOWN_TO_SYSTEM_AS_OF与PUBLICLY_AVAILABLE_AS_OF查询：KNOWN只取publication及真实recorded_at均不晚于t的最新版本，PUBLIC单独返回t时已公开但可后来才录入的版本并标system_unknown；事件时间不代替发布时间，日期精度不推定午夜，未知/含糊时间不进入精确截面。查询返回精确版本、当时已存在版本、当前版本和后续版本指针，完整正文只在当前用途/保存许可及撤权检查通过时读取；导航索引可由Archive权威记录重建。Concept/Background/MethodUse/TransmissionLink共用同一版本接口，知识复用记录精确旧版、当前版、题目条件变化、结论、证据和does_not_prove，不记录读者掌握。真实两个周截面、完整依赖纠错、W39/W40/W52消费和持久恢复仍属后续 |
+| [T11](#t11) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t11) | CURRENT_BINDING | 六层共享档案职责；第一篇保存；第二阶段跨周；第四阶段持久恢复 | W33已离线实现同一Archive的CURRENT、KNOWN_TO_SYSTEM_AS_OF与PUBLICLY_AVAILABLE_AS_OF查询：KNOWN只取publication及真实recorded_at均不晚于t的最新版本，PUBLIC单独返回t时已公开但可后来才录入的版本并标system_unknown；完整正文只在当前用途/保存许可及撤权检查通过时读取，Concept/Background/MethodUse/TransmissionLink共用版本接口。W34已离线实现更正后的显式反向依赖遍历、立即版本级限制、逐版本维持/缩小/撤回/未决分类，以及必须引用目标版本和精确更正案卷的Review按范围恢复；W15旧采用与W33当前正文均受活动限制，历史截面仍可回放，无关分支和旧原话保留。真实两个周截面、自然更正、W39/W40/W52消费和持久恢复仍属后续 |
 | [T12](#t12) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t12) | CURRENT_BINDING | 年度A01—A12组织；复用六层；第四阶段缩区间演练；全年另验 | 年度双输入/A工序只组织C01—C05现有能力；无第二套引擎，年度成果待实现验收 |
 | [T13](#t13) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t13) | CURRENT_BINDING | 实际工具执行与配置记录；不替内容裁决；受控使用先行；二/三/四阶段逐步验证 | W17 OperationRequest/Receipt、Adapter返回校验、UNKNOWN对账与逻辑操作累计已离线实现；W18调用前能力/材料/外发/重试门禁、共享预算预留结算与未知保留已离线实现。真实第三方认证/适配、生产预算恢复和Actions周运行未实现 |
 
@@ -206,7 +206,7 @@
 
 设计目的：规范与交接控制
 
-责任：执行者组织；未来执行层维护决定；阶段：人工定位先行；第二阶段控制器；实现：C02提交/Review/AdoptionDecision追加版本与W15分离决定接口已离线实现；W31已将实际Article读者稿、B1/B2/C精确成果、独立疑点、作者回应和审稿结案绑定到ReviewCoverage及W15决定，作者不能签发自己的审核，PASS/REVISE/BLOCK分别映射READY/RETURN/BLOCKED。身份认证、通用审稿能力认证、完整读者成品、持久恢复和自动采用仍未实现。
+责任：执行者组织；未来执行层维护决定；阶段：人工定位先行；第二阶段控制器；实现：C02提交/Review/AdoptionDecision追加版本与W15分离决定接口已离线实现；W31将实际Article、B1/B2/C、独立疑点、作者回应和审稿结案绑定ReviewCoverage及W15决定；W34又将版本级Correction restriction 接入W15/W33当前使用检查，使旧READY在更正限制下失效，只有引用精确更正案卷与目标版本的新Review/新决定可按范围恢复，旧决定不自动复活。身份认证、通用审稿能力、完整读者成品、持久恢复和自动采用仍未实现。
 
 理论出处：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -406,7 +406,7 @@
 
 设计目的：共享档案、历史查询与纠错
 
-责任：六层共享档案职责；阶段：第一篇保存；第二阶段跨周；第四阶段持久恢复；实现：W33已离线实现同一Archive的CURRENT、KNOWN_TO_SYSTEM_AS_OF与PUBLICLY_AVAILABLE_AS_OF查询：KNOWN只取publication及真实recorded_at均不晚于t的最新版本，PUBLIC单独返回t时已公开但可后来才录入的版本并标system_unknown；事件时间不代替发布时间，日期精度不推定午夜，未知/含糊时间不进入精确截面。查询返回精确版本、当时已存在版本、当前版本和后续版本指针，完整正文只在当前用途/保存许可及撤权检查通过时读取；导航索引可由Archive权威记录重建。Concept/Background/MethodUse/TransmissionLink共用同一版本接口，知识复用记录精确旧版、当前版、题目条件变化、结论、证据和does_not_prove，不记录读者掌握。真实两个周截面、完整依赖纠错、W39/W40/W52消费和持久恢复仍属后续。
+责任：六层共享档案职责；阶段：第一篇保存；第二阶段跨周；第四阶段持久恢复；实现：W33已离线实现同一Archive的CURRENT、KNOWN_TO_SYSTEM_AS_OF与PUBLICLY_AVAILABLE_AS_OF查询：KNOWN只取publication及真实recorded_at均不晚于t的最新版本，PUBLIC单独返回t时已公开但可后来才录入的版本并标system_unknown；完整正文只在当前用途/保存许可及撤权检查通过时读取，Concept/Background/MethodUse/TransmissionLink共用版本接口。W34已离线实现更正后的显式反向依赖遍历、立即版本级限制、逐版本维持/缩小/撤回/未决分类，以及必须引用目标版本和精确更正案卷的Review按范围恢复；W15旧采用与W33当前正文均受活动限制，历史截面仍可回放，无关分支和旧原话保留。真实两个周截面、自然更正、W39/W40/W52消费和持久恢复仍属后续。
 
 理论出处：[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 

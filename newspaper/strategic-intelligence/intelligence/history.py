@@ -233,6 +233,14 @@ class HistoryArchiveController:
                               str | None, str | None, bool, tuple[str, ...]]:
         if not request.include_body or version_id is None:
             return None, None, False, ()
+        if request.mode is HistoryMode.CURRENT:
+            from .correction import is_version_restricted
+            if is_version_restricted(
+                    self.archive, version_id,
+                    request.required_scope
+                    or (request.intended_use.value,)):
+                return None, None, False, (
+                    "Current body is withheld by an active correction restriction",)
         try:
             self.archive.check_version_use(
                 version_id, request.intended_use, request.use_context)
@@ -378,6 +386,12 @@ class HistoryArchiveController:
         self.archive.check_version_use(
             request.source_version_id, request.intended_use,
             request.use_context)
+        from .correction import is_version_restricted
+        if is_version_restricted(
+                self.archive, request.source_version_id,
+                (request.intended_use.value,)):
+            raise HistoryArchiveError(
+                "Knowledge reuse source is under an active correction restriction")
         reuse_version_id = _version(
             "KNOWLEDGE-REUSE-", canonical([
                 request.reuse_id, _digest(request.model_dump(mode="json"))]))

@@ -1,8 +1,8 @@
 {
   "record_id": "W33-HISTORY-AUDIT-20261031-001",
-  "checked_at": "2026-10-31T22:34:50+13:00",
+  "checked_at": "2026-10-31T22:48:22+13:00",
   "reviewed_parent": "b381b00",
-  "spec_sha256": "f0102ec6704115c480617cca914011b4e24a2b6fb08d7ff18606dcdb6f9bae1c",
+  "spec_sha256": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f",
   "implemented": {
     "dual_as_of_semantics": {
       "status": "VERIFIED_OFFLINE",
@@ -37,7 +37,7 @@
   },
   "regressions": {
     "w33_tests": 11,
-    "runtime_tests": 268,
+    "runtime_tests": 276,
     "maintenance_tests": 52,
     "runtime_result": "PASS",
     "maintenance_result": "PASS",
@@ -57,12 +57,12 @@
     "Q07": "RECORDED_SCOPE: no real model, supplier/API, external history service, paid resource, production archive, publication, delivery or deployment was invoked"
   },
   "source_hashes": {
-    "intelligence/history.py": "fd4233b1e0c25cd7281381017cbf10ace6c82e4bc2fce64e18d46ab4e9c911f6",
+    "intelligence/history.py": "73820d286218792d99f7af5bbe4e389dde33e6e1f014f18cde3f3a5373baefcf",
     "tests_runtime/test_history.py": "a31109a939e6bcc62f87841460fe69b1b17c580a87bdc7129d706be804e6917d",
     "intelligence/archive.py": "b75f175260b1635b36bfd5f93d07e71aa82dae300587f12f22aca6077479dc73",
-    "intelligence/contracts.py": "cc80f92efdb53c91b88770a1baae82f77a3a4d681b569a0b0cb82a02e8036a0b",
-    "intelligence/adoption.py": "95c7b97c146242f8227abb1c93048e73004b916ffb59025c7b9f64ea18cd9c85",
-    "CANONICAL_SYSTEM_SPEC_V5.md": "f0102ec6704115c480617cca914011b4e24a2b6fb08d7ff18606dcdb6f9bae1c"
+    "intelligence/contracts.py": "f4433cafdf340e13d7b6ca52bc2547f74906501f0bf594a82d1f8237288acefe",
+    "intelligence/adoption.py": "238285a63dd167939334d8b27d144e5f52677ed700986a14bfd514e8cb628c38",
+    "CANONICAL_SYSTEM_SPEC_V5.md": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f"
   },
   "work_states": {
     "W13": "IN_PROGRESS",
@@ -86,7 +86,7 @@
     "W31": "IN_PROGRESS",
     "W32": "IN_PROGRESS",
     "W33": "IN_PROGRESS",
-    "W34": "NOT_STARTED"
+    "W34": "IN_PROGRESS"
   },
   "limits": [
     "No real two-different-week historical replay or natural correction case was performed",
