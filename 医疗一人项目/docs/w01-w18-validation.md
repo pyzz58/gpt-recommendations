@@ -8,15 +8,16 @@
 
 | 命令/检查 | 工作目录 | 模式 | 退出码 | 结果 |
 | --- | --- | --- | --- | --- |
-| Alembic升级到head→降到`a7c4e2f9b610`→再升级 | `services/core` | 真实PostgreSQL 17.6 | 0 | head `b2e7d4a9c310`，79条RLS |
+| Alembic升级到head→降到`b2e7d4a9c310`→再升级→current | `services/core` | 真实PostgreSQL 17.6 | 0 | head `c8f1a6d3e720` |
+| PostgreSQL版本与RLS计数 | 项目根目录 | 真实PostgreSQL 17.6 | 0 | `server_version=17.6`，79条RLS策略 |
 | `uv run --frozen pytest` | `services/core` | mock + 真实PostgreSQL/API，Office渲染 | 0 | 105 passed；1个Starlette TestClient弃用警告 |
 | `uv run --frozen ruff check .` | `services/core` | 静态检查 | 0 | passed |
-| `uv run --frozen mypy src` | `services/core` | 严格类型检查 | 0 | 109 source files，no issues |
-| `pnpm --dir apps/web lint` | 项目根目录 | Next.js/ESLint | 0 | passed；本机Node 24.22.1触发engine warning，项目锁定22.23.4 |
+| `uv run --frozen mypy services/core/src` | 项目根目录 | 严格类型检查 | 0 | 112 source files，no issues |
+| `pnpm --dir apps/web lint` | 项目根目录 | Next.js/ESLint | 0 | passed；本地Node 24.22.1，CI锁定22.23.4 |
 | `pnpm --dir apps/web typecheck` | 项目根目录 | TypeScript | 0 | passed |
 | `pnpm --dir apps/web build` | 项目根目录 | Next.js生产构建 | 0 | 15个路由成功，包含`/recovery` |
-| `python3 tools/check_traceability.py check` | 项目根目录 | Git实现路径+证据结构 | 0 | ok，errors为空 |
-| `python3 tools/test_traceability.py` | 项目根目录 | 隔离Git临时仓库 | 0 | 18 tests passed |
+| `python3 tools/test_traceability.py` | 项目根目录 | 隔离Git临时仓库 | 0 | 22 tests passed |
+| `python3 tools/check_traceability.py check` | 项目根目录 | Git实现路径、源码树及产物hash | 0 | ok，errors为空 |
 
 ## 已覆盖
 
@@ -42,4 +43,5 @@
 - W21跨包端到端、W22 live连接、W23部署发布和W24模式验证。
 
 该记录是本地验收摘要。完整命令结构、源码SHA、文件hash、四类验证级别和
-未覆盖项同时保存在`traceability/acceptance-records.json`。
+未覆盖项同时保存在`traceability/acceptance-records.json`。源码提交先于证据提交；
+验收记录绑定被测源码SHA，日志和证据提交只用于保存对应命令的真实结果。

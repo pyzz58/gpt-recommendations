@@ -1430,8 +1430,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-10-31T22:08:55.127012+00:00",
-    "note": "PR#81复核源码基线：R01-R06修复、后台worker、类型化输入、审计门槛、源码树证据和独立DB回放已同步；验收记录将在被测源码提交后生成。",
+    "at": "2026-10-31T22:27:46.133100+00:00",
+    "note": "最终源码验收的日志、文档与验收记录均已绑定内容hash；后续变化将触发重验。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -2755,7 +2755,7 @@
         "RQ-032",
         "RQ-033"
       ],
-      "sha256": "1be698215c74114f035abae07e4bdf0e7c3e063bc11f7d00791b2330d5166f4a"
+      "sha256": "7bb2ffcde8d984f1ee3d893673f2b8b474fee5832c3bb760d7562d08780fee22"
     },
     {
       "path": "docs/w24-pilot-charter.md",
@@ -2863,7 +2863,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "246f867f77cfbe61fd392297925d4f498946eff28bcf3d66f62a6e22ed3c8209"
+      "sha256": "c7392f0ba10c71fc963af1970ac355d1be4ec682e6fb11fcf568f954a40634e4"
     }
   ]
 }
