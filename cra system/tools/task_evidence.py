@@ -12,7 +12,7 @@ import re
 import subprocess
 from pathlib import Path
 from urllib.request import Request, urlopen
-from review_gate import task_evidence_errors, validate_findings
+from review_gate import load_findings, task_evidence_errors, validate_findings
 
 WORKFLOW = ".github/workflows/cra-system.yml"
 
@@ -117,13 +117,124 @@ def remote_errors(repository, task, profile, get_json):
     return errors
 
 
-def verify(root, repository, get_json):
+def _normalise_job_log(value: str) -> str:
+    return re.sub(r"\x1b\[[0-9;]*m", "", value)
+
+
+def remote_finding_errors(
+    root, repository, get_json, get_text
+):
+    """Verify each closed review record against its exact successful CI job."""
+    payload = load_findings(root)
+    profiles = json.loads(
+        (root / "plan/implementation.json").read_text()
+    )["verification_profiles"]
+    profiles_by_job = {
+        profile["required_job"]: profile for profile in profiles
+    }
+    errors, checked = [], 0
+    jobs_cache = {}
+    logs_cache = {}
+    for finding in payload["findings"]:
+        if finding.get("status") != "closed":
+            continue
+        checked += 1
+        fid = finding["id"]
+        evidence = finding["closure_evidence"]
+        run_id = evidence["run_id"]
+        run = get_json(f"/repos/{repository}/actions/runs/{run_id}")
+        if run.get("repository", {}).get("full_name") != repository:
+            errors.append(fid + ": closure CI run is from another repository")
+        if run.get("head_sha") != evidence["tested_commit"]:
+            errors.append(fid + ": closure CI commit mismatch")
+        if run.get("path") != WORKFLOW or run.get("event") != "push":
+            errors.append(fid + ": closure CI workflow/event is not trusted")
+        if (
+            run.get("status") != "completed"
+            or run.get("conclusion") != "success"
+        ):
+            errors.append(fid + ": closure CI run is not successful")
+        if run_id not in jobs_cache:
+            jobs = []
+            for page in range(1, 11):
+                data = get_json(
+                    f"/repos/{repository}/actions/runs/{run_id}/jobs"
+                    f"?per_page=100&page={page}"
+                )
+                jobs.extend(data["jobs"])
+                if len(jobs) >= data["total_count"]:
+                    break
+            jobs_cache[run_id] = jobs
+        matching = [
+            job
+            for job in jobs_cache[run_id]
+            if job.get("name") == evidence["job_name"]
+        ]
+        if len(matching) != 1:
+            errors.append(
+                fid + ": closure task-specific CI job missing or ambiguous"
+            )
+            continue
+        job = matching[0]
+        if (
+            job.get("status") != "completed"
+            or job.get("conclusion") != "success"
+        ):
+            errors.append(fid + ": closure task-specific CI job failed")
+        profile = profiles_by_job.get(evidence["job_name"])
+        if profile is None:
+            errors.append(fid + ": closure CI job has no verification profile")
+        else:
+            for name in profile["required_steps"]:
+                steps = [
+                    step
+                    for step in job.get("steps", [])
+                    if step.get("name") == name
+                ]
+                if (
+                    len(steps) != 1
+                    or steps[0].get("status") != "completed"
+                    or steps[0].get("conclusion") != "success"
+                ):
+                    errors.append(
+                        fid
+                        + ": closure required CI step missing/failed: "
+                        + name
+                    )
+        job_id = job.get("id")
+        if not isinstance(job_id, int) or isinstance(job_id, bool):
+            errors.append(fid + ": closure CI job id required for log binding")
+            continue
+        if job_id not in logs_cache:
+            logs_cache[job_id] = _normalise_job_log(
+                get_text(
+                    f"/repos/{repository}/actions/jobs/{job_id}/logs"
+                )
+            )
+        log = logs_cache[job_id]
+        for test_case in evidence["test_cases"]:
+            if test_case not in log:
+                errors.append(
+                    fid
+                    + ": closure test case not found in successful CI log: "
+                    + test_case
+                )
+    return errors, checked
+
+
+def verify(root, repository, get_json, get_text):
     tasks = json.loads((root / "plan/tasks.json").read_text())["tasks"]
     profiles = {p["task_id"]: p for p in json.loads((root / "plan/implementation.json").read_text())["verification_profiles"]}
     errors = [
         "review gate: " + error
         for error in validate_findings(root)
     ]
+    findings_checked = 0
+    if not errors:
+        finding_errors, findings_checked = remote_finding_errors(
+            root, repository, get_json, get_text
+        )
+        errors.extend(finding_errors)
     checked = 0
     for task in tasks:
         if task["status"] != "verified" or task["id"] == "CRA-W00":
@@ -167,7 +278,7 @@ def verify(root, repository, get_json):
             errors.extend(remote_errors(repository, task, profile, get_json))
         except (OSError, ValueError, KeyError, StopIteration, TypeError):
             errors.append(task["id"] + ": unable to verify source or authoritative GitHub evidence; no fallback to a self-report")
-    return errors, checked
+    return errors, checked, findings_checked
 
 
 def main():
@@ -187,14 +298,30 @@ def main():
         with urlopen(Request("https://api.github.com" + path, headers=headers), timeout=15) as response:
             cache[path] = json.load(response)
             return cache[path]
+    text_cache = {}
+    def get_text(path):
+        if path in text_cache:
+            return text_cache[path]
+        headers = {"Accept": "application/vnd.github+json", "User-Agent": "cra-task-evidence"}
+        token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+        if token:
+            headers["Authorization"] = "Bearer " + token
+        with urlopen(Request("https://api.github.com" + path, headers=headers), timeout=30) as response:
+            text_cache[path] = response.read().decode("utf-8", errors="replace")
+            return text_cache[path]
     try:
-        errors, checked = verify(Path(__file__).resolve().parents[1], args.repository, get_json)
+        errors, checked, findings_checked = verify(
+            Path(__file__).resolve().parents[1],
+            args.repository,
+            get_json,
+            get_text,
+        )
     except (OSError, ValueError, KeyError, TypeError):
         print("EVIDENCE ERROR: authoritative verification unavailable; no task was approved.")
         return 1
     for error in errors:
         print("ERROR:", error)
-    print(json.dumps({"task_evidence_checked": checked, "historical_bootstrap": "CRA-W00", "authoritative_verification": not errors}))
+    print(json.dumps({"task_evidence_checked": checked, "review_findings_checked": findings_checked, "historical_bootstrap": "CRA-W00", "authoritative_verification": not errors}))
     return 1 if errors else 0
 
 

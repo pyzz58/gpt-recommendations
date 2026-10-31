@@ -91,10 +91,21 @@ class EvidenceTests(unittest.TestCase):
     def record(self, sha="a" * 40):
         return {"kind": "github_actions", "profile_id": "CRA-W01", "run_id": 123, "tested_commit": sha, "subject_digest": subject_digest(self.root, self.task, self.profile)}
 
+    def bind_finding(self, sha):
+        path = self.root / "audit/current_findings.json"
+        payload = json.loads(path.read_text())
+        payload["findings"][0]["closure_evidence"]["tested_commit"] = sha
+        path.write_text(json.dumps(payload))
+
     def response(self, path):
         if "/jobs?" in path:
-            return {"total_count": 1, "jobs": [{"name": "cra-w01", "status": "completed", "conclusion": "success", "steps": [{"name": "test", "status": "completed", "conclusion": "success"}]}]}
+            return {"total_count": 1, "jobs": [{"id": 456, "name": "cra-w01", "status": "completed", "conclusion": "success", "steps": [{"name": "test", "status": "completed", "conclusion": "success"}]}]}
         return {"repository": {"full_name": "example/repo"}, "head_sha": self.task["completion_evidence"]["tested_commit"], "path": ".github/workflows/cra-system.yml", "event": "push", "status": "completed", "conclusion": "success"}
+
+    def logs(self, path):
+        if path.endswith("/actions/jobs/456/logs"):
+            return "tests/test_feature.py::test_correct_behavior PASSED"
+        raise AssertionError("unexpected log path " + path)
 
     def test_self_report_without_machine_evidence_is_rejected(self):
         self.task.update(status="verified", evidence=["I finished"])
@@ -150,13 +161,20 @@ class EvidenceTests(unittest.TestCase):
         self.git("init", "-q")
         tested = self.commit()
         self.task["completion_evidence"] = self.record(tested)
+        self.bind_finding(tested)
         self.task["status"] = "verified"
         self.save_plan()
         self.commit()
-        self.assertEqual(verify(self.root, "example/repo", self.response), ([], 1))
+        self.assertEqual(
+            verify(self.root, "example/repo", self.response, self.logs),
+            ([], 1, 1),
+        )
         (self.root / "implementation.py").write_text("def add_one(value):\n    return 999\n")
-        errors, checked = verify(self.root, "example/repo", self.response)
+        errors, checked, findings_checked = verify(
+            self.root, "example/repo", self.response, self.logs
+        )
         self.assertEqual(checked, 1)
+        self.assertEqual(findings_checked, 1)
         self.assertTrue(any("stale" in e for e in errors))
 
     def test_changed_test_profile_after_run_is_rejected(self):
@@ -164,11 +182,31 @@ class EvidenceTests(unittest.TestCase):
         tested = self.commit()
         self.profile["required_steps"] = ["different-test"]
         self.task["completion_evidence"] = self.record(tested)
+        self.bind_finding(tested)
         self.task["status"] = "verified"
         self.save_plan()
         self.commit()
-        errors, _ = verify(self.root, "example/repo", self.response)
+        errors, _, _ = verify(
+            self.root, "example/repo", self.response, self.logs
+        )
         self.assertTrue(any("specification/profile" in e for e in errors))
+
+    def test_closed_finding_requires_its_test_case_in_successful_job_log(self):
+        self.git("init", "-q")
+        tested = self.commit()
+        self.task["completion_evidence"] = self.record(tested)
+        self.bind_finding(tested)
+        self.task["status"] = "verified"
+        self.save_plan()
+        self.commit()
+        errors, _, findings_checked = verify(
+            self.root,
+            "example/repo",
+            self.response,
+            lambda _path: "tests/test_feature.py::different_test PASSED",
+        )
+        self.assertEqual(findings_checked, 1)
+        self.assertTrue(any("not found in successful CI log" in e for e in errors))
 
 
 if __name__ == "__main__":
