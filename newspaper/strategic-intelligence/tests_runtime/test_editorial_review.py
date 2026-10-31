@@ -595,6 +595,46 @@ class EditorialReviewTests(unittest.TestCase):
         with self.assertRaisesRegex(ValidationError, "Extra inputs"):
             OpenReviewRequest.model_validate_json(canonical(payload))
 
+    def test_multiple_articles_under_one_task_keep_independent_w15_decisions(self):
+        _, case, revised = self.responded()
+        first = self.reviewer.decide(self.final_request(
+            case, revised, review_id="REVIEW-W31-MULTI-ONE"))
+        self.time += timedelta(seconds=1)
+        second_article = self.store(
+            "ARTICLE-OBJECT-W31-SECOND", "ARTICLE-W31-SECOND-v001",
+            ObjectKind.ARTICLE, b"# Second reviewed article\n\nOwned body.",
+            references=self.article_references())
+        opened = self.reviewer.open_case(self.open_request(
+            review_case_id="REVIEW-CASE-W31-SECOND",
+            article_version_id=second_article.submission.version_id,
+            inquiries=()))
+        self.time = max(
+            self.time, opened.created_at) + timedelta(seconds=1)
+        responded = self.reviewer.respond(AuthorResponseRequest(
+            review_case_version_id=opened.review_case_version_id,
+            expected_current_case_version_id=opened.review_case_version_id,
+            responder_id="AUTHOR-W31",
+            article_version_id=second_article.submission.version_id,
+            responses=(), note="Owned clean second Article.",
+            responded_at=self.time))
+        self.time += timedelta(seconds=1)
+        second = self.reviewer.decide(FinalReviewRequest(
+            review_case_version_id=responded.review_case_version_id,
+            expected_current_case_version_id=responded.review_case_version_id,
+            review_id="REVIEW-W31-MULTI-TWO",
+            article_version_id=second_article.submission.version_id,
+            reviewer_id="REVIEWER-W31",
+            decision=ReviewDisposition.PASS,
+            reviewed_scope=responded.reviewed_scope, closures=(),
+            decision_reason="Owned second clean review.",
+            remaining_limitations=(),
+            expires_at=self.time + timedelta(days=30),
+            decided_at=self.time))
+        self.assertTrue(self.reviewer.adoption.is_current(
+            first.adoption_decision_version_id, self.time))
+        self.assertTrue(self.reviewer.adoption.is_current(
+            second.adoption_decision_version_id, self.time))
+
     @staticmethod
     def revalidated(request):
         return OpenReviewRequest.model_validate_json(

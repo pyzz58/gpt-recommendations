@@ -1,8 +1,8 @@
 {
   "record_id": "W31-EDITORIAL-REVIEW-AUDIT-20261031-001",
-  "checked_at": "2026-10-31T22:17:37+13:00",
+  "checked_at": "2026-10-31T22:28:19+13:00",
   "reviewed_parent": "6fc64bf",
-  "spec_sha256": "eb599a5567acb4655774e0b7674ef8bca2a2f802acc48ae76bea4e0664b58c4d",
+  "spec_sha256": "e4263d2ffc3d931d6eaa1a2cfd6acbe6f294c47c6f479c6cb83e24207a5fbe55",
   "implemented": {
     "fixed_reader_draft": {
       "status": "VERIFIED_OFFLINE",
@@ -50,13 +50,14 @@
         "upstream B1/B2/C and Article versions are rechecked at response and final decision",
         "failed or interrupted review writes remain non-authoritative; completed exact decisions are idempotent",
         "concurrent final decisions converge on one Review and one W15 decision without mutually different outcomes",
-        "a synchronized two-writer regression reproduces the independent load/decide window and accepts the existing exact W15 decision instead of creating a self-parent record"
+        "a synchronized two-writer regression reproduces the independent load/decide window and accepts the existing exact W15 decision instead of creating a self-parent record",
+        "different Articles under one Task use per-review W15 step slots, so separate current adoptions remain independent"
       ]
     }
   },
   "regressions": {
-    "w31_tests": 16,
-    "runtime_tests": 246,
+    "w31_tests": 17,
+    "runtime_tests": 257,
     "maintenance_tests": 52,
     "runtime_result": "PASS",
     "maintenance_result": "PASS",
@@ -69,14 +70,14 @@
     "Q01": "PASS: current W31 card, T09.L01-L03/T01.L02, registered implementation and sections 15.2.1-15.2.3/13.7/18 were reviewed",
     "Q02": "FORMAL_PRECONDITION_PENDING: W27-W30, W19, W15 and earlier packages remain IN_PROGRESS rather than ACCEPTED; only the authorized offline W31 interface scope was exercised",
     "Q03": "PASS_OFFLINE: actual Article review, independent inquiries, author response, closure, final Review and W15 version-bound decision are implemented",
-    "Q04": "PASS_OFFLINE: 16 W31 tests cover actual body/quotes, self-signing, inquiry source types, response completeness/order, PASS/REVISE/BLOCK, supported dispute, critical block, stale Article/revision, exposure, W19/receipt, idempotency/concurrency and forged self-pass/score fields",
+    "Q04": "PASS_OFFLINE: 17 W31 tests cover actual body/quotes, self-signing, inquiry source types, response completeness/order, PASS/REVISE/BLOCK, supported dispute, critical block, stale Article/revision, exposure, W19/receipt, idempotency/concurrency, multi-Article W15 isolation and forged self-pass/score fields",
     "Q05": "PASS_LIMITED_RECOVERY: unresolved critical items BLOCK; unresolved noncritical work RETURNS; accepted disputes and bounded limitations remain explicit; old decisions cannot cover later Article or research versions",
     "Q06": "PASS_SCOPED_REVIEW: only owned synthetic Article, research components and current-version checks were used; no real independent human review, blind capability test, cross-domain detection study or reader assessment was performed",
     "Q07": "RECORDED_SCOPE: no real model, supplier/API, paid resource, publication, delivery, deployment or external review service was invoked; no reviewer capability claim beyond this offline interface is made"
   },
   "source_hashes": {
-    "intelligence/editorial_review.py": "e8595f2364baab6cbd9a8830cd4ba1c5c100f8e5f8688bb064eb91eabb9ad8f1",
-    "tests_runtime/test_editorial_review.py": "ae2871b84a0c40bc0a026362b5db31e88a42e6203fcca5a1f7537e059992249c",
+    "intelligence/editorial_review.py": "f2c9c9036bd2eee0a782bab9a58b35e9177dd1dfcb522fb8568c685bb01ed06d",
+    "tests_runtime/test_editorial_review.py": "3d149f6541bb88b6182406029dde8c27272a1e152c319ec5b52d5a85ea82fd73",
     "intelligence/adoption.py": "95c7b97c146242f8227abb1c93048e73004b916ffb59025c7b9f64ea18cd9c85",
     "intelligence/prospective.py": "062d4d603f6ee43abf65d498997c1cbf27b0dc5c94326cad3831fa766a1ff8ae",
     "intelligence/advisor.py": "c33589d8e71c8bf31cba966fadc99d85564324e7c14fb5c2c20affa29e3bf1ea",
@@ -86,7 +87,7 @@
     "intelligence/model_admission.py": "8c5d0122523bf1b05d5996cf48836e3efae437392a16b4a9c6d9ecbf45dc3c63",
     "intelligence/operations.py": "a6e5416b604d38f9955762d03d82efd2b719417e7949702dd56285324a9fb7c6",
     "intelligence/workflow.py": "3151dc0398016fd025f57eac60ddcea5b198befe4989184f5bd32ad21cdbcb46",
-    "CANONICAL_SYSTEM_SPEC_V5.md": "eb599a5567acb4655774e0b7674ef8bca2a2f802acc48ae76bea4e0664b58c4d"
+    "CANONICAL_SYSTEM_SPEC_V5.md": "e4263d2ffc3d931d6eaa1a2cfd6acbe6f294c47c6f479c6cb83e24207a5fbe55"
   },
   "work_states": {
     "W13": "IN_PROGRESS",
@@ -108,7 +109,7 @@
     "W29": "IN_PROGRESS",
     "W30": "IN_PROGRESS",
     "W31": "IN_PROGRESS",
-    "W32": "NOT_STARTED"
+    "W32": "IN_PROGRESS"
   },
   "limits": [
     "No real independent human or model review of an actual publication draft was performed",

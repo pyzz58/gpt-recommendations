@@ -5,7 +5,7 @@
 **CURRENT_BINDING仅表示本次关联版本一致；不证明方案正确、程序已实现、内容已审或获准运行。**
 理论或设计/依赖改变会变为REVIEW_REQUIRED；重新生成只刷新事实，不自动改写技术正文或批准新基线。
 
-当前规范SHA-256：`eb599a5567acb4655774e0b7674ef8bca2a2f802acc48ae76bea4e0664b58c4d`。
+当前规范SHA-256：`e4263d2ffc3d931d6eaa1a2cfd6acbe6f294c47c6f479c6cb83e24207a5fbe55`。
 
 需复核节点：无；仅限关联新鲜度检查。
 
@@ -28,7 +28,7 @@
 | [T07](#t07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t07) | CURRENT_BINDING | L4帝师职责；从M02参与；第一阶段真实教学；后续按任务验证 | W29已离线实现C04 B2的M02早期知识问题、当前W16修订、W25 Claim/Evidence/评估、MethodUse和按需Concept精确绑定；M11要求实际事实、必要基础、至少两段过程连接、边界/反例、知识总结与迁移条件段落，专业术语必须先解释后命名，必要回顾须有实际RECAP段落。可选B1只接受当前M10与B1版本且B2增益不得重标B1；人工成果禁止模型身份，模型成果另核W19 TEACHER准入、绑定全部输入的M11 OperationRequest与成功OperationReceipt。真实教学文字、内容审稿、读者效果、模型能力和阶段门仍未验收 |
 | [T08](#t08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t08) | CURRENT_BINDING | L4的C与M12准备；当期保存条件；真实结果后来再核 | W30已离线实现C04条件记录：必须接当前B1/M10与B2/M11的有效成果，精确保留原判断和教学命题；按MULTI_PATH、SINGLE_LIMITED或NOT_APPLICABLE保存可区分路径或如实停止理由。每条路径要求行动者/权限资源/决定/前置/中间状态/最小时滞/不确定性及两段以上Evidence连接；各路径须有不同分支条件和第一观察。记录观察窗口、支持/削弱/推翻条件、机制与替代解释检查、开放问题及W39/W40复查归属，不保存概率或将未来写成事实。M12以当期ReviewWindow和重开触发有限收口；原判断仅标记W33保存目标，实际W33档案、W31内容审、真实到期结果及阶段门仍待实现 |
 | [T09](#t09) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t09) | CURRENT_BINDING | L5独立核查；不自签；第一阶段实际核查；第二阶段能力配置验证 | W31已离线实现C04独立核查+C01回源+C02版本+C03返工接口：先固定实际读者稿和审稿人逐条疑点，再由声明作者逐项回应并提交精确修订版本，最后由固定审稿人核每项closure并生成Review及W15决定。审稿引文须真实出现在原稿，重大问题可PASS解决、合理争议可保留、未核/未解决转REVISE，未解决critical转BLOCK；审稿者不得为作者/生产署名人，模型成果须独立W19 REVIEW准入和实际回执。真实内容识错/合理放行、盲测/新例、跨领域能力、模型调用和完整样刊仍未验收 |
-| [T10](#t10) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t10) | CURRENT_BINDING | L6主编/呈现；新命题回L4/L5；第一阶段实际格式；第四阶段正式渲染/交付 | C05 Jinja+第四阶段WeasyPrint，复用年度呈现；内容/实际文件对应未实现验收 |
+| [T10](#t10) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t10) | CURRENT_BINDING | L6主编/呈现；新命题回L4/L5；第一阶段实际格式；第四阶段正式渲染/交付 | W32已离线实现C05第一格式阶段：Edition来源只能组合当前W23 placement、安全的W26更新检查结论、精确PASS Review与当前W15采用的Article；封面和专题标题必须等于被审H1，正文直接来自被审全文字节，不提供第二研究正文。Jinja严格模板自动转义标题/正文/来源标签，拒绝非HTTPS链接和外部模板加载；生成HTML以0600私有文件保存并与Edition版本/hash/bytes绑定，重试和并发不覆写。整刊内容审、实际用户阅读、PDF/字体/分页/视觉呈现、W49正式渲染、出版与交付仍未验收 |
 | [T11](#t11) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t11) | CURRENT_BINDING | 六层共享档案职责；第一篇保存；第二阶段跨周；第四阶段持久恢复 | C02 Pydantic/SQLAlchemy+私有版本文件；共享依赖/双as-of/纠错待实现，图检查点不是事实库 |
 | [T12](#t12) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t12) | CURRENT_BINDING | 年度A01—A12组织；复用六层；第四阶段缩区间演练；全年另验 | 年度双输入/A工序只组织C01—C05现有能力；无第二套引擎，年度成果待实现验收 |
 | [T13](#t13) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t13) | CURRENT_BINDING | 实际工具执行与配置记录；不替内容裁决；受控使用先行；二/三/四阶段逐步验证 | W17 OperationRequest/Receipt、Adapter返回校验、UNKNOWN对账与逻辑操作累计已离线实现；W18调用前能力/材料/外发/重试门禁、共享预算预留结算与未知保留已离线实现。真实第三方认证/适配、生产预算恢复和Actions周运行未实现 |
@@ -386,7 +386,7 @@
 
 设计目的：成稿、整刊与实际阅读文件
 
-责任：L6主编/呈现；新命题回L4/L5；阶段：第一阶段实际格式；第四阶段正式渲染/交付；实现：C05 Jinja+第四阶段WeasyPrint，复用年度呈现；内容/实际文件对应未实现验收。
+责任：L6主编/呈现；新命题回L4/L5；阶段：第一阶段实际格式；第四阶段正式渲染/交付；实现：W32已离线实现C05第一格式阶段：Edition来源只能组合当前W23 placement、安全的W26更新检查结论、精确PASS Review与当前W15采用的Article；封面和专题标题必须等于被审H1，正文直接来自被审全文字节，不提供第二研究正文。Jinja严格模板自动转义标题/正文/来源标签，拒绝非HTTPS链接和外部模板加载；生成HTML以0600私有文件保存并与Edition版本/hash/bytes绑定，重试和并发不覆写。整刊内容审、实际用户阅读、PDF/字体/分页/视觉呈现、W49正式渲染、出版与交付仍未验收。
 
 理论出处：[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 

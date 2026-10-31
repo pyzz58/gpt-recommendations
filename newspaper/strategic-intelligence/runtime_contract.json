@@ -59,7 +59,9 @@
     "intelligence/prospective.py",
     "tests_runtime/test_prospective.py",
     "intelligence/editorial_review.py",
-    "tests_runtime/test_editorial_review.py"
+    "tests_runtime/test_editorial_review.py",
+    "intelligence/presentation.py",
+    "tests_runtime/test_presentation.py"
   ],
   "data_files": [
     "SOURCE_REGISTRY.json",
@@ -78,5 +80,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "eb599a5567acb4655774e0b7674ef8bca2a2f802acc48ae76bea4e0664b58c4d"
+  "spec_sha256": "e4263d2ffc3d931d6eaa1a2cfd6acbe6f294c47c6f479c6cb83e24207a5fbe55"
 }

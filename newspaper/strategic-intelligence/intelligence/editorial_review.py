@@ -1117,7 +1117,8 @@ class EditorialReviewController:
             request.review_id, request.article_version_id]))
         submission_record = StepSubmission(
             schema_version=2, submission_id=submission_id,
-            work_id="W31", step_id="CONTENT_REVIEW",
+            work_id="W31",
+            step_id="CONTENT_REVIEW_" + case.review_case_id,
             spec_sha256=case.spec_sha256,
             task_version_id=case.task_version_id,
             subject_version_id=request.article_version_id,
