@@ -381,6 +381,7 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
                 staging["properties"]["handoffs"] = {"type": "array"}
                 staging["properties"]["cut_note"] = {"type": "string"}
                 staging["properties"]["environment_state"] = {"type": "object"}
+                staging["properties"]["production_feasibility"] = {"type": "object"}
                 staging["required"].extend(["physical_state", "relationship_map"])
     if editorial_handoff is not None:
         creative_bridge.inspect_preproduction(base, editorial_handoff)
@@ -698,6 +699,11 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 "确属有意跳切且改变手/姿态时，在 staging 写可核对的 cut_note。"
                 "门/窗变化写 environment_state.doors/windows，逐项写稳定ID、"
                 "open/closed 的 start/end、changed_by 与 cause；跨镜不得无动作跳变。"
+                "有演员镜头写 production_feasibility：professional_intent、"
+                "physical_complexity(low/medium/high)、model_risk、"
+                "capability_evidence(none/documented/tested)、evidence_ref、"
+                "test_environment、fallback_route、fallback_preserves_story。"
+                "没有真实测试时 capability_evidence 只能写 none；不得把文档或推测写成实测。"
                 "零演员图文镜在 performance 写 no_performer_reason，character_contracts 为空对象。"
                 "不得新增未在剧本中的故事事实；表演合同必须来自当前 director_lock 的 performance_bible。")
     serialized = json.dumps(request, ensure_ascii=False, sort_keys=True,

@@ -27,6 +27,9 @@ MODE = {
 HANDS = frozenset({"left", "right", "both", "none"})
 POSTURES = frozenset({"standing", "seated", "lying", "kneeling", "other"})
 ENVIRONMENT_STATES = frozenset({"open", "closed"})
+COMPLEXITIES = frozenset({"low", "medium", "high"})
+CAPABILITY_EVIDENCE = frozenset({"none", "documented", "tested"})
+GENERIC_FALLBACK_SIGNALS = ("TODO", "待定", "后续处理", "考虑一下", "以后再")
 GENERIC_PHRASES = (
     "自然地", "自然表演", "表演自然", "情绪到位", "悲伤地看着",
     "很悲伤", "很生气", "开心地看着", "正常地",
@@ -593,6 +596,80 @@ def _inspect_cross_shot(base, payload, report):
                          shot_id=after_id)
 
 
+def _inspect_production_feasibility(source, shot, cast, report):
+    """Separate professional staging choice from unverified model capability."""
+    if not cast:
+        return
+    sid = source.get("id")
+    staging = shot.get("staging") or {}
+    feasibility = staging.get("production_feasibility")
+    if not isinstance(feasibility, dict):
+        _add(report["blockers"], "ACTING_FEASIBILITY_MISSING",
+             "strict acting shots need production_feasibility for model-risk planning",
+             shot_id=sid)
+        return
+    for field in ("professional_intent", "model_risk", "fallback_route",
+                  "fallback_preserves_story"):
+        if not _text(feasibility.get(field)):
+            _add(report["blockers"], "ACTING_FEASIBILITY_FIELD_MISSING",
+                 "production_feasibility needs concrete " + field,
+                 shot_id=sid)
+    complexity = feasibility.get("physical_complexity")
+    if complexity not in COMPLEXITIES:
+        _add(report["blockers"], "ACTING_COMPLEXITY_INVALID",
+             "physical_complexity must be low/medium/high",
+             shot_id=sid)
+    evidence = feasibility.get("capability_evidence")
+    if evidence not in CAPABILITY_EVIDENCE:
+        _add(report["blockers"], "ACTING_CAPABILITY_EVIDENCE_INVALID",
+             "capability_evidence must be none/documented/tested",
+             shot_id=sid)
+    if evidence in ("documented", "tested") and not _text(feasibility.get("evidence_ref")):
+        _add(report["blockers"], "ACTING_CAPABILITY_EVIDENCE_MISSING",
+             "documented/tested capability claims need an evidence_ref",
+             shot_id=sid)
+    if evidence == "tested" and not _text(feasibility.get("test_environment")):
+        _add(report["blockers"], "ACTING_TEST_ENVIRONMENT_MISSING",
+             "tested capability claims need the actual test environment",
+             shot_id=sid)
+    if evidence == "tested":
+        _add(report["reviews"], "ACTING_TESTED_CAPABILITY_HUMAN_VERIFY",
+             "a tested capability claim still requires human evidence review",
+             shot_id=sid)
+    fallback = feasibility.get("fallback_route")
+    if _text(fallback) and any(signal in fallback for signal in GENERIC_FALLBACK_SIGNALS):
+        _add(report["reviews"], "ACTING_FALLBACK_GENERIC",
+             "fallback_route reads generic; specify the actual alternate shot/edit",
+             shot_id=sid)
+    handoffs = staging.get("handoffs") or []
+    action_units = (shot.get("shootability") or {}).get("action_units") or []
+    hand_props = staging.get("hand_prop") or []
+    posture_changes = (staging.get("physical_state") or {}).get("posture_changes") or []
+    computed = "low"
+    if (len(cast) >= 3 or handoffs or len(action_units) >= 2
+            or len(hand_props) >= 2 or posture_changes):
+        computed = "medium"
+    if (len(action_units) >= 4 or len(hand_props) >= 3
+            or (handoffs and len(cast) >= 3)
+            or (handoffs and posture_changes)):
+        computed = "high"
+    rank = {"low": 0, "medium": 1, "high": 2}
+    if complexity in rank and rank[complexity] < rank[computed]:
+        _add(report["reviews"], "ACTING_COMPLEXITY_UNDERREPORTED",
+             "physical_complexity is lower than the authored interaction signals",
+             shot_id=sid)
+    mode = (shot.get("shootability") or {}).get("mode")
+    if computed == "high" and mode == "single_take":
+        if not _text(fallback):
+            _add(report["blockers"], "ACTING_FALLBACK_MISSING",
+                 "a high-complexity single take needs a concrete fallback route",
+                 shot_id=sid)
+        else:
+            _add(report["reviews"], "ACTING_SINGLE_TAKE_REVIEW",
+                 "high-complexity single take is a rehearsal risk, not a proven model failure",
+                 shot_id=sid)
+
+
 def inspect_delivery(base, state, payload):
     """Validate per-shot/per-character acting contracts and hand ownership."""
     report = _findings()
@@ -703,5 +780,6 @@ def inspect_delivery(base, state, payload):
                      shot_id=sid)
         _inspect_hand_prop(source, shot, set(cast), report)
         _inspect_dual_person(source, shot, set(cast), report)
+        _inspect_production_feasibility(source, shot, set(cast), report)
     _inspect_cross_shot(base, payload, report)
     return report

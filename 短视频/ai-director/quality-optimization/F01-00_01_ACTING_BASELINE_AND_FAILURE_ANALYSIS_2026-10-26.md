@@ -2,7 +2,7 @@
 
 日期：2026-10-26  
 范围：`短视频/ai-director/`，现有 acting / acting_coach 岗位与离线校验链。  
-状态：**F01-00/01 基线已完成；F01-02/03 严格表演合同已实现；F01-04 的双人实体状态、关系对位与交物/姿态跨镜门禁已完成本轮部分；F01-05 至 F01-09 与独立专业审稿仍待完成。QO-F01 仍保持 `audit_pending`。**
+状态：**F01-00/01 基线已完成；F01-02/03 严格表演合同已实现；F01-04 的实体状态、关系对位、交物/姿态与环境跨镜门禁已完成软件层；F01-05 的制作可行性/替代方案已实现部分；F01-06 至 F01-09 与独立专业审稿仍待完成。QO-F01 仍保持 `audit_pending`。**
 
 本文件不是艺术验收，不新增第二套质量账本。状态仍以 [QUALITY_ISSUES.json](QUALITY_ISSUES.json) 的 QO-F01 为准；本轮将其从 `audit_pending` 推进为 `in_progress`，不标 `complete`。
 
@@ -142,3 +142,16 @@ agent_team (acting / acting_coach DAG)
 - 测试覆盖：正常交物、缺交物、缺关系对位、缺三人对位、姿态跨镜跳变、手部跨镜跳变、门/窗缺少原因、门/窗跨镜跳变，以及有意 cut_note 的复核路径。
 
 尚未完成：三人以上的复杂调度质量、真实视频中的手部/面容/口型、供应商能力与实拍替代（F01-05/F01-08）。结构门禁通过不等于这些艺术/媒体层验收。
+
+## 10. F01-05 部分实现：制作可行性与替代方案（2026-10-31）
+
+严格模式新增 `staging.production_feasibility`，把专业表演选择与供应商能力判断拆开：
+
+- `professional_intent`：为什么采用当前表演/调度。
+- `physical_complexity`：low/medium/high，由交物、三人以上、动作单位数量、道具动作数量与姿态变化辅助复核；低报进入 review。
+- `model_risk`：具体的模型风险描述，不声称模型必然成功或失败。
+- `capability_evidence`：none/documented/tested；documented/tested 必须提供 `evidence_ref`，tested 还必须提供 `test_environment`；没有真实测试只能写 none。
+- `fallback_route` 与 `fallback_preserves_story`：高复杂度 single_take 若没有具体替代路线则阻断；有替代路线时进入 review，而不是宣称模型一定不能做。
+- 既有 [director_shootability.py](../director_shootability.py) 继续负责逐动作时间、手/道具、动作密度和单镜失败信号的物理预检；本项只补“表演意图 vs 模型能力”的分离，不重复其逻辑。
+
+仍未完成：经验证的供应商能力表、真实模型试拍、真实表演/手部/口型审片。F01-05 保持部分实现，不能因结构测试通过而关闭。

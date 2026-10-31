@@ -448,6 +448,85 @@ class DirectorActingContractTests(unittest.TestCase):
         self.assertIn("ACTING_RELATIONSHIP_PAIR_MISSING",
                       {row["code"] for row in report["blockers"]})
 
+    def test_missing_production_feasibility_blocks(self):
+        base, state, _ = self.bound_state_and_bible()
+        acting = deepcopy(self.data["acting"])
+        acting["shots"]["S01"]["staging"].pop("production_feasibility")
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertIn("ACTING_FEASIBILITY_MISSING",
+                      {row["code"] for row in report["blockers"]})
+
+    def test_tested_capability_without_evidence_blocks(self):
+        base, state, _ = self.bound_state_and_bible()
+        acting = deepcopy(self.data["acting"])
+        feasibility = acting["shots"]["S01"]["staging"]["production_feasibility"]
+        feasibility["capability_evidence"] = "tested"
+        feasibility["evidence_ref"] = ""
+        feasibility["test_environment"] = ""
+        report = director_acting.inspect_delivery(base, state, acting)
+        codes = {row["code"] for row in report["blockers"]}
+        self.assertIn("ACTING_CAPABILITY_EVIDENCE_MISSING", codes)
+        self.assertIn("ACTING_TEST_ENVIRONMENT_MISSING", codes)
+
+    def test_high_complexity_single_take_requires_fallback(self):
+        base, state, _ = self.bound_state_and_bible()
+        acting = deepcopy(self.data["acting"])
+        shot = acting["shots"]["S01"]
+        shot["shootability"]["action_units"].extend([
+            {
+                "id": f"A{i}",
+                "beat_index": 0,
+                "actor_id": "CH_DAUGHTER",
+                "hand": "left" if i % 2 else "right",
+                "prop_id": None,
+                "from_s": 0.1 * i,
+                "to_s": 0.1 * i + 0.3,
+                "action": "hold a readable reaction beat",
+                "visible_result": "the actor holds the reaction",
+            }
+            for i in range(2, 5)
+        ])
+        feasibility = shot["staging"]["production_feasibility"]
+        feasibility["physical_complexity"] = "high"
+        feasibility["fallback_route"] = ""
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertIn("ACTING_FALLBACK_MISSING",
+                      {row["code"] for row in report["blockers"]})
+
+    def test_high_complexity_single_take_with_fallback_is_review(self):
+        base, state, _ = self.bound_state_and_bible()
+        acting = deepcopy(self.data["acting"])
+        shot = acting["shots"]["S01"]
+        shot["shootability"]["action_units"].extend([
+            {
+                "id": f"A{i}",
+                "beat_index": 0,
+                "actor_id": "CH_DAUGHTER",
+                "hand": "left" if i % 2 else "right",
+                "prop_id": None,
+                "from_s": 0.1 * i,
+                "to_s": 0.1 * i + 0.3,
+                "action": "hold a readable reaction beat",
+                "visible_result": "the actor holds the reaction",
+            }
+            for i in range(2, 5)
+        ])
+        shot["staging"]["production_feasibility"]["physical_complexity"] = "high"
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertNotIn("ACTING_FALLBACK_MISSING",
+                         {row["code"] for row in report["blockers"]})
+        self.assertIn("ACTING_SINGLE_TAKE_REVIEW",
+                      {row["code"] for row in report["reviews"]})
+
+    def test_documented_capability_with_reference_passes(self):
+        base, state, _ = self.bound_state_and_bible()
+        acting = deepcopy(self.data["acting"])
+        feasibility = acting["shots"]["S01"]["staging"]["production_feasibility"]
+        feasibility["capability_evidence"] = "documented"
+        feasibility["evidence_ref"] = "https://example.org/reviewed-provider-capability"
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertEqual(report["blockers"], [])
+
 
 class StrictActingPipelineTests(ProfessionalRoleContractsTests):
     """Reuse the existing ten-role fixture with the strict F01 mode enabled."""
@@ -544,6 +623,16 @@ class StrictActingPipelineTests(ProfessionalRoleContractsTests):
                 staging["relationship_map"] = []
                 staging["handoffs"] = []
                 staging["cut_note"] = ""
+                staging["production_feasibility"] = {
+                    "professional_intent": "Keep the hand and letter action in one readable beat.",
+                    "physical_complexity": "low",
+                    "model_risk": "A small prop action; no provider test exists.",
+                    "capability_evidence": "none",
+                    "evidence_ref": "",
+                    "test_environment": "",
+                    "fallback_route": "Use two smaller shots with a close-up of the hand and a separate reaction if the single take fails.",
+                    "fallback_preserves_story": "The envelope action and reaction remain visible in the edit.",
+                }
         return payload
 
     def test_strict_ten_role_pipeline_passes(self):

@@ -235,7 +235,17 @@
             }
           ],
           "handoffs": [],
-          "cut_note": ""
+          "cut_note": "",
+          "production_feasibility": {
+            "professional_intent": "Keep the daughter's concealment and the mother's suspicion in one continuous two-shot so their power struggle is readable without narration.",
+            "physical_complexity": "medium",
+            "model_risk": "Two actors, eye contact, a delayed reaction and a small hand prop move; no provider test has been run.",
+            "capability_evidence": "none",
+            "evidence_ref": "",
+            "test_environment": "",
+            "fallback_route": "If the hand action is unstable, use a medium reaction shot for the dialogue and a close-up insert for the letter moving below the table edge, joined on the mother's eye movement.",
+            "fallback_preserves_story": "The daughter still hides the letter and the mother still notices the hand movement; only the coverage changes."
+          }
         },
         "performance": {
           "motivation": "Protect the mother from the letter until she can decide how to explain it.",
