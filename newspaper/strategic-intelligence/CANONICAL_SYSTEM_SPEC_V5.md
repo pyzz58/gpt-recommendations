@@ -1,6 +1,6 @@
 # 内参系统 V5｜唯一现行完整架构基线
 
-> 状态：**唯一权威、完整、自足的 V5 产品与架构施工说明书；软件、样刊及生产效果尚未验证**。制定于2026-10-14，修订于2026-10-31（Pacific/Auckland）。PR #76独立核查确认原W15—W17机械边界存在可复现缺陷；本轮依次修复F01/F02/F10、W15的F03—F05、W16的F06/F09及W17的F07/F08/F11，并推进W18调用前门禁、W19模型配置有限准入、W20已授权字节来源适配、W21事件归并提案、W22独立参照/覆盖缺口及W23初选/S8/当期取舍记录：正文用途与私有权限、Review精确覆盖、Task决定链隔离、必要依赖递归失效、作品真实依据/兼容复核、修订-CAS提交、供应商对账身份、回执CAS、Adapter观测保留、能力准入、共享预算预留/结算/未知处理、配置身份/三类验证/职责领域复验、Feed/HTML/API候选索引、血缘根与探索队列、范围限定的漏题原因记录，以及研究准入与刊登准入分离。11项机械缺陷已按离线接口范围返工；实际144项运行测试、52项维护测试及文档/技术/清单检查通过。W12仍待用户实际阅读，G01—G04均未通过；W13—W23为`IN_PROGRESS`，W24未开始。局部返工和离线接口不等于整包ACCEPTED。未调用真实研究模型或供应商、未启用生产或外发。此前施工沿革保留在Git和§23.2，不覆盖历史证据。
+> 状态：**唯一权威、完整、自足的 V5 产品与架构施工说明书；软件、样刊及生产效果尚未验证**。制定于2026-10-14，修订于2026-10-31（Pacific/Auckland）。PR #76独立核查确认原W15—W17机械边界存在可复现缺陷；本轮依次修复F01/F02/F10、W15的F03—F05、W16的F06/F09及W17的F07/F08/F11，并推进W18调用前门禁、W19模型配置有限准入、W20已授权字节来源适配、W21事件归并提案、W22独立参照/覆盖缺口、W23初选/S8/当期取舍记录及W24原件取得/结构/用途记录：正文用途与私有权限、Review精确覆盖、Task决定链隔离、必要依赖递归失效、作品真实依据/兼容复核、修订-CAS提交、供应商对账身份、回执CAS、Adapter观测保留、能力准入、共享预算预留/结算/未知处理、配置身份/三类验证/职责领域复验、Feed/HTML/API候选索引、血缘根与探索队列、范围限定的漏题原因记录、研究准入与刊登准入分离，以及正文保存/机器处理/翻译分别核权。11项机械缺陷已按离线接口范围返工；实际159项运行测试、52项维护测试及文档/技术/清单检查通过。W12仍待用户实际阅读，G01—G04均未通过；W13—W24为`IN_PROGRESS`，W25未开始。局部返工和离线接口不等于整包ACCEPTED。未调用真实研究模型或供应商、未启用生产或外发。此前施工沿革保留在Git和§23.2，不覆盖历史证据。
 
 <a id="th-0"></a>
 ## 0. 效力、定义与阅读方式
@@ -3450,7 +3450,7 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
 
 **修复与验收**：ToolResponse/OperationReceipt显式分开采用状态与观察事实，记录observed_status、observed_result_sha256、result_adopted和adapter_violation。内部重试超限等违规时结果不返回、状态保持UNKNOWN，但provider ID、实际/估计/未知费用、用量、内部重试、原始错误和起止时间全部保留；逻辑操作汇总继续计入已观测费用，不重复计费或降为未知。
 
-**当前状态与验证边界**：PR #76的F01—F11均已在对应离线接口范围修复，W18调用前门禁、W19模型配置有限准入、W20来源适配、W21事件归并提案、W22独立参照/覆盖缺口和W23初选/S8/当期取舍记录已开始离线实现；完整运行测试为144项（W13共享接口56项、W15采用接口12项、W16修订接口9项、W17操作接口10项、W18门禁接口8项、W19准入接口7项、W20来源接口6项、W21归并接口5项、W22覆盖接口5项、W23编辑接口10项），52项维护测试通过。W15—W23为`IN_PROGRESS`但整包不ACCEPTED，W24保持`NOT_STARTED`。W12阅读后置，G01—G04仍未通过。后续须核W13—W23正式前置并继续W24；局部返工、离线门禁和测试数量不能替代真实模型、供应商、内容、生产或阶段验收。本轮没有调用真实模型/供应商，没有生产、付费、邮件或日报变更。
+**当前状态与验证边界**：PR #76的F01—F11均已在对应离线接口范围修复，W18调用前门禁、W19模型配置有限准入、W20来源适配、W21事件归并提案、W22独立参照/覆盖缺口、W23初选/S8/当期取舍记录和W24原件取得/结构/用途记录已开始离线实现；完整运行测试为159项（W13共享接口56项、W15采用接口12项、W16修订接口9项、W17操作接口10项、W18门禁接口8项、W19准入接口7项、W20来源接口6项、W21归并接口5项、W22覆盖接口5项、W23编辑接口10项、W24原件接口15项），52项维护测试通过。W15—W24为`IN_PROGRESS`但整包不ACCEPTED，W25保持`NOT_STARTED`。W12阅读后置，G01—G04仍未通过。后续须核W13—W24正式前置并继续W25；局部返工、离线门禁和测试数量不能替代真实原件、PDF/OCR、内容、生产或阶段验收。本轮没有调用真实模型/供应商，没有生产、付费、邮件或日报变更。
 
 <!-- END ISSUE_LEDGER -->
 
@@ -3543,7 +3543,9 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
     "intelligence/coverage.py",
     "tests_runtime/test_coverage.py",
     "intelligence/editorial.py",
-    "tests_runtime/test_editorial.py"
+    "tests_runtime/test_editorial.py",
+    "intelligence/original.py",
+    "tests_runtime/test_original.py"
   ],
   "data_files": [
     "SOURCE_REGISTRY.json",
@@ -4282,7 +4284,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-21": "386ce86f2f982fc025f78fbc52dec967175ba47cf66e1312f96266b7fa0698e0",
           "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
           "th-23": "2560efd910883f759add3d4b12d7be2fa6e1e3e66e6cc3bbff716aa1a670a081",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-24-6-1": "a919ddc4780f7ffea8dd534773f6cd6f62f2f6cd2c552749e816c121720a0171",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-2-1": "a0ebae25928e42057b41578e635f2f0e82d56cba9582c6f9a3ed9c9a21ad529f",
@@ -4393,7 +4395,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-23-1": "842f844567b289b3c8a797805cfc323bab96ea8ba2e67784a2e54388fee2ddc7",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-3": "9aa6d95fd01aabad258fc42f76d07c19c3c3d3bfbe96bd55a7b24350c6438869",
           "th-4": "e6ea367cd4ec7d32c2405e8fe8f8afb763854d86f5834e1932fdd01ec125bcfe",
           "th-4-1": "f9026cc097948e519049857380febfbd9e1d2d4fb736306f360842d45643f4cb",
@@ -4416,8 +4418,8 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T13": "ec77d74e56f5b91db5523bc1b263ad6806a9c2da834787c69e825cb46aae3fdf"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T13": "b410809bf22789a428b47388c578175c3f2f595433814c85ff9e7de8cd932169"
         }
       }
     },
@@ -4517,7 +4519,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-2-2": "4e093d43b92cf009f2ec806a7f02430c03c551fc1da3e7c118696404c53eb939",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-5": "c1aee06d68af70fd93c977d0f557a45461ab9d813399c341fb8233f695041d5a",
           "th-5-2": "1611ce202dc40f205f4599fa2cff22a2f7addce6ecd3a1f843fab285dd69aadd",
           "th-5-4": "4278863064983744c4dc2775723c692a27f0030227c1633b9db27934a49cb100",
@@ -4539,10 +4541,10 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T02": "796514ff6718bd5ebdf8ac3ec996f602bc97b162f2eba1ab11576a7b73e52dd8",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T02": "01608eef8acdade4ced7f90e92adeb2c3d9e01e3da04dab1af322440e4043612",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce"
         }
       }
     },
@@ -4551,7 +4553,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
       "design_anchor": "tech-t04",
       "owner": "L3取证/中文核对",
       "phase": "第一阶段实际回源；第二阶段适配",
-      "implementation": "C01网页/Feed与按需Docling+C02权利/支持；共用翻译适配待实现，提取不代核真",
+      "implementation": "C01已离线复用Trafilatura解析获准HTML字节，并支持纯文本定位；W24持久SOURCE_MATERIAL、SOURCE_STRUCTURE、SOURCE_INTAKE及RIGHTS_RECORD，正文保存、机器处理和后续翻译分别核权。PDF/Docling/OCR尚未接入，复杂原件只保留与显式缺口；提取不代内容核真",
       "intent": "原作、证据与中文材料",
       "theory_refs": [
         "th-2-1",
@@ -4631,7 +4633,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
         }
       ],
       "reviewed_binding": {
-        "design_sha256": "6f65545b49ac934ff668df00990fccdf9e87d63a98eab4952aabf6f09e4ca3b2",
+        "design_sha256": "d4d4d4fa829fb0f34029d70ed0534a647e7dd3893f2421be6e3616f2d4903c2b",
         "sources": {
           "th-0": "4bc1cd5eb27610caf414be0abd5857b906b9131537ac3531b221d3849d353042",
           "th-1": "d5d22c7dd6bc453e32b6f9b99e32453da7dd8cde91a0b46d6a7c2f3e29240052",
@@ -4641,7 +4643,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
           "th-7": "972e0d9adbc8a66c8dc251eba3cba1625ab028e5787e05ee0bd2ca31d3436087",
@@ -4662,9 +4664,9 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e",
-          "T13": "ec77d74e56f5b91db5523bc1b263ad6806a9c2da834787c69e825cb46aae3fdf"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce",
+          "T13": "b410809bf22789a428b47388c578175c3f2f595433814c85ff9e7de8cd932169"
         }
       }
     },
@@ -4769,7 +4771,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8": "91ab96c2bb995b85eb4631865a32948b315533bd82633cb6dec385cad49e9859",
           "th-8-2": "23869016701668cb160d16091d55588bee5e9f5713ad9e6e592568828aa81547",
@@ -4793,10 +4795,10 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T03": "b1632ed1a404d04bf47df852f5f7ea31cd9f2d424e56b578d0d28d6102215f5b",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T03": "47b31578ca8023194c7d9a5f9cebd3ee17267e9c22c0a72630029cf9fe41d1a9",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce"
         }
       }
     },
@@ -4893,7 +4895,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-4-1": "dbb74d063b86f8c4cd9ce03b681216b9005e793d69d1a8ae6d6778ad15d08a1c",
           "th-8-7": "21760aa13ceb70c03357d189607b8319dffd72a97854e4e576c5d030581cd609",
@@ -4914,7 +4916,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122"
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539"
         }
       }
     },
@@ -5017,7 +5019,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-4-1": "dbb74d063b86f8c4cd9ce03b681216b9005e793d69d1a8ae6d6778ad15d08a1c",
           "th-9-1": "67e830495614adfc932ffd0d97034ba57893eba3e6b98028ade6f54cb9d3fadc"
@@ -5035,8 +5037,8 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e"
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce"
         }
       }
     },
@@ -5131,7 +5133,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-4-2": "906eb9adb90d079276c6fa9279b18f929d5d914e190f15713e726b86f0974797",
           "th-8-8": "ecf75eae6e9a07eb60e63713a023bd438e75ee1d9cbe16001edc337888deb22d",
@@ -5150,10 +5152,10 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122",
-          "T06": "628be08bec6dd902f188ae334583adf551e4fbd8c7a14096ac0b674862b94186",
-          "T07": "4c784669044eda910872f2a40b5f1d465ffbf58e5f350361d71bba93c89bf0ff",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e"
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539",
+          "T06": "c9850068fed6016ea4cdf655ec95842029f0fc3ab16a0481ba12810a0512a909",
+          "T07": "32e0c94e487d020371af06108ed7ff7f9ffa3970ee7f7b07b688377bafe8023e",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce"
         }
       }
     },
@@ -5259,7 +5261,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-19-5-1": "a3f99035e9f13d2b57fc1e3e6d4e640023287d07dbaf14af629a1522ebd24684",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
           "th-8-2-4": "fa6bfd9fc037d6695a5fb31cb31aac1b611549e767990235d1b0fd121da3f733"
@@ -5277,12 +5279,12 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122",
-          "T06": "628be08bec6dd902f188ae334583adf551e4fbd8c7a14096ac0b674862b94186",
-          "T07": "4c784669044eda910872f2a40b5f1d465ffbf58e5f350361d71bba93c89bf0ff",
-          "T08": "717d51c4d8c723f2b62b937195a870cb496000dc081c632e900f48da4852d856"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539",
+          "T06": "c9850068fed6016ea4cdf655ec95842029f0fc3ab16a0481ba12810a0512a909",
+          "T07": "32e0c94e487d020371af06108ed7ff7f9ffa3970ee7f7b07b688377bafe8023e",
+          "T08": "081425cc59e764f3d9d9911a572be1357a6594ee160fe0f9551305fc96deee0f"
         }
       }
     },
@@ -5387,7 +5389,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-5-5": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180"
         },
@@ -5404,10 +5406,10 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T03": "b1632ed1a404d04bf47df852f5f7ea31cd9f2d424e56b578d0d28d6102215f5b",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T09": "05cea01e1243ac05fc6dbeb67488237ce0fe39998574392c5e4f936312afa46d",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e"
+          "T03": "47b31578ca8023194c7d9a5f9cebd3ee17267e9c22c0a72630029cf9fe41d1a9",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T09": "3e08a89f202d0bf79094cdf6faecb20094fb9c96a9fefcf7437df5915510203d",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce"
         }
       }
     },
@@ -5514,7 +5516,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-23-3": "2cff81751a78a83139bbd7b8ecefcb133c56c58446a4a81d8cb47bf4bb2528bb",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-24-5": "882315791d1cf274d392adf4cd37ee87dced97415c15004318499248bd0e06e5",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180"
         },
@@ -5531,8 +5533,8 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T13": "ec77d74e56f5b91db5523bc1b263ad6806a9c2da834787c69e825cb46aae3fdf"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T13": "b410809bf22789a428b47388c578175c3f2f595433814c85ff9e7de8cd932169"
         }
       }
     },
@@ -5642,7 +5644,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-2-3": "3e49ce680c1b5093c7e48307117d09610ce9bf95662e9042eaffc269a4101a7a",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-8-3": "c10fa170f2627bc5e29a89fe84f156927bd7b779c48f88dc8c2072cf75640378"
         },
@@ -5659,16 +5661,16 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T02": "796514ff6718bd5ebdf8ac3ec996f602bc97b162f2eba1ab11576a7b73e52dd8",
-          "T03": "b1632ed1a404d04bf47df852f5f7ea31cd9f2d424e56b578d0d28d6102215f5b",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122",
-          "T06": "628be08bec6dd902f188ae334583adf551e4fbd8c7a14096ac0b674862b94186",
-          "T07": "4c784669044eda910872f2a40b5f1d465ffbf58e5f350361d71bba93c89bf0ff",
-          "T08": "717d51c4d8c723f2b62b937195a870cb496000dc081c632e900f48da4852d856",
-          "T09": "05cea01e1243ac05fc6dbeb67488237ce0fe39998574392c5e4f936312afa46d",
-          "T10": "9acccf35c5c95a43835d4b9b4216ca48e0b8c9e2ff2f67aca18581c48dbd809e",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e"
+          "T02": "01608eef8acdade4ced7f90e92adeb2c3d9e01e3da04dab1af322440e4043612",
+          "T03": "47b31578ca8023194c7d9a5f9cebd3ee17267e9c22c0a72630029cf9fe41d1a9",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539",
+          "T06": "c9850068fed6016ea4cdf655ec95842029f0fc3ab16a0481ba12810a0512a909",
+          "T07": "32e0c94e487d020371af06108ed7ff7f9ffa3970ee7f7b07b688377bafe8023e",
+          "T08": "081425cc59e764f3d9d9911a572be1357a6594ee160fe0f9551305fc96deee0f",
+          "T09": "3e08a89f202d0bf79094cdf6faecb20094fb9c96a9fefcf7437df5915510203d",
+          "T10": "9140725837eeacb636a5cae28207e69d39c06062c97edca841f6c8468c497742",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce"
         }
       }
     },
@@ -5769,7 +5771,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-22": "21029159c81ae3ef0a44a85630d52b89cca0cc0bebc1a5ba86910a60c87fd89b",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-24-6-1": "a919ddc4780f7ffea8dd534773f6cd6f62f2f6cd2c552749e816c121720a0171",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33"
@@ -5787,7 +5789,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a"
         }
       }
     },
@@ -5944,7 +5946,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-4": "e6ea367cd4ec7d32c2405e8fe8f8afb763854d86f5834e1932fdd01ec125bcfe",
           "th-5-2": "1611ce202dc40f205f4599fa2cff22a2f7addce6ecd3a1f843fab285dd69aadd",
           "th-5-5": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
@@ -5966,18 +5968,18 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T02": "796514ff6718bd5ebdf8ac3ec996f602bc97b162f2eba1ab11576a7b73e52dd8",
-          "T03": "b1632ed1a404d04bf47df852f5f7ea31cd9f2d424e56b578d0d28d6102215f5b",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122",
-          "T06": "628be08bec6dd902f188ae334583adf551e4fbd8c7a14096ac0b674862b94186",
-          "T07": "4c784669044eda910872f2a40b5f1d465ffbf58e5f350361d71bba93c89bf0ff",
-          "T08": "717d51c4d8c723f2b62b937195a870cb496000dc081c632e900f48da4852d856",
-          "T09": "05cea01e1243ac05fc6dbeb67488237ce0fe39998574392c5e4f936312afa46d",
-          "T10": "9acccf35c5c95a43835d4b9b4216ca48e0b8c9e2ff2f67aca18581c48dbd809e",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e",
-          "T13": "ec77d74e56f5b91db5523bc1b263ad6806a9c2da834787c69e825cb46aae3fdf"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T02": "01608eef8acdade4ced7f90e92adeb2c3d9e01e3da04dab1af322440e4043612",
+          "T03": "47b31578ca8023194c7d9a5f9cebd3ee17267e9c22c0a72630029cf9fe41d1a9",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539",
+          "T06": "c9850068fed6016ea4cdf655ec95842029f0fc3ab16a0481ba12810a0512a909",
+          "T07": "32e0c94e487d020371af06108ed7ff7f9ffa3970ee7f7b07b688377bafe8023e",
+          "T08": "081425cc59e764f3d9d9911a572be1357a6594ee160fe0f9551305fc96deee0f",
+          "T09": "3e08a89f202d0bf79094cdf6faecb20094fb9c96a9fefcf7437df5915510203d",
+          "T10": "9140725837eeacb636a5cae28207e69d39c06062c97edca841f6c8468c497742",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce",
+          "T13": "b410809bf22789a428b47388c578175c3f2f595433814c85ff9e7de8cd932169"
         }
       }
     },
@@ -6104,7 +6106,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-2-2": "4e093d43b92cf009f2ec806a7f02430c03c551fc1da3e7c118696404c53eb939",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-5-2": "1611ce202dc40f205f4599fa2cff22a2f7addce6ecd3a1f843fab285dd69aadd",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-4-2": "906eb9adb90d079276c6fa9279b18f929d5d914e190f15713e726b86f0974797"
@@ -6122,16 +6124,16 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T03": "b1632ed1a404d04bf47df852f5f7ea31cd9f2d424e56b578d0d28d6102215f5b",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122",
-          "T06": "628be08bec6dd902f188ae334583adf551e4fbd8c7a14096ac0b674862b94186",
-          "T07": "4c784669044eda910872f2a40b5f1d465ffbf58e5f350361d71bba93c89bf0ff",
-          "T08": "717d51c4d8c723f2b62b937195a870cb496000dc081c632e900f48da4852d856",
-          "T09": "05cea01e1243ac05fc6dbeb67488237ce0fe39998574392c5e4f936312afa46d",
-          "T10": "9acccf35c5c95a43835d4b9b4216ca48e0b8c9e2ff2f67aca18581c48dbd809e",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T03": "47b31578ca8023194c7d9a5f9cebd3ee17267e9c22c0a72630029cf9fe41d1a9",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539",
+          "T06": "c9850068fed6016ea4cdf655ec95842029f0fc3ab16a0481ba12810a0512a909",
+          "T07": "32e0c94e487d020371af06108ed7ff7f9ffa3970ee7f7b07b688377bafe8023e",
+          "T08": "081425cc59e764f3d9d9911a572be1357a6594ee160fe0f9551305fc96deee0f",
+          "T09": "3e08a89f202d0bf79094cdf6faecb20094fb9c96a9fefcf7437df5915510203d",
+          "T10": "9140725837eeacb636a5cae28207e69d39c06062c97edca841f6c8468c497742",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce"
         }
       }
     },
@@ -6252,7 +6254,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-2-1": "7d0e3ca9c9e1f9538ecc98c50624c74c92c141843d39e49411e6c3e326337cd2",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-5-5": "40164a8cdf2516c456357310063f88c4af7c0d69b117890bec73b0ff27c0098d",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
@@ -6271,12 +6273,12 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T03": "b1632ed1a404d04bf47df852f5f7ea31cd9f2d424e56b578d0d28d6102215f5b",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T09": "05cea01e1243ac05fc6dbeb67488237ce0fe39998574392c5e4f936312afa46d",
-          "T10": "9acccf35c5c95a43835d4b9b4216ca48e0b8c9e2ff2f67aca18581c48dbd809e",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T03": "47b31578ca8023194c7d9a5f9cebd3ee17267e9c22c0a72630029cf9fe41d1a9",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T09": "3e08a89f202d0bf79094cdf6faecb20094fb9c96a9fefcf7437df5915510203d",
+          "T10": "9140725837eeacb636a5cae28207e69d39c06062c97edca841f6c8468c497742",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce"
         }
       }
     },
@@ -6399,7 +6401,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-19-7": "37d2009fd59bb8dfbc0a4508478775ca6b0c805b3c76c66cd2985a9e17506985",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-6-2": "e7df21f0426e2ef6f1737d6e274bba7c9609d2af6e7c4ebf96b6b0b81baf4a33",
           "th-7-4": "23be12c2d3de2673b1da2aef57d8ecf4fdccec2183568685c340b88f379a7b9b",
@@ -6419,15 +6421,15 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T03": "b1632ed1a404d04bf47df852f5f7ea31cd9f2d424e56b578d0d28d6102215f5b",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122",
-          "T06": "628be08bec6dd902f188ae334583adf551e4fbd8c7a14096ac0b674862b94186",
-          "T07": "4c784669044eda910872f2a40b5f1d465ffbf58e5f350361d71bba93c89bf0ff",
-          "T09": "05cea01e1243ac05fc6dbeb67488237ce0fe39998574392c5e4f936312afa46d",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e",
-          "T13": "ec77d74e56f5b91db5523bc1b263ad6806a9c2da834787c69e825cb46aae3fdf"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T03": "47b31578ca8023194c7d9a5f9cebd3ee17267e9c22c0a72630029cf9fe41d1a9",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539",
+          "T06": "c9850068fed6016ea4cdf655ec95842029f0fc3ab16a0481ba12810a0512a909",
+          "T07": "32e0c94e487d020371af06108ed7ff7f9ffa3970ee7f7b07b688377bafe8023e",
+          "T09": "3e08a89f202d0bf79094cdf6faecb20094fb9c96a9fefcf7437df5915510203d",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce",
+          "T13": "b410809bf22789a428b47388c578175c3f2f595433814c85ff9e7de8cd932169"
         }
       }
     },
@@ -6558,7 +6560,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180"
         },
         "shared_context": {
@@ -6574,16 +6576,16 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122",
-          "T06": "628be08bec6dd902f188ae334583adf551e4fbd8c7a14096ac0b674862b94186",
-          "T07": "4c784669044eda910872f2a40b5f1d465ffbf58e5f350361d71bba93c89bf0ff",
-          "T08": "717d51c4d8c723f2b62b937195a870cb496000dc081c632e900f48da4852d856",
-          "T09": "05cea01e1243ac05fc6dbeb67488237ce0fe39998574392c5e4f936312afa46d",
-          "T10": "9acccf35c5c95a43835d4b9b4216ca48e0b8c9e2ff2f67aca18581c48dbd809e",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e",
-          "T12": "f1210fcc3ae562ef15a0e33c7f680e52835bac37d7a9841512187c40beb89547"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539",
+          "T06": "c9850068fed6016ea4cdf655ec95842029f0fc3ab16a0481ba12810a0512a909",
+          "T07": "32e0c94e487d020371af06108ed7ff7f9ffa3970ee7f7b07b688377bafe8023e",
+          "T08": "081425cc59e764f3d9d9911a572be1357a6594ee160fe0f9551305fc96deee0f",
+          "T09": "3e08a89f202d0bf79094cdf6faecb20094fb9c96a9fefcf7437df5915510203d",
+          "T10": "9140725837eeacb636a5cae28207e69d39c06062c97edca841f6c8468c497742",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce",
+          "T12": "4f40129f415d66010673e2916a5c3c443f3e3e3a2e001db9e9e85ca6175ca890"
         }
       }
     },
@@ -6713,7 +6715,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-19-2": "01a8cb6ede69b3f7bbb2c0199a85779d28091c5635f9a66d7612e4c9ce4599c4",
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180"
         },
         "shared_context": {
@@ -6729,19 +6731,19 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T02": "796514ff6718bd5ebdf8ac3ec996f602bc97b162f2eba1ab11576a7b73e52dd8",
-          "T03": "b1632ed1a404d04bf47df852f5f7ea31cd9f2d424e56b578d0d28d6102215f5b",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122",
-          "T06": "628be08bec6dd902f188ae334583adf551e4fbd8c7a14096ac0b674862b94186",
-          "T07": "4c784669044eda910872f2a40b5f1d465ffbf58e5f350361d71bba93c89bf0ff",
-          "T08": "717d51c4d8c723f2b62b937195a870cb496000dc081c632e900f48da4852d856",
-          "T09": "05cea01e1243ac05fc6dbeb67488237ce0fe39998574392c5e4f936312afa46d",
-          "T10": "9acccf35c5c95a43835d4b9b4216ca48e0b8c9e2ff2f67aca18581c48dbd809e",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e",
-          "T12": "f1210fcc3ae562ef15a0e33c7f680e52835bac37d7a9841512187c40beb89547",
-          "T13": "ec77d74e56f5b91db5523bc1b263ad6806a9c2da834787c69e825cb46aae3fdf"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T02": "01608eef8acdade4ced7f90e92adeb2c3d9e01e3da04dab1af322440e4043612",
+          "T03": "47b31578ca8023194c7d9a5f9cebd3ee17267e9c22c0a72630029cf9fe41d1a9",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539",
+          "T06": "c9850068fed6016ea4cdf655ec95842029f0fc3ab16a0481ba12810a0512a909",
+          "T07": "32e0c94e487d020371af06108ed7ff7f9ffa3970ee7f7b07b688377bafe8023e",
+          "T08": "081425cc59e764f3d9d9911a572be1357a6594ee160fe0f9551305fc96deee0f",
+          "T09": "3e08a89f202d0bf79094cdf6faecb20094fb9c96a9fefcf7437df5915510203d",
+          "T10": "9140725837eeacb636a5cae28207e69d39c06062c97edca841f6c8468c497742",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce",
+          "T12": "4f40129f415d66010673e2916a5c3c443f3e3e3a2e001db9e9e85ca6175ca890",
+          "T13": "b410809bf22789a428b47388c578175c3f2f595433814c85ff9e7de8cd932169"
         }
       }
     },
@@ -6863,7 +6865,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-20-3": "dee00f46215b4853e9cfb5dcd7713a809e17a1768ca6955a0f1e7e502ebfa56b",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-24-6-1": "a919ddc4780f7ffea8dd534773f6cd6f62f2f6cd2c552749e816c121720a0171",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180",
           "th-8-2-4": "fa6bfd9fc037d6695a5fb31cb31aac1b611549e767990235d1b0fd121da3f733"
@@ -6881,13 +6883,13 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122",
-          "T09": "05cea01e1243ac05fc6dbeb67488237ce0fe39998574392c5e4f936312afa46d",
-          "T10": "9acccf35c5c95a43835d4b9b4216ca48e0b8c9e2ff2f67aca18581c48dbd809e",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e",
-          "T13": "ec77d74e56f5b91db5523bc1b263ad6806a9c2da834787c69e825cb46aae3fdf"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539",
+          "T09": "3e08a89f202d0bf79094cdf6faecb20094fb9c96a9fefcf7437df5915510203d",
+          "T10": "9140725837eeacb636a5cae28207e69d39c06062c97edca841f6c8468c497742",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce",
+          "T13": "b410809bf22789a428b47388c578175c3f2f595433814c85ff9e7de8cd932169"
         }
       }
     },
@@ -7008,7 +7010,7 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "th-2": "806595368d54d327c728f4a5b3b6510a6b44203b7529bbb24c80d9897c1c3e44",
           "th-20": "75dc62b754371837f1b27a92a33ccb9da425d766b77414237e593db8ce0aca6c",
           "th-22-4": "086a7fecc92e4c0d08f534e17259ab28f1033c4c0d30006413aafc3f337f582a",
-          "th-24": "acd8e720555a97c98acb6d6e56c6fa012051c0f61a424fc93a1ec902d97a7b39",
+          "th-24": "6a531b0350e2b18364f1588cca67b9dd53b961d20e8f72eae54d43bd1309b713",
           "th-6": "1bcfef36220b0b078e8feacf35c882203ada95c4d4ab46cb42a107d9acafa180"
         },
         "shared_context": {
@@ -7024,14 +7026,14 @@ T11是各层从第一篇起就要使用的共享档案，不是只能等整刊�
           "tech-shared-25-9": "ad3b73c1fe9da525bf687ecd595f3866d94895a480b7703cb009e836cc24c780"
         },
         "dependencies": {
-          "T01": "5e687ed03be98c5043e6b2ecf9e6ad3f19904452e04ba24c1a095563af8f146e",
-          "T03": "b1632ed1a404d04bf47df852f5f7ea31cd9f2d424e56b578d0d28d6102215f5b",
-          "T04": "a97b8b27451886d0c2aa5edca8323e9fa8966468ae3d7a1682127c2f943c8635",
-          "T05": "42924f663626ecd57e820912ac6d6a3fd44505b1e052750f95a3fd9aa8ad8122",
-          "T09": "05cea01e1243ac05fc6dbeb67488237ce0fe39998574392c5e4f936312afa46d",
-          "T10": "9acccf35c5c95a43835d4b9b4216ca48e0b8c9e2ff2f67aca18581c48dbd809e",
-          "T11": "5ac618520969cef5b121fcce76a223791a07e0248e677a9fa91b831dbdf9450e",
-          "T13": "ec77d74e56f5b91db5523bc1b263ad6806a9c2da834787c69e825cb46aae3fdf"
+          "T01": "b88d8208ead5ed43ef23465fad1edc970a37fa0f9028bccb6993bb44a3f77c3a",
+          "T03": "47b31578ca8023194c7d9a5f9cebd3ee17267e9c22c0a72630029cf9fe41d1a9",
+          "T04": "c5086d560910df485f0be8cc4bff06c765d96a72e121ef6208253056bdff556e",
+          "T05": "5b028d1782a285b559400b01fa0118d01bb3e8cec3895690de3195a9baecc539",
+          "T09": "3e08a89f202d0bf79094cdf6faecb20094fb9c96a9fefcf7437df5915510203d",
+          "T10": "9140725837eeacb636a5cae28207e69d39c06062c97edca841f6c8468c497742",
+          "T11": "ef14bc6f182c023669689b1978c486baaed16df5c8cdb810e55172e5a8c985ce",
+          "T13": "b410809bf22789a428b47388c578175c3f2f595433814c85ff9e7de8cd932169"
         }
       }
     }
@@ -7404,7 +7406,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "仅任务SI-WEEKLY-2026-W42及首篇档案准备；输入规范f793d407/110e3c821eda，私有包SHA-256 d0feedf3f468ac7b139765f91d73d4005327236cb1e7fb72774268c0ab246f44；正文/Review/全球覆盖/生产和长期恢复均未验，不代G01或W02以后工作"
         }
       ],
-      "reviewed_basis_sha256": "d9d93a9b44b0d5449e7b4c74758d3e3c03b2ed47e234e28972d03e07190b696b",
+      "reviewed_basis_sha256": "cb0d36431dd897b935412ee68f001cee02841a233a04b98b569e67a570830680",
       "order": 1,
       "work_type": "人工内容验证"
     },
@@ -7464,7 +7466,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "仅SI-WEEKLY-2026-W42的W02手工L1交付；输入df660635/951b7953a2aa，主池18条先冻结后查10参照，最终26候选（19比较/7待核）、35来源/12关系、7类缺口；私有包当前保存版本1 SHA-256 60fdf68840fd41b7965293c8d8a485651b53a279948ca9688355542a8524955c，回读相符；回溯同人路径独立检查，不是盲测/全球覆盖/原件事实PASS/自动采集；W03尚无入选/筛选差异，G01/生产均未验"
         }
       ],
-      "reviewed_basis_sha256": "1bf8075ee7c9808abf713dc213b7658072bf07e5f1fff1ace47c41ccbb0c572f",
+      "reviewed_basis_sha256": "2eed225aea5b6e45e2ca731b7c89bb16b2c5a756adf9ef9e78e2722e88c28c9a",
       "order": 2,
       "work_type": "人工内容验证"
     },
@@ -7522,7 +7524,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "仅SI-WEEKLY-2026-W42的W03人工初选与S7计划；26卡/3拟取证/16WATCH/7待核，3计划10取证动作，10参照与7类缺口；私有保存版本0/113611字节/SHA-256 5916f2834267bc2cca90a6d028e0efc886fc0785817ea2e81abf3fc58f440c3e，28文件/27清单回读相符；全部晚取得/历史正文未证；无S8/COVER/Review、正文、G01或生产实现，W04尚未开始"
         }
       ],
-      "reviewed_basis_sha256": "0529fb1239659df379bcad6e5ee831c5e953da9c90b2311d182d2aed8b6cce67",
+      "reviewed_basis_sha256": "e8b15c689bb6c306834d61178b45d84e5c8d5a4fb707a8b9f86a6ba435a3a2f8",
       "order": 3,
       "work_type": "人工内容验证"
     },
@@ -7581,7 +7583,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "仅W04手工S8前证据包：19文档/指针、21支持关系、9权限、3真实计算及10限制，IEA关键页实际核；不是19原件全齐，正式收费表/MoU/国家原通告等未取，历史正文未证；私有版本0/81521字节/1887d65c97b563230f409dfb878c1758375f3226fdc0dd11a62a7ad4efbdb0b5、26文件25清单回读一致。无S8/COVER/读者正文/Review/G01或生产验收，W05尚未开始"
         }
       ],
-      "reviewed_basis_sha256": "ddf09950c1166bb6631659c6455b22249b442d8f804b4f44e9d730413e6d7765",
+      "reviewed_basis_sha256": "9d20b206a5aea4674c8282a918ebff1f624f22a0f082309e60b46e2dcfb30090",
       "order": 4,
       "work_type": "人工内容验证"
     },
@@ -7642,7 +7644,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "仅W05人工S8及入选中文A：7实质复选5COVER2WATCH、19仅接续，1深度研究/3首次事实/1公开部分精选导引，5真实中文与19段原文对应、10局部观察、9实际用途权利，10参照/7开放覆盖缺口；回溯材料历史正文未证，正式收费表/独立效果/合同履约/国家原通告等缺口保留。私有版本0/121892字节/dfef666078dc8e5c46c2c3cba4e53cb7a141080005a49fbd4b01e3be51f95f0f、41文件40清单实际回读一致；未通过L5/整刊/G01或生产验收，W06尚未开始。"
         }
       ],
-      "reviewed_basis_sha256": "ae92d054b6b8963106a9b020353dea8bb62375e182a522845e3e51a8c7fdcb1c",
+      "reviewed_basis_sha256": "b79ae1057e6ccf4aa385454cec7837e49a679a0ef64cf7eb54bae73efecb592d",
       "order": 5,
       "work_type": "人工内容验证"
     },
@@ -7700,7 +7702,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "仅W06人工M01—M03：同案卷D06-v001/P01-Q-v003，8事实、7子问完成标准、4顾问/5帝师早期问题，5层结果/6知识用途，关键原件及机制/结果缺口与不同返工去向保留。回溯历史正文未证，阶段联系为公司报告非独立因果；READY不是子问全解/L5或B1/B2/C完成。私有版本0/85952字节/59f1f24d7e5325023ab425f85f3dbb69db19465a903f83b6b8a5c3536f83188c、30文件29清单实际回读一致；W07—W10仍未开始。"
         }
       ],
-      "reviewed_basis_sha256": "59229e0bd65b74f5a845869e1c684c881394fa64d1fb8975234bc73bca6e15b5",
+      "reviewed_basis_sha256": "e9e73e34697c0c06c27b77856b028130cf63fcd6c761363e87e3013b07e525a0",
       "order": 6,
       "work_type": "人工内容验证"
     },
@@ -7760,7 +7762,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "仅W07 M04—M09有限研究：D07-v001/P01-Q-v003，原版及修订DCT/说明函等8文书身份、12主张、3竞争解释/6观察、4方法、5风险链/5计算。前提失配的强信号应用撤销，项目原因/实际费用保护未决；历史正文仍未证。私有版本0/144798字节/784cff6707c1c2c6d5721f15a40a4168c819e7fb81ba378b62a8432d9e8a4d99、55文件/54清单实际回读。W08/W09实稿、独审、G01及生产未完成。"
         }
       ],
-      "reviewed_basis_sha256": "8ea7065f3afa5e84797cf78a0c8c1ae78656e9335e5acadfabdb5555082e854c",
+      "reviewed_basis_sha256": "b2c9be33aed83c82b362c4378eed6a3d7a4d9542cbe61e2c444d54f9dccb18a0",
       "order": 7,
       "work_type": "人工内容验证"
     },
@@ -7816,7 +7818,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "仅W08 M10人工成稿及增益对照：B1-v002/D08-v001/P01-Q-v003，16段实稿/8判断/6主体/6对照，真实v001保留及4段修订。期限表述差异与来源路径定向回核；具体适用期限/项目原因/实际费用效果未决。私有包版本0/193067字节/c1fc86eab5e9d2d6c6f1393ab22fc367d371b5de707cfcd01bcf1dbc4787672c及单独正文实际回读。W09双向成稿互校、独立审稿、G01和生产未完成。"
         }
       ],
-      "reviewed_basis_sha256": "e1cf3c8880686385ffe2d7908df014bb26a8771b0ac29754af9c7bf387593548",
+      "reviewed_basis_sha256": "738bc6477ae1ed6fe15cadba79f073fc5c540af143d969d84af647e4249bbd27",
       "order": 8,
       "work_type": "人工内容验证"
     },
@@ -7873,7 +7875,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "仅W09 M11人工教学及互校：B2-v002/B1-v003/D09/P01-Q-v003，22段/9知识主张/5计算/3人工概念登记/4对照，B1两段澄清和B2三段真实修订；所有假设非真实案例/独立验证/学习测量。项目原因/个案责任/净回收与账单未决。私有包版本0/255422字节/2c6c06c704443286f082da46858d47e8ce945bef2f5127a2fa7876edebfeb072和单独正文实际回读；W10、独审、整刊/G01和生产未完成。"
         }
       ],
-      "reviewed_basis_sha256": "4086f85fdb380978331aacc80d09124b5d5cb7870579df32c3dba50f0e166abc",
+      "reviewed_basis_sha256": "99116b5ef339070da176a544145eae360ea38f2fb65e86ffafebd79fba7f7590",
       "order": 9,
       "work_type": "人工内容验证"
     },
@@ -7931,7 +7933,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "仅W10人工C/M12准备：C-v001/D10/P01，2条件路径/2Thesis及原W01同任务槽位的实际追加；原话形成10月22日非18日预测，窗口为有理由事件触发，无新未来结果/点预测命中率/自动查询。113文件包版本0/310331字节/dacafff28e5f1be7855a5934008991b3eeedf99bf277aa154bdaf2e531eab100及单独正文真实回读。个案原因/责任/工程/净回收和账单未决，独立W11、整刊/G01及生产未完成。"
         }
       ],
-      "reviewed_basis_sha256": "8a11c110bdd727e7c306314ecb5a79e7135993c4de17ea7f9601c9158121c03c",
+      "reviewed_basis_sha256": "93aa713556c10aa26bdbbdee7b365510c9a8ad469c6a2b60a4195e1b80b07d46",
       "order": 10,
       "work_type": "人工内容验证"
     },
@@ -7993,7 +7995,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "仅W11第一阶段人工内容核查：8初始疑点/8实际意见、2修订要求、11来源范围与8算术；A02/B1-v004/B2-v003/C-v002及真实全文绑定RV-W11-CONTENT-20261023-001。139文件包版本0/415640字节/97611a22175d0bfa2d09f578a4bc9bb5f6e6690052815903d9fe9cc3b94b459e与全文回读相符。PASS只交W12内容使用，个案/原因/工程/净回收未知、原M12时间保留；视觉/完整样刊/G01、通用能力及生产未验。"
         }
       ],
-      "reviewed_basis_sha256": "09d087c503c8b7614e189ad969f45e5beaacc4d4eaa2039950601ae89b68e0f4",
+      "reviewed_basis_sha256": "a580e50a0fdf7bff22fe628eddf0b1f563d643520047321a242af6a9694b79ef",
       "order": 11,
       "work_type": "人工内容验证"
     },
@@ -8065,7 +8067,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "原PDF与独立存储PDF字节不相同，分别保留身份；21页文本、像素和55链接及8项目录一致，承接原有限内容/呈现检查。保存ZIP与原包逐字节相同，214文件/213项清单核过；用户实际阅读仍待，W12/G01未过，不继续W13/W14。"
         }
       ],
-      "reviewed_basis_sha256": "eab1a472948d3e5465b49e48668d8aa84afd82d8eedac7311e15b89f69c6ae1c",
+      "reviewed_basis_sha256": "4aea7653a576679714c85d914a3548b00115201a5760631e1a0d50f5b102d083",
       "order": 12,
       "work_type": "人工内容验证"
     },
@@ -8121,7 +8123,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "59fce554c51fc4a8dd12ef86c73a6239a265f37a56c50dbe7b3f7f99c4d4693e",
+      "reviewed_basis_sha256": "55231d2b03c45ff73b77ea1f061ffe8884282e4c5a2826298634fc2eaa7767e5",
       "order": 13,
       "work_type": "阶段门"
     },
@@ -8249,7 +8251,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "F01/F02已修复离线共享边界：新正文仅在显式、当时有效、条件确认且全内容覆盖的STORE_BODY许可下写入；后续读取复核保存许可；部分授权只能返回独立MaterialSelection的精确字节，原完整正文或字节相同重贴均拒绝。旧schema1正文保留本地恢复读取，但新写入不能用旧缺项绕过。G01未过，W13仍非ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "8119c740e9ebdd50eca03b70f461e013d78b654fdc721e82cc02d31c6f958d5c",
+      "reviewed_basis_sha256": "b6a58b2b1523b21db2215eb70317dd0b82f00f231c00da51ebe6b04556d88dac",
       "order": 14,
       "work_type": "代码与接口工作包"
     },
@@ -8354,7 +8356,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "F10已修复：get、read-reference和准备包统一调用O_EXCL/NOFOLLOW直接创建0600文件，不再先按umask创建后chmod；宽松umask下正文和准备包均为0600，既有文件不覆盖、仓库内路径与符号链接仍拒绝。W13/W12/G01正式前置未过，整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "8ca57ce79c65f4e8075665418ccb84b24bb8efe2f5ef344732dafc9e8b239e27",
+      "reviewed_basis_sha256": "db89189d2e86dc94303101093a2d7631e91ab4c416648067ea96973c260c0a6f",
       "order": 15,
       "work_type": "代码与接口工作包"
     },
@@ -8446,7 +8448,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "F03—F05已修复离线范围：ReviewCoverage结构化绑定精确Task/主体/用途并支持多主体；决定与提交按稳定Task对象隔离，CLI显式按Task查询且旧共享槽只读筛选；当前采用递归核必要依赖、状态、期限、Task/主体最新版本及主体/Review/必输版本撤回。A→B→C、独立分支、两Task、主体撤回、新Task版本和检查后恢复均通过。W14/G01正式前置未过，调用者身份、真实L5、内容真伪、完整M图和生产仍未验，W15整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "25a2bdcc1b3e13be81f29ff62e9674a5c02c5df83da8c3cac0fc730f0e45db3f",
+      "reviewed_basis_sha256": "4dfeafda197242bc7839865cd0ec619df57edd22976260ab9c6131bcd0f52eb8",
       "order": 16,
       "work_type": "代码与接口工作包"
     },
@@ -8537,7 +8539,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "F06/F09已修复离线范围：修订结构化区分问题/证据/截点/限制，非critical以外默认关键；ArtifactLink保存并核对作品实际basis，旧作品仅在完整列举非关键增删并经精确Review兼容后沿用，关键变化须重建；Archive写事务同时核期望revision和上一commit，检查后换修订返回Conflict。重建、关键拒绝、无关通过、revision/commit交错及并发提交均有回归。W13/W15正式前置未过，真实W27—W32、模型内容与生产恢复未验，W16整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "43f2740cd013b70d081f3d91acc72e277649a918073228d6cb8d7dbc49b73fd6",
+      "reviewed_basis_sha256": "12468b5b9875fb40f7e4856dadca2cc68c507c560bb9129220ee5f77ebaea29e",
       "order": 17,
       "work_type": "代码与接口工作包"
     },
@@ -8630,7 +8632,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "F07/F08/F11已修复离线范围：UNKNOWN对账绑定原operation、原回执版本、已知provider ID及引用operation的Evidence；不同查询ID须带同版本ProviderRequestMapping。对账以expected-current CAS写回，不覆盖并发成功，失败/失败只留一个当前回执。Adapter违规结果不采用但保留provider ID、实际费用、用量、内部重试、观察状态/结果哈希和违规原因，汇总继续计费。W18授权/预算、真实供应商认证与生产恢复未验，W17整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "582070335f28390777ca394bd4f44b92d5f5903dade232b3c4427cecc20d5b81",
+      "reviewed_basis_sha256": "f2c88b90c1ef489204fa3d5e7116dd161fc8bd0048f4664ca66950e77cb6028a",
       "order": 18,
       "work_type": "代码与接口工作包"
     },
@@ -8687,7 +8689,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "W18离线门禁：CapabilityAdmission精确绑定Task/步骤/供应商/工具/配置/操作/材料/地域/期限/Review和重试；BudgetEnvelope与追加预算事件在执行前预留、执行后按实际/估计结算，未知费用保留，默认并发预留1并由expected-current保护。材料用途/外发/配置/重试不足均在Adapter调用前拒绝；受控试用显式标记人工复核。真实供应商认证/账单、生产预算/W48恢复仍未验，整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "228238507c58c6ae8c43ef6e26a2570be0d260b28d7fcfa7b282bc3459c1ee7b",
+      "reviewed_basis_sha256": "62b1d661c294fe0c17469f4544792b6ea6216a4c767de6ac3f6774224d65fb90",
       "order": 19,
       "work_type": "代码与接口工作包"
     },
@@ -8741,7 +8743,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "W19离线记录：配置精确绑定供应商/模型/任务/提示/上下文/生成/方法/工具/职责/领域/材料形式，未知项显式；给定材料、真实检索、约束增益分别验证并保留全部尝试/失败/人工帮助/未验范围；准入只授明确职责领域，固定材料不扩为检索，关键失败/人工帮助降为受限或受控试用，配置变化旧准入失效并按身份/范围影响列复验。未调用真实模型、未做内容质量或W28/29/31消费，整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "ac349aee56bbb265107d03bfc5195d9948e646f7458e7a2421cb8753e471a593",
+      "reviewed_basis_sha256": "d0e429d70e020ae5eb83b462feac5464fed146641c255ed221cbfb2332b4dddf",
       "order": 20,
       "work_type": "代码与接口工作包"
     },
@@ -8795,7 +8797,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "W20离线来源入口：仅解析明确许可的既有字节，Feed使用feedparser、HTML使用Trafilatura、JSON API按显式items映射；CandidateIndex保存来源/取得方式/哈希/语言地区所有权、短摘或摘要、时间精度、血缘、缺字段、故障和人工探测性质，原始正文不随候选保存。真实网络来源、覆盖时段、事件归并和W21/W23消费未验，整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "569d392989d16974be9a02d113f4307213f1d1bc439f70ea4184d934fd0fbf79",
+      "reviewed_basis_sha256": "abe88b57aa6056bad1470674413b4509c94ba6ad23bcf49a168f0f4f8bccdcde",
       "order": 21,
       "work_type": "代码与接口工作包"
     },
@@ -8847,7 +8849,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "W21离线提案：只有显式事件键、已记录共同血缘根、canonical/duplicate候选关系或完全同URL才建立合并建议；标题相似和possible-related不强制合并且进探索队列。十次同源转载只计一个血缘根，独立来源按原始根而非URL数；差异、成员、来源和理由保留交T03复核，低热候选不丢弃。真实来源链、内容归并判断、W22覆盖及W23选择未验，整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "6256141f3dc2b9cc292cfb61971942d943e3da2d185c569f212766e24ae1cc0f",
+      "reviewed_basis_sha256": "cfefae1d96c9496de17c4c695392a09b2e1299718ee6a9e61190ac1b92e9939b",
       "order": 22,
       "work_type": "代码与接口工作包"
     },
@@ -8902,7 +8904,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "W22离线比较：参照计划须在CandidateIndex/EventClusterProposal之前固定且不得由域配额、候选或入选结果倒推；独立通道失败单列SOURCE_UNAVAILABLE，参照与候选可按精确事件键或显式匹配比较。未发现、聚类/筛选漏失、编辑舍弃、材料不足、未成熟、他题覆盖和重复覆盖分别记录责任人/下一步；审计明确global_recall_claim=false，只覆盖声明窗口/通道。真实参照、W23选择、W36/W41整刊影响未验，整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "231580512db5888b0019c6714e005d186659447cd8a0b83f227736e7b3c1c373",
+      "reviewed_basis_sha256": "ef7e5f621a2fcf50d53b247ac0ffea84e9de558d1f5529e4a75d027d70cbc04c",
       "order": 23,
       "work_type": "代码与接口工作包"
     },
@@ -8959,7 +8961,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "scope": "W23离线记录：S0—S7/WATCH与S8/COVER前后决定保留；S8包必须绑定实际QuestionVersion、SourceMaterial、Evidence、RightsRecord、ReadingScopePlan、CandidateIndex、EventClusterProposal及可选CoverageAudit，依赖过期或错类型阻止COVER准入；研究准入只保留COVER稿型且hard-coded无出版权，期次建议必须由当前COVER、有效研究准入和显式位置组成，研究准入/期次建议均不授予刊登。十项回归覆盖高分不自动拼刊、外来候选/事件簇、错误类型、新证据失效、旧决定失效、长期题降型和校验后并发CAS。W24—W26真实证据/中文、W31审稿、W36/W39/W41闭环及用户阅读未验，整包不ACCEPTED。"
         }
       ],
-      "reviewed_basis_sha256": "66cf7d23e0bd5a7028bfc3550e30c2d6024fc4014a093aeb8e4b19cfc83bcebe",
+      "reviewed_basis_sha256": "287fe1c43b2cf42e2d18ad2abdd3fe7988d75072f966c63aba7b43477f7f5858",
       "order": 24,
       "work_type": "代码与接口工作包"
     },
@@ -8993,9 +8995,27 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       ],
       "failure_action": "改合法定位/导引或报缺口，不用现网页伪造旧版，故障不误删其他有效材料。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
-      "reviewed_basis_sha256": "e1fbe2dd05bc0a40139697ea9ea42683555430ee97b94178f441b646e1a40e47",
+      "progress": "IN_PROGRESS",
+      "evidence": [
+        {
+          "record_id": "W24-ORIGINAL-AUDIT-20261031-001",
+          "artifact_refs": [
+            "intelligence/original.py",
+            "intelligence/contracts.py",
+            "intelligence/editorial.py",
+            "tests_runtime/test_original.py",
+            "audits/pr76-review-remediation-w24-20261031.json"
+          ],
+          "validation_refs": [
+            "tests_runtime/test_original.py (15 actual passing W24 tests)",
+            "audits/pr76-review-remediation-w24-20261031.json"
+          ],
+          "reviewer": "当前执行者实际离线检查获准字节、原文/结构/权利/取得记录、用途门禁和并发反例；非真实来源取得、PDF/OCR、事实核对或阶段批准",
+          "result": "IN_PROGRESS",
+          "scope": "W24离线接口：从当前S7 WATCH/REVISE或S8 COVER及明确请求处理调用者提供的精确字节；错哈希/格式、空正文、陈旧或DROP决定被阻断。STORE_BODY决定是否保留原件，MODEL_PROCESS决定是否运行结构提取，TRANSLATE按精确源版本另行检查；HTML/纯文本生成不含正文的节点定位和哈希，表格/图像强制回原件，PDF只保存并标记解析器/OCR缺口。RIGHTS_RECORD、SOURCE_STRUCTURE与SOURCE_INTAKE均引用同一SOURCE_MATERIAL版本；首段部分取得、无保存权、无处理权、错误版本、空源、PDF未解析、重复取得和操作中决定变更均有反例。未用真实网页/PDF/扫描件、Docling、OCR、翻译、Claim支持或W25/W26闭环，整包不ACCEPTED。"
+        }
+      ],
+      "reviewed_basis_sha256": "baec46bf3f4f1b687096895ec33256742289cd1e88f51dac77c51e2fac2c0c30",
       "order": 25,
       "work_type": "代码与接口工作包"
     },
@@ -9035,7 +9055,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "f2f4e81f13e6430be16dfc64d68fcf08d578728ad70db289ab438c4f4d5027f2",
+      "reviewed_basis_sha256": "2ec073b0e05488f3e510c8f22ac8a2b8dfe6f6ff67f76db802e7f0ff30e5d46c",
       "order": 26,
       "work_type": "代码与接口工作包"
     },
@@ -9073,7 +9093,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "8dd4c98b05c899f7b9b91ee35a38d4d9d2d7489015b5df6b7406fdd137a1c169",
+      "reviewed_basis_sha256": "fce640b6c8cd7a23539897f2bc1a8ae6378069ba58648e0cec4365734fb89bca",
       "order": 27,
       "work_type": "代码与接口工作包"
     },
@@ -9115,7 +9135,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "4a5a9e873cf47c54a636f7ad690be5a01ce77b3b946d5a29ddb24970ad55f68b",
+      "reviewed_basis_sha256": "18c92cf377b5d95358ab5771f4ac85e407160447fe3a6c510fdc29421266e772",
       "order": 28,
       "work_type": "代码与接口工作包"
     },
@@ -9150,7 +9170,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "6656fbd2b2f0c1bf4891e96b7813888229af16e9240515767818fcecb5926320",
+      "reviewed_basis_sha256": "5a29ed73378a07edac48f7519cde409abc03c0b10cbbfaf374ac4e7c40466fed",
       "order": 29,
       "work_type": "代码与接口工作包"
     },
@@ -9186,7 +9206,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "06b3ef2005b6faf5d7c41126c8bd03db00eca6ae5e35a270d90fa876da5a8b7b",
+      "reviewed_basis_sha256": "7d15b1595c853cab4807236476ab07a299a3dc98ac7f7dec7a9c0b89cd3753e5",
       "order": 30,
       "work_type": "代码与接口工作包"
     },
@@ -9223,7 +9243,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "cef875586837904d827173e2112bf1b5c931eb167f6001364477a82b7cf729be",
+      "reviewed_basis_sha256": "e1039ce564e2c254f094a8853a5ab2128bf6752ccc4d3cebe680467d6c19bb02",
       "order": 31,
       "work_type": "代码与接口工作包"
     },
@@ -9265,7 +9285,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "a783e49f1d9189c93092d843148929483ced7901f941d60dfe37fd4a244b2ac2",
+      "reviewed_basis_sha256": "322a42f06bcf8d78ffd9048d20c6e086a893c0bb8fe1ffe3535ac83dff71da38",
       "order": 32,
       "work_type": "代码与接口工作包"
     },
@@ -9305,7 +9325,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "49f7fdbbb2b3e144960b5be259a2b94c3a423dc1329d1a8f7336f8aae563765f",
+      "reviewed_basis_sha256": "50e79e4611cd306f9dbef3ea9e3ff99045562b6be88c72c6f33dbea1627a37cd",
       "order": 33,
       "work_type": "代码与接口工作包"
     },
@@ -9342,7 +9362,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "38d2c5f784222cf8e08ac5a6ef98b21ac1b6b8df1fc6e8f1bbb385d4f621d66a",
+      "reviewed_basis_sha256": "2fb24937d2b0cf0ca78d0b44f1f6d7ea9df802dfd21a4d07ae238cbbb2b4eee6",
       "order": 34,
       "work_type": "代码与接口工作包"
     },
@@ -9381,7 +9401,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "5e0a9bb143cb17d3263887d4d5d9b9814deaa06042613fcb8264077b18ef2fa2",
+      "reviewed_basis_sha256": "c0e16e9a85cc33519b05c794103553b33225fcb5f0049282a8b2eafed16aa349",
       "order": 35,
       "work_type": "代码与接口工作包"
     },
@@ -9421,7 +9441,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": "仅第二阶段出现经RunLog记录的真实上下文/装载受阻时启用；无受阻依据可有据不适用，不能跳过输入完整性，也不得因W27未完成本身自动启动。",
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "d85f0b3f2e7b939a5906ef3282f800fd2b62f518e48ee372dca385009772fdbe",
+      "reviewed_basis_sha256": "841dacf1af0b4cbc669e12dcb87de98db8b3d9a8643b430f58cdf6e4533ce755",
       "order": 36,
       "work_type": "条件能力"
     },
@@ -9471,7 +9491,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "49a6d58a65b451e7663db800c23e3670558d0e5b551dc72c6ee000a2f745ea92",
+      "reviewed_basis_sha256": "469aa4c78224dee1d426e3e0e8d13646f115ae0459b6ff526b324e91632a1e75",
       "order": 37,
       "work_type": "路线集成验收"
     },
@@ -9513,7 +9533,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "37a2ac2391e1462f0d25f931633d88b43d8e713795b9c669fa07afaf005dd9f9",
+      "reviewed_basis_sha256": "24c48fd3fd20660c45ada73749209f9f2bbc2fa6b08f5fddbd70a81bace43de9",
       "order": 38,
       "work_type": "路线集成验收"
     },
@@ -9555,7 +9575,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "ee80825261ca4470fa6982aff37da40e9a64b8e9d610a194a5933829252d60cf",
+      "reviewed_basis_sha256": "262dc6319d4771e5a186f6e4fccb06edafad5ec7a5060c2fff0d9760e79691f9",
       "order": 39,
       "work_type": "路线集成验收"
     },
@@ -9596,7 +9616,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "7e2962a1b97c63c9c928c3db8e6c8321c69a0a1fb7aa8a63245df6dc2b90ea6e",
+      "reviewed_basis_sha256": "f706324fa7074fc9f2e71748589ec041c034c135c232c207fd450717b4a0edaa",
       "order": 40,
       "work_type": "路线集成验收"
     },
@@ -9637,7 +9657,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "0f3e38a88f1aea5de0d2c8b69627d786674674f603812cb3e82d7c7b9c18358b",
+      "reviewed_basis_sha256": "4810afa528b0e911b37adccdae14d8b48bf0315d0d7d1519bafd073e5e9b55b2",
       "order": 41,
       "work_type": "路线集成验收"
     },
@@ -9678,7 +9698,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "aaac81eaccaeb2d0cec6fa72409bd2933a215d27ebb655584ca0c04efa3ce2c8",
+      "reviewed_basis_sha256": "0aa97346d7d316ac12b52c5eeddaf444cbaef7334b1d424c9bbfdc19e3601b74",
       "order": 42,
       "work_type": "真实案例与能力验收"
     },
@@ -9753,7 +9773,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "d1c8839c3ef506a7ac1d018dda9100ce99498f642055c74a853328dc2e7d58b9",
+      "reviewed_basis_sha256": "8357a24d9fbe20509355f64cf256a04ab5ac3918ca593e409bc8782101aa0b94",
       "order": 43,
       "work_type": "阶段门"
     },
@@ -9792,7 +9812,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "c333d6128f9d43eac4a96ef5981a0a0b4f8d0cf05cbf564fca876ad37dece593",
+      "reviewed_basis_sha256": "65609e90a8e7a95c5aa17fe6e3b936738941d3a579cece933801440634828c2c",
       "order": 44,
       "work_type": "代码与接口工作包"
     },
@@ -9834,7 +9854,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "35d44c47dca24192574b75d13b248e51325fcd2b39078ac574c21985780b5798",
+      "reviewed_basis_sha256": "e6d8e5e2593e97634b8bc5c47edb081cd1b4e1ccc8b5f0de4ba68ffb5461204d",
       "order": 45,
       "work_type": "真实案例与能力验收"
     },
@@ -9872,7 +9892,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": "只有真实专业瓶颈需要时比较；用户此轮仅授权工作清单，未授权现在启动多Agent。",
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "33607b51039fbe279799aca267d1c1a1e20d49bdd8cd5b0faa94df75b5af3186",
+      "reviewed_basis_sha256": "cc18ef4dfc1c54129508413ef649ab5948a976d70d31a67543324d5c0d5756ab",
       "order": 46,
       "work_type": "条件能力"
     },
@@ -9911,7 +9931,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "773e8b159be7588e9688943fbb9eed0b7536543b1458805fa9e681c28fd541fb",
+      "reviewed_basis_sha256": "72e75528629fab97566cc6f77aee6301b416a2509cdcf29e64c679ead203d2e4",
       "order": 47,
       "work_type": "真实案例与能力验收"
     },
@@ -9951,7 +9971,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "4f231cea11203549b9143eeb2a4b547b36a45d2a16135fc0a812b998e63d96b7",
+      "reviewed_basis_sha256": "2a4b6f0c125c75dee7f570ef4c8069f4f0f3a2e6080a5a4dca7c91e2be4ce21d",
       "order": 48,
       "work_type": "阶段门"
     },
@@ -9993,7 +10013,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "903183e4082cdf4d7fd06033e797a69a9fb1b2ca7875e2f0a9e8d4d66dc4b8a9",
+      "reviewed_basis_sha256": "c5ef5776ce6fdf16b718ac48f3576c9be6599e1b6f89a9dbb4ef02d98f65dc6b",
       "order": 49,
       "work_type": "代码与接口工作包"
     },
@@ -10038,7 +10058,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "6f3b71c5b619b91b1e203e7223d57fc88415c16d441c55b7af7a9a6ce813c32a",
+      "reviewed_basis_sha256": "a3c3f9334b2e2fe520181ff451456d3c5af208c7c56d065913078335e2c56c2c",
       "order": 50,
       "work_type": "代码与接口工作包"
     },
@@ -10086,7 +10106,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "1b92f3d0a0d14254c0f3e7f168f07b3eb330bb8d206cc3971e5729e8cca22ade",
+      "reviewed_basis_sha256": "83d2bc94dad9a071c59d8c10e91cfee2dd3179368a256215c9364d2adab3601d",
       "order": 51,
       "work_type": "代码与接口工作包"
     },
@@ -10128,7 +10148,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "69995e96813748ab8558e1bfef7b3c10f3d104e6112e99b954602e3b740aa553",
+      "reviewed_basis_sha256": "3fe81b1dd878ee3d93573915851d6c6c6468ded0e78e597058e9ac277961d6cb",
       "order": 52,
       "work_type": "代码与接口工作包"
     },
@@ -10169,7 +10189,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "f668362bdbcd9d0cc30a6d3e6daa4fb1277bd9fa6c4a489f0e7b5360b7985c10",
+      "reviewed_basis_sha256": "ef28feab6f2de6ab77cf90f98a1fcd86a152a45a4fa5a588c6025784b14ec8f9",
       "order": 53,
       "work_type": "代码与接口工作包"
     },
@@ -10209,7 +10229,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "8bb6ebd3526f36dc1c4e559a2233aee7252c3de96cbe28d1677d3a5136c3c9e2",
+      "reviewed_basis_sha256": "83ea8443d464a1d672e777c557ce36bc761f36ba22f8eaaa3805b753ccbdc283",
       "order": 54,
       "work_type": "代码与接口工作包"
     },
@@ -10249,7 +10269,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "640b2becc46aaed9e96a44492047fb9b517339023d576f8a63f970bbd9d7b1ad",
+      "reviewed_basis_sha256": "f6b445d90c427b1efe74ed5398e3da4bfce5d8ad2d15c96b775fe7fa49dc4a1c",
       "order": 55,
       "work_type": "代码与接口工作包"
     },
@@ -10292,7 +10312,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "a3357733bc8a6d4fedb98af23a11db8fcf18f4f604467aedfc3f6c5d4affdcc8",
+      "reviewed_basis_sha256": "081637680646a1195f061b4afd5744cf90256250644247c0ba497914c035a8cc",
       "order": 56,
       "work_type": "代码与接口工作包"
     },
@@ -10334,7 +10354,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "3efe847f23aa64e5691553669c7ac15730c934e4686ccecff0444fe984d5413c",
+      "reviewed_basis_sha256": "d7e02a44c5dd5ceebfc89d28357fb111daddda5f6874de20b9950dac8d371a1e",
       "order": 57,
       "work_type": "路线集成验收"
     },
@@ -10389,7 +10409,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "77fc9674e88394840b96728a968333ff421af703ae8f022474ab4f2d66499c72",
+      "reviewed_basis_sha256": "c946250e4f042855a8866a7d48cdd09d81448ab2618fabff2164d446e035a298",
       "order": 58,
       "work_type": "路线集成验收"
     },
@@ -10445,7 +10465,7 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       "conditional": null,
       "progress": "NOT_STARTED",
       "evidence": [],
-      "reviewed_basis_sha256": "649bca433c790da5f5e91477ea62a635ce616d06dd58342cdc5b7a7ec3e5b8f8",
+      "reviewed_basis_sha256": "6b3c11ee2a14dfd8ce7c4eec8895e079919adb0319fe0612ff3b4368f2045318",
       "order": 59,
       "work_type": "阶段门"
     }

@@ -56,6 +56,8 @@ class ObjectKind(str, Enum):
     COVERAGE_AUDIT = "CoverageAudit"
     QUESTION_VERSION = "QuestionVersion"
     SOURCE_MATERIAL = "SourceMaterial"
+    SOURCE_STRUCTURE = "SourceStructure"
+    SOURCE_INTAKE = "SourceIntake"
     RIGHTS_RECORD = "RightsRecord"
     READING_SCOPE_PLAN = "ReadingScopePlan"
     S8_PREREQUISITE_PACKAGE = "S8PrerequisitePackage"
