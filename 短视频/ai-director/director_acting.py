@@ -24,6 +24,7 @@ MODE = {
     "version": 1,
 }
 HANDS = frozenset({"left", "right", "both", "none"})
+POSTURES = frozenset({"standing", "seated", "lying", "kneeling", "other"})
 GENERIC_PHRASES = (
     "自然地", "自然表演", "表演自然", "情绪到位", "悲伤地看着",
     "很悲伤", "很生气", "开心地看着", "正常地",
@@ -280,6 +281,261 @@ def _inspect_hand_prop(source, shot, cast, report):
         intervals.setdefault(key, []).append((start, end))
 
 
+def _props_for(source):
+    props = set((source.get("continuity_contract") or {}).get("props", {}))
+    if not props:
+        props = set((source.get("art") or {}).get("prop_ids", []))
+    return props
+
+
+def _hand_owner(phase, prop):
+    for actor, entry in (phase or {}).items():
+        hands = (entry or {}).get("hands") or {}
+        for hand in ("left", "right"):
+            if hands.get(hand) == prop:
+                return actor, hand
+    return None, None
+
+
+def _validate_hands(hands, props, report, sid, cid):
+    if not isinstance(hands, dict) or set(hands) != {"left", "right"}:
+        _add(report["blockers"], "ACTING_HANDS_INVALID",
+             "hands must contain exactly left and right",
+             shot_id=sid, character_id=cid)
+        return
+    for hand, value in hands.items():
+        if value not in ("free", "none") and value not in props:
+            _add(report["blockers"], "ACTING_HAND_PROP_UNKNOWN",
+                 "physical_state hand references an undeclared prop",
+                 shot_id=sid, character_id=cid)
+
+
+def _inspect_dual_person(source, shot, cast, report):
+    sid = source.get("id")
+    staging = shot.get("staging") or {}
+    props = _props_for(source)
+    cut_note = staging.get("cut_note")
+    if cut_note:
+        _add(report["reviews"], "ACTING_INTENTIONAL_CUT",
+             "an explicit cut note changes physical state between shots",
+             shot_id=sid)
+    if not cast:
+        return
+    state = staging.get("physical_state")
+    if not isinstance(state, dict):
+        _add(report["blockers"], "ACTING_PHYSICAL_STATE_MISSING",
+             "strict acting shots need physical_state start/end",
+             shot_id=sid)
+        return
+    phases = {}
+    for phase_name in ("start", "end"):
+        phase = state.get(phase_name)
+        if not isinstance(phase, dict):
+            _add(report["blockers"], "ACTING_PHYSICAL_STATE_INVALID",
+                 "physical_state needs start and end objects",
+                 shot_id=sid)
+            continue
+        phases[phase_name] = phase
+        for cid in cast:
+            entry = phase.get(cid)
+            if not isinstance(entry, dict):
+                _add(report["blockers"], "ACTING_PHYSICAL_ACTOR_MISSING",
+                     "each cast member needs a physical state at shot boundaries",
+                     shot_id=sid, character_id=cid)
+                continue
+            if entry.get("posture") not in POSTURES:
+                _add(report["blockers"], "ACTING_POSTURE_INVALID",
+                     "posture must be standing/seated/lying/kneeling/other",
+                     shot_id=sid, character_id=cid)
+            if not _text(entry.get("facing")):
+                _add(report["blockers"], "ACTING_FACING_MISSING",
+                     "physical state needs a concrete facing direction",
+                     shot_id=sid, character_id=cid)
+            _validate_hands(entry.get("hands"), props, report, sid, cid)
+        for cid in set(phase) - set(cast):
+            _add(report["blockers"], "ACTING_PHYSICAL_ACTOR_UNKNOWN",
+                 "physical state references an actor outside this shot",
+                 shot_id=sid, character_id=cid)
+    if len(phases) == 2:
+        changes = state.get("posture_changes") or []
+        for cid in cast:
+            start = (phases["start"].get(cid) or {}).get("posture")
+            end = (phases["end"].get(cid) or {}).get("posture")
+            if start and end and start != end:
+                ok = any(
+                    isinstance(change, dict)
+                    and change.get("actor_id") == cid
+                    and change.get("from") == start
+                    and change.get("to") == end
+                    and _text(change.get("cause"))
+                    for change in changes
+                )
+                if not ok:
+                    _add(report["blockers"], "ACTING_POSTURE_CHANGE_UNMOTIVATED",
+                         "posture change needs actor_id/from/to/cause",
+                         shot_id=sid, character_id=cid)
+    relationships = staging.get("relationship_map")
+    if len(cast) == 2:
+        if not isinstance(relationships, list):
+            _add(report["blockers"], "ACTING_RELATIONSHIP_MAP_MISSING",
+                 "dual-person shots need a relationship_map",
+                 shot_id=sid)
+        else:
+            for actor in cast:
+                target = next((cid for cid in cast if cid != actor), None)
+                if not any(
+                    isinstance(row, dict)
+                    and row.get("actor_id") == actor
+                    and row.get("target_id") == target
+                    and all(_text(row.get(key)) for key in
+                            ("gaze", "body_orientation", "distance", "interaction"))
+                    for row in relationships
+                ):
+                    _add(report["blockers"], "ACTING_RELATIONSHIP_ROW_MISSING",
+                         "each dual-person actor needs gaze/body/distance/interaction toward the other",
+                         shot_id=sid, character_id=actor)
+    elif isinstance(relationships, list):
+        for row in relationships:
+            if (not isinstance(row, dict) or row.get("actor_id") not in cast
+                    or row.get("target_id") not in cast
+                    or not all(_text(row.get(key)) for key in
+                               ("gaze", "body_orientation", "distance", "interaction"))):
+                _add(report["blockers"], "ACTING_RELATIONSHIP_ROW_INVALID",
+                     "relationship_map rows need in-cast actors and concrete interaction fields",
+                     shot_id=sid)
+    handoffs = staging.get("handoffs")
+    if handoffs is None:
+        handoffs = []
+    if not isinstance(handoffs, list):
+        _add(report["blockers"], "ACTING_HANDOFF_INVALID",
+             "handoffs must be a list",
+             shot_id=sid)
+        handoffs = []
+    orders = set()
+    for entry in handoffs:
+        if not isinstance(entry, dict):
+            _add(report["blockers"], "ACTING_HANDOFF_INVALID",
+                 "every handoff must be an object", shot_id=sid)
+            continue
+        order = entry.get("order")
+        if type(order) is not int or order in orders:
+            _add(report["blockers"], "ACTING_HANDOFF_ORDER_INVALID",
+                 "handoff order must be a unique integer", shot_id=sid)
+        orders.add(order)
+        from_actor, to_actor = entry.get("from_actor"), entry.get("to_actor")
+        prop = entry.get("prop_id")
+        if from_actor not in cast or to_actor not in cast or from_actor == to_actor:
+            _add(report["blockers"], "ACTING_HANDOFF_ACTOR_INVALID",
+                 "handoff needs two distinct actors from this shot",
+                 shot_id=sid)
+        if prop not in props:
+            _add(report["blockers"], "ACTING_HANDOFF_PROP_UNKNOWN",
+                 "handoff prop must be declared in the continuity contract",
+                 shot_id=sid)
+        start, end = entry.get("from_s"), entry.get("to_s")
+        if (not isinstance(start, (int, float)) or isinstance(start, bool)
+                or not isinstance(end, (int, float)) or isinstance(end, bool)
+                or start < 0 or end <= start or end > source.get("duration", 0) + 1e-9):
+            _add(report["blockers"], "ACTING_HANDOFF_TIME_INVALID",
+                 "handoff time window must sit inside the shot", shot_id=sid)
+        if not _text(entry.get("action")) or not _text(entry.get("visible_result")):
+            _add(report["blockers"], "ACTING_HANDOFF_ACTION_MISSING",
+                 "handoff needs action and visible_result", shot_id=sid)
+        if entry.get("visible") is not True:
+            if entry.get("visible") is False and _text(entry.get("note")):
+                _add(report["reviews"], "ACTING_OFFSCREEN_HANDOFF",
+                     "offscreen handoff needs human confirmation", shot_id=sid)
+            else:
+                _add(report["blockers"], "ACTING_HANDOFF_VISIBILITY_INVALID",
+                     "handoff needs visible=true or visible=false with a note",
+                     shot_id=sid)
+    if len(phases) == 2:
+        for prop in props:
+            start_actor, _ = _hand_owner(phases["start"], prop)
+            end_actor, _ = _hand_owner(phases["end"], prop)
+            if start_actor == end_actor:
+                continue
+            evidence = any(
+                isinstance(entry, dict) and entry.get("prop_id") == prop
+                for entry in handoffs
+            ) or any(
+                isinstance(entry, dict) and entry.get("prop_id") == prop
+                for entry in (staging.get("hand_prop") or [])
+            )
+            if not evidence:
+                _add(report["blockers"], "ACTING_HAND_STATE_UNMOTIVATED",
+                     "hand ownership changes need a pickup/place/handoff event",
+                     shot_id=sid)
+            if start_actor and end_actor and start_actor != end_actor:
+                if not any(
+                    isinstance(entry, dict)
+                    and entry.get("prop_id") == prop
+                    and entry.get("from_actor") == start_actor
+                    and entry.get("to_actor") == end_actor
+                    for entry in handoffs
+                ):
+                    _add(report["blockers"], "ACTING_HANDOFF_MISSING",
+                         "cross-actor ownership needs an ordered handoff",
+                         shot_id=sid)
+
+
+def _inspect_cross_shot(base, payload, report):
+    shots = payload.get("shots") or {}
+    sources = [shot.get("id") for shot in base.get("shots", [])]
+    if not sources or set(shots) != set(sources):
+        return  # Scoped revision: per-shot checks plus ledger merge handle linkage.
+    for before_id, after_id in zip(sources, sources[1:]):
+        before = shots.get(before_id) or {}
+        after = shots.get(after_id) or {}
+        before_state = (before.get("staging") or {}).get("physical_state") or {}
+        after_state = (after.get("staging") or {}).get("physical_state") or {}
+        before_end = before_state.get("end") or {}
+        after_start = after_state.get("start") or {}
+        cut_note = (after.get("staging") or {}).get("cut_note") or ""
+        for actor in set(before_end) & set(after_start):
+            old = before_end.get(actor) or {}
+            new = after_start.get(actor) or {}
+            old_hands, new_hands = old.get("hands") or {}, new.get("hands") or {}
+            if old_hands != new_hands:
+                changed = {
+                    value for value in list(old_hands.values()) + list(new_hands.values())
+                    if value not in ("free", "none")
+                }
+                handoff = any(
+                    isinstance(entry, dict) and entry.get("prop_id") in changed
+                    for shot in (before, after)
+                    for entry in ((shot.get("staging") or {}).get("handoffs") or [])
+                )
+                if not handoff:
+                    if cut_note:
+                        _add(report["reviews"], "ACTING_INTENTIONAL_CUT_STATE_CHANGE",
+                             "cut note explains a hand-state change",
+                             shot_id=after_id, character_id=actor)
+                    else:
+                        _add(report["blockers"], "ACTING_HAND_STATE_JUMP",
+                             "hand ownership changes across a cut without a visible event or note",
+                             shot_id=after_id, character_id=actor)
+            if old.get("posture") != new.get("posture"):
+                changes = (after_state.get("posture_changes") or [])
+                explained = any(
+                    isinstance(change, dict)
+                    and change.get("actor_id") == actor
+                    and change.get("from") == old.get("posture")
+                    and change.get("to") == new.get("posture")
+                    and _text(change.get("cause"))
+                    for change in changes
+                )
+                if not explained:
+                    if cut_note:
+                        _add(report["reviews"], "ACTING_INTENTIONAL_CUT_STATE_CHANGE",
+                             "cut note explains a posture change",
+                             shot_id=after_id, character_id=actor)
+                    else:
+                        _add(report["blockers"], "ACTING_POSTURE_STATE_JUMP",
+                             "posture changes across a cut without an action or note",
+                             shot_id=after_id, character_id=actor)
+
+
 def inspect_delivery(base, state, payload):
     """Validate per-shot/per-character acting contracts and hand ownership."""
     report = _findings()
@@ -389,4 +645,6 @@ def inspect_delivery(base, state, payload):
                      "all beats repeat one performance phrase; verify a real change",
                      shot_id=sid)
         _inspect_hand_prop(source, shot, set(cast), report)
+        _inspect_dual_person(source, shot, set(cast), report)
+    _inspect_cross_shot(base, payload, report)
     return report

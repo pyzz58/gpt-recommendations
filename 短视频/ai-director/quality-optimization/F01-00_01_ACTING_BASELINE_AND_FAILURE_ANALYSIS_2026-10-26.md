@@ -2,7 +2,7 @@
 
 日期：2026-10-26  
 范围：`短视频/ai-director/`，现有 acting / acting_coach 岗位与离线校验链。  
-状态：**F01-00/01 基线已完成；F01-02/03 严格表演合同已实现并通过离线回归；F01-04 至 F01-09 与独立专业审稿仍待完成。QO-F01 仍保持 `audit_pending`。**
+状态：**F01-00/01 基线已完成；F01-02/03 严格表演合同已实现；F01-04 的双人实体状态、关系对位与交物/姿态跨镜门禁已完成本轮部分；F01-05 至 F01-09 与独立专业审稿仍待完成。QO-F01 仍保持 `audit_pending`。**
 
 本文件不是艺术验收，不新增第二套质量账本。状态仍以 [QUALITY_ISSUES.json](QUALITY_ISSUES.json) 的 QO-F01 为准；本轮将其从 `audit_pending` 推进为 `in_progress`，不标 `complete`。
 
@@ -126,4 +126,17 @@ agent_team (acting / acting_coach DAG)
 
 - 这仍是**离线结构与因果合同**，不是专业演员/导演盲评，也不能证明真实 AI 表演质量。
 - QO-F01 仍为 `audit_pending`：quality registry 要求未来部门在非 pending 状态前具备独立专业审稿；没有该证据时不得刷状态。
-- F01-04（双人调度、实体交接硬门禁）、F01-05（模型可拍性与替代）、F01-06（跨岗位同源版本/定点返修）、F01-07（多题材离线正反回归）、F01-08（真实媒体）和 F01-09（冻结交接）仍未完成。
+- F01-04 本轮仅完成双人实体状态与交物部分；门/窗环境状态、三人以上复杂互动仍未完成。F01-05（模型可拍性与替代）、F01-06（跨岗位同源版本/定点返修）、F01-07（多题材离线正反回归）、F01-08（真实媒体）和 F01-09（冻结交接）仍未完成。
+
+## 9. F01-04 部分实现：双人实体状态与交物（2026-10-31）
+
+在严格模式下新增并验证：
+
+- `staging.physical_state.start/end`：每名出场角色的 posture、facing、hands.left/right；hand 只允许 `free`/`none` 或 continuity contract 中声明的稳定道具 ID。
+- `posture_changes`：镜内坐/站等姿态变化必须写 actor_id/from/to/cause。
+- `staging.relationship_map`：双人镜必须分别为两名角色写 target_id、gaze、body_orientation、distance、interaction；群体镜至少要求每个角色有一个合法对手行。
+- `staging.handoffs`：交物必须有序、同一镜双方、道具 ID、时间窗、可见动作/结果；场外交接需 `visible=false` + note，并进入人工复核。
+- 跨镜：相邻镜的 end→start 手部持有或姿态变化若无可见动作/交物事件，也没有 `cut_note`，则阻断；写 `cut_note` 表示有意跳切并进入 review，而不是静默瞬移。
+- 测试覆盖：正常交物、缺交物、缺关系对位、姿态跨镜跳变、手部跨镜跳变、以及有意 cut_note 的复核路径。
+
+尚未完成：门/窗等环境状态机、三人以上复杂互动、真实视频中的手部/面容/口型验证。它们仍属于 F01-04/F01-08 待办，不能因本轮结构测试通过而关闭。

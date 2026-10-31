@@ -376,6 +376,11 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
                 }
                 staging = shot_schema["properties"]["staging"]
                 staging["properties"]["hand_prop"] = {"type": "array"}
+                staging["properties"]["physical_state"] = {"type": "object"}
+                staging["properties"]["relationship_map"] = {"type": "array"}
+                staging["properties"]["handoffs"] = {"type": "array"}
+                staging["properties"]["cut_note"] = {"type": "string"}
+                staging["required"].extend(["physical_state", "relationship_map"])
     if editorial_handoff is not None:
         creative_bridge.inspect_preproduction(base, editorial_handoff)
         if (editorial_handoff.get("episode_source_digest") !=
@@ -683,6 +688,13 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 "reaction 必须是对手/环境触发的可见回应。"
                 "有道具移动时，staging 增加 hand_prop 列表，逐项写 actor_id、"
                 "hand(left/right/both/none)、prop_id、from_s、to_s、action、visible_result。"
+                "所有有演员的镜头写 physical_state.start/end，逐角色记录 posture、"
+                "facing 与 hands.left/right（free/none 或稳定道具ID）；姿态变化写"
+                " posture_changes(actor_id/from/to/cause)。双人镜写 relationship_map，"
+                "逐角色记录 target_id、gaze、body_orientation、distance、interaction；"
+                "交物写 handoffs(order/from_actor/to_actor/prop_id/from_s/to_s/action/"
+                "visible_result/visible)，场外交接必须 visible=false 且有 note。"
+                "确属有意跳切且改变手/姿态时，在 staging 写可核对的 cut_note。"
                 "零演员图文镜在 performance 写 no_performer_reason，character_contracts 为空对象。"
                 "不得新增未在剧本中的故事事实；表演合同必须来自当前 director_lock 的 performance_bible。")
     serialized = json.dumps(request, ensure_ascii=False, sort_keys=True,

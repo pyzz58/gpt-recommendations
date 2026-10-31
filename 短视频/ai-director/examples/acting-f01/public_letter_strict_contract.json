@@ -176,7 +176,66 @@
               "action": "Slide the letter off the table edge while the left hand stays open on the tabletop.",
               "visible_result": "The letter leaves the tabletop and disappears below the edge."
             }
-          ]
+          ],
+          "physical_state": {
+            "start": {
+              "CH_DAUGHTER": {
+                "posture": "seated",
+                "facing": "CH_MOTHER",
+                "hands": {
+                  "left": "free",
+                  "right": "free"
+                }
+              },
+              "CH_MOTHER": {
+                "posture": "standing",
+                "facing": "CH_DAUGHTER",
+                "hands": {
+                  "left": "free",
+                  "right": "free"
+                }
+              }
+            },
+            "end": {
+              "CH_DAUGHTER": {
+                "posture": "seated",
+                "facing": "CH_MOTHER",
+                "hands": {
+                  "left": "free",
+                  "right": "PROP_LETTER"
+                }
+              },
+              "CH_MOTHER": {
+                "posture": "standing",
+                "facing": "CH_DAUGHTER",
+                "hands": {
+                  "left": "free",
+                  "right": "free"
+                }
+              }
+            },
+            "posture_changes": []
+          },
+          "relationship_map": [
+            {
+              "actor_id": "CH_DAUGHTER",
+              "target_id": "CH_MOTHER",
+              "gaze": "Eye contact, with one downward flick to the letter.",
+              "body_orientation": "Open toward the mother, right hand moving below the table.",
+              "distance": "Across the narrow table.",
+              "interaction": "Deflect the question while hiding the letter."
+            },
+            {
+              "actor_id": "CH_MOTHER",
+              "target_id": "CH_DAUGHTER",
+              "gaze": "Watches the daughter's face, then her right hand.",
+              "body_orientation": "Standing squarely toward the daughter, one hand on the chair back.",
+              "distance": "Across the narrow table.",
+              "interaction": "Question the answer and watch for a physical tell."
+            }
+          ],
+          "handoffs": [],
+          "cut_note": ""
         },
         "performance": {
           "motivation": "Protect the mother from the letter until she can decide how to explain it.",

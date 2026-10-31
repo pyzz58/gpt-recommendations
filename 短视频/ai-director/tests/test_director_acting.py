@@ -212,6 +212,113 @@ class DirectorActingContractTests(unittest.TestCase):
         self.assertIn("F01 逐镜表演合同",
                       acting["messages"][0]["content"])
 
+    def _two_shot_case(self):
+        base = deepcopy(self.data["base"])
+        second = deepcopy(base["shots"][0])
+        second["id"] = "S02"
+        second["start"] = 6
+        second["source_adaptation"] = {
+            "beat_id": "B002",
+            "covered_beat_ids": ["B002"],
+        }
+        base["shots"].append(second)
+        base["duration"] = 12
+        state = agent_team.start(base, source_text=self.data["source_text"])
+        bible = deepcopy(
+            self.data["director_lock"]["global_direction"]["performance_bible"])
+        bible["source_digest"] = state["source_digest"]
+        state["tasks"]["director_lock"]["deliverable"] = {
+            "global_direction": {"performance_bible": bible},
+        }
+        acting = deepcopy(self.data["acting"])
+        acting["shots"]["S02"] = deepcopy(acting["shots"]["S01"])
+        acting["shots"]["S02"]["performance"]["character_contracts"][
+            "CH_DAUGHTER"]["source_beat_id"] = "B002"
+        acting["shots"]["S02"]["performance"]["character_contracts"][
+            "CH_MOTHER"]["source_beat_id"] = "B002"
+        return base, state, bible, acting
+
+    def test_dual_person_handoff_positive_passes(self):
+        base, state, _ = self.bound_state_and_bible()
+        acting = deepcopy(self.data["acting"])
+        staging = acting["shots"]["S01"]["staging"]
+        staging["hand_prop"] = [{
+            "actor_id": "CH_DAUGHTER",
+            "hand": "right",
+            "prop_id": "PROP_LETTER",
+            "from_s": 4.0,
+            "to_s": 5.4,
+            "action": "Hand the letter across the table to CH_MOTHER.",
+            "visible_result": "The mother takes the letter into her right hand.",
+        }]
+        staging["physical_state"]["start"]["CH_DAUGHTER"]["hands"]["right"] = "PROP_LETTER"
+        staging["physical_state"]["end"]["CH_DAUGHTER"]["hands"]["right"] = "free"
+        staging["physical_state"]["end"]["CH_MOTHER"]["hands"]["right"] = "PROP_LETTER"
+        staging["handoffs"] = [{
+            "order": 1,
+            "from_actor": "CH_DAUGHTER",
+            "to_actor": "CH_MOTHER",
+            "prop_id": "PROP_LETTER",
+            "from_s": 4.0,
+            "to_s": 5.4,
+            "action": "Hand the letter across the table.",
+            "visible_result": "The letter changes hands and stays in frame.",
+            "visible": True,
+        }]
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertEqual(report["blockers"], [])
+
+    def test_dual_person_handoff_without_event_blocks(self):
+        base, state, _ = self.bound_state_and_bible()
+        acting = deepcopy(self.data["acting"])
+        staging = acting["shots"]["S01"]["staging"]
+        staging["physical_state"]["start"]["CH_DAUGHTER"]["hands"]["right"] = "PROP_LETTER"
+        staging["physical_state"]["end"]["CH_DAUGHTER"]["hands"]["right"] = "free"
+        staging["physical_state"]["end"]["CH_MOTHER"]["hands"]["right"] = "PROP_LETTER"
+        staging["handoffs"] = []
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertIn("ACTING_HANDOFF_MISSING",
+                      {row["code"] for row in report["blockers"]})
+
+    def test_dual_person_relationship_map_is_required(self):
+        base, state, _ = self.bound_state_and_bible()
+        acting = deepcopy(self.data["acting"])
+        acting["shots"]["S01"]["staging"].pop("relationship_map")
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertIn("ACTING_RELATIONSHIP_MAP_MISSING",
+                      {row["code"] for row in report["blockers"]})
+
+    def test_cross_shot_posture_jump_blocks(self):
+        base, state, _, acting = self._two_shot_case()
+        acting["shots"]["S01"]["staging"]["physical_state"]["end"][
+            "CH_DAUGHTER"]["posture"] = "seated"
+        acting["shots"]["S02"]["staging"]["physical_state"]["start"][
+            "CH_DAUGHTER"]["posture"] = "standing"
+        acting["shots"]["S02"]["staging"]["physical_state"]["end"][
+            "CH_DAUGHTER"]["posture"] = "standing"
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertIn("ACTING_POSTURE_STATE_JUMP",
+                      {row["code"] for row in report["blockers"]})
+
+    def test_cross_shot_hand_jump_blocks_unless_explained(self):
+        base, state, _, acting = self._two_shot_case()
+        acting["shots"]["S01"]["staging"]["physical_state"]["end"][
+            "CH_DAUGHTER"]["hands"]["right"] = "PROP_LETTER"
+        acting["shots"]["S02"]["staging"]["physical_state"]["start"][
+            "CH_MOTHER"]["hands"]["right"] = "PROP_LETTER"
+        acting["shots"]["S02"]["staging"]["physical_state"]["end"][
+            "CH_MOTHER"]["hands"]["right"] = "PROP_LETTER"
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertIn("ACTING_HAND_STATE_JUMP",
+                      {row["code"] for row in report["blockers"]})
+        acting["shots"]["S02"]["staging"]["cut_note"] = (
+            "Intentional match cut; the handoff occurs in the edit gap and is not a visible action.")
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertNotIn("ACTING_HAND_STATE_JUMP",
+                         {row["code"] for row in report["blockers"]})
+        self.assertIn("ACTING_INTENTIONAL_CUT_STATE_CHANGE",
+                      {row["code"] for row in report["reviews"]})
+
 
 class StrictActingPipelineTests(ProfessionalRoleContractsTests):
     """Reuse the existing ten-role fixture with the strict F01 mode enabled."""
@@ -287,6 +394,27 @@ class StrictActingPipelineTests(ProfessionalRoleContractsTests):
                         "source_beat_id": beat_id
                     }
                 }
+                staging = payload["shots"][sid]["staging"]
+                staging["physical_state"] = {
+                    "start": {
+                        "CHAR01": {
+                            "posture": "seated",
+                            "facing": "SCREEN_LEFT",
+                            "hands": {"left": "free", "right": "free"}
+                        }
+                    },
+                    "end": {
+                        "CHAR01": {
+                            "posture": "seated",
+                            "facing": "SCREEN_LEFT",
+                            "hands": {"left": "free", "right": "free"}
+                        }
+                    },
+                    "posture_changes": []
+                }
+                staging["relationship_map"] = []
+                staging["handoffs"] = []
+                staging["cut_note"] = ""
         return payload
 
     def test_strict_ten_role_pipeline_passes(self):
