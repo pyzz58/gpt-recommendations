@@ -51,6 +51,7 @@ class ObjectKind(str, Enum):
     MODEL_VALIDATION = "ModelValidation"
     MODEL_USE_ADMISSION = "ModelUseAdmission"
     CANDIDATE_INDEX = "CandidateIndex"
+    EVENT_CLUSTER_PROPOSAL = "EventClusterProposal"
     MATERIAL_SELECTION = "MaterialSelection"
 
 
