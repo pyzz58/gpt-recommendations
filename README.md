@@ -16,6 +16,12 @@
 > 说明：本仓库只做「项目索引 + 研究笔记」，**不复制**任何第三方项目的完整源码。
 > 所有项目均保留原作者与原始 GitHub 地址，版权归原作者所有。
 
+## Featured field report (English)
+
+**[Trying to Replace the AI Assistant on a China-Market Samsung Galaxy S24](https://github.com/pyzz58/galaxy-s24-china-ai-assistant-experiment)** — Real-device Android 16 / One UI 8.5 experiment: Samsung/Bixby side-key routing, `power_button_long_press` values 101 versus 5, failed `VoiceInteractionSessionService` binding, and a **working `ACTION_ASSIST` Activity-based side-key launch**. Cloud Chinese speech recognition ultimately returned HTTP 401, so this is an **experimental engineering report, not a finished assistant**. Includes architecture diagram, sanitized logs, rollback guidance, and platform references.
+
+**Search terms:** Galaxy S24 China CHC, Samsung One UI 8.5, Android Assistant, Bixby, ACTION_ASSIST, side key, ADB, VoiceInteractionService, speech recognition.
+
 ## 项目索引
 
 | # | 项目 | 原始地址 | 状态 |
