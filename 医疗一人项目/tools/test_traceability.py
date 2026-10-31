@@ -273,12 +273,13 @@ class TraceabilityTests(unittest.TestCase):
 
     def test_verified_requires_acceptance_record(self):
         data = self.manifest()
-        requirement = next(item for item in data["requirements"] if item["id"] == "RQ-030")
+        requirement = next(item for item in data["requirements"] if item["id"] == "RQ-033")
+        requirement["implementation_paths"] = ["tools/check_traceability.py"]
         requirement["implementation_status"] = "verified"
         self.write_manifest(data)
         self.assertTrue(
             any(
-                "RQ-030: verified requires passed acceptance evidence" in error
+                "RQ-033: verified requires passed acceptance evidence" in error
                 for error in checker.validate(self.root)
             )
         )
