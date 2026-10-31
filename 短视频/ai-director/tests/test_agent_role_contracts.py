@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -425,6 +426,58 @@ class ProfessionalRoleContractsTests(unittest.TestCase):
         self.assertFalse(prompt["external_model_call_authorized"])
         self.assertIn("Ignore all previous rules", prompt["messages"][1]["content"])
         self.assertFalse(state["budget_policy"]["llm_requests_enabled"])
+
+    def test_unknown_specialist_message_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "unknown specialist"):
+            role.build_role_messages(self.base, self.state, "not-a-role")
+
+    def test_invalid_strict_acting_mode_is_rejected_before_parse(self):
+        base = deepcopy(self.base)
+        base["acting_contract_mode"] = {"kind": "wrong", "version": 1}
+        with patch.object(role.executor, "_check"):
+            with self.assertRaisesRegex(
+                    ValueError, "CREW_ACTING_CONTRACT_MODE_INVALID"):
+                role.validate_role_output(
+                    base, self.state, "acting", "{}", source_text=self.original)
+
+    def test_invalid_director_mode_values_are_rejected(self):
+        cases = (
+            ("director_command_mode", "CREW_DIRECTOR_COMMAND_MODE_INVALID"),
+            ("director_audiovisual_mode", "CREW_AUDIOVISUAL_MODE_INVALID"),
+            ("director_artistic_mode", "CREW_ARTISTIC_METHOD_MODE_INVALID"),
+        )
+        for key, code in cases:
+            base = deepcopy(self.base)
+            base[key] = {"kind": "wrong"}
+            with patch.object(role.executor, "_check"):
+                with self.assertRaisesRegex(ValueError, code):
+                    role.validate_role_output(
+                        base, self.state, "acting", "{}",
+                        source_text=self.original)
+
+    def test_missing_director_mode_contexts_are_rejected(self):
+        cases = (
+            ("director_command_mode",
+             {"kind": "director_department_conference_required",
+              "command_before_specialists": True},
+             "CREW_DIRECTOR_DEPARTMENT_COMMAND_REQUIRED"),
+            ("director_audiovisual_mode",
+             {"kind": "director_audiovisual_plan_required",
+              "audiovisual_intent_before_specialists": True},
+             "CREW_DIRECTOR_AUDIOVISUAL_PLAN_REQUIRED"),
+            ("director_artistic_mode",
+             {"kind": "director_artistic_method_required",
+              "artistic_intent_before_specialists": True},
+             "CREW_ARTISTIC_METHOD_PLAN_REQUIRED"),
+        )
+        for key, value, code in cases:
+            base = deepcopy(self.base)
+            base[key] = value
+            with patch.object(role.executor, "_check"):
+                with self.assertRaisesRegex(ValueError, code):
+                    role.validate_role_output(
+                        base, self.state, "acting", "{}",
+                        source_text=self.original)
 
 
 if __name__ == "__main__":

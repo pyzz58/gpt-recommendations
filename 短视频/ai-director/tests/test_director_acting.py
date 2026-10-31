@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -10,6 +11,8 @@ sys.path.insert(0, str(ROOT))
 import agent_role_contracts as roles
 import agent_team
 import director_acting
+sys.path.insert(0, str(ROOT / "tests"))
+from test_agent_role_contracts import ProfessionalRoleContractsTests
 
 FIXTURE = ROOT / "examples/acting-f01/public_letter_strict_contract.json"
 
@@ -122,6 +125,175 @@ class DirectorActingContractTests(unittest.TestCase):
         report = director_acting.inspect_delivery(
             base, state, deepcopy(self.data["acting"]))
         self.assertTrue(report.get("not_required"))
+
+    def test_invalid_mode_is_rejected_by_schema(self):
+        base = deepcopy(self.data["base"])
+        base["acting_contract_mode"] = {"kind": "wrong", "version": 1}
+        state = agent_team.start(base, source_text=self.data["source_text"])
+        with self.assertRaisesRegex(
+                ValueError, "CREW_ACTING_CONTRACT_MODE_INVALID"):
+            roles.execution_output_schema(base, state, "acting")
+
+    def test_strict_director_lock_validation_is_wired(self):
+        base, state, bible = self.bound_state_and_bible()
+        payload = {
+            "global_direction": {
+                "audience_emotion_arc": "Hesitation to a controlled answer",
+                "visual_grammar": "A fixed two-shot at the table",
+                "audio_grammar": "Quiet room tone and restrained dialogue",
+                "graphic_safety": "No text in generated footage",
+                "reference_strategy": "No reference images exist yet",
+                "generation_budget": "No paid generation is authorized",
+                "performance_bible": bible,
+            },
+            "shot_objectives": {
+                "S01": {
+                    "emotion": "Controlled alarm",
+                    "observable_turn": "The letter leaves the tabletop",
+                    "visual_focus": "The daughter's right hand",
+                },
+            },
+        }
+        with patch.object(roles.executor, "_check"), \
+             patch.object(roles.team, "ready", return_value=["director_lock"]), \
+             patch.object(roles, "parse_strict_json", return_value=payload), \
+             patch.object(roles.acting_contract, "inspect_bible",
+                          return_value={"blockers": [{"code": "TEST"}]}):
+            with self.assertRaisesRegex(ValueError, "CREW_ACTING_BIBLE_BLOCKED"):
+                roles.validate_role_output(
+                    base, state, "director_lock", "{}",
+                    source_text=self.data["source_text"])
+
+    def test_strict_acting_validation_is_wired(self):
+        base, state, _ = self.bound_state_and_bible()
+        payload = deepcopy(self.data["acting"])
+        with patch.object(roles.executor, "_check"), \
+             patch.object(roles.team, "ready", return_value=["acting"]), \
+             patch.object(roles, "parse_strict_json", return_value=payload), \
+             patch.object(roles.acting_contract, "inspect_delivery",
+                          return_value={"blockers": [{"code": "TEST"}]}):
+            with self.assertRaisesRegex(ValueError, "CREW_ACTING_CONTRACT_BLOCKED"):
+                roles.validate_role_output(
+                    base, state, "acting", "{}",
+                    source_text=self.data["source_text"])
+
+    def test_strict_role_messages_include_f01_boundaries(self):
+        base, state, _ = self.bound_state_and_bible()
+        source = self.data["source_text"]
+
+        def fake_context(base_arg, state_arg, task_id, *, source_text=None):
+            spec = roles.team.SPECS[task_id]
+            return {
+                "packet": {
+                    "role": spec["role"],
+                    "task_kind": spec["kind"],
+                    "revision_scope": None,
+                    "shot_ids": list(state["shot_ids"]),
+                    "allowed_fields": list(spec["fields"]),
+                    "dependency_revisions": {},
+                    "base_digest": state["base_digest"],
+                    "source_digest": state["source_digest"],
+                    "source_review_bound": True,
+                    "upstream_artifacts": {},
+                    "independent_handoff_audit": None,
+                },
+                "authoritative_base": base,
+                "original_script": source,
+                "next_revision": 1,
+            }
+
+        with patch.object(roles.executor, "role_context", side_effect=fake_context):
+            lock = roles.build_role_messages(
+                base, state, "director_lock", source_text=source)
+            acting = roles.build_role_messages(
+                base, state, "acting", source_text=source)
+        self.assertIn("F01 人物表演圣经",
+                      lock["messages"][0]["content"])
+        self.assertIn("F01 逐镜表演合同",
+                      acting["messages"][0]["content"])
+
+
+class StrictActingPipelineTests(ProfessionalRoleContractsTests):
+    """Reuse the existing ten-role fixture with the strict F01 mode enabled."""
+
+    def setUp(self):
+        super().setUp()
+        self.base["characters"] = [
+            {"id": "CHAR01"},
+            {"id": "CHAR02"},
+        ]
+        self.base["scenes"] = [
+            {"id": "SC01", "description": "Synthetic table scene"}
+        ]
+        for index, shot in enumerate(self.base["shots"], 1):
+            shot["source_adaptation"] = {"beat_id": f"B{index:03d}"}
+        self.base["acting_contract_mode"] = {
+            "kind": "source_bound_acting_bible_required",
+            "version": 1,
+        }
+        self.state = agent_team.start(self.base, source_text=self.original)
+
+    def payload(self, name, scope=None):
+        payload = super().payload(name, scope)
+        if name == "director_lock":
+            payload["global_direction"]["performance_bible"] = {
+                "version": 1,
+                "source_digest": self.state["source_digest"],
+                "characters": {
+                    "CHAR01": {
+                        "given_circumstances": "A synthetic letter sits on a table in a quiet room.",
+                        "relationships": [
+                            {
+                                "character_id": "CHAR02",
+                                "relation": "synthetic scene partner",
+                                "stakes": "The partner may see the letter first."
+                            }
+                        ],
+                        "objective": "Open the letter before the partner can stop the action.",
+                        "obstacle": "The character fears what the letter will reveal.",
+                        "tactic_habits": [
+                            "Reach for the envelope while keeping the other hand still.",
+                            "Pause with the fingers above the seal."
+                        ],
+                        "subtext": "I need to know, even if I am not ready.",
+                        "entry_state": "Seated with the sealed envelope within reach.",
+                        "exit_state": "Envelope open, held in the right hand.",
+                        "source_spans": [
+                            {
+                                "scene_id": "SC01",
+                                "beat_id": "B001",
+                                "quote": "A sealed envelope waits on the table."
+                            }
+                        ]
+                    }
+                }
+            }
+        if name == "acting":
+            ids = list(self.state["shot_ids"] if scope is None else scope)
+            for sid in ids:
+                source = next(
+                    shot for shot in self.base["shots"] if shot["id"] == sid)
+                beat_id = source["source_adaptation"]["beat_id"]
+                payload["shots"][sid]["performance"]["character_contracts"] = {
+                    "CHAR01": {
+                        "trigger": "The envelope is within reach and the partner is not looking away.",
+                        "objective": "Open the envelope before the partner intervenes.",
+                        "obstacle": "Fear of the letter's contents makes the hand hesitate.",
+                        "tactic": "Reach, pause above the seal, then break the seal with the right hand.",
+                        "subtext": "I need to know, even if I am not ready.",
+                        "reaction": "The right hand trembles, then moves decisively.",
+                        "visible_change": "The right hand moves from hesitation to opening the envelope.",
+                        "ending_state": "The opened letter is held in the right hand.",
+                        "source_beat_id": beat_id
+                    }
+                }
+        return payload
+
+    def test_strict_ten_role_pipeline_passes(self):
+        self.advance()
+        self.assertEqual(agent_team.ready(self.state), [])
+        self.assertFalse(self.state["release"]["human_approved"])
+        self.assertFalse(self.state["release"]["paid_api_authorized"])
 
 
 if __name__ == "__main__":
