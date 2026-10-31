@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling==1.33.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "medical-one-person-core"
+version = "0.1.0"
+description = "Local-first API and worker skeleton for the Medical One Person project."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "MIT"
+dependencies = [
+  "alembic==1.20.1",
+  "fastapi==0.162.0",
+  "jsonschema==4.26.0",
+  "psycopg[binary]==3.3.6",
+  "openpyxl==3.1.5",
+  "Pillow==13.0.0",
+  "pydantic==2.14.2",
+  "pydantic-settings==2.16.2",
+  "pypdf==6.21.4",
+  "python-docx==1.2.0",
+  "python-pptx==1.0.2",
+  "PyYAML==6.0.3",
+  "python-multipart==0.0.32",
+  "reportlab==5.1.0",
+  "sqlalchemy==2.1.6",
+  "uvicorn[standard]==0.54.0",
+  "cryptography==46.0.3",
+]
+
+[dependency-groups]
+dev = [
+  "httpx==0.28.1",
+  "mypy==2.4.1",
+  "pytest==9.2.0",
+  "ruff==0.17.3",
+  "types-PyYAML==6.0.12.20261030",
+  "types-openpyxl==3.1.5.20261017",
+  "types-jsonschema==4.26.0.20261006",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/medical_one_person"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+markers = [
+  "integration: requires MEDICAL_ONE_TEST_DATABASE_URL and a disposable PostgreSQL test database",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/medical_one_person/api/*.py" = ["B008"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["medical_one_person"]
+mypy_path = "src"

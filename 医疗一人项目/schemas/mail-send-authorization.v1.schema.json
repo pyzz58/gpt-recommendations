@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:mail-send-authorization:v1",
+  "additionalProperties": false,
+  "properties": {
+    "expires_in_minutes": {
+      "default": 60,
+      "maximum": 1440,
+      "minimum": 1,
+      "title": "Expires In Minutes",
+      "type": "integer"
+    },
+    "max_sends": {
+      "default": 1,
+      "maximum": 20,
+      "minimum": 1,
+      "title": "Max Sends",
+      "type": "integer"
+    }
+  },
+  "title": "MailSendAuthorizationSpec",
+  "type": "object",
+  "description": "Time- and count-bounded local send authorization contract."
+}

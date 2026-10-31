@@ -1,0 +1,121 @@
+name: medical-one-person
+
+services:
+  postgres:
+    image: postgres:17.6-alpine@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94
+    environment:
+      POSTGRES_DB: medical_one
+      POSTGRES_USER: medical_one_migrator
+      POSTGRES_PASSWORD: ${POSTGRES_MIGRATOR_PASSWORD:?Set POSTGRES_MIGRATOR_PASSWORD}
+      POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD:?Set POSTGRES_APP_PASSWORD}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/010-app-role.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medical_one -d medical_one"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  migrate:
+    build:
+      context: ..
+      dockerfile: services/core/Dockerfile
+    image: medical-one-core:w05
+    command:
+      ["python", "-m", "alembic", "-c", "/app/alembic.ini", "upgrade", "head"]
+    environment:
+      MEDICAL_ONE_DATABASE_URL: postgresql+psycopg://medical_one_migrator:${POSTGRES_MIGRATOR_PASSWORD}@postgres:5432/medical_one
+      MEDICAL_ONE_MIGRATION_DATABASE_URL: postgresql+psycopg://medical_one_migrator:${POSTGRES_MIGRATOR_PASSWORD}@postgres:5432/medical_one
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    build:
+      context: ..
+      dockerfile: services/core/Dockerfile
+    image: medical-one-core:w05
+    environment:
+      MEDICAL_ONE_APP_MODE: mock
+      MEDICAL_ONE_ENVIRONMENT: production
+      MEDICAL_ONE_DATABASE_URL: postgresql+psycopg://medical_one_app:${POSTGRES_APP_PASSWORD}@postgres:5432/medical_one
+      MEDICAL_ONE_CORS_ORIGINS: http://127.0.0.1:3000,http://localhost:3000
+      MEDICAL_ONE_ARTIFACT_ROOT: /var/lib/medical-one/artifacts
+      MEDICAL_ONE_RUN_ROOT: /var/lib/medical-one/runs
+      MEDICAL_ONE_KNOWLEDGE_STAGING_ROOT: /var/lib/medical-one/knowledge-staging
+      MEDICAL_ONE_AGENT_CONFIG_PATH: /app/config/agents/roles.yaml
+      MEDICAL_ONE_SKILL_CONFIG_PATH: /app/config/skills/catalog.yaml
+      MEDICAL_ONE_SOURCE_POLICY_PATH: /app/config/source_policies/catalog.yaml
+      MEDICAL_ONE_THEORY_PATH: /app/最高思想.md
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - artifacts:/var/lib/medical-one/artifacts
+      - runs:/var/lib/medical-one/runs
+      - knowledge-staging:/var/lib/medical-one/knowledge-staging
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/live', timeout=2)",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ..
+      dockerfile: services/core/Dockerfile
+    image: medical-one-core:w05
+    command: ["python", "-m", "medical_one_person.worker"]
+    environment:
+      MEDICAL_ONE_APP_MODE: mock
+      MEDICAL_ONE_ENVIRONMENT: production
+      MEDICAL_ONE_DATABASE_URL: postgresql+psycopg://medical_one_app:${POSTGRES_APP_PASSWORD}@postgres:5432/medical_one
+      MEDICAL_ONE_ARTIFACT_ROOT: /var/lib/medical-one/artifacts
+      MEDICAL_ONE_RUN_ROOT: /var/lib/medical-one/runs
+      MEDICAL_ONE_KNOWLEDGE_STAGING_ROOT: /var/lib/medical-one/knowledge-staging
+      MEDICAL_ONE_AGENT_CONFIG_PATH: /app/config/agents/roles.yaml
+      MEDICAL_ONE_SKILL_CONFIG_PATH: /app/config/skills/catalog.yaml
+      MEDICAL_ONE_SOURCE_POLICY_PATH: /app/config/source_policies/catalog.yaml
+      MEDICAL_ONE_THEORY_PATH: /app/最高思想.md
+    volumes:
+      - artifacts:/var/lib/medical-one/artifacts
+      - runs:/var/lib/medical-one/runs
+      - knowledge-staging:/var/lib/medical-one/knowledge-staging
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ..
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:8000
+    image: medical-one-web:w05
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  artifacts:
+  runs:
+  knowledge-staging:

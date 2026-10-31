@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:audit-finding:v1",
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "title": "Code",
+      "type": "string"
+    },
+    "severity": {
+      "enum": [
+        "critical",
+        "major",
+        "minor"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "category": {
+      "title": "Category",
+      "type": "string"
+    },
+    "message": {
+      "title": "Message",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "affected_objects": {
+      "items": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "type": "object"
+      },
+      "title": "Affected Objects",
+      "type": "array"
+    }
+  },
+  "required": [
+    "code",
+    "severity",
+    "category",
+    "message"
+  ],
+  "title": "AuditFindingSpec",
+  "type": "object",
+  "description": "Structured A25/A26 review finding; a rule hit is not proof of scientific correctness."
+}

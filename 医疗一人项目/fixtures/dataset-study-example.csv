@@ -1,0 +1,8 @@
+group,score,response,visit
+control,10,0,baseline
+control,12,0,baseline
+control,14,0,baseline
+treatment,15,1,baseline
+treatment,17,1,baseline
+treatment,19,1,baseline
+treatment,,1,baseline

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:restore-check-request:v1",
+  "additionalProperties": false,
+  "properties": {
+    "passphrase": {
+      "maxLength": 1024,
+      "minLength": 12,
+      "title": "Passphrase",
+      "type": "string"
+    }
+  },
+  "required": [
+    "passphrase"
+  ],
+  "title": "RestoreCheckRequest",
+  "type": "object",
+  "description": "Transient passphrase request for isolated restore verification."
+}

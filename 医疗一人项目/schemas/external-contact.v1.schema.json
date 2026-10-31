@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:external-contact:v1",
+  "$defs": {
+    "VerificationState": {
+      "enum": [
+        "candidate",
+        "contacted",
+        "verified",
+        "rejected"
+      ],
+      "title": "VerificationState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "organization_id": {
+      "format": "uuid",
+      "title": "Organization Id",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "role": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Role",
+      "type": "string"
+    },
+    "email": {
+      "anyOf": [
+        {
+          "maxLength": 320,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Email"
+    },
+    "source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "title": "Source Refs",
+      "type": "array"
+    },
+    "verification_state": {
+      "$ref": "#/$defs/VerificationState",
+      "default": "candidate"
+    }
+  },
+  "required": [
+    "organization_id",
+    "name",
+    "role",
+    "source_refs"
+  ],
+  "title": "ContactSpec",
+  "type": "object",
+  "description": "External contact provenance and verification contract."
+}

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:external-expert:v1",
+  "$defs": {
+    "ExpertState": {
+      "enum": [
+        "candidate",
+        "contacted",
+        "replied",
+        "limited_review",
+        "engaged",
+        "declined"
+      ],
+      "title": "ExpertState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "expertise": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Expertise",
+      "type": "string"
+    },
+    "public_source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "title": "Public Source Refs",
+      "type": "array"
+    },
+    "contact_email": {
+      "anyOf": [
+        {
+          "maxLength": 320,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Contact Email"
+    },
+    "conflict_notes": {
+      "default": "未核查",
+      "maxLength": 5000,
+      "title": "Conflict Notes",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/ExpertState",
+      "default": "candidate"
+    }
+  },
+  "required": [
+    "name",
+    "expertise",
+    "public_source_refs"
+  ],
+  "title": "ExpertSpec",
+  "type": "object",
+  "description": "Expert candidate and engagement-state contract."
+}

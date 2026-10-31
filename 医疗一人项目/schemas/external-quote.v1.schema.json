@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:external-quote:v1",
+  "$defs": {
+    "QuoteState": {
+      "enum": [
+        "received",
+        "accepted",
+        "rejected",
+        "expired"
+      ],
+      "title": "QuoteState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "engagement_id": {
+      "format": "uuid",
+      "title": "Engagement Id",
+      "type": "string"
+    },
+    "amount": {
+      "anyOf": [
+        {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Amount"
+    },
+    "currency": {
+      "pattern": "^[A-Z]{3}$",
+      "title": "Currency",
+      "type": "string"
+    },
+    "tax_included": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Tax Included"
+    },
+    "shipping_included": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Shipping Included"
+    },
+    "assumptions": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 50,
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "excluded_work": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 50,
+      "title": "Excluded Work",
+      "type": "array"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    },
+    "document_version_id": {
+      "anyOf": [
+        {
+          "format": "uuid",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Document Version Id"
+    },
+    "state": {
+      "$ref": "#/$defs/QuoteState",
+      "default": "received"
+    }
+  },
+  "required": [
+    "engagement_id",
+    "currency"
+  ],
+  "title": "QuoteSpec",
+  "type": "object",
+  "description": "Received quote and original-document contract."
+}

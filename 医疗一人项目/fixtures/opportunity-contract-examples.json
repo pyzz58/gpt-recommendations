@@ -1,0 +1,400 @@
+{
+  "fixture_version": "w09-opportunity-contracts.v1",
+  "data_status": "synthetic_mock",
+  "warning": "全部内容为结构测试用虚构样例。引用、金额、概率、需求、专业意见和下一步验证均不是真实证据、报价、专家意见或科学判断。",
+  "opportunities": [
+    {
+      "title": "合成样例：已有药物用于宠物疼痛管理",
+      "track": "pet_repurposing",
+      "proposed_use": "评估假设性犬用新剂型，不对应任何真实药物或适应症。",
+      "target_population_or_scene": "合成场景中的目标犬只与门诊使用。",
+      "need_evidence_refs": [
+        "synthetic://w09/pet-need"
+      ],
+      "mechanism_steps": [
+        {
+          "statement": "合成资料声称存在可测的镇痛终点。",
+          "status": "fact",
+          "evidence_refs": [
+            "synthetic://w09/pet-endpoint"
+          ]
+        },
+        {
+          "statement": "若目标物种暴露与终点关系成立，可能改善依从性。",
+          "status": "hypothesis",
+          "evidence_refs": []
+        }
+      ],
+      "current_alternatives": [
+        "合成样例中的现有支持治疗"
+      ],
+      "proposed_advantage": "仅假设给药便利性可能不同，尚未比较任何真实产品。",
+      "comparison_metrics": [
+        "目标物种直接证据",
+        "剂型可行性",
+        "首轮验证费用",
+        "注册路径不确定性"
+      ],
+      "gaps": {
+        "science": [
+          "缺少合成样例之外的目标物种剂量与终点证据"
+        ],
+        "regulatory": [
+          "目标市场分类尚未核实"
+        ],
+        "ip": [
+          "未检索真实权利要求"
+        ],
+        "manufacturing": [
+          "缺少真实工艺与稳定性资料"
+        ],
+        "commercial": [
+          "需求仅来自虚构任务书"
+        ]
+      },
+      "next_validation": {
+        "objective": "用文献核查判断是否存在值得询价的转化证据。",
+        "success_criteria": [
+          "找到可直接适用的目标物种研究"
+        ],
+        "stop_criteria": [
+          "关键终点只有无关物种证据且无法合理外推"
+        ],
+        "possible_outcomes": [
+          "进入专业审阅",
+          "补证",
+          "停止"
+        ]
+      },
+      "probabilities": [
+        {
+          "event": "下一轮桌面证据核查发现可支持外部专业审阅的转化依据",
+          "conditions": "只使用资料截止日前可取得的直接证据",
+          "horizon": "10个工作日",
+          "success_criterion": "至少两个独立来源支持同一关键环节",
+          "method": "subjective_scenario",
+          "basis_refs": [],
+          "population_or_base_rate": null,
+          "lower": 0.15,
+          "upper": 0.35,
+          "calibration_status": "uncalibrated",
+          "limitations": [
+            "该区间是结构测试假设，不是经验概率"
+          ],
+          "unknown_reason": null
+        }
+      ],
+      "costs": [
+        {
+          "currency": "CNY",
+          "scope": "合成桌面核查与单次专业审阅",
+          "stage": "下一轮验证",
+          "line_items": [
+            {
+              "item": "虚构专业审阅预算",
+              "quantity": 1,
+              "unit": "次",
+              "unit_cost_lower": 2000,
+              "unit_cost_upper": 5000,
+              "source_type": "assumption",
+              "source_ref": null
+            }
+          ],
+          "price_date": "2026-10-31",
+          "expiry": null,
+          "tax_shipping_assumption": "仅为假设，不含税费的真实判断",
+          "excluded_work": [
+            "真实实验",
+            "监管申报"
+          ],
+          "contingency_basis": "未设预备费",
+          "total_range": [
+            2000,
+            5000
+          ],
+          "unknown_items": []
+        }
+      ],
+      "change_trigger": "出现直接目标物种阴性结果或明确权利障碍时重评。",
+      "professional_opinions": {
+        "science": "合成占位意见，不是专家意见"
+      },
+      "review_findings": [
+        "尚未进行独立审阅"
+      ],
+      "evidence_cutoff": "2026-10-31T00:00:00Z",
+      "limitations": [
+        "全部内容为合成样例",
+        "不能用于判断任何真实候选"
+      ]
+    },
+    {
+      "title": "合成样例：用于场景A的IVD检测",
+      "track": "ivd",
+      "proposed_use": "假设性检测用途，用于比较分析性能与临床决策价值。",
+      "target_population_or_scene": "合成样本集合与基层检测场景。",
+      "need_evidence_refs": [],
+      "mechanism_steps": [
+        {
+          "statement": "检测结果只有与预设临床决策相连才可能产生价值。",
+          "status": "inference",
+          "evidence_refs": []
+        }
+      ],
+      "current_alternatives": [
+        "合成场景中的参照检测"
+      ],
+      "proposed_advantage": "仅测试比较结构，不声称周转时间或灵敏度优势。",
+      "comparison_metrics": [
+        "预期用途清晰度",
+        "分析性能目标",
+        "临床性能证据",
+        "样本与质量控制"
+      ],
+      "gaps": {
+        "science": [
+          "尚未定义分析物与目标样本"
+        ],
+        "regulatory": [
+          "分类和临床评价范围未知"
+        ],
+        "ip": [
+          "尚未检索检测方法与试剂权利"
+        ],
+        "manufacturing": [],
+        "commercial": [
+          "尚无真实用户或支付依据"
+        ]
+      },
+      "next_validation": {
+        "objective": "确定预期用途、样本和分析性能边界。",
+        "success_criteria": [
+          "形成可审阅的分析性能目标"
+        ],
+        "stop_criteria": [
+          "无法与明确临床决策联系"
+        ],
+        "possible_outcomes": [
+          "继续设计",
+          "仅保留观察",
+          "停止"
+        ]
+      },
+      "probabilities": [
+        {
+          "event": "首轮桌面研究足以形成可测试的分析性能合同",
+          "conditions": "只使用资料截止日前可取得的资料",
+          "horizon": "15个工作日",
+          "success_criterion": "预期用途和关键性能目标均可核查",
+          "method": "unknown",
+          "basis_refs": [],
+          "population_or_base_rate": null,
+          "lower": null,
+          "upper": null,
+          "calibration_status": "not_applicable",
+          "limitations": [
+            "没有适配的基准率或验证模型"
+          ],
+          "unknown_reason": "缺少样本、检测物和性能目标"
+        }
+      ],
+      "costs": [
+        {
+          "currency": "CNY",
+          "scope": "合成桌面研究与专业方法审阅",
+          "stage": "下一轮验证",
+          "line_items": [
+            {
+              "item": "虚构方法审阅",
+              "quantity": 1,
+              "unit": "项",
+              "unit_cost_lower": 35000,
+              "unit_cost_upper": 60000,
+              "source_type": "published_price",
+              "source_ref": "synthetic://w09/ivd-price"
+            }
+          ],
+          "price_date": "2026-10-31",
+          "expiry": null,
+          "tax_shipping_assumption": "合成假设，未验证",
+          "excluded_work": [
+            "真实样本测试",
+            "临床评价"
+          ],
+          "contingency_basis": "未设预备费",
+          "total_range": [
+            35000,
+            60000
+          ],
+          "unknown_items": []
+        }
+      ],
+      "change_trigger": "无法明确预期用途或参照方法时停止。",
+      "professional_opinions": {
+        "ivd_method": "合成占位意见，不是专业审查"
+      },
+      "review_findings": [
+        "临床价值尚未核查"
+      ],
+      "evidence_cutoff": "2026-10-31T00:00:00Z",
+      "limitations": [
+        "合成样例",
+        "分析性能不等于临床价值"
+      ]
+    },
+    {
+      "title": "合成样例：场景B辅助器械",
+      "track": "device",
+      "proposed_use": "假设性辅助使用功能，仅用于测试工程与临床缺口比较。",
+      "target_population_or_scene": "合成使用者与受控使用环境。",
+      "need_evidence_refs": [],
+      "mechanism_steps": [
+        {
+          "statement": "使用者错误可能影响预期收益，需单独评价人因风险。",
+          "status": "hypothesis",
+          "evidence_refs": []
+        }
+      ],
+      "current_alternatives": [
+        "现有手动流程"
+      ],
+      "proposed_advantage": "不宣称任何真实性能提升。",
+      "comparison_metrics": [
+        "用户与使用场景",
+        "工程风险",
+        "原型验证",
+        "人因确认"
+      ],
+      "gaps": {
+        "science": [
+          "临床收益假说未验证"
+        ],
+        "regulatory": [
+          "功能分类未核查"
+        ],
+        "ip": [
+          "未检索权利"
+        ],
+        "manufacturing": [
+          "原型、材料与生产转移均未知"
+        ],
+        "commercial": [
+          "采购与使用意愿未知"
+        ]
+      },
+      "next_validation": {
+        "objective": "完成需求、风险与可用性问题的首轮桌面核查。",
+        "success_criteria": [
+          "形成可证伪的原型需求"
+        ],
+        "stop_criteria": [
+          "收益依赖未经验证的临床假设且无法低成本检验"
+        ],
+        "possible_outcomes": [
+          "制作研究原型",
+          "补证",
+          "停止"
+        ]
+      },
+      "probabilities": [
+        {
+          "event": "下一轮桌面核查形成可执行且成本有界的原型需求",
+          "conditions": "不开展真实制造或临床研究",
+          "horizon": "20个工作日",
+          "success_criterion": "需求、风险和停止条件均明确",
+          "method": "unknown",
+          "basis_refs": [],
+          "population_or_base_rate": null,
+          "lower": null,
+          "upper": null,
+          "calibration_status": "not_applicable",
+          "limitations": [
+            "没有适配基准率"
+          ],
+          "unknown_reason": "临床用途和工程范围尚未定义"
+        }
+      ],
+      "costs": [
+        {
+          "currency": "CNY",
+          "scope": "合成原型范围估计",
+          "stage": "下一轮验证",
+          "line_items": [
+            {
+              "item": "虚构原型制作",
+              "quantity": null,
+              "unit": "批",
+              "unit_cost_lower": null,
+              "unit_cost_upper": null,
+              "source_type": "unknown",
+              "source_ref": null
+            }
+          ],
+          "price_date": null,
+          "expiry": null,
+          "tax_shipping_assumption": null,
+          "excluded_work": [
+            "真实工程验证",
+            "临床评价"
+          ],
+          "contingency_basis": null,
+          "total_range": [
+            null,
+            null
+          ],
+          "unknown_items": [
+            "原型制作范围与价格"
+          ]
+        }
+      ],
+      "change_trigger": "工程风险或使用场景出现重大变化时重评。",
+      "professional_opinions": {
+        "device_engineering": "合成占位意见，不是工程验证"
+      },
+      "review_findings": [
+        "未做原型或可用性测试"
+      ],
+      "evidence_cutoff": "2026-10-31T00:00:00Z",
+      "limitations": [
+        "合成样例",
+        "未制造或测试器械"
+      ]
+    }
+  ],
+  "scientific_brief": {
+    "problem_and_use": "合成问题：判断哪条方向值得投入下一轮桌面核查。",
+    "facts": [
+      "合成事实仅用于验证字段，不来自真实资料"
+    ],
+    "mechanism_chain": [
+      {
+        "statement": "机制链占位。",
+        "status": "hypothesis",
+        "evidence_refs": []
+      }
+    ],
+    "strongest_support": [],
+    "strongest_counterevidence": [
+      "所有真实支持与反证均未取得"
+    ],
+    "direct_and_extrapolated_evidence": {
+      "direct": [],
+      "extrapolated": []
+    },
+    "alternative_explanations": [
+      "观察到的需求可能来自合成任务书假设"
+    ],
+    "key_unknowns": [
+      "真实需求、成本和权利状态"
+    ],
+    "proposed_verification": "先完成可追溯的桌面证据核查。",
+    "resources": "仅记录合成预算范围，无承诺支出。",
+    "falsification_conditions": [
+      "直接证据否定关键机制或目标用途"
+    ],
+    "limitations": [
+      "合成样例",
+      "不构成科学建议或专家意见"
+    ]
+  }
+}

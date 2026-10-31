@@ -1,0 +1,195 @@
+{
+  "$defs": {
+    "EvidenceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "ref": {
+          "minLength": 1,
+          "title": "Ref",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "fixture",
+            "internal",
+            "external",
+            "data"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "locator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Locator"
+        }
+      },
+      "required": [
+        "ref",
+        "source_kind"
+      ],
+      "title": "EvidenceReference",
+      "type": "object"
+    },
+    "FactClaim": {
+      "additionalProperties": false,
+      "properties": {
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "supported",
+            "inferred",
+            "hypothesis",
+            "conflicting",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "statement",
+        "status",
+        "source_refs"
+      ],
+      "title": "FactClaim",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "agent_delivery.v1",
+      "default": "agent_delivery.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "mock",
+        "live"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "role_id": {
+      "pattern": "^A\\d{2}$",
+      "title": "Role Id",
+      "type": "string"
+    },
+    "role_version": {
+      "minimum": 1,
+      "title": "Role Version",
+      "type": "integer"
+    },
+    "project_id": {
+      "format": "uuid",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "task_id": {
+      "format": "uuid",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "delivery_type": {
+      "minLength": 1,
+      "title": "Delivery Type",
+      "type": "string"
+    },
+    "problem_statement": {
+      "minLength": 1,
+      "title": "Problem Statement",
+      "type": "string"
+    },
+    "facts": {
+      "items": {
+        "$ref": "#/$defs/FactClaim"
+      },
+      "title": "Facts",
+      "type": "array"
+    },
+    "analysis": {
+      "minLength": 1,
+      "title": "Analysis",
+      "type": "string"
+    },
+    "counterpoints": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Counterpoints",
+      "type": "array"
+    },
+    "unknowns": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Unknowns",
+      "type": "array"
+    },
+    "recommendation": {
+      "minLength": 1,
+      "title": "Recommendation",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "$ref": "#/$defs/EvidenceReference"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Limitations",
+      "type": "array"
+    },
+    "independent_review": {
+      "title": "Independent Review",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "mode",
+    "role_id",
+    "role_version",
+    "project_id",
+    "task_id",
+    "delivery_type",
+    "problem_statement",
+    "facts",
+    "analysis",
+    "counterpoints",
+    "unknowns",
+    "recommendation",
+    "evidence_refs",
+    "limitations",
+    "independent_review"
+  ],
+  "title": "AgentDelivery",
+  "type": "object"
+}
