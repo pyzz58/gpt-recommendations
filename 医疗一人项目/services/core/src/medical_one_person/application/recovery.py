@@ -38,6 +38,7 @@ from medical_one_person.infrastructure.artifacts import LocalArtifactStore
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.engine import EXPECTED_DATABASE_REVISION
 from medical_one_person.infrastructure.db.models import (
+    AgentRun,
     AnalysisReview,
     AnalysisRun,
     Artifact,
@@ -47,12 +48,16 @@ from medical_one_person.infrastructure.db.models import (
     AuditFinding,
     AuditRun,
     BackupSnapshot,
+    Budget,
+    BudgetLedgerEntry,
+    BudgetReservation,
     Citation,
     Claim,
     ClaimVersion,
     Dataset,
     DatasetRow,
     DatasetVersion,
+    Decision,
     DocumentExtraction,
     EvidenceLink,
     ExtractionTable,
@@ -62,16 +67,26 @@ from medical_one_person.infrastructure.db.models import (
     KnowledgeDocument,
     KnowledgeDocumentVersion,
     Library,
+    Opportunity,
+    OpportunityVersion,
+    Plan,
+    PlanNode,
     Project,
     ProjectEvent,
+    ProjectVersion,
     ProvenanceEdge,
     RestoreCheck,
     RetrievalSnapshot,
     SourcePassage,
     SourceReview,
     StatisticalPlan,
+    Task,
+    TaskDependency,
+    TaskReview,
+    TaskVersion,
     TrashEntry,
     User,
+    Workspace,
 )
 
 BACKUP_FORMAT = "medical-one-encrypted-backup.v1"
@@ -458,7 +473,8 @@ class RecoveryService:
                             "plaintext_sha256": plaintext_sha256,
                             "backup_sha256": actual_sha,
                             "restore_directory": str(destination),
-                            "database_snapshot_validated": True,
+                            "database_json_validated": True,
+                            "isolated_database_restore_run": False,
                             "active_database_overwritten": False,
                         },
                         created_by_user_id=actor.id,
@@ -517,7 +533,24 @@ class RecoveryService:
             select(KnowledgeBlob).where(KnowledgeBlob.id.in_(blob_ids))
         ).all()
         tables: dict[str, list[dict[str, Any]]] = {
+            "workspaces": [
+                _model_row(
+                    session.get(Workspace, project.workspace_id)
+                )
+            ],
+            "users": [
+                _model_row(item)
+                for item in session.scalars(
+                    select(User).where(User.workspace_id == project.workspace_id)
+                ).all()
+            ],
             "projects": [_model_row(project)],
+            "project_versions": [
+                _model_row(item)
+                for item in session.scalars(
+                    select(ProjectVersion).where(ProjectVersion.project_id == project.id)
+                ).all()
+            ],
             "libraries": [_model_row(item) for item in libraries],
             "knowledge_documents": [_model_row(item) for item in documents],
             "knowledge_document_versions": [_model_row(item) for item in versions],
@@ -608,6 +641,19 @@ class RecoveryService:
 
 
 _PROJECT_TABLES: tuple[type[Any], ...] = (
+    AgentRun,
+    Budget,
+    BudgetReservation,
+    BudgetLedgerEntry,
+    Decision,
+    Opportunity,
+    OpportunityVersion,
+    Plan,
+    PlanNode,
+    Task,
+    TaskVersion,
+    TaskDependency,
+    TaskReview,
     KnowledgeChunk,
     Citation,
     RetrievalSnapshot,

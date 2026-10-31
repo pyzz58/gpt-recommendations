@@ -118,6 +118,7 @@ def test_w18_offline_trash_rebuild_backup_and_restore_api(
     )
     assert check.status_code == 201, check.text
     assert check.json()["state"] == "verified"
+    assert check.json()["detail"]["isolated_database_restore_run"] is False
     assert check.json()["detail"]["active_database_overwritten"] is False
 
     capabilities = client.get("/api/v1/system/capabilities")

@@ -1,6 +1,6 @@
 # W01—W18 本地验收记录摘要
 
-被测源码：`6e69daabc90b4cc347762cfd82a177fca281eb37`
+被测源码：最终PR修复提交（由验收记录绑定）
 
 验收日期：2026-11-01（Pacific/Auckland）
 
@@ -9,7 +9,7 @@
 | 命令/检查 | 工作目录 | 模式 | 退出码 | 结果 |
 | --- | --- | --- | --- | --- |
 | Alembic升级到head→降到`a7c4e2f9b610`→再升级 | `services/core` | 真实PostgreSQL 17.6 | 0 | head `b2e7d4a9c310`，79条RLS |
-| `uv run --frozen pytest` | `services/core` | mock + 真实PostgreSQL/API，Office渲染 | 0 | 104 passed；1个Starlette TestClient弃用警告 |
+| `uv run --frozen pytest` | `services/core` | mock + 真实PostgreSQL/API，Office渲染 | 0 | 105 passed；1个Starlette TestClient弃用警告 |
 | `uv run --frozen ruff check .` | `services/core` | 静态检查 | 0 | passed |
 | `uv run --frozen mypy src` | `services/core` | 严格类型检查 | 0 | 109 source files，no issues |
 | `pnpm --dir apps/web lint` | 项目根目录 | Next.js/ESLint | 0 | passed；本机Node 24.22.1触发engine warning，项目锁定22.23.4 |
@@ -22,10 +22,13 @@
 
 - W02—W18真实PostgreSQL迁移、事务、RLS、幂等和项目隔离；
 - W04上游输入失效、调度拒绝、新TaskVersion恢复；
+- W05返工run键包含revision/input snapshot/review，并注入上一轮output/findings；
 - W08知识库换版对直接任务和下游的失效传播；
-- W11审核接受前输入有效性检查；
+- W11审核接受前输入与审计门槛、真正重做、下游自动入队；
+- W12阶段决定检查关联独立审计；
+- mock后台worker持续分发、领取、执行和提交；
 - W17 A25/A26确定性规则与阻断；
-- W18回收站、索引重建、加密备份、错误口令/篡改和隔离恢复；
+- W18回收站、索引重建、加密备份、错误口令/篡改、文件校验和独立PostgreSQL回放；
 - W14实际Office/PDF文件、公式重算和页面渲染；
 - 前端生产构建与路由包含W17/W18页面。
 

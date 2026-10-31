@@ -47,6 +47,7 @@ from medical_one_person.infrastructure.db.models import (
     KnowledgeDocumentVersion,
     Project,
     ProjectEvent,
+    Task,
     User,
 )
 
@@ -76,6 +77,7 @@ class AuditRunView(BaseModel):
     project_id: UUID
     target_type: AuditTargetType
     target_id: UUID
+    linked_task_id: UUID | None
     target_sha256: str
     input_sha256: str
     reviewer_role: str
@@ -190,6 +192,7 @@ class AuditService:
         target_id: UUID,
         reviewer_role: str,
         producer_role: str | None,
+        linked_task_id: UUID | None = None,
         idempotency_key: str,
     ) -> AuditRunView:
         reviewer = self._roles.get(reviewer_role)
@@ -216,11 +219,21 @@ class AuditService:
                 "target_id": str(target_id),
                 "reviewer_role": reviewer_role,
                 "producer_role": producer_role,
+                "linked_task_id": str(linked_task_id) if linked_task_id else None,
             }
         )
         with self._session_factory.begin() as session:
             actor, project = _context(session, project_id, actor_user_id)
             _lock_project(session, project)
+            if linked_task_id is not None:
+                task = session.scalar(
+                    select(Task).where(
+                        Task.id == linked_task_id,
+                        Task.project_id == project.id,
+                    )
+                )
+                if task is None:
+                    raise NotFoundError("Linked task not found")
             existing = session.scalar(
                 select(AuditRun)
                 .where(
@@ -253,6 +266,7 @@ class AuditService:
                 project_id=project.id,
                 target_type=target_type.value,
                 target_id=target_id,
+                linked_task_id=linked_task_id,
                 target_sha256=target_sha256,
                 input_sha256=_digest(packet),
                 reviewer_role=reviewer_role,
@@ -918,6 +932,7 @@ def _review_view(session: Session, run: AuditRun) -> AuditRunView:
         project_id=run.project_id,
         target_type=AuditTargetType(run.target_type),
         target_id=run.target_id,
+        linked_task_id=run.linked_task_id,
         target_sha256=run.target_sha256,
         input_sha256=run.input_sha256,
         reviewer_role=run.reviewer_role,

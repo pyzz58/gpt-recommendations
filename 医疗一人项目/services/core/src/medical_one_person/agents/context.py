@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from uuid import UUID
 
@@ -15,6 +16,8 @@ class AgentContext:
     input_refs: tuple[str, ...]
     project_scope: str
     authorized_collaboration: tuple[str, ...] = ()
+    review_feedback: tuple[str, ...] = ()
+    previous_output: dict[str, object] | None = None
 
     def system_instructions(self) -> str:
         responsibilities = "; ".join(self.role.responsibilities)
@@ -34,6 +37,14 @@ class AgentContext:
             "task_goal": self.goal,
             "input_refs": "\n".join(self.input_refs),
             "authorized_collaboration": "\n".join(self.authorized_collaboration),
+            "review_feedback": "\n".join(self.review_feedback),
+            "previous_output": json.dumps(
+                self.previous_output,
+                ensure_ascii=False,
+                sort_keys=True,
+            )
+            if self.previous_output is not None
+            else "",
             "source_policy": self.role.source_policy,
         }
 
@@ -47,5 +58,7 @@ class AgentContext:
             "input_refs": list(self.input_refs),
             "project_scope": self.project_scope,
             "authorized_collaboration": list(self.authorized_collaboration),
+            "review_feedback": list(self.review_feedback),
+            "previous_output": self.previous_output,
             "memory_scope": self.role.memory_scope,
         }

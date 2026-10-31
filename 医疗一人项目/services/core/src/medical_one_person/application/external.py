@@ -16,6 +16,7 @@ from medical_one_person.application.errors import (
     NotFoundError,
     PlanStateError,
 )
+from medical_one_person.application.readiness import require_no_active_audit_blockers
 from medical_one_person.domain.external import (
     ContactSpec,
     ContractSpec,
@@ -903,6 +904,12 @@ class ExternalService:
                 raise ValueError("Cannot review a deliverable without an original version")
             if spec.decision == "accepted" and spec.missing_items:
                 raise ValueError("A deliverable with missing items cannot be accepted")
+            if spec.decision == "accepted":
+                require_no_active_audit_blockers(
+                    session,
+                    project_id=project.id,
+                    target_ids={row.id},
+                )
             if (
                 row.kind == DeliverableKind.RAW_DATA.value
                 and not row.knowledge_version_id

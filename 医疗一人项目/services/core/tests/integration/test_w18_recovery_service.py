@@ -1,10 +1,15 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
+from uuid import uuid4
 
 import pytest
-from sqlalchemy import Engine, text
+from alembic import command
+from alembic.config import Config
+from sqlalchemy import Engine, create_engine, text
+from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session, sessionmaker
 
 from medical_one_person.application.errors import NotFoundError
@@ -19,6 +24,7 @@ from medical_one_person.application.knowledge_browser import KnowledgeBrowser
 from medical_one_person.application.knowledge_ingestion import KnowledgeIngestionService
 from medical_one_person.application.projects import ProjectService
 from medical_one_person.application.recovery import RecoveryService
+from medical_one_person.application.recovery_database import restore_manifest_rows
 from medical_one_person.application.tasks import TaskService
 from medical_one_person.domain.recovery import TrashState
 from medical_one_person.infrastructure.artifacts import LocalArtifactStore
@@ -238,6 +244,7 @@ def test_trash_restore_and_safe_index_rebuild(
 
 def test_encrypted_backup_and_isolated_restore_verification(
     session_factory: sessionmaker[Session],
+    database_url: str,
     tmp_path: Path,
 ) -> None:
     identity, project, task, _store, _uploads, _indexer, recovery, version = _setup(
@@ -276,11 +283,48 @@ def test_encrypted_backup_and_isolated_restore_verification(
     )
     assert verified.state == "verified"
     assert verified.object_count >= 1
-    assert verified.detail["database_snapshot_validated"] is True
+    assert verified.detail["database_json_validated"] is True
+    assert verified.detail["isolated_database_restore_run"] is False
     assert verified.detail["active_database_overwritten"] is False
     restore_directory = Path(verified.detail["restore_directory"])
     assert (restore_directory / "manifest.json").is_file()
     assert list((restore_directory / "objects").rglob("*"))
+    manifest = json.loads((restore_directory / "manifest.json").read_text())
+
+    parsed = make_url(database_url)
+    restore_database = f"medical_one_restore_{uuid4().hex[:10]}"
+    admin_engine = create_engine(
+        parsed.set(database="postgres").render_as_string(hide_password=False),
+        isolation_level="AUTOCOMMIT",
+    )
+    with admin_engine.connect() as connection:
+        connection.execute(text(f'CREATE DATABASE "{restore_database}"'))
+    restore_url = parsed.set(database=restore_database).render_as_string(
+        hide_password=False
+    )
+    restore_engine = None
+    try:
+        core_root = Path(__file__).resolve().parents[2]
+        config = Config(core_root / "alembic.ini")
+        config.set_main_option("script_location", str(core_root / "migrations"))
+        config.attributes["database_url"] = restore_url
+        command.upgrade(config, "head")
+        restore_engine = create_engine(restore_url)
+        with sessionmaker(bind=restore_engine).begin() as restored_session:
+            counts = restore_manifest_rows(restored_session, manifest)
+        assert counts["workspaces"] == 1
+        assert counts["projects"] == 1
+        assert counts["tasks"] == 1
+        assert counts["citations"] == 1
+        assert counts["budget_ledger_entries"] == 0
+    finally:
+        if restore_engine is not None:
+            restore_engine.dispose()
+        with admin_engine.connect() as connection:
+            connection.execute(
+                text(f'DROP DATABASE IF EXISTS "{restore_database}" WITH (FORCE)')
+            )
+        admin_engine.dispose()
 
     failed = recovery.restore_check(
         project_id=project.id,

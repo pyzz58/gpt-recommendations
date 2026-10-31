@@ -2,7 +2,7 @@ SHELL := /bin/sh
 CORE := services/core
 WEB := apps/web
 
-.PHONY: bootstrap dev-mock dev-api dev-web test test-core test-integration test-web lint build schema db-upgrade db-bootstrap trace-check
+.PHONY: bootstrap dev-mock dev-api dev-web dev-worker test test-core test-integration test-web lint build schema db-upgrade db-bootstrap trace-check
 
 bootstrap:
 	uv sync --project $(CORE) --locked
@@ -16,6 +16,9 @@ dev-api:
 
 dev-web:
 	pnpm --dir $(WEB) dev
+
+dev-worker:
+	cd $(CORE) && uv run python -m medical_one_person.worker --poll-seconds 1
 
 test: test-core test-web trace-check
 

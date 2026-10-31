@@ -26,6 +26,7 @@ from medical_one_person.infrastructure.db.models import (
     AgentRun,
     Project,
     Task,
+    TaskReview,
 )
 from medical_one_person.providers.base import (
     ModelProvider,
@@ -42,6 +43,11 @@ class TaskExecutionView:
     input_refs: tuple[str, ...]
     input_version: str
     purpose: str
+    revision: int
+    input_snapshot_sha256: str
+    review_id: UUID | None
+    review_feedback: tuple[str, ...]
+    previous_output: dict[str, Any] | None
 
 
 @dataclass(frozen=True)
@@ -79,6 +85,7 @@ class AgentRunner:
         existing = self._get_existing_run(claim.workspace_id, task.project_id, run_key)
         if existing is not None and existing.state == "succeeded" and existing.output:
             delivery = AgentDelivery.model_validate(existing.output)
+            self._validate_delivery(delivery, task, role)
             self._finish_delivery(claim, task.id, delivery)
             return delivery
 
@@ -205,6 +212,41 @@ class AgentRunner:
             project = session.get(Project, task.project_id)
             if project is None:
                 raise AgentConfigurationError("Project not found for agent context")
+            latest_review = session.scalar(
+                select(TaskReview)
+                .where(
+                    TaskReview.task_id == task.id,
+                    TaskReview.decision == "changes_requested",
+                )
+                .order_by(TaskReview.created_at.desc(), TaskReview.review_round.desc())
+                .limit(1)
+            )
+            previous_run = session.scalar(
+                select(AgentRun)
+                .where(
+                    AgentRun.task_id == task.id,
+                    AgentRun.state == "succeeded",
+                    AgentRun.output.is_not(None),
+                )
+                .order_by(AgentRun.created_at.desc())
+                .limit(1)
+            )
+            review_feedback = (
+                (
+                    f"review_id={latest_review.id}",
+                    f"summary={latest_review.summary}",
+                    *[
+                        (
+                            f"finding={item.get('code', 'unknown')}:"
+                            f"{item.get('severity', 'unknown')}:"
+                            f"{item.get('message', '')}"
+                        )
+                        for item in latest_review.findings
+                    ],
+                )
+                if latest_review is not None
+                else ()
+            )
             context = AgentContext(
                 role=role,
                 project_id=project.id,
@@ -212,6 +254,8 @@ class AgentRunner:
                 goal=task.goal,
                 input_refs=tuple(task.input_refs),
                 project_scope=project.scope,
+                review_feedback=review_feedback,
+                previous_output=previous_run.output if previous_run is not None else None,
             )
             execution = TaskExecutionView(
                 id=task.id,
@@ -221,6 +265,11 @@ class AgentRunner:
                 input_refs=tuple(task.input_refs),
                 input_version=task.input_version,
                 purpose=task.purpose,
+                revision=task.revision,
+                input_snapshot_sha256=task.input_snapshot_sha256 or "",
+                review_id=latest_review.id if latest_review is not None else None,
+                review_feedback=review_feedback,
+                previous_output=previous_run.output if previous_run is not None else None,
             )
             return execution, role, instance_id, context
 
@@ -362,6 +411,7 @@ class AgentRunner:
 def _run_key(task: TaskExecutionView, role: AgentRoleConfig) -> str:
     canonical = (
         f"{task.project_id}:{task.id}:{role.role_id}:{role.version}:"
-        f"{task.input_version}:{task.purpose}"
+        f"{task.input_version}:{task.input_snapshot_sha256}:"
+        f"{task.revision}:{task.review_id or 'none'}:{task.purpose}"
     )
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()

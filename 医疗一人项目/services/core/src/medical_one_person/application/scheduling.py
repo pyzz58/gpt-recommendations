@@ -7,6 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, sessionmaker
 
 from medical_one_person.application.errors import LeaseConflictError, TaskNotReadyError
+from medical_one_person.application.readiness import active_audit_blockers
 from medical_one_person.application.tasks import require_current_task_inputs
 from medical_one_person.domain.tasks import (
     AttemptState,
@@ -148,7 +149,13 @@ class JobQueue:
                 job.finished_at = now
                 return None
             try:
-                require_current_task_inputs(task)
+                require_current_task_inputs(task, session=session)
+                if active_audit_blockers(
+                    session,
+                    project_id=task.project_id,
+                    task_id=task.id,
+                ):
+                    raise TaskNotReadyError("Task has active independent audit blockers")
             except TaskNotReadyError:
                 job.state = JobState.CANCELLED.value
                 job.last_error_code = "TASK_INPUT_STALE"

@@ -3,6 +3,7 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
+from pathlib import Path
 from threading import Barrier
 from uuid import UUID
 
@@ -10,6 +11,7 @@ import pytest
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, sessionmaker
 
+from medical_one_person.agents.config import load_role_configs
 from medical_one_person.application.budgets import BudgetService
 from medical_one_person.application.errors import (
     BudgetExceededError,
@@ -21,6 +23,7 @@ from medical_one_person.application.errors import (
 from medical_one_person.application.projects import ProjectService
 from medical_one_person.application.scheduling import JobQueue, OutboxDispatcher
 from medical_one_person.application.tasks import TaskService
+from medical_one_person.application.worker_loop import WorkerLoop
 from medical_one_person.domain.tasks import InputValidity, TaskState
 from medical_one_person.infrastructure.bootstrap import bootstrap_local_owner
 from medical_one_person.infrastructure.db.context import set_rls_context
@@ -33,6 +36,9 @@ from medical_one_person.infrastructure.db.models import (
     TaskAttempt,
     TaskVersion,
 )
+from medical_one_person.providers import FakeModelProvider
+
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 
 
 def _project(
@@ -499,3 +505,53 @@ def test_429_is_retried_without_duplicate_attempt_side_effect(
 
     with pytest.raises(LeaseConflictError):
         queue.complete(workspace_id=identity.workspace_id, claim=second)
+
+
+def test_durable_worker_loop_dispatches_claims_runs_and_submits(
+    session_factory: sessionmaker[Session],
+) -> None:
+    identity, project = _project(
+        session_factory,
+        name="后台worker项目",
+        idempotency_key="create-worker-project",
+    )
+    tasks = TaskService(session_factory)
+    task = _task(
+        tasks,
+        actor_user_id=identity.owner_user_id,
+        project_id=project.id,
+        purpose="worker-loop",
+    )
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        stored = session.get(Task, task.id)
+        assert stored is not None
+        stored.role_version = "1"
+    tasks.enqueue(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+        task_id=task.id,
+    )
+    worker = WorkerLoop(
+        session_factory,
+        FakeModelProvider(),
+        load_role_configs(PROJECT_ROOT / "config" / "agents" / "roles.yaml"),
+        theory_hash="0" * 64,
+        worker_id="w04-test-worker",
+    )
+    result = worker.run_once(workspace_id=identity.workspace_id)
+    assert result.claimed_job_id is not None
+    assert result.task_id == task.id
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        refreshed = session.get(Task, task.id)
+        assert refreshed is not None
+        assert refreshed.state == TaskState.SUBMITTED.value

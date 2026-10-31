@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
 from pathlib import Path
+from uuid import uuid4
 
 import pytest
 from sqlalchemy import Engine, func, select, text
@@ -23,7 +25,12 @@ from medical_one_person.domain.workflows import (
 )
 from medical_one_person.infrastructure.bootstrap import bootstrap_local_owner
 from medical_one_person.infrastructure.db.context import set_rls_context
-from medical_one_person.infrastructure.db.models import StageAssessment, StageDecision
+from medical_one_person.infrastructure.db.models import (
+    AuditFinding,
+    AuditRun,
+    StageAssessment,
+    StageDecision,
+)
 from medical_one_person.infrastructure.workflows import WorkflowRegistry
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
@@ -109,6 +116,77 @@ def test_stage_evidence_gate_blocks_external_stage_until_real_records(
     )
     assert first.status == AssessmentStatus.READY_FOR_REVIEW
     assert first.recommendation == AssessmentRecommendation.CONTINUE_TO_REVIEW
+    audit_id = uuid4()
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        session.add(
+            AuditRun(
+                id=audit_id,
+                workspace_id=identity.workspace_id,
+                project_id=project.id,
+                target_type="claim_version",
+                target_id=claim_version_id,
+                linked_task_id=None,
+                target_sha256="a" * 64,
+                input_sha256="b" * 64,
+                reviewer_role="A26",
+                producer_role="A02",
+                method="deterministic_rules.v1",
+                state="blocked",
+                downstream_blocked=True,
+                summary="合成阶段证据被独立审计阻断。",
+                review_version=1,
+                input_snapshot={},
+                idempotency_key="w12-stage-audit-block",
+                request_hash="c" * 64,
+                created_by_user_id=identity.owner_user_id,
+                created_at=datetime.now(UTC),
+            )
+        )
+        session.flush()
+        session.add(
+            AuditFinding(
+                id=uuid4(),
+                workspace_id=identity.workspace_id,
+                project_id=project.id,
+                audit_id=audit_id,
+                code="STAGE_EVIDENCE_BLOCKED",
+                severity="critical",
+                category="counter_evidence",
+                message="阶段引用仍存在未解决独立审计缺陷。",
+                evidence_refs=[str(claim_version_id)],
+                affected_objects=[],
+                status="open",
+                created_at=datetime.now(UTC),
+            )
+        )
+    with pytest.raises(ReviewPolicyError, match="Active audit findings"):
+        service.decide_stage(
+            project_id=project.id,
+            assessment_id=first.id,
+            actor_user_id=identity.owner_user_id,
+            decision=StageDecisionStatus.ACCEPTED,
+            reviewer_role="A25",
+            reason="存在独立阻断时不得通过。",
+        )
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        finding = session.scalar(
+            select(AuditFinding).where(AuditFinding.audit_id == audit_id)
+        )
+        assert finding is not None
+        finding.status = "resolved"
+        finding.resolution = "合成缺陷已修复并记录复审。"
+        finding.resolved_by_user_id = identity.owner_user_id
+        finding.resolved_at = datetime.now(UTC)
     first_decided = service.decide_stage(
         project_id=project.id,
         assessment_id=first.id,

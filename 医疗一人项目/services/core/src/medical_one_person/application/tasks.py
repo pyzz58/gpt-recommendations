@@ -14,9 +14,16 @@ from medical_one_person.application.errors import (
     TaskDependencyError,
     TaskNotReadyError,
 )
+from medical_one_person.application.readiness import require_no_active_audit_blockers
 from medical_one_person.domain.tasks import InputValidity, TaskSnapshot, TaskState
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.models import (
+    AnalysisRun,
+    Citation,
+    ClaimVersion,
+    Decision,
+    ExternalDeliverable,
+    KnowledgeDocumentVersion,
     OutboxMessage,
     Project,
     ProjectEvent,
@@ -81,11 +88,6 @@ class TaskService:
             }
         )
         now = datetime.now(UTC)
-        input_snapshot, input_snapshot_sha256 = build_task_input_snapshot(
-            input_version,
-            input_refs,
-            captured_at=now,
-        )
         with self._session_factory.begin() as session:
             actor = self._actor(session, actor_user_id)
             self._set_context(session, actor)
@@ -94,6 +96,13 @@ class TaskService:
                 project_id,
                 actor.workspace_id,
                 for_update=True,
+            )
+            input_snapshot, input_snapshot_sha256 = resolve_task_inputs(
+                session,
+                project_id=project.id,
+                input_version=input_version,
+                input_refs=input_refs,
+                captured_at=now,
             )
             existing = session.scalar(
                 select(Task).where(
@@ -249,7 +258,12 @@ class TaskService:
             )
             if task is None:
                 raise NotFoundError("Task not found")
-            require_current_task_inputs(task)
+            require_current_task_inputs(task, session=session)
+            require_no_active_audit_blockers(
+                session,
+                project_id=project_id,
+                task_id=task.id,
+            )
             if task.state == TaskState.QUEUED.value:
                 return _task_snapshot(task)
             if task.state != TaskState.READY.value:
@@ -323,7 +337,7 @@ class TaskService:
                 raise TaskNotReadyError("Task revision conflict")
             if task.state != TaskState.RUNNING.value:
                 raise TaskNotReadyError("Only a running task can be submitted")
-            require_current_task_inputs(task)
+            require_current_task_inputs(task, session=session)
             now = datetime.now(UTC)
             task.state = TaskState.SUBMITTED.value
             task.revision += 1
@@ -368,7 +382,7 @@ class TaskService:
                 raise TaskNotReadyError("Task revision conflict")
             if task.state != TaskState.RUNNING.value:
                 raise TaskNotReadyError("Only a running task can be submitted")
-            require_current_task_inputs(task)
+            require_current_task_inputs(task, session=session)
             now = datetime.now(UTC)
             task.state = TaskState.SUBMITTED.value
             task.revision += 1
@@ -429,11 +443,6 @@ class TaskService:
         if not input_version.strip() or not input_refs:
             raise ValueError("Revised task inputs require a version and references")
         now = datetime.now(UTC)
-        snapshot, snapshot_sha256 = build_task_input_snapshot(
-            input_version,
-            input_refs,
-            captured_at=now,
-        )
         with self._session_factory.begin() as session:
             actor = self._actor(session, actor_user_id)
             self._set_context(session, actor)
@@ -445,6 +454,13 @@ class TaskService:
             )
             if task is None:
                 raise NotFoundError("Task not found")
+            snapshot, snapshot_sha256 = resolve_task_inputs(
+                session,
+                project_id=project_id,
+                input_version=input_version,
+                input_refs=input_refs,
+                captured_at=now,
+            )
             if task.revision != expected_revision:
                 raise TaskNotReadyError("Task revision conflict")
             if task.state in {
@@ -677,16 +693,219 @@ def build_task_input_snapshot(
             for ref in input_refs
         ],
     }
-    return snapshot, _digest(snapshot)
+    return snapshot, _digest(
+        {
+            "input_version": input_version,
+            "refs": snapshot["refs"],
+        }
+    )
 
 
-def require_current_task_inputs(task: Task) -> None:
+def require_current_task_inputs(task: Task, *, session: Session | None = None) -> None:
     if task.input_validity != InputValidity.CURRENT.value:
         raise TaskNotReadyError(
             f"Task input validity is {task.input_validity}; revise inputs before continuing"
         )
-    if not task.input_snapshot_sha256 or _digest(task.input_snapshot) != task.input_snapshot_sha256:
+    if (
+        task.input_snapshot.get("input_version") != task.input_version
+        or [
+            item.get("ref")
+            for item in task.input_snapshot.get("refs", [])
+            if isinstance(item, dict)
+        ]
+        != task.input_refs
+    ):
+        raise TaskNotReadyError("Task snapshot does not match current task inputs")
+    if session is not None:
+        _snapshot, current_hash = resolve_task_inputs(
+            session,
+            project_id=task.project_id,
+            input_version=task.input_version,
+            input_refs=task.input_refs,
+            captured_at=datetime.fromisoformat(str(task.input_snapshot["captured_at"])),
+        )
+        if current_hash != task.input_snapshot_sha256:
+            raise TaskNotReadyError("Resolved task inputs changed without a new revision")
+    elif (
+        not task.input_snapshot_sha256
+        or _digest(
+            {
+                "input_version": task.input_snapshot["input_version"],
+                "refs": task.input_snapshot["refs"],
+            }
+        )
+        != task.input_snapshot_sha256
+    ):
         raise TaskNotReadyError("Task input snapshot hash is missing or does not match")
+
+
+def resolve_task_inputs(
+    session: Session,
+    *,
+    project_id: UUID,
+    input_version: str,
+    input_refs: Sequence[str],
+    captured_at: datetime,
+) -> tuple[dict[str, object], str]:
+    entries: list[dict[str, object]] = []
+    for ref in input_refs:
+        kind, separator, value = ref.partition(":")
+        entry: dict[str, object] = {
+            "ref": ref,
+            "kind": kind if separator else "opaque",
+            "declared_version": input_version,
+            "ref_sha256": hashlib.sha256(ref.encode("utf-8")).hexdigest(),
+            "resolution_status": "declared_only",
+            "object_id": None,
+            "object_version": None,
+            "content_sha256": None,
+            "access_state": "not_applicable",
+        }
+        identifier: UUID | None = None
+        try:
+            identifier = UUID(value) if separator else None
+        except ValueError:
+            identifier = None
+        if kind == "fixture":
+            entry["resolution_status"] = "synthetic_fixture"
+        elif kind == "workflow":
+            entry["resolution_status"] = "configuration_reference"
+        elif kind == "decision" and identifier is not None:
+            decision = session.scalar(
+                select(Decision).where(
+                    Decision.id == identifier,
+                    Decision.project_id == project_id,
+                )
+            )
+            if decision is None:
+                raise TaskNotReadyError("Decision input reference is outside the project")
+            entry.update(
+                {
+                    "resolution_status": "resolved",
+                    "object_id": str(decision.id),
+                    "object_version": str(decision.selected_opportunity_version),
+                    "content_sha256": hashlib.sha256(
+                        json.dumps(
+                            {
+                                "selected": decision.selected,
+                                "reason": decision.reason,
+                                "scope": decision.scope,
+                            },
+                            ensure_ascii=False,
+                            sort_keys=True,
+                        ).encode("utf-8")
+                    ).hexdigest(),
+                    "access_state": "active",
+                }
+            )
+        elif kind == "document" and identifier is not None:
+            version = session.scalar(
+                select(KnowledgeDocumentVersion).where(
+                    KnowledgeDocumentVersion.id == identifier,
+                    KnowledgeDocumentVersion.project_id == project_id,
+                )
+            )
+            if version is None:
+                raise TaskNotReadyError("Document input version is unavailable in the project")
+            entry.update(
+                {
+                    "resolution_status": "resolved",
+                    "object_id": str(version.document_id),
+                    "object_version": str(version.id),
+                    "content_sha256": version.content_hash,
+                    "access_state": version.access_state,
+                }
+            )
+        elif kind == "citation" and identifier is not None:
+            citation = session.scalar(
+                select(Citation).where(
+                    Citation.id == identifier,
+                    Citation.project_id == project_id,
+                )
+            )
+            if citation is None:
+                raise TaskNotReadyError("Citation input is unavailable in the project")
+            entry.update(
+                {
+                    "resolution_status": "resolved",
+                    "object_id": str(citation.id),
+                    "object_version": str(citation.version_id),
+                    "content_sha256": citation.content_sha256,
+                    "access_state": "active",
+                }
+            )
+        elif kind == "claim" and identifier is not None:
+            claim = session.scalar(
+                select(ClaimVersion).where(
+                    ClaimVersion.id == identifier,
+                    ClaimVersion.project_id == project_id,
+                )
+            )
+            if claim is None:
+                raise TaskNotReadyError("Claim input is unavailable in the project")
+            entry.update(
+                {
+                    "resolution_status": "resolved",
+                    "object_id": str(claim.claim_id),
+                    "object_version": str(claim.id),
+                    "content_sha256": hashlib.sha256(
+                        claim.statement.encode("utf-8")
+                    ).hexdigest(),
+                    "access_state": claim.status,
+                }
+            )
+        elif kind == "analysis" and identifier is not None:
+            analysis = session.scalar(
+                select(AnalysisRun).where(
+                    AnalysisRun.id == identifier,
+                    AnalysisRun.project_id == project_id,
+                )
+            )
+            if analysis is None:
+                raise TaskNotReadyError("Analysis input is unavailable in the project")
+            entry.update(
+                {
+                    "resolution_status": "resolved",
+                    "object_id": str(analysis.id),
+                    "object_version": str(analysis.analysis_version),
+                    "content_sha256": analysis.output_sha256,
+                    "access_state": analysis.state,
+                }
+            )
+        elif kind == "deliverable" and identifier is not None:
+            deliverable = session.scalar(
+                select(ExternalDeliverable).where(
+                    ExternalDeliverable.id == identifier,
+                    ExternalDeliverable.project_id == project_id,
+                )
+            )
+            if deliverable is None:
+                raise TaskNotReadyError("Deliverable input is unavailable in the project")
+            entry.update(
+                {
+                    "resolution_status": "resolved",
+                    "object_id": str(deliverable.id),
+                    "object_version": str(deliverable.revision),
+                    "content_sha256": hashlib.sha256(
+                        json.dumps(
+                            deliverable.manifest,
+                            ensure_ascii=False,
+                            sort_keys=True,
+                        ).encode("utf-8")
+                    ).hexdigest(),
+                    "access_state": deliverable.state,
+                }
+            )
+        entries.append(entry)
+    semantic = {
+        "input_version": input_version,
+        "refs": entries,
+    }
+    snapshot: dict[str, object] = {
+        **semantic,
+        "captured_at": captured_at.isoformat(),
+    }
+    return snapshot, _digest(semantic)
 
 
 def invalidate_task_inputs(

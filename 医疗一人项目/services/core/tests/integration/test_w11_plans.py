@@ -32,6 +32,7 @@ from medical_one_person.domain.tasks import TaskState
 from medical_one_person.infrastructure.bootstrap import bootstrap_local_owner
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.models import (
+    AgentRun,
     OutboxMessage,
     Plan,
     Task,
@@ -351,6 +352,22 @@ def test_plan_dag_dispatch_independent_review_and_unlock(
         workspace_id=identity.workspace_id,
         worker_name="w11-worker-research-rework",
     )
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        runs = session.scalars(
+            select(AgentRun)
+            .where(AgentRun.task_id == research.task_id)
+            .order_by(AgentRun.created_at)
+        ).all()
+    assert len(runs) == 2
+    assert runs[0].run_key != runs[1].run_key
+    feedback = runs[1].input_snapshot["review_feedback"]
+    assert any("MISSING_LOCATOR" in item for item in feedback)
+    assert runs[1].input_snapshot["previous_output"] is not None
     research_task = _task_in_plan(
         session_factory,
         workspace_id=identity.workspace_id,
@@ -378,19 +395,33 @@ def test_plan_dag_dispatch_independent_review_and_unlock(
         actor_user_id=identity.owner_user_id,
     )
     audit_node = next(node for node in current_plan.nodes if node.node_key == "audit")
-    assert audit_node.task_state == "ready"
+    assert audit_node.task_state == "queued"
     audit_dispatch = service.dispatch_plan(
         project_id=project.id,
         plan_id=submitted.id,
         actor_user_id=identity.owner_user_id,
         expected_revision=current_plan.revision,
     )
-    assert audit_dispatch.dispatched[0].node_key == "audit"
-    _run_ready_task(
-        session_factory,
-        workspace_id=identity.workspace_id,
-        worker_name="w11-worker-audit",
+    assert audit_dispatch.dispatched == []
+    created_jobs = OutboxDispatcher(session_factory).dispatch_once(
+        workspace_id=identity.workspace_id
     )
+    queue = JobQueue(session_factory)
+    claim = queue.claim(
+        workspace_id=identity.workspace_id,
+        worker_id="w11-worker-audit",
+        lease_seconds=60,
+        task_ids={audit.task_id},
+    )
+    assert created_jobs
+    assert claim is not None
+    AgentRunner(
+        session_factory,
+        FakeModelProvider(),
+        _roles(),
+        theory_hash="d" * 64,
+        job_queue=queue,
+    ).run_claim(claim)
     audit_task = _task_in_plan(
         session_factory,
         workspace_id=identity.workspace_id,

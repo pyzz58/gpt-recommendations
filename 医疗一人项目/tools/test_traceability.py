@@ -191,6 +191,72 @@ class TraceabilityTests(unittest.TestCase):
             )
         )
 
+    def test_mock_evidence_cannot_verify_real_outsourcing_requirement(self):
+        data = self.manifest()
+        requirement = next(item for item in data["requirements"] if item["id"] == "RQ-033")
+        requirement["implementation_status"] = "verified"
+        requirement["implementation_paths"] = ["package.json"]
+        self.write_manifest(data)
+        evidence_path = self.root / "traceability/acceptance-records.json"
+        evidence = json.loads(evidence_path.read_text())
+        record = evidence["records"][0]
+        record["requirements"].append("RQ-033")
+        record["technical_refs"] = sorted(
+            set(record["technical_refs"]) | set(requirement["technical_refs"])
+        )
+        record["acceptance_refs"] = sorted(
+            set(record["acceptance_refs"]) | set(requirement["acceptance_refs"])
+        )
+        evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
+        checker.refresh(
+            self.root,
+            "隔离反例：mock验收记录被错误用于现实外包要求，不得自动通过。",
+        )
+        errors = checker.validate(self.root)
+        self.assertTrue(
+            any("RQ-033: required real_outsourcing validation" in error for error in errors)
+        )
+
+    def test_source_scope_detects_budget_code_change(self):
+        data = self.manifest()
+        requirement = next(item for item in data["requirements"] if item["id"] == "RQ-002")
+        requirement["implementation_status"] = "verified"
+        requirement["implementation_paths"] = [
+            "services/core/src/medical_one_person/application/budgets.py"
+        ]
+        self.write_manifest(data)
+        evidence_path = self.root / "traceability/acceptance-records.json"
+        evidence = json.loads(evidence_path.read_text())
+        record = evidence["records"][0]
+        record["requirements"].append("RQ-002")
+        record["technical_refs"] = sorted(
+            set(record["technical_refs"]) | set(requirement["technical_refs"])
+        )
+        record["acceptance_refs"] = sorted(
+            set(record["acceptance_refs"]) | set(requirement["acceptance_refs"])
+        )
+        evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
+        checker.refresh(
+            self.root,
+            "隔离反例：预算代码已被源码树范围覆盖，修改后必须使证据待更新。",
+        )
+        self.assertEqual(checker.validate(self.root), [])
+        path = self.root / requirement["implementation_paths"][0]
+        path.write_text(
+            path.read_text(encoding="utf-8").replace(
+                "budget.reserved_amount + budget.spent_amount + amount > budget.limit_amount",
+                "False",
+                1,
+            ),
+            encoding="utf-8",
+        )
+        self.assertTrue(
+            any(
+                "implementation tree changed after acceptance" in error
+                for error in checker.validate(self.root)
+            )
+        )
+
     def test_implemented_requires_tracked_git_path(self):
         data = self.manifest()
         requirement = next(item for item in data["requirements"] if item["id"] == "RQ-006")

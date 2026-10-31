@@ -166,6 +166,19 @@ def test_search_snapshot_citation_claim_and_version_impact(
         quoted_excerpt=hit.excerpt,
     )
     assert citation.review_status == "unreviewed"
+    direct_task = TaskService(session_factory).create_task(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+        task_type="evidence.review",
+        purpose="w08-direct-citation",
+        assignee_role="A26",
+        role_version="1",
+        input_version="v1",
+        input_refs=[f"citation:{citation.id}"],
+        goal="直接使用Citation而不创建新的RetrievalSnapshot。",
+        deliverable_schema="audit_report.v1",
+        acceptance_policy="independent_review.v1",
+    )
     with pytest.raises(ValueError, match="not present"):
         citations.create(
             workspace_id=identity.workspace_id,
@@ -250,7 +263,9 @@ def test_search_snapshot_citation_claim_and_version_impact(
         snapshots = session.scalars(select(RetrievalSnapshot)).all()
         impact_rows = session.scalars(select(ImpactReview)).all()
         links = session.scalars(select(EvidenceLink)).all()
-        task_row = session.get(Task, task.id)
+        task_rows = session.scalars(
+            select(Task).order_by(Task.purpose)
+        ).all()
         task_versions = session.scalars(
             select(TaskVersion)
             .where(TaskVersion.task_id == task.id)
@@ -264,10 +279,11 @@ def test_search_snapshot_citation_claim_and_version_impact(
     assert len(snapshots) == 3
     assert len(impact_rows) == 1
     assert len(links) == 1
-    assert task_row is not None
-    assert task_row.state == "needs_input"
-    assert task_row.input_validity == "stale"
-    assert task_row.input_invalidated_reason == (
+    assert len(task_rows) == 2
+    assert all(item.state == "needs_input" for item in task_rows)
+    assert all(item.input_validity == "stale" for item in task_rows)
+    direct_row = next(item for item in task_rows if item.id == direct_task.id)
+    assert direct_row.input_invalidated_reason == (
         f"KNOWLEDGE_CURRENT_VERSION_CHANGED:{second.version_id}"
     )
     assert [item.input_validity for item in task_versions] == ["current", "stale"]

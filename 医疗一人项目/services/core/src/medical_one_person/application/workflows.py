@@ -15,6 +15,7 @@ from medical_one_person.application.errors import (
     ReviewPolicyError,
 )
 from medical_one_person.application.plans import PlanService, PlanView
+from medical_one_person.application.readiness import require_no_active_audit_blockers
 from medical_one_person.domain.opportunities import Track
 from medical_one_person.domain.plans import PlanSpec
 from medical_one_person.domain.workflows import (
@@ -263,6 +264,17 @@ class WorkflowService:
                 )
             if assessment.status != AssessmentStatus.READY_FOR_REVIEW.value:
                 raise PlanStateError("Stage assessment is not ready for a gate decision")
+            target_ids: set[UUID] = set()
+            for value in assessment.evidence_refs:
+                try:
+                    target_ids.add(UUID(value))
+                except ValueError:
+                    continue
+            require_no_active_audit_blockers(
+                session,
+                project_id=project.id,
+                target_ids=target_ids,
+            )
             reviewer = self._roles.get(reviewer_role)
             if (
                 reviewer is None

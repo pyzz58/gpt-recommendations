@@ -477,11 +477,18 @@ def test_w17_audit_reviews_block_reverse_evidence_and_preserve_history(
         target_id=contradictory.version_id,
         reviewer_role="A26",
         producer_role="A02",
+        linked_task_id=task.id,
         idempotency_key="w17-a26-claim",
     )
     assert a26.state == AuditState.BLOCKED
     assert a26.downstream_blocked is True
     assert [finding.code for finding in a26.findings] == ["CONTRADICTION_IGNORED"]
+    with pytest.raises(ReviewPolicyError, match="Active audit findings"):
+        TaskService(session_factory).enqueue(
+            project_id=project.id,
+            actor_user_id=identity.owner_user_id,
+            task_id=task.id,
+        )
     with session_factory.begin() as session:
         set_rls_context(
             session,
@@ -490,6 +497,15 @@ def test_w17_audit_reviews_block_reverse_evidence_and_preserve_history(
         )
         claim = session.get(ClaimVersion, contradictory.version_id)
         assert claim is not None and claim.status == "disputed"
+    a26_finding = a26.findings[0]
+    service.resolve_finding(
+        project_id=project.id,
+        audit_id=a26.id,
+        finding_id=a26_finding.id,
+        actor_user_id=identity.owner_user_id,
+        status=AuditFindingStatus.RESOLVED,
+        resolution="合成反证已补查并记录新的复审需求。",
+    )
 
     analysis_review = service.create_review(
         project_id=project.id,

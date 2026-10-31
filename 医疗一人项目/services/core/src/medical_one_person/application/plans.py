@@ -18,9 +18,10 @@ from medical_one_person.application.errors import (
     ReviewPolicyError,
     RevisionConflictError,
 )
+from medical_one_person.application.readiness import require_no_active_audit_blockers
 from medical_one_person.application.tasks import (
-    build_task_input_snapshot,
     require_current_task_inputs,
+    resolve_task_inputs,
 )
 from medical_one_person.domain.opportunities import Track
 from medical_one_person.domain.plans import (
@@ -225,9 +226,11 @@ class PlanService:
                         ]
                     )
                 )
-                input_snapshot, input_snapshot_sha256 = build_task_input_snapshot(
-                    node_spec.input_version,
-                    input_refs,
+                input_snapshot, input_snapshot_sha256 = resolve_task_inputs(
+                    session,
+                    project_id=project.id,
+                    input_version=node_spec.input_version,
+                    input_refs=input_refs,
                     captured_at=now,
                 )
                 task = Task(
@@ -420,7 +423,12 @@ class PlanService:
                     TaskState.REWORK.value,
                 }:
                     continue
-                require_current_task_inputs(task)
+                require_current_task_inputs(task, session=session)
+                require_no_active_audit_blockers(
+                    session,
+                    project_id=project.id,
+                    task_id=task.id,
+                )
                 dependencies = dependency_map.get(task.id, [])
                 if any(
                     tasks_by_id[dependency_id].state != TaskState.ACCEPTED.value
@@ -558,7 +566,12 @@ class PlanService:
                 raise RevisionConflictError("Task revision conflict")
             if task.state != TaskState.SUBMITTED.value:
                 raise PlanStateError("Only a submitted task can be reviewed")
-            require_current_task_inputs(task)
+            require_current_task_inputs(task, session=session)
+            require_no_active_audit_blockers(
+                session,
+                project_id=project.id,
+                task_id=task.id,
+            )
             _validate_reviewer(task, reviewer_role, self._roles)
             critical = any(item.severity == FindingSeverity.CRITICAL for item in findings)
             if critical and decision != ReviewDecision.CHANGES_REQUESTED:
@@ -629,6 +642,15 @@ class PlanService:
                     actor_user_id=actor.id,
                     now=now,
                 )
+                for unlocked_task_id in unlocked:
+                    self._queue_for_worker(
+                        session,
+                        project=project,
+                        task_id=unlocked_task_id,
+                        operation="unlocked",
+                        actor_user_id=actor.id,
+                        now=now,
+                    )
                 nodes = self._plan_tasks(session, plan.id, project.id)
                 if nodes and all(item.state == TaskState.ACCEPTED.value for item in nodes):
                     plan.status = PlanStatus.COMPLETED.value
@@ -678,6 +700,14 @@ class PlanService:
                         payload={"review_id": str(review.id)},
                         now=now,
                     )
+                    self._queue_for_worker(
+                        session,
+                        project=project,
+                        task_id=task.id,
+                        operation=f"rework:{review.id}",
+                        actor_user_id=actor.id,
+                        now=now,
+                    )
             else:
                 _append_event(
                     session,
@@ -705,6 +735,49 @@ class PlanService:
             review.result_payload = result.model_dump(mode="json")
             session.flush()
             return result
+
+    def _queue_for_worker(
+        self,
+        session: Session,
+        *,
+        project: Project,
+        task_id: UUID,
+        operation: str,
+        actor_user_id: UUID,
+        now: datetime,
+    ) -> None:
+        task = session.get(Task, task_id)
+        if task is None:
+            raise NotFoundError("Task not found for worker queue")
+        if task.state == TaskState.READY.value:
+            _transition_task(
+                session,
+                task,
+                TaskState.QUEUED,
+                event_type="task.auto_queued",
+                actor_user_id=actor_user_id,
+                payload={"operation": operation},
+                now=now,
+            )
+        session.add(
+            OutboxMessage(
+                id=uuid4(),
+                workspace_id=project.workspace_id,
+                project_id=project.id,
+                task_id=task.id,
+                unique_key=f"task:{task.id}:worker:{task.revision}:{operation}",
+                event_type="task.queue_requested",
+                payload={
+                    "task_id": str(task.id),
+                    "deliverable_schema": task.deliverable_schema,
+                    "input_snapshot_sha256": task.input_snapshot_sha256,
+                },
+                state="pending",
+                attempts=0,
+                available_at=now,
+                created_at=now,
+            )
+        )
 
     def pause_plan(
         self,

@@ -132,7 +132,32 @@ def _load_evidence(root, manifest):
     return data, records
 
 
-def _validate_evidence_record(root, record, requirement_ids):
+def _tree_fingerprint(root, paths, commit=None):
+    args = ["ls-tree", "-r", "--full-tree"]
+    if commit:
+        args.append(commit)
+    args.extend(["--", *paths])
+    result = _git(root, *args)
+    if commit:
+        return digest(result.stdout)
+    tracked = result.stdout.decode("utf-8").splitlines()
+    entries = []
+    prefix = _git_prefix(root)
+    for line in tracked:
+        parts = line.split("\t", 1)
+        if len(parts) != 2:
+            continue
+        repo_path = parts[1]
+        if not repo_path.startswith(prefix):
+            continue
+        local_path = repo_path[len(prefix):]
+        path = safe_file(root, local_path)
+        if path.is_file():
+            entries.append(local_path + "\0" + digest(path.read_bytes()))
+    return digest("\n".join(sorted(entries)))
+
+
+def _validate_evidence_record(root, record, requirement_ids, requirements, anchors):
     errors = []
     record_id = record.get("id", "<missing>")
     if not isinstance(record_id, str) or not record_id.strip():
@@ -214,6 +239,49 @@ def _validate_evidence_record(root, record, requirement_ids):
             errors.append(value + ": hash does not match source_commit")
         if digest(path.read_bytes()) != expected:
             errors.append(value + ": implementation changed after tested source")
+    source_scope = record.get("source_scope")
+    if not isinstance(source_scope, list) or not source_scope:
+        errors.append(record_id + ": source_scope must be non-empty")
+    else:
+        if record.get("source_tree_git_sha256") != _tree_fingerprint(
+            root,
+            source_scope,
+            source_commit,
+        ):
+            errors.append(record_id + ": source tree differs from source_commit")
+        if record.get("source_tree_worktree_sha256") != _tree_fingerprint(
+            root,
+            source_scope,
+        ):
+            errors.append(record_id + ": implementation tree changed after acceptance")
+    validation_levels = record.get("validation_levels", {})
+    if result_value == "passed":
+        for requirement_id in refs:
+            requirement = requirements.get(requirement_id, {})
+            required_levels = requirement.get("required_validation", ["mock"])
+            for level in required_levels:
+                if validation_levels.get(level, {}).get("status") != "passed":
+                    errors.append(
+                        requirement_id + f": required {level} validation is not passed"
+                    )
+            missing_acceptance = set(requirement.get("acceptance_refs", [])) - set(
+                record.get("acceptance_refs", [])
+            )
+            if missing_acceptance:
+                errors.append(
+                    requirement_id
+                    + ": acceptance coverage missing "
+                    + ", ".join(sorted(missing_acceptance))
+                )
+            missing_technical = set(requirement.get("technical_refs", [])) - set(
+                record.get("technical_refs", [])
+            )
+            if missing_technical:
+                errors.append(
+                    requirement_id
+                    + ": technical coverage missing "
+                    + ", ".join(sorted(missing_technical))
+                )
     if not isinstance(record.get("artifacts"), list):
         errors.append(record_id + ": artifacts must be a list")
     if not isinstance(record.get("uncovered"), list):
@@ -300,7 +368,15 @@ def validate(root, fingerprints=True):
         if fingerprints and not missing and r.get("source_sha256") != combined(refs, source_map):
             errors.append(rid + ": source fingerprint stale")
     for record in evidence_records:
-        errors.extend(_validate_evidence_record(root, record, set(ids)))
+        errors.extend(
+            _validate_evidence_record(
+                root,
+                record,
+                set(ids),
+                {str(item["id"]): item for item in reqs},
+                declared,
+            )
+        )
     artifact_paths = set()
     for item in m.get("supporting_artifacts", []):
         name = item.get("path", "")

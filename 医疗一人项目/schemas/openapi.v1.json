@@ -6363,6 +6363,18 @@
               }
             ],
             "title": "Producer Role"
+          },
+          "linked_task_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Task Id"
           }
         },
         "type": "object",
@@ -6392,6 +6404,18 @@
             "type": "string",
             "format": "uuid",
             "title": "Target Id"
+          },
+          "linked_task_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Task Id"
           },
           "target_sha256": {
             "type": "string",
@@ -6459,6 +6483,7 @@
           "project_id",
           "target_type",
           "target_id",
+          "linked_task_id",
           "target_sha256",
           "input_sha256",
           "reviewer_role",

@@ -31,6 +31,7 @@ class AuditReviewRequest(BaseModel):
         default=None,
         pattern=r"^A(0[1-9]|1[0-9]|2[0-6])$",
     )
+    linked_task_id: UUID | None = None
 
 
 class AuditFindingResolutionRequest(BaseModel):
@@ -71,6 +72,7 @@ def build_audit_router(
             target_id=request.target_id,
             reviewer_role=request.reviewer_role,
             producer_role=request.producer_role,
+            linked_task_id=request.linked_task_id,
             idempotency_key=idempotency_key,
         )
 

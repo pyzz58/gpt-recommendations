@@ -1,0 +1,74 @@
+name: Medical One Person - application CI
+
+on:
+  push:
+    paths:
+      - '医疗一人项目/**'
+      - '.github/workflows/medical-one-person-ci.yml'
+  pull_request:
+    paths:
+      - '医疗一人项目/**'
+      - '.github/workflows/medical-one-person-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: medical-one-person-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  application:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17.6-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: medical_one_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d medical_one_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    defaults:
+      run:
+        working-directory: 医疗一人项目
+    env:
+      MEDICAL_ONE_TEST_DATABASE_URL: postgresql+psycopg://postgres:postgres@127.0.0.1:5432/medical_one_test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
+        with:
+          python-version: '3.12.14'
+      - name: Set up Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591009
+        with:
+          node-version: '22.23.4'
+      - name: Install locked dependencies
+        run: |
+          python -m pip install uv==0.12.13
+          corepack prepare pnpm@11.25.0 --activate
+          uv sync --project services/core --locked
+          pnpm install --frozen-lockfile
+      - name: PostgreSQL application tests
+        run: uv run --project services/core --frozen pytest services/core/tests -q
+      - name: Static checks
+        run: |
+          uv run --project services/core --frozen ruff check services/core
+          uv run --project services/core --frozen mypy services/core/src
+      - name: Web checks
+        run: |
+          pnpm --dir apps/web lint
+          pnpm --dir apps/web typecheck
+          pnpm --dir apps/web build

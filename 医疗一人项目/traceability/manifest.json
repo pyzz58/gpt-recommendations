@@ -1245,6 +1245,9 @@
       "acceptance_refs": [
         "AT-033"
       ],
+      "required_validation": [
+        "real_outsourcing"
+      ],
       "planned_paths": [
         "services/core/src/medical_one_person/domain/engagements",
         "services/core/src/medical_one_person/domain/phase_validations",
@@ -1315,9 +1318,9 @@
     }
   ],
   "theory_version": "V0.9",
-  "roadmap_version": "V1.12",
+  "roadmap_version": "V1.13",
   "theory_sha256": "93da3c5140432607aabed9301d90d9f8a35e7d742a62f5211402878782aef6c6",
-  "roadmap_sha256": "1737d2d289401cc1167d8e1649f42f4c3851f4b037b20329f5c260e7cb9d52f4",
+  "roadmap_sha256": "2c42f513906ab4c91e90ab785ee9f1b12b461f25d2d302792ae0d3e095ad6e3e",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1427,8 +1430,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-10-31T21:25:35.377942+00:00",
-    "note": "最终证据重绑定：验收期间追踪自测隔离修正提交为6e69daa；W01-W18证据绑定该源码SHA，含检查器与自测文件hash。",
+    "at": "2026-10-31T22:08:55.127012+00:00",
+    "note": "PR#81复核源码基线：R01-R06修复、后台worker、类型化输入、审计门槛、源码树证据和独立DB回放已同步；验收记录将在被测源码提交后生成。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -1458,7 +1461,7 @@
       "requirement_ids": [
         "RQ-032"
       ],
-      "sha256": "ba6e6a3bf77c5f40c3f8325a4883de8c93f8f297708bb5ea3a17574a5658a67f"
+      "sha256": "c108bdea089b44cbddea26bb192959301e3ebd56610b73615296ef0346832989"
     },
     {
       "path": "pnpm-lock.yaml",
@@ -1857,7 +1860,7 @@
         "RQ-029",
         "RQ-034"
       ],
-      "sha256": "1b4b8f825d56a0ff4fd240bb659575b7bc1c898955408125ae7c22f0d17bf296"
+      "sha256": "d6ab2f8bb2162cd05cb2e7542a8231dd811b569e0e64f4e66365c7d86a745725"
     },
     {
       "path": "apps/web/src/components/project-shell.tsx",
@@ -1931,7 +1934,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "6b382ca500225b21b059f04f1a33436400cd76e2bf35f133bf5fbb240fc46117"
+      "sha256": "61142ebb238c0170af341948eda324bd30e682690d16a731b962910ddea08033"
     },
     {
       "path": "services/core/src/medical_one_person/application/plan_execution.py",
@@ -1980,7 +1983,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "bfc79b37abe254faf46bed9087c006e873c39bd0655b9d07ade2eab5f1937787"
+      "sha256": "930a773e84b01f7b397ef3da6da5b199897972c63fcff291776e1310fa651b34"
     },
     {
       "path": "services/core/tests/integration/test_w11_plan_api.py",
@@ -2073,7 +2076,7 @@
         "RQ-018",
         "RQ-031"
       ],
-      "sha256": "b1eb0e241343f08d6d914a4a35f9286af1653e9ee6eba8cf0211d270903fc080"
+      "sha256": "ce99b869b365594de07eb8412912e90a6fb61628e3b1033b28d5e3faae0461ae"
     },
     {
       "path": "services/core/src/medical_one_person/api/workflows.py",
@@ -2124,7 +2127,7 @@
         "RQ-018",
         "RQ-031"
       ],
-      "sha256": "ce6d3996005604614122789ec1f75430897bdc959fa18bf30430d2e2e26f90d5"
+      "sha256": "9d12dbb7a33a96f9b142bae3cab008659a32fb91362f97be032d282084f194c3"
     },
     {
       "path": "services/core/tests/integration/test_w12_workflow_api.py",
@@ -2485,7 +2488,7 @@
         "RQ-024",
         "RQ-031"
       ],
-      "sha256": "d32e717f33d9143edbc9900995a5124089f3871523ac86e8636d82b8ab8d547d"
+      "sha256": "981091ff6c827b6345a48f69ee48c5754ed2770118b75e646f74ed0f68a1e7fa"
     },
     {
       "path": "services/core/src/medical_one_person/api/audits.py",
@@ -2493,7 +2496,7 @@
         "RQ-006",
         "RQ-022"
       ],
-      "sha256": "4abe492ca85ef192f1c69265ea521d40afefd84d35b4b97726289b0bf0e35b19"
+      "sha256": "ea562aaab19add52406cd89efa59cc33b08573e9520a75e0937624ff73482289"
     },
     {
       "path": "services/core/migrations/versions/e9f6a3c2d140_w17_audit_reviews.py",
@@ -2533,7 +2536,7 @@
         "RQ-024",
         "RQ-031"
       ],
-      "sha256": "93e11689d296a2b93c71cef78bf7581f309696c43b6975a74cc59c3af0099426"
+      "sha256": "6c27ec249a6dd1c91fc540047a63d295e9bd5b02a3adbc110fb509dd8cc53924"
     },
     {
       "path": "services/core/tests/integration/test_w17_audit_api.py",
@@ -2626,7 +2629,7 @@
         "RQ-027",
         "RQ-034"
       ],
-      "sha256": "904c0e923cedc01ac8731a45fb1e580f5ec402b566173e442a3cf283cc3b27ca"
+      "sha256": "7da52840640fb3ff443847dc0ee80ea7dfd60ddbcf03ae939975f6933fa74385"
     },
     {
       "path": "services/core/src/medical_one_person/api/recovery.py",
@@ -2653,7 +2656,7 @@
         "RQ-027",
         "RQ-034"
       ],
-      "sha256": "745fae72596cc9121108fa53a593f7ecfcb93b34fc6358a894839fad46e170f4"
+      "sha256": "683bb9bc8d131addb4c2b325ae2c21191bcc2f8d385b7feac6d6c094cb09a94e"
     },
     {
       "path": "services/core/tests/integration/test_w18_recovery_api.py",
@@ -2661,7 +2664,7 @@
         "RQ-026",
         "RQ-034"
       ],
-      "sha256": "a5b7e85563fa893dcbcda9f91568105e816d18726672de7698f33726876e2048"
+      "sha256": "c4bbf11bd51144ca754649fb43537cbc2ab3f0eb849a1162a7bd1ac23394cee3"
     },
     {
       "path": "apps/web/src/app/projects/[id]/recovery/page.tsx",
@@ -2681,7 +2684,7 @@
         "RQ-032",
         "RQ-034"
       ],
-      "sha256": "ea736d32dd7a9322df3d96fbf4f5bc7d824ad94027bc49b6a281a76cf884e62a"
+      "sha256": "d7d2cca6c6585fa3cfb2eeb1611ba2046d2ad4bdd64e140d8a5381d29c3a32dc"
     },
     {
       "path": "docs/w18-recovery-overview.png",
@@ -2722,7 +2725,7 @@
       "requirement_ids": [
         "RQ-009"
       ],
-      "sha256": "05e252ab9db2559bc3d3dd187ba958ebef8fc70803b280d2a97fd5445747c8e2"
+      "sha256": "4198a6f78a15f0ac6912a548906041ef7c2197208aa2216f090b891afb0b6c5e"
     },
     {
       "path": "services/core/src/medical_one_person/application/scheduling.py",
@@ -2730,7 +2733,7 @@
         "RQ-009",
         "RQ-027"
       ],
-      "sha256": "b4680e535fb6124a3c9a0d1e08621d7d1b019073c37c3735af99beecd994ed6a"
+      "sha256": "85e2e984f6106be062b819515702af523567130a274eb20bd457344d50ce8eae"
     },
     {
       "path": "docs/w01-w18-delivery-status.md",
@@ -2741,7 +2744,7 @@
         "RQ-032",
         "RQ-033"
       ],
-      "sha256": "f747802b179bae8bc1b192a5796c0a1c229b2fc6c960200811dce7e75c2d457f"
+      "sha256": "c11089599c0d39cf9c3a0282f9d4c543eccdea085006e495209e810ceeeea35e"
     },
     {
       "path": "docs/w01-w18-validation.md",
@@ -2752,7 +2755,7 @@
         "RQ-032",
         "RQ-033"
       ],
-      "sha256": "e253c962bcb5263d00d5fb2053e73fd0075bde3ea8478d5bdb7c1bdcb149eb6f"
+      "sha256": "1be698215c74114f035abae07e4bdf0e7c3e063bc11f7d00791b2330d5166f4a"
     },
     {
       "path": "docs/w24-pilot-charter.md",
@@ -2764,6 +2767,63 @@
         "RQ-033"
       ],
       "sha256": "d834893b857b5a18cf332dc31c56559983aa34ee55eee5322f8a37c41a98a638"
+    },
+    {
+      "path": "services/core/src/medical_one_person/application/readiness.py",
+      "requirement_ids": [
+        "RQ-006",
+        "RQ-009",
+        "RQ-022"
+      ],
+      "sha256": "8a2ac30169ffc3b4b00d6a9035fb8c271596ffbe0976c3859ba9845b6f2c763d"
+    },
+    {
+      "path": "services/core/src/medical_one_person/application/worker_loop.py",
+      "requirement_ids": [
+        "RQ-008",
+        "RQ-009",
+        "RQ-010",
+        "RQ-032"
+      ],
+      "sha256": "ec5e346eb06672fadad3be19015253f1b0b7405444dff9f8e2f38d5d833db5c0"
+    },
+    {
+      "path": "services/core/src/medical_one_person/application/recovery_database.py",
+      "requirement_ids": [
+        "RQ-012",
+        "RQ-026",
+        "RQ-027",
+        "RQ-034"
+      ],
+      "sha256": "a4fa2b93491134135d56fa76acd94e47253fd67c75a9da0f2600d6fbf3ce757f"
+    },
+    {
+      "path": "services/core/src/medical_one_person/worker/__main__.py",
+      "requirement_ids": [
+        "RQ-008",
+        "RQ-009",
+        "RQ-010",
+        "RQ-032"
+      ],
+      "sha256": "8c7e7cee297257842f2ef877b4e87aab5126c913eac96ac8208a3652f98768fc"
+    },
+    {
+      "path": "services/core/migrations/versions/c8f1a6d3e720_w17_audit_task_links.py",
+      "requirement_ids": [
+        "RQ-006",
+        "RQ-009",
+        "RQ-022"
+      ],
+      "sha256": "985760776e2968be56a1ae9745953502a849d0553ef5ee17f7415d9b31734567"
+    },
+    {
+      "path": "services/core/tests/integration/test_w04_scheduling.py",
+      "requirement_ids": [
+        "RQ-002",
+        "RQ-009",
+        "RQ-027"
+      ],
+      "sha256": "9c400c51f349f301b756efa7f08bd9ebc7214b08f02a0d3fbb39eea4f07e7674"
     },
     {
       "path": "traceability/acceptance-records.json",
@@ -2803,7 +2863,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "bcf22fd4c3bece3dfd7494953d3ebe4d731187a40b41fba40223f0a7dabf5590"
+      "sha256": "246f867f77cfbe61fd392297925d4f498946eff28bcf3d66f62a6e22ed3c8209"
     }
   ]
 }

@@ -1420,6 +1420,11 @@ class AuditRun(Base):
             ["projects.workspace_id", "projects.id"],
             name="audit_run_same_project",
         ),
+        ForeignKeyConstraint(
+            ["workspace_id", "project_id", "linked_task_id"],
+            ["tasks.workspace_id", "tasks.project_id", "tasks.id"],
+            name="audit_run_linked_task",
+        ),
         CheckConstraint(
             f"target_type IN ({AUDIT_TARGET_TYPE_VALUES})",
             name="audit_run_target_type",
@@ -1447,6 +1452,7 @@ class AuditRun(Base):
     project_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
     target_type: Mapped[str] = mapped_column(String(40), nullable=False)
     target_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
+    linked_task_id: Mapped[UUID | None] = mapped_column(PGUUID(as_uuid=True))
     target_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
     input_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
     reviewer_role: Mapped[str] = mapped_column(String(3), nullable=False)

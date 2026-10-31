@@ -3,8 +3,8 @@
 对应：RQ-012、RQ-026、RQ-027、RQ-034；TR-10、TR-16、TR-17、TR-18、
 TR-20、TR-21、TR-25；W18；AT-012、AT-026、AT-027、AT-034。
 
-状态：IMPLEMENTED，未VERIFIED。核心实现和本地 PostgreSQL/API/页面证据存在，
-但活动数据库原地重放、异地介质、密钥丢失演练和真实主机故障没有验证。
+状态：IMPLEMENTED，未VERIFIED。核心实现、独立PostgreSQL表回放和本地
+API/页面证据存在；活动数据库切换、异地介质、密钥丢失和真实主机故障没有验证。
 
 ## 已交付
 
@@ -20,11 +20,17 @@ TR-20、TR-21、TR-25；W18；AT-012、AT-026、AT-027、AT-034。
   使用scrypt派生密钥和AES-256-GCM流式加密，口令和密钥不入库。
 - 恢复校验在隔离目录解密，核对备份hash、manifest、表计数、对象hash及
   Citation→chunk、EvidenceLink→Citation引用链；不覆盖活动数据库。
+- 独立PostgreSQL回放工具按迁移后的外键顺序重放工作区、用户、项目、任务/
+  版本、引用、预算账本等表快照，并重新验证关系与input snapshot。
 - 任务生命周期与`input_validity`拆分。任务保存输入版本、引用列表、引用hash、
   捕获时间和snapshot整体SHA-256。
 - 知识库current版本变化在同一事务内失效相关任务及未取消下游；historical
   TaskVersion保留accepted事实，新输入通过新版本恢复并重新派工/验收。
 - 调度领取、结果提交、计划派发和审核接受均拒绝stale/under_review输入。
+- 直接Citation.task_id及类型化document引用也进入换版影响集，不再只依赖
+  RetrievalSnapshot。
+- 受限mock后台worker持续分发outbox、领取job、执行Runner并恢复过期租约；
+  返工和验收后解锁任务自动入队。
 - 新增`trash_entries`、`backup_snapshots`、`restore_checks`三张FORCE RLS表；
   累计79条策略。W19 input-validity迁移增加任务列和索引。
 - “恢复与离线”页面显示网络策略、索引修复、回收站、加密备份和恢复历史；
@@ -54,6 +60,7 @@ TR-20、TR-21、TR-25；W18；AT-012、AT-026、AT-027、AT-034。
 - 原生PostgreSQL事务与RLS；
 - 合成原件、合成引用和合成备份；
 - 隔离恢复目录中的hash/引用链校验；
+- 独立PostgreSQL迁移后表回放和关系检查；
 - Next.js lint/typecheck/build。
 
 没有通过或没有执行的：

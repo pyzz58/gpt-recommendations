@@ -1,6 +1,6 @@
 # W01—W18 可审核交付状态
 
-被测源码提交：`6e69daabc90b4cc347762cfd82a177fca281eb37`
+被测源码提交：由最终`traceability/acceptance-records.json`绑定
 
 状态口径：下列工作包均为IMPLEMENTED，不等于整体VERIFIED。成功的mock和
 真实PostgreSQL测试只能支持对应技术行为；live模型、真人专家、真实邮箱和现实

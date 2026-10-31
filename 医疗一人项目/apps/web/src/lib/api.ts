@@ -952,6 +952,7 @@ export type AuditRunView = {
   project_id: string;
   target_type: AuditTargetType;
   target_id: string;
+  linked_task_id: string | null;
   target_sha256: string;
   input_sha256: string;
   reviewer_role: "A25" | "A26";
@@ -2230,6 +2231,7 @@ export function createAuditReview(
     target_id: string;
     reviewer_role: "A25" | "A26";
     producer_role: string | null;
+    linked_task_id?: string | null;
   },
   idempotencyKey: string,
 ): Promise<AuditRunView> {

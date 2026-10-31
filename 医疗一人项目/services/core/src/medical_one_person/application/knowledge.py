@@ -654,7 +654,23 @@ class KnowledgeVersionService:
                 select(RetrievalSnapshot).where(RetrievalSnapshot.project_id == changed.project_id)
             ).all()
             old_chunk_ids = {str(chunk_id) for chunk_id in old_chunks}
-            task_ids: set[UUID] = set()
+            task_ids: set[UUID] = {
+                citation.task_id
+                for citation in citations
+                if citation.task_id is not None
+            }
+            project_tasks = session.scalars(
+                select(Task).where(Task.project_id == changed.project_id)
+            ).all()
+            for task in project_tasks:
+                for item in task.input_snapshot.get("refs", []):
+                    if not isinstance(item, dict):
+                        continue
+                    if (
+                        item.get("object_id") == str(previous.document_id)
+                        or item.get("object_version") == str(previous.id)
+                    ):
+                        task_ids.add(task.id)
             for snapshot in snapshots:
                 if old_chunk_ids & set(snapshot.selected_chunk_ids):
                     task_ids.add(snapshot.task_id)
