@@ -1430,8 +1430,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-10-31T22:27:46.133100+00:00",
-    "note": "最终源码验收的日志、文档与验收记录均已绑定内容hash；后续变化将触发重验。",
+    "at": "2026-10-31T22:34:40.695552+00:00",
+    "note": "CI隔离认证修复后的最终源码已重跑本地、真实PostgreSQL和前端验收并重新绑定证据。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -2863,7 +2863,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "c7392f0ba10c71fc963af1970ac355d1be4ec682e6fb11fcf568f954a40634e4"
+      "sha256": "0d2574ddb2e2873aca315a0b2a9b0aba89acd5615eed1ee5e0704b47a6cbca15"
     }
   ]
 }
