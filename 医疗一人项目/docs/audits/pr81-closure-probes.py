@@ -2,6 +2,8 @@
 
 These probes do not run the application database, provider, or subprocess. A zero exit
 code means that the audit ran; consult findings, rather than treating it as acceptance.
+The archived probes require the original source-file hashes; use application regression
+tests to validate fixes on newer source instead of relabeling this historical evidence.
 Run: python3 docs/audits/pr81-closure-probes.py --output /tmp/pr81-probes.json
 """
 from __future__ import annotations
@@ -22,13 +24,26 @@ from uuid import UUID, uuid4
 PROJECT = Path(__file__).resolve().parents[2]
 SOURCE = PROJECT / "services/core/src/medical_one_person"
 TESTED_SOURCE = "4320e35bcd18ab8bb4a143853ed7bdce3267d4e7"
+BASELINE_HASHES = {
+    "application/readiness.py": "ff5bcec4f6e5c6b3a132137389a27a9f96a80c89e51726ae4d58e3391331a2ba",
+    "application/tasks.py": "c945c4d6743a51d46310c56e6b838a7d2c22504b2483df1f98e949733c1af81c",
+    "worker/__main__.py": "51d29587667c7fb3bc215f53d040f41fd2ca59fe7ce2e867956a2e2c1e429fcf",
+    "agents/runner.py": "099548d38291867d78a0a284d02140b6e3fc8f3ff049817d32ffc262956fdec0",
+    "application/worker_loop.py": "7630f90f270c86b80c5132b02c7b6b6cdca6a4263b451ecde9dfe8b9fc9cbc64",
+}
 source_hashes: dict[str, str] = {}
 
 
 def extract(relative: str, names: set[str], namespace: dict, owner: str | None = None):
     path = SOURCE / relative
     data = path.read_bytes()
-    source_hashes[str(path.relative_to(PROJECT))] = hashlib.sha256(data).hexdigest()
+    actual_hash = hashlib.sha256(data).hexdigest()
+    if actual_hash != BASELINE_HASHES[relative]:
+        raise SystemExit(
+            f"Archived probe targets {TESTED_SOURCE}; source {relative} changed. "
+            "Use application regression tests for newer source."
+        )
+    source_hashes[str(path.relative_to(PROJECT))] = actual_hash
     tree = ast.parse(data)
     body = tree.body
     if owner:

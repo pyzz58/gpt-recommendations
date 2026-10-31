@@ -22,7 +22,7 @@
 | 独立检查 | 按Git blob SHA还原源码与证据，核对Git祖先/源码树指纹；文档检查通过；22项追踪维护测试通过 |
 | 定点诊断 | 执行原函数AST及明确的session/provider doubles：审计范围、输入准入、CLI默认参数、语义身份、单次失败结算、迟到start写入六组；31个原问题预期条件成立，另复现C01 |
 
-诊断脚本：[pr81-closure-probes.py](pr81-closure-probes.py)；原始结果：[pr81-closure-probe-results.json](pr81-closure-probe-results.json)。结果保存被审源码文件SHA-256。脚本退出0表示诊断完成，应读取`findings`；它不是完整应用验收，也没有替代真实PostgreSQL、子进程或真实模型测试。
+诊断脚本：[pr81-closure-probes.py](pr81-closure-probes.py)；原始结果：[pr81-closure-probe-results.json](pr81-closure-probe-results.json)。结果保存被审源码文件SHA-256，脚本也强制核对这些原版本hash；源码变化后拒绝继续沿用旧版本标识。脚本退出0表示诊断完成，应读取`findings`；它不是完整应用验收，也没有替代真实PostgreSQL、子进程或真实模型测试。修复验收使用正常应用回归测试，不改写这份历史结果。
 
 ```bash
 # 本项目目录执行；结果写在临时位置，保留本次历史档案
