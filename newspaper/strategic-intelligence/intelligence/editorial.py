@@ -618,11 +618,9 @@ class EditorialController:
             raise EditorialError("Research admission identity mismatch")
         return admission
 
-    def append_edition_proposal(self, proposal: EditionPlacementProposal) -> StoredVersion:
-        if not isinstance(proposal, EditionPlacementProposal):
-            raise TypeError("append_edition_proposal requires EditionPlacementProposal")
-        proposal = EditionPlacementProposal.model_validate_json(
-            proposal.model_dump_json(warnings=False))
+    def _validate_edition_proposal_context(
+            self, proposal: EditionPlacementProposal
+    ) -> tuple[StoredVersion, ...]:
         context_records = []
         for placement in proposal.placements:
             decision, records = self._current_decision_context(placement.topic_decision_id)
@@ -649,7 +647,15 @@ class EditorialController:
             if (admission.created_at < decision.created_at
                     or proposal.created_at < admission.created_at):
                 raise EditorialError("Edition placement has inverted decision/admission time")
-        context_records = list(self._unique(tuple(context_records)))
+        return self._unique(tuple(context_records))
+
+    def append_edition_proposal(self, proposal: EditionPlacementProposal) -> StoredVersion:
+        if not isinstance(proposal, EditionPlacementProposal):
+            raise TypeError("append_edition_proposal requires EditionPlacementProposal")
+        proposal = EditionPlacementProposal.model_validate_json(
+            proposal.model_dump_json(warnings=False))
+        context_records = list(
+            self._validate_edition_proposal_context(proposal))
         version_id = self._version("EDITION-PROPOSAL-", proposal.edition_proposal_id)
         object_id = self._object("EDITION-PROPOSAL-", proposal.edition_proposal_id)
         referenced = [
@@ -686,4 +692,13 @@ class EditorialController:
                 or stored.submission.spec_sha256 != proposal.spec_sha256
                 or stored.submission.created_at != proposal.created_at):
             raise EditorialError("Edition placement identity mismatch")
+        return proposal
+
+    def load_current_edition_proposal(
+            self, proposal_id: str) -> EditionPlacementProposal:
+        proposal = self.load_edition_proposal(proposal_id)
+        stored = self.archive.get(
+            self._version("EDITION-PROPOSAL-", proposal_id))
+        self._ensure_current(stored, "edition placement proposal")
+        self._validate_edition_proposal_context(proposal)
         return proposal

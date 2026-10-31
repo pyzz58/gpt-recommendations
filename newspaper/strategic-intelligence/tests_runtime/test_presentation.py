@@ -13,11 +13,25 @@ from pydantic import ValidationError
 
 from intelligence.adoption import StepState
 from intelligence.archive import Archive
-from intelligence.contracts import (ObjectKind, ReferenceUse, Representation,
-                                    VersionReference, VersionSubmission)
+from intelligence.contracts import (ObjectKind, Precision, ReferenceUse,
+                                    Representation, TimePoint, VersionReference,
+                                    VersionSubmission)
+from intelligence.coverage import (CandidateCoverageDecision, CoverageBasis,
+                                   CoverageComparator, CoverageController,
+                                   CoverageReferencePlan, EditorialDecision,
+                                   ReferenceChannelAttempt,
+                                   ReferenceChannelOutcome, ReferenceItem,
+                                   ReferenceOrigin,
+                                   SelectionCoverageSnapshot)
+from intelligence.discovery import (CandidateHint, EventClusterController,
+                                    EventClusterer, LineageRole)
 from intelligence.editorial import (ArticleType, EditionPlacement,
                                     EditionPlacementProposal,
-                                    EditorialController, PublicationBasis)
+                                    DecisionStage, EditorialController,
+                                    EditorialError,
+                                    PublicationBasis, ResearchAdmission,
+                                    S8PrerequisitePackage, TopicDecision,
+                                    TopicDecisionCode, ValueBasis)
 from intelligence.editorial_review import EditorialReviewController, ReviewDisposition
 from intelligence.materials import ImportantUpdateCheck, UpdateAction
 from intelligence.presentation import (EditionEntryRole,
@@ -25,6 +39,9 @@ from intelligence.presentation import (EditionEntryRole,
                                        EditionPresentationError,
                                        EditionRecord, EditionSourceRequest,
                                        ReviewedEditionEntry, SourceLink)
+from intelligence.sources import (PermissionStateW20, SourceAdapter,
+                                  SourceAdapterController, SourceDescriptor,
+                                  SourceType)
 from intelligence.workflow import ResearchStep
 
 AT = datetime(2026, 10, 31, 0, 0, tzinfo=timezone.utc)
@@ -52,6 +69,9 @@ class EditionPresentationTests(unittest.TestCase):
         self.archive = self.rf.archive
         self.rights = self.rf.rights
         self.time = self.rf.time + timedelta(seconds=2)
+        self.editorial = EditorialController(self.archive, self.rights)
+        self.make_w23_chain()
+        self.proposal = self.make_proposal()
         self.main_article = self.article(
             "ARTICLE-W32-MAIN",
             "# Bounded Commitment\n\n"
@@ -62,7 +82,6 @@ class EditionPresentationTests(unittest.TestCase):
             "# Owned Weekly Edition\n\n"
             "A reviewed cover explaining the bounded question of this edition.")
         self.update_check = self.make_update_check()
-        self.proposal = self.make_proposal()
         self.main_review, self.main_case = self.review_article(
             self.main_article, "CASE-W32-MAIN", "REVIEW-W32-MAIN")
         self.cover_review, self.cover_case = self.review_article(
@@ -75,7 +94,21 @@ class EditionPresentationTests(unittest.TestCase):
 
     def article(self, object_id, text):
         self.time += timedelta(seconds=1)
-        references = self.rf.article_references()
+        references = (
+            *self.rf.article_references(),
+            VersionReference(
+                target_version_id=self.w23_decision_version_id,
+                use=ReferenceUse.BASIS,
+                locator="current W23 S8 COVER decision"),
+            VersionReference(
+                target_version_id=self.w23_admission_version_id,
+                use=ReferenceUse.BASIS,
+                locator="current W23 research admission"),
+            VersionReference(
+                target_version_id=self.proposal.submission.version_id,
+                use=ReferenceUse.BASIS,
+                locator="current W23 edition placement proposal"),
+        )
         return self.archive.append(VersionSubmission(
             schema_version=2, object_id=object_id,
             version_id=object_id + "-v001", kind=ObjectKind.ARTICLE,
@@ -83,6 +116,195 @@ class EditionPresentationTests(unittest.TestCase):
             created_at=self.time, rights=self.rights,
             representation=Representation.FULL_BODY,
             references=tuple(references)), text.encode())
+
+    def w23_record(self, object_id, version_id, kind):
+        self.time += timedelta(seconds=1)
+        return self.archive.append(VersionSubmission(
+            schema_version=2, object_id=object_id, version_id=version_id,
+            kind=kind, title=f"Owned W32 prerequisite {object_id}",
+            spec_sha256=self.rf.pf.revision.spec_sha256,
+            created_at=self.time, rights=self.rights,
+            representation=Representation.FULL_BODY),
+            f"Owned W32 prerequisite {object_id}".encode())
+
+    def make_w23_chain(self):
+        self.rights_record = self.w23_record(
+            "RIGHTS-RECORD-W32", "RIGHTS-RECORD-W32-v001",
+            ObjectKind.RIGHTS_RECORD)
+        self.reading_plan = self.w23_record(
+            "READING-PLAN-W32", "READING-PLAN-W32-v001",
+            ObjectKind.READING_SCOPE_PLAN)
+
+        source = SourceDescriptor(
+            source_id="SRC-W32-W23", name="Owned W32 discovery source",
+            source_url="https://example.invalid/w32",
+            source_type=SourceType.JSON_API, language="en", region="NZ",
+            sector="fixture", ownership="Owned owner",
+            permission_state=PermissionStateW20.CLEARED,
+            permission_evidence="Owned W32 synthetic source")
+        raw = json.dumps({"items": [{
+            "id": "w32-event",
+            "title": "Owned bounded commitment event",
+            "url": "https://example.invalid/w32/event",
+            "summary": "Owned clue for the bounded commitment fixture",
+            "published_at": "2026-10-30T10:00:00Z",
+        }]}).encode()
+        self.index = SourceAdapter().parse(
+            source, raw, acquired_at=self.time,
+            content_type="application/json",
+            spec_sha256=self.rf.pf.revision.spec_sha256)
+        self.index_stored = SourceAdapterController(
+            self.archive, self.rights).append_index(self.index)
+        self.candidate = self.index.candidates[0]
+        hint = CandidateHint(
+            candidate_index_id=self.index.index_id,
+            candidate_id=self.candidate.candidate_id,
+            event_key="EVENT-W32",
+            lineage_role=LineageRole.ORIGINAL,
+            lineage_root_ids=("ORIGIN-W32",),
+            note="Owned W32 candidate mapping")
+        self.discovery = EventClusterer().build(
+            (self.index,), (hint,), proposal_id="DISCOVERY-W32",
+            spec_sha256=self.rf.pf.revision.spec_sha256,
+            created_at=self.time + timedelta(seconds=1))
+        self.discovery_stored = EventClusterController(
+            self.archive, self.rights).append_proposal(self.discovery)
+        self.cluster = next(
+            item for item in self.discovery.clusters
+            if self.candidate.candidate_id in item.candidate_ids)
+
+        fixed_at = self.time - timedelta(hours=1)
+        channel = ReferenceChannelAttempt(
+            channel_id="REFERENCE-CHANNEL-W32",
+            source_id="SRC-REFERENCE-W32",
+            method="Owned independent reference query",
+            attempted_at=fixed_at,
+            outcome=ReferenceChannelOutcome.AVAILABLE,
+            note="Owned W32 independent reference")
+        reference = ReferenceItem(
+            item_id="REFERENCE-W32",
+            title="Owned independent bounded commitment event",
+            source_id="SRC-REFERENCE-W32",
+            source_url="https://example.invalid/w32/reference",
+            channel_id=channel.channel_id,
+            origin=ReferenceOrigin.EXTERNAL_QUERY,
+            observed_at=fixed_at,
+            published_at=TimePoint(
+                precision=Precision.DATE, value="2026-10-30"),
+            region="NZ", language="en", domain="fixture",
+            event_key="EVENT-W32",
+            priority_basis="Owned independent W32 reference")
+        plan = CoverageReferencePlan(
+            plan_id="COVERAGE-PLAN-W32",
+            spec_sha256=self.rf.pf.revision.spec_sha256,
+            basis=CoverageBasis.INDEPENDENT_REFERENCE,
+            fixed_at=fixed_at,
+            created_at=fixed_at + timedelta(seconds=1),
+            window_start=fixed_at - timedelta(days=1),
+            window_end=fixed_at,
+            scope_description="Owned W32 independent reference window",
+            selection_viewed_at_fix=False,
+            channels=(channel,), references=(reference,),
+            limitations=("No global recall claim",))
+        selection = SelectionCoverageSnapshot(
+            snapshot_id="SELECTION-W32",
+            proposal_id=self.discovery.proposal_id,
+            decisions=(CandidateCoverageDecision(
+                candidate_id=self.candidate.candidate_id,
+                decision=EditorialDecision.SELECTED,
+                reason="Owned W32 bounded selection"),),
+            created_at=self.discovery.created_at + timedelta(seconds=1))
+        audit = CoverageComparator().compare(
+            plan, (self.index,), self.discovery,
+            audit_id="COVERAGE-AUDIT-W32",
+            created_at=self.discovery.created_at + timedelta(seconds=2),
+            selection=selection)
+        coverage = CoverageController(self.archive, self.rights)
+        self.coverage_plan_stored = coverage.append_plan(plan)
+        self.coverage_audit_stored = coverage.append_audit(audit)
+
+        self.package = S8PrerequisitePackage(
+            package_id="PACKAGE-W32",
+            topic_id="TOPIC-W32",
+            edition_id="EDITION-W32",
+            spec_sha256=self.rf.pf.revision.spec_sha256,
+            discovery_proposal_id=self.discovery.proposal_id,
+            question_version_id=self.rf.pf.fx.question.submission.version_id,
+            source_material_version_ids=(
+                self.rf.pf.fx.baseline.submission.version_id,),
+            evidence_version_ids=(
+                self.rf.pf.fx.evidence_version_id,),
+            rights_record_version_ids=(
+                self.rights_record.submission.version_id,),
+            reading_plan_version_id=(
+                self.reading_plan.submission.version_id),
+            limitations=("Owned W32 fixture; no real article acceptance",),
+            candidate_index_ids=(self.index.index_id,),
+            coverage_audit_ids=(audit.audit_id,),
+            created_at=audit.created_at + timedelta(seconds=1))
+        self.package_stored = self.editorial.append_package(self.package)
+
+        def decision(decision_id, stage, code, created_at, *, previous=None,
+                     package_id=None):
+            return TopicDecision(
+                decision_id=decision_id,
+                topic_id="TOPIC-W32",
+                theme_id="THEME-W29",
+                edition_id="EDITION-W32",
+                spec_sha256=self.rf.pf.revision.spec_sha256,
+                discovery_proposal_id=self.discovery.proposal_id,
+                question_version_id=(
+                    self.rf.pf.fx.question.submission.version_id),
+                candidate_index_ids=(self.index.index_id,),
+                candidate_ids=(self.candidate.candidate_id,),
+                cluster_ids=(self.cluster.cluster_id,),
+                stage=stage,
+                publication_basis=PublicationBasis.CURRENT_WEEK,
+                article_type=ArticleType.DEEP_THEME,
+                value_bases=(ValueBasis.RESEARCH_VALUE,),
+                decision=code,
+                reasons=("Owned W32 exact route integration",),
+                gaps=(),
+                next_action=(
+                    "Acquire exact source evidence"
+                    if code is TopicDecisionCode.WATCH else None),
+                trial_score=None,
+                trial_score_basis=None,
+                research_investment_note="Owned W32 offline fixture",
+                s8_package_id=package_id,
+                previous_decision_id=previous,
+                created_at=created_at)
+
+        watch = decision(
+            "DECISION-W32-S0", DecisionStage.S0, TopicDecisionCode.WATCH,
+            self.package.created_at + timedelta(seconds=1))
+        self.editorial.append_decision(watch)
+        self.w23_decision = decision(
+            "DECISION-W32-S8", DecisionStage.S8,
+            TopicDecisionCode.COVER,
+            self.package.created_at + timedelta(seconds=2),
+            previous=watch.decision_id,
+            package_id=self.package.package_id)
+        decision_stored = self.editorial.append_decision(
+            self.w23_decision)
+        self.w23_decision_version_id = (
+            decision_stored.submission.version_id)
+        self.w23_admission = ResearchAdmission(
+            research_admission_id="ADMISSION-W32",
+            topic_decision_id=self.w23_decision.decision_id,
+            topic_id="TOPIC-W32",
+            theme_id="THEME-W29",
+            edition_id="EDITION-W32",
+            spec_sha256=self.rf.pf.revision.spec_sha256,
+            allowed_article_types=(ArticleType.DEEP_THEME,),
+            scope="Produce the exact W32 deep-theme chain only",
+            restrictions=("No publication authorization",),
+            created_at=self.w23_decision.created_at + timedelta(seconds=1))
+        admission_stored = self.editorial.append_research_admission(
+            self.w23_admission)
+        self.w23_admission_version_id = (
+            admission_stored.submission.version_id)
+        self.time = max(self.time, self.w23_admission.created_at)
 
     def make_update_check(self):
         self.time += timedelta(seconds=1)
@@ -123,8 +345,9 @@ class EditionPresentationTests(unittest.TestCase):
             spec_sha256=self.rf.pf.revision.spec_sha256,
             placements=(EditionPlacement(
                 placement_id="PLACEMENT-W32-MAIN",
-                topic_decision_id="TOPIC-DECISION-W32",
-                research_admission_id="ADMISSION-W32",
+                topic_decision_id=self.w23_decision.decision_id,
+                research_admission_id=(
+                    self.w23_admission.research_admission_id),
                 topic_id="TOPIC-W32",
                 article_type=ArticleType.DEEP_THEME,
                 publication_basis=PublicationBasis.CURRENT_WEEK,
@@ -133,20 +356,7 @@ class EditionPresentationTests(unittest.TestCase):
                 reason="Owned W32 combination"),),
             combination_reason="Owned W32 reviewed edition composition",
             created_at=self.time)
-        version_id = EditorialController._version(
-            "EDITION-PROPOSAL-", proposal.edition_proposal_id)
-        object_id = EditorialController._object(
-            "EDITION-PROPOSAL-", proposal.edition_proposal_id)
-        return self.archive.append(VersionSubmission(
-            schema_version=2, object_id=object_id, version_id=version_id,
-            kind=ObjectKind.EDITION_PLACEMENT_PROPOSAL,
-            title="Owned W32 edition proposal",
-            spec_sha256=proposal.spec_sha256,
-            created_at=proposal.created_at,
-            rights=self.rights, representation=Representation.FULL_BODY),
-            json.dumps(
-                proposal.model_dump(mode="json"), ensure_ascii=False,
-                sort_keys=True, separators=(",", ":")).encode())
+        return self.editorial.append_edition_proposal(proposal)
 
     def review_article(self, article, case_id, review_id):
         opened = self.rf.reviewer.open_case(self.rf.open_request(
@@ -321,6 +531,25 @@ class EditionPresentationTests(unittest.TestCase):
             "article_version_id": later.submission.version_id})
         with self.assertRaisesRegex(EditionPresentationError, "Review does not bind"):
             self.controller.compose(self.request(entries=tuple(entries)))
+
+    def test_w23_s8_basis_is_rechecked_when_rendering(self):
+        old_evidence = self.archive.get(
+            self.rf.pf.fx.evidence_version_id)
+        self.time += timedelta(seconds=1)
+        self.archive.append(VersionSubmission(
+            schema_version=2,
+            object_id=old_evidence.submission.object_id,
+            version_id="EVIDENCE-W29-v002",
+            parent_version_id=old_evidence.submission.version_id,
+            kind=ObjectKind.EVIDENCE,
+            title="Owned later W29 evidence",
+            spec_sha256=old_evidence.submission.spec_sha256,
+            created_at=self.time,
+            rights=self.rights,
+            representation=Representation.FULL_BODY),
+            b"Owned later evidence invalidates the old S8 package")
+        with self.assertRaisesRegex(EditorialError, "not the current"):
+            self.controller.compose(self.request())
 
     def test_output_inside_git_and_existing_foreign_file_are_rejected(self):
         request = self.request()

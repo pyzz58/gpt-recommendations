@@ -62,6 +62,7 @@
     "tests_runtime/test_editorial_review.py",
     "intelligence/presentation.py",
     "tests_runtime/test_presentation.py",
+    "tests_runtime/test_route_integration.py",
     "intelligence/history.py",
     "tests_runtime/test_history.py",
     "intelligence/correction.py",
@@ -84,5 +85,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "3d8a0959b3c81d4744160f8afd21ad5d979414ef7ba4b8c5e38fecdddedb79e4"
+  "spec_sha256": "98814ddf580992c27cd255c4f5a008353124c582653568a936087c67acf659f6"
 }

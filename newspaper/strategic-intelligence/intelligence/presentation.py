@@ -347,7 +347,7 @@ class EditionPresentationController:
             raise TypeError("compose requires EditionSourceRequest")
         request = EditionSourceRequest.model_validate_json(
             request.model_dump_json(warnings=False))
-        proposal = self.editorial.load_edition_proposal(
+        proposal = self.editorial.load_current_edition_proposal(
             request.edition_proposal_id)
         if (proposal.spec_sha256 != request.spec_sha256
                 or proposal.edition_id != request.edition_id):
@@ -356,10 +356,6 @@ class EditionPresentationController:
         proposal_version_id = EditorialController._version(
             "EDITION-PROPOSAL-", request.edition_proposal_id)
         proposal_stored = self.archive.get(proposal_version_id)
-        self._current(
-            proposal_stored,
-            self.archive.latest(proposal_stored.submission.object_id),
-            "Edition proposal")
         # W26 update checks are shared records; identity and identity time are
         # checked locally so W32 need not create a second materials controller.
         update_stored = self.archive.get(

@@ -8,7 +8,7 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`3d8a0959b3c81d4744160f8afd21ad5d979414ef7ba4b8c5e38fecdddedb79e4`。
+当前规范SHA-256：`98814ddf580992c27cd255c4f5a008353124c582653568a936087c67acf659f6`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
@@ -71,7 +71,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 34 | [W33 原文档案、双模式查询与知识复用](#w33) | 代码与接口工作包 | T11 | [W13](#w13)、[W16](#w16)、[W32](#w32) | 进行中 / CURRENT_BINDING |
 | 35 | [W34 更正影响、限制采用与有限恢复](#w34) | 代码与接口工作包 | T11/T01 | [W33](#w33)、[W25](#w25)、[W31](#w31)、[W15](#w15) | 进行中 / CURRENT_BINDING |
 | 36 | [W35 必要时的原文任务视图与分段装载](#w35) | 条件能力 | T01/T13/R07 | [W14](#w14)、[W17](#w17) | 有据不适用 / CURRENT_BINDING |
-| 37 | [W36 最小深度主题闭环与中断重接](#w36) | 路线集成验收 | R01/R07/T01/T09/T11/T13 | [W22](#w22)、[W32](#w32)、[W33](#w33)、[W18](#w18) | 待开始 / CURRENT_BINDING |
+| 37 | [W36 最小深度主题闭环与中断重接](#w36) | 路线集成验收 | R01/R07/T01/T09/T11/T13 | [W22](#w22)、[W32](#w32)、[W33](#w33)、[W18](#w18) | 进行中 / CURRENT_BINDING |
 | 38 | [W37 精选、首次事实、进展及更正分支](#w37) | 路线集成验收 | R03/T03/T04/T09/T10 | [W23](#w23)、[W26](#w26)、[W31](#w31)、[W32](#w32)、[W34](#w34) | 待开始 / CURRENT_BINDING |
 | 39 | [W38 定向补证、解释变化与回S8](#w38) | 路线集成验收 | R04/T03/T04/T05 | [W25](#w25)、[W27](#w27)、[W23](#w23)、[W31](#w31) | 待开始 / CURRENT_BINDING |
 | 40 | [W39 真实跨周接续与长期专题入刊](#w39) | 路线集成验收 | R02/T03/T05/T11 | [W33](#w33)、[W27](#w27)、[W23](#w23)、[W36](#w36) | 待开始 / CURRENT_BINDING |
@@ -1304,7 +1304,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W32-PRESENTATION-AUDIT-20261031-001", "artifact_refs": ["intelligence/presentation.py", "intelligence/editorial_review.py", "intelligence/editorial.py", "intelligence/materials.py", "intelligence/adoption.py", "intelligence/contracts.py", "tests_runtime/test_presentation.py", "audits/pr76-review-remediation-w32-20261031.json", "pyproject.toml", "uv.lock"], "validation_refs": ["tests_runtime/test_presentation.py (10 actual passing W32 tests)", "audits/pr76-review-remediation-w32-20261031.json"], "reviewer": "当前执行者实际离线检查Edition组合、PASS Review/W15版本、W23 placement、W26更新、Jinja转义、私有文件、并发和错误路径；非真实整刊内容、用户阅读、视觉/PDF或阶段批准", "result": "IN_PROGRESS", "scope": "W32离线接口：Edition只接收当前W23 EditionPlacementProposal与当前W26 ImportantUpdateCheck；需研究/审稿/改型/更正的更新不能被版面层吞掉，文章Review须晚于该检查。封面与专题各绑定当前Article、PASS Review及当前W15 READY采用；Article必须保留全文且H1与被审版本一致，Review精确覆盖Article及用途，W15 subject/review/scope一致。Feature必须匹配W23 placement和slot；一个Edition不能把同一Article重复冒充多篇。模板只使用Jinja StrictUndefined/autoescape，不加载外部模板或资源；标题、正文、目录和来源标签均转义，来源URL仅允许HTTPS，正文HTML片段与脚本不执行。正文在Archive中保留为EditionRecord，实际读者文件为版本绑定HTML，按O_NOFOLLOW/O_EXCL创建0600私有文件并记录hash/bytes；重试、并发和陈旧版本不覆盖当前Edition。Edition固定content_review_required=true、full_edition_review_required=true、publication_authorized=false、delivery_authorized=false，生成文件不等于内容通过、正式PDF、出版或送达。十项回归覆盖PASS/W15组合、标题篡改、真实原文、W23 placement/slot、W26返回、HTTPS、新稿旧审、仓库内/外来文件、并发幂等、排序重复和HTML转义。真实整刊阅读、标题/图表/卷首审稿、字体分页、视觉呈现、PDF/W49、用户阅读及G01未完成，整包不ACCEPTED。"}]
+实际证据：[{"record_id": "W32-PRESENTATION-AUDIT-20261031-001", "artifact_refs": ["intelligence/presentation.py", "intelligence/editorial_review.py", "intelligence/editorial.py", "intelligence/materials.py", "intelligence/adoption.py", "intelligence/contracts.py", "tests_runtime/test_presentation.py", "audits/pr76-review-remediation-w32-20261031.json", "pyproject.toml", "uv.lock"], "validation_refs": ["tests_runtime/test_presentation.py (10 actual passing W32 tests)", "audits/pr76-review-remediation-w32-20261031.json"], "reviewer": "当前执行者实际离线检查Edition组合、PASS Review/W15版本、W23 placement、W26更新、Jinja转义、私有文件、并发和错误路径；非真实整刊内容、用户阅读、视觉/PDF或阶段批准", "result": "IN_PROGRESS", "scope": "W32离线接口：Edition只接收当前W23 EditionPlacementProposal与当前W26 ImportantUpdateCheck；需研究/审稿/改型/更正的更新不能被版面层吞掉，文章Review须晚于该检查。封面与专题各绑定当前Article、PASS Review及当前W15 READY采用；Article必须保留全文且H1与被审版本一致，Review精确覆盖Article及用途，W15 subject/review/scope一致。Feature必须匹配W23 placement和slot；一个Edition不能把同一Article重复冒充多篇。模板只使用Jinja StrictUndefined/autoescape，不加载外部模板或资源；标题、正文、目录和来源标签均转义，来源URL仅允许HTTPS，正文HTML片段与脚本不执行。正文在Archive中保留为EditionRecord，实际读者文件为版本绑定HTML，按O_NOFOLLOW/O_EXCL创建0600私有文件并记录hash/bytes；重试、并发和陈旧版本不覆盖当前Edition。Edition固定content_review_required=true、full_edition_review_required=true、publication_authorized=false、delivery_authorized=false，生成文件不等于内容通过、正式PDF、出版或送达。十项回归覆盖PASS/W15组合、标题篡改、真实原文、W23 placement/slot、W26返回、HTTPS、新稿旧审、仓库内/外来文件、并发幂等、排序重复和HTML转义。真实整刊阅读、标题/图表/卷首审稿、字体分页、视觉呈现、PDF/W49、用户阅读及G01未完成，整包不ACCEPTED。"}, {"record_id": "W32-W36-CURRENT-S8-REVALIDATION-20261031-001", "artifact_refs": ["intelligence/editorial.py", "intelligence/presentation.py", "tests_runtime/test_presentation.py", "tests_runtime/test_route_integration.py", "audits/w36-route-integration-20261031.json"], "validation_refs": ["tests_runtime/test_presentation.py (11 actual passing W32 tests)", "tests_runtime/test_route_integration.py (3 actual passing W36 route tests)", "audits/w36-route-integration-20261031.json"], "reviewer": "当前执行者实际离线检查W36反向用例及W32当前依据重核；非真实跨模块内容、用户阅读或阶段批准", "result": "IN_PROGRESS", "scope": "W36接续修复W32在生成阅读文件前只核Edition方案自身版本、未重核其所依赖当前W23 S8决定/研究准入/S8包的问题。新增load_current_edition_proposal：先确认方案当前，再逐placement用W23同一依赖校验核当前TopicDecision、ResearchAdmission、S8包、候选、覆盖、问题、来源、权利和Evidence；任一变为旧版即退回相应编辑/取证责任，不生成HTML。W32夹具改为真实经过W23控制器的候选/覆盖/S8/准入/方案链，新增后出Evidence使旧S8失效的反例；十一项W32测试通过。真实整刊、用户阅读和G02仍未验，W32整包不ACCEPTED。"}]
 
 <a id="w33"></a>
 ## W33｜原文档案、双模式查询与知识复用
@@ -1425,7 +1425,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：37/59；阶段：2；类型：路线集成验收。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W22](#w22)、[W32](#w32)、[W33](#w33)、[W18](#w18)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W22](#w22)、[W32](#w32)、[W33](#w33)、[W18](#w18)。
 
 前置尚未验收：[W18](#w18)、[W22](#w22)、[W32](#w32)、[W33](#w33)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -1455,7 +1455,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W36-ROUTE-INTEGRATION-20261031-001", "artifact_refs": ["intelligence/editorial.py", "intelligence/presentation.py", "tests_runtime/test_presentation.py", "tests_runtime/test_route_integration.py", "audits/w36-route-integration-20261031.json"], "validation_refs": ["tests_runtime/test_route_integration.py (3 actual passing W36 route tests)", "tests_runtime/test_presentation.py (11 actual passing W32 tests)", "audits/w36-route-integration-20261031.json"], "reviewer": "当前执行者实际搭建并回归同一Archive的R01/R07离线链；非真实冻结案例、独立内容审稿、用户阅读、持久生产恢复或阶段批准", "result": "IN_PROGRESS", "scope": "W36离线路线集成：在同一Archive以自有合成合法材料串起候选索引、独立参照/覆盖审计、S8包、COVER决定、研究准入、Edition方案、W27全集、B1/B2/C、W31 Review/W15、W32 HTML及W33 CURRENT版本回取；W32在成刊前重新核当前W23决定、准入和S8依赖。控制器丢失后从Archive dossier重建十二步检查点；新Dossier在M01后中断，恢复后只继续M02且M01记录未重建。聊天摘要字符串不能冒充快照。外部受控试用经W18后保留OperationRequest/Receipt与$0.03累计费用，控制器重建后重复请求在Adapter前因既有储备被拒。另验后出Evidence使W23 S8系旧时W32不生成页面。真实冻结案例、跨模块内容质量、独立L5、读者阅读、实际中断/C03持久后端、W37以后路线和G01—G04未完成；W35仍N/A，故整包IN_PROGRESS，不ACCEPTED。"}]
 
 <a id="w37"></a>
 ## W37｜精选、首次事实、进展及更正分支
