@@ -14,7 +14,7 @@
 ## 当前阶段
 
 - 研发模式：**仅 GitHub 源码、公开虚构素材、隔离沙箱与既有 CI**；当前不部署、不同步、不操作用户 Mac。
-- 专业阶段：**QO-F01 表演**软件层已 review-ready（F01-08 真实媒体 blocked；F01-09 交接完成）。**QO-F02 摄影/灯光/美术**软件层已 review-ready（F02-09 已形成 F03 交接），独立 DOP 审片与真实光学媒体仍 blocked。下一专业阶段为 **QO-F03 对白/配音/拟音/音乐**；QO-F01/QO-F02 均保持 `audit_pending`。
+- 专业阶段：**F01 表演**与 **F02 摄影/灯光/美术**软件层均 review-ready（真实媒体仍 blocked）；**F03 对白/配音/拟音/音乐**严格合同与公开合成回归已实现部分，独立声音审片、真实音频/口型/音乐授权仍未完成。QO-F01/F02/F03 均保持 `audit_pending`；下一阶段为 F04 剪辑/动效/信息图。
 - 状态权威：`quality-optimization/QUALITY_ISSUES.json`（40 项，`complete=0`）与 `AUDIT_FINDINGS.json`（36 项，开放 P0 为 AUD-002）。README 与历史审计不替代 JSON 状态。
 - 真实付费生产：必须先满足私有存储、账单核验、逐次明确授权与费用上限；开发“继续”不等于付费许可。
 

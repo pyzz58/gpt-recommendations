@@ -24,6 +24,7 @@ import director_visual_language as visual_language
 import director_artistic_methods as artistic_methods
 import director_acting as acting_contract
 import director_photography as photography_contract
+import director_sound as sound_contract
 
 CONTRACT_VERSION = "1.0"
 MAX_CONTEXT_CHARS = 220_000
@@ -436,6 +437,98 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
                     "key_light_position", "key_light_direction", "safe_area",
                     "scene_geometry",
                 ])
+    sound_mode = base.get("sound_contract_mode")
+    if sound_mode is not None:
+        if sound_mode != sound_contract.MODE:
+            raise ValueError("CREW_SOUND_CONTRACT_MODE_INVALID")
+        if task_id == "sound":
+            shot_properties = schema["properties"]["shots"]["properties"]
+            for shot_schema in shot_properties.values():
+                sound_schema = shot_schema["properties"]["sound"]
+                sound_schema["properties"]["mix"] = {
+                    "type": "object",
+                    "required": ["dialogue_priority", "music_level",
+                                 "ambience_level", "dynamic_range_note",
+                                 "silence_intent"],
+                    "properties": {
+                        key: {"type": "string", "minLength": 1}
+                        for key in ("dialogue_priority", "music_level",
+                                    "ambience_level", "dynamic_range_note",
+                                    "silence_intent")}}
+                sound_schema["properties"]["music_plan"] = {
+                    "type": "object",
+                    "required": ["mode", "cue_id", "start_s", "end_s", "purpose",
+                                 "instrumentation", "mix_level", "rights_status",
+                                 "license_ref"],
+                    "properties": {
+                        "mode": {"type": "string", "enum": ["none", "cue"]},
+                        "cue_id": {"type": "string", "minLength": 1},
+                        "start_s": {"type": "number"},
+                        "end_s": {"type": "number"},
+                        "purpose": {"type": "string", "minLength": 1},
+                        "instrumentation": {"type": "string", "minLength": 1},
+                        "mix_level": {"type": "string", "minLength": 1},
+                        "rights_status": {"type": "string",
+                                          "enum": ["unknown", "not_selected",
+                                                   "unlicensed", "cleared"]},
+                        "license_ref": {"type": "string"},
+                    }}
+                sound_schema["properties"]["sound_bridge"] = {
+                    "type": "object",
+                    "required": ["type", "duration_s", "track", "reason"],
+                    "properties": {
+                        "type": {"type": "string",
+                                 "enum": ["none", "j_cut", "l_cut",
+                                          "match_cut", "room_tone_bridge"]},
+                        "duration_s": {"type": "number"},
+                        "track": {"type": "string"},
+                        "reason": {"type": "string", "minLength": 1},
+                    }}
+                sound_schema["properties"]["effects"] = {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "required": ["time_s", "cue", "source", "layer", "mix_note"],
+                        "properties": {
+                            "time_s": {"type": "number"},
+                            "cue": {"type": "string", "minLength": 1},
+                            "source": {"type": "string", "minLength": 1},
+                            "layer": {"type": "string",
+                                      "enum": ["foley", "ambience", "sfx", "silence"]},
+                            "mix_note": {"type": "string", "minLength": 1},
+                        }}}
+                sound_schema["required"].extend(["mix", "music_plan", "sound_bridge"])
+                speech_schema = shot_schema["properties"]["speech"]
+                speech_schema["properties"]["dialogue"] = {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["speaker_id", "text", "delivery", "from_s",
+                                     "to_s", "kind", "lip_sync", "clarity_note"],
+                        "properties": {
+                            "speaker_id": {"type": "string", "minLength": 1},
+                            "text": {"type": "string", "minLength": 1},
+                            "delivery": {"type": "string", "minLength": 1},
+                            "from_s": {"type": "number"},
+                            "to_s": {"type": "number"},
+                            "kind": {"type": "string",
+                                     "enum": ["onscreen_dialogue", "offscreen_dialogue"]},
+                            "lip_sync": {"type": "string",
+                                         "enum": ["required", "native", "none",
+                                                  "not_applicable"]},
+                            "clarity_note": {"type": "string", "minLength": 1},
+                        }}}
+                speech_schema["properties"]["subtitle_cues"] = {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["text", "from_s", "to_s"],
+                        "properties": {
+                            "text": {"type": "string", "minLength": 1},
+                            "from_s": {"type": "number"},
+                            "to_s": {"type": "number"},
+                        }}}
     if editorial_handoff is not None:
         creative_bridge.inspect_preproduction(base, editorial_handoff)
         if (editorial_handoff.get("episode_source_digest") !=
@@ -777,6 +870,23 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 "texture、scene_geometry(anchor_positions/key_light_position/camera_axis)。"
                 "同一场景的几何与主光方向必须连续；跨轴必须写 axis_break_reason 并进入人工复核。"
                 "不得只写“电影感/高级感/视觉冲击”等空词替代具体摄影选择。")
+    sound_mode = base.get("sound_contract_mode")
+    if sound_mode is not None:
+        if sound_mode != sound_contract.MODE:
+            raise ValueError("CREW_SOUND_CONTRACT_MODE_INVALID")
+        if task_id == "sound":
+            boundary += (
+                "\n\n【F03 声音合同】每镜 sound 增加 mix(dialogue_priority/"
+                "music_level/ambience_level/dynamic_range_note/silence_intent)、"
+                "music_plan(mode none/cue、cue_id、start/end、purpose、instrumentation、"
+                "mix_level、rights_status、license_ref)、sound_bridge(type/duration/track/reason)；"
+                "effects 每项写 time_s、cue、source、layer(foley/ambience/sfx/silence)、mix_note。"
+                "speech.dialogue 每句写 speaker_id、text、delivery、from/to、"
+                "kind(onscreen_dialogue/offscreen_dialogue)、lip_sync、clarity_note；"
+                "onscreen 必须口型 required/native，offscreen 必须 none/not_applicable。"
+                "字幕必须匹配已说文本；音乐未取得授权时 rights_status 只能 unknown/"
+                "not_selected/unlicensed，cleared 必须有 license_ref。"
+                "不得新增未在剧本中的对白或把泛泛“氛围感”当作音乐设计。")
     serialized = json.dumps(request, ensure_ascii=False, sort_keys=True,
                             separators=(",", ":"), allow_nan=False)
     _check_json_size(serialized, MAX_CONTEXT_CHARS, "private prompt")
@@ -832,6 +942,9 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
     photography_mode = base.get("photography_contract_mode")
     if photography_mode is not None and photography_mode != photography_contract.MODE:
         raise ValueError("CREW_PHOTOGRAPHY_CONTRACT_MODE_INVALID")
+    sound_mode = base.get("sound_contract_mode")
+    if sound_mode is not None and sound_mode != sound_contract.MODE:
+        raise ValueError("CREW_SOUND_CONTRACT_MODE_INVALID")
     # The production adapter cannot accept a downstream specialist's result
     # without the same locked director work order used to prepare its prompt.
     if task_id in director_command.DEPARTMENTS:
@@ -1055,6 +1168,10 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
         report = photography_contract.inspect_delivery(base, payload)
         if report["blockers"]:
             raise ValueError("CREW_PHOTOGRAPHY_CONTRACT_BLOCKED")
+    if sound_mode is not None and task_id == "sound":
+        report = sound_contract.inspect_delivery(base, payload)
+        if report["blockers"]:
+            raise ValueError("CREW_SOUND_CONTRACT_BLOCKED")
     # After existing domain-specific checks, enforce the EXACT schema that
     # the model received, including the bridged camera extensions. Preserve
     # existing informative static domain error codes but reject any remaining
