@@ -51,7 +51,9 @@
     "intelligence/materials.py",
     "tests_runtime/test_materials.py",
     "intelligence/workflow.py",
-    "tests_runtime/test_workflow.py"
+    "tests_runtime/test_workflow.py",
+    "intelligence/advisor.py",
+    "tests_runtime/test_advisor.py"
   ],
   "data_files": [
     "SOURCE_REGISTRY.json",
@@ -70,5 +72,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "a40955b58f5b2bdbd541eaaf48613a56a97a85d3558b35bcb77e4be76905335e"
+  "spec_sha256": "f49633ac65b8e60e858b30c5bd6b321b594f90ed203444e3b0bf76945f5da7e2"
 }

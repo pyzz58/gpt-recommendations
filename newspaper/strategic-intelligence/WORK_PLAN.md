@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`a40955b58f5b2bdbd541eaaf48613a56a97a85d3558b35bcb77e4be76905335e`。
+当前规范SHA-256：`f49633ac65b8e60e858b30c5bd6b321b594f90ed203444e3b0bf76945f5da7e2`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收15包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收16包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -63,7 +63,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 26 | [W25 主张支持、计算与定向补证接口](#w25) | 代码与接口工作包 | T04/T05/R04 | [W24](#w24)、[W16](#w16) | 进行中 / CURRENT_BINDING |
 | 27 | [W26 入选中文、节选边界与重要更新](#w26) | 代码与接口工作包 | T04/T03 | [W24](#w24)、[W25](#w25)、[W23](#w23) | 进行中 / CURRENT_BINDING |
 | 28 | [W27 M工序、共同研究与有限收口接口](#w27) | 代码与接口工作包 | T05/T07/R04 | [W16](#w16)、[W25](#w25)、[W19](#w19) | 进行中 / CURRENT_BINDING |
-| 29 | [W28 顾问任务、判断与增益提交](#w28) | 代码与接口工作包 | T06 | [W27](#w27) | 待开始 / CURRENT_BINDING |
+| 29 | [W28 顾问任务、判断与增益提交](#w28) | 代码与接口工作包 | T06 | [W27](#w27) | 进行中 / CURRENT_BINDING |
 | 30 | [W29 帝师研究、连续教学与迁移提交](#w29) | 代码与接口工作包 | T07 | [W27](#w27) | 待开始 / CURRENT_BINDING |
 | 31 | [W30 条件路径与原判断检验条件](#w30) | 代码与接口工作包 | T08 | [W28](#w28)、[W29](#w29) | 待开始 / CURRENT_BINDING |
 | 32 | [W31 独立核查、意见闭环与审核决定](#w31) | 代码与接口工作包 | T09/T01 | [W28](#w28)、[W29](#w29)、[W30](#w30)、[W19](#w19)、[W15](#w15) | 待开始 / CURRENT_BINDING |
@@ -1127,7 +1127,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：29/59；阶段：2；类型：代码与接口工作包。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W27](#w27)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W27](#w27)。
 
 前置尚未验收：[W27](#w27)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -1156,7 +1156,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W28-ADVISER-AUDIT-20261031-001", "artifact_refs": ["intelligence/advisor.py", "intelligence/contracts.py", "intelligence/research.py", "intelligence/evidence.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/workflow.py", "tests_runtime/test_advisor.py", "audits/pr76-review-remediation-w28-20261031.json"], "validation_refs": ["tests_runtime/test_advisor.py (13 actual passing W28 tests)", "audits/pr76-review-remediation-w28-20261031.json"], "reviewer": "当前执行者实际离线检查B1输入/判断/增益/决策选项/M10、W25关系、模型身份与回执、幂等和上游返工；非真实B1内容、独立审稿、读者或阶段批准", "result": "IN_PROGRESS", "scope": "W28离线接口：B1只能以当前W27案卷的活跃M09、当前W16修订及其实际输入中的当前基线原作/文档、W25 Claim、Evidence和ClaimEvidenceAssessment为依据；评估必须精确覆盖所选Claim并共同覆盖同一Evidence集合，撤权、跨theme/spec、旧version、陈修订和陈快照均拒绝。判断强制列明条件、未知、可改变判断的证据与支持范围；原作已有解释和本刊贡献分开，前后增益不得同文重标。只有声明具体行动决策时才要求真实决策者、比较基础和至少两个含行动理由、代价、受益者、其他行动者反应、调整/退出及可观察效果的选项；无行动决策不得夹带臆造选项。BOUNDED提交READY、CANDIDATE仅提交CANDIDATE、LIMITATION_OR_UNKNOWN提交LIMITED，均不是内容PASS；成果固定B1、facts_verified=false、causal_support=false、content_review_required=true、publication_authorized=false。人工成果拒绝模型身份；模型成果须有当前W19职责/领域准入、绑定全部判断输入的MODEL OperationRequest及成功OperationReceipt，并回指操作。重复调用幂等；Archive后M10失败时只保留未采用的确定性attempt，同一basis精确重试可恢复，否则须按变化后basis另立版本；并发不会产生两个活跃M10，上游重做会以旧M10为parent重建。十三项回归覆盖完整M01—M09/B1/M10、陈旧快照/修订/M09、错类型/错关系/撤权、贡献与增益重标、无据条件/未知/falsifier、两类决策上下文、READY/LIMITED/CANDIDATE、人工/模型身份、成功/缺失回执、失败恢复、并发及上游返工。真实B1研究文字、判断质量、决策真实性、独立Review/W31、持久运行和阶段门未完成，整包不ACCEPTED。"}]
 
 <a id="w29"></a>
 ## W29｜帝师研究、连续教学与迁移提交

@@ -39,6 +39,7 @@ class ObjectKind(str, Enum):
     ADOPTION_DECISION = "AdoptionDecision"
     RESEARCH_REVISION = "ResearchRevision"
     RESEARCH_STEP_RECORD = "ResearchStepRecord"
+    ADVISOR_OUTPUT = "AdvisorOutput"
     ARTIFACT_LINK = "ResearchArtifactLink"
     ARTIFACT_COMPATIBILITY = "ResearchArtifactCompatibility"
     RESEARCH_COMMIT = "ResearchCommit"
