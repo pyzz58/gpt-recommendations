@@ -26,7 +26,8 @@ from .archive import (Archive, ArchiveError, Conflict, MissingVersion,
 from .contracts import (Contract, Digest, Identifier, NonBlank, ObjectKind,
                         ReferenceUse, Representation, RightsGrant, SourceTimes,
                         StoredVersion, VersionReference, VersionSubmission)
-from .editorial import EditionPlacementProposal, EditorialController
+from .editorial import (ArticleType, EditionPlacementProposal,
+                        EditorialController)
 from .editorial_review import (EditorialReviewController,
                                EditorialReviewDecision, ReviewDisposition)
 from .materials import ImportantUpdateCheck, UpdateAction
@@ -55,8 +56,9 @@ class ReviewedEditionEntry(Contract):
                 or len(self.required_scope) != len(set(self.required_scope))):
             raise ValueError(
                 "Edition entry needs unique required review scope")
-        if self.role is EditionEntryRole.FEATURE and self.placement_id is None:
-            raise ValueError("Feature entry needs its W23 placement")
+        if self.role is not EditionEntryRole.COVER and self.placement_id is None:
+            raise ValueError(
+                "Every non-cover entry needs its exact W23 placement")
         if self.role is EditionEntryRole.COVER and self.placement_id is not None:
             raise ValueError("Cover entry cannot pretend to be a W23 placement")
         return self
@@ -330,16 +332,24 @@ class EditionPresentationController:
                 entry.adoption_decision_id, entry.required_scope, at):
             raise EditionPresentationError(
                 "W15 decision does not authorize this Edition use scope")
-        if entry.role is EditionEntryRole.FEATURE:
+        if entry.role is not EditionEntryRole.COVER:
             placement = next(
                 (item for item in proposal.placements
                  if item.placement_id == entry.placement_id), None)
             if placement is None:
                 raise EditionPresentationError(
-                    "Feature entry is absent from the W23 placement proposal")
+                    "Non-cover entry is absent from the W23 placement proposal")
             if placement.slot_order != entry.slot_order:
                 raise EditionPresentationError(
-                    "Feature entry order differs from its W23 placement")
+                    "Edition entry order differs from its W23 placement")
+            if (entry.role is EditionEntryRole.FEATURE
+                    and placement.article_type is not ArticleType.DEEP_THEME):
+                raise EditionPresentationError(
+                    "A short form cannot replace the reviewed depth feature")
+            if (entry.role is EditionEntryRole.UPDATE
+                    and placement.article_type is ArticleType.DEEP_THEME):
+                raise EditionPresentationError(
+                    "A deep-theme Article cannot be relabelled as a short update")
         return article, review, body, article_text
 
     def compose(self, request: EditionSourceRequest) -> EditionResult:

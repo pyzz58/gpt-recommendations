@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from enum import Enum
 import hashlib
+import json
 from typing import Literal, Self
 
 from pydantic import AwareDatetime, model_validator
@@ -17,6 +18,7 @@ from pydantic import AwareDatetime, model_validator
 from .adoption import (AdoptionController, CheckerRole, DecisionRequest,
                        StepState, StepSubmission)
 from .archive import Archive, ArchiveError, Conflict, MissingVersion, canonical
+from .article_route import ArticleRouteController, ArticleRouteError
 from .contracts import (Contract, Digest, Identifier, MaterialUse, NonBlank,
                         ObjectKind, ReferenceUse, Representation, ReviewCoverage,
                         RightsGrant, SourceTimes, StoredVersion,
@@ -371,6 +373,103 @@ class EditorialReviewDecision(Contract):
     created_at: AwareDatetime
 
 
+class ShortFormReviewCaseRecord(Contract):
+    schema_version: Literal[2] = 2
+    review_case_id: Identifier
+    review_case_version_id: Identifier
+    previous_version_id: Identifier | None
+    state: ReviewCaseState
+    article_route_version_id: Identifier
+    task_version_id: Identifier
+    theme_id: Identifier
+    spec_sha256: Digest
+    initial_article_version_id: Identifier
+    current_article_version_id: Identifier
+    evidence_version_ids: tuple[Identifier, ...]
+    reviewer_id: NonBlank
+    author_ids: tuple[NonBlank, ...]
+    producer_id: NonBlank
+    reviewed_scope: tuple[NonBlank, ...]
+    exposure: ReviewExposure
+    inquiries: tuple[ReviewerInquiry, ...]
+    responses: tuple[AuthorResponseItem, ...]
+    content_review_required: Literal[True] = True
+    publication_authorized: Literal[False] = False
+    created_at: AwareDatetime
+    updated_at: AwareDatetime
+
+
+class ShortFormOpenReviewRequest(Contract):
+    schema_version: Literal[2] = 2
+    review_case_id: Identifier
+    article_route_version_id: Identifier
+    task_version_id: Identifier
+    article_version_id: Identifier
+    spec_sha256: Digest
+    reviewer_id: NonBlank
+    author_ids: tuple[NonBlank, ...]
+    producer_id: NonBlank
+    reviewed_scope: tuple[NonBlank, ...]
+    exposure: ReviewExposure
+    inquiries: tuple[ReviewerInquiry, ...] = ()
+    evidence_version_ids: tuple[Identifier, ...]
+    execution_method: Literal[ExecutionMethod.MANUAL] = ExecutionMethod.MANUAL
+    created_at: AwareDatetime
+
+    @model_validator(mode="after")
+    def coherent(self) -> Self:
+        for name, values in (
+                ("author", self.author_ids),
+                ("reviewed scope", self.reviewed_scope),
+                ("inquiry", [item.inquiry_id for item in self.inquiries]),
+                ("evidence", self.evidence_version_ids)):
+            if not values and name != "inquiry":
+                raise ValueError(f"Short-form review needs {name}")
+            if len(values) != len(set(values)):
+                raise ValueError(f"Duplicate short-form review {name}")
+        normalized_authors = {item.casefold() for item in self.author_ids}
+        if self.reviewer_id.casefold() in normalized_authors:
+            raise ValueError("Reviewer cannot be an author")
+        if self.producer_id.casefold() == self.reviewer_id.casefold():
+            raise ValueError("Reviewer cannot be the producer/checker signer")
+        if self.producer_id.casefold() not in normalized_authors:
+            raise ValueError("Producer must be one of the declared authors")
+        if any(item.formed_at > self.created_at for item in self.inquiries):
+            raise ValueError(
+                "Reviewer inquiry cannot postdate the fixed review case")
+        return self
+
+
+class ShortFormReviewDecision(Contract):
+    schema_version: Literal[2] = 2
+    review_id: Identifier
+    review_case_id: Identifier
+    review_case_version_id: Identifier
+    article_route_version_id: Identifier
+    task_version_id: Identifier
+    article_version_id: Identifier
+    article_body_sha256: Digest
+    spec_sha256: Digest
+    reviewer_id: NonBlank
+    author_ids: tuple[NonBlank, ...]
+    producer_id: NonBlank
+    exposure: ReviewExposure
+    inquiries: tuple[ReviewerInquiry, ...]
+    responses: tuple[AuthorResponseItem, ...]
+    closures: tuple[IssueClosure, ...]
+    decision: ReviewDisposition
+    reviewed_scope: tuple[NonBlank, ...]
+    decision_reason: NonBlank
+    remaining_limitations: tuple[NonBlank, ...]
+    evidence_version_ids: tuple[Identifier, ...]
+    review_performed: Literal[True] = True
+    author_self_approved: Literal[False] = False
+    model_self_passed: Literal[False] = False
+    publication_authorized: Literal[False] = False
+    review_capability_certified: Literal[False] = False
+    created_at: AwareDatetime
+
+
 class ReviewDecisionResult(Contract):
     review_case_version_id: Identifier
     review_version_id: Identifier
@@ -411,6 +510,7 @@ class EditorialReviewController:
         self.prospective = ProspectiveController(archive, rights, workflow)
         self.adoption = AdoptionController(archive, rights)
         self.model_admission = ModelAdmissionController(archive, rights)
+        self.routes = ArticleRouteController(archive, rights)
 
     @staticmethod
     def _current_version(stored: StoredVersion,
@@ -1166,12 +1266,18 @@ class EditorialReviewController:
             adoption_submission_version_id=submission_id,
             adoption_decision_version_id=decision_id)
 
-    def current_case(self, version_id: str) -> tuple[StoredVersion, ReviewCaseRecord]:
+    def current_case(
+            self, version_id: str
+    ) -> tuple[StoredVersion, ReviewCaseRecord | ShortFormReviewCaseRecord]:
         stored = self.archive.get(version_id)
         if stored.submission.kind is not ObjectKind.REVIEW_CASE:
             raise EditorialReviewError("Requested version is not a ReviewCase")
-        record = ReviewCaseRecord.model_validate_json(
-            self.archive.read_body(version_id))
+        raw = self.archive.read_body(version_id)
+        payload = json.loads(raw)
+        if payload.get("article_route_version_id") is not None:
+            record = ShortFormReviewCaseRecord.model_validate_json(raw)
+        else:
+            record = ReviewCaseRecord.model_validate_json(raw)
         latest = self.archive.latest(stored.submission.object_id)
         if (latest is None or latest.submission.version_id
                 != stored.submission.version_id
@@ -1182,14 +1288,417 @@ class EditorialReviewController:
             raise EditorialReviewError("Review case identity/version mismatch")
         return stored, record
 
-    def load_review(self, review_version_id: str) -> EditorialReviewDecision:
+    def load_review(
+            self, review_version_id: str
+    ) -> EditorialReviewDecision | ShortFormReviewDecision:
         stored = self.archive.get(review_version_id)
         if stored.submission.kind is not ObjectKind.REVIEW:
             raise EditorialReviewError("Requested version is not a Review")
-        review = EditorialReviewDecision.model_validate_json(
-            self.archive.read_body(review_version_id))
+        raw = self.archive.read_body(review_version_id)
+        payload = json.loads(raw)
+        if payload.get("article_route_version_id") is not None:
+            review = ShortFormReviewDecision.model_validate_json(raw)
+        else:
+            review = EditorialReviewDecision.model_validate_json(raw)
         if (review.review_id != review_version_id
                 or stored.submission.spec_sha256 != review.spec_sha256
                 or stored.submission.created_at != review.created_at):
             raise EditorialReviewError("Review identity mismatch")
         return review
+
+
+class ShortFormReviewController:
+    """Independent review for routed source-selection and update/correction."""
+
+    def __init__(self, archive: Archive, rights: RightsGrant,
+                 routes: ArticleRouteController | None = None,
+                 adoption: AdoptionController | None = None):
+        if not isinstance(archive, Archive):
+            raise TypeError(
+                "ShortFormReviewController requires the shared Archive")
+        if not isinstance(rights, RightsGrant):
+            raise TypeError(
+                "ShortFormReviewController requires an internal journal grant")
+        self.archive = archive
+        self.rights = rights
+        self.routes = routes or ArticleRouteController(archive, rights)
+        self.adoption = adoption or AdoptionController(archive, rights)
+
+    def open_case(
+            self, request: ShortFormOpenReviewRequest
+    ) -> ShortFormReviewCaseRecord:
+        if not isinstance(request, ShortFormOpenReviewRequest):
+            raise TypeError("open_case requires ShortFormOpenReviewRequest")
+        request = ShortFormOpenReviewRequest.model_validate_json(
+            request.model_dump_json(warnings=False))
+        route = self.routes.require_current(
+            request.article_route_version_id,
+            request.article_version_id)
+        if route.article_version_id != request.article_version_id:
+            raise EditorialReviewError(
+                "Short-form review must open on the routed initial Article")
+        if (route.task_version_id != request.task_version_id
+                or route.spec_sha256 != request.spec_sha256
+                or set(route.evidence_version_ids)
+                != set(request.evidence_version_ids)):
+            raise EditorialReviewError(
+                "Short-form review crosses its Article route")
+        task = self.archive.get(request.task_version_id)
+        if (task.submission.kind is not ObjectKind.TASK
+                or task.submission.spec_sha256 != request.spec_sha256):
+            raise EditorialReviewError(
+                "Short-form review task is invalid")
+        latest = self.archive.latest(task.submission.object_id)
+        if latest is None or latest.submission.version_id != (
+                task.submission.version_id):
+            raise EditorialReviewError(
+                "Short-form review task is stale")
+        article = self.archive.get(request.article_version_id)
+        body = self.archive.read_body(request.article_version_id)
+        try:
+            text = body.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise EditorialReviewError(
+                "Short-form reader draft is not UTF-8") from exc
+        for inquiry in request.inquiries:
+            if inquiry.quoted_text not in text:
+                raise EditorialReviewError(
+                    "Reviewer quotation does not occur in the routed Article")
+            if not set(inquiry.evidence_version_ids) <= set(
+                    route.evidence_version_ids):
+                raise EditorialReviewError(
+                    "Reviewer inquiry cites undeclared route Evidence")
+            if inquiry.claim_version_ids or inquiry.method_use_version_ids:
+                raise EditorialReviewError(
+                    "Short-form inquiry cannot pretend to use deep Claim/MethodUse IDs")
+        case_object = _object(
+            "REVIEW-CASE-OBJECT-", request.review_case_id)
+        if self.archive.latest(case_object) is not None:
+            raise EditorialReviewError("Review case ID already exists")
+        content = canonical(request.model_dump(mode="json")).encode()
+        case_version = _version("REVIEW-CASE-", canonical([
+            request.review_case_id, None, _digest(content)]))
+        record = ShortFormReviewCaseRecord(
+            review_case_id=request.review_case_id,
+            review_case_version_id=case_version,
+            previous_version_id=None, state=ReviewCaseState.OPEN,
+            article_route_version_id=request.article_route_version_id,
+            task_version_id=request.task_version_id,
+            theme_id=route.theme_id, spec_sha256=request.spec_sha256,
+            initial_article_version_id=request.article_version_id,
+            current_article_version_id=request.article_version_id,
+            evidence_version_ids=request.evidence_version_ids,
+            reviewer_id=request.reviewer_id,
+            author_ids=request.author_ids,
+            producer_id=request.producer_id,
+            reviewed_scope=request.reviewed_scope,
+            exposure=request.exposure,
+            inquiries=request.inquiries, responses=(),
+            created_at=request.created_at, updated_at=request.created_at)
+        refs = (
+            VersionReference(
+                target_version_id=request.article_route_version_id,
+                use=ReferenceUse.BASIS, locator="exact short-form route"),
+            VersionReference(
+                target_version_id=request.task_version_id,
+                use=ReferenceUse.BASIS, locator="review task"),
+            VersionReference(
+                target_version_id=request.article_version_id,
+                use=ReferenceUse.REVIEW_OF, locator="actual routed draft"),
+            *(
+                VersionReference(
+                    target_version_id=evidence_id,
+                    use=ReferenceUse.SUPPORT,
+                    locator=f"short-form review Evidence {index}")
+                for index, evidence_id in enumerate(
+                    request.evidence_version_ids)
+            ),
+        )
+        submission = VersionSubmission(
+            schema_version=2, object_id=case_object,
+            version_id=case_version, parent_version_id=None,
+            kind=ObjectKind.REVIEW_CASE,
+            title=f"short-form review case {request.review_case_id}",
+            spec_sha256=request.spec_sha256,
+            created_at=request.created_at, source_times=SourceTimes(),
+            rights=self.rights, representation=Representation.FULL_BODY,
+            references=refs)
+        expected = {
+            case_object: None,
+            article.submission.object_id: article.submission.version_id,
+            task.submission.object_id: task.submission.version_id,
+            self.archive.get(
+                request.article_route_version_id
+            ).submission.object_id: request.article_route_version_id,
+        }
+        self.archive.append(
+            submission, canonical(record.model_dump(mode="json")).encode(),
+            expected_current=expected)
+        return record
+
+    def respond(
+            self, request: AuthorResponseRequest) -> ShortFormReviewCaseRecord:
+        if not isinstance(request, AuthorResponseRequest):
+            raise TypeError("respond requires AuthorResponseRequest")
+        request = AuthorResponseRequest.model_validate_json(
+            request.model_dump_json(warnings=False))
+        latest, current = EditorialReviewController(
+            self.archive, self.rights).current_case(
+                request.expected_current_case_version_id)
+        if not isinstance(current, ShortFormReviewCaseRecord):
+            raise EditorialReviewError(
+                "Short-form response target is not a routed review case")
+        if latest.submission.version_id != (
+                request.expected_current_case_version_id):
+            raise Conflict("Review case changed before author response")
+        if current.state is not ReviewCaseState.OPEN:
+            raise Conflict(
+                "Author response is only valid for an open routed case")
+        self.routes.require_current(
+            current.article_route_version_id, request.article_version_id)
+        if request.responder_id not in current.author_ids:
+            raise EditorialReviewError(
+                "Author response came from an undeclared author")
+        if request.responder_id == current.reviewer_id:
+            raise EditorialReviewError(
+                "Reviewer cannot author the response")
+        if {item.inquiry_id for item in request.responses} != {
+                item.inquiry_id for item in current.inquiries}:
+            raise EditorialReviewError(
+                "Author response must address every routed inquiry exactly once")
+        inquiry_times = {
+            item.inquiry_id: item.formed_at for item in current.inquiries}
+        if any(item.responded_at < inquiry_times[item.inquiry_id]
+               for item in request.responses):
+            raise EditorialReviewError(
+                "Author response cannot predate the corresponding inquiry")
+        if request.responded_at < current.created_at:
+            raise EditorialReviewError(
+                "Author response cannot predate the fixed routed case")
+        article = self.archive.get(request.article_version_id)
+        history = self.archive.history(article.submission.object_id)
+        if current.initial_article_version_id not in {
+                item.submission.version_id for item in history}:
+            raise EditorialReviewError(
+                "Revised draft is unrelated to the routed initial Article")
+        updated = current.model_copy(update={
+            "review_case_version_id": _version("REVIEW-CASE-", canonical([
+                current.review_case_id, current.review_case_version_id,
+                _digest(request.model_dump(mode="json"))])),
+            "previous_version_id": current.review_case_version_id,
+            "state": ReviewCaseState.RESPONDED,
+            "current_article_version_id": request.article_version_id,
+            "responses": request.responses,
+            "updated_at": request.responded_at,
+        })
+        refs = (
+            VersionReference(
+                target_version_id=current.review_case_version_id,
+                use=ReferenceUse.BASIS, locator="open routed review case"),
+            VersionReference(
+                target_version_id=request.article_version_id,
+                use=ReferenceUse.REVIEW_OF, locator="revised routed draft"),
+            VersionReference(
+                target_version_id=current.initial_article_version_id,
+                use=ReferenceUse.REVIEW_OF, locator="initial routed draft"),
+        )
+        submission = VersionSubmission(
+            schema_version=2, object_id=latest.submission.object_id,
+            version_id=updated.review_case_version_id,
+            parent_version_id=current.review_case_version_id,
+            kind=ObjectKind.REVIEW_CASE,
+            title=f"short-form review case {current.review_case_id}",
+            spec_sha256=current.spec_sha256,
+            created_at=request.responded_at, source_times=SourceTimes(),
+            rights=self.rights, representation=Representation.FULL_BODY,
+            references=refs)
+        self.archive.append(
+            submission,
+            canonical(updated.model_dump(mode="json")).encode(),
+            expected_current={
+                latest.submission.object_id:
+                    latest.submission.version_id,
+                article.submission.object_id:
+                    article.submission.version_id,
+            })
+        return updated
+
+    def decide(
+            self, request: FinalReviewRequest) -> ReviewDecisionResult:
+        if not isinstance(request, FinalReviewRequest):
+            raise TypeError("decide requires FinalReviewRequest")
+        request = FinalReviewRequest.model_validate_json(
+            request.model_dump_json(warnings=False))
+        reviewer = EditorialReviewController(self.archive, self.rights)
+        case_stored, case = reviewer.current_case(
+            request.expected_current_case_version_id)
+        if not isinstance(case, ShortFormReviewCaseRecord):
+            raise EditorialReviewError(
+                "Short-form decision target is not a routed case")
+        if case_stored.submission.version_id != (
+                request.review_case_version_id):
+            raise Conflict("Final review prepared from a stale routed case")
+        if case.state is not ReviewCaseState.RESPONDED:
+            raise Conflict("Final review needs a recorded author response")
+        self.routes.require_current(
+            case.article_route_version_id, request.article_version_id)
+        if request.reviewer_id != case.reviewer_id:
+            raise EditorialReviewError(
+                "Only the fixed reviewer can issue this routed decision")
+        if request.article_version_id != case.current_article_version_id:
+            raise EditorialReviewError(
+                "Final review does not bind the responded routed Article")
+        if not set(request.reviewed_scope) <= set(case.reviewed_scope):
+            raise EditorialReviewError(
+                "Final decision scope exceeds the fixed routed scope")
+        if {item.inquiry_id for item in request.closures} != {
+                item.inquiry_id for item in case.inquiries}:
+            raise EditorialReviewError(
+                "Every routed inquiry needs exactly one final closure")
+        inquiry_by_id = {
+            item.inquiry_id: item for item in case.inquiries}
+        if any(item.checked_at < case.updated_at
+               for item in request.closures):
+            raise EditorialReviewError(
+                "Routed closure cannot predate the author response")
+        if request.decided_at < max(
+                [case.updated_at]
+                + [item.checked_at for item in request.closures]):
+            raise EditorialReviewError(
+                "Routed decision cannot predate its response or closures")
+        if request.decision is ReviewDisposition.BLOCK and not any(
+                inquiry_by_id[item.inquiry_id].severity
+                is IssueSeverity.CRITICAL
+                and item.outcome in (
+                    ClosureOutcome.OPEN, ClosureOutcome.UNVERIFIED)
+                for item in request.closures):
+            raise EditorialReviewError(
+                "BLOCK needs an unresolved critical routed inquiry")
+        for closure in request.closures:
+            for version_id in closure.basis_version_ids:
+                self.archive.get(version_id)
+        article = self.archive.get(request.article_version_id)
+        decision = ShortFormReviewDecision(
+            review_id=request.review_id,
+            review_case_id=case.review_case_id,
+            review_case_version_id=case.review_case_version_id,
+            article_route_version_id=case.article_route_version_id,
+            task_version_id=case.task_version_id,
+            article_version_id=request.article_version_id,
+            article_body_sha256=article.body_sha256,
+            spec_sha256=case.spec_sha256,
+            reviewer_id=case.reviewer_id,
+            author_ids=case.author_ids,
+            producer_id=case.producer_id,
+            exposure=case.exposure,
+            inquiries=case.inquiries, responses=case.responses,
+            closures=request.closures, decision=request.decision,
+            reviewed_scope=request.reviewed_scope,
+            decision_reason=request.decision_reason,
+            remaining_limitations=request.remaining_limitations,
+            evidence_version_ids=case.evidence_version_ids,
+            created_at=request.decided_at)
+        review_object = _object(
+            "EDITORIAL-REVIEW-", request.review_id)
+        refs = (
+            VersionReference(
+                target_version_id=case.article_route_version_id,
+                use=ReferenceUse.BASIS, locator="routed review basis"),
+            VersionReference(
+                target_version_id=case.task_version_id,
+                use=ReferenceUse.BASIS, locator="review task"),
+            VersionReference(
+                target_version_id=request.article_version_id,
+                use=ReferenceUse.REVIEW_OF, locator="final routed draft"),
+            VersionReference(
+                target_version_id=case.review_case_version_id,
+                use=ReferenceUse.BASIS, locator="responded routed case"),
+            *(
+                VersionReference(
+                    target_version_id=evidence_id,
+                    use=ReferenceUse.SUPPORT,
+                    locator=f"routed review Evidence {index}")
+                for index, evidence_id in enumerate(
+                    case.evidence_version_ids)
+            ),
+            *(
+                VersionReference(
+                    target_version_id=version_id,
+                    use=ReferenceUse.SUPPORT,
+                    locator=f"routed issue closure {index}")
+                for index, version_id in enumerate(sorted({
+                    item for closure in request.closures
+                    for item in closure.basis_version_ids}))
+            ),
+        )
+        submission = VersionSubmission(
+            schema_version=2, object_id=review_object,
+            version_id=request.review_id, parent_version_id=None,
+            kind=ObjectKind.REVIEW,
+            title=f"independent routed content review {request.review_id}",
+            spec_sha256=case.spec_sha256,
+            created_at=request.decided_at, source_times=SourceTimes(),
+            rights=self.rights, representation=Representation.FULL_BODY,
+            references=refs,
+            review_coverage=(ReviewCoverage(
+                task_version_id=case.task_version_id,
+                subject_version_id=request.article_version_id,
+                reviewed_scope=request.reviewed_scope),))
+        self.archive.append(
+            submission,
+            canonical(decision.model_dump(mode="json")).encode(),
+            expected_current={
+                review_object: None,
+                case_stored.submission.object_id:
+                    case.review_case_version_id,
+                article.submission.object_id:
+                    article.submission.version_id,
+            })
+        state = {
+            ReviewDisposition.PASS: StepState.READY,
+            ReviewDisposition.REVISE: StepState.RETURN,
+            ReviewDisposition.BLOCK: StepState.BLOCKED,
+        }[request.decision]
+        claimed_scope = (
+            request.reviewed_scope
+            if request.decision is ReviewDisposition.PASS else ())
+        submission_id = _version(
+            "W37-REVIEW-SUBMISSION-", canonical([
+                request.review_id, request.article_version_id]))
+        self.adoption.submit(StepSubmission(
+            schema_version=2, submission_id=submission_id,
+            work_id="W37",
+            step_id="CONTENT_REVIEW_" + case.review_case_id,
+            spec_sha256=case.spec_sha256,
+            task_version_id=case.task_version_id,
+            subject_version_id=request.article_version_id,
+            producer_id=case.producer_id, proposed_state=state,
+            claimed_scope=claimed_scope,
+            input_version_ids=(
+                request.article_version_id,
+                case.article_route_version_id,
+                *case.evidence_version_ids,
+            ),
+            evidence_version_ids=(request.review_id,),
+            gaps=tuple(request.remaining_limitations),
+            created_at=request.decided_at))
+        decision_id = _version(
+            "W37-REVIEW-DECISION-", canonical([
+                request.review_id, request.article_version_id]))
+        self.adoption.decide(DecisionRequest(
+            decision_id=decision_id,
+            submission_version_id=submission_id,
+            state=state,
+            checker_id=case.reviewer_id, checker_role=CheckerRole.L5,
+            review_version_id=request.review_id,
+            allowed_scope=claimed_scope,
+            reason=request.decision_reason,
+            decided_at=request.decided_at,
+            expires_at=(
+                request.expires_at
+                if request.decision is ReviewDisposition.PASS else None)))
+        return ReviewDecisionResult(
+            review_case_version_id=case.review_case_version_id,
+            review_version_id=request.review_id,
+            adoption_submission_version_id=submission_id,
+            adoption_decision_version_id=decision_id)

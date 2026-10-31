@@ -44,6 +44,8 @@
     "tests_runtime/test_coverage.py",
     "intelligence/editorial.py",
     "tests_runtime/test_editorial.py",
+    "intelligence/article_route.py",
+    "tests_runtime/test_article_route.py",
     "intelligence/original.py",
     "tests_runtime/test_original.py",
     "intelligence/evidence.py",
@@ -85,5 +87,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "98814ddf580992c27cd255c4f5a008353124c582653568a936087c67acf659f6"
+  "spec_sha256": "6b7da8ea0804e5a5677c3f67beb9d674ae0b4e7a770a233e8fd32f475c15a0a0"
 }
