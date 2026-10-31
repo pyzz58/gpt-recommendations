@@ -59,6 +59,33 @@ class Settings(BaseSettings):
         default="disabled", alias="CRA_MODEL_PROVIDER"
     )
     ocr_provider: str = Field(default="disabled", alias="CRA_OCR_PROVIDER")
+    private_storage_backend: Literal["local", "s3"] = Field(
+        default="local", alias="CRA_STORAGE_BACKEND"
+    )
+    private_storage_local_path: str = Field(
+        default="runtime/private", alias="CRA_PRIVATE_STORAGE_LOCAL_PATH"
+    )
+    private_storage_endpoint: str | None = Field(
+        default=None, alias="CRA_PRIVATE_STORAGE_ENDPOINT"
+    )
+    private_storage_access_key: str | None = Field(
+        default=None, alias="CRA_PRIVATE_STORAGE_ACCESS_KEY"
+    )
+    private_storage_secret_key: SecretStr | None = Field(
+        default=None, alias="CRA_PRIVATE_STORAGE_SECRET_KEY"
+    )
+    private_storage_bucket: str = Field(
+        default="cra-private", alias="CRA_PRIVATE_STORAGE_BUCKET"
+    )
+    private_storage_region: str = Field(
+        default="us-east-1", alias="CRA_PRIVATE_STORAGE_REGION"
+    )
+    max_upload_bytes: int = Field(
+        default=20 * 1024 * 1024,
+        ge=1024,
+        le=100 * 1024 * 1024,
+        alias="CRA_MAX_UPLOAD_BYTES",
+    )
 
     def sqlalchemy_url(self) -> str:
         value = self.database_url.get_secret_value()

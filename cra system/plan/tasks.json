@@ -98,17 +98,28 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
         "CRA-R036",
         "CRA-R040"
       ],
-      "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41178355227；扩展授权项目/中心查询后，cra-w01的migrate/test在PostgreSQL 18.6上重新通过；被测提交2db8475906b57a1689ca0f6fcc19b02880c67c4f。旧证据保存在completion_history。"
-      ],
       "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-10-31",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41178355227；扩展授权项目/中心查询后，cra-w01的migrate/test在PostgreSQL 18.6上重新通过；被测提交2db8475906b57a1689ca0f6fcc19b02880c67c4f。旧证据保存在completion_history。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W01",
+            "run_id": 41178355227,
+            "tested_commit": "2db8475906b57a1689ca0f6fcc19b02880c67c4f",
+            "subject_digest": "03ba12806def27bcfcce82a406ebbc72cf0f06cfc5af27cd593c8c62edef462a"
+          }
+        },
         {
           "recorded_status": "verified",
           "recorded_at": "2026-10-31",
@@ -253,13 +264,6 @@
       "handoff_outputs": [
         "数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W01",
-        "run_id": 41178355227,
-        "tested_commit": "2db8475906b57a1689ca0f6fcc19b02880c67c4f",
-        "subject_digest": "03ba12806def27bcfcce82a406ebbc72cf0f06cfc5af27cd593c8c62edef462a"
-      },
       "verification_profile": "CRA-W01"
     },
     {
@@ -272,15 +276,28 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
       "requirement_ids": [
         "CRA-R035",
         "CRA-R036",
         "CRA-R040"
       ],
-      "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41178355227；cra-w02的migrate、6项PostgreSQL API测试、3项前端测试、typecheck、build、OpenAPI、运行时smoke和devcontainer-smoke全部成功；被测提交2db8475906b57a1689ca0f6fcc19b02880c67c4f。"
+      "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-10-31",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41178355227；cra-w02的migrate、6项PostgreSQL API测试、3项前端测试、typecheck、build、OpenAPI、运行时smoke和devcontainer-smoke全部成功；被测提交2db8475906b57a1689ca0f6fcc19b02880c67c4f。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W02",
+            "run_id": 41178355227,
+            "tested_commit": "2db8475906b57a1689ca0f6fcc19b02880c67c4f",
+            "subject_digest": "71579fb04f3122541840437ca1f5e6b956a6e3fca51d2d7206ff2ed1bd879377"
+          }
+        }
       ],
       "track": "v1a",
       "instruction_path": "plan/work_packages/CRA-W02.md",
@@ -442,13 +459,6 @@
       "handoff_outputs": [
         "可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W02",
-        "run_id": 41178355227,
-        "tested_commit": "2db8475906b57a1689ca0f6fcc19b02880c67c4f",
-        "subject_digest": "71579fb04f3122541840437ca1f5e6b956a6e3fca51d2d7206ff2ed1bd879377"
-      },
       "verification_profile": "CRA-W02"
     },
     {
@@ -461,7 +471,7 @@
         "M02",
         "M12"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。",
       "requirement_ids": [
         "CRA-R003",
@@ -602,6 +612,16 @@
         {
           "command": "uv run --frozen python -m cra_app.providers.probe --synthetic",
           "purpose": "可安装、可运行的识别候选探测，不代表全格式准确性",
+          "availability": "to_implement"
+        },
+        {
+          "command": "npm --prefix web run api:check",
+          "purpose": "资料接口、前端类型及PDF查看器契约",
+          "availability": "to_implement"
+        },
+        {
+          "command": "npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run build",
+          "purpose": "资料界面测试、类型和构建",
           "availability": "to_implement"
         }
       ],

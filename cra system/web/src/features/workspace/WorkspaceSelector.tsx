@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import type { CapabilityResponse, ScopeResponse } from "../../api/client";
+import { DocumentWorkspace } from "../documents/DocumentWorkspace";
 import {
   type WorkspaceSelection,
   readStoredSelection,
@@ -178,15 +179,22 @@ export function WorkspaceSelector({
             <span className="status-chip">授权范围已验证</span>
           </article>
           <article className="context-card placeholder">
-            <p className="eyebrow">下一步模块</p>
-            <h2>监查工作区</h2>
+            <p className="eyebrow">当前模块</p>
+            <h2>资料与原文</h2>
             <p>
-              受试者、遗留问题、检验核对和报告将在后续工作包接入；当前页面不生成
-              临床结论。
+              上传私有合成资料，查看不可变版本、解析覆盖和可回查原文位置；当前页面
+              不生成临床结论。
             </p>
-            <span className="status-chip muted">尚未实现</span>
+            <span className="status-chip">W03 已接入</span>
           </article>
         </section>
+
+        {selectedStudy && selectedSite && (
+          <DocumentWorkspace
+            studyId={selectedStudy.id}
+            siteId={selectedSite.id}
+          />
+        )}
       </main>
     </div>
   );

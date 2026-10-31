@@ -208,19 +208,28 @@
       "required_job": "cra-w03",
       "required_steps": [
         "test",
-        "provider-probe"
+        "provider-probe",
+        "contracts",
+        "frontend"
       ],
       "workflow_path": ".github/workflows/cra-system.yml",
-      "implementation_status": "to_implement",
+      "implementation_status": "implemented",
       "evidence_kind": "github_actions",
       "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
       "binding_paths": [
         "backend/cra_app/documents/",
         "backend/cra_app/governance/",
         "backend/cra_app/providers/",
+        "backend/cra_app/platform/",
+        "backend/cra_app/main.py",
+        "backend/cra_app/shared/config.py",
+        "migrations/env.py",
+        "migrations/versions/0002_documents_jobs.py",
         "pyproject.toml",
         "uv.lock",
-        "tests/fixtures/"
+        "tests/fixtures/",
+        "contracts/",
+        "web/"
       ]
     },
     {

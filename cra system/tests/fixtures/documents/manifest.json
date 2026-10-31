@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "source": "pure_synthetic",
+  "generated_on": "2026-10-31",
+  "generator": "tests/fixtures/documents/generate_fixtures.py",
+  "artifacts": [
+    {
+      "artifact_id": "RULE-DOCX-DEV",
+      "file": "artifacts/synthetic_rule_protocol.docx",
+      "format": "docx",
+      "purpose": "rule",
+      "group": "development",
+      "sha256": "feed29fd148ef7ed5027e306ae5cf96a4ab3fdc1154b80a249fea6ee466c9811",
+      "expected": {
+        "anchors": [
+          "table_cell",
+          "footnote",
+          "paragraph",
+          "media"
+        ],
+        "section_path": [
+          "Synthetic Study Protocol",
+          "1. Screening"
+        ],
+        "background_tag": "CRA-BACKGROUND",
+        "bold_text": "any study procedure",
+        "footnote_text": "Synthetic footnote: applicability is illustrative only."
+      }
+    },
+    {
+      "artifact_id": "REPORT-PDF-EVAL",
+      "file": "artifacts/synthetic_monitoring_report.pdf",
+      "format": "pdf",
+      "purpose": "carryover_report",
+      "group": "evaluation",
+      "sha256": "68ccf22a77ca979e448d0844814db856831bf82a63477e1ab374429c0abd9d1e",
+      "expected": {
+        "page": 1,
+        "anchor_types": [
+          "pdf_text",
+          "table_cell"
+        ],
+        "contains": [
+          "SYN-001",
+          "Synthetic Hb"
+        ],
+        "coordinates_present": true
+      }
+    },
+    {
+      "artifact_id": "TRACK-XLSX-DEV",
+      "file": "artifacts/synthetic_track.xlsx",
+      "format": "xlsx",
+      "purpose": "track",
+      "group": "development",
+      "sha256": "0f2f16a7b8c2274f875b5ba0abc3e1069e7ed0168bcc63d369cae72918c516f6",
+      "expected": {
+        "retained_as_private_file": true,
+        "structured_parsing_task": "CRA-W07/W06"
+      }
+    },
+    {
+      "artifact_id": "LAB-PNG-PROBE",
+      "file": "artifacts/synthetic_lab_report.png",
+      "format": "png",
+      "purpose": "fact",
+      "group": "development",
+      "sha256": "5583ff2ff4f57d8f6a37d1116f05378248cb946c09075a6fc2c64ec01951c8fb",
+      "expected": {
+        "ocr_candidate_probe_only": true,
+        "minimum_expected_tokens": [
+          "SYNTH-Hb",
+          "121",
+          "g/L"
+        ]
+      }
+    },
+    {
+      "artifact_id": "TEMPLATE-DOCX-DEV",
+      "file": "artifacts/synthetic_report_template.docx",
+      "format": "docx",
+      "purpose": "template",
+      "group": "development",
+      "sha256": "feed29fd148ef7ed5027e306ae5cf96a4ab3fdc1154b80a249fea6ee466c9811",
+      "expected": {
+        "retained_as_private_file": true
+      }
+    },
+    {
+      "artifact_id": "RULE-TEXT-DEV",
+      "file": "artifacts/synthetic_rule_text.txt",
+      "format": "txt",
+      "purpose": "rule",
+      "group": "development",
+      "sha256": "8637536e8ae4d25f3601a13f3f60f1d8e0eb976c519e540911da97cfdf8f3d62",
+      "expected": {
+        "anchor_types": [
+          "plain_text"
+        ],
+        "contains": [
+          "condition C",
+          "path B"
+        ]
+      }
+    }
+  ]
+}

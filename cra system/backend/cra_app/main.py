@@ -12,6 +12,15 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.sessions import SessionMiddleware
 
+from cra_app.documents.api import router as documents_router
+from cra_app.documents.service import (
+    DocumentIdempotencyConflict,
+    DocumentJobConflict,
+    DocumentNotFound,
+    DocumentService,
+    DocumentValidationError,
+)
+from cra_app.documents.storage import build_private_storage
 from cra_app.governance.api import router as governance_router
 from cra_app.governance.identity import IdentityProvider, build_identity_provider
 from cra_app.governance.service import (
@@ -25,6 +34,7 @@ from cra_app.governance.service import (
     RevisionConflict,
 )
 from cra_app.platform.api import router as platform_router
+from cra_app.platform.jobs import ProcrastinateQueue
 from cra_app.shared.api_contract import ErrorDetail, ErrorEnvelope
 from cra_app.shared.config import Settings, get_settings
 from cra_app.shared.db import (
@@ -58,6 +68,7 @@ def create_app(
     settings: Settings | None = None,
     session_factory=None,
     identity_provider: IdentityProvider | None = None,
+    document_service: DocumentService | None = None,
 ) -> FastAPI:
     resolved_settings = settings or get_settings()
     own_engine = None
@@ -70,6 +81,13 @@ def create_app(
     resolved_provider = identity_provider or build_identity_provider(
         resolved_settings
     )
+    if document_service is None:
+        document_service = DocumentService(
+            session_factory,
+            storage=build_private_storage(resolved_settings),
+            queue=ProcrastinateQueue(resolved_settings.sqlalchemy_url()),
+            max_upload_bytes=resolved_settings.max_upload_bytes,
+        )
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -93,6 +111,7 @@ def create_app(
     application.state.session_factory = session_factory
     application.state.identity_provider = resolved_provider
     application.state.governance_service = GovernanceService(session_factory)
+    application.state.document_service = document_service
 
     application.add_middleware(
         SessionMiddleware,
@@ -111,7 +130,8 @@ def create_app(
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Referrer-Policy"] = "no-referrer"
         if request.url.path.startswith("/api/"):
-            response.headers["Cache-Control"] = "no-store"
+            if "cache-control" not in response.headers:
+                response.headers["Cache-Control"] = "no-store"
         return response
 
     @application.exception_handler(AuthorizationDenied)
@@ -181,6 +201,42 @@ def create_app(
             content=_error("governance_error", str(exc)),
         )
 
+    @application.exception_handler(DocumentValidationError)
+    async def document_validation_error(
+        request: Request, exc: DocumentValidationError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content=_error("document_validation_failed", str(exc)),
+        )
+
+    @application.exception_handler(DocumentNotFound)
+    async def document_not_found_error(
+        request: Request, exc: DocumentNotFound
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=_error("document_not_found", str(exc)),
+        )
+
+    @application.exception_handler(DocumentIdempotencyConflict)
+    async def document_idempotency_error(
+        request: Request, exc: DocumentIdempotencyConflict
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=_error("document_idempotency_conflict", str(exc)),
+        )
+
+    @application.exception_handler(DocumentJobConflict)
+    async def document_job_error(
+        request: Request, exc: DocumentJobConflict
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=_error("document_job_conflict", str(exc)),
+        )
+
     @application.exception_handler(RequestValidationError)
     async def validation_error(
         request: Request, exc: RequestValidationError
@@ -239,6 +295,7 @@ def create_app(
 
     application.include_router(platform_router)
     application.include_router(governance_router)
+    application.include_router(documents_router)
 
     def custom_openapi():
         if application.openapi_schema:

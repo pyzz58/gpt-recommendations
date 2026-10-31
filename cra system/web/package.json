@@ -16,8 +16,10 @@
     "api:check": "npm run api:generate --silent && git -C .. diff --exit-code -- contracts/openapi.json web/src/api/generated.ts"
   },
   "dependencies": {
+    "pdfjs-dist": "6.3.289",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "react-pdf": "11.0.0"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

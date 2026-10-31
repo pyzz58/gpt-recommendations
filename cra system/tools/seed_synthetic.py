@@ -13,8 +13,8 @@ if str(BACKEND_ROOT) not in sys.path:
 from cra_app.governance.service import (  # noqa: E402
     CreateSite,
     CreateStudy,
-    GrantMembership,
     GovernanceService,
+    GrantMembership,
     ScopeContext,
 )
 from cra_app.shared.config import get_settings  # noqa: E402

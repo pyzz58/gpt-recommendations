@@ -1,0 +1,3 @@
+Synthetic rule text
+Background: this line is synthetic context.
+Requirement: if condition C is present, follow path B.

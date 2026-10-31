@@ -55,10 +55,11 @@ python3 tools/check_traceability.py
 uv run --frozen pytest -q
 npm --prefix web test
 uv run --frozen uvicorn cra_app.main:app --app-dir backend --host 0.0.0.0 --port 8000
+uv run --frozen python -m cra_app.documents.worker
 npm --prefix web run dev
 ```
 
-API使用8000、Vite使用5173，两个转发端口均设为private。上面只使用合成数据，没有真实资料、模型调用、外发消息或EDC写回。
+API使用8000、Vite使用5173，两个转发端口均设为private。资料上传后由独立Procrastinate worker解析；本地开发默认只写`runtime/private`，不会公开文件。上面只使用合成数据，没有真实资料、OCR/模型调用、外发消息或EDC写回。
 
 ## 理论和技术的维护关系
 

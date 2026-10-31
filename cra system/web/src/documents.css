@@ -1,0 +1,232 @@
+.document-workspace {
+  margin-top: 24px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 254, 249, 0.88);
+}
+
+.document-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.document-heading h2 {
+  margin: 0 0 8px;
+  font-family: "Iowan Old Style", "Songti SC", serif;
+  font-size: 32px;
+}
+
+.document-heading p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.upload-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 18px;
+  background: #f4f6ef;
+}
+
+.upload-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.upload-form input,
+.upload-form select {
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--ink);
+  background: white;
+}
+
+.upload-form .file-field,
+.upload-form .form-actions {
+  grid-column: span 2;
+}
+
+.upload-form .form-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.document-grid {
+  display: grid;
+  grid-template-columns: minmax(230px, 0.72fr) minmax(0, 1.8fr);
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.document-list,
+.source-detail {
+  min-width: 0;
+}
+
+.document-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.document-list button {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--ink);
+  background: #fff;
+  text-align: left;
+}
+
+.document-list button.active {
+  color: white;
+  border-color: var(--green);
+  background: var(--green);
+}
+
+.document-list small {
+  display: block;
+  margin-top: 5px;
+  color: inherit;
+  opacity: 0.66;
+}
+
+.source-detail {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+}
+
+.source-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+
+.source-meta span,
+.coverage-pill {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #eef1e9;
+  font-size: 11px;
+}
+
+.coverage-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.coverage-pill.background {
+  background: #eee4d1;
+}
+
+.coverage-pill.unsupported,
+.coverage-pill.failed {
+  color: #76271f;
+  background: #f4deda;
+}
+
+.anchor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 460px;
+  overflow: auto;
+  margin-top: 16px;
+}
+
+.anchor-item {
+  padding: 12px 14px;
+  border-left: 3px solid var(--green-bright);
+  background: #fafbf7;
+}
+
+.anchor-item button {
+  padding: 0;
+  border: 0;
+  color: var(--ink);
+  background: transparent;
+  text-align: left;
+}
+
+.anchor-item small {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  word-break: break-word;
+}
+
+.anchor-item p {
+  margin: 7px 0 0;
+  font-size: 13px;
+}
+
+.pdf-viewer {
+  max-width: 100%;
+  margin-top: 16px;
+  overflow: auto;
+}
+
+.pdf-page-frame {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.pdf-page-frame canvas {
+  max-width: 100%;
+  height: auto !important;
+}
+
+.source-highlight {
+  position: absolute;
+  z-index: 4;
+  border: 2px solid #e2a72e;
+  border-radius: 3px;
+  background: rgba(255, 214, 99, 0.28);
+  pointer-events: none;
+}
+
+.viewer-loading {
+  padding: 20px;
+  color: var(--muted);
+}
+
+.empty-documents {
+  margin: 18px 0 0;
+  padding: 18px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .upload-form,
+  .document-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-form .file-field,
+  .upload-form .form-actions {
+    grid-column: auto;
+  }
+}

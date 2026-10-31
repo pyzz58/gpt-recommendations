@@ -67,3 +67,16 @@ RuleVersion和ClinicalFact版本通过依赖表关联Assessment、ActionItem、D
 ## 6. v0.4执行细化
 
 ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping和共性规则包按[EXECUTION_CONTRACTS](EXECUTION_CONTRACTS.md)增量实现；字段与计算/来源状态由各模块拥有。provider原调用不保证绝不重复，保存attempt/request与费用，旧输入job输出不静默替代新事实。profile源文件绑定是工程证据，不存真实临床资料。
+
+## 7. W03实际数据底座
+
+迁移`0002_documents_jobs`增加本轮所需的最小表：
+
+- `source_documents`：项目/中心、标题、类型、规则或事实用途及修订。
+- `document_versions`：业务版本、私有storage key、原文件名、媒体类型、SHA-256、大小、发布日期、上传时间/操作者、用户手动开始使用信息、解析状态和重复来源。源字段由PostgreSQL触发器禁止更新，解析状态可由worker更新。
+- `source_anchors`：版本、逻辑节点、章节路径、原文、格式、页码、bbox、表格行列和脚注编号。
+- `parse_coverage`：版本内的原始处理单元及processed/background/not_applicable/unsupported/failed/pending状态。
+- `business_jobs`：内部输入版本、actor/租户/范围、幂等摘要、尝试/租约/最大尝试、安全错误摘要和输出摘要。
+- `outbox_events`：业务提交时创建，队列不可用时保留；`dedup_key`防止重复发布。
+
+复合外键将资料、版本和锚点绑定到同一tenant/study/site。Procrastinate拥有通用queue schema；业务Job/Outbox仍由本系统负责。W03不创建规则、患者、问题或报告业务表。

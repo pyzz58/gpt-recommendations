@@ -1,12 +1,13 @@
 """Identity and authorized workspace HTTP endpoints."""
 from __future__ import annotations
 
+import secrets
 import uuid
 from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response, status
 from fastapi.responses import JSONResponse, RedirectResponse
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 from cra_app.governance.identity import (
     SESSION_COOKIE_NAME,
@@ -20,6 +21,7 @@ from cra_app.governance.service import GovernanceService, ScopeContext
 from cra_app.shared.config import Settings
 
 router = APIRouter(prefix="/api/v1", tags=["governance"])
+CSRF_COOKIE_NAME = "cra_csrf"
 
 
 class IdentityView(BaseModel):
@@ -57,7 +59,7 @@ class ScopeResponse(BaseModel):
     studies: list[ScopeStudy]
 
 
-def _require_identity(request: Request) -> AuthenticatedIdentity:
+def require_identity(request: Request) -> AuthenticatedIdentity:
     provider = request.app.state.identity_provider
     identity = provider.resolve(request.cookies.get(SESSION_COOKIE_NAME))
     if identity is None:
@@ -71,7 +73,7 @@ def _require_identity(request: Request) -> AuthenticatedIdentity:
     return identity
 
 
-def _scope_from_identity(identity: AuthenticatedIdentity) -> ScopeContext:
+def scope_from_identity(identity: AuthenticatedIdentity) -> ScopeContext:
     return ScopeContext(
         actor_id=identity.actor_id,
         tenant_id=identity.tenant_id,
@@ -102,6 +104,34 @@ def _set_session_cookie(
         samesite="lax",
         path="/",
     )
+    response.set_cookie(
+        key=CSRF_COOKIE_NAME,
+        value=secrets.token_urlsafe(32),
+        max_age=settings.session_max_age_seconds,
+        httponly=False,
+        secure=settings.resolved_cookie_secure(),
+        samesite="lax",
+        path="/",
+    )
+
+
+def require_csrf(
+    request: Request,
+    csrf_token: str | None = Header(default=None, alias="X-CSRF-Token"),
+) -> None:
+    cookie_token = request.cookies.get(CSRF_COOKIE_NAME)
+    if (
+        not cookie_token
+        or not csrf_token
+        or not secrets.compare_digest(cookie_token, csrf_token)
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "code": "csrf_validation_failed",
+                "message": "A matching CSRF token is required",
+            },
+        )
 
 
 @router.post(
@@ -204,6 +234,13 @@ def logout(request: Request) -> Response:
         httponly=True,
         samesite="lax",
     )
+    response.delete_cookie(
+        CSRF_COOKIE_NAME,
+        path="/",
+        secure=request.app.state.settings.resolved_cookie_secure(),
+        httponly=False,
+        samesite="lax",
+    )
     return response
 
 
@@ -214,10 +251,10 @@ def logout(request: Request) -> Response:
 )
 def get_my_scopes(
     request: Request,
-    identity: AuthenticatedIdentity = Depends(_require_identity),
+    identity: AuthenticatedIdentity = Depends(require_identity),
 ) -> ScopeResponse:
     service: GovernanceService = request.app.state.governance_service
-    scope = _scope_from_identity(identity)
+    scope = scope_from_identity(identity)
     workspaces = service.list_authorized_workspaces(scope)
     return ScopeResponse(
         actor_id=identity.actor_id,

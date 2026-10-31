@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W02。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -96,6 +96,18 @@ uv run --frozen pytest -q tests/integration/test_documents.py
 
 ```bash
 uv run --frozen python -m cra_app.providers.probe --synthetic
+```
+
+- [to_implement] 资料接口、前端类型及PDF查看器契约
+
+```bash
+npm --prefix web run api:check
+```
+
+- [to_implement] 资料界面测试、类型和构建
+
+```bash
+npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run build
 ```
 
 ## 完成标准

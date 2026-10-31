@@ -13,6 +13,8 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from cra_app.governance import models as governance_models  # noqa: E402,F401
+from cra_app.documents import models as document_models  # noqa: E402,F401
+from cra_app.platform import jobs as platform_jobs  # noqa: E402,F401
 from cra_app.shared.config import get_settings  # noqa: E402
 from cra_app.shared.db import Base  # noqa: E402
 
@@ -23,6 +25,19 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 
+def include_object(object_, name, type_, reflected, compare_to):
+    """Procrastinate owns its tables and indexes, not the CRA metadata."""
+    if type_ in {"table", "index"} and name and name.startswith("procrastinate_"):
+        return False
+    if (
+        type_ == "index"
+        and getattr(object_, "table", None) is not None
+        and object_.table.name.startswith("procrastinate_")
+    ):
+        return False
+    return True
+
+
 def run_migrations_offline() -> None:
     context.configure(
         url=get_settings().sqlalchemy_url(),
@@ -30,6 +45,7 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
         compare_type=True,
+        include_object=include_object,
     )
     with context.begin_transaction():
         context.run_migrations()
@@ -48,6 +64,7 @@ def run_migrations_online() -> None:
             connection=connection,
             target_metadata=target_metadata,
             compare_type=True,
+            include_object=include_object,
         )
         with context.begin_transaction():
             context.run_migrations()

@@ -77,3 +77,20 @@ ApplicableRule补充preconditions、trigger、branches、follow_up、completion�
 | `GET /health/live`；`GET /health/ready`；`GET /capabilities` | 分别表示进程、PostgreSQL依赖和真实已配置能力，不用服务在线替代功能验证 |
 
 错误统一包含`error.code`、`error.message`、`retryable`及可选安全详情，HTTP状态区分401、403、409、422和503。`contracts/openapi.json`从实际FastAPI应用生成，`web/src/api/generated.ts`从该契约生成；两者由`npm --prefix web run api:check`阻止漂移。OutputEnvelope作为OpenAPI组件与运行时Pydantic模型共用同一源。
+
+## 8. W03已实现资料入口
+
+所有资料写入要求有效会话、匹配的`X-CSRF-Token`和`Idempotency-Key`。actor/tenant/中心范围仍由服务端会话及W01授权推导。
+
+| 接口 | 实现约束 |
+| --- | --- |
+| `POST /api/v1/studies/{study_id}/documents` | 大小/签名/类型校验后私有保存，创建不可变首版本、业务Job和Outbox；返回202及job_id |
+| `POST /api/v1/documents/{document_id}/versions` | 以`expected_revision`追加版本；旧版本源字段由数据库触发器禁止更新 |
+| `GET /api/v1/studies/{study_id}/documents` | 只列当前已授权中心和范围的资料 |
+| `GET /api/v1/documents/{document_id}/versions` | 返回业务版本、发布日期、上传时间、用户手动开始使用信息、解析状态及重复文件引用 |
+| `GET /api/v1/document-versions/{version_id}/anchors` | 返回DOCX章节/节点/表格/脚注/格式或PDF页/坐标/表格单元 |
+| `GET /api/v1/document-versions/{version_id}/coverage` | 分开返回processed/background/not_applicable/unsupported/failed/pending |
+| `GET /api/v1/document-versions/{version_id}/content` | 每次读取前重新授权，以私有、no-store响应返回原文件；不返回永久公开地址 |
+| `GET /api/v1/jobs/{job_id}`；`POST /api/v1/jobs/{job_id}/retry` | 查询业务Job/尝试次数；重试沿用同一版本，不新建资料版本 |
+
+上传先使用内容哈希检测重复，但重复只记录`duplicate_of_version_id`，不自动判定版本替代或业务生效。业务写入、Job和Outbox同事务提交；Outbox relay再通过Procrastinate queueing lock幂等入队。worker只收到内部job_id，处理前重新查W01授权。源文件存储使用boto3私有S3适配；开发环境可用不位于Web根目录的本地私有适配。PDF查看器只读取上述授权内容接口，并通过页/bbox叠层定位，不替代OCR或解析覆盖。

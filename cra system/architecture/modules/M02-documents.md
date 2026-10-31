@@ -1,6 +1,6 @@
 # M02 项目资料与原文定位
 
-版本：4；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/documents/`。
+版本：5；状态：W03私有文件、不可变版本、DOCX/PDF来源定位、覆盖和异步Task已实现；provider/真实格式用途验证仍属于后续任务。代码位置：`backend/cra_app/documents/`。
 
 ## 对应理论和任务
 
@@ -45,3 +45,7 @@
 ## v0.5成熟组件复用
 
 boto3封装私有文件；React-PDF显示源PDF；Procrastinate经薄队列adapter处理通用任务。Docling仅样本验证后替换合适的解析层，保留OOXML精确来源。 具体上游、许可、替代范围和任务接法见[复用评估](../REUSE_ASSESSMENT.md)及[目录](../reuse-catalog.json)。本轮仅选型和来源核对，尚未安装/集成验证。
+
+## W03实现记录
+
+已接入受控OOXML DOCX解析、pdfplumber文字PDF坐标/表格、纯文本、私有本地/S3存储、Procrastinate Job/Outbox、幂等上传、不可变源版本及React-PDF源页查看。W03测试真实经过PostgreSQL和S3 HTTP接口，合成DOCX覆盖w:sdt背景标记、合并单元格、脚注和run级加粗；嵌入媒体保留为明确unsupported，不冒称已解析。XLSX/图片在W03仅作原文件保存，结构化读取分别属于W07与W08。业务生效区间、规则树、历史问题整理和报告仍未实现。
