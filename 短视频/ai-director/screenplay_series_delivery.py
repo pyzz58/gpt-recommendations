@@ -370,6 +370,9 @@ def build_per_episode_crew(handoff, dossier, breakdown):
         sub["photography_contract_mode"] = {
             "kind": "source_bound_photography_plan_required",
             "version": 1}
+        sub["sound_contract_mode"] = {
+            "kind": "source_bound_sound_plan_required",
+            "version": 1}
         sub["series_context"] = {
             "kind": "director_episode_from_complete_screenplay",
             "episode_id": episode["episode_id"],

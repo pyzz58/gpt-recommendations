@@ -1589,7 +1589,7 @@
       "priority": "P1",
       "status": "audit_pending",
       "title": "配音/对白/拟音/音乐专业审计",
-      "observed_in": "agent_role_contracts sound; production_delivery",
+      "observed_in": "agent_role_contracts sound; production_delivery; director_sound.py; screenplay_series_delivery.build_per_episode_crew sound_contract_mode",
       "problem": "声音专业岗位尚未按真实声音总监标准核查混音、叙事留白和声音衔接",
       "root_cause": "音轨工程和口型风险尚无系统性审计",
       "solution": "独立 VO/角色对白/环境/音乐/拟音层，动态范围、对白清晰度、声画时间线与旁白措辞所有权",
@@ -1604,7 +1604,7 @@
       "evidence": {
         "implementation_pr": "",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "tests/test_director_sound.py::test_public_two_shot_sound_passes; tests/test_director_sound.py::test_missing_mix_blocks; tests/test_director_sound.py::test_cleared_music_without_license_reference_blocks; tests/test_director_sound.py::test_onscreen_lip_sync_and_offscreen_policy_are_enforced; tests/test_director_sound.py::test_subtitle_must_match_spoken_text; tests/test_director_sound.py::test_generic_music_language_is_review; tests/test_director_sound.py::test_missing_sound_bridge_blocks; tests/test_director_sound.py::test_schema_requires_sound_contract_fields; tests/test_director_sound.py::test_strict_sound_validation_is_wired; tests/test_director_sound.py::test_legacy_mode_is_not_forced",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1615,6 +1615,12 @@
           "date": "2026-10-13",
           "status": "audit_pending",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F03-00软件层：新增sound_contract_mode、director_sound；强制mix/music_plan/sound_bridge、音乐cue与rights_status、拟音source/layer/mix_note、逐句dialogue lip_sync与clarity_note、字幕匹配已说文本；cleared无license_ref阻断，出镜/画外口型错误阻断，泛词review。公开两镜合成样例10项正反回归通过；真实音频/ASR/口型/独立混音审片未完成，QO-F03保持audit_pending。",
           "evidence_ref": ""
         }
       ]

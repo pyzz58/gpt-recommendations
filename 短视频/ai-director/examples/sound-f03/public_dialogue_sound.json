@@ -1,0 +1,181 @@
+{
+  "fixture_id": "F03-PUBLIC-DIALOGUE-SOUND-001",
+  "fictional": true,
+  "public_synthetic": true,
+  "source_note": "Public synthetic sound fixture for F03. No real voice, user manuscript, private audio, generated TTS or licensed music file.",
+  "base": {
+    "title": "Public F03 sound scene",
+    "duration": 8,
+    "characters": [
+      {"id": "CH_A", "description": "Public fictional speaker A."},
+      {"id": "CH_B", "description": "Public fictional speaker B."}
+    ],
+    "scenes": [{"id": "LOC02", "description": "Plain fictional room."}],
+    "dialogue": [
+      {"speaker": "CH_A", "line": "我没事。"},
+      {"speaker": "CH_B", "line": "看着我。"}
+    ],
+    "shots": [
+      {
+        "id": "S01",
+        "start": 0,
+        "duration": 4,
+        "scene_id": "LOC02",
+        "character_ids": ["CH_A", "CH_B"],
+        "visual_type": "ai_video",
+        "narration": "A waits.",
+        "transition": "hard_cut"
+      },
+      {
+        "id": "S02",
+        "start": 4,
+        "duration": 4,
+        "scene_id": "LOC02",
+        "character_ids": ["CH_A", "CH_B"],
+        "visual_type": "ai_video",
+        "narration": "B answers.",
+        "transition": "fade_out"
+      }
+    ],
+    "sound_contract_mode": {
+      "kind": "source_bound_sound_plan_required",
+      "version": 1
+    }
+  },
+  "sound": {
+    "shots": {
+      "S01": {
+        "sound": {
+          "ambient": "Quiet room tone with a faint chair creak.",
+          "music": "Low solo piano bed under the question.",
+          "effects": [
+            {
+              "time_s": 1.2,
+              "cue": "Paper slides on the table.",
+              "source": "paper on the wooden table",
+              "layer": "foley",
+              "mix_note": "Close, dry and below the dialogue."
+            }
+          ],
+          "voiceover_note": "External narration remains dry and forward.",
+          "mix": {
+            "dialogue_priority": "Dialogue is foreground and intelligible.",
+            "music_level": "Low bed under speech; no masking.",
+            "ambience_level": "Room tone low and continuous.",
+            "dynamic_range_note": "Keep a narrow dynamic range for phone playback.",
+            "silence_intent": "Leave a short room-tone pause before the answer."
+          },
+          "music_plan": {
+            "mode": "cue",
+            "cue_id": "MUSIC_01",
+            "start_s": 0,
+            "end_s": 4,
+            "purpose": "Hold tension without telling the audience how to feel.",
+            "instrumentation": "Solo piano, sparse low notes",
+            "mix_level": "Low bed below dialogue",
+            "rights_status": "unknown",
+            "license_ref": ""
+          },
+          "sound_bridge": {
+            "type": "j_cut",
+            "duration_s": 0.5,
+            "track": "room_tone",
+            "reason": "Room tone enters before the cut so the two shots share one space."
+          }
+        },
+        "speech": {
+          "voiceover": {
+            "text": "A waits.",
+            "delivery": "Quiet and restrained.",
+            "timing": "First second, before dialogue.",
+            "cues": [{"from_s": 0, "to_s": 1, "text": "A waits."}]
+          },
+          "dialogue": [
+            {
+              "speaker_id": "CH_A",
+              "text": "我没事。",
+              "delivery": "Quiet, slightly too even.",
+              "from_s": 1.2,
+              "to_s": 2.2,
+              "kind": "onscreen_dialogue",
+              "lip_sync": "required",
+              "clarity_note": "Dialogue in front of the piano bed; no reverb tail."
+            }
+          ],
+          "subtitle_cues": [
+            {"text": "A waits.", "from_s": 0, "to_s": 1},
+            {"text": "我没事。", "from_s": 1.2, "to_s": 2.2}
+          ],
+          "subtitle_direction": "Single white line inside the bottom safe area.",
+          "lip_sync_policy": "Onscreen dialogue requires lip sync; no offscreen dialogue in this shot."
+        }
+      },
+      "S02": {
+        "sound": {
+          "ambient": "Same quiet room tone, now with a low chair creak.",
+          "music": "No music under the final line.",
+          "effects": [
+            {
+              "time_s": 3.0,
+              "cue": "Chair creaks as B shifts.",
+              "source": "chair under B",
+              "layer": "foley",
+              "mix_note": "Low and close to the room tone."
+            }
+          ],
+          "voiceover_note": "External narration remains dry and forward.",
+          "mix": {
+            "dialogue_priority": "Offscreen dialogue stays clear but not louder than the narration.",
+            "music_level": "No music.",
+            "ambience_level": "Room tone continuous with the previous shot.",
+            "dynamic_range_note": "Keep the final line and room tone in the same pocket.",
+            "silence_intent": "End on room tone and the chair creak, with no music sting."
+          },
+          "music_plan": {
+            "mode": "none",
+            "cue_id": "MUSIC_NONE",
+            "start_s": 0,
+            "end_s": 0,
+            "purpose": "No music under the final line.",
+            "instrumentation": "none",
+            "mix_level": "no music",
+            "rights_status": "not_selected",
+            "license_ref": ""
+          },
+          "sound_bridge": {
+            "type": "none",
+            "duration_s": 0,
+            "track": "none",
+            "reason": "Final shot ends on room tone; no outgoing bridge is needed."
+          }
+        },
+        "speech": {
+          "voiceover": {
+            "text": "B answers.",
+            "delivery": "Quiet and level.",
+            "timing": "First second of the shot.",
+            "cues": [{"from_s": 0, "to_s": 1, "text": "B answers."}]
+          },
+          "dialogue": [
+            {
+              "speaker_id": "CH_B",
+              "text": "看着我。",
+              "delivery": "Offscreen, calm and firm.",
+              "from_s": 1.0,
+              "to_s": 2.0,
+              "kind": "offscreen_dialogue",
+              "lip_sync": "none",
+              "clarity_note": "Offscreen line sits above room tone and below narration."
+            }
+          ],
+          "subtitle_cues": [
+            {"text": "B answers.", "from_s": 0, "to_s": 1},
+            {"text": "看着我。", "from_s": 1.0, "to_s": 2.0}
+          ],
+          "subtitle_direction": "Single white line inside the bottom safe area.",
+          "lip_sync_policy": "No lip sync is required for the offscreen line; no visible speaker mouth is driven."
+        }
+      }
+    }
+  }
+}

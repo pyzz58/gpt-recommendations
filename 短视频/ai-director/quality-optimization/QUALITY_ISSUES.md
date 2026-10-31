@@ -491,7 +491,7 @@
 ### QO-F03 · 配音/对白/拟音/音乐专业审计
 
 - 状态：audit_pending；优先级：P1；阶段：future_dept；负责人：sound_voice
-- 发现位置：agent_role_contracts sound; production_delivery
+- 发现位置：agent_role_contracts sound; production_delivery; director_sound.py; screenplay_series_delivery.build_per_episode_crew sound_contract_mode
 - 问题：声音专业岗位尚未按真实声音总监标准核查混音、叙事留白和声音衔接
 - 根因：音轨工程和口型风险尚无系统性审计
 - 方案：独立 VO/角色对白/环境/音乐/拟音层，动态范围、对白清晰度、声画时间线与旁白措辞所有权
@@ -499,8 +499,8 @@
 - AI 视频适配：AI原生声音与后期音轨共存会产生重读、口型与同步冲突
 - 依赖：QO-D08
 - 历史问题：无
-- 修复证据：PR 未提供；回归 未完成；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:audit_pending
+- 修复证据：PR 未提供；回归 tests/test_director_sound.py::test_public_two_shot_sound_passes; tests/test_director_sound.py::test_missing_mix_blocks; tests/test_director_sound.py::test_cleared_music_without_license_reference_blocks; tests/test_director_sound.py::test_onscreen_lip_sync_and_offscreen_policy_are_enforced; tests/test_director_sound.py::test_subtitle_must_match_spoken_text; tests/test_director_sound.py::test_generic_music_language_is_review; tests/test_director_sound.py::test_missing_sound_bridge_blocks; tests/test_director_sound.py::test_schema_requires_sound_contract_fields; tests/test_director_sound.py::test_strict_sound_validation_is_wired; tests/test_director_sound.py::test_legacy_mode_is_not_forced；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:audit_pending → 2026-10-31:audit_pending
 
 ### QO-F04 · 剪辑/动效/信息图专业审计
 
