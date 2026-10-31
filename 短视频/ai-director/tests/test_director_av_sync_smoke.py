@@ -42,7 +42,13 @@ class RequiredSyntheticAVDependencies(unittest.TestCase):
             completed = subprocess.run(
                 ["ffmpeg", "-hide_banner", "-filters"],
                 capture_output=True, text=True, check=True, timeout=15)
-            self.assertRegex(completed.stdout, r"(?m)^\s*\.\.\. subtitles\s")
+            # FFmpeg versions print different flag columns (e.g. "... subtitles"
+            # vs ".. subtitles"); require the actual video filter, not one
+            # particular padding width.
+            self.assertRegex(
+                completed.stdout,
+                r"(?m)^\s*[.TSANV|]{0,3}\s+subtitles\s+V->V\b",
+            )
 
 
 @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"),

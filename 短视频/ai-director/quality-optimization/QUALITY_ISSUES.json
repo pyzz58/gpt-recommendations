@@ -1449,7 +1449,7 @@
       "priority": "P1",
       "status": "audit_pending",
       "title": "演员表演与动作调度专业审计",
-      "observed_in": "agent_role_contracts acting; director_shootability.py",
+      "observed_in": "agent_role_contracts acting; director_shootability.py; director_acting.py; agent_role_contracts acting_contract_mode; screenplay_series_delivery.build_per_episode_crew",
       "problem": "未对照国际表演/场面调度标准并结合AI虚拟演员真实验证",
       "root_cause": "专业动作语义与生成模型可执行性的质量差距未知",
       "solution": "审查意图-策略-可见行为-反应-走位/视线-手部/道具接触；建立易失败动作分拆和镜头替代方案",
@@ -1462,9 +1462,9 @@
       "owner": "acting",
       "opened_on": "2026-10-13",
       "evidence": {
-        "implementation_pr": "",
-        "commit_sha": "450df9bc81200280f7056e5cdb6f4b8a691e689b",
-        "automated_test": "tests/test_f01_acting_baseline.py::test_public_fixture_is_synthetic_and_contains_no_private_paths; tests/test_f01_acting_baseline.py::test_fixture_satisfies_only_current_structural_acting_minimum; tests/test_f01_acting_baseline.py::test_current_schema_lacks_professional_causal_fields",
+        "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/78",
+        "commit_sha": "0b00a7721e4720ac101b8cb816413cec4404e0f2",
+        "automated_test": "tests/test_f01_acting_baseline.py::test_public_fixture_is_synthetic_and_contains_no_private_paths; tests/test_f01_acting_baseline.py::test_fixture_satisfies_only_current_structural_acting_minimum; tests/test_f01_acting_baseline.py::test_current_schema_lacks_professional_causal_fields; tests/test_director_acting.py::test_positive_strict_contract_passes; tests/test_director_acting.py::test_missing_character_contracts_blocks; tests/test_director_acting.py::test_stale_bible_blocks; tests/test_director_acting.py::test_overlapping_hand_prop_blocks; tests/test_director_acting.py::test_generic_language_is_review_not_automatic_block; tests/test_director_acting.py::test_zero_actor_shot_needs_reason_and_passes; tests/test_director_acting.py::test_schema_requires_strict_fields; tests/test_director_acting.py::test_legacy_mode_is_not_forced; tests/test_director_acting.py::test_strict_ten_role_pipeline_passes; tests/test_director_acting.py::test_strict_role_messages_include_f01_boundaries; tests/test_director_acting.py::test_strict_director_lock_validation_is_wired; tests/test_director_acting.py::test_strict_acting_validation_is_wired; tests/test_director_acting.py::test_invalid_mode_is_rejected_by_schema; tests/test_agent_role_contracts.py::test_invalid_director_mode_values_are_rejected; tests/test_agent_role_contracts.py::test_missing_director_mode_contexts_are_rejected; tests/test_director_acting.py::test_dual_person_handoff_positive_passes; tests/test_director_acting.py::test_dual_person_handoff_without_event_blocks; tests/test_director_acting.py::test_dual_person_relationship_map_is_required; tests/test_director_acting.py::test_cross_shot_posture_jump_blocks; tests/test_director_acting.py::test_cross_shot_hand_jump_blocks_unless_explained; tests/test_director_acting.py::test_door_change_with_cause_passes; tests/test_director_acting.py::test_door_change_without_cause_blocks; tests/test_director_acting.py::test_cross_shot_environment_jump_blocks_unless_explained; tests/test_director_acting.py::test_three_person_relationship_pairs_required; tests/test_director_acting.py::test_missing_production_feasibility_blocks; tests/test_director_acting.py::test_tested_capability_without_evidence_blocks; tests/test_director_acting.py::test_high_complexity_single_take_requires_fallback; tests/test_director_acting.py::test_high_complexity_single_take_with_fallback_is_review; tests/test_director_acting.py::test_documented_capability_with_reference_passes; tests/test_director_acting.py::test_downstream_roles_receive_versioned_acting_context; tests/test_director_acting.py::test_scoped_acting_revision_scopes_downstream_context; tests/test_f01_regression_matrix.py::test_single_restrained_and_dual_conflict_pass; tests/test_f01_regression_matrix.py::test_absurd_comedy_can_use_causal_environment_interaction; tests/test_f01_regression_matrix.py::test_zero_actor_scene_is_not_forced_into_performance; tests/test_f01_regression_matrix.py::test_three_person_complex_action_with_fallback_passes_with_review; tests/test_f01_regression_matrix.py::test_unmotivated_handoff_is_blocked; tests/test_f01_regression_matrix.py::test_two_performance_directions_are_explicitly_not_human_blind_review; tests/test_f01_stage_handoff.py::test_manifest_matches_open_qo_status_and_next_stage; tests/test_f01_stage_handoff.py::test_real_media_evidence_absent_is_blocked; tests/test_f01_stage_handoff.py::test_completion_claim_without_evidence_is_blocked; tests/test_f01_stage_handoff.py::test_complete_synthetic_evidence_is_review_ready_not_approved; tests/test_f01_stage_handoff.py::test_partial_real_media_evidence_is_blocked",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1482,6 +1482,54 @@
           "status": "audit_pending",
           "note": "F01-00/01基线记录：锁定既有acting调用链与五类输出，以公开虚构“我没事/藏信”反例证明当前只检查字段与物理动作、缺目标—障碍—策略—潜台词—反应因果；因无独立专业表演审稿，状态保持audit_pending，未新增表演Agent，未进入真实媒体。",
           "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F01-02/03可选严格表演合同已实现：导演performance_bible（关系/目标/障碍/策略/潜台词/来源span）与逐镜逐角色合同（trigger/objective/obstacle/tactic/subtext/reaction/source_beat_id）进入model-facing schema；hand_prop重叠阻断，泛词仅复核，零演员图文镜允许。公开正例与8项回归通过；因仍无独立专业表演审稿，QO-F01保持audit_pending，F01-04..09未完成。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/78"
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F01-02/03严格合同已完成集成回归：复用原十岗位fixture在strict模式跑通；公开正例/负例、过期圣经、手部重叠、零演员、model-facing schema与mode门禁均覆盖。GitHub CI 926 tests OK、89% coverage、audit issues=36 p0_open=1。QO-F01仍audit_pending，等待独立专业表演审稿；F01-04..09未完成。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/78"
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F01-04部分完成：physical_state start/end（posture/facing/hands）、relationship_map双人关系对位、handoffs有序交物与场外note、镜内姿态变化原因、跨镜手/姿态跳变阻断及有意cut_note复核已实现并有正反测试；门/窗环境状态与三人以上互动仍未完成。QO-F01继续audit_pending，不冒充独立专业审稿或真实媒体完成。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/78"
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F01-04软件门禁进一步完成：environment_state门/窗open/closed与changed_by/cause、跨镜环境跳变阻断、三人以上relationship_map逐演员对覆盖、门/窗跨镜有意cut_note复核均已实现并有正反测试。三人以上实际调度质量与真实媒体仍待F01-05/F01-08；QO-F01保持audit_pending。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/78"
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F01-05部分完成：production_feasibility分离专业表演意图与模型风险；physical_complexity低报复核、documented/tested能力必须带证据、tested必须带测试环境、高复杂度single_take必须有具体fallback，有fallback进入review而非宣称模型失败。既有director_shootability继续负责物理动作时间/手/道具/密度。供应商实测和真实表演审片仍未完成；QO-F01保持audit_pending。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/78"
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F01-06部分完成：不改变十岗DAG，在现有role message注入acting_contract_context；camera_art/sound先收performance_bible planning context，acting完成后收delivery digest；editing/ai/QA/final收版本化contract digest与revision scope；定向acting返修只失效既有下游，camera/sound不被无关作废，editing scope含目标及相邻镜。真实岗位语义遵从与媒体验收未完成；QO-F01保持audit_pending。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/78"
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F01-07部分完成：多题材离线矩阵覆盖单人克制、双人冲突、荒诞喜剧、零演员、三人复杂动作、无动机交物；新增两份同场景表演方向（克制家庭剧vs荒诞家庭喜剧）及选择标准。文本比较明确标注为自撰，不是人类盲评；QO-F01保持audit_pending，F01-08真实媒体验收仍未开始。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/78"
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F01-08/F01-09软件层：真实媒体证据门禁要求授权引用、解码帧、手脸口型审片、跨镜情绪审片、独立审片人与返工日志；即使齐全也只返回review_ready，complete/human_approval/real_media_verified均为false。F01_STAGE_HANDOFF_2026-10-31.json记录F01-08 blocked_real_media与F01-09 review_ready_handoff，向F02交接且禁止声称F01完成。QO-F01保持audit_pending。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/78"
         }
       ]
     },

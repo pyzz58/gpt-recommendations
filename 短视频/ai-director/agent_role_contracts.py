@@ -22,6 +22,7 @@ import role_schema_guard as schema_guard
 import director_department_command as director_command
 import director_visual_language as visual_language
 import director_artistic_methods as artistic_methods
+import director_acting as acting_contract
 
 CONTRACT_VERSION = "1.0"
 MAX_CONTEXT_CHARS = 220_000
@@ -346,6 +347,42 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
     change the editing authority or extend the user's original manuscript.
     """
     schema = output_schema(state, task_id)
+    acting_mode = base.get("acting_contract_mode")
+    if acting_mode is not None:
+        if acting_mode != acting_contract.MODE:
+            raise ValueError("CREW_ACTING_CONTRACT_MODE_INVALID")
+        if task_id == "director_lock":
+            global_schema = schema["properties"]["global_direction"]
+            global_schema["properties"]["performance_bible"] = {
+                "type": "object",
+                "required": ["version", "source_digest", "characters"],
+                "properties": {
+                    "version": {"const": 1},
+                    "source_digest": {"type": "string", "minLength": 64},
+                    "characters": {"type": "object"},
+                },
+            }
+            global_schema["required"].append("performance_bible")
+        elif task_id == "acting":
+            shot_properties = schema["properties"]["shots"]["properties"]
+            for shot_schema in shot_properties.values():
+                performance = shot_schema["properties"]["performance"]
+                performance["properties"]["character_contracts"] = {"type": "object"}
+                performance["properties"]["no_performer_reason"] = {"type": "string"}
+                performance["required"].append("character_contracts")
+                continuity = shot_schema["properties"]["continuity"]
+                continuity["properties"]["performance_bible_digest"] = {
+                    "type": "string", "minLength": 64,
+                }
+                staging = shot_schema["properties"]["staging"]
+                staging["properties"]["hand_prop"] = {"type": "array"}
+                staging["properties"]["physical_state"] = {"type": "object"}
+                staging["properties"]["relationship_map"] = {"type": "array"}
+                staging["properties"]["handoffs"] = {"type": "array"}
+                staging["properties"]["cut_note"] = {"type": "string"}
+                staging["properties"]["environment_state"] = {"type": "object"}
+                staging["properties"]["production_feasibility"] = {"type": "object"}
+                staging["required"].extend(["physical_state", "relationship_map"])
     if editorial_handoff is not None:
         creative_bridge.inspect_preproduction(base, editorial_handoff)
         if (editorial_handoff.get("episode_source_digest") !=
@@ -470,6 +507,9 @@ def build_role_messages(base, state, task_id, *, source_text=None,
         "output_json_schema": execution_output_schema(
             base, state, task_id, editorial_handoff=editorial_handoff),
     }
+    acting_context = acting_contract.downstream_context(base, state, task_id)
+    if acting_context is not None:
+        request["acting_contract_context"] = acting_context
     if editorial_handoff is not None:
         # Preserve the first director's vision across the v0.1 -> ten-role
         # handoff, even though those initial stages restart for a NEW plan.
@@ -631,6 +671,44 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 "\n\n【编剧权威边界】此来源是前置编剧完成的剧本版本；"
                 "本岗位只完成自身专业交付，不得暗改故事、对白、旁白、人物关系和原文事实。"
                 "如需修改，只向总导演提出编剧返修请求，重新走审阅流程。")
+    acting_mode = base.get("acting_contract_mode")
+    if acting_mode is not None:
+        if acting_mode != acting_contract.MODE:
+            raise ValueError("CREW_ACTING_CONTRACT_MODE_INVALID")
+        if task_id == "director_lock":
+            boundary += (
+                "\n\n【F01 人物表演圣经】本集启用源绑定表演合同。"
+                "global_direction 必须增加 performance_bible：version=1、"
+                "source_digest 必须等于本任务真实 source_digest、characters 以角色ID为键。"
+                "每个出场角色写 given_circumstances、relationships（character_id/relation/stakes）、"
+                "objective、obstacle、tactic_habits（可执行策略列表）、subtext、"
+                "entry_state、exit_state、source_spans（scene_id/beat_id/quote）。"
+                "只能从已审剧本追溯，不得新增剧情、人物关系或事实。")
+        elif task_id == "acting":
+            boundary += (
+                "\n\n【F01 逐镜表演合同】每个有演员的镜头，performance 必须增加"
+                " character_contracts，以本镜 character_ids 为键；每位角色写 trigger、"
+                "objective、obstacle、tactic、subtext、reaction、visible_change、"
+                "ending_state、source_beat_id。tactic 必须是可播放的策略，不能复述 objective；"
+                "reaction 必须是对手/环境触发的可见回应。"
+                "有道具移动时，staging 增加 hand_prop 列表，逐项写 actor_id、"
+                "hand(left/right/both/none)、prop_id、from_s、to_s、action、visible_result。"
+                "所有有演员的镜头写 physical_state.start/end，逐角色记录 posture、"
+                "facing 与 hands.left/right（free/none 或稳定道具ID）；姿态变化写"
+                " posture_changes(actor_id/from/to/cause)。双人镜写 relationship_map，"
+                "逐角色记录 target_id、gaze、body_orientation、distance、interaction；"
+                "交物写 handoffs(order/from_actor/to_actor/prop_id/from_s/to_s/action/"
+                "visible_result/visible)，场外交接必须 visible=false 且有 note。"
+                "确属有意跳切且改变手/姿态时，在 staging 写可核对的 cut_note。"
+                "门/窗变化写 environment_state.doors/windows，逐项写稳定ID、"
+                "open/closed 的 start/end、changed_by 与 cause；跨镜不得无动作跳变。"
+                "有演员镜头写 production_feasibility：professional_intent、"
+                "physical_complexity(low/medium/high)、model_risk、"
+                "capability_evidence(none/documented/tested)、evidence_ref、"
+                "test_environment、fallback_route、fallback_preserves_story。"
+                "没有真实测试时 capability_evidence 只能写 none；不得把文档或推测写成实测。"
+                "零演员图文镜在 performance 写 no_performer_reason，character_contracts 为空对象。"
+                "不得新增未在剧本中的故事事实；表演合同必须来自当前 director_lock 的 performance_bible。")
     serialized = json.dumps(request, ensure_ascii=False, sort_keys=True,
                             separators=(",", ":"), allow_nan=False)
     _check_json_size(serialized, MAX_CONTEXT_CHARS, "private prompt")
@@ -680,6 +758,9 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
     authoring; do not silently inject defaults or rewrite the source script.
     """
     executor._check(base, state, source_text)
+    acting_mode = base.get("acting_contract_mode")
+    if acting_mode is not None and acting_mode != acting_contract.MODE:
+        raise ValueError("CREW_ACTING_CONTRACT_MODE_INVALID")
     # The production adapter cannot accept a downstream specialist's result
     # without the same locked director work order used to prepare its prompt.
     if task_id in director_command.DEPARTMENTS:
@@ -889,6 +970,16 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
                     for step in steps:
                         _required_string(step, "action", "CREW_POSTPRODUCTION_STEP")
                         _required_string(step, "time_window", "CREW_POSTPRODUCTION_STEP")
+    if acting_mode is not None:
+        if task_id == "director_lock":
+            report = acting_contract.inspect_bible(
+                base, state, payload["global_direction"])
+            if report["blockers"]:
+                raise ValueError("CREW_ACTING_BIBLE_BLOCKED")
+        elif task_id == "acting":
+            report = acting_contract.inspect_delivery(base, state, payload)
+            if report["blockers"]:
+                raise ValueError("CREW_ACTING_CONTRACT_BLOCKED")
     # After existing domain-specific checks, enforce the EXACT schema that
     # the model received, including the bridged camera extensions. Preserve
     # existing informative static domain error codes but reject any remaining

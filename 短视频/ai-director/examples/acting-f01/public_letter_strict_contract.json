@@ -1,0 +1,337 @@
+{
+  "fixture_id": "F01-PUBLIC-LETTER-STRICT-001",
+  "fictional": true,
+  "public_synthetic": true,
+  "source_note": "Public synthetic fixture for the F01 source-bound acting contract. No user manuscript, real person, private job, model output, or media.",
+  "source_text": "母亲问：你到底怎么了？\n女儿把信压在膝上，说：我没事。\n母亲看着她的手，没有立刻离开。",
+  "base": {
+    "title": "公开虚构：我没事",
+    "duration": 6,
+    "characters": [
+      {
+        "id": "CH_DAUGHTER",
+        "description": "Public fictional adult daughter; plain clothes; no real person."
+      },
+      {
+        "id": "CH_MOTHER",
+        "description": "Public fictional mother; plain clothes; no real person."
+      }
+    ],
+    "scenes": [
+      {
+        "id": "LOC01",
+        "description": "A plain fictional dining table with two chairs."
+      }
+    ],
+    "shots": [
+      {
+        "id": "S01",
+        "start": 0,
+        "duration": 6,
+        "visual_type": "ai_video",
+        "character_ids": [
+          "CH_DAUGHTER",
+          "CH_MOTHER"
+        ],
+        "scene_id": "LOC01",
+        "source_adaptation": {
+          "beat_id": "B001",
+          "covered_beat_ids": [
+            "B001"
+          ]
+        },
+        "continuity_contract": {
+          "version": 1,
+          "coverage": "complete",
+          "props": {
+            "PROP_LETTER": {
+              "initial": "LOC01:table",
+              "label": "the single letter"
+            }
+          },
+          "actors": {
+            "CH_DAUGHTER": {
+              "initial": "LOC01:chair"
+            },
+            "CH_MOTHER": {
+              "initial": "LOC01:standing"
+            }
+          }
+        },
+        "continuity_state": {
+          "props_before": {
+            "PROP_LETTER": "LOC01:table"
+          },
+          "actors_before": {
+            "CH_DAUGHTER": "LOC01:chair",
+            "CH_MOTHER": "LOC01:standing"
+          },
+          "prop_moves": [
+            {
+              "order": 1,
+              "prop": "PROP_LETTER",
+              "from": "LOC01:table",
+              "to": "CH_DAUGHTER:hand",
+              "kind": "pickup",
+              "visible": true
+            }
+          ],
+          "actor_moves": [],
+          "props_after": {
+            "PROP_LETTER": "CH_DAUGHTER:hand"
+          },
+          "actors_after": {
+            "CH_DAUGHTER": "LOC01:chair",
+            "CH_MOTHER": "LOC01:standing"
+          }
+        }
+      }
+    ],
+    "acting_contract_mode": {
+      "kind": "source_bound_acting_bible_required",
+      "version": 1
+    }
+  },
+  "director_lock": {
+    "global_direction": {
+      "performance_bible": {
+        "version": 1,
+        "source_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "characters": {
+          "CH_DAUGHTER": {
+            "given_circumstances": "Evening at a fictional dining table; she has just read a letter that changes the family plan.",
+            "relationships": [
+              {
+                "character_id": "CH_MOTHER",
+                "relation": "loving but protective mother-daughter",
+                "stakes": "The mother may panic if she learns the letter now."
+              }
+            ],
+            "objective": "Keep the letter hidden until she can choose when and how to discuss it.",
+            "obstacle": "Her mother is watching closely and asking direct questions.",
+            "tactic_habits": [
+              "Answer briefly and keep eye contact.",
+              "Redirect attention to the table.",
+              "Move the letter out of sight below the table edge."
+            ],
+            "subtext": "I am fine enough for now; please do not look closer.",
+            "entry_state": "Seated, letter on the table, mother standing opposite.",
+            "exit_state": "Letter below the table edge, eye contact maintained, mother still watching.",
+            "source_spans": [
+              {
+                "scene_id": "LOC01",
+                "beat_id": "B001",
+                "quote": "我没事。"
+              }
+            ]
+          },
+          "CH_MOTHER": {
+            "given_circumstances": "Evening at the same fictional table; she senses her daughter is hiding something.",
+            "relationships": [
+              {
+                "character_id": "CH_DAUGHTER",
+                "relation": "protective mother-daughter",
+                "stakes": "She fears the daughter is in trouble and will withdraw if pushed too hard."
+              }
+            ],
+            "objective": "Find out whether the daughter is actually all right.",
+            "obstacle": "The daughter's calm, evasive surface.",
+            "tactic_habits": [
+              "Ask one direct question.",
+              "Hold eye contact.",
+              "Watch the daughter's hands rather than her mouth."
+            ],
+            "subtext": "I know you are hiding something, but I am trying not to corner you.",
+            "entry_state": "Standing opposite the daughter, waiting for an answer.",
+            "exit_state": "Still standing, eyes moving to the daughter's hand, saying nothing.",
+            "source_spans": [
+              {
+                "scene_id": "LOC01",
+                "beat_id": "B001",
+                "quote": "母亲看着她的手，没有立刻离开。"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "acting": {
+    "shots": {
+      "S01": {
+        "staging": {
+          "blocking": "CH_DAUGHTER is seated at the table; CH_MOTHER stands opposite, one hand resting on the chair back.",
+          "gaze": "They hold eye contact; the mother's gaze drops to the daughter's right hand as it moves.",
+          "spatial_constraints": [
+            "The letter starts on the table and ends below the table edge.",
+            "The mother does not cross to the daughter's side."
+          ],
+          "hand_prop": [
+            {
+              "actor_id": "CH_DAUGHTER",
+              "hand": "right",
+              "prop_id": "PROP_LETTER",
+              "from_s": 4.0,
+              "to_s": 5.4,
+              "action": "Slide the letter off the table edge while the left hand stays open on the tabletop.",
+              "visible_result": "The letter leaves the tabletop and disappears below the edge."
+            }
+          ],
+          "physical_state": {
+            "start": {
+              "CH_DAUGHTER": {
+                "posture": "seated",
+                "facing": "CH_MOTHER",
+                "hands": {
+                  "left": "free",
+                  "right": "free"
+                }
+              },
+              "CH_MOTHER": {
+                "posture": "standing",
+                "facing": "CH_DAUGHTER",
+                "hands": {
+                  "left": "free",
+                  "right": "free"
+                }
+              }
+            },
+            "end": {
+              "CH_DAUGHTER": {
+                "posture": "seated",
+                "facing": "CH_MOTHER",
+                "hands": {
+                  "left": "free",
+                  "right": "PROP_LETTER"
+                }
+              },
+              "CH_MOTHER": {
+                "posture": "standing",
+                "facing": "CH_DAUGHTER",
+                "hands": {
+                  "left": "free",
+                  "right": "free"
+                }
+              }
+            },
+            "posture_changes": []
+          },
+          "relationship_map": [
+            {
+              "actor_id": "CH_DAUGHTER",
+              "target_id": "CH_MOTHER",
+              "gaze": "Eye contact, with one downward flick to the letter.",
+              "body_orientation": "Open toward the mother, right hand moving below the table.",
+              "distance": "Across the narrow table.",
+              "interaction": "Deflect the question while hiding the letter."
+            },
+            {
+              "actor_id": "CH_MOTHER",
+              "target_id": "CH_DAUGHTER",
+              "gaze": "Watches the daughter's face, then her right hand.",
+              "body_orientation": "Standing squarely toward the daughter, one hand on the chair back.",
+              "distance": "Across the narrow table.",
+              "interaction": "Question the answer and watch for a physical tell."
+            }
+          ],
+          "handoffs": [],
+          "cut_note": "",
+          "production_feasibility": {
+            "professional_intent": "Keep the daughter's concealment and the mother's suspicion in one continuous two-shot so their power struggle is readable without narration.",
+            "physical_complexity": "medium",
+            "model_risk": "Two actors, eye contact, a delayed reaction and a small hand prop move; no provider test has been run.",
+            "capability_evidence": "none",
+            "evidence_ref": "",
+            "test_environment": "",
+            "fallback_route": "If the hand action is unstable, use a medium reaction shot for the dialogue and a close-up insert for the letter moving below the table edge, joined on the mother's eye movement.",
+            "fallback_preserves_story": "The daughter still hides the letter and the mother still notices the hand movement; only the coverage changes."
+          }
+        },
+        "performance": {
+          "motivation": "Protect the mother from the letter until she can decide how to explain it.",
+          "facial_microaction": "A small smile arrives a beat late, then the eyes flick down and back up.",
+          "body_microaction": "The right hand begins to move only after the mother looks at it.",
+          "ending_pose": "Seated, left hand flat on the table, right hand below the edge, eyes back on the mother.",
+          "character_contracts": {
+            "CH_DAUGHTER": {
+              "trigger": "The mother asks what is wrong and holds eye contact.",
+              "objective": "Keep the letter hidden while making the mother believe the answer is ordinary.",
+              "obstacle": "The mother keeps watching her hands instead of accepting the words.",
+              "tactic": "Answer lightly, keep eye contact, and move the letter only when the mother glances down.",
+              "subtext": "Do not look at the letter; if you look, she will know.",
+              "reaction": "Her smile is one beat late; her eyes flick to the letter and back.",
+              "visible_change": "Her right hand leaves the tabletop and the letter disappears below the edge.",
+              "ending_state": "She is still seated, eyes on the mother, right hand out of sight.",
+              "source_beat_id": "B001"
+            },
+            "CH_MOTHER": {
+              "trigger": "The daughter says she is fine while her right hand starts to move.",
+              "objective": "Test whether the answer is true without driving the daughter further away.",
+              "obstacle": "The daughter's calm words and steady eye contact.",
+              "tactic": "Stay standing, keep eye contact, and watch the daughter's hands.",
+              "subtext": "I am not convinced, but I will not accuse you yet.",
+              "reaction": "Her eyes drop to the moving hand and then return to the daughter's face.",
+              "visible_change": "She notices the hand movement and chooses not to speak.",
+              "ending_state": "Still standing, watching the daughter, one hand on the chair back.",
+              "source_beat_id": "B001"
+            }
+          },
+          "no_performer_reason": ""
+        },
+        "beats": [
+          {
+            "from_s": 0,
+            "to_s": 2,
+            "visible_change": "The mother asks the question; the daughter holds eye contact.",
+            "performance": "The daughter answers with a small, delayed smile; the mother watches her face.",
+            "camera": "fixed medium two-shot",
+            "sound": "room tone and the mother's question"
+          },
+          {
+            "from_s": 2,
+            "to_s": 4,
+            "visible_change": "The daughter says I am fine; the mother's gaze drops toward her hands.",
+            "performance": "The daughter keeps her left hand open on the table; the mother leans a little closer.",
+            "camera": "fixed medium two-shot",
+            "sound": "dialogue and a chair creak"
+          },
+          {
+            "from_s": 4,
+            "to_s": 6,
+            "visible_change": "The letter slides below the table edge; the mother notices but does not speak.",
+            "performance": "The daughter moves only her right hand; the mother's eyes track it, then return to her face.",
+            "camera": "fixed medium two-shot, slight push in",
+            "sound": "paper sliding on wood, then room tone"
+          }
+        ],
+        "continuity": {
+          "start_state": "Daughter seated; mother standing; letter on the table; both visible.",
+          "end_state": "Daughter seated; mother standing; letter below the table edge in the daughter's right hand.",
+          "locked_entities": [
+            "CH_DAUGHTER",
+            "CH_MOTHER",
+            "PROP_LETTER"
+          ],
+          "reference_assets": []
+        },
+        "shootability": {
+          "mode": "single_take",
+          "action_units": [
+            {
+              "id": "A1",
+              "beat_index": 2,
+              "actor_id": "CH_DAUGHTER",
+              "hand": "right",
+              "prop_id": "PROP_LETTER",
+              "from_s": 4,
+              "to_s": 5.4,
+              "action": "slide the letter below the table edge",
+              "visible_result": "letter leaves the tabletop"
+            }
+          ],
+          "fallback": "If the slide is unstable, cut to a close-up of the hand and letter below the table edge."
+        }
+      }
+    }
+  }
+}

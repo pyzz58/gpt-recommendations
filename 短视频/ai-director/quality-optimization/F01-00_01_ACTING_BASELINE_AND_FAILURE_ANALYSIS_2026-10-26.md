@@ -2,7 +2,7 @@
 
 日期：2026-10-26  
 范围：`短视频/ai-director/`，现有 acting / acting_coach 岗位与离线校验链。  
-状态：**F01-00/01 已完成本轮基线核对与反例；F01-02 至 F01-09 尚未完成。**
+状态：**F01-00/01 基线已完成；F01-02/03 严格表演合同已实现；F01-04 的实体状态、关系对位、交物/姿态与环境跨镜门禁已完成软件层；F01-05 的制作可行性/替代方案已实现部分；F01-06 的下游同源上下文与定点失效已实现部分；F01-07 至 F01-09 与独立专业审稿仍待完成。QO-F01 仍保持 `audit_pending`。**
 
 本文件不是艺术验收，不新增第二套质量账本。状态仍以 [QUALITY_ISSUES.json](QUALITY_ISSUES.json) 的 QO-F01 为准；本轮将其从 `audit_pending` 推进为 `in_progress`，不标 `complete`。
 
@@ -108,3 +108,61 @@ agent_team (acting / acting_coach DAG)
 - 新增公开反例 JSON 与 `tests/test_f01_acting_baseline.py`；测试只证明当前结构接受该反例、而专业缺口确实存在，不证明任何表演质量。
 - 本轮达到 **G1/L1 的基线证据**：能复现结构通过但专业不足；尚未达到 L2（独立盲评）、L3（真实 AI 镜头）或 L4（成片）。
 - 不调用付费模型，不使用用户真实文案/人物/媒体，不声称官方认证或行业大师审阅。
+
+## 8. F01-02/03 严格表演合同实现更新（2026-10-31）
+
+在上述基线和反例成立后，新增了**可选的严格表演合同**；旧 fixture/旧 base 不受影响，正式新系列由 `screenplay_series_delivery.build_per_episode_crew` 显式启用：
+
+- 新模块 [director_acting.py](../director_acting.py)：
+  - 校验导演锁定的 `performance_bible`：source digest、角色、关系、目标、障碍、策略习惯、潜台词、进出状态、source spans；
+  - 校验逐镜逐角色合同：trigger、objective、obstacle、tactic、subtext、reaction、visible_change、ending_state、source_beat_id；
+  - 校验 `hand_prop`：角色、左右手、道具 ID、时间窗、可见结果；同一手重叠动作阻断；
+  - 泛词（“自然地”“悲伤地看着”等）只作为人工复核信号，不自动判错；零演员图文镜要求 `no_performer_reason`，允许沉默/无演员。
+- [agent_role_contracts.py](../agent_role_contracts.py)：在 `acting_contract_mode` 下把 `performance_bible`、`character_contracts`、`hand_prop` 写入真实 model-facing schema；`validate_role_output` 在结构检查后调用严格表演校验；不新增 Agent。
+- [screenplay_series_delivery.py](../screenplay_series_delivery.py)：正式新系列的每集 base 显式设置 `acting_contract_mode`，旧序列/旧 fixture 保持兼容。
+- 新公开正例：[public_letter_strict_contract.json](../examples/acting-f01/public_letter_strict_contract.json)；新测试：`tests/test_director_acting.py`（正例、缺合同、过期圣经、手部重叠、泛词复核、零演员、schema 集成、legacy 不强制）。
+
+边界：
+
+- 这仍是**离线结构与因果合同**，不是专业演员/导演盲评，也不能证明真实 AI 表演质量。
+- QO-F01 仍为 `audit_pending`：quality registry 要求未来部门在非 pending 状态前具备独立专业审稿；没有该证据时不得刷状态。
+- F01-04 本轮仅完成双人实体状态与交物部分；门/窗环境状态、三人以上复杂互动仍未完成。F01-05（模型可拍性与替代）、F01-06（跨岗位同源版本/定点返修）、F01-07（多题材离线正反回归）、F01-08（真实媒体）和 F01-09（冻结交接）仍未完成。
+
+## 9. F01-04 部分实现：双人实体状态与交物（2026-10-31）
+
+在严格模式下新增并验证：
+
+- `staging.physical_state.start/end`：每名出场角色的 posture、facing、hands.left/right；hand 只允许 `free`/`none` 或 continuity contract 中声明的稳定道具 ID。
+- `posture_changes`：镜内坐/站等姿态变化必须写 actor_id/from/to/cause。
+- `staging.relationship_map`：双人镜必须分别为两名角色写 target_id、gaze、body_orientation、distance、interaction；群体镜至少要求每个角色有一个合法对手行。
+- `staging.handoffs`：交物必须有序、同一镜双方、道具 ID、时间窗、可见动作/结果；场外交接需 `visible=false` + note，并进入人工复核。
+- 跨镜：相邻镜的 end→start 手部持有、姿态或门/窗状态变化若无可见动作/环境事件，也没有 `cut_note`，则阻断；写 `cut_note` 表示有意跳切并进入 review，而不是静默瞬移。
+- `environment_state.doors/windows`：稳定 ID、open/closed 起止状态、changed_by 与 cause；跨镜门/窗状态跳变同样受门禁。
+- 三人及以上：`relationship_map` 至少覆盖每个演员对，避免群体镜只写两名角色而遗漏第三人。
+- 测试覆盖：正常交物、缺交物、缺关系对位、缺三人对位、姿态跨镜跳变、手部跨镜跳变、门/窗缺少原因、门/窗跨镜跳变，以及有意 cut_note 的复核路径。
+
+尚未完成：三人以上的复杂调度质量、真实视频中的手部/面容/口型、供应商能力与实拍替代（F01-05/F01-08）。结构门禁通过不等于这些艺术/媒体层验收。
+
+## 10. F01-05 部分实现：制作可行性与替代方案（2026-10-31）
+
+严格模式新增 `staging.production_feasibility`，把专业表演选择与供应商能力判断拆开：
+
+- `professional_intent`：为什么采用当前表演/调度。
+- `physical_complexity`：low/medium/high，由交物、三人以上、动作单位数量、道具动作数量与姿态变化辅助复核；低报进入 review。
+- `model_risk`：具体的模型风险描述，不声称模型必然成功或失败。
+- `capability_evidence`：none/documented/tested；documented/tested 必须提供 `evidence_ref`，tested 还必须提供 `test_environment`；没有真实测试只能写 none。
+- `fallback_route` 与 `fallback_preserves_story`：高复杂度 single_take 若没有具体替代路线则阻断；有替代路线时进入 review，而不是宣称模型一定不能做。
+- 既有 [director_shootability.py](../director_shootability.py) 继续负责逐动作时间、手/道具、动作密度和单镜失败信号的物理预检；本项只补“表演意图 vs 模型能力”的分离，不重复其逻辑。
+
+仍未完成：经验证的供应商能力表、真实模型试拍、真实表演/手部/口型审片。F01-05 保持部分实现，不能因结构测试通过而关闭。
+
+## 11. F01-06 部分实现：下游同源上下文与定点失效（2026-10-31）
+
+不改变原十岗位 DAG，在现有 `build_role_messages` 中注入版本化的 `acting_contract_context`：
+
+- `camera_art`、`sound`：在表演稿尚未完成时收到 locked `performance_bible` 的 planning context，明确不能把计划当成最终表演；表演完成后收到 completed 的 acting delivery digest。
+- `editing_animation`、`ai_technical`、`quality_review`、`director_final`：收到已完成表演稿的 contract digest、acting revision、acting revision scope 与使用说明。
+- 上下文包含 `performance_bible_digest`、`acting_delivery_digest`、`previous_acting_delivery_digest`、`contract_digest`、`acting_status`、`acting_revision_scope`；源/版本不一致时可追溯。
+- 定向返修：`request_revision` 已按现有 DAG 将 editing/ai/QA/final 标为 stale；camera_art/sound 不被无关 acting 返修错误作废；editing 的 revision scope 含目标镜及相邻镜。新上下文在 needs_revision 时禁止把旧 acting delivery 复用于目标镜，并保留 previous digest 以便追溯。
+
+仍未完成：真实跨岗位模型消息的语义遵从、摄影/声音实际重做、人工冲突仲裁与真实媒体验收。F01-06 保持部分实现；不把“消息带上了”当作专业岗位实际使用了它。

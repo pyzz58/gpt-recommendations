@@ -1,0 +1,51 @@
+{
+  "fixture_id": "F01-PUBLIC-PERFORMANCE-DIRECTIONS-001",
+  "fictional": true,
+  "public_synthetic": true,
+  "review_status": "self_authored_textual_comparison_not_human_blind_review",
+  "source_note": "Public synthetic scene and two authored performance directions for F01-07. This is not a human blind review, not a real actor test, and contains no user manuscript.",
+  "scene": {
+    "setting": "A plain dining table in a fictional apartment.",
+    "situation": "A daughter has a letter that changes the family plan. Her mother asks if she is all right.",
+    "duration_s": 6
+  },
+  "directions": [
+    {
+      "id": "D1_RESTRAINED_DRAMA",
+      "genre": "quiet domestic drama",
+      "objective": "Keep the letter hidden until the daughter can choose how to explain it.",
+      "obstacle": "The mother watches the daughter's hands instead of trusting the words.",
+      "tactic_sequence": [
+        "Answer briefly and hold eye contact.",
+        "Keep the left hand open on the table as a calm anchor.",
+        "Move the letter below the table edge only when the mother glances down.",
+        "Return the eyes to the mother immediately after the move."
+      ],
+      "reaction": "The smile arrives one beat late; the eyes flick to the letter and back.",
+      "audience_effect": "The audience reads concealment and care at the same time; the scene stays quiet.",
+      "tradeoffs": "The action is subtle and may be missed on a phone screen; the edit may need a slightly longer reaction hold.",
+      "best_for": "A restrained character story or serious family drama."
+    },
+    {
+      "id": "D2_ABSURD_DOMESTIC_COMEDY",
+      "genre": "absurd domestic comedy",
+      "objective": "Hide the letter before the mother opens the squeaky drawer again.",
+      "obstacle": "The mother keeps politely opening the drawer at the worst possible moment while discussing dinner.",
+      "tactic_sequence": [
+        "Start a completely normal conversation about dinner.",
+        "Use an elbow to nudge the drawer closed while keeping a pleasant smile.",
+        "Freeze when the drawer squeaks.",
+        "Improvise a too-bright compliment to cover the sound."
+      ],
+      "reaction": "The mother opens the drawer again without changing her pleasant expression; the daughter's smile tightens.",
+      "audience_effect": "Warm laughter comes from a credible escalation of a domestic habit, not from random gags.",
+      "tradeoffs": "The comic escalation can overpower the quieter theme and must not be used for serious documentary or grief scenes.",
+      "best_for": "A comic family story or a scene explicitly designed around absurd domestic escalation."
+    }
+  ],
+  "selection_criteria": [
+    "Choose the direction that serves the approved story and audience experience.",
+    "Do not mix the two directions in one shot without a motivated tonal turn.",
+    "Neither direction is approved by a human blind review or a real-media test."
+  ]
+}
