@@ -744,6 +744,54 @@ def downstream_context(base, state, task_id):
     }
 
 
+def inspect_media_readiness(evidence):
+    """F01-08 evidence gate. Never grants final approval from software alone."""
+    report = {
+        "status": "blocked",
+        "complete": False,
+        "human_approval": False,
+        "real_media_verified": False,
+        "blockers": [],
+    }
+    if not isinstance(evidence, dict):
+        _add(report["blockers"], "F01_REAL_MEDIA_NOT_PROVIDED",
+             "no authorized real performance media evidence was provided")
+        return report
+    if evidence.get("evidence_type") != "real_authorized_media":
+        _add(report["blockers"], "F01_MEDIA_EVIDENCE_TYPE_INVALID",
+             "evidence_type must be real_authorized_media")
+    if not _text(evidence.get("authorization_ref")):
+        _add(report["blockers"], "F01_MEDIA_AUTHORIZATION_MISSING",
+             "real media review needs an explicit authorization reference")
+    frames = evidence.get("decoded_frame_paths")
+    if (not isinstance(frames, list) or not frames
+            or not all(_text(path) for path in frames)):
+        _add(report["blockers"], "F01_MEDIA_DECODE_EVIDENCE_MISSING",
+             "real media review needs decoded frame evidence")
+    for field, code, detail in (
+        ("hand_face_mouth_review", "F01_MEDIA_HAND_FACE_REVIEW_MISSING",
+         "hand/face/mouth review evidence is missing"),
+        ("cross_shot_emotion_review", "F01_MEDIA_EMOTION_REVIEW_MISSING",
+         "cross-shot emotion review evidence is missing"),
+        ("independent_reviewer_ref", "F01_MEDIA_REVIEWER_MISSING",
+         "independent reviewer reference is missing"),
+    ):
+        if not _text(evidence.get(field)):
+            _add(report["blockers"], code, detail)
+    rework = evidence.get("rework_log")
+    if not isinstance(rework, list) or not rework:
+        _add(report["blockers"], "F01_MEDIA_REWORK_LOG_MISSING",
+             "real media review needs a rework log")
+    if report["blockers"]:
+        return report
+    report["status"] = "review_ready"
+    report["review_note"] = (
+        "Evidence is complete enough for human review; software does not grant "
+        "final media approval or human signoff."
+    )
+    return report
+
+
 def inspect_delivery(base, state, payload):
     """Validate per-shot/per-character acting contracts and hand ownership."""
     report = _findings()

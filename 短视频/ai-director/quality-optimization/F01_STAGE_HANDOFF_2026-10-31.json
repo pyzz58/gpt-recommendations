@@ -1,0 +1,61 @@
+{
+  "version": "f01-stage-handoff-v1",
+  "date": "2026-10-31",
+  "stage": "F01",
+  "qo_id": "QO-F01",
+  "qo_status": "audit_pending",
+  "software_stage": "review_ready",
+  "substages": {
+    "F01-00": "baseline_recorded",
+    "F01-01": "professional_method_baseline_recorded",
+    "F01-02": "strict_contract_implemented",
+    "F01-03": "per_shot_contract_implemented",
+    "F01-04": "physical_and_environment_gates_implemented",
+    "F01-05": "feasibility_and_fallback_partial",
+    "F01-06": "downstream_version_context_partial",
+    "F01-07": "offline_regression_complete_not_human_blind_review",
+    "F01-08": "blocked_real_media",
+    "F01-09": "review_ready_handoff"
+  },
+  "real_media": {
+    "status": "blocked",
+    "authorized_evidence": false,
+    "decoded_media": false,
+    "hand_face_mouth_review": false,
+    "cross_shot_emotion_review": false,
+    "independent_reviewer": false,
+    "human_approval": false
+  },
+  "software_evidence": {
+    "pr": "https://github.com/pyzz58/gpt-recommendations/pull/78",
+    "contract_module": "director_acting.py",
+    "role_integration": "agent_role_contracts.py",
+    "formal_series_mode": "screenplay_series_delivery.build_per_episode_crew",
+    "regression_matrix": "tests/test_f01_regression_matrix.py",
+    "contract_tests": "tests/test_director_acting.py",
+    "text_comparison": "examples/acting-f01/public_performance_directions.json"
+  },
+  "not_verified": [
+    "real paid or authorized video generation",
+    "real actor or synthetic performer face/hand/mouth acceptance",
+    "human blind comparison of performance directions",
+    "provider capability measurements",
+    "final edited film or publication approval"
+  ],
+  "next_stage": {
+    "id": "F02",
+    "title": "摄影、灯光与美术专业审计",
+    "entry_conditions": [
+      "Read the F01 acting contract and its explicit boundaries.",
+      "Use the performance bible, physical state, handoff and feasibility context as upstream constraints.",
+      "Keep the existing ten-role DAG and source/version bindings.",
+      "Do not claim F01 acting quality, real media or human blind review is complete."
+    ],
+    "must_not_claim": [
+      "F01 complete",
+      "real acting quality verified",
+      "model capability tested",
+      "final film approved"
+    ]
+  }
+}
