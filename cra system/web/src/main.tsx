@@ -5,6 +5,7 @@ import { Router } from "./app/Router";
 import "./documents.css";
 import "./laboratory.css";
 import "./rules.css";
+import "./safety.css";
 import "./subjects.css";
 import "./styles.css";
 

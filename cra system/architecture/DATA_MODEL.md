@@ -149,3 +149,15 @@ ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping�
 - `lab_comparison_issue_links`：显式记录哪些比较字段由用户关联到哪个稳定Issue，不自动把差异变成PD或完成Action。
 
 `edc_lab_records`新增可选`report_revision`映射。OCR不可用时仍可保存源文件、人工候选和局部CheckDecision；自动候选、用户更正及比较结果分层存储。W08不创建报告正文、医学安全结论或EDC写回。
+
+## 13. W09实际安全分析底座
+
+迁移`0008_safety_assessment`增加：
+
+- `safety_assessments`：受试者、事件类型/日期、请求维度、事实/规则快照、provider版本/状态、受限解释、具体问题、及时提醒、unknown、Evidence与OutputEnvelope；数据库触发器禁止更新/删除。
+- `safety_dimension_results`：AE收集、分级、SAE严重性、相关性、预期性、AESI、DLT、PD和及时报告各自status、候选动作、unknown、规则版本、证据ID与SourceRef；不可变。
+- `safety_cra_reviews`：CRA append-only复核决定、所选维度及可选W05 CheckDecision引用；不修改系统候选。
+- `medical_safety_responses`：研究者/医学角色、实际答复、分维度答复和来源说明；与CRA复核分开且不可变。
+- `safety_issue_links`：安全分析到M06 Issue的显式关联及维度；不保存或自动改变Action完成状态。
+
+分析键绑定事实修订、适用规则版本、检验比较revision、provider和活动安全跳过决定。相同输入幂等复用；provider替换或新事实/规则/跳过范围可产生新分析，旧维度、复核和医学答复保留。模型解释Claim保持`inference/needs_review`，仅引用实际输入的证据ID，不能成为最终医学结论或自动完成依据。

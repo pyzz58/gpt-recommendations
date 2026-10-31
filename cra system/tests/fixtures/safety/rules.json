@@ -1,0 +1,242 @@
+{
+  "source": "pure_synthetic",
+  "tenant_id": "synthetic",
+  "study_id": "00000000-0000-0000-0000-000000000001",
+  "site_id": "00000000-0000-0000-0000-000000000002",
+  "rules": [
+    {
+      "rule_key": "R-AE-COLLECTION-01",
+      "title": "AE collection candidate",
+      "anchor_key": "safety:r-ae-collection-01",
+      "summary": "Collect an adverse-event candidate when an event term is reported.",
+      "trigger": {
+        "op": "present",
+        "fact_key": "ae_term"
+      },
+      "branches": [
+        {
+          "branch_key": "CAND",
+          "condition": {
+            "op": "present",
+            "fact_key": "ae_term"
+          },
+          "actions": [
+            "AE candidate is present; verify the original record and event term."
+          ]
+        }
+      ],
+      "required_facts": ["ae_term"],
+      "quote": "Synthetic rule: collect an AE candidate when an event term is reported."
+    },
+    {
+      "rule_key": "R-AE-GRADE-01",
+      "title": "AE grade criterion candidate",
+      "anchor_key": "safety:r-ae-grade-01",
+      "summary": "Identify a grade toxicity candidate from the project criteria.",
+      "trigger": {
+        "op": "eq",
+        "left": {"kind": "fact_ref", "fact_key": "grade_criteria_met"},
+        "right": {"kind": "literal", "value": true}
+      },
+      "branches": [
+        {
+          "branch_key": "G3",
+          "condition": {
+            "op": "eq",
+            "left": {"kind": "fact_ref", "fact_key": "grade_criteria_met"},
+            "right": {"kind": "literal", "value": true}
+          },
+          "actions": [
+            "Candidate grade 3 toxicity criterion; verify the grade with the investigator."
+          ]
+        }
+      ],
+      "required_facts": ["grade_criteria_met"],
+      "quote": "Synthetic rule: a true grade criterion is only a candidate until investigator confirmation."
+    },
+    {
+      "rule_key": "R-AE-SERIOUSNESS-01",
+      "title": "SAE seriousness candidate",
+      "anchor_key": "safety:r-ae-seriousness-01",
+      "summary": "Review SAE criteria separately from toxicity grade.",
+      "trigger": {
+        "op": "eq",
+        "left": {"kind": "fact_ref", "fact_key": "sae_criteria_met"},
+        "right": {"kind": "literal", "value": true}
+      },
+      "branches": [
+        {
+          "branch_key": "SAE",
+          "condition": {
+            "op": "eq",
+            "left": {"kind": "fact_ref", "fact_key": "sae_criteria_met"},
+            "right": {"kind": "literal", "value": true}
+          },
+          "actions": [
+            "Candidate SAE criteria; verify the serious determination and reporting obligation."
+          ]
+        }
+      ],
+      "required_facts": ["sae_criteria_met"],
+      "quote": "Synthetic rule: grade does not replace the separate serious-adverse-event assessment."
+    },
+    {
+      "rule_key": "R-AE-RELATEDNESS-01",
+      "title": "Investigator relatedness",
+      "anchor_key": "safety:r-ae-relatedness-01",
+      "summary": "Request the investigator's separate relatedness assessment.",
+      "trigger": {
+        "op": "present",
+        "fact_key": "relatedness_assessment"
+      },
+      "branches": [
+        {
+          "branch_key": "RELA",
+          "condition": {
+            "op": "present",
+            "fact_key": "relatedness_assessment"
+          },
+          "actions": [
+            "Review the investigator relatedness assessment and its rationale."
+          ]
+        }
+      ],
+      "required_facts": ["relatedness_assessment"],
+      "quote": "Synthetic rule: relatedness requires a separate investigator assessment."
+    },
+    {
+      "rule_key": "R-AE-EXPECTEDNESS-01",
+      "title": "Expectedness against the adopted IB",
+      "anchor_key": "safety:r-ae-expect-01",
+      "summary": "Assess expectedness only against the project-adopted reference safety information.",
+      "trigger": {
+        "op": "present",
+        "fact_key": "ib_version"
+      },
+      "branches": [
+        {
+          "branch_key": "EXPECT",
+          "condition": {
+            "op": "present",
+            "fact_key": "ib_version"
+          },
+          "actions": [
+            "Compare the event with the project-adopted IB version."
+          ]
+        }
+      ],
+      "required_facts": ["ib_version", "expectedness_assessment"],
+      "quote": "Synthetic rule: expectedness uses the project-adopted reference safety information."
+    },
+    {
+      "rule_key": "R-AESI-01",
+      "title": "AESI list check",
+      "anchor_key": "safety:r-aesi-01",
+      "summary": "Check the event against the applicable AESI list without replacing SAE assessment.",
+      "trigger": {
+        "op": "present",
+        "fact_key": "aesi_list"
+      },
+      "branches": [
+        {
+          "branch_key": "AESI",
+          "condition": {
+            "op": "present",
+            "fact_key": "aesi_list"
+          },
+          "actions": [
+            "Check the event term against the applicable AESI list."
+          ]
+        }
+      ],
+      "required_facts": ["aesi_list", "ae_term"],
+      "quote": "Synthetic rule: AESI is a separate dimension from SAE seriousness."
+    },
+    {
+      "rule_key": "R-DLT-01",
+      "title": "DLT criteria",
+      "anchor_key": "safety:r-dlt-01",
+      "summary": "Review DLT only when the project DLT criteria and assessment window are available.",
+      "trigger": {
+        "op": "present",
+        "fact_key": "dlt_criteria"
+      },
+      "branches": [
+        {
+          "branch_key": "DLT",
+          "condition": {
+            "op": "present",
+            "fact_key": "dlt_criteria"
+          },
+          "actions": [
+            "Check DLT criteria and the applicable assessment window."
+          ]
+        }
+      ],
+      "required_facts": ["dlt_criteria", "dlt_window"],
+      "quote": "Synthetic rule: DLT requires its own criteria and assessment window."
+    },
+    {
+      "rule_key": "R-PD-01",
+      "title": "Protocol deviation candidate",
+      "anchor_key": "safety:r-pd-01",
+      "summary": "Review possible protocol deviation criteria and applicable reporting.",
+      "trigger": {
+        "op": "eq",
+        "left": {
+          "kind": "fact_ref",
+          "fact_key": "protocol_deviation_suspected"
+        },
+        "right": {"kind": "literal", "value": true}
+      },
+      "branches": [
+        {
+          "branch_key": "PD",
+          "condition": {
+            "op": "eq",
+            "left": {
+              "kind": "fact_ref",
+              "fact_key": "protocol_deviation_suspected"
+            },
+            "right": {"kind": "literal", "value": true}
+          },
+          "actions": [
+            "Candidate protocol deviation; verify PD criteria, reporting and correction."
+          ]
+        }
+      ],
+      "required_facts": ["protocol_deviation_suspected"],
+      "quote": "Synthetic rule: a suspected deviation is a candidate until confirmed."
+    },
+    {
+      "rule_key": "R-SAE-TIMELINESS-01",
+      "title": "SAE time anchors",
+      "anchor_key": "safety:r-sae-time-01",
+      "summary": "Record event, awareness, entry and actual reporting times separately.",
+      "trigger": {
+        "op": "eq",
+        "left": {"kind": "fact_ref", "fact_key": "sae_criteria_met"},
+        "right": {"kind": "literal", "value": true}
+      },
+      "branches": [
+        {
+          "branch_key": "TIME",
+          "condition": {
+            "op": "eq",
+            "left": {"kind": "fact_ref", "fact_key": "sae_criteria_met"},
+            "right": {"kind": "literal", "value": true}
+          },
+          "actions": [
+            "Record event, awareness, entry and actual reporting times; apply the project SAE timeline."
+          ]
+        }
+      ],
+      "required_facts": [
+        "sae_criteria_met",
+        "safety_awareness_date",
+        "safety_reported_date"
+      ],
+      "quote": "Synthetic rule: event, awareness, entry and actual reporting times must remain separate."
+    }
+  ]
+}

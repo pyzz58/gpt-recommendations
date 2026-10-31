@@ -60,6 +60,16 @@ export type LabComparisonFieldView =
   components["schemas"]["LabComparisonFieldView"];
 export type LabIssueLinkView =
   components["schemas"]["LabIssueLinkView"];
+export type SafetyAssessmentView =
+  components["schemas"]["SafetyAssessmentView"];
+export type SafetyAssessmentSummaryView =
+  components["schemas"]["SafetyAssessmentSummaryView"];
+export type SafetyDimensionView =
+  components["schemas"]["SafetyDimensionView"];
+export type SafetyQuestionView =
+  components["schemas"]["SafetyQuestionView"];
+export type TimelySafetyAlertView =
+  components["schemas"]["TimelySafetyAlertView"];
 
 type ErrorEnvelope = {
   error?: {
@@ -351,6 +361,139 @@ export function getSubjects(
 ): Promise<SubjectView[]> {
   return request<SubjectView[]>(
     `/api/v1/studies/${studyId}/subjects?site_id=${encodeURIComponent(siteId)}`
+  );
+}
+
+export function getSafetyAssessments(
+  studyId: string,
+  siteId: string,
+  subjectId: string
+): Promise<SafetyAssessmentSummaryView[]> {
+  const query = new URLSearchParams({
+    site_id: siteId,
+    subject_id: subjectId
+  });
+  return request<SafetyAssessmentSummaryView[]>(
+    `/api/v1/studies/${studyId}/safety-assessments?${query.toString()}`
+  );
+}
+
+export function getSafetyAssessment(
+  assessmentId: string
+): Promise<SafetyAssessmentView> {
+  return request<SafetyAssessmentView>(
+    `/api/v1/safety-assessments/${assessmentId}`
+  );
+}
+
+export function createSafetyAssessment(values: {
+  studyId: string;
+  siteId: string;
+  subjectId: string;
+  eventType: string;
+  eventDate: string;
+  requestedDimensions: string[];
+  note: string;
+}): Promise<SafetyAssessmentView> {
+  return request<SafetyAssessmentView>("/api/v1/safety-assessments", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: crypto.randomUUID(),
+      study_id: values.studyId,
+      site_id: values.siteId,
+      subject_id: values.subjectId,
+      event_type: values.eventType,
+      event_date: values.eventDate,
+      requested_dimensions: values.requestedDimensions,
+      lab_comparison_id: null,
+      note: values.note || null
+    })
+  });
+}
+
+export function recordSafetyCraReview(
+  assessmentId: string,
+  values: {
+    decision: string;
+    dimensions: string[];
+    note: string;
+  }
+): Promise<SafetyAssessmentView> {
+  return request<SafetyAssessmentView>(
+    `/api/v1/safety-assessments/${assessmentId}/cra-review`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        idempotency_key: crypto.randomUUID(),
+        decision: values.decision,
+        dimensions: values.dimensions,
+        note: values.note || null
+      })
+    }
+  );
+}
+
+export function recordMedicalSafetyResponse(
+  assessmentId: string,
+  values: {
+    respondentRole: string;
+    respondentName: string;
+    responseText: string;
+    dimensionResponses: Record<string, string>;
+    sourceNote: string;
+  }
+): Promise<SafetyAssessmentView> {
+  return request<SafetyAssessmentView>(
+    `/api/v1/safety-assessments/${assessmentId}/medical-response`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        idempotency_key: crypto.randomUUID(),
+        respondent_role: values.respondentRole,
+        respondent_name: values.respondentName || null,
+        response_text: values.responseText,
+        dimension_responses: values.dimensionResponses,
+        source_note: values.sourceNote || null
+      })
+    }
+  );
+}
+
+export function linkSafetyAssessmentIssue(
+  assessmentId: string,
+  values: {
+    dimensions: string[];
+    requirement: string;
+  }
+): Promise<IssueView> {
+  return request<IssueView>(
+    `/api/v1/safety-assessments/${assessmentId}/issues`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        idempotency_key: crypto.randomUUID(),
+        dimensions: values.dimensions,
+        action_kind: "medical_clarification",
+        requirement: values.requirement || null
+      })
+    }
   );
 }
 

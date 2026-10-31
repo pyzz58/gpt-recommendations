@@ -1,6 +1,6 @@
 # M12 模型、OCR与检索接入
 
-版本：6；状态：W03统一端口/OCR探测及W04确定性规则提取provider已实现；W08/W09实际用途provider仍待后续任务。代码位置：`backend/cra_app/providers/`。
+版本：7；状态：W03统一端口/OCR探测、W04确定性规则提取、W08检验读取与W09受限安全解释provider已实现；尚未完成真实资料与临床用途验证。代码位置：`backend/cra_app/providers/`。
 
 ## 对应理论和任务
 
@@ -57,3 +57,9 @@ W03先探测兼容与资源，必要时隔离识别环境，W04/W08/W09实际pro
 ## W08实现记录
 
 `RoutedLabProvider`把文字PDF和图像路由到可替换adapter：文字PDF由pdfplumber直接读取表格与cell bbox；清晰PNG/JPEG由Docling 2.145.0在隔离Python 3.12子进程读取，主应用不导入其依赖。每次报告识别创建持久`lab_recognition_jobs`记录，并保存provider/model版本、SupportProfile、源定位、失败和候选数量。独立合成PNG评估实际恢复5/5行、关键字段零错误且坐标齐全；文字PDF同样5/5。两格式比较均为3条自动一致、2条集中复核。该证据不覆盖真实版式、中文、模糊图像、生产资源/模型镜像或临床用途；详见`validation/LAB_AUTOMATION_SCOPE.md`。
+
+## W09实现记录
+
+`LocalTransformersCaseAnalysisProvider`固定Qwen2.5-0.5B-Instruct模型提交，在隔离Python 3.12环境运行transformers 4.57.1、torch 2.7.1和safetensors 0.5.3。模型只选择服务端允许的解释模板和输入证据ID，不决定安全维度或输出处置。主服务验证JSON形状、允许代码、引用ID及医学/数值边界；任何失败均记录provider rejected并保留程序候选、未知和问题。
+
+独立评测只把合成事实、规则证据和确定性维度送入模型，不传正确预期。3/3案例维度与问题主题正确，模型输出3/3通过grounding；伪造引用、越界医学结论、无依据数字/日期和“分级等同严重性”控制均被阻止。评估不是临床质量或节时验证，模型/依赖来源与限制见`validation/W09_DEPENDENCIES.md`和`validation/W09_STATUS.md`。

@@ -719,6 +719,91 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/safety-assessments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Safety Assessment */
+        post: operations["create_safety_assessment_api_v1_safety_assessments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/safety-assessments/{assessment_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Safety Assessment */
+        get: operations["get_safety_assessment_api_v1_safety_assessments__assessment_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/safety-assessments/{assessment_id}/cra-review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record Cra Safety Review */
+        post: operations["record_cra_safety_review_api_v1_safety_assessments__assessment_id__cra_review_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/safety-assessments/{assessment_id}/issues": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Link Safety Assessment Issue */
+        post: operations["link_safety_assessment_issue_api_v1_safety_assessments__assessment_id__issues_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/safety-assessments/{assessment_id}/medical-response": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record Medical Safety Response */
+        post: operations["record_medical_safety_response_api_v1_safety_assessments__assessment_id__medical_response_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/studies/{study_id}/carryover-imports/preview-text": {
         parameters: {
             query?: never;
@@ -901,6 +986,23 @@ export interface paths {
         };
         /** List Rules */
         get: operations["list_rules_api_v1_studies__study_id__rules_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/studies/{study_id}/safety-assessments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Safety Assessments */
+        get: operations["list_safety_assessments_api_v1_studies__study_id__safety_assessments_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1992,6 +2094,20 @@ export interface components {
             /** Unit Type */
             unit_type: string;
         };
+        /** CraSafetyReviewCommand */
+        CraSafetyReviewCommand: {
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "reviewed_candidate" | "needs_clarification" | "not_checked_by_user";
+            /** Dimensions */
+            dimensions: ("ae_collection" | "grade" | "seriousness" | "relatedness" | "expectedness" | "aesi" | "dlt" | "protocol_deviation" | "reporting_timeliness")[];
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Note */
+            note?: string | null;
+        };
         /** CreateActivationCommand */
         CreateActivationCommand: {
             /**
@@ -2146,6 +2262,48 @@ export interface components {
             replied_on?: string | null;
             /** Reply Summary */
             reply_summary?: string | null;
+        };
+        /** CreateSafetyAssessmentCommand */
+        CreateSafetyAssessmentCommand: {
+            /**
+             * Event Date
+             * Format: date
+             */
+            event_date: string;
+            /**
+             * Event Type
+             * @enum {string}
+             */
+            event_type: "adverse_event" | "serious_event_review" | "laboratory_logic" | "protocol_deviation" | "mixed";
+            /**
+             * Expected Revision
+             * @default 0
+             * @constant
+             */
+            expected_revision: 0;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Lab Comparison Id */
+            lab_comparison_id?: string | null;
+            /** Note */
+            note?: string | null;
+            /** Requested Dimensions */
+            requested_dimensions?: ("ae_collection" | "grade" | "seriousness" | "relatedness" | "expectedness" | "aesi" | "dlt" | "protocol_deviation" | "reporting_timeliness")[];
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+            /**
+             * Subject Id
+             * Format: uuid
+             */
+            subject_id: string;
         };
         /** CreateSubjectCommand */
         CreateSubjectCommand: {
@@ -3252,6 +3410,21 @@ export interface components {
             /** Idempotency Key */
             idempotency_key: string;
         };
+        /** LinkSafetyIssuesCommand */
+        LinkSafetyIssuesCommand: {
+            /**
+             * Action Kind
+             * @default medical_clarification
+             * @enum {string}
+             */
+            action_kind: "medical_clarification" | "other";
+            /** Dimensions */
+            dimensions: ("ae_collection" | "grade" | "seriousness" | "relatedness" | "expectedness" | "aesi" | "dlt" | "protocol_deviation" | "reporting_timeliness")[];
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Requirement */
+            requirement?: string | null;
+        };
         /** LiveResponse */
         LiveResponse: {
             /**
@@ -3331,6 +3504,53 @@ export interface components {
             idempotency_key: string;
             /** Identity Namespace */
             identity_namespace: string;
+        };
+        /** MedicalSafetyResponseCommand */
+        MedicalSafetyResponseCommand: {
+            /** Dimension Responses */
+            dimension_responses?: {
+                [key: string]: string;
+            };
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Respondent Name */
+            respondent_name?: string | null;
+            /**
+             * Respondent Role
+             * @enum {string}
+             */
+            respondent_role: "investigator" | "medical_monitor" | "medical_reviewer" | "other";
+            /** Response Text */
+            response_text: string;
+            /** Source Note */
+            source_note?: string | null;
+        };
+        /** MedicalSafetyResponseView */
+        MedicalSafetyResponseView: {
+            /** Actor Id */
+            actor_id: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Dimension Responses */
+            dimension_responses: {
+                [key: string]: string;
+            };
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Respondent Name */
+            respondent_name: string | null;
+            /** Respondent Role */
+            respondent_role: string;
+            /** Response Text */
+            response_text: string;
+            /** Source Note */
+            source_note: string | null;
         };
         /** ModuleCapability */
         ModuleCapability: {
@@ -4050,6 +4270,205 @@ export interface components {
             /** Version No */
             version_no: number;
         };
+        /** SafetyAssessmentSummaryView */
+        SafetyAssessmentSummaryView: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Event Date
+             * Format: date
+             */
+            event_date: string;
+            /** Event Type */
+            event_type: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Provider Status */
+            provider_status: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /** Status */
+            status: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+            /**
+             * Subject Id
+             * Format: uuid
+             */
+            subject_id: string;
+        };
+        /** SafetyAssessmentView */
+        SafetyAssessmentView: {
+            /** Context Snapshot */
+            context_snapshot: {
+                [key: string]: unknown;
+            };
+            /** Cra Reviews */
+            cra_reviews: components["schemas"]["SafetyCraReviewView"][];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Created By */
+            created_by: string;
+            /** Deterministic Summary */
+            deterministic_summary: {
+                [key: string]: unknown;
+            };
+            /** Dimensions */
+            dimensions: components["schemas"]["SafetyDimensionView"][];
+            /**
+             * Event Date
+             * Format: date
+             */
+            event_date: string;
+            /** Event Type */
+            event_type: string;
+            /** Evidence Refs */
+            evidence_refs: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Issue Id */
+            issue_id: string | null;
+            /** Lab Comparison Id */
+            lab_comparison_id: string | null;
+            /** Medical Responses */
+            medical_responses: components["schemas"]["MedicalSafetyResponseView"][];
+            /** Model Version */
+            model_version: string | null;
+            output_envelope: components["schemas"]["OutputEnvelope"];
+            /** Provider Name */
+            provider_name: string;
+            /** Provider Output */
+            provider_output: {
+                [key: string]: unknown;
+            };
+            /** Provider Status */
+            provider_status: string;
+            /** Provider Version */
+            provider_version: string;
+            /** Questions */
+            questions: components["schemas"]["SafetyQuestionView"][];
+            /** Replayed */
+            replayed: boolean;
+            /** Requested Dimensions */
+            requested_dimensions: string[];
+            /** Revision */
+            revision: number;
+            /** Rule Inputs */
+            rule_inputs: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /** Status */
+            status: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+            /**
+             * Subject Id
+             * Format: uuid
+             */
+            subject_id: string;
+            /** Timely Alerts */
+            timely_alerts: components["schemas"]["TimelySafetyAlertView"][];
+            /** Unknowns */
+            unknowns: {
+                [key: string]: unknown;
+            }[];
+        };
+        /** SafetyCraReviewView */
+        SafetyCraReviewView: {
+            /** Actor Id */
+            actor_id: string;
+            /** Check Decision Id */
+            check_decision_id: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Decision */
+            decision: string;
+            /** Dimensions */
+            dimensions: string[];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Note */
+            note: string | null;
+        };
+        /** SafetyDimensionView */
+        SafetyDimensionView: {
+            /** Candidate Values */
+            candidate_values: string[];
+            /** Dimension */
+            dimension: string;
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Label */
+            label: string;
+            /** Rationale */
+            rationale: string | null;
+            /** Rule Version Ids */
+            rule_version_ids: string[];
+            /** Source Refs */
+            source_refs: {
+                [key: string]: unknown;
+            }[];
+            /** Status */
+            status: string;
+            /** Uncertainties */
+            uncertainties: string[];
+        };
+        /** SafetyQuestionView */
+        SafetyQuestionView: {
+            /** Dimension */
+            dimension: string;
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Priority */
+            priority: string;
+            /** Question */
+            question: string;
+            /** Question Key */
+            question_key: string;
+            /** Reason */
+            reason: string;
+        };
         /** ScopeResponse */
         ScopeResponse: {
             /** Actor Id */
@@ -4175,6 +4594,34 @@ export interface components {
              * Format: uuid
              */
             study_id: string;
+        };
+        /** TimelySafetyAlertView */
+        TimelySafetyAlertView: {
+            /** Alert Key */
+            alert_key: string;
+            /** Awareness Date */
+            awareness_date: string | null;
+            /** Deadline Status */
+            deadline_status: string;
+            /** Detail */
+            detail: string;
+            /** Dimensions */
+            dimensions: string[];
+            /** Entry Date */
+            entry_date: string | null;
+            /**
+             * Event Date
+             * Format: date
+             */
+            event_date: string;
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Not A Final Reportability Decision */
+            not_a_final_reportability_decision: boolean;
+            /** Reported Date */
+            reported_date: string | null;
+            /** Title */
+            title: string;
         };
         /** UnknownItem */
         UnknownItem: {
@@ -5807,6 +6254,183 @@ export interface operations {
             };
         };
     };
+    create_safety_assessment_api_v1_safety_assessments_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateSafetyAssessmentCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SafetyAssessmentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_safety_assessment_api_v1_safety_assessments__assessment_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                assessment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SafetyAssessmentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    record_cra_safety_review_api_v1_safety_assessments__assessment_id__cra_review_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                assessment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CraSafetyReviewCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SafetyAssessmentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    link_safety_assessment_issue_api_v1_safety_assessments__assessment_id__issues_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                assessment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LinkSafetyIssuesCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IssueView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    record_medical_safety_response_api_v1_safety_assessments__assessment_id__medical_response_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                assessment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MedicalSafetyResponseCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SafetyAssessmentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     preview_carryover_text_api_v1_studies__study_id__carryover_imports_preview_text_post: {
         parameters: {
             query?: never;
@@ -6294,6 +6918,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RuleListItemView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_safety_assessments_api_v1_studies__study_id__safety_assessments_get: {
+        parameters: {
+            query: {
+                site_id: string;
+                subject_id: string;
+            };
+            header?: never;
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SafetyAssessmentSummaryView"][];
                 };
             };
             /** @description Validation Error */

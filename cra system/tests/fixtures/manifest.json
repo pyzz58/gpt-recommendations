@@ -193,6 +193,32 @@
         ],
         "coordinates_present": true
       }
+    },
+    {
+      "artifact_id": "SAFETY-RULES-DEV",
+      "file": "safety/rules.json",
+      "format": "json",
+      "purpose": "safety_rules",
+      "group": "development",
+      "sha256": "31d03c105fc37fff8aab9d1ddb4d22b3df53d25c14c91c0651ccff0cfb01ff5c",
+      "expected": {
+        "rule_count": 9,
+        "source": "pure_synthetic",
+        "model_input": "rules and facts only; no expected answer"
+      }
+    },
+    {
+      "artifact_id": "SAFETY-CASES-EVAL",
+      "file": "safety/evaluation_cases.json",
+      "format": "json",
+      "purpose": "safety_evaluation",
+      "group": "evaluation",
+      "sha256": "fd24bf5956f88527a0dc4e2931f42becc5fddffad9d17078fefbffe2a7422a72",
+      "expected": {
+        "case_count": 3,
+        "dimensional_separation": true,
+        "provider_expected_values_withheld": true
+      }
     }
   ]
 }

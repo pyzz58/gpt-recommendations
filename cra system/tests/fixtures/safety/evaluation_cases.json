@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "source": "pure_synthetic",
+  "evaluation_group": "independent_synthetic",
+  "cases": [
+    {
+      "case_id": "SAFE-EVAL-001",
+      "event_date": "2026-10-01",
+      "requested_dimensions": [
+        "ae_collection",
+        "grade",
+        "seriousness",
+        "relatedness",
+        "expectedness"
+      ],
+      "facts": {
+        "ae_term": "synthetic headache",
+        "grade_criteria_met": true
+      },
+      "expected": {
+        "candidate_dimensions": ["ae_collection", "grade"],
+        "unknown_dimensions": ["seriousness", "relatedness", "expectedness"],
+        "required_question_topics": [
+          "SAE",
+          "relatedness",
+          "adopted reference safety information"
+        ],
+        "must_not_assert": [
+          "confirmed SAE",
+          "no adverse event",
+          "clinical safe"
+        ]
+      }
+    },
+    {
+      "case_id": "SAFE-EVAL-002",
+      "event_date": "2026-10-02",
+      "requested_dimensions": [
+        "seriousness",
+        "reporting_timeliness"
+      ],
+      "facts": {
+        "ae_term": "synthetic hypersensitivity",
+        "sae_criteria_met": true
+      },
+      "expected": {
+        "candidate_dimensions": ["seriousness", "reporting_timeliness"],
+        "unknown_dimensions": [],
+        "required_question_topics": [
+          "awareness time"
+        ],
+        "must_not_assert": [
+          "confirmed SAE",
+          "deadline breached",
+          "clinical safe"
+        ]
+      }
+    },
+    {
+      "case_id": "SAFE-EVAL-003",
+      "event_date": "2026-10-03",
+      "requested_dimensions": [
+        "protocol_deviation"
+      ],
+      "facts": {
+        "protocol_deviation_suspected": true
+      },
+      "expected": {
+        "candidate_dimensions": ["protocol_deviation"],
+        "unknown_dimensions": [],
+        "required_question_topics": [
+          "PD criteria",
+          "reporting and correction"
+        ],
+        "must_not_assert": [
+          "confirmed PD",
+          "automatically reported",
+          "clinical safe"
+        ]
+      }
+    }
+  ]
+}

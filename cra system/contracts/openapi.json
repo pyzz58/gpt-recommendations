@@ -2596,6 +2596,65 @@
         "title": "CoverageView",
         "type": "object"
       },
+      "CraSafetyReviewCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "decision": {
+            "enum": [
+              "reviewed_candidate",
+              "needs_clarification",
+              "not_checked_by_user"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "dimensions": {
+            "items": {
+              "enum": [
+                "ae_collection",
+                "grade",
+                "seriousness",
+                "relatedness",
+                "expectedness",
+                "aesi",
+                "dlt",
+                "protocol_deviation",
+                "reporting_timeliness"
+              ],
+              "type": "string"
+            },
+            "maxItems": 32,
+            "minItems": 1,
+            "title": "Dimensions",
+            "type": "array"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "decision",
+          "dimensions"
+        ],
+        "title": "CraSafetyReviewCommand",
+        "type": "object"
+      },
       "CreateActivationCommand": {
         "additionalProperties": false,
         "properties": {
@@ -3072,6 +3131,107 @@
           "query_state"
         ],
         "title": "CreateQueryLinkCommand",
+        "type": "object"
+      },
+      "CreateSafetyAssessmentCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "event_date": {
+            "format": "date",
+            "title": "Event Date",
+            "type": "string"
+          },
+          "event_type": {
+            "enum": [
+              "adverse_event",
+              "serious_event_review",
+              "laboratory_logic",
+              "protocol_deviation",
+              "mixed"
+            ],
+            "title": "Event Type",
+            "type": "string"
+          },
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "lab_comparison_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lab Comparison Id"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "requested_dimensions": {
+            "items": {
+              "enum": [
+                "ae_collection",
+                "grade",
+                "seriousness",
+                "relatedness",
+                "expectedness",
+                "aesi",
+                "dlt",
+                "protocol_deviation",
+                "reporting_timeliness"
+              ],
+              "type": "string"
+            },
+            "maxItems": 32,
+            "title": "Requested Dimensions",
+            "type": "array"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          },
+          "subject_id": {
+            "format": "uuid",
+            "title": "Subject Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "study_id",
+          "site_id",
+          "subject_id",
+          "event_type",
+          "event_date"
+        ],
+        "title": "CreateSafetyAssessmentCommand",
         "type": "object"
       },
       "CreateSubjectCommand": {
@@ -6200,6 +6360,64 @@
         "title": "LinkLabIssuesCommand",
         "type": "object"
       },
+      "LinkSafetyIssuesCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "action_kind": {
+            "default": "medical_clarification",
+            "enum": [
+              "medical_clarification",
+              "other"
+            ],
+            "title": "Action Kind",
+            "type": "string"
+          },
+          "dimensions": {
+            "items": {
+              "enum": [
+                "ae_collection",
+                "grade",
+                "seriousness",
+                "relatedness",
+                "expectedness",
+                "aesi",
+                "dlt",
+                "protocol_deviation",
+                "reporting_timeliness"
+              ],
+              "type": "string"
+            },
+            "maxItems": 32,
+            "minItems": 1,
+            "title": "Dimensions",
+            "type": "array"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "requirement": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirement"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "dimensions"
+        ],
+        "title": "LinkSafetyIssuesCommand",
+        "type": "object"
+      },
       "LiveResponse": {
         "additionalProperties": false,
         "properties": {
@@ -6441,6 +6659,153 @@
           "external_id"
         ],
         "title": "MapSubjectIdentifierCommand",
+        "type": "object"
+      },
+      "MedicalSafetyResponseCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "dimension_responses": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "maxProperties": 32,
+            "propertyNames": {
+              "enum": [
+                "ae_collection",
+                "grade",
+                "seriousness",
+                "relatedness",
+                "expectedness",
+                "aesi",
+                "dlt",
+                "protocol_deviation",
+                "reporting_timeliness"
+              ]
+            },
+            "title": "Dimension Responses",
+            "type": "object"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "respondent_name": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Respondent Name"
+          },
+          "respondent_role": {
+            "enum": [
+              "investigator",
+              "medical_monitor",
+              "medical_reviewer",
+              "other"
+            ],
+            "title": "Respondent Role",
+            "type": "string"
+          },
+          "response_text": {
+            "maxLength": 20000,
+            "minLength": 1,
+            "title": "Response Text",
+            "type": "string"
+          },
+          "source_note": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Note"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "respondent_role",
+          "response_text"
+        ],
+        "title": "MedicalSafetyResponseCommand",
+        "type": "object"
+      },
+      "MedicalSafetyResponseView": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "dimension_responses": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Dimension Responses",
+            "type": "object"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "respondent_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Respondent Name"
+          },
+          "respondent_role": {
+            "title": "Respondent Role",
+            "type": "string"
+          },
+          "response_text": {
+            "title": "Response Text",
+            "type": "string"
+          },
+          "source_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Note"
+          }
+        },
+        "required": [
+          "id",
+          "respondent_role",
+          "respondent_name",
+          "response_text",
+          "dimension_responses",
+          "source_note",
+          "actor_id",
+          "created_at"
+        ],
+        "title": "MedicalSafetyResponseView",
         "type": "object"
       },
       "ModuleCapability": {
@@ -8582,6 +8947,480 @@
         "title": "RuleVersionSummaryView",
         "type": "object"
       },
+      "SafetyAssessmentSummaryView": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "event_date": {
+            "format": "date",
+            "title": "Event Date",
+            "type": "string"
+          },
+          "event_type": {
+            "title": "Event Type",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "provider_status": {
+            "title": "Provider Status",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          },
+          "subject_id": {
+            "format": "uuid",
+            "title": "Subject Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "study_id",
+          "site_id",
+          "subject_id",
+          "event_type",
+          "event_date",
+          "status",
+          "provider_status",
+          "revision",
+          "created_at"
+        ],
+        "title": "SafetyAssessmentSummaryView",
+        "type": "object"
+      },
+      "SafetyAssessmentView": {
+        "additionalProperties": false,
+        "properties": {
+          "context_snapshot": {
+            "additionalProperties": true,
+            "title": "Context Snapshot",
+            "type": "object"
+          },
+          "cra_reviews": {
+            "items": {
+              "$ref": "#/components/schemas/SafetyCraReviewView"
+            },
+            "title": "Cra Reviews",
+            "type": "array"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "deterministic_summary": {
+            "additionalProperties": true,
+            "title": "Deterministic Summary",
+            "type": "object"
+          },
+          "dimensions": {
+            "items": {
+              "$ref": "#/components/schemas/SafetyDimensionView"
+            },
+            "title": "Dimensions",
+            "type": "array"
+          },
+          "event_date": {
+            "format": "date",
+            "title": "Event Date",
+            "type": "string"
+          },
+          "event_type": {
+            "title": "Event Type",
+            "type": "string"
+          },
+          "evidence_refs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "issue_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issue Id"
+          },
+          "lab_comparison_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lab Comparison Id"
+          },
+          "medical_responses": {
+            "items": {
+              "$ref": "#/components/schemas/MedicalSafetyResponseView"
+            },
+            "title": "Medical Responses",
+            "type": "array"
+          },
+          "model_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Version"
+          },
+          "output_envelope": {
+            "$ref": "#/components/schemas/OutputEnvelope"
+          },
+          "provider_name": {
+            "title": "Provider Name",
+            "type": "string"
+          },
+          "provider_output": {
+            "additionalProperties": true,
+            "title": "Provider Output",
+            "type": "object"
+          },
+          "provider_status": {
+            "title": "Provider Status",
+            "type": "string"
+          },
+          "provider_version": {
+            "title": "Provider Version",
+            "type": "string"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/SafetyQuestionView"
+            },
+            "title": "Questions",
+            "type": "array"
+          },
+          "replayed": {
+            "title": "Replayed",
+            "type": "boolean"
+          },
+          "requested_dimensions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Requested Dimensions",
+            "type": "array"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "rule_inputs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Rule Inputs",
+            "type": "array"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          },
+          "subject_id": {
+            "format": "uuid",
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "timely_alerts": {
+            "items": {
+              "$ref": "#/components/schemas/TimelySafetyAlertView"
+            },
+            "title": "Timely Alerts",
+            "type": "array"
+          },
+          "unknowns": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Unknowns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "study_id",
+          "site_id",
+          "subject_id",
+          "lab_comparison_id",
+          "event_type",
+          "event_date",
+          "requested_dimensions",
+          "context_snapshot",
+          "rule_inputs",
+          "deterministic_summary",
+          "provider_name",
+          "provider_version",
+          "model_version",
+          "provider_status",
+          "provider_output",
+          "questions",
+          "timely_alerts",
+          "unknowns",
+          "evidence_refs",
+          "output_envelope",
+          "status",
+          "revision",
+          "created_by",
+          "created_at",
+          "dimensions",
+          "cra_reviews",
+          "medical_responses",
+          "issue_id",
+          "replayed"
+        ],
+        "title": "SafetyAssessmentView",
+        "type": "object"
+      },
+      "SafetyCraReviewView": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "check_decision_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Check Decision Id"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "decision": {
+            "title": "Decision",
+            "type": "string"
+          },
+          "dimensions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Dimensions",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "required": [
+          "id",
+          "decision",
+          "dimensions",
+          "note",
+          "check_decision_id",
+          "actor_id",
+          "created_at"
+        ],
+        "title": "SafetyCraReviewView",
+        "type": "object"
+      },
+      "SafetyDimensionView": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_values": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Candidate Values",
+            "type": "array"
+          },
+          "dimension": {
+            "title": "Dimension",
+            "type": "string"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "rationale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rationale"
+          },
+          "rule_version_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Rule Version Ids",
+            "type": "array"
+          },
+          "source_refs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "uncertainties": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Uncertainties",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "dimension",
+          "status",
+          "label",
+          "candidate_values",
+          "rationale",
+          "uncertainties",
+          "rule_version_ids",
+          "evidence_ids",
+          "source_refs"
+        ],
+        "title": "SafetyDimensionView",
+        "type": "object"
+      },
+      "SafetyQuestionView": {
+        "additionalProperties": false,
+        "properties": {
+          "dimension": {
+            "title": "Dimension",
+            "type": "string"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "priority": {
+            "title": "Priority",
+            "type": "string"
+          },
+          "question": {
+            "title": "Question",
+            "type": "string"
+          },
+          "question_key": {
+            "title": "Question Key",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question_key",
+          "dimension",
+          "question",
+          "reason",
+          "priority",
+          "evidence_ids"
+        ],
+        "title": "SafetyQuestionView",
+        "type": "object"
+      },
       "ScopeResponse": {
         "properties": {
           "actor_id": {
@@ -8873,6 +9712,101 @@
           "identifiers"
         ],
         "title": "SubjectView",
+        "type": "object"
+      },
+      "TimelySafetyAlertView": {
+        "additionalProperties": false,
+        "properties": {
+          "alert_key": {
+            "title": "Alert Key",
+            "type": "string"
+          },
+          "awareness_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Awareness Date"
+          },
+          "deadline_status": {
+            "title": "Deadline Status",
+            "type": "string"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "dimensions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Dimensions",
+            "type": "array"
+          },
+          "entry_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entry Date"
+          },
+          "event_date": {
+            "format": "date",
+            "title": "Event Date",
+            "type": "string"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "not_a_final_reportability_decision": {
+            "title": "Not A Final Reportability Decision",
+            "type": "boolean"
+          },
+          "reported_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reported Date"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "alert_key",
+          "title",
+          "detail",
+          "dimensions",
+          "evidence_ids",
+          "event_date",
+          "awareness_date",
+          "entry_date",
+          "reported_date",
+          "deadline_status",
+          "not_a_final_reportability_decision"
+        ],
+        "title": "TimelySafetyAlertView",
         "type": "object"
       },
       "UnknownItem": {
@@ -11794,6 +12728,315 @@
         ]
       }
     },
+    "/api/v1/safety-assessments": {
+      "post": {
+        "operationId": "create_safety_assessment_api_v1_safety_assessments_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSafetyAssessmentCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafetyAssessmentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Safety Assessment",
+        "tags": [
+          "safety"
+        ]
+      }
+    },
+    "/api/v1/safety-assessments/{assessment_id}": {
+      "get": {
+        "operationId": "get_safety_assessment_api_v1_safety_assessments__assessment_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafetyAssessmentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Safety Assessment",
+        "tags": [
+          "safety"
+        ]
+      }
+    },
+    "/api/v1/safety-assessments/{assessment_id}/cra-review": {
+      "post": {
+        "operationId": "record_cra_safety_review_api_v1_safety_assessments__assessment_id__cra_review_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CraSafetyReviewCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafetyAssessmentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Record Cra Safety Review",
+        "tags": [
+          "safety"
+        ]
+      }
+    },
+    "/api/v1/safety-assessments/{assessment_id}/issues": {
+      "post": {
+        "operationId": "link_safety_assessment_issue_api_v1_safety_assessments__assessment_id__issues_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkSafetyIssuesCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssueView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Link Safety Assessment Issue",
+        "tags": [
+          "safety"
+        ]
+      }
+    },
+    "/api/v1/safety-assessments/{assessment_id}/medical-response": {
+      "post": {
+        "operationId": "record_medical_safety_response_api_v1_safety_assessments__assessment_id__medical_response_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MedicalSafetyResponseCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafetyAssessmentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Record Medical Safety Response",
+        "tags": [
+          "safety"
+        ]
+      }
+    },
     "/api/v1/studies/{study_id}/carryover-imports/preview-text": {
       "post": {
         "operationId": "preview_carryover_text_api_v1_studies__study_id__carryover_imports_preview_text_post",
@@ -12756,6 +13999,73 @@
         "summary": "List Rules",
         "tags": [
           "rules"
+        ]
+      }
+    },
+    "/api/v1/studies/{study_id}/safety-assessments": {
+      "get": {
+        "operationId": "list_safety_assessments_api_v1_studies__study_id__safety_assessments_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Site Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subject_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Subject Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SafetyAssessmentSummaryView"
+                  },
+                  "title": "Response List Safety Assessments Api V1 Studies  Study Id  Safety Assessments Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Safety Assessments",
+        "tags": [
+          "safety"
         ]
       }
     },

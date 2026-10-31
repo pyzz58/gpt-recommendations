@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W04、CRA-W06、CRA-W08。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -74,16 +74,34 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 候选与确认、缺资料、假引用和提醒
+- [available] 候选与确认、缺资料、假引用和提醒
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_safety.py
 ```
 
-- [to_implement] 实际分析模型的事实/来源/条件与答复边界评估
+- [available] 实际分析模型的事实/来源/条件与答复边界评估
 
 ```bash
 uv run --frozen python -m cra_app.providers.evaluate_cases --dataset tests/fixtures/manifest.json
+```
+
+- [available] W09迁移空库升级、降级和再升级
+
+```bash
+uv run --frozen alembic downgrade 0007_laboratory_comparison && uv run --frozen alembic upgrade head
+```
+
+- [available] OpenAPI与前端生成契约同步
+
+```bash
+npm --prefix web run api:check
+```
+
+- [available] 安全分析界面测试、类型检查和生产构建
+
+```bash
+npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run build
 ```
 
 ## 完成标准

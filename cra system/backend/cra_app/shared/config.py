@@ -58,6 +58,9 @@ class Settings(BaseSettings):
     model_provider: str = Field(
         default="disabled", alias="CRA_MODEL_PROVIDER"
     )
+    analysis_provider: str = Field(
+        default="disabled", alias="CRA_ANALYSIS_PROVIDER"
+    )
     ocr_provider: str = Field(default="disabled", alias="CRA_OCR_PROVIDER")
     common_policy_path: str | None = Field(
         default=None, alias="CRA_COMMON_POLICY_PATH"
@@ -118,6 +121,12 @@ class Settings(BaseSettings):
                 self.oidc_client_secret,
             )
         )
+
+    def resolved_analysis_provider(self) -> str:
+        """Keep the W09 local-model path synthetic/test-only."""
+        if self.environment in {"synthetic", "test"}:
+            return self.analysis_provider
+        return "disabled"
 
 
 @lru_cache(maxsize=1)

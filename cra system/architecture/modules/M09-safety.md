@@ -1,6 +1,6 @@
 # M09 AE、安全及方案偏离分析支持
 
-版本：3；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/safety/`。
+版本：4；状态：W09已实现确定性维度分析、受限模型解释、具体问题、及时提醒、CRA复核、医学答复和M06关联；仅完成合成/provider工程验证，临床用途仍待验证。代码位置：`backend/cra_app/safety/`。
 
 ## 对应理论和任务
 
@@ -40,4 +40,10 @@
 
 ## v0.4技术实施补齐
 
-SafetyContext逐用途缺口与有依据分析，不把检验表当完整AE资料。 实现契约见[EXECUTION_CONTRACTS.md](../EXECUTION_CONTRACTS.md)，当前任务的进入条件/交接见[完整实施路径](../../plan/IMPLEMENTATION_PATH.md)。理论和任务编号保持；本轮文档不是业务功能完成证据。
+SafetyContext逐用途缺口与有依据分析，不把检验表当完整AE资料。实现契约见[EXECUTION_CONTRACTS.md](../EXECUTION_CONTRACTS.md)，当前任务的进入条件/交接见[完整实施路径](../../plan/IMPLEMENTATION_PATH.md)。理论和任务编号保持；本轮文档不是业务功能完成证据。
+
+## W09实现记录
+
+程序从W04事件日适用规则和仅`original_record`/`cra_confirmed`事实计算九个维度，分别保存candidate、unknown、not_applicable和用户跳过；分级不产生SAE结论。缺知悉时间或项目时限时仅显示及时提醒和具体问题，不计算超期。检验比较仅用于提出AE线索问题，不输出临床安全。
+
+`Qwen/Qwen2.5-0.5B-Instruct`固定提交`7ae557604adf67be50417f59c2c2f167def9a775`在隔离Python 3.12进程中选择服务端允许的解释模板和证据ID，主应用不导入模型依赖。grounding拒绝残缺/自由JSON、未知或伪造引用、越界数字及医学结论。CRA复核、研究者/医学答复和M06 Action分表保存；provider无权关闭行动。独立三个合成案例的维度/问题/边界检查及实际模型选择全部通过，证据见[W09状态](../../validation/W09_STATUS.md)。

@@ -15,6 +15,7 @@
 | 当前区域 | 复用选择 | 省去的工作 | 接入边界与验收 |
 | --- | --- | --- | --- |
 | M08/M12检验读取 | PaddleOCR/PP-Structure优先候选；Docling作对照候选 | 通用文字检测、识别、版面及表格结构 | W03少量合成样本比较字段/坐标/资源；W08把选中的一个管道接RecognizeLab，不默认同时装两套。项目、日期、初检复查和单位逻辑仍本系统处理 |
+| M09/M12安全解释 | Qwen2.5-0.5B-Instruct固定模型提交＋隔离Transformers运行 | 有界语言模板/证据选择，避免在医疗文本上从零训练模型 | W09仅合成用途评估；维度、日期、条件和最终医学判断仍由程序/责任人处理，模型不关闭Action |
 | M14/M02后台作业 | Procrastinate | PostgreSQL队列、worker、锁与重试 | W03以jobs.py薄适配封装；业务Job、授权、版本与Outbox保留。实际驱动/事务必须测试 |
 | M11 Word报告/信件 | docxtpl（python-docx-template） | 套用Word样式、变量与重复问题区 | W11 TemplateMapping提供受控上下文，保留原模板；不是任意上传Word都无需适配 |
 | M07/M08核对界面 | AG Grid Community＋ag-grid-react | 排序筛选、虚拟滚动、单元格和差异展示 | 仅MIT包；规则/匹配在后端，正常范围可批量确认，不能引入逐字段机械打卡 |

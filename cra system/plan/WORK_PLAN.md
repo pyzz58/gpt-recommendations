@@ -7,15 +7,15 @@
 | 工作包 | 内容 | 前置 | 模块 | 状态 |
 | --- | --- | --- | --- | --- |
 | CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
-| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | verified |
-| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | verified |
-| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | verified |
-| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | verified |
-| CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | verified |
-| CRA-W06 | 实现遗留整理、提醒与点击确认整改 | CRA-W05 | M05、M06 | verified |
-| CRA-W07 | 实现EDC Excel检验快照导入 | CRA-W05 | M07 | verified |
-| CRA-W08 | 实现检验源文件自动读取与EDC核对 | CRA-W06、CRA-W07 | M08、M12 | verified |
-| CRA-W09 | 实现有依据的AE及PD分析 | CRA-W04、CRA-W06、CRA-W08 | M09、M12 | planned |
+| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | in_progress |
+| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | in_progress |
+| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | in_progress |
+| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | in_progress |
+| CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | in_progress |
+| CRA-W06 | 实现遗留整理、提醒与点击确认整改 | CRA-W05 | M05、M06 | in_progress |
+| CRA-W07 | 实现EDC Excel检验快照导入 | CRA-W05 | M07 | in_progress |
+| CRA-W08 | 实现检验源文件自动读取与EDC核对 | CRA-W06、CRA-W07 | M08、M12 | in_progress |
+| CRA-W09 | 实现有依据的AE及PD分析 | CRA-W04、CRA-W06、CRA-W08 | M09、M12 | in_progress |
 | CRA-W10 | 实现中心文件目录和其他阶段清单 | CRA-W04、CRA-W06 | M05、M10 | planned |
 | CRA-W11 | 实现访视信、报告和Excel导出 | CRA-W06、CRA-W09、CRA-W10 | M11 | planned |
 | CRA-W12 | 串联四阶段界面与一次完整监查 | CRA-W08、CRA-W09、CRA-W10、CRA-W11 | M05 | planned |
@@ -37,15 +37,11 @@
 
 对应理论：CRA-R002、CRA-R036、CRA-R040
 
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41193029019；W08新增检验识别/比较迁移、共享API和前端后，cra-w01专属job的migrate/test在PostgreSQL 18.6再次通过；被测提交a9c699bf8196d6a1cbbe2aeafbbccaade6835fde。
-
 ## CRA-W02 建立云上API和界面框架
 
 验收：在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。
 
 对应理论：CRA-R035、CRA-R036、CRA-R040
-
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41193029019；W08接入检验识别/复核/并排核对后，cra-w02的6项API测试、12项前端测试、类型、构建、OpenAPI、运行时和devcontainer smoke全部通过；被测提交a9c699bf8196d6a1cbbe2aeafbbccaade6835fde。
 
 ## CRA-W03 实现资料接收、解析和来源定位
 
@@ -53,15 +49,11 @@
 
 对应理论：CRA-R003、CRA-R004、CRA-R009、CRA-R024、CRA-R036、CRA-R038
 
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41193029019；W08扩展fixtures、共享依赖/API和前端后，cra-w03专属job的8项PostgreSQL/S3测试、provider探测、OpenAPI契约和前端全部再次通过；被测提交a9c699bf8196d6a1cbbe2aeafbbccaade6835fde。
-
 ## CRA-W04 实现规则候选提取及分层list
 
 验收：从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。
 
 对应理论：CRA-R002、CRA-R004、CRA-R005、CRA-R006、CRA-R007、CRA-R008、CRA-R009、CRA-R011、CRA-R019、CRA-R034、CRA-R035、CRA-R036、CRA-R038、CRA-R041
-
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41193029019；W08扩展共享fixtures/API与前端后，cra-w04专属job的PostgreSQL测试、真实DOCX规则provider独立评估、OpenAPI契约和前端全部再次通过；被测提交a9c699bf8196d6a1cbbe2aeafbbccaade6835fde。
 
 ## CRA-W05 实现患者事实、锚点与核查断点
 
@@ -69,15 +61,11 @@
 
 对应理论：CRA-R010、CRA-R011、CRA-R012、CRA-R028、CRA-R034、CRA-R041、CRA-R045
 
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41193029019；W08扩展共享迁移、入口、fixtures和前端后，cra-w05专属job的7项PostgreSQL 18.6测试、OpenAPI契约、前端测试、类型检查和构建全部再次通过；被测提交a9c699bf8196d6a1cbbe2aeafbbccaade6835fde。
-
 ## CRA-W06 实现遗留整理、提醒与点击确认整改
 
 验收：上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。
 
 对应理论：CRA-R001、CRA-R009、CRA-R012、CRA-R020、CRA-R021、CRA-R022、CRA-R023、CRA-R025、CRA-R026、CRA-R027、CRA-R028、CRA-R031、CRA-R041、CRA-R043、CRA-R045
-
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41193029019；W08扩展共享迁移、API、fixtures和前端后，cra-w06专属job的test步骤运行test_issues.py 5项和test_carryover_import.py 3项，全部通过PostgreSQL 18.6；contracts与12项frontend测试、类型和生产构建全部成功；被测提交a9c699bf8196d6a1cbbe2aeafbbccaade6835fde。
 
 ## CRA-W07 实现EDC Excel检验快照导入
 
@@ -85,15 +73,11 @@
 
 对应理论：CRA-R013、CRA-R014、CRA-R015、CRA-R034
 
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41193029019；W08新增报告修订字段、快照列表及共享比较入口后，cra-w07专属job的5项PostgreSQL 18.6 EDC集成测试、OpenAPI契约、12项frontend测试、类型检查和生产构建全部再次通过；被测提交a9c699bf8196d6a1cbbe2aeafbbccaade6835fde。
-
 ## CRA-W08 实现检验源文件自动读取与EDC核对
 
 验收：支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。
 
 对应理论：CRA-R013、CRA-R015、CRA-R016、CRA-R017、CRA-R034、CRA-R035、CRA-R038
-
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41193029019；cra-w08专属job的6项PostgreSQL 18.6实验室集成测试、3项源文件识别测试、实际Docling/PDF独立评估、OpenAPI契约、12项frontend测试、类型检查和生产构建全部成功；文字PDF与清晰PNG均恢复5/5行、关键字段零错误；被测提交a9c699bf8196d6a1cbbe2aeafbbccaade6835fde。
 
 ## CRA-W09 实现有依据的AE及PD分析
 

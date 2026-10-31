@@ -58,6 +58,7 @@ from cra_app.monitoring.api import router as monitoring_router
 from cra_app.monitoring.service import MonitoringService
 from cra_app.platform.api import router as platform_router
 from cra_app.platform.jobs import ProcrastinateQueue
+from cra_app.providers.case_analysis import build_case_analysis_provider
 from cra_app.providers.lab_ocr import RoutedLabProvider
 from cra_app.rules.api import router as rules_router
 from cra_app.rules.common_policy import load_common_policy_set
@@ -73,6 +74,13 @@ from cra_app.subjects.service import (
     SubjectNotFound,
     SubjectService,
     SubjectValidationError,
+)
+from cra_app.safety.api import router as safety_router
+from cra_app.safety.service import (
+    SafetyConflict,
+    SafetyNotFound,
+    SafetyService,
+    SafetyValidationError,
 )
 from cra_app.shared.api_contract import ErrorDetail, ErrorEnvelope
 from cra_app.shared.config import Settings, get_settings
@@ -114,6 +122,7 @@ def create_app(
     monitoring_service: MonitoringService | None = None,
     edc_import_service: EDCImportService | None = None,
     laboratory_service: LaboratoryService | None = None,
+    safety_service: SafetyService | None = None,
 ) -> FastAPI:
     resolved_settings = settings or get_settings()
     own_engine = None
@@ -177,6 +186,18 @@ def create_app(
                 ocr_provider=resolved_settings.ocr_provider
             ),
         )
+    if safety_service is None:
+        safety_service = SafetyService(
+            session_factory,
+            governance=governance_service,
+            rules=rule_service,
+            subjects=subject_service,
+            issues=issue_service,
+            laboratory=laboratory_service,
+            provider=build_case_analysis_provider(
+                resolved_settings.resolved_analysis_provider()
+            ),
+        )
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -207,6 +228,7 @@ def create_app(
     application.state.monitoring_service = monitoring_service
     application.state.edc_import_service = edc_import_service
     application.state.laboratory_service = laboratory_service
+    application.state.safety_service = safety_service
 
     application.add_middleware(
         SessionMiddleware,
@@ -467,6 +489,33 @@ def create_app(
             content=_error("laboratory_conflict", str(exc)),
         )
 
+    @application.exception_handler(SafetyNotFound)
+    async def safety_not_found_error(
+        request: Request, exc: SafetyNotFound
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=_error("safety_not_found", str(exc)),
+        )
+
+    @application.exception_handler(SafetyValidationError)
+    async def safety_validation_error(
+        request: Request, exc: SafetyValidationError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            content=_error("safety_validation_failed", str(exc)),
+        )
+
+    @application.exception_handler(SafetyConflict)
+    async def safety_conflict_error(
+        request: Request, exc: SafetyConflict
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=_error("safety_conflict", str(exc)),
+        )
+
     @application.exception_handler(RequestValidationError)
     async def validation_error(
         request: Request, exc: RequestValidationError
@@ -532,6 +581,7 @@ def create_app(
     application.include_router(monitoring_router)
     application.include_router(edc_import_router)
     application.include_router(laboratory_router)
+    application.include_router(safety_router)
 
     def custom_openapi():
         if application.openapi_schema:

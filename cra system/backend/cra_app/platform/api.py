@@ -126,6 +126,23 @@ def capabilities(request: Request) -> CapabilityResponse:
                 "text PDF uses the separate local pdfplumber route"
             ),
         )
+    analysis_capability = _provider_capability(
+        settings.resolved_analysis_provider(), "Safety analysis"
+    )
+    if settings.resolved_analysis_provider().strip().lower() in {
+        "local-qwen2.5-0.5b",
+        "local-transformers",
+    }:
+        analysis_capability = ProviderCapability(
+            provider="local-qwen2.5-0.5b",
+            status="configured",
+            validated=True,
+            automatic_completion_allowed=False,
+            limitation=(
+                "validated only for grounded explanation encoding on the "
+                "independent synthetic W09 fixture; no final medical decision"
+            ),
+        )
     return CapabilityResponse(
         environment=settings.environment,
         generated_at=datetime.now(UTC),
@@ -144,6 +161,7 @@ def capabilities(request: Request) -> CapabilityResponse:
                     "free-form clinical protocols require review"
                 ),
             ),
+            "analysis": analysis_capability,
         },
         modules=[
             ModuleCapability(
@@ -184,6 +202,16 @@ def capabilities(request: Request) -> CapabilityResponse:
             ModuleCapability(
                 module_id="M08",
                 label="检验自动读取与核对",
+                status="limited",
+            ),
+            ModuleCapability(
+                module_id="M09",
+                label="AE、SAE及PD分析支持",
+                status="limited",
+            ),
+            ModuleCapability(
+                module_id="M12",
+                label="可替换分析与识别provider",
                 status="limited",
             ),
             ModuleCapability(

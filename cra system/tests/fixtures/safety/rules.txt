@@ -1,0 +1,62 @@
+Rule R-AE-COLLECTION-01: collect a synthetic adverse event candidate when an event term is reported.
+Trigger: present ae_term
+Branch CAND: WHEN present ae_term THEN verify the original record, event term, first occurrence
+Follow-up: record the source and unresolved facts
+Completion: source-backed event information is reviewed
+Required facts: ae_term
+
+Rule R-AE-GRADE-01: apply the synthetic project toxicity grade criterion separately.
+Trigger: grade_criteria_met = true
+Branch G3: WHEN grade_criteria_met = true THEN verify the investigator grade against the adopted criteria
+Follow-up: record the adopted grade scale version
+Completion: investigator grade and rationale are documented
+Required facts: grade_criteria_met
+
+Rule R-AE-SERIOUSNESS-01: assess synthetic SAE seriousness criteria separately from toxicity grade.
+Trigger: sae_criteria_met = true
+Branch SAE: WHEN sae_criteria_met = true THEN verify every serious criterion; confirm the reporting obligation
+Follow-up: record the serious criterion and reporting basis
+Completion: serious determination and reporting are reviewed by the responsible person
+Required facts: sae_criteria_met
+
+Rule R-AE-RELATEDNESS-01: require a separate synthetic investigator relatedness assessment.
+Trigger: present relatedness_assessment
+Branch REL: WHEN present relatedness_assessment THEN review the investigator relatedness; review the rationale
+Follow-up: retain the medical conclusion separately
+Completion: relatedness assessment and rationale are documented
+Required facts: relatedness_assessment
+
+Rule R-AE-EXPECTEDNESS-01: use the project-adopted reference safety information for expectedness.
+Trigger: present ib_version
+Branch EXP: WHEN present ib_version THEN compare the event term with the adopted reference safety information
+Follow-up: confirm the version applicable at event time
+Completion: expectedness and adopted version are documented
+Required facts: ib_version, expectedness_assessment
+
+Rule R-AESI-01: check a synthetic AESI list separately.
+Trigger: present aesi_list
+Branch AESI: WHEN present aesi_list THEN check the event term against the applicable AESI list
+Follow-up: record list version and source
+Completion: AESI list review is documented
+Required facts: aesi_list, ae_term
+
+Rule R-DLT-01: review a synthetic DLT criterion and assessment window.
+Trigger: present dlt_criteria
+Branch DLT: WHEN present dlt_criteria THEN check DLT criteria; check the applicable assessment window
+Follow-up: record treatment cycle and window
+Completion: DLT criteria, window and responsible review are documented
+Required facts: dlt_criteria, dlt_window
+
+Rule R-PD-01: review a synthetic protocol deviation candidate.
+Trigger: protocol_deviation_suspected = true
+Branch PD: WHEN protocol_deviation_suspected = true THEN verify PD criteria, reporting, correction
+Follow-up: keep reporting and correction as separate actions
+Completion: PD determination and independent actions are reviewed
+Required facts: protocol_deviation_suspected
+
+Rule R-SAE-TIMELINESS-01: keep synthetic safety event and reporting time anchors separate.
+Trigger: sae_criteria_met = true
+Branch TIME: WHEN sae_criteria_met = true THEN verify event date, awareness time, entry time, actual reporting time, project timeline
+Follow-up: do not infer a deadline when the awareness time or project timeline is absent
+Completion: time anchors and applicable reporting rule are documented
+Required facts: sae_criteria_met, safety_awareness_date, safety_reported_date

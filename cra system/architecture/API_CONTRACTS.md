@@ -24,7 +24,7 @@ API前缀/api/v1。身份来自获验证的OIDC会话；无正式身份源时只
 | M07 | POST /edc-imports/preview；POST /edc-imports/{id}/confirm | Excel快照、列映射、实例及导出范围确认；返回行级定位和错误 |
 | M08 | POST /lab-reports；POST /lab-fields/{id}/confirm-or-skip | 自动提取候选及源定位，结构/身份校验后可比较；低可信/歧义集中复核，候选不冒称CRA已核实 |
 | M08 | POST /lab-matches/preview；POST /lab-comparisons | 先核实对象和重复实例，再按批准单位/逻辑规则比对；歧义返回候选不自动挑最接近值 |
-| M09 | POST /assessments | 允许范围的事实、明确规则版本及上下文→候选分析、缺口、具体问题、引用，不直接改Action为完成 |
+| M09 | POST /safety-assessments | 允许范围的事实、明确规则版本及上下文→候选分析、缺口、具体问题、引用，不直接改Action为完成 |
 | M10 | POST /document-directories；GET /site-file-status；POST /file-verifications | ISF/TMF目录版本及现状→待补及复核状态 |
 | M11 | POST /letters/draft；POST /reports/draft；POST /reports/{id}/snapshot；POST /exports | 模板及选择条目→草稿/Excel；签发状态取实际操作，导出不等于发送 |
 | M12 | parse_document、extract_rules、recognize_lab、analyze_case | 受限适配器端口，结构化结果必须经过域层校验；不能直连数据库改业务状态 |
@@ -186,3 +186,18 @@ Issue聚合状态只用于展示；Action分别保存`open/reported_done/complet
 | `POST /api/v1/lab-comparisons/{id}/issues` | 用户选择非一致字段后创建`edc_correction`待办；不自动创建PD上报或完成整改 |
 
 比较值保留原文、Decimal和可选`< <= > >=`，不同/未知单位返回`unit_review`。原始报告没有缓存或无法解释的文本不猜成数值。确认/更正/跳过使报告revision前进；比较字段按有效来源状态返回`stale`，只有未变化字段可继续关联M06。`not_seen_in_export`沿用W07范围语义，不能改写为EDC漏录。SupportProfile、评估结果和未测范围见`validation/LAB_AUTOMATION_SCOPE.md`。
+
+## 14. W09已实现安全分析入口
+
+安全分析写命令要求有效会话、服务端项目/中心范围、CSRF及幂等键；读取前重新授权。程序使用W04已确认且按事件日生效的有限AST计算维度，模型只在允许解释模板与证据ID中选择，不决定维度、不关闭Action。
+
+| 接口 | 实现约束 |
+| --- | --- |
+| `POST /api/v1/safety-assessments` | 输入受试者、事件类型/日期、所需维度和可选检验比较ID；保存事实/规则快照、候选/unknown、具体问题、证据与及时线索 |
+| `GET /api/v1/safety-assessments/{id}` | 返回固定维度、CRA复核、医学答复、来源、provider状态和OutputEnvelope；不提供全局`clinical_safe`字段 |
+| `GET /api/v1/studies/{study_id}/safety-assessments?site_id=&subject_id=` | 只列授权中心内指定受试者的分析记录摘要 |
+| `POST /api/v1/safety-assessments/{id}/cra-review` | 追加CRA复核决定；`not_checked_by_user`通过M04/W05局部CheckDecision限定维度和事件日，不计正常 |
+| `POST /api/v1/safety-assessments/{id}/medical-response` | 独立保存研究者或医学人员答复，不覆盖系统候选或CRA复核 |
+| `POST /api/v1/safety-assessments/{id}/issues` | 用户选择维度后创建M06 `medical_clarification` Action；provider不能完成、上报或关闭该Action |
+
+分析记录不可变；CRA复核、医学答复和M06关联以独立记录追加。AE收集、分级、SAE严重性、相关性、预期性、AESI、DLT、PD及时报告分别保存。缺AESI/DLT/IB/知悉时间或项目时限时保持unknown，不从检验一致推断未发生AE或临床安全。模型自由文本、虚拟引用、越界数字/结论均被拒绝，程序问题和未知保留。
