@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import resource
 import sys
@@ -63,10 +64,27 @@ def main() -> int:
         raise ValueError("provider evaluation accepts only pure synthetic requests")
 
     import torch
+    from huggingface_hub import hf_hub_download
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     model_id = "Qwen/Qwen2.5-0.5B-Instruct"
     revision = "7ae557604adf67be50417f59c2c2f167def9a775"
+    model_sha256 = (
+        "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe"
+    )
+    weights_path = Path(
+        hf_hub_download(
+            model_id,
+            "model.safetensors",
+            revision=revision,
+        )
+    )
+    digest = hashlib.sha256()
+    with weights_path.open("rb") as weights:
+        for chunk in iter(lambda: weights.read(1024 * 1024), b""):
+            digest.update(chunk)
+    if digest.hexdigest() != model_sha256:
+        raise ValueError("pinned model weights hash mismatch")
     tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
@@ -99,6 +117,7 @@ def main() -> int:
                 "case_id": request["case_id"],
                 "raw_output": raw,
                 "elapsed_seconds": round(time.perf_counter() - started, 3),
+                "model_sha256": model_sha256,
             }
         )
     raw_rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss

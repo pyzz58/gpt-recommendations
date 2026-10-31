@@ -72,6 +72,11 @@ def _compare(
     left_decimal = _decimal(left_raw)
     right_decimal = _decimal(right_raw)
     if left_decimal is not None and right_decimal is not None:
+        if (left_unit or right_unit) and not (left_unit and right_unit):
+            return _unknown("required measurement unit is missing")
+        if left_unit and right_unit and left_unit != right_unit:
+            return _unknown(f"unit mismatch: {left_unit} != {right_unit}")
+    if left_decimal is not None and right_decimal is not None:
         comparable_left: Any = left_decimal
         comparable_right: Any = right_decimal
     else:
@@ -164,13 +169,17 @@ def evaluate_condition(
                 has_unknown = True
                 continue
             value, unit = candidate_value
-            if actual_unit and unit and actual_unit != unit:
-                has_unknown = True
-                continue
-            if actual_value == value:
-                return EvaluationResult(result="true")
             left_decimal = _decimal(actual_value)
             right_decimal = _decimal(value)
+            if left_decimal is not None and right_decimal is not None:
+                if (actual_unit or unit) and not (actual_unit and unit):
+                    has_unknown = True
+                    continue
+                if actual_unit and unit and actual_unit != unit:
+                    has_unknown = True
+                    continue
+            if actual_value == value:
+                return EvaluationResult(result="true")
             if (
                 left_decimal is not None
                 and right_decimal is not None
@@ -248,9 +257,7 @@ def evaluate_node(node: RuleNode, facts: dict[str, FactValue]) -> NodeEvaluation
         for reason in item.reasons
     ]
 
-    if any(item.result == "true" for item in exception_results):
-        status = "exception"
-    elif any(item.result == "false" for item in precondition_results):
+    if any(item.result == "false" for item in precondition_results):
         status = "not_applicable"
     elif any(item.result == "unknown" for item in precondition_results):
         status = "unknown"
@@ -258,6 +265,10 @@ def evaluate_node(node: RuleNode, facts: dict[str, FactValue]) -> NodeEvaluation
         status = "unknown"
     elif trigger_result.result == "false":
         status = "not_applicable"
+    elif any(item.result == "true" for item in exception_results):
+        status = "exception"
+    elif any(item.result == "unknown" for item in exception_results):
+        status = "unknown"
     else:
         status = "applicable"
 

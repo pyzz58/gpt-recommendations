@@ -155,9 +155,11 @@ ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping�
 迁移`0008_safety_assessment`增加：
 
 - `safety_assessments`：受试者、事件类型/日期、请求维度、事实/规则快照、provider版本/状态、受限解释、具体问题、及时提醒、unknown、Evidence与OutputEnvelope；数据库触发器禁止更新/删除。
+- 迁移`0009_review_remediation`增加可选`event_fact_id`及`fact_scope`：明确事件事实、重复实例及用户显式加入的相关事实，避免同一受试者多个AE互相混用。
 - `safety_dimension_results`：AE收集、分级、SAE严重性、相关性、预期性、AESI、DLT、PD和及时报告各自status、候选动作、unknown、规则版本、证据ID与SourceRef；不可变。
 - `safety_cra_reviews`：CRA append-only复核决定、所选维度及可选W05 CheckDecision引用；不修改系统候选。
 - `medical_safety_responses`：研究者/医学角色、实际答复、分维度答复和来源说明；与CRA复核分开且不可变。
 - `safety_issue_links`：安全分析到M06 Issue的显式关联及维度；不保存或自动改变Action完成状态。
+- `safety_provider_runs`：模型解释的独立持久运行、请求快照、租约、尝试、provider/model/权重哈希、原文输出、grounding结果和错误；模型结果不能覆盖确定性维度或修改Action。
 
-分析键绑定事实修订、适用规则版本、检验比较revision、provider和活动安全跳过决定。相同输入幂等复用；provider替换或新事实/规则/跳过范围可产生新分析，旧维度、复核和医学答复保留。模型解释Claim保持`inference/needs_review`，仅引用实际输入的证据ID，不能成为最终医学结论或自动完成依据。
+分析键绑定事件事实范围、事实修订、研究配置法域、适用规则版本、检验比较revision、provider和活动安全跳过决定。相同输入幂等复用；provider替换或新事实/规则/跳过范围可产生新分析，旧维度、复核和医学答复保留。模型解释只能产生独立provider run和`limited/validated=false`能力状态，不能成为最终医学结论或自动完成依据。

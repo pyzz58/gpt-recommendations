@@ -1,10 +1,13 @@
 """Replaceable, isolated local-model adapter for safety explanations."""
 from __future__ import annotations
 
+import hashlib
 import json
 import os
+import platform
 import shutil
 import subprocess
+import sys
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -21,6 +24,8 @@ class CaseModelResult:
     error: str | None = None
     elapsed_seconds: float | None = None
     max_rss_bytes: int | None = None
+    model_sha256: str | None = None
+    dependency_lock_sha256: str | None = None
 
 
 class CaseAnalysisProvider(Protocol):
@@ -41,6 +46,7 @@ class DisabledCaseAnalysisProvider:
                 provider_name=self.name,
                 provider_version=self.version,
                 model_version=None,
+                model_sha256=None,
                 status="unavailable",
                 raw_output=None,
                 error="analysis provider is not configured",
@@ -56,7 +62,9 @@ class LocalTransformersCaseAnalysisProvider:
     version = "1"
     model_id = "Qwen/Qwen2.5-0.5B-Instruct"
     model_revision = "7ae557604adf67be50417f59c2c2f167def9a775"
-
+    model_sha256 = (
+        "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe"
+    )
     def __init__(
         self,
         *,
@@ -67,6 +75,25 @@ class LocalTransformersCaseAnalysisProvider:
         self.enabled = enabled
         self.timeout_seconds = timeout_seconds
         self.project_root = project_root or Path(__file__).resolve().parents[3]
+
+    def _lock_path(self) -> Path:
+        return self.project_root / "provider-locks" / (
+            "analysis-macos-arm64-py312.txt"
+            if sys.platform == "darwin" and platform.machine() == "arm64"
+            else "analysis-linux-py312.txt"
+        )
+
+    @staticmethod
+    def _file_sha256(path: Path) -> str:
+        digest = hashlib.sha256()
+        with path.open("rb") as source:
+            for chunk in iter(lambda: source.read(1024 * 1024), b""):
+                digest.update(chunk)
+        return digest.hexdigest()
+
+    @property
+    def lock_sha256(self) -> str:
+        return self._file_sha256(self._lock_path())
 
     def analyze_batch(
         self, requests: list[dict[str, Any]]
@@ -82,6 +109,8 @@ class LocalTransformersCaseAnalysisProvider:
                     provider_name=self.name,
                     provider_version=self.version,
                     model_version=self.model_id,
+                    model_sha256=self.model_sha256,
+                    dependency_lock_sha256=self.lock_sha256,
                     status="failed",
                     raw_output=None,
                     error="uv executable is required",
@@ -102,12 +131,8 @@ class LocalTransformersCaseAnalysisProvider:
                 "--isolated",
                 "--python",
                 "3.12",
-                "--with",
-                "transformers==4.57.1",
-                "--with",
-                "torch==2.7.1",
-                "--with",
-                "safetensors==0.5.3",
+                "--with-requirements",
+                str(self._lock_path()),
                 "python",
                 "-m",
                 "cra_app.providers.case_worker",
@@ -122,6 +147,7 @@ class LocalTransformersCaseAnalysisProvider:
                 else ""
             )
             environment["TOKENIZERS_PARALLELISM"] = "false"
+            environment["UV_TORCH_BACKEND"] = "cpu"
             try:
                 completed = subprocess.run(
                     command,
@@ -137,6 +163,8 @@ class LocalTransformersCaseAnalysisProvider:
                         provider_name=self.name,
                         provider_version=self.version,
                         model_version=self.model_id,
+                        model_sha256=self.model_sha256,
+                        dependency_lock_sha256=self.lock_sha256,
                         status="failed",
                         raw_output=None,
                         error="local analysis model timed out",
@@ -150,6 +178,8 @@ class LocalTransformersCaseAnalysisProvider:
                         provider_name=self.name,
                         provider_version=self.version,
                         model_version=self.model_id,
+                        model_sha256=self.model_sha256,
+                        dependency_lock_sha256=self.lock_sha256,
                         status="failed",
                         raw_output=None,
                         error=error,
@@ -171,6 +201,8 @@ class LocalTransformersCaseAnalysisProvider:
                         provider_name=self.name,
                         provider_version=self.version,
                         model_version=self.model_id,
+                        model_sha256=self.model_sha256,
+                        dependency_lock_sha256=self.lock_sha256,
                         status="failed",
                         raw_output=None,
                         error="local analysis model returned no structured result",
@@ -185,6 +217,8 @@ class LocalTransformersCaseAnalysisProvider:
                         provider_name=self.name,
                         provider_version=self.version,
                         model_version=self.model_id,
+                        model_sha256=self.model_sha256,
+                        dependency_lock_sha256=self.lock_sha256,
                         status="failed",
                         raw_output=None,
                         error="local analysis model returned invalid JSON envelope",
@@ -201,6 +235,8 @@ class LocalTransformersCaseAnalysisProvider:
                         provider_name=self.name,
                         provider_version=self.version,
                         model_version=self.model_id,
+                        model_sha256=self.model_sha256,
+                        dependency_lock_sha256=self.lock_sha256,
                         status="failed",
                         raw_output=None,
                         error="result missing for case",
@@ -214,6 +250,10 @@ class LocalTransformersCaseAnalysisProvider:
                     model_version=(
                         f"{self.model_id}@{self.model_revision}"
                     ),
+                    model_sha256=(
+                        raw_result.get("model_sha256") or self.model_sha256
+                    ),
+                    dependency_lock_sha256=self.lock_sha256,
                     status="completed",
                     raw_output=str(raw_result.get("raw_output") or ""),
                     error=raw_result.get("error"),

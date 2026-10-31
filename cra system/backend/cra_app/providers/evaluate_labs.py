@@ -255,6 +255,9 @@ def _evaluate_artifact(
         "format_kind": artifact["format_kind"],
         "provider": result.provider_name,
         "provider_version": result.provider_version,
+        "model_version": result.model_version,
+        "model_sha256": result.model_sha256,
+        "dependency_lock_sha256": result.dependency_lock_sha256,
         "input_sha256": digest,
         "expected_rows": len(expected_rows),
         "recognized_rows": len(draft.rows),
@@ -299,6 +302,13 @@ def _evaluate_artifact(
                     row["coordinates"]
                     for row in key_checks
                 )
+                and (
+                    artifact.get("format_kind") != "clear_printed_image"
+                    or (
+                        result.model_sha256 is not None
+                        and result.dependency_lock_sha256 is not None
+                    )
+                )
             )
             else "failed"
         ),
@@ -327,15 +337,43 @@ def main() -> int:
     edc_records = _records_from_edc(
         dataset_path.parent / evaluation["edc_artifact"]
     )
-    results = [
-        _evaluate_artifact(
-            root,
-            artifact,
-            evaluation["rows"],
-            edc_records,
+    results = []
+    for artifact in artifacts:
+        expected_path = dataset_path.parent / artifact.get(
+            "expected_file", "labs/evaluation_cases.json"
         )
-        for artifact in artifacts
-    ]
+        expected_payload = json.loads(
+            expected_path.read_text(encoding="utf-8")
+        )
+        if artifact["artifact_id"] == "LAB-REPORT-ZH-CONTEXT-EVAL":
+            context = expected_payload["expected"]["report_context"]
+            expected_rows = [
+                {
+                    "subject_external_id": context["subject_external_id"],
+                    "visit_key": None,
+                    "analyte": row["analyte"],
+                    "value_raw": row["value_raw"],
+                    "unit_raw": row["unit"],
+                    "collected_on": context["collected_on"],
+                    "collected_time": None,
+                    "instance_type": context["instance_type"],
+                    "specimen": None,
+                    "report_revision": context["report_revision"],
+                    "lower_limit": row["lower_limit"],
+                    "upper_limit": row["upper_limit"],
+                }
+                for row in expected_payload["expected"]["rows"]
+            ]
+        else:
+            expected_rows = expected_payload["rows"]
+        results.append(
+            _evaluate_artifact(
+                root,
+                artifact,
+                expected_rows,
+                edc_records,
+            )
+        )
     passed = all(result["status"] == "passed" for result in results)
     payload = {
         "schema_version": 1,

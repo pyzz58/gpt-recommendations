@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import os
 import uuid
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -44,7 +45,9 @@ from cra_app.rules.models import (
     RuleVersion,
 )
 from cra_app.rules.service import (
+    CreateActivationCommand,
     ExtractRuleCommand,
+    ApplicableRuleQuery,
     RuleService,
     RuleValidationError,
 )
@@ -711,6 +714,188 @@ class _StaticProvider:
 
     def extract_rules(self, *, anchors):
         return self.result
+
+
+def test_shared_project_rule_can_have_independent_site_adoption_dates(
+    services: dict,
+):
+    content = (
+        "Rule R-CENTER-ADOPTION-01: Apply the synthetic center adoption rule.\n"
+        "Trigger: center_ready = true\n"
+        "Branch A: WHEN center_ready = true THEN require center review\n"
+        "Required facts: center_ready\n"
+    ).encode()
+    upload = services["documents"].create_document(
+        services["admin"],
+        services["study"],
+        CreateDocumentCommand(
+            expected_revision=0,
+            idempotency_key="center-shared-document",
+            site_id=None,
+            title="Synthetic shared project protocol",
+            document_type="protocol",
+            purpose="rule",
+            version_label="v1",
+        ),
+        filename="synthetic_shared_protocol.txt",
+        content=content,
+    )
+    assert services["documents"].process_job(upload.job_id).status == "completed"
+    extraction = services["rules"].extract_candidates(
+        services["admin"],
+        upload.document_version_id,
+        ExtractRuleCommand(idempotency_key="center-shared-extract"),
+    )
+    assert extraction.confirmed_count == 1
+    for key, site in (
+        ("center-a-start", services["site_a"]),
+        ("center-b-start", services["site_b"]),
+    ):
+        starts_on = "2026-01-01" if site == services["site_a"] else "2026-02-01"
+        outcome = services["rules"].create_activation(
+            services["admin"],
+            CreateActivationCommand(
+                expected_revision=0,
+                idempotency_key=key,
+                document_version_id=upload.document_version_id,
+                site_id=site,
+                starts_on=date.fromisoformat(starts_on),
+                reason="Synthetic center-specific adoption date",
+            ),
+        )
+        assert outcome.conflicts == ()
+
+    scope_a = ScopeContext(
+        actor_id="synthetic-cra-a",
+        tenant_id="synthetic-tenant",
+        authentication_source="trusted-test",
+    )
+    scope_b = ScopeContext(
+        actor_id="synthetic-cra-b",
+        tenant_id="synthetic-tenant",
+        authentication_source="trusted-test",
+    )
+
+    def active(scope, site, value):
+        return services["rules"].applicable_rules(
+            scope,
+            ApplicableRuleQuery(
+                study_id=services["study"],
+                site_id=site,
+                event_date=date.fromisoformat(value),
+                facts={"center_ready": FactValue(value=True)},
+            ),
+        )
+
+    assert active(scope_a, services["site_a"], "2026-01-15").rules
+    assert not active(scope_b, services["site_b"], "2026-01-15").rules
+    assert active(scope_b, services["site_b"], "2026-02-15").rules
+
+
+def test_natural_chinese_rule_prose_becomes_reviewable_candidate(
+    services: dict,
+):
+    cra = ScopeContext(
+        actor_id="synthetic-cra-a",
+        tenant_id="synthetic-tenant",
+        authentication_source="trusted-test",
+    )
+    upload = services["documents"].create_document(
+        cra,
+        services["study"],
+        CreateDocumentCommand(
+            expected_revision=0,
+            idempotency_key="natural-chinese-rule",
+            site_id=services["site_a"],
+            title="Synthetic natural Chinese rule email",
+            document_type="text",
+            purpose="rule",
+            version_label="v1",
+        ),
+        filename="synthetic_natural_rule.txt",
+        content=(
+            "严重不良事件必须在获知后及时上报，"
+            "并核实研究者相关性和预期性。"
+        ).encode(),
+    )
+    assert services["documents"].process_job(upload.job_id).status == "completed"
+    extraction = services["rules"].extract_candidates(
+        cra,
+        upload.document_version_id,
+        ExtractRuleCommand(idempotency_key="natural-chinese-extract"),
+    )
+    assert extraction.candidate_count == 1
+    rules = services["rules"].list_rules(
+        cra, services["study"], services["site_a"]
+    )
+    natural = next(item for item in rules if item.rule.rule_key.startswith("NAT-"))
+    assert natural.current_version is not None
+    tree = RuleNode.model_validate(natural.current_version.tree)
+    assert tree.semantic_status == "analysis_required"
+    assert "seriousness" in tree.purpose_tags
+    coverage = services["rules"].list_extraction_coverage(
+        cra, extraction.snapshot_id
+    )
+    assert any(item.status == "analysis_required" for item in coverage)
+
+
+def test_natural_chinese_paragraph_table_footnote_and_qa_are_preserved(
+    services: dict,
+):
+    cra = ScopeContext(
+        actor_id="synthetic-cra-a",
+        tenant_id="synthetic-tenant",
+        authentication_source="trusted-test",
+    )
+    content = """研究方案沟通记录（纯合成）
+严重不良事件应在获知后及时上报，并由研究者完成相关性判断。
+访视表
+筛选期：需核对入排标准并记录来源。
+治疗期：必须记录剂量调整原因。
+注：发生SAE时必须在24小时内通知申办方。
+问：DLT如何判定？
+答：应按当前版本剂量限制性毒性定义核实，不得自行推断。
+"""
+    upload = services["documents"].create_document(
+        cra,
+        services["study"],
+        CreateDocumentCommand(
+            expected_revision=0,
+            idempotency_key="natural-chinese-context-rule",
+            site_id=services["site_a"],
+            title="Synthetic natural Chinese protocol discussion",
+            document_type="text",
+            purpose="rule",
+            version_label="v1",
+        ),
+        filename="synthetic_natural_protocol_discussion.txt",
+        content=content.encode(),
+    )
+    assert services["documents"].process_job(upload.job_id).status == "completed"
+    extraction = services["rules"].extract_candidates(
+        cra,
+        upload.document_version_id,
+        ExtractRuleCommand(idempotency_key="natural-chinese-context-extract"),
+    )
+    assert extraction.candidate_count >= 5
+    rules = services["rules"].list_rules(
+        cra, services["study"], services["site_a"]
+    )
+    natural = [
+        RuleNode.model_validate(item.current_version.tree)
+        for item in rules
+        if item.current_version is not None
+        and item.rule.rule_key.startswith("NAT-")
+    ]
+    assert len(natural) >= 5
+    assert all(item.semantic_status == "analysis_required" for item in natural)
+    assert all(item.source_refs for item in natural)
+    assert any("seriousness" in item.purpose_tags for item in natural)
+    assert any("dlt" in item.purpose_tags for item in natural)
+    assert any(
+        any("问：" in ref.quote for ref in item.source_refs)
+        for item in natural
+    )
 
 
 def test_fake_anchor_and_numeric_invention_are_rejected(

@@ -39,6 +39,10 @@ class CreateSafetyAssessmentCommand(SafetyContract):
     subject_id: uuid.UUID
     event_type: SafetyEventType
     event_date: date
+    event_fact_id: uuid.UUID | None = None
+    related_fact_ids: list[uuid.UUID] = Field(
+        default_factory=list, max_length=200
+    )
     requested_dimensions: list[SafetyDimension] = Field(
         default_factory=list, max_length=32
     )
@@ -49,6 +53,15 @@ class CreateSafetyAssessmentCommand(SafetyContract):
     def validate_dimensions(self) -> "CreateSafetyAssessmentCommand":
         if len(self.requested_dimensions) != len(set(self.requested_dimensions)):
             raise ValueError("requested_dimensions must be unique")
+        if len(self.related_fact_ids) != len(set(self.related_fact_ids)):
+            raise ValueError("related_fact_ids must be unique")
+        if (
+            self.event_fact_id is not None
+            and self.event_fact_id in self.related_fact_ids
+        ):
+            raise ValueError(
+                "event_fact_id cannot also appear in related_fact_ids"
+            )
         return self
 
 

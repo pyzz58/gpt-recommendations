@@ -8,10 +8,12 @@ from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
+from openpyxl import load_workbook
 from sqlalchemy import func, select, text
 from sqlalchemy.exc import SQLAlchemyError
 
 from cra_app.governance.identity import SyntheticIdentityProvider
+from cra_app.documents.worker import build_worker_app
 from cra_app.governance.service import (
     AuthorizationDenied,
     CreateSite,
@@ -313,6 +315,7 @@ def _import_facts(
     *,
     facts: dict[str, object],
     key: str,
+    repeat_instance: str = "AE1",
 ) -> None:
     rows = []
     for fact_key, value in facts.items():
@@ -331,6 +334,7 @@ def _import_facts(
                     else "string"
                 ),
                 "observed_on": "2026-09-30",
+                "repeat_instance": repeat_instance,
                 "source_kind": "original_record",
                 "source_ref": {
                     "source_type": "record",
@@ -355,6 +359,172 @@ def _import_facts(
     assert imported.status_code == 200, imported.text
 
 
+def test_safety_facts_are_scoped_to_the_selected_event_instance(
+    api: TestClient,
+    application,
+    workspace: dict,
+):
+    subject_id, _, _ = _bootstrap_subject_and_rules(
+        api, application, workspace
+    )
+    _import_facts(
+        api,
+        workspace,
+        facts={
+            "ae_term": "synthetic headache event one",
+            "grade_criteria_met": True,
+        },
+        key="w09-event-one-facts",
+        repeat_instance="AE1",
+    )
+    _import_facts(
+        api,
+        workspace,
+        facts={
+            "ae_term": "synthetic rash event two",
+            "grade_criteria_met": False,
+            "sae_criteria_met": True,
+        },
+        key="w09-event-two-facts",
+        repeat_instance="AE2",
+    )
+    timeline = api.get(f"/api/v1/subjects/{subject_id}/timeline").json()
+    event_one = next(
+        item
+        for item in timeline
+        if item["is_current"]
+        and item["fact_key"] == "ae_term"
+        and item["repeat_instance"] == "AE1"
+    )
+    event_two = next(
+        item
+        for item in timeline
+        if item["is_current"]
+        and item["fact_key"] == "ae_term"
+        and item["repeat_instance"] == "AE2"
+    )
+    body = _create_assessment(
+        api,
+        workspace,
+        subject_id,
+        key="w09-event-scoped",
+        requested_dimensions=["ae_collection", "grade", "seriousness"],
+        event_fact_id=event_one["id"],
+    )
+    selected_ids = {
+        item["fact_id"] for item in body["context_snapshot"]["facts"]
+    }
+    assert event_one["id"] in selected_ids
+    assert event_two["id"] not in selected_ids
+    assert body["event_fact_id"] == event_one["id"]
+    assert body["fact_scope"]["event_repeat_instance"] == "AE1"
+    assert _dimension(body, "grade")["status"] == "candidate"
+    assert _dimension(body, "seriousness")["status"] == "unknown"
+
+
+def test_safety_accepts_historical_related_context_without_promoting_it(
+    api: TestClient,
+    application,
+    workspace: dict,
+):
+    subject_id, _, _ = _bootstrap_subject_and_rules(
+        api, application, workspace
+    )
+    _import_facts(
+        api,
+        workspace,
+        facts={"ae_term": "synthetic historical relatedness event"},
+        key="w09-history-event",
+        repeat_instance="EVT-HISTORY",
+    )
+    _import_facts(
+        api,
+        workspace,
+        facts={"sae_criteria_met": True},
+        key="w09-history-related-first",
+        repeat_instance="UNRELATED-EVENT",
+    )
+    first_timeline = api.get(
+        f"/api/v1/subjects/{subject_id}/timeline"
+    ).json()
+    historical_related = next(
+        item
+        for item in first_timeline
+        if item["fact_key"] == "sae_criteria_met"
+        and item["repeat_instance"] == "UNRELATED-EVENT"
+    )
+    _import_facts(
+        api,
+        workspace,
+        facts={"sae_criteria_met": False},
+        key="w09-history-related-second",
+        repeat_instance="UNRELATED-EVENT",
+    )
+    event_fact_id = next(
+        item["id"]
+        for item in api.get(
+            f"/api/v1/subjects/{subject_id}/timeline"
+        ).json()
+        if item["is_current"]
+        and item["fact_key"] == "ae_term"
+        and item["repeat_instance"] == "EVT-HISTORY"
+    )
+    body = _create_assessment(
+        api,
+        workspace,
+        subject_id,
+        key="w09-history-related-context",
+        requested_dimensions=["ae_collection", "seriousness"],
+        event_fact_id=event_fact_id,
+        related_fact_ids=[historical_related["id"]],
+    )
+    historical = next(
+        item
+        for item in body["context_snapshot"]["facts"]
+        if item["fact_id"] == historical_related["id"]
+    )
+    assert historical["is_current"] is False
+    assert historical["scope_role"] == "related_history"
+    assert historical["deterministic"] is False
+    assert historical_related["id"] in body["fact_scope"]["related_fact_ids"]
+    assert _dimension(body, "seriousness")["status"] == "unknown"
+
+
+def test_blank_repeat_instance_does_not_pull_in_other_events(
+    api: TestClient,
+    application,
+    workspace: dict,
+):
+    subject_id, _, _ = _bootstrap_subject_and_rules(
+        api, application, workspace
+    )
+    _import_facts(
+        api,
+        workspace,
+        facts={"ae_term": "synthetic unscoped event"},
+        key="w09-blank-event",
+        repeat_instance="_",
+    )
+    _import_facts(
+        api,
+        workspace,
+        facts={"grade_criteria_met": True},
+        key="w09-unrelated-grade",
+        repeat_instance="OTHER-EVENT",
+    )
+    body = _create_assessment(
+        api,
+        workspace,
+        subject_id,
+        key="w09-blank-instance-scope",
+        requested_dimensions=["ae_collection", "grade"],
+    )
+    assert _dimension(body, "ae_collection")["status"] == "candidate"
+    assert _dimension(body, "grade")["status"] == "unknown"
+    assert body["fact_scope"]["event_repeat_instance"] == "_"
+    assert len(body["fact_scope"]["selected_fact_ids"]) == 1
+
+
 def _assessment_command(
     workspace: dict,
     subject_id: str,
@@ -363,6 +533,8 @@ def _assessment_command(
     event_type: str = "adverse_event",
     requested_dimensions: list[str] | None = None,
     lab_comparison_id: str | None = None,
+    event_fact_id: str | None = None,
+    related_fact_ids: list[str] | None = None,
     event_date: str = "2026-10-01",
 ) -> dict:
     return {
@@ -373,6 +545,8 @@ def _assessment_command(
         "subject_id": subject_id,
         "event_type": event_type,
         "event_date": event_date,
+        "event_fact_id": event_fact_id,
+        "related_fact_ids": related_fact_ids or [],
         "requested_dimensions": requested_dimensions
         or [
             "ae_collection",
@@ -396,7 +570,20 @@ def _create_assessment(
     event_type: str = "adverse_event",
     requested_dimensions: list[str] | None = None,
     lab_comparison_id: str | None = None,
+    event_fact_id: str | None = None,
+    related_fact_ids: list[str] | None = None,
 ) -> dict:
+    if (
+        event_fact_id is None
+        and event_type in {"adverse_event", "serious_event_review", "mixed"}
+    ):
+        timeline = api.get(f"/api/v1/subjects/{subject_id}/timeline")
+        assert timeline.status_code == 200, timeline.text
+        event_fact_id = next(
+            item["id"]
+            for item in timeline.json()
+            if item["is_current"] and item["fact_key"] == "ae_term"
+        )
     response = api.post(
         "/api/v1/safety-assessments",
         json=_assessment_command(
@@ -406,6 +593,8 @@ def _create_assessment(
             event_type=event_type,
             requested_dimensions=requested_dimensions,
             lab_comparison_id=lab_comparison_id,
+            event_fact_id=event_fact_id,
+            related_fact_ids=related_fact_ids,
         ),
         headers=_csrf(api),
     )
@@ -456,6 +645,14 @@ def test_dimensions_timely_alert_reviews_issue_and_immutability(
         unknown["code"] == "provider:not_configured"
         for unknown in body["unknowns"]
     )
+    assert any(
+        unknown["code"].startswith("upstream_common_policy_unknown")
+        for unknown in body["unknowns"]
+    )
+    assert body["provider_output"]["accepted"] is False
+    capability = body["output_envelope"]["capabilities"][0]
+    assert capability["level"] == "limited"
+    assert capability["validated"] is False
     fact_claims = [
         claim
         for claim in body["output_envelope"]["claims"]
@@ -687,6 +884,124 @@ class _InvalidReferenceProvider:
         ]
 
 
+class _QueuedExplanationProvider:
+    name = "queued-test-provider"
+    version = "1"
+    model_id = "synthetic-explanation"
+    model_sha256 = "a" * 64
+    lock_sha256 = "b" * 64
+
+    def analyze_batch(self, requests):
+        return [
+            CaseModelResult(
+                provider_name=self.name,
+                provider_version=self.version,
+                model_version=self.model_id,
+                model_sha256=self.model_sha256,
+                dependency_lock_sha256=self.lock_sha256,
+                status="completed",
+                raw_output=json.dumps(
+                    {
+                        "explanation_code": request[
+                            "allowed_explanation_codes"
+                        ][0],
+                        "evidence_ids": [
+                            request["evidence"][0]["evidence_id"]
+                        ],
+                    }
+                ),
+            )
+            for request in requests
+        ]
+
+
+def test_safety_provider_runs_as_a_separate_recoverable_job(
+    api: TestClient,
+    application,
+    workspace: dict,
+    session_factory,
+):
+    subject_id, _, _ = _bootstrap_subject_and_rules(
+        api, application, workspace
+    )
+    _import_facts(
+        api,
+        workspace,
+        facts={
+            "ae_term": "synthetic queued explanation",
+            "grade_criteria_met": True,
+        },
+        key="w09-queued-provider-facts",
+    )
+    event_fact_id = next(
+        item["id"]
+        for item in api.get(
+            f"/api/v1/subjects/{subject_id}/timeline"
+        ).json()
+        if item["is_current"] and item["fact_key"] == "ae_term"
+    )
+    governed = application.state
+    service = SafetyService(
+        session_factory,
+        governance=governed.governance_service,
+        rules=governed.rule_service,
+        subjects=governed.subject_service,
+        issues=governed.issue_service,
+        laboratory=governed.laboratory_service,
+        provider=_QueuedExplanationProvider(),
+        defer_provider=True,
+        queue=governed.document_service.queue,
+    )
+    detail = service.create(
+        _scope_a(),
+        CreateSafetyAssessmentCommand.model_validate(
+            _assessment_command(
+                workspace,
+                subject_id,
+                key="w09-queued-provider",
+                requested_dimensions=["ae_collection", "grade"],
+                event_fact_id=event_fact_id,
+            )
+        ),
+    )
+    assert detail.assessment.provider_status == "queued"
+    assert len(detail.provider_runs) == 1
+    run = detail.provider_runs[0]
+    assert run.status == "queued"
+    assert run.request_payload["source"] == "pure_synthetic"
+    assert run.model_sha256 == "a" * 64
+    assert run.dependency_lock_sha256 == "b" * 64
+    with session_factory() as session:
+        assert session.scalar(
+            text(
+                "SELECT count(*) FROM procrastinate_jobs "
+                "WHERE task_name = 'cra.safety.analyze'"
+            )
+        ) == 1
+    worker = build_worker_app(
+        governed.document_service,
+        os.environ["CRA_TEST_DATABASE_URL"],
+        governed.laboratory_service,
+        service,
+    )
+    worker.run_worker(queues=["safety"], concurrency=1, wait=False)
+    completed = service.detail(_scope_a(), detail.assessment.id)
+    assert len(completed.provider_runs) == 1
+    assert completed.provider_runs[0].status == "completed"
+    assert completed.provider_runs[0].accepted is True
+    assert completed.provider_runs[0].evidence_ids
+    assert completed.provider_runs[0].dependency_lock_sha256 == "b" * 64
+    api_view = api.get(
+        f"/api/v1/safety-assessments/{detail.assessment.id}"
+    )
+    assert api_view.status_code == 200, api_view.text
+    assert api_view.json()["provider_status"] == "completed"
+    assert api_view.json()["provider_runs"][0]["status"] == "completed"
+    assert api_view.json()["provider_runs"][0][
+        "dependency_lock_sha256"
+    ] == "b" * 64
+
+
 def test_invalid_provider_reference_is_rejected_without_decision(
     api: TestClient,
     application,
@@ -706,6 +1021,13 @@ def test_invalid_provider_reference_is_rejected_without_decision(
         key="w09-facts-invalid-provider",
     )
     governed = application.state
+    event_fact_id = next(
+        item["id"]
+        for item in api.get(
+            f"/api/v1/subjects/{subject_id}/timeline"
+        ).json()
+        if item["is_current"] and item["fact_key"] == "ae_term"
+    )
     service = SafetyService(
         session_factory,
         governance=governed.governance_service,
@@ -723,6 +1045,7 @@ def test_invalid_provider_reference_is_rejected_without_decision(
                 subject_id,
                 key="w09-invalid-provider",
                 requested_dimensions=["grade", "seriousness"],
+                    event_fact_id=event_fact_id,
             )
         ),
     )
@@ -843,7 +1166,18 @@ def test_laboratory_difference_generates_specific_question_not_safe_conclusion(
         },
         headers={**_csrf(api), "Idempotency-Key": "w09-lab-report"},
     )
-    assert report.status_code == 200, report.text
+    assert report.status_code == 202, report.text
+    queued_report = report.json()
+    application.state.laboratory_service.process_recognition_job(
+        _scope_a(),
+        uuid.UUID(queued_report["recognition_job_id"]),
+        worker_id="synthetic-w09-lab-worker",
+    )
+    report_detail = api.get(
+        f"/api/v1/lab-reports/{queued_report['id']}"
+    )
+    assert report_detail.status_code == 200, report_detail.text
+    report = report_detail
     comparison = api.post(
         "/api/v1/lab-comparisons",
         json={
@@ -870,9 +1204,238 @@ def test_laboratory_difference_generates_specific_question_not_safe_conclusion(
     )
     assert any(
         "AE线索" in item["question"]
-        and "数值一致或差异均不等于医学安全结论" in item["question"]
+        and "系统未据数据一致或差异直接认定AE" in item["question"]
         for item in body["questions"]
     )
     serialized = json.dumps(body, ensure_ascii=False).casefold()
     assert "clinical_safe" not in serialized
     assert "completion_allowed\": true" not in serialized
+
+    report_body = report.json()
+    glucose = next(
+        item
+        for item in report_body["observations"]
+        if item["analyte"] == "Glucose"
+    )
+    corrected = api.post(
+        (
+            f"/api/v1/lab-reports/{report_body['id']}/observations/"
+            f"{glucose['id']}/decision"
+        ),
+        json={
+            "expected_revision": report_body["revision"],
+            "idempotency_key": "w09-lab-correct-glucose",
+            "action": "correct",
+            "corrected_fields": {"value_raw": "5.2"},
+            "note": "Synthetic correction makes the old comparison stale",
+        },
+        headers=_csrf(api),
+    )
+    assert corrected.status_code == 200, corrected.text
+    stale_attempt = api.post(
+        "/api/v1/safety-assessments",
+        json=_assessment_command(
+            workspace,
+            subject_id,
+            key="w09-lab-stale-attempt",
+            event_type="laboratory_logic",
+            requested_dimensions=["ae_collection"],
+            lab_comparison_id=comparison.json()["id"],
+        ),
+        headers=_csrf(api),
+    )
+    assert stale_attempt.status_code == 422, stale_attempt.text
+    assert "stale" in stale_attempt.json()["error"]["message"]
+
+    corrected_body = corrected.json()
+    alt = next(
+        item
+        for item in corrected_body["observations"]
+        if item["analyte"] == "ALT"
+    )
+    skipped = api.post(
+        (
+            f"/api/v1/lab-reports/{report_body['id']}/observations/"
+            f"{alt['id']}/decision"
+        ),
+        json={
+            "expected_revision": corrected_body["revision"],
+            "idempotency_key": "w09-lab-skip-alt",
+            "action": "skip",
+            "note": "Synthetic field-specific skip",
+        },
+        headers=_csrf(api),
+    )
+    assert skipped.status_code == 200, skipped.text
+    refreshed_comparison = api.post(
+        "/api/v1/lab-comparisons",
+        json={
+            "expected_revision": 0,
+            "idempotency_key": "w09-lab-comparison-refreshed",
+            "report_id": report_body["id"],
+            "edc_snapshot_id": snapshot.json()["id"],
+        },
+        headers=_csrf(api),
+    )
+    assert refreshed_comparison.status_code == 200, refreshed_comparison.text
+    scoped = _create_assessment(
+        api,
+        workspace,
+        subject_id,
+        key="w09-lab-scoped-skip",
+        event_type="laboratory_logic",
+        requested_dimensions=["ae_collection"],
+        lab_comparison_id=refreshed_comparison.json()["id"],
+    )
+    assert any(
+        item["code"].startswith("laboratory_not_checked:")
+        for item in scoped["output_envelope"]["not_checked"]
+    )
+    assert all(
+        alt["id"] not in item["question_key"]
+        for item in scoped["questions"]
+    )
+
+
+def test_consistent_abnormal_lab_result_remains_a_safety_lead(
+    api: TestClient,
+    application,
+    workspace: dict,
+    tmp_path,
+):
+    subject_id, _, _ = _bootstrap_subject_and_rules(
+        api, application, workspace
+    )
+    workbook_path = tmp_path / "synthetic_abnormal_export.xlsx"
+    workbook = load_workbook(EDC_XLSX)
+    hematology = workbook["Hematology"]
+    for row in range(2, hematology.max_row + 1):
+        if (
+            hematology.cell(row, 1).value == "SYN-EDC-001"
+            and hematology.cell(row, 3).value == "Hemoglobin"
+            and hematology.cell(row, 8).value == "Initial"
+        ):
+            hematology.cell(row, 4).value = 170
+            break
+    workbook.save(workbook_path)
+    preview = api.post(
+        f"/api/v1/studies/{workspace['study']}/edc-imports/preview",
+        files={
+            "file": (
+                workbook_path.name,
+                workbook_path.read_bytes(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+        },
+        data={
+            "site_id": str(workspace["site_a"]),
+            "title": "Synthetic abnormal consistent EDC",
+            "export_scope_json": json.dumps(
+                {
+                    "status": "declared",
+                    "forms": ["Hematology", "Chemistry"],
+                    "subjects": ["SYN-EDC-001"],
+                    "sites": ["A01"],
+                    "filters": {},
+                    "declared_complete": False,
+                }
+            ),
+            "included_sheets_json": json.dumps(
+                ["Hematology", "Chemistry"]
+            ),
+            "identity_namespace": "edc",
+        },
+        headers={**_csrf(api), "Idempotency-Key": "w09-abnormal-edc-preview"},
+    )
+    assert preview.status_code == 200, preview.text
+    preview_body = preview.json()
+    snapshot = api.post(
+        f"/api/v1/edc-imports/{preview_body['id']}/confirm",
+        json={
+            "expected_revision": preview_body["revision"],
+            "idempotency_key": "w09-abnormal-edc-confirm",
+            "mapping": _edc_mapping(),
+            "identity_namespace": "edc",
+        },
+        headers=_csrf(api),
+    )
+    assert snapshot.status_code == 200, snapshot.text
+    report = api.post(
+        f"/api/v1/studies/{workspace['study']}/lab-reports",
+        files={"file": (LAB_PDF.name, LAB_PDF.read_bytes(), "application/pdf")},
+        data={
+            "site_id": str(workspace["site_a"]),
+            "title": "Synthetic abnormal source report",
+            "version_label": "v1",
+        },
+        headers={**_csrf(api), "Idempotency-Key": "w09-abnormal-report"},
+    )
+    assert report.status_code == 202, report.text
+    queued = report.json()
+    application.state.laboratory_service.process_recognition_job(
+        _scope_a(),
+        uuid.UUID(queued["recognition_job_id"]),
+        worker_id="synthetic-abnormal-worker",
+    )
+    recognized = api.get(f"/api/v1/lab-reports/{queued['id']}").json()
+    hemoglobin = next(
+        item
+        for item in recognized["observations"]
+        if item["analyte"] == "Hemoglobin"
+        and item["instance_type"] == "initial"
+    )
+    corrected = api.post(
+        (
+            f"/api/v1/lab-reports/{recognized['id']}/observations/"
+            f"{hemoglobin['id']}/decision"
+        ),
+        json={
+            "expected_revision": recognized["revision"],
+            "idempotency_key": "w09-abnormal-source-correction",
+            "action": "correct",
+            "corrected_fields": {"value_raw": "170"},
+            "note": "Synthetic abnormal source value",
+        },
+        headers=_csrf(api),
+    )
+    assert corrected.status_code == 200, corrected.text
+    comparison = api.post(
+        "/api/v1/lab-comparisons",
+        json={
+            "expected_revision": 0,
+            "idempotency_key": "w09-abnormal-comparison",
+            "report_id": recognized["id"],
+            "edc_snapshot_id": snapshot.json()["id"],
+        },
+        headers=_csrf(api),
+    )
+    assert comparison.status_code == 200, comparison.text
+    field = next(
+        item
+        for item in comparison.json()["fields"]
+        if item["observation_id"] == hemoglobin["id"]
+    )
+    assert field["result_status"] == "agreement"
+    assert any(
+        result["field"] == "reference_range_flag"
+        and result["source"] == "above_range"
+        and result["edc"] == "above_range"
+        for result in field["field_results"]
+    )
+    assessment = _create_assessment(
+        api,
+        workspace,
+        subject_id,
+        key="w09-consistent-abnormal",
+        event_type="laboratory_logic",
+        requested_dimensions=["ae_collection"],
+        lab_comparison_id=comparison.json()["id"],
+    )
+    assert any(
+        "报告范围线索" in item["question"]
+        for item in assessment["questions"]
+    )
+    assert any(
+        item["code"].startswith("laboratory_above_range:")
+        for item in assessment["unknowns"]
+    )

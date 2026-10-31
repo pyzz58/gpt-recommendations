@@ -56,3 +56,5 @@ PaddleOCR/表格结构为首候选，Docling作对照；界面复用AG Grid Comm
 - 差异可显式关联M06的`edc_correction`待办，保留比较范围、未知和来源；关联动作本身不完成问题。
 
 W08支持的合成范围、关键字段结果、耗时和限制见[LAB_AUTOMATION_SCOPE](../../validation/LAB_AUTOMATION_SCOPE.md)。该证据是synthetic/provider工程验证，不是真实临床性能或全版式支持。
+
+2026-11-01复核补充：人工更正按完整有效决策链折叠，confirm不会恢复原OCR值；参考上下限和报告级上下文分别保留。检验上传改为持久Job/Outbox/Procrastinate worker，带租约和显式重试；页眉身份/日期可一次校验后供不重复这些字段的结果行复用。隔离Docling环境使用`provider-locks/ocr-*.txt`完整哈希锁。

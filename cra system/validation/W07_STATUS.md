@@ -1,6 +1,6 @@
 # CRA-W07 completion record
 
-Status: verified. Date: 2026-10-31.
+Status: revalidation in progress for the 2026-11-01 review remediation.
 
 Revalidated after W08 added optional EDC report-revision mapping, authorized
 snapshot listing and the shared laboratory comparison consumer. Current

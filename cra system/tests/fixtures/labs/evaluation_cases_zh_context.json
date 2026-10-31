@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "source": "pure_synthetic",
+  "evaluation_group": "independent_synthetic",
+  "artifact_id": "LAB-REPORT-ZH-CONTEXT-EVAL",
+  "expected": {
+    "report_context": {
+      "subject_external_id": "SYN-ZH-001",
+      "collected_on": "2026-01-02",
+      "instance_type": "initial",
+      "report_revision": "FINAL"
+    },
+    "rows": [
+      {
+        "analyte": "血红蛋白",
+        "value_raw": "121",
+        "unit": "g/L",
+        "lower_limit": "110",
+        "upper_limit": "160"
+      },
+      {
+        "analyte": "葡萄糖",
+        "value_raw": "5.1",
+        "unit": "mmol/L",
+        "lower_limit": "3.9",
+        "upper_limit": "5.5"
+      }
+    ],
+    "rows_do_not_repeat_identity_or_date": true
+  }
+}

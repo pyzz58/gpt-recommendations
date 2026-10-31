@@ -202,6 +202,13 @@ class LabRowDraft:
 
 
 @dataclass(frozen=True)
+class ReportContext:
+    values: dict[str, str]
+    sources: dict[str, dict[str, Any]]
+    ambiguities: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
 class RecognitionDraft:
     provider_name: str
     provider_version: str
@@ -211,6 +218,7 @@ class RecognitionDraft:
     warnings: tuple[str, ...]
     rows: tuple[LabRowDraft, ...]
     state: str
+    report_context: ReportContext
 
 
 def _field_for_header(value: str) -> str | None:
@@ -231,6 +239,59 @@ def _header_mapping(table: ProviderTable) -> tuple[int, dict[int, str]] | None:
         if "analyte" in mapping.values() and "value_raw" in mapping.values():
             return row_index, mapping
     return None
+
+
+def _extract_report_context(lines: tuple[ProviderLine, ...]) -> ReportContext:
+    candidates: dict[str, list[tuple[str, ProviderLine]]] = {}
+    context_fields = {
+        "subject_external_id",
+        "visit_key",
+        "collected_on",
+        "collected_time",
+        "instance_type",
+        "specimen",
+        "report_on",
+        "report_revision",
+    }
+    for line in lines:
+        text = normalized_text(line.text)
+        if not text:
+            continue
+        for field, aliases in _FIELD_ALIASES.items():
+            if field not in context_fields:
+                continue
+            for alias in aliases:
+                matches = re.finditer(
+                    rf"(?:^|\s){re.escape(alias)}\s*[:：]\s*"
+                    rf"(.+?)(?=\s+[^:：\s]+\s*[:：]|$)",
+                    text,
+                    re.IGNORECASE,
+                )
+                for match in matches:
+                    candidates.setdefault(field, []).append(
+                        (match.group(1).strip(), line)
+                    )
+    values: dict[str, str] = {}
+    sources: dict[str, dict[str, Any]] = {}
+    ambiguities: list[str] = []
+    for field, items in candidates.items():
+        distinct = {
+            _normalized_header(value)
+            for value, _ in items
+            if _normalized_header(value)
+        }
+        if len(distinct) != 1:
+            ambiguities.append(f"report_context_{field}_ambiguous")
+            continue
+        value, line = items[0]
+        values[field] = normalized_text(value)
+        sources[field] = {
+            "text": line.text,
+            "page": line.page,
+            "bbox": _bbox(line.bbox),
+            "kind": "report_context",
+        }
+    return ReportContext(values, sources, tuple(ambiguities))
 
 
 def _cell_value(
@@ -255,11 +316,15 @@ def _row_from_table(
     ordinal: int,
     provider_name: str,
     provider_version: str,
+    report_context: ReportContext,
 ) -> LabRowDraft | None:
     values: dict[str, str | None] = {}
     source_cells: dict[str, dict[str, Any]] = {}
     for field_name in _FIELD_ALIASES:
         value, cell = _cell_value(row, columns, field_name)
+        if not value and field_name in report_context.values:
+            value = report_context.values[field_name]
+            source_cells[field_name] = report_context.sources[field_name]
         values[field_name] = value
         if cell is not None:
             source_cells[field_name] = {
@@ -269,6 +334,21 @@ def _row_from_table(
     if not values["analyte"] and not values["value_raw"]:
         return None
     issues: list[str] = []
+    for context_field in {
+        "subject_external_id",
+        "collected_on",
+        "collected_time",
+        "instance_type",
+        "report_on",
+        "report_revision",
+    }:
+        if (
+            values[context_field]
+            and context_field in report_context.values
+            and _normalized_header(values[context_field] or "")
+            != _normalized_header(report_context.values[context_field])
+        ):
+            issues.append(f"report_context_{context_field}_conflict")
     if not values["subject_external_id"]:
         issues.append("subject_external_id_missing")
     if not values["analyte"]:
@@ -307,6 +387,7 @@ def _row_from_table(
         "table_bbox": _bbox(table.bbox),
         "cells": source_cells,
         "anchor": f"page[{table.page}]/table[{table.index}]/row[{row_index}]",
+        "report_context": report_context.values,
     }
     return LabRowDraft(
         ordinal=ordinal,
@@ -354,6 +435,7 @@ def _row_from_table(
 def extract_observations(
     result: LabRecognitionResult,
 ) -> RecognitionDraft:
+    report_context = _extract_report_context(result.lines)
     rows: list[LabRowDraft] = []
     warnings = list(result.warnings)
     for table in result.tables:
@@ -375,6 +457,7 @@ def extract_observations(
                 ordinal=len(rows) + 1,
                 provider_name=result.provider_name,
                 provider_version=result.provider_version,
+                report_context=report_context,
             )
             if draft is not None:
                 rows.append(draft)
@@ -393,8 +476,17 @@ def extract_observations(
         provider_version=result.provider_version,
         model_version=result.model_version,
         file_format=result.file_format,
-        support_profile=SUPPORT_PROFILE,
-        warnings=tuple(dict.fromkeys(warnings)),
+        support_profile={
+            **SUPPORT_PROFILE,
+            "report_context": report_context.values,
+            "report_context_ambiguities": list(report_context.ambiguities),
+            "model_sha256": result.model_sha256,
+            "dependency_lock_sha256": result.dependency_lock_sha256,
+        },
+        warnings=tuple(
+            dict.fromkeys([*warnings, *report_context.ambiguities])
+        ),
         rows=tuple(rows),
         state=state,
+        report_context=report_context,
     )

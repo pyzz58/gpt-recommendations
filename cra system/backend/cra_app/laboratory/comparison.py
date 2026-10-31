@@ -168,6 +168,95 @@ def _reference_flag(
     return "unknown"
 
 
+def _text_field_status(
+    source: str | None,
+    edc: str | None,
+    *,
+    missing_is_difference: bool = False,
+) -> str:
+    source_value = " ".join((source or "").split()) or None
+    edc_value = " ".join((edc or "").split()) or None
+    if source_value is None and edc_value is None:
+        return "unknown"
+    if source_value is None or edc_value is None:
+        return "difference" if missing_is_difference else "unknown"
+    return "agreement" if source_value == edc_value else "difference"
+
+
+def _auxiliary_field_results(
+    source: ObservationValue,
+    candidate: EdcValue,
+    *,
+    source_flag: str | None = None,
+    edc_flag: str | None = None,
+) -> tuple[list[FieldResult], tuple[str, ...]]:
+    results = [
+        FieldResult(
+            "lower_limit",
+            _text_field_status(
+                source.lower_limit,
+                candidate.lower_limit,
+                missing_is_difference=True,
+            ),
+            source=source.lower_limit,
+            edc=candidate.lower_limit,
+        ),
+        FieldResult(
+            "upper_limit",
+            _text_field_status(
+                source.upper_limit,
+                candidate.upper_limit,
+                missing_is_difference=True,
+            ),
+            source=source.upper_limit,
+            edc=candidate.upper_limit,
+        ),
+        FieldResult(
+            "report_on",
+            _text_field_status(
+                source.report_on.isoformat() if source.report_on else None,
+                candidate.report_on.isoformat() if candidate.report_on else None,
+            ),
+            source=source.report_on.isoformat() if source.report_on else None,
+            edc=(
+                candidate.report_on.isoformat()
+                if candidate.report_on
+                else None
+            ),
+        ),
+        FieldResult(
+            "report_revision",
+            _text_field_status(
+                source.report_revision, candidate.report_revision
+            ),
+            source=source.report_revision,
+            edc=candidate.report_revision,
+        ),
+    ]
+    if source_flag is not None and edc_flag is not None:
+        results.append(
+            FieldResult(
+                "reference_range_flag",
+                (
+                    "unknown"
+                    if source_flag == "unknown" or edc_flag == "unknown"
+                    else "agreement"
+                    if source_flag == edc_flag
+                    else "difference"
+                ),
+                source=source_flag,
+                edc=edc_flag,
+                detail="仅描述报告范围标记；医学安全和异常结论属于 M09。",
+            )
+        )
+    unknown = tuple(
+        f"{result.field}_difference"
+        for result in results
+        if result.status == "difference"
+    )
+    return results, unknown
+
+
 def _matched_identity(source: ObservationValue) -> dict[str, Any]:
     return {
         "subject_external_id": source.subject_external_id,
@@ -297,6 +386,18 @@ def compare_observation(
     edc_value = candidate.value
     source_unit = source.unit_normalized
     edc_unit = candidate.unit_normalized
+    source_flag = _reference_flag(
+        source_value, source.lower_limit, source.upper_limit
+    )
+    edc_flag = _reference_flag(
+        edc_value, candidate.lower_limit, candidate.upper_limit
+    )
+    auxiliary, auxiliary_differences = _auxiliary_field_results(
+        source,
+        candidate,
+        source_flag=source_flag,
+        edc_flag=edc_flag,
+    )
     if not source_unit or not edc_unit:
         field_results.append(
             FieldResult(
@@ -307,12 +408,13 @@ def compare_observation(
                 detail="任一侧缺失单位，未猜换算。",
             )
         )
+        field_results.extend(auxiliary)
         return ComparisonOutcome(
             match_status=match_status,
             result_status="unit_review",
             matched_identity=matched_identity,
             candidate_record_ids=candidate_ids,
-            unknowns=("unit_missing",),
+            unknowns=("unit_missing", *auxiliary_differences),
             reason="单位缺失或未知，数值未作自动换算。",
             field_results=tuple(field_results),
             edc_record_id=candidate.id,
@@ -327,12 +429,16 @@ def compare_observation(
                 detail="单位不同且没有已批准转换。",
             )
         )
+        field_results.extend(auxiliary)
         return ComparisonOutcome(
             match_status=match_status,
             result_status="unit_review",
             matched_identity=matched_identity,
             candidate_record_ids=candidate_ids,
-            unknowns=("unit_conversion_unapproved",),
+            unknowns=(
+                "unit_conversion_unapproved",
+                *auxiliary_differences,
+            ),
             reason="单位不同，未猜测换算关系。",
             field_results=tuple(field_results),
             edc_record_id=candidate.id,
@@ -415,34 +521,33 @@ def compare_observation(
             )
         )
 
-    source_flag = _reference_flag(
-        source_value, source.lower_limit, source.upper_limit
+    field_results.extend(auxiliary)
+    range_status = next(
+        (
+            result.status
+            for result in auxiliary
+            if result.field == "reference_range_flag"
+        ),
+        "unknown",
     )
-    edc_flag = _reference_flag(
-        edc_value, candidate.lower_limit, candidate.upper_limit
-    )
-    range_status = "unknown"
-    if source_flag != "unknown" and edc_flag != "unknown":
-        range_status = (
-            "agreement" if source_flag == edc_flag else "difference"
-        )
-    field_results.append(
-        FieldResult(
-            "reference_range_flag",
-            range_status,
-            source=source_flag,
-            edc=edc_flag,
-            detail="仅描述报告范围标记；医学安全和异常结论属于 M09。",
-        )
+    limit_difference = any(
+        result.status == "difference"
+        for result in auxiliary
+        if result.field in {
+            "lower_limit",
+            "upper_limit",
+            "report_on",
+            "report_revision",
+        }
     )
     if (
         value_result_status == "agreement"
-        and range_status == "difference"
+        and (range_status == "difference" or limit_difference)
     ):
         value_result_status = "logic_difference"
         value_unknowns = (
             *value_unknowns,
-            "reference_range_flag_difference",
+            *auxiliary_differences,
         )
     return ComparisonOutcome(
         match_status=match_status,

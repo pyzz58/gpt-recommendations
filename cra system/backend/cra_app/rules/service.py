@@ -1517,10 +1517,6 @@ class RuleService:
             command.site_id if command.site_id is not None else version.site_id
         )
         self._authorize_write(scope, version.study_id, effective_site_id)
-        if document.site_id is None and command.site_id is not None:
-            raise RuleValidationError(
-                "a study-wide document cannot be activated for one site"
-            )
         if document.site_id is not None and command.site_id not in {
             None,
             document.site_id,
@@ -1823,6 +1819,19 @@ class RuleService:
                     for rule, version in latest_by_rule.values()
                 )
 
+            site_rule_keys = {
+                rule.rule_key
+                for activation, rule, _ in selected
+                if activation.site_id is not None
+            }
+            selected = [
+                item
+                for item in selected
+                if not (
+                    item[0].site_id is None
+                    and item[1].rule_key in site_rule_keys
+                )
+            ]
             by_rule_layer_key: dict[tuple[str, str, uuid.UUID | None], list[Any]] = {}
             for item in selected:
                 _, rule, _ = item

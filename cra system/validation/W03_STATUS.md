@@ -1,6 +1,6 @@
 # CRA-W03 completion record
 
-Status: verified. Date: 2026-10-31.
+Status: revalidation in progress for the 2026-11-01 review remediation.
 
 Revalidated after W08 added the laboratory fixture corpus and consumed parsed
 source files through the W03 public port. Current evidence: run `41193029019`,

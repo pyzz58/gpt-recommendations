@@ -197,6 +197,14 @@ def create_app(
             provider=build_case_analysis_provider(
                 resolved_settings.resolved_analysis_provider()
             ),
+            provider_data_classification=(
+                resolved_settings.resolved_analysis_data_classification()
+            ),
+            defer_provider=(
+                resolved_settings.resolved_analysis_provider().strip().lower()
+                not in {"", "disabled", "none"}
+            ),
+            queue=document_service.queue,
         )
 
     @asynccontextmanager

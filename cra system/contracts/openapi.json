@@ -3141,6 +3141,18 @@
             "title": "Event Date",
             "type": "string"
           },
+          "event_fact_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Fact Id"
+          },
           "event_type": {
             "enum": [
               "adverse_event",
@@ -3187,6 +3199,15 @@
               }
             ],
             "title": "Note"
+          },
+          "related_fact_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 200,
+            "title": "Related Fact Ids",
+            "type": "array"
           },
           "requested_dimensions": {
             "items": {
@@ -8353,6 +8374,14 @@
             "title": "Preconditions",
             "type": "array"
           },
+          "purpose_tags": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 32,
+            "title": "Purpose Tags",
+            "type": "array"
+          },
           "required_facts": {
             "items": {
               "type": "string"
@@ -8465,6 +8494,14 @@
               "$ref": "#/components/schemas/RuleCondition-Output"
             },
             "title": "Preconditions",
+            "type": "array"
+          },
+          "purpose_tags": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 32,
+            "title": "Purpose Tags",
             "type": "array"
           },
           "required_facts": {
@@ -9053,6 +9090,18 @@
             "title": "Event Date",
             "type": "string"
           },
+          "event_fact_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Fact Id"
+          },
           "event_type": {
             "title": "Event Type",
             "type": "string"
@@ -9064,6 +9113,11 @@
             },
             "title": "Evidence Refs",
             "type": "array"
+          },
+          "fact_scope": {
+            "additionalProperties": true,
+            "title": "Fact Scope",
+            "type": "object"
           },
           "id": {
             "format": "uuid",
@@ -9123,6 +9177,13 @@
             "additionalProperties": true,
             "title": "Provider Output",
             "type": "object"
+          },
+          "provider_runs": {
+            "items": {
+              "$ref": "#/components/schemas/SafetyProviderRunView"
+            },
+            "title": "Provider Runs",
+            "type": "array"
           },
           "provider_status": {
             "title": "Provider Status",
@@ -9203,10 +9264,12 @@
           "site_id",
           "subject_id",
           "lab_comparison_id",
+          "event_fact_id",
           "event_type",
           "event_date",
           "requested_dimensions",
           "context_snapshot",
+          "fact_scope",
           "rule_inputs",
           "deterministic_summary",
           "provider_name",
@@ -9226,6 +9289,7 @@
           "dimensions",
           "cra_reviews",
           "medical_responses",
+          "provider_runs",
           "issue_id",
           "replayed"
         ],
@@ -9377,6 +9441,129 @@
           "source_refs"
         ],
         "title": "SafetyDimensionView",
+        "type": "object"
+      },
+      "SafetyProviderRunView": {
+        "additionalProperties": false,
+        "properties": {
+          "accepted": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accepted"
+          },
+          "attempts": {
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "dependency_lock_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dependency Lock Sha256"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Errors",
+            "type": "array"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "explanation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Explanation"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "model_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Sha256"
+          },
+          "model_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Version"
+          },
+          "provider_name": {
+            "title": "Provider Name",
+            "type": "string"
+          },
+          "provider_version": {
+            "title": "Provider Version",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "provider_name",
+          "provider_version",
+          "model_version",
+          "model_sha256",
+          "dependency_lock_sha256",
+          "status",
+          "attempts",
+          "accepted",
+          "explanation",
+          "evidence_ids",
+          "errors",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "SafetyProviderRunView",
         "type": "object"
       },
       "SafetyQuestionView": {
@@ -10299,6 +10486,8 @@
               "out_of_window",
               "unknown_anchor",
               "unknown_actual",
+              "unknown_applicability",
+              "not_applicable",
               "not_checked_by_user",
               "needs_review"
             ],
@@ -12276,6 +12465,65 @@
         ]
       }
     },
+    "/api/v1/lab-reports/{report_id}/retry-recognition": {
+      "post": {
+        "operationId": "retry_lab_recognition_api_v1_lab_reports__report_id__retry_recognition_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Report Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabReportView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Retry Lab Recognition",
+        "tags": [
+          "laboratory"
+        ]
+      }
+    },
     "/api/v1/me/scopes": {
       "get": {
         "operationId": "get_my_scopes_api_v1_me_scopes_get",
@@ -12825,6 +13073,65 @@
           }
         },
         "summary": "Get Safety Assessment",
+        "tags": [
+          "safety"
+        ]
+      }
+    },
+    "/api/v1/safety-assessments/{assessment_id}/analysis-retry": {
+      "post": {
+        "operationId": "retry_safety_provider_run_api_v1_safety_assessments__assessment_id__analysis_retry_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SafetyAssessmentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Retry Safety Provider Run",
         "tags": [
           "safety"
         ]
@@ -13842,7 +14149,7 @@
           "required": true
         },
         "responses": {
-          "200": {
+          "202": {
             "content": {
               "application/json": {
                 "schema": {

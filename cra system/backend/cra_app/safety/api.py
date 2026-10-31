@@ -94,6 +94,25 @@ class MedicalSafetyResponseView(BaseModel):
     created_at: datetime
 
 
+class SafetyProviderRunView(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: uuid.UUID
+    provider_name: str
+    provider_version: str
+    model_version: str | None
+    model_sha256: str | None
+    dependency_lock_sha256: str | None
+    status: str
+    attempts: int
+    accepted: bool | None
+    explanation: str | None
+    evidence_ids: list[str]
+    errors: list[str]
+    created_at: datetime
+    updated_at: datetime
+
+
 class SafetyAssessmentSummaryView(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -117,10 +136,12 @@ class SafetyAssessmentView(BaseModel):
     site_id: uuid.UUID
     subject_id: uuid.UUID
     lab_comparison_id: uuid.UUID | None
+    event_fact_id: uuid.UUID | None
     event_type: str
     event_date: date
     requested_dimensions: list[str]
     context_snapshot: dict[str, Any]
+    fact_scope: dict[str, Any]
     rule_inputs: list[dict[str, Any]]
     deterministic_summary: dict[str, Any]
     provider_name: str
@@ -140,6 +161,7 @@ class SafetyAssessmentView(BaseModel):
     dimensions: list[SafetyDimensionView]
     cra_reviews: list[SafetyCraReviewView]
     medical_responses: list[MedicalSafetyResponseView]
+    provider_runs: list[SafetyProviderRunView]
     issue_id: uuid.UUID | None
     replayed: bool
 
@@ -165,22 +187,34 @@ def _summary(item) -> SafetyAssessmentSummaryView:
 
 def _assessment_view(detail: AssessmentDetail) -> SafetyAssessmentView:
     item = detail.assessment
+    latest_provider_status = (
+        detail.provider_runs[-1].status
+        if detail.provider_runs
+        else item.provider_status
+    )
+    exposed_provider_status = (
+        "queued"
+        if latest_provider_status == "running"
+        else latest_provider_status
+    )
     return SafetyAssessmentView(
         id=item.id,
         study_id=item.study_id,
         site_id=item.site_id,
         subject_id=item.subject_id,
         lab_comparison_id=item.lab_comparison_id,
+        event_fact_id=item.event_fact_id,
         event_type=item.event_type,
         event_date=item.event_date,
         requested_dimensions=item.requested_dimensions,
         context_snapshot=item.context_snapshot,
+        fact_scope=item.fact_scope,
         rule_inputs=item.rule_inputs,
         deterministic_summary=item.deterministic_summary,
         provider_name=item.provider_name,
         provider_version=item.provider_version,
         model_version=item.model_version,
-        provider_status=item.provider_status,
+        provider_status=exposed_provider_status,
         provider_output=item.provider_output,
         questions=[
             SafetyQuestionView.model_validate(value)
@@ -236,6 +270,25 @@ def _assessment_view(detail: AssessmentDetail) -> SafetyAssessmentView:
                 created_at=value.created_at,
             )
             for value in detail.medical_responses
+        ],
+        provider_runs=[
+            SafetyProviderRunView(
+                id=value.id,
+                provider_name=value.provider_name,
+                provider_version=value.provider_version,
+                model_version=value.model_version,
+                model_sha256=value.model_sha256,
+                dependency_lock_sha256=value.dependency_lock_sha256,
+                status=value.status,
+                attempts=value.attempts,
+                accepted=value.accepted,
+                explanation=value.explanation,
+                evidence_ids=value.evidence_ids,
+                errors=value.errors,
+                created_at=value.created_at,
+                updated_at=value.updated_at,
+            )
+            for value in detail.provider_runs
         ],
         issue_id=detail.issue_link.issue_id if detail.issue_link else None,
         replayed=detail.replayed,
@@ -342,5 +395,23 @@ def link_safety_assessment_issue(
     return issue_view(
         _service(request).link_issue(
             scope_from_identity(identity), assessment_id, command
+        )
+    )
+
+
+@router.post(
+    "/safety-assessments/{assessment_id}/analysis-retry",
+    response_model=SafetyAssessmentView,
+    status_code=202,
+    dependencies=[Depends(require_csrf)],
+)
+def retry_safety_provider_run(
+    assessment_id: uuid.UUID,
+    request: Request,
+    identity: AuthenticatedIdentity = Depends(require_identity),
+) -> SafetyAssessmentView:
+    return _assessment_view(
+        _service(request).retry_provider_run(
+            scope_from_identity(identity), assessment_id
         )
     )

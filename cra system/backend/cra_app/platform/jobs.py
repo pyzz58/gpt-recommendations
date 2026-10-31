@@ -160,6 +160,8 @@ class ProcrastinateQueue:
     """Thin queue adapter; business state remains in BusinessJob/OutboxEvent."""
 
     TASK_NAME = "cra.document.parse"
+    LAB_TASK_NAME = "cra.laboratory.recognize"
+    SAFETY_TASK_NAME = "cra.safety.analyze"
 
     def __init__(self, database_url: str):
         self._conninfo = database_url.replace(
@@ -209,6 +211,44 @@ class ProcrastinateQueue:
         finally:
             app.close()
 
+    def enqueue_lab_recognition(self, job_id: uuid.UUID) -> int | None:
+        self.ensure_schema()
+        app = self._new_app()
+        app.open()
+        try:
+            try:
+                deferred = app.configure_task(
+                    self.LAB_TASK_NAME,
+                    allow_unknown=True,
+                    queue="laboratory",
+                    retry=2,
+                    queueing_lock=f"laboratory-recognition:{job_id}",
+                ).defer(job_id=str(job_id))
+                return getattr(deferred, "job_id", deferred)
+            except AlreadyEnqueued:
+                return None
+        finally:
+            app.close()
+
+    def enqueue_safety_analysis(self, job_id: uuid.UUID) -> int | None:
+        self.ensure_schema()
+        app = self._new_app()
+        app.open()
+        try:
+            try:
+                deferred = app.configure_task(
+                    self.SAFETY_TASK_NAME,
+                    allow_unknown=True,
+                    queue="safety",
+                    retry=2,
+                    queueing_lock=f"safety-analysis:{job_id}",
+                ).defer(job_id=str(job_id))
+                return getattr(deferred, "job_id", deferred)
+            except AlreadyEnqueued:
+                return None
+        finally:
+            app.close()
+
 
 def relay_pending_outbox(
     session_factory: sessionmaker[Session],
@@ -232,10 +272,21 @@ def relay_pending_outbox(
             for event in events:
                 event.attempts += 1
                 try:
-                    if event.event_type != "document.parse.requested":
+                    if event.event_type == "document.parse.requested":
+                        job_id = uuid.UUID(str(event.payload["job_id"]))
+                        queue.enqueue_parse(job_id)
+                    elif event.event_type == "laboratory.recognition.requested":
+                        job_id = uuid.UUID(
+                            str(event.payload["recognition_job_id"])
+                        )
+                        queue.enqueue_lab_recognition(job_id)
+                    elif event.event_type == "safety.analysis.requested":
+                        job_id = uuid.UUID(
+                            str(event.payload["provider_run_id"])
+                        )
+                        queue.enqueue_safety_analysis(job_id)
+                    else:
                         raise ValueError("unsupported outbox event")
-                    job_id = uuid.UUID(str(event.payload["job_id"]))
-                    queue.enqueue_parse(job_id)
                     event.status = "published"
                     event.published_at = datetime.now(UTC)
                     event.last_error = None

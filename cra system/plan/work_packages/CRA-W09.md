@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W04、CRA-W06、CRA-W08。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -57,6 +57,10 @@
 4. 生成具体提问和必要及时提醒，分开事件、知悉和实际上报时间。
 5. 关联M06待办及后续答复，provider无权自行关闭行动。
 6. 使用W04条件分支与版本启用服务；测试真实引文但条件错误的反例，医学综合条款保持分析型。
+7. 安全事实按明确event_fact_id或事件repeat_instance范围选择，区分事件事实、相关历史和后来补充结论。
+8. 读取研究配置法域并继承W04共同约束unknown/conflict；模型输入分类由受信环境和元数据决定。
+9. 检验一致但异常保留为安全线索；字段跳过不重问，stale比较不得作为新事实。
+10. 模型解释使用独立持久运行、租约和重试；响应accepted只表示grounding通过，不自行升级临床能力。
 
 ## 验证命令
 
@@ -89,7 +93,7 @@ uv run --frozen python -m cra_app.providers.evaluate_cases --dataset tests/fixtu
 - [available] W09迁移空库升级、降级和再升级
 
 ```bash
-uv run --frozen alembic downgrade 0007_laboratory_comparison && uv run --frozen alembic upgrade head
+uv run --frozen alembic downgrade 0008_safety_assessment && uv run --frozen alembic upgrade head
 ```
 
 - [available] OpenAPI与前端生成契约同步
@@ -111,6 +115,9 @@ npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run 
 - 分析给出具体应核实的问题，而非泛泛问医学。
 - 候选判断不冒充研究者确认，不用分级替代SAE判断。
 - 模拟provider与真实provider验证分开，缺凭证明示能力缺口。
+- 同一受试者多个AE不混用；unknown例外不生成确定性候选。
+- 一致且异常、不一致、不可比较、跳过及stale分别处理；数据差异不直接认定AE。
+- 模型运行可在worker恢复且模型/依赖/权重版本可复现；输出能力保持limited而非临床validated。
 
 关联完整场景：CRA-S23、CRA-S24、CRA-S25、CRA-S30。局部测试通过不自动把全部场景标为verified。
 

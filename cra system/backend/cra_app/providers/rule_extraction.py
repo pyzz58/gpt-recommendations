@@ -34,6 +34,11 @@ RULE_HEADING = re.compile(
     re.IGNORECASE,
 )
 RULE_REFERENCE = re.compile(r"\bR-[A-Z0-9][A-Z0-9._-]*\b", re.IGNORECASE)
+NATURAL_REQUIREMENT = re.compile(
+    r"(?:应当|应|必须|需要|需|不得|禁止|要求|shall|must|required)",
+    re.IGNORECASE,
+)
+NATURAL_QUESTION = re.compile(r"^\s*(?:问|问题|Q)\s*[:：]", re.IGNORECASE)
 RELATION_DIRECTIVE = re.compile(
     r"^\s*(?:Relation|关系)\s*[:：]\s*"
     r"(?P<source>[A-Za-z][A-Za-z0-9._-]+)\s+"
@@ -62,6 +67,32 @@ TOKEN = re.compile(
 
 class RuleExtractionError(ValueError):
     pass
+
+
+def infer_rule_purpose_tags(*values: str) -> list[str]:
+    content = " ".join(value for value in values if value).casefold()
+    rules = {
+        "ae_collection": ("不良事件", "adverse event", " ae", "ae-"),
+        "grade": ("分级", "毒性", "ctcae", "toxicity", "grade"),
+        "seriousness": ("严重不良事件", "serious", "sae", "严重性"),
+        "relatedness": ("相关性", "因果关系", "relatedness", "causality"),
+        "expectedness": ("预期性", "未预期", "expectedness", "ib version"),
+        "aesi": ("aesi", "特别关注"),
+        "dlt": ("dlt", "剂量限制性毒性"),
+        "protocol_deviation": ("方案偏离", "protocol deviation", "pd-"),
+        "reporting_timeliness": (
+            "及时报告",
+            "报告时限",
+            "上报时限",
+            "上报",
+            "timeliness",
+        ),
+    }
+    return [
+        dimension
+        for dimension, tokens in rules.items()
+        if any(token in content for token in tokens)
+    ]
 
 
 @dataclass
@@ -403,6 +434,7 @@ class AnchoredRuleExtractor:
     def extract_rules(self, *, anchors: list[ParsedAnchor]) -> RuleExtractionResult:
         builders: dict[str, _RuleBuilder] = {}
         current: _RuleBuilder | None = None
+        pending_question_context: list[ParsedAnchor] = []
         footnotes: list[tuple[str, ParsedAnchor]] = []
         relations: list[ExtractionRelation] = []
         coverage: list[ExtractionCoverage] = []
@@ -503,32 +535,51 @@ class AnchoredRuleExtractor:
                 )
                 continue
 
+            natural_requirement = NATURAL_REQUIREMENT.search(text)
+            if natural_requirement and (
+                current is None
+                or current.rule_key.startswith("NAT-")
+            ):
+                rule_key = "NAT-" + hashlib.sha256(
+                    text.encode("utf-8")
+                ).hexdigest()[:16].upper()
+                current = _RuleBuilder(
+                    rule_key=rule_key,
+                    summary=text,
+                    source_line=anchor,
+                    analysis_required=True,
+                    unknowns=[
+                        "natural language requirement requires structured analysis"
+                    ],
+                )
+                current.add_source(anchor)
+                for question_anchor in pending_question_context:
+                    current.add_source(question_anchor)
+                pending_question_context.clear()
+                warnings.append(
+                    f"natural requirement candidate at {anchor.logical_node_id}"
+                )
+                coverage.append(
+                    ExtractionCoverage(
+                        unit_key=anchor.logical_node_id,
+                        status="analysis_required",
+                        reason="natural requirement preserved as a reviewable candidate",
+                        anchor_key=anchor.logical_node_id,
+                    )
+                )
+                builders[rule_key] = current
+                continue
             if current is None:
-                if re.search(
-                    r"\b(?:shall|must|required)\b|应当|必须|要求",
-                    text,
-                    re.IGNORECASE,
-                ):
-                    warnings.append(
-                        f"unbound requirement at {anchor.logical_node_id}"
+                if NATURAL_QUESTION.search(text):
+                    pending_question_context.append(anchor)
+                coverage.append(
+                    ExtractionCoverage(
+                        unit_key=anchor.logical_node_id,
+                        status="processed",
+                        reason="non-rule context",
+                        anchor_key=anchor.logical_node_id,
                     )
-                    coverage.append(
-                        ExtractionCoverage(
-                            unit_key=anchor.logical_node_id,
-                            status="analysis_required",
-                            reason="requirement has no stable Rule identifier",
-                            anchor_key=anchor.logical_node_id,
-                        )
-                    )
-                else:
-                    coverage.append(
-                        ExtractionCoverage(
-                            unit_key=anchor.logical_node_id,
-                            status="processed",
-                            reason="non-rule context",
-                            anchor_key=anchor.logical_node_id,
-                        )
-                    )
+                )
                 continue
 
             matched = re.match(
@@ -737,6 +788,16 @@ class AnchoredRuleExtractor:
                     self._source_ref_for_builder(anchor)
                     for anchor in builder.source_anchors
                 ],
+                purpose_tags=infer_rule_purpose_tags(
+                    builder.rule_key,
+                    builder.summary,
+                    builder.follow_up or "",
+                    *[
+                        action
+                        for branch in builder.branches
+                        for action in branch.actions
+                    ],
+                ),
                 semantic_status=(
                     "analysis_required"
                     if builder.analysis_required

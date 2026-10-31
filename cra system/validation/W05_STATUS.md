@@ -1,6 +1,6 @@
 # CRA-W05 completion record
 
-Status: verified. Date: 2026-10-31.
+Status: revalidation in progress for the 2026-11-01 review remediation.
 
 Revalidated after W08 expanded the shared migration chain, fixtures, API and
 frontend. Current evidence: run `41193029019`, tested commit

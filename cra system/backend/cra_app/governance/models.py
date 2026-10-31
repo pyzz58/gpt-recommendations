@@ -35,6 +35,9 @@ class Study(Base):
     tenant_id: Mapped[str] = mapped_column(String(128), nullable=False)
     code: Mapped[str] = mapped_column(String(64), nullable=False)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
+    jurisdiction: Mapped[str] = mapped_column(
+        String(64), nullable=False, default="synthetic"
+    )
     revision: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
     created_by: Mapped[str] = mapped_column(String(128), nullable=False)
     updated_by: Mapped[str] = mapped_column(String(128), nullable=False)

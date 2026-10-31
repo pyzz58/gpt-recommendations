@@ -50,6 +50,7 @@ class DateIntervalSpec:
     min_days: int
     max_days: int
     inclusive: bool
+    gate_conditions: tuple[RuleCondition, ...] = ()
 
 
 def _date_interval(condition: RuleCondition | None) -> tuple[str, str, int, int, bool] | None:
@@ -71,7 +72,11 @@ def _date_interval(condition: RuleCondition | None) -> tuple[str, str, int, int,
 def extract_date_interval_specs(node: RuleNode) -> list[DateIntervalSpec]:
     specs: list[DateIntervalSpec] = []
 
-    def add(condition: RuleCondition | None, path: str) -> None:
+    def add(
+        condition: RuleCondition | None,
+        path: str,
+        gate_conditions: tuple[RuleCondition, ...],
+    ) -> None:
         parsed = _date_interval(condition)
         if parsed:
             anchor, event, minimum, maximum, inclusive = parsed
@@ -84,16 +89,41 @@ def extract_date_interval_specs(node: RuleNode) -> list[DateIntervalSpec]:
                     min_days=minimum,
                     max_days=maximum,
                     inclusive=inclusive,
+                    gate_conditions=gate_conditions,
                 )
             )
 
+    base_gates = tuple(node.preconditions) + tuple(
+        RuleCondition(op="not", child=exception.condition)
+        for exception in node.exceptions
+        if exception.condition is not None
+    )
     for index, precondition in enumerate(node.preconditions):
-        add(precondition, f"precondition[{index}]")
-    add(node.trigger, "trigger")
+        gates = tuple(
+            gate
+            for gate_index, gate in enumerate(node.preconditions)
+            if gate_index != index
+        )
+        add(precondition, f"precondition[{index}]", gates)
+    add(node.trigger, "trigger", base_gates)
+    branch_gates = (
+        base_gates + (node.trigger,)
+        if node.trigger is not None and node.trigger.op != "date_interval"
+        else base_gates
+    )
     for branch in node.branches:
-        add(branch.condition, f"branch:{branch.branch_key}")
+        add(
+            branch.condition,
+            f"branch:{branch.branch_key}",
+            branch_gates,
+        )
+    exception_gates = branch_gates
     for exception in node.exceptions:
-        add(exception.condition, f"exception:{exception.exception_key}")
+        add(
+            exception.condition,
+            f"exception:{exception.exception_key}",
+            exception_gates,
+        )
     for child in node.children:
         specs.extend(
             DateIntervalSpec(
@@ -104,6 +134,7 @@ def extract_date_interval_specs(node: RuleNode) -> list[DateIntervalSpec]:
                 min_days=spec.min_days,
                 max_days=spec.max_days,
                 inclusive=spec.inclusive,
+                gate_conditions=spec.gate_conditions,
             )
             for spec in extract_date_interval_specs(child)
         )

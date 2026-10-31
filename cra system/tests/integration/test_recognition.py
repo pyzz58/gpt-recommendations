@@ -18,6 +18,9 @@ ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = ROOT / "tests" / "fixtures"
 PDF = FIXTURES / "labs" / "artifacts" / "synthetic_lab_report.pdf"
 PNG = FIXTURES / "labs" / "artifacts" / "synthetic_lab_report_eval.png"
+ZH_CONTEXT_PDF = (
+    FIXTURES / "labs" / "artifacts" / "synthetic_lab_report_zh_context.pdf"
+)
 
 
 def test_text_pdf_is_read_from_file_with_table_coordinates():
@@ -78,10 +81,35 @@ def test_laboratory_artifacts_are_marked_synthetic_and_hash_bound():
     assert set(artifacts) == {
         "LAB-REPORT-PDF-DEV",
         "LAB-REPORT-PNG-EVAL",
+        "LAB-REPORT-ZH-CONTEXT-EVAL",
     }
     assert "synthetic" in PDF.name
     assert "synthetic" in PNG.name
     for item in artifacts.values():
         content = (FIXTURES / item["file"]).read_bytes()
         assert hashlib.sha256(content).hexdigest() == item["sha256"]
-        assert item["expected_file"] == "labs/evaluation_cases.json"
+        assert item["expected_file"] in {
+            "labs/evaluation_cases.json",
+            "labs/evaluation_cases_zh_context.json",
+        }
+
+
+def test_chinese_report_context_is_bound_once_and_reused_by_rows():
+    result = TextPdfLabProvider().recognize(
+        ZH_CONTEXT_PDF.read_bytes(),
+        filename=ZH_CONTEXT_PDF.name,
+        media_type="application/pdf",
+    )
+    draft = extract_observations(result)
+    assert draft.state == "recognized"
+    assert len(draft.rows) == 2
+    assert draft.report_context.values["subject_external_id"] == "SYN-ZH-001"
+    assert draft.report_context.values["collected_on"] == "2026-01-02"
+    assert draft.report_context.values["instance_type"] == "初检"
+    assert {row.subject_external_id for row in draft.rows} == {"SYN-ZH-001"}
+    assert {row.instance_type for row in draft.rows} == {"initial"}
+    assert all(
+        row.source_ref["cells"]["subject_external_id"]["kind"]
+        == "report_context"
+        for row in draft.rows
+    )

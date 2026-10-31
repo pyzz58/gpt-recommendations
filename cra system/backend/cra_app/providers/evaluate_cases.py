@@ -4,6 +4,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import platform
+import sys
 import time
 from pathlib import Path
 from typing import Any
@@ -421,11 +423,31 @@ def main() -> int:
         and all(
             item["provider_status"] == "completed" for item in details
         )
+        and bool(results)
+        and all(
+            result.model_sha256 and result.dependency_lock_sha256
+            for result in results
+        )
     )
     output = {
         "schema_version": 1,
         "source": "pure_synthetic",
         "provider": provider.name,
+        "provider_lock_sha256": _sha256(
+            ROOT
+            / "provider-locks"
+            / (
+                "analysis-macos-arm64-py312.txt"
+                if sys.platform == "darwin" and platform.machine() == "arm64"
+                else "analysis-linux-py312.txt"
+            )
+        ),
+        "model_sha256": (
+            results[0].model_sha256 if results else None
+        ),
+        "dependency_lock_sha256": (
+            results[0].dependency_lock_sha256 if results else None
+        ),
         "provider_validation": provider_validation,
         "clinical_validation": False,
         "manual_workflow_time_comparison": None,

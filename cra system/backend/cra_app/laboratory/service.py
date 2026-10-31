@@ -4,8 +4,9 @@ from __future__ import annotations
 import hashlib
 import json
 import uuid
+from collections import defaultdict
 from dataclasses import dataclass
-from datetime import UTC, date, datetime, time
+from datetime import UTC, date, datetime, time, timedelta
 from decimal import Decimal
 from typing import Any
 
@@ -66,7 +67,11 @@ from cra_app.laboratory.recognition import (
     SUPPORT_PROFILE,
     extract_observations,
 )
-from cra_app.platform.jobs import digest_payload
+from cra_app.platform.jobs import (
+    OutboxEvent,
+    digest_payload,
+    relay_pending_outbox,
+)
 from cra_app.providers.lab_ocr import (
     LabProviderError,
     LabProviderUnavailable,
@@ -224,10 +229,14 @@ def _fields_from_observation(observation: LabObservation) -> dict[str, Any]:
 
 def _effective_observation(
     observation: LabObservation,
-    decision: LabObservationDecision | None,
+    decisions: list[LabObservationDecision] | None,
 ) -> EffectiveObservation:
     fields = _fields_from_observation(observation)
-    if decision is None:
+    ordered = sorted(
+        decisions or [],
+        key=lambda item: (item.created_at, str(item.id)),
+    )
+    if not ordered:
         return EffectiveObservation(
             observation=observation,
             decision=None,
@@ -236,30 +245,11 @@ def _effective_observation(
             validation_state=observation.validation_state,
             issues=tuple(observation.issues),
         )
-    if decision.action == "skip":
-        return EffectiveObservation(
-            observation=observation,
-            decision=decision,
-            fields=fields,
-            extraction_state="user_skipped",
-            validation_state="needs_review",
-            issues=("user_skipped",),
-        )
-    if decision.action == "confirm":
-        if observation.validation_state != "ready_for_match":
-            raise LaboratoryValidationError(
-                "only observations that passed structural validation can be "
-                "bulk-confirmed"
-            )
-        return EffectiveObservation(
-            observation=observation,
-            decision=decision,
-            fields=fields,
-            extraction_state="user_confirmed",
-            validation_state="ready_for_match",
-            issues=tuple(observation.issues),
-        )
-    fields.update(decision.corrected_fields)
+    corrected = False
+    for decision in ordered:
+        if decision.action == "correct":
+            fields.update(decision.corrected_fields)
+            corrected = True
     fields["collected_on"] = _as_date(fields.get("collected_on"))
     collected_at, timezone_status = _as_datetime(
         fields.get("collected_at"),
@@ -278,9 +268,28 @@ def _effective_observation(
     fields["operator"] = parsed.operator
     fields["numeric_value"] = parsed.number
     validation_state, issues = _validate_fields(fields)
+    latest = ordered[-1]
+    if latest.action == "skip":
+        return EffectiveObservation(
+            observation=observation,
+            decision=latest,
+            fields=fields,
+            extraction_state="user_skipped",
+            validation_state="needs_review",
+            issues=("user_skipped",),
+        )
+    if latest.action == "confirm":
+        return EffectiveObservation(
+            observation=observation,
+            decision=latest,
+            fields=fields,
+            extraction_state="user_confirmed",
+            validation_state=validation_state,
+            issues=issues,
+        )
     return EffectiveObservation(
         observation=observation,
-        decision=decision,
+        decision=latest,
         fields=fields,
         extraction_state="user_corrected",
         validation_state=validation_state,
@@ -345,9 +354,11 @@ def _effective_signature(effective: EffectiveObservation) -> dict[str, Any]:
 def effective_observations(
     detail: ReportDetail,
 ) -> tuple[EffectiveObservation, ...]:
-    latest = _latest_decisions(list(detail.decisions))
+    grouped: dict[uuid.UUID, list[LabObservationDecision]] = defaultdict(list)
+    for decision in detail.decisions:
+        grouped[decision.observation_id].append(decision)
     return tuple(
-        _effective_observation(observation, latest.get(observation.id))
+        _effective_observation(observation, grouped.get(observation.id, []))
         for observation in detail.observations
     )
 
@@ -573,7 +584,7 @@ class LaboratoryService:
             provider_confidence=draft.provider_confidence,
         )
 
-    def create_and_recognize(
+    def create_and_queue(
         self,
         scope: ScopeContext,
         study_id: uuid.UUID,
@@ -589,14 +600,6 @@ class LaboratoryService:
             filename=filename,
             content=content,
         )
-        try:
-            self.documents.process_job(
-                upload.job_id, worker_id="laboratory-intake"
-            )
-        except DocumentError:
-            # The generic W03 parser may not support an image even when the
-            # laboratory provider does. The private source and lab job remain.
-            pass
         with self.session_factory() as session:
             existing = session.scalar(
                 select(LabReportVersion).where(
@@ -653,16 +656,139 @@ class LaboratoryService:
                 ),
                 status="queued",
                 attempts=0,
+                max_attempts=3,
                 output={},
             )
             session.add(recognition_job)
             session.flush()
             session.add(report)
+            session.add(
+                OutboxEvent(
+                    id=uuid.uuid4(),
+                    tenant_id=scope.tenant_id,
+                    study_id=study_id,
+                    site_id=command.site_id,
+                    event_type="laboratory.recognition.requested",
+                    aggregate_type="lab_recognition_job",
+                    aggregate_id=recognition_job.id,
+                    dedup_key=f"laboratory-recognition:{recognition_job.id}",
+                    payload={"recognition_job_id": str(recognition_job.id)},
+                )
+            )
             session.commit()
             report_id = report.id
-            job_id = report.recognition_job_id
-        self._mark_job_running(job_id)
-        stored = self.documents.read_content(scope, upload.document_version_id)
+        self.relay_outbox_safely()
+        return self.report_detail(scope, report_id)
+
+    def create_and_recognize(
+        self,
+        scope: ScopeContext,
+        study_id: uuid.UUID,
+        command: CreateDocumentCommand,
+        *,
+        filename: str,
+        content: bytes,
+    ) -> ReportDetail:
+        queued = self.create_and_queue(
+            scope,
+            study_id,
+            command,
+            filename=filename,
+            content=content,
+        )
+        return self.process_recognition_job(
+            scope,
+            queued.report.recognition_job_id,
+            worker_id="laboratory-inline",
+        )
+
+    def relay_outbox_safely(self) -> int:
+        try:
+            return relay_pending_outbox(
+                self.session_factory, self.documents.queue
+            )
+        except Exception:
+            return 0
+
+    def _claim_job(
+        self,
+        scope: ScopeContext,
+        job_id: uuid.UUID,
+        *,
+        worker_id: str,
+    ) -> uuid.UUID:
+        self._authorize_read(scope, *self._job_scope(job_id))
+        with self.session_factory() as session:
+            with session.begin():
+                job = session.get(
+                    LabRecognitionJob, job_id, with_for_update=True
+                )
+                if job is None:
+                    raise LaboratoryNotFound(
+                        "laboratory recognition job was not found"
+                    )
+                now = datetime.now(UTC)
+                if job.status == "succeeded":
+                    report = session.scalar(
+                        select(LabReportVersion).where(
+                            LabReportVersion.recognition_job_id == job.id
+                        )
+                    )
+                    if report is None:
+                        raise LaboratoryNotFound("laboratory report was not found")
+                    return report.id
+                lease_active = (
+                    job.status == "running"
+                    and job.lease_expires_at is not None
+                    and job.lease_expires_at > now
+                )
+                if lease_active:
+                    raise LaboratoryConflict(
+                        "laboratory recognition job is already running"
+                    )
+                if job.attempts >= job.max_attempts:
+                    job.status = "failed"
+                    job.error_code = "max_attempts_exhausted"
+                    job.error_summary = "recognition attempts exhausted"
+                    raise LaboratoryConflict(
+                        "laboratory recognition attempts are exhausted"
+                    )
+                report = session.scalar(
+                    select(LabReportVersion).where(
+                        LabReportVersion.recognition_job_id == job.id
+                    )
+                )
+                if report is None:
+                    raise LaboratoryNotFound("laboratory report was not found")
+                job.status = "running"
+                job.attempts += 1
+                job.lease_owner = worker_id[:128]
+                job.lease_expires_at = now + timedelta(minutes=15)
+                job.error_code = None
+                job.error_summary = None
+                return report.id
+
+    def _job_scope(self, job_id: uuid.UUID) -> tuple[uuid.UUID, uuid.UUID]:
+        with self.session_factory() as session:
+            job = session.get(LabRecognitionJob, job_id)
+            if job is None:
+                raise LaboratoryNotFound(
+                    "laboratory recognition job was not found"
+                )
+            return job.study_id, job.site_id
+
+    def process_recognition_job(
+        self,
+        scope: ScopeContext,
+        job_id: uuid.UUID,
+        *,
+        worker_id: str,
+    ) -> ReportDetail:
+        report_id = self._claim_job(scope, job_id, worker_id=worker_id)
+        report = self._load_report(scope, report_id)
+        stored = self.documents.read_content(
+            scope, report.source_document_version_id
+        )
         try:
             result = self.provider.recognize(
                 stored.content,
@@ -672,27 +798,62 @@ class LaboratoryService:
             draft = extract_observations(result)
         except LabProviderUnavailable as exc:
             return self._finish_unavailable_report(
-                scope, report_id, provider_name="disabled", warning=str(exc)
+                scope, report.id, provider_name="disabled", warning=str(exc)
             )
         except LabProviderError as exc:
             return self._finish_failed_report(
                 scope,
-                report_id,
+                report.id,
                 provider_name=getattr(self.provider, "name", "provider"),
                 warning=f"provider_failed:{type(exc).__name__}",
             )
-        return self._store_recognition(scope, report_id, draft)
+        return self._store_recognition(scope, report.id, draft)
 
-    def _mark_job_running(self, job_id: uuid.UUID) -> None:
+    def retry_recognition(
+        self, scope: ScopeContext, report_id: uuid.UUID
+    ) -> ReportDetail:
+        report = self._load_report(scope, report_id)
+        self._authorize_write(scope, report.study_id, report.site_id)
         with self.session_factory() as session:
             with session.begin():
-                job = session.get(
-                    LabRecognitionJob, job_id, with_for_update=True
+                job = session.scalar(
+                    select(LabRecognitionJob)
+                    .where(LabRecognitionJob.id == report.recognition_job_id)
+                    .with_for_update()
                 )
                 if job is None:
-                    raise LaboratoryNotFound("laboratory recognition job was not found")
-                job.status = "running"
-                job.attempts = 1
+                    raise LaboratoryNotFound(
+                        "laboratory recognition job was not found"
+                    )
+                if job.status == "running":
+                    raise LaboratoryConflict(
+                        "running laboratory recognition cannot be retried"
+                    )
+                if job.status == "succeeded":
+                    return self.report_detail(scope, report_id)
+                if job.attempts >= job.max_attempts:
+                    job.attempts = 0
+                job.status = "queued"
+                job.lease_owner = None
+                job.lease_expires_at = None
+                session.add(
+                    OutboxEvent(
+                        id=uuid.uuid4(),
+                        tenant_id=report.tenant_id,
+                        study_id=report.study_id,
+                        site_id=report.site_id,
+                        event_type="laboratory.recognition.requested",
+                        aggregate_type="lab_recognition_job",
+                        aggregate_id=job.id,
+                        dedup_key=(
+                            f"laboratory-recognition-retry:{job.id}:"
+                            f"{job.attempts}:{datetime.now(UTC).isoformat()}"
+                        ),
+                        payload={"recognition_job_id": str(job.id)},
+                    )
+                )
+        self.relay_outbox_safely()
+        return self.report_detail(scope, report_id)
 
     def _finish_unavailable_report(
         self,
@@ -722,6 +883,8 @@ class LaboratoryService:
                 )
                 if job is not None:
                     job.status = "failed"
+                    job.lease_owner = None
+                    job.lease_expires_at = None
                     job.error_code = "provider_unavailable"
                     job.error_summary = warning[:500]
                     job.output = {"report_id": str(report.id)}
@@ -755,6 +918,8 @@ class LaboratoryService:
                 )
                 if job is not None:
                     job.status = "failed"
+                    job.lease_owner = None
+                    job.lease_expires_at = None
                     job.error_code = "provider_failed"
                     job.error_summary = warning[:500]
                     job.output = {"report_id": str(report.id)}
@@ -796,6 +961,8 @@ class LaboratoryService:
                         "laboratory recognition job was not found"
                     )
                 job.status = "succeeded"
+                job.lease_owner = None
+                job.lease_expires_at = None
                 job.error_code = None
                 job.error_summary = None
                 job.output = {
@@ -873,9 +1040,25 @@ class LaboratoryService:
                 )
                 if observation is None:
                     raise LaboratoryNotFound("laboratory observation was not found")
+                existing_decisions = list(
+                    session.scalars(
+                        select(LabObservationDecision)
+                        .where(
+                            LabObservationDecision.observation_id
+                            == observation.id
+                        )
+                        .order_by(
+                            LabObservationDecision.created_at,
+                            LabObservationDecision.id,
+                        )
+                    )
+                )
+                current = _effective_observation(
+                    observation, existing_decisions
+                )
                 if (
                     command.action == "confirm"
-                    and observation.validation_state != "ready_for_match"
+                    and current.validation_state != "ready_for_match"
                 ):
                     raise LaboratoryValidationError(
                         "an observation with validation gaps cannot be "
@@ -966,25 +1149,36 @@ class LaboratoryService:
                     raise LaboratoryValidationError(
                         "one or more observations are outside this report"
                     )
-                if any(
-                    item.validation_state != "ready_for_match"
-                    for item in observations.values()
-                ):
-                    raise LaboratoryValidationError(
-                        "batch confirmation only accepts observations that "
-                        "passed structural validation"
-                    )
-                latest = _latest_decisions(
-                    list(
-                        session.scalars(
-                            select(LabObservationDecision).where(
-                                LabObservationDecision.observation_id.in_(
-                                    command.observation_ids
-                                )
+                decisions = list(
+                    session.scalars(
+                        select(LabObservationDecision).where(
+                            LabObservationDecision.observation_id.in_(
+                                command.observation_ids
                             )
                         )
                     )
                 )
+                by_observation: dict[
+                    uuid.UUID, list[LabObservationDecision]
+                ] = defaultdict(list)
+                for decision in decisions:
+                    by_observation[decision.observation_id].append(decision)
+                current = {
+                    observation_id: _effective_observation(
+                        observation,
+                        by_observation.get(observation_id, []),
+                    )
+                    for observation_id, observation in observations.items()
+                }
+                if any(
+                    item.validation_state != "ready_for_match"
+                    for item in current.values()
+                ):
+                    raise LaboratoryValidationError(
+                        "batch confirmation only accepts observations whose "
+                        "current corrected version passed structural validation"
+                    )
+                latest = _latest_decisions(decisions)
                 for observation_id in command.observation_ids:
                     if latest.get(observation_id) and latest[
                         observation_id
@@ -1478,11 +1672,16 @@ class LaboratoryService:
                     )
                 )
             )
-            latest = _latest_decisions(list(decisions))
+            by_observation: dict[
+                uuid.UUID, list[LabObservationDecision]
+            ] = defaultdict(list)
+            for decision in decisions:
+                by_observation[decision.observation_id].append(decision)
             current = {
                 observation.id: _effective_signature(
                     _effective_observation(
-                        observation, latest.get(observation.id)
+                        observation,
+                        by_observation.get(observation.id, []),
                     )
                 )
                 for observation in observations

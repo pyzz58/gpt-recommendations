@@ -1,6 +1,6 @@
 # CRA-W01 completion record
 
-Status: verified. Date: 2026-10-31.
+Status: revalidation in progress for the 2026-11-01 review remediation.
 
 Revalidated after W08 added laboratory recognition/comparison migrations,
 shared API entrypoints and frontend workflows. Current evidence: run

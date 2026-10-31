@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W01。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -62,6 +62,7 @@
 5. 增加typecheck/build/test脚本及CI，记录并锁定实际依赖版本。
 6. 从实际API生成contracts/openapi.json及前端类型，增加api:check，后续接口变化同步生成，禁止维护两套手写类型。
 7. 前端按AG Grid Community/React与React-PDF路线准备可复用边界，实际依赖在使用任务加入锁文件；不导入Enterprise，不以完整FastAPI模板覆盖当前SQLAlchemy/授权/证据设计。
+8. 保留iPad Safari、桌面浏览器、刷新和重新登录可用的服务端授权/CSRF边界；实际设备与弱网接续验收登记到W12，不在本任务伪装完成。
 
 ## 验证命令
 

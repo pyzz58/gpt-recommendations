@@ -386,6 +386,18 @@ export function getSafetyAssessment(
   );
 }
 
+export function retrySafetyAnalysis(
+  assessmentId: string
+): Promise<SafetyAssessmentView> {
+  return request<SafetyAssessmentView>(
+    `/api/v1/safety-assessments/${assessmentId}/analysis-retry`,
+    {
+      method: "POST",
+      headers: { "X-CSRF-Token": csrfToken() }
+    }
+  );
+}
+
 export function createSafetyAssessment(values: {
   studyId: string;
   siteId: string;
@@ -394,6 +406,7 @@ export function createSafetyAssessment(values: {
   eventDate: string;
   requestedDimensions: string[];
   note: string;
+  eventFactId: string;
 }): Promise<SafetyAssessmentView> {
   return request<SafetyAssessmentView>("/api/v1/safety-assessments", {
     method: "POST",
@@ -411,6 +424,8 @@ export function createSafetyAssessment(values: {
       event_date: values.eventDate,
       requested_dimensions: values.requestedDimensions,
       lab_comparison_id: null,
+      event_fact_id: values.eventFactId || null,
+      related_fact_ids: [],
       note: values.note || null
     })
   });
@@ -1218,6 +1233,18 @@ export function createLabReport(values: {
 
 export function getLabReport(reportId: string): Promise<LabReportView> {
   return request<LabReportView>(`/api/v1/lab-reports/${reportId}`);
+}
+
+export function retryLabRecognition(
+  reportId: string
+): Promise<LabReportView> {
+  return request<LabReportView>(
+    `/api/v1/lab-reports/${reportId}/retry-recognition`,
+    {
+      method: "POST",
+      headers: { "X-CSRF-Token": csrfToken() }
+    }
+  );
 }
 
 export function reviewLabObservation(

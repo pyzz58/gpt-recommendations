@@ -159,6 +159,7 @@ class RuleNode(RuleContract):
     required_facts: list[str] = Field(default_factory=list)
     children: list["RuleNode"] = Field(default_factory=list)
     source_refs: list[RuleSourceRef] = Field(min_length=1)
+    purpose_tags: list[str] = Field(default_factory=list, max_length=32)
     semantic_status: SemanticStatus = "complete"
     unknowns: list[str] = Field(default_factory=list)
 

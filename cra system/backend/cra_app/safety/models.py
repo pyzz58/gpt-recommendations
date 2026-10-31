@@ -6,6 +6,7 @@ from datetime import date, datetime
 from typing import Any
 
 from sqlalchemy import (
+    Boolean,
     CheckConstraint,
     Date,
     DateTime,
@@ -48,6 +49,12 @@ class SafetyAssessment(Base):
             name="fk_safety_assessments_lab_comparison",
             ondelete="RESTRICT",
         ),
+        ForeignKeyConstraint(
+            ["tenant_id", "study_id", "event_fact_id"],
+            ["clinical_facts.tenant_id", "clinical_facts.study_id", "clinical_facts.id"],
+            name="fk_safety_assessments_event_fact",
+            ondelete="RESTRICT",
+        ),
         UniqueConstraint(
             "tenant_id",
             "study_id",
@@ -66,7 +73,8 @@ class SafetyAssessment(Base):
             name="ck_safety_assessments_status",
         ),
         CheckConstraint(
-            "provider_status IN ('completed','not_configured','rejected','failed')",
+            "provider_status IN ('queued','completed','not_configured',"
+            "'rejected','failed')",
             name="ck_safety_assessments_provider_status",
         ),
         CheckConstraint(
@@ -94,6 +102,12 @@ class SafetyAssessment(Base):
     subject_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
     lab_comparison_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True), nullable=True
+    )
+    event_fact_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), nullable=True
+    )
+    fact_scope: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, nullable=False
     )
     assessment_key: Mapped[str] = mapped_column(String(64), nullable=False)
     event_type: Mapped[str] = mapped_column(String(32), nullable=False)
@@ -326,4 +340,75 @@ class SafetyIssueLink(Base):
     created_by: Mapped[str] = mapped_column(String(128), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+class SafetyProviderRun(Base):
+    __tablename__ = "safety_provider_runs"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "study_id", "assessment_id"],
+            [
+                "safety_assessments.tenant_id",
+                "safety_assessments.study_id",
+                "safety_assessments.id",
+            ],
+            name="fk_safety_provider_runs_assessment",
+            ondelete="RESTRICT",
+        ),
+        UniqueConstraint(
+            "assessment_id", name="uq_safety_provider_runs_assessment"
+        ),
+        CheckConstraint(
+            "status IN ('queued','running','completed','rejected','failed')",
+            name="ck_safety_provider_runs_status",
+        ),
+        CheckConstraint(
+            "max_attempts >= 1 AND attempts <= max_attempts",
+            name="ck_safety_provider_runs_attempts",
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True)
+    tenant_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    study_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
+    site_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
+    assessment_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), nullable=False
+    )
+    actor_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    authentication_source: Mapped[str] = mapped_column(
+        String(128), nullable=False
+    )
+    platform_roles: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
+    request_payload: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, nullable=False
+    )
+    provider_name: Mapped[str] = mapped_column(String(64), nullable=False)
+    provider_version: Mapped[str] = mapped_column(String(64), nullable=False)
+    model_version: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    model_sha256: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    dependency_lock_sha256: Mapped[str | None] = mapped_column(
+        String(64), nullable=True
+    )
+    status: Mapped[str] = mapped_column(String(24), nullable=False)
+    attempts: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    max_attempts: Mapped[int] = mapped_column(Integer, nullable=False, default=3)
+    lease_owner: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    lease_expires_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    raw_output: Mapped[str | None] = mapped_column(Text, nullable=True)
+    accepted: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    explanation: Mapped[str | None] = mapped_column(Text, nullable=True)
+    evidence_ids: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
+    errors: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
     )

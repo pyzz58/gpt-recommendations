@@ -176,16 +176,17 @@ Issue聚合状态只用于展示；Action分别保存`open/reported_done/complet
 
 | 接口 | 实现约束 |
 | --- | --- |
-| `POST /api/v1/studies/{study_id}/lab-reports` | multipart上传合成或获授权源报告；保存源版本/哈希、provider/model、SupportProfile、Job、候选字段、原文/bbox和失败原因 |
+| `POST /api/v1/studies/{study_id}/lab-reports` | multipart上传后保存源版本/哈希和持久识别Job，快速返回202/pending；worker重新鉴权后生成provider/model、SupportProfile、候选字段、原文/bbox和失败原因 |
 | `GET /api/v1/studies/{study_id}/lab-reports`；`GET /api/v1/lab-reports/{id}` | 按授权范围返回报告、候选、最新用户动作和来源位置；自动候选与人工核实分列 |
 | `POST /api/v1/lab-reports/{id}/observations/{observation_id}/decision` | confirm/correct/skip追加保存；更正不覆盖自动识别结果，跳过只影响对应路径且不计正常 |
 | `POST /api/v1/lab-reports/{id}/observations/batch-confirm` | 仅批量确认通过结构/来源/实例校验的候选，避免逐字段机械点击 |
 | `POST /api/v1/lab-reports/{id}/observations` | 仅用于少量不可读/失败路径的人工候选补录，保留补录依据 |
+| `POST /api/v1/lab-reports/{id}/retry-recognition` | 失败/中断的识别Job重新入队；原文件、尝试和失败历史保留 |
 | `POST /api/v1/lab-comparisons` | 同一中心内先匹配再比较；返回`match_status`、`result_status`、字段结果、未知和明确scope，歧义不自动选数值最接近项 |
 | `GET /api/v1/lab-comparisons/{id}` | 读取不可变比较快照、已关联M06问题和来源 |
 | `POST /api/v1/lab-comparisons/{id}/issues` | 用户选择非一致字段后创建`edc_correction`待办；不自动创建PD上报或完成整改 |
 
-比较值保留原文、Decimal和可选`< <= > >=`，不同/未知单位返回`unit_review`。原始报告没有缓存或无法解释的文本不猜成数值。确认/更正/跳过使报告revision前进；比较字段按有效来源状态返回`stale`，只有未变化字段可继续关联M06。`not_seen_in_export`沿用W07范围语义，不能改写为EDC漏录。SupportProfile、评估结果和未测范围见`validation/LAB_AUTOMATION_SCOPE.md`。
+比较值保留原文、Decimal和可选`< <= > >=`，不同/未知单位返回`unit_review`。原始报告没有缓存或无法解释的文本不猜成数值。有效值按全部有序复核决策累积，后续confirm或局部字段更正不能回退之前的人工更正。报告级页眉受试者/日期/实例可经来源绑定一次后供结果行复用。参考上下限、比较符、单位和报告元数据分别比较，不能只比较正常/异常标志。确认/更正/跳过使报告revision前进；比较字段按有效来源状态返回`stale`，只有未变化字段可继续关联M06。`not_seen_in_export`沿用W07范围语义，不能改写为EDC漏录。SupportProfile、评估结果和未测范围见`validation/LAB_AUTOMATION_SCOPE.md`。
 
 ## 14. W09已实现安全分析入口
 
@@ -199,5 +200,6 @@ Issue聚合状态只用于展示；Action分别保存`open/reported_done/complet
 | `POST /api/v1/safety-assessments/{id}/cra-review` | 追加CRA复核决定；`not_checked_by_user`通过M04/W05局部CheckDecision限定维度和事件日，不计正常 |
 | `POST /api/v1/safety-assessments/{id}/medical-response` | 独立保存研究者或医学人员答复，不覆盖系统候选或CRA复核 |
 | `POST /api/v1/safety-assessments/{id}/issues` | 用户选择维度后创建M06 `medical_clarification` Action；provider不能完成、上报或关闭该Action |
+| `POST /api/v1/safety-assessments/{id}/analysis-retry` | 失败或拒绝的独立模型解释运行重新持久入队；不重算或改写确定性候选，除非输入发生变化后创建新分析 |
 
-分析记录不可变；CRA复核、医学答复和M06关联以独立记录追加。AE收集、分级、SAE严重性、相关性、预期性、AESI、DLT、PD及时报告分别保存。缺AESI/DLT/IB/知悉时间或项目时限时保持unknown，不从检验一致推断未发生AE或临床安全。模型自由文本、虚拟引用、越界数字/结论均被拒绝，程序问题和未知保留。
+分析记录不可变；CRA复核、医学答复、M06关联和模型运行以独立记录追加。请求必须通过`event_fact_id`或其可唯一确定的AE事实限定事件范围，并可显式加入相关事实；同一患者不同AE和访视不能按fact_key混用。AE收集、分级、SAE严重性、相关性、预期性、AESI、DLT、PD及时报告分别保存。缺AESI/DLT/IB/知悉时间或项目时限时保持unknown，不从检验一致推断未发生AE或临床安全。检验一致但超出参考范围仍进入安全线索；字段跳过和stale比较分别处理。模型自由文本、虚拟引用、越界数字/结论均被拒绝，程序问题和未知保留。

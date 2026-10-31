@@ -47,6 +47,9 @@ class _WriteCommand(BaseModel):
 class CreateStudy(_WriteCommand):
     code: str = Field(min_length=1, max_length=64)
     title: str = Field(min_length=1, max_length=255)
+    jurisdiction: str = Field(
+        default="synthetic", min_length=1, max_length=64
+    )
 
 
 class UpdateStudy(_WriteCommand):
@@ -399,6 +402,7 @@ class GovernanceService:
                     tenant_id=scope.tenant_id,
                     code=command.code,
                     title=command.title,
+                jurisdiction=command.jurisdiction,
                     revision=1,
                     created_by=scope.actor_id,
                     updated_by=scope.actor_id,

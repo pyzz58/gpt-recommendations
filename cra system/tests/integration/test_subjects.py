@@ -305,6 +305,63 @@ def _upload_visit_rule(api: TestClient, services: dict) -> dict:
     }
 
 
+def _upload_gated_text_window_rule(api: TestClient, services: dict) -> dict:
+    content = (
+        "Rule R-WINDOW-GATED-01: Synthetic gated visit window.\n"
+        "Trigger: screening_active = true\n"
+        "Branch V: WHEN visit_date within -2..2 days of infusion_date "
+        "THEN review the synthetic visit window\n"
+        "Required facts: screening_active, infusion_date, visit_date\n"
+    ).encode()
+    upload = api.post(
+        f"/api/v1/studies/{services['study']}/documents",
+        files={
+            "file": (
+                "synthetic_gated_window_rule.txt",
+                content,
+                "text/plain",
+            )
+        },
+        data={
+            "title": "Synthetic gated visit window",
+            "document_type": "text",
+            "purpose": "rule",
+            "version_label": "v1",
+            "expected_revision": "0",
+            "site_id": str(services["site_a"]),
+        },
+        headers={
+            "Idempotency-Key": "w05-gated-rule-upload",
+            "X-CSRF-Token": api.cookies.get("cra_csrf"),
+        },
+    )
+    assert upload.status_code == 202, upload.text
+    body = upload.json()
+    assert services["documents"].process_job(
+        uuid.UUID(body["job_id"])
+    ).status == "completed"
+    extracted = api.post(
+        f"/api/v1/document-versions/{body['document_version_id']}"
+        "/rule-candidates",
+        json={"expected_revision": 0, "idempotency_key": "w05-gated-extract"},
+        headers={"X-CSRF-Token": api.cookies.get("cra_csrf")},
+    )
+    assert extracted.status_code == 202, extracted.text
+    activation = api.post(
+        "/api/v1/version-activations",
+        json={
+            "expected_revision": 0,
+            "idempotency_key": "w05-gated-activation",
+            "document_version_id": body["document_version_id"],
+            "starts_on": "2020-01-01",
+            "reason": "Synthetic gated window activation",
+        },
+        headers={"X-CSRF-Token": api.cookies.get("cra_csrf")},
+    )
+    assert activation.status_code == 200, activation.text
+    return body
+
+
 def _context_rows(filename: str) -> list[FactImportRow]:
     return parse_context_file(
         filename, (SUBJECT_FIXTURES / filename).read_bytes()
@@ -355,6 +412,30 @@ def _subject_by_external(api: TestClient, services: dict, external_id: str):
     )
 
 
+def _record_no_protocol_waiver(
+    services: dict, external_id: str, *, key: str, observed_on: date
+):
+    _import_rows(
+        services,
+        [
+            FactImportRow(
+                subject_external_id=external_id,
+                fact_key="protocol_waiver",
+                value_raw="false",
+                value_type="boolean",
+                observed_on=observed_on,
+                source_ref={
+                    "source_type": "record",
+                    "source_id": f"synthetic-no-waiver:{external_id}",
+                    "locator": "synthetic/waiver",
+                    "quote": "Pure synthetic no-waiver fact",
+                },
+            )
+        ],
+        key=key,
+    )
+
+
 def _evaluate(api: TestClient, subject_id: str, event_date: str) -> dict:
     response = api.post(
         f"/api/v1/subjects/{subject_id}/visit-requirements",
@@ -366,6 +447,124 @@ def _evaluate(api: TestClient, subject_id: str, event_date: str) -> dict:
     )
     assert response.status_code == 200, response.text
     return response.json()
+
+
+def test_visit_window_respects_gate_unknown_date_and_auto_candidate_status(
+    api, services
+):
+    _upload_gated_text_window_rule(api, services)
+    ref = {
+        "source_type": "record",
+        "source_id": "synthetic-visit-window-source",
+        "locator": "synthetic/window",
+        "quote": "Pure synthetic visit-window facts",
+    }
+    rows = [
+        FactImportRow(
+            subject_external_id="SYN-GATE-FALSE",
+            fact_key="screening_active",
+            value_raw="false",
+            value_type="boolean",
+            observed_on=date(2026, 1, 1),
+            source_ref=ref,
+        ),
+        FactImportRow(
+            subject_external_id="SYN-GATE-FALSE",
+            fact_key="infusion_date",
+            value_raw="2026-01-01",
+            value_type="date",
+            observed_on=date(2026, 1, 1),
+            source_ref=ref,
+        ),
+        FactImportRow(
+            subject_external_id="SYN-GATE-FALSE",
+            fact_key="visit_date",
+            value_raw="2026-01-10",
+            value_type="date",
+            observed_on=date(2026, 1, 10),
+            source_ref=ref,
+        ),
+        FactImportRow(
+            subject_external_id="SYN-UNKNOWN-DATE",
+            fact_key="screening_active",
+            value_raw="true",
+            value_type="boolean",
+            observed_on=date(2026, 1, 1),
+            source_ref=ref,
+        ),
+        FactImportRow(
+            subject_external_id="SYN-UNKNOWN-DATE",
+            fact_key="infusion_date",
+            value_raw="2026-01-01",
+            value_type="date",
+            observed_on=date(2026, 1, 1),
+            source_ref=ref,
+        ),
+        FactImportRow(
+            subject_external_id="SYN-UNKNOWN-DATE",
+            fact_key="visit_date",
+            value_raw="date unavailable",
+            value_type="string",
+            observed_on=date(2026, 1, 10),
+            source_ref=ref,
+        ),
+        FactImportRow(
+            subject_external_id="SYN-UNKNOWN-GATE",
+            fact_key="infusion_date",
+            value_raw="2026-01-01",
+            value_type="date",
+            observed_on=date(2026, 1, 1),
+            source_ref=ref,
+        ),
+        FactImportRow(
+            subject_external_id="SYN-UNKNOWN-GATE",
+            fact_key="visit_date",
+            value_raw="2026-01-02",
+            value_type="date",
+            observed_on=date(2026, 1, 2),
+            source_ref=ref,
+        ),
+    ]
+    _import_rows(services, rows, key="w05-gated-window")
+    false_subject = _subject_by_external(api, services, "SYN-GATE-FALSE")
+    false_body = _evaluate(api, false_subject["id"], "2026-01-10")
+    assert false_body["requirements"][0]["window_status"] == "not_applicable"
+    assert false_body["requirements"][0]["requirement"]["window_start"] is None
+
+    unknown_subject = _subject_by_external(
+        api, services, "SYN-UNKNOWN-DATE"
+    )
+    unknown_body = _evaluate(api, unknown_subject["id"], "2026-01-10")
+    assert unknown_body["requirements"][0]["window_status"] == "unknown_actual"
+    assert any(
+        item["code"] == "missing_actual_visit_date"
+        for item in unknown_body["envelope"]["unknowns"]
+    )
+    window_claims = [
+        claim
+        for claim in unknown_body["envelope"]["claims"]
+        if claim["kind"] == "auto_candidate"
+    ]
+    assert window_claims
+    assert all(
+        claim["verification_status"] == "needs_review"
+        for claim in window_claims
+    )
+
+    unknown_gate_subject = _subject_by_external(
+        api, services, "SYN-UNKNOWN-GATE"
+    )
+    unknown_gate_body = _evaluate(
+        api, unknown_gate_subject["id"], "2026-01-10"
+    )
+    assert (
+        unknown_gate_body["requirements"][0]["window_status"]
+        == "unknown_applicability"
+    )
+    assert any(
+        item["code"] == "unknown_visit_applicability"
+        for item in unknown_gate_body["envelope"]["unknowns"]
+    )
 
 
 def test_structured_context_json_csv_and_xlsx_parse_same_subjects():
@@ -497,6 +696,12 @@ def test_rule_driven_window_dates_and_stage(
         _context_rows("synthetic_context.json"),
         key="w05-window-context",
     )
+    _record_no_protocol_waiver(
+        services,
+        "SYN-001",
+        key="w05-window-no-waiver",
+        observed_on=date(2021, 1, 1),
+    )
     syn1 = _subject_by_external(api, services, "SYN-001")
     result = _evaluate(api, syn1["id"], "2021-01-02")
     assert result["envelope"]["purpose"] == "visit_window"
@@ -543,6 +748,18 @@ def test_missing_anchor_skip_recovery_and_other_work_continues(
         services,
         _context_rows("synthetic_context.json"),
         key="w05-skip-context",
+    )
+    _record_no_protocol_waiver(
+        services,
+        "SYN-002",
+        key="w05-skip-no-waiver",
+        observed_on=date(2021, 1, 3),
+    )
+    _record_no_protocol_waiver(
+        services,
+        "SYN-001",
+        key="w05-other-subject-no-waiver",
+        observed_on=date(2021, 1, 1),
     )
     syn1 = _subject_by_external(api, services, "SYN-001")
     syn2 = _subject_by_external(api, services, "SYN-002")
@@ -644,6 +861,12 @@ def test_fact_revision_marks_requirements_stale_and_breakpoints_are_separate(
         services,
         _context_rows("synthetic_context.json"),
         key="w05-revision-context",
+    )
+    _record_no_protocol_waiver(
+        services,
+        "SYN-001",
+        key="w05-revision-no-waiver",
+        observed_on=date(2021, 1, 1),
     )
     subject = _subject_by_external(api, services, "SYN-001")
     other_subject = _subject_by_external(api, services, "SYN-002")

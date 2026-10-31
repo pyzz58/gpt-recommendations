@@ -22,7 +22,9 @@ import {
   batchConfirmLabObservations,
   createLabReport,
   documentContentUrl,
+  getLabReport,
   getLabReports,
+  retryLabRecognition,
   reviewLabObservation
 } from "../../api/client";
 import { SourcePdfViewer } from "../../components/SourcePdfViewer";
@@ -119,6 +121,23 @@ export function RecognitionReview({
     load().catch((reason) => setError(errorMessage(reason)));
   }, [load]);
 
+  useEffect(() => {
+    if (!report || report.state !== "pending") {
+      return;
+    }
+    const poll = window.setInterval(() => {
+      getLabReport(report.id)
+        .then((next) => {
+          adopt(next);
+          if (next.state !== "pending") {
+            window.clearInterval(poll);
+          }
+        })
+        .catch((reason) => setError(errorMessage(reason)));
+    }, 2000);
+    return () => window.clearInterval(poll);
+  }, [report?.id, report?.state]);
+
   function adopt(next: LabReportView) {
     setReport(next);
     setReports((current) => {
@@ -155,7 +174,9 @@ export function RecognitionReview({
       adopt(next);
       formElement.reset();
       setMessage(
-        next.state === "provider_unavailable"
+        next.state === "pending"
+          ? "文件已私有保存并进入持久识别队列；页面会自动刷新处理结果。"
+          : next.state === "provider_unavailable"
           ? "文件已私有保存；当前 OCR 未启用。可人工少量补录或跳过该范围。"
           : `已从原文件读取 ${next.observations_count} 条候选；复核仅展示低可信、歧义和异常。`
       );
@@ -187,6 +208,23 @@ export function RecognitionReview({
       const next = await batchConfirmLabObservations(report, ids);
       adopt(next);
       setMessage(`已批量确认 ${ids.length} 条通过校验的候选。`);
+    } catch (reason) {
+      setError(errorMessage(reason));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function retryRecognition() {
+    if (!report) {
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    try {
+      const next = await retryLabRecognition(report.id);
+      adopt(next);
+      setMessage("识别作业已重新入队；权限和源版本将在worker中重新检查。");
     } catch (reason) {
       setError(errorMessage(reason));
     } finally {
@@ -341,6 +379,22 @@ export function RecognitionReview({
 
       {message && <div className="notice" role="status">{message}</div>}
       {error && <div className="notice notice-error" role="alert">{error}</div>}
+      {report &&
+        ["failed", "provider_unavailable"].includes(report.state) && (
+          <div className="recognition-actions">
+            <button
+              type="button"
+              className="secondary-button"
+              disabled={busy}
+              onClick={() => void retryRecognition()}
+            >
+              重新排入识别队列
+            </button>
+            <span className="muted-copy">
+              原文件与失败记录保留；worker会重新检查权限和源版本。
+            </span>
+          </div>
+        )}
 
       <form className="lab-upload-form" onSubmit={(event) => void upload(event)}>
         <label>

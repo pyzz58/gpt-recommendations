@@ -2,6 +2,7 @@ import { type FormEvent, useCallback, useEffect, useState } from "react";
 
 import {
   ApiError,
+  type ClinicalFactView,
   type SafetyAssessmentSummaryView,
   type SafetyAssessmentView,
   type SafetyDimensionView,
@@ -9,10 +10,12 @@ import {
   createSafetyAssessment,
   getSafetyAssessment,
   getSafetyAssessments,
+  getSubjectTimeline,
   getSubjects,
   linkSafetyAssessmentIssue,
   recordMedicalSafetyResponse,
-  recordSafetyCraReview
+  recordSafetyCraReview,
+  retrySafetyAnalysis
 } from "../../api/client";
 
 type Props = {
@@ -64,6 +67,8 @@ export function AssessmentPanel({ studyId, siteId }: Props) {
   const today = new Date().toISOString().slice(0, 10);
   const [subjects, setSubjects] = useState<SubjectView[]>([]);
   const [subjectId, setSubjectId] = useState("");
+  const [subjectFacts, setSubjectFacts] = useState<ClinicalFactView[]>([]);
+  const [eventFactId, setEventFactId] = useState("");
   const [assessments, setAssessments] = useState<
     SafetyAssessmentSummaryView[]
   >([]);
@@ -130,6 +135,44 @@ export function AssessmentPanel({ studyId, siteId }: Props) {
     );
   }, [loadAssessments, subjectId]);
 
+  useEffect(() => {
+    if (!assessment || assessment.provider_status !== "queued") {
+      return;
+    }
+    const timer = window.setInterval(() => {
+      getSafetyAssessment(assessment.id)
+        .then((next) => {
+          setAssessment(next);
+          if (next.provider_status !== "queued") {
+            window.clearInterval(timer);
+          }
+        })
+        .catch((reason) => setError(errorMessage(reason)));
+    }, 2000);
+    return () => window.clearInterval(timer);
+  }, [assessment?.id, assessment?.provider_status]);
+
+  useEffect(() => {
+    if (!subjectId) {
+      setSubjectFacts([]);
+      setEventFactId("");
+      return;
+    }
+    getSubjectTimeline(subjectId)
+      .then((items) => {
+        const current = items.filter((item) => item.is_current);
+        setSubjectFacts(current);
+        setEventFactId((value) =>
+          current.some((item) => item.id === value)
+            ? value
+            : current.find((item) => item.fact_key === "ae_term")?.id ??
+              current[0]?.id ??
+              ""
+        );
+      })
+      .catch((reason) => setError(errorMessage(reason)));
+  }, [subjectId]);
+
   function toggle(
     value: string,
     current: string[],
@@ -166,8 +209,8 @@ export function AssessmentPanel({ studyId, siteId }: Props) {
 
   async function analyze(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!subjectId || requested.length === 0) {
-      setError("请选择受试者并至少选择一个安全判断维度。");
+    if (!subjectId || !eventFactId || requested.length === 0) {
+      setError("请选择受试者、事件事实并至少选择一个安全判断维度。");
       return;
     }
     setBusy(true);
@@ -181,7 +224,8 @@ export function AssessmentPanel({ studyId, siteId }: Props) {
         eventType,
         eventDate,
         requestedDimensions: requested,
-        note: eventNote
+        note: eventNote,
+        eventFactId
       });
       applyAssessment(next);
       const summaries = await getSafetyAssessments(
@@ -278,6 +322,22 @@ export function AssessmentPanel({ studyId, siteId }: Props) {
     }
   }
 
+  async function retryAnalysis() {
+    if (!assessment) {
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    try {
+      setAssessment(await retrySafetyAnalysis(assessment.id));
+      setMessage("安全分析解释已重新进入持久队列。");
+    } catch (reason) {
+      setError(errorMessage(reason));
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <section className="safety-panel" aria-labelledby="safety-title">
       <div className="document-heading">
@@ -327,6 +387,22 @@ export function AssessmentPanel({ studyId, siteId }: Props) {
             <option value="laboratory_logic">检验安全线索</option>
             <option value="protocol_deviation">方案偏离候选</option>
             <option value="mixed">混合事项</option>
+          </select>
+        </label>
+        <label>
+          事件事实
+          <select
+            value={eventFactId}
+            onChange={(event) => setEventFactId(event.target.value)}
+            required
+          >
+            <option value="">选择具体事件事实</option>
+            {subjectFacts.map((fact) => (
+              <option key={fact.id} value={fact.id}>
+                {fact.fact_key} · {fact.repeat_instance} ·{" "}
+                {String(fact.value_raw)}
+              </option>
+            ))}
           </select>
         </label>
         <label>
@@ -387,6 +463,30 @@ export function AssessmentPanel({ studyId, siteId }: Props) {
             <span>状态: {assessment.provider_status}</span>
             <span>模型不能作最终医学结论</span>
           </div>
+          {assessment.provider_runs.map((run) => (
+            <div className="notice" key={run.id}>
+              <strong>
+                模型运行 {run.status}
+                {run.accepted ? " · 解释已通过引用校验" : ""}
+              </strong>
+              <span>{run.explanation ?? "尚未形成可用解释"}</span>
+              {run.errors.length > 0 && (
+                <small>{run.errors.join("；")}</small>
+              )}
+            </div>
+          ))}
+          {assessment.provider_runs.some(
+            (run) => run.status === "failed" || run.status === "rejected"
+          ) && (
+            <button
+              type="button"
+              className="secondary-button"
+              disabled={busy}
+              onClick={() => void retryAnalysis()}
+            >
+              重新排队模型解释
+            </button>
+          )}
 
           {assessment.timely_alerts.map((alert) => (
             <article className="safety-urgent" key={alert.alert_key}>

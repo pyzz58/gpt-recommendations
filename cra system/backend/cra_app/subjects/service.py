@@ -24,7 +24,8 @@ from cra_app.governance.service import (
     ScopeContext,
 )
 from cra_app.platform.jobs import digest_payload
-from cra_app.rules.contracts import FactValue
+from cra_app.rules.contracts import FactValue, RuleCondition
+from cra_app.rules.evaluator import evaluate_condition
 from cra_app.rules.service import (
     ApplicableRuleQuery,
     RuleService,
@@ -1600,9 +1601,25 @@ class SubjectService:
         anchor: ClinicalFact | None,
         actual: ClinicalFact | None,
         active_decision: CheckDecision | None,
+        facts: dict[str, FactValue],
     ) -> tuple[str, DateWindow | None]:
+        gate_condition = (
+            spec.gate_conditions[0]
+            if len(spec.gate_conditions) == 1
+            else RuleCondition(
+                op="all",
+                children=list(spec.gate_conditions),
+            )
+            if spec.gate_conditions
+            else None
+        )
+        gate = evaluate_condition(gate_condition, facts)
+        if spec.gate_conditions and gate.result == "false":
+            return "not_applicable", None
         if active_decision is not None:
             return "not_checked_by_user", None
+        if spec.gate_conditions and gate.result == "unknown":
+            return "unknown_applicability", None
         if anchor is None:
             return "unknown_anchor", None
         anchor_date = _date_from_fact(anchor)
@@ -1616,7 +1633,12 @@ class SubjectService:
         )
         if actual is None:
             return "unknown_actual", window
-        classification = window.classify(_date_from_fact(actual))
+        actual_date = _date_from_fact(actual)
+        if actual_date is None:
+            return "unknown_actual", window
+        classification = window.classify(actual_date)
+        if classification == "unknown":
+            return "unknown_actual", window
         return (
             "in_window" if classification == "in_window" else "out_of_window",
             window,
@@ -1704,6 +1726,7 @@ class SubjectService:
                         anchor=anchor,
                         actual=actual,
                         active_decision=decision,
+                        facts=fact_map,
                     )
                     input_facts = [
                         fact
@@ -1803,11 +1826,7 @@ class SubjectService:
                     claims.append(
                         Claim(
                             claim_id=f"visit-window:{requirement.id}",
-                            kind=(
-                                "fact"
-                                if status in {"in_window", "out_of_window"}
-                                else "inference"
-                            ),
+                            kind="auto_candidate",
                             label=(
                                 f"{applicable.rule.rule_key} {spec.path} "
                                 f"{status}"
@@ -1841,11 +1860,7 @@ class SubjectService:
                                 "inclusive": spec.inclusive,
                                 "rule_version_id": str(applicable.version.id),
                             },
-                            verification_status=(
-                                "cra_confirmed"
-                                if status in {"in_window", "out_of_window"}
-                                else "needs_review"
-                            ),
+                            verification_status="needs_review",
                             source_refs=[
                                 self._fact_source_ref(fact)
                                 for fact in input_facts
@@ -1897,6 +1912,17 @@ class SubjectService:
                                 affected_scope=visit_key,
                             )
                         )
+                    elif status == "unknown_applicability":
+                        unknowns.append(
+                            UnknownItem(
+                                code="unknown_visit_applicability",
+                                reason=(
+                                    "visit-window prerequisite or exception "
+                                    "remains unknown"
+                                ),
+                                affected_scope=visit_key,
+                            )
+                        )
                     elif status == "not_checked_by_user":
                         assert decision is not None
                         not_checked.append(
@@ -1911,7 +1937,7 @@ class SubjectService:
                     OutputCapability(
                         capability_id="rule-driven-visit-window",
                         level="limited",
-                        validated=True,
+                        validated=False,
                         limitations=[
                             "uses the finite W04 date-interval rules only",
                             "not a complete protocol schedule",
@@ -1926,6 +1952,13 @@ class SubjectService:
                         affected_scope=f"{subject.deidentified_label}@{command.event_date.isoformat()}",
                     )
                 )
+            unknowns.extend(rule_outcome.envelope.unknowns)
+            unknowns = list(
+                {
+                    (item.code, item.affected_scope, item.reason): item
+                    for item in unknowns
+                }.values()
+            )
             envelope = OutputEnvelope(
                 output_id=uuid.uuid4(),
                 purpose="visit_window",

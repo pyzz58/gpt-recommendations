@@ -195,6 +195,25 @@
       }
     },
     {
+      "artifact_id": "LAB-REPORT-ZH-CONTEXT-EVAL",
+      "file": "labs/artifacts/synthetic_lab_report_zh_context.pdf",
+      "format": "pdf",
+      "format_kind": "text_pdf",
+      "purpose": "laboratory",
+      "group": "evaluation",
+      "expected_file": "labs/evaluation_cases_zh_context.json",
+      "sha256": "bb5217282b642534a61b39b12d952954f3c4950b265339071dfc5cb209aaaf89",
+      "expected": {
+        "row_count": 2,
+        "report_context": {
+          "subject_external_id": "SYN-ZH-001",
+          "collected_on": "2026-01-02",
+          "instance_type": "initial"
+        },
+        "rows_do_not_repeat_identity_or_date": true
+      }
+    },
+    {
       "artifact_id": "SAFETY-RULES-DEV",
       "file": "safety/rules.json",
       "format": "json",

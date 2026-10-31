@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import os
 import uuid
-from datetime import date
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 import pytest
@@ -15,6 +15,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from cra_app.documents.service import DocumentService
 from cra_app.documents.storage import build_private_storage
 from cra_app.documents.models import DocumentVersion
+from cra_app.documents.worker import build_worker_app
 from cra_app.governance.identity import SyntheticIdentityProvider
 from cra_app.governance.service import (
     CreateSite,
@@ -49,6 +50,9 @@ pytestmark = pytest.mark.postgres
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
 LAB_PDF = FIXTURES / "labs" / "artifacts" / "synthetic_lab_report.pdf"
 LAB_PNG = FIXTURES / "labs" / "artifacts" / "synthetic_lab_report_eval.png"
+ZH_CONTEXT_PDF = (
+    FIXTURES / "labs" / "artifacts" / "synthetic_lab_report_zh_context.pdf"
+)
 EDC_XLSX = FIXTURES / "edc" / "artifacts" / "synthetic_edc_lab.xlsx"
 
 
@@ -339,8 +343,22 @@ def _upload_lab(api: TestClient, services: dict, *, key: str = "w08-lab") -> dic
         },
         headers={**_csrf(api), "Idempotency-Key": key},
     )
-    assert response.status_code == 200, response.text
-    return response.json()
+    assert response.status_code == 202, response.text
+    queued = response.json()
+    assert queued["state"] == "pending"
+    scope = ScopeContext(
+        actor_id="synthetic-cra-a",
+        tenant_id="synthetic-tenant",
+        authentication_source="trusted-test",
+    )
+    api.app.state.laboratory_service.process_recognition_job(
+        scope,
+        uuid.UUID(queued["recognition_job_id"]),
+        worker_id="synthetic-test-worker",
+    )
+    completed = api.get(f"/api/v1/lab-reports/{queued['id']}")
+    assert completed.status_code == 200, completed.text
+    return completed.json()
 
 
 def _create_comparison(
@@ -382,7 +400,7 @@ def test_text_pdf_initial_repeat_scope_and_issue_link(
             DocumentVersion, uuid.UUID(report["source_document_version_id"])
         )
         assert source is not None
-        assert source.parse_status == "completed"
+        assert source.parse_status in {"pending", "completed"}
     assert report["observations_count"] == 5
     assert report["file_format"] == "text_pdf"
     assert report["support_profile"]["clinical_use_validated"] is False
@@ -568,6 +586,106 @@ def test_correction_recomputes_difference_without_overwriting_source(
                 )
 
 
+def test_confirm_and_successive_corrections_keep_current_effective_value(
+    api: TestClient, services: dict
+):
+    report = _upload_lab(api, services, key="w08-correction-chain")
+    observation = next(
+        item
+        for item in report["observations"]
+        if item["analyte"] == "Hemoglobin"
+        and item["instance_type"] == "initial"
+    )
+    value_corrected = api.post(
+        (
+            f"/api/v1/lab-reports/{report['id']}/observations/"
+            f"{observation['id']}/decision"
+        ),
+        json={
+            "expected_revision": report["revision"],
+            "idempotency_key": "w08-chain-value",
+            "action": "correct",
+            "corrected_fields": {"value_raw": "119"},
+            "note": "Synthetic CRA value correction",
+        },
+        headers=_csrf(api),
+    )
+    assert value_corrected.status_code == 200, value_corrected.text
+    corrected = value_corrected.json()
+    confirmed = api.post(
+        (
+            f"/api/v1/lab-reports/{report['id']}/observations/"
+            f"{observation['id']}/decision"
+        ),
+        json={
+            "expected_revision": corrected["revision"],
+            "idempotency_key": "w08-chain-confirm",
+            "action": "confirm",
+            "note": "Synthetic CRA confirms the current corrected value",
+        },
+        headers=_csrf(api),
+    )
+    assert confirmed.status_code == 200, confirmed.text
+    confirmed_body = confirmed.json()
+    current = next(
+        item
+        for item in confirmed_body["observations"]
+        if item["id"] == observation["id"]
+    )
+    assert current["value_raw"] == "119"
+    assert current["extraction_state"] == "user_confirmed"
+
+    unit_corrected = api.post(
+        (
+            f"/api/v1/lab-reports/{report['id']}/observations/"
+            f"{observation['id']}/decision"
+        ),
+        json={
+            "expected_revision": confirmed_body["revision"],
+            "idempotency_key": "w08-chain-unit",
+            "action": "correct",
+            "corrected_fields": {"unit_raw": "g/L"},
+            "note": "Synthetic CRA later corrects only the unit",
+        },
+        headers=_csrf(api),
+    )
+    assert unit_corrected.status_code == 200, unit_corrected.text
+    latest = next(
+        item
+        for item in unit_corrected.json()["observations"]
+        if item["id"] == observation["id"]
+    )
+    assert latest["value_raw"] == "119"
+    assert latest["unit"] == "g/L"
+    batch = api.post(
+        f"/api/v1/lab-reports/{report['id']}/observations/batch-confirm",
+        json={
+            "expected_revision": unit_corrected.json()["revision"],
+            "idempotency_key": "w08-chain-batch",
+            "observation_ids": [observation["id"]],
+            "note": "Synthetic batch confirmation of the current correction",
+        },
+        headers=_csrf(api),
+    )
+    assert batch.status_code == 200, batch.text
+    after_batch = next(
+        item
+        for item in batch.json()["observations"]
+        if item["id"] == observation["id"]
+    )
+    assert after_batch["value_raw"] == "119"
+    assert after_batch["unit"] == "g/L"
+    with api.app.state.session_factory() as session:
+        candidates = list(
+            session.scalars(
+                select(LabObservation).where(
+                    LabObservation.id == uuid.UUID(observation["id"])
+                )
+            )
+        )
+        assert candidates[0].value_raw == "121"
+
+
 def test_skip_is_scope_limited_and_not_normal(api: TestClient, services: dict):
     snapshot = _confirm_edc(api, services)
     report = _upload_lab(api, services, key="w08-lab-skip")
@@ -708,8 +826,19 @@ def test_ocr_disabled_preserves_file_and_allows_small_manual_fallback(
         },
         headers={**_csrf(api), "Idempotency-Key": "w08-image-disabled"},
     )
-    assert uploaded.status_code == 200, uploaded.text
-    report = uploaded.json()
+    assert uploaded.status_code == 202, uploaded.text
+    queued = uploaded.json()
+    scope = ScopeContext(
+        actor_id="synthetic-cra-a",
+        tenant_id="synthetic-tenant",
+        authentication_source="trusted-test",
+    )
+    api.app.state.laboratory_service.process_recognition_job(
+        scope,
+        uuid.UUID(queued["recognition_job_id"]),
+        worker_id="synthetic-test-worker",
+    )
+    report = api.get(f"/api/v1/lab-reports/{queued['id']}").json()
     assert report["state"] == "provider_unavailable"
     assert report["observations_count"] == 0
     assert "OCR" in report["warnings"][0]
@@ -741,3 +870,141 @@ def test_ocr_disabled_preserves_file_and_allows_small_manual_fallback(
     assert body["observations_count"] == 1
     assert body["observations"][0]["extraction_state"] == "manual"
     assert body["observations"][0]["source_ref"]["provider"] == "manual-entry"
+
+
+def test_lab_upload_returns_queued_job_and_recovers_expired_lease(
+    api: TestClient, services: dict, session_factory
+):
+    uploaded = api.post(
+        f"/api/v1/studies/{services['study']}/lab-reports",
+        files={"file": (LAB_PDF.name, LAB_PDF.read_bytes(), "application/pdf")},
+        data={
+            "site_id": str(services["sites"]["site_a"]),
+            "title": "Synthetic queued laboratory report",
+            "version_label": "v1",
+        },
+        headers={**_csrf(api), "Idempotency-Key": "w08-queued-lab"},
+    )
+    assert uploaded.status_code == 202, uploaded.text
+    queued = uploaded.json()
+    assert queued["state"] == "pending"
+    assert queued["observations_count"] == 0
+    with session_factory() as session:
+        assert session.scalar(
+            text(
+                "SELECT count(*) FROM procrastinate_jobs "
+                "WHERE task_name = 'cra.laboratory.recognize'"
+            )
+        ) == 1
+        job = session.get(
+            LabRecognitionJob,
+            uuid.UUID(queued["recognition_job_id"]),
+        )
+        assert job is not None and job.status == "queued"
+        job.status = "running"
+        job.attempts = 1
+        job.lease_owner = "interrupted-worker"
+        job.lease_expires_at = datetime.now(UTC) - timedelta(minutes=1)
+        session.commit()
+
+    scope = ScopeContext(
+        actor_id="synthetic-cra-a",
+        tenant_id="synthetic-tenant",
+        authentication_source="trusted-test",
+    )
+    recovered = api.app.state.laboratory_service.process_recognition_job(
+        scope,
+        uuid.UUID(queued["recognition_job_id"]),
+        worker_id="recovery-worker",
+    )
+    assert recovered.report.state == "recognized"
+    with session_factory() as session:
+        job = session.get(
+            LabRecognitionJob,
+            uuid.UUID(queued["recognition_job_id"]),
+        )
+        assert job is not None
+        assert job.status == "succeeded"
+        assert job.attempts == 2
+        assert job.lease_owner is None
+
+
+def test_real_procrastinate_worker_processes_laboratory_job(
+    api: TestClient, services: dict, settings: Settings, session_factory
+):
+    uploaded = api.post(
+        f"/api/v1/studies/{services['study']}/lab-reports",
+        files={"file": (LAB_PDF.name, LAB_PDF.read_bytes(), "application/pdf")},
+        data={
+            "site_id": str(services["sites"]["site_a"]),
+            "title": "Synthetic worker laboratory report",
+            "version_label": "v1",
+        },
+        headers={**_csrf(api), "Idempotency-Key": "w08-worker-lab"},
+    )
+    assert uploaded.status_code == 202, uploaded.text
+    queued = uploaded.json()
+    worker = build_worker_app(
+        services["documents"],
+        _database_url(),
+        api.app.state.laboratory_service,
+    )
+    worker.run_worker(queues=["laboratory"], concurrency=1, wait=False)
+    completed = api.get(f"/api/v1/lab-reports/{queued['id']}")
+    assert completed.status_code == 200, completed.text
+    assert completed.json()["state"] == "recognized"
+    with session_factory() as session:
+        job = session.get(
+            LabRecognitionJob,
+            uuid.UUID(queued["recognition_job_id"]),
+        )
+        assert job is not None
+        assert job.status == "succeeded"
+        assert job.attempts == 1
+
+
+def test_chinese_report_identity_and_date_are_bound_once_for_all_rows(
+    api: TestClient, services: dict
+):
+    uploaded = api.post(
+        f"/api/v1/studies/{services['study']}/lab-reports",
+        files={
+            "file": (
+                ZH_CONTEXT_PDF.name,
+                ZH_CONTEXT_PDF.read_bytes(),
+                "application/pdf",
+            )
+        },
+        data={
+            "site_id": str(services["sites"]["site_a"]),
+            "title": "Synthetic Chinese report context",
+            "version_label": "v1",
+        },
+        headers={**_csrf(api), "Idempotency-Key": "w08-zh-context-lab"},
+    )
+    assert uploaded.status_code == 202, uploaded.text
+    scope = ScopeContext(
+        actor_id="synthetic-cra-a",
+        tenant_id="synthetic-tenant",
+        authentication_source="trusted-test",
+    )
+    queued = uploaded.json()
+    api.app.state.laboratory_service.process_recognition_job(
+        scope,
+        uuid.UUID(queued["recognition_job_id"]),
+        worker_id="synthetic-zh-context-worker",
+    )
+    report = api.get(f"/api/v1/lab-reports/{queued['id']}").json()
+    assert report["state"] == "recognized"
+    assert report["support_profile"]["report_context"] == {
+        "subject_external_id": "SYN-ZH-001",
+        "collected_on": "2026-01-02",
+        "instance_type": "初检",
+        "report_revision": "FINAL",
+    }
+    assert {
+        item["subject_external_id"] for item in report["observations"]
+    } == {"SYN-ZH-001"}
+    assert {
+        item["instance_type"] for item in report["observations"]
+    } == {"initial"}

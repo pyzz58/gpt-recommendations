@@ -47,3 +47,5 @@ SafetyContext逐用途缺口与有依据分析，不把检验表当完整AE资�
 程序从W04事件日适用规则和仅`original_record`/`cra_confirmed`事实计算九个维度，分别保存candidate、unknown、not_applicable和用户跳过；分级不产生SAE结论。缺知悉时间或项目时限时仅显示及时提醒和具体问题，不计算超期。检验比较仅用于提出AE线索问题，不输出临床安全。
 
 `Qwen/Qwen2.5-0.5B-Instruct`固定提交`7ae557604adf67be50417f59c2c2f167def9a775`在隔离Python 3.12进程中选择服务端允许的解释模板和证据ID，主应用不导入模型依赖。grounding拒绝残缺/自由JSON、未知或伪造引用、越界数字及医学结论。CRA复核、研究者/医学答复和M06 Action分表保存；provider无权关闭行动。独立三个合成案例的维度/问题/边界检查及实际模型选择全部通过，证据见[W09状态](../../validation/W09_STATUS.md)。
+
+2026-11-01审查复核后补充：事实集合由明确事件事实/重复实例选择；研究配置提供法域，并继承W04共同约束unknown/conflict。检验一致性、异常范围、差异、不可比较、用户跳过和stale字段分别处理，一致但异常仍形成安全线索。模型解释改为独立持久provider run，包含租约、重试、模型和权重哈希；单次grounding通过仅保持`limited`能力，不再升级为validated。自然规则携带双语用途标签，安全维度不依赖英文规则编号。

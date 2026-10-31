@@ -1,10 +1,13 @@
 """Replaceable laboratory recognition adapters with source coordinates."""
 from __future__ import annotations
 
+import hashlib
 import json
 import os
+import platform
 import shutil
 import subprocess
+import sys
 import tempfile
 from dataclasses import dataclass
 from datetime import datetime
@@ -60,6 +63,8 @@ class LabRecognitionResult:
     warnings: tuple[str, ...]
     elapsed_seconds: float | None = None
     max_rss_bytes: int | None = None
+    model_sha256: str | None = None
+    dependency_lock_sha256: str | None = None
 
 
 class LabRecognitionProvider(Protocol):
@@ -190,7 +195,9 @@ class DoclingLabProvider:
     """Run Docling in an isolated process so the main runtime stays on 3.13."""
 
     name = "docling"
-    version = "2.145.0"
+    version = (
+        "2.145.0+locka935fb56356b2076fb134776d139e6f2fb98be868a5554b7a6aa8180cf5ce153"
+    )
 
     def __init__(
         self,
@@ -209,6 +216,21 @@ class DoclingLabProvider:
     def enabled(self) -> bool:
         return self._enabled
 
+    def _lock_path(self) -> Path:
+        return self.project_root / "provider-locks" / (
+            "ocr-macos-arm64-py312.txt"
+            if sys.platform == "darwin" and platform.machine() == "arm64"
+            else "ocr-linux-py312.txt"
+        )
+
+    @staticmethod
+    def _file_sha256(path: Path) -> str:
+        digest = hashlib.sha256()
+        with path.open("rb") as source:
+            for chunk in iter(lambda: source.read(1024 * 1024), b""):
+                digest.update(chunk)
+        return digest.hexdigest()
+
     def recognize(
         self,
         content: bytes,
@@ -224,6 +246,8 @@ class DoclingLabProvider:
         if not uv:
             raise LabProviderError("uv executable is required for Docling")
         suffix = Path(filename).suffix.lower() or ".bin"
+        lock_path = self._lock_path()
+        expected_lock_sha256 = self._file_sha256(lock_path)
         with tempfile.TemporaryDirectory(prefix="cra-lab-provider-") as temporary:
             source = Path(temporary) / f"source{suffix}"
             source.write_bytes(content)
@@ -234,13 +258,15 @@ class DoclingLabProvider:
                 "--isolated",
                 "--python",
                 "3.12",
-                "--with",
-                f"docling=={self.package_version}",
+                "--with-requirements",
+                str(lock_path),
                 "python",
                 "-m",
                 "cra_app.providers.lab_worker",
                 "--source",
                 str(source),
+                "--lock-file",
+                str(lock_path),
             ]
             environment = os.environ.copy()
             backend = str(self.project_root / "backend")
@@ -249,6 +275,7 @@ class DoclingLabProvider:
                 if environment.get("PYTHONPATH")
                 else ""
             )
+            environment["UV_TORCH_BACKEND"] = "cpu"
             try:
                 completed = subprocess.run(
                     command,
@@ -284,6 +311,10 @@ class DoclingLabProvider:
                 raise LabProviderError(
                     "Docling process returned invalid JSON"
                 ) from exc
+        if result.get("dependency_lock_sha256") != expected_lock_sha256:
+            raise LabProviderError(
+                "Docling dependency lock hash does not match the selected lock"
+            )
         tables = tuple(
             ProviderTable(
                 index=int(table["index"]),
@@ -338,6 +369,16 @@ class DoclingLabProvider:
             max_rss_bytes=(
                 int(result["max_rss_bytes"])
                 if result.get("max_rss_bytes") is not None
+                else None
+            ),
+            model_sha256=(
+                str(result["model_sha256"])
+                if result.get("model_sha256")
+                else None
+            ),
+            dependency_lock_sha256=(
+                str(result["dependency_lock_sha256"])
+                if result.get("dependency_lock_sha256")
                 else None
             ),
         )

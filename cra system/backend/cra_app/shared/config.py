@@ -61,6 +61,12 @@ class Settings(BaseSettings):
     analysis_provider: str = Field(
         default="disabled", alias="CRA_ANALYSIS_PROVIDER"
     )
+    analysis_data_classification: Literal[
+        "pure_synthetic", "disabled"
+    ] = Field(
+        default="pure_synthetic",
+        alias="CRA_ANALYSIS_DATA_CLASSIFICATION",
+    )
     ocr_provider: str = Field(default="disabled", alias="CRA_OCR_PROVIDER")
     common_policy_path: str | None = Field(
         default=None, alias="CRA_COMMON_POLICY_PATH"
@@ -124,8 +130,16 @@ class Settings(BaseSettings):
 
     def resolved_analysis_provider(self) -> str:
         """Keep the W09 local-model path synthetic/test-only."""
-        if self.environment in {"synthetic", "test"}:
+        if (
+            self.environment in {"synthetic", "test"}
+            and self.analysis_data_classification == "pure_synthetic"
+        ):
             return self.analysis_provider
+        return "disabled"
+
+    def resolved_analysis_data_classification(self) -> str:
+        if self.environment in {"synthetic", "test"}:
+            return self.analysis_data_classification
         return "disabled"
 
 

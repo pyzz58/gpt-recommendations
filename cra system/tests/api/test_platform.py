@@ -288,6 +288,20 @@ def test_production_rejects_synthetic_identity_and_client_headers(
         assert oidc.json()["error"]["code"] == "oidc_not_configured"
 
 
+def test_analysis_provider_requires_pure_synthetic_classification(settings):
+    disabled = settings.model_copy(
+        update={
+            "analysis_provider": "local-transformers",
+            "analysis_data_classification": "disabled",
+        }
+    )
+    assert disabled.resolved_analysis_provider() == "disabled"
+    pure = disabled.model_copy(
+        update={"analysis_data_classification": "pure_synthetic"}
+    )
+    assert pure.resolved_analysis_provider() == "local-transformers"
+
+
 def test_oidc_claim_mapping_requires_explicit_tenant(
     settings,
 ):

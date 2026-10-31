@@ -2,13 +2,14 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
 import resource
 import sys
 import time
 from pathlib import Path
 from typing import Any
-
 
 def _bbox(value: Any) -> list[float] | None:
     if value is None:
@@ -95,7 +96,64 @@ def _table_rows(item: Any, fallback_bbox: list[float] | None) -> list[list[dict]
     return rows
 
 
-def recognize(source: Path) -> dict:
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _model_manifest_sha256() -> str | None:
+    entries: list[tuple[str, Path]] = []
+    hf_home = Path(
+        os.environ.get("HF_HOME", str(Path.home() / ".cache" / "huggingface"))
+    )
+    hub_cache = Path(os.environ.get("HF_HUB_CACHE", str(hf_home / "hub")))
+    for model_name in (
+        "models--docling-project--docling-models",
+        "models--docling-project--docling-layout-heron",
+    ):
+        snapshots = hub_cache / model_name / "snapshots"
+        if not snapshots.is_dir():
+            continue
+        for path in sorted(
+            item for item in snapshots.rglob("*") if item.is_file()
+        ):
+            entries.append(
+                (
+                    f"hf/{model_name}/{path.relative_to(snapshots).as_posix()}",
+                    path,
+                )
+            )
+    legacy_roots = (
+        Path.home() / ".cache" / "docling" / "models",
+        Path(os.environ.get("DOCLING_CACHE_DIR", ""))
+        if os.environ.get("DOCLING_CACHE_DIR")
+        else None,
+    )
+    for root in legacy_roots:
+        if root is None or not root.is_dir():
+            continue
+        for path in sorted(item for item in root.rglob("*") if item.is_file()):
+            entries.append(
+                (f"docling/{path.relative_to(root).as_posix()}", path)
+            )
+    if not entries:
+        return None
+    digest = hashlib.sha256()
+    seen: set[Path] = set()
+    for label, path in sorted(entries):
+        resolved = path.resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        digest.update(label.encode())
+        digest.update(_file_sha256(path).encode())
+    return digest.hexdigest()
+
+
+def recognize(source: Path, *, dependency_lock_sha256: str) -> dict:
     from docling.document_converter import DocumentConverter
 
     started = time.perf_counter()
@@ -138,21 +196,27 @@ def recognize(source: Path) -> dict:
     max_rss_bytes = raw_rss if sys.platform == "darwin" else raw_rss * 1024
     return {
         "provider": "docling",
-        "model_version": "layout-default-ocr-default",
+        "model_version": "docling-default-layout-ocr-v1",
         "elapsed_seconds": round(time.perf_counter() - started, 3),
         "max_rss_bytes": max_rss_bytes,
         "pages": len(result.document.pages) or 1,
         "tables": tables,
         "lines": lines,
         "warnings": warnings,
+        "model_sha256": _model_manifest_sha256(),
+        "dependency_lock_sha256": dependency_lock_sha256,
     }
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, required=True)
+    parser.add_argument("--lock-file", type=Path, required=True)
     args = parser.parse_args()
-    payload = recognize(args.source)
+    payload = recognize(
+        args.source,
+        dependency_lock_sha256=_file_sha256(args.lock_file),
+    )
     print("CRA_LAB_RESULT=" + json.dumps(payload, ensure_ascii=False))
     return 0
 

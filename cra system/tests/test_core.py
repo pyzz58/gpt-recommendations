@@ -9,7 +9,6 @@ sys.path.insert(0, str(ROOT / "backend"))
 from cra_core.issues import Action, Issue, confirm_pd_reported, make_snapshot, previsit_selection, record_reported_correction, verify_correction
 from cra_core.laboratory import LabRecord, candidate_matches, compare_fields
 
-
 class IssueTests(unittest.TestCase):
     def issue(self):
         return Issue("I1", "synthetic finding", "DEMO location", "synthetic advice",
@@ -101,7 +100,6 @@ class LaboratoryTests(unittest.TestCase):
 
     def test_unknown_revision_needs_explicit_instance_confirmation(self):
         self.assertEqual(compare_fields(replace(self.record(), report_revision=None), self.record())["status"], "identity_review")
-
 
 if __name__ == "__main__":
     unittest.main()

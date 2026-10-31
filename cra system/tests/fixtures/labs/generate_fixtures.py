@@ -14,6 +14,8 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 from reportlab.lib.pagesizes import landscape
 from reportlab.lib.units import mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen import canvas
 
@@ -186,6 +188,52 @@ def create_pdf(path: Path) -> None:
     drawing.save()
 
 
+def create_chinese_context_pdf(path: Path) -> None:
+    pdfmetrics.registerFont(UnicodeCIDFont("STSong-Light"))
+    page_width, page_height = landscape((297 * mm, 210 * mm))
+    drawing = canvas.Canvas(
+        str(path),
+        pagesize=(page_width, page_height),
+        pageCompression=1,
+        invariant=1,
+    )
+    drawing.setTitle("Synthetic Chinese Laboratory Report Context")
+    drawing.setAuthor("CRA synthetic fixture generator")
+    drawing.setFont("STSong-Light", 12)
+    drawing.drawString(35, page_height - 42, "合成检验报告 · 非临床资料")
+    drawing.drawString(35, page_height - 68, "受试者编号：SYN-ZH-001")
+    drawing.drawString(230, page_height - 68, "采样日期：2026-01-02")
+    drawing.drawString(440, page_height - 68, "初检复查：初检")
+    drawing.drawString(610, page_height - 68, "报告修订：FINAL")
+    headers = ("检验项目", "结果", "单位", "参考下限", "参考上限")
+    rows = (
+        ("血红蛋白", "121", "g/L", "110", "160"),
+        ("葡萄糖", "5.1", "mmol/L", "3.9", "5.5"),
+    )
+    x_positions = [35.0]
+    for width in (150, 100, 100, 120, 120):
+        x_positions.append(x_positions[-1] + width)
+    top = page_height - 120
+    row_height = 30
+    for x in x_positions:
+        drawing.line(x, top, x, top - row_height * 3)
+    drawing.line(x_positions[0], top, x_positions[-1], top)
+    for row_index, row in enumerate((headers, *rows)):
+        for column, value in enumerate(row):
+            drawing.drawString(
+                x_positions[column] + 5,
+                top - row_height * (row_index + 1) + 10,
+                value,
+            )
+        drawing.line(
+            x_positions[0],
+            top - row_height * (row_index + 1),
+            x_positions[-1],
+            top - row_height * (row_index + 1),
+        )
+    drawing.save()
+
+
 def create_image(path: Path, *, evaluation: bool) -> None:
     width, height = 3200, 1800
     image = Image.new("RGB", (width, height), "white")
@@ -335,6 +383,27 @@ def create_artifact_manifest() -> dict:
                     "coordinates_present": True,
                 },
             },
+            {
+                "artifact_id": "LAB-REPORT-ZH-CONTEXT-EVAL",
+                "file": "labs/artifacts/synthetic_lab_report_zh_context.pdf",
+                "format": "pdf",
+                "format_kind": "text_pdf",
+                "purpose": "laboratory",
+                "group": "evaluation",
+                "expected_file": "labs/evaluation_cases_zh_context.json",
+                "sha256": sha(
+                    "labs/artifacts/synthetic_lab_report_zh_context.pdf"
+                ),
+                "expected": {
+                    "row_count": 2,
+                    "report_context": {
+                        "subject_external_id": "SYN-ZH-001",
+                        "collected_on": "2026-01-02",
+                        "instance_type": "initial",
+                    },
+                    "rows_do_not_repeat_identity_or_date": True,
+                },
+            },
         ],
     }
 
@@ -345,6 +414,9 @@ def main() -> None:
     create_image(
         ARTIFACTS / "synthetic_lab_report_eval.png",
         evaluation=True,
+    )
+    create_chinese_context_pdf(
+        ARTIFACTS / "synthetic_lab_report_zh_context.pdf"
     )
     (ROOT / "evaluation_cases.json").write_text(
         json.dumps(create_expected(), ensure_ascii=False, indent=2) + "\n",

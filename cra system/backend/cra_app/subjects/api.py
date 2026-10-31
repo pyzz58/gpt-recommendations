@@ -133,6 +133,8 @@ class VisitRequirementView(BaseModel):
         "out_of_window",
         "unknown_anchor",
         "unknown_actual",
+        "unknown_applicability",
+        "not_applicable",
         "not_checked_by_user",
         "needs_review",
     ]

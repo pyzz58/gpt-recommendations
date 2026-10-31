@@ -15,6 +15,7 @@ from fastapi import (
     Query,
     Request,
     UploadFile,
+    status,
 )
 from pydantic import BaseModel, ConfigDict
 
@@ -271,6 +272,7 @@ def _comparison_view(detail: ComparisonDetail) -> LabComparisonView:
 @router.post(
     "/studies/{study_id}/lab-reports",
     response_model=LabReportView,
+    status_code=status.HTTP_202_ACCEPTED,
     dependencies=[Depends(require_csrf)],
 )
 async def create_lab_report(
@@ -294,7 +296,7 @@ async def create_lab_report(
         version_label=version_label,
         site_id=site_id,
     )
-    detail = _service(request).create_and_recognize(
+    detail = _service(request).create_and_queue(
         scope_from_identity(identity),
         study_id,
         command,
@@ -334,6 +336,24 @@ def get_lab_report(
 ) -> LabReportView:
     return _report_view(
         _service(request).report_detail(
+            scope_from_identity(identity), report_id
+        )
+    )
+
+
+@router.post(
+    "/lab-reports/{report_id}/retry-recognition",
+    response_model=LabReportView,
+    status_code=status.HTTP_202_ACCEPTED,
+    dependencies=[Depends(require_csrf)],
+)
+def retry_lab_recognition(
+    report_id: uuid.UUID,
+    request: Request,
+    identity: AuthenticatedIdentity = Depends(require_identity),
+) -> LabReportView:
+    return _report_view(
+        _service(request).retry_recognition(
             scope_from_identity(identity), report_id
         )
     )

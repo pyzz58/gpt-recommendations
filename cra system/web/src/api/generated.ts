@@ -566,6 +566,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/lab-reports/{report_id}/retry-recognition": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Retry Lab Recognition */
+        post: operations["retry_lab_recognition_api_v1_lab_reports__report_id__retry_recognition_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me/scopes": {
         parameters: {
             query?: never;
@@ -747,6 +764,23 @@ export interface paths {
         get: operations["get_safety_assessment_api_v1_safety_assessments__assessment_id__get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/safety-assessments/{assessment_id}/analysis-retry": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Retry Safety Provider Run */
+        post: operations["retry_safety_provider_run_api_v1_safety_assessments__assessment_id__analysis_retry_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2270,6 +2304,8 @@ export interface components {
              * Format: date
              */
             event_date: string;
+            /** Event Fact Id */
+            event_fact_id?: string | null;
             /**
              * Event Type
              * @enum {string}
@@ -2287,6 +2323,8 @@ export interface components {
             lab_comparison_id?: string | null;
             /** Note */
             note?: string | null;
+            /** Related Fact Ids */
+            related_fact_ids?: string[];
             /** Requested Dimensions */
             requested_dimensions?: ("ae_collection" | "grade" | "seriousness" | "relatedness" | "expectedness" | "aesi" | "dlt" | "protocol_deviation" | "reporting_timeliness")[];
             /**
@@ -4072,6 +4110,8 @@ export interface components {
             node_key: string;
             /** Preconditions */
             preconditions?: components["schemas"]["RuleCondition-Input"][];
+            /** Purpose Tags */
+            purpose_tags?: string[];
             /** Required Facts */
             required_facts?: string[];
             /**
@@ -4104,6 +4144,8 @@ export interface components {
             node_key: string;
             /** Preconditions */
             preconditions?: components["schemas"]["RuleCondition-Output"][];
+            /** Purpose Tags */
+            purpose_tags?: string[];
             /** Required Facts */
             required_facts?: string[];
             /**
@@ -4337,12 +4379,18 @@ export interface components {
              * Format: date
              */
             event_date: string;
+            /** Event Fact Id */
+            event_fact_id: string | null;
             /** Event Type */
             event_type: string;
             /** Evidence Refs */
             evidence_refs: {
                 [key: string]: unknown;
             }[];
+            /** Fact Scope */
+            fact_scope: {
+                [key: string]: unknown;
+            };
             /**
              * Id
              * Format: uuid
@@ -4363,6 +4411,8 @@ export interface components {
             provider_output: {
                 [key: string]: unknown;
             };
+            /** Provider Runs */
+            provider_runs: components["schemas"]["SafetyProviderRunView"][];
             /** Provider Status */
             provider_status: string;
             /** Provider Version */
@@ -4453,6 +4503,46 @@ export interface components {
             status: string;
             /** Uncertainties */
             uncertainties: string[];
+        };
+        /** SafetyProviderRunView */
+        SafetyProviderRunView: {
+            /** Accepted */
+            accepted: boolean | null;
+            /** Attempts */
+            attempts: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Dependency Lock Sha256 */
+            dependency_lock_sha256: string | null;
+            /** Errors */
+            errors: string[];
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Explanation */
+            explanation: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Model Sha256 */
+            model_sha256: string | null;
+            /** Model Version */
+            model_version: string | null;
+            /** Provider Name */
+            provider_name: string;
+            /** Provider Version */
+            provider_version: string;
+            /** Status */
+            status: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
         };
         /** SafetyQuestionView */
         SafetyQuestionView: {
@@ -4799,7 +4889,7 @@ export interface components {
              * Status
              * @enum {string}
              */
-            status: "ready" | "in_window" | "out_of_window" | "unknown_anchor" | "unknown_actual" | "not_checked_by_user" | "needs_review";
+            status: "ready" | "in_window" | "out_of_window" | "unknown_anchor" | "unknown_actual" | "unknown_applicability" | "not_applicable" | "not_checked_by_user" | "needs_review";
             /** Visit Key */
             visit_key: string;
             /** Window End */
@@ -5959,6 +6049,39 @@ export interface operations {
             };
         };
     };
+    retry_lab_recognition_api_v1_lab_reports__report_id__retry_recognition_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                report_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LabReportView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     get_my_scopes_api_v1_me_scopes_get: {
         parameters: {
             query?: never;
@@ -6302,6 +6425,39 @@ export interface operations {
         responses: {
             /** @description Successful Response */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SafetyAssessmentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    retry_safety_provider_run_api_v1_safety_assessments__assessment_id__analysis_retry_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                assessment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6842,7 +6998,7 @@ export interface operations {
         };
         responses: {
             /** @description Successful Response */
-            200: {
+            202: {
                 headers: {
                     [name: string]: unknown;
                 };

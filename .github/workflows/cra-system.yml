@@ -62,16 +62,25 @@ jobs:
         run: uv run --frozen alembic upgrade head
       - name: migration-roundtrip
         run: |
-          uv run --frozen alembic downgrade 0007_laboratory_comparison
+          uv run --frozen alembic downgrade 0008_safety_assessment
           uv run --frozen alembic upgrade head
       - name: test
         run: >-
           uv run --frozen pytest -q
+          tests/integration/test_review_units.py
+          tests/integration/test_rules.py
+          tests/integration/test_subjects.py
+          tests/integration/test_laboratory.py
+          tests/integration/test_recognition.py
           tests/integration/test_safety.py
           tests/api/test_platform.py
       - name: analysis-provider-evaluation
         run: >-
           uv run --frozen python -m cra_app.providers.evaluate_cases
+          --dataset tests/fixtures/manifest.json
+      - name: lab-provider-evaluation
+        run: >-
+          uv run --frozen python -m cra_app.providers.evaluate_labs
           --dataset tests/fixtures/manifest.json
       - name: contracts
         run: npm --prefix web run api:check
@@ -129,6 +138,7 @@ jobs:
         run: uv run --frozen alembic upgrade head
       - name: test
         run: |
+          uv run --frozen pytest -q tests/integration/test_review_units.py
           uv run --frozen pytest -q tests/integration/test_laboratory.py
           uv run --frozen pytest -q tests/integration/test_recognition.py
       - name: lab-provider-evaluation
@@ -356,7 +366,10 @@ jobs:
       - name: migrate
         run: uv run --frozen alembic upgrade head
       - name: test
-        run: uv run --frozen pytest -q tests/integration/test_rules.py
+        run: >-
+          uv run --frozen pytest -q
+          tests/integration/test_review_units.py
+          tests/integration/test_rules.py
       - name: rule-provider-evaluation
         run: uv run --frozen python -m cra_app.providers.evaluate_rules --dataset tests/fixtures/manifest.json
       - name: contracts

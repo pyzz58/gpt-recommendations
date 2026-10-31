@@ -1,6 +1,6 @@
 # CRA-W06 completion record
 
-Status: verified. Date: 2026-10-31.
+Status: revalidation in progress for the 2026-11-01 review remediation.
 
 Revalidated after W08 expanded shared migrations, API, fixtures and frontend.
 Current evidence: run `41193029019`, tested commit

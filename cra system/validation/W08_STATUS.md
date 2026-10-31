@@ -1,6 +1,6 @@
 # CRA-W08 completion record
 
-Status: verified. Date: 2026-10-31.
+Status: revalidation in progress for the 2026-11-01 review remediation.
 
 This record covers source laboratory report recognition, field-level review,
 exact instance matching and deterministic EDC comparison for the declared

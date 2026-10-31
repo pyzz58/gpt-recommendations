@@ -63,3 +63,5 @@ W03先探测兼容与资源，必要时隔离识别环境，W04/W08/W09实际pro
 `LocalTransformersCaseAnalysisProvider`固定Qwen2.5-0.5B-Instruct模型提交，在隔离Python 3.12环境运行transformers 4.57.1、torch 2.7.1和safetensors 0.5.3。模型只选择服务端允许的解释模板和输入证据ID，不决定安全维度或输出处置。主服务验证JSON形状、允许代码、引用ID及医学/数值边界；任何失败均记录provider rejected并保留程序候选、未知和问题。
 
 独立评测只把合成事实、规则证据和确定性维度送入模型，不传正确预期。3/3案例维度与问题主题正确，模型输出3/3通过grounding；伪造引用、越界医学结论、无依据数字/日期和“分级等同严重性”控制均被阻止。评估不是临床质量或节时验证，模型/依赖来源与限制见`validation/W09_DEPENDENCIES.md`和`validation/W09_STATUS.md`。
+
+2026-11-01复核补充：分析、OCR和文档worker使用同一Procrastinate/Outbox约定；隔离环境读取`provider-locks/`中的完整传递依赖哈希锁。Qwen模型提交和`model.safetensors` SHA-256在每个worker启动时核验。API中的模型解释为独立`safety_provider_runs`，不阻塞确定性安全结果，也不以单次accepted升级能力等级。

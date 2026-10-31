@@ -7,7 +7,7 @@ import re
 import uuid
 from collections import defaultdict
 from dataclasses import dataclass
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
 from typing import Any, Iterable
 
@@ -17,6 +17,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, sessionmaker
 
 from cra_app.governance.models import AuditEvent, IdempotencyRecord
+from cra_app.governance.models import Study
 from cra_app.governance.service import (
     GovernanceService,
     IdempotencyConflict,
@@ -25,7 +26,12 @@ from cra_app.governance.service import (
 from cra_app.issues.contracts import ActionCreate, CreateIssueCommand
 from cra_app.issues.service import IssueDetail, IssueService
 from cra_app.laboratory.service import ComparisonDetail, LaboratoryService
-from cra_app.platform.jobs import digest_payload
+from cra_app.platform.jobs import (
+    OutboxEvent,
+    ProcrastinateQueue,
+    digest_payload,
+    relay_pending_outbox,
+)
 from cra_app.providers.case_analysis import (
     CaseAnalysisProvider,
     CaseModelResult,
@@ -52,6 +58,7 @@ from cra_app.safety.models import (
     SafetyCraReview,
     SafetyDimensionResult,
     SafetyIssueLink,
+    SafetyProviderRun,
 )
 from cra_app.shared.output_contract import (
     Claim,
@@ -177,6 +184,8 @@ class FactSnapshot:
     fact: ClinicalFact
     evidence_id: str
     deterministic: bool
+    is_current: bool
+    scope_role: str
 
 
 @dataclass(frozen=True)
@@ -185,6 +194,7 @@ class AssessmentDetail:
     dimensions: tuple[SafetyDimensionResult, ...]
     cra_reviews: tuple[SafetyCraReview, ...]
     medical_responses: tuple[MedicalSafetyResponse, ...]
+    provider_runs: tuple[SafetyProviderRun, ...]
     issue_link: SafetyIssueLink | None
     replayed: bool = False
 
@@ -219,6 +229,8 @@ def _walk_rule_refs(node: RuleNode):
 def _rule_matches_dimension(
     rule_key: str, title: str, tree: RuleNode, dimension: SafetyDimension
 ) -> bool:
+    if tree.purpose_tags:
+        return dimension in tree.purpose_tags
     content = " ".join(
         (rule_key, title, tree.node_key, tree.summary)
     ).casefold()
@@ -375,6 +387,23 @@ def _missing_fact_question(
     )
 
 
+def _laboratory_abnormal_flags(field) -> list[str]:
+    result = next(
+        (
+            item
+            for item in field.field_results
+            if item.get("field") == "reference_range_flag"
+        ),
+        None,
+    )
+    if result is None:
+        return []
+    source = str(result.get("source") or "")
+    if source in {"below_range", "above_range"}:
+        return [source]
+    return []
+
+
 class SafetyService:
     def __init__(
         self,
@@ -386,6 +415,9 @@ class SafetyService:
         issues: IssueService,
         laboratory: LaboratoryService,
         provider: CaseAnalysisProvider | None = None,
+        provider_data_classification: str = "pure_synthetic",
+        defer_provider: bool = False,
+        queue: ProcrastinateQueue | None = None,
     ):
         self.session_factory = session_factory
         self.governance = governance or GovernanceService(session_factory)
@@ -394,6 +426,9 @@ class SafetyService:
         self.issues = issues
         self.laboratory = laboratory
         self.provider = provider or DisabledCaseAnalysisProvider()
+        self.provider_data_classification = provider_data_classification
+        self.defer_provider = defer_provider
+        self.queue = queue
 
     def _authorize_read(
         self, scope: ScopeContext, study_id: uuid.UUID, site_id: uuid.UUID
@@ -503,6 +538,22 @@ class SafetyService:
             )
             return assessment
 
+    def _study_jurisdiction(
+        self, scope: ScopeContext, study_id: uuid.UUID
+    ) -> str:
+        with self.session_factory() as session:
+            jurisdiction = session.scalar(
+                select(Study.jurisdiction).where(
+                    Study.tenant_id == scope.tenant_id,
+                    Study.id == study_id,
+                )
+            )
+        if not jurisdiction:
+            raise SafetyValidationError(
+                "study jurisdiction is not configured"
+            )
+        return jurisdiction
+
     def detail(
         self, scope: ScopeContext, assessment_id: uuid.UUID
     ) -> AssessmentDetail:
@@ -538,11 +589,19 @@ class SafetyService:
                     SafetyIssueLink.assessment_id == assessment_id
                 )
             )
+            provider_runs = tuple(
+                session.scalars(
+                    select(SafetyProviderRun).where(
+                        SafetyProviderRun.assessment_id == assessment_id
+                    )
+                )
+            )
             return AssessmentDetail(
                 assessment=assessment,
                 dimensions=dimensions,
                 cra_reviews=reviews,
                 medical_responses=responses,
+                provider_runs=provider_runs,
                 issue_link=issue_link,
             )
 
@@ -575,7 +634,12 @@ class SafetyService:
         self,
         scope: ScopeContext,
         command: CreateSafetyAssessmentCommand,
-    ) -> tuple[SubjectSummary, list[TimelineItem], list[FactSnapshot]]:
+    ) -> tuple[
+        SubjectSummary,
+        list[TimelineItem],
+        list[FactSnapshot],
+        dict[str, Any],
+    ]:
         summaries = self.subjects.list_subjects(
             scope, command.study_id, command.site_id
         )
@@ -591,16 +655,110 @@ class SafetyService:
             raise SafetyNotFound("subject was not found in the authorized site")
         timeline = self.subjects.timeline(scope, command.subject_id)
         current = [item for item in timeline if item.is_current]
-        snapshots = [
-            FactSnapshot(
-                fact=item.fact,
-                evidence_id=f"FACT:{item.fact.id}",
-                deterministic=item.fact.verification_status
-                in {"original_record", "cra_confirmed"},
-            )
-            for item in current
+        timeline_by_id = {item.fact.id: item for item in timeline}
+        current_by_id = {item.fact.id: item.fact for item in current}
+        event_fact = None
+        if command.event_fact_id is not None:
+            event_fact = current_by_id.get(command.event_fact_id)
+            if event_fact is None:
+                raise SafetyValidationError(
+                    "event_fact_id is not a current fact for this subject"
+                )
+        elif command.event_type in {
+            "adverse_event",
+            "serious_event_review",
+            "mixed",
+        }:
+            event_candidates = [
+                item.fact
+                for item in current
+                if item.fact.fact_key == "ae_term"
+            ]
+            if len(event_candidates) == 1:
+                event_fact = event_candidates[0]
+            elif len(event_candidates) > 1:
+                raise SafetyValidationError(
+                    "multiple current AE facts exist; event_fact_id is required"
+                )
+            else:
+                raise SafetyValidationError(
+                    "event_fact_id is required for a safety-event analysis"
+                )
+        selected_ids: set[uuid.UUID] = set()
+        if event_fact is not None:
+            selected_ids.add(event_fact.id)
+            if event_fact.repeat_instance not in {"", "_"}:
+                selected_ids.update(
+                    item.fact.id
+                    for item in current
+                    if item.fact.repeat_instance
+                    == event_fact.repeat_instance
+                )
+        for related_id in command.related_fact_ids:
+            if related_id not in timeline_by_id:
+                raise SafetyValidationError(
+                    "a related_fact_id is not a fact for this subject"
+                )
+            selected_ids.add(related_id)
+        selected = [
+            item for item in timeline if item.fact.id in selected_ids
         ]
-        return summary, timeline, snapshots
+        event_id = event_fact.id if event_fact else None
+        related_ids = set(command.related_fact_ids)
+        snapshots = []
+        for item in selected:
+            if item.fact.id == event_id:
+                scope_role = "event"
+            elif item.fact.id in related_ids:
+                scope_role = (
+                    "related_current"
+                    if item.is_current
+                    else "related_history"
+                )
+            else:
+                scope_role = "event_instance_context"
+            snapshots.append(
+                FactSnapshot(
+                    fact=item.fact,
+                    evidence_id=f"FACT:{item.fact.id}",
+                    deterministic=(
+                        item.is_current
+                        and item.fact.verification_status
+                        in {"original_record", "cra_confirmed"}
+                    ),
+                    is_current=item.is_current,
+                    scope_role=scope_role,
+                )
+            )
+        fact_scope = {
+            "event_fact_id": str(event_fact.id) if event_fact else None,
+            "event_repeat_instance": (
+                event_fact.repeat_instance if event_fact else None
+            ),
+            "selected_fact_ids": [
+                str(item.fact.id) for item in selected
+            ],
+            "selected_facts": [
+                {
+                    "fact_id": snapshot.evidence_id.removeprefix("FACT:"),
+                    "is_current": snapshot.is_current,
+                    "scope_role": snapshot.scope_role,
+                    "fact_key": snapshot.fact.fact_key,
+                    "repeat_instance": snapshot.fact.repeat_instance,
+                    "observed_on": (
+                        snapshot.fact.observed_on.isoformat()
+                        if snapshot.fact.observed_on
+                        else None
+                    ),
+                    "recorded_at": snapshot.fact.created_at.isoformat(),
+                }
+                for snapshot in snapshots
+            ],
+            "related_fact_ids": [
+                str(item) for item in command.related_fact_ids
+            ],
+        }
+        return summary, timeline, snapshots, fact_scope
 
     @staticmethod
     def _fact_values(
@@ -871,7 +1029,13 @@ class SafetyService:
                     "Applicable structured conditions evaluated false; this "
                     "dimension is not triggered for the stated event."
                 )
-            if status in {"unknown", "analysis_required"} and not questions:
+            if (
+                status in {"unknown", "analysis_required"}
+                and not any(
+                    question.dimension == dimension
+                    for question in questions
+                )
+            ):
                 for key in (
                     matched[0].tree.required_facts
                     if matched
@@ -1014,9 +1178,11 @@ class SafetyService:
         list[QuestionDraft],
         list[dict[str, Any]],
         list[SourceRef],
+        list[NotCheckedItem],
+        list[str],
     ]:
         if command.lab_comparison_id is None:
-            return None, [], [], []
+            return None, [], [], [], [], []
         detail = self.laboratory.comparison_detail(
             scope, command.lab_comparison_id
         )
@@ -1040,27 +1206,66 @@ class SafetyService:
             raise SafetyValidationError(
                 "laboratory comparison does not contain this subject"
             )
+        stale_fields = [
+            field
+            for field in fields
+            if field.id in detail.stale_field_ids
+        ]
+        if stale_fields:
+            raise SafetyValidationError(
+                "laboratory comparison contains stale subject fields; "
+                "rerun the comparison before safety analysis"
+            )
         questions = []
         evidence = []
         refs = []
+        not_checked: list[NotCheckedItem] = []
+        unknown_codes: list[str] = []
         for field in fields:
-            if field.result_status == "agreement":
+            if field.result_status == "not_checked_by_user":
+                not_checked.append(
+                    NotCheckedItem(
+                        code=f"laboratory_not_checked:{field.id}",
+                        scope=str(
+                            field.matched_identity.get("analyte")
+                            or field.id
+                        ),
+                        reason=(
+                            "The CRA skipped this laboratory field; the safety "
+                            "path is not treated as normal and is not re-prompted."
+                        ),
+                    )
+                )
+                continue
+            abnormal = _laboratory_abnormal_flags(field)
+            if field.result_status == "agreement" and not abnormal:
                 continue
             evidence_id = f"LAB:{field.id}"
+            if abnormal:
+                reason = (
+                    "Source and EDC agree but the reported laboratory result "
+                    "is outside its source reference range: "
+                    + ", ".join(abnormal)
+                )
+                priority = "normal"
+            else:
+                reason = (
+                    field.reason
+                    or "laboratory comparison requires safety review"
+                )
+                priority = "normal"
             questions.append(
                 QuestionDraft(
                     question_key=f"lab:{field.id}",
                     dimension="ae_collection",
                     question=(
                         f"请核实检验项目 {field.matched_identity.get('analyte')} "
-                        f"的{field.result_status}结果是否构成需要收集的AE线索，"
-                        "并核对源报告、EDC和临床意义；数值一致或差异均不等于医学安全结论。"
+                        f"的{field.result_status}结果及报告范围线索是否为记录问题、"
+                        "临床变化或需要进一步收集的AE线索，并核对源报告、EDC和"
+                        "临床意义；系统未据数据一致或差异直接认定AE。"
                     ),
-                    reason=(
-                        field.reason
-                        or "laboratory comparison requires safety review"
-                    ),
-                    priority="normal",
+                    reason=reason,
+                    priority=priority,
                     evidence_ids=(evidence_id,),
                 )
             )
@@ -1071,7 +1276,8 @@ class SafetyService:
                         f"{field.matched_identity.get('analyte')}: "
                         f"{field.source_value} {field.source_unit or ''} vs "
                         f"{field.edc_value} {field.edc_unit or ''}; "
-                        f"status={field.result_status}"
+                        f"status={field.result_status}; "
+                        f"abnormal={','.join(abnormal) or 'none'}"
                     ),
                     "kind": "laboratory_comparison",
                     "source_ref": SourceRef(
@@ -1092,7 +1298,17 @@ class SafetyService:
                     quote=field.reason,
                 )
             )
-        return detail, questions, evidence, refs
+            unknown_codes.extend(
+                f"laboratory_{flag}:{field.id}" for flag in abnormal
+            )
+        return (
+            detail,
+            questions,
+            evidence,
+            refs,
+            not_checked,
+            unknown_codes,
+        )
 
     def _provider_analysis(
         self,
@@ -1101,6 +1317,7 @@ class SafetyService:
         facts: list[FactSnapshot],
         dimensions: list[DimensionDraft],
         evidence: list[dict[str, Any]],
+        defer: bool = False,
     ) -> tuple[CaseModelResult, dict[str, Any]]:
         if not evidence:
             provider_name = getattr(self.provider, "name", "unknown")
@@ -1109,6 +1326,9 @@ class SafetyService:
                 provider_name=provider_name,
                 provider_version=provider_version,
                 model_version=getattr(self.provider, "model_version", None),
+                dependency_lock_sha256=getattr(
+                    self.provider, "lock_sha256", None
+                ),
                 status="unavailable",
                 raw_output=None,
                 error="no grounded evidence is available for explanation",
@@ -1119,6 +1339,11 @@ class SafetyService:
                 "evidence_ids": [],
                 "source_refs": [],
                 "errors": [result.error],
+                "provider_name": result.provider_name,
+                "provider_version": result.provider_version,
+                "model_version": result.model_version,
+                "model_sha256": result.model_sha256,
+                "dependency_lock_sha256": result.dependency_lock_sha256,
             }
         has_candidate = any(
             item.status == "candidate" for item in dimensions
@@ -1138,12 +1363,14 @@ class SafetyService:
         )
         request = {
             "case_id": str(case_id),
-            "source": "pure_synthetic",
+            "source": self.provider_data_classification,
             "facts": [
                 {
                     "evidence_id": item.evidence_id,
                     "fact_key": item.fact.fact_key,
                     "value": _json_value(item.fact.value_json),
+                    "is_current": item.is_current,
+                    "scope_role": item.scope_role,
                 }
                 for item in facts
             ],
@@ -1162,6 +1389,37 @@ class SafetyService:
             "evidence": evidence,
             "allowed_explanation_codes": allowed_codes,
         }
+        if defer:
+            provider_name = getattr(self.provider, "name", "unknown")
+            provider_version = getattr(self.provider, "version", "unknown")
+            model_version = getattr(self.provider, "model_id", None)
+            model_sha256 = getattr(self.provider, "model_sha256", None)
+            dependency_lock_sha256 = getattr(
+                self.provider, "lock_sha256", None
+            )
+            result = CaseModelResult(
+                provider_name=provider_name,
+                provider_version=provider_version,
+                model_version=model_version,
+                model_sha256=model_sha256,
+                dependency_lock_sha256=dependency_lock_sha256,
+                status="queued",
+                raw_output=None,
+            )
+            return result, {
+                "accepted": False,
+                "deferred": True,
+                "explanation": None,
+                "evidence_ids": [],
+                "source_refs": [],
+                "errors": [],
+                "request": request,
+                "provider_name": provider_name,
+                "provider_version": provider_version,
+                "model_version": model_version,
+                "model_sha256": model_sha256,
+                "dependency_lock_sha256": dependency_lock_sha256,
+            }
         result = self.provider.analyze_batch([request])[0]
         if result.status != "completed" or not result.raw_output:
             return result, {
@@ -1196,6 +1454,11 @@ class SafetyService:
             ],
             "errors": list(grounded.errors),
             "raw_output": result.raw_output,
+            "provider_name": result.provider_name,
+            "provider_version": result.provider_version,
+            "model_version": result.model_version,
+            "model_sha256": result.model_sha256,
+            "dependency_lock_sha256": result.dependency_lock_sha256,
         }
 
     def create(
@@ -1205,8 +1468,8 @@ class SafetyService:
     ) -> AssessmentDetail:
         self._authorize_write(scope, command.study_id, command.site_id)
         requested = _requested_dimensions(command)
-        summary, _timeline, fact_snapshots = self._subject_and_facts(
-            scope, command
+        summary, _timeline, fact_snapshots, fact_scope = (
+            self._subject_and_facts(scope, command)
         )
         facts, ambiguous, non_deterministic = self._fact_values(
             fact_snapshots
@@ -1220,6 +1483,9 @@ class SafetyService:
                 study_id=command.study_id,
                 site_id=command.site_id,
                 event_date=command.event_date,
+                jurisdiction=self._study_jurisdiction(
+                    scope, command.study_id
+                ),
                 facts=facts,
             ),
         )
@@ -1240,9 +1506,19 @@ class SafetyService:
             non_deterministic_fact_keys=non_deterministic,
             active_decisions=active_decisions,
         )
-        comparison, lab_questions, lab_evidence, lab_refs = self._lab_questions(
-            scope, command, summary
+        unknown_codes.extend(
+            f"upstream_{item.code}:{item.reason}"
+            for item in rule_outcome.envelope.unknowns
         )
+        (
+            comparison,
+            lab_questions,
+            lab_evidence,
+            lab_refs,
+            lab_not_checked,
+            lab_unknown_codes,
+        ) = self._lab_questions(scope, command, summary)
+        unknown_codes.extend(lab_unknown_codes)
         questions.extend(lab_questions)
         questions = list(
             {item.question_key: item for item in questions}.values()
@@ -1267,10 +1543,19 @@ class SafetyService:
             facts=fact_snapshots,
             dimensions=dimensions,
             evidence=all_evidence,
+            defer=self.defer_provider,
         )
         context_snapshot = {
             "subject_label": summary.subject.deidentified_label,
-            "facts": [_fact_dict(item.fact) for item in fact_snapshots],
+            "facts": [
+                {
+                    **_fact_dict(item.fact),
+                    "is_current": item.is_current,
+                    "scope_role": item.scope_role,
+                    "deterministic": item.deterministic,
+                }
+                for item in fact_snapshots
+            ],
             "ambiguous_fact_keys": sorted(ambiguous),
             "non_deterministic_fact_keys": sorted(non_deterministic),
             "active_safety_decisions": [
@@ -1286,9 +1571,13 @@ class SafetyService:
             "laboratory_comparison_id": (
                 str(comparison.comparison.id) if comparison else None
             ),
+            "fact_scope": fact_scope,
             "note": command.note,
         }
         provider_status = (
+            "queued"
+            if provider_output.get("deferred")
+            else
             "completed"
             if provider_output["accepted"]
             else "rejected"
@@ -1346,6 +1635,7 @@ class SafetyService:
             for item in dimensions
             if item.status == "not_checked_by_user"
         ]
+        not_checked.extend(lab_not_checked)
         fact_claims = [
             Claim(
                 claim_id=item.evidence_id,
@@ -1398,7 +1688,11 @@ class SafetyService:
             )
         envelope_status = (
             "needs_clarification"
-            if questions or unknown_items
+            if (
+                questions
+                or unknown_items
+                or rule_outcome.envelope.conflicts
+            )
             else "ready_to_review"
         )
         envelope = OutputEnvelope(
@@ -1452,12 +1746,8 @@ class SafetyService:
             capabilities=[
                 OutputCapability(
                     capability_id="analyze_case",
-                    level=(
-                        "validated"
-                        if provider_output["accepted"]
-                        else "limited"
-                    ),
-                    validated=bool(provider_output["accepted"]),
+                    level="limited",
+                    validated=False,
                     limitations=[
                         "Synthetic/provider engineering validation only",
                         "Not a final medical judgment",
@@ -1490,6 +1780,8 @@ class SafetyService:
                 "active_safety_decision_ids": sorted(
                     str(item.id) for item in active_decisions
                 ),
+                "event_fact_id": fact_scope.get("event_fact_id"),
+                "selected_fact_ids": fact_scope.get("selected_fact_ids"),
             }
         )
         try:
@@ -1533,6 +1825,7 @@ class SafetyService:
                     dimensions=detail.dimensions,
                     cra_reviews=detail.cra_reviews,
                     medical_responses=detail.medical_responses,
+                    provider_runs=detail.provider_runs,
                     issue_link=detail.issue_link,
                     replayed=True,
                 )
@@ -1559,6 +1852,7 @@ class SafetyService:
         provider_output: dict[str, Any],
         existing_key: str,
     ) -> AssessmentDetail:
+        fact_scope = context_snapshot["fact_scope"]
         with self.session_factory() as session:
             existing = session.scalar(
                 select(SafetyAssessment).where(
@@ -1575,6 +1869,7 @@ class SafetyService:
                     dimensions=detail.dimensions,
                     cra_reviews=detail.cra_reviews,
                     medical_responses=detail.medical_responses,
+                    provider_runs=detail.provider_runs,
                     issue_link=detail.issue_link,
                     replayed=True,
                 )
@@ -1602,6 +1897,12 @@ class SafetyService:
                     site_id=command.site_id,
                     subject_id=command.subject_id,
                     lab_comparison_id=lab_comparison_id,
+                    event_fact_id=(
+                        uuid.UUID(str(fact_scope["event_fact_id"]))
+                        if fact_scope.get("event_fact_id")
+                        else None
+                    ),
+                    fact_scope=fact_scope,
                     assessment_key=assessment_key,
                     event_type=command.event_type,
                     event_date=command.event_date,
@@ -1705,6 +2006,47 @@ class SafetyService:
                             source_refs=list(item.source_refs),
                         )
                     )
+                if provider_status == "queued":
+                    provider_run = SafetyProviderRun(
+                        id=uuid.uuid4(),
+                        tenant_id=scope.tenant_id,
+                        study_id=command.study_id,
+                        site_id=command.site_id,
+                        assessment_id=assessment.id,
+                        actor_id=scope.actor_id,
+                        authentication_source=scope.authentication_source,
+                        platform_roles=sorted(scope.platform_roles),
+                        request_payload=provider_output["request"],
+                        provider_name=model_result.provider_name,
+                        provider_version=model_result.provider_version,
+                        model_version=model_result.model_version,
+                        model_sha256=model_result.model_sha256,
+                        dependency_lock_sha256=(
+                            model_result.dependency_lock_sha256
+                        ),
+                        status="queued",
+                        attempts=0,
+                        max_attempts=3,
+                        evidence_ids=[],
+                        errors=[],
+                    )
+                    session.add(provider_run)
+                    session.flush()
+                    session.add(
+                        OutboxEvent(
+                            id=uuid.uuid4(),
+                            tenant_id=scope.tenant_id,
+                            study_id=command.study_id,
+                            site_id=command.site_id,
+                            event_type="safety.analysis.requested",
+                            aggregate_type="safety_provider_run",
+                            aggregate_id=provider_run.id,
+                            dedup_key=f"safety-analysis:{provider_run.id}",
+                            payload={
+                                "provider_run_id": str(provider_run.id)
+                            },
+                        )
+                    )
                 session.add(
                     AuditEvent(
                         id=uuid.uuid4(),
@@ -1732,6 +2074,154 @@ class SafetyService:
                     )
                 )
                 self._complete(record, assessment.id, 1)
+        if provider_status == "queued":
+            self.relay_outbox_safely()
+        return self.detail(scope, assessment_id)
+
+    def relay_outbox_safely(self) -> int:
+        if self.queue is None:
+            return 0
+        try:
+            return relay_pending_outbox(self.session_factory, self.queue)
+        except Exception:
+            return 0
+
+    def process_provider_job(
+        self, run_id: uuid.UUID, *, worker_id: str
+    ) -> AssessmentDetail:
+        with self.session_factory() as session:
+            with session.begin():
+                run = session.get(SafetyProviderRun, run_id, with_for_update=True)
+                if run is None:
+                    raise SafetyNotFound("safety provider run was not found")
+                scope = ScopeContext(
+                    actor_id=run.actor_id,
+                    tenant_id=run.tenant_id,
+                    authentication_source=run.authentication_source,
+                    platform_roles=frozenset(run.platform_roles),
+                )
+                self._authorize_read(scope, run.study_id, run.site_id)
+                already_completed = run.status == "completed"
+                if already_completed:
+                    assessment_id = run.assessment_id
+                else:
+                    now = datetime.now(UTC)
+                    if (
+                        run.status == "running"
+                        and run.lease_expires_at is not None
+                        and run.lease_expires_at > now
+                    ):
+                        raise SafetyConflict(
+                            "safety provider run is already in progress"
+                        )
+                    if run.attempts >= run.max_attempts:
+                        run.status = "failed"
+                        run.errors = ["max_attempts_exhausted"]
+                        raise SafetyConflict(
+                            "safety provider attempts are exhausted"
+                        )
+                    run.status = "running"
+                    run.attempts += 1
+                    run.lease_owner = worker_id[:128]
+                    run.lease_expires_at = now + timedelta(minutes=15)
+                    request = dict(run.request_payload)
+                    assessment_id = run.assessment_id
+                    provider_name = run.provider_name
+                    provider_version = run.provider_version
+                    model_version = run.model_version
+                    model_sha256 = run.model_sha256
+                    dependency_lock_sha256 = run.dependency_lock_sha256
+            if already_completed:
+                return self.detail(scope, assessment_id)
+        result = self.provider.analyze_batch([request])[0]
+        if result.status == "completed" and result.raw_output:
+            grounded = validate_model_explanation(
+                result.raw_output,
+                allowed_evidence_ids={
+                    str(item["evidence_id"])
+                    for item in request["evidence"]
+                },
+                allowed_explanation_codes=set(
+                    request["allowed_explanation_codes"]
+                ),
+            )
+        else:
+            grounded = None
+        with self.session_factory() as session:
+            with session.begin():
+                run = session.get(SafetyProviderRun, run_id, with_for_update=True)
+                if run is None:
+                    raise SafetyNotFound("safety provider run was not found")
+                run.raw_output = result.raw_output
+                run.model_sha256 = result.model_sha256 or model_sha256
+                run.dependency_lock_sha256 = (
+                    result.dependency_lock_sha256
+                    or dependency_lock_sha256
+                )
+                run.accepted = bool(grounded and grounded.accepted)
+                run.explanation = grounded.explanation if grounded else None
+                run.evidence_ids = (
+                    list(grounded.evidence_ids)
+                    if grounded and grounded.accepted
+                    else []
+                )
+                run.errors = (
+                    list(grounded.errors)
+                    if grounded
+                    else [result.error or "provider failed"]
+                )
+                run.status = (
+                    "completed"
+                    if run.accepted
+                    else "rejected"
+                    if result.status == "completed"
+                    else "failed"
+                )
+                run.lease_owner = None
+                run.lease_expires_at = None
+        return self.detail(scope, assessment_id)
+
+    def retry_provider_run(
+        self, scope: ScopeContext, assessment_id: uuid.UUID
+    ) -> AssessmentDetail:
+        assessment = self._load_assessment(scope, assessment_id)
+        self._authorize_write(scope, assessment.study_id, assessment.site_id)
+        with self.session_factory() as session:
+            with session.begin():
+                run = session.scalar(
+                    select(SafetyProviderRun)
+                    .where(
+                        SafetyProviderRun.assessment_id == assessment.id,
+                        SafetyProviderRun.tenant_id == scope.tenant_id,
+                    )
+                    .with_for_update()
+                )
+                if run is None:
+                    raise SafetyNotFound("safety provider run was not found")
+                if run.status in {"queued", "running", "completed"}:
+                    return self.detail(scope, assessment_id)
+                run.status = "queued"
+                run.attempts = 0
+                run.lease_owner = None
+                run.lease_expires_at = None
+                run.errors = []
+                session.add(
+                    OutboxEvent(
+                        id=uuid.uuid4(),
+                        tenant_id=run.tenant_id,
+                        study_id=run.study_id,
+                        site_id=run.site_id,
+                        event_type="safety.analysis.requested",
+                        aggregate_type="safety_provider_run",
+                        aggregate_id=run.id,
+                        dedup_key=(
+                            f"safety-analysis-retry:{run.id}:"
+                            f"{datetime.now(UTC).isoformat()}"
+                        ),
+                        payload={"provider_run_id": str(run.id)},
+                    )
+                )
+        self.relay_outbox_safely()
         return self.detail(scope, assessment_id)
 
     def record_cra_review(
