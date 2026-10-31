@@ -18,7 +18,9 @@
         "D-030",
         "SEC:14",
         "SEC:15",
-        "SEC:20"
+        "SEC:20",
+        "D-031",
+        "SEC:14.5"
       ],
       "technical_refs": [
         "TR-01",
@@ -38,7 +40,7 @@
         "traceability/manifest.json"
       ],
       "implementation_status": "documentation_ready",
-      "source_sha256": "f469add438a69af590714fe5f62a9137a90e67374a290a1652c14cf52bcdb02b"
+      "source_sha256": "6796a24c4d1d2dc2d5f6bd43621caef1df8f92ec46696cbc666fc0307df31ea0"
     },
     {
       "id": "RQ-002",
@@ -335,7 +337,8 @@
         "D-008",
         "D-022",
         "SEC:7.2",
-        "SEC:7.3"
+        "SEC:7.3",
+        "SEC:14.5"
       ],
       "technical_refs": [
         "TR-04",
@@ -368,7 +371,7 @@
         "services/core/tests/integration/test_w04_scheduling.py"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "306867d2a3dd1a085c558163ff3d36a7e75ea1119a22f918cd7ed2cf61f5dd80"
+      "source_sha256": "297bba45633eea3f34a0eee2df8e6110640731e7a488fe97d53a84c938953bb9"
     },
     {
       "id": "RQ-010",
@@ -454,7 +457,8 @@
       "source_refs": [
         "D-017",
         "SEC:11.1",
-        "SEC:11.2"
+        "SEC:11.2",
+        "SEC:14.5"
       ],
       "technical_refs": [
         "TR-04",
@@ -482,7 +486,7 @@
         "services/core/migrations/versions/a7c4e2f9b610_w18_recovery_and_backups.py"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "3247773d1a5ce65f7890a73c1c1a5901daea44671aa7d6b07f3804d9eabe4f61"
+      "source_sha256": "faa8cb5e1a0e5a19b61bc5345799bb842d7f63cca6cbd9d73cdedd0440d6872a"
     },
     {
       "id": "RQ-013",
@@ -793,7 +797,8 @@
         "D-019",
         "D-024",
         "SEC:7.7",
-        "SEC:10.1"
+        "SEC:10.1",
+        "SEC:14.5"
       ],
       "technical_refs": [
         "TR-05",
@@ -836,7 +841,7 @@
         "docs/w17-handoff.md"
       ],
       "implementation_status": "implemented",
-      "source_sha256": "f2df1f1602f19e4d8825802e46a29b1d0d71fff2116167ced519540d9ec3c49b"
+      "source_sha256": "4a38ccd7bd4985b7f2a3caf6c1e25045a6d85783e97be846f9f702e3d27406e7"
     },
     {
       "id": "RQ-023",
@@ -978,7 +983,8 @@
       "source_refs": [
         "D-004",
         "SEC:7.4",
-        "SEC:7.7"
+        "SEC:7.7",
+        "SEC:14.5"
       ],
       "technical_refs": [
         "TR-05",
@@ -1004,7 +1010,7 @@
         "services/core/migrations/versions/c7296a4b69d8_w04_tasks_jobs_budgets.py"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "428f3e16accf91ea8aa2acde2d34c29162f7e07bfd7f82e4540abf34dbca881c"
+      "source_sha256": "145641c52e0e5aa3e0be46e7d0dc7c4ddb581d8c2b15c690efdadb137d8903ec"
     },
     {
       "id": "RQ-028",
@@ -1042,7 +1048,8 @@
         "D-012",
         "SEC:11",
         "SEC:12",
-        "SEC:19"
+        "SEC:19",
+        "SEC:14.5"
       ],
       "technical_refs": [
         "TR-04",
@@ -1085,14 +1092,15 @@
         "apps/web/src/app/projects/[id]/external/page.tsx"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "442398da3587ddf7a8a7762b5f70353f6d7bf95900a80fdbdf49abdc2fc73cfc"
+      "source_sha256": "a6f569eee21d7693def322c9b8ec51204693b60eb69d8a116cd14897feb3e30d"
     },
     {
       "id": "RQ-030",
       "title": "思想更新和运行版本迁移",
       "source_refs": [
         "D-026",
-        "SEC:14.4"
+        "SEC:14.4",
+        "SEC:14.5"
       ],
       "technical_refs": [
         "TR-02",
@@ -1111,7 +1119,7 @@
         "services/core/src/medical_one_person/domain/policy_bundles"
       ],
       "implementation_status": "planned",
-      "source_sha256": "86f57e7150f6fcd23cdf5bcac647513bc1a5f4c29339628d11fbabd9c495d5c2"
+      "source_sha256": "8e6ee7e14a15142a6d1bd9711a6e2f1c2177caa5c68fdd1693593d48c097f9ca"
     },
     {
       "id": "RQ-031",
@@ -1170,7 +1178,9 @@
         "D-025",
         "D-029",
         "SEC:13",
-        "SEC:14.3"
+        "SEC:14.3",
+        "D-031",
+        "SEC:14.5"
       ],
       "technical_refs": [
         "TR-01",
@@ -1211,7 +1221,7 @@
         "services/core/tests/integration/test_w16_external_api.py"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "448f484ffd455755a617ac39566545126f92183112932dbd40375ed2a83dcdf2"
+      "source_sha256": "1dfc82725ae054f2b99be00d339eaa9e0c55f46f3e06a67af4031a025f6ffbd1"
     },
     {
       "id": "RQ-033",
@@ -1255,7 +1265,7 @@
         "docs/w24-pilot-charter.md"
       ],
       "implementation_status": "planned",
-      "source_sha256": "994770f60cdab4795bc0907847c88e2acf940b7b70fde35672b829cfc3bbfceb"
+      "source_sha256": "dd4d20e4b5e67339e7fa0f4fb853fbf1293def954827254789010f65d3dd51e8"
     },
     {
       "id": "RQ-034",
@@ -1317,10 +1327,10 @@
       "source_sha256": "9dcba219e342a846330c0616f7366940e73f5fe794c44e6e4b63ae58c84ddd0f"
     }
   ],
-  "theory_version": "V0.9",
-  "roadmap_version": "V1.14",
-  "theory_sha256": "93da3c5140432607aabed9301d90d9f8a35e7d742a62f5211402878782aef6c6",
-  "roadmap_sha256": "26b23df3a2e7f1af1a025deebb856ea9cf8d6a0df6ccf96a4593d96dcca4c072",
+  "theory_version": "V0.10",
+  "roadmap_version": "V1.15",
+  "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
+  "roadmap_sha256": "8b51d63d9a343d63f0ea7c91447893cb1d00aeba6b35caf25c606cd85ed12d10",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1378,6 +1388,7 @@
     "D-028": "f4e142e1da986403d7df1f47035b36d37ec47fb5420d87977b60826ccc8f3e0f",
     "D-029": "1f465b7f09657ce31b196803d826acf826b5d57acc202ebf85ec411a797f212e",
     "D-030": "b421323fd1dc529fd7156b5f9274f6c0fa24a8908c6b3f091335fa3ae08c4cb3",
+    "D-031": "e19fafc9f25cd62ecd9e1198ce955e5489b80fba7b3544fd2e135f7392c07139",
     "SEC:1": "52e486d89ee01d3fbaa7ab6523701790d6521eb0ed0d4b938079630b0186d429",
     "SEC:10": "ffbbb85feabab581eddd6981f9eebcddd3a4ee80f0e6a35eec7defb4942c4319",
     "SEC:10.1": "b7f0bfdb75b16ea23113b34fb6a81fb1cb51d83208bf3c01499468d731c960e6",
@@ -1391,19 +1402,20 @@
     "SEC:11.4": "c8811de2ab0e62462148e6ada4977259b3220df8295cec923437862edb37051c",
     "SEC:11.5": "d5a49fffe64408a8c8b014bfa9eebb53c52591d9639fa0670da10d654e87887b",
     "SEC:12": "b3dae2aaee9061835a130037e69a5059af27b3057c344159bdf51a381827cbb2",
-    "SEC:13": "6933a81ef6b82a4d4af27171067cc9b78c80263e40cdd88d882b4006ffbae22a",
-    "SEC:14": "9bcb83a2fd093f1659724e91b9936940720ada238eb53ba28f28eae932bf84e5",
+    "SEC:13": "6652bc09901a0d8c2f41e6c8b10b90a29152ab4cc47b16b6af32113b09e8bd89",
+    "SEC:14": "86f379f00cb3205366d838231a5e3a0fba6f188de33062f3a8468dce7c011f80",
     "SEC:14.1": "ead0ff5cdc0cbaf1a289cce340ee2d76f2ea8a9128cbdb974befa0a111f76486",
     "SEC:14.2": "4147762299dec3a53c2ee856c49b2f954d097a8aabb1192088bcd385a6df4691",
     "SEC:14.3": "b6db822470a775dd4638ec3afc851d1a5ab36ef44ff6610e24f649e18704b9f0",
     "SEC:14.4": "90e44adec37f0a10287927a8ab167bf2c133abff6f62307866d92fb1ffe9a3f6",
-    "SEC:15": "30d2baa48fe74545b0c7d477e20d91a2ea74988552638c2c7f657b6053e874a7",
+    "SEC:14.5": "a1e5d501dd05de3479e6dc576487d15ac65ff0393e3b8ca27d7c23f292491bdb",
+    "SEC:15": "98c94fcf63725ee95fd9810da2727fe9b2d7f3933ee5071647cbedb3c909a820",
     "SEC:16": "9f6227eb98bd1eebc5f27aba11b6eb3cc76f600ff8e84312e3fa2639df27f812",
     "SEC:17": "cddc96517598615329e9f4d21b636727445c0bb70dee72d5c22e325b16bf18e0",
     "SEC:18": "1966fcb6011158392d5333e5e575a4afa056a1494b01ae0d047818604622c190",
-    "SEC:19": "88fc59c0071506a7255d95a29895912b7ab61bf04547dbfa28718c331deefcae",
+    "SEC:19": "67400437eb6df71fc6e14ab36ea4710240d99df5c1dd2e82b938050e8bb1c5a7",
     "SEC:2": "5eb22249cfa663386cfe1f2597bb12a70ff9a6dc0cbcf13cea9ace3d7e9473d5",
-    "SEC:20": "84357f6dcc3badfd1bf8ac39119a5a376a27053c8b5ce1e44992d8e1e053ac9e",
+    "SEC:20": "243449fc74ce4af461983c85858f7e6243632979a5d187b7c687c3c02e87b5dc",
     "SEC:3": "1e5e735d84a3f6c2cb3d94f4d36853d010e75fa64f5781bc668e1412371981ee",
     "SEC:4": "cc6632d2b4f100a59fb85c92a6ebc0bfb75e7dad6b785e130be3b1236863baba",
     "SEC:4.1": "d5e130effdd09ce1dbfac7e64a1070f1360c2aa2e6ddee0442998b94c29c9857",
@@ -1430,8 +1442,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-10-31T23:07:19.666707+00:00",
-    "note": "PR81第二轮复核F01-F04修复已在真实PostgreSQL和完整前端验收中通过，证据重新绑定最终源码。",
+    "at": "2026-10-31T23:33:07.052957+00:00",
+    "note": "按D-031完成PR81收口复盘：思想V0.10/技术V1.15同步长期原则、永久回归及W19切片；F01-F03与F04语义身份关闭，C01(P2)原函数反例仍开放，须定点修复再W19。本次不改应用源码、验收记录或完成等级。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -2864,6 +2876,36 @@
         "RQ-034"
       ],
       "sha256": "aace0199d063c75b721355926a7eb60ca6b8aa3d43ff2c1e702043be314838a3"
+    },
+    {
+      "path": "docs/audits/pr81-closure-and-retrospective.md",
+      "requirement_ids": [
+        "RQ-001",
+        "RQ-027",
+        "RQ-030",
+        "RQ-032"
+      ],
+      "sha256": "438a060054a946d74fcf5c597e7dbbb4dc9672af7059d0cf050887e6d7837120"
+    },
+    {
+      "path": "docs/audits/pr81-closure-probes.py",
+      "requirement_ids": [
+        "RQ-009",
+        "RQ-022",
+        "RQ-027",
+        "RQ-032"
+      ],
+      "sha256": "d2628fda35f62f6058c1901b1b2be79ab807e05f4eeef93e7133ea01590252df"
+    },
+    {
+      "path": "docs/audits/pr81-closure-probe-results.json",
+      "requirement_ids": [
+        "RQ-009",
+        "RQ-022",
+        "RQ-027",
+        "RQ-032"
+      ],
+      "sha256": "af3d14c80acdf48aefc06654a5d163b3d6480565875f15d43323e80633f3ad09"
     }
   ]
 }
