@@ -195,9 +195,7 @@ class DoclingLabProvider:
     """Run Docling in an isolated process so the main runtime stays on 3.13."""
 
     name = "docling"
-    version = (
-        "2.145.0+locka935fb56356b2076fb134776d139e6f2fb98be868a5554b7a6aa8180cf5ce153"
-    )
+    version = "2.145.0"
 
     def __init__(
         self,
@@ -258,6 +256,10 @@ class DoclingLabProvider:
                 "--isolated",
                 "--python",
                 "3.12",
+                "--index",
+                "https://download.pytorch.org/whl/cpu",
+                "--index-strategy",
+                "unsafe-best-match",
                 "--with-requirements",
                 str(lock_path),
                 "python",

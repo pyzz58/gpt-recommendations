@@ -71,13 +71,14 @@ uv run --frozen python -m cra_app.providers.evaluate_labs \
 | Focused review required | 3 | 3 | 2 |
 | Provider validation | passed | passed | passed |
 
-The current local isolated-image run emitted OCR lock SHA-256
-`fcd0ec5ac7da801c69e8e2c9f608343f1ad4fcab76c3926e3fab6e61169bfcbd`
+The current local isolated-image run is expected to emit OCR lock SHA-256
+`c0ffdc03a0cf991f478b168c7ab201b5edb6f6144dde42354ed121220e74e449`
 and Docling model-manifest SHA-256
 `c5309aff4606055d82f24f07da522ce6830de7d664faaeb4f9fa44cd10d0705b`.
-CI logs the authoritative values for its fresh environment. The image run used
-about 3.1 GiB maximum RSS and 8.7 seconds in the provider process in the local
-observation; these are resource observations, not production commitments.
+CI logs the authoritative values for its fresh environment. The cold-start
+local image run used about 3.1 GiB maximum RSS and 34.3 seconds in the provider
+process; warm-cache observations were roughly 8-17 seconds. These are resource
+observations, not production commitments.
 
 The review items are expected scope behavior rather than OCR misses:
 

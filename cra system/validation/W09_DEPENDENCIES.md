@@ -22,9 +22,11 @@ the worker verifies the downloaded bytes before loading the model.
 The OCR isolated environment is likewise locked in
 `provider-locks/ocr-linux-py312.txt` and
 `provider-locks/ocr-macos-arm64-py312.txt`. The Linux lock SHA-256 is
-`a935fb56356b2076fb134776d139e6f2fb98be868a5554b7a6aa8180cf5ce153`.
+`b63ebded2cb330b5b68a67f24988c28733798336874cabc5d157983f5c7b1e01`.
 The macOS arm64 lock SHA-256 is
-`fcd0ec5ac7da801c69e8e2c9f608343f1ad4fcab76c3926e3fab6e61169bfcbd`.
+`c0ffdc03a0cf991f478b168c7ab201b5edb6f6144dde42354ed121220e74e449`.
+Both OCR environments explicitly pin CPU-capable `torch==2.7.1`; this avoids
+resolving a future CPU suffix that is not available from the runner index.
 OCR evaluation emits the selected lock hash and a SHA-256 manifest over the
 Docling model snapshot files. The local macOS evaluation observed model
 manifest
@@ -37,6 +39,9 @@ starts an isolated Python 3.12 process through `uv` with the exact packages
 above. The model revision is pinned in both provider and worker code.
 The provider computes the hash of the actual platform-specific lock it passed
 to `uv`, and `UV_TORCH_BACKEND=cpu` prevents implicit accelerator selection.
+The worker command also names `https://download.pytorch.org/whl/cpu` and uses
+the unsafe-best-match strategy because the hash lock records `+cpu` wheels;
+this removes dependence on local index auto-detection.
 
 The approximately 988 MB `model.safetensors` weight file is not committed.
 CI downloads the pinned public model only after receiving the synthetic W09
