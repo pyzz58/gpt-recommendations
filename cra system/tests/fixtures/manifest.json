@@ -6,11 +6,11 @@
   "artifacts": [
     {
       "artifact_id": "RULE-DOCX-DEV",
-      "file": "artifacts/synthetic_rule_protocol.docx",
+      "file": "documents/artifacts/synthetic_rule_protocol.docx",
       "format": "docx",
       "purpose": "rule",
       "group": "development",
-      "sha256": "feed29fd148ef7ed5027e306ae5cf96a4ab3fdc1154b80a249fea6ee466c9811",
+      "sha256": "b73b551d548e033dd5518761204446184b34921fceb4177ad12d68fea26312bd",
       "expected": {
         "anchors": [
           "table_cell",
@@ -29,11 +29,11 @@
     },
     {
       "artifact_id": "REPORT-PDF-EVAL",
-      "file": "artifacts/synthetic_monitoring_report.pdf",
+      "file": "documents/artifacts/synthetic_monitoring_report.pdf",
       "format": "pdf",
       "purpose": "carryover_report",
       "group": "evaluation",
-      "sha256": "68ccf22a77ca979e448d0844814db856831bf82a63477e1ab374429c0abd9d1e",
+      "sha256": "489f603533987c93b686cd26d19def68a4a4be552f8bede62ae43caa5c9e934c",
       "expected": {
         "page": 1,
         "anchor_types": [
@@ -49,11 +49,11 @@
     },
     {
       "artifact_id": "TRACK-XLSX-DEV",
-      "file": "artifacts/synthetic_track.xlsx",
+      "file": "documents/artifacts/synthetic_track.xlsx",
       "format": "xlsx",
       "purpose": "track",
       "group": "development",
-      "sha256": "0f2f16a7b8c2274f875b5ba0abc3e1069e7ed0168bcc63d369cae72918c516f6",
+      "sha256": "1b04f2484fff75cf9eb3e765f163f80cd0619dd6743e3c5c43b0403b97a482b8",
       "expected": {
         "retained_as_private_file": true,
         "structured_parsing_task": "CRA-W07/W06"
@@ -61,7 +61,7 @@
     },
     {
       "artifact_id": "LAB-PNG-PROBE",
-      "file": "artifacts/synthetic_lab_report.png",
+      "file": "documents/artifacts/synthetic_lab_report.png",
       "format": "png",
       "purpose": "fact",
       "group": "development",
@@ -77,18 +77,18 @@
     },
     {
       "artifact_id": "TEMPLATE-DOCX-DEV",
-      "file": "artifacts/synthetic_report_template.docx",
+      "file": "documents/artifacts/synthetic_report_template.docx",
       "format": "docx",
       "purpose": "template",
       "group": "development",
-      "sha256": "feed29fd148ef7ed5027e306ae5cf96a4ab3fdc1154b80a249fea6ee466c9811",
+      "sha256": "b73b551d548e033dd5518761204446184b34921fceb4177ad12d68fea26312bd",
       "expected": {
         "retained_as_private_file": true
       }
     },
     {
       "artifact_id": "RULE-TEXT-DEV",
-      "file": "artifacts/synthetic_rule_text.txt",
+      "file": "documents/artifacts/synthetic_rule_text.txt",
       "format": "txt",
       "purpose": "rule",
       "group": "development",

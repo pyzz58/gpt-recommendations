@@ -45,8 +45,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 pytestmark = pytest.mark.postgres
 
-FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "documents"
-ARTIFACTS = FIXTURES / "artifacts"
+FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
+ARTIFACTS = FIXTURES / "documents" / "artifacts"
 
 
 def _database_url() -> str:

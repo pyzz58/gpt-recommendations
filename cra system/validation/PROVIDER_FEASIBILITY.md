@@ -43,11 +43,32 @@ image against both pipelines, verifies expected tokens and coordinate presence,
 and selects the lower-latency passing candidate. CI uses isolated processes so
 the candidate dependency trees do not modify the main application environment.
 
+## CI cross-platform result
+
+The same exact probe in GitHub Actions `41180745185` produced a different
+runtime result:
+
+- PaddleOCR 3.7.0 / PaddlePaddle 3.3.1 failed before inference on the Ubuntu
+  runner with `NotImplementedError: ConvertPirAttribute2RuntimeAttribute not
+  support [pir::ArrayAttribute<pir::DoubleAttribute>]` in the oneDNN execution
+  path.
+- Docling 2.145.0 passed on the same image with 3/3 expected tokens, 4 boxes
+  and one page; measured warm process time was 29.831 s and max RSS
+  2,491,514,880 bytes.
+
+The probe therefore selected Docling in CI without disabling the failed
+candidate or treating it as passing.
+
 ## Decision
 
-Select **PaddleOCR/PP-Structure as the first W08 integration candidate**. It was
-faster and used less memory on the same output, while retaining per-line text
-and coordinates. Docling remains the controlled comparison/fallback candidate.
+Select **Docling as the current W08 integration candidate for the pinned Linux
+CI path**. It was the only candidate that ran end-to-end on both this Mac and
+GitHub Ubuntu with expected text and coordinates.
+
+PaddleOCR/PP-Structure remains a valuable local/isolated alternative: on macOS
+it was faster and used less memory. It must not be called Linux-compatible until
+the oneDNN/inference configuration is pinned and retested. W08 should choose one
+pipeline from actual supported-format results, not install both by default.
 
 This selection does not make OCR available in W03. `RecognizeLab` remains
 explicitly disabled; W08 owns the supported-format intake, field extraction,
@@ -59,9 +80,10 @@ manual review burden and total time.
 ## Remaining risks
 
 - One synthetic image cannot establish accuracy or format coverage.
-- The warm probes consumed approximately 1.4 GiB (PaddleOCR) and 2.7 GiB
-  (Docling) maximum resident memory in this process; production resource limits
-  and concurrency must be measured again in the approved Linux runtime.
+- Local warm probes consumed approximately 1.4 GiB (PaddleOCR) and 2.7 GiB
+  (Docling) maximum resident memory; GitHub Docling measured approximately
+  2.5 GiB. Production resource limits and concurrency must be measured again in
+  the approved provider runtime.
 - Model downloads require explicit network/mirror approval in an isolated
   provider image. CI cache absence may produce a much longer first run.
 - Package/model declarations were checked, but transitive dependencies and the

@@ -22,6 +22,7 @@ from reportlab.pdfgen import canvas
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "artifacts"
+MANIFEST_PATH = ROOT.parent / "manifest.json"
 
 
 def _synthetic_docx(path: Path) -> None:
@@ -238,7 +239,7 @@ def main() -> None:
         "artifacts": [
             {
                 "artifact_id": "RULE-DOCX-DEV",
-                "file": "artifacts/synthetic_rule_protocol.docx",
+                "file": "documents/artifacts/synthetic_rule_protocol.docx",
                 "format": "docx",
                 "purpose": "rule",
                 "group": "development",
@@ -258,7 +259,7 @@ def main() -> None:
             },
             {
                 "artifact_id": "REPORT-PDF-EVAL",
-                "file": "artifacts/synthetic_monitoring_report.pdf",
+                "file": "documents/artifacts/synthetic_monitoring_report.pdf",
                 "format": "pdf",
                 "purpose": "carryover_report",
                 "group": "evaluation",
@@ -272,7 +273,7 @@ def main() -> None:
             },
             {
                 "artifact_id": "TRACK-XLSX-DEV",
-                "file": "artifacts/synthetic_track.xlsx",
+                "file": "documents/artifacts/synthetic_track.xlsx",
                 "format": "xlsx",
                 "purpose": "track",
                 "group": "development",
@@ -284,7 +285,7 @@ def main() -> None:
             },
             {
                 "artifact_id": "LAB-PNG-PROBE",
-                "file": "artifacts/synthetic_lab_report.png",
+                "file": "documents/artifacts/synthetic_lab_report.png",
                 "format": "png",
                 "purpose": "fact",
                 "group": "development",
@@ -296,7 +297,7 @@ def main() -> None:
             },
             {
                 "artifact_id": "TEMPLATE-DOCX-DEV",
-                "file": "artifacts/synthetic_report_template.docx",
+                "file": "documents/artifacts/synthetic_report_template.docx",
                 "format": "docx",
                 "purpose": "template",
                 "group": "development",
@@ -305,7 +306,7 @@ def main() -> None:
             },
             {
                 "artifact_id": "RULE-TEXT-DEV",
-                "file": "artifacts/synthetic_rule_text.txt",
+                "file": "documents/artifacts/synthetic_rule_text.txt",
                 "format": "txt",
                 "purpose": "rule",
                 "group": "development",
@@ -317,7 +318,7 @@ def main() -> None:
             },
         ],
     }
-    (ROOT / "manifest.json").write_text(
+    MANIFEST_PATH.write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )

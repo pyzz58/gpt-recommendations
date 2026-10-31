@@ -48,4 +48,4 @@ W03先探测兼容与资源，必要时隔离识别环境，W04/W08/W09实际pro
 
 ## W03实现记录
 
-已建立ParseDocument/ExtractRules/RecognizeLab/AnalyzeCase端口和显式DisabledProvider。同一合成检验图片在隔离Python3.12环境实际试装了PaddleOCR 3.7.0/PaddlePaddle 3.3.1与Docling 2.145.0；两者输出预期token和坐标，PaddleOCR本次运行更快、内存更低，因此列为W08首选的隔离候选，Docling保留对照。主应用未安装OCR候选；单图探测不构成格式覆盖、字段准确率或临床验证，详见validation/PROVIDER_FEASIBILITY.md。
+已建立ParseDocument/ExtractRules/RecognizeLab/AnalyzeCase端口和显式DisabledProvider。同一合成检验图片在隔离Python3.12环境实际试装PaddleOCR 3.7.0/PaddlePaddle 3.3.1与Docling 2.145.0：macOS上两者均输出预期token和坐标，PaddleOCR更快；但GitHub Ubuntu上PaddlePaddle在oneDNN执行路径失败，Docling通过。因此当前固定Linux CI路径选择Docling作为W08候选，PaddleOCR保留为需修正推理配置的隔离替代。主应用未安装OCR候选；单图探测不构成格式覆盖、字段准确率或临床验证，详见validation/PROVIDER_FEASIBILITY.md。
