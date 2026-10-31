@@ -1449,7 +1449,7 @@
       "priority": "P1",
       "status": "audit_pending",
       "title": "演员表演与动作调度专业审计",
-      "observed_in": "agent_role_contracts acting; director_shootability.py",
+      "observed_in": "agent_role_contracts acting; director_shootability.py; director_acting.py; agent_role_contracts acting_contract_mode; screenplay_series_delivery.build_per_episode_crew",
       "problem": "未对照国际表演/场面调度标准并结合AI虚拟演员真实验证",
       "root_cause": "专业动作语义与生成模型可执行性的质量差距未知",
       "solution": "审查意图-策略-可见行为-反应-走位/视线-手部/道具接触；建立易失败动作分拆和镜头替代方案",
@@ -1464,7 +1464,7 @@
       "evidence": {
         "implementation_pr": "",
         "commit_sha": "450df9bc81200280f7056e5cdb6f4b8a691e689b",
-        "automated_test": "tests/test_f01_acting_baseline.py::test_public_fixture_is_synthetic_and_contains_no_private_paths; tests/test_f01_acting_baseline.py::test_fixture_satisfies_only_current_structural_acting_minimum; tests/test_f01_acting_baseline.py::test_current_schema_lacks_professional_causal_fields",
+        "automated_test": "tests/test_f01_acting_baseline.py::test_public_fixture_is_synthetic_and_contains_no_private_paths; tests/test_f01_acting_baseline.py::test_fixture_satisfies_only_current_structural_acting_minimum; tests/test_f01_acting_baseline.py::test_current_schema_lacks_professional_causal_fields; tests/test_director_acting.py::test_positive_strict_contract_passes; tests/test_director_acting.py::test_missing_character_contracts_blocks; tests/test_director_acting.py::test_stale_bible_blocks; tests/test_director_acting.py::test_overlapping_hand_prop_blocks; tests/test_director_acting.py::test_generic_language_is_review_not_automatic_block; tests/test_director_acting.py::test_zero_actor_shot_needs_reason_and_passes; tests/test_director_acting.py::test_schema_requires_strict_fields; tests/test_director_acting.py::test_legacy_mode_is_not_forced",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1481,6 +1481,12 @@
           "date": "2026-10-26",
           "status": "audit_pending",
           "note": "F01-00/01基线记录：锁定既有acting调用链与五类输出，以公开虚构“我没事/藏信”反例证明当前只检查字段与物理动作、缺目标—障碍—策略—潜台词—反应因果；因无独立专业表演审稿，状态保持audit_pending，未新增表演Agent，未进入真实媒体。",
+          "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F01-02/03可选严格表演合同已实现：导演performance_bible（关系/目标/障碍/策略/潜台词/来源span）与逐镜逐角色合同（trigger/objective/obstacle/tactic/subtext/reaction/source_beat_id）进入model-facing schema；hand_prop重叠阻断，泛词仅复核，零演员图文镜允许。公开正例与8项回归通过；因仍无独立专业表演审稿，QO-F01保持audit_pending，F01-04..09未完成。",
           "evidence_ref": ""
         }
       ]

@@ -2,7 +2,7 @@
 
 日期：2026-10-26  
 范围：`短视频/ai-director/`，现有 acting / acting_coach 岗位与离线校验链。  
-状态：**F01-00/01 已完成本轮基线核对与反例；F01-02 至 F01-09 尚未完成。**
+状态：**F01-00/01 基线已完成；F01-02/03 严格表演合同已实现并通过离线回归；F01-04 至 F01-09 与独立专业审稿仍待完成。QO-F01 仍保持 `audit_pending`。**
 
 本文件不是艺术验收，不新增第二套质量账本。状态仍以 [QUALITY_ISSUES.json](QUALITY_ISSUES.json) 的 QO-F01 为准；本轮将其从 `audit_pending` 推进为 `in_progress`，不标 `complete`。
 
@@ -108,3 +108,22 @@ agent_team (acting / acting_coach DAG)
 - 新增公开反例 JSON 与 `tests/test_f01_acting_baseline.py`；测试只证明当前结构接受该反例、而专业缺口确实存在，不证明任何表演质量。
 - 本轮达到 **G1/L1 的基线证据**：能复现结构通过但专业不足；尚未达到 L2（独立盲评）、L3（真实 AI 镜头）或 L4（成片）。
 - 不调用付费模型，不使用用户真实文案/人物/媒体，不声称官方认证或行业大师审阅。
+
+## 8. F01-02/03 严格表演合同实现更新（2026-10-31）
+
+在上述基线和反例成立后，新增了**可选的严格表演合同**；旧 fixture/旧 base 不受影响，正式新系列由 `screenplay_series_delivery.build_per_episode_crew` 显式启用：
+
+- 新模块 [director_acting.py](../director_acting.py)：
+  - 校验导演锁定的 `performance_bible`：source digest、角色、关系、目标、障碍、策略习惯、潜台词、进出状态、source spans；
+  - 校验逐镜逐角色合同：trigger、objective、obstacle、tactic、subtext、reaction、visible_change、ending_state、source_beat_id；
+  - 校验 `hand_prop`：角色、左右手、道具 ID、时间窗、可见结果；同一手重叠动作阻断；
+  - 泛词（“自然地”“悲伤地看着”等）只作为人工复核信号，不自动判错；零演员图文镜要求 `no_performer_reason`，允许沉默/无演员。
+- [agent_role_contracts.py](../agent_role_contracts.py)：在 `acting_contract_mode` 下把 `performance_bible`、`character_contracts`、`hand_prop` 写入真实 model-facing schema；`validate_role_output` 在结构检查后调用严格表演校验；不新增 Agent。
+- [screenplay_series_delivery.py](../screenplay_series_delivery.py)：正式新系列的每集 base 显式设置 `acting_contract_mode`，旧序列/旧 fixture 保持兼容。
+- 新公开正例：[public_letter_strict_contract.json](../examples/acting-f01/public_letter_strict_contract.json)；新测试：`tests/test_director_acting.py`（正例、缺合同、过期圣经、手部重叠、泛词复核、零演员、schema 集成、legacy 不强制）。
+
+边界：
+
+- 这仍是**离线结构与因果合同**，不是专业演员/导演盲评，也不能证明真实 AI 表演质量。
+- QO-F01 仍为 `audit_pending`：quality registry 要求未来部门在非 pending 状态前具备独立专业审稿；没有该证据时不得刷状态。
+- F01-04（双人调度、实体交接硬门禁）、F01-05（模型可拍性与替代）、F01-06（跨岗位同源版本/定点返修）、F01-07（多题材离线正反回归）、F01-08（真实媒体）和 F01-09（冻结交接）仍未完成。

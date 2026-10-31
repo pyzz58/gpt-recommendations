@@ -463,7 +463,7 @@
 ### QO-F01 · 演员表演与动作调度专业审计
 
 - 状态：audit_pending；优先级：P1；阶段：future_dept；负责人：acting
-- 发现位置：agent_role_contracts acting; director_shootability.py
+- 发现位置：agent_role_contracts acting; director_shootability.py; director_acting.py; agent_role_contracts acting_contract_mode; screenplay_series_delivery.build_per_episode_crew
 - 问题：未对照国际表演/场面调度标准并结合AI虚拟演员真实验证
 - 根因：专业动作语义与生成模型可执行性的质量差距未知
 - 方案：审查意图-策略-可见行为-反应-走位/视线-手部/道具接触；建立易失败动作分拆和镜头替代方案
@@ -471,8 +471,8 @@
 - AI 视频适配：多主体交互及手部一致性需按片段限制设计
 - 依赖：QO-D04
 - 历史问题：无
-- 修复证据：PR 未提供；回归 tests/test_f01_acting_baseline.py::test_public_fixture_is_synthetic_and_contains_no_private_paths; tests/test_f01_acting_baseline.py::test_fixture_satisfies_only_current_structural_acting_minimum; tests/test_f01_acting_baseline.py::test_current_schema_lacks_professional_causal_fields；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:audit_pending → 2026-10-26:audit_pending
+- 修复证据：PR 未提供；回归 tests/test_f01_acting_baseline.py::test_public_fixture_is_synthetic_and_contains_no_private_paths; tests/test_f01_acting_baseline.py::test_fixture_satisfies_only_current_structural_acting_minimum; tests/test_f01_acting_baseline.py::test_current_schema_lacks_professional_causal_fields; tests/test_director_acting.py::test_positive_strict_contract_passes; tests/test_director_acting.py::test_missing_character_contracts_blocks; tests/test_director_acting.py::test_stale_bible_blocks; tests/test_director_acting.py::test_overlapping_hand_prop_blocks; tests/test_director_acting.py::test_generic_language_is_review_not_automatic_block; tests/test_director_acting.py::test_zero_actor_shot_needs_reason_and_passes; tests/test_director_acting.py::test_schema_requires_strict_fields; tests/test_director_acting.py::test_legacy_mode_is_not_forced；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:audit_pending → 2026-10-26:audit_pending → 2026-10-31:audit_pending
 
 ### QO-F02 · 摄影/灯光/美术世界观专业审计
 
