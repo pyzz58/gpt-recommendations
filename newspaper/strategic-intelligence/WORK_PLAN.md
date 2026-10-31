@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`6c2c4dda5b5f5ae57ee0fba4508725beee1c594e58e11ab459d2671f75a81b8a`。
+当前规范SHA-256：`eb599a5567acb4655774e0b7674ef8bca2a2f802acc48ae76bea4e0664b58c4d`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收18包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收19包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -66,7 +66,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 29 | [W28 顾问任务、判断与增益提交](#w28) | 代码与接口工作包 | T06 | [W27](#w27) | 进行中 / CURRENT_BINDING |
 | 30 | [W29 帝师研究、连续教学与迁移提交](#w29) | 代码与接口工作包 | T07 | [W27](#w27) | 进行中 / CURRENT_BINDING |
 | 31 | [W30 条件路径与原判断检验条件](#w30) | 代码与接口工作包 | T08 | [W28](#w28)、[W29](#w29) | 进行中 / CURRENT_BINDING |
-| 32 | [W31 独立核查、意见闭环与审核决定](#w31) | 代码与接口工作包 | T09/T01 | [W28](#w28)、[W29](#w29)、[W30](#w30)、[W19](#w19)、[W15](#w15) | 待开始 / CURRENT_BINDING |
+| 32 | [W31 独立核查、意见闭环与审核决定](#w31) | 代码与接口工作包 | T09/T01 | [W28](#w28)、[W29](#w29)、[W30](#w30)、[W19](#w19)、[W15](#w15) | 进行中 / CURRENT_BINDING |
 | 33 | [W32 连续文章、卷首与审后变更承接](#w32) | 代码与接口工作包 | T10/T03 | [W31](#w31)、[W23](#w23)、[W26](#w26) | 待开始 / CURRENT_BINDING |
 | 34 | [W33 原文档案、双模式查询与知识复用](#w33) | 代码与接口工作包 | T11 | [W13](#w13)、[W16](#w16)、[W32](#w32) | 待开始 / CURRENT_BINDING |
 | 35 | [W34 更正影响、限制采用与有限恢复](#w34) | 代码与接口工作包 | T11/T01 | [W33](#w33)、[W25](#w25)、[W31](#w31)、[W15](#w15) | 待开始 / CURRENT_BINDING |
@@ -1237,7 +1237,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：32/59；阶段：2；类型：代码与接口工作包。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W28](#w28)、[W29](#w29)、[W30](#w30)、[W19](#w19)、[W15](#w15)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W28](#w28)、[W29](#w29)、[W30](#w30)、[W19](#w19)、[W15](#w15)。
 
 前置尚未验收：[W15](#w15)、[W19](#w19)、[W28](#w28)、[W29](#w29)、[W30](#w30)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -1267,7 +1267,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W31-EDITORIAL-REVIEW-AUDIT-20261031-001", "artifact_refs": ["intelligence/editorial_review.py", "intelligence/adoption.py", "intelligence/prospective.py", "intelligence/advisor.py", "intelligence/teacher.py", "intelligence/contracts.py", "intelligence/research.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/workflow.py", "tests_runtime/test_editorial_review.py", "audits/pr76-review-remediation-w31-20261031.json"], "validation_refs": ["tests_runtime/test_editorial_review.py (16 actual passing W31 tests)", "audits/pr76-review-remediation-w31-20261031.json"], "reviewer": "当前执行者实际离线检查实际Article正文、独立疑点、作者回应、逐项closure、PASS/REVISE/BLOCK、W15版本决定、模型身份与并发；非真实独立审阅、通用审稿能力、用户阅读或阶段批准", "result": "IN_PROGRESS", "scope": "W31离线接口：先固定当前W27案卷的M10/M11/M12、当前W16修订、B1/B2/C精确输出和实际Article读者稿。Article必须是当前保留全文版本，正文非空且引用精确revision、Task、M10/M11/M12及对应B1/B2/C输出；仅案卷或指针不能冒充读者稿。ReviewCase先记录审稿者独立疑点，再允许声明的作者逐项回应并提交可追到初稿的修订Article。疑点的quoted_text必须真实出现在初稿，类型/严重度、Claim/Evidence/MethodUse精确引用；reviewer不得是author或producer，draft-first不得同时声称看过作者自评/旧Review，缺陷答案键始终不得提供。最终固定reviewer逐项closure；PASS不得保留open/unverified，REVISE至少一项open/unverified，BLOCK至少一项critical未解决；合理accepted dispute可保留而不强迫新结论。最终Review绑定实际修订Article、Task与scope并写ReviewCoverage，再由W15以精确subject/review/scope形成决定：PASS→READY，REVISE→RETURN，BLOCK→BLOCKED。作者不能签审核，模型审稿须W19 REVIEW独立准入、与writer configuration分离、W31 OperationRequest及成功回执。上游W27修订、B1/B2/C最新版本、Article或case版本变化均使旧Review失效；同一final决定并发幂等且后续Article不能继承旧Review。成果固定author_self_approved=false、model_self_passed=false、publication_authorized=false、review_capability_certified=false。十六项回归覆盖正向PASS/W15、自签、真实正文/引文、问题来源、作者回应顺序、PASS未决拒绝、合理争议、REVISE/BLOCK、critical block、新Article、上游修订、exposure、模型W19/回执、并发和库评分/预定PASS偷渡。真实审稿文字、盲测/新例、跨领域漏检/误拒、完整样刊、W32消费及G02仍未完成，整包不ACCEPTED。"}]
 
 <a id="w32"></a>
 ## W32｜连续文章、卷首与审后变更承接

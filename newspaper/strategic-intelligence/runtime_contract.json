@@ -57,7 +57,9 @@
     "intelligence/teacher.py",
     "tests_runtime/test_teacher.py",
     "intelligence/prospective.py",
-    "tests_runtime/test_prospective.py"
+    "tests_runtime/test_prospective.py",
+    "intelligence/editorial_review.py",
+    "tests_runtime/test_editorial_review.py"
   ],
   "data_files": [
     "SOURCE_REGISTRY.json",
@@ -76,5 +78,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "6c2c4dda5b5f5ae57ee0fba4508725beee1c594e58e11ab459d2671f75a81b8a"
+  "spec_sha256": "eb599a5567acb4655774e0b7674ef8bca2a2f802acc48ae76bea4e0664b58c4d"
 }
