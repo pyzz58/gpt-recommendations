@@ -52,6 +52,8 @@ class ObjectKind(str, Enum):
     MODEL_USE_ADMISSION = "ModelUseAdmission"
     CANDIDATE_INDEX = "CandidateIndex"
     EVENT_CLUSTER_PROPOSAL = "EventClusterProposal"
+    COVERAGE_REFERENCE_PLAN = "CoverageReferencePlan"
+    COVERAGE_AUDIT = "CoverageAudit"
     MATERIAL_SELECTION = "MaterialSelection"
 
 

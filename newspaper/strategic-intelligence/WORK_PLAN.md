@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`690f2cba3fdce00f10f83218ced950d1b35570f98715b26072593fea7ef03178`。
+当前规范SHA-256：`6699610f1adeccbb08212eefc7224ae469baa297969f1ad181a9ee06b3d03afa`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收9包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收10包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -57,7 +57,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 20 | [W19 模型任务配置与有限准入证据](#w19) | 代码与接口工作包 | T13/T09 | [W18](#w18) | 进行中 / CURRENT_BINDING |
 | 21 | [W20 少量来源适配与候选输入](#w20) | 代码与接口工作包 | T02 | [W17](#w17)、[W18](#w18) | 进行中 / CURRENT_BINDING |
 | 22 | [W21 事件归并、血缘与探索队列](#w21) | 代码与接口工作包 | T02 | [W20](#w20)、[W13](#w13) | 进行中 / CURRENT_BINDING |
-| 23 | [W22 独立参照与覆盖缺口接口](#w22) | 代码与接口工作包 | T02/T03 | [W20](#w20)、[W21](#w21) | 待开始 / CURRENT_BINDING |
+| 23 | [W22 独立参照与覆盖缺口接口](#w22) | 代码与接口工作包 | T02/T03 | [W20](#w20)、[W21](#w21) | 进行中 / CURRENT_BINDING |
 | 24 | [W23 初选、S8与当期取舍记录](#w23) | 代码与接口工作包 | T03 | [W15](#w15)、[W21](#w21) | 待开始 / CURRENT_BINDING |
 | 25 | [W24 原件取得、结构提取与用途控制](#w24) | 代码与接口工作包 | T04 | [W13](#w13)、[W17](#w17)、[W18](#w18)、[W23](#w23) | 待开始 / CURRENT_BINDING |
 | 26 | [W25 主张支持、计算与定向补证接口](#w25) | 代码与接口工作包 | T04/T05/R04 | [W24](#w24)、[W16](#w16) | 待开始 / CURRENT_BINDING |
@@ -907,7 +907,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：23/59；阶段：2；类型：代码与接口工作包。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W20](#w20)、[W21](#w21)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W20](#w20)、[W21](#w21)。
 
 前置尚未验收：[W20](#w20)、[W21](#w21)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -936,7 +936,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W22-COVERAGE-AUDIT-20261031-001", "artifact_refs": ["intelligence/coverage.py", "intelligence/discovery.py", "intelligence/sources.py", "intelligence/contracts.py", "tests_runtime/test_coverage.py", "audits/pr76-review-remediation-w22-20261031.json"], "validation_refs": ["tests_runtime/test_coverage.py (5 actual passing W22 tests)", "audits/pr76-review-remediation-w22-20261031.json"], "reviewer": "当前执行者实际离线预固定参照、候选/入选比较、七类缺口和Archive往返检查；非真实来源、编辑决定或阶段批准", "result": "IN_PROGRESS", "scope": "W22离线比较：参照计划须在CandidateIndex/EventClusterProposal之前固定且不得由域配额、候选或入选结果倒推；独立通道失败单列SOURCE_UNAVAILABLE，参照与候选可按精确事件键或显式匹配比较。未发现、聚类/筛选漏失、编辑舍弃、材料不足、未成熟、他题覆盖和重复覆盖分别记录责任人/下一步；审计明确global_recall_claim=false，只覆盖声明窗口/通道。真实参照、W23选择、W36/W41整刊影响未验，整包不ACCEPTED。"}]
 
 <a id="w23"></a>
 ## W23｜初选、S8与当期取舍记录
