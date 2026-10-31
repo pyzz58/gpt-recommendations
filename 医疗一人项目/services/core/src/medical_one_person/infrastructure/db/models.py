@@ -156,6 +156,71 @@ class User(Base):
     )
 
 
+class PolicyBundle(Base):
+    __tablename__ = "policy_bundles"
+    __table_args__ = (
+        UniqueConstraint("workspace_id", "id"),
+        UniqueConstraint("workspace_id", "content_sha256"),
+        CheckConstraint(
+            "state IN ('published', 'retired')",
+            name="policy_bundle_state",
+        ),
+        CheckConstraint(
+            "id ~ '^[0-9a-f]{64}$' AND content_sha256 ~ '^[0-9a-f]{64}$'",
+            name="policy_bundle_hashes",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    workspace_id: Mapped[UUID] = mapped_column(
+        PGUUID(as_uuid=True),
+        ForeignKey("workspaces.id"),
+        nullable=False,
+        index=True,
+    )
+    version_label: Mapped[str] = mapped_column(String(100), nullable=False)
+    content_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+    theory_version: Mapped[str] = mapped_column(String(50), nullable=False)
+    theory_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+    component_sha256: Mapped[dict[str, str]] = mapped_column(JSONB, nullable=False)
+    snapshot: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    state: Mapped[str] = mapped_column(
+        String(20), nullable=False, default="published"
+    )
+    created_by_user_id: Mapped[UUID] = mapped_column(
+        PGUUID(as_uuid=True), ForeignKey("users.id"), nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+class PolicyState(Base):
+    __tablename__ = "policy_states"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["workspace_id", "active_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="policy_state_active_bundle",
+        ),
+        CheckConstraint("revision >= 1", name="policy_state_revision_positive"),
+    )
+
+    workspace_id: Mapped[UUID] = mapped_column(
+        PGUUID(as_uuid=True),
+        ForeignKey("workspaces.id"),
+        primary_key=True,
+    )
+    active_bundle_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    revision: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    updated_by_user_id: Mapped[UUID] = mapped_column(
+        PGUUID(as_uuid=True), ForeignKey("users.id"), nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False
+    )
+
+
 class Session(Base):
     __tablename__ = "sessions"
 
@@ -182,6 +247,11 @@ class Project(Base):
             ["workspace_id", "parent_project_id"],
             ["projects.workspace_id", "projects.id"],
             name="parent_project_same_workspace",
+        ),
+        ForeignKeyConstraint(
+            ["workspace_id", "policy_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="project_policy_bundle",
         ),
         CheckConstraint(f"stage IN ({PROJECT_STAGE_VALUES})", name="project_stage"),
         CheckConstraint(f"status IN ({PROJECT_STATUS_VALUES})", name="project_status"),
@@ -228,6 +298,11 @@ class ProjectVersion(Base):
             ["projects.workspace_id", "projects.id"],
             name="project_version_same_workspace",
         ),
+        ForeignKeyConstraint(
+            ["workspace_id", "policy_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="project_version_policy_bundle",
+        ),
         Index("ix_project_versions_project_revision", "project_id", "project_revision"),
     )
 
@@ -247,6 +322,118 @@ class ProjectVersion(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
+
+
+class PolicyImpact(Base):
+    __tablename__ = "policy_impacts"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["workspace_id", "from_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="policy_impact_from_bundle",
+        ),
+        ForeignKeyConstraint(
+            ["workspace_id", "to_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="policy_impact_to_bundle",
+        ),
+        ForeignKeyConstraint(
+            ["workspace_id", "project_id"],
+            ["projects.workspace_id", "projects.id"],
+            name="policy_impact_same_project",
+        ),
+        UniqueConstraint(
+            "project_id",
+            "from_bundle_id",
+            "to_bundle_id",
+            name="uq_policy_impacts_transition",
+        ),
+        CheckConstraint(
+            "status IN ('recorded', 'applied')",
+            name="policy_impact_status",
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True)
+    workspace_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
+    project_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
+    from_bundle_id: Mapped[str | None] = mapped_column(String(64))
+    to_bundle_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    change_source: Mapped[str] = mapped_column(String(300), nullable=False)
+    changed_components: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
+    affected_requirements: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
+    affected_task_ids: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
+    status: Mapped[str] = mapped_column(String(20), nullable=False)
+    created_by_user_id: Mapped[UUID] = mapped_column(
+        PGUUID(as_uuid=True), ForeignKey("users.id"), nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False
+    )
+    applied_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class PolicyMigrationOperation(Base):
+    __tablename__ = "policy_migration_operations"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["workspace_id", "from_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="policy_migration_from_bundle",
+        ),
+        ForeignKeyConstraint(
+            ["workspace_id", "to_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="policy_migration_to_bundle",
+        ),
+        ForeignKeyConstraint(
+            ["workspace_id", "project_id"],
+            ["projects.workspace_id", "projects.id"],
+            name="policy_migration_same_project",
+        ),
+        CheckConstraint(
+            "kind IN ('config', 'database')",
+            name="policy_migration_kind",
+        ),
+        CheckConstraint(
+            "state IN ('dry_run_passed', 'dry_run_failed', 'applying', "
+            "'succeeded', 'failed', 'rolled_back')",
+            name="policy_migration_state",
+        ),
+        CheckConstraint(
+            "expected_project_revision >= 1",
+            name="policy_migration_expected_revision",
+        ),
+        UniqueConstraint(
+            "project_id",
+            "to_bundle_id",
+            "kind",
+            "schema_revision",
+            name="uq_policy_migrations_target",
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True)
+    workspace_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
+    project_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
+    kind: Mapped[str] = mapped_column(String(20), nullable=False)
+    from_bundle_id: Mapped[str | None] = mapped_column(String(64))
+    to_bundle_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    expected_project_revision: Mapped[int] = mapped_column(Integer, nullable=False)
+    schema_revision: Mapped[str | None] = mapped_column(String(64))
+    state: Mapped[str] = mapped_column(String(30), nullable=False)
+    report: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    backup_ref: Mapped[str | None] = mapped_column(String(300))
+    error_code: Mapped[str | None] = mapped_column(String(100))
+    created_by_user_id: Mapped[UUID] = mapped_column(
+        PGUUID(as_uuid=True), ForeignKey("users.id"), nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False
+    )
+    applied_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    rolled_back_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
 class Conversation(Base):
@@ -1838,6 +2025,11 @@ class Task(Base):
             ["projects.workspace_id", "projects.id"],
             name="task_same_workspace",
         ),
+        ForeignKeyConstraint(
+            ["workspace_id", "policy_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="task_policy_bundle",
+        ),
         CheckConstraint(f"state IN ({TASK_STATE_VALUES})", name="task_state"),
         CheckConstraint(
             f"input_validity IN ({INPUT_VALIDITY_VALUES})",
@@ -1859,6 +2051,7 @@ class Task(Base):
     purpose: Mapped[str] = mapped_column(String(200), nullable=False)
     assignee_role: Mapped[str] = mapped_column(String(20), nullable=False)
     role_version: Mapped[str] = mapped_column(String(100), nullable=False)
+    policy_bundle_id: Mapped[str | None] = mapped_column(String(64))
     input_version: Mapped[str] = mapped_column(String(100), nullable=False)
     input_refs: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
     input_validity: Mapped[str] = mapped_column(
@@ -1916,6 +2109,11 @@ class TaskVersion(Base):
             ["tasks.workspace_id", "tasks.project_id", "tasks.id"],
             name="task_version_same_task",
         ),
+        ForeignKeyConstraint(
+            ["workspace_id", "policy_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="task_version_policy_bundle",
+        ),
         CheckConstraint(
             f"input_validity IN ({INPUT_VALIDITY_VALUES})",
             name="task_version_input_validity",
@@ -1936,6 +2134,7 @@ class TaskVersion(Base):
     input_invalidated_reason: Mapped[str | None] = mapped_column(Text)
     input_invalidated_by: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
     role_version: Mapped[str] = mapped_column(String(100), nullable=False)
+    policy_bundle_id: Mapped[str | None] = mapped_column(String(64))
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
@@ -2236,6 +2435,11 @@ class AgentRun(Base):
             ],
             name="agent_run_same_instance",
         ),
+        ForeignKeyConstraint(
+            ["workspace_id", "policy_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="agent_run_policy_bundle_id",
+        ),
         UniqueConstraint("workspace_id", "project_id", "agent_instance_id", "id"),
         CheckConstraint("mode IN ('mock', 'live')", name="agent_run_mode"),
         CheckConstraint(
@@ -2259,6 +2463,7 @@ class AgentRun(Base):
     role_version: Mapped[int] = mapped_column(Integer, nullable=False)
     theory_hash: Mapped[str] = mapped_column(String(64), nullable=False)
     policy_bundle: Mapped[str] = mapped_column(String(100), nullable=False)
+    policy_bundle_id: Mapped[str | None] = mapped_column(String(64))
     input_snapshot: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
     state: Mapped[str] = mapped_column(String(20), nullable=False)
     output_schema: Mapped[str] = mapped_column(String(100), nullable=False)
@@ -2282,6 +2487,11 @@ class SkillRun(Base):
             ["tasks.workspace_id", "tasks.project_id", "tasks.id"],
             name="skill_run_same_task",
         ),
+        ForeignKeyConstraint(
+            ["workspace_id", "policy_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="skill_run_policy_bundle",
+        ),
         CheckConstraint("mode IN ('mock', 'live')", name="skill_run_mode"),
         CheckConstraint(
             "state IN ('pending', 'running', 'succeeded', 'failed', 'denied', 'unavailable')",
@@ -2296,6 +2506,7 @@ class SkillRun(Base):
     task_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
     skill_id: Mapped[str] = mapped_column(String(100), nullable=False)
     skill_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    policy_bundle_id: Mapped[str | None] = mapped_column(String(64))
     run_key: Mapped[str] = mapped_column(String(64), nullable=False)
     mode: Mapped[str] = mapped_column(String(10), nullable=False)
     input_schema: Mapped[str] = mapped_column(String(100), nullable=False)
@@ -3204,6 +3415,11 @@ class Plan(Base):
             name="plan_same_project",
         ),
         ForeignKeyConstraint(
+            ["workspace_id", "policy_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="plan_policy_bundle",
+        ),
+        ForeignKeyConstraint(
             ["workspace_id", "project_id", "source_decision_id"],
             ["decisions.workspace_id", "decisions.project_id", "decisions.id"],
             name="plan_source_same_decision",
@@ -3256,6 +3472,7 @@ class Plan(Base):
     workflow_version: Mapped[int | None] = mapped_column(Integer)
     workflow_sha256: Mapped[str | None] = mapped_column(String(64))
     stage_id: Mapped[str | None] = mapped_column(String(64))
+    policy_bundle_id: Mapped[str | None] = mapped_column(String(64))
     pause_reason: Mapped[str | None] = mapped_column(String(100))
     max_nodes: Mapped[int] = mapped_column(Integer, nullable=False, default=20)
     max_rework_rounds: Mapped[int] = mapped_column(Integer, nullable=False, default=3)

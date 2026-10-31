@@ -71,6 +71,10 @@ from medical_one_person.infrastructure.db.models import (
     OpportunityVersion,
     Plan,
     PlanNode,
+    PolicyBundle,
+    PolicyImpact,
+    PolicyMigrationOperation,
+    PolicyState,
     Project,
     ProjectEvent,
     ProjectVersion,
@@ -545,6 +549,38 @@ class RecoveryService:
                 ).all()
             ],
             "projects": [_model_row(project)],
+            "policy_states": [
+                _model_row(item)
+                for item in session.scalars(
+                    select(PolicyState).where(
+                        PolicyState.workspace_id == project.workspace_id
+                    )
+                ).all()
+            ],
+            "policy_bundles": [
+                _model_row(item)
+                for item in session.scalars(
+                    select(PolicyBundle)
+                    .where(PolicyBundle.workspace_id == project.workspace_id)
+                    .order_by(PolicyBundle.id)
+                ).all()
+            ],
+            "policy_impacts": [
+                _model_row(item)
+                for item in session.scalars(
+                    select(PolicyImpact)
+                    .where(PolicyImpact.project_id == project.id)
+                    .order_by(PolicyImpact.id)
+                ).all()
+            ],
+            "policy_migration_operations": [
+                _model_row(item)
+                for item in session.scalars(
+                    select(PolicyMigrationOperation)
+                    .where(PolicyMigrationOperation.project_id == project.id)
+                    .order_by(PolicyMigrationOperation.id)
+                ).all()
+            ],
             "project_versions": [
                 _model_row(item)
                 for item in session.scalars(

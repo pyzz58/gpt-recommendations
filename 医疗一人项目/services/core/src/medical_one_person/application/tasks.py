@@ -25,6 +25,7 @@ from medical_one_person.infrastructure.db.models import (
     ExternalDeliverable,
     KnowledgeDocumentVersion,
     OutboxMessage,
+    PolicyBundle,
     Project,
     ProjectEvent,
     Task,
@@ -55,6 +56,7 @@ class TaskService:
         mode: str = "mock",
         max_attempts: int = 3,
         dependencies: Sequence[UUID] = (),
+        policy_bundle_id: str | None = None,
     ) -> TaskSnapshot:
         if mode != "mock":
             raise ValueError("W04 only permits mock/free task scheduling")
@@ -97,6 +99,12 @@ class TaskService:
                 actor.workspace_id,
                 for_update=True,
             )
+            bundle_id = policy_bundle_id or project.policy_bundle_id
+            if not bundle_id:
+                raise TaskNotReadyError("Project has no active policy bundle")
+            bundle = session.get(PolicyBundle, bundle_id)
+            if bundle is None or bundle.workspace_id != project.workspace_id:
+                raise TaskNotReadyError("Task policy bundle is unknown")
             input_snapshot, input_snapshot_sha256 = resolve_task_inputs(
                 session,
                 project_id=project.id,
@@ -133,6 +141,7 @@ class TaskService:
                 purpose=purpose,
                 assignee_role=assignee_role,
                 role_version=role_version,
+                policy_bundle_id=bundle.id,
                 input_version=input_version,
                 input_refs=list(input_refs),
                 input_validity=InputValidity.CURRENT.value,
@@ -189,7 +198,11 @@ class TaskService:
         with self._session_factory.begin() as session:
             actor = self._actor(session, actor_user_id)
             self._set_context(session, actor)
-            session.scalar(select(Project).where(Project.id == project_id).with_for_update())
+            project = session.scalar(
+                select(Project).where(Project.id == project_id).with_for_update()
+            )
+            if project is None:
+                raise NotFoundError("Project not found")
             loaded = self._dependency_tasks(
                 session,
                 project_id,
@@ -250,7 +263,11 @@ class TaskService:
         with self._session_factory.begin() as session:
             actor = self._actor(session, actor_user_id)
             self._set_context(session, actor)
-            session.scalar(select(Project).where(Project.id == project_id).with_for_update())
+            project = session.scalar(
+                select(Project).where(Project.id == project_id).with_for_update()
+            )
+            if project is None:
+                raise NotFoundError("Project not found")
             task = session.scalar(
                 select(Task)
                 .where(Task.id == task_id, Task.project_id == project_id)
@@ -446,7 +463,11 @@ class TaskService:
         with self._session_factory.begin() as session:
             actor = self._actor(session, actor_user_id)
             self._set_context(session, actor)
-            session.scalar(select(Project).where(Project.id == project_id).with_for_update())
+            project = session.scalar(
+                select(Project).where(Project.id == project_id).with_for_update()
+            )
+            if project is None:
+                raise NotFoundError("Project not found")
             task = session.scalar(
                 select(Task)
                 .where(Task.id == task_id, Task.project_id == project_id)
@@ -483,6 +504,9 @@ class TaskService:
                 for dependency in dependencies
             )
             task.input_version = input_version
+            if not project.policy_bundle_id:
+                raise TaskNotReadyError("Project has no active policy bundle")
+            task.policy_bundle_id = project.policy_bundle_id
             task.input_refs = list(input_refs)
             task.input_snapshot = snapshot
             task.input_snapshot_sha256 = snapshot_sha256
@@ -619,6 +643,7 @@ class TaskService:
                 input_invalidated_reason=task.input_invalidated_reason,
                 input_invalidated_by=task.input_invalidated_by,
                 role_version=task.role_version,
+                policy_bundle_id=task.policy_bundle_id,
                 created_at=now,
             )
         )
@@ -672,6 +697,7 @@ def _task_snapshot(task: Task) -> TaskSnapshot:
         mode=task.mode,
         input_validity=InputValidity(task.input_validity),
         input_snapshot_sha256=task.input_snapshot_sha256,
+        policy_bundle_id=task.policy_bundle_id,
     )
 
 

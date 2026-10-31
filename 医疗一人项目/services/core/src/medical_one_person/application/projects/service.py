@@ -17,6 +17,9 @@ from medical_one_person.application.errors import (
     NotFoundError,
     RevisionConflictError,
 )
+from medical_one_person.application.policy_bundles import (
+    ensure_active_bundle_in_session,
+)
 from medical_one_person.domain.projects import ProjectSnapshot, ProjectStage, ProjectStatus
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.models import (
@@ -38,6 +41,7 @@ class ProjectReceiptPayload(BaseModel):
     revision: int
     created_at: datetime
     updated_at: datetime
+    policy_bundle_id: str | None = None
 
 
 class ProjectService:
@@ -100,6 +104,12 @@ class ProjectService:
                 return self._replay_receipt(receipt, request_hash)
 
             now = datetime.now(UTC)
+            policy_bundle_id = ensure_active_bundle_in_session(
+                session,
+                workspace_id=actor.workspace_id,
+                actor_user_id=actor.id,
+                now=now,
+            )
             project = Project(
                 id=uuid4(),
                 workspace_id=actor.workspace_id,
@@ -107,6 +117,7 @@ class ProjectService:
                 scope=scope,
                 stage=ProjectStage.DRAFT.value,
                 status=ProjectStatus.DRAFT.value,
+                policy_bundle_id=policy_bundle_id,
                 revision=1,
                 created_by_user_id=actor.id,
                 created_at=now,
@@ -251,6 +262,7 @@ class ProjectService:
             revision=payload.revision,
             created_at=payload.created_at,
             updated_at=payload.updated_at,
+            policy_bundle_id=payload.policy_bundle_id,
         )
 
     @staticmethod
@@ -340,6 +352,7 @@ def _snapshot(project: Project) -> ProjectSnapshot:
         revision=project.revision,
         created_at=project.created_at,
         updated_at=project.updated_at,
+        policy_bundle_id=project.policy_bundle_id,
     )
 
 
@@ -354,4 +367,5 @@ def _receipt_payload(project: Project) -> dict[str, object]:
         revision=project.revision,
         created_at=project.created_at,
         updated_at=project.updated_at,
+        policy_bundle_id=project.policy_bundle_id,
     ).model_dump(mode="json")

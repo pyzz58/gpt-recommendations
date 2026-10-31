@@ -15,6 +15,8 @@ class AgentContext:
     goal: str
     input_refs: tuple[str, ...]
     project_scope: str
+    policy_bundle_id: str
+    current_policy_restrictions: tuple[str, ...] = ()
     authorized_collaboration: tuple[str, ...] = ()
     review_feedback: tuple[str, ...] = ()
     previous_output: dict[str, object] | None = None
@@ -38,6 +40,9 @@ class AgentContext:
             "input_refs": "\n".join(self.input_refs),
             "authorized_collaboration": "\n".join(self.authorized_collaboration),
             "review_feedback": "\n".join(self.review_feedback),
+            "current_policy_restrictions": "\n".join(
+                self.current_policy_restrictions
+            ),
             "previous_output": json.dumps(
                 self.previous_output,
                 ensure_ascii=False,
@@ -59,6 +64,10 @@ class AgentContext:
             "project_scope": self.project_scope,
             "authorized_collaboration": list(self.authorized_collaboration),
             "review_feedback": list(self.review_feedback),
+            "policy_bundle_id": self.policy_bundle_id,
+            "current_policy_restrictions": list(
+                self.current_policy_restrictions
+            ),
             "previous_output": self.previous_output,
             "memory_scope": self.role.memory_scope,
         }

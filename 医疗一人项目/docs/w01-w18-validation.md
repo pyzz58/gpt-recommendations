@@ -1,4 +1,4 @@
-# W01—W18 本地验收记录摘要
+# W01—W19 本地验收记录摘要
 
 被测源码：最终PR修复提交（由验收记录绑定）
 
@@ -8,11 +8,11 @@
 
 | 命令/检查 | 工作目录 | 模式 | 退出码 | 结果 |
 | --- | --- | --- | --- | --- |
-| Alembic升级到head→降到`b2e7d4a9c310`→再升级→current | `services/core` | 真实PostgreSQL 17.6 | 0 | head `c8f1a6d3e720` |
-| PostgreSQL版本与RLS计数 | 项目根目录 | 真实PostgreSQL 17.6 | 0 | `server_version=17.6`，79条RLS策略 |
-| `uv run --frozen pytest -ra --junitxml=...` | 项目根目录 | mock + 真实PostgreSQL/API，Office渲染 | 0 | 112 passed，0 skipped；1个Starlette TestClient弃用警告 |
+| Alembic升级到head→降到`c8f1a6d3e720`→再升级→current | `services/core` | 真实PostgreSQL 17.6 | 0 | head `d9a7e3f1b420` |
+| PostgreSQL版本与RLS计数 | 项目根目录 | 真实PostgreSQL 17.6 | 0 | `server_version=17.6`，83条RLS策略 |
+| `uv run --frozen pytest -ra --junitxml=...` | 项目根目录 | mock + 真实PostgreSQL/API，Office渲染 | 0 | 118 passed，0 skipped；1个Starlette TestClient弃用警告 |
 | `uv run --frozen ruff check .` | `services/core` | 静态检查 | 0 | passed |
-| `uv run --frozen mypy services/core/src` | 项目根目录 | 严格类型检查 | 0 | 112 source files，no issues |
+| `uv run --frozen mypy services/core/src` | 项目根目录 | 严格类型检查 | 0 | 115 source files，no issues |
 | `pnpm --dir apps/web lint` | 项目根目录 | Next.js/ESLint | 0 | passed；本地Node 24.22.1，CI锁定22.23.4 |
 | `pnpm --dir apps/web typecheck` | 项目根目录 | TypeScript | 0 | passed |
 | `pnpm --dir apps/web build` | 项目根目录 | Next.js生产构建 | 0 | 15个路由成功，包含`/recovery` |
@@ -36,6 +36,8 @@
 - W17 A25/A26确定性规则与阻断，未关联目标按直接输入识别，关联上游阻断其
   依赖下游，无关目标不被`None`误匹配；
 - W18回收站、索引重建、加密备份、错误口令/篡改、文件校验和独立PostgreSQL回放；
+- W19不可变策略bundle、固定运行依据、精确影响传播、迁移dry-run/幂等应用/回滚；
+- C01旧worker在新worker成功后不能重置run，成功output/输入快照/结束时间保持不变；
 - W14实际Office/PDF文件、公式重算和页面渲染；
 - 前端生产构建与路由包含W17/W18页面。
 

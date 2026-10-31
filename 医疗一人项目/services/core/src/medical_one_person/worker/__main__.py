@@ -14,6 +14,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, sessionmaker
 
 from medical_one_person.agents.config import load_role_configs
+from medical_one_person.application.policy_bundles import PolicyBundleService
 from medical_one_person.application.worker_loop import WorkerLoop
 from medical_one_person.config import get_settings
 from medical_one_person.infrastructure.db.engine import create_database_engine
@@ -43,6 +44,10 @@ async def run(*, workspace_id: UUID | None, poll_seconds: float) -> None:
                 "Set --workspace-id when the database does not contain exactly one workspace"
             )
         workspace_id = workspace_ids[0]
+    PolicyBundleService(
+        session_factory,
+        settings=settings,
+    ).require_runtime_ready(workspace_id=workspace_id)
     theory_hash = hashlib.sha256(settings.theory_path.read_bytes()).hexdigest()
     worker_id = f"{socket.gethostname()}:{os.getpid()}"
     loop_runner = WorkerLoop(

@@ -78,6 +78,10 @@ def session_factory(app_database: Engine, database: Engine) -> Iterator[sessionm
             text(
                 """
                 TRUNCATE TABLE
+                  policy_migration_operations,
+                  policy_impacts,
+                  policy_states,
+                  policy_bundles,
                   restore_checks,
                   backup_snapshots,
                   trash_entries,

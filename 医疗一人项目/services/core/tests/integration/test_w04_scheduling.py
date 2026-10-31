@@ -17,7 +17,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session, sessionmaker
 
 from medical_one_person.agents.config import load_role_configs
-from medical_one_person.agents.runner import AgentRunner
+from medical_one_person.agents.runner import AgentRunner, _run_key
 from medical_one_person.application.budgets import BudgetService
 from medical_one_person.application.errors import (
     BudgetExceededError,
@@ -790,6 +790,25 @@ def test_late_worker_cannot_persist_success_after_fence_takeover(
     queue = JobQueue(session_factory)
     stale = queue.claim(workspace_id=identity.workspace_id, worker_id="worker-stale")
     assert stale is not None
+    provider = _CountingProvider()
+    runner = AgentRunner(
+        session_factory,
+        provider,
+        load_role_configs(PROJECT_ROOT / "config" / "agents" / "roles.yaml"),
+        theory_hash="3" * 64,
+        job_queue=queue,
+    )
+    task_view, role, instance_id, context = runner._prepare_context(stale)
+    run_key = _run_key(task_view, role)
+    stale_run_id, cached = runner._start_run(
+        claim=stale,
+        task=task_view,
+        role=role,
+        instance_id=instance_id,
+        context=context,
+        run_key=run_key,
+    )
+    assert cached is None
     with session_factory.begin() as session:
         set_rls_context(session, workspace_id=identity.workspace_id, user_id=None)
         job = session.get(Job, stale.job_id)
@@ -799,37 +818,48 @@ def test_late_worker_cannot_persist_success_after_fence_takeover(
     assert current is not None
     assert current.fence_token == stale.fence_token + 1
 
-    provider = _CountingProvider()
-    runner = AgentRunner(
-        session_factory,
-        provider,
-        load_role_configs(PROJECT_ROOT / "config" / "agents" / "roles.yaml"),
-        theory_hash="3" * 64,
-        job_queue=queue,
-    )
-    with pytest.raises(LeaseConflictError, match="owned by another worker"):
-        runner.run_claim(stale)
-    with session_factory.begin() as session:
-        set_rls_context(
-            session,
-            workspace_id=identity.workspace_id,
-            user_id=identity.owner_user_id,
-        )
-        run = session.scalar(select(AgentRun).where(AgentRun.task_id == task.id))
-    assert run is not None
-    assert run.state == "running"
-    assert run.output is None
-
     runner.run_claim(current)
-    assert provider.calls == 2
+    assert provider.calls == 1
     with session_factory.begin() as session:
         set_rls_context(
             session,
             workspace_id=identity.workspace_id,
             user_id=identity.owner_user_id,
         )
-        run = session.scalar(select(AgentRun).where(AgentRun.task_id == task.id))
-    assert run is not None and run.state == "succeeded"
+        completed = session.get(AgentRun, stale_run_id)
+        assert completed is not None
+        success_snapshot = {
+            "state": completed.state,
+            "output": completed.output,
+            "input_snapshot": completed.input_snapshot,
+            "started_at": completed.started_at,
+            "ended_at": completed.ended_at,
+        }
+    assert success_snapshot["state"] == "succeeded"
+    assert success_snapshot["output"] is not None
+
+    with pytest.raises(LeaseConflictError, match="owned by another worker"):
+        runner._start_run(
+            claim=stale,
+            task=task_view,
+            role=role,
+            instance_id=instance_id,
+            context=context,
+            run_key=run_key,
+        )
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        unchanged = session.get(AgentRun, stale_run_id)
+        assert unchanged is not None
+        assert unchanged.state == success_snapshot["state"]
+        assert unchanged.output == success_snapshot["output"]
+        assert unchanged.input_snapshot == success_snapshot["input_snapshot"]
+        assert unchanged.started_at == success_snapshot["started_at"]
+        assert unchanged.ended_at == success_snapshot["ended_at"]
 
 
 def test_worker_cli_discovers_workspace_and_exits_cleanly(

@@ -1919,6 +1919,304 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/policy": {
+      "get": {
+        "tags": [
+          "policy"
+        ],
+        "summary": "Project Policy",
+        "operationId": "project_policy_api_v1_projects__project_id__policy_get",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyProjectView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/policy/publish": {
+      "post": {
+        "tags": [
+          "policy"
+        ],
+        "summary": "Publish Policy Bundle",
+        "operationId": "publish_policy_bundle_api_v1_projects__project_id__policy_publish_post",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyBundleView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/policy/activate": {
+      "post": {
+        "tags": [
+          "policy"
+        ],
+        "summary": "Activate Policy Bundle",
+        "operationId": "activate_policy_bundle_api_v1_projects__project_id__policy_activate_post",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivatePolicyBundleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyProjectView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/policy/migrations/dry-run": {
+      "post": {
+        "tags": [
+          "policy"
+        ],
+        "summary": "Dry Run Policy Migration",
+        "operationId": "dry_run_policy_migration_api_v1_projects__project_id__policy_migrations_dry_run_post",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MigrationDryRunRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyMigrationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/policy/migrations/{operation_id}/apply": {
+      "post": {
+        "tags": [
+          "policy"
+        ],
+        "summary": "Apply Policy Migration",
+        "operationId": "apply_policy_migration_api_v1_projects__project_id__policy_migrations__operation_id__apply_post",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "operation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Operation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyMigrationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/policy/migrations/{operation_id}/rollback": {
+      "post": {
+        "tags": [
+          "policy"
+        ],
+        "summary": "Rollback Policy Migration",
+        "operationId": "rollback_policy_migration_api_v1_projects__project_id__policy_migrations__operation_id__rollback_post",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "operation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Operation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyMigrationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/workflows": {
       "get": {
         "tags": [
@@ -5465,6 +5763,26 @@
         ],
         "title": "ActionRequired"
       },
+      "ActivatePolicyBundleRequest": {
+        "properties": {
+          "bundle_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Bundle Id"
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Revision"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bundle_id",
+          "expected_revision"
+        ],
+        "title": "ActivatePolicyBundleRequest"
+      },
       "AgentRunSummary": {
         "properties": {
           "id": {
@@ -5487,6 +5805,17 @@
           "model_id": {
             "type": "string",
             "title": "Model Id"
+          },
+          "policy_bundle_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Bundle Id"
           },
           "created_at": {
             "type": "string",
@@ -5513,6 +5842,7 @@
           "mode",
           "provider_id",
           "model_id",
+          "policy_bundle_id",
           "created_at",
           "ended_at"
         ],
@@ -10543,6 +10873,54 @@
         ],
         "title": "MechanismStep"
       },
+      "MigrationDryRunRequest": {
+        "properties": {
+          "target_bundle_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Target Bundle Id"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/PolicyMigrationKind"
+          },
+          "schema_revision": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schema Revision"
+          },
+          "backup_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Backup Ref"
+          },
+          "expected_project_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Project Revision"
+          }
+        },
+        "type": "object",
+        "required": [
+          "target_bundle_id",
+          "kind",
+          "expected_project_revision"
+        ],
+        "title": "MigrationDryRunRequest"
+      },
       "MockSmokeRequest": {
         "properties": {
           "input": {
@@ -11781,6 +12159,344 @@
         ],
         "title": "PlanView"
       },
+      "PolicyBundleState": {
+        "type": "string",
+        "enum": [
+          "published",
+          "retired"
+        ],
+        "title": "PolicyBundleState"
+      },
+      "PolicyBundleView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "workspace_id": {
+            "type": "string",
+            "title": "Workspace Id"
+          },
+          "version_label": {
+            "type": "string",
+            "title": "Version Label"
+          },
+          "content_sha256": {
+            "type": "string",
+            "title": "Content Sha256"
+          },
+          "theory_version": {
+            "type": "string",
+            "title": "Theory Version"
+          },
+          "theory_sha256": {
+            "type": "string",
+            "title": "Theory Sha256"
+          },
+          "component_sha256": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Component Sha256"
+          },
+          "state": {
+            "$ref": "#/components/schemas/PolicyBundleState"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "workspace_id",
+          "version_label",
+          "content_sha256",
+          "theory_version",
+          "theory_sha256",
+          "component_sha256",
+          "state",
+          "created_at"
+        ],
+        "title": "PolicyBundleView"
+      },
+      "PolicyImpactStatus": {
+        "type": "string",
+        "enum": [
+          "recorded",
+          "applied"
+        ],
+        "title": "PolicyImpactStatus"
+      },
+      "PolicyImpactView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "from_bundle_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From Bundle Id"
+          },
+          "to_bundle_id": {
+            "type": "string",
+            "title": "To Bundle Id"
+          },
+          "changed_components": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Changed Components"
+          },
+          "affected_requirements": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Affected Requirements"
+          },
+          "affected_task_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Affected Task Ids"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PolicyImpactStatus"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "project_id",
+          "from_bundle_id",
+          "to_bundle_id",
+          "changed_components",
+          "affected_requirements",
+          "affected_task_ids",
+          "status",
+          "created_at"
+        ],
+        "title": "PolicyImpactView"
+      },
+      "PolicyMigrationKind": {
+        "type": "string",
+        "enum": [
+          "config",
+          "database"
+        ],
+        "title": "PolicyMigrationKind"
+      },
+      "PolicyMigrationState": {
+        "type": "string",
+        "enum": [
+          "dry_run_passed",
+          "dry_run_failed",
+          "applying",
+          "succeeded",
+          "failed",
+          "rolled_back"
+        ],
+        "title": "PolicyMigrationState"
+      },
+      "PolicyMigrationView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/PolicyMigrationKind"
+          },
+          "from_bundle_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From Bundle Id"
+          },
+          "to_bundle_id": {
+            "type": "string",
+            "title": "To Bundle Id"
+          },
+          "expected_project_revision": {
+            "type": "integer",
+            "title": "Expected Project Revision"
+          },
+          "schema_revision": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schema Revision"
+          },
+          "state": {
+            "$ref": "#/components/schemas/PolicyMigrationState"
+          },
+          "report": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Report"
+          },
+          "backup_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Backup Ref"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "project_id",
+          "kind",
+          "from_bundle_id",
+          "to_bundle_id",
+          "expected_project_revision",
+          "schema_revision",
+          "state",
+          "report",
+          "backup_ref",
+          "error_code",
+          "created_at",
+          "finished_at"
+        ],
+        "title": "PolicyMigrationView"
+      },
+      "PolicyProjectView": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_revision": {
+            "type": "integer",
+            "title": "Project Revision"
+          },
+          "active_bundle": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PolicyBundleView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "project_bundle": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PolicyBundleView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "impacts": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyImpactView"
+            },
+            "type": "array",
+            "title": "Impacts"
+          },
+          "migrations": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyMigrationView"
+            },
+            "type": "array",
+            "title": "Migrations"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "project_id",
+          "project_revision",
+          "active_bundle",
+          "project_bundle",
+          "impacts",
+          "migrations",
+          "limitations"
+        ],
+        "title": "PolicyProjectView"
+      },
       "ProbabilityEstimate": {
         "properties": {
           "event": {
@@ -12583,6 +13299,17 @@
             "type": "string",
             "format": "date-time",
             "title": "Updated At"
+          },
+          "policy_bundle_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Bundle Id"
           }
         },
         "type": "object",
@@ -13926,6 +14653,17 @@
             ],
             "title": "Input Snapshot Sha256"
           },
+          "policy_bundle_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Bundle Id"
+          },
           "input_invalidated_at": {
             "anyOf": [
               {
@@ -13990,6 +14728,7 @@
           "input_refs",
           "input_validity",
           "input_snapshot_sha256",
+          "policy_bundle_id",
           "input_invalidated_at",
           "input_invalidated_reason",
           "deliverable_schema",

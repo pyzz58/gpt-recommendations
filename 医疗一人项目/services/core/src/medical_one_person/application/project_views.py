@@ -109,6 +109,7 @@ class TaskView(BaseModel):
     input_refs: list[str]
     input_validity: str
     input_snapshot_sha256: str | None
+    policy_bundle_id: str | None
     input_invalidated_at: datetime | None
     input_invalidated_reason: str | None
     deliverable_schema: str
@@ -124,6 +125,7 @@ class AgentRunSummary(BaseModel):
     mode: str
     provider_id: str
     model_id: str
+    policy_bundle_id: str | None
     created_at: datetime
     ended_at: datetime | None
 
@@ -382,6 +384,7 @@ class WorkspaceReader:
                                 mode=run_row.mode,
                                 provider_id=run_row.provider_id,
                                 model_id=run_row.model_id,
+                                policy_bundle_id=run_row.policy_bundle_id,
                                 created_at=run_row.created_at,
                                 ended_at=run_row.ended_at,
                             )
@@ -492,6 +495,7 @@ def _task_view(task: Task, dependencies: list[UUID]) -> TaskView:
         input_refs=task.input_refs,
         input_validity=task.input_validity,
         input_snapshot_sha256=task.input_snapshot_sha256,
+        policy_bundle_id=task.policy_bundle_id,
         input_invalidated_at=task.input_invalidated_at,
         input_invalidated_reason=task.input_invalidated_reason,
         deliverable_schema=task.deliverable_schema,

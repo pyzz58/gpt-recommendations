@@ -53,6 +53,7 @@ class TaskSnapshot:
     mode: str
     input_validity: InputValidity
     input_snapshot_sha256: str | None
+    policy_bundle_id: str | None = None
 
 
 @dataclass(frozen=True)

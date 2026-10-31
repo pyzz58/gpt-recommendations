@@ -179,6 +179,8 @@ class PlanService:
                 selected_track=_decision_track(session, decision),
                 workflows=self._workflows,
             )
+            if not project.policy_bundle_id:
+                raise PlanStateError("Project has no active policy bundle")
             now = datetime.now(UTC)
             plan_version = (
                 session.scalar(
@@ -203,6 +205,7 @@ class PlanService:
                 workflow_version=spec.workflow_version,
                 workflow_sha256=workflow_sha256,
                 stage_id=spec.stage_id,
+                policy_bundle_id=project.policy_bundle_id,
                 pause_reason=None,
                 max_nodes=20,
                 max_rework_rounds=spec.max_rework_rounds,
@@ -249,6 +252,7 @@ class PlanService:
                     purpose=node_spec.purpose,
                     assignee_role=node_spec.assignee_role,
                     role_version=node_spec.role_version,
+                    policy_bundle_id=plan.policy_bundle_id,
                     input_version=node_spec.input_version,
                     input_refs=input_refs,
                     input_validity="current",
@@ -1397,6 +1401,7 @@ def _append_task_version(session: Session, task: Task, now: datetime) -> None:
             input_invalidated_reason=task.input_invalidated_reason,
             input_invalidated_by=task.input_invalidated_by,
             role_version=task.role_version,
+            policy_bundle_id=task.policy_bundle_id,
             created_at=now,
         )
     )

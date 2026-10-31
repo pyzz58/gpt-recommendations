@@ -20,6 +20,7 @@ from medical_one_person.api.external import build_external_router
 from medical_one_person.api.knowledge import build_knowledge_router
 from medical_one_person.api.mail import build_mail_router
 from medical_one_person.api.plans import build_plan_router
+from medical_one_person.api.policies import build_policy_router
 from medical_one_person.api.recovery import build_recovery_router
 from medical_one_person.api.session import (
     build_principal_dependency,
@@ -245,6 +246,13 @@ def create_app(
             roles,
             workflows,
             theory_hash,
+            current_principal,
+        )
+    )
+    app.include_router(
+        build_policy_router(
+            session_factory,
+            settings,
             current_principal,
         )
     )

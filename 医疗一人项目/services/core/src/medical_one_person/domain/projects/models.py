@@ -41,3 +41,4 @@ class ProjectSnapshot:
     revision: int
     created_at: datetime
     updated_at: datetime
+    policy_bundle_id: str | None = None

@@ -13,6 +13,9 @@ from medical_one_person.infrastructure.db.models import (
     BudgetLedgerEntry,
     Citation,
     KnowledgeChunk,
+    PolicyBundle,
+    PolicyState,
+    Task,
     TaskVersion,
 )
 
@@ -62,6 +65,30 @@ def verify_restored_relationships(session: Session) -> None:
     )
     if ledger_mismatch:
         raise ValueError("Restored budget ledger contains missing keys")
+    orphan_task_bundles = session.scalar(
+        select(func.count())
+        .select_from(Task)
+        .outerjoin(
+            PolicyBundle,
+            (PolicyBundle.workspace_id == Task.workspace_id)
+            & (PolicyBundle.id == Task.policy_bundle_id),
+        )
+        .where(Task.policy_bundle_id.is_not(None), PolicyBundle.id.is_(None))
+    )
+    if orphan_task_bundles:
+        raise ValueError("Restored tasks reference missing policy bundles")
+    orphan_policy_states = session.scalar(
+        select(func.count())
+        .select_from(PolicyState)
+        .outerjoin(
+            PolicyBundle,
+            (PolicyBundle.workspace_id == PolicyState.workspace_id)
+            & (PolicyBundle.id == PolicyState.active_bundle_id),
+        )
+        .where(PolicyBundle.id.is_(None))
+    )
+    if orphan_policy_states:
+        raise ValueError("Restored policy states reference missing active bundles")
 
 
 def _convert_row(table: Any, row: dict[str, Any]) -> dict[str, Any]:

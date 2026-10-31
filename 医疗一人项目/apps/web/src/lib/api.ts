@@ -51,6 +51,7 @@ export type ProjectSnapshot = {
   revision: number;
   created_at: string;
   updated_at: string;
+  policy_bundle_id?: string | null;
 };
 
 export type ProjectListItem = {
@@ -105,6 +106,62 @@ export type ProjectOverview = {
   recent_events: ProjectEvent[];
 };
 
+export type PolicyBundleView = {
+  id: string;
+  workspace_id: string;
+  version_label: string;
+  content_sha256: string;
+  theory_version: string;
+  theory_sha256: string;
+  component_sha256: Record<string, string>;
+  state: "published" | "retired";
+  created_at: string;
+};
+
+export type PolicyImpactView = {
+  id: string;
+  project_id: string;
+  from_bundle_id: string | null;
+  to_bundle_id: string;
+  changed_components: string[];
+  affected_requirements: string[];
+  affected_task_ids: string[];
+  status: "recorded" | "applied";
+  created_at: string;
+};
+
+export type PolicyMigrationView = {
+  id: string;
+  project_id: string;
+  kind: "config" | "database";
+  from_bundle_id: string | null;
+  to_bundle_id: string;
+  expected_project_revision: number;
+  schema_revision: string | null;
+  state:
+    | "dry_run_passed"
+    | "dry_run_failed"
+    | "applying"
+    | "succeeded"
+    | "failed"
+    | "rolled_back";
+  report: Record<string, unknown>;
+  backup_ref: string | null;
+  error_code: string | null;
+  created_at: string;
+  finished_at: string | null;
+};
+
+export type ProjectPolicyView = {
+  project_id: string;
+  project_revision: number;
+  active_bundle: PolicyBundleView | null;
+  project_bundle: PolicyBundleView | null;
+  impacts: PolicyImpactView[];
+  migrations: PolicyMigrationView[];
+  limitations: string[];
+};
+
 export type TaskView = {
   id: string;
   task_type: string;
@@ -118,6 +175,7 @@ export type TaskView = {
   input_refs: string[];
   input_validity: "current" | "stale" | "under_review";
   input_snapshot_sha256: string | null;
+  policy_bundle_id: string | null;
   input_invalidated_at: string | null;
   input_invalidated_reason: string | null;
   deliverable_schema: string;
@@ -133,6 +191,7 @@ export type AgentRunSummary = {
   mode: string;
   provider_id: string;
   model_id: string;
+  policy_bundle_id: string | null;
   created_at: string;
   ended_at: string | null;
 };
@@ -1284,6 +1343,15 @@ export function fetchOverview(
   signal?: AbortSignal,
 ): Promise<ProjectOverview> {
   return request<ProjectOverview>(`/api/v1/projects/${projectId}/overview`, {
+    signal,
+  });
+}
+
+export function fetchProjectPolicy(
+  projectId: string,
+  signal?: AbortSignal,
+): Promise<ProjectPolicyView> {
+  return request<ProjectPolicyView>(`/api/v1/projects/${projectId}/policy`, {
     signal,
   });
 }

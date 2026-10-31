@@ -4,8 +4,12 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-import { fetchOverview, subscribeProjectEvents } from "@/lib/api";
-import type { ProjectOverview } from "@/lib/api";
+import {
+  fetchOverview,
+  fetchProjectPolicy,
+  subscribeProjectEvents,
+} from "@/lib/api";
+import type { ProjectOverview, ProjectPolicyView } from "@/lib/api";
 
 import {
   EmptyState,
@@ -34,6 +38,7 @@ export default function OverviewPage() {
   const params = useParams<{ id: string }>();
   const projectId = params.id;
   const [overview, setOverview] = useState<ProjectOverview | null>(null);
+  const [policy, setPolicy] = useState<ProjectPolicyView | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +46,12 @@ export default function OverviewPage() {
     setLoading(true);
     setError("");
     try {
-      setOverview(await fetchOverview(projectId, signal));
+      const [nextOverview, nextPolicy] = await Promise.all([
+        fetchOverview(projectId, signal),
+        fetchProjectPolicy(projectId, signal),
+      ]);
+      setOverview(nextOverview);
+      setPolicy(nextPolicy);
     } catch (cause) {
       if (!signal?.aborted) {
         setError(cause instanceof Error ? cause.message : "无法读取项目概览");
@@ -113,6 +123,46 @@ export default function OverviewPage() {
         <Metric label="项目资料" value={overview.counts.documents} note="当前有效版本" />
         <Metric label="候选方向" value={overview.counts.opportunities} note="保留未知与反证" />
         <Metric label="活跃岗位" value={overview.counts.active_agents} note="实际Agent实例" />
+      </section>
+
+      <section className="surface">
+        <SectionHeader
+          eyebrow="POLICY BASELINE"
+          title="运行依据与变更范围"
+          aside={
+            policy?.project_bundle ? (
+              <StatusPill value={policy.project_bundle.state} />
+            ) : undefined
+          }
+        />
+        {policy?.project_bundle ? (
+          <div className="directionCard">
+            <span className="trackLabel">项目固定基线</span>
+            <h3>{policy.project_bundle.version_label}</h3>
+            <p>
+              项目 revision {policy.project_revision} · bundle{" "}
+              {policy.project_bundle.id.slice(0, 12)}… · 思想{" "}
+              {policy.project_bundle.theory_version}
+            </p>
+            {policy.active_bundle &&
+            policy.active_bundle.id !== policy.project_bundle.id ? (
+              <p>
+                工作区已有新 bundle；项目升级需通过影响检查和迁移操作，当前任务
+                不会热替换。
+              </p>
+            ) : (
+              <p>项目与工作区当前 bundle 一致。</p>
+            )}
+            <p className="mutedText">
+              最近影响记录 {policy.impacts.length} 项，迁移操作{" "}
+              {policy.migrations.length} 项。固定配置只说明运行依据，不证明科学结论。
+            </p>
+          </div>
+        ) : (
+          <EmptyState title="尚无策略基线">
+            <p>未绑定 bundle 的项目不能启动新 Agent 任务。</p>
+          </EmptyState>
+        )}
       </section>
 
       <div className="splitLayout">

@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from medical_one_person.domain.policies import AccessAction, SubjectContext
 from medical_one_person.domain.skills import SkillState
 from medical_one_person.infrastructure.db.context import set_rls_context
-from medical_one_person.infrastructure.db.models import SkillRun, Task
+from medical_one_person.infrastructure.db.models import PolicyBundle, SkillRun, Task
 from medical_one_person.infrastructure.skills.registry import (
     RegisteredSkill,
     SkillRegistry,
@@ -86,8 +86,12 @@ class SkillRunner:
         if len(input_bytes) > definition.resource_limits.max_input_bytes:
             raise ValueError("Skill input exceeds configured size limit")
         input_hash = hashlib.sha256(input_bytes).hexdigest()
+        bundle = self._policy_bundle_for_task(subject, task_id)
         run_key = hashlib.sha256(
-            f"{subject.project_id}:{task_id}:{skill_id}:{definition.version}:{input_hash}".encode()
+            (
+                f"{subject.project_id}:{task_id}:{skill_id}:"
+                f"{definition.version}:{bundle.id}:{input_hash}"
+            ).encode()
         ).hexdigest()
 
         existing = self._existing_run(subject, task_id, run_key, registered)
@@ -102,6 +106,7 @@ class SkillRunner:
             run_key=run_key,
             input_hash=input_hash,
             existing=existing,
+            bundle=bundle,
         )
         if registered.state != SkillState.READY:
             self._finish_run(
@@ -246,6 +251,7 @@ class SkillRunner:
         run_key: str,
         input_hash: str,
         existing: ExistingSkillRun | None,
+        bundle: PolicyBundle,
     ) -> UUID:
         now = datetime.now(UTC)
         with self._session_factory.begin() as session:
@@ -257,6 +263,23 @@ class SkillRunner:
             task = session.get(Task, task_id)
             if task is None or task.project_id != subject.project_id:
                 raise SkillUnavailableError("Task not found in project")
+            if not task.policy_bundle_id:
+                raise SkillUnavailableError("Task has no fixed policy bundle")
+            fixed_skill = next(
+                (
+                    item
+                    for item in bundle.snapshot.get("components", {}).get("skills", [])
+                    if isinstance(item, dict)
+                    and item.get("skill_id") == registered.definition.skill_id
+                ),
+                None,
+            )
+            if fixed_skill is None or int(fixed_skill.get("version", 0)) != (
+                registered.definition.version
+            ):
+                raise SkillUnavailableError(
+                    "Current skill implementation does not match the fixed policy bundle"
+                )
             if existing is None:
                 run = SkillRun(
                     id=uuid4(),
@@ -265,6 +288,7 @@ class SkillRunner:
                     task_id=task.id,
                     skill_id=registered.definition.skill_id,
                     skill_version=registered.definition.version,
+                    policy_bundle_id=bundle.id,
                     run_key=run_key,
                     mode="mock",
                     input_schema=registered.definition.input_schema,
@@ -286,6 +310,27 @@ class SkillRunner:
             persisted.started_at = now
             persisted.ended_at = None
             return persisted.id
+
+    def _policy_bundle_for_task(
+        self,
+        subject: SubjectContext,
+        task_id: UUID,
+    ) -> PolicyBundle:
+        with self._session_factory.begin() as session:
+            set_rls_context(
+                session,
+                workspace_id=subject.workspace_id,
+                user_id=subject.user_id,
+            )
+            task = session.get(Task, task_id)
+            if task is None or task.project_id != subject.project_id:
+                raise SkillUnavailableError("Task not found in project")
+            if not task.policy_bundle_id:
+                raise SkillUnavailableError("Task has no fixed policy bundle")
+            bundle = session.get(PolicyBundle, task.policy_bundle_id)
+            if bundle is None or bundle.workspace_id != subject.workspace_id:
+                raise SkillUnavailableError("Task policy bundle is unavailable")
+            return bundle
 
     def _finish_run(
         self,

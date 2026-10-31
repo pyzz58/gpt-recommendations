@@ -419,6 +419,7 @@ def _transition_task(
             input_invalidated_reason=task.input_invalidated_reason,
             input_invalidated_by=task.input_invalidated_by,
             role_version=task.role_version,
+            policy_bundle_id=task.policy_bundle_id,
             created_at=now,
         )
     )

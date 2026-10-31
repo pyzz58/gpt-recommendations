@@ -27,6 +27,7 @@ from medical_one_person.infrastructure.db.models import (
     AgentInstance,
     AgentRun,
     Job,
+    PolicyBundle,
     Project,
     Task,
     TaskReview,
@@ -48,6 +49,8 @@ class TaskExecutionView:
     purpose: str
     revision: int
     input_snapshot_sha256: str
+    policy_bundle_id: str
+    policy_theory_hash: str
     review_id: UUID | None
     review_feedback: tuple[str, ...]
     previous_output: dict[str, Any] | None
@@ -92,15 +95,18 @@ class AgentRunner:
             self._finish_delivery(claim, task.id, delivery)
             return delivery
 
-        run = self._start_run(
+        run, cached_delivery = self._start_run(
             claim=claim,
             task=task,
             role=role,
             instance_id=instance_id,
             context=context,
             run_key=run_key,
-            existing=existing,
         )
+        if cached_delivery is not None:
+            self._validate_delivery(cached_delivery, task, role)
+            self._finish_delivery(claim, task.id, cached_delivery)
+            return cached_delivery
         request = StructuredGenerationRequest(
             role_id=role.role_id,
             role_version=role.version,
@@ -179,11 +185,49 @@ class AgentRunner:
             )
             if task is None:
                 raise AgentConfigurationError("Task not found for job")
-            role = self._roles.get(task.assignee_role)
-            if role is None:
-                raise AgentConfigurationError("Task role is not configured")
+            if not task.policy_bundle_id:
+                raise AgentConfigurationError("Task has no policy bundle")
+            bundle = session.get(PolicyBundle, task.policy_bundle_id)
+            if bundle is None or bundle.workspace_id != task.workspace_id:
+                raise AgentConfigurationError("Task policy bundle is unavailable")
+            role_snapshot = next(
+                (
+                    item
+                    for item in bundle.snapshot.get("components", {}).get("agents", [])
+                    if isinstance(item, dict)
+                    and item.get("role_id") == task.assignee_role
+                ),
+                None,
+            )
+            if role_snapshot is None:
+                raise AgentConfigurationError(
+                    "Task policy bundle does not contain its role contract"
+                )
+            role = AgentRoleConfig.model_validate(role_snapshot)
             if task.role_version != str(role.version):
-                raise AgentConfigurationError("Task role version does not match active config")
+                raise AgentConfigurationError(
+                    "Task role version does not match fixed policy bundle"
+                )
+            current_role = self._roles.get(task.assignee_role)
+            if current_role is None:
+                raise AgentConfigurationError("Task role is not configured")
+            effective_allow = sorted(
+                set(role.tools_allow) & set(current_role.tools_allow)
+            )
+            revoked_tools = sorted(
+                set(role.tools_allow) - set(current_role.tools_allow)
+            )
+            added_denials = sorted(
+                set(current_role.tools_deny) - set(role.tools_deny)
+            )
+            role = role.model_copy(
+                update={
+                    "tools_allow": effective_allow,
+                    "tools_deny": sorted(
+                        set(role.tools_deny) | set(current_role.tools_deny)
+                    ),
+                }
+            )
             if task.mode != "mock" or self._provider.capabilities().mode != "mock":
                 raise AgentConfigurationError("W05 only permits mock provider execution")
 
@@ -254,6 +298,11 @@ class AgentRunner:
                 goal=task.goal,
                 input_refs=tuple(task.input_refs),
                 project_scope=project.scope,
+                policy_bundle_id=bundle.id,
+                current_policy_restrictions=tuple(
+                    [f"REVOKED_TOOL:{item}" for item in revoked_tools]
+                    + [f"CURRENT_DENY:{item}" for item in added_denials]
+                ),
                 review_feedback=review_feedback,
                 previous_output=previous_run.output if previous_run is not None else None,
             )
@@ -267,6 +316,8 @@ class AgentRunner:
                 purpose=task.purpose,
                 revision=task.revision,
                 input_snapshot_sha256=task.input_snapshot_sha256 or "",
+                policy_bundle_id=bundle.id,
+                policy_theory_hash=bundle.theory_sha256,
                 review_id=latest_review.id if latest_review is not None else None,
                 review_feedback=review_feedback,
                 previous_output=previous_run.output if previous_run is not None else None,
@@ -282,12 +333,20 @@ class AgentRunner:
         instance_id: UUID,
         context: AgentContext,
         run_key: str,
-        existing: ExistingRunView | None,
-    ) -> UUID:
+    ) -> tuple[UUID, AgentDelivery | None]:
         now = datetime.now(UTC)
         with self._session_factory.begin() as session:
             set_rls_context(session, workspace_id=claim.workspace_id, user_id=None)
-            if existing is None:
+            self._require_active_claim(session, claim)
+            persisted = session.scalar(
+                select(AgentRun)
+                .where(
+                    AgentRun.project_id == task.project_id,
+                    AgentRun.run_key == run_key,
+                )
+                .with_for_update()
+            )
+            if persisted is None:
                 run = AgentRun(
                     id=uuid4(),
                     workspace_id=task.workspace_id,
@@ -301,8 +360,9 @@ class AgentRunner:
                     model_id=self._provider.capabilities().provider_id,
                     role_id=role.role_id,
                     role_version=role.version,
-                    theory_hash=self._theory_hash,
+                    theory_hash=task.policy_theory_hash,
                     policy_bundle=role.limits_profile,
+                    policy_bundle_id=task.policy_bundle_id,
                     input_snapshot=context.snapshot(),
                     state="running",
                     output_schema=role.output_schema,
@@ -312,17 +372,18 @@ class AgentRunner:
                 )
                 session.add(run)
                 session.flush()
-                return run.id
-            persisted = session.get(AgentRun, existing.id)
-            if persisted is None:
-                raise AgentConfigurationError("Existing run disappeared")
+                return run.id, None
+            if persisted.state == "succeeded" and persisted.output:
+                return persisted.id, AgentDelivery.model_validate(persisted.output)
+            if persisted.state == "cancelled":
+                raise AgentConfigurationError("Cancelled agent run cannot restart")
             persisted.job_id = claim.job_id
             persisted.state = "running"
             persisted.error_code = None
             persisted.input_snapshot = context.snapshot()
             persisted.started_at = now
             persisted.ended_at = None
-            return persisted.id
+            return persisted.id, None
 
     def _mark_succeeded(
         self,
@@ -338,7 +399,9 @@ class AgentRunner:
         with self._session_factory.begin() as session:
             set_rls_context(session, workspace_id=workspace_id, user_id=None)
             self._require_active_claim(session, claim)
-            run = session.get(AgentRun, run_id)
+            run = session.scalar(
+                select(AgentRun).where(AgentRun.id == run_id).with_for_update()
+            )
             if run is None:
                 raise AgentConfigurationError("Agent run disappeared")
             run.provider_id = provider_id
@@ -359,7 +422,9 @@ class AgentRunner:
         with self._session_factory.begin() as session:
             set_rls_context(session, workspace_id=workspace_id, user_id=None)
             self._require_active_claim(session, claim)
-            run = session.get(AgentRun, run_id)
+            run = session.scalar(
+                select(AgentRun).where(AgentRun.id == run_id).with_for_update()
+            )
             if run is not None:
                 run.state = "failed"
                 run.error_code = error_code
@@ -439,7 +504,7 @@ class AgentRunner:
 def _run_key(task: TaskExecutionView, role: AgentRoleConfig) -> str:
     canonical = (
         f"{task.project_id}:{task.id}:{role.role_id}:{role.version}:"
-        f"{task.input_version}:{task.input_snapshot_sha256}:"
+        f"{task.policy_bundle_id}:{task.input_version}:{task.input_snapshot_sha256}:"
         f"{task.review_id or 'none'}:{task.purpose}"
     )
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()

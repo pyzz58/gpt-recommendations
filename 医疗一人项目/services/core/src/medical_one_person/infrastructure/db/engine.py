@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from medical_one_person.contracts import DependencyStatus
 
-EXPECTED_DATABASE_REVISION = "c8f1a6d3e720"
+EXPECTED_DATABASE_REVISION = "d9a7e3f1b420"
 
 
 def create_database_engine(database_url: str) -> Engine:

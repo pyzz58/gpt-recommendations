@@ -12,6 +12,7 @@ def test_run_key_uses_semantic_execution_identity_not_lifecycle_revision() -> No
         id=uuid4(),
         input_version="v1",
         input_snapshot_sha256="a" * 64,
+        policy_bundle_id="b" * 64,
         revision=3,
         review_id=None,
         purpose="same-semantic-execution",
