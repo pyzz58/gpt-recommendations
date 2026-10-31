@@ -749,6 +749,8 @@ def resolve_task_inputs(
 ) -> tuple[dict[str, object], str]:
     entries: list[dict[str, object]] = []
     for ref in input_refs:
+        if not ref.strip():
+            raise TaskNotReadyError("Task input reference cannot be empty")
         kind, separator, value = ref.partition(":")
         entry: dict[str, object] = {
             "ref": ref,
@@ -762,13 +764,34 @@ def resolve_task_inputs(
             "access_state": "not_applicable",
         }
         identifier: UUID | None = None
-        try:
-            identifier = UUID(value) if separator else None
-        except ValueError:
-            identifier = None
-        if kind == "fixture":
+        strict_typed = {
+            "document",
+            "citation",
+            "claim",
+            "analysis",
+            "deliverable",
+            "decision",
+        }
+        if not separator:
+            value = ref
+            entry["resolution_status"] = "opaque_string"
+        elif kind in strict_typed:
+            try:
+                identifier = UUID(value)
+            except ValueError as exc:
+                raise TaskNotReadyError(
+                    f"{kind} input reference must contain a UUID"
+                ) from exc
+        elif not value.strip():
+            raise TaskNotReadyError(f"{kind} input reference must contain a value")
+        elif kind == "opaque":
+            entry["resolution_status"] = "opaque_string"
+        elif kind not in {"fixture", "workflow"}:
+            raise TaskNotReadyError(f"Unsupported task input reference type: {kind}")
+
+        if kind == "fixture" and separator:
             entry["resolution_status"] = "synthetic_fixture"
-        elif kind == "workflow":
+        elif kind == "workflow" and separator:
             entry["resolution_status"] = "configuration_reference"
         elif kind == "decision" and identifier is not None:
             decision = session.scalar(
@@ -807,6 +830,14 @@ def resolve_task_inputs(
             )
             if version is None:
                 raise TaskNotReadyError("Document input version is unavailable in the project")
+            if version.version_status != "current":
+                raise TaskNotReadyError(
+                    f"Document input version is {version.version_status}, not current"
+                )
+            if version.access_state != "active":
+                raise TaskNotReadyError(
+                    f"Document input version is {version.access_state}, not accessible"
+                )
             entry.update(
                 {
                     "resolution_status": "resolved",
@@ -825,6 +856,28 @@ def resolve_task_inputs(
             )
             if citation is None:
                 raise TaskNotReadyError("Citation input is unavailable in the project")
+            if citation.review_status in {"invalid", "disputed"}:
+                raise TaskNotReadyError(
+                    f"Citation input review status is {citation.review_status}"
+                )
+            version = session.scalar(
+                select(KnowledgeDocumentVersion).where(
+                    KnowledgeDocumentVersion.id == citation.version_id,
+                    KnowledgeDocumentVersion.project_id == project_id,
+                )
+            )
+            if version is None:
+                raise TaskNotReadyError(
+                    "Citation input source version is unavailable in the project"
+                )
+            if version.version_status != "current":
+                raise TaskNotReadyError(
+                    f"Citation source version is {version.version_status}, not current"
+                )
+            if version.access_state != "active":
+                raise TaskNotReadyError(
+                    f"Citation source version is {version.access_state}, not accessible"
+                )
             entry.update(
                 {
                     "resolution_status": "resolved",
@@ -843,6 +896,8 @@ def resolve_task_inputs(
             )
             if claim is None:
                 raise TaskNotReadyError("Claim input is unavailable in the project")
+            if claim.status in {"stale", "disputed"}:
+                raise TaskNotReadyError(f"Claim input status is {claim.status}")
             entry.update(
                 {
                     "resolution_status": "resolved",
@@ -863,6 +918,8 @@ def resolve_task_inputs(
             )
             if analysis is None:
                 raise TaskNotReadyError("Analysis input is unavailable in the project")
+            if analysis.state != "succeeded":
+                raise TaskNotReadyError(f"Analysis input state is {analysis.state}")
             entry.update(
                 {
                     "resolution_status": "resolved",
@@ -881,6 +938,10 @@ def resolve_task_inputs(
             )
             if deliverable is None:
                 raise TaskNotReadyError("Deliverable input is unavailable in the project")
+            if deliverable.state not in {"received", "under_review", "accepted"}:
+                raise TaskNotReadyError(
+                    f"Deliverable input state is {deliverable.state}"
+                )
             entry.update(
                 {
                     "resolution_status": "resolved",

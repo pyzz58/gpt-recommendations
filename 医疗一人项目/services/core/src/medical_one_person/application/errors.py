@@ -54,5 +54,20 @@ class AgentOutputValidationError(ApplicationError):
     pass
 
 
+class AgentExecutionFailure(AgentOutputValidationError):
+    """A classified task failure that the worker must settle exactly once."""
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        error_code: str,
+        retryable: bool,
+    ) -> None:
+        super().__init__(message)
+        self.error_code = error_code
+        self.retryable = retryable
+
+
 class AgentRunError(ApplicationError):
     pass

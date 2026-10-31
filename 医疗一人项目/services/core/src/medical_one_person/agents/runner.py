@@ -15,15 +15,18 @@ from medical_one_person.agents.context import AgentContext
 from medical_one_person.agents.contracts import AgentDelivery
 from medical_one_person.application.errors import (
     AgentConfigurationError,
+    AgentExecutionFailure,
     AgentOutputValidationError,
+    LeaseConflictError,
 )
 from medical_one_person.application.scheduling import JobQueue
 from medical_one_person.application.tasks import TaskService
-from medical_one_person.domain.tasks import JobClaim, TaskState
+from medical_one_person.domain.tasks import JobClaim, JobState, TaskState
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.models import (
     AgentInstance,
     AgentRun,
+    Job,
     Project,
     Task,
     TaskReview,
@@ -125,35 +128,32 @@ class AgentRunner:
                 validation_error = str(exc)[:4000]
                 if repair >= self._max_schema_repairs:
                     self._mark_failed(
+                        claim=claim,
                         run_id=run,
                         workspace_id=claim.workspace_id,
                         error_code="AGENT_SCHEMA_INVALID",
                     )
-                    self._job_queue.fail(
-                        workspace_id=claim.workspace_id,
-                        claim=claim,
+                    raise AgentExecutionFailure(
+                        "Provider output failed schema/reference validation after repairs",
                         error_code="AGENT_SCHEMA_INVALID",
                         retryable=False,
-                    )
-                    raise AgentOutputValidationError(
-                        "Provider output failed schema/reference validation after repairs"
                     ) from exc
             except Exception as exc:
                 self._mark_failed(
+                    claim=claim,
                     run_id=run,
                     workspace_id=claim.workspace_id,
                     error_code="PROVIDER_ERROR",
                 )
-                self._job_queue.fail(
-                    workspace_id=claim.workspace_id,
-                    claim=claim,
+                raise AgentExecutionFailure(
+                    "Provider generation failed",
                     error_code="PROVIDER_ERROR",
                     retryable=True,
-                )
-                raise AgentOutputValidationError("Provider generation failed") from exc
+                ) from exc
 
         assert response is not None
         self._mark_succeeded(
+            claim=claim,
             run_id=run,
             workspace_id=claim.workspace_id,
             delivery=delivery,
@@ -327,6 +327,7 @@ class AgentRunner:
     def _mark_succeeded(
         self,
         *,
+        claim: JobClaim,
         run_id: UUID,
         workspace_id: UUID,
         delivery: AgentDelivery,
@@ -336,6 +337,7 @@ class AgentRunner:
     ) -> None:
         with self._session_factory.begin() as session:
             set_rls_context(session, workspace_id=workspace_id, user_id=None)
+            self._require_active_claim(session, claim)
             run = session.get(AgentRun, run_id)
             if run is None:
                 raise AgentConfigurationError("Agent run disappeared")
@@ -346,14 +348,40 @@ class AgentRunner:
             run.usage = usage
             run.ended_at = datetime.now(UTC)
 
-    def _mark_failed(self, *, run_id: UUID, workspace_id: UUID, error_code: str) -> None:
+    def _mark_failed(
+        self,
+        *,
+        claim: JobClaim,
+        run_id: UUID,
+        workspace_id: UUID,
+        error_code: str,
+    ) -> None:
         with self._session_factory.begin() as session:
             set_rls_context(session, workspace_id=workspace_id, user_id=None)
+            self._require_active_claim(session, claim)
             run = session.get(AgentRun, run_id)
             if run is not None:
                 run.state = "failed"
                 run.error_code = error_code
                 run.ended_at = datetime.now(UTC)
+
+    @staticmethod
+    def _require_active_claim(session: Session, claim: JobClaim) -> None:
+        job = session.scalar(
+            select(Job).where(Job.id == claim.job_id).with_for_update()
+        )
+        now = datetime.now(UTC)
+        if (
+            job is None
+            or job.state != JobState.RUNNING.value
+            or job.lease_owner != claim.worker_id
+            or job.fence_token != claim.fence_token
+            or job.lease_until is None
+            or job.lease_until <= now
+        ):
+            raise LeaseConflictError(
+                "Job lease is expired or owned by another worker"
+            )
 
     def _finish_delivery(self, claim: JobClaim, task_id: UUID, delivery: AgentDelivery) -> None:
         if delivery.task_id != task_id:
@@ -412,6 +440,6 @@ def _run_key(task: TaskExecutionView, role: AgentRoleConfig) -> str:
     canonical = (
         f"{task.project_id}:{task.id}:{role.role_id}:{role.version}:"
         f"{task.input_version}:{task.input_snapshot_sha256}:"
-        f"{task.revision}:{task.review_id or 'none'}:{task.purpose}"
+        f"{task.review_id or 'none'}:{task.purpose}"
     )
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()

@@ -3,16 +3,15 @@ from __future__ import annotations
 from decimal import Decimal
 from pathlib import Path
 
-import pytest
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, sessionmaker
 
 from medical_one_person.agents.config import load_role_configs
 from medical_one_person.agents.runner import AgentRunner
-from medical_one_person.application.errors import AgentOutputValidationError
 from medical_one_person.application.projects import ProjectService
 from medical_one_person.application.scheduling import JobQueue, OutboxDispatcher
 from medical_one_person.application.tasks import TaskService
+from medical_one_person.application.worker_loop import WorkerLoop
 from medical_one_person.infrastructure.bootstrap import bootstrap_local_owner
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.models import (
@@ -258,19 +257,16 @@ def test_runner_rejects_wrong_role_and_fails_job_without_acceptance(
     )
     OutboxDispatcher(session_factory).dispatch_once(workspace_id=identity.workspace_id)
     queue = JobQueue(session_factory)
-    claim = queue.claim(workspace_id=identity.workspace_id, worker_id="worker-bad")
-    assert claim is not None
-    runner = AgentRunner(
+    worker = WorkerLoop(
         session_factory,
         _WrongRoleProvider(),
         _roles(),
         theory_hash="b" * 64,
+        worker_id="worker-bad",
         job_queue=queue,
-        max_schema_repairs=0,
     )
-
-    with pytest.raises(AgentOutputValidationError):
-        runner.run_claim(claim)
+    failed = worker.run_once(workspace_id=identity.workspace_id)
+    assert failed.failure_code == "AGENT_SCHEMA_INVALID"
 
     with session_factory.begin() as session:
         set_rls_context(

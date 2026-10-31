@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import contextlib
 import hashlib
+import logging
 import os
 import signal
 import socket
@@ -18,6 +19,12 @@ from medical_one_person.config import get_settings
 from medical_one_person.infrastructure.db.engine import create_database_engine
 from medical_one_person.infrastructure.db.models import Workspace
 from medical_one_person.providers import FakeModelProvider
+
+logger = logging.getLogger(__name__)
+
+
+def parse_workspace_id(value: str | None) -> UUID | None:
+    return UUID(value) if value else None
 
 
 async def run(*, workspace_id: UUID | None, poll_seconds: float) -> None:
@@ -50,13 +57,35 @@ async def run(*, workspace_id: UUID | None, poll_seconds: float) -> None:
     for name in (signal.SIGINT, signal.SIGTERM):
         loop.add_signal_handler(name, stop.set)
 
-    print(f"medical-one-person mock worker started: {worker_id}")
+    print(f"medical-one-person mock worker started: {worker_id}", flush=True)
+    consecutive_errors = 0
     try:
         while not stop.is_set():
-            result = await asyncio.to_thread(
-                loop_runner.run_once,
-                workspace_id=workspace_id,
-            )
+            try:
+                result = await asyncio.to_thread(
+                    loop_runner.run_once,
+                    workspace_id=workspace_id,
+                )
+            except Exception:
+                consecutive_errors += 1
+                delay = min(
+                    max(poll_seconds, 0.1) * (2 ** min(consecutive_errors - 1, 5)),
+                    30.0,
+                )
+                logger.exception(
+                    "Worker iteration failed; retrying in %.1f seconds",
+                    delay,
+                )
+                with contextlib.suppress(TimeoutError):
+                    await asyncio.wait_for(stop.wait(), timeout=delay)
+                continue
+            consecutive_errors = 0
+            if result.failure_code:
+                logger.error(
+                    "Task job %s failed with %s; continuing",
+                    result.failed_job_id,
+                    result.failure_code,
+                )
             if result.claimed_job_id is None:
                 with contextlib.suppress(TimeoutError):
                     await asyncio.wait_for(stop.wait(), timeout=poll_seconds)
@@ -75,7 +104,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     asyncio.run(
         run(
-            workspace_id=UUID(args.workspace_id),
+            workspace_id=parse_workspace_id(args.workspace_id),
             poll_seconds=max(args.poll_seconds, 0.1),
         )
     )

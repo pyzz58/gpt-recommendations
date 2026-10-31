@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 from pathlib import Path
+from uuid import UUID
 
 import pytest
 from sqlalchemy import Engine, text
@@ -16,6 +17,7 @@ from medical_one_person.application.errors import (
     ConflictingOperationError,
     NotFoundError,
     ReviewPolicyError,
+    TaskNotReadyError,
 )
 from medical_one_person.application.external import ExternalService
 from medical_one_person.application.knowledge import (
@@ -27,6 +29,7 @@ from medical_one_person.application.knowledge import (
 )
 from medical_one_person.application.knowledge_ingestion import KnowledgeIngestionService
 from medical_one_person.application.projects import ProjectService
+from medical_one_person.application.readiness import active_audit_blockers
 from medical_one_person.application.tasks import TaskService
 from medical_one_person.domain.audits import (
     AuditFindingStatus,
@@ -56,8 +59,11 @@ from medical_one_person.infrastructure.db.models import (
     AuditEvaluation,
     AuditFinding,
     AuditRun,
+    Citation,
     ClaimVersion,
     ExternalDeliverable,
+    KnowledgeDocumentVersion,
+    Task,
 )
 from medical_one_person.infrastructure.knowledge.parsers import DocumentParser
 from medical_one_person.infrastructure.knowledge.upload import UploadService
@@ -614,6 +620,331 @@ def test_w17_audit_reviews_block_reverse_evidence_and_preserve_history(
     assert len(workspace.reviews) == 5
     assert len(workspace.evaluations) == 1
     assert any("not live model or human expert reviews" in item for item in workspace.limitations)
+
+
+def test_audit_blocks_are_scoped_to_consumers_and_dependency_descendants(
+    session_factory: sessionmaker[Session],
+) -> None:
+    identity = bootstrap_local_owner(session_factory)
+    project = ProjectService(session_factory).create_project(
+        actor_user_id=identity.owner_user_id,
+        name="W17审计影响范围",
+        scope="验证未关联目标、直接输入和下游依赖的阻断范围。",
+        idempotency_key="w17-scope-project",
+    )
+    claims = ClaimService(session_factory)
+    consumed_claim = claims.create(
+        workspace_id=identity.workspace_id,
+        actor_user_id=identity.owner_user_id,
+        project_id=project.id,
+        statement="待独立审计的输入声明。",
+        species_or_population="犬",
+        sample_size=12,
+        directness="direct",
+    )
+    linked_claim = claims.create(
+        workspace_id=identity.workspace_id,
+        actor_user_id=identity.owner_user_id,
+        project_id=project.id,
+        statement="关联上游任务的审计声明。",
+        species_or_population="犬",
+        sample_size=12,
+        directness="direct",
+    )
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        for version_id in (consumed_claim.version_id, linked_claim.version_id):
+            row = session.get(ClaimVersion, version_id)
+            assert row is not None
+            row.status = "supported"
+    tasks = TaskService(session_factory)
+
+    def create_task(
+        purpose: str,
+        input_refs: list[str],
+        dependencies: tuple[UUID, ...] = (),
+    ):
+        return tasks.create_task(
+            project_id=project.id,
+            actor_user_id=identity.owner_user_id,
+            task_type="audit.scope",
+            purpose=purpose,
+            assignee_role="A02",
+            role_version="1",
+            input_version="v1",
+            input_refs=input_refs,
+            goal="验证审计只阻断受影响任务。",
+            deliverable_schema="agent_delivery.v1",
+            acceptance_policy="independent_review.v1",
+            dependencies=dependencies,
+        )
+
+    consuming = create_task(
+        "consumes-audited-claim",
+        [f"claim:{consumed_claim.version_id}"],
+    )
+    unrelated = create_task("unrelated-task", ["fixture:unrelated"])
+    upstream = create_task("linked-upstream", ["fixture:upstream"])
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        row = session.get(Task, upstream.id)
+        assert row is not None
+        row.state = "accepted"
+        row.revision += 1
+    downstream = create_task(
+        "dependency-downstream",
+        ["fixture:downstream"],
+        dependencies=(upstream.id,),
+    )
+
+    roles = load_role_configs(PROJECT_ROOT / "config" / "agents" / "roles.yaml")
+    audits = AuditService(
+        session_factory,
+        roles,
+        PROJECT_ROOT / "fixtures" / "w17-audit-cases.json",
+    )
+    consumed_audit = audits.create_review(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+        target_type=AuditTargetType.CLAIM_VERSION,
+        target_id=consumed_claim.version_id,
+        reviewer_role="A26",
+        producer_role="A02",
+        idempotency_key="w17-consumed-unlinked",
+    )
+    linked_audit = audits.create_review(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+        target_type=AuditTargetType.CLAIM_VERSION,
+        target_id=linked_claim.version_id,
+        reviewer_role="A26",
+        producer_role="A02",
+        linked_task_id=upstream.id,
+        idempotency_key="w17-linked-upstream",
+    )
+    assert consumed_audit.state == AuditState.BLOCKED
+    assert linked_audit.state == AuditState.BLOCKED
+
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        assert active_audit_blockers(
+            session,
+            project_id=project.id,
+            task_id=consuming.id,
+        )
+        assert not active_audit_blockers(
+            session,
+            project_id=project.id,
+            task_id=unrelated.id,
+        )
+        assert not active_audit_blockers(
+            session,
+            project_id=project.id,
+            target_ids={unrelated.id},
+        )
+        assert active_audit_blockers(
+            session,
+            project_id=project.id,
+            task_id=downstream.id,
+        )
+
+    with pytest.raises(ReviewPolicyError, match="Active audit findings"):
+        tasks.enqueue(
+            project_id=project.id,
+            actor_user_id=identity.owner_user_id,
+            task_id=downstream.id,
+        )
+    for finding in linked_audit.findings:
+        audits.resolve_finding(
+            project_id=project.id,
+            audit_id=linked_audit.id,
+            finding_id=finding.id,
+            actor_user_id=identity.owner_user_id,
+            status=AuditFindingStatus.RESOLVED,
+            resolution="仅解除关联上游及下游的合成审计阻断。",
+        )
+    downstream_queued = tasks.enqueue(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+        task_id=downstream.id,
+    )
+    assert downstream_queued.state == "queued"
+    with pytest.raises(TaskNotReadyError, match="Claim input status is disputed"):
+        tasks.enqueue(
+            project_id=project.id,
+            actor_user_id=identity.owner_user_id,
+            task_id=consuming.id,
+        )
+
+
+def test_task_inputs_fail_closed_for_bad_or_unavailable_typed_references(
+    session_factory: sessionmaker[Session],
+    tmp_path: Path,
+) -> None:
+    identity = bootstrap_local_owner(session_factory)
+    projects = ProjectService(session_factory)
+    project = projects.create_project(
+        actor_user_id=identity.owner_user_id,
+        name="W04输入准入",
+        scope="验证严格类型、访问状态和项目归属。",
+        idempotency_key="w04-input-project",
+    )
+    other_project = projects.create_project(
+        actor_user_id=identity.owner_user_id,
+        name="W04输入越权",
+        scope="验证其他项目文档不可作为输入。",
+        idempotency_key="w04-input-other-project",
+    )
+    tasks = TaskService(session_factory)
+    seed_task = tasks.create_task(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+        task_type="knowledge.seed",
+        purpose="input-admission-seed",
+        assignee_role="A02",
+        role_version="1",
+        input_version="seed-v1",
+        input_refs=["fixture:input-admission"],
+        goal="创建合法知识输入。",
+        deliverable_schema="agent_delivery.v1",
+        acceptance_policy="independent_review.v1",
+    )
+    store = LocalArtifactStore(tmp_path / "input-objects")
+    uploads = UploadService(
+        session_factory,
+        store,
+        tmp_path / "input-staging",
+        max_file_bytes=2 * 1024 * 1024,
+        max_batch_bytes=4 * 1024 * 1024,
+        chunk_size=64 * 1024,
+    )
+    uploads.ensure_private_library(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+    )
+    citation, _, _ = _seed_claim(
+        identity,
+        project,
+        seed_task,
+        store,
+        uploads,
+        session_factory,
+    )
+
+    def create_with_refs(input_refs: list[str], purpose: str):
+        return tasks.create_task(
+            project_id=project.id,
+            actor_user_id=identity.owner_user_id,
+            task_type="input.admission",
+            purpose=purpose,
+            assignee_role="A02",
+            role_version="1",
+            input_version="v1",
+            input_refs=input_refs,
+            goal="验证输入准入。",
+            deliverable_schema="agent_delivery.v1",
+            acceptance_policy="independent_review.v1",
+        )
+
+    active = create_with_refs(
+        [
+            f"document:{citation.version_id}",
+            f"citation:{citation.id}",
+        ],
+        "active-inputs",
+    )
+    assert active.input_validity == "current"
+    for ref in [
+        "document:not-a-uuid",
+        "citation:not-a-uuid",
+        "claim:not-a-uuid",
+        "analysis:not-a-uuid",
+        "deliverable:not-a-uuid",
+        "decision:not-a-uuid",
+        "unknown-typed:value",
+    ]:
+        with pytest.raises(TaskNotReadyError):
+            create_with_refs([ref], "bad-" + ref.replace(":", "-"))
+
+    with pytest.raises(TaskNotReadyError, match="unavailable in the project"):
+        tasks.create_task(
+            project_id=other_project.id,
+            actor_user_id=identity.owner_user_id,
+            task_type="input.cross-project",
+            purpose="cross-project-document",
+            assignee_role="A02",
+            role_version="1",
+            input_version="v1",
+            input_refs=[f"document:{citation.version_id}"],
+            goal="验证跨项目输入拒绝。",
+            deliverable_schema="agent_delivery.v1",
+            acceptance_policy="independent_review.v1",
+        )
+
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        version = session.get(KnowledgeDocumentVersion, citation.version_id)
+        assert version is not None
+        version.access_state = "trashed"
+    with pytest.raises(TaskNotReadyError, match="not accessible"):
+        create_with_refs(
+            [f"document:{citation.version_id}"],
+            "trashed-document",
+        )
+    with pytest.raises(TaskNotReadyError, match="not accessible"):
+        create_with_refs(
+            [f"citation:{citation.id}"],
+            "citation-with-trashed-source",
+        )
+
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        version = session.get(KnowledgeDocumentVersion, citation.version_id)
+        assert version is not None
+        version.access_state = "active"
+        version.version_status = "historical"
+    with pytest.raises(TaskNotReadyError, match="not current"):
+        create_with_refs(
+            [f"document:{citation.version_id}"],
+            "historical-document",
+        )
+
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        version = session.get(KnowledgeDocumentVersion, citation.version_id)
+        citation_row = session.get(Citation, citation.id)
+        assert version is not None and citation_row is not None
+        version.version_status = "current"
+        citation_row.review_status = "invalid"
+    with pytest.raises(TaskNotReadyError, match="review status is invalid"):
+        create_with_refs(
+            [f"citation:{citation.id}"],
+            "invalid-citation",
+        )
 
 
 def test_w17_tables_are_forced_through_workspace_rls(database: Engine) -> None:

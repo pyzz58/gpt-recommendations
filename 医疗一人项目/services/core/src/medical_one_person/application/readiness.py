@@ -7,7 +7,12 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from medical_one_person.application.errors import ReviewPolicyError
-from medical_one_person.infrastructure.db.models import AuditFinding, AuditRun
+from medical_one_person.infrastructure.db.models import (
+    AuditFinding,
+    AuditRun,
+    Task,
+    TaskDependency,
+)
 
 
 @dataclass(frozen=True)
@@ -40,12 +45,44 @@ def active_audit_blockers(
         existing = latest.get(key)
         if existing is None or run.review_version > existing.review_version:
             latest[key] = run
+    tasks = session.scalars(
+        select(Task).where(Task.project_id == project_id)
+    ).all()
+    dependencies = session.scalars(
+        select(TaskDependency).where(TaskDependency.project_id == project_id)
+    ).all()
+    downstream: dict[UUID, set[UUID]] = {}
+    for dependency in dependencies:
+        downstream.setdefault(dependency.depends_on_task_id, set()).add(
+            dependency.task_id
+        )
+
+    def affected_task_ids(run: AuditRun) -> set[UUID]:
+        roots = {
+            task.id
+            for task in tasks
+            if _task_consumes_target(task, run)
+        }
+        if run.linked_task_id is not None:
+            roots.add(run.linked_task_id)
+        affected = set(roots)
+        frontier = list(roots)
+        while frontier:
+            upstream = frontier.pop()
+            for dependent in downstream.get(upstream, set()):
+                if dependent not in affected:
+                    affected.add(dependent)
+                    frontier.append(dependent)
+        return affected
+
     blockers: list[AuditBlocker] = []
     for run in latest.values():
-        affected = run.linked_task_id == task_id or (
-            target_ids is not None and run.target_id in target_ids
+        task_affected = task_id is not None and task_id in affected_task_ids(run)
+        target_affected = (
+            target_ids is not None
+            and run.target_id in target_ids
         )
-        if not affected or run.state == "passed":
+        if not (task_affected or target_affected) or run.state == "passed":
             continue
         findings = session.scalars(
             select(AuditFinding).where(AuditFinding.audit_id == run.id)
@@ -68,6 +105,35 @@ def active_audit_blockers(
                 )
             )
     return blockers
+
+
+def _task_consumes_target(task: Task, run: AuditRun) -> bool:
+    refs = task.input_snapshot.get("refs", [])
+    if not isinstance(refs, list):
+        return False
+    target_id = str(run.target_id)
+    for item in refs:
+        if not isinstance(item, dict):
+            continue
+        kind = item.get("kind")
+        if (
+            run.target_type == "claim_version"
+            and kind == "claim"
+            and item.get("object_version") == target_id
+        ):
+            return True
+        if (
+            run.target_type in {"analysis_run", "external_deliverable"}
+            and kind
+            == (
+                "analysis"
+                if run.target_type == "analysis_run"
+                else "deliverable"
+            )
+            and item.get("object_id") == target_id
+        ):
+            return True
+    return False
 
 
 def require_no_active_audit_blockers(

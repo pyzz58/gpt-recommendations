@@ -64,7 +64,7 @@ jobs:
           uv sync --project services/core --locked
           pnpm install --frozen-lockfile
       - name: PostgreSQL application tests
-        run: uv run --project services/core --frozen pytest services/core/tests -q
+        run: uv run --project services/core --frozen pytest services/core/tests -q -ra
       - name: Static checks
         run: |
           uv run --project services/core --frozen ruff check services/core

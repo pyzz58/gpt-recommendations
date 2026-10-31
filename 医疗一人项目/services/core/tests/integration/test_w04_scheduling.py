@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+import os
+import select as select_module
+import subprocess
+import sys
+import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
@@ -12,6 +17,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session, sessionmaker
 
 from medical_one_person.agents.config import load_role_configs
+from medical_one_person.agents.runner import AgentRunner
 from medical_one_person.application.budgets import BudgetService
 from medical_one_person.application.errors import (
     BudgetExceededError,
@@ -28,6 +34,7 @@ from medical_one_person.domain.tasks import InputValidity, TaskState
 from medical_one_person.infrastructure.bootstrap import bootstrap_local_owner
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.models import (
+    AgentRun,
     Budget,
     BudgetLedgerEntry,
     Job,
@@ -79,6 +86,50 @@ def _task(
         acceptance_policy="independent_review.v1",
         dependencies=dependencies,
     )
+
+
+class _FailFirstProvider(FakeModelProvider):
+    def __init__(self) -> None:
+        super().__init__()
+        self.calls = 0
+
+    def generate_structured(self, request):
+        self.calls += 1
+        if self.calls == 1:
+            raise RuntimeError("synthetic provider outage")
+        return super().generate_structured(request)
+
+
+class _CountingProvider(FakeModelProvider):
+    def __init__(self) -> None:
+        super().__init__()
+        self.calls = 0
+
+    def generate_structured(self, request):
+        self.calls += 1
+        return super().generate_structured(request)
+
+
+class _CountingFailQueue(JobQueue):
+    def __init__(self, session_factory: sessionmaker[Session]) -> None:
+        super().__init__(session_factory)
+        self.fail_calls = 0
+
+    def fail(self, **kwargs):
+        self.fail_calls += 1
+        return super().fail(**kwargs)
+
+
+class _CrashBeforeCompleteQueue(JobQueue):
+    def __init__(self, session_factory: sessionmaker[Session]) -> None:
+        super().__init__(session_factory)
+        self.crash_once = True
+
+    def complete(self, **kwargs):
+        if self.crash_once:
+            self.crash_once = False
+            raise RuntimeError("synthetic worker crash before job completion")
+        return super().complete(**kwargs)
 
 
 def test_task_dependency_cycle_queue_dedup_and_no_auto_acceptance(
@@ -555,3 +606,280 @@ def test_durable_worker_loop_dispatches_claims_runs_and_submits(
         refreshed = session.get(Task, task.id)
         assert refreshed is not None
         assert refreshed.state == TaskState.SUBMITTED.value
+
+
+def test_worker_continues_after_one_task_failure_and_settles_once(
+    session_factory: sessionmaker[Session],
+) -> None:
+    identity, project = _project(
+        session_factory,
+        name="worker故障隔离",
+        idempotency_key="create-worker-failure-project",
+    )
+    tasks = TaskService(session_factory)
+    failing = _task(
+        tasks,
+        actor_user_id=identity.owner_user_id,
+        project_id=project.id,
+        purpose="provider-failure",
+    )
+    succeeding = _task(
+        tasks,
+        actor_user_id=identity.owner_user_id,
+        project_id=project.id,
+        purpose="after-failure",
+    )
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        for task_id in (failing.id, succeeding.id):
+            row = session.get(Task, task_id)
+            assert row is not None
+            row.role_version = "1"
+            row.max_attempts = 1
+    for task_id in (failing.id, succeeding.id):
+        tasks.enqueue(
+            project_id=project.id,
+            actor_user_id=identity.owner_user_id,
+            task_id=task_id,
+        )
+    OutboxDispatcher(session_factory).dispatch_once(workspace_id=identity.workspace_id)
+
+    queue = _CountingFailQueue(session_factory)
+    provider = _FailFirstProvider()
+    worker = WorkerLoop(
+        session_factory,
+        provider,
+        load_role_configs(PROJECT_ROOT / "config" / "agents" / "roles.yaml"),
+        theory_hash="1" * 64,
+        worker_id="w04-failure-isolation",
+        job_queue=queue,
+    )
+    failed = worker.run_once(workspace_id=identity.workspace_id)
+    assert failed.task_id == failing.id
+    assert failed.failure_code == "PROVIDER_ERROR"
+    assert queue.fail_calls == 1
+    recovered = worker.run_once(workspace_id=identity.workspace_id)
+    assert recovered.task_id == succeeding.id
+    assert recovered.failure_code is None
+
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        failed_task = session.get(Task, failing.id)
+        failed_job = session.scalar(select(Job).where(Job.task_id == failing.id))
+        successful_task = session.get(Task, succeeding.id)
+        failed_attempt = session.scalar(
+            select(TaskAttempt).where(TaskAttempt.task_id == failing.id)
+        )
+    assert failed_task is not None and failed_task.state == TaskState.FAILED.value
+    assert failed_job is not None and failed_job.state == "dead"
+    assert failed_job.last_error_code == "PROVIDER_ERROR"
+    assert failed_attempt is not None
+    assert failed_attempt.state == "failed"
+    assert failed_attempt.error_code == "PROVIDER_ERROR"
+    assert successful_task is not None
+    assert successful_task.state == TaskState.SUBMITTED.value
+
+
+def test_successful_run_is_reused_after_lease_recovery_changes_revision(
+    session_factory: sessionmaker[Session],
+) -> None:
+    identity, project = _project(
+        session_factory,
+        name="worker恢复幂等",
+        idempotency_key="create-worker-recovery-project",
+    )
+    tasks = TaskService(session_factory)
+    task = _task(
+        tasks,
+        actor_user_id=identity.owner_user_id,
+        project_id=project.id,
+        purpose="recover-before-complete",
+    )
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        row = session.get(Task, task.id)
+        assert row is not None
+        row.role_version = "1"
+    tasks.enqueue(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+        task_id=task.id,
+    )
+    OutboxDispatcher(session_factory).dispatch_once(workspace_id=identity.workspace_id)
+    queue = _CrashBeforeCompleteQueue(session_factory)
+    provider = _CountingProvider()
+    runner = AgentRunner(
+        session_factory,
+        provider,
+        load_role_configs(PROJECT_ROOT / "config" / "agents" / "roles.yaml"),
+        theory_hash="2" * 64,
+        job_queue=queue,
+    )
+    first = queue.claim(workspace_id=identity.workspace_id, worker_id="worker-crash")
+    assert first is not None
+    with pytest.raises(RuntimeError, match="synthetic worker crash"):
+        runner.run_claim(first)
+    assert provider.calls == 1
+
+    with session_factory.begin() as session:
+        set_rls_context(session, workspace_id=identity.workspace_id, user_id=None)
+        job = session.get(Job, first.job_id)
+        assert job is not None
+        job.lease_until = datetime.now(UTC) - timedelta(seconds=1)
+    assert queue.recover_expired(workspace_id=identity.workspace_id) == 1
+    second = queue.claim(workspace_id=identity.workspace_id, worker_id="worker-recovered")
+    assert second is not None
+    assert second.task_revision != first.task_revision
+    runner.run_claim(second)
+    assert provider.calls == 1
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        recovered_task = session.get(Task, task.id)
+        job = session.get(Job, first.job_id)
+    assert recovered_task is not None
+    assert recovered_task.state == TaskState.SUBMITTED.value
+    assert job is not None and job.state == "succeeded"
+
+
+def test_late_worker_cannot_persist_success_after_fence_takeover(
+    session_factory: sessionmaker[Session],
+) -> None:
+    identity, project = _project(
+        session_factory,
+        name="worker fencing",
+        idempotency_key="create-worker-fencing-project",
+    )
+    tasks = TaskService(session_factory)
+    task = _task(
+        tasks,
+        actor_user_id=identity.owner_user_id,
+        project_id=project.id,
+        purpose="late-worker-write",
+    )
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        row = session.get(Task, task.id)
+        assert row is not None
+        row.role_version = "1"
+    tasks.enqueue(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+        task_id=task.id,
+    )
+    OutboxDispatcher(session_factory).dispatch_once(workspace_id=identity.workspace_id)
+    queue = JobQueue(session_factory)
+    stale = queue.claim(workspace_id=identity.workspace_id, worker_id="worker-stale")
+    assert stale is not None
+    with session_factory.begin() as session:
+        set_rls_context(session, workspace_id=identity.workspace_id, user_id=None)
+        job = session.get(Job, stale.job_id)
+        assert job is not None
+        job.lease_until = datetime.now(UTC) - timedelta(seconds=1)
+    current = queue.claim(workspace_id=identity.workspace_id, worker_id="worker-current")
+    assert current is not None
+    assert current.fence_token == stale.fence_token + 1
+
+    provider = _CountingProvider()
+    runner = AgentRunner(
+        session_factory,
+        provider,
+        load_role_configs(PROJECT_ROOT / "config" / "agents" / "roles.yaml"),
+        theory_hash="3" * 64,
+        job_queue=queue,
+    )
+    with pytest.raises(LeaseConflictError, match="owned by another worker"):
+        runner.run_claim(stale)
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        run = session.scalar(select(AgentRun).where(AgentRun.task_id == task.id))
+    assert run is not None
+    assert run.state == "running"
+    assert run.output is None
+
+    runner.run_claim(current)
+    assert provider.calls == 2
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        run = session.scalar(select(AgentRun).where(AgentRun.task_id == task.id))
+    assert run is not None and run.state == "succeeded"
+
+
+def test_worker_cli_discovers_workspace_and_exits_cleanly(
+    session_factory: sessionmaker[Session],
+    app_database_url: str,
+) -> None:
+    identity, _project_value = _project(
+        session_factory,
+        name="worker CLI自动发现",
+        idempotency_key="create-worker-cli-project",
+    )
+    env = os.environ.copy()
+    env["MEDICAL_ONE_DATABASE_URL"] = app_database_url
+    env["PYTHONUNBUFFERED"] = "1"
+    env.pop("MEDICAL_ONE_WORKSPACE_ID", None)
+    process = subprocess.Popen(
+        [
+            sys.executable,
+            "-m",
+            "medical_one_person.worker",
+            "--poll-seconds",
+            "0.1",
+        ],
+        cwd=PROJECT_ROOT / "services" / "core",
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    try:
+        assert process.stdout is not None
+        deadline = time.monotonic() + 15
+        started = False
+        while time.monotonic() < deadline:
+            if process.poll() is not None:
+                break
+            ready, _, _ = select_module.select([process.stdout], [], [], 0.1)
+            if not ready:
+                continue
+            line = process.stdout.readline()
+            if "mock worker started" in line:
+                started = True
+                break
+        assert started, process.stderr.read() if process.poll() is not None else "startup timeout"
+        process.terminate()
+        stdout, stderr = process.communicate(timeout=10)
+    finally:
+        if process.poll() is None:
+            process.kill()
+            process.wait(timeout=5)
+    assert process.returncode == 0, stderr
+    assert identity.workspace_id
+    assert "mock worker stopped" in stdout
