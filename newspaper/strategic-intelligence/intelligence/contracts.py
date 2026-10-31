@@ -41,6 +41,7 @@ class ObjectKind(str, Enum):
     RESEARCH_STEP_RECORD = "ResearchStepRecord"
     ADVISOR_OUTPUT = "AdvisorOutput"
     TEACHER_OUTPUT = "TeacherOutput"
+    CONDITIONAL_OUTPUT = "ConditionalOutput"
     ARTIFACT_LINK = "ResearchArtifactLink"
     ARTIFACT_COMPATIBILITY = "ResearchArtifactCompatibility"
     RESEARCH_COMMIT = "ResearchCommit"
