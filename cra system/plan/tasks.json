@@ -1268,7 +1268,7 @@
       "module_ids": [
         "M04"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。",
       "requirement_ids": [
         "CRA-R010",
@@ -1279,7 +1279,9 @@
         "CRA-R041",
         "CRA-R045"
       ],
-      "evidence": [],
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；15项PostgreSQL/API分支目标测试和4项review-gate自测通过；直接/容器目标、false/unknown/true、真实超窗、兄弟路径和多入口OR语义验证完成。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。"
+      ],
       "completion_history": [
         {
           "recorded_status": "verified",
@@ -1498,7 +1500,13 @@
       "handoff_outputs": [
         "患者/锚点/分类断点及缺口拒绝/恢复契约，日期精度和来源保留。"
       ],
-      "completion_evidence": null,
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W05",
+        "run_id": 41251079001,
+        "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
+        "subject_digest": "2712bc34d2f6d3afda66c48e823d8333617b2981695f9332006828581e93e29e"
+      },
       "verification_profile": "CRA-W05"
     },
     {
@@ -1511,7 +1519,7 @@
         "M05",
         "M06"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。",
       "requirement_ids": [
         "CRA-R001",
@@ -1530,7 +1538,9 @@
         "CRA-R043",
         "CRA-R045"
       ],
-      "evidence": [],
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；W05依赖链重新验证后，遗留复核、一次确认整改和分项状态真实PostgreSQL回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。"
+      ],
       "completion_history": [
         {
           "recorded_status": "verified",
@@ -1752,7 +1762,13 @@
       "handoff_outputs": [
         "历史文件整理→遗留提醒/展开→点击确认→下次接续，正式Query与草稿区分。"
       ],
-      "completion_evidence": null,
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W06",
+        "run_id": 41251079001,
+        "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
+        "subject_digest": "2c592b02f72172fae7d717c2236755b30e7419a1f099a1bab4e89f437a6825e0"
+      },
       "verification_profile": "CRA-W06"
     },
     {
@@ -1764,7 +1780,7 @@
       "module_ids": [
         "M07"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。",
       "requirement_ids": [
         "CRA-R013",
@@ -1772,7 +1788,9 @@
         "CRA-R015",
         "CRA-R034"
       ],
-      "evidence": [],
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；W05依赖链重新验证后，真实XLSX导入、不可变快照、契约和前端回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。"
+      ],
       "completion_history": [
         {
           "recorded_status": "verified",
@@ -1943,7 +1961,13 @@
       "handoff_outputs": [
         "真实Excel输入、可复用列映射和不可变标准检验快照。"
       ],
-      "completion_evidence": null,
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W07",
+        "run_id": 41251079001,
+        "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
+        "subject_digest": "a375158e26881828e16e1eda8e9d3ae5da0685f5ef55c640b303903c3759f128"
+      },
       "verification_profile": "CRA-W07"
     },
     {
@@ -1957,7 +1981,7 @@
         "M08",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。",
       "requirement_ids": [
         "CRA-R013",
@@ -1968,7 +1992,9 @@
         "CRA-R035",
         "CRA-R038"
       ],
-      "evidence": [],
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；7项复核、13项检验和4项识别测试通过；真实Docling评估及既有关闭的复投/租约修正回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。"
+      ],
       "completion_history": [
         {
           "recorded_status": "verified",
@@ -2183,7 +2209,13 @@
       "handoff_outputs": [
         "自动源文件读取→匹配→比较→差异/未知与待办、实际provider证据、人工负担和支持范围。"
       ],
-      "completion_evidence": null,
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W08",
+        "run_id": 41251079001,
+        "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
+        "subject_digest": "ceb19f83da8dc43ea211530a5a0e1f4120e5580766ed45e8f627e85178fe97e7"
+      },
       "verification_profile": "CRA-W08"
     },
     {
@@ -2198,7 +2230,7 @@
         "M09",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。",
       "requirement_ids": [
         "CRA-R007",
@@ -2341,8 +2373,16 @@
         "按项目标准区分医学维度的候选分析、具体问题及必要及时线索，不自动作最终医学结论。"
       ],
       "verification_profile": "CRA-W09",
-      "evidence": [],
-      "completion_evidence": null,
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；65项受影响PostgreSQL/API测试、真实Qwen与Docling评估、契约和前端通过；W05分支目标修正已继承验证。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。"
+      ],
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W09",
+        "run_id": 41251079001,
+        "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
+        "subject_digest": "b604f28c0dccebbd5b5aad58264101e350e3dcebb2b325f486b68684f1fa8747"
+      },
       "completion_history": [
         {
           "recorded_status": "verified",

@@ -2,8 +2,9 @@
 
 Date: 2026-11-01.
 
-Status: local implementation complete; source-bound CI and independent closure
-evidence remain required.
+Status: verified. Source-bound CI:
+https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001,
+tested commit `12a7b38d577066424cb7cec9e29378923eeef406`.
 
 ## Original finding 03
 
@@ -56,5 +57,20 @@ required step.
 - Unittest suite: 47 passed.
 - Traceability and generated-view checks passed.
 
-The authoritative commit, GitHub run, task digests and finding closure evidence
-are added after CI.
+## Authoritative result
+
+- W05 task job: 15 PostgreSQL/API tests and 4 review-gate tests passed.
+- W05 passed `test`, `review-gate-self-test`, `contracts` and `frontend`.
+- W06-W09 dependency-chain jobs passed.
+- W09 ran 65 affected tests plus real Qwen and Docling evaluations.
+- `task_evidence.py` reports 9 checked tasks with authoritative verification
+  true; `review_gate.py --task CRA-W05` reports no blocker and the selector
+  advances to W10.
+
+Task digests:
+
+- W05 `2712bc34d2f6d3afda66c48e823d8333617b2981695f9332006828581e93e29e`
+- W06 `2c592b02f72172fae7d717c2236755b30e7419a1f099a1bab4e89f437a6825e0`
+- W07 `a375158e26881828e16e1eda8e9d3ae5da0685f5ef55c640b303903c3759f128`
+- W08 `ceb19f83da8dc43ea211530a5a0e1f4120e5580766ed45e8f627e85178fe97e7`
+- W09 `b604f28c0dccebbd5b5aad58264101e350e3dcebb2b325f486b68684f1fa8747`

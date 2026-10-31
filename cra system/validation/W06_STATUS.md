@@ -1,12 +1,12 @@
 # CRA-W06 completion record
 
-Status: revalidation in progress because W05 is being revalidated.
+Status: verified. Date: 2026-11-01.
 
-2026-11-01 dependent revalidation after the W05 residual fix supersedes the evidence
-below: run
-https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769,
-tested commit `f66750c9fac58dbf2e03189582a3544fc039bfd4`, digest
-`2df3d12dbbe1dc7ae1492623fc6119878a94715965ba3b34e2a69b3229226157`.
+2026-11-01 dependent revalidation after the W05 branch-target fix supersedes
+the evidence below: run
+https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001,
+tested commit `12a7b38d577066424cb7cec9e29378923eeef406`, digest
+`2c592b02f72172fae7d717c2236755b30e7419a1f099a1bab4e89f437a6825e0`.
 
 Revalidated after W08 expanded shared migrations, API, fixtures and frontend.
 Current evidence: run `41193029019`, tested commit

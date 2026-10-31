@@ -1,6 +1,6 @@
 # CRA-W08 completion record
 
-Status: revalidation in progress because W05 is being revalidated.
+Status: verified. Date: 2026-11-01.
 
 This record covers source laboratory report recognition, field-level review,
 exact instance matching and deterministic EDC comparison for the declared
@@ -47,9 +47,9 @@ validation or proof of workflow time savings.
 ## Authoritative execution
 
 - Tested commit:
-  `f66750c9fac58dbf2e03189582a3544fc039bfd4`.
+  `12a7b38d577066424cb7cec9e29378923eeef406`.
 - GitHub Actions:
-  https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769
+  https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001
 - Task job: `cra-w08`.
 - Required steps: `test`, `lab-provider-evaluation`, `contracts`, `frontend`.
 - PostgreSQL 18.6 service, migration `0009_review_remediation`, source-bound
@@ -67,12 +67,12 @@ validation or proof of workflow time savings.
   `b63ebded2cb330b5b68a67f24988c28733798336874cabc5d157983f5c7b1e01`.
 - CI Docling model-manifest SHA-256:
   `c5309aff4606055d82f24f07da522ce6830de7d664faaeb4f9fa44cd10d0705b`.
-- CI isolated-image provider time: 37.152 seconds; maximum RSS:
-  2,418,384,896 bytes. Total W08 lab evaluation: 48.267 seconds.
+- CI isolated-image provider time: 37.940 seconds; maximum RSS:
+  2,352,201,728 bytes. Total W08 lab evaluation: 53.049 seconds.
 - OpenAPI drift check, 13 frontend tests, TypeScript and production build
   passed.
 - Subject digest:
-  `d92da00ab44a893f7f5bfbd6195eca4ded8bcfbd9921927f0e2587cc3f4c0932`.
+  `ceb19f83da8dc43ea211530a5a0e1f4120e5580766ed45e8f627e85178fe97e7`.
 
 ## Remaining limits
 

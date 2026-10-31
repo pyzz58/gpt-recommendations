@@ -11,7 +11,7 @@
     {
       "id": "CRA-REV-20261101-03",
       "guard": "CRA-GUARD-01",
-      "status": "open",
+      "status": "closed",
       "blocking": true,
       "summary": "RuleBranch target selection must reach the target's own window and descendants without deleting the window.",
       "affected_tasks": [
@@ -26,10 +26,23 @@
       ],
       "required_tests": [
         "tests/integration/test_subjects.py::test_branch_target_preserves_window_and_selection_context",
+        "tests/integration/test_subjects.py::test_multiple_branch_entries_to_one_target_use_or_semantics",
         "tests/integration/test_subjects.py::test_nested_visit_windows_inherit_parent_gates_and_keep_out_of_window",
         "tests/integration/test_subjects.py::test_sibling_equal_visit_windows_keep_distinct_condition_paths"
       ],
-      "closure_evidence": null
+      "closure_evidence": {
+        "kind": "github_actions",
+        "run_id": 41251079001,
+        "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
+        "job_name": "cra-w05",
+        "test_cases": [
+          "tests/integration/test_subjects.py::test_branch_target_preserves_window_and_selection_context",
+          "tests/integration/test_subjects.py::test_multiple_branch_entries_to_one_target_use_or_semantics",
+          "tests/integration/test_subjects.py::test_nested_visit_windows_inherit_parent_gates_and_keep_out_of_window",
+          "tests/integration/test_subjects.py::test_sibling_equal_visit_windows_keep_distinct_condition_paths"
+        ],
+        "acceptance_passed": true
+      }
     },
     {
       "id": "CRA-REV-20261101-04",

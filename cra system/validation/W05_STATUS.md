@@ -1,12 +1,12 @@
 # CRA-W05 completion record
 
-Status: revalidation in progress for the branch-target residual and prevention integration.
+Status: verified. Date: 2026-11-01.
 
-2026-11-01 independent remediation-recheck closure supersedes the evidence
-below: run
-https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769,
-tested commit `f66750c9fac58dbf2e03189582a3544fc039bfd4`, digest
-`0057da1039e992312002af5c7e324edb32dae2529088ab42579cd3a8df63ad66`.
+2026-11-01 branch-target closure and prevention integration supersede the
+evidence below: 15 PostgreSQL/API tests and 4 review-gate tests passed. Run
+https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001,
+tested commit `12a7b38d577066424cb7cec9e29378923eeef406`, digest
+`2712bc34d2f6d3afda66c48e823d8333617b2981695f9332006828581e93e29e`.
 
 Revalidated after W08 expanded the shared migration chain, fixtures, API and
 frontend. Current evidence: run `41193029019`, tested commit
