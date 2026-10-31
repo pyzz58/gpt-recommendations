@@ -1819,17 +1819,18 @@ class RuleService:
                     for rule, version in latest_by_rule.values()
                 )
 
-            site_rule_keys = {
-                rule.rule_key
+            adopted_rule_ids = {
+                rule.id
                 for activation, rule, _ in selected
                 if activation.site_id is not None
+                and rule.site_id is None
             }
             selected = [
                 item
                 for item in selected
                 if not (
                     item[0].site_id is None
-                    and item[1].rule_key in site_rule_keys
+                    and item[1].id in adopted_rule_ids
                 )
             ]
             by_rule_layer_key: dict[tuple[str, str, uuid.UUID | None], list[Any]] = {}

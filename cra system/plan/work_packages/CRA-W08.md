@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W06、CRA-W07。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -69,6 +69,7 @@
 11. 复用报告级身份/日期上下文；比较上下限、比较符、单位和报告元数据，不仅比较异常标志。
 12. 检验上传走持久Job/Outbox和Processor worker，保存租约、尝试和可恢复失败状态。
 13. 隔离OCR依赖使用完整锁文件与固定模型标识/哈希。
+14. succeeded作业重复投递在provider前直接返回；公开retry区分活跃和过期租约，过期重排使用attempt/owner fencing防止旧结果迟到写入。
 
 ## 验证命令
 
@@ -116,6 +117,7 @@ uv run --frozen python -m cra_app.providers.evaluate_labs --dataset tests/fixtur
 - 更正→单项确认、更正→批量确认、连续局部更正均保留当前有效值；原始识别历史不变。
 - 页眉身份/日期可供结果行复用；参考上下限本身不同即使标志相同也报告差异。
 - 上传请求快速返回job，worker中断/超时后同任务可恢复，撤权后不能继续读取。
+- 完成态worker复投不调用provider、不改revision/候选/完成审计；过期租约可经公开API恢复，活跃租约受保护，旧attempt不覆盖新结果和CRA更正。
 
 关联完整场景：CRA-S13、CRA-S19、CRA-S20、CRA-S21、CRA-S22、CRA-S36、CRA-S39。局部测试通过不自动把全部场景标为verified。
 

@@ -108,7 +108,7 @@ ApplicableRule补充preconditions、trigger、branches、follow_up、completion�
 | `GET /api/v1/rule-snapshots/{snapshot_id}/coverage` | 分开返回processed/background/analysis_required/unsupported/failed |
 | `POST /api/v1/version-activations` | 用户输入项目/中心实际`starts_on`及可选`ends_before`；上传时间不替代，重叠返回冲突ID |
 | `POST /api/v1/version-activations/{id}/preview-change` | 预览更正区间、重叠和受影响规则/版本；不追溯重判历史 |
-| `POST /api/v1/rules/applicable` | 按项目、中心、临床事件日和事实返回当前确认规则及OutputEnvelope；同规则多层并列、同层重叠冲突而不自动取最新/更严 |
+| `POST /api/v1/rules/applicable` | 按项目、中心、临床事件日和事实返回当前确认规则及OutputEnvelope；同源Rule沿革可按中心采用日选择，独立中心同编号规则仍与项目规则并列；同层真实重叠展示冲突，不自动取最新/更严 |
 
 `RuleNode`包含summary、preconditions、trigger、branches、exceptions、follow_up、completion、required_facts、children和source_refs。条件使用closed AST及true/false/unknown；无结构自由文本返回analysis_required。W04确定性provider仅支持任务卡声明的规则语句子集，不能表述为通用临床文本理解。
 
@@ -181,12 +181,12 @@ Issue聚合状态只用于展示；Action分别保存`open/reported_done/complet
 | `POST /api/v1/lab-reports/{id}/observations/{observation_id}/decision` | confirm/correct/skip追加保存；更正不覆盖自动识别结果，跳过只影响对应路径且不计正常 |
 | `POST /api/v1/lab-reports/{id}/observations/batch-confirm` | 仅批量确认通过结构/来源/实例校验的候选，避免逐字段机械点击 |
 | `POST /api/v1/lab-reports/{id}/observations` | 仅用于少量不可读/失败路径的人工候选补录，保留补录依据 |
-| `POST /api/v1/lab-reports/{id}/retry-recognition` | 失败/中断的识别Job重新入队；原文件、尝试和失败历史保留 |
+| `POST /api/v1/lab-reports/{id}/retry-recognition` | 失败/中断或running租约已过期的识别Job重新入队；活跃租约返回409；attempt/owner fencing隔离旧结果，原文件、候选、CRA更正和失败历史保留 |
 | `POST /api/v1/lab-comparisons` | 同一中心内先匹配再比较；返回`match_status`、`result_status`、字段结果、未知和明确scope，歧义不自动选数值最接近项 |
 | `GET /api/v1/lab-comparisons/{id}` | 读取不可变比较快照、已关联M06问题和来源 |
 | `POST /api/v1/lab-comparisons/{id}/issues` | 用户选择非一致字段后创建`edc_correction`待办；不自动创建PD上报或完成整改 |
 
-比较值保留原文、Decimal和可选`< <= > >=`，不同/未知单位返回`unit_review`。原始报告没有缓存或无法解释的文本不猜成数值。有效值按全部有序复核决策累积，后续confirm或局部字段更正不能回退之前的人工更正。报告级页眉受试者/日期/实例可经来源绑定一次后供结果行复用。参考上下限、比较符、单位和报告元数据分别比较，不能只比较正常/异常标志。确认/更正/跳过使报告revision前进；比较字段按有效来源状态返回`stale`，只有未变化字段可继续关联M06。`not_seen_in_export`沿用W07范围语义，不能改写为EDC漏录。SupportProfile、评估结果和未测范围见`validation/LAB_AUTOMATION_SCOPE.md`。
+比较值保留原文、Decimal和可选`< <= > >=`，不同/未知单位返回`unit_review`。原始报告没有缓存或无法解释的文本不猜成数值。有效值按全部有序复核决策累积，后续confirm或局部字段更正不能回退之前的人工更正。报告级页眉受试者/日期/实例可经来源绑定一次后供结果行复用。参考上下限、比较符、单位和报告元数据分别比较，不能只比较正常/异常标志。确认/更正/跳过使报告revision前进；比较字段按有效来源状态返回`stale`，只有未变化字段可继续关联M06。`not_seen_in_export`沿用W07范围语义，不能改写为EDC漏录。`succeeded`识别Job的重复投递是只读幂等重放；旧attempt不得写回。SupportProfile、评估结果和未测范围见`validation/LAB_AUTOMATION_SCOPE.md`。
 
 ## 14. W09已实现安全分析入口
 

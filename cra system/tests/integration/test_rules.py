@@ -747,6 +747,19 @@ def test_shared_project_rule_can_have_independent_site_adoption_dates(
         ExtractRuleCommand(idempotency_key="center-shared-extract"),
     )
     assert extraction.confirmed_count == 1
+    project_activation = services["rules"].create_activation(
+        services["admin"],
+        CreateActivationCommand(
+            expected_revision=0,
+            idempotency_key="center-project-default",
+            document_version_id=upload.document_version_id,
+            site_id=None,
+            starts_on=date(2025, 1, 1),
+            reason="Synthetic project default adoption",
+        ),
+    )
+    assert project_activation.conflicts == ()
+    site_activation_ids = {}
     for key, site in (
         ("center-a-start", services["site_a"]),
         ("center-b-start", services["site_b"]),
@@ -764,6 +777,7 @@ def test_shared_project_rule_can_have_independent_site_adoption_dates(
             ),
         )
         assert outcome.conflicts == ()
+        site_activation_ids[site] = outcome.activation_id
 
     scope_a = ScopeContext(
         actor_id="synthetic-cra-a",
@@ -787,9 +801,107 @@ def test_shared_project_rule_can_have_independent_site_adoption_dates(
             ),
         )
 
-    assert active(scope_a, services["site_a"], "2026-01-15").rules
-    assert not active(scope_b, services["site_b"], "2026-01-15").rules
-    assert active(scope_b, services["site_b"], "2026-02-15").rules
+    active_a = active(scope_a, services["site_a"], "2026-01-15")
+    assert len(active_a.rules) == 1
+    assert active_a.rules[0].activation_id == site_activation_ids[
+        services["site_a"]
+    ]
+    active_b_before = active(scope_b, services["site_b"], "2026-01-15")
+    assert len(active_b_before.rules) == 1
+    assert (
+        active_b_before.rules[0].activation_id
+        == project_activation.activation_id
+    )
+    active_b_after = active(scope_b, services["site_b"], "2026-02-15")
+    assert len(active_b_after.rules) == 1
+    assert active_b_after.rules[0].activation_id == site_activation_ids[
+        services["site_b"]
+    ]
+
+
+def test_independent_site_rule_cannot_hide_same_key_project_rule(
+    services: dict,
+):
+    def add_rule_document(*, site_id, label: str, action: str):
+        upload = services["documents"].create_document(
+            services["admin"],
+            services["study"],
+            CreateDocumentCommand(
+                expected_revision=0,
+                idempotency_key=f"independent-scope-{label}",
+                site_id=site_id,
+                title=f"Synthetic {label} same-key rule",
+                document_type="protocol" if site_id is None else "sop",
+                purpose="rule",
+                version_label="v1",
+            ),
+            filename=f"synthetic_independent_{label}.txt",
+            content=(
+                "Rule R-SAME-KEY-SCOPE-01: "
+                f"Synthetic {label} requirement.\n"
+                "Trigger: scope_ready = true\n"
+                f"Branch A: WHEN scope_ready = true THEN {action}\n"
+                "Required facts: scope_ready\n"
+            ).encode(),
+        )
+        assert (
+            services["documents"].process_job(upload.job_id).status
+            == "completed"
+        )
+        extraction = services["rules"].extract_candidates(
+            services["admin"],
+            upload.document_version_id,
+            ExtractRuleCommand(
+                idempotency_key=f"independent-scope-extract-{label}"
+            ),
+        )
+        assert extraction.confirmed_count == 1
+        outcome = services["rules"].create_activation(
+            services["admin"],
+            CreateActivationCommand(
+                expected_revision=0,
+                idempotency_key=f"independent-scope-activate-{label}",
+                document_version_id=upload.document_version_id,
+                site_id=site_id,
+                starts_on=date(2021, 1, 1),
+                reason="Synthetic independent source activation",
+            ),
+        )
+        assert outcome.conflicts == ()
+
+    add_rule_document(
+        site_id=None,
+        label="project",
+        action="retain project review",
+    )
+    add_rule_document(
+        site_id=services["site_a"],
+        label="site",
+        action="perform site review",
+    )
+    scope = ScopeContext(
+        actor_id="synthetic-cra-a",
+        tenant_id="synthetic-tenant",
+        authentication_source="trusted-test",
+    )
+    outcome = services["rules"].applicable_rules(
+        scope,
+        ApplicableRuleQuery(
+            study_id=services["study"],
+            site_id=services["site_a"],
+            event_date=date(2021, 1, 2),
+            facts={"scope_ready": FactValue(value=True)},
+        ),
+    )
+    visible = {
+        (item.rule.policy_layer, item.tree.summary)
+        for item in outcome.rules
+    }
+    assert visible == {
+        ("study", "Synthetic project requirement"),
+        ("site", "Synthetic site requirement"),
+    }
+    assert outcome.envelope.conflicts == []
 
 
 def test_natural_chinese_rule_prose_becomes_reviewable_candidate(

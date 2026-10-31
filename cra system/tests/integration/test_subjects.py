@@ -362,6 +362,92 @@ def _upload_gated_text_window_rule(api: TestClient, services: dict) -> dict:
     return body
 
 
+def _confirm_nested_window_rule(api: TestClient, services: dict) -> None:
+    rules = api.get(
+        f"/api/v1/studies/{services['study']}/rules",
+        params={"site_id": str(services["site_a"])},
+    )
+    assert rules.status_code == 200, rules.text
+    item = next(
+        rule
+        for rule in rules.json()
+        if rule["rule_key"] == "R-WINDOW-GATED-01"
+    )
+    version_id = item["current_version"]["id"]
+    detail = api.get(f"/api/v1/rule-versions/{version_id}")
+    assert detail.status_code == 200, detail.text
+    source_ref = detail.json()["tree"]["source_refs"][0]
+    interval = {
+        "op": "date_interval",
+        "fact_key": "visit_date",
+        "anchor_fact_key": "infusion_date",
+        "min_days": -2,
+        "max_days": 2,
+        "inclusive": True,
+    }
+    confirmed = api.post(
+        f"/api/v1/rules/{item['id']}/confirmation",
+        json={
+            "expected_revision": item["revision"],
+            "idempotency_key": "w05-nested-parent-confirmation",
+            "base_version_id": version_id,
+            "reason": "Add synthetic nested applicability boundary",
+            "operations": [
+                {
+                    "op": "edit_fields",
+                    "preconditions": [
+                        {
+                            "op": "eq",
+                            "left": {
+                                "kind": "fact_ref",
+                                "fact_key": "gate_ok",
+                            },
+                            "right": {
+                                "kind": "literal",
+                                "value": True,
+                            },
+                        }
+                    ],
+                },
+                {
+                    "op": "add_exception",
+                    "exception": {
+                        "exception_key": "PARENT-WAIVER",
+                        "description": "Synthetic parent waiver",
+                        "condition": {
+                            "op": "eq",
+                            "left": {
+                                "kind": "fact_ref",
+                                "fact_key": "waiver",
+                            },
+                            "right": {
+                                "kind": "literal",
+                                "value": True,
+                            },
+                        },
+                        "source_refs": [source_ref],
+                    },
+                },
+                {
+                    "op": "add_child",
+                    "child": {
+                        "node_key": "R-WINDOW-GATED-01-NESTED",
+                        "summary": "Synthetic nested visit window",
+                        "trigger": interval,
+                        "required_facts": [
+                            "infusion_date",
+                            "visit_date",
+                        ],
+                        "source_refs": [source_ref],
+                    },
+                },
+            ],
+        },
+        headers={"X-CSRF-Token": api.cookies.get("cra_csrf")},
+    )
+    assert confirmed.status_code == 200, confirmed.text
+
+
 def _context_rows(filename: str) -> list[FactImportRow]:
     return parse_context_file(
         filename, (SUBJECT_FIXTURES / filename).read_bytes()
@@ -565,6 +651,197 @@ def test_visit_window_respects_gate_unknown_date_and_auto_candidate_status(
         item["code"] == "unknown_visit_applicability"
         for item in unknown_gate_body["envelope"]["unknowns"]
     )
+
+
+def test_nested_visit_windows_inherit_parent_gates_and_keep_out_of_window(
+    api, services
+):
+    _upload_gated_text_window_rule(api, services)
+    _confirm_nested_window_rule(api, services)
+    ref = {
+        "source_type": "record",
+        "source_id": "synthetic-nested-parent-source",
+        "locator": "synthetic/nested-parent",
+        "quote": "Pure synthetic nested parent facts",
+    }
+
+    def fact(subject, key, value, value_type="boolean"):
+        return FactImportRow(
+            subject_external_id=subject,
+            fact_key=key,
+            value_raw=str(value),
+            value_type=value_type,
+            observed_on=date(2026, 1, 1),
+            source_ref=ref,
+        )
+
+    rows = []
+    for subject, gate_ok, waiver in (
+        ("SYN-NESTED-PARENT-FALSE", False, False),
+        ("SYN-NESTED-PARENT-WAIVED", True, True),
+    ):
+        rows.extend(
+            [
+                fact(subject, "screening_active", True),
+                fact(subject, "gate_ok", gate_ok),
+                fact(subject, "waiver", waiver),
+                fact(subject, "infusion_date", "2026-01-01", "date"),
+                fact(subject, "visit_date", "2026-01-10", "date"),
+            ]
+        )
+    rows.extend(
+        [
+            fact("SYN-NESTED-PARENT-UNKNOWN", "screening_active", True),
+            fact("SYN-NESTED-PARENT-UNKNOWN", "waiver", False),
+            fact(
+                "SYN-NESTED-PARENT-UNKNOWN",
+                "infusion_date",
+                "2026-01-01",
+                "date",
+            ),
+            fact(
+                "SYN-NESTED-PARENT-UNKNOWN",
+                "visit_date",
+                "2026-01-10",
+                "date",
+            ),
+            fact("SYN-NESTED-OUT", "screening_active", True),
+            fact("SYN-NESTED-OUT", "gate_ok", True),
+            fact("SYN-NESTED-OUT", "waiver", False),
+            fact("SYN-NESTED-OUT", "infusion_date", "2026-01-01", "date"),
+            fact("SYN-NESTED-OUT", "visit_date", "2026-01-10", "date"),
+        ]
+    )
+    _import_rows(services, rows, key="w05-nested-parent-window")
+
+    expected = {
+        "SYN-NESTED-PARENT-FALSE": "not_applicable",
+        "SYN-NESTED-PARENT-WAIVED": "not_applicable",
+        "SYN-NESTED-PARENT-UNKNOWN": "unknown_applicability",
+        "SYN-NESTED-OUT": "out_of_window",
+    }
+    for external_id, status in expected.items():
+        subject = _subject_by_external(api, services, external_id)
+        body = _evaluate(api, subject["id"], "2026-01-10")
+        nested = [
+            item
+            for item in body["requirements"]
+            if "NESTED" in item["requirement"]["visit_key"]
+        ]
+        assert len(nested) == 1
+        assert nested[0]["window_status"] == status
+
+
+def test_sibling_equal_visit_windows_keep_distinct_condition_paths(
+    api, services
+):
+    content = (
+        "Rule R-WINDOW-SIBLINGS-01: Synthetic sibling paths.\n"
+        "Trigger: screening_active = true\n"
+        "Branch B1: WHEN visit_date within -2..2 days of infusion_date "
+        "THEN review path B1\n"
+        "Branch B2: WHEN visit_date within -2..2 days of infusion_date "
+        "THEN review path B2\n"
+        "Required facts: screening_active, infusion_date, visit_date\n"
+    ).encode()
+    upload = api.post(
+        f"/api/v1/studies/{services['study']}/documents",
+        files={
+            "file": (
+                "synthetic_sibling_window_rule.txt",
+                content,
+                "text/plain",
+            )
+        },
+        data={
+            "title": "Synthetic sibling visit windows",
+            "document_type": "text",
+            "purpose": "rule",
+            "version_label": "v1",
+            "expected_revision": "0",
+            "site_id": str(services["site_a"]),
+        },
+        headers={
+            "Idempotency-Key": "w05-sibling-rule-upload",
+            "X-CSRF-Token": api.cookies.get("cra_csrf"),
+        },
+    )
+    assert upload.status_code == 202, upload.text
+    uploaded = upload.json()
+    assert services["documents"].process_job(
+        uuid.UUID(uploaded["job_id"])
+    ).status == "completed"
+    extracted = api.post(
+        f"/api/v1/document-versions/{uploaded['document_version_id']}"
+        "/rule-candidates",
+        json={
+            "expected_revision": 0,
+            "idempotency_key": "w05-sibling-extract",
+        },
+        headers={"X-CSRF-Token": api.cookies.get("cra_csrf")},
+    )
+    assert extracted.status_code == 202, extracted.text
+    activation = api.post(
+        "/api/v1/version-activations",
+        json={
+            "expected_revision": 0,
+            "idempotency_key": "w05-sibling-activation",
+            "document_version_id": uploaded["document_version_id"],
+            "starts_on": "2020-01-01",
+            "reason": "Synthetic sibling branch activation",
+        },
+        headers={"X-CSRF-Token": api.cookies.get("cra_csrf")},
+    )
+    assert activation.status_code == 200, activation.text
+    ref = {
+        "source_type": "record",
+        "source_id": "synthetic-sibling-window-source",
+        "locator": "synthetic/siblings",
+        "quote": "Pure synthetic sibling window facts",
+    }
+    _import_rows(
+        services,
+        [
+            FactImportRow(
+                subject_external_id="SYN-SIBLING-WINDOW",
+                fact_key="screening_active",
+                value_raw="true",
+                value_type="boolean",
+                observed_on=date(2026, 1, 1),
+                source_ref=ref,
+            ),
+            FactImportRow(
+                subject_external_id="SYN-SIBLING-WINDOW",
+                fact_key="infusion_date",
+                value_raw="2026-01-01",
+                value_type="date",
+                observed_on=date(2026, 1, 1),
+                source_ref=ref,
+            ),
+            FactImportRow(
+                subject_external_id="SYN-SIBLING-WINDOW",
+                fact_key="visit_date",
+                value_raw="2026-01-02",
+                value_type="date",
+                observed_on=date(2026, 1, 2),
+                source_ref=ref,
+            ),
+        ],
+        key="w05-sibling-window-facts",
+    )
+    subject = _subject_by_external(
+        api, services, "SYN-SIBLING-WINDOW"
+    )
+    body = _evaluate(api, subject["id"], "2026-01-02")
+    sibling_keys = {
+        item["requirement"]["visit_key"]
+        for item in body["requirements"]
+        if "R-WINDOW-SIBLINGS-01" in item["requirement"]["visit_key"]
+    }
+    assert sibling_keys == {
+        "R-WINDOW-SIBLINGS-01:branch:B1",
+        "R-WINDOW-SIBLINGS-01:branch:B2",
+    }
 
 
 def test_structured_context_json_csv_and_xlsx_parse_same_subjects():

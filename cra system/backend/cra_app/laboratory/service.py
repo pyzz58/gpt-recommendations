@@ -131,6 +131,15 @@ class IssueLinkResult:
     links: tuple[tuple[uuid.UUID, uuid.UUID], ...]
 
 
+@dataclass(frozen=True)
+class RecognitionJobClaim:
+    job_id: uuid.UUID
+    report_id: uuid.UUID
+    worker_id: str | None
+    attempt: int | None
+    already_completed: bool = False
+
+
 def _digest(value: Any) -> str:
     return hashlib.sha256(
         json.dumps(
@@ -716,7 +725,7 @@ class LaboratoryService:
         job_id: uuid.UUID,
         *,
         worker_id: str,
-    ) -> uuid.UUID:
+    ) -> RecognitionJobClaim:
         self._authorize_read(scope, *self._job_scope(job_id))
         with self.session_factory() as session:
             with session.begin():
@@ -736,7 +745,13 @@ class LaboratoryService:
                     )
                     if report is None:
                         raise LaboratoryNotFound("laboratory report was not found")
-                    return report.id
+                    return RecognitionJobClaim(
+                        job_id=job.id,
+                        report_id=report.id,
+                        worker_id=None,
+                        attempt=None,
+                        already_completed=True,
+                    )
                 lease_active = (
                     job.status == "running"
                     and job.lease_expires_at is not None
@@ -762,11 +777,38 @@ class LaboratoryService:
                     raise LaboratoryNotFound("laboratory report was not found")
                 job.status = "running"
                 job.attempts += 1
-                job.lease_owner = worker_id[:128]
+                claimed_worker = worker_id[:128]
+                job.lease_owner = claimed_worker
                 job.lease_expires_at = now + timedelta(minutes=15)
                 job.error_code = None
                 job.error_summary = None
-                return report.id
+                return RecognitionJobClaim(
+                    job_id=job.id,
+                    report_id=report.id,
+                    worker_id=claimed_worker,
+                    attempt=job.attempts,
+                )
+
+    @staticmethod
+    def _claim_is_active(
+        session: Session,
+        claim: RecognitionJobClaim,
+    ) -> bool:
+        job = session.get(
+            LabRecognitionJob,
+            claim.job_id,
+            with_for_update=True,
+        )
+        if job is None or claim.already_completed:
+            return False
+        now = datetime.now(UTC)
+        return bool(
+            job.status == "running"
+            and job.lease_owner == claim.worker_id
+            and job.attempts == claim.attempt
+            and job.lease_expires_at is not None
+            and job.lease_expires_at > now
+        )
 
     def _job_scope(self, job_id: uuid.UUID) -> tuple[uuid.UUID, uuid.UUID]:
         with self.session_factory() as session:
@@ -784,8 +826,10 @@ class LaboratoryService:
         *,
         worker_id: str,
     ) -> ReportDetail:
-        report_id = self._claim_job(scope, job_id, worker_id=worker_id)
-        report = self._load_report(scope, report_id)
+        claim = self._claim_job(scope, job_id, worker_id=worker_id)
+        if claim.already_completed:
+            return self.report_detail(scope, claim.report_id)
+        report = self._load_report(scope, claim.report_id)
         stored = self.documents.read_content(
             scope, report.source_document_version_id
         )
@@ -798,16 +842,26 @@ class LaboratoryService:
             draft = extract_observations(result)
         except LabProviderUnavailable as exc:
             return self._finish_unavailable_report(
-                scope, report.id, provider_name="disabled", warning=str(exc)
+                scope,
+                report.id,
+                claim=claim,
+                provider_name="disabled",
+                warning=str(exc),
             )
         except LabProviderError as exc:
             return self._finish_failed_report(
                 scope,
                 report.id,
+                claim=claim,
                 provider_name=getattr(self.provider, "name", "provider"),
                 warning=f"provider_failed:{type(exc).__name__}",
             )
-        return self._store_recognition(scope, report.id, draft)
+        return self._store_recognition(
+            scope,
+            report.id,
+            claim=claim,
+            draft=draft,
+        )
 
     def retry_recognition(
         self, scope: ScopeContext, report_id: uuid.UUID
@@ -825,7 +879,12 @@ class LaboratoryService:
                     raise LaboratoryNotFound(
                         "laboratory recognition job was not found"
                     )
-                if job.status == "running":
+                now = datetime.now(UTC)
+                if (
+                    job.status == "running"
+                    and job.lease_expires_at is not None
+                    and job.lease_expires_at > now
+                ):
                     raise LaboratoryConflict(
                         "running laboratory recognition cannot be retried"
                     )
@@ -847,7 +906,7 @@ class LaboratoryService:
                         aggregate_id=job.id,
                         dedup_key=(
                             f"laboratory-recognition-retry:{job.id}:"
-                            f"{job.attempts}:{datetime.now(UTC).isoformat()}"
+                            f"{job.attempts}:{now.isoformat()}"
                         ),
                         payload={"recognition_job_id": str(job.id)},
                     )
@@ -860,11 +919,14 @@ class LaboratoryService:
         scope: ScopeContext,
         report_id: uuid.UUID,
         *,
+        claim: RecognitionJobClaim,
         provider_name: str,
         warning: str,
     ) -> ReportDetail:
         with self.session_factory() as session:
             with session.begin():
+                if not self._claim_is_active(session, claim):
+                    return self.report_detail(scope, report_id)
                 report = session.get(
                     LabReportVersion, report_id, with_for_update=True
                 )
@@ -895,11 +957,14 @@ class LaboratoryService:
         scope: ScopeContext,
         report_id: uuid.UUID,
         *,
+        claim: RecognitionJobClaim,
         provider_name: str,
         warning: str,
     ) -> ReportDetail:
         with self.session_factory() as session:
             with session.begin():
+                if not self._claim_is_active(session, claim):
+                    return self.report_detail(scope, report_id)
                 report = session.get(
                     LabReportVersion, report_id, with_for_update=True
                 )
@@ -929,10 +994,14 @@ class LaboratoryService:
         self,
         scope: ScopeContext,
         report_id: uuid.UUID,
+        *,
+        claim: RecognitionJobClaim,
         draft: RecognitionDraft,
     ) -> ReportDetail:
         with self.session_factory() as session:
             with session.begin():
+                if not self._claim_is_active(session, claim):
+                    return self.report_detail(scope, report_id)
                 report = session.get(
                     LabReportVersion, report_id, with_for_update=True
                 )

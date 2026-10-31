@@ -71,7 +71,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W04 实现规则候选提取及分层list](work_packages/CRA-W04.md)
 
-状态：verified；前置：CRA-W03。
+状态：in_progress；前置：CRA-W03。
 
 进入条件：已解析原文、处理覆盖及授权提取端口可用。
 
@@ -83,7 +83,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W05 实现患者事实、锚点与核查断点](work_packages/CRA-W05.md)
 
-状态：verified；前置：CRA-W04。
+状态：in_progress；前置：CRA-W04。
 
 进入条件：规则版本和三值逻辑可用，准备患者上下文合成表。
 
@@ -95,7 +95,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W06 实现遗留整理、提醒与点击确认整改](work_packages/CRA-W06.md)
 
-状态：verified；前置：CRA-W05。
+状态：in_progress；前置：CRA-W05。
 
 进入条件：事实、来源与规则接口可用，完整M10非前置。
 
@@ -107,7 +107,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W07 实现EDC Excel检验快照导入](work_packages/CRA-W07.md)
 
-状态：verified；前置：CRA-W05。
+状态：in_progress；前置：CRA-W05。
 
 进入条件：患者映射及快照范围契约可用。
 
@@ -119,7 +119,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W08 实现检验源文件自动读取与EDC核对](work_packages/CRA-W08.md)
 
-状态：verified；前置：CRA-W06、CRA-W07。
+状态：in_progress；前置：CRA-W06、CRA-W07。
 
 进入条件：W06/W07通过；W03探测已给出可安装、可运行的识别候选，支持格式和代表性评估输入已确定。
 
@@ -131,7 +131,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W09 实现有依据的AE及PD分析](work_packages/CRA-W09.md)
 
-状态：verified；前置：CRA-W04、CRA-W06、CRA-W08。
+状态：in_progress；前置：CRA-W04、CRA-W06、CRA-W08。
 
 进入条件：自动比较结果、规则依据与已有安全上下文可用；缺项允许明确保留未知。
 

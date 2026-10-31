@@ -58,3 +58,5 @@ PaddleOCR/表格结构为首候选，Docling作对照；界面复用AG Grid Comm
 W08支持的合成范围、关键字段结果、耗时和限制见[LAB_AUTOMATION_SCOPE](../../validation/LAB_AUTOMATION_SCOPE.md)。该证据是synthetic/provider工程验证，不是真实临床性能或全版式支持。
 
 2026-11-01复核补充：人工更正按完整有效决策链折叠，confirm不会恢复原OCR值；参考上下限和报告级上下文分别保留。检验上传改为持久Job/Outbox/Procrastinate worker，带租约和显式重试；页眉身份/日期可一次校验后供不重复这些字段的结果行复用。隔离Docling环境使用`provider-locks/ocr-*.txt`完整哈希锁。
+
+独立复核再次补充：`succeeded`作业的重复投递直接返回既有报告，不读取源文件、不调用provider、不追加候选或完成审计。公开retry只在running租约仍有效时返回冲突；租约过期后重排同一Job。每次claim的attempt、worker owner和未过期租约共同构成fencing条件，旧attempt迟到不能写入新结果，已存在的CRA更正和候选保持。

@@ -1,0 +1,79 @@
+# 2026-11-01 remediation recheck closure
+
+Status: implementation and local verification complete; source-bound cloud
+verification is required before W04-W09 return to verified.
+
+The independent review at
+https://github.com/pyzz58/gpt-recommendations/actions/runs/41247079903
+reproduced three residuals. Its five green diagnostic cases meant
+`acceptance_passed=false`; this record does not reuse them as product
+acceptance.
+
+## CRA-REV-20261101-03
+
+Date-interval extraction now carries all ancestor preconditions, exceptions
+and non-date branch gates into child nodes at any depth. Window identity
+includes the RuleNode path and gate-condition signature, so equal sibling
+intervals under distinct paths remain separate.
+
+Forward PostgreSQL/API regressions:
+
+- `test_nested_visit_windows_inherit_parent_gates_and_keep_out_of_window`
+- `test_sibling_equal_visit_windows_keep_distinct_condition_paths`
+
+The tests cover false parent prerequisite, true parent waiver, unknown ancestor
+applicability, equal sibling windows and a genuinely applicable visit outside
+the window.
+
+## CRA-REV-20261101-04
+
+Project-default suppression now uses the explicit Rule identity/version
+lineage. A site adoption of the same shared Rule can select the center's
+effective version without creating a duplicate project rule. An independently
+extracted center SOP with the same `rule_key` is a different Rule and remains in
+the three-layer result alongside the project rule.
+
+Forward PostgreSQL regressions:
+
+- `test_shared_project_rule_can_have_independent_site_adoption_dates`
+- `test_independent_site_rule_cannot_hide_same_key_project_rule`
+
+The tests cover project default plus two center adoption dates and independent
+same-key project/site requirements.
+
+## CRA-REV-20261101-08
+
+Recognition job claims now distinguish already-succeeded replay from active
+work. A repeated delivery of a succeeded job returns the existing report before
+source read, provider inference or candidate persistence.
+
+Running retries protect a live lease and accept only an expired lease. The
+attempt number, worker owner and unexpired lease are checked transactionally
+before any result write. A late obsolete attempt therefore returns the current
+report without changing observations, revision or CRA corrections.
+
+Forward PostgreSQL/API/worker regressions:
+
+- `test_succeeded_job_redelivery_is_noop_before_provider`
+- `test_public_retry_recovers_expired_lease_but_protects_live_lease`
+- `test_obsolete_attempt_cannot_overwrite_new_result_or_cra_correction`
+- existing `test_real_procrastinate_worker_processes_laboratory_job`
+
+## Preserved limits
+
+- Ordinary Chinese text still produces reviewable `analysis_required`
+  candidates rather than a complete arbitrary-protocol AST.
+- Laboratory recognition remains limited to the declared synthetic text,
+  clear-print image and Chinese header-context formats.
+- iPad, weak-network and cross-device validation remain under W12/W15.
+- No real clinical data, deployment, external send or EDC write-back was used.
+
+Local verification at the implementation checkpoint:
+
+- full non-S3 pytest: 122 passed;
+- W04/W05/W08 focused PostgreSQL tests: 40 passed;
+- frontend: 13 passed, TypeScript and production build passed;
+- traceability and synchronization checks passed.
+
+The authoritative tested commit, GitHub run and task digests are recorded after
+the task-specific CI completes.

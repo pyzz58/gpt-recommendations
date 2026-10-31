@@ -1,6 +1,6 @@
 # CRA-W05 completion record
 
-Status: verified. Date: 2026-11-01.
+Status: revalidation in progress for the independent remediation recheck.
 
 2026-11-01 review-remediation revalidation supersedes the older evidence
 below: run

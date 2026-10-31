@@ -140,7 +140,7 @@ ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping�
 
 迁移`0007_laboratory_comparison`增加：
 
-- `lab_recognition_jobs`：项目/中心、M02源文档版本、操作者/身份来源、幂等摘要、queued/running/succeeded/failed、attempt、错误和输出摘要。
+- `lab_recognition_jobs`：项目/中心、M02源文档版本、操作者/身份来源、幂等摘要、queued/running/succeeded/failed、attempt、最大尝试、worker owner/租约到期、错误和输出摘要；attempt+owner+有效租约作为旧结果写入的fencing条件。
 - `lab_report_versions`：M02源文档版本、源哈希、文件格式、provider/model版本、SupportProfile、警告、状态、候选数量和对应识别Job；同一源版本只建立一份报告识别记录。
 - `lab_observations`：保留受试者外部ID、访视、项目原文/规范化、样本、采样精度、初检/复查、报告版本、结果原文/Decimal/operator、单位、参考范围、自动/复核状态、问题及原始页/表/行/字段bbox。来源候选和比较结果由数据库触发器禁止更新或删除。
 - `lab_observation_decisions`：confirm/correct/skip以append-only动作保存，含人工更正字段、说明、操作者和时间。有效字段由原候选叠加最新动作计算，更正不覆盖原识别结果。

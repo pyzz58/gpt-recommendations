@@ -72,81 +72,139 @@ def _date_interval(condition: RuleCondition | None) -> tuple[str, str, int, int,
 def extract_date_interval_specs(node: RuleNode) -> list[DateIntervalSpec]:
     specs: list[DateIntervalSpec] = []
 
-    def add(
-        condition: RuleCondition | None,
-        path: str,
-        gate_conditions: tuple[RuleCondition, ...],
+    def condition_signature(condition: RuleCondition) -> str:
+        return condition.model_dump_json(exclude_none=True)
+
+    def extract(
+        current: RuleNode,
+        *,
+        inherited_gates: tuple[RuleCondition, ...],
+        path_prefix: str,
+        suppress_trigger: bool = False,
     ) -> None:
-        parsed = _date_interval(condition)
-        if parsed:
-            anchor, event, minimum, maximum, inclusive = parsed
-            specs.append(
-                DateIntervalSpec(
-                    node_key=node.node_key,
-                    path=path,
-                    anchor_fact_key=anchor,
-                    event_fact_key=event,
-                    min_days=minimum,
-                    max_days=maximum,
-                    inclusive=inclusive,
-                    gate_conditions=gate_conditions,
+        def add(
+            condition: RuleCondition | None,
+            path: str,
+            gate_conditions: tuple[RuleCondition, ...],
+        ) -> None:
+            parsed = _date_interval(condition)
+            if parsed:
+                anchor, event, minimum, maximum, inclusive = parsed
+                specs.append(
+                    DateIntervalSpec(
+                        node_key=current.node_key,
+                        path=f"{path_prefix}{path}",
+                        anchor_fact_key=anchor,
+                        event_fact_key=event,
+                        min_days=minimum,
+                        max_days=maximum,
+                        inclusive=inclusive,
+                        gate_conditions=gate_conditions,
+                    )
                 )
+
+        precondition_gates = tuple(
+            RuleCondition(op="not", child=exception.condition)
+            for exception in current.exceptions
+            if exception.condition is not None
+        )
+        trigger_gate = (
+            (current.trigger,)
+            if current.trigger is not None
+            and current.trigger.op != "date_interval"
+            else ()
+        )
+        base_gates = (
+            inherited_gates
+            + tuple(current.preconditions)
+            + precondition_gates
+        )
+        branch_gates = base_gates + trigger_gate
+        for index, precondition in enumerate(current.preconditions):
+            add(
+                precondition,
+                f"precondition[{index}]",
+                (
+                    inherited_gates
+                    + tuple(
+                        gate
+                        for gate_index, gate in enumerate(
+                            current.preconditions
+                        )
+                        if gate_index != index
+                    )
+                    + precondition_gates
+                    + trigger_gate
+                ),
+            )
+        if not suppress_trigger:
+            add(current.trigger, "trigger", base_gates)
+        for branch in current.branches:
+            add(
+                branch.condition,
+                f"branch:{branch.branch_key}",
+                branch_gates,
+            )
+        for exception in current.exceptions:
+            add(
+                exception.condition,
+                f"exception:{exception.exception_key}",
+                (
+                    inherited_gates
+                    + tuple(current.preconditions)
+                    + trigger_gate
+                    + tuple(
+                        RuleCondition(op="not", child=other.condition)
+                        for other in current.exceptions
+                        if other.exception_key != exception.exception_key
+                        and other.condition is not None
+                    )
+                ),
+            )
+        branch_targets = {
+            target
+            for branch in current.branches
+            for target in branch.target_node_ids
+        }
+        for child in current.children:
+            extract(
+                child,
+                inherited_gates=branch_gates,
+                path_prefix=f"{path_prefix}{child.node_key}:",
+                suppress_trigger=child.node_key in branch_targets,
             )
 
-    base_gates = tuple(node.preconditions) + tuple(
-        RuleCondition(op="not", child=exception.condition)
-        for exception in node.exceptions
-        if exception.condition is not None
+    extract(
+        node,
+        inherited_gates=(),
+        path_prefix="",
     )
-    for index, precondition in enumerate(node.preconditions):
-        gates = tuple(
-            gate
-            for gate_index, gate in enumerate(node.preconditions)
-            if gate_index != index
-        )
-        add(precondition, f"precondition[{index}]", gates)
-    add(node.trigger, "trigger", base_gates)
-    branch_gates = (
-        base_gates + (node.trigger,)
-        if node.trigger is not None and node.trigger.op != "date_interval"
-        else base_gates
-    )
-    for branch in node.branches:
-        add(
-            branch.condition,
-            f"branch:{branch.branch_key}",
-            branch_gates,
-        )
-    exception_gates = branch_gates
-    for exception in node.exceptions:
-        add(
-            exception.condition,
-            f"exception:{exception.exception_key}",
-            exception_gates,
-        )
-    for child in node.children:
-        specs.extend(
-            DateIntervalSpec(
-                node_key=spec.node_key,
-                path=f"{child.node_key}:{spec.path}",
-                anchor_fact_key=spec.anchor_fact_key,
-                event_fact_key=spec.event_fact_key,
-                min_days=spec.min_days,
-                max_days=spec.max_days,
-                inclusive=spec.inclusive,
-                gate_conditions=spec.gate_conditions,
-            )
-            for spec in extract_date_interval_specs(child)
-        )
     unique: list[DateIntervalSpec] = []
-    seen: set[tuple[str, str, int, int, bool]] = set()
+    seen: set[
+        tuple[
+            str,
+            str,
+            str,
+            str,
+            int,
+            int,
+            bool,
+            tuple[str, ...],
+        ]
+    ] = set()
     for spec in specs:
         key = (
+            spec.node_key,
+            spec.path,
             spec.anchor_fact_key,
             spec.event_fact_key,
             spec.min_days,
             spec.max_days,
             spec.inclusive,
+            tuple(
+                condition_signature(condition)
+                for condition in spec.gate_conditions
+            ),
         )
         if key in seen:
             continue

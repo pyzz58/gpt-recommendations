@@ -16,6 +16,7 @@ from cra_app.documents.service import DocumentService
 from cra_app.documents.storage import build_private_storage
 from cra_app.documents.models import DocumentVersion
 from cra_app.documents.worker import build_worker_app
+from cra_app.governance.models import AuditEvent
 from cra_app.governance.identity import SyntheticIdentityProvider
 from cra_app.governance.service import (
     CreateSite,
@@ -30,6 +31,7 @@ from cra_app.laboratory.comparison import (
     ObservationValue,
     compare_observation,
 )
+from cra_app.laboratory.recognition import extract_observations
 from cra_app.laboratory.models import (
     LabComparison,
     LabObservation,
@@ -332,13 +334,19 @@ def _confirm_edc(api: TestClient, services: dict) -> dict:
     return confirmed.json()
 
 
-def _upload_lab(api: TestClient, services: dict, *, key: str = "w08-lab") -> dict:
+def _queue_lab(
+    api: TestClient,
+    services: dict,
+    *,
+    key: str = "w08-lab",
+    title: str = "Synthetic W08 laboratory report",
+) -> dict:
     response = api.post(
         f"/api/v1/studies/{services['study']}/lab-reports",
         files={"file": (LAB_PDF.name, LAB_PDF.read_bytes(), "application/pdf")},
         data={
             "site_id": str(services["sites"]["site_a"]),
-            "title": "Synthetic W08 laboratory report",
+            "title": title,
             "version_label": "v1",
         },
         headers={**_csrf(api), "Idempotency-Key": key},
@@ -346,6 +354,11 @@ def _upload_lab(api: TestClient, services: dict, *, key: str = "w08-lab") -> dic
     assert response.status_code == 202, response.text
     queued = response.json()
     assert queued["state"] == "pending"
+    return queued
+
+
+def _upload_lab(api: TestClient, services: dict, *, key: str = "w08-lab") -> dict:
+    queued = _queue_lab(api, services, key=key)
     scope = ScopeContext(
         actor_id="synthetic-cra-a",
         tenant_id="synthetic-tenant",
@@ -961,6 +974,250 @@ def test_real_procrastinate_worker_processes_laboratory_job(
         assert job is not None
         assert job.status == "succeeded"
         assert job.attempts == 1
+
+
+def test_succeeded_job_redelivery_is_noop_before_provider(
+    api: TestClient, services: dict, session_factory
+):
+    report = _upload_lab(api, services, key="w08-redelivery-noop")
+    service = api.app.state.laboratory_service
+    real_provider = service.provider
+    calls = []
+
+    class CountingProvider:
+        enabled = True
+        name = "synthetic-counting-provider"
+        version = "1"
+
+        def recognize(self, content, *, filename, media_type):
+            calls.append(1)
+            return real_provider.recognize(
+                content,
+                filename=filename,
+                media_type=media_type,
+            )
+
+    scope = ScopeContext(
+        actor_id="synthetic-cra-a",
+        tenant_id="synthetic-tenant",
+        authentication_source="trusted-test",
+    )
+    with session_factory() as session:
+        audits_before = session.scalar(
+            select(func.count())
+            .select_from(AuditEvent)
+            .where(
+                AuditEvent.resource_id == uuid.UUID(report["id"]),
+                AuditEvent.action == "laboratory.recognition.completed",
+            )
+        )
+    service.provider = CountingProvider()
+    try:
+        worker = build_worker_app(
+            services["documents"],
+            _database_url(),
+            service,
+        )
+        worker.run_worker(queues=["laboratory"], concurrency=1, wait=False)
+    finally:
+        service.provider = real_provider
+    current = service.report_detail(scope, uuid.UUID(report["id"]))
+    assert calls == []
+    assert current.report.revision == report["revision"]
+    assert len(current.observations) == report["observations_count"] == 5
+    with session_factory() as session:
+        audits_after = session.scalar(
+            select(func.count())
+            .select_from(AuditEvent)
+            .where(
+                AuditEvent.resource_id == uuid.UUID(report["id"]),
+                AuditEvent.action == "laboratory.recognition.completed",
+            )
+        )
+        job = session.get(
+            LabRecognitionJob,
+            uuid.UUID(report["recognition_job_id"]),
+        )
+        assert job is not None and job.status == "succeeded"
+        assert job.attempts == 1
+    assert audits_after == audits_before == 1
+
+
+def test_public_retry_recovers_expired_lease_but_protects_live_lease(
+    api: TestClient, services: dict, session_factory
+):
+    expired = _queue_lab(
+        api,
+        services,
+        key="w08-expired-public-retry",
+        title="Synthetic expired public retry",
+    )
+    with session_factory() as session:
+        job = session.get(
+            LabRecognitionJob,
+            uuid.UUID(expired["recognition_job_id"]),
+        )
+        assert job is not None
+        job.status = "running"
+        job.attempts = 1
+        job.lease_owner = "synthetic-expired-worker"
+        job.lease_expires_at = datetime.now(UTC) - timedelta(minutes=1)
+        session.commit()
+    retried = api.post(
+        f"/api/v1/lab-reports/{expired['id']}/retry-recognition",
+        headers=_csrf(api),
+    )
+    assert retried.status_code == 202, retried.text
+    assert retried.json()["state"] == "pending"
+    with session_factory() as session:
+        job = session.get(
+            LabRecognitionJob,
+            uuid.UUID(expired["recognition_job_id"]),
+        )
+        assert job is not None
+        assert job.status == "queued"
+        assert job.lease_owner is None
+        assert job.lease_expires_at is None
+
+    worker = build_worker_app(
+        services["documents"],
+        _database_url(),
+        api.app.state.laboratory_service,
+    )
+    worker.run_worker(queues=["laboratory"], concurrency=1, wait=False)
+    completed = api.get(f"/api/v1/lab-reports/{expired['id']}")
+    assert completed.status_code == 200, completed.text
+    assert completed.json()["state"] == "recognized"
+    assert completed.json()["observations_count"] == 5
+
+    live = _queue_lab(
+        api,
+        services,
+        key="w08-live-public-retry",
+        title="Synthetic live public retry",
+    )
+    with session_factory() as session:
+        job = session.get(
+            LabRecognitionJob,
+            uuid.UUID(live["recognition_job_id"]),
+        )
+        assert job is not None
+        job.status = "running"
+        job.attempts = 1
+        job.lease_owner = "synthetic-live-worker"
+        job.lease_expires_at = datetime.now(UTC) + timedelta(minutes=10)
+        session.commit()
+    denied = api.post(
+        f"/api/v1/lab-reports/{live['id']}/retry-recognition",
+        headers=_csrf(api),
+    )
+    assert denied.status_code == 409, denied.text
+    with session_factory() as session:
+        job = session.get(
+            LabRecognitionJob,
+            uuid.UUID(live["recognition_job_id"]),
+        )
+        assert job is not None
+        assert job.status == "running"
+        assert job.lease_owner == "synthetic-live-worker"
+
+
+def test_obsolete_attempt_cannot_overwrite_new_result_or_cra_correction(
+    api: TestClient, services: dict, session_factory
+):
+    queued = _queue_lab(
+        api,
+        services,
+        key="w08-stale-attempt-fence",
+        title="Synthetic stale attempt fence",
+    )
+    service = api.app.state.laboratory_service
+    scope = ScopeContext(
+        actor_id="synthetic-cra-a",
+        tenant_id="synthetic-tenant",
+        authentication_source="trusted-test",
+    )
+    old_claim = service._claim_job(
+        scope,
+        uuid.UUID(queued["recognition_job_id"]),
+        worker_id="synthetic-obsolete-worker",
+    )
+    stored = services["documents"].read_content(
+        scope,
+        uuid.UUID(queued["source_document_version_id"]),
+    )
+    old_result = service.provider.recognize(
+        stored.content,
+        filename=stored.filename,
+        media_type=stored.media_type,
+    )
+    old_draft = extract_observations(old_result)
+    with session_factory() as session:
+        job = session.get(
+            LabRecognitionJob,
+            uuid.UUID(queued["recognition_job_id"]),
+        )
+        assert job is not None
+        job.lease_expires_at = datetime.now(UTC) - timedelta(minutes=1)
+        session.commit()
+    retried = api.post(
+        f"/api/v1/lab-reports/{queued['id']}/retry-recognition",
+        headers=_csrf(api),
+    )
+    assert retried.status_code == 202, retried.text
+    completed = service.process_recognition_job(
+        scope,
+        uuid.UUID(queued["recognition_job_id"]),
+        worker_id="synthetic-new-worker",
+    )
+    assert completed.report.state == "recognized"
+    hemoglobin = next(
+        row
+        for row in completed.observations
+        if row.analyte_raw == "Hemoglobin"
+        and row.instance_type == "initial"
+    )
+    corrected = api.post(
+        (
+            f"/api/v1/lab-reports/{queued['id']}/observations/"
+            f"{hemoglobin.id}/decision"
+        ),
+        json={
+            "expected_revision": completed.report.revision,
+            "idempotency_key": "w08-stale-attempt-correction",
+            "action": "correct",
+            "corrected_fields": {"value_raw": "119"},
+            "note": "Synthetic CRA correction before obsolete result arrives",
+        },
+        headers=_csrf(api),
+    )
+    assert corrected.status_code == 200, corrected.text
+    corrected_body = corrected.json()
+    stale = service._store_recognition(
+        scope,
+        uuid.UUID(queued["id"]),
+        claim=old_claim,
+        draft=old_draft,
+    )
+    current_report = api.get(f"/api/v1/lab-reports/{queued['id']}")
+    assert current_report.status_code == 200, current_report.text
+    current = next(
+        row
+        for row in current_report.json()["observations"]
+        if row["id"] == str(hemoglobin.id)
+    )
+    assert current["value_raw"] == "119"
+    assert current["extraction_state"] == "user_corrected"
+    assert stale.report.revision == corrected_body["revision"]
+    assert len(stale.observations) == 5
+    with session_factory() as session:
+        job = session.get(
+            LabRecognitionJob,
+            uuid.UUID(queued["recognition_job_id"]),
+        )
+        assert job is not None
+        assert job.status == "succeeded"
+        assert job.attempts == 2
 
 
 def test_chinese_report_identity_and_date_are_bound_once_for_all_rows(

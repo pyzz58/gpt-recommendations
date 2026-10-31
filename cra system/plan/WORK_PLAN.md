@@ -10,12 +10,12 @@
 | CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | verified |
 | CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | verified |
 | CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | verified |
-| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | verified |
-| CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | verified |
-| CRA-W06 | 实现遗留整理、提醒与点击确认整改 | CRA-W05 | M05、M06 | verified |
-| CRA-W07 | 实现EDC Excel检验快照导入 | CRA-W05 | M07 | verified |
-| CRA-W08 | 实现检验源文件自动读取与EDC核对 | CRA-W06、CRA-W07 | M08、M12 | verified |
-| CRA-W09 | 实现有依据的AE及PD分析 | CRA-W04、CRA-W06、CRA-W08 | M09、M12 | verified |
+| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | in_progress |
+| CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | in_progress |
+| CRA-W06 | 实现遗留整理、提醒与点击确认整改 | CRA-W05 | M05、M06 | in_progress |
+| CRA-W07 | 实现EDC Excel检验快照导入 | CRA-W05 | M07 | in_progress |
+| CRA-W08 | 实现检验源文件自动读取与EDC核对 | CRA-W06、CRA-W07 | M08、M12 | in_progress |
+| CRA-W09 | 实现有依据的AE及PD分析 | CRA-W04、CRA-W06、CRA-W08 | M09、M12 | in_progress |
 | CRA-W10 | 实现中心文件目录和其他阶段清单 | CRA-W04、CRA-W06 | M05、M10 | planned |
 | CRA-W11 | 实现访视信、报告和Excel导出 | CRA-W06、CRA-W09、CRA-W10 | M11 | planned |
 | CRA-W12 | 串联四阶段界面与一次完整监查 | CRA-W08、CRA-W09、CRA-W10、CRA-W11 | M05 | planned |
@@ -61,15 +61,11 @@
 
 对应理论：CRA-R002、CRA-R004、CRA-R005、CRA-R006、CRA-R007、CRA-R008、CRA-R009、CRA-R011、CRA-R019、CRA-R034、CRA-R035、CRA-R036、CRA-R038、CRA-R041
 
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w04 的普通中文段落/表格/脚注/Q&A、三值逻辑、未知例外、中心独立启用日和规则 provider 评估通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。
-
 ## CRA-W05 实现患者事实、锚点与核查断点
 
 验收：EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。
 
 对应理论：CRA-R010、CRA-R011、CRA-R012、CRA-R028、CRA-R034、CRA-R041、CRA-R045
-
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w05 的门槛/例外 unknown、未知实际日期、not_applicable 窗口和自动候选状态反例通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。
 
 ## CRA-W06 实现遗留整理、提醒与点击确认整改
 
@@ -77,15 +73,11 @@
 
 对应理论：CRA-R001、CRA-R009、CRA-R012、CRA-R020、CRA-R021、CRA-R022、CRA-R023、CRA-R025、CRA-R026、CRA-R027、CRA-R028、CRA-R031、CRA-R041、CRA-R043、CRA-R045
 
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w06 的历史遗留、一次确认整改、分项状态和真实 PostgreSQL 回归通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。
-
 ## CRA-W07 实现EDC Excel检验快照导入
 
 验收：预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。
 
 对应理论：CRA-R013、CRA-R014、CRA-R015、CRA-R034
-
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w07 的真实 XLSX 导入/不可变快照、contract 和前端回归通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。
 
 ## CRA-W08 实现检验源文件自动读取与EDC核对
 
@@ -93,15 +85,11 @@
 
 对应理论：CRA-R013、CRA-R015、CRA-R016、CRA-R017、CRA-R034、CRA-R035、CRA-R038
 
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w08 的更正链、参考范围、报告级上下文、真实异步 worker 与真实 Docling 评估通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。
-
 ## CRA-W09 实现有依据的AE及PD分析
 
 验收：基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。
 
 对应理论：CRA-R007、CRA-R016、CRA-R018、CRA-R019、CRA-R020、CRA-R035、CRA-R036、CRA-R038、CRA-R042
-
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w09 的事件事实归属、检验安全衔接、异步 provider run、真实 Qwen/Docling 评估和全部受影响回归通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。
 
 ## CRA-W10 实现中心文件目录和其他阶段清单
 
