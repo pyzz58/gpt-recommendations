@@ -106,6 +106,22 @@ class TraceabilityTests(unittest.TestCase):
             ):
                 task["status"] = "in_progress"
                 task["completion_evidence"] = None
+        changed = True
+        while changed:
+            changed = False
+            statuses = {
+                task["id"]: task["status"] for task in tasks["tasks"]
+            }
+            for task in tasks["tasks"]:
+                if task["status"] != "verified":
+                    continue
+                if any(
+                    statuses[dependency] != "verified"
+                    for dependency in task["depends_on"]
+                ):
+                    task["status"] = "in_progress"
+                    task["completion_evidence"] = None
+                    changed = True
         self.write("plan/tasks.json", tasks)
         self.regenerate()
         self.assertEqual(validate(self.root), [])
