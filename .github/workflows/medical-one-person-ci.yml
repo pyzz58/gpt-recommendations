@@ -27,8 +27,8 @@ jobs:
         image: postgres:17.6-alpine
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: medical_one_test
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 5432:5432
         options: >-
@@ -40,7 +40,7 @@ jobs:
       run:
         working-directory: 医疗一人项目
     env:
-      MEDICAL_ONE_TEST_DATABASE_URL: postgresql+psycopg://postgres:postgres@127.0.0.1:5432/medical_one_test
+      MEDICAL_ONE_TEST_DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:5432/medical_one_test
     steps:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
@@ -71,7 +71,7 @@ jobs:
           uv run --project services/core --frozen mypy services/core/src
       - name: Migration round-trip
         env:
-          MEDICAL_ONE_MIGRATION_DATABASE_URL: postgresql+psycopg://postgres:postgres@127.0.0.1:5432/medical_one_test
+          MEDICAL_ONE_MIGRATION_DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:5432/medical_one_test
         run: |
           cd services/core
           uv run --frozen alembic upgrade head

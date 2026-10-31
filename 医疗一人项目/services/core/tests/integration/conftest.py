@@ -8,7 +8,7 @@ import pytest
 from alembic import command
 from alembic.config import Config
 from sqlalchemy import Engine, create_engine, text
-from sqlalchemy.engine import make_url
+from sqlalchemy.engine import URL, make_url
 from sqlalchemy.orm import Session, sessionmaker
 
 
@@ -43,9 +43,15 @@ def database(database_url: str) -> Iterator[Engine]:
 @pytest.fixture(scope="session")
 def app_database_url(database: Engine, database_url: str) -> str:
     parsed = make_url(database_url)
-    return parsed.set(username="medical_one_app", password=None).render_as_string(
-        hide_password=False
-    )
+    return URL.create(
+        drivername=parsed.drivername,
+        username="medical_one_app",
+        password=None,
+        host=parsed.host,
+        port=parsed.port,
+        database=parsed.database,
+        query=parsed.query,
+    ).render_as_string(hide_password=False)
 
 
 @pytest.fixture(scope="session")
