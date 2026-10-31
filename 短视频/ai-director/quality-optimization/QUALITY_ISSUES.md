@@ -499,7 +499,7 @@
 - AI 视频适配：AI原生声音与后期音轨共存会产生重读、口型与同步冲突
 - 依赖：QO-D08
 - 历史问题：无
-- 修复证据：PR 未提供；回归 tests/test_director_sound.py::test_public_two_shot_sound_passes; tests/test_director_sound.py::test_missing_mix_blocks; tests/test_director_sound.py::test_cleared_music_without_license_reference_blocks; tests/test_director_sound.py::test_onscreen_lip_sync_and_offscreen_policy_are_enforced; tests/test_director_sound.py::test_subtitle_must_match_spoken_text; tests/test_director_sound.py::test_generic_music_language_is_review; tests/test_director_sound.py::test_missing_sound_bridge_blocks; tests/test_director_sound.py::test_schema_requires_sound_contract_fields; tests/test_director_sound.py::test_strict_sound_validation_is_wired; tests/test_director_sound.py::test_legacy_mode_is_not_forced；独立审核 未完成；真实媒体 未完成或不适用
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/80；回归 tests/test_director_sound.py::test_public_two_shot_sound_passes; tests/test_director_sound.py::test_missing_mix_blocks; tests/test_director_sound.py::test_cleared_music_without_license_reference_blocks; tests/test_director_sound.py::test_onscreen_lip_sync_and_offscreen_policy_are_enforced; tests/test_director_sound.py::test_subtitle_must_match_spoken_text; tests/test_director_sound.py::test_generic_music_language_is_review; tests/test_director_sound.py::test_missing_sound_bridge_blocks; tests/test_director_sound.py::test_schema_requires_sound_contract_fields; tests/test_director_sound.py::test_strict_sound_validation_is_wired; tests/test_director_sound.py::test_legacy_mode_is_not_forced；独立审核 未完成；真实媒体 未完成或不适用
 - 状态历史：2026-10-13:audit_pending → 2026-10-31:audit_pending
 
 ### QO-F04 · 剪辑/动效/信息图专业审计
