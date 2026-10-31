@@ -98,12 +98,15 @@
         "M01",
         "M14"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
         "CRA-R036",
         "CRA-R040"
+      ],
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41177038097；CRA-W01专属job的migrate和test步骤在PostgreSQL 18.6上通过，6项集成测试及40项基线测试通过；被测提交ffe71849c9046d5f070bae1eb43aafd562a26cff。详见validation/W01_STATUS.md。"
       ],
       "track": "v1a",
       "instruction_path": "plan/work_packages/CRA-W01.md",
@@ -209,17 +212,17 @@
         {
           "command": "uv sync --frozen --group dev",
           "purpose": "安装锁定依赖",
-          "availability": "to_implement"
+          "availability": "available"
         },
         {
           "command": "uv run --frozen alembic upgrade head",
           "purpose": "空库迁移",
-          "availability": "to_implement"
+          "availability": "available"
         },
         {
           "command": "uv run --frozen pytest -q tests/integration/test_governance.py",
           "purpose": "权限、事务、幂等和并发",
-          "availability": "to_implement"
+          "availability": "available"
         }
       ],
       "phase_id": "P1",
@@ -234,6 +237,13 @@
       "handoff_outputs": [
         "数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。"
       ],
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W01",
+        "run_id": 41177038097,
+        "tested_commit": "ffe71849c9046d5f070bae1eb43aafd562a26cff",
+        "subject_digest": "5c00b0745688cb459427b1e875d93377fec217ac9b388fcfe50baec2c8d3ae7f"
+      },
       "verification_profile": "CRA-W01"
     },
     {

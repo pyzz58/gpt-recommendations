@@ -6,7 +6,7 @@
 
 ## 完整技术实施入口
 
-先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。当前实际编程仍从W01开始。
+先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01数据、权限和历史底座已完成；下一项为W02，不代表后续临床功能已实现。
 
 ## 当前交付和实际状态
 
@@ -14,7 +14,7 @@
 
 **这些还不是可投入真实监查的完整应用。** 数据库、界面、资料自动提取、OCR、模型、导出和实际部署的开发状态以[工作计划](plan/WORK_PLAN.md)为准；不能把“已设计”记为“已实现”，也不能把基础代码检查通过记为临床试用通过。
 
-首轮工程检查已在GitHub云端通过：22项单元测试、同步检查及合成流程示例。详见[验证记录](validation/BASELINE_STATUS.md)。这仅完成CRA-W00，不代表下列临床功能已实现。
+W01已在真实GitHub PostgreSQL 18.6服务上通过迁移和6项集成测试，完成证据绑定被测提交与任务专属`cra-w01`运行；详见[W01交付记录](validation/W01_STATUS.md)。这仅完成共用数据/权限底座，不代表正式OIDC、API、界面或后续临床功能已经实现。
 
 历史v0.2技术复核：[2026-10-29审查报告](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)。总体架构保留，已登记10项开放问题及修订/关闭标准；含云端复现的任务完成检查缺口。最新[v0.4复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)补齐执行契约、自动检验路径、验证和源码绑定完成门槛；W01底座可推进，性能与真实用途证据仍待实现。[本轮澄清及设计响应](audit/USER_CLARIFICATION_RESPONSE_20261029.md)已将用户决定同步到对应区域；审查项未因改完文档而冒称实现或验证完成。
 
@@ -64,6 +64,6 @@ Git中的 `theory/requirements.json` 是开发可执行基线；Notion是本次�
 
 当前没有运行时Notion自动同步凭证或任务。仅修改Notion而未导入Git的内容，CI无法凭空发现；维护人必须先导入，或者后续实现只读差异导入。系统不会自动替人决定新架构或静默改写已签发报告。
 
-最新v0.4工程验证：[40项测试及云端证据](validation/IMPLEMENTATION_V04_STATUS.md)。结构化完成声明的反例已被拒绝；W01及之后仍待实际编程和对应用途验证。
+最新v0.4工程验证：[40项测试及云端证据](validation/IMPLEMENTATION_V04_STATUS.md)。结构化完成声明的反例已被拒绝；W01已按新任务专属门槛完成，W02及之后仍待实际编程和对应用途验证。
 
 开源复用修订v0.5：[14项目核对与替代边界](architecture/REUSE_ASSESSMENT.md)，[可直接发给Codex的第一段](plan/CODEX_FIRST_MESSAGE.md)。依赖选择已同步到任务；尚未安装、集成或做临床性能验证。

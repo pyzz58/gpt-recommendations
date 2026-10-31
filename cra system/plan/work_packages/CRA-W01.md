@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：in_progress；分支路线：v1a。
+状态：verified；分支路线：v1a。
 前置：CRA-W00。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -77,19 +77,19 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 安装锁定依赖
+- [available] 安装锁定依赖
 
 ```bash
 uv sync --frozen --group dev
 ```
 
-- [to_implement] 空库迁移
+- [available] 空库迁移
 
 ```bash
 uv run --frozen alembic upgrade head
 ```
 
-- [to_implement] 权限、事务、幂等和并发
+- [available] 权限、事务、幂等和并发
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_governance.py
