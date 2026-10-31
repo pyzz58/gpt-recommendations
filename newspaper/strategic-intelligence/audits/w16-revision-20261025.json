@@ -1,0 +1,44 @@
+{
+  "record_id": "W16-REVISION-20261025-001",
+  "checked_at": "2026-10-25T12:56:14+13:00",
+  "work_id": "W16",
+  "superseded_by_review": "Codex-PR76-Review-20261025: F06/F09 reproduced; current work state RETURNED",
+  "source_main_commit": "a69475cb4013c54b2eb373160bcc55a6c18bd604",
+  "implementation": [
+    "ResearchRevision appends one current revision per Theme with exact expected parent",
+    "ArtifactLink binds an exact output version to one revision and role",
+    "ResearchCommit writes the authoritative paired set in one append",
+    "current revision/commit checks reject stale outputs without deleting history"
+  ],
+  "checks": {
+    "paired_adviser_teacher_same_revision": "PASS",
+    "new_adviser_with_old_teacher_rejected": "PASS",
+    "new_revision_invalidates_old_commit": "PASS",
+    "concurrent_revision_writer_one_commit_one_conflict": "PASS",
+    "concurrent_commit_writer_one_commit_one_conflict": "PASS",
+    "cross_specification_artifact_rejected": "PASS",
+    "runtime_tests": 5,
+    "result": "PASS_OFFLINE_INTERFACE"
+  },
+  "q_checks": {
+    "Q01": "PASS: current T01/T05/T11 design, NC-041 and W16 acceptance reviewed; no content or production authorization inferred",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W13 and W15 remain IN_PROGRESS; authorized offline preparation only",
+    "Q03": "PASS_OFFLINE: revision, artifact-link and single combined commit records implemented against the shared immutable archive",
+    "Q04": "PASS_OFFLINE: same-revision pair, cross-revision pair, concurrent revision, concurrent commit and stale output cases checked",
+    "Q05": "PASS_LIMITED_RECOVERY: conflicts preserve both attempts and require a new bound revision/commit; history is not overwritten",
+    "Q06": "PASS_SCOPED_REVIEW: current executor ran real SQLite tests; no semantic research or independent L5 review claimed",
+    "Q07": "RECORDED_SCOPE: synthetic owned records only; no model, network, paid API, deployment or delivery"
+  },
+  "source_hashes": {
+    "intelligence/research.py": "7423a71d3e13a5fde80be467e363443b607b632c420c0d7c984ec4af1203b65f",
+    "tests_runtime/test_research.py": "fdafd75a6e98e3108a1f5be2c497b8ca199e870b628f5382687e0c80a3129120",
+    "intelligence/contracts.py": "051cda391e41f860ef3036407ed420cac3416340d34556e7649f9495ee45b644"
+  },
+  "limits": [
+    "No model or network call",
+    "No semantic content review or publication authorization",
+    "No complete M01-M12 graph or real W27-W32 integration",
+    "W13 and W15 formal prerequisites remain unaccepted"
+  ],
+  "work_state": "IN_PROGRESS"
+}

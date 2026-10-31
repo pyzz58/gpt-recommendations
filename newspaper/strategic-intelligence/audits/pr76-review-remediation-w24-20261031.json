@@ -1,0 +1,93 @@
+{
+  "record_id": "W24-ORIGINAL-AUDIT-20261031-001",
+  "checked_at": "2026-10-31T20:29:31+13:00",
+  "reviewed_parent": "cb745ffee232900a7da933168daeed215629d13a",
+  "spec_sha256": "5b6e5f86c85ba193edeb99f8e7c578dd5432245a5ce1f6cd7cd9d2dab851b5f6",
+  "implemented": {
+    "exact_acquisition": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "acquisition binds the current S7 WATCH/REVISE or S8 COVER decision, exact specification, topic, source identity, expected SHA-256, media/format and acquisition time",
+        "caller-provided bytes must match the expected hash and format; wrong version, stale decision, dropped topic and changed decision during intake do not create a successful intake",
+        "post-S8 acquisition may add a distinct source, but changing a source object already protected by the S8 package requires editorial re-review",
+        "empty source is recorded as FAILED with no source, rights or structure substitute",
+        "partial acquisition is explicitly scoped and cannot imply the unprovided remainder"
+      ]
+    },
+    "purpose_specific_rights": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "STORE_BODY is checked transactionally before retaining full bytes; if unavailable, only a pointer/hash and explicit gap are recorded",
+        "MODEL_PROCESS is checked before HTML/text structure extraction; STORE_BODY alone does not authorize parsing",
+        "TRANSLATE and other later uses are checked against the exact source version through the shared Archive",
+        "pointer-only or revoked source bodies cannot be returned as retained originals"
+      ]
+    },
+    "structure_and_locator": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "HTML and UTF-8 text produce locator nodes with character ranges, text hashes and no duplicated full extracted text in SourceStructure",
+        "table and figure regions require original visual verification; table text can be reread only after exact source/use checks",
+        "PDF bytes are retained when authorized but are marked parser/OCR unsupported rather than pretending page/table extraction",
+        "SourceStructure and SourceNodeRead always record content_verification=NOT_PERFORMED; SourceIntake records facts_verified=false, claims_supported=false and review_status=PENDING"
+      ]
+    },
+    "shared_records": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "SOURCE_MATERIAL, RIGHTS_RECORD, SOURCE_STRUCTURE and SOURCE_INTAKE are immutable shared Archive versions",
+        "SourceIntake preserves creator, institution, language, version label, publication time and data period with the exact source hash",
+        "RightsRecord, SourceStructure and SourceIntake all reference the same exact source version; intake also references its editorial decision",
+        "re-ingesting the same acquisition reuses exact source/structure/rights versions; a later acquisition of identical bytes creates a new intake without duplicating unchanged derived records",
+        "W23 can consume the emitted SOURCE_MATERIAL and RIGHTS_RECORD version IDs and W25/W26 can consume the exact SOURCE_INTAKE version"
+      ]
+    }
+  },
+  "regressions": {
+    "w24_tests": 15,
+    "runtime_tests": 159,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS",
+    "spec_check": "PASS",
+    "technical_check": "PASS",
+    "work_plan_check": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W24 card, T04.L01, sections 6-7, 16 and 22 plus the registered design/implementation were reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W13/W17/W18/W23 and earlier packages remain unaccepted; only authorized offline source-intake scope was checked",
+    "Q03": "PASS_OFFLINE: exact source acquisition, purpose-specific rights, locator structure, rights record and intake record are implemented",
+    "Q04": "PASS_OFFLINE: HTML/text/Pdf/empty/partial/wrong-hash/wrong-format/no-storage/no-processing/no-translation/stale/drop/concurrent/replay cases were exercised",
+    "Q05": "PASS_LIMITED_RECOVERY: affected retention, parsing, translation or locator use stops with explicit errors/gaps; no index or model output substitutes for a missing original",
+    "Q06": "PASS_SCOPED_REVIEW: only owned synthetic bytes and test records were used; no real source content or factual claim was reviewed",
+    "Q07": "RECORDED_SCOPE: no network retrieval, real PDF/OCR/Docling, research model, paid API, publication, deployment or delivery"
+  },
+  "source_hashes": {
+    "intelligence/original.py": "81b723da21e24a7790d40edb77ac7511b209770d6a39efdc04d24b4913624027",
+    "tests_runtime/test_original.py": "0f050d8450edc8c0e7b15624a91aa494c3d148f1b1ad6d949bcf8fe3362c9ab0",
+    "intelligence/contracts.py": "9155642de14c29a5454dcb7ab3d985d15bbf8e2a05defaae6f436f9e3aee9c12"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "IN_PROGRESS",
+    "W21": "IN_PROGRESS",
+    "W22": "IN_PROGRESS",
+    "W23": "IN_PROGRESS",
+    "W24": "IN_PROGRESS",
+    "W25": "NOT_STARTED"
+  },
+  "limits": [
+    "No real webpage, report, PDF, scanned page or third-party original was acquired",
+    "PDF, Docling and OCR structure extraction are not implemented; PDF bytes are retained only with explicit unsupported/visual-review gaps",
+    "Structure extraction and node rereads are not factual, claim-support or causal verification",
+    "W25 Claim-Evidence/calculation work, W26 selected Chinese material, W31 review and W34 correction propagation remain pending",
+    "Formal prerequisites and G01-G04 remain unaccepted; W24 is not ACCEPTED",
+    "No research model, supplier API, paid resource, deployment, publication, email or delivery was invoked"
+  ]
+}

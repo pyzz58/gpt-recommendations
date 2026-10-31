@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "record_id": "W39-CROSS-WEEK-CONTINUATION-20261031-001",
+  "work_id": "W39",
+  "checked_at": "2026-11-01T00:13:26+13:00",
+  "reviewed_basis": {
+    "spec_sha256_at_start": "64bce268dad3988ae2764595e320b1ff1060276c9adb9823e172483c61827be1",
+    "fixture_scope": "OWNED_SYNTHETIC_TWO_SNAPSHOT_TEST"
+  },
+  "result": "IN_PROGRESS",
+  "implementation_changes": {
+    "cross_week_record": "Added CrossWeekContinuation with two non-overlapping IssueSnapshot periods, an old known-to-system Article query, a later publicly-available Article query, current W38 supplement route, current W27 Dossier and optional current W23 T03 re-selection.",
+    "historical_guard": "The old exact excerpt must be found in the earlier known version. A later Article cannot be supplied as the old snapshot.",
+    "public_snapshot": "The later public query returns the later Article and records whether it had been publicly available but unknown to the system when recorded.",
+    "editorial_guard": "MATURE_FOR_T03 requires a current post-snapshot TopicDecision and exact publication basis. It still sets automatic_issue_addition=false and requires editorial placement/review."
+  },
+  "positive_checks": {
+    "two_snapshots": "Two distinct period snapshots retain the old exact wording while selecting the later Article.",
+    "supplement": "The W38 independent-root supplement route lies between the two public snapshots and is bound to the continuation.",
+    "T03": "A mature continuation can point only to a current W23 decision created after the second snapshot; no issue slot is created.",
+    "system_unknown": "A later Article publicly available by the later snapshot but recorded afterwards is retained with later_system_unknown=true."
+  },
+  "negative_checks": {
+    "backfill": "Supplying the later Article as the old known version is rejected.",
+    "overlap": "Overlapping or reversed IssueSnapshots are rejected.",
+    "long_term_downgrade": "LONG_TERM_FEATURE with SOURCE_SELECTION cannot pass continuation review.",
+    "forced_publication": "SUSPEND/CLOSE need an explicit reason and never authorize publication."
+  },
+  "test_scope": {
+    "w39_tests": 5,
+    "runtime_tests": 299,
+    "maintenance_tests": 52
+  },
+  "post_update_validation": {
+    "completed_at": "2026-11-01T00:15:34+13:00",
+    "final_spec_sha256": "64830be28f324e61f1c8b1c928ab692a32db44a46b11137b17974c6d6f6eb976",
+    "code_sha256": {
+      "intelligence/weekly_continuation.py": "589ccaf8b76d2ca16aa14f68998edfe6ce87aabfba44edee3cd65f881ac85897",
+      "intelligence/history.py": "73820d286218792d99f7af5bbe4e389dde33e6e1f014f18cde3f3a5373baefcf",
+      "tests_runtime/test_weekly_continuation.py": "20b1f008265e3b37b087c3e8c79af4c03a14f0b88566d20cf3f9cbf02f442491"
+    },
+    "runtime_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 299,
+      "result": "PASS",
+      "duration_seconds": 61.812
+    },
+    "maintenance_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 52,
+      "result": "PASS",
+      "duration_seconds": 21.690
+    },
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W39_work_plan_check": "PASS",
+    "compileall_and_json": "PASS",
+    "controlled_binding_refresh": {
+      "technical_nodes": 21,
+      "work_packages_and_gates": 59,
+      "progress_and_evidence_preserved": true,
+      "reason": "New W39 implementation/test files and technical implementation summaries changed the conservative managed-file and design binding contexts. All 21/59 bindings were explicitly reviewed; no W/G progress or evidence was reset."
+    },
+    "final_work_states": {
+      "W12": "AWAITING_REVIEW",
+      "W13_to_W38": "IN_PROGRESS_WITH_W35_NOT_APPLICABLE",
+      "W39": "IN_PROGRESS",
+      "W40": "NOT_STARTED",
+      "G01_to_G04": "NOT_STARTED"
+    }
+  },
+  "limits": [
+    "Both week snapshots are owned synthetic fixtures; the record explicitly has stage_evidence_eligible=false.",
+    "No naturally occurring second week, real public article or real user reading was used.",
+    "W31 independent review was not performed on the mature theme.",
+    "W39 remains IN_PROGRESS and cannot contribute to G02 until two real distinct week snapshots and actual content review are supplied."
+  ]
+}

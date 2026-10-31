@@ -1,0 +1,54 @@
+{
+  "record_id": "W17-OPERATIONS-20261025-001",
+  "checked_at": "2026-10-25T13:04:39+13:00",
+  "work_id": "W17",
+  "superseded_by_review": "Codex-PR76-Review-20261025: F07/F08/F11 reproduced; current work state RETURNED",
+  "source_main_commit": "a69475cb4013c54b2eb373160bcc55a6c18bd604",
+  "implementation": [
+    "OperationRequest records task, step, run, logical idempotency key, exact attempt, tool and request-byte digest",
+    "OperationRequest also binds provider and configuration digest; retry cannot change the logical operation",
+    "ToolAdapter returns typed AdapterReturn; controller computes response digest from exact returned bytes",
+    "OperationReceipt preserves provider ID, result/error, usage, actual/estimated/unknown cost and timing",
+    "successful duplicate is not re-invoked; only explicit FAILED may retry against the exact prior operation",
+    "UNKNOWN blocks automatic retry until provider reconciliation evidence is appended",
+    "logical operation summary preserves attempt history and cumulative actual/estimated cost and elapsed time"
+  ],
+  "checks": {
+    "successful_exact_response": "PASS",
+    "duplicate_not_invoked": "PASS",
+    "accepted_then_timeout_is_unknown": "PASS",
+    "unknown_retry_blocked_until_reconciled": "PASS",
+    "failed_retry_binding_and_limit": "PASS",
+    "request_digest_mismatch": "PASS",
+    "adapter_version_mismatch": "PASS",
+    "internal_retry_limit_exceeded": "PASS",
+    "cumulative_costs_and_time": "PASS",
+    "operation_summary_cli": "PASS",
+    "runtime_tests": 6,
+    "result": "PASS_OFFLINE_INTERFACE"
+  },
+  "q_checks": {
+    "Q01": "PASS: current §6.2/§17.2/§19.1/§22.4, T11/T13 and W17 card reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W13/W15 remain IN_PROGRESS; allowed offline preparation only",
+    "Q03": "PASS_OFFLINE: replaceable adapter protocol and append-only operation/request/receipt journal implemented",
+    "Q04": "PASS_OFFLINE: exact success bytes, duplicate, failure-retry, timeout-unknown, mismatch, reconciliation and cumulative-cost controls checked",
+    "Q05": "PASS_LIMITED_RECOVERY: UNKNOWN is preserved and cannot be retried until evidence-backed reconciliation; no silent overwrite",
+    "Q06": "PASS_SCOPED_REVIEW: current executor ran actual local adapter/SQLite tests; no provider, model or L5 claim",
+    "Q07": "RECORDED_SCOPE: synthetic owned fixture only; no network, model call, paid API, production or delivery"
+  },
+  "source_hashes": {
+    "intelligence/operations.py": "faa6f87fc96ea456204aaba87399181ba9ed0db70f27210d35663749c288dcd2",
+    "tests_runtime/test_operations.py": "c321b59363f99819aef80ee602479ff5297257dbae7d8efa02d74373d8e4d1fb",
+    "intelligence/__main__.py": "2baad07b723043faba5d2784936aa7d4fd0475c8d63bed6151100e64c32895a9",
+    "intelligence/archive.py": "b9915263e235e693df9f64a2204472c8ade0146ee7f542bdb3134f5676b48fcb",
+    "intelligence/contracts.py": "c4fae8506133984b4f135379bc31ec3ae179fbd641181c955c2459ea0df81aba"
+  },
+  "limits": [
+    "No pre-call authorization or budget reservation; deferred to W18",
+    "Caller and adapter identities are declared, not authenticated",
+    "No real third-party provider adapter or network call",
+    "No semantic content review, publication or delivery",
+    "No production restart or GitHub Actions recovery"
+  ],
+  "work_state": "IN_PROGRESS"
+}

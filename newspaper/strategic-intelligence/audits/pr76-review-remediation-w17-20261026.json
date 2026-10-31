@@ -1,0 +1,82 @@
+{
+  "record_id": "PR76-REMEDIATION-W17-20261026-001",
+  "checked_at": "2026-10-26T14:24:44+13:00",
+  "reviewed_parent": "18cbb9f0a28737931453acedf109c6775fa881d1",
+  "review_report_sha256": "a5367ab068c8b3f025a0f5b10b8ba8b8cc32af46d0736293f9ca3eafb49e4ab1",
+  "fixed_in_this_step": {
+    "F07_provider_reconciliation_identity": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-060",
+      "checks": [
+        "reconciliation loads the exact current operation receipt and requires its known provider request ID",
+        "the response provider ID must equal the original ID or an explicit mapping bound to the same operation and exact UNKNOWN receipt",
+        "a mapping stores original ID, query ID, reviewed evidence and reason and is itself an immutable archive record",
+        "all reconciliation evidence must be Evidence versions referencing the exact operation",
+        "Task versions or unrelated records cannot satisfy reconciliation evidence",
+        "wrong provider IDs or non-query evidence leave the original UNKNOWN receipt current and do not open retry"
+      ]
+    },
+    "F08_reconciliation_receipt_cas": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-061",
+      "checks": [
+        "initial receipt creation requires expected current receipt None under the Archive write transaction",
+        "reconciliation uses the exact previously read receipt version as parent and expected-current condition",
+        "a concurrent success wins and stale failure reconciliation raises Conflict without appending",
+        "concurrent failure reconciliations leave one current failure only",
+        "a confirmed success remains current and blocks later retry registration"
+      ]
+    },
+    "F11_adapter_observation_preservation": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-064",
+      "checks": [
+        "adapter internal-retry overflow marks its result non-adopted and UNKNOWN without discarding observations",
+        "provider request ID, actual cost, usage, observed internal retries, original error facts and timestamps are retained",
+        "observed status and observed result digest are stored separately from adopted status/result",
+        "the adapter violation reason is persisted and response bytes are not returned or adopted",
+        "actual observed cost remains in the logical-operation summary and is not converted to unknown cost",
+        "only an adopted successful result can be returned as invocation output"
+      ]
+    }
+  },
+  "regressions": {
+    "w17_tests": 10,
+    "runtime_tests": 103,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W17 card, T13/T11 logic, §6.2, §17.2, §19.7 and §22.4 reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W13, W15, W16, W14, G01 and W12 remain unaccepted; only the authorized offline W17 boundary was checked",
+    "Q03": "PASS_OFFLINE: exact receipt CAS, provider mapping, query evidence binding and observed-versus-adopted receipt fields are implemented",
+    "Q04": "PASS_OFFLINE: wrong provider, wrong evidence kind, mapped provider ID, success/failure interleave, failure/failure interleave and adapter retry violation covered",
+    "Q05": "PASS_LIMITED_RECOVERY: failed or stale reconciliation preserves the prior receipt; only explicit mapping/evidence and a fresh transaction can resolve UNKNOWN",
+    "Q06": "PASS_SCOPED_REVIEW: independent report probes were reproduced before repair; positive, negative, compatibility and concurrency regressions now pass",
+    "Q07": "RECORDED_SCOPE: synthetic owned adapters and fixed USD values only; no real provider, paid call, model, deployment or delivery"
+  },
+  "source_hashes": {
+    "intelligence/operations.py": "be48076a53e001f6db4193a7aa0c1278453f576f06ea1e2b4a2c9f5be2f65ef3",
+    "intelligence/archive.py": "09dbb0a25c524429fd010ec6daa5bbf19ef36a0a3fc1940b1e188174a71dffd2",
+    "intelligence/contracts.py": "81950c05b46b6d61b5affa12789cb1a6c6029640a72f84ccc2b575773e835523",
+    "tests_runtime/test_operations.py": "022d1bca836257f700f1b9b6e039b0f9ad1c0997fa0e495aeb8fb10aa1a7e417"
+  },
+  "work_states": {
+    "W12": "AWAITING_REVIEW",
+    "G01": "NOT_STARTED",
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "NOT_STARTED"
+  },
+  "limits": [
+    "Provider IDs, query evidence and mapping reasons are structurally bound but not independently authenticated",
+    "No real provider API, SDK retry behavior, credential scope or external reconciliation endpoint was exercised",
+    "W18 pre-call permission/budget checks and W48 production recovery remain unimplemented",
+    "W13-W16 formal prerequisites, W12 user reading and stage gates remain pending",
+    "No real model, paid call, deployment, publication or delivery occurred"
+  ]
+}

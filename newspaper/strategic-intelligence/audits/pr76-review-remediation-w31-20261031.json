@@ -1,0 +1,127 @@
+{
+  "record_id": "W31-EDITORIAL-REVIEW-AUDIT-20261031-001",
+  "checked_at": "2026-10-31T22:48:22+13:00",
+  "reviewed_parent": "6fc64bf",
+  "spec_sha256": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f",
+  "implemented": {
+    "fixed_reader_draft": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "the review case binds a current ARTICLE full body, exact Task and current W27 dossier/M10/M11/M12",
+        "the Article must reference the exact W16 revision, task, M step records and B1/B2/C output versions",
+        "dossier fields or pointer-only records cannot substitute for the actual reader draft",
+        "each reviewer quotation must occur in the actual initial Article body; substantive inquiries cite exact Claim, Evidence or MethodUse",
+        "the Article body must be current, retained and valid UTF-8"
+      ]
+    },
+    "independent_inquiry_before_response": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "the reviewer and authors/producer are separated by identity fields, and the later W15 checker cannot equal the producer",
+        "draft-first review cannot simultaneously claim unseen author-self-assessment or prior-review conclusions",
+        "defect answer keys are structurally forbidden; a non-draft-first review must state its exposure limitation",
+        "reviewer inquiries are fixed before any author response and include type, severity, article locator, quote, concern, required check and exact source references"
+      ]
+    },
+    "author_response_and_closure": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "only a declared author can respond, with one response per inquiry, after the inquiry and fixed case",
+        "the final reviewed Article must descend from the initial Article object through its retained version history",
+        "the fixed reviewer alone resolves every inquiry; responses cannot edit inquiries or sign the review",
+        "PASS cannot leave OPEN/UNVERIFIED inquiries; REVISE needs unresolved work; BLOCK needs an unresolved critical inquiry",
+        "supported disagreement can be retained as ACCEPTED_DISPUTE without forcing a new claim or false certainty"
+      ]
+    },
+    "review_and_w15_decision": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "the final Review binds the actual revised Article, Task, reviewed scope and exact ReviewCoverage",
+        "W15 receives the Review as declared evidence and produces READY for PASS, RETURN for REVISE and BLOCKED for BLOCK",
+        "PASS allowed scope must remain within the fixed review scope and the W15 decision checks current exact subject/Review coverage",
+        "a newer Article, case or upstream W27 revision cannot inherit the old PASS decision",
+        "the output fixes author_self_approved=false, model_self_passed=false, publication_authorized=false and review_capability_certified=false"
+      ]
+    },
+    "model_and_concurrency": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "model review requires a current W19 REVIEW/given-material admission, separate model configuration, all reviewed inputs and a successful W31 OperationReceipt",
+        "upstream B1/B2/C and Article versions are rechecked at response and final decision",
+        "failed or interrupted review writes remain non-authoritative; completed exact decisions are idempotent",
+        "concurrent final decisions converge on one Review and one W15 decision without mutually different outcomes",
+        "a synchronized two-writer regression reproduces the independent load/decide window and accepts the existing exact W15 decision instead of creating a self-parent record",
+        "different Articles under one Task use per-review W15 step slots, so separate current adoptions remain independent"
+      ]
+    }
+  },
+  "regressions": {
+    "w31_tests": 17,
+    "runtime_tests": 276,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS",
+    "compileall_result": "PASS",
+    "spec_check": "PASS",
+    "technical_check_T09": "PASS",
+    "work_plan_check_G01_W30_W31_W32": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W31 card, T09.L01-L03/T01.L02, registered implementation and sections 15.2.1-15.2.3/13.7/18 were reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W27-W30, W19, W15 and earlier packages remain IN_PROGRESS rather than ACCEPTED; only the authorized offline W31 interface scope was exercised",
+    "Q03": "PASS_OFFLINE: actual Article review, independent inquiries, author response, closure, final Review and W15 version-bound decision are implemented",
+    "Q04": "PASS_OFFLINE: 17 W31 tests cover actual body/quotes, self-signing, inquiry source types, response completeness/order, PASS/REVISE/BLOCK, supported dispute, critical block, stale Article/revision, exposure, W19/receipt, idempotency/concurrency, multi-Article W15 isolation and forged self-pass/score fields",
+    "Q05": "PASS_LIMITED_RECOVERY: unresolved critical items BLOCK; unresolved noncritical work RETURNS; accepted disputes and bounded limitations remain explicit; old decisions cannot cover later Article or research versions",
+    "Q06": "PASS_SCOPED_REVIEW: only owned synthetic Article, research components and current-version checks were used; no real independent human review, blind capability test, cross-domain detection study or reader assessment was performed",
+    "Q07": "RECORDED_SCOPE: no real model, supplier/API, paid resource, publication, delivery, deployment or external review service was invoked; no reviewer capability claim beyond this offline interface is made"
+  },
+  "source_hashes": {
+    "intelligence/editorial_review.py": "f2c9c9036bd2eee0a782bab9a58b35e9177dd1dfcb522fb8568c685bb01ed06d",
+    "tests_runtime/test_editorial_review.py": "3d149f6541bb88b6182406029dde8c27272a1e152c319ec5b52d5a85ea82fd73",
+    "intelligence/adoption.py": "238285a63dd167939334d8b27d144e5f52677ed700986a14bfd514e8cb628c38",
+    "intelligence/prospective.py": "062d4d603f6ee43abf65d498997c1cbf27b0dc5c94326cad3831fa766a1ff8ae",
+    "intelligence/advisor.py": "c33589d8e71c8bf31cba966fadc99d85564324e7c14fb5c2c20affa29e3bf1ea",
+    "intelligence/teacher.py": "35363a04ce871932700a84312f344bc5a3b6685135010de418d6181bc43a607a",
+    "intelligence/contracts.py": "f4433cafdf340e13d7b6ca52bc2547f74906501f0bf594a82d1f8237288acefe",
+    "intelligence/research.py": "e091655d59cacf9300bad4441454409ac2469f825533e5b02bdeab29174e9b7d",
+    "intelligence/model_admission.py": "8c5d0122523bf1b05d5996cf48836e3efae437392a16b4a9c6d9ecbf45dc3c63",
+    "intelligence/operations.py": "a6e5416b604d38f9955762d03d82efd2b719417e7949702dd56285324a9fb7c6",
+    "intelligence/workflow.py": "3151dc0398016fd025f57eac60ddcea5b198befe4989184f5bd32ad21cdbcb46",
+    "CANONICAL_SYSTEM_SPEC_V5.md": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "IN_PROGRESS",
+    "W21": "IN_PROGRESS",
+    "W22": "IN_PROGRESS",
+    "W23": "IN_PROGRESS",
+    "W24": "IN_PROGRESS",
+    "W25": "IN_PROGRESS",
+    "W26": "IN_PROGRESS",
+    "W27": "IN_PROGRESS",
+    "W28": "IN_PROGRESS",
+    "W29": "IN_PROGRESS",
+    "W30": "IN_PROGRESS",
+    "W31": "IN_PROGRESS",
+    "W32": "IN_PROGRESS",
+    "W33": "IN_PROGRESS",
+    "W34": "IN_PROGRESS"
+  },
+  "limits": [
+    "No real independent human or model review of an actual publication draft was performed",
+    "Semantic fact/calculation/translation/teaching accuracy, reviewer judgement quality and whether this specific Article deserves PASS remain for real content review",
+    "No blind benchmark, unseen new-case test, cross-domain miss/false-reject estimate or general reviewer capability certification was performed",
+    "Identity fields are records, not authenticated people; the implementation enforces differences among declared IDs but cannot prove real-world independence",
+    "The W31 tests reuse owned W28/W29/W30 outputs and direct W25-compatible records; upstream provenance checks are not replaced",
+    "Model tests use synthetic operation receipts and patched admission/config lookups; no real W19 review model, provider or cost was exercised",
+    "Review case, Review and W15 records are separate Archive commits; idempotent retries are covered, but this remains an append-only multi-write workflow rather than one atomic database transaction",
+    "W32 actual Article/Edition assembly, W12 user reading, production publication, delivery and stage gates remain pending",
+    "Formal prerequisites and G01-G04 remain unaccepted; W31 is IN_PROGRESS, not ACCEPTED"
+  ]
+}

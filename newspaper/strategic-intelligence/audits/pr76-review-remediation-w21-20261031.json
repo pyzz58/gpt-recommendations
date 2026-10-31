@@ -1,0 +1,83 @@
+{
+  "record_id": "W21-CLUSTER-PROPOSAL-20261031-001",
+  "checked_at": "2026-10-31T19:40:49+13:00",
+  "reviewed_parent": "fc424b7044001b19cd93dfed826fb6d96e376980",
+  "implemented": {
+    "event_cluster_proposal": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "only explicit event key, shared recorded lineage root, canonical/duplicate candidate link or exact URL creates a proposed merge",
+        "title similarity alone never forces a merge",
+        "possible-related links remain explicitly ambiguous and send the cluster to editor review",
+        "every input candidate appears exactly once across proposed clusters, preserving raw candidate identity",
+        "member titles, URLs, source IDs, time points and differences are retained for T03 review"
+      ]
+    },
+    "lineage_and_independence": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "independence is derived from recorded lineage roots, never count of URLs or reposts",
+        "ten reposts sharing one origin count as one recorded origin",
+        "two explicit independent origins remain two origins in the same event proposal",
+        "URL-only duplicates with no lineage root remain UNKNOWN independence",
+        "original/repost/unknown roles and external-origin gaps remain visible"
+      ]
+    },
+    "exploration_queue": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "low-heat candidates are queued rather than discarded",
+        "missing fields, no strong event match, unknown origin and possible ambiguous matches have explicit reasons",
+        "the queue is an editor action record, not a hidden deletion or selection decision"
+      ]
+    },
+    "shared_persistence": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "DiscoveryReview persists to the shared Archive as an immutable EventClusterProposal",
+        "roundtrip preserves all clusters, lineage roots, differences and exploration reasons",
+        "no candidate is marked adopted, verified or editorially selected"
+      ]
+    }
+  },
+  "regressions": {
+    "w21_tests": 5,
+    "runtime_tests": 129,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W21 card, T02.L02, §4.1-4.4, §6.1 and §18 reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W13/W20 and earlier packages remain unaccepted; only authorized offline clustering scope was checked",
+    "Q03": "PASS_OFFLINE: event proposals, source lineage, independent-origin accounting, exploration queue and Archive persistence implemented",
+    "Q04": "PASS_OFFLINE: ten reposts, two independent origins, exact URL duplicates, missing hints, ambiguous possible match and low-heat preservation covered",
+    "Q05": "PASS_LIMITED_RECOVERY: ambiguity and unknown origin remain explicit editor work; no force-merge fallback",
+    "Q06": "PASS_SCOPED_REVIEW: owned synthetic candidates only; no semantic model, real source or T03 content review",
+    "Q07": "RECORDED_SCOPE: no real discovery run, model/API call, paid resource, deployment, publication or delivery"
+  },
+  "source_hashes": {
+    "intelligence/discovery.py": "90791033139aed402bb6434de6a4565eea0bc010925fc230544bf801a8c387c2",
+    "tests_runtime/test_discovery.py": "d47c49489a41ea6a45656094075dd36e59fa3da27627ea0cd62dc69973932311",
+    "intelligence/contracts.py": "c42071c6782b3358f7b9516a622bab8c97214ea463e43fa41848cc176ac55803"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "IN_PROGRESS",
+    "W21": "IN_PROGRESS",
+    "W22": "NOT_STARTED"
+  },
+  "limits": [
+    "No semantic clustering or model-assisted title/body similarity was used",
+    "No real source, republication chain or independent-origin claim was verified",
+    "T03 content review, W22 coverage gaps, W23 editorial selection and W20 production discovery remain pending",
+    "The cluster proposal never implies event truth, evidence sufficiency or publication selection",
+    "No paid API, deployment, publication or delivery occurred"
+  ]
+}

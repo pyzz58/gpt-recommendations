@@ -18,7 +18,8 @@ class WorkPlanTests(unittest.TestCase):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         self.root = Path(temp.name) / 'intelligence'
-        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns('__pycache__'))
+        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns(
+            '__pycache__', '*.pyc', '.venv', '.pytest_cache', '.mypy_cache', '.ruff_cache'))
         # Isolated fixtures establish known correspondence; production baselines
         # are never changed by the generator or this test suite.
         self.edit('WORK_PLAN', lambda c: [w.update(progress='NOT_STARTED', evidence=[]) for w in c['items']])
@@ -123,6 +124,18 @@ class WorkPlanTests(unittest.TestCase):
         after = self.current()
         self.assertEqual(before, {w['id']: w['basis_sha256'] for w in after['items']})
         self.assertFalse(after['review_required'])
+
+    def test_w35_repair_branch_is_not_blocked_by_unfinished_w27(self):
+        before = {w['id']: w for w in self.current()['items']}
+        self.assertEqual(before['W35']['depends_on'], ['W14', 'W17'])
+        self.assertNotIn('W27', before['W35']['pending_completion_dependencies'])
+        self.mutate_work('W27', lambda w: w.update(progress='BLOCKED', evidence=self.evidence()))
+        self.mutate_work('W35', lambda w: w.update(progress='IN_PROGRESS', evidence=self.evidence()))
+        after = self.current()
+        self.assertFalse(after['review_required'])
+        repaired = {w['id']: w for w in after['items']}
+        self.assertEqual(repaired['W35']['progress'], 'IN_PROGRESS')
+        self.assertNotIn('W27', repaired['W35']['pending_completion_dependencies'])
 
     def test_missing_logic_coverage_blocks_all_projection_writes(self):
         before = {name: (self.root / name).read_bytes() for name in sync.OUTPUTS}

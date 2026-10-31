@@ -1,0 +1,75 @@
+{
+  "record_id": "PR76-REMEDIATION-W19-20261026-001",
+  "checked_at": "2026-10-26T14:47:21+13:00",
+  "reviewed_parent": "e65e26114d1bd972d05bad03a5b62a90ec3d7dad",
+  "implemented": {
+    "configuration_identity": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "ModelTaskConfiguration records provider/model/version, specification, task/prompt, context, generation settings, method, tools, duties, domains and material forms",
+        "configuration fingerprint is deterministic and verified on reload",
+        "unknown model version must be explicitly listed rather than silently filled",
+        "configuration and validation artifacts use exact immutable versions"
+      ]
+    },
+    "three_validation_kinds": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "GIVEN_MATERIAL requires fixed case versions and reviewed exact artifacts",
+        "REAL_RETRIEVAL requires successful operation receipts referencing the exact model configuration",
+        "CONSTRAINT_GAIN requires distinct baseline/constrained artifacts and a Review covering both",
+        "all attempts, failed attempts, human help and unverified scope are retained",
+        "a passing summary cannot hide a failed attempt without listing the validation as a known failure and requiring manual review"
+      ]
+    },
+    "limited_use_admission": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "admission is limited to exact configuration, duties and domains",
+        "every admitted duty needs a passing task-specific validation",
+        "given-material validation does not authorize real retrieval",
+        "constraint-gain and retrieval flags require corresponding passing evidence",
+        "controlled trial and limited admission remain non-approved and require manual review/restrictions",
+        "configuration changes invalidate old admission; revalidation plans distinguish identity changes from scope-only changes"
+      ]
+    }
+  },
+  "regressions": {
+    "w19_tests": 7,
+    "runtime_tests": 118,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W19 card, T09.L01/T13.L01/T13.L02, §17.2, §19.5.1, §19.6 and §19.7 reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W18 and earlier packages remain unaccepted; only the authorized offline W19 boundary was checked",
+    "Q03": "PASS_OFFLINE: configuration identity, three validation kinds, limited-use admission and change-revalidation APIs implemented",
+    "Q04": "PASS_OFFLINE: stable/unknown config, fixed-material scope, hidden failure, unvalidated duty/retrieval, constraint comparison, manual help and config changes covered",
+    "Q05": "PASS_LIMITED_RECOVERY: failed/inconclusive evidence remains explicit and limited admission cannot self-upgrade to APPROVED",
+    "Q06": "PASS_SCOPED_REVIEW: synthetic owned artifacts and Review records only; no real model capability or content judgment",
+    "Q07": "RECORDED_SCOPE: no model/API call, paid resource, credential, deployment, publication or delivery"
+  },
+  "source_hashes": {
+    "intelligence/model_admission.py": "8c5d0122523bf1b05d5996cf48836e3efae437392a16b4a9c6d9ecbf45dc3c63",
+    "tests_runtime/test_model_admission.py": "ed56e45222150704a62e283d881c8df54afcd1bf8d8b06a6f6024eea19f0e03f",
+    "intelligence/contracts.py": "9cd00c4cb3e2e5e68ce6393a9bf02924abedf2cad92dd1add6f339f60fd52c7b"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "NOT_STARTED"
+  },
+  "limits": [
+    "No real model, candidate comparison or natural retrieval was performed",
+    "Reviews are structurally bound but semantic quality and reviewer independence are not judged",
+    "PROMPTFOO and external evaluation remain conditional/not installed",
+    "W28/W29/W31 real consumers, W13-W18 formal prerequisites, user reading and stage gates remain pending",
+    "No paid API, deployment, publication or delivery occurred"
+  ]
+}

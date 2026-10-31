@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "record_id": "W36-ROUTE-INTEGRATION-20261031-001",
+  "work_id": "W36",
+  "checked_at": "2026-10-31T23:24:28+13:00",
+  "reviewed_basis": {
+    "spec_sha256_at_start": "3d8a0959b3c81d4744160f8afd21ad5d979414ef7ba4b8c5e38fecdddedb79e4",
+    "fixture_scope": "OWNED_SYNTHETIC_LEGAL_MATERIAL"
+  },
+  "result": "IN_PROGRESS",
+  "implementation_changes": {
+    "w23_s8_revalidation": {
+      "files": [
+        "intelligence/editorial.py",
+        "intelligence/presentation.py"
+      ],
+      "actual_change": "Added load_current_edition_proposal and shared edition-proposal context validation. HTML composition now requires the proposal itself to be current and rechecks each placement's current W23 COVER decision, research admission, S8 package, candidates, coverage, question, rights, and Evidence before creating a file.",
+      "failure_behavior": "A later Evidence version makes the old S8 basis non-current and presentation refuses to render; no HTML is created."
+    },
+    "integration_harness": {
+      "files": [
+        "tests_runtime/test_presentation.py",
+        "tests_runtime/test_route_integration.py"
+      ],
+      "actual_change": "W32 fixtures now use a real W23 controlled chain rather than a proposal with invented decision/admission IDs. W36 composes that chain with the shared Archive, W27 research, B1/B2/C, W31, presentation, W33, W18/W17 restart checks, and C03 checkpoint reconstruction."
+    }
+  },
+  "actual_route_checks": {
+    "single_archive_chain": [
+      "candidate index",
+      "event-cluster proposal",
+      "independent coverage plan and audit",
+      "S8 prerequisite package",
+      "W23 COVER decision",
+      "research admission",
+      "edition placement proposal",
+      "M01-M12 dossier and B1/B2/C",
+      "independent Review and W15 adoption",
+      "reviewed HTML Edition",
+      "W33 CURRENT readback"
+    ],
+    "render_recheck": "The feature Article is current full body, title equals reviewed H1, Review is PASS and W15 is current; the W23 chain is revalidated before output.",
+    "history_replay": "Every chain version can be recovered as CURRENT through the same W33 Archive; Article bytes remain available through the exact saved version.",
+    "edition_boundary": "Edition remains content_review_required=true, publication_authorized=false and delivery_authorized=false; output is 0600 and hash/bytes match the file."
+  },
+  "restart_checks": {
+    "dossier_rehydration": "A new ResearchWorkflowController restored all twelve completed steps from an authoritative Archive snapshot.",
+    "actual_resume": "A separate Dossier completed M01, lost its controller, restored the exact snapshot, then continued only M02; the original M01 record remained the sole active M01.",
+    "summary_rejection": "A chat-summary-looking string is not a stored DossierSnapshot and raises MissingVersion.",
+    "external_identity": "A W18 controlled-trial request and W17 receipt remained readable after controller reconstruction.",
+    "budget_recovery": "Actual consumed calls=1 and cost:USD=0.03, remaining cost:USD=0.97 survived restart. Repeating the same request was rejected before the Adapter because the budget reservation identity already existed.",
+    "forced_replay": "No external Adapter call occurred during checkpoint/controller reconstruction; replay is limited to reconstructing navigation state from authoritative records."
+  },
+  "negative_checks": {
+    "stale_w23_s8": "A later Evidence version invalidates the old S8 basis; render is refused.",
+    "chat_summary": "No archive snapshot means no restore.",
+    "duplicate_external_operation": "Existing reservation prevents a second Adapter invocation/spend.",
+    "self_or_field_only_release": "W31 remains the source of PASS Review and W15 remains the source of current adoption; HTML generation cannot create either."
+  },
+  "test_scope": {
+    "w36_route_tests": 3,
+    "w32_tests": 11,
+    "runtime_tests": 280,
+    "maintenance_tests": 52
+  },
+  "post_update_validation": {
+    "completed_at": "2026-10-31T23:26:35+13:00",
+    "final_spec_sha256": "98814ddf580992c27cd255c4f5a008353124c582653568a936087c67acf659f6",
+    "code_sha256": {
+      "intelligence/editorial.py": "795c2dbd661358f448dcfa2afe47a672114d586b92a72bec8998f082ff9a452a",
+      "intelligence/presentation.py": "aba7b7708b2ad913aa95c45f413a95f15579d8bf62e5415e2d3925905e52c5f9",
+      "tests_runtime/test_presentation.py": "f3b88eadd9877f0446609c653d804b2c83946b6dd1634c303c23025fc9ef2ee6",
+      "tests_runtime/test_route_integration.py": "0d8e5edca0198d200a7f50986152d284df9d9c123cd3d24c8d697d3effe2fece"
+    },
+    "runtime_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 280,
+      "result": "PASS",
+      "duration_seconds": 28.083
+    },
+    "maintenance_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 52,
+      "result": "PASS",
+      "duration_seconds": 14.415
+    },
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W32_W35_W36_work_plan_check": "PASS",
+    "compileall_and_json": "PASS",
+    "diff_check": "PASS",
+    "controlled_binding_refresh": {
+      "technical_nodes": 21,
+      "work_packages_and_gates": 59,
+      "progress_and_evidence_preserved": true,
+      "reason": "Registering the new W36 runtime test changed the managed-file inventory and therefore the conservative global th-24 binding context; every affected technical and work-plan binding was explicitly reviewed rather than hidden by projection regeneration."
+    },
+    "final_work_states": {
+      "W12": "AWAITING_REVIEW",
+      "W13_to_W34": "IN_PROGRESS",
+      "W35": "NOT_APPLICABLE",
+      "W36": "IN_PROGRESS",
+      "W37": "NOT_STARTED",
+      "G01_to_G04": "NOT_STARTED"
+    }
+  },
+  "limits": [
+    "The route uses owned synthetic legal material, not a frozen real case or real reader article.",
+    "No research model, translation service, paid source, real independent reviewer or reader was invoked.",
+    "W18/W22/W32/W33 formal prerequisites remain IN_PROGRESS and unaccepted; W14/W17 and G01-G04 are also not accepted.",
+    "The official LangGraph checkpoint is reconstructed from the Archive in-process; a persistent production checkpointer/crash backend remains unverified.",
+    "W35 is NOT_APPLICABLE for this evidence set; no task-view or segmentation capability is implemented.",
+    "No full-edition visual review, user reading, publication, delivery, production restoration or stage gate is claimed."
+  ]
+}

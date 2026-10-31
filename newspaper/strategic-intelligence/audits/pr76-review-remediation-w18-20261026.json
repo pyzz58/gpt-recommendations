@@ -1,0 +1,84 @@
+{
+  "record_id": "PR76-REMEDIATION-W18-20261026-001",
+  "checked_at": "2026-10-26T14:36:53+13:00",
+  "reviewed_parent": "950ee10ff4f233b22b2085aabe56b81d810bc6c7",
+  "review_report_sha256": "a5367ab068c8b3f025a0f5b10b8ba8b8cc32af46d0736293f9ca3eafb49e4ab1",
+  "implemented": {
+    "pre_call_capability_and_material_gate": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-044",
+      "checks": [
+        "CapabilityAdmission binds exact Task, step, provider, tool/version, configuration, operation kind, material use, territory, validity and Review",
+        "admission requires explicit external-processing permission and exact retry/internal-retry limits",
+        "every operation input version is checked for the concrete material use and current storage/revocation terms before reservation",
+        "partial-content grants require an exact MaterialSelection input rather than a mixed original body",
+        "adapter descriptor and request identity are checked before invocation",
+        "controlled-trial admission is explicit and marks the result for manual review"
+      ]
+    },
+    "shared_budget_reservation_and_settlement": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-044",
+      "checks": [
+        "BudgetEnvelope binds Task/run and approved metrics; unknown or unapproved metrics cannot reserve",
+        "every approved budget metric must be explicitly reserved before invocation",
+        "unknown pre-call estimates are rejected instead of becoming unlimited authority",
+        "reservation events use expected-current CAS; default concurrent reservation limit is one and all balance arithmetic runs under the archive lock",
+        "actual/estimated cost is settled separately by currency metric; usage metrics are aggregated",
+        "unknown actual cost retains its reservation and blocks balance reuse",
+        "a second concurrent call cannot reserve the same remaining budget"
+      ]
+    },
+    "single_call_path": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "PreCallGate performs capability, material and budget checks before adapter invocation",
+        "low-level OperationJournal adapter execution is now a private primitive",
+        "adapter invocation is one level only and descriptor/internal retry bounds are part of admission",
+        "failed pre-call checks leave adapter call count and budget counters unchanged"
+      ]
+    }
+  },
+  "regressions": {
+    "w18_tests": 8,
+    "runtime_tests": 111,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W18 card, T13.L01/T13.L03/T01.L02, §6, §17.2, §19.7 and §22.4 reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W13-W17, W14, G01 and W12 remain unaccepted; only the authorized offline W18 boundary was checked",
+    "Q03": "PASS_OFFLINE: capability admission, material permission, shared budget reserve/settle/unknown and single gate path implemented",
+    "Q04": "PASS_OFFLINE: admitted call, unknown estimate, material/external denial, scope/retry denial, controlled trial, concurrent reservation and unknown cost covered",
+    "Q05": "PASS_LIMITED_RECOVERY: denial occurs before invocation; known settlement releases reservation and unknown actual cost retains hold for W48 reconciliation",
+    "Q06": "PASS_SCOPED_REVIEW: synthetic adapters and owned records only; no real provider or paid operation",
+    "Q07": "RECORDED_SCOPE: fixed synthetic USD values only; no credentials, model/API call, deployment, publication or delivery"
+  },
+  "source_hashes": {
+    "intelligence/gating.py": "a87190d42ed46a6553038a96cb0bf1e4263be9bf296809fd97fb72f79be88a93",
+    "intelligence/operations.py": "a6e5416b604d38f9955762d03d82efd2b719417e7949702dd56285324a9fb7c6",
+    "intelligence/archive.py": "b75f175260b1635b36bfd5f93d07e71aa82dae300587f12f22aca6077479dc73",
+    "intelligence/contracts.py": "47175266070acc72025e7156b520b52fa0286b71907530416a249509581fdd02",
+    "tests_runtime/test_gating.py": "cfe94beaf48df32d2dff393728ff965d51c52c1be7d0c130f78b483f22a52dec",
+    "tests_runtime/test_operations.py": "3221559c6d7137a3f92bd69601bd27cd5ac343a723c00ba60e3b35fb2ed5b80c"
+  },
+  "work_states": {
+    "W12": "AWAITING_REVIEW",
+    "G01": "NOT_STARTED",
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "NOT_STARTED"
+  },
+  "limits": [
+    "No external provider credentials, actual billing, model capability or SDK retry behavior was tested",
+    "Capability Review scope is structurally bound but substantive ability is not judged here",
+    "Production multi-task concurrency, unknown-cost reconciliation and crash recovery remain for W48",
+    "W13-W17 formal prerequisites, W12 user reading and stage gates remain pending",
+    "No real model, provider API, paid call, deployment, publication or delivery occurred"
+  ]
+}
