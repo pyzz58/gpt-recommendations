@@ -1,0 +1,1119 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-01",
+  "timezone": "Pacific/Auckland",
+  "repo": "pyzz58/gpt-recommendations",
+  "project_root": "cra system",
+  "main_snapshot": "12dfeb8eb0172857533e607746dce6c34fce7933",
+  "developer_branch": "codex/cra-w01-governance-20261031",
+  "latest_status_snapshot": "137786b3088ce57a1d660b6a47e2ce070dfc2796",
+  "core_source_snapshot": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+  "w09_source_snapshot": "df6f04b4c321f133f80dff07afa24c0974266927",
+  "notion_source": {
+    "url": "https://app.notion.com/p/4070782f004581ea84f4e6ef46e5fc68",
+    "version": "v0.14",
+    "last_edited": "2026-10-29T01:20:56.559Z",
+    "latest_user_decisions": "theory/DECISIONS_20261029.md; current conversation"
+  },
+  "unchanged_theory": true,
+  "task_status_snapshot": {
+    "verified": [
+      "CRA-W00",
+      "CRA-W01",
+      "CRA-W02",
+      "CRA-W03",
+      "CRA-W04",
+      "CRA-W05",
+      "CRA-W06",
+      "CRA-W07",
+      "CRA-W08",
+      "CRA-W09"
+    ],
+    "planned": [
+      "CRA-W10",
+      "CRA-W11",
+      "CRA-W12",
+      "CRA-W13",
+      "CRA-W14",
+      "CRA-W15"
+    ]
+  },
+  "existing_evidence": [
+    {
+      "run_id": 41193688723,
+      "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+      "jobs": 9,
+      "conclusion": "success",
+      "purpose": "W01-W08 existing engineering regression; 43 baseline tests, task jobs and actual source-provider evaluations",
+      "clinical_acceptance": false
+    },
+    {
+      "run_id": 41196248119,
+      "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+      "jobs": 10,
+      "conclusion": "success",
+      "purpose": "W09 source-tested workflow; 10 W09/platform API tests, three model-template provider cases; W01-W08 revalidation",
+      "clinical_acceptance": false
+    },
+    {
+      "run_id": 41196595963,
+      "commit": "137786b3088ce57a1d660b6a47e2ce070dfc2796",
+      "conclusion": "success",
+      "purpose": "W09 status/evidence recording commit"
+    }
+  ],
+  "independent_diagnostics": {
+    "run_id": 41196720274,
+    "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa",
+    "job_id": 124524256702,
+    "conclusion": "success",
+    "cases": 14,
+    "reproduced": 14,
+    "acceptance_passed": false,
+    "meaning": "Diagnostic execution succeeded. Reproduced findings remain open. This is not a full API, browser, OCR or clinical-use acceptance test."
+  },
+  "review_branch_regression": {
+    "run_id": 41196720321,
+    "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa",
+    "conclusion": "success",
+    "scope": "Existing W01-W08 baseline source on the independent audit branch"
+  },
+  "probe_execution_history": [
+    {
+      "run_id": 41196255530,
+      "conclusion": "failure",
+      "reason": "Reviewer probe omitted required ScopeContext.authentication_source; this is a reviewer-fixture error, not a product finding."
+    },
+    {
+      "run_id": 41196437290,
+      "conclusion": "success",
+      "cases": 10,
+      "reproduced": 10,
+      "execution_commit": "6d95cf7dfd8058e4732ef9361bf5e1572ebf3e4e"
+    },
+    {
+      "run_id": 41196720274,
+      "conclusion": "success",
+      "cases": 14,
+      "reproduced": 14,
+      "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+    }
+  ],
+  "findings": [
+    {
+      "n": 1,
+      "priority": "P1",
+      "kind": "correctness",
+      "title": "确认和后续局部更正会丢失先前人工更正",
+      "tasks": [
+        "CRA-W08"
+      ],
+      "requirements": [
+        "CRA-R016",
+        "CRA-R034",
+        "CRA-R038",
+        "CRA-R041"
+      ],
+      "clinical": "CRA把识别值121改成119，之后点击确认或批量确认，有效值回到原来的121；再次只改单位也可能丢掉数值更正。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/laboratory/service.py",
+          "line": 176,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/laboratory/service.py#L176"
+        },
+        {
+          "path": "cra system/backend/cra_app/laboratory/service.py",
+          "line": 225,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/laboratory/service.py#L225"
+        },
+        {
+          "path": "cra system/backend/cra_app/laboratory/service.py",
+          "line": 988,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/laboratory/service.py#L988"
+        },
+        {
+          "path": "cra system/web/src/features/laboratory/RecognitionReview.tsx",
+          "line": 169,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/web/src/features/laboratory/RecognitionReview.tsx#L169"
+        }
+      ],
+      "fix": "把有效值修订与核实/跳过状态分开，或者按有序事件折叠完整更正链；确认不能恢复原OCR值，补丁应作用于当前有效版本。",
+      "close": [
+        "真实API和PostgreSQL验证：更正→单项确认、更正→批量确认、连续两次局部更正，值始终保留。",
+        "刷新、重登、重新比较及源输入修订后仍一致；原识别值和审计历史保留。"
+      ],
+      "id": "CRA-REV-20261101-01",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [
+        {
+          "case": "correct_then_confirm",
+          "reproduced": true,
+          "evidence_kind": "actual_component_call",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        },
+        {
+          "case": "successive_partial_corrections",
+          "reproduced": true,
+          "evidence_kind": "actual_component_call",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        }
+      ],
+      "verification_level": "source_and_synthetic_component_probe"
+    },
+    {
+      "n": 2,
+      "priority": "P1",
+      "kind": "correctness",
+      "title": "未知例外和缺失单位仍能产生确定性规则结果",
+      "tasks": [
+        "CRA-W04",
+        "CRA-W09"
+      ],
+      "requirements": [
+        "CRA-R007",
+        "CRA-R034"
+      ],
+      "clinical": "例外是否适用还没取得资料，规则已显示适用；一侧没有单位，也可以与带单位阈值直接判真。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/rules/evaluator.py",
+          "line": 63,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/rules/evaluator.py#L63"
+        },
+        {
+          "path": "cra system/backend/cra_app/rules/evaluator.py",
+          "line": 251,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/rules/evaluator.py#L251"
+        }
+      ],
+      "fix": "明确前提、触发、例外及分支的三值合成次序；依赖的例外未知时保留不确定性，所需单位缺失时禁止直接数值判定。",
+      "close": [
+        "否则适用+例外未知→unknown；确定不适用的前提不被例外覆盖。",
+        "带单位比较覆盖两侧单位一致、缺失、冲突；合法无量纲比较仍可运行。"
+      ],
+      "id": "CRA-REV-20261101-02",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [
+        {
+          "case": "unknown_exception_fact",
+          "reproduced": true,
+          "evidence_kind": "actual_component_call",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        },
+        {
+          "case": "missing_unit_in_dimensioned_comparison",
+          "reproduced": true,
+          "evidence_kind": "actual_component_call",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        }
+      ],
+      "verification_level": "source_and_synthetic_component_probe"
+    },
+    {
+      "n": 3,
+      "priority": "P1",
+      "kind": "correctness",
+      "title": "访视窗口丢失适用条件、未知状态和真实确认语义",
+      "tasks": [
+        "CRA-W05",
+        "CRA-W09"
+      ],
+      "requirements": [
+        "CRA-R002",
+        "CRA-R007",
+        "CRA-R011",
+        "CRA-R034"
+      ],
+      "clinical": "只有条件A成立才需检查，A不成立仍生成窗口任务；实际日期是未知文字时可能显示超窗；程序算出的窗口结果被标为CRA已确认。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/subjects/service.py",
+          "line": 1596,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/subjects/service.py#L1596"
+        },
+        {
+          "path": "cra system/backend/cra_app/subjects/service.py",
+          "line": 1690,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/subjects/service.py#L1690"
+        },
+        {
+          "path": "cra system/backend/cra_app/subjects/service.py",
+          "line": 1844,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/subjects/service.py#L1844"
+        },
+        {
+          "path": "cra system/backend/cra_app/subjects/calendar.py",
+          "line": 71,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/subjects/calendar.py#L71"
+        }
+      ],
+      "fix": "区分适用门槛和待核查的窗口断言，保存分支/例外上下文；未知实际日期保留unknown，自动计算与CRA确认分开，继承上游规则未知/冲突。",
+      "close": [
+        "有/无前提、C→B/D→F、例外、嵌套且或/否定的窗口在实际API上验证。",
+        "不能简单过滤所有not_applicable：窗口超界可能是待发现的偏离，须区分适用条件与被检验条件。",
+        "未知实际日期不成超窗；未点击核实不写cra_confirmed；共性资料未知不在下游消失。"
+      ],
+      "id": "CRA-REV-20261101-03",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [
+        {
+          "case": "inapplicable_rule_window_path",
+          "reproduced": true,
+          "evidence_kind": "actual_component_calls_plus_static_caller_trace",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        },
+        {
+          "case": "unknown_actual_date",
+          "reproduced": true,
+          "evidence_kind": "actual_component_call",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        }
+      ],
+      "verification_level": "source_and_synthetic_component_probe"
+    },
+    {
+      "n": 4,
+      "priority": "P1",
+      "kind": "requirement_gap",
+      "title": "共享项目方案不能设置某中心的实际启用日",
+      "tasks": [
+        "CRA-W04",
+        "CRA-W05"
+      ],
+      "requirements": [
+        "CRA-R002",
+        "CRA-R005",
+        "CRA-R011",
+        "CRA-R041"
+      ],
+      "clinical": "方案属于整个项目，A中心1月开始用，B中心2月开始用；当前命令直接拒绝给项目级文件设置某个中心启用日。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/rules/service.py",
+          "line": 1513,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/rules/service.py#L1513"
+        }
+      ],
+      "fix": "分开文件/规则的归属与版本的实际采用范围；项目方案仍是项目规则，共享原件可以有各中心采用区间，避免要求逐中心复制或改称中心规定。",
+      "close": [
+        "同一文档版本在两个中心不同日期采用，按事件日准确选择，起始日含当天。",
+        "项目默认、中心采用、真实冲突、更正影响和历史输出边界均有测试，不能一律取最新或更严。"
+      ],
+      "id": "CRA-REV-20261101-04",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [
+        {
+          "case": "site_activation_of_shared_protocol",
+          "reproduced": true,
+          "evidence_kind": "actual_command_guard_with_stubbed_authorized_source",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        }
+      ],
+      "verification_level": "source_and_synthetic_component_probe"
+    },
+    {
+      "n": 5,
+      "priority": "P1",
+      "kind": "core_capability_gap",
+      "title": "规则语义入口仍依赖专门编写的格式和英文标识",
+      "tasks": [
+        "CRA-W04",
+        "CRA-W09"
+      ],
+      "requirements": [
+        "CRA-R003",
+        "CRA-R004",
+        "CRA-R006",
+        "CRA-R007",
+        "CRA-R008",
+        "CRA-R018",
+        "CRA-R045"
+      ],
+      "clinical": "正常中文方案/邮件尚不能直接形成有用list；当前识别器要求Rule/规则编号、前提、触发、分支等格式。新增安全模块还依赖SAE/GRADE等英文标题或编号片段识别用途。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/providers/rule_extraction.py",
+          "line": 32,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/providers/rule_extraction.py#L32"
+        },
+        {
+          "path": "cra system/backend/cra_app/providers/rule_extraction.py",
+          "line": 506,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/providers/rule_extraction.py#L506"
+        },
+        {
+          "path": "cra system/backend/cra_app/rules/service.py",
+          "line": 694,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/rules/service.py#L694"
+        },
+        {
+          "path": "cra system/backend/cra_app/safety/service.py",
+          "line": 114,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/safety/service.py#L114"
+        },
+        {
+          "path": "cra system/backend/cra_app/safety/service.py",
+          "line": 219,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/safety/service.py#L219"
+        },
+        {
+          "path": "cra system/backend/cra_app/providers/case_worker.py",
+          "line": 24,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/providers/case_worker.py#L24"
+        }
+      ],
+      "fix": "保留有限AST作为执行器，增加直接消费普通资料的语义提取入口并记录覆盖；用明确、可确认的规则用途元数据路由安全维度。无须为使用AI而使用AI，但必须证明实际资料能减少整理工作。",
+      "close": [
+        "用普通中文段落、访视表格、脚注及自然语言Q&A构成独立合成集，不能先人工改写成专用DSL再验收。",
+        "原句含应/需/不得等要求时，不能因不合语法就静默标成非规则。",
+        "中文规则不靠英文编号仍进入正确维度；实际规则和事实能生成具体判断理由/问题，四句通用解释模板不能单独代表该能力完成。"
+      ],
+      "id": "CRA-REV-20261101-05",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [
+        {
+          "case": "ordinary_chinese_rule_prose",
+          "reproduced": true,
+          "evidence_kind": "actual_component_call",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        },
+        {
+          "case": "chinese_safety_dimension_without_english_id_token",
+          "reproduced": true,
+          "evidence_kind": "actual_component_call_with_synthetic_comparison_service_port",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        }
+      ],
+      "verification_level": "source_and_synthetic_component_probe"
+    },
+    {
+      "n": 6,
+      "priority": "P2",
+      "kind": "correctness",
+      "title": "参考范围只比异常标志，漏掉范围本身不一致",
+      "tasks": [
+        "CRA-W08"
+      ],
+      "requirements": [
+        "CRA-R016",
+        "CRA-R034"
+      ],
+      "clinical": "结果都为10，源参考上限20、EDC上限30，两侧都在范围内，当前总结果仍显示一致。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/laboratory/comparison.py",
+          "line": 418,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/laboratory/comparison.py#L418"
+        }
+      ],
+      "fix": "把上下限、比较符、单位及缺失状态作为独立比较字段；范围标志作为额外逻辑检查。补清已解析报告日期等字段的比较范围。",
+      "close": [
+        "上下限不同但标志相同、只有一侧有范围、单侧边界、不可读边界均不能丢失。",
+        "数值/单位一致与其他字段差异分开显示，输出措辞与本次实际覆盖一致。"
+      ],
+      "id": "CRA-REV-20261101-06",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [
+        {
+          "case": "different_reference_limits_same_range_flag",
+          "reproduced": true,
+          "evidence_kind": "actual_component_call",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        }
+      ],
+      "verification_level": "source_and_synthetic_component_probe"
+    },
+    {
+      "n": 7,
+      "priority": "P1",
+      "kind": "core_capability_gap",
+      "title": "检验报告页眉上下文不能复用到结果行",
+      "tasks": [
+        "CRA-W08",
+        "CRA-W13"
+      ],
+      "requirements": [
+        "CRA-R010",
+        "CRA-R013",
+        "CRA-R015",
+        "CRA-R035",
+        "CRA-R044",
+        "CRA-R045"
+      ],
+      "clinical": "识别结果已取得页眉里的受试者和采样日，但逐行提取只找表格列；结果每行不重复身份/日期时，都会变成待手填。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/laboratory/recognition.py",
+          "line": 249,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/laboratory/recognition.py#L249"
+        },
+        {
+          "path": "cra system/backend/cra_app/laboratory/recognition.py",
+          "line": 354,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/laboratory/recognition.py#L354"
+        },
+        {
+          "path": "cra system/validation/LAB_AUTOMATION_SCOPE.md",
+          "line": 1,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/validation/LAB_AUTOMATION_SCOPE.md#L1"
+        }
+      ],
+      "fix": "增加报告级身份/日期上下文及一次性绑定确认，经来源和范围校验后供各结果行复用；不能直接凭当前打开患者把无身份文件强行归属。",
+      "close": [
+        "支持至少一种接近实际工作的清晰中文合成报告：身份在页眉、结果在表格；保留原件/字段区域和歧义。",
+        "加入同日复查、修订、缺少显式初复检标签等代表性情形；测量每份报告的总确认和补录负担。",
+        "现有英文定制PDF和单张PNG确有实际识别结果，应保留；它们不单独证明实际拍照流程可用。"
+      ],
+      "id": "CRA-REV-20261101-07",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [
+        {
+          "case": "report_header_context_outside_result_rows",
+          "reproduced": true,
+          "evidence_kind": "actual_field_extractor_call_with_synthetic_parsed_provider_output_no_OCR_run",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        }
+      ],
+      "verification_level": "source_and_synthetic_component_probe"
+    },
+    {
+      "n": 8,
+      "priority": "P1",
+      "kind": "reliability_architecture",
+      "title": "检验OCR绕过既有异步队列，阻塞上传请求且无法可靠续跑",
+      "tasks": [
+        "CRA-W03",
+        "CRA-W08"
+      ],
+      "requirements": [
+        "CRA-R035",
+        "CRA-R036",
+        "CRA-R045"
+      ],
+      "clinical": "上传后页面要等OCR全部完成；进程中断后，同一请求重试找到已有pending/running报告就返回，当前没有接续识别路径。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/laboratory/api.py",
+          "line": 276,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/laboratory/api.py#L276"
+        },
+        {
+          "path": "cra system/backend/cra_app/laboratory/service.py",
+          "line": 576,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/laboratory/service.py#L576"
+        },
+        {
+          "path": "cra system/backend/cra_app/laboratory/service.py",
+          "line": 609,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/laboratory/service.py#L609"
+        },
+        {
+          "path": "cra system/backend/cra_app/providers/lab_ocr.py",
+          "line": 252,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/providers/lab_ocr.py#L252"
+        }
+      ],
+      "fix": "复用持久Job/Outbox和Procrastinate，将识别移到worker，API尽快返回作业引用，页面查询状态；补授权复查、租约、幂等、异常恢复和输出版本检查。",
+      "close": [
+        "上传期间其他请求可服务；杀worker、超时、断网重试后同一任务可恢复且无重复候选。",
+        "保存来源版本和作业尝试，撤权后禁止继续读取/输出；失败/停机不永久卡在running。",
+        "W09如有耗时模型推理，也采用同一约定。"
+      ],
+      "id": "CRA-REV-20261101-08",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [],
+      "verification_level": "source_review_only"
+    },
+    {
+      "n": 9,
+      "priority": "P2",
+      "kind": "reproducibility",
+      "title": "隔离provider仅固定顶层包，完整依赖和OCR模型未锁定",
+      "tasks": [
+        "CRA-W03",
+        "CRA-W08",
+        "CRA-W09"
+      ],
+      "requirements": [
+        "CRA-R038",
+        "CRA-R044"
+      ],
+      "clinical": "同样的应用代码以后重新运行，OCR底层依赖或默认模型可能变化，之前的评估不能直接证明新环境表现。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/providers/lab_ocr.py",
+          "line": 230,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/providers/lab_ocr.py#L230"
+        },
+        {
+          "path": "cra system/backend/cra_app/providers/lab_worker.py",
+          "line": 98,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/backend/cra_app/providers/lab_worker.py#L98"
+        },
+        {
+          "path": "cra system/backend/cra_app/providers/case_analysis.py",
+          "line": 98,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/providers/case_analysis.py#L98"
+        },
+        {
+          "path": "cra system/validation/PROVIDER_FEASIBILITY.md",
+          "line": 1,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/validation/PROVIDER_FEASIBILITY.md#L1"
+        }
+      ],
+      "fix": "为隔离环境提供完整锁文件/固定镜像与模型标识或哈希，把这些版本纳入provider输出及评估证据；保留W09已固定的Qwen模型revision。",
+      "close": [
+        "缓存清空后可重建相同依赖/模型，记录引擎、模型、资源限制和许可范围。",
+        "不是要求现在部署生产；W15部署前仍需真实环境许可、恢复和运行验证。"
+      ],
+      "id": "CRA-REV-20261101-09",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [],
+      "verification_level": "source_review_only"
+    },
+    {
+      "n": 10,
+      "priority": "P2",
+      "kind": "discussion_traceability_gap",
+      "title": "iPad/电脑与资料知识库的近期讨论尚未完整进入CRA任务验收",
+      "tasks": [
+        "CRA-W02",
+        "CRA-W03",
+        "CRA-W04",
+        "CRA-W12",
+        "CRA-W15"
+      ],
+      "requirements": [
+        "CRA-R003",
+        "CRA-R039",
+        "CRA-R045"
+      ],
+      "clinical": "已有资料库底层；但iPad拍照/触控、换设备接续、资料搜索和有效版本展示等没有作为明确整体验收。",
+      "refs": [
+        {
+          "path": "cra system/plan/tasks.json",
+          "line": 1,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/plan/tasks.json#L1"
+        },
+        {
+          "path": "cra system/architecture/SYSTEM.md",
+          "line": 1,
+          "commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/1ff52eb1c91ccc312cc03aab9700d00fb378b217/cra%20system/architecture/SYSTEM.md#L1"
+        }
+      ],
+      "fix": "登记本对话中明确的设备场景；将知识库建议区分为已确认需求与待确认设计，落实到原有模块和任务，不另建不相连的大平台。",
+      "close": [
+        "形成讨论→理论/设计→任务/测试的对应关系；支持范围与离线边界明确。",
+        "至少验证iPad上传/查看/确认、电脑Excel核对、两端同一记录接续和弱网中断恢复。",
+        "本项是近期需求追踪，不追认此前已经验收，也不要求现在扩展临床OCR到其他资料。"
+      ],
+      "id": "CRA-REV-20261101-10",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [],
+      "verification_level": "source_review_only"
+    },
+    {
+      "n": 11,
+      "priority": "P1",
+      "kind": "correctness",
+      "title": "W09把数据差异作为安全入口，遗漏一致但异常的结果，并重提已跳过或陈旧字段",
+      "tasks": [
+        "CRA-W08",
+        "CRA-W09"
+      ],
+      "requirements": [
+        "CRA-R016",
+        "CRA-R017",
+        "CRA-R018",
+        "CRA-R019",
+        "CRA-R034",
+        "CRA-R041",
+        "CRA-R045"
+      ],
+      "clinical": "源与EDC都记录同一个超参考范围结果时，检验安全入口直接跳过；用户局部不核查仍会重新产生AE问题；已因更正失效的旧对照也被继续消费。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/safety/service.py",
+          "line": 1007,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/safety/service.py#L1007"
+        },
+        {
+          "path": "cra system/backend/cra_app/safety/service.py",
+          "line": 1046,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/safety/service.py#L1046"
+        }
+      ],
+      "fix": "将数据一致性、异常/趋势线索、医学所需上下文和用户核查决定分开；一致的异常也保留为安全事实，跳过仅停止对应路径，陈旧字段需重算或显式标为旧依据。",
+      "close": [
+        "一致且正常、一致但异常、不一致、无法比较、用户跳过、来源更正导致stale，逐项做真实API联调。",
+        "AE未提供不写无AE；医学规则按项目实际版本；数据质量差异本身不直接当AE。",
+        "从检验事实到规则判断和具体提问的路径有独立代表性案例，不仅依赖人工预填grade_criteria_met等结果性标志。",
+        "局部跳过不屏蔽其他独立已知安全事实或紧急提示；只停止依赖被跳过输入的对应路径。"
+      ],
+      "id": "CRA-REV-20261101-11",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [
+        {
+          "case": "consistent_but_abnormal_lab_handoff",
+          "reproduced": true,
+          "evidence_kind": "actual_component_call_with_synthetic_comparison_service_port",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        },
+        {
+          "case": "skipped_lab_path_generates_safety_question",
+          "reproduced": true,
+          "evidence_kind": "actual_component_call_with_synthetic_comparison_service_port",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        },
+        {
+          "case": "stale_comparison_consumed_for_new_safety_question",
+          "reproduced": true,
+          "evidence_kind": "actual_component_call_with_synthetic_comparison_service_port",
+          "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa"
+        }
+      ],
+      "verification_level": "source_and_synthetic_component_probe"
+    },
+    {
+      "n": 12,
+      "priority": "P1",
+      "kind": "governance_semantics",
+      "title": "W09未完整继承适用上下文，并将一次模型输出通过当作能力已验证",
+      "tasks": [
+        "CRA-W04",
+        "CRA-W09",
+        "CRA-W13"
+      ],
+      "requirements": [
+        "CRA-R002",
+        "CRA-R034",
+        "CRA-R036",
+        "CRA-R044"
+      ],
+      "clinical": "安全查询未提供法域而落到synthetic默认；共性资料未知没有并入下游unknowns；模型回复符合格式就把能力写为validated；请求来源固定写pure_synthetic。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/safety/service.py",
+          "line": 1217,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/safety/service.py#L1217"
+        },
+        {
+          "path": "cra system/backend/cra_app/safety/service.py",
+          "line": 1139,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/safety/service.py#L1139"
+        },
+        {
+          "path": "cra system/backend/cra_app/safety/service.py",
+          "line": 1302,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/safety/service.py#L1302"
+        },
+        {
+          "path": "cra system/backend/cra_app/safety/service.py",
+          "line": 1452,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/safety/service.py#L1452"
+        }
+      ],
+      "fix": "使用可信研究配置确定法域/范围，继承上游未知和冲突及状态；分开单次响应结构校验、能力验证记录与临床用途；数据来源由真实元数据/环境控制决定。",
+      "close": [
+        "共性资料缺失/草案/不适用、规则冲突、法域配置有反例且在最终页面/输出可见。",
+        "响应accepted不能自行升级能力验证等级；实际用途证据与模型/规则/输入版本绑定。",
+        "非合成请求不会被代码虚标为pure_synthetic；生产接入仍受W15授权环境限制。"
+      ],
+      "id": "CRA-REV-20261101-12",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [],
+      "verification_level": "source_review_only"
+    },
+    {
+      "n": 13,
+      "priority": "P1",
+      "kind": "context_binding",
+      "title": "W09事实集合未绑定具体事件和访视",
+      "tasks": [
+        "CRA-W05",
+        "CRA-W09"
+      ],
+      "requirements": [
+        "CRA-R010",
+        "CRA-R011",
+        "CRA-R015",
+        "CRA-R018",
+        "CRA-R034"
+      ],
+      "clinical": "安全分析读取受试者所有当前事实，再按fact_key合并；多个AE或访视可混在一起，重复键全变歧义，单个其他事件的事实也可能进入本次判断。",
+      "refs": [
+        {
+          "path": "cra system/backend/cra_app/safety/contracts.py",
+          "line": 34,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/safety/contracts.py#L34"
+        },
+        {
+          "path": "cra system/backend/cra_app/safety/service.py",
+          "line": 574,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/safety/service.py#L574"
+        },
+        {
+          "path": "cra system/backend/cra_app/safety/service.py",
+          "line": 606,
+          "commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+          "url": "https://github.com/pyzz58/gpt-recommendations/blob/df6f04b4c321f133f80dff07afa24c0974266927/cra%20system/backend/cra_app/safety/service.py#L606"
+        }
+      ],
+      "fix": "增加明确的事件/访视及事实用途范围，区分当前事件事实、纵向相关历史、后来取得的补充结论；按来源和时序选择，无法归属则明确待核实。",
+      "close": [
+        "同一患者两个AE、同一指标跨访视、同日复查以及历史事件后补医学意见均有独立测试。",
+        "不能简单丢弃所有后来记录：事件发生、观察、录入和后补确认时间分别保留，并建立具体归属。"
+      ],
+      "id": "CRA-REV-20261101-13",
+      "status": "open",
+      "source_confirmed": true,
+      "reviewed_task_status": "verified_at_137786b",
+      "evidence_cases": [],
+      "verification_level": "source_review_only"
+    }
+  ],
+  "not_performed": [
+    "No real or de-identified clinical records processed.",
+    "No clinical regulatory compliance determination.",
+    "No new model/OCR inference was invoked by the independent probes; existing CI inference logs were read.",
+    "No full browser/iPad acceptance or complete clinical end-to-end workflow was executed in this audit.",
+    "No product code fix, task completion state change, main merge, release, EDC writeback or message sending."
+  ],
+  "observations": [
+    {
+      "schema_version": 1,
+      "reviewed_source_commit": "1ff52eb1c91ccc312cc03aab9700d00fb378b217",
+      "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa",
+      "scope": "synthetic component counterexamples, not clinical or complete API validation",
+      "diagnostic_completed": true,
+      "acceptance_passed": false,
+      "meaning_of_successful_process": "diagnostics executed; reproduced findings remain OPEN",
+      "observations": [
+        {
+          "case": "correct_then_confirm",
+          "finding": "CRA-REV-20261101-01",
+          "expected_correct_behavior": "A later confirmation retains the current corrected value 119.",
+          "observed": {
+            "after_correction": "119",
+            "after_later_confirmation": "121"
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_call"
+        },
+        {
+          "case": "successive_partial_corrections",
+          "finding": "CRA-REV-20261101-01",
+          "expected_correct_behavior": "Correcting a different field retains an earlier value correction.",
+          "observed": {
+            "earlier_value": "119",
+            "value_after_latest_partial_patch": "121"
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_call"
+        },
+        {
+          "case": "unknown_exception_fact",
+          "finding": "CRA-REV-20261101-02",
+          "expected_correct_behavior": "Unknown exception applicability stays unknown or requires clarification.",
+          "observed": {
+            "node_key": "R-REVIEW-EXCEPTION",
+            "status": "applicable",
+            "preconditions": [],
+            "trigger": {
+              "result": "true",
+              "reasons": []
+            },
+            "exceptions": [
+              {
+                "result": "unknown",
+                "reasons": [
+                  "required fact is missing"
+                ]
+              }
+            ],
+            "branches": [],
+            "selected_branch_keys": [],
+            "unknown_branch_keys": [],
+            "unknowns": [
+              "required fact is missing"
+            ]
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_call"
+        },
+        {
+          "case": "missing_unit_in_dimensioned_comparison",
+          "finding": "CRA-REV-20261101-02",
+          "expected_correct_behavior": "An unresolved required measurement unit returns unknown.",
+          "observed": {
+            "result": "true",
+            "reasons": []
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_call"
+        },
+        {
+          "case": "inapplicable_rule_window_path",
+          "finding": "CRA-REV-20261101-03",
+          "expected_correct_behavior": "A false prerequisite prevents an active visit-window obligation.",
+          "observed": {
+            "rule_evaluation": "not_applicable",
+            "specs_emitted": 1,
+            "ungated_window_classification": "out_of_window",
+            "caller_reference": "subjects/service.py:1690-1707 ignores applicability evaluation"
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_calls_plus_static_caller_trace"
+        },
+        {
+          "case": "unknown_actual_date",
+          "finding": "CRA-REV-20261101-03",
+          "expected_correct_behavior": "An actual date that cannot be determined remains unknown_actual.",
+          "observed": {
+            "classification": "out_of_window"
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_call"
+        },
+        {
+          "case": "site_activation_of_shared_protocol",
+          "finding": "CRA-REV-20261101-04",
+          "expected_correct_behavior": "An authorized shared project document can have an explicit site adoption date.",
+          "observed": {
+            "validation_rejection": "a study-wide document cannot be activated for one site"
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_command_guard_with_stubbed_authorized_source"
+        },
+        {
+          "case": "ordinary_chinese_rule_prose",
+          "finding": "CRA-REV-20261101-05",
+          "expected_correct_behavior": "Ordinary rule-purpose prose produces reviewable candidates or explicit semantic gaps.",
+          "observed": {
+            "rules": 0,
+            "coverage": [
+              {
+                "unit_key": "review-plain-rule",
+                "status": "processed",
+                "reason": "non-rule context",
+                "anchor_key": "review-plain-rule"
+              }
+            ],
+            "warnings": []
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_call"
+        },
+        {
+          "case": "different_reference_limits_same_range_flag",
+          "finding": "CRA-REV-20261101-06",
+          "expected_correct_behavior": "Different reference bounds are retained as a reference-range discrepancy.",
+          "observed": {
+            "result_status": "agreement",
+            "source_upper_limit": "20",
+            "edc_upper_limit": "30",
+            "fields": [
+              {
+                "field": "identity",
+                "status": "agreement",
+                "source": "SYNTH-REVIEW-001",
+                "edc": "SYNTH-REVIEW-001"
+              },
+              {
+                "field": "analyte",
+                "status": "agreement",
+                "source": "Synthetic",
+                "edc": "Synthetic"
+              },
+              {
+                "field": "collection",
+                "status": "agreement",
+                "source": "2021-01-01",
+                "edc": "2021-01-01"
+              },
+              {
+                "field": "instance",
+                "status": "agreement",
+                "source": "initial",
+                "edc": "initial"
+              },
+              {
+                "field": "collection_time",
+                "status": "unknown",
+                "source": null,
+                "edc": null
+              },
+              {
+                "field": "unit",
+                "status": "agreement",
+                "source": "g/L",
+                "edc": "g/L"
+              },
+              {
+                "field": "value",
+                "status": "agreement",
+                "source": "10",
+                "edc": "10"
+              },
+              {
+                "field": "reference_range_flag",
+                "status": "agreement",
+                "source": "within_reported_range",
+                "edc": "within_reported_range"
+              }
+            ]
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_call"
+        },
+        {
+          "case": "report_header_context_outside_result_rows",
+          "finding": "CRA-REV-20261101-07",
+          "expected_correct_behavior": "Recognized report-level identity/date/instance can be bound once and reused across rows.",
+          "observed": {
+            "rows": 1,
+            "state": "partial",
+            "row_issues": [
+              [
+                "subject_external_id_missing",
+                "collection_date_missing_or_invalid",
+                "initial_repeat_instance_missing"
+              ]
+            ]
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_field_extractor_call_with_synthetic_parsed_provider_output_no_OCR_run"
+        }
+      ],
+      "cases": 10,
+      "findings_reproduced": 10
+    },
+    {
+      "schema_version": 1,
+      "reviewed_source_commit": "df6f04b4c321f133f80dff07afa24c0974266927",
+      "execution_commit": "6f4b4810de3c41cb980c09b07c2f20f1a89fbcfa",
+      "scope": "W09 in-progress component boundary probes, no model inference or end-to-end clinical validation",
+      "diagnostic_completed": true,
+      "acceptance_passed": false,
+      "meaning_of_successful_process": "diagnostics executed; reproduced findings remain OPEN",
+      "observations": [
+        {
+          "case": "consistent_but_abnormal_lab_handoff",
+          "finding": "CRA-REV-20261101-11",
+          "expected_correct_behavior": "A consistent abnormal result remains available to the scoped safety review.",
+          "observed": {
+            "comparison_status": "agreement",
+            "source_range_flag": "above_range",
+            "safety_questions": 0,
+            "lab_evidence": 0
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_call_with_synthetic_comparison_service_port"
+        },
+        {
+          "case": "skipped_lab_path_generates_safety_question",
+          "finding": "CRA-REV-20261101-11",
+          "expected_correct_behavior": "A local user skip remains skipped and does not itself regenerate this dependent prompt.",
+          "observed": {
+            "comparison_status": "not_checked_by_user",
+            "questions": [
+              "请核实检验项目 Synthetic 的not_checked_by_user结果是否构成需要收集的AE线索，并核对源报告、EDC和临床意义；数值一致或差异均不等于医学安全结论。"
+            ]
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_call_with_synthetic_comparison_service_port"
+        },
+        {
+          "case": "stale_comparison_consumed_for_new_safety_question",
+          "finding": "CRA-REV-20261101-11",
+          "expected_correct_behavior": "A stale field is identified as stale and not used as a fresh safety fact.",
+          "observed": {
+            "input_stale": true,
+            "questions": [
+              "请核实检验项目 Synthetic 的value_difference结果是否构成需要收集的AE线索，并核对源报告、EDC和临床意义；数值一致或差异均不等于医学安全结论。"
+            ],
+            "lab_evidence": 1
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_call_with_synthetic_comparison_service_port"
+        },
+        {
+          "case": "chinese_safety_dimension_without_english_id_token",
+          "finding": "CRA-REV-20261101-05",
+          "expected_correct_behavior": "A confirmed rule's safety dimension is explicit metadata independent of English ID spelling.",
+          "observed": {
+            "rule_title": "严重不良事件判断",
+            "seriousness_rule_recognized": false
+          },
+          "finding_reproduced": true,
+          "evidence_kind": "actual_component_call_with_synthetic_comparison_service_port"
+        }
+      ],
+      "cases": 4,
+      "findings_reproduced": 4
+    }
+  ]
+}
