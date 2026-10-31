@@ -29,3 +29,7 @@ jobs:
           uv sync --frozen --group dev
       - name: Reproduce reviewer counterexamples (not clinical acceptance)
         run: uv run --frozen python audit/probes/review_20261101.py
+      - name: Read pinned in-progress W09 source in a detached worktree
+        run: git worktree add --detach "$RUNNER_TEMP/cra-review-w09" df6f04b4c321f133f80dff07afa24c0974266927
+      - name: Reproduce W09 boundary counterexamples (not clinical acceptance)
+        run: uv run --frozen python audit/probes/review_w09_20261101.py --source-root "$RUNNER_TEMP/cra-review-w09/cra system"
