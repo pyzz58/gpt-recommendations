@@ -8,6 +8,8 @@
 
 2026-11-01独立审查提出的13项问题已按[关闭映射](validation/REVIEW_REMEDIATION_20261101.md)修复，并在[run 41245438323](https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323)重新完成W01—W09源码绑定CI；旧完成证据保留在`completion_history`。
 
+第二轮复核确认的03/04/08残留已按[补充关闭记录](validation/REMEDIATION_RECHECK_CLOSURE_20261101.md)修复，W04—W09在[run 41248250769](https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769)重新完成专属CI。诊断探针通过只表示复现预期缺陷，不构成验收。
+
 
 编码和宣称完成前阅读[audit/TECHNICAL_ROUTE_REVIEW_20261029.md](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)及[开放项](audit/findings.json)。本次八点澄清已修改14条理论及相应设计/任务，见[最新决定](theory/DECISIONS_20261029.md)；W04完成的是有来源的规则候选、有限AST、用户确认和启用日，不代表任意方案自动理解或检验核对。历史导入、真实格式覆盖和获准试用等缺口仍须在相应功能交付前修订，不能因为基础CI绿色就忽略。
 

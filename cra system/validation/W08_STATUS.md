@@ -1,6 +1,6 @@
 # CRA-W08 completion record
 
-Status: revalidation in progress for the independent remediation recheck.
+Status: verified. Date: 2026-11-01.
 
 This record covers source laboratory report recognition, field-level review,
 exact instance matching and deterministic EDC comparison for the declared
@@ -20,8 +20,10 @@ validation or proof of workflow time savings.
   both sides produce the same normal/abnormal flag.
 - Upload returns HTTP 202 after persisting the source version, report/job and
   Outbox event. Procrastinate processes recognition in a worker with lease,
-  attempt, authorization and current-source checks. Expired leases and explicit
-  retry can resume failed work without duplicating candidates.
+  attempt, authorization and current-source checks. A succeeded delivery is a
+  no-op before provider invocation; expired running leases can be requeued while
+  live leases remain protected; attempt/owner/lease fencing rejects late writes
+  from obsolete workers without losing CRA corrections.
 - The isolated OCR environment uses complete platform-specific hash locks and
   an explicit PyTorch CPU index. Provider output includes the selected lock and
   Docling model-manifest SHA-256.
@@ -45,14 +47,14 @@ validation or proof of workflow time savings.
 ## Authoritative execution
 
 - Tested commit:
-  `5148684064a57e50077dd32d02e76b57b2221fc4`.
+  `f66750c9fac58dbf2e03189582a3544fc039bfd4`.
 - GitHub Actions:
-  https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323
+  https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769
 - Task job: `cra-w08`.
 - Required steps: `test`, `lab-provider-evaluation`, `contracts`, `frontend`.
 - PostgreSQL 18.6 service, migration `0009_review_remediation`, source-bound
   task profile and all six W08 review unit regressions passed.
-- W08 PostgreSQL/recognition tests: 10 laboratory integration, 4 source-file
+- W08 PostgreSQL/recognition tests: 13 laboratory integration, 4 source-file
   recognition and 7 review-unit tests passed.
 - Actual Docling evaluation passed against the text PDF, clear PNG and Chinese
   header-context PDF. All expected rows and source coordinates were recovered
@@ -65,12 +67,12 @@ validation or proof of workflow time savings.
   `b63ebded2cb330b5b68a67f24988c28733798336874cabc5d157983f5c7b1e01`.
 - CI Docling model-manifest SHA-256:
   `c5309aff4606055d82f24f07da522ce6830de7d664faaeb4f9fa44cd10d0705b`.
-- CI isolated-image provider time: 38.468 seconds; maximum RSS:
-  2,371,555,328 bytes. Total W08 lab evaluation: 53.033 seconds.
+- CI isolated-image provider time: 37.152 seconds; maximum RSS:
+  2,418,384,896 bytes. Total W08 lab evaluation: 48.267 seconds.
 - OpenAPI drift check, 13 frontend tests, TypeScript and production build
   passed.
 - Subject digest:
-  `c3581509bb54111ccf75fddc7d5e1c160b3741c40d2d2673b10ecdc9cec12ab0`.
+  `d92da00ab44a893f7f5bfbd6195eca4ded8bcfbd9921927f0e2587cc3f4c0932`.
 
 ## Remaining limits
 

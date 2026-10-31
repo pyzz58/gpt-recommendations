@@ -1,7 +1,8 @@
 # 2026-11-01 remediation recheck closure
 
-Status: implementation and local verification complete; source-bound cloud
-verification is required before W04-W09 return to verified.
+Status: verified. Source-bound CI:
+https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769,
+tested commit `f66750c9fac58dbf2e03189582a3544fc039bfd4`.
 
 The independent review at
 https://github.com/pyzz58/gpt-recommendations/actions/runs/41247079903
@@ -75,5 +76,22 @@ Local verification at the implementation checkpoint:
 - frontend: 13 passed, TypeScript and production build passed;
 - traceability and synchronization checks passed.
 
-The authoritative tested commit, GitHub run and task digests are recorded after
-the task-specific CI completes.
+## Authoritative cloud result
+
+- W04: 17 rule/review-unit tests, rule provider evaluation, contracts and
+  frontend passed; digest
+  `13521d2ec37a9c11fce187c210e87dd06858dd7ca4c29f8f299c60bb092ac594`.
+- W05: 10 PostgreSQL/API tests passed; digest
+  `0057da1039e992312002af5c7e324edb32dae2529088ab42579cd3a8df63ad66`.
+- W06/W07 dependency-chain jobs passed; digests
+  `2df3d12dbbe1dc7ae1492623fc6119878a94715965ba3b34e2a69b3229226157`
+  and `4e7c96f9cee4dc2730b99ea2a34287e732efc91123205850487e5ae3b7a938fd`.
+- W08: 7 review-unit, 13 laboratory and 4 recognition tests passed; real
+  Docling evaluation passed; digest
+  `d92da00ab44a893f7f5bfbd6195eca4ded8bcfbd9921927f0e2587cc3f4c0932`.
+- W09: 60 affected tests, real Qwen and Docling evaluations, contracts and
+  frontend passed; digest
+  `72c1ade1c9a043e30ea9838d2fdaa10463955cc65eb10aa08bc2b1107919dfd7`.
+
+`tools/task_evidence.py` reports 9 tasks checked with authoritative
+verification true. The selector advances to CRA-W10.

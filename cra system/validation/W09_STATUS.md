@@ -1,6 +1,6 @@
 # CRA-W09 completion record
 
-Status: revalidation in progress because W04, W06 and W08 are being revalidated.
+Status: verified. Date: 2026-11-01.
 
 This record covers evidence-grounded AE, SAE, special-standard and
 protocol-deviation analysis support for the declared synthetic/provider scope.
@@ -44,9 +44,9 @@ savings.
 ## Authoritative execution
 
 - Tested commit:
-  `5148684064a57e50077dd32d02e76b57b2221fc4`.
+  `f66750c9fac58dbf2e03189582a3544fc039bfd4`.
 - GitHub Actions:
-  https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323
+  https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769
 - Task job: `cra-w09`.
 - Required steps: `migration-roundtrip`, `test`,
   `analysis-provider-evaluation`, `lab-provider-evaluation`, `contracts`,
@@ -54,7 +54,7 @@ savings.
 - PostgreSQL 18.6 service. Migration `0009_review_remediation` downgraded to
   `0008_safety_assessment` and re-upgraded successfully.
 - W09 job's combined review/rule/subject/lab/recognition/safety/platform test
-  step: 54 passed in 22.21 seconds.
+  step: 60 passed in 25.92 seconds.
 - Actual Qwen evaluation: 3/3 dimension matches, 3/3 required-question topic
   matches, 3/3 grounded outputs. Fabricated evidence, unsupported
   numbers/dates, medical conclusions and grade-to-SAE control were rejected.
@@ -62,18 +62,18 @@ savings.
   `0e94391c3ffb1d11612bc37bf0000ece9e1d96f1e3b3c3ebb6d0300dbf48b6d1`
   and model-weight SHA-256
   `fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe`.
-- Qwen evaluation took 40.519 seconds; maximum RSS was 3,478,671,360 bytes.
+- Qwen evaluation took 46.797 seconds; maximum RSS was 3,469,950,976 bytes.
 - Actual laboratory evaluation in the same task: text PDF, clear PNG and Chinese
   header-context PDF all passed. OCR lock SHA-256 was
   `b63ebded2cb330b5b68a67f24988c28733798336874cabc5d157983f5c7b1e01`;
   Docling model-manifest SHA-256 was
   `c5309aff4606055d82f24f07da522ce6830de7d664faaeb4f9fa44cd10d0705b`.
-  The isolated image provider took 42.034 seconds with 2,291,511,296 bytes
+  The isolated image provider took 38.586 seconds with 2,374,926,336 bytes
   maximum RSS.
 - OpenAPI drift check, 13 frontend tests, TypeScript and production build
   passed.
 - Subject digest:
-  `78354e6c70872085e15fc20c608c297feb1d2d9b83e5af988ad3577fd7d46afb`.
+  `72c1ade1c9a043e30ea9838d2fdaa10463955cc65eb10aa08bc2b1107919dfd7`.
 
 ## Remaining limits
 

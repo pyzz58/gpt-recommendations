@@ -1,12 +1,12 @@
 # CRA-W07 completion record
 
-Status: revalidation in progress because W05 is being revalidated.
+Status: verified. Date: 2026-11-01.
 
-2026-11-01 review-remediation revalidation supersedes the older evidence
+2026-11-01 dependent revalidation after the W05 residual fix supersedes the evidence
 below: run
-https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323,
-tested commit `5148684064a57e50077dd32d02e76b57b2221fc4`, digest
-`16cd2aff30b55ce6f9a9971e3b630832ee7d57f992d435e399ea703e814e2b3e`.
+https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769,
+tested commit `f66750c9fac58dbf2e03189582a3544fc039bfd4`, digest
+`4e7c96f9cee4dc2730b99ea2a34287e732efc91123205850487e5ae3b7a938fd`.
 
 Revalidated after W08 added optional EDC report-revision mapping, authorized
 snapshot listing and the shared laboratory comparison consumer. Current

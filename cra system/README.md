@@ -18,6 +18,8 @@ W04已在真实PostgreSQL上完成有出处规则候选、项目共享方案的�
 
 历史v0.2技术复核：[2026-10-29审查报告](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)。总体架构保留，已登记10项开放问题及修订/关闭标准；含云端复现的任务完成检查缺口。最新[v0.4复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)补齐执行契约、自动检验路径、验证和源码绑定完成门槛。[本轮澄清及设计响应](audit/USER_CLARIFICATION_RESPONSE_20261029.md)已将用户决定同步到对应区域。2026-11-01的13项审查问题已按[关闭映射](validation/REVIEW_REMEDIATION_20261101.md)修复，W01—W09在[run 41245438323](https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323)重新完成源码绑定验证；这不关闭真实临床资料、代表性和节时验证缺口。
 
+第二轮独立复核只发现的03/04/08三项残留已按[补充关闭记录](validation/REMEDIATION_RECHECK_CLOSURE_20261101.md)修复，W04—W09在[run 41248250769](https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769)重新通过源码绑定CI；复核探针的“5 passed”仅表示缺陷复现，未作为产品验收。
+
 ## 从哪里看
 
 | 你想了解什么 | 入口 |
