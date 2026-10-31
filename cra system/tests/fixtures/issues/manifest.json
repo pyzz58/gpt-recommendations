@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "source": "pure_synthetic",
+  "generator": "tests/fixtures/issues/generate_fixtures.py",
+  "artifacts": [
+    {
+      "artifact_id": "CARRYOVER-DOCX-DEV",
+      "file": "issues/artifacts/synthetic_carryover_report.docx",
+      "purpose": "carryover_report",
+      "format": "docx",
+      "sha256": "ff429d86c03929db3ebb72c1b47aeac5b1143d052b13da3a0eae5dff5f15321d",
+      "expected": {
+        "issue_numbers": [
+          "CRA-SYN-101",
+          "CRA-SYN-102"
+        ]
+      }
+    },
+    {
+      "artifact_id": "CARRYOVER-XLSX-DEV",
+      "file": "issues/artifacts/synthetic_carryover_track.xlsx",
+      "purpose": "track",
+      "format": "xlsx",
+      "sha256": "9b8c84dc15294f56a4de0d228617665ec23724f7653e22d8c36444befc69e41c",
+      "expected": {
+        "issue_numbers": [
+          "CRA-SYN-101",
+          "CRA-SYN-103"
+        ],
+        "unknown_fields": [
+          "location",
+          "recommendation"
+        ]
+      }
+    }
+  ]
+}

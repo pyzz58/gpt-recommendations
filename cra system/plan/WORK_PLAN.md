@@ -7,12 +7,12 @@
 | 工作包 | 内容 | 前置 | 模块 | 状态 |
 | --- | --- | --- | --- | --- |
 | CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
-| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | verified |
-| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | verified |
-| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | verified |
-| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | verified |
-| CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | verified |
-| CRA-W06 | 实现遗留整理、提醒与点击确认整改 | CRA-W05 | M05、M06 | planned |
+| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | in_progress |
+| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | in_progress |
+| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | in_progress |
+| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | in_progress |
+| CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | in_progress |
+| CRA-W06 | 实现遗留整理、提醒与点击确认整改 | CRA-W05 | M05、M06 | in_progress |
 | CRA-W07 | 实现EDC Excel检验快照导入 | CRA-W05 | M07 | planned |
 | CRA-W08 | 实现检验源文件自动读取与EDC核对 | CRA-W06、CRA-W07 | M08、M12 | planned |
 | CRA-W09 | 实现有依据的AE及PD分析 | CRA-W04、CRA-W06、CRA-W08 | M09、M12 | planned |

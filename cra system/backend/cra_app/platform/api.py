@@ -157,7 +157,12 @@ def capabilities(request: Request) -> CapabilityResponse:
             ModuleCapability(
                 module_id="M05",
                 label="受试者监查工作区",
-                status="not_implemented",
+                status="limited",
+            ),
+            ModuleCapability(
+                module_id="M06",
+                label="遗留问题、行动与Query跟进",
+                status="implemented",
             ),
             ModuleCapability(
                 module_id="M08",

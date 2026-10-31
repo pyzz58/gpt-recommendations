@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W05。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -32,6 +32,7 @@
 | `tests/integration/test_issues.py` | test | 分项完成、改错和跨次跟进 |
 | `backend/cra_app/issues/carryover_import.py` | code | 历史报告/track/文字自动整理与幂等关联 |
 | `tests/integration/test_carryover_import.py` | test | 前次资料进入本次遗留与重复导入 |
+| `migrations/versions/0005_issues_monitoring.py` | migration | Issue、分项Action、Query、遗留导入、监查访视和访前选择 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -78,13 +79,13 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 分项行动及跨次历史
+- [available] 分项行动及跨次历史
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_issues.py
 ```
 
-- [to_implement] 遗留从文件接续，不靠预置JSON
+- [available] 遗留从文件接续，不靠预置JSON
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_carryover_import.py

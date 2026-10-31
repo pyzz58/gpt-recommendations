@@ -108,3 +108,17 @@ ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping�
 - `check_decisions`：患者/事项/期间/规则范围的局部不核查选择、reason、缺失键、影响路径、可继续事项、恢复可用标记和显式恢复历史。
 
 确定性事实计算仅使用`original_record`/`cra_confirmed`；`reported_by_other`和`model_candidate`保留但不覆盖事实或生成确定性日期。W05不创建Issue、检验比较或报告表。
+
+## 10. W06实际遗留与监查底座
+
+迁移`0005_issues_monitoring`增加：
+
+- `issues`：项目/中心稳定的Issue编号、原问题、位置、建议来源、已知进展、可选已有沟通、来源资料/锚点和显式revision；问题信息可部分未知。
+- `issue_actions`：Issue下稳定Action key、类型、要求、独立状态、`completion_basis`、服务器操作者/时间、可选说明和期限来源；PD上报与数据更正等互不覆盖。
+- `issue_history`：Issue/Action创建、上报、CRA确认、重开、沟通、遗留导入和Query关联的append-only历史；数据库触发器禁止更新/删除。
+- `query_links`：草稿或正式Query、外部编号/系统、实际创建/回复日、截止日、期限来源及引用；正式Query和有依据期限由数据库约束检查。
+- `monitoring_visits`与`monitoring_visit_selections`：本次监查阶段、范围简记、状态、revision及访前选择；选择不删除Issue。
+- `carryover_imports`：来源文件版本或文字、SHA-256/解析器指纹、预览/确认状态、解析警告和确认操作者/时间。
+- `carryover_candidates`：候选原编号/问题/位置/建议/进展/行动、原文件source_refs、unknown字段、用户修正及导入Issue映射；相同来源、原编号和确认命令幂等。
+
+`Issue`聚合完成状态由Action派生，不是替代各Action的通用closed字段。`confirm-corrected`记录`completion_basis=user_confirmation`并由服务器取actor/time；`confirm-reported`仅用于PD上报。来源文件或文字缺位置、建议或行动时保持unknown。W06没有M10目录状态表、报告/信件表、Query自动提交或EDC写回。

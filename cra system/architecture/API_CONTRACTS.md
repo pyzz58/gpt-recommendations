@@ -132,3 +132,24 @@ ApplicableRule补充preconditions、trigger、branches、follow_up、completion�
 | `POST /api/v1/subjects/{id}/check-decisions/{decision_id}/resume` | 用户显式恢复；新事实仅把`recovery_available`置为true，不自动恢复 |
 
 `visit_window` OutputEnvelope区分原始/CRA确认事实、规则版本、窗口计算、unknown和`not_checked_by_user`。缺锚点只停止依赖窗口，已识别患者的其他类别工作继续。W05的本地跳过和断点不替代M05完整工作台，也不宣称局部资料是完整病史。
+
+## 11. W06已实现遗留与监查入口
+
+Issue、Action、Query和carryover写入要求有效会话、服务端项目/中心授权、CSRF和幂等键；读取、确认或导入前重新检查范围。`Idempotency-Key`在同一请求体内，批量确认按每个Action的`expected_revision`检查，不静默覆盖并发变化。
+
+| 接口 | 实现约束 |
+| --- | --- |
+| `POST /api/v1/studies/{study_id}/issues`；`GET /api/v1/studies/{study_id}/issues?site_id=` | 创建或列出中心范围Issue；允许原问题/位置/建议/进展不全时保存，稳定编号只在本项目/中心内唯一 |
+| `GET /api/v1/issues/{id}` | 返回原问题、位置、建议及来源、已知进展、分项Action、Query和append-only操作历史 |
+| `POST /api/v1/issues/{id}/actions` | 在既有Issue下增加独立完成口径的Action；期限必须与明确依据同时出现 |
+| `POST /api/v1/actions/confirm-corrected` | 明确Action IDs和各自expected revision；服务器记录actor/time及`user_confirmation`，不要求回复、附件、位置或额外证明 |
+| `POST /api/v1/actions/{id}/confirm-reported` | 仅`pd_reporting`可用；用户明确陈述已上报后只完成该Action，不完成其他整改 |
+| `POST /api/v1/actions/{id}/reopen` | 用户发现仍未完成时重开指定Action，保留原确认及历史 |
+| `POST /api/v1/issues/{id}/replies` | 可选保存已有沟通/中心报告，不反向完成Action |
+| `POST /api/v1/issues/{id}/query-links` | 草稿可缺正式编号；正式Query须有实际外部编号和创建日；有截止日必须有期限来源，缺期限返回unknown而非超期天数 |
+| `POST /api/v1/studies/{study_id}/monitoring-visits`；`GET /api/v1/monitoring-visits/{id}/workbench` | 建立本次监查并带入当前中心全部未完Issue；通过M02公开读取已上传资料引用，`reference_only`不冒充M10状态 |
+| `POST /api/v1/monitoring-visits/{id}/previsit-selection` | 保存访前选择集合，不删除未选Issue，也不生成最终信件 |
+| `POST /api/v1/document-versions/{id}/carryover-imports/preview`；`POST /api/v1/studies/{study_id}/carryover-imports/preview-text` | 从实际DOCX/PDF锚点、XLSX track行或问题文字生成候选；未知字段保留，不调用模型补齐 |
+| `GET /api/v1/carryover-imports/{id}`；`POST /api/v1/carryover-imports/{id}/confirm` | 预览→用户修正→确认导入；相同来源哈希和原编号幂等映射，已有Issue复用编号并追加来源/历史 |
+
+Issue聚合状态只用于展示；Action分别保存`open/reported_done/completed/needs_correction`。PD上报与数据更正可一完成一待办。导入候选的缺项保持unknown，用户修正与原文位置分别保存；重复文件不会重复建Issue。W06不接入或伪装M10目录全量状态，也不正式提交Query、外发或生成模板化信件。

@@ -33,6 +33,15 @@ from cra_app.governance.service import (
     ResourceNotFound,
     RevisionConflict,
 )
+from cra_app.issues.api import router as issues_router
+from cra_app.issues.service import (
+    IssueConflict,
+    IssueNotFound,
+    IssueService,
+    IssueValidationError,
+)
+from cra_app.monitoring.api import router as monitoring_router
+from cra_app.monitoring.service import MonitoringService
 from cra_app.platform.api import router as platform_router
 from cra_app.platform.jobs import ProcrastinateQueue
 from cra_app.rules.api import router as rules_router
@@ -86,6 +95,8 @@ def create_app(
     document_service: DocumentService | None = None,
     rule_service: RuleService | None = None,
     subject_service: SubjectService | None = None,
+    issue_service: IssueService | None = None,
+    monitoring_service: MonitoringService | None = None,
 ) -> FastAPI:
     resolved_settings = settings or get_settings()
     own_engine = None
@@ -119,6 +130,19 @@ def create_app(
             governance=governance_service,
             rules=rule_service,
         )
+    if issue_service is None:
+        issue_service = IssueService(
+            session_factory,
+            governance=governance_service,
+            documents=document_service,
+        )
+    if monitoring_service is None:
+        monitoring_service = MonitoringService(
+            session_factory,
+            issues=issue_service,
+            documents=document_service,
+            governance=governance_service,
+        )
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -145,6 +169,8 @@ def create_app(
     application.state.document_service = document_service
     application.state.rule_service = rule_service
     application.state.subject_service = subject_service
+    application.state.issue_service = issue_service
+    application.state.monitoring_service = monitoring_service
 
     application.add_middleware(
         SessionMiddleware,
@@ -324,6 +350,33 @@ def create_app(
             content=_error("subject_conflict", str(exc)),
         )
 
+    @application.exception_handler(IssueNotFound)
+    async def issue_not_found_error(
+        request: Request, exc: IssueNotFound
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=_error("issue_not_found", str(exc)),
+        )
+
+    @application.exception_handler(IssueValidationError)
+    async def issue_validation_error(
+        request: Request, exc: IssueValidationError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            content=_error("issue_validation_failed", str(exc)),
+        )
+
+    @application.exception_handler(IssueConflict)
+    async def issue_conflict_error(
+        request: Request, exc: IssueConflict
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=_error("issue_conflict", str(exc)),
+        )
+
     @application.exception_handler(RequestValidationError)
     async def validation_error(
         request: Request, exc: RequestValidationError
@@ -385,6 +438,8 @@ def create_app(
     application.include_router(documents_router)
     application.include_router(rules_router)
     application.include_router(subjects_router)
+    application.include_router(issues_router)
+    application.include_router(monitoring_router)
 
     def custom_openapi():
         if application.openapi_schema:

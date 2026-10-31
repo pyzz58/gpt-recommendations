@@ -1,6 +1,6 @@
 # M06 遗留问题、整改、Query与PD跟进
 
-版本：2；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/issues/`。
+版本：2；状态：W06已实现稳定Issue、分项Action、CRA点击确认/重开、PD单独确认、Query草稿/正式关联及文件遗留导入；真实临床格式和性能仍待用途验证。代码位置：`backend/cra_app/issues/`。
 
 ## 对应理论和任务
 

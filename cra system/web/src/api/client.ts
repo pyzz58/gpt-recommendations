@@ -37,6 +37,12 @@ export type CheckDecisionView =
   components["schemas"]["CheckDecisionView"];
 export type ImportFactsResponse =
   components["schemas"]["ImportFactsResponse"];
+export type IssueView = components["schemas"]["IssueView"];
+export type ActionView = components["schemas"]["ActionView"];
+export type QueryLinkView = components["schemas"]["QueryLinkView"];
+export type CarryoverResponse =
+  components["schemas"]["CarryoverResponse"];
+export type WorkbenchView = components["schemas"]["WorkbenchView"];
 
 type ErrorEnvelope = {
   error?: {
@@ -578,6 +584,310 @@ export function resumeCheckDecision(
         expected_revision: expectedRevision,
         idempotency_key: crypto.randomUUID(),
         reason: "CRA恢复核查该局部路径"
+      })
+    }
+  );
+}
+
+export function getIssues(
+  studyId: string,
+  siteId: string,
+  remainingOnly = false
+): Promise<IssueView[]> {
+  const params = new URLSearchParams({
+    site_id: siteId,
+    remaining_only: String(remainingOnly)
+  });
+  return request<IssueView[]>(
+    `/api/v1/studies/${studyId}/issues?${params.toString()}`
+  );
+}
+
+export function createIssue(
+  studyId: string,
+  values: {
+    siteId: string;
+    issueNumber?: string;
+    finding: string;
+    location?: string;
+    recommendation?: string;
+    knownProgress?: string;
+    actions: {
+      kind: string;
+      requirement?: string;
+      actionKey?: string;
+    }[];
+  }
+): Promise<IssueView> {
+  return request<IssueView>(`/api/v1/studies/${studyId}/issues`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: crypto.randomUUID(),
+      site_id: values.siteId,
+      issue_number: values.issueNumber || null,
+      original_finding: values.finding,
+      location: values.location || null,
+      recommendation: values.recommendation || null,
+      recommendation_sources: [],
+      known_progress: values.knownProgress || null,
+      source_kind: "manual",
+      source_refs: [
+        {
+          source_type: "record",
+          source_id: `synthetic-manual:${crypto.randomUUID()}`,
+          locator: "CRA工作台人工记录"
+        }
+      ],
+      actions: values.actions.map((action, index) => ({
+        action_key: action.actionKey || `A${index + 1}`,
+        kind: action.kind,
+        requirement: action.requirement || null,
+        deadline_source_refs: []
+      }))
+    })
+  });
+}
+
+export function confirmCorrectedActions(values: {
+  actions: { id: string; revision: number }[];
+  note?: string;
+}): Promise<{ actions: ActionView[]; replayed: boolean }> {
+  return request("/api/v1/actions/confirm-corrected", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      idempotency_key: crypto.randomUUID(),
+      actions: values.actions.map((action) => ({
+        action_id: action.id,
+        expected_revision: action.revision
+      })),
+      optional_note: values.note || null
+    })
+  });
+}
+
+export function confirmPdReported(
+  action: { id: string; revision: number },
+  values: { statement: string; note?: string }
+): Promise<ActionView> {
+  return request<ActionView>(
+    `/api/v1/actions/${action.id}/confirm-reported`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: action.revision,
+        idempotency_key: crypto.randomUUID(),
+        user_statement: values.statement,
+        optional_note: values.note || null
+      })
+    }
+  );
+}
+
+export function reopenIssueAction(
+  action: { id: string; revision: number },
+  reason: string
+): Promise<ActionView> {
+  return request<ActionView>(`/api/v1/actions/${action.id}/reopen`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: action.revision,
+      idempotency_key: crypto.randomUUID(),
+      reason
+    })
+  });
+}
+
+export function createQueryLink(
+  issue: { id: string; revision: number },
+  values: {
+    state: "draft" | "formal";
+    externalSystem: string;
+    externalNumber: string;
+    openedOn: string;
+    dueOn: string;
+    deadlineSource: string;
+  }
+): Promise<QueryLinkView> {
+  return request<QueryLinkView>(
+    `/api/v1/issues/${issue.id}/query-links`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: issue.revision,
+        idempotency_key: crypto.randomUUID(),
+        query_state: values.state,
+        external_system: values.externalSystem || null,
+        external_query_number: values.externalNumber || null,
+        opened_on: values.openedOn || null,
+        due_on: values.dueOn || null,
+        deadline_source: values.deadlineSource || null,
+        deadline_source_refs: []
+      })
+    }
+  );
+}
+
+export function createMonitoringVisit(values: {
+  studyId: string;
+  siteId: string;
+  title: string;
+  scopeNote: string;
+  stage?: string;
+}): Promise<WorkbenchView> {
+  return request<WorkbenchView>(
+    `/api/v1/studies/${values.studyId}/monitoring-visits`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: 0,
+        idempotency_key: crypto.randomUUID(),
+        site_id: values.siteId,
+        stage: values.stage || "carryover_review",
+        title: values.title,
+        scope_note: values.scopeNote || null
+      })
+    }
+  );
+}
+
+export function getMonitoringWorkbench(
+  visitId: string
+): Promise<WorkbenchView> {
+  return request<WorkbenchView>(
+    `/api/v1/monitoring-visits/${visitId}/workbench`
+  );
+}
+
+export function selectPrevisitIssues(
+  visit: { id: string; revision: number },
+  issueIds: string[]
+): Promise<WorkbenchView> {
+  return request<WorkbenchView>(
+    `/api/v1/monitoring-visits/${visit.id}/previsit-selection`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: visit.revision,
+        idempotency_key: crypto.randomUUID(),
+        issue_ids: issueIds
+      })
+    }
+  );
+}
+
+export function updateMonitoringScope(
+  visit: { id: string; revision: number },
+  values: { scopeNote: string; status: string }
+): Promise<WorkbenchView> {
+  return request<WorkbenchView>(
+    `/api/v1/monitoring-visits/${visit.id}/scope`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: visit.revision,
+        idempotency_key: crypto.randomUUID(),
+        scope_note: values.scopeNote || null,
+        status: values.status
+      })
+    }
+  );
+}
+
+export function previewCarryoverDocument(values: {
+  versionId: string;
+  siteId: string;
+}): Promise<CarryoverResponse> {
+  return request<CarryoverResponse>(
+    `/api/v1/document-versions/${values.versionId}/carryover-imports/preview`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: 0,
+        idempotency_key: crypto.randomUUID(),
+        site_id: values.siteId
+      })
+    }
+  );
+}
+
+export function previewCarryoverText(values: {
+  studyId: string;
+  siteId: string;
+  label: string;
+  text: string;
+}): Promise<CarryoverResponse> {
+  return request<CarryoverResponse>(
+    `/api/v1/studies/${values.studyId}/carryover-imports/preview-text`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: 0,
+        idempotency_key: crypto.randomUUID(),
+        site_id: values.siteId,
+        source_label: values.label,
+        text: values.text
+      })
+    }
+  );
+}
+
+export function confirmCarryoverImport(
+  preview: CarryoverResponse,
+  corrections: Record<string, unknown>[]
+): Promise<CarryoverResponse> {
+  return request<CarryoverResponse>(
+    `/api/v1/carryover-imports/${preview.import_record.id}/confirm`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: preview.import_record.revision,
+        idempotency_key: crypto.randomUUID(),
+        corrections
       })
     }
   );
