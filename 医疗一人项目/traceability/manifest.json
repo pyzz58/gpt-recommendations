@@ -1350,9 +1350,9 @@
     }
   ],
   "theory_version": "V0.10",
-  "roadmap_version": "V1.15",
+  "roadmap_version": "V1.16",
   "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "8b51d63d9a343d63f0ea7c91447893cb1d00aeba6b35caf25c606cd85ed12d10",
+  "roadmap_sha256": "a6a70bb5f4b08bb40d92a56b25dfbb180ac91c4e2b694c27953e8995c9f12908",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1464,8 +1464,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-10-31T23:35:45.809053+00:00",
-    "note": "D-031复盘与W19准入不变；诊断档案强制校验原版本源文件hash，避免未来在新源码上沿用4320e35标签。未改应用实现或验收记录，C01保持open/P2。",
+    "at": "2026-10-31T23:58:38.768165+00:00",
+    "note": "W19与C01最终源码、真实PostgreSQL、前端、迁移及22项追踪验收全部完成并绑定。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -1495,7 +1495,7 @@
       "requirement_ids": [
         "RQ-032"
       ],
-      "sha256": "c108bdea089b44cbddea26bb192959301e3ebd56610b73615296ef0346832989"
+      "sha256": "cf70171b774fbb50c55f0bf6edfc3f28a999feda633f8fdd0619e806105875d1"
     },
     {
       "path": "pnpm-lock.yaml",
@@ -1829,7 +1829,7 @@
         "RQ-028",
         "RQ-031"
       ],
-      "sha256": "9636d70aae7751cc99a3b4b5fdcc9496f35b7d3d5147fd3c7b483881de7366c3"
+      "sha256": "6ab1d3491360c2d59f594391cf59ce7ea33d0e0e65679fe4c4fed95122b7aa0e"
     },
     {
       "path": "docs/w09-handoff.md",
@@ -1876,7 +1876,7 @@
         "RQ-008",
         "RQ-029"
       ],
-      "sha256": "4aac8bda6cac45d1800e7db93991efbcb5a15246730dd49906fa3718c59a2bc2"
+      "sha256": "059a5adc196a85d9671ca0eb289438974cc1d3045bf4ee26ab3440766592cd6f"
     },
     {
       "path": "services/core/src/medical_one_person/application/knowledge_browser.py",
@@ -1894,7 +1894,7 @@
         "RQ-029",
         "RQ-034"
       ],
-      "sha256": "d6ab2f8bb2162cd05cb2e7542a8231dd811b569e0e64f4e66365c7d86a745725"
+      "sha256": "d55d5c7b75927a891b566223b6a0541268c787b03dc37a3384980dd4da48cb3d"
     },
     {
       "path": "apps/web/src/components/project-shell.tsx",
@@ -1968,7 +1968,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "61142ebb238c0170af341948eda324bd30e682690d16a731b962910ddea08033"
+      "sha256": "3300ee368b76c55ad79fa3e3d11fd416ddb822653143b23cdbb9571de12735b6"
     },
     {
       "path": "services/core/src/medical_one_person/application/plan_execution.py",
@@ -2017,7 +2017,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "930a773e84b01f7b397ef3da6da5b199897972c63fcff291776e1310fa651b34"
+      "sha256": "c5fb9afeaef9ad2ea2df97ed35379265a751f30a6d2a28c89c323fe812365733"
     },
     {
       "path": "services/core/tests/integration/test_w11_plan_api.py",
@@ -2161,7 +2161,7 @@
         "RQ-018",
         "RQ-031"
       ],
-      "sha256": "9d12dbb7a33a96f9b142bae3cab008659a32fb91362f97be032d282084f194c3"
+      "sha256": "6f13e83011ac5634ec9ebf2398fab3f97640371f56741be608e4f1f8c66be301"
     },
     {
       "path": "services/core/tests/integration/test_w12_workflow_api.py",
@@ -2278,7 +2278,7 @@
       "requirement_ids": [
         "RQ-017"
       ],
-      "sha256": "70e18c87f59da532559abb6929abdb6e0b4155fcaa4b30729789afdf5a0d6a0e"
+      "sha256": "d36a3e43344473747934cefeae27456d3a6dc1063b99fba6f33373a01b6fbdc3"
     },
     {
       "path": "services/core/tests/integration/test_w13_dataset_api.py",
@@ -2570,7 +2570,7 @@
         "RQ-024",
         "RQ-031"
       ],
-      "sha256": "84c02c1a5634132612478ce8bab52f1f7e1d3097bd2cd21c9de0ab99340e8ae6"
+      "sha256": "790ef2865680a4598892a47b10039adbff8183aa44b30e62326434ca7ff1aea4"
     },
     {
       "path": "services/core/tests/integration/test_w17_audit_api.py",
@@ -2663,7 +2663,7 @@
         "RQ-027",
         "RQ-034"
       ],
-      "sha256": "7da52840640fb3ff443847dc0ee80ea7dfd60ddbcf03ae939975f6933fa74385"
+      "sha256": "2e37677683c16df331e9f7c0a9d1c4e89cfc34765665c722df1783677f37ef76"
     },
     {
       "path": "services/core/src/medical_one_person/api/recovery.py",
@@ -2690,7 +2690,7 @@
         "RQ-027",
         "RQ-034"
       ],
-      "sha256": "683bb9bc8d131addb4c2b325ae2c21191bcc2f8d385b7feac6d6c094cb09a94e"
+      "sha256": "9bc30884cb5b54fdbb6b1e2865b4ce7b6dcc0a2dc7da95129279aa59824dfce3"
     },
     {
       "path": "services/core/tests/integration/test_w18_recovery_api.py",
@@ -2759,7 +2759,7 @@
       "requirement_ids": [
         "RQ-009"
       ],
-      "sha256": "c945c4d6743a51d46310c56e6b838a7d2c22504b2483df1f98e949733c1af81c"
+      "sha256": "7f9a24ec5b790a79c0ae5d2d31e363fabce3570fc08c3444a9487cc6f22fab26"
     },
     {
       "path": "services/core/src/medical_one_person/application/scheduling.py",
@@ -2767,7 +2767,7 @@
         "RQ-009",
         "RQ-027"
       ],
-      "sha256": "85e2e984f6106be062b819515702af523567130a274eb20bd457344d50ce8eae"
+      "sha256": "bf779a1e2aeeb839d807880827e642822b09c6f023f64054adae5fb6f7303088"
     },
     {
       "path": "docs/w01-w18-delivery-status.md",
@@ -2778,7 +2778,7 @@
         "RQ-032",
         "RQ-033"
       ],
-      "sha256": "ba0e4253cb71e9f77ac077e4be33926aed9704c5f40624289e4fef5da5c1a90c"
+      "sha256": "c551aa597a860a33ada1454cee0bc5e4abdee1c49f2488246202e41e8a31afb0"
     },
     {
       "path": "docs/w01-w18-validation.md",
@@ -2789,7 +2789,7 @@
         "RQ-032",
         "RQ-033"
       ],
-      "sha256": "7862047f59685674ae6480353ba17eb44bf8343301b68a3a9974b7f495669e83"
+      "sha256": "1dba14fa33c7106c9c44f8e60da4cbb756cf784bc6ce86b9f2121226684a4bd1"
     },
     {
       "path": "docs/w24-pilot-charter.md",
@@ -2829,7 +2829,7 @@
         "RQ-027",
         "RQ-034"
       ],
-      "sha256": "a4fa2b93491134135d56fa76acd94e47253fd67c75a9da0f2600d6fbf3ce757f"
+      "sha256": "53dabb4f253ea6657982e1e1dce0517b72c960ddd3ab9529fbf9de004a850d4e"
     },
     {
       "path": "services/core/src/medical_one_person/worker/__main__.py",
@@ -2839,7 +2839,7 @@
         "RQ-010",
         "RQ-032"
       ],
-      "sha256": "51d29587667c7fb3bc215f53d040f41fd2ca59fe7ce2e867956a2e2c1e429fcf"
+      "sha256": "fafc2c4d90780d7f9372e862ec51b1debfab25cff8018f177133b0aaebf25c89"
     },
     {
       "path": "services/core/migrations/versions/c8f1a6d3e720_w17_audit_task_links.py",
@@ -2857,7 +2857,7 @@
         "RQ-009",
         "RQ-027"
       ],
-      "sha256": "d8173da2ddff6f7d5a81ef838d1e2e57679a124c0d070d0f6f1264a6ad800caf"
+      "sha256": "23b2ede7ebe202deee1943ee7075161832cdd37b794dcac34ac2db7ef1833178"
     },
     {
       "path": "traceability/acceptance-records.json",
@@ -2897,7 +2897,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "aace0199d063c75b721355926a7eb60ca6b8aa3d43ff2c1e702043be314838a3"
+      "sha256": "fca9e8a5c1cea10e05f42265fcf93f195eca1bf090a1262db476729dbea78e86"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -2937,7 +2937,7 @@
         "RQ-030",
         "RQ-032"
       ],
-      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      "sha256": "c1f859452856637c7c0966112ef2a5d58b366e3e18a25289e01c38a5c866eb29"
     }
   ]
 }

@@ -22,6 +22,6 @@ warning: in the working copy of 'traceability/logs/build-web-final.log', CRLF wi
 .warning: in the working copy of 'traceability/logs/build-web-final.log', CRLF will be replaced by LF the next time Git touches it
 .
 ----------------------------------------------------------------------
-Ran 22 tests in 72.048s
+Ran 22 tests in 88.813s
 
 OK
