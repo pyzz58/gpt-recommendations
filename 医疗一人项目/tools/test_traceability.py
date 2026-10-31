@@ -55,6 +55,14 @@ class TraceabilityTests(unittest.TestCase):
                 target = self.root / name
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(source, target)
+            artifact_paths = set(record.get("artifacts", []))
+            for command in record.get("commands", []):
+                artifact_paths.update(command.get("artifacts", []))
+            for name in artifact_paths:
+                source = self.project / name
+                target = self.root / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target)
         subprocess.run(["git", "init"], cwd=self.root, check=True, capture_output=True)
         subprocess.run(
             ["git", "config", "user.email", "traceability@example.invalid"],
@@ -84,6 +92,26 @@ class TraceabilityTests(unittest.TestCase):
         evidence = json.loads(path.read_text())
         for record in evidence.get("records", []):
             record["source_commit"] = fixture_commit
+            for item in record.get("code_paths", []):
+                item["sha256"] = hashlib.sha256(
+                    (self.root / item["path"]).read_bytes()
+                ).hexdigest()
+            record["source_tree_git_sha256"] = checker._tree_fingerprint(
+                self.root,
+                record["source_scope"],
+                fixture_commit,
+            )
+            record["source_tree_worktree_sha256"] = checker._tree_fingerprint(
+                self.root,
+                record["source_scope"],
+            )
+            artifact_paths = set(record.get("artifacts", []))
+            for command in record.get("commands", []):
+                artifact_paths.update(command.get("artifacts", []))
+            record["artifact_hashes"] = {
+                name: hashlib.sha256((self.root / name).read_bytes()).hexdigest()
+                for name in sorted(artifact_paths)
+            }
         if not evidence["records"]:
             requirement = next(
                 item for item in self.manifest()["requirements"] if item["id"] == "RQ-001"
@@ -124,6 +152,11 @@ class TraceabilityTests(unittest.TestCase):
                         }
                     ],
                     "artifacts": ["traceability/acceptance-records.json"],
+                    "artifact_hashes": {
+                        "traceability/acceptance-records.json": hashlib.sha256(
+                            (self.root / "traceability/acceptance-records.json").read_bytes()
+                        ).hexdigest()
+                    },
                     "uncovered": ["No application or real-world validation."],
                     "source_scope": source_scope,
                     "source_tree_git_sha256": checker._tree_fingerprint(
@@ -308,23 +341,25 @@ class TraceabilityTests(unittest.TestCase):
         evidence_path = self.root / "traceability/acceptance-records.json"
         evidence = json.loads(evidence_path.read_text())
         record = evidence["records"][0]
-        record["requirements"].append("RQ-002")
+        if "RQ-002" not in record["requirements"]:
+            record["requirements"].append("RQ-002")
         record["technical_refs"] = sorted(
             set(record["technical_refs"]) | set(requirement["technical_refs"])
         )
         record["acceptance_refs"] = sorted(
             set(record["acceptance_refs"]) | set(requirement["acceptance_refs"])
         )
-        record["source_commit"] = source_commit
-        record["source_tree_git_sha256"] = checker._tree_fingerprint(
-            self.root,
-            record["source_scope"],
-            source_commit,
-        )
-        record["source_tree_worktree_sha256"] = checker._tree_fingerprint(
-            self.root,
-            record["source_scope"],
-        )
+        for record in evidence["records"]:
+            record["source_commit"] = source_commit
+            record["source_tree_git_sha256"] = checker._tree_fingerprint(
+                self.root,
+                record["source_scope"],
+                source_commit,
+            )
+            record["source_tree_worktree_sha256"] = checker._tree_fingerprint(
+                self.root,
+                record["source_scope"],
+            )
         evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
         checker.refresh(
             self.root,
@@ -359,6 +394,50 @@ class TraceabilityTests(unittest.TestCase):
         self.assertTrue(
             any(
                 "implementation path is not tracked by Git" in error
+                for error in checker.validate(self.root)
+            )
+        )
+
+    def test_tree_fingerprint_uses_repository_relative_paths_from_subdirectory(self):
+        outer = self.root / "nested-project"
+        outer.mkdir()
+        source = self.project / "services/core/src/medical_one_person/agents/runner.py"
+        target = outer / "services/core/src/medical_one_person/agents/runner.py"
+        target.parent.mkdir(parents=True)
+        shutil.copyfile(source, target)
+        subprocess.run(["git", "add", "nested-project"], cwd=self.root, check=True)
+        subprocess.run(
+            ["git", "commit", "-m", "add nested project"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+        )
+        commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        committed = checker._tree_fingerprint(
+            outer,
+            ["services/core/src"],
+            commit,
+        )
+        worktree = checker._tree_fingerprint(outer, ["services/core/src"])
+        self.assertNotEqual(committed, hashlib.sha256(b"").hexdigest())
+        self.assertEqual(committed, worktree)
+
+    def test_artifact_hash_detects_post_acceptance_change(self):
+        self.assertEqual(checker.validate(self.root), [])
+        (self.root / "docs/w01-w18-validation.md").write_text(
+            (self.root / "docs/w01-w18-validation.md").read_text(encoding="utf-8")
+            + "\n变更后的验收产物。\n",
+            encoding="utf-8",
+        )
+        self.assertTrue(
+            any(
+                "artifact hash changed" in error
                 for error in checker.validate(self.root)
             )
         )
@@ -407,7 +486,12 @@ class TraceabilityTests(unittest.TestCase):
                     },
                 },
                 "code_paths": [{"path": path, "sha256": file_sha256}],
-                "artifacts": [],
+                "artifacts": ["docs/w01-w18-validation.md"],
+                "artifact_hashes": {
+                    "docs/w01-w18-validation.md": hashlib.sha256(
+                        (self.root / "docs/w01-w18-validation.md").read_bytes()
+                    ).hexdigest()
+                },
                 "uncovered": ["No live or human expert verification."],
                 "source_scope": ["tools", "services/core/src"],
                 "source_tree_git_sha256": checker._tree_fingerprint(

@@ -133,25 +133,73 @@ def _load_evidence(root, manifest):
 
 
 def _tree_fingerprint(root, paths, commit=None):
+    prefix = _git_prefix(root)
+    git_root = Path(
+        _git(root, "rev-parse", "--show-toplevel").stdout.decode("utf-8").strip()
+    )
+    repo_paths = []
+    for value in paths:
+        local_path = safe_file(root, value).relative_to(root.resolve()).as_posix()
+        repo_paths.append(prefix + local_path)
     if commit:
         result = _git(
-            root,
+            git_root,
             "ls-tree",
             "-r",
+            "--name-only",
+            "-z",
             "--full-tree",
             commit,
             "--",
-            *paths,
+            *repo_paths,
         )
-        return digest(result.stdout)
-    result = _git(root, "ls-files", "-z", "--", *paths)
+        if not result.stdout.strip():
+            raise ValueError("source_scope does not match tracked Git paths")
+        repo_paths_at_commit = [
+            value
+            for value in result.stdout.decode("utf-8").split("\0")
+            if value
+        ]
+        batch = subprocess.run(
+            ["git", "-C", str(git_root), "cat-file", "--batch"],
+            input="".join(
+                f"{commit}:{repo_path}\n" for repo_path in repo_paths_at_commit
+            ).encode("utf-8"),
+            check=False,
+            capture_output=True,
+        )
+        if batch.returncode != 0:
+            detail = batch.stderr.decode("utf-8", errors="replace").strip()
+            raise ValueError("Git evidence check failed: " + detail)
+        entries = []
+        offset = 0
+        for repo_path in repo_paths_at_commit:
+            header_end = batch.stdout.find(b"\n", offset)
+            if header_end < 0:
+                raise ValueError("Git cat-file returned a truncated source tree")
+            header = batch.stdout[offset:header_end].split()
+            if len(header) != 3 or header[1] != b"blob":
+                raise ValueError("Git cat-file returned a non-blob source tree entry")
+            size = int(header[2])
+            content_start = header_end + 1
+            content_end = content_start + size
+            if content_end >= len(batch.stdout) or batch.stdout[content_end] != 0x0A:
+                raise ValueError("Git cat-file returned malformed source content")
+            local_path = repo_path[len(prefix):] if repo_path.startswith(prefix) else repo_path
+            entries.append(
+                local_path + "\0" + digest(batch.stdout[content_start:content_end])
+            )
+            offset = content_end + 1
+        return digest("\n".join(sorted(entries)))
+    result = _git(git_root, "ls-files", "-z", "--", *repo_paths)
     tracked = [
         value
         for value in result.stdout.decode("utf-8").split("\0")
         if value
     ]
+    if not tracked:
+        raise ValueError("source_scope does not match tracked Git paths")
     entries = []
-    prefix = _git_prefix(root)
     for repo_path in tracked:
         if not repo_path.startswith(prefix):
             continue
@@ -160,6 +208,37 @@ def _tree_fingerprint(root, paths, commit=None):
         if path.is_file():
             entries.append(local_path + "\0" + digest(path.read_bytes()))
     return digest("\n".join(sorted(entries)))
+
+
+def _artifact_errors(root, record_id, artifacts, artifact_hashes, require_nonempty):
+    errors = []
+    if not isinstance(artifacts, list):
+        return [record_id + ": artifacts must be a list"]
+    if require_nonempty and not artifacts:
+        errors.append(record_id + ": passed evidence requires artifacts")
+    if not isinstance(artifact_hashes, dict):
+        errors.append(record_id + ": artifact_hashes must be an object")
+        artifact_hashes = {}
+    artifact_paths = set()
+    for value in artifacts:
+        if not isinstance(value, str) or not value:
+            errors.append(record_id + ": invalid artifact path")
+            continue
+        artifact_paths.add(value)
+        expected = artifact_hashes.get(value)
+        try:
+            path = safe_file(root, value)
+        except (ValueError, TypeError):
+            errors.append(record_id + ": artifact path escapes project")
+            continue
+        if not path.is_file():
+            errors.append(record_id + ": artifact does not exist: " + value)
+            continue
+        if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
+            errors.append(record_id + ": artifact lacks SHA-256: " + value)
+        elif digest(path.read_bytes()) != expected:
+            errors.append(record_id + ": artifact hash changed: " + value)
+    return errors
 
 
 def _validate_evidence_record(root, record, requirement_ids, requirements, anchors):
@@ -211,6 +290,17 @@ def _validate_evidence_record(root, record, requirement_ids, requirements, ancho
             errors.append(prefix + " missing integer exit_code")
         if not isinstance(command.get("artifacts", []), list):
             errors.append(prefix + " artifacts must be a list")
+        if isinstance(command.get("artifacts"), list):
+            artifact_hashes = record.get("artifact_hashes", {})
+            errors.extend(
+                _artifact_errors(
+                    root,
+                    prefix,
+                    command["artifacts"],
+                    artifact_hashes if isinstance(artifact_hashes, dict) else {},
+                    False,
+                )
+            )
     levels = record.get("validation_levels")
     if not isinstance(levels, dict) or set(levels) != VALIDATION_LEVELS:
         errors.append(record_id + ": validation levels must be explicit")
@@ -248,17 +338,20 @@ def _validate_evidence_record(root, record, requirement_ids, requirements, ancho
     if not isinstance(source_scope, list) or not source_scope:
         errors.append(record_id + ": source_scope must be non-empty")
     else:
-        if record.get("source_tree_git_sha256") != _tree_fingerprint(
-            root,
-            source_scope,
-            source_commit,
-        ):
-            errors.append(record_id + ": source tree differs from source_commit")
-        if record.get("source_tree_worktree_sha256") != _tree_fingerprint(
-            root,
-            source_scope,
-        ):
-            errors.append(record_id + ": implementation tree changed after acceptance")
+        try:
+            if record.get("source_tree_git_sha256") != _tree_fingerprint(
+                root,
+                source_scope,
+                source_commit,
+            ):
+                errors.append(record_id + ": source tree differs from source_commit")
+            if record.get("source_tree_worktree_sha256") != _tree_fingerprint(
+                root,
+                source_scope,
+            ):
+                errors.append(record_id + ": implementation tree changed after acceptance")
+        except (ValueError, OSError) as exc:
+            errors.append(record_id + ": invalid source tree scope: " + str(exc))
     validation_levels = record.get("validation_levels", {})
     if result_value == "passed":
         for requirement_id in refs:
@@ -287,8 +380,34 @@ def _validate_evidence_record(root, record, requirement_ids, requirements, ancho
                     + ": technical coverage missing "
                     + ", ".join(sorted(missing_technical))
                 )
-    if not isinstance(record.get("artifacts"), list):
-        errors.append(record_id + ": artifacts must be a list")
+    errors.extend(
+        _artifact_errors(
+            root,
+            record_id,
+            record.get("artifacts"),
+            record.get("artifact_hashes"),
+            result_value == "passed",
+        )
+    )
+    record_artifacts = {
+        value for value in record.get("artifacts", []) if isinstance(value, str)
+    }
+    for command in commands:
+        if isinstance(command, dict):
+            record_artifacts.update(
+                value
+                for value in command.get("artifacts", [])
+                if isinstance(value, str)
+            )
+    declared_hashes = record.get("artifact_hashes", {})
+    if isinstance(declared_hashes, dict):
+        extra = set(declared_hashes) - record_artifacts
+        if extra:
+            errors.append(
+                record_id
+                + ": artifact_hashes contains undeclared paths: "
+                + ", ".join(sorted(extra))
+            )
     if not isinstance(record.get("uncovered"), list):
         errors.append(record_id + ": uncovered must be a list")
     if result_value == "passed" and any(
