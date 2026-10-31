@@ -8,7 +8,7 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`64830be28f324e61f1c8b1c928ab692a32db44a46b11137b17974c6d6f6eb976`。
+当前规范SHA-256：`566a4dafca2389e09e7b7db349789d6d1341feacef59528c43755fe58f8004d2`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
@@ -75,7 +75,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 38 | [W37 精选、首次事实、进展及更正分支](#w37) | 路线集成验收 | R03/T03/T04/T09/T10 | [W23](#w23)、[W26](#w26)、[W31](#w31)、[W32](#w32)、[W34](#w34) | 进行中 / CURRENT_BINDING |
 | 39 | [W38 定向补证、解释变化与回S8](#w38) | 路线集成验收 | R04/T03/T04/T05 | [W25](#w25)、[W27](#w27)、[W23](#w23)、[W31](#w31) | 进行中 / CURRENT_BINDING |
 | 40 | [W39 真实跨周接续与长期专题入刊](#w39) | 路线集成验收 | R02/T03/T05/T11 | [W33](#w33)、[W27](#w27)、[W23](#w23)、[W36](#w36) | 进行中 / CURRENT_BINDING |
-| 41 | [W40 更正、当前采用与历史回放集成](#w40) | 路线集成验收 | R05/T11/T09/T10 | [W34](#w34)、[W39](#w39)、[W31](#w31)、[W32](#w32) | 待开始 / CURRENT_BINDING |
+| 41 | [W40 更正、当前采用与历史回放集成](#w40) | 路线集成验收 | R05/T11/T09/T10 | [W34](#w34)、[W39](#w39)、[W31](#w31)、[W32](#w32) | 进行中 / CURRENT_BINDING |
 | 42 | [W41 六份真实跨领域案例与投入联合验收](#w41) | 真实案例与能力验收 | R01/R02/R03/R04/R05/R07/T09/T13 | [W36](#w36)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[W40](#w40) | 待开始 / CURRENT_BINDING |
 | 43 | [G02 第二阶段门：研究闭环、跨周与六例](#g02) | 阶段门 | R01/R02/R03/R04/R05/R07/T01/T02/T03/T04/T05/T06/T07/T08/T09/T10/T11/T13 | [W13](#w13)、[W14](#w14)、[W15](#w15)、[W16](#w16)、[W17](#w17)、[W18](#w18)、[W19](#w19)、[W20](#w20)、[W21](#w21)、[W22](#w22)、[W23](#w23)、[W24](#w24)、[W25](#w25)、[W26](#w26)、[W27](#w27)、[W28](#w28)、[W29](#w29)、[W30](#w30)、[W31](#w31)、[W32](#w32)、[W33](#w33)、[W34](#w34)、[W35](#w35)、[W36](#w36)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[W40](#w40)、[W41](#w41) | 待开始 / CURRENT_BINDING |
 | 44 | [W42 按题接入必要专业原始资料](#w42) | 代码与接口工作包 | T04/T05/T13 | [G02](#g02) | 待开始 / CURRENT_BINDING |
@@ -1567,7 +1567,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：41/59；阶段：2；类型：路线集成验收。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W34](#w34)、[W39](#w39)、[W31](#w31)、[W32](#w32)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W34](#w34)、[W39](#w39)、[W31](#w31)、[W32](#w32)。
 
 前置尚未验收：[W31](#w31)、[W32](#w32)、[W34](#w34)、[W39](#w39)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -1595,7 +1595,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W40-CORRECTION-INTEGRATION-20261031-001", "artifact_refs": ["intelligence/adoption.py", "intelligence/correction.py", "intelligence/history.py", "intelligence/presentation.py", "tests_runtime/test_correction_integration.py", "tests_runtime/test_correction.py", "audits/w40-correction-integration-20261031.json"], "validation_refs": ["tests_runtime/test_correction_integration.py (2 actual passing W40 tests)", "tests_runtime/test_correction.py (8 actual passing W34 tests)", "tests_runtime/test_adoption.py", "audits/w40-correction-integration-20261031.json"], "reviewer": "当前执行者实际离线检查W34显式依赖到W16/B1/B2/C/W31/W32/W33的传播、旧采用阻断、历史回放和部分恢复；非自然更正、真实W31全稿重审、生产恢复或阶段批准", "result": "IN_PROGRESS", "scope": "W40离线集成：从Evidence更正出发，沿显式Archive反向引用追踪ResearchRevision、B1/B2/C、Review/ReviewCase、Article与Edition。CURRENT正文与当前Edition按受影响scope拒绝，KNOWN历史Article仍可回放；旧W15采用失效，旧页无法重新组合。W15 current检查扩展至subject、Review及全部input/evidence的更正限制，只允许精确目标版本、恢复Review、scope和allowed decision解除；仅恢复Article但M10/M11/M12仍受限时，决定继续非当前。两项集成回归覆盖当前/历史分列、旧PASS/Edition阻断和部分恢复。测试使用明确更正副本，不冒充自然更正；真实跨周、完整W31重审、生产备份恢复及G02未完成，整包IN_PROGRESS，不ACCEPTED。"}]
 
 <a id="w41"></a>
 ## W41｜六份真实跨领域案例与投入联合验收

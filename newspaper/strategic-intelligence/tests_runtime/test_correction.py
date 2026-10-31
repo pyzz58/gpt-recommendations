@@ -229,9 +229,7 @@ class CorrectionTests(unittest.TestCase):
             self.archive.read_body(initial_submission.submission.version_id))
         new_submission = self.adoption.submit(old_submission.model_copy(update={
             "submission_id": "SUB-W34-RECOVERY-v001",
-            "evidence_version_ids": (
-                *old_submission.evidence_version_ids,
-                review.submission.version_id),
+            "evidence_version_ids": (review.submission.version_id,),
             "created_at": self.time,
         }))
         self.adoption.decide(DecisionRequest(

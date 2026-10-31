@@ -14,8 +14,8 @@ from pydantic import ValidationError
 from intelligence.adoption import StepState
 from intelligence.archive import Archive
 from intelligence.contracts import (ObjectKind, Precision, ReferenceUse,
-                                    Representation, TimePoint, VersionReference,
-                                    VersionSubmission)
+                                    Representation, SourceTimes, TimePoint,
+                                    VersionReference, VersionSubmission)
 from intelligence.coverage import (CandidateCoverageDecision, CoverageBasis,
                                    CoverageComparator, CoverageController,
                                    CoverageReferencePlan, EditorialDecision,
@@ -115,6 +115,10 @@ class EditionPresentationTests(unittest.TestCase):
             title=object_id, spec_sha256=self.rf.pf.revision.spec_sha256,
             created_at=self.time, rights=self.rights,
             representation=Representation.FULL_BODY,
+            source_times=SourceTimes(published=TimePoint(
+                precision=Precision.INSTANT, value=self.time.isoformat(),
+                source_timezone="UTC",
+                provenance="Owned W32 publication time")),
             references=tuple(references)), text.encode())
 
     def w23_record(self, object_id, version_id, kind):

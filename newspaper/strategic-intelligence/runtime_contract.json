@@ -50,6 +50,7 @@
     "tests_runtime/test_supplement_route.py",
     "intelligence/weekly_continuation.py",
     "tests_runtime/test_weekly_continuation.py",
+    "tests_runtime/test_correction_integration.py",
     "intelligence/original.py",
     "tests_runtime/test_original.py",
     "intelligence/evidence.py",
@@ -91,5 +92,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "64830be28f324e61f1c8b1c928ab692a32db44a46b11137b17974c6d6f6eb976"
+  "spec_sha256": "566a4dafca2389e09e7b7db349789d6d1341feacef59528c43755fe58f8004d2"
 }

@@ -429,9 +429,24 @@ class AdoptionController:
         self._require_latest(task, "Task")
         self._require_latest(subject, "Subject")
         self._require_review_coverage(review, submission, decision.allowed_scope)
+        from .correction import is_version_restricted
+        for stored, label in (
+                (subject, "Subject"), (review, "Review")):
+            if is_version_restricted(
+                    self.archive, stored.submission.version_id,
+                    decision.allowed_scope, decision.decision_id):
+                raise AdoptionError(
+                    f"{label} has an active correction restriction")
         for version_id in (*submission.input_version_ids, *submission.evidence_version_ids):
+            stored = self.archive.get(version_id)
             self._require_available(
-                self.archive.get(version_id), f"Required input or evidence {version_id}")
+                stored, f"Required input or evidence {version_id}")
+            if is_version_restricted(
+                    self.archive, version_id,
+                    decision.allowed_scope, decision.decision_id):
+                raise AdoptionError(
+                    f"Required input or evidence {version_id} "
+                    "has an active correction restriction")
         self._validate_dependencies(
             submission, at, trail | frozenset({decision.decision_id}))
 
