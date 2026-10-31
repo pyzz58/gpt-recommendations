@@ -9,6 +9,32 @@
 
 > **Summary.** A custom Android app was successfully invoked by a *physical long-press* of the Galaxy S24 side key using Android's official assistant mechanism. A first implementation built around VoiceInteractionService repeatedly failed to bind its VoiceInteractionSessionService. Switching to an Activity handling ACTION_ASSIST fixed the launch path, both in an isolated test package and in the main app. However, an end-to-end Chinese voice assistant was **not** completed: the device exposed no usable standard third-party speech recognizer, and later cloud speech-to-text (STT) requests returned HTTP 401. After documenting the results, the project was voluntarily paused.
 
+## The experiment at a glance
+
+**Tested on a China-market Galaxy S24 (SM-S9210, CHC, Android 16 / One UI 8.5).**
+
+| Attempt | Outcome |
+| --- | --- |
+| Default assistant + Samsung's original long-press behavior (101) | **Bixby still opened** |
+| Android assistant behavior (5) + VoiceInteractionService | **Assistant invoked, but SessionService failed to bind** |
+| Android assistant behavior (5) + ACTION_ASSIST Activity | **Worked: physical side key launched the custom app** |
+| Chinese cloud STT → spoken command | **Not completed: repeated HTTP 401** |
+
+~~~mermaid
+flowchart TD
+    A["Physical side-key long press"] --> B{"System long-press behavior"}
+    B -->|101 in tested firmware| C["Samsung / Bixby path"]
+    B -->|5 in tested firmware| D["SystemUI AssistManager"]
+    D --> E{"Selected assistant architecture"}
+    E -->|VoiceInteractionService| F["SessionService bind: not found"]
+    E -->|ACTION_ASSIST Activity| G["AssistActivity → MainActivity"]
+    G --> H["Cloud STT: HTTP 401; voice loop incomplete"]
+    style F fill:#fce8e6,stroke:#a92d2d,color:#202124
+    style G fill:#e6f4ea,stroke:#237a3b,color:#202124
+~~~
+
+**The useful result is the supported Android side-key launch path—not a claim of a finished Bixby replacement.** The full experimental timeline, troubleshooting evidence, rollback instructions, and limitations are below.
+
 ## 1. Motivation: a real assistant, not another shortcut
 
 The idea was to make the Chinese-market Galaxy S24's hardware side key launch a user-selected assistant capable of conversational Chinese interaction, rather than simply opening a chat app from a home-screen icon or double-press shortcut.
