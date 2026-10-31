@@ -1318,9 +1318,9 @@
     }
   ],
   "theory_version": "V0.9",
-  "roadmap_version": "V1.13",
+  "roadmap_version": "V1.14",
   "theory_sha256": "93da3c5140432607aabed9301d90d9f8a35e7d742a62f5211402878782aef6c6",
-  "roadmap_sha256": "2c42f513906ab4c91e90ab785ee9f1b12b461f25d2d302792ae0d3e095ad6e3e",
+  "roadmap_sha256": "26b23df3a2e7f1af1a025deebb856ea9cf8d6a0df6ccf96a4593d96dcca4c072",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1430,8 +1430,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-10-31T22:34:40.695552+00:00",
-    "note": "CI隔离认证修复后的最终源码已重跑本地、真实PostgreSQL和前端验收并重新绑定证据。",
+    "at": "2026-10-31T23:07:19.666707+00:00",
+    "note": "PR81第二轮复核F01-F04修复已在真实PostgreSQL和完整前端验收中通过，证据重新绑定最终源码。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -1547,7 +1547,7 @@
         "RQ-027",
         "RQ-032"
       ],
-      "sha256": "4bf0e7fcd981d5463f4ea1dd88916e7aa2de186a5c292a6dc822303d41c03898"
+      "sha256": "1a19c41d7a4409955b15391ac87b023e4c0475943b1e0e72541c8c793de5e072"
     },
     {
       "path": "config/agents/roles.yaml",
@@ -2536,7 +2536,7 @@
         "RQ-024",
         "RQ-031"
       ],
-      "sha256": "6c27ec249a6dd1c91fc540047a63d295e9bd5b02a3adbc110fb509dd8cc53924"
+      "sha256": "84c02c1a5634132612478ce8bab52f1f7e1d3097bd2cd21c9de0ab99340e8ae6"
     },
     {
       "path": "services/core/tests/integration/test_w17_audit_api.py",
@@ -2584,7 +2584,7 @@
         "RQ-031",
         "RQ-032"
       ],
-      "sha256": "f184026d181e43d1a98ccf337d71d3c4dd4f48db7bc8cacaa1a214228d544f66"
+      "sha256": "d91d5f63223099db31e7276a15cf3348355760127de08a6ac4852fe910832b9e"
     },
     {
       "path": "docs/w17-audit-overview.png",
@@ -2684,7 +2684,7 @@
         "RQ-032",
         "RQ-034"
       ],
-      "sha256": "d7d2cca6c6585fa3cfb2eeb1611ba2046d2ad4bdd64e140d8a5381d29c3a32dc"
+      "sha256": "7ae35ff40c7d4acffe389e2841e637bbabc121d20d7ef02d7818e44d7ef39a65"
     },
     {
       "path": "docs/w18-recovery-overview.png",
@@ -2725,7 +2725,7 @@
       "requirement_ids": [
         "RQ-009"
       ],
-      "sha256": "4198a6f78a15f0ac6912a548906041ef7c2197208aa2216f090b891afb0b6c5e"
+      "sha256": "c945c4d6743a51d46310c56e6b838a7d2c22504b2483df1f98e949733c1af81c"
     },
     {
       "path": "services/core/src/medical_one_person/application/scheduling.py",
@@ -2744,7 +2744,7 @@
         "RQ-032",
         "RQ-033"
       ],
-      "sha256": "c11089599c0d39cf9c3a0282f9d4c543eccdea085006e495209e810ceeeea35e"
+      "sha256": "ba0e4253cb71e9f77ac077e4be33926aed9704c5f40624289e4fef5da5c1a90c"
     },
     {
       "path": "docs/w01-w18-validation.md",
@@ -2755,7 +2755,7 @@
         "RQ-032",
         "RQ-033"
       ],
-      "sha256": "7bb2ffcde8d984f1ee3d893673f2b8b474fee5832c3bb760d7562d08780fee22"
+      "sha256": "7862047f59685674ae6480353ba17eb44bf8343301b68a3a9974b7f495669e83"
     },
     {
       "path": "docs/w24-pilot-charter.md",
@@ -2775,7 +2775,7 @@
         "RQ-009",
         "RQ-022"
       ],
-      "sha256": "8a2ac30169ffc3b4b00d6a9035fb8c271596ffbe0976c3859ba9845b6f2c763d"
+      "sha256": "ff5bcec4f6e5c6b3a132137389a27a9f96a80c89e51726ae4d58e3391331a2ba"
     },
     {
       "path": "services/core/src/medical_one_person/application/worker_loop.py",
@@ -2785,7 +2785,7 @@
         "RQ-010",
         "RQ-032"
       ],
-      "sha256": "ec5e346eb06672fadad3be19015253f1b0b7405444dff9f8e2f38d5d833db5c0"
+      "sha256": "7630f90f270c86b80c5132b02c7b6b6cdca6a4263b451ecde9dfe8b9fc9cbc64"
     },
     {
       "path": "services/core/src/medical_one_person/application/recovery_database.py",
@@ -2805,7 +2805,7 @@
         "RQ-010",
         "RQ-032"
       ],
-      "sha256": "8c7e7cee297257842f2ef877b4e87aab5126c913eac96ac8208a3652f98768fc"
+      "sha256": "51d29587667c7fb3bc215f53d040f41fd2ca59fe7ce2e867956a2e2c1e429fcf"
     },
     {
       "path": "services/core/migrations/versions/c8f1a6d3e720_w17_audit_task_links.py",
@@ -2823,7 +2823,7 @@
         "RQ-009",
         "RQ-027"
       ],
-      "sha256": "9c400c51f349f301b756efa7f08bd9ebc7214b08f02a0d3fbb39eea4f07e7674"
+      "sha256": "d8173da2ddff6f7d5a81ef838d1e2e57679a124c0d070d0f6f1264a6ad800caf"
     },
     {
       "path": "traceability/acceptance-records.json",
@@ -2863,7 +2863,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "0d2574ddb2e2873aca315a0b2a9b0aba89acd5615eed1ee5e0704b47a6cbca15"
+      "sha256": "aace0199d063c75b721355926a7eb60ca6b8aa3d43ff2c1e702043be314838a3"
     }
   ]
 }
