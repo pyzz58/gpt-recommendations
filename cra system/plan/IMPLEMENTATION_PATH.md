@@ -35,7 +35,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W01 建立数据、权限和历史记录底座](work_packages/CRA-W01.md)
 
-状态：planned；前置：CRA-W00。
+状态：in_progress；前置：CRA-W00。
 
 进入条件：W00已有证据，完成声明使用新的任务专属CI门槛。
 

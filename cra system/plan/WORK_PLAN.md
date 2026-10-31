@@ -7,7 +7,7 @@
 | 工作包 | 内容 | 前置 | 模块 | 状态 |
 | --- | --- | --- | --- | --- |
 | CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
-| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | planned |
+| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | in_progress |
 | CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | planned |
 | CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | planned |
 | CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | planned |

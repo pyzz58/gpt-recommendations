@@ -1,0 +1,29 @@
+[project]
+name = "cra-system"
+version = "0.1.0"
+description = "CRA monitoring workbench engineering baseline"
+readme = "README.md"
+requires-python = ">=3.13.15,<3.14"
+dependencies = [
+    "alembic>=1.16,<2",
+    "psycopg[binary]>=3.2,<4",
+    "pydantic>=2.11,<3",
+    "pydantic-settings>=2.10,<3",
+    "sqlalchemy>=2.0.41,<2.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4,<10",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["backend"]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "postgres: requires CRA_TEST_DATABASE_URL pointing to a disposable PostgreSQL 18 database",
+]
+
+[tool.uv]
+managed = true

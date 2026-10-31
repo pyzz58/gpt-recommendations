@@ -98,7 +98,7 @@
         "M01",
         "M14"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
