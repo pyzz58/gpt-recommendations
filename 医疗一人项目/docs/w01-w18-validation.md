@@ -10,7 +10,7 @@
 | --- | --- | --- | --- | --- |
 | Alembic升级到head→降到`b2e7d4a9c310`→再升级→current | `services/core` | 真实PostgreSQL 17.6 | 0 | head `c8f1a6d3e720` |
 | PostgreSQL版本与RLS计数 | 项目根目录 | 真实PostgreSQL 17.6 | 0 | `server_version=17.6`，79条RLS策略 |
-| `uv run --frozen pytest` | `services/core` | mock + 真实PostgreSQL/API，Office渲染 | 0 | 105 passed；1个Starlette TestClient弃用警告 |
+| `uv run --frozen pytest -ra --junitxml=...` | 项目根目录 | mock + 真实PostgreSQL/API，Office渲染 | 0 | 112 passed，0 skipped；1个Starlette TestClient弃用警告 |
 | `uv run --frozen ruff check .` | `services/core` | 静态检查 | 0 | passed |
 | `uv run --frozen mypy services/core/src` | 项目根目录 | 严格类型检查 | 0 | 112 source files，no issues |
 | `pnpm --dir apps/web lint` | 项目根目录 | Next.js/ESLint | 0 | passed；本地Node 24.22.1，CI锁定22.23.4 |
@@ -23,12 +23,18 @@
 
 - W02—W18真实PostgreSQL迁移、事务、RLS、幂等和项目隔离；
 - W04上游输入失效、调度拒绝、新TaskVersion恢复；
+- W04默认CLI自动发现workspace、单任务失败只结算一次、后续任务继续、迟到
+  worker按fence拒绝持久化、成功输出在提交前中断后跨租约复用；
 - W05返工run键包含revision/input snapshot/review，并注入上一轮output/findings；
+- W05语义run键不再随生命周期revision变化，新输入或新review才形成新run；
 - W08知识库换版对直接任务和下游的失效传播；
+- 已知类型输入严格校验UUID、项目、current/active/use-state，格式错误和回收站
+  文档、Citation底层失效来源均fail-closed；
 - W11审核接受前输入与审计门槛、真正重做、下游自动入队；
 - W12阶段决定检查关联独立审计；
 - mock后台worker持续分发、领取、执行和提交；
-- W17 A25/A26确定性规则与阻断；
+- W17 A25/A26确定性规则与阻断，未关联目标按直接输入识别，关联上游阻断其
+  依赖下游，无关目标不被`None`误匹配；
 - W18回收站、索引重建、加密备份、错误口令/篡改、文件校验和独立PostgreSQL回放；
 - W14实际Office/PDF文件、公式重算和页面渲染；
 - 前端生产构建与路由包含W17/W18页面。

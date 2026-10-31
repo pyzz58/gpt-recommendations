@@ -26,10 +26,12 @@ API/页面证据存在；活动数据库切换、异地介质、密钥丢失和�
   捕获时间和snapshot整体SHA-256。
 - 知识库current版本变化在同一事务内失效相关任务及未取消下游；historical
   TaskVersion保留accepted事实，新输入通过新版本恢复并重新派工/验收。
-- 调度领取、结果提交、计划派发和审核接受均拒绝stale/under_review输入。
+- 调度领取、结果提交、计划派发和审核接受均拒绝stale/under_review输入；
+  已知类型引用必须使用合法UUID并满足对象存在、项目归属及访问状态政策。
 - 直接Citation.task_id及类型化document引用也进入换版影响集，不再只依赖
   RetrievalSnapshot。
 - 受限mock后台worker持续分发outbox、领取job、执行Runner并恢复过期租约；
+  默认入口自动发现唯一workspace，单任务失败只结算一次且不终止后续任务；
   返工和验收后解锁任务自动入队。
 - 新增`trash_entries`、`backup_snapshots`、`restore_checks`三张FORCE RLS表；
   累计79条策略。W19 input-validity迁移增加任务列和索引。

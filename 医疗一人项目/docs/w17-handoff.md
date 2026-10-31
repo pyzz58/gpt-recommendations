@@ -24,12 +24,15 @@ Agent或完整科学审查，不能用于宣布医药判断可靠。
   `disputed`，stale不会被disputed覆盖。
 - finding状态为open、resolved或accepted_risk；处置必须填写理由。已解决
   finding不能用不同理由改写，原审计run、输入快照和结论保持可追溯。
+- 阻断范围按显式关联任务、任务已解析输入中的实际审计目标和其未取消依赖下游
+  计算。界面未填写linked_task_id时，引用目标的消费任务仍被识别；仅非空任务id
+  执行关联相等比较，无关目标不会被`None == None`误阻断。
 - 幂等键重放返回原审查；相同键改目标、岗位或producer返回409。
 - 7个合成fixture覆盖未核查引文、stale断言、过度声明、负向证据遗漏、
   分析hash不符、无原件交付和clean claim；保存TP/FP/FN、precision/recall、
   逐案差异与限制。
 - 新增`audit_runs`、`audit_findings`、`audit_evaluations`三张FORCE RLS表，
-  累计76条策略。W17迁移同时把ClaimVersion的`disputed`纳入约束，并在
+  当前全库累计79条策略。W17迁移同时把ClaimVersion的`disputed`纳入约束，并在
   downgrade恢复W16约束。
 - 新增两个JSON Schema：`audit-finding.v1.schema.json`和
   `audit-evaluation-fixture.v1.schema.json`。
@@ -52,7 +55,7 @@ Agent或完整科学审查，不能用于宣布医药判断可靠。
 ## 验收
 
 执行环境为macOS arm64、Python 3.12、PostgreSQL 17.6、Node.js 24.22.1
-（项目锁定Node 22.23.4，本次存在engine warning）、Next.js 16.4.3。
+（CI锁定Node 22.23.4）、Next.js 16.4.3。
 
 ```bash
 export MEDICAL_ONE_TEST_DATABASE_URL='postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test'
@@ -66,9 +69,9 @@ PATH="/Users/zz/Library/pnpm/bin:$PATH" make build
 本轮结果：
 
 ```text
-98 core tests passed
+112 core tests passed (0 skipped locally)
 W17 migration: b8c1e5f7a942 -> e9f6a3c2d140 -> b8c1e5f7a942 -> e9f6a3c2d140 passed
-76 RLS policies; audit_runs/audit_findings/audit_evaluations FORCE RLS
+79 RLS policies; audit_runs/audit_findings/audit_evaluations FORCE RLS
 A25: unreviewed citation -> changes_requested
 A26: refuting evidence while supported -> blocked + claim disputed
 Analysis: result/chart hash mismatch -> blocked
