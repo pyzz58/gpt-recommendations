@@ -1464,7 +1464,7 @@
       "evidence": {
         "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/78",
         "commit_sha": "0b00a7721e4720ac101b8cb816413cec4404e0f2",
-        "automated_test": "tests/test_f01_acting_baseline.py::test_public_fixture_is_synthetic_and_contains_no_private_paths; tests/test_f01_acting_baseline.py::test_fixture_satisfies_only_current_structural_acting_minimum; tests/test_f01_acting_baseline.py::test_current_schema_lacks_professional_causal_fields; tests/test_director_acting.py::test_positive_strict_contract_passes; tests/test_director_acting.py::test_missing_character_contracts_blocks; tests/test_director_acting.py::test_stale_bible_blocks; tests/test_director_acting.py::test_overlapping_hand_prop_blocks; tests/test_director_acting.py::test_generic_language_is_review_not_automatic_block; tests/test_director_acting.py::test_zero_actor_shot_needs_reason_and_passes; tests/test_director_acting.py::test_schema_requires_strict_fields; tests/test_director_acting.py::test_legacy_mode_is_not_forced",
+        "automated_test": "tests/test_f01_acting_baseline.py::test_public_fixture_is_synthetic_and_contains_no_private_paths; tests/test_f01_acting_baseline.py::test_fixture_satisfies_only_current_structural_acting_minimum; tests/test_f01_acting_baseline.py::test_current_schema_lacks_professional_causal_fields; tests/test_director_acting.py::test_positive_strict_contract_passes; tests/test_director_acting.py::test_missing_character_contracts_blocks; tests/test_director_acting.py::test_stale_bible_blocks; tests/test_director_acting.py::test_overlapping_hand_prop_blocks; tests/test_director_acting.py::test_generic_language_is_review_not_automatic_block; tests/test_director_acting.py::test_zero_actor_shot_needs_reason_and_passes; tests/test_director_acting.py::test_schema_requires_strict_fields; tests/test_director_acting.py::test_legacy_mode_is_not_forced; tests/test_director_acting.py::test_strict_ten_role_pipeline_passes; tests/test_director_acting.py::test_strict_role_messages_include_f01_boundaries; tests/test_director_acting.py::test_strict_director_lock_validation_is_wired; tests/test_director_acting.py::test_strict_acting_validation_is_wired; tests/test_director_acting.py::test_invalid_mode_is_rejected_by_schema; tests/test_agent_role_contracts.py::test_invalid_director_mode_values_are_rejected; tests/test_agent_role_contracts.py::test_missing_director_mode_contexts_are_rejected",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1487,6 +1487,12 @@
           "date": "2026-10-31",
           "status": "audit_pending",
           "note": "F01-02/03可选严格表演合同已实现：导演performance_bible（关系/目标/障碍/策略/潜台词/来源span）与逐镜逐角色合同（trigger/objective/obstacle/tactic/subtext/reaction/source_beat_id）进入model-facing schema；hand_prop重叠阻断，泛词仅复核，零演员图文镜允许。公开正例与8项回归通过；因仍无独立专业表演审稿，QO-F01保持audit_pending，F01-04..09未完成。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/78"
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F01-02/03严格合同已完成集成回归：复用原十岗位fixture在strict模式跑通；公开正例/负例、过期圣经、手部重叠、零演员、model-facing schema与mode门禁均覆盖。GitHub CI 926 tests OK、89% coverage、audit issues=36 p0_open=1。QO-F01仍audit_pending，等待独立专业表演审稿；F01-04..09未完成。",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/78"
         }
       ]
