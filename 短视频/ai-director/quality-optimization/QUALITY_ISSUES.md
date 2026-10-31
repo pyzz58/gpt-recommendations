@@ -485,8 +485,8 @@
 - AI 视频适配：参考图和生成时视觉一致性受模型/版次限制
 - 依赖：QO-D07
 - 历史问题：无
-- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/79；回归 tests/test_director_photography.py::test_public_dialogue_scene_passes; tests/test_director_photography.py::test_axis_break_blocks_without_reason_and_reviews_with_reason; tests/test_director_photography.py::test_light_direction_jump_requires_motivated_change; tests/test_director_photography.py::test_scene_geometry_drift_blocks; tests/test_director_photography.py::test_missing_focal_length_blocks; tests/test_director_photography.py::test_generic_photography_language_is_review; tests/test_director_photography.py::test_schema_requires_photography_fields; tests/test_director_photography.py::test_strict_photography_validation_is_wired; tests/test_director_photography.py::test_legacy_mode_is_not_forced；独立审核 未完成；真实媒体 未完成或不适用
-- 状态历史：2026-10-13:audit_pending → 2026-10-31:audit_pending
+- 修复证据：PR https://github.com/pyzz58/gpt-recommendations/pull/79；回归 tests/test_director_photography.py::test_public_dialogue_scene_passes; tests/test_director_photography.py::test_axis_break_blocks_without_reason_and_reviews_with_reason; tests/test_director_photography.py::test_light_direction_jump_requires_motivated_change; tests/test_director_photography.py::test_scene_geometry_drift_blocks; tests/test_director_photography.py::test_missing_focal_length_blocks; tests/test_director_photography.py::test_generic_photography_language_is_review; tests/test_director_photography.py::test_schema_requires_photography_fields; tests/test_director_photography.py::test_strict_photography_validation_is_wired; tests/test_director_photography.py::test_legacy_mode_is_not_forced; tests/test_f02_stage_handoff.py::test_manifest_matches_open_qo_status_and_f03_next_stage; tests/test_f02_stage_handoff.py::test_real_media_and_independent_review_are_not_claimed；独立审核 未完成；真实媒体 未完成或不适用
+- 状态历史：2026-10-13:audit_pending → 2026-10-31:audit_pending → 2026-10-31:audit_pending
 
 ### QO-F03 · 配音/对白/拟音/音乐专业审计
 

@@ -1555,7 +1555,7 @@
       "evidence": {
         "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/79",
         "commit_sha": "8520bdf12b70fb5b542f81f0b4007c2ef03aa6a4",
-        "automated_test": "tests/test_director_photography.py::test_public_dialogue_scene_passes; tests/test_director_photography.py::test_axis_break_blocks_without_reason_and_reviews_with_reason; tests/test_director_photography.py::test_light_direction_jump_requires_motivated_change; tests/test_director_photography.py::test_scene_geometry_drift_blocks; tests/test_director_photography.py::test_missing_focal_length_blocks; tests/test_director_photography.py::test_generic_photography_language_is_review; tests/test_director_photography.py::test_schema_requires_photography_fields; tests/test_director_photography.py::test_strict_photography_validation_is_wired; tests/test_director_photography.py::test_legacy_mode_is_not_forced",
+        "automated_test": "tests/test_director_photography.py::test_public_dialogue_scene_passes; tests/test_director_photography.py::test_axis_break_blocks_without_reason_and_reviews_with_reason; tests/test_director_photography.py::test_light_direction_jump_requires_motivated_change; tests/test_director_photography.py::test_scene_geometry_drift_blocks; tests/test_director_photography.py::test_missing_focal_length_blocks; tests/test_director_photography.py::test_generic_photography_language_is_review; tests/test_director_photography.py::test_schema_requires_photography_fields; tests/test_director_photography.py::test_strict_photography_validation_is_wired; tests/test_director_photography.py::test_legacy_mode_is_not_forced; tests/test_f02_stage_handoff.py::test_manifest_matches_open_qo_status_and_f03_next_stage; tests/test_f02_stage_handoff.py::test_real_media_and_independent_review_are_not_claimed",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1572,6 +1572,12 @@
           "date": "2026-10-31",
           "status": "audit_pending",
           "note": "F02-00软件基线/严格合同：新增photography_contract_mode、director_photography；camera强制shot_size/焦距/screen_axis/camera_side/eyeline/movement_trigger_event，art强制lighting_state/practical_sources/key_light_position/direction/safe_area/scene_geometry；同场景几何漂移、无理由越轴、主光跳变阻断，有理由越轴/主光变化进入review，泛词进入review。公开合成双镜正反回归通过；独立摄影审片和真实媒体未完成，QO-F02保持audit_pending。",
+          "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/79"
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F02-09软件阶段冻结：F02_STAGE_HANDOFF_2026-10-31.json记录严格camera/art合同、多镜回归与独立DOP审片blocked、真实光学媒体blocked，并向F03对白/配音/拟音/音乐交接。QO-F02保持audit_pending；绿色测试不替代摄影/灯光/美术专业审片或真实媒体。",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/79"
         }
       ]
