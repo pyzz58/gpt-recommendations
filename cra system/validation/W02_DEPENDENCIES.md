@@ -32,6 +32,9 @@ Installed versions are resolved from `uv.lock` under CPython 3.13.15.
 
 `web/package-lock.json` is the frontend exact lock. W02 verification uses Node
 24.22.2 and npm 11.19.1. Vite/plugin peer requirements accept Node 24.
+The lock overrides transitive `minimatch` to 11.0.1; after the override,
+`npm audit` reports 0 production and 0 development vulnerabilities for the
+installed tree.
 
 PostgreSQL remains pinned to the PostgreSQL 18.6 image digest recorded in
 W01_DEPENDENCIES.md. Codespaces pins the Node and Docker devcontainer features;
