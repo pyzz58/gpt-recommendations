@@ -38,6 +38,14 @@ class TraceabilityTests(unittest.TestCase):
                 target = self.root / name
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(source, target)
+        evidence = json.loads((self.root / "traceability/acceptance-records.json").read_text())
+        for record in evidence.get("records", []):
+            for item in record.get("code_paths", []):
+                name = item["path"]
+                source = self.project / name
+                target = self.root / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target)
         subprocess.run(["git", "init"], cwd=self.root, check=True, capture_output=True)
         subprocess.run(
             ["git", "config", "user.email", "traceability@example.invalid"],
@@ -55,6 +63,22 @@ class TraceabilityTests(unittest.TestCase):
             cwd=self.root,
             check=True,
             capture_output=True,
+        )
+        fixture_commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        path = self.root / "traceability/acceptance-records.json"
+        evidence = json.loads(path.read_text())
+        for record in evidence.get("records", []):
+            record["source_commit"] = fixture_commit
+        path.write_text(json.dumps(evidence, ensure_ascii=False), encoding="utf-8")
+        checker.refresh(
+            self.root,
+            "隔离测试仓库已重绑定验收记录到临时基线提交，源码内容保持一致。",
         )
 
     def manifest(self):
@@ -157,12 +181,12 @@ class TraceabilityTests(unittest.TestCase):
 
     def test_verified_requires_acceptance_record(self):
         data = self.manifest()
-        requirement = next(item for item in data["requirements"] if item["id"] == "RQ-006")
+        requirement = next(item for item in data["requirements"] if item["id"] == "RQ-030")
         requirement["implementation_status"] = "verified"
         self.write_manifest(data)
         self.assertTrue(
             any(
-                "RQ-006: verified requires passed acceptance evidence" in error
+                "RQ-030: verified requires passed acceptance evidence" in error
                 for error in checker.validate(self.root)
             )
         )
