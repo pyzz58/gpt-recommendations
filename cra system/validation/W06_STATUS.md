@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W08 expanded shared migrations, API, fixtures and frontend.
+Current evidence: run `41193029019`, tested commit
+`a9c699bf8196d6a1cbbe2aeafbbccaade6835fde`, digest
+`163be945f8ecebc2162ac98e07c99e2a8b40ff55a2a11a03425fa64817a7fe16`.
+
 Revalidated after W07 expanded the shared migration, API and frontend. Current
 evidence: run `41189767787`, tested commit
 `9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59`, digest
@@ -107,4 +112,4 @@ Browser checks against the local API and Vite used only synthetic data:
   email, report or EDC write-back was used. Real-format coverage, clinical
   appropriateness and time-saving benefit remain unvalidated.
 
-Next task by dependency after W07: CRA-W08.
+Next task by dependency after W08: CRA-W09.

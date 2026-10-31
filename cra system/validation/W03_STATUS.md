@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W08 added the laboratory fixture corpus and consumed parsed
+source files through the W03 public port. Current evidence: run `41193029019`,
+tested commit `a9c699bf8196d6a1cbbe2aeafbbccaade6835fde`, digest
+`6bd51ec7ddbfeed21796ff1cc88e57040381a92e135037a0892f25c8937e96c0`.
+
 Revalidated after W07 expanded shared dependencies, API and frontend. Current
 evidence: run `41189767787`, tested commit
 `9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59`, digest
@@ -93,4 +98,4 @@ Current evidence: run `41183652961`, tested commit
 - No real clinical document, model credential, EDC write-back or external
   provider run was used.
 
-Next task by dependency after W07: CRA-W08.
+Next task by dependency after W08: CRA-W09.

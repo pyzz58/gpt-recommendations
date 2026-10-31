@@ -2,6 +2,12 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W08 added optional EDC report-revision mapping, authorized
+snapshot listing and the shared laboratory comparison consumer. Current
+evidence: run `41193029019`, tested commit
+`a9c699bf8196d6a1cbbe2aeafbbccaade6835fde`, digest
+`f49038ec3b804a87bc7923f6450e3afe91c9142ceea4ef61e3f5e6848421c782`.
+
 This record covers previewing an EDC laboratory `.xlsx` export, confirming a
 reusable column mapping and export scope, and storing an immutable snapshot with
 normalized laboratory records that retain source positions. It is synthetic
@@ -96,9 +102,10 @@ actual UI confirmation.
   real vendor export variations are not validated.
 - A fixed miss means only `not_seen_in_export`. It does not prove source or EDC
   omission and must not be described as an EDC missing-entry finding.
-- W07 imports and standardizes EDC results only. M08 source-report extraction,
-  identity/instance matching, comparison, difference work items, OCR, reports,
-  Query submission and EDC write-back remain unimplemented.
+- W07's own scope imports and standardizes EDC results only. W08 subsequently
+  implements source-report extraction, identity/instance matching,
+  comparison and difference work items; reports, Query submission and EDC
+  write-back remain outside both tasks.
 - No real clinical data, real EDC export, external model credential, provider
   call or approved clinical trial was used. Clinical appropriateness,
   real-format coverage, safety and time-saving benefit remain unvalidated.
@@ -106,4 +113,4 @@ actual UI confirmation.
   main JavaScript bundle is about 2.1 MB. This is a delivery/maintenance limit,
   not a correctness result.
 
-Next task by dependency after W07: CRA-W08.
+Next task by dependency after W08: CRA-W09.

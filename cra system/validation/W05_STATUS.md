@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W08 expanded the shared migration chain, fixtures, API and
+frontend. Current evidence: run `41193029019`, tested commit
+`a9c699bf8196d6a1cbbe2aeafbbccaade6835fde`, digest
+`c5c19f22a0eeba12ed177e67afe9d29cf7af94421bb6c141d1cad8c5f4083dc6`.
+
 Revalidated after W07 expanded the shared migration chain, API entrypoints and
 frontend. Current evidence: run `41189767787`, tested commit
 `9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59`, digest
@@ -99,4 +104,4 @@ Browser checks with synthetic data showed:
   production deployment was used. No clinical-use or time-saving benefit is
   claimed.
 
-Next task by dependency after W07: CRA-W08.
+Next task by dependency after W08: CRA-W09.

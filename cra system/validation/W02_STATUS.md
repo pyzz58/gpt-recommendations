@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W08 connected recognition review and side-by-side EDC
+comparison to the shared API/workbench. Current evidence: run `41193029019`,
+tested commit `a9c699bf8196d6a1cbbe2aeafbbccaade6835fde`, digest
+`d4cd2adf8e8fdf5fb7f2b3cf2fa67b8a66fce3bbcc6bef5561038eab0e30e9b2`.
+
 Revalidated after W07 connected EDC upload, mapping confirmation and the AG Grid
 preview to the shared API and workbench. Current evidence: run `41189767787`,
 tested commit `9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59`, digest
@@ -91,4 +96,4 @@ retention were visually checked.
 - W02 has no subject monitoring, documents, rules, laboratory OCR/comparison,
   reports or real clinical trial data. Those remain W03 onward.
 
-Next task by dependency after W07: CRA-W08.
+Next task by dependency after W08: CRA-W09.

@@ -2,6 +2,12 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W08 added laboratory recognition/comparison migrations,
+shared API entrypoints and frontend workflows. Current evidence: run
+`41193029019`, tested commit
+`a9c699bf8196d6a1cbbe2aeafbbccaade6835fde`, digest
+`a9ca00f83f95c594a90e327dffb7a3e81e428f8c1e13143c2f05a10b1359e87b`.
+
 Revalidated after W07 added the EDC snapshot migration, shared API entrypoints
 and AG Grid frontend dependency. Current evidence: run `41189767787`, tested
 commit `9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59`, digest
@@ -83,4 +89,4 @@ upgrade to head and all tests were rerun successfully.
 - No OCR, provider, report, EDC integration, production deployment or clinical
   effectiveness/time-saving claim is made.
 
-Next task by dependency after W07: CRA-W08.
+Next task by dependency after W08: CRA-W09.
