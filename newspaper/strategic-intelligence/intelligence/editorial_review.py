@@ -1137,7 +1137,7 @@ class EditorialReviewController:
         except MissingVersion:
             try:
                 self.adoption.submit(submission_record)
-            except Conflict:
+            except (Conflict, ValueError):
                 self.archive.get(submission_id)
         decision_id = _version("W31-REVIEW-DECISION-", canonical([
             request.review_id, request.article_version_id]))
@@ -1157,7 +1157,7 @@ class EditorialReviewController:
                     expires_at=(
                         request.expires_at
                         if request.decision is ReviewDisposition.PASS else None)))
-            except Conflict:
+            except (Conflict, ValueError):
                 self.adoption.load(decision_id)
         return ReviewDecisionResult(
             review_case_version_id=case.review_case_version_id,

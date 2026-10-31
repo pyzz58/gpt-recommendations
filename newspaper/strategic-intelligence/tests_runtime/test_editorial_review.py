@@ -4,12 +4,13 @@ from datetime import datetime, timedelta, timezone
 import hashlib
 from pathlib import Path
 from types import SimpleNamespace
+import threading
 import unittest
 from unittest.mock import patch
 
 from pydantic import ValidationError
 
-from intelligence.adoption import StepState
+from intelligence.adoption import AdoptionController, StepState
 from intelligence.archive import Archive, canonical
 from intelligence.contracts import (MaterialUse, ObjectKind, ReferenceUse,
                                     Representation, VersionReference,
@@ -547,6 +548,12 @@ class EditorialReviewTests(unittest.TestCase):
     def test_final_decision_is_concurrent_idempotent(self):
         _, case, revised = self.responded()
         request = self.final_request(case, revised)
+        barrier = threading.Barrier(2)
+        original_decide = AdoptionController.decide
+
+        def synchronized_decide(controller, decision_request):
+            barrier.wait(timeout=10)
+            return original_decide(controller, decision_request)
 
         def worker(_):
             with Archive(self.archive.root) as archive:
@@ -559,7 +566,10 @@ class EditorialReviewTests(unittest.TestCase):
                     return exc
 
         with ThreadPoolExecutor(max_workers=2) as pool:
-            outcomes = list(pool.map(worker, range(2)))
+            with patch.object(
+                    AdoptionController, "decide",
+                    new=synchronized_decide):
+                outcomes = list(pool.map(worker, range(2)))
         errors = [item for item in outcomes if isinstance(item, Exception)]
         self.assertFalse(errors, errors)
         self.assertEqual(outcomes[0], outcomes[1])

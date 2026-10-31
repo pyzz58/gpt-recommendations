@@ -1,6 +1,6 @@
 {
   "record_id": "W31-EDITORIAL-REVIEW-AUDIT-20261031-001",
-  "checked_at": "2026-10-31T22:09:07+13:00",
+  "checked_at": "2026-10-31T22:17:37+13:00",
   "reviewed_parent": "6fc64bf",
   "spec_sha256": "eb599a5567acb4655774e0b7674ef8bca2a2f802acc48ae76bea4e0664b58c4d",
   "implemented": {
@@ -49,7 +49,8 @@
         "model review requires a current W19 REVIEW/given-material admission, separate model configuration, all reviewed inputs and a successful W31 OperationReceipt",
         "upstream B1/B2/C and Article versions are rechecked at response and final decision",
         "failed or interrupted review writes remain non-authoritative; completed exact decisions are idempotent",
-        "concurrent final decisions converge on one Review and one W15 decision without mutually different outcomes"
+        "concurrent final decisions converge on one Review and one W15 decision without mutually different outcomes",
+        "a synchronized two-writer regression reproduces the independent load/decide window and accepts the existing exact W15 decision instead of creating a self-parent record"
       ]
     }
   },
@@ -74,8 +75,8 @@
     "Q07": "RECORDED_SCOPE: no real model, supplier/API, paid resource, publication, delivery, deployment or external review service was invoked; no reviewer capability claim beyond this offline interface is made"
   },
   "source_hashes": {
-    "intelligence/editorial_review.py": "960da27751bd8f698cd80c5124b850d2bf072cb7b90a3b54d3541f7671d0fd71",
-    "tests_runtime/test_editorial_review.py": "166e41a14da8a4618976653d1e544f0d9462e86b16c48d33e99db0466ce2a9ee",
+    "intelligence/editorial_review.py": "e8595f2364baab6cbd9a8830cd4ba1c5c100f8e5f8688bb064eb91eabb9ad8f1",
+    "tests_runtime/test_editorial_review.py": "ae2871b84a0c40bc0a026362b5db31e88a42e6203fcca5a1f7537e059992249c",
     "intelligence/adoption.py": "95c7b97c146242f8227abb1c93048e73004b916ffb59025c7b9f64ea18cd9c85",
     "intelligence/prospective.py": "062d4d603f6ee43abf65d498997c1cbf27b0dc5c94326cad3831fa766a1ff8ae",
     "intelligence/advisor.py": "c33589d8e71c8bf31cba966fadc99d85564324e7c14fb5c2c20affa29e3bf1ea",
