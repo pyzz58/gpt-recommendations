@@ -169,7 +169,7 @@ rule_service._authorize_write = lambda *args: None
 rejection = None
 try:
     rule_service.create_activation(
-        ScopeContext(actor_id="reviewer-synthetic", tenant_id="synthetic"),
+        ScopeContext(actor_id="reviewer-synthetic", tenant_id="synthetic", authentication_source="synthetic-review"),
         CreateActivationCommand(idempotency_key="review-site-activation",
                                 document_version_id=version_id, site_id=site_id,
                                 starts_on=date(2021, 1, 1), reason="Synthetic site adoption"),
