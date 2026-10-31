@@ -167,7 +167,7 @@
         "test"
       ],
       "workflow_path": ".github/workflows/cra-system.yml",
-      "implementation_status": "implemented_pending_ci",
+      "implementation_status": "implemented",
       "evidence_kind": "github_actions",
       "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
       "binding_paths": [
