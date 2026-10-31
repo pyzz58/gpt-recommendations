@@ -4,14 +4,14 @@
 
 ## 最新技术复核
 
-先读[第一性原理v0.4结论](audit/FIRST_PRINCIPLES_REVIEW_V04.md)、[完整实施路径](plan/IMPLEMENTATION_PATH.md)和当前任务的design_refs/entry_conditions/handoff_outputs。W01已完成实际PostgreSQL迁移、权限/事务测试和专属CI源码绑定；临床用途及节时证据仍待后续工作验证。原业务要求和任务编号保持。
+先读[第一性原理v0.4结论](audit/FIRST_PRINCIPLES_REVIEW_V04.md)、[完整实施路径](plan/IMPLEMENTATION_PATH.md)和当前任务的design_refs/entry_conditions/handoff_outputs。W01/W02已完成实际PostgreSQL、API/工作台和devcontainer验证；临床资料处理、provider用途及节时证据仍待后续工作验证。原业务要求和任务编号保持。
 
 
-编码和宣称完成前阅读[audit/TECHNICAL_ROUTE_REVIEW_20261029.md](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)及[开放项](audit/findings.json)。本次八点澄清已修改14条理论及相应设计/任务，见[最新决定](theory/DECISIONS_20261029.md)；W01只完成数据/权限/审计底座。历史导入、全输出约束和阶段契约等缺口须在相应功能交付前修订，不能因为基础CI绿色就忽略。
+编码和宣称完成前阅读[audit/TECHNICAL_ROUTE_REVIEW_20261029.md](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)及[开放项](audit/findings.json)。本次八点澄清已修改14条理论及相应设计/任务，见[最新决定](theory/DECISIONS_20261029.md)；W01/W02只完成工程底座与工作台壳。历史导入、全输出约束和阶段契约等缺口须在相应功能交付前修订，不能因为基础CI绿色就忽略。
 
 ## 当前状态和第一步
 
-已完成CRA-W00技术基线和**CRA-W01：数据、权限和历史记录底座**。选择器当前应定位W02；后续业务代码仍待实现。
+已完成CRA-W00技术基线、**CRA-W01数据/权限底座**和**CRA-W02 API/工作台壳**。选择器当前应定位W03；后续临床业务代码仍待实现。
 
 先运行只读选择器：
 
@@ -35,7 +35,7 @@ python3 tools/next_task.py
 
 ## 可直接交给Codex的首轮指令
 
-使用[plan/CODEX_FIRST_MESSAGE.md](plan/CODEX_FIRST_MESSAGE.md)中的完整指令；先读[复用选择](architecture/REUSE_ASSESSMENT.md)。W01已交付并停止；后续从W02继续，不因调研而跳到OCR或部署。
+使用[plan/CODEX_FIRST_MESSAGE.md](plan/CODEX_FIRST_MESSAGE.md)中的完整指令；先读[复用选择](architecture/REUSE_ASSESSMENT.md)。W01/W02已交付并停止；后续从W03继续，不因调研而跳到复杂OCR或部署。
 
 后续用户说“继续”，先运行next_task并按实际状态接续；不得只机械把任务号加一。默认推进V1A。若用户指定其他工作包，先核实其依赖，说明未完成前置，不隐瞒或擅改理论。
 
@@ -49,4 +49,4 @@ python3 tools/next_task.py
 
 业务理论按固定CRA-R编号和来源维护，改动后执行既有SYNC_POLICY。技术文件布局、任务细化或依赖工具选择的调整，不应伪造新的临床决定。接口、存储或供应商变化按实际受影响模块更新，保留历史事实和已签发报告。
 
-最新业务决定：遗留逐项展开，CRA点击确认整改即可；缺数据用户可拒绝并跳过相关路径；list含前后条件和分支；版本手动设开始使用日；目录可直接作对照文件；W08自动检验读取属于主线，手工仅少量例外。45个理论编号保持，14条提高revision。W01已按底座范围实现，W02及之后仍待实现，不能沿用旧的人工V1A验收口径。
+最新业务决定：遗留逐项展开，CRA点击确认整改即可；缺数据用户可拒绝并跳过相关路径；list含前后条件和分支；版本手动设开始使用日；目录可直接作对照文件；W08自动检验读取属于主线，手工仅少量例外。45个理论编号保持，14条提高revision。W01/W02已按工程范围实现，W03及之后仍待实现，不能沿用旧的人工V1A验收口径。

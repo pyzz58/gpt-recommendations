@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：in_progress；分支路线：v1a。
+状态：verified；分支路线：v1a。
 前置：CRA-W01。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -79,49 +79,49 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] API和身份
+- [available] API和身份
 
 ```bash
 uv run --frozen pytest -q tests/api/test_platform.py
 ```
 
-- [to_implement] 安装前端锁定依赖
+- [available] 安装前端锁定依赖
 
 ```bash
 npm --prefix web ci
 ```
 
-- [to_implement] 类型检查
+- [available] 类型检查
 
 ```bash
 npm --prefix web run typecheck
 ```
 
-- [to_implement] 构建
+- [available] 构建
 
 ```bash
 npm --prefix web run build
 ```
 
-- [to_implement] 项目/中心刷新上下文
+- [available] 项目/中心刷新上下文
 
 ```bash
 npm --prefix web run test
 ```
 
-- [to_implement] 接口契约与前端类型一致
+- [available] 接口契约与前端类型一致
 
 ```bash
 npm --prefix web run api:check
 ```
 
-- [to_implement] 实际启动API、登录、授权范围和Vite页面
+- [available] 实际启动API、登录、授权范围和Vite页面
 
 ```bash
 bash tools/smoke_w02.sh
 ```
 
-- [to_implement] 实际启动Codespace兼容开发容器
+- [available] 实际启动Codespace兼容开发容器
 
 ```bash
 npx --yes @devcontainers/cli@0.90.0 up --workspace-folder "$GITHUB_WORKSPACE" --config "$GITHUB_WORKSPACE/.devcontainer/cra-system/devcontainer.json" --remove-existing-container

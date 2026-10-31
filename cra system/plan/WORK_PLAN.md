@@ -7,8 +7,8 @@
 | 工作包 | 内容 | 前置 | 模块 | 状态 |
 | --- | --- | --- | --- | --- |
 | CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
-| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | in_progress |
-| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | in_progress |
+| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | verified |
+| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | verified |
 | CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | planned |
 | CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | planned |
 | CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | planned |
@@ -37,11 +37,15 @@
 
 对应理论：CRA-R002、CRA-R036、CRA-R040
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41178355227；扩展授权项目/中心查询后，cra-w01的migrate/test在PostgreSQL 18.6上重新通过；被测提交2db8475906b57a1689ca0f6fcc19b02880c67c4f。旧证据保存在completion_history。
+
 ## CRA-W02 建立云上API和界面框架
 
 验收：在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。
 
 对应理论：CRA-R035、CRA-R036、CRA-R040
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41178355227；cra-w02的migrate、6项PostgreSQL API测试、3项前端测试、typecheck、build、OpenAPI、运行时smoke和devcontainer-smoke全部成功；被测提交2db8475906b57a1689ca0f6fcc19b02880c67c4f。
 
 ## CRA-W03 实现资料接收、解析和来源定位
 

@@ -2,6 +2,13 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W02 added the authorized workspace-list query to the shared
+governance service. Current evidence: GitHub Actions run `41178355227`, tested
+commit `2db8475906b57a1689ca0f6fcc19b02880c67c4f`, current subject digest
+`03ba12806def27bcfcce82a406ebbc72cf0f06cfc5af27cd593c8c62edef462a`.
+The earlier W01 evidence remains in `plan/tasks.json` under
+`completion_history`; the execution details below record that earlier run.
+
 This record covers only the shared data, authorization, revision, idempotency
 and audit foundation. It is engineering and synthetic validation, not clinical
 use validation.
@@ -51,4 +58,4 @@ upgrade to head and all tests were rerun successfully.
 - No OCR, provider, report, EDC integration, production deployment or clinical
   effectiveness/time-saving claim is made.
 
-Next task by dependency: CRA-W02.
+Next task by dependency after W02: CRA-W03.
