@@ -1,0 +1,124 @@
+{
+  "fixture_id": "F02-PUBLIC-DIALOGUE-SCENE-001",
+  "fictional": true,
+  "public_synthetic": true,
+  "source_note": "Public synthetic camera/light/art fixture for F02. No user manuscript, real person, private media, or generated footage.",
+  "base": {
+    "title": "Public F02 dialogue scene",
+    "duration": 8,
+    "characters": [
+      {"id": "CH_A", "description": "Public fictional speaker A."},
+      {"id": "CH_B", "description": "Public fictional listener B."}
+    ],
+    "scenes": [
+      {
+        "id": "LOC02",
+        "description": "A plain fictional room with a table, two chairs and a window on screen-left."
+      }
+    ],
+    "shots": [
+      {
+        "id": "S01",
+        "start": 0,
+        "duration": 4,
+        "scene_id": "LOC02",
+        "character_ids": ["CH_A", "CH_B"],
+        "visual_type": "ai_video",
+        "narration": "",
+        "transition": "hard_cut"
+      },
+      {
+        "id": "S02",
+        "start": 4,
+        "duration": 4,
+        "scene_id": "LOC02",
+        "character_ids": ["CH_A", "CH_B"],
+        "visual_type": "ai_video",
+        "narration": "",
+        "transition": "fade_out"
+      }
+    ],
+    "photography_contract_mode": {
+      "kind": "source_bound_photography_plan_required",
+      "version": 1
+    }
+  },
+  "camera_art": {
+    "shots": {
+      "S01": {
+        "camera": {
+          "start_frame": "Medium two-shot at the table, A on screen-left, B on screen-right",
+          "movement": "Slow 5% push toward the letter after A begins to lift it",
+          "move_trigger_s": 1.2,
+          "end_frame": "A and B remain on their original sides; the letter is visible between them",
+          "lens_feel": "35mm natural perspective with mild depth",
+          "reason": "The push follows A's decision to lift the letter without changing the spatial relationship",
+          "shot_size": "medium",
+          "focal_length_mm": 35,
+          "screen_axis": "A screen-left, B screen-right, table center",
+          "camera_side": "left",
+          "eyeline": "A looks right toward B; B looks left toward A",
+          "movement_trigger_event": "A lifts the letter as B leans slightly forward"
+        },
+        "art": {
+          "environment": "Plain room with a wooden table, two chairs and a screen-left window",
+          "light_source": "Soft window daylight from screen-left",
+          "lighting_state": "lit",
+          "practical_sources": ["screen-left window daylight", "desk lamp off"],
+          "lighting_change_reason": "Same window daylight remains the key source",
+          "key_light_position": "Screen-left window",
+          "key_light_direction": "From screen-left toward screen-right",
+          "color_path": "Neutral warm grey remains stable",
+          "texture": "Natural wood grain and matte paper",
+          "safe_area": "Both faces and the letter remain inside the center vertical safe area",
+          "scene_geometry": {
+            "anchor_positions": {
+              "CH_A": "screen-left chair",
+              "CH_B": "screen-right chair",
+              "TABLE": "screen center"
+            },
+            "key_light_position": "Screen-left window",
+            "camera_axis": "Along the table, A screen-left, B screen-right"
+          }
+        }
+      },
+      "S02": {
+        "camera": {
+          "start_frame": "Same medium two-shot with A screen-left, B screen-right",
+          "movement": "Hold still until B's hand reaches toward the letter",
+          "move_trigger_s": 2.0,
+          "end_frame": "B's hand and the letter remain inside the same screen geometry",
+          "lens_feel": "35mm natural perspective with mild depth",
+          "reason": "The hold preserves the same side of the table while B reacts to A's action",
+          "shot_size": "medium",
+          "focal_length_mm": 35,
+          "screen_axis": "A screen-left, B screen-right, table center",
+          "camera_side": "left",
+          "eyeline": "A looks right toward B; B looks left toward the letter and then A",
+          "movement_trigger_event": "B's hand reaches toward the letter"
+        },
+        "art": {
+          "environment": "Plain room with a wooden table, two chairs and a screen-left window",
+          "light_source": "Soft window daylight from screen-left",
+          "lighting_state": "lit",
+          "practical_sources": ["screen-left window daylight", "desk lamp off"],
+          "lighting_change_reason": "Same window daylight continues with no key-light change",
+          "key_light_position": "Screen-left window",
+          "key_light_direction": "From screen-left toward screen-right",
+          "color_path": "Neutral warm grey continues without a palette jump",
+          "texture": "Natural wood grain and matte paper",
+          "safe_area": "Both faces and the reaching hand stay inside the center safe area",
+          "scene_geometry": {
+            "anchor_positions": {
+              "CH_A": "screen-left chair",
+              "CH_B": "screen-right chair",
+              "TABLE": "screen center"
+            },
+            "key_light_position": "Screen-left window",
+            "camera_axis": "Along the table, A screen-left, B screen-right"
+          }
+        }
+      }
+    }
+  }
+}

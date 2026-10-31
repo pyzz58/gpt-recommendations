@@ -1,0 +1,53 @@
+{
+  "version": "f02-stage-handoff-v1",
+  "date": "2026-10-31",
+  "stage": "F02",
+  "qo_id": "QO-F02",
+  "qo_status": "audit_pending",
+  "software_stage": "review_ready",
+  "substages": {
+    "F02-00": "baseline_and_strict_camera_art_contract",
+    "F02-01": "multi_shot_axis_light_geometry_regression",
+    "F02-02": "independent_dop_review_blocked",
+    "F02-03": "real_media_optics_blocked",
+    "F02-04": "review_ready_f03_handoff"
+  },
+  "real_media": {
+    "status": "blocked",
+    "real_camera_or_lighting_evidence": false,
+    "decoded_optical_media": false,
+    "independent_dop_review": false,
+    "human_approval": false
+  },
+  "software_evidence": {
+    "pr": "https://github.com/pyzz58/gpt-recommendations/pull/79",
+    "contract_module": "director_photography.py",
+    "role_integration": "agent_role_contracts.py",
+    "formal_series_mode": "screenplay_series_delivery.build_per_episode_crew",
+    "tests": "tests/test_director_photography.py",
+    "public_fixture": "examples/photography-f02/public_dialogue_scene.json",
+    "baseline_report": "quality-optimization/F02-00_PHOTOGRAPHY_BASELINE_AND_CONTRACT_2026-10-31.md"
+  },
+  "not_verified": [
+    "independent DOP, gaffer or production-design review",
+    "real camera/lens/lighting/set test",
+    "AI-video optical consistency",
+    "final color, composition or film acceptance"
+  ],
+  "next_stage": {
+    "id": "F03",
+    "title": "对白、配音、拟音与音乐",
+    "entry_conditions": [
+      "Read the F02 handoff and the strict camera_art contract.",
+      "Keep the ten-role DAG and source/version bindings.",
+      "Use camera side, eyeline, light and geometry as upstream constraints.",
+      "Do not claim F02 photography quality or real media is complete."
+    ],
+    "must_not_claim": [
+      "F02 complete",
+      "real photography verified",
+      "independent DOP review completed",
+      "final film approved"
+    ]
+  }
+}
