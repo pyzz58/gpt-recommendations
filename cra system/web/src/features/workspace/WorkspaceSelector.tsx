@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import type { CapabilityResponse, ScopeResponse } from "../../api/client";
 import { DocumentWorkspace } from "../documents/DocumentWorkspace";
+import { RuleWorkspace } from "../rules/RuleWorkspace";
 import {
   type WorkspaceSelection,
   readStoredSelection,
@@ -70,7 +71,13 @@ export function WorkspaceSelector({
 
   const unavailableProviders = Object.entries(capabilities.providers)
     .filter(([, provider]) => provider.status === "not_configured")
-    .map(([name]) => (name === "ocr" ? "检验 OCR" : "模型分析"));
+    .map(([name]) =>
+      name === "ocr"
+        ? "检验 OCR"
+        : name === "rule_extractor"
+          ? "规则提取"
+          : "模型分析"
+    );
 
   return (
     <div className="workspace-shell">
@@ -180,20 +187,26 @@ export function WorkspaceSelector({
           </article>
           <article className="context-card placeholder">
             <p className="eyebrow">当前模块</p>
-            <h2>资料与原文</h2>
+            <h2>资料、规则与分层list</h2>
             <p>
-              上传私有合成资料，查看不可变版本、解析覆盖和可回查原文位置；当前页面
-              不生成临床结论。
+              上传私有合成资料，查看不可变版本和可回查原文；规则候选经用户确认后
+              按临床事件日期解析当时适用版本。
             </p>
-            <span className="status-chip">W03 已接入</span>
+            <span className="status-chip">W04 已接入</span>
           </article>
         </section>
 
         {selectedStudy && selectedSite && (
-          <DocumentWorkspace
-            studyId={selectedStudy.id}
-            siteId={selectedSite.id}
-          />
+          <>
+            <DocumentWorkspace
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+            <RuleWorkspace
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+          </>
         )}
       </main>
     </div>

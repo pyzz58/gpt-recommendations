@@ -59,6 +59,9 @@ class Settings(BaseSettings):
         default="disabled", alias="CRA_MODEL_PROVIDER"
     )
     ocr_provider: str = Field(default="disabled", alias="CRA_OCR_PROVIDER")
+    common_policy_path: str | None = Field(
+        default=None, alias="CRA_COMMON_POLICY_PATH"
+    )
     private_storage_backend: Literal["local", "s3"] = Field(
         default="local", alias="CRA_STORAGE_BACKEND"
     )

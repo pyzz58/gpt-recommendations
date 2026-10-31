@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W03。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -11,7 +11,7 @@ list能直接显示具体要求、完整条件和例外，并可展开到原文�
 
 ## 对应理论和模块
 
-理论：[CRA-R002](../../theory/REQUIREMENTS.md#cra-r002)、[CRA-R004](../../theory/REQUIREMENTS.md#cra-r004)、[CRA-R005](../../theory/REQUIREMENTS.md#cra-r005)、[CRA-R005](../../theory/REQUIREMENTS.md#cra-r005)、[CRA-R006](../../theory/REQUIREMENTS.md#cra-r006)、[CRA-R007](../../theory/REQUIREMENTS.md#cra-r007)、[CRA-R008](../../theory/REQUIREMENTS.md#cra-r008)、[CRA-R009](../../theory/REQUIREMENTS.md#cra-r009)、[CRA-R011](../../theory/REQUIREMENTS.md#cra-r011)、[CRA-R019](../../theory/REQUIREMENTS.md#cra-r019)、[CRA-R034](../../theory/REQUIREMENTS.md#cra-r034)、[CRA-R035](../../theory/REQUIREMENTS.md#cra-r035)、[CRA-R036](../../theory/REQUIREMENTS.md#cra-r036)、[CRA-R038](../../theory/REQUIREMENTS.md#cra-r038)、[CRA-R041](../../theory/REQUIREMENTS.md#cra-r041)
+理论：[CRA-R002](../../theory/REQUIREMENTS.md#cra-r002)、[CRA-R004](../../theory/REQUIREMENTS.md#cra-r004)、[CRA-R005](../../theory/REQUIREMENTS.md#cra-r005)、[CRA-R006](../../theory/REQUIREMENTS.md#cra-r006)、[CRA-R007](../../theory/REQUIREMENTS.md#cra-r007)、[CRA-R008](../../theory/REQUIREMENTS.md#cra-r008)、[CRA-R009](../../theory/REQUIREMENTS.md#cra-r009)、[CRA-R011](../../theory/REQUIREMENTS.md#cra-r011)、[CRA-R019](../../theory/REQUIREMENTS.md#cra-r019)、[CRA-R034](../../theory/REQUIREMENTS.md#cra-r034)、[CRA-R035](../../theory/REQUIREMENTS.md#cra-r035)、[CRA-R036](../../theory/REQUIREMENTS.md#cra-r036)、[CRA-R038](../../theory/REQUIREMENTS.md#cra-r038)、[CRA-R041](../../theory/REQUIREMENTS.md#cra-r041)
 
 模块：[M03](../../architecture/modules/M03-rules.md)、[M12](../../architecture/modules/M12-providers.md)
 
@@ -32,6 +32,7 @@ list能直接显示具体要求、完整条件和例外，并可展开到原文�
 | `backend/cra_app/rules/version_activation.py` | code | 手动开始使用日及按事件时间选择版本 |
 | `backend/cra_app/providers/evaluate_rules.py` | code | 实际提取器与独立条件预期的评估入口 |
 | `backend/cra_app/rules/common_policy.py` | code | 共性规则包、官方效力与项目/中心启用日分别解析 |
+| `migrations/versions/0003_rules_versions.py` | migration | 规则快照、不可变版本、来源、关系、启用区间和提取覆盖 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -80,16 +81,28 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 脚注、边界、例外和更新关系
+- [available] 脚注、边界、例外和更新关系
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_rules.py
 ```
 
-- [to_implement] 实际规则提取与独立条件预期比较
+- [available] 实际规则提取与独立条件预期比较
 
 ```bash
 uv run --frozen python -m cra_app.providers.evaluate_rules --dataset tests/fixtures/manifest.json
+```
+
+- [available] 规则、启用区间及适用查询的OpenAPI/前端类型契约
+
+```bash
+npm --prefix web run api:check
+```
+
+- [available] 分层list、确认和适用查询前端验证
+
+```bash
+npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run build
 ```
 
 ## 完成标准

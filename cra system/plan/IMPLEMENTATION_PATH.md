@@ -35,7 +35,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W01 建立数据、权限和历史记录底座](work_packages/CRA-W01.md)
 
-状态：verified；前置：CRA-W00。
+状态：in_progress；前置：CRA-W00。
 
 进入条件：W00已有证据，完成声明使用新的任务专属CI门槛。
 
@@ -47,7 +47,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W02 建立云上API和界面框架](work_packages/CRA-W02.md)
 
-状态：verified；前置：CRA-W01。
+状态：in_progress；前置：CRA-W01。
 
 进入条件：W01迁移与隔离测试实际通过。
 
@@ -59,7 +59,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W03 实现资料接收、解析和来源定位](work_packages/CRA-W03.md)
 
-状态：verified；前置：CRA-W02。
+状态：in_progress；前置：CRA-W02。
 
 进入条件：API、私有文件接口和持久事务可用。
 
@@ -71,7 +71,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W04 实现规则候选提取及分层list](work_packages/CRA-W04.md)
 
-状态：planned；前置：CRA-W03。
+状态：in_progress；前置：CRA-W03。
 
 进入条件：已解析原文、处理覆盖及授权提取端口可用。
 

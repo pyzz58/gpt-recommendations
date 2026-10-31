@@ -55,6 +55,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/document-versions/{document_version_id}/rule-candidates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Extract Rule Candidates */
+        post: operations["extract_rule_candidates_api_v1_document_versions__document_version_id__rule_candidates_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/document-versions/{version_id}": {
         parameters: {
             query?: never;
@@ -192,6 +209,91 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/rule-snapshots/{snapshot_id}/coverage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Rule Extraction Coverage */
+        get: operations["rule_extraction_coverage_api_v1_rule_snapshots__snapshot_id__coverage_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/rule-versions/{rule_version_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Rule Version */
+        get: operations["get_rule_version_api_v1_rule_versions__rule_version_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/rules/applicable": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Applicable Rules */
+        post: operations["applicable_rules_api_v1_rules_applicable_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/rules/{rule_id}/confirmation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm Rule */
+        post: operations["confirm_rule_api_v1_rules__rule_id__confirmation_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/rules/{rule_id}/versions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Rule Versions */
+        get: operations["list_rule_versions_api_v1_rules__rule_id__versions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/studies/{study_id}/documents": {
         parameters: {
             query?: never;
@@ -204,6 +306,57 @@ export interface paths {
         put?: never;
         /** Create Document */
         post: operations["create_document_api_v1_studies__study_id__documents_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/studies/{study_id}/rules": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Rules */
+        get: operations["list_rules_api_v1_studies__study_id__rules_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/version-activations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Version Activation */
+        post: operations["create_version_activation_api_v1_version_activations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/version-activations/{activation_id}/preview-change": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Version Activation Change */
+        post: operations["preview_version_activation_change_api_v1_version_activations__activation_id__preview_change_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -265,6 +418,56 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** ActivationChangePreviewView */
+        ActivationChangePreviewView: {
+            /**
+             * Activation Id
+             * Format: uuid
+             */
+            activation_id: string;
+            /** Affected Rule Ids */
+            affected_rule_ids: string[];
+            /** Affected Rule Version Ids */
+            affected_rule_version_ids: string[];
+            /** Conflicting Activation Ids */
+            conflicting_activation_ids: string[];
+            /** Contains Start */
+            contains_start: boolean;
+            current: components["schemas"]["ActivationWindowView"];
+            proposed: components["schemas"]["ActivationWindowView"];
+            /**
+             * Retroactive Reassessment
+             * @default false
+             * @constant
+             */
+            retroactive_reassessment: false;
+        };
+        /** ActivationResponse */
+        ActivationResponse: {
+            /**
+             * Activation Id
+             * Format: uuid
+             */
+            activation_id: string;
+            /** Conflicts */
+            conflicts: string[];
+            /** Replayed */
+            replayed: boolean;
+            /** Revision */
+            revision: number;
+        };
+        /** ActivationWindowView */
+        ActivationWindowView: {
+            /** Ends Before */
+            ends_before: string | null;
+            /** Reason */
+            reason?: string | null;
+            /**
+             * Starts On
+             * Format: date
+             */
+            starts_on: string;
+        };
         /** AnchorView */
         AnchorView: {
             /** Anchor Type */
@@ -303,6 +506,63 @@ export interface components {
             table_index: number | null;
             /** Text */
             text: string;
+        };
+        /** ApplicabilityResponse */
+        ApplicabilityResponse: {
+            /** Common Policy Configured */
+            common_policy_configured: boolean;
+            envelope: components["schemas"]["OutputEnvelope"];
+            /** Rules */
+            rules: components["schemas"]["ApplicableRuleView"][];
+        };
+        /** ApplicableRuleQuery */
+        ApplicableRuleQuery: {
+            /**
+             * Event Date
+             * Format: date
+             */
+            event_date: string;
+            /** Facts */
+            facts?: {
+                [key: string]: components["schemas"]["FactValue"];
+            };
+            /**
+             * Jurisdiction
+             * @default synthetic
+             */
+            jurisdiction: string;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+        };
+        /** ApplicableRuleView */
+        ApplicableRuleView: {
+            /**
+             * Activation Id
+             * Format: uuid
+             */
+            activation_id: string;
+            evaluation: components["schemas"]["NodeEvaluation"];
+            /**
+             * Rule Id
+             * Format: uuid
+             */
+            rule_id: string;
+            /** Rule Key */
+            rule_key: string;
+            /**
+             * Rule Version Id
+             * Format: uuid
+             */
+            rule_version_id: string;
+            tree: components["schemas"]["RuleNode-Output"];
         };
         /** Body_add_document_version_api_v1_documents__document_id__versions_post */
         Body_add_document_version_api_v1_documents__document_id__versions_post: {
@@ -344,6 +604,20 @@ export interface components {
             user_starts_on?: string | null;
             /** Version Label */
             version_label: string;
+        };
+        /** BranchEvaluation */
+        BranchEvaluation: {
+            /** Actions */
+            actions: string[];
+            /** Branch Key */
+            branch_key: string;
+            /** Reasons */
+            reasons?: string[];
+            /**
+             * Result
+             * @enum {string}
+             */
+            result: "true" | "false" | "unknown";
         };
         /** CapabilityResponse */
         CapabilityResponse: {
@@ -409,6 +683,64 @@ export interface components {
              */
             verification_status: "unverified" | "auto_extracted" | "needs_review" | "cra_confirmed" | "medical_confirmed" | "not_checked";
         };
+        /** ConfirmRuleRequest */
+        ConfirmRuleRequest: {
+            /**
+             * Base Version Id
+             * Format: uuid
+             */
+            base_version_id: string;
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Operations */
+            operations: components["schemas"]["ConfirmationOperation"][];
+            /** Reason */
+            reason: string;
+        };
+        /** ConfirmationOperation */
+        ConfirmationOperation: {
+            child?: components["schemas"]["RuleNode-Input"] | null;
+            /** Child Key */
+            child_key?: string | null;
+            /** Completion */
+            completion?: string | null;
+            exception?: components["schemas"]["RuleException-Input"] | null;
+            /** Follow Up */
+            follow_up?: string | null;
+            /** Has Trigger */
+            has_trigger?: boolean | null;
+            /**
+             * Op
+             * @enum {string}
+             */
+            op: "edit_fields" | "add_child" | "remove_child" | "add_exception";
+            /** Preconditions */
+            preconditions?: components["schemas"]["RuleCondition-Input"][] | null;
+            /** Required Facts */
+            required_facts?: string[] | null;
+            /** Summary */
+            summary?: string | null;
+            trigger?: components["schemas"]["RuleCondition-Input"] | null;
+        };
+        /** ConfirmationResponse */
+        ConfirmationResponse: {
+            /** Replayed */
+            replayed: boolean;
+            /** Revision */
+            revision: number;
+            /**
+             * Rule Id
+             * Format: uuid
+             */
+            rule_id: string;
+            /**
+             * Rule Version Id
+             * Format: uuid
+             */
+            rule_version_id: string;
+        };
         /** ConflictItem */
         ConflictItem: {
             /** Conflict Id */
@@ -444,6 +776,34 @@ export interface components {
             unit_key: string;
             /** Unit Type */
             unit_type: string;
+        };
+        /** CreateActivationCommand */
+        CreateActivationCommand: {
+            /**
+             * Document Version Id
+             * Format: uuid
+             */
+            document_version_id: string;
+            /** Ends Before */
+            ends_before?: string | null;
+            /**
+             * Expected Revision
+             * @default 0
+             */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Reason */
+            reason: string;
+            /** Site Id */
+            site_id?: string | null;
+            /**
+             * Starts On
+             * Format: date
+             */
+            starts_on: string;
+            /** Supersedes Activation Id */
+            supersedes_activation_id?: string | null;
         };
         /** DependencyState */
         DependencyState: {
@@ -486,6 +846,63 @@ export interface components {
             tenant_id: string;
             /** Title */
             title: string;
+        };
+        /** EvaluationResult */
+        EvaluationResult: {
+            /** Reasons */
+            reasons?: string[];
+            /**
+             * Result
+             * @enum {string}
+             */
+            result: "true" | "false" | "unknown";
+        };
+        /** ExtractRuleCommand */
+        ExtractRuleCommand: {
+            /**
+             * Expected Revision
+             * @default 0
+             */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+        };
+        /** ExtractionResponse */
+        ExtractionResponse: {
+            /** Candidate Count */
+            candidate_count: number;
+            /** Confirmed Count */
+            confirmed_count: number;
+            /**
+             * Document Version Id
+             * Format: uuid
+             */
+            document_version_id: string;
+            /** Duplicate Source */
+            duplicate_source: boolean;
+            /** Replayed */
+            replayed: boolean;
+            /** Rule Version Ids */
+            rule_version_ids: string[];
+            /**
+             * Snapshot Id
+             * Format: uuid
+             */
+            snapshot_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ready" | "needs_review" | "invalid";
+        };
+        /** FactValue */
+        FactValue: {
+            /** Precision */
+            precision?: string | null;
+            /** Unit */
+            unit?: string | null;
+            /** Value */
+            value?: unknown;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -582,6 +999,29 @@ export interface components {
              * @enum {string}
              */
             status: "implemented" | "configured" | "validated" | "limited" | "not_implemented";
+        };
+        /** NodeEvaluation */
+        NodeEvaluation: {
+            /** Branches */
+            branches?: components["schemas"]["BranchEvaluation"][];
+            /** Exceptions */
+            exceptions?: components["schemas"]["EvaluationResult"][];
+            /** Node Key */
+            node_key: string;
+            /** Preconditions */
+            preconditions?: components["schemas"]["EvaluationResult"][];
+            /** Selected Branch Keys */
+            selected_branch_keys?: string[];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "applicable" | "not_applicable" | "unknown" | "exception" | "analysis_required";
+            trigger?: components["schemas"]["EvaluationResult"] | null;
+            /** Unknown Branch Keys */
+            unknown_branch_keys?: string[];
+            /** Unknowns */
+            unknowns?: string[];
         };
         /** NotCheckedItem */
         NotCheckedItem: {
@@ -699,6 +1139,18 @@ export interface components {
             /** Version */
             version: string;
         };
+        /** PreviewActivationChangeCommand */
+        PreviewActivationChangeCommand: {
+            /** Ends Before */
+            ends_before?: string | null;
+            /** Reason */
+            reason: string;
+            /**
+             * Starts On
+             * Format: date
+             */
+            starts_on: string;
+        };
         /** ProviderCapability */
         ProviderCapability: {
             /**
@@ -742,6 +1194,365 @@ export interface components {
             job_id: string;
             /** Status */
             status: string;
+        };
+        /** RuleBranch */
+        "RuleBranch-Input": {
+            /** Actions */
+            actions?: string[];
+            /** Branch Key */
+            branch_key: string;
+            condition: components["schemas"]["RuleCondition-Input"];
+            /** Label */
+            label: string;
+            /** Source Refs */
+            source_refs: components["schemas"]["RuleSourceRef"][];
+            /** Target Node Ids */
+            target_node_ids?: string[];
+        };
+        /** RuleBranch */
+        "RuleBranch-Output": {
+            /** Actions */
+            actions?: string[];
+            /** Branch Key */
+            branch_key: string;
+            condition: components["schemas"]["RuleCondition-Output"];
+            /** Label */
+            label: string;
+            /** Source Refs */
+            source_refs: components["schemas"]["RuleSourceRef"][];
+            /** Target Node Ids */
+            target_node_ids?: string[];
+        };
+        /** RuleCondition */
+        "RuleCondition-Input": {
+            /** Anchor Fact Key */
+            anchor_fact_key?: string | null;
+            child?: components["schemas"]["RuleCondition-Input"] | null;
+            /** Children */
+            children?: components["schemas"]["RuleCondition-Input"][];
+            /** Fact Key */
+            fact_key?: string | null;
+            /**
+             * Inclusive
+             * @default true
+             */
+            inclusive: boolean;
+            left?: components["schemas"]["RuleOperand-Input"] | null;
+            /** Max Days */
+            max_days?: number | null;
+            /** Min Days */
+            min_days?: number | null;
+            /**
+             * Op
+             * @enum {string}
+             */
+            op: "all" | "any" | "not" | "present" | "eq" | "ne" | "gt" | "ge" | "lt" | "le" | "in" | "date_interval";
+            right?: components["schemas"]["RuleOperand-Input"] | null;
+            /** Values */
+            values?: components["schemas"]["RuleOperand-Input"][];
+        };
+        /** RuleCondition */
+        "RuleCondition-Output": {
+            /** Anchor Fact Key */
+            anchor_fact_key?: string | null;
+            child?: components["schemas"]["RuleCondition-Output"] | null;
+            /** Children */
+            children?: components["schemas"]["RuleCondition-Output"][];
+            /** Fact Key */
+            fact_key?: string | null;
+            /**
+             * Inclusive
+             * @default true
+             */
+            inclusive: boolean;
+            left?: components["schemas"]["RuleOperand-Output"] | null;
+            /** Max Days */
+            max_days?: number | null;
+            /** Min Days */
+            min_days?: number | null;
+            /**
+             * Op
+             * @enum {string}
+             */
+            op: "all" | "any" | "not" | "present" | "eq" | "ne" | "gt" | "ge" | "lt" | "le" | "in" | "date_interval";
+            right?: components["schemas"]["RuleOperand-Output"] | null;
+            /** Values */
+            values?: components["schemas"]["RuleOperand-Output"][];
+        };
+        /** RuleException */
+        "RuleException-Input": {
+            condition?: components["schemas"]["RuleCondition-Input"] | null;
+            /** Description */
+            description: string;
+            /** Exception Key */
+            exception_key: string;
+            /** Source Refs */
+            source_refs: components["schemas"]["RuleSourceRef"][];
+        };
+        /** RuleException */
+        "RuleException-Output": {
+            condition?: components["schemas"]["RuleCondition-Output"] | null;
+            /** Description */
+            description: string;
+            /** Exception Key */
+            exception_key: string;
+            /** Source Refs */
+            source_refs: components["schemas"]["RuleSourceRef"][];
+        };
+        /** RuleExtractionCoverageView */
+        RuleExtractionCoverageView: {
+            /** Anchor Id */
+            anchor_id: string | null;
+            /** Reason */
+            reason: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "processed" | "background" | "analysis_required" | "unsupported" | "failed";
+            /** Unit Key */
+            unit_key: string;
+        };
+        /** RuleListItemView */
+        RuleListItemView: {
+            /** Candidate Versions */
+            candidate_versions: components["schemas"]["RuleVersionSummaryView"][];
+            current_version: components["schemas"]["RuleVersionSummaryView"] | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Policy Layer
+             * @enum {string}
+             */
+            policy_layer: "common" | "study" | "site";
+            /** Revision */
+            revision: number;
+            /** Rule Key */
+            rule_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "candidate" | "active" | "withdrawn";
+            /** Title */
+            title: string;
+        };
+        /** RuleNode */
+        "RuleNode-Input": {
+            /** Branches */
+            branches?: components["schemas"]["RuleBranch-Input"][];
+            /** Children */
+            children?: components["schemas"]["RuleNode-Input"][];
+            /** Completion */
+            completion?: string | null;
+            /** Exceptions */
+            exceptions?: components["schemas"]["RuleException-Input"][];
+            /** Follow Up */
+            follow_up?: string | null;
+            /** Node Key */
+            node_key: string;
+            /** Preconditions */
+            preconditions?: components["schemas"]["RuleCondition-Input"][];
+            /** Required Facts */
+            required_facts?: string[];
+            /**
+             * Semantic Status
+             * @default complete
+             * @enum {string}
+             */
+            semantic_status: "complete" | "analysis_required";
+            /** Source Refs */
+            source_refs: components["schemas"]["RuleSourceRef"][];
+            /** Summary */
+            summary: string;
+            trigger?: components["schemas"]["RuleCondition-Input"] | null;
+            /** Unknowns */
+            unknowns?: string[];
+        };
+        /** RuleNode */
+        "RuleNode-Output": {
+            /** Branches */
+            branches?: components["schemas"]["RuleBranch-Output"][];
+            /** Children */
+            children?: components["schemas"]["RuleNode-Output"][];
+            /** Completion */
+            completion?: string | null;
+            /** Exceptions */
+            exceptions?: components["schemas"]["RuleException-Output"][];
+            /** Follow Up */
+            follow_up?: string | null;
+            /** Node Key */
+            node_key: string;
+            /** Preconditions */
+            preconditions?: components["schemas"]["RuleCondition-Output"][];
+            /** Required Facts */
+            required_facts?: string[];
+            /**
+             * Semantic Status
+             * @default complete
+             * @enum {string}
+             */
+            semantic_status: "complete" | "analysis_required";
+            /** Source Refs */
+            source_refs: components["schemas"]["RuleSourceRef"][];
+            /** Summary */
+            summary: string;
+            trigger?: components["schemas"]["RuleCondition-Output"] | null;
+            /** Unknowns */
+            unknowns?: string[];
+        };
+        /** RuleOperand */
+        "RuleOperand-Input": {
+            /** Fact Key */
+            fact_key?: string | null;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "literal" | "fact_ref";
+            /** Unit */
+            unit?: string | null;
+            /** Value */
+            value?: string | number | boolean | null;
+        };
+        /** RuleOperand */
+        "RuleOperand-Output": {
+            /** Fact Key */
+            fact_key?: string | null;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "literal" | "fact_ref";
+            /** Unit */
+            unit?: string | null;
+            /** Value */
+            value?: string | number | boolean | null;
+        };
+        /** RuleRelationView */
+        RuleRelationView: {
+            /** Evidence */
+            evidence: {
+                [key: string]: unknown;
+            }[];
+            /** From Version Id */
+            from_version_id: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Reason */
+            reason: string;
+            /** Relation Type */
+            relation_type: string;
+            /**
+             * To Version Id
+             * Format: uuid
+             */
+            to_version_id: string;
+        };
+        /** RuleSourceRef */
+        RuleSourceRef: {
+            /** Anchor Id */
+            anchor_id?: string | null;
+            /** Anchor Key */
+            anchor_key: string;
+            /** Document Version Id */
+            document_version_id?: string | null;
+            /** Locator */
+            locator?: string | null;
+            /** Quote */
+            quote: string;
+        };
+        /** RuleSourceRefView */
+        RuleSourceRefView: {
+            /**
+             * Anchor Id
+             * Format: uuid
+             */
+            anchor_id: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Locator */
+            locator: string | null;
+            /** Ordinal */
+            ordinal: number;
+            /** Quote */
+            quote: string;
+        };
+        /** RuleVersionDetailView */
+        RuleVersionDetailView: {
+            /**
+             * Policy Layer
+             * @enum {string}
+             */
+            policy_layer: "common" | "study" | "site";
+            /** Relations */
+            relations: components["schemas"]["RuleRelationView"][];
+            /**
+             * Rule Id
+             * Format: uuid
+             */
+            rule_id: string;
+            /** Rule Key */
+            rule_key: string;
+            /** Rule Revision */
+            rule_revision: number;
+            /** Source Refs */
+            source_refs: components["schemas"]["RuleSourceRefView"][];
+            tree: components["schemas"]["RuleNode-Output"];
+            version: components["schemas"]["RuleVersionSummaryView"];
+        };
+        /** RuleVersionSummaryView */
+        RuleVersionSummaryView: {
+            /**
+             * Confirmation Basis
+             * @enum {string}
+             */
+            confirmation_basis: "candidate" | "user_confirmation" | "direct_rule_text" | "unchanged_inheritance" | "manual_add";
+            /** Confirmed At */
+            confirmed_at: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Rule Id
+             * Format: uuid
+             */
+            rule_id: string;
+            /**
+             * Semantic Status
+             * @enum {string}
+             */
+            semantic_status: "complete" | "analysis_required";
+            /**
+             * Snapshot Id
+             * Format: uuid
+             */
+            snapshot_id: string;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "candidate" | "confirmed" | "withdrawn";
+            /** Summary */
+            summary: string;
+            /** Version No */
+            version_no: number;
         };
         /** ScopeResponse */
         ScopeResponse: {
@@ -983,6 +1794,43 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    extract_rule_candidates_api_v1_document_versions__document_version_id__rule_candidates_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                document_version_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExtractRuleCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExtractionResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
             };
         };
     };
@@ -1268,6 +2116,169 @@ export interface operations {
             };
         };
     };
+    rule_extraction_coverage_api_v1_rule_snapshots__snapshot_id__coverage_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                snapshot_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RuleExtractionCoverageView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_rule_version_api_v1_rule_versions__rule_version_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                rule_version_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RuleVersionDetailView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    applicable_rules_api_v1_rules_applicable_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApplicableRuleQuery"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApplicabilityResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    confirm_rule_api_v1_rules__rule_id__confirmation_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                rule_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConfirmRuleRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfirmationResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_rule_versions_api_v1_rules__rule_id__versions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                rule_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RuleVersionSummaryView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_documents_api_v1_studies__study_id__documents_get: {
         parameters: {
             query?: {
@@ -1326,6 +2337,109 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UploadResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_rules_api_v1_studies__study_id__rules_get: {
+        parameters: {
+            query?: {
+                site_id?: string | null;
+            };
+            header?: never;
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RuleListItemView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_version_activation_api_v1_version_activations_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateActivationCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActivationResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    preview_version_activation_change_api_v1_version_activations__activation_id__preview_change_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                activation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PreviewActivationChangeCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActivationChangePreviewView"];
                 };
             };
             /** @description Validation Error */

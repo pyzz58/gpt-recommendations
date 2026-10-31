@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "package_id": "SYNTHETIC-COMMON-POLICY",
+  "version": "2026.10",
+  "entries": [
+    {
+      "policy_id": "SYN-COMMON-ACCESS-01",
+      "title": "Synthetic authorization and source traceability test policy",
+      "version": "1",
+      "jurisdiction": "*",
+      "official_effective_on": "2020-01-01",
+      "acquisition_status": "available",
+      "official_status": "unknown",
+      "sources": [
+        {
+          "label": "Pure synthetic W04 common-policy fixture",
+          "locator": "tests/fixtures/rules/common_policy.json#/entries/0",
+          "quote": "This is a synthetic engineering illustration, not a legal determination.",
+          "source_kind": "synthetic_illustration"
+        }
+      ]
+    },
+    {
+      "policy_id": "SYN-COMMON-UNAVAILABLE-02",
+      "title": "Synthetic unavailable source illustration",
+      "version": "1",
+      "jurisdiction": "*",
+      "official_effective_on": "2020-01-01",
+      "acquisition_status": "unavailable",
+      "official_status": "unknown",
+      "sources": []
+    }
+  ]
+}

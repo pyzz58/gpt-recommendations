@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "artifact_id": "RULE-DOCX-EVAL",
+  "source": "pure_synthetic",
+  "cases": [
+    {
+      "rule_key": "R-LAB-01",
+      "semantic_status": "complete",
+      "exception_count": 1,
+      "facts": {
+        "local_reference_ranges": [true, null],
+        "site_profile_complete": [true, null],
+        "lab_value": ["11.0", null],
+        "delegation_allowed": [false, null]
+      },
+      "branch_expectations": [
+        {
+          "branch_key": "A",
+          "result": "true"
+        },
+        {
+          "branch_key": "B",
+          "result": "false"
+        }
+      ]
+    },
+    {
+      "rule_key": "R-LAB-01",
+      "semantic_status": "complete",
+      "exception_count": 1,
+      "facts": {
+        "local_reference_ranges": [true, null],
+        "site_profile_complete": [true, null],
+        "lab_value": ["10.5", null],
+        "delegation_allowed": [true, null]
+      },
+      "branch_expectations": [
+        {
+          "branch_key": "A",
+          "result": "true"
+        },
+        {
+          "branch_key": "B",
+          "result": "false"
+        }
+      ]
+    },
+    {
+      "rule_key": "R-LAB-01",
+      "semantic_status": "complete",
+      "exception_count": 1,
+      "facts": {
+        "local_reference_ranges": [true, null],
+        "site_profile_complete": [true, null]
+      },
+      "branch_expectations": [
+        {
+          "branch_key": "A",
+          "result": "unknown"
+        },
+        {
+          "branch_key": "B",
+          "result": "unknown"
+        }
+      ]
+    },
+    {
+      "rule_key": "R-SAFETY-01",
+      "semantic_status": "complete",
+      "exception_count": 1,
+      "facts": {
+        "ae_present": [true, null],
+        "relatedness_documented": [false, null],
+        "not_yet_assessed": [false, null]
+      },
+      "branch_expectations": [
+        {
+          "branch_key": "N",
+          "result": "true"
+        }
+      ]
+    }
+  ]
+}

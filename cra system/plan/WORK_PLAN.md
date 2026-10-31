@@ -7,10 +7,10 @@
 | 工作包 | 内容 | 前置 | 模块 | 状态 |
 | --- | --- | --- | --- | --- |
 | CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
-| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | verified |
-| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | verified |
-| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | verified |
-| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | planned |
+| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | in_progress |
+| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | in_progress |
+| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | in_progress |
+| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | in_progress |
 | CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | planned |
 | CRA-W06 | 实现遗留整理、提醒与点击确认整改 | CRA-W05 | M05、M06 | planned |
 | CRA-W07 | 实现EDC Excel检验快照导入 | CRA-W05 | M07 | planned |
@@ -59,7 +59,7 @@
 
 验收：从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。
 
-对应理论：CRA-R002、CRA-R004、CRA-R005、CRA-R005、CRA-R006、CRA-R007、CRA-R008、CRA-R009、CRA-R011、CRA-R019、CRA-R034、CRA-R035、CRA-R036、CRA-R038、CRA-R041
+对应理论：CRA-R002、CRA-R004、CRA-R005、CRA-R006、CRA-R007、CRA-R008、CRA-R009、CRA-R011、CRA-R019、CRA-R034、CRA-R035、CRA-R036、CRA-R038、CRA-R041
 
 ## CRA-W05 实现患者事实、锚点与核查断点
 

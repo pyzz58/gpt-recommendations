@@ -94,3 +94,20 @@ ApplicableRule补充preconditions、trigger、branches、follow_up、completion�
 | `GET /api/v1/jobs/{job_id}`；`POST /api/v1/jobs/{job_id}/retry` | 查询业务Job/尝试次数；重试沿用同一版本，不新建资料版本 |
 
 上传先使用内容哈希检测重复，但重复只记录`duplicate_of_version_id`，不自动判定版本替代或业务生效。业务写入、Job和Outbox同事务提交；Outbox relay再通过Procrastinate queueing lock幂等入队。worker只收到内部job_id，处理前重新查W01授权。源文件存储使用boto3私有S3适配；开发环境可用不位于Web根目录的本地私有适配。PDF查看器只读取上述授权内容接口，并通过页/bbox叠层定位，不替代OCR或解析覆盖。
+
+## 9. W04已实现规则入口
+
+规则写入使用有效会话、服务端范围、CSRF和幂等键；状态写入同时保存AUD及expected revision。读取在返回树、来源或适用性前重新检查项目/中心授权。
+
+| 接口 | 实现约束 |
+| --- | --- |
+| `POST /api/v1/document-versions/{version_id}/rule-candidates` | 只处理已完成/部分解析的规则资料；实际provider读取锚点；重复哈希复用规范版本快照，不重复规则或确认 |
+| `GET /api/v1/studies/{study_id}/rules` | 返回稳定规则、当前版本及候选版本；只含授权项目/中心和适用层 |
+| `GET /api/v1/rule-versions/{version_id}` | 返回四层RuleNode、不可变版本状态、来源引用和逐条关系 |
+| `POST /api/v1/rules/{rule_id}/confirmation` | 以expected_revision和base_version_id确认用户增删改；生成新版本，不覆盖候选/旧版 |
+| `GET /api/v1/rule-snapshots/{snapshot_id}/coverage` | 分开返回processed/background/analysis_required/unsupported/failed |
+| `POST /api/v1/version-activations` | 用户输入项目/中心实际`starts_on`及可选`ends_before`；上传时间不替代，重叠返回冲突ID |
+| `POST /api/v1/version-activations/{id}/preview-change` | 预览更正区间、重叠和受影响规则/版本；不追溯重判历史 |
+| `POST /api/v1/rules/applicable` | 按项目、中心、临床事件日和事实返回当前确认规则及OutputEnvelope；同规则多层并列、同层重叠冲突而不自动取最新/更严 |
+
+`RuleNode`包含summary、preconditions、trigger、branches、exceptions、follow_up、completion、required_facts、children和source_refs。条件使用closed AST及true/false/unknown；无结构自由文本返回analysis_required。W04确定性provider仅支持任务卡声明的规则语句子集，不能表述为通用临床文本理解。

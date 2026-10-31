@@ -98,7 +98,7 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
@@ -109,6 +109,20 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；W03依赖与契约变更后，cra-w01的migrate/test再次通过；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。"
       ],
       "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-10-31",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；W03依赖与契约变更后，cra-w01的migrate/test再次通过；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W01",
+            "run_id": 41181003025,
+            "tested_commit": "b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb",
+            "subject_digest": "c9e4a400a314628a818104c2ca8c79fac86ec500d7c8504f8d50d99e3e78aea5"
+          }
+        },
         {
           "recorded_status": "verified",
           "recorded_at": "2026-10-31",
@@ -267,13 +281,7 @@
       "handoff_outputs": [
         "数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W01",
-        "run_id": 41181003025,
-        "tested_commit": "b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb",
-        "subject_digest": "c9e4a400a314628a818104c2ca8c79fac86ec500d7c8504f8d50d99e3e78aea5"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W01"
     },
     {
@@ -286,7 +294,7 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
       "requirement_ids": [
         "CRA-R035",
@@ -297,6 +305,20 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；W03资料界面和契约接入后，cra-w02的API、前端、构建、OpenAPI、运行时及devcontainer smoke全部再次通过；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。"
       ],
       "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-10-31",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；W03资料界面和契约接入后，cra-w02的API、前端、构建、OpenAPI、运行时及devcontainer smoke全部再次通过；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W02",
+            "run_id": 41181003025,
+            "tested_commit": "b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb",
+            "subject_digest": "e2fd12d19f7946a7b35367960fa07e0d6f1f0f7e81d8132ae911fe3e7b525f78"
+          }
+        },
         {
           "recorded_status": "verified",
           "recorded_at": "2026-10-31",
@@ -472,13 +494,7 @@
       "handoff_outputs": [
         "可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W02",
-        "run_id": 41181003025,
-        "tested_commit": "b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb",
-        "subject_digest": "e2fd12d19f7946a7b35367960fa07e0d6f1f0f7e81d8132ae911fe3e7b525f78"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W02"
     },
     {
@@ -491,7 +507,7 @@
         "M02",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。",
       "requirement_ids": [
         "CRA-R003",
@@ -503,6 +519,22 @@
       ],
       "evidence": [
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；cra-w03的8项PostgreSQL/S3测试、隔离OCR候选探测、OpenAPI契约和前端测试/类型/构建全部成功；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。"
+      ],
+      "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-10-31",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；cra-w03的8项PostgreSQL/S3测试、隔离OCR候选探测、OpenAPI契约和前端测试/类型/构建全部成功；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W03",
+            "run_id": 41181003025,
+            "tested_commit": "b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb",
+            "subject_digest": "aaef6a167d0cbdefe9137df5263d26b1fa5a5ccc9d9ba134a17c5123cfaf19b0"
+          }
+        }
       ],
       "track": "v1a",
       "instruction_path": "plan/work_packages/CRA-W03.md",
@@ -660,13 +692,7 @@
       "handoff_outputs": [
         "文件/锚点/作业接口，合成资料集和OCR依赖/资源可行性探测记录。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W03",
-        "run_id": 41181003025,
-        "tested_commit": "b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb",
-        "subject_digest": "aaef6a167d0cbdefe9137df5263d26b1fa5a5ccc9d9ba134a17c5123cfaf19b0"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W03"
     },
     {
@@ -679,12 +705,11 @@
         "M03",
         "M12"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "acceptance": "从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。",
       "requirement_ids": [
         "CRA-R002",
         "CRA-R004",
-        "CRA-R005",
         "CRA-R005",
         "CRA-R006",
         "CRA-R007",
@@ -756,6 +781,11 @@
           "path": "backend/cra_app/rules/common_policy.py",
           "kind": "code",
           "purpose": "共性规则包、官方效力与项目/中心启用日分别解析"
+        },
+        {
+          "path": "migrations/versions/0003_rules_versions.py",
+          "kind": "migration",
+          "purpose": "规则快照、不可变版本、来源、关系、启用区间和提取覆盖"
         }
       ],
       "contracts": [
@@ -807,12 +837,22 @@
         {
           "command": "uv run --frozen pytest -q tests/integration/test_rules.py",
           "purpose": "脚注、边界、例外和更新关系",
-          "availability": "to_implement"
+          "availability": "available"
         },
         {
           "command": "uv run --frozen python -m cra_app.providers.evaluate_rules --dataset tests/fixtures/manifest.json",
           "purpose": "实际规则提取与独立条件预期比较",
-          "availability": "to_implement"
+          "availability": "available"
+        },
+        {
+          "command": "npm --prefix web run api:check",
+          "purpose": "规则、启用区间及适用查询的OpenAPI/前端类型契约",
+          "availability": "available"
+        },
+        {
+          "command": "npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run build",
+          "purpose": "分层list、确认和适用查询前端验证",
+          "availability": "available"
         }
       ],
       "phase_id": "P2",

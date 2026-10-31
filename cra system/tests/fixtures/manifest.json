@@ -10,7 +10,7 @@
       "format": "docx",
       "purpose": "rule",
       "group": "development",
-      "sha256": "b73b551d548e033dd5518761204446184b34921fceb4177ad12d68fea26312bd",
+      "sha256": "53d61951e7b4d43c4241c72dbb1a27d39fd51c086153fb25042c8c993b93f69b",
       "expected": {
         "anchors": [
           "table_cell",
@@ -33,7 +33,7 @@
       "format": "pdf",
       "purpose": "carryover_report",
       "group": "evaluation",
-      "sha256": "489f603533987c93b686cd26d19def68a4a4be552f8bede62ae43caa5c9e934c",
+      "sha256": "b6f4f34854293d333a5d75eec435a9ea0b1f8f4b78cba3b2c5fe50c6ec9ab732",
       "expected": {
         "page": 1,
         "anchor_types": [
@@ -53,7 +53,7 @@
       "format": "xlsx",
       "purpose": "track",
       "group": "development",
-      "sha256": "1b04f2484fff75cf9eb3e765f163f80cd0619dd6743e3c5c43b0403b97a482b8",
+      "sha256": "f2d4fa0981ea5e49ebd6d045ad9bda45021316363f9efeaa1dc142b27c41e12e",
       "expected": {
         "retained_as_private_file": true,
         "structured_parsing_task": "CRA-W07/W06"
@@ -81,7 +81,7 @@
       "format": "docx",
       "purpose": "template",
       "group": "development",
-      "sha256": "b73b551d548e033dd5518761204446184b34921fceb4177ad12d68fea26312bd",
+      "sha256": "53d61951e7b4d43c4241c72dbb1a27d39fd51c086153fb25042c8c993b93f69b",
       "expected": {
         "retained_as_private_file": true
       }
@@ -92,15 +92,64 @@
       "format": "txt",
       "purpose": "rule",
       "group": "development",
-      "sha256": "8637536e8ae4d25f3601a13f3f60f1d8e0eb976c519e540911da97cfdf8f3d62",
+      "sha256": "af42e54c56d3331f1b6fbce544624a439204247424504ec1367b0c32e2f5f07d",
       "expected": {
         "anchor_types": [
           "plain_text"
         ],
         "contains": [
-          "condition C",
+          "R-EMAIL-01",
+          "condition_c",
           "path B"
-        ]
+        ],
+        "direct_accept": true
+      }
+    },
+    {
+      "artifact_id": "RULE-DOCX-V1-DEV",
+      "file": "documents/artifacts/synthetic_rule_matrix_v1.docx",
+      "format": "docx",
+      "purpose": "rule",
+      "group": "development",
+      "sha256": "c8b0497d88b5146d4d5cfff07542f1c6f427857c337164ce64835cca69fd0407",
+      "expected": {
+        "rule_keys": [
+          "R-SCREEN-01",
+          "R-VISIT-01"
+        ],
+        "footnote_rule": "R-VISIT-01",
+        "exception_count": 2,
+        "analysis_required": false
+      }
+    },
+    {
+      "artifact_id": "RULE-DOCX-V2-DEV",
+      "file": "documents/artifacts/synthetic_rule_matrix_v2.docx",
+      "format": "docx",
+      "purpose": "rule",
+      "group": "development",
+      "sha256": "551b8ae299177ce1342ed753f6557a7d8cb0d35cfe9e90f451b8db49f5ecadf3",
+      "expected": {
+        "rule_keys": [
+          "R-SCREEN-01"
+        ],
+        "omitted_prior_rule": "R-VISIT-01",
+        "new_exception": "E3"
+      }
+    },
+    {
+      "artifact_id": "RULE-DOCX-EVAL",
+      "file": "documents/artifacts/synthetic_rule_evaluation.docx",
+      "format": "docx",
+      "purpose": "rule",
+      "group": "evaluation",
+      "sha256": "5c3b95612319aaa1e1c086ffde1b1c2c96861b13b73cd580a9c69be522d9ec7a",
+      "expected": {
+        "rule_keys": [
+          "R-LAB-01",
+          "R-SAFETY-01"
+        ],
+        "evaluation_cases": "rules/evaluation_cases.json"
       }
     }
   ]

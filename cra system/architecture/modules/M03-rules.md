@@ -1,6 +1,6 @@
 # M03 适用规则与分层list
 
-版本：3；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/rules/`。
+版本：4；状态：W04规则快照、候选提取、用户确认、分层list、启用区间和事件日适用性已实现并有真实PostgreSQL/合成provider证据。代码位置：`backend/cra_app/rules/`。
 
 ## 对应理论和任务
 
@@ -41,3 +41,11 @@ list含前提、触发、分支、例外、后续动作与完成方式，条件C
 ## v0.4技术实施补齐
 
 共性规则包、版本启用、完整分支和三值条件、实际提取评估。 实现契约见[EXECUTION_CONTRACTS.md](../EXECUTION_CONTRACTS.md)，当前任务的进入条件/交接见[完整实施路径](../../plan/IMPLEMENTATION_PATH.md)。理论和任务编号保持；本轮文档不是业务功能完成证据。
+
+## W04实现记录
+
+已增加规则快照、不可变RuleVersion、来源引用、逐条关系、提取覆盖和手动VersionActivation表。新资料版本会形成完整规则快照；未在新版提及的旧规则以unchanged继承，不自动当撤销；含义改变而无明确replace/withdraw证据时登记conflict，不自动覆盖。用户确认增删改生成新版本并保留候选、旧版本、AUD和来源。
+
+有限AST支持all/any/not、存在、六类比较、in及日期区间，Decimal、单位和日期精度显式处理，unknown不默认走另一分支。确定性`anchored-rule-subset` provider实际读取W03锚点，支持W04声明的结构化规则语法，并拒绝假锚点、不可追溯数字及丢前提/否定/例外的候选。独立评估样本与开发样本分离；该provider不代表任意真实方案都能完整自动提取。
+
+测试真实经过PostgreSQL 18.6、DOCX解析、规则提取、用户确认、v1/v2继承、同范围启用日边界和冲突预览。未使用真实临床资料；复杂自由文本仍保留analysis_required，真实方案格式覆盖、专业语义复核和模型provider验证仍待后续授权环境。

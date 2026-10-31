@@ -211,6 +211,12 @@ class SourceAnchor(Base):
             "logical_node_id",
             name="uq_source_anchors_node",
         ),
+        UniqueConstraint(
+            "tenant_id",
+            "study_id",
+            "id",
+            name="uq_source_anchors_scope_id",
+        ),
         CheckConstraint(
             "anchor_type IN ('paragraph','table_cell','footnote',"
             "'pdf_text','plain_text','header','footer','media')",

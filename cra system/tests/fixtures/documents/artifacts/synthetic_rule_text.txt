@@ -1,3 +1,5 @@
-Synthetic rule text
-Background: this line is synthetic context.
-Requirement: if condition C is present, follow path B.
+Rule R-EMAIL-01: Apply the synthetic email rule directly.
+Trigger: condition_c = true
+Branch B: WHEN condition_c = true THEN follow path B
+Completion: the named path is documented
+Required facts: condition_c

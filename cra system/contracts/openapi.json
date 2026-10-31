@@ -1,6 +1,136 @@
 {
   "components": {
     "schemas": {
+      "ActivationChangePreviewView": {
+        "properties": {
+          "activation_id": {
+            "format": "uuid",
+            "title": "Activation Id",
+            "type": "string"
+          },
+          "affected_rule_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Affected Rule Ids",
+            "type": "array"
+          },
+          "affected_rule_version_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Affected Rule Version Ids",
+            "type": "array"
+          },
+          "conflicting_activation_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Conflicting Activation Ids",
+            "type": "array"
+          },
+          "contains_start": {
+            "title": "Contains Start",
+            "type": "boolean"
+          },
+          "current": {
+            "$ref": "#/components/schemas/ActivationWindowView"
+          },
+          "proposed": {
+            "$ref": "#/components/schemas/ActivationWindowView"
+          },
+          "retroactive_reassessment": {
+            "const": false,
+            "default": false,
+            "title": "Retroactive Reassessment",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "activation_id",
+          "current",
+          "proposed",
+          "contains_start",
+          "conflicting_activation_ids",
+          "affected_rule_ids",
+          "affected_rule_version_ids"
+        ],
+        "title": "ActivationChangePreviewView",
+        "type": "object"
+      },
+      "ActivationResponse": {
+        "properties": {
+          "activation_id": {
+            "format": "uuid",
+            "title": "Activation Id",
+            "type": "string"
+          },
+          "conflicts": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Conflicts",
+            "type": "array"
+          },
+          "replayed": {
+            "title": "Replayed",
+            "type": "boolean"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "activation_id",
+          "revision",
+          "conflicts",
+          "replayed"
+        ],
+        "title": "ActivationResponse",
+        "type": "object"
+      },
+      "ActivationWindowView": {
+        "properties": {
+          "ends_before": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ends Before"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "starts_on": {
+            "format": "date",
+            "title": "Starts On",
+            "type": "string"
+          }
+        },
+        "required": [
+          "starts_on",
+          "ends_before"
+        ],
+        "title": "ActivationWindowView",
+        "type": "object"
+      },
       "AnchorView": {
         "additionalProperties": false,
         "properties": {
@@ -129,6 +259,111 @@
           "ordinal"
         ],
         "title": "AnchorView",
+        "type": "object"
+      },
+      "ApplicabilityResponse": {
+        "properties": {
+          "common_policy_configured": {
+            "title": "Common Policy Configured",
+            "type": "boolean"
+          },
+          "envelope": {
+            "$ref": "#/components/schemas/OutputEnvelope"
+          },
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/ApplicableRuleView"
+            },
+            "title": "Rules",
+            "type": "array"
+          }
+        },
+        "required": [
+          "envelope",
+          "rules",
+          "common_policy_configured"
+        ],
+        "title": "ApplicabilityResponse",
+        "type": "object"
+      },
+      "ApplicableRuleQuery": {
+        "additionalProperties": false,
+        "properties": {
+          "event_date": {
+            "format": "date",
+            "title": "Event Date",
+            "type": "string"
+          },
+          "facts": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/FactValue"
+            },
+            "title": "Facts",
+            "type": "object"
+          },
+          "jurisdiction": {
+            "default": "synthetic",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Jurisdiction",
+            "type": "string"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "study_id",
+          "site_id",
+          "event_date"
+        ],
+        "title": "ApplicableRuleQuery",
+        "type": "object"
+      },
+      "ApplicableRuleView": {
+        "properties": {
+          "activation_id": {
+            "format": "uuid",
+            "title": "Activation Id",
+            "type": "string"
+          },
+          "evaluation": {
+            "$ref": "#/components/schemas/NodeEvaluation"
+          },
+          "rule_id": {
+            "format": "uuid",
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "rule_key": {
+            "title": "Rule Key",
+            "type": "string"
+          },
+          "rule_version_id": {
+            "format": "uuid",
+            "title": "Rule Version Id",
+            "type": "string"
+          },
+          "tree": {
+            "$ref": "#/components/schemas/RuleNode-Output"
+          }
+        },
+        "required": [
+          "rule_id",
+          "rule_key",
+          "rule_version_id",
+          "activation_id",
+          "tree",
+          "evaluation"
+        ],
+        "title": "ApplicableRuleView",
         "type": "object"
       },
       "Body_add_document_version_api_v1_documents__document_id__versions_post": {
@@ -286,6 +521,45 @@
         "title": "Body_create_document_api_v1_studies__study_id__documents_post",
         "type": "object"
       },
+      "BranchEvaluation": {
+        "additionalProperties": false,
+        "properties": {
+          "actions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Actions",
+            "type": "array"
+          },
+          "branch_key": {
+            "title": "Branch Key",
+            "type": "string"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "result": {
+            "enum": [
+              "true",
+              "false",
+              "unknown"
+            ],
+            "title": "Result",
+            "type": "string"
+          }
+        },
+        "required": [
+          "branch_key",
+          "result",
+          "actions"
+        ],
+        "title": "BranchEvaluation",
+        "type": "object"
+      },
       "CapabilityResponse": {
         "properties": {
           "automatic_completion_allowed": {
@@ -415,6 +689,216 @@
         "title": "Claim",
         "type": "object"
       },
+      "ConfirmRuleRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "base_version_id": {
+            "format": "uuid",
+            "title": "Base Version Id",
+            "type": "string"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "operations": {
+            "items": {
+              "$ref": "#/components/schemas/ConfirmationOperation"
+            },
+            "minItems": 1,
+            "title": "Operations",
+            "type": "array"
+          },
+          "reason": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "base_version_id",
+          "reason",
+          "operations"
+        ],
+        "title": "ConfirmRuleRequest",
+        "type": "object"
+      },
+      "ConfirmationOperation": {
+        "additionalProperties": false,
+        "properties": {
+          "child": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleNode-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "child_key": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Child Key"
+          },
+          "completion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completion"
+          },
+          "exception": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleException-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "follow_up": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Follow Up"
+          },
+          "has_trigger": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Has Trigger"
+          },
+          "op": {
+            "enum": [
+              "edit_fields",
+              "add_child",
+              "remove_child",
+              "add_exception"
+            ],
+            "title": "Op",
+            "type": "string"
+          },
+          "preconditions": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/RuleCondition-Input"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preconditions"
+          },
+          "required_facts": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Required Facts"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "trigger": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleCondition-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "op"
+        ],
+        "title": "ConfirmationOperation",
+        "type": "object"
+      },
+      "ConfirmationResponse": {
+        "properties": {
+          "replayed": {
+            "title": "Replayed",
+            "type": "boolean"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "rule_id": {
+            "format": "uuid",
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "rule_version_id": {
+            "format": "uuid",
+            "title": "Rule Version Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "rule_id",
+          "rule_version_id",
+          "revision",
+          "replayed"
+        ],
+        "title": "ConfirmationResponse",
+        "type": "object"
+      },
       "ConflictItem": {
         "additionalProperties": false,
         "properties": {
@@ -508,6 +992,83 @@
           "metadata"
         ],
         "title": "CoverageView",
+        "type": "object"
+      },
+      "CreateActivationCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "document_version_id": {
+            "format": "uuid",
+            "title": "Document Version Id",
+            "type": "string"
+          },
+          "ends_before": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ends Before"
+          },
+          "expected_revision": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "reason": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          },
+          "site_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Site Id"
+          },
+          "starts_on": {
+            "format": "date",
+            "title": "Starts On",
+            "type": "string"
+          },
+          "supersedes_activation_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supersedes Activation Id"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "document_version_id",
+          "starts_on",
+          "reason"
+        ],
+        "title": "CreateActivationCommand",
         "type": "object"
       },
       "DependencyState": {
@@ -606,6 +1167,148 @@
           "created_at"
         ],
         "title": "DocumentView",
+        "type": "object"
+      },
+      "EvaluationResult": {
+        "additionalProperties": false,
+        "properties": {
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "result": {
+            "enum": [
+              "true",
+              "false",
+              "unknown"
+            ],
+            "title": "Result",
+            "type": "string"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "EvaluationResult",
+        "type": "object"
+      },
+      "ExtractRuleCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key"
+        ],
+        "title": "ExtractRuleCommand",
+        "type": "object"
+      },
+      "ExtractionResponse": {
+        "properties": {
+          "candidate_count": {
+            "title": "Candidate Count",
+            "type": "integer"
+          },
+          "confirmed_count": {
+            "title": "Confirmed Count",
+            "type": "integer"
+          },
+          "document_version_id": {
+            "format": "uuid",
+            "title": "Document Version Id",
+            "type": "string"
+          },
+          "duplicate_source": {
+            "title": "Duplicate Source",
+            "type": "boolean"
+          },
+          "replayed": {
+            "title": "Replayed",
+            "type": "boolean"
+          },
+          "rule_version_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Rule Version Ids",
+            "type": "array"
+          },
+          "snapshot_id": {
+            "format": "uuid",
+            "title": "Snapshot Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ready",
+              "needs_review",
+              "invalid"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "snapshot_id",
+          "document_version_id",
+          "status",
+          "rule_version_ids",
+          "replayed",
+          "duplicate_source",
+          "candidate_count",
+          "confirmed_count"
+        ],
+        "title": "ExtractionResponse",
+        "type": "object"
+      },
+      "FactValue": {
+        "additionalProperties": false,
+        "properties": {
+          "precision": {
+            "anyOf": [
+              {
+                "maxLength": 32,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Precision"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "maxLength": 32,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "value": {
+            "title": "Value"
+          }
+        },
+        "title": "FactValue",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -818,6 +1521,84 @@
           "status"
         ],
         "title": "ModuleCapability",
+        "type": "object"
+      },
+      "NodeEvaluation": {
+        "additionalProperties": false,
+        "properties": {
+          "branches": {
+            "items": {
+              "$ref": "#/components/schemas/BranchEvaluation"
+            },
+            "title": "Branches",
+            "type": "array"
+          },
+          "exceptions": {
+            "items": {
+              "$ref": "#/components/schemas/EvaluationResult"
+            },
+            "title": "Exceptions",
+            "type": "array"
+          },
+          "node_key": {
+            "title": "Node Key",
+            "type": "string"
+          },
+          "preconditions": {
+            "items": {
+              "$ref": "#/components/schemas/EvaluationResult"
+            },
+            "title": "Preconditions",
+            "type": "array"
+          },
+          "selected_branch_keys": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Selected Branch Keys",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "applicable",
+              "not_applicable",
+              "unknown",
+              "exception",
+              "analysis_required"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "trigger": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EvaluationResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "unknown_branch_keys": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Unknown Branch Keys",
+            "type": "array"
+          },
+          "unknowns": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Unknowns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "node_key",
+          "status"
+        ],
+        "title": "NodeEvaluation",
         "type": "object"
       },
       "NotCheckedItem": {
@@ -1107,6 +1888,40 @@
         "title": "PolicyVersion",
         "type": "object"
       },
+      "PreviewActivationChangeCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "ends_before": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ends Before"
+          },
+          "reason": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          },
+          "starts_on": {
+            "format": "date",
+            "title": "Starts On",
+            "type": "string"
+          }
+        },
+        "required": [
+          "starts_on",
+          "reason"
+        ],
+        "title": "PreviewActivationChangeCommand",
+        "type": "object"
+      },
       "ProviderCapability": {
         "properties": {
           "automatic_completion_allowed": {
@@ -1186,6 +2001,1210 @@
           "status"
         ],
         "title": "RetryResponse",
+        "type": "object"
+      },
+      "RuleBranch-Input": {
+        "additionalProperties": false,
+        "properties": {
+          "actions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Actions",
+            "type": "array"
+          },
+          "branch_key": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Branch Key",
+            "type": "string"
+          },
+          "condition": {
+            "$ref": "#/components/schemas/RuleCondition-Input"
+          },
+          "label": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "$ref": "#/components/schemas/RuleSourceRef"
+            },
+            "minItems": 1,
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "target_node_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Target Node Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "branch_key",
+          "label",
+          "condition",
+          "source_refs"
+        ],
+        "title": "RuleBranch",
+        "type": "object"
+      },
+      "RuleBranch-Output": {
+        "additionalProperties": false,
+        "properties": {
+          "actions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Actions",
+            "type": "array"
+          },
+          "branch_key": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Branch Key",
+            "type": "string"
+          },
+          "condition": {
+            "$ref": "#/components/schemas/RuleCondition-Output"
+          },
+          "label": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "$ref": "#/components/schemas/RuleSourceRef"
+            },
+            "minItems": 1,
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "target_node_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Target Node Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "branch_key",
+          "label",
+          "condition",
+          "source_refs"
+        ],
+        "title": "RuleBranch",
+        "type": "object"
+      },
+      "RuleCondition-Input": {
+        "additionalProperties": false,
+        "properties": {
+          "anchor_fact_key": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anchor Fact Key"
+          },
+          "child": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleCondition-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/RuleCondition-Input"
+            },
+            "title": "Children",
+            "type": "array"
+          },
+          "fact_key": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fact Key"
+          },
+          "inclusive": {
+            "default": true,
+            "title": "Inclusive",
+            "type": "boolean"
+          },
+          "left": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleOperand-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "max_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Days"
+          },
+          "min_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Days"
+          },
+          "op": {
+            "enum": [
+              "all",
+              "any",
+              "not",
+              "present",
+              "eq",
+              "ne",
+              "gt",
+              "ge",
+              "lt",
+              "le",
+              "in",
+              "date_interval"
+            ],
+            "title": "Op",
+            "type": "string"
+          },
+          "right": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleOperand-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "values": {
+            "items": {
+              "$ref": "#/components/schemas/RuleOperand-Input"
+            },
+            "title": "Values",
+            "type": "array"
+          }
+        },
+        "required": [
+          "op"
+        ],
+        "title": "RuleCondition",
+        "type": "object"
+      },
+      "RuleCondition-Output": {
+        "additionalProperties": false,
+        "properties": {
+          "anchor_fact_key": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anchor Fact Key"
+          },
+          "child": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleCondition-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/RuleCondition-Output"
+            },
+            "title": "Children",
+            "type": "array"
+          },
+          "fact_key": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fact Key"
+          },
+          "inclusive": {
+            "default": true,
+            "title": "Inclusive",
+            "type": "boolean"
+          },
+          "left": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleOperand-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "max_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Days"
+          },
+          "min_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Days"
+          },
+          "op": {
+            "enum": [
+              "all",
+              "any",
+              "not",
+              "present",
+              "eq",
+              "ne",
+              "gt",
+              "ge",
+              "lt",
+              "le",
+              "in",
+              "date_interval"
+            ],
+            "title": "Op",
+            "type": "string"
+          },
+          "right": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleOperand-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "values": {
+            "items": {
+              "$ref": "#/components/schemas/RuleOperand-Output"
+            },
+            "title": "Values",
+            "type": "array"
+          }
+        },
+        "required": [
+          "op"
+        ],
+        "title": "RuleCondition",
+        "type": "object"
+      },
+      "RuleException-Input": {
+        "additionalProperties": false,
+        "properties": {
+          "condition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleCondition-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "minLength": 1,
+            "title": "Description",
+            "type": "string"
+          },
+          "exception_key": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Exception Key",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "$ref": "#/components/schemas/RuleSourceRef"
+            },
+            "minItems": 1,
+            "title": "Source Refs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "exception_key",
+          "description",
+          "source_refs"
+        ],
+        "title": "RuleException",
+        "type": "object"
+      },
+      "RuleException-Output": {
+        "additionalProperties": false,
+        "properties": {
+          "condition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleCondition-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "minLength": 1,
+            "title": "Description",
+            "type": "string"
+          },
+          "exception_key": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Exception Key",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "$ref": "#/components/schemas/RuleSourceRef"
+            },
+            "minItems": 1,
+            "title": "Source Refs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "exception_key",
+          "description",
+          "source_refs"
+        ],
+        "title": "RuleException",
+        "type": "object"
+      },
+      "RuleExtractionCoverageView": {
+        "properties": {
+          "anchor_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anchor Id"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "status": {
+            "enum": [
+              "processed",
+              "background",
+              "analysis_required",
+              "unsupported",
+              "failed"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "unit_key": {
+            "title": "Unit Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "unit_key",
+          "status",
+          "reason",
+          "anchor_id"
+        ],
+        "title": "RuleExtractionCoverageView",
+        "type": "object"
+      },
+      "RuleListItemView": {
+        "additionalProperties": false,
+        "properties": {
+          "candidate_versions": {
+            "items": {
+              "$ref": "#/components/schemas/RuleVersionSummaryView"
+            },
+            "title": "Candidate Versions",
+            "type": "array"
+          },
+          "current_version": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleVersionSummaryView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "policy_layer": {
+            "enum": [
+              "common",
+              "study",
+              "site"
+            ],
+            "title": "Policy Layer",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "rule_key": {
+            "title": "Rule Key",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "candidate",
+              "active",
+              "withdrawn"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "rule_key",
+          "policy_layer",
+          "title",
+          "status",
+          "revision",
+          "current_version",
+          "candidate_versions"
+        ],
+        "title": "RuleListItemView",
+        "type": "object"
+      },
+      "RuleNode-Input": {
+        "additionalProperties": false,
+        "properties": {
+          "branches": {
+            "items": {
+              "$ref": "#/components/schemas/RuleBranch-Input"
+            },
+            "title": "Branches",
+            "type": "array"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/RuleNode-Input"
+            },
+            "title": "Children",
+            "type": "array"
+          },
+          "completion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completion"
+          },
+          "exceptions": {
+            "items": {
+              "$ref": "#/components/schemas/RuleException-Input"
+            },
+            "title": "Exceptions",
+            "type": "array"
+          },
+          "follow_up": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Follow Up"
+          },
+          "node_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Node Key",
+            "type": "string"
+          },
+          "preconditions": {
+            "items": {
+              "$ref": "#/components/schemas/RuleCondition-Input"
+            },
+            "title": "Preconditions",
+            "type": "array"
+          },
+          "required_facts": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Required Facts",
+            "type": "array"
+          },
+          "semantic_status": {
+            "default": "complete",
+            "enum": [
+              "complete",
+              "analysis_required"
+            ],
+            "title": "Semantic Status",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "$ref": "#/components/schemas/RuleSourceRef"
+            },
+            "minItems": 1,
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "summary": {
+            "minLength": 1,
+            "title": "Summary",
+            "type": "string"
+          },
+          "trigger": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleCondition-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "unknowns": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Unknowns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "node_key",
+          "summary",
+          "source_refs"
+        ],
+        "title": "RuleNode",
+        "type": "object"
+      },
+      "RuleNode-Output": {
+        "additionalProperties": false,
+        "properties": {
+          "branches": {
+            "items": {
+              "$ref": "#/components/schemas/RuleBranch-Output"
+            },
+            "title": "Branches",
+            "type": "array"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/RuleNode-Output"
+            },
+            "title": "Children",
+            "type": "array"
+          },
+          "completion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completion"
+          },
+          "exceptions": {
+            "items": {
+              "$ref": "#/components/schemas/RuleException-Output"
+            },
+            "title": "Exceptions",
+            "type": "array"
+          },
+          "follow_up": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Follow Up"
+          },
+          "node_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Node Key",
+            "type": "string"
+          },
+          "preconditions": {
+            "items": {
+              "$ref": "#/components/schemas/RuleCondition-Output"
+            },
+            "title": "Preconditions",
+            "type": "array"
+          },
+          "required_facts": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Required Facts",
+            "type": "array"
+          },
+          "semantic_status": {
+            "default": "complete",
+            "enum": [
+              "complete",
+              "analysis_required"
+            ],
+            "title": "Semantic Status",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "$ref": "#/components/schemas/RuleSourceRef"
+            },
+            "minItems": 1,
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "summary": {
+            "minLength": 1,
+            "title": "Summary",
+            "type": "string"
+          },
+          "trigger": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleCondition-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "unknowns": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Unknowns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "node_key",
+          "summary",
+          "source_refs"
+        ],
+        "title": "RuleNode",
+        "type": "object"
+      },
+      "RuleOperand-Input": {
+        "additionalProperties": false,
+        "properties": {
+          "fact_key": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fact Key"
+          },
+          "kind": {
+            "enum": [
+              "literal",
+              "fact_ref"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "maxLength": 32,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "title": "RuleOperand",
+        "type": "object"
+      },
+      "RuleOperand-Output": {
+        "additionalProperties": false,
+        "properties": {
+          "fact_key": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fact Key"
+          },
+          "kind": {
+            "enum": [
+              "literal",
+              "fact_ref"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "maxLength": 32,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "title": "RuleOperand",
+        "type": "object"
+      },
+      "RuleRelationView": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "from_version_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From Version Id"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "relation_type": {
+            "title": "Relation Type",
+            "type": "string"
+          },
+          "to_version_id": {
+            "format": "uuid",
+            "title": "To Version Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "from_version_id",
+          "to_version_id",
+          "relation_type",
+          "reason",
+          "evidence"
+        ],
+        "title": "RuleRelationView",
+        "type": "object"
+      },
+      "RuleSourceRef": {
+        "additionalProperties": false,
+        "properties": {
+          "anchor_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anchor Id"
+          },
+          "anchor_key": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Anchor Key",
+            "type": "string"
+          },
+          "document_version_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Version Id"
+          },
+          "locator": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locator"
+          },
+          "quote": {
+            "minLength": 1,
+            "title": "Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "anchor_key",
+          "quote"
+        ],
+        "title": "RuleSourceRef",
+        "type": "object"
+      },
+      "RuleSourceRefView": {
+        "additionalProperties": false,
+        "properties": {
+          "anchor_id": {
+            "format": "uuid",
+            "title": "Anchor Id",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "locator": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locator"
+          },
+          "ordinal": {
+            "title": "Ordinal",
+            "type": "integer"
+          },
+          "quote": {
+            "title": "Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "anchor_id",
+          "quote",
+          "locator",
+          "ordinal"
+        ],
+        "title": "RuleSourceRefView",
+        "type": "object"
+      },
+      "RuleVersionDetailView": {
+        "additionalProperties": false,
+        "properties": {
+          "policy_layer": {
+            "enum": [
+              "common",
+              "study",
+              "site"
+            ],
+            "title": "Policy Layer",
+            "type": "string"
+          },
+          "relations": {
+            "items": {
+              "$ref": "#/components/schemas/RuleRelationView"
+            },
+            "title": "Relations",
+            "type": "array"
+          },
+          "rule_id": {
+            "format": "uuid",
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "rule_key": {
+            "title": "Rule Key",
+            "type": "string"
+          },
+          "rule_revision": {
+            "title": "Rule Revision",
+            "type": "integer"
+          },
+          "source_refs": {
+            "items": {
+              "$ref": "#/components/schemas/RuleSourceRefView"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "tree": {
+            "$ref": "#/components/schemas/RuleNode-Output"
+          },
+          "version": {
+            "$ref": "#/components/schemas/RuleVersionSummaryView"
+          }
+        },
+        "required": [
+          "rule_id",
+          "rule_key",
+          "policy_layer",
+          "rule_revision",
+          "version",
+          "tree",
+          "source_refs",
+          "relations"
+        ],
+        "title": "RuleVersionDetailView",
+        "type": "object"
+      },
+      "RuleVersionSummaryView": {
+        "additionalProperties": false,
+        "properties": {
+          "confirmation_basis": {
+            "enum": [
+              "candidate",
+              "user_confirmation",
+              "direct_rule_text",
+              "unchanged_inheritance",
+              "manual_add"
+            ],
+            "title": "Confirmation Basis",
+            "type": "string"
+          },
+          "confirmed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed At"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "rule_id": {
+            "format": "uuid",
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "semantic_status": {
+            "enum": [
+              "complete",
+              "analysis_required"
+            ],
+            "title": "Semantic Status",
+            "type": "string"
+          },
+          "snapshot_id": {
+            "format": "uuid",
+            "title": "Snapshot Id",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "candidate",
+              "confirmed",
+              "withdrawn"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "version_no": {
+            "title": "Version No",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "rule_id",
+          "snapshot_id",
+          "version_no",
+          "state",
+          "confirmation_basis",
+          "semantic_status",
+          "summary",
+          "created_at",
+          "confirmed_at"
+        ],
+        "title": "RuleVersionSummaryView",
         "type": "object"
       },
       "ScopeResponse": {
@@ -1625,7 +3644,7 @@
   "info": {
     "description": "Synthetic-first CRA monitoring workbench API. Service health and implemented capabilities are reported separately from clinical use.",
     "title": "CRA System API",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -1683,6 +3702,75 @@
         "summary": "Create Synthetic Session",
         "tags": [
           "governance"
+        ]
+      }
+    },
+    "/api/v1/document-versions/{document_version_id}/rule-candidates": {
+      "post": {
+        "operationId": "extract_rule_candidates_api_v1_document_versions__document_version_id__rule_candidates_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_version_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Document Version Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractRuleCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Extract Rule Candidates",
+        "tags": [
+          "rules"
         ]
       }
     },
@@ -2108,6 +4196,253 @@
         ]
       }
     },
+    "/api/v1/rule-snapshots/{snapshot_id}/coverage": {
+      "get": {
+        "operationId": "rule_extraction_coverage_api_v1_rule_snapshots__snapshot_id__coverage_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Snapshot Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RuleExtractionCoverageView"
+                  },
+                  "title": "Response Rule Extraction Coverage Api V1 Rule Snapshots  Snapshot Id  Coverage Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Rule Extraction Coverage",
+        "tags": [
+          "rules"
+        ]
+      }
+    },
+    "/api/v1/rule-versions/{rule_version_id}": {
+      "get": {
+        "operationId": "get_rule_version_api_v1_rule_versions__rule_version_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "rule_version_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Rule Version Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleVersionDetailView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Rule Version",
+        "tags": [
+          "rules"
+        ]
+      }
+    },
+    "/api/v1/rules/applicable": {
+      "post": {
+        "operationId": "applicable_rules_api_v1_rules_applicable_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicableRuleQuery"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicabilityResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Applicable Rules",
+        "tags": [
+          "rules"
+        ]
+      }
+    },
+    "/api/v1/rules/{rule_id}/confirmation": {
+      "post": {
+        "operationId": "confirm_rule_api_v1_rules__rule_id__confirmation_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "rule_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Rule Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmRuleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfirmationResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Confirm Rule",
+        "tags": [
+          "rules"
+        ]
+      }
+    },
+    "/api/v1/rules/{rule_id}/versions": {
+      "get": {
+        "operationId": "list_rule_versions_api_v1_rules__rule_id__versions_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "rule_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Rule Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RuleVersionSummaryView"
+                  },
+                  "title": "Response List Rule Versions Api V1 Rules  Rule Id  Versions Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Rule Versions",
+        "tags": [
+          "rules"
+        ]
+      }
+    },
     "/api/v1/studies/{study_id}/documents": {
       "get": {
         "operationId": "list_documents_api_v1_studies__study_id__documents_get",
@@ -2245,6 +4580,182 @@
         "summary": "Create Document",
         "tags": [
           "documents"
+        ]
+      }
+    },
+    "/api/v1/studies/{study_id}/rules": {
+      "get": {
+        "operationId": "list_rules_api_v1_studies__study_id__rules_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Site Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RuleListItemView"
+                  },
+                  "title": "Response List Rules Api V1 Studies  Study Id  Rules Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Rules",
+        "tags": [
+          "rules"
+        ]
+      }
+    },
+    "/api/v1/version-activations": {
+      "post": {
+        "operationId": "create_version_activation_api_v1_version_activations_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateActivationCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivationResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Version Activation",
+        "tags": [
+          "rules"
+        ]
+      }
+    },
+    "/api/v1/version-activations/{activation_id}/preview-change": {
+      "post": {
+        "operationId": "preview_version_activation_change_api_v1_version_activations__activation_id__preview_change_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "activation_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Activation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreviewActivationChangeCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivationChangePreviewView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Preview Version Activation Change",
+        "tags": [
+          "rules"
         ]
       }
     },

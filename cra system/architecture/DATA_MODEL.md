@@ -80,3 +80,17 @@ ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping�
 - `outbox_events`：业务提交时创建，队列不可用时保留；`dedup_key`防止重复发布。
 
 复合外键将资料、版本和锚点绑定到同一tenant/study/site。Procrastinate拥有通用queue schema；业务Job/Outbox仍由本系统负责。W03不创建规则、患者、问题或报告业务表。
+
+## 8. W04实际规则底座
+
+迁移`0003_rules_versions`增加：
+
+- `rule_snapshots`：绑定一个已解析文档版本及前一快照，保存provider、版本、状态和校验摘要；同一源文档版本只允许一个提取快照。
+- `rules`：稳定规则键和项目/中心层，保留当前版本指针和显式revision。
+- `rule_versions`：一个稳定规则的具体不可变快照，保存四层树、语义状态、候选/确认/撤销状态、确认依据和继承来源；数据库触发器禁止更新或删除。
+- `rule_source_refs`：RuleVersion与真实SourceAnchor、quote摘要和位置绑定，复合外键阻止跨研究锚点。
+- `rule_relations`：`unchanged/new/supplement/exception/replaces/withdraws/restores/conflict`逐条关系，不从新版本未提及推定撤销。
+- `rule_extraction_coverage`：规则提取对每个锚点的processed/background/analysis_required/unsupported/failed覆盖。
+- `version_activations`：文档版本/规则快照、项目或中心、`starts_on`含当天与`ends_before`不含、revision及更正前驱；重叠区间保留并提示，不自动裁决。
+
+新文档版本形成完整规则快照：未改变的旧规则复制为`unchanged_inheritance`，已确认项不要求再次确认；旧规则在新版未提及仍保留。含义变化缺明确关系证据时登记conflict候选，不自动覆盖。W04未创建患者、问题、检验或报告业务表。

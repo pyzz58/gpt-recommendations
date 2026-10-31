@@ -10,6 +10,22 @@ export type SourceAnchorView = components["schemas"]["AnchorView"];
 export type ParseCoverageView = components["schemas"]["CoverageView"];
 export type JobView = components["schemas"]["JobView"];
 export type UploadResponse = components["schemas"]["UploadResponse"];
+export type RuleListItemView = components["schemas"]["RuleListItemView"];
+export type RuleVersionSummaryView =
+  components["schemas"]["RuleVersionSummaryView"];
+export type RuleRelationView = components["schemas"]["RuleRelationView"];
+export type RuleVersionDetailView =
+  components["schemas"]["RuleVersionDetailView"];
+export type RuleNodeView = components["schemas"]["RuleNode-Output"];
+export type RuleConditionView = components["schemas"]["RuleCondition-Output"];
+export type RuleSourceRefView = components["schemas"]["RuleSourceRef"];
+export type NodeEvaluationView = components["schemas"]["NodeEvaluation"];
+export type ExtractionResponse =
+  components["schemas"]["ExtractionResponse"];
+export type ApplicabilityResponse =
+  components["schemas"]["ApplicabilityResponse"];
+export type ActivationResponse =
+  components["schemas"]["ActivationResponse"];
 
 type ErrorEnvelope = {
   error?: {
@@ -175,5 +191,122 @@ export function uploadDocument(
       "Idempotency-Key": values.idempotencyKey,
       "X-CSRF-Token": csrfToken()
     }
+  });
+}
+
+export function getRules(
+  studyId: string,
+  siteId: string
+): Promise<RuleListItemView[]> {
+  return request<RuleListItemView[]>(
+    `/api/v1/studies/${studyId}/rules?site_id=${encodeURIComponent(siteId)}`
+  );
+}
+
+export function getRuleVersion(
+  ruleVersionId: string
+): Promise<RuleVersionDetailView> {
+  return request<RuleVersionDetailView>(
+    `/api/v1/rule-versions/${ruleVersionId}`
+  );
+}
+
+export function getRuleVersions(
+  ruleId: string
+): Promise<RuleVersionSummaryView[]> {
+  return request<RuleVersionSummaryView[]>(
+    `/api/v1/rules/${ruleId}/versions`
+  );
+}
+
+export function extractRuleCandidates(
+  documentVersionId: string,
+  idempotencyKey: string
+): Promise<ExtractionResponse> {
+  return request<ExtractionResponse>(
+    `/api/v1/document-versions/${documentVersionId}/rule-candidates`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: 0,
+        idempotency_key: idempotencyKey
+      })
+    }
+  );
+}
+
+export function confirmRule(
+  ruleId: string,
+  values: {
+    expectedRevision: number;
+    baseVersionId: string;
+    reason: string;
+    operations: Record<string, unknown>[];
+  }
+): Promise<{
+  rule_id: string;
+  rule_version_id: string;
+  revision: number;
+  replayed: boolean;
+}> {
+  return request(`/api/v1/rules/${ruleId}/confirmation`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: values.expectedRevision,
+      idempotency_key: crypto.randomUUID(),
+      base_version_id: values.baseVersionId,
+      reason: values.reason,
+      operations: values.operations
+    })
+  });
+}
+
+export function createVersionActivation(values: {
+  documentVersionId: string;
+  startsOn: string;
+  endsBefore: string;
+  reason: string;
+}): Promise<ActivationResponse> {
+  return request<ActivationResponse>("/api/v1/version-activations", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: crypto.randomUUID(),
+      document_version_id: values.documentVersionId,
+      starts_on: values.startsOn,
+      ends_before: values.endsBefore || null,
+      reason: values.reason
+    })
+  });
+}
+
+export function getApplicableRules(values: {
+  studyId: string;
+  siteId: string;
+  eventDate: string;
+  facts: Record<string, unknown>;
+}): Promise<ApplicabilityResponse> {
+  return request<ApplicabilityResponse>("/api/v1/rules/applicable", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      study_id: values.studyId,
+      site_id: values.siteId,
+      event_date: values.eventDate,
+      jurisdiction: "synthetic",
+      facts: values.facts
+    })
   });
 }

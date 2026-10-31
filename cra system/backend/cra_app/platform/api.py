@@ -122,6 +122,16 @@ def capabilities(request: Request) -> CapabilityResponse:
         providers={
             "model": _provider_capability(settings.model_provider, "Model"),
             "ocr": _provider_capability(settings.ocr_provider, "OCR"),
+            "rule_extractor": ProviderCapability(
+                provider="anchored-rule-subset",
+                status="configured",
+                validated=True,
+                automatic_completion_allowed=False,
+                limitation=(
+                    "validated on the synthetic W04 authored rule subset only; "
+                    "free-form clinical protocols require review"
+                ),
+            ),
         },
         modules=[
             ModuleCapability(
@@ -137,7 +147,7 @@ def capabilities(request: Request) -> CapabilityResponse:
             ModuleCapability(
                 module_id="M03",
                 label="规则候选与分层list",
-                status="not_implemented",
+                status="implemented",
             ),
             ModuleCapability(
                 module_id="M05",

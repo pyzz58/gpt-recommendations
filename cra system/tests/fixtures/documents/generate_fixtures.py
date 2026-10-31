@@ -137,6 +137,224 @@ def _synthetic_docx(path: Path) -> None:
                     archive.write(item, item.relative_to(temp).as_posix())
 
 
+def _rule_paragraphs(document: Document, *, version: int) -> None:
+    document.add_heading("Synthetic Rule Matrix", level=0)
+    document.add_heading("1. Consent and screening", level=1)
+    document.add_paragraph(
+        "Rule R-SCREEN-01: Apply consent requirements before any study procedure."
+    )
+    document.add_paragraph(
+        "Precondition: study_phase IN (screening, treatment)"
+    )
+    document.add_paragraph(
+        "Trigger: screening_active = true AND consent_given = false"
+    )
+    document.add_paragraph(
+        "Branch B: WHEN screening_active = true AND consent_given = false "
+        "THEN obtain documented consent before procedures"
+    )
+    document.add_paragraph(
+        "Branch F: WHEN emergency_treatment = true THEN follow emergency pathway"
+    )
+    if version == 1:
+        document.add_paragraph(
+            "Exception E1: WHEN emergency_treatment = true "
+            "THEN emergency exception applies"
+        )
+    else:
+        document.add_paragraph(
+            "Exception E1: WHEN emergency_treatment = true "
+            "THEN emergency exception applies"
+        )
+        document.add_paragraph(
+            "Exception E3: WHEN consent_given = false "
+            "THEN pause further non-emergency procedures"
+        )
+    document.add_paragraph(
+        "Follow-up: document the exception rationale"
+    )
+    document.add_paragraph(
+        "Completion: signed consent or documented emergency exception is present"
+    )
+    document.add_paragraph(
+        "Required facts: study_phase, screening_active, consent_given, "
+        "emergency_treatment"
+    )
+    if version == 1:
+        document.add_heading("2. Visit timing", level=1)
+        document.add_paragraph(
+            "Rule R-VISIT-01: Visit 1 must occur within the permitted window."
+        )
+        document.add_paragraph("Trigger: present visit_1_due")
+        document.add_paragraph(
+            "Branch W: WHEN visit_date within -3..3 days of consent_date "
+            "THEN record window as on time"
+        )
+        document.add_paragraph(
+            "Branch OUT: WHEN visit_date within 4..30 days of consent_date "
+            "THEN create follow-up"
+        )
+        document.add_paragraph(
+            "Exception E2: WHEN protocol_waiver = true "
+            "THEN follow the approved waiver"
+        )
+        document.add_paragraph(
+            "Follow-up: record dates and source"
+        )
+        document.add_paragraph(
+            "Completion: source dates are verified"
+        )
+        document.add_paragraph(
+            "Required facts: visit_1_due, visit_date, consent_date, protocol_waiver"
+        )
+    document.add_heading("3. Background", level=1)
+    document.add_paragraph(
+        "This illustrative matrix is synthetic and is not a clinical protocol."
+    )
+
+
+def _inject_footnote(
+    path: Path,
+    *,
+    target_text: str,
+    footnote_text: str,
+) -> None:
+    with tempfile.TemporaryDirectory() as temporary:
+        temp = Path(temporary)
+        with zipfile.ZipFile(path) as source:
+            source.extractall(temp)
+        document_xml = temp / "word/document.xml"
+        xml = document_xml.read_text(encoding="utf-8")
+        target = (
+            "<w:p><w:r><w:t>"
+            + target_text
+            + "</w:t></w:r></w:p>"
+        )
+        if target not in xml:
+            raise RuntimeError("footnote target paragraph not found")
+        xml = xml.replace(
+            target,
+            (
+                "<w:p><w:r><w:t>"
+                + target_text
+                + "</w:t></w:r>"
+                '<w:r><w:rPr><w:rStyle w:val="FootnoteReference"/></w:rPr>'
+                '<w:footnoteReference w:id="7"/></w:r></w:p>'
+            ),
+            1,
+        )
+        document_xml.write_text(xml, encoding="utf-8")
+        (temp / "word/footnotes.xml").write_text(
+            """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:footnotes xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:footnote w:type="separator" w:id="-1"><w:p><w:r><w:separator/></w:r></w:p></w:footnote>
+  <w:footnote w:type="continuationSeparator" w:id="0"><w:p><w:r><w:continuationSeparator/></w:r></w:p></w:footnote>
+  <w:footnote w:id="7"><w:p><w:r><w:t>"""
+            + footnote_text
+            + """</w:t></w:r></w:p></w:footnote>
+</w:footnotes>
+""",
+            encoding="utf-8",
+        )
+        content_types = temp / "[Content_Types].xml"
+        content_xml = content_types.read_text(encoding="utf-8")
+        if "footnotes+xml" not in content_xml:
+            content_xml = content_xml.replace(
+                "</Types>",
+                '<Override PartName="/word/footnotes.xml" '
+                'ContentType="application/vnd.openxmlformats-officedocument.'
+                'wordprocessingml.footnotes+xml"/></Types>',
+            )
+            content_types.write_text(content_xml, encoding="utf-8")
+        rels = temp / "word/_rels/document.xml.rels"
+        rels_xml = rels.read_text(encoding="utf-8")
+        if "footnotes.xml" not in rels_xml:
+            rels_xml = rels_xml.replace(
+                "</Relationships>",
+                '<Relationship Id="rIdCRAFootnotes" '
+                'Type="http://schemas.openxmlformats.org/officeDocument/2006/'
+                'relationships/footnotes" Target="footnotes.xml"/></Relationships>',
+            )
+            rels.write_text(rels_xml, encoding="utf-8")
+        with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as archive:
+            for item in sorted(temp.rglob("*")):
+                if item.is_file():
+                    archive.write(item, item.relative_to(temp).as_posix())
+
+
+def _synthetic_rule_matrix(path: Path, *, version: int) -> None:
+    document = Document()
+    document.core_properties.title = f"Synthetic rule matrix v{version}"
+    document.core_properties.author = "Synthetic fixture generator"
+    document.core_properties.created = datetime(2026, 10, 31)
+    document.core_properties.modified = datetime(2026, 10, 31)
+    _rule_paragraphs(document, version=version)
+    document.save(path)
+    if version == 1:
+        _inject_footnote(
+            path,
+            target_text=(
+                "Rule R-VISIT-01: Visit 1 must occur within the permitted window."
+            ),
+            footnote_text=(
+                "Synthetic footnote R-VISIT-01: day 3 is inclusive and day 4 "
+                "is outside the on-time branch."
+            ),
+        )
+
+
+def _synthetic_rule_evaluation(path: Path) -> None:
+    document = Document()
+    document.core_properties.title = "Independent synthetic rule evaluation"
+    document.core_properties.author = "Synthetic fixture generator"
+    document.core_properties.created = datetime(2026, 10, 31)
+    document.core_properties.modified = datetime(2026, 10, 31)
+    document.add_heading("Independent Rule Evaluation", level=0)
+    document.add_heading("1. Laboratory", level=1)
+    document.add_paragraph(
+        "Rule R-LAB-01: Apply the synthetic local reference range policy."
+    )
+    document.add_paragraph(
+        "Trigger: local_reference_ranges = true AND site_profile_complete = true"
+    )
+    document.add_paragraph(
+        "Branch A: WHEN lab_value >= 10.5 THEN flag for CRA review"
+    )
+    document.add_paragraph(
+        "Branch B: WHEN lab_value < 10.5 THEN retain as normal-range record"
+    )
+    document.add_paragraph(
+        "Exception X: WHEN delegation_allowed = true "
+        "THEN follow delegated review"
+    )
+    document.add_paragraph("Follow-up: compare the signed local range")
+    document.add_paragraph("Completion: source range and value are verified")
+    document.add_paragraph(
+        "Required facts: local_reference_ranges, site_profile_complete, "
+        "lab_value, delegation_allowed"
+    )
+    document.add_heading("2. Safety documentation", level=1)
+    document.add_paragraph(
+        "Rule R-SAFETY-01: Investigators must not record relatedness without "
+        "a documented rationale."
+    )
+    document.add_paragraph("Trigger: ae_present = true")
+    document.add_paragraph(
+        "Branch N: WHEN relatedness_documented = false "
+        "THEN request a documented rationale"
+    )
+    document.add_paragraph(
+        "Exception Q: WHEN not_yet_assessed = true "
+        "THEN retain relatedness as pending"
+    )
+    document.add_paragraph("Follow-up: keep medical conclusion separate")
+    document.add_paragraph("Completion: documented rationale is available")
+    document.add_paragraph(
+        "Required facts: ae_present, relatedness_documented, not_yet_assessed"
+    )
+    document.save(path)
+
+
 def _synthetic_pdf(path: Path) -> None:
     pdf = canvas.Canvas(str(path), pagesize=A4)
     pdf.setTitle("Synthetic monitoring report")
@@ -221,13 +439,18 @@ def main() -> None:
     protocol = OUTPUT / "synthetic_rule_protocol.docx"
     _synthetic_docx(protocol)
     shutil.copy2(protocol, OUTPUT / "synthetic_report_template.docx")
+    _synthetic_rule_matrix(OUTPUT / "synthetic_rule_matrix_v1.docx", version=1)
+    _synthetic_rule_matrix(OUTPUT / "synthetic_rule_matrix_v2.docx", version=2)
+    _synthetic_rule_evaluation(OUTPUT / "synthetic_rule_evaluation.docx")
     _synthetic_pdf(OUTPUT / "synthetic_monitoring_report.pdf")
     _synthetic_xlsx(OUTPUT / "synthetic_track.xlsx")
     _synthetic_image(OUTPUT / "synthetic_lab_report.png")
     (OUTPUT / "synthetic_rule_text.txt").write_text(
-        "Synthetic rule text\n"
-        "Background: this line is synthetic context.\n"
-        "Requirement: if condition C is present, follow path B.\n",
+        "Rule R-EMAIL-01: Apply the synthetic email rule directly.\n"
+        "Trigger: condition_c = true\n"
+        "Branch B: WHEN condition_c = true THEN follow path B\n"
+        "Completion: the named path is documented\n"
+        "Required facts: condition_c\n",
         encoding="utf-8",
     )
     hashes = _hashes()
@@ -313,7 +536,47 @@ def main() -> None:
                 "sha256": hashes["synthetic_rule_text.txt"],
                 "expected": {
                     "anchor_types": ["plain_text"],
-                    "contains": ["condition C", "path B"],
+                    "contains": ["R-EMAIL-01", "condition_c", "path B"],
+                    "direct_accept": True,
+                },
+            },
+            {
+                "artifact_id": "RULE-DOCX-V1-DEV",
+                "file": "documents/artifacts/synthetic_rule_matrix_v1.docx",
+                "format": "docx",
+                "purpose": "rule",
+                "group": "development",
+                "sha256": hashes["synthetic_rule_matrix_v1.docx"],
+                "expected": {
+                    "rule_keys": ["R-SCREEN-01", "R-VISIT-01"],
+                    "footnote_rule": "R-VISIT-01",
+                    "exception_count": 2,
+                    "analysis_required": False,
+                },
+            },
+            {
+                "artifact_id": "RULE-DOCX-V2-DEV",
+                "file": "documents/artifacts/synthetic_rule_matrix_v2.docx",
+                "format": "docx",
+                "purpose": "rule",
+                "group": "development",
+                "sha256": hashes["synthetic_rule_matrix_v2.docx"],
+                "expected": {
+                    "rule_keys": ["R-SCREEN-01"],
+                    "omitted_prior_rule": "R-VISIT-01",
+                    "new_exception": "E3",
+                },
+            },
+            {
+                "artifact_id": "RULE-DOCX-EVAL",
+                "file": "documents/artifacts/synthetic_rule_evaluation.docx",
+                "format": "docx",
+                "purpose": "rule",
+                "group": "evaluation",
+                "sha256": hashes["synthetic_rule_evaluation.docx"],
+                "expected": {
+                    "rule_keys": ["R-LAB-01", "R-SAFETY-01"],
+                    "evaluation_cases": "rules/evaluation_cases.json",
                 },
             },
         ],

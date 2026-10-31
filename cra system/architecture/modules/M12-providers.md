@@ -1,6 +1,6 @@
 # M12 模型、OCR与检索接入
 
-版本：5；状态：W03统一端口、显式DisabledProvider和隔离OCR候选探测已实现；W04/W08/W09实际用途provider尚未实现/验证。代码位置：`backend/cra_app/providers/`。
+版本：6；状态：W03统一端口/OCR探测及W04确定性规则提取provider已实现；W08/W09实际用途provider仍待后续任务。代码位置：`backend/cra_app/providers/`。
 
 ## 对应理论和任务
 
@@ -49,3 +49,7 @@ W03先探测兼容与资源，必要时隔离识别环境，W04/W08/W09实际pro
 ## W03实现记录
 
 已建立ParseDocument/ExtractRules/RecognizeLab/AnalyzeCase端口和显式DisabledProvider。同一合成检验图片在隔离Python3.12环境实际试装PaddleOCR 3.7.0/PaddlePaddle 3.3.1与Docling 2.145.0：macOS上两者均输出预期token和坐标，PaddleOCR更快；但GitHub Ubuntu上PaddlePaddle在oneDNN执行路径失败，Docling通过。因此当前固定Linux CI路径选择Docling作为W08候选，PaddleOCR保留为需修正推理配置的隔离替代。主应用未安装OCR候选；单图探测不构成格式覆盖、字段准确率或临床验证，详见validation/PROVIDER_FEASIBILITY.md。
+
+## W04实现记录
+
+新增`AnchoredRuleExtractor`，实际消费W03解析锚点并只支持已声明的结构化规则语句子集。provider不读取评估预期，输出规则树与覆盖；域服务逐条校验锚点、引文归属、数字来源和条件完整性。独立评估组比较且/或、边界、例外、三值unknown，并用同引文反例检查漏前提、丢例外、否定颠倒和且改或。该实现不是通用LLM，也未在真实方案/IB上验证；自由文本保持analysis_required。

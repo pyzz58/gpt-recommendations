@@ -35,6 +35,14 @@ from cra_app.governance.service import (
 )
 from cra_app.platform.api import router as platform_router
 from cra_app.platform.jobs import ProcrastinateQueue
+from cra_app.rules.api import router as rules_router
+from cra_app.rules.common_policy import load_common_policy_set
+from cra_app.rules.service import (
+    RuleNotFound,
+    RuleService,
+    RuleStateConflict,
+    RuleValidationError,
+)
 from cra_app.shared.api_contract import ErrorDetail, ErrorEnvelope
 from cra_app.shared.config import Settings, get_settings
 from cra_app.shared.db import (
@@ -69,6 +77,7 @@ def create_app(
     session_factory=None,
     identity_provider: IdentityProvider | None = None,
     document_service: DocumentService | None = None,
+    rule_service: RuleService | None = None,
 ) -> FastAPI:
     resolved_settings = settings or get_settings()
     own_engine = None
@@ -88,6 +97,13 @@ def create_app(
             queue=ProcrastinateQueue(resolved_settings.sqlalchemy_url()),
             max_upload_bytes=resolved_settings.max_upload_bytes,
         )
+    if rule_service is None:
+        rule_service = RuleService(
+            session_factory,
+            common_policy_set=load_common_policy_set(
+                resolved_settings.common_policy_path
+            ),
+        )
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -97,7 +113,7 @@ def create_app(
 
     application = FastAPI(
         title="CRA System API",
-        version="0.2.0",
+        version="0.3.0",
         description=(
             "Synthetic-first CRA monitoring workbench API. Service health and "
             "implemented capabilities are reported separately from clinical use."
@@ -112,6 +128,7 @@ def create_app(
     application.state.identity_provider = resolved_provider
     application.state.governance_service = GovernanceService(session_factory)
     application.state.document_service = document_service
+    application.state.rule_service = rule_service
 
     application.add_middleware(
         SessionMiddleware,
@@ -237,6 +254,33 @@ def create_app(
             content=_error("document_job_conflict", str(exc)),
         )
 
+    @application.exception_handler(RuleNotFound)
+    async def rule_not_found_error(
+        request: Request, exc: RuleNotFound
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=_error("rule_not_found", str(exc)),
+        )
+
+    @application.exception_handler(RuleValidationError)
+    async def rule_validation_error(
+        request: Request, exc: RuleValidationError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            content=_error("rule_validation_failed", str(exc)),
+        )
+
+    @application.exception_handler(RuleStateConflict)
+    async def rule_state_conflict_error(
+        request: Request, exc: RuleStateConflict
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=_error("rule_state_conflict", str(exc)),
+        )
+
     @application.exception_handler(RequestValidationError)
     async def validation_error(
         request: Request, exc: RequestValidationError
@@ -296,6 +340,7 @@ def create_app(
     application.include_router(platform_router)
     application.include_router(governance_router)
     application.include_router(documents_router)
+    application.include_router(rules_router)
 
     def custom_openapi():
         if application.openapi_schema:
