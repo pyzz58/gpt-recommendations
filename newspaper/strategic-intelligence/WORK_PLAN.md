@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`d3e8a3152114f29253ec9b015ec94655d92d11a7c328fa4c5c33ec2a9facc1f6`。
+当前规范SHA-256：`cda15bfdc6c56555369ebd9c6a1bfab5f17d9daefe49aba8622067a802917647`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收7包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收8包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -55,7 +55,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 18 | [W17 工具适配器与真实操作身份](#w17) | 代码与接口工作包 | T13/T11 | [W13](#w13)、[W15](#w15) | 进行中 / CURRENT_BINDING |
 | 19 | [W18 调用前权限、预算与能力核验](#w18) | 代码与接口工作包 | T13/T01 | [W17](#w17)、[W15](#w15) | 进行中 / CURRENT_BINDING |
 | 20 | [W19 模型任务配置与有限准入证据](#w19) | 代码与接口工作包 | T13/T09 | [W18](#w18) | 进行中 / CURRENT_BINDING |
-| 21 | [W20 少量来源适配与候选输入](#w20) | 代码与接口工作包 | T02 | [W17](#w17)、[W18](#w18) | 待开始 / CURRENT_BINDING |
+| 21 | [W20 少量来源适配与候选输入](#w20) | 代码与接口工作包 | T02 | [W17](#w17)、[W18](#w18) | 进行中 / CURRENT_BINDING |
 | 22 | [W21 事件归并、血缘与探索队列](#w21) | 代码与接口工作包 | T02 | [W20](#w20)、[W13](#w13) | 待开始 / CURRENT_BINDING |
 | 23 | [W22 独立参照与覆盖缺口接口](#w22) | 代码与接口工作包 | T02/T03 | [W20](#w20)、[W21](#w21) | 待开始 / CURRENT_BINDING |
 | 24 | [W23 初选、S8与当期取舍记录](#w23) | 代码与接口工作包 | T03 | [W15](#w15)、[W21](#w21) | 待开始 / CURRENT_BINDING |
@@ -835,7 +835,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：21/59；阶段：2；类型：代码与接口工作包。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W17](#w17)、[W18](#w18)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W17](#w17)、[W18](#w18)。
 
 前置尚未验收：[W17](#w17)、[W18](#w18)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -864,7 +864,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W20-SOURCE-ADAPTER-20261031-001", "artifact_refs": ["intelligence/sources.py", "intelligence/contracts.py", "tests_runtime/test_sources.py", "pyproject.toml", "uv.lock", "audits/pr76-review-remediation-w20-20261031.json"], "validation_refs": ["tests_runtime/test_sources.py (6 actual passing W20 tests)", "feedparser 6.0.14; trafilatura 2.3.1; lxml 6.1.3 locked", "audits/pr76-review-remediation-w20-20261031.json"], "reviewer": "当前执行者实际离线Feed/HTML/JSON字节、字段/时间缺口、失败索引、权限边界与Archive往返检查；非真实来源、内容或阶段批准", "result": "IN_PROGRESS", "scope": "W20离线来源入口：仅解析明确许可的既有字节，Feed使用feedparser、HTML使用Trafilatura、JSON API按显式items映射；CandidateIndex保存来源/取得方式/哈希/语言地区所有权、短摘或摘要、时间精度、血缘、缺字段、故障和人工探测性质，原始正文不随候选保存。真实网络来源、覆盖时段、事件归并和W21/W23消费未验，整包不ACCEPTED。"}]
 
 <a id="w21"></a>
 ## W21｜事件归并、血缘与探索队列

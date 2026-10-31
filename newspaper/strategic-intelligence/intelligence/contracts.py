@@ -50,6 +50,7 @@ class ObjectKind(str, Enum):
     MODEL_TASK_CONFIGURATION = "ModelTaskConfiguration"
     MODEL_VALIDATION = "ModelValidation"
     MODEL_USE_ADMISSION = "ModelUseAdmission"
+    CANDIDATE_INDEX = "CandidateIndex"
     MATERIAL_SELECTION = "MaterialSelection"
 
 

@@ -5,7 +5,7 @@
 **CURRENT_BINDING仅表示本次关联版本一致；不证明方案正确、程序已实现、内容已审或获准运行。**
 理论或设计/依赖改变会变为REVIEW_REQUIRED；重新生成只刷新事实，不自动改写技术正文或批准新基线。
 
-当前规范SHA-256：`d3e8a3152114f29253ec9b015ec94655d92d11a7c328fa4c5c33ec2a9facc1f6`。
+当前规范SHA-256：`cda15bfdc6c56555369ebd9c6a1bfab5f17d9daefe49aba8622067a802917647`。
 
 需复核节点：无；仅限关联新鲜度检查。
 
@@ -20,7 +20,7 @@
 | [R07](#r07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r07) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 已有文档关联维护继续；研究任务原文装载/分段与C03持久恢复仍待实现，不由摘要恢复 |
 | [R08](#r08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r08) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | C06 Actions只设周开始+C03长任务续跑+C02期号/回执+C05文件；生产/已授权交付待实现 |
 | [T01](#t01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t01) | CURRENT_BINDING | 执行者组织；未来执行层维护决定；人工定位先行；第二阶段控制器 | C02提交/Review/AdoptionDecision追加版本与W15分离决定接口已离线实现；身份认证、完整研究图、LangGraph持久恢复和端到端采用仍未实现 |
-| [T02](#t02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t02) | CURRENT_BINDING | L1发现职责；第一阶段人工取样；第四阶段生产增量 | C01 feedparser/Trafilatura共享入口+C02候选；血缘/归并/覆盖薄适配待实现 |
+| [T02](#t02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t02) | CURRENT_BINDING | L1发现职责；第一阶段人工取样；第四阶段生产增量 | W20已离线实现feedparser/Trafilatura/JSON API受控字节入口、CandidateIndex、取得元信息、字段/时间缺口和失败记录，并持久到C02；真实来源运行、血缘/事件归并和覆盖薄适配待W21/W22 |
 | [T03](#t03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t03) | CURRENT_BINDING | L2编辑决定；第一阶段人工；第二阶段记录和接口 | C04编辑任务+C02决定+C03 S依赖；价值/刊登规则待实现，不用分数自动拼刊 |
 | [T04](#t04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t04) | CURRENT_BINDING | L3取证/中文核对；第一阶段实际回源；第二阶段适配 | C01网页/Feed与按需Docling+C02权利/支持；共用翻译适配待实现，提取不代核真 |
 | [T05](#t05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t05) | CURRENT_BINDING | L4联合研究组织；B1/B2从早期参与；第一阶段分步研究；第二阶段可重跑组织 | W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；C03完整M图、C04研究函数及真实模型内容仍待实现 |
@@ -226,7 +226,7 @@
 
 设计目的：全球发现与候选归并
 
-责任：L1发现职责；阶段：第一阶段人工取样；第四阶段生产增量；实现：C01 feedparser/Trafilatura共享入口+C02候选；血缘/归并/覆盖薄适配待实现。
+责任：L1发现职责；阶段：第一阶段人工取样；第四阶段生产增量；实现：W20已离线实现feedparser/Trafilatura/JSON API受控字节入口、CandidateIndex、取得元信息、字段/时间缺口和失败记录，并持久到C02；真实来源运行、血缘/事件归并和覆盖薄适配待W21/W22。
 
 理论出处：[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
