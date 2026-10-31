@@ -54,6 +54,14 @@ class ObjectKind(str, Enum):
     EVENT_CLUSTER_PROPOSAL = "EventClusterProposal"
     COVERAGE_REFERENCE_PLAN = "CoverageReferencePlan"
     COVERAGE_AUDIT = "CoverageAudit"
+    QUESTION_VERSION = "QuestionVersion"
+    SOURCE_MATERIAL = "SourceMaterial"
+    RIGHTS_RECORD = "RightsRecord"
+    READING_SCOPE_PLAN = "ReadingScopePlan"
+    S8_PREREQUISITE_PACKAGE = "S8PrerequisitePackage"
+    TOPIC_DECISION = "TopicDecision"
+    RESEARCH_ADMISSION = "ResearchAdmission"
+    EDITION_PLACEMENT_PROPOSAL = "EditionPlacementProposal"
     MATERIAL_SELECTION = "MaterialSelection"
 
 

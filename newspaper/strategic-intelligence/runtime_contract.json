@@ -41,7 +41,9 @@
     "intelligence/discovery.py",
     "tests_runtime/test_discovery.py",
     "intelligence/coverage.py",
-    "tests_runtime/test_coverage.py"
+    "tests_runtime/test_coverage.py",
+    "intelligence/editorial.py",
+    "tests_runtime/test_editorial.py"
   ],
   "data_files": [
     "SOURCE_REGISTRY.json",
@@ -60,5 +62,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "6699610f1adeccbb08212eefc7224ae469baa297969f1ad181a9ee06b3d03afa"
+  "spec_sha256": "b2975c8511ec9005745fefb67f050b5f4ea1972121bccd70eb8c590057a3cf80"
 }

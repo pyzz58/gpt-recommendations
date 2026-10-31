@@ -5,7 +5,7 @@
 **CURRENT_BINDING仅表示本次关联版本一致；不证明方案正确、程序已实现、内容已审或获准运行。**
 理论或设计/依赖改变会变为REVIEW_REQUIRED；重新生成只刷新事实，不自动改写技术正文或批准新基线。
 
-当前规范SHA-256：`6699610f1adeccbb08212eefc7224ae469baa297969f1ad181a9ee06b3d03afa`。
+当前规范SHA-256：`b2975c8511ec9005745fefb67f050b5f4ea1972121bccd70eb8c590057a3cf80`。
 
 需复核节点：无；仅限关联新鲜度检查。
 
@@ -20,8 +20,8 @@
 | [R07](#r07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r07) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | 已有文档关联维护继续；研究任务原文装载/分段与C03持久恢复仍待实现，不由摘要恢复 |
 | [R08](#r08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-r08) | CURRENT_BINDING | 对应流程中注明的L层/技术模块责任；沿§19.2原四阶段；文档关联现可检查 | C06 Actions只设周开始+C03长任务续跑+C02期号/回执+C05文件；生产/已授权交付待实现 |
 | [T01](#t01) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t01) | CURRENT_BINDING | 执行者组织；未来执行层维护决定；人工定位先行；第二阶段控制器 | C02提交/Review/AdoptionDecision追加版本与W15分离决定接口已离线实现；身份认证、完整研究图、LangGraph持久恢复和端到端采用仍未实现 |
-| [T02](#t02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t02) | CURRENT_BINDING | L1发现职责；第一阶段人工取样；第四阶段生产增量 | W20已离线实现feedparser/Trafilatura/JSON API受控字节入口、CandidateIndex、取得元信息、字段/时间缺口和失败记录，并持久到C02；W21已实现强键事件归并提案、来源血缘/独立根、编辑歧义和探索队列；W22已实现预固定独立参照、范围限定的覆盖比较与七类缺口。真实来源运行、T03内容复核和编辑选择待W23 |
-| [T03](#t03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t03) | CURRENT_BINDING | L2编辑决定；第一阶段人工；第二阶段记录和接口 | C04编辑任务+C02决定+C03 S依赖；W22已提供独立参照与覆盖缺口接口，W23价值/刊登决定尚未实现，不用分数自动拼刊 |
+| [T02](#t02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t02) | CURRENT_BINDING | L1发现职责；第一阶段人工取样；第四阶段生产增量 | W20已离线实现feedparser/Trafilatura/JSON API受控字节入口、CandidateIndex、取得元信息、字段/时间缺口和失败记录，并持久到C02；W21已实现强键事件归并提案、来源血缘/独立根、编辑歧义和探索队列；W22已实现预固定独立参照、范围限定的覆盖比较与七类缺口；W23已消费候选/事件簇/覆盖审计，保存S0—S8取舍。真实来源运行与T03真实内容复核仍待后续 |
+| [T03](#t03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t03) | CURRENT_BINDING | L2编辑决定；第一阶段人工；第二阶段记录和接口 | C04编辑任务+C02决定+C03 S依赖；W22提供独立参照与覆盖缺口接口，W23已离线实现S0—S8前后决定、S8前置包的实对象绑定、研究准入与刊登准入分离及显式期次建议；分值不自动产生准入或拼刊，真实编辑取舍和W24—W26闭环待验 |
 | [T04](#t04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t04) | CURRENT_BINDING | L3取证/中文核对；第一阶段实际回源；第二阶段适配 | C01网页/Feed与按需Docling+C02权利/支持；共用翻译适配待实现，提取不代核真 |
 | [T05](#t05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t05) | CURRENT_BINDING | L4联合研究组织；B1/B2从早期参与；第一阶段分步研究；第二阶段可重跑组织 | W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；C03完整M图、C04研究函数及真实模型内容仍待实现 |
 | [T06](#t06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t06) | CURRENT_BINDING | L4顾问职责；第一阶段真实研判；后续按任务验证 | C04 B1任务共用C02/C03和模型接口；实际顾问贡献待内容验收 |
@@ -226,7 +226,7 @@
 
 设计目的：全球发现与候选归并
 
-责任：L1发现职责；阶段：第一阶段人工取样；第四阶段生产增量；实现：W20已离线实现feedparser/Trafilatura/JSON API受控字节入口、CandidateIndex、取得元信息、字段/时间缺口和失败记录，并持久到C02；W21已实现强键事件归并提案、来源血缘/独立根、编辑歧义和探索队列；W22已实现预固定独立参照、范围限定的覆盖比较与七类缺口。真实来源运行、T03内容复核和编辑选择待W23。
+责任：L1发现职责；阶段：第一阶段人工取样；第四阶段生产增量；实现：W20已离线实现feedparser/Trafilatura/JSON API受控字节入口、CandidateIndex、取得元信息、字段/时间缺口和失败记录，并持久到C02；W21已实现强键事件归并提案、来源血缘/独立根、编辑歧义和探索队列；W22已实现预固定独立参照、范围限定的覆盖比较与七类缺口；W23已消费候选/事件簇/覆盖审计，保存S0—S8取舍。真实来源运行与T03真实内容复核仍待后续。
 
 理论出处：[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -246,7 +246,7 @@
 
 设计目的：选题、复选与整刊计划
 
-责任：L2编辑决定；阶段：第一阶段人工；第二阶段记录和接口；实现：C04编辑任务+C02决定+C03 S依赖；W22已提供独立参照与覆盖缺口接口，W23价值/刊登决定尚未实现，不用分数自动拼刊。
+责任：L2编辑决定；阶段：第一阶段人工；第二阶段记录和接口；实现：C04编辑任务+C02决定+C03 S依赖；W22提供独立参照与覆盖缺口接口，W23已离线实现S0—S8前后决定、S8前置包的实对象绑定、研究准入与刊登准入分离及显式期次建议；分值不自动产生准入或拼刊，真实编辑取舍和W24—W26闭环待验。
 
 理论出处：[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§2.2](CANONICAL_SYSTEM_SPEC_V5.md#th-2-2)、[§5](CANONICAL_SYSTEM_SPEC_V5.md#th-5)、[§7.4](CANONICAL_SYSTEM_SPEC_V5.md#th-7-4)、[§13.1](CANONICAL_SYSTEM_SPEC_V5.md#th-13-1)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
