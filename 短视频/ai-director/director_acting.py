@@ -15,6 +15,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 import hashlib
+from itertools import combinations
 import json
 import re
 
@@ -25,6 +26,7 @@ MODE = {
 }
 HANDS = frozenset({"left", "right", "both", "none"})
 POSTURES = frozenset({"standing", "seated", "lying", "kneeling", "other"})
+ENVIRONMENT_STATES = frozenset({"open", "closed"})
 GENERIC_PHRASES = (
     "自然地", "自然表演", "表演自然", "情绪到位", "悲伤地看着",
     "很悲伤", "很生气", "开心地看着", "正常地",
@@ -319,6 +321,33 @@ def _inspect_dual_person(source, shot, cast, report):
         _add(report["reviews"], "ACTING_INTENTIONAL_CUT",
              "an explicit cut note changes physical state between shots",
              shot_id=sid)
+    environment = staging.get("environment_state")
+    if environment is not None:
+        if not isinstance(environment, dict):
+            _add(report["blockers"], "ACTING_ENVIRONMENT_STATE_INVALID",
+                 "environment_state must be an object", shot_id=sid)
+        else:
+            for kind in ("doors", "windows"):
+                entries = environment.get(kind)
+                if entries is None:
+                    continue
+                if not isinstance(entries, dict):
+                    _add(report["blockers"], "ACTING_ENVIRONMENT_STATE_INVALID",
+                         kind + " must be an object keyed by stable ID", shot_id=sid)
+                    continue
+                for object_id, entry in entries.items():
+                    if (not _text(object_id) or not isinstance(entry, dict)
+                            or entry.get("start") not in ENVIRONMENT_STATES
+                            or entry.get("end") not in ENVIRONMENT_STATES):
+                        _add(report["blockers"], "ACTING_ENVIRONMENT_STATE_INVALID",
+                             kind + " entries need a stable ID and open/closed start/end",
+                             shot_id=sid)
+                        continue
+                    if entry["start"] != entry["end"]:
+                        if entry.get("changed_by") not in cast or not _text(entry.get("cause")):
+                            _add(report["blockers"], "ACTING_ENVIRONMENT_CHANGE_UNMOTIVATED",
+                                 "door/window change needs an in-shot actor and cause",
+                                 shot_id=sid)
     if not cast:
         return
     state = staging.get("physical_state")
@@ -375,34 +404,40 @@ def _inspect_dual_person(source, shot, cast, report):
                          "posture change needs actor_id/from/to/cause",
                          shot_id=sid, character_id=cid)
     relationships = staging.get("relationship_map")
-    if len(cast) == 2:
+    if len(cast) >= 2:
         if not isinstance(relationships, list):
             _add(report["blockers"], "ACTING_RELATIONSHIP_MAP_MISSING",
-                 "dual-person shots need a relationship_map",
+                 "multi-person shots need a relationship_map",
                  shot_id=sid)
         else:
-            for actor in cast:
-                target = next((cid for cid in cast if cid != actor), None)
+            valid_rows = []
+            for row in relationships:
+                if (not isinstance(row, dict) or row.get("actor_id") not in cast
+                        or row.get("target_id") not in cast
+                        or row.get("actor_id") == row.get("target_id")
+                        or not all(_text(row.get(key)) for key in
+                                   ("gaze", "body_orientation", "distance", "interaction"))):
+                    _add(report["blockers"], "ACTING_RELATIONSHIP_ROW_INVALID",
+                         "relationship_map rows need distinct in-cast actors and concrete interaction fields",
+                         shot_id=sid)
+                    continue
+                valid_rows.append(row)
+            if len(cast) == 2:
+                for actor in cast:
+                    target = next(cid for cid in cast if cid != actor)
+                    if not any(row["actor_id"] == actor and row["target_id"] == target
+                               for row in valid_rows):
+                        _add(report["blockers"], "ACTING_RELATIONSHIP_ROW_MISSING",
+                             "each dual-person actor needs gaze/body/distance/interaction toward the other",
+                             shot_id=sid, character_id=actor)
+            for first, second in combinations(sorted(cast), 2):
                 if not any(
-                    isinstance(row, dict)
-                    and row.get("actor_id") == actor
-                    and row.get("target_id") == target
-                    and all(_text(row.get(key)) for key in
-                            ("gaze", "body_orientation", "distance", "interaction"))
-                    for row in relationships
+                    {row["actor_id"], row["target_id"]} == {first, second}
+                    for row in valid_rows
                 ):
-                    _add(report["blockers"], "ACTING_RELATIONSHIP_ROW_MISSING",
-                         "each dual-person actor needs gaze/body/distance/interaction toward the other",
-                         shot_id=sid, character_id=actor)
-    elif isinstance(relationships, list):
-        for row in relationships:
-            if (not isinstance(row, dict) or row.get("actor_id") not in cast
-                    or row.get("target_id") not in cast
-                    or not all(_text(row.get(key)) for key in
-                               ("gaze", "body_orientation", "distance", "interaction"))):
-                _add(report["blockers"], "ACTING_RELATIONSHIP_ROW_INVALID",
-                     "relationship_map rows need in-cast actors and concrete interaction fields",
-                     shot_id=sid)
+                    _add(report["blockers"], "ACTING_RELATIONSHIP_PAIR_MISSING",
+                         "relationship_map needs at least one interaction row for every cast pair",
+                         shot_id=sid)
     handoffs = staging.get("handoffs")
     if handoffs is None:
         handoffs = []
@@ -534,6 +569,28 @@ def _inspect_cross_shot(base, payload, report):
                         _add(report["blockers"], "ACTING_POSTURE_STATE_JUMP",
                              "posture changes across a cut without an action or note",
                              shot_id=after_id, character_id=actor)
+        for kind in ("doors", "windows"):
+            before_env = (((before.get("staging") or {}).get("environment_state") or {})
+                          .get(kind) or {})
+            after_env = (((after.get("staging") or {}).get("environment_state") or {})
+                         .get(kind) or {})
+            for object_id in set(before_env) & set(after_env):
+                old_env = before_env.get(object_id) or {}
+                new_env = after_env.get(object_id) or {}
+                if not isinstance(old_env, dict) or not isinstance(new_env, dict):
+                    continue
+                if old_env.get("end") == new_env.get("start"):
+                    continue
+                if new_env.get("start") != new_env.get("end"):
+                    continue
+                if cut_note:
+                    _add(report["reviews"], "ACTING_INTENTIONAL_CUT_STATE_CHANGE",
+                         "cut note explains a door/window state change",
+                         shot_id=after_id)
+                else:
+                    _add(report["blockers"], "ACTING_ENVIRONMENT_STATE_JUMP",
+                         "door/window state changes across a cut without an action or note",
+                         shot_id=after_id)
 
 
 def inspect_delivery(base, state, payload):

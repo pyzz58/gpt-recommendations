@@ -380,6 +380,7 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
                 staging["properties"]["relationship_map"] = {"type": "array"}
                 staging["properties"]["handoffs"] = {"type": "array"}
                 staging["properties"]["cut_note"] = {"type": "string"}
+                staging["properties"]["environment_state"] = {"type": "object"}
                 staging["required"].extend(["physical_state", "relationship_map"])
     if editorial_handoff is not None:
         creative_bridge.inspect_preproduction(base, editorial_handoff)
@@ -695,6 +696,8 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 "交物写 handoffs(order/from_actor/to_actor/prop_id/from_s/to_s/action/"
                 "visible_result/visible)，场外交接必须 visible=false 且有 note。"
                 "确属有意跳切且改变手/姿态时，在 staging 写可核对的 cut_note。"
+                "门/窗变化写 environment_state.doors/windows，逐项写稳定ID、"
+                "open/closed 的 start/end、changed_by 与 cause；跨镜不得无动作跳变。"
                 "零演员图文镜在 performance 写 no_performer_reason，character_contracts 为空对象。"
                 "不得新增未在剧本中的故事事实；表演合同必须来自当前 director_lock 的 performance_bible。")
     serialized = json.dumps(request, ensure_ascii=False, sort_keys=True,

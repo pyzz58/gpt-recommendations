@@ -319,6 +319,135 @@ class DirectorActingContractTests(unittest.TestCase):
         self.assertIn("ACTING_INTENTIONAL_CUT_STATE_CHANGE",
                       {row["code"] for row in report["reviews"]})
 
+    def test_door_change_with_cause_passes(self):
+        base, state, _ = self.bound_state_and_bible()
+        acting = deepcopy(self.data["acting"])
+        acting["shots"]["S01"]["staging"]["environment_state"] = {
+            "doors": {
+                "DOOR_01": {
+                    "start": "closed",
+                    "end": "open",
+                    "changed_by": "CH_MOTHER",
+                    "cause": "The mother opens the door behind her while keeping eye contact.",
+                }
+            },
+            "windows": {},
+        }
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertEqual(report["blockers"], [])
+
+    def test_door_change_without_cause_blocks(self):
+        base, state, _ = self.bound_state_and_bible()
+        acting = deepcopy(self.data["acting"])
+        acting["shots"]["S01"]["staging"]["environment_state"] = {
+            "doors": {
+                "DOOR_01": {
+                    "start": "closed",
+                    "end": "open",
+                    "changed_by": "CH_MOTHER",
+                    "cause": "",
+                }
+            }
+        }
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertIn("ACTING_ENVIRONMENT_CHANGE_UNMOTIVATED",
+                      {row["code"] for row in report["blockers"]})
+
+    def test_cross_shot_environment_jump_blocks_unless_explained(self):
+        base, state, _, acting = self._two_shot_case()
+        acting["shots"]["S01"]["staging"]["environment_state"] = {
+            "doors": {
+                "DOOR_01": {
+                    "start": "closed",
+                    "end": "open",
+                    "changed_by": "CH_MOTHER",
+                    "cause": "The mother opens the door.",
+                }
+            }
+        }
+        acting["shots"]["S02"]["staging"]["environment_state"] = {
+            "doors": {
+                "DOOR_01": {
+                    "start": "closed",
+                    "end": "closed",
+                    "changed_by": "",
+                    "cause": "",
+                }
+            }
+        }
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertIn("ACTING_ENVIRONMENT_STATE_JUMP",
+                      {row["code"] for row in report["blockers"]})
+        acting["shots"]["S02"]["staging"]["cut_note"] = (
+            "Intentional cut to a second angle; the door closes in the edit gap.")
+        report = director_acting.inspect_delivery(base, state, acting)
+        self.assertNotIn("ACTING_ENVIRONMENT_STATE_JUMP",
+                         {row["code"] for row in report["blockers"]})
+        self.assertIn("ACTING_INTENTIONAL_CUT_STATE_CHANGE",
+                      {row["code"] for row in report["reviews"]})
+
+    def test_three_person_relationship_pairs_required(self):
+        source = {
+            "id": "S01",
+            "duration": 6,
+            "continuity_contract": {"props": {}},
+        }
+        cast = {"CH_A", "CH_B", "CH_C"}
+        phase = {
+            actor: {
+                "posture": "standing",
+                "facing": "the group center",
+                "hands": {"left": "free", "right": "free"},
+            }
+            for actor in cast
+        }
+        rows = [
+            {
+                "actor_id": "CH_A",
+                "target_id": "CH_B",
+                "gaze": "CH_A watches CH_B",
+                "body_orientation": "CH_A turns toward CH_B",
+                "distance": "one step apart",
+                "interaction": "A challenges B",
+            },
+            {
+                "actor_id": "CH_B",
+                "target_id": "CH_C",
+                "gaze": "CH_B glances at CH_C",
+                "body_orientation": "CH_B angles toward CH_C",
+                "distance": "one step apart",
+                "interaction": "B asks C to choose a side",
+            },
+            {
+                "actor_id": "CH_C",
+                "target_id": "CH_A",
+                "gaze": "CH_C looks at CH_A",
+                "body_orientation": "CH_C faces CH_A",
+                "distance": "across the group",
+                "interaction": "C refuses the challenge",
+            },
+        ]
+        shot = {
+            "staging": {
+                "physical_state": {
+                    "start": phase,
+                    "end": deepcopy(phase),
+                    "posture_changes": [],
+                },
+                "relationship_map": rows,
+                "handoffs": [],
+                "cut_note": "",
+            }
+        }
+        report = {"blockers": [], "reviews": []}
+        director_acting._inspect_dual_person(source, shot, cast, report)
+        self.assertEqual(report["blockers"], [])
+        shot["staging"]["relationship_map"] = rows[:2]
+        report = {"blockers": [], "reviews": []}
+        director_acting._inspect_dual_person(source, shot, cast, report)
+        self.assertIn("ACTING_RELATIONSHIP_PAIR_MISSING",
+                      {row["code"] for row in report["blockers"]})
+
 
 class StrictActingPipelineTests(ProfessionalRoleContractsTests):
     """Reuse the existing ten-role fixture with the strict F01 mode enabled."""

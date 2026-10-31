@@ -136,7 +136,9 @@ agent_team (acting / acting_coach DAG)
 - `posture_changes`：镜内坐/站等姿态变化必须写 actor_id/from/to/cause。
 - `staging.relationship_map`：双人镜必须分别为两名角色写 target_id、gaze、body_orientation、distance、interaction；群体镜至少要求每个角色有一个合法对手行。
 - `staging.handoffs`：交物必须有序、同一镜双方、道具 ID、时间窗、可见动作/结果；场外交接需 `visible=false` + note，并进入人工复核。
-- 跨镜：相邻镜的 end→start 手部持有或姿态变化若无可见动作/交物事件，也没有 `cut_note`，则阻断；写 `cut_note` 表示有意跳切并进入 review，而不是静默瞬移。
-- 测试覆盖：正常交物、缺交物、缺关系对位、姿态跨镜跳变、手部跨镜跳变、以及有意 cut_note 的复核路径。
+- 跨镜：相邻镜的 end→start 手部持有、姿态或门/窗状态变化若无可见动作/环境事件，也没有 `cut_note`，则阻断；写 `cut_note` 表示有意跳切并进入 review，而不是静默瞬移。
+- `environment_state.doors/windows`：稳定 ID、open/closed 起止状态、changed_by 与 cause；跨镜门/窗状态跳变同样受门禁。
+- 三人及以上：`relationship_map` 至少覆盖每个演员对，避免群体镜只写两名角色而遗漏第三人。
+- 测试覆盖：正常交物、缺交物、缺关系对位、缺三人对位、姿态跨镜跳变、手部跨镜跳变、门/窗缺少原因、门/窗跨镜跳变，以及有意 cut_note 的复核路径。
 
-尚未完成：门/窗等环境状态机、三人以上复杂互动、真实视频中的手部/面容/口型验证。它们仍属于 F01-04/F01-08 待办，不能因本轮结构测试通过而关闭。
+尚未完成：三人以上的复杂调度质量、真实视频中的手部/面容/口型、供应商能力与实拍替代（F01-05/F01-08）。结构门禁通过不等于这些艺术/媒体层验收。
