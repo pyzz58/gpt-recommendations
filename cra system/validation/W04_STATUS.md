@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W05 began consuming rule versions and date windows. Current
+evidence: run `41185363902`, tested commit
+`f97fb13fe4557f9aa5fecef838ce596c8571f0a8`, digest
+`956bdb247f4e6dac505398cab7c946911a0ee0e4121cab44aff0b0610df460b4`.
+
 This record covers extraction of source-anchored rule candidates, user
 confirmation, layered lists, item-level relations, manual activation windows
 and event-date applicability. It is synthetic engineering validation, not
@@ -83,4 +88,4 @@ v2 with E3, and selecting candidate v3 opened it read-only.
 - No real clinical document, external model, patient fact, OCR, report or EDC
   write-back was used. W04 does not add those workflows.
 
-Next task by dependency: CRA-W05.
+Next task by dependency after W05: CRA-W06.

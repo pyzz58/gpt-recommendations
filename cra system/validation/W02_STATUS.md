@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W05 added the subject timeline and expanded generated API
+types. Current evidence: run `41185363902`, tested commit
+`f97fb13fe4557f9aa5fecef838ce596c8571f0a8`, digest
+`a5fdee24968259f12419f9d90b010cf29565e207ff9cb427336cbd1b01f123ca`.
+
 Revalidated after W03 added the document/PDF workbench and expanded the shared
 dependency lock. Current evidence: run `41181003025`, tested commit
 `b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb`, digest
@@ -76,4 +81,4 @@ retention were visually checked.
 - W02 has no subject monitoring, documents, rules, laboratory OCR/comparison,
   reports or real clinical trial data. Those remain W03 onward.
 
-Next task by dependency: CRA-W03.
+Next task by dependency after W05: CRA-W06.

@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W05 added the subject/checkpoint migration. Current evidence:
+run `41185363902`, tested commit
+`f97fb13fe4557f9aa5fecef838ce596c8571f0a8`, digest
+`03b83983234d59ee9974f1e78b1545b0a69ce439f167368d4be7c29a808ef150`.
+
 Revalidated after W02 added the authorized workspace-list query to the shared
 governance service. Current evidence: GitHub Actions run `41178355227`, tested
 commit `2db8475906b57a1689ca0f6fcc19b02880c67c4f`, current subject digest
@@ -68,4 +73,4 @@ upgrade to head and all tests were rerun successfully.
 - No OCR, provider, report, EDC integration, production deployment or clinical
   effectiveness/time-saving claim is made.
 
-Next task by dependency after W02: CRA-W03.
+Next task by dependency after W05: CRA-W06.

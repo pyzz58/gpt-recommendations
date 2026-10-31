@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W05 changed shared migration/runtime configuration. Current
+evidence: run `41185363902`, tested commit
+`f97fb13fe4557f9aa5fecef838ce596c8571f0a8`, digest
+`575cfc53bdd802a9dd10eb0fd3457ab6f0f70652c8a4239b294ad35190944498`.
+
 This record covers source document intake, immutable versions, deterministic
 DOCX/text-PDF/text parsing, private storage, parse jobs and source review. It is
 engineering/synthetic validation, not clinical-use or full-format validation.
@@ -78,4 +83,4 @@ Current evidence: run `41183652961`, tested commit
 - No real clinical document, model credential, EDC write-back or external
   provider run was used.
 
-Next task by dependency: CRA-W04.
+Next task by dependency after W05: CRA-W06.
