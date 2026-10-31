@@ -98,6 +98,15 @@ class TraceabilityTests(unittest.TestCase):
             }
         }
         self.write("changes/CR-TEST.json", record)
+        tasks = self.read("plan/tasks.json")
+        for task in tasks["tasks"]:
+            if (
+                task["status"] == "verified"
+                and item["id"] in task["requirement_ids"]
+            ):
+                task["status"] = "in_progress"
+                task["completion_evidence"] = None
+        self.write("plan/tasks.json", tasks)
         self.regenerate()
         self.assertEqual(validate(self.root), [])
 
