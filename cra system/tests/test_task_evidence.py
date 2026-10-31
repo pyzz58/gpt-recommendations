@@ -8,7 +8,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
-from task_evidence import record_errors, remote_errors, subject_digest, verify
+from task_evidence import (
+    _SafeLogRedirectHandler,
+    record_errors,
+    remote_errors,
+    subject_digest,
+    verify,
+)
+from urllib.request import Request
 from implementation_plan import validate_implementation
 
 
@@ -207,6 +214,23 @@ class EvidenceTests(unittest.TestCase):
         )
         self.assertEqual(findings_checked, 1)
         self.assertTrue(any("not found in successful CI log" in e for e in errors))
+
+    def test_log_download_does_not_forward_token_to_storage_host(self):
+        handler = _SafeLogRedirectHandler()
+        request = Request(
+            "https://api.github.com/repos/example/repo/actions/jobs/1/logs",
+            headers={"Authorization": "Bearer secret"},
+        )
+        redirected = handler.redirect_request(
+            request,
+            None,
+            302,
+            "Found",
+            {},
+            "https://logs.example.invalid/signed/log.txt",
+        )
+        self.assertIsNotNone(redirected)
+        self.assertIsNone(redirected.get_header("Authorization"))
 
 
 if __name__ == "__main__":

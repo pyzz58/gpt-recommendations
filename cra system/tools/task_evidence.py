@@ -11,10 +11,30 @@ import os
 import re
 import subprocess
 from pathlib import Path
+from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, build_opener
 from review_gate import load_findings, task_evidence_errors, validate_findings
 
 WORKFLOW = ".github/workflows/cra-system.yml"
+
+
+class _SafeLogRedirectHandler(HTTPRedirectHandler):
+    """Do not forward a GitHub token to the signed log-storage host."""
+
+    def redirect_request(
+        self, req, fp, code, msg, headers, newurl
+    ):
+        redirected = super().redirect_request(
+            req, fp, code, msg, headers, newurl
+        )
+        if (
+            redirected is not None
+            and urlsplit(req.full_url).netloc
+            != urlsplit(newurl).netloc
+        ):
+            redirected.remove_header("Authorization")
+        return redirected
 
 
 def digest(value):
@@ -306,7 +326,11 @@ def main():
         token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
         if token:
             headers["Authorization"] = "Bearer " + token
-        with urlopen(Request("https://api.github.com" + path, headers=headers), timeout=30) as response:
+        opener = build_opener(_SafeLogRedirectHandler())
+        with opener.open(
+            Request("https://api.github.com" + path, headers=headers),
+            timeout=30,
+        ) as response:
             text_cache[path] = response.read().decode("utf-8", errors="replace")
             return text_cache[path]
     try:
@@ -316,8 +340,11 @@ def main():
             get_json,
             get_text,
         )
-    except (OSError, ValueError, KeyError, TypeError):
-        print("EVIDENCE ERROR: authoritative verification unavailable; no task was approved.")
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        print(
+            "EVIDENCE ERROR: authoritative verification unavailable; "
+            f"no task was approved ({type(exc).__name__}: {exc})."
+        )
         return 1
     for error in errors:
         print("ERROR:", error)
