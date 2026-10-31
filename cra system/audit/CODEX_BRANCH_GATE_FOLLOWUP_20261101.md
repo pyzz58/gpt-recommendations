@@ -1,0 +1,17 @@
+# 给Codex：只补原03的分支目标残留
+
+被审源码f66750c9fac58dbf2e03189582a3544fc039bfd4，完成状态fa8cd479b0913a2241b3a6ab5145af462c8153d9。先读最新HEAD、AGENTS、最高业务基线及本分支audit/RESIDUAL_CLOSURE_REVIEW_20261101.md/json，保留已有修复与范围。
+
+独立正向验收run 41249314958（产品源码未改）为8 passed、3 failed：原七项修复回归全部通过，所以原04/08可关闭，不重做；03的祖先前提/例外和路径去重有效，剩余只在RuleBranch.target_node_ids与子清单窗口的连接。
+
+请修复：
+1. 分支A=true指向一个带独立日期trigger的子项时，不可因它是branch_target就把日期窗口删掉。
+2. 分支指向容器、日期义务在下一层时，选择条件须沿目标路径继承：A=false为not_applicable，A未知为unknown_applicability，A=true且实际超窗仍为out_of_window。
+3. 保留原date_interval分支生成树的合理去重、兄弟同窗身份、父级前提/豁免/unknown以及真正适用超窗。不要依赖子项必须重复复制branch.condition；若结构确实不支持，应明确拒绝/analysis_required，不能接受complete后静默丢失。
+4. 多条入口指向同一子项按已有树语义处理，不把并列可达路径误作全条件AND；不扩展任意中文AST或新增临床功能。
+
+复用audit/probes/closure_branch_20261101.py中的四项正向API用例，放入正常产品回归并绑定任务专属CI；它们断言正确行为，不是期待缺陷的诊断探针。保持同一独立workflow所列原七项通过。按既有约定重开实际受影响任务/依赖链、保留completion_history，运行CI后重新绑定源码，不能仅改完成文字。
+
+此前用户要求的防复发规范在audit/cra-regression-prevention-20261101、文档提交40c8d2f2dfb200afe6975656c3c315f9986fbc14，目前尚未进入被审开发分支。请读取architecture/REGRESSION_PREVENTION.md，选择性同步规范、AGENTS/开发入口及相应工程检查，保留最新关闭/状态记录；不要机械合入带旧状态的整份分支，不把要求已写成文档称为自动生效。
+
+本轮只补上述既有范围。保持04/08的有效修复和清晰合成格式、analysis_required、设备后续验收等限制。完成03及必要工程接入，给出新源码/实际CI/正向结果后，再进入原W10。不要部署、外发、写回EDC或上传真实资料。

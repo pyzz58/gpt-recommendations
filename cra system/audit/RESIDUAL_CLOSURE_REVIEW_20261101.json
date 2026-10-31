@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-01",
+  "timezone": "Pacific/Auckland",
+  "repository": "pyzz58/gpt-recommendations",
+  "project": "cra system",
+  "review_scope": "Only original residual findings 03/04/08 and the previously requested prevention-document integration.",
+  "source_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+  "status_commit": "fa8cd479b0913a2241b3a6ab5145af462c8153d9",
+  "runtime_changed_by_status_commit": false,
+  "developer_runs": [
+    {
+      "id": 41248250769,
+      "head_sha": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+      "conclusion": "success",
+      "jobs": 10
+    },
+    {
+      "id": 41248689830,
+      "head_sha": "fa8cd479b0913a2241b3a6ab5145af462c8153d9",
+      "conclusion": "success",
+      "jobs": 10,
+      "task_evidence_checked": 9,
+      "authoritative_verification": true
+    }
+  ],
+  "independent_forward_run": {
+    "id": 41249314958,
+    "job_id": 124679301464,
+    "execution_commit": "8345b2d6ec81969fd977cc411222b59a2febe6e2",
+    "runtime_source_unchanged_from": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+    "conclusion": "failure",
+    "passed": 8,
+    "failed": 3,
+    "environment": "disposable PostgreSQL 18.6, migration head 0009, Python 3.13.15 and existing frozen uv lock",
+    "test_kind": "forward assertions of correct behavior; not green reproduction probes",
+    "existing_fix_cases_passed": 7,
+    "new_branch_cases": {
+      "passed": 1,
+      "failed": 3
+    },
+    "all_setup_and_API_confirmation_succeeded": true,
+    "observations": [
+      {
+        "source_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+        "original_finding": "CRA-REV-20261101-03",
+        "shape": "direct",
+        "branch_fact": true,
+        "expected": [
+          "out_of_window"
+        ],
+        "observed": [],
+        "requirement_count": 0,
+        "acceptance_passed": false,
+        "evidence_kind": "public_confirmation_and_visit_requirement_API_with_PostgreSQL"
+      },
+      {
+        "source_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+        "original_finding": "CRA-REV-20261101-03",
+        "shape": "container",
+        "branch_fact": false,
+        "expected": [
+          "not_applicable"
+        ],
+        "observed": [
+          "out_of_window"
+        ],
+        "requirement_count": 1,
+        "acceptance_passed": false,
+        "evidence_kind": "public_confirmation_and_visit_requirement_API_with_PostgreSQL"
+      },
+      {
+        "source_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+        "original_finding": "CRA-REV-20261101-03",
+        "shape": "container",
+        "branch_fact": null,
+        "expected": [
+          "unknown_applicability"
+        ],
+        "observed": [
+          "out_of_window"
+        ],
+        "requirement_count": 1,
+        "acceptance_passed": false,
+        "evidence_kind": "public_confirmation_and_visit_requirement_API_with_PostgreSQL"
+      },
+      {
+        "source_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+        "original_finding": "CRA-REV-20261101-03",
+        "shape": "container",
+        "branch_fact": true,
+        "expected": [
+          "out_of_window"
+        ],
+        "observed": [
+          "out_of_window"
+        ],
+        "requirement_count": 1,
+        "acceptance_passed": true,
+        "evidence_kind": "public_confirmation_and_visit_requirement_API_with_PostgreSQL"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "CRA-REV-20261101-03",
+      "status": "partially_fixed_branch_target_residual_confirmed",
+      "priority": "P1",
+      "blocks_W10": true,
+      "fixed_behaviors": [
+        "ancestor prerequisite false",
+        "ancestor waiver true",
+        "ancestor unknown",
+        "distinct sibling window paths",
+        "genuinely applicable out-of-window"
+      ],
+      "remaining_behaviors": [
+        "Direct branch target loses its own date trigger because suppression depends only on target membership.",
+        "Branch selection condition is not inherited by target-container descendants; false and unknown are treated as out-of-window."
+      ],
+      "source_paths": [
+        "backend/cra_app/subjects/calendar.py:164",
+        "backend/cra_app/subjects/calendar.py:172",
+        "backend/cra_app/subjects/calendar.py:174"
+      ],
+      "closure_criteria": [
+        "Branch-selected child retains its distinct window.",
+        "Selection false stops dependent window as not applicable; unknown remains unknown applicability.",
+        "Selection true checks the actual window and retains true out-of-window findings.",
+        "Keep all seven previously verified original-fix cases passing.",
+        "Existing RuleBranch/RuleNode semantics drive branch selection; do not require duplicated child triggers or silently accept unsupported shapes as complete."
+      ]
+    },
+    {
+      "id": "CRA-REV-20261101-04",
+      "status": "closed_targeted_engineering_fix",
+      "independent_cases_passed": 2,
+      "clinical_validation_claim": false
+    },
+    {
+      "id": "CRA-REV-20261101-08",
+      "status": "closed_targeted_engineering_fix",
+      "independent_cases_passed": 3,
+      "clinical_validation_claim": false
+    }
+  ],
+  "prevention_integration": {
+    "integrated": false,
+    "current_branch": "fa8cd479b0913a2241b3a6ab5145af462c8153d9",
+    "document_source_commit": "40c8d2f2dfb200afe6975656c3c315f9986fbc14",
+    "policy_exists": false,
+    "selector_has_review_gate": false,
+    "evidence_has_review_gate": false
+  },
+  "accepted_limits": [
+    "Chinese analysis_required candidates; no arbitrary protocol AST guarantee",
+    "Declared clear synthetic laboratory formats; no arbitrary hospital-photo coverage",
+    "Device/weak-network/cross-device validation in W12/W15",
+    "No real clinical performance or total-burden/time-saving claim"
+  ],
+  "changes_made_by_review": [
+    "Independent forward acceptance file and dedicated audit-only workflow",
+    "Review records and focused Codex handoff"
+  ],
+  "product_changed_by_review": false,
+  "developer_branch_changed_by_review": false,
+  "task_status_changed_by_review": false,
+  "W10_started_by_review": false,
+  "recommendation": "Only finish original 03 branch-target propagation; keep closed 04/08 fixes and accepted limits. Bring the previously requested prevention requirements into development without repeating completed work."
+}
