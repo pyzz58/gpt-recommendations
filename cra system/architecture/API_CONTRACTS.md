@@ -111,3 +111,24 @@ ApplicableRule补充preconditions、trigger、branches、follow_up、completion�
 | `POST /api/v1/rules/applicable` | 按项目、中心、临床事件日和事实返回当前确认规则及OutputEnvelope；同规则多层并列、同层重叠冲突而不自动取最新/更严 |
 
 `RuleNode`包含summary、preconditions、trigger、branches、exceptions、follow_up、completion、required_facts、children和source_refs。条件使用closed AST及true/false/unknown；无结构自由文本返回analysis_required。W04确定性provider仅支持任务卡声明的规则语句子集，不能表述为通用临床文本理解。
+
+## 10. W05已实现患者入口
+
+患者/事实写入要求项目中心和有效会话范围，状态写入使用CSRF、幂等键和审计；读取时间线、窗口、断点或跳过选择前重新授权。
+
+| 接口 | 实现约束 |
+| --- | --- |
+| `GET /api/v1/studies/{study_id}/subjects` | 只列指定已授权中心患者；阶段从当前确定性事实计算，模型建议不覆盖 |
+| `POST /api/v1/studies/{study_id}/subjects` | 创建去标识患者及稳定来源标识 |
+| `POST /api/v1/subjects/{id}/identifiers` | 显式映射额外来源ID到既有患者，不按姓名或相似值自动合并 |
+| `POST /api/v1/studies/{study_id}/facts/import` | 授权结构化JSON事实导入，保留原值、来源、时间、精度和重复实例 |
+| `POST /api/v1/studies/{study_id}/facts/import-file` | 解析已映射JSON/CSV/XLSX，仅为结构化上下文导入，不执行宏或OCR |
+| `GET /api/v1/subjects/{id}/timeline` | 返回完整事实修订和当前标记；date-only不增加时分 |
+| `POST /api/v1/facts/{id}/confirm` | 生成独立CRA确认修订，原来源和历史保留 |
+| `POST /api/v1/subjects/{id}/visit-requirements` | 用事件日适用的已确认W04规则计算日期窗口、所需事实、允许来源、unknown及可继续事项，返回OutputEnvelope |
+| `GET /api/v1/subjects/{id}/visit-requirements?event_date=` | 返回已保存的最新规则驱动窗口快照 |
+| `POST /api/v1/subjects/{id}/coverage`；`GET .../coverage` | 按类别和范围版本化核查断点，正常范围可简记，未核实范围分开 |
+| `POST /api/v1/subjects/{id}/check-decisions` | 保存本患者/事项/期间的missing-data局部跳过及影响范围，不创建Issue |
+| `POST /api/v1/subjects/{id}/check-decisions/{decision_id}/resume` | 用户显式恢复；新事实仅把`recovery_available`置为true，不自动恢复 |
+
+`visit_window` OutputEnvelope区分原始/CRA确认事实、规则版本、窗口计算、unknown和`not_checked_by_user`。缺锚点只停止依赖窗口，已识别患者的其他类别工作继续。W05的本地跳过和断点不替代M05完整工作台，也不宣称局部资料是完整病史。

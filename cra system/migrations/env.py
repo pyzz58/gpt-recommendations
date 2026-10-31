@@ -16,6 +16,7 @@ from cra_app.governance import models as governance_models  # noqa: E402,F401
 from cra_app.documents import models as document_models  # noqa: E402,F401
 from cra_app.platform import jobs as platform_jobs  # noqa: E402,F401
 from cra_app.rules import models as rule_models  # noqa: E402,F401
+from cra_app.subjects import models as subject_models  # noqa: E402,F401
 from cra_app.shared.config import get_settings  # noqa: E402
 from cra_app.shared.db import Base  # noqa: E402
 

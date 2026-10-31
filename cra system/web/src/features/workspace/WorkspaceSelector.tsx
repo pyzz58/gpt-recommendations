@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { CapabilityResponse, ScopeResponse } from "../../api/client";
 import { DocumentWorkspace } from "../documents/DocumentWorkspace";
 import { RuleWorkspace } from "../rules/RuleWorkspace";
+import { SubjectTimeline } from "../subjects/SubjectTimeline";
 import {
   type WorkspaceSelection,
   readStoredSelection,
@@ -187,12 +188,12 @@ export function WorkspaceSelector({
           </article>
           <article className="context-card placeholder">
             <p className="eyebrow">当前模块</p>
-            <h2>资料、规则与分层list</h2>
+            <h2>资料、规则与患者核查</h2>
             <p>
               上传私有合成资料，查看不可变版本和可回查原文；规则候选经用户确认后
-              按临床事件日期解析当时适用版本。
+              按事件日期解析适用版本，并分别续接患者核查位置。
             </p>
-            <span className="status-chip">W04 已接入</span>
+            <span className="status-chip">W05 已接入</span>
           </article>
         </section>
 
@@ -203,6 +204,10 @@ export function WorkspaceSelector({
               siteId={selectedSite.id}
             />
             <RuleWorkspace
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+            <SubjectTimeline
               studyId={selectedStudy.id}
               siteId={selectedSite.id}
             />

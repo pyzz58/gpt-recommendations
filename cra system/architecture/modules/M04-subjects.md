@@ -1,6 +1,6 @@
 # M04 受试者事实与访视时间线
 
-版本：3；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/subjects/`。
+版本：4；状态：W05身份映射、不可变事实修订、规则驱动访视窗口、分类断点及局部跳过/恢复已实现。代码位置：`backend/cra_app/subjects/`。
 
 ## 对应理论和任务
 
@@ -41,3 +41,13 @@
 ## v0.4技术实施补齐
 
 ContextImport/所需事实、日期精度、局部拒绝与恢复。 实现契约见[EXECUTION_CONTRACTS.md](../EXECUTION_CONTRACTS.md)，当前任务的进入条件/交接见[完整实施路径](../../plan/IMPLEMENTATION_PATH.md)。理论和任务编号保持；本轮文档不是业务功能完成证据。
+
+## W05实现记录
+
+已增加患者稳定内部ID、来源命名空间/外部ID映射、不可变ClinicalFact修订、visit instance/requirements、逐类别coverage breakpoint、fact change impact和CheckDecision。原记录、CRA确认、他人答复和模型建议分别保存；确定计算只使用授权原始记录/CRA确认，模型建议不覆盖当前确定性事实。
+
+结构化JSON、CSV和XLSX导入均走授权范围与幂等。date-only事实保留date精度，不补时分；datetime要求显式UTC偏移。事实修订保留所有旧行，并将使用受影响事实的访视要求标为`needs_review`，同时记录具体impact。
+
+访视要求消费W04已确认、按事件日启用的规则版本和有限date_interval AST，窗口计算包含锚点、实际日期、天数范围、所需事实、允许来源、受影响路径和可继续事项。未知锚点不产生假日期；用户可选择本患者/事项/期间的局部跳过，拒绝后保持`not_checked_by_user`，其他类别继续。新输入只提示可恢复，不自动恢复，必须由用户显式恢复。
+
+测试实际经过PostgreSQL 18.6和W03/W04文档解析、规则确认、启用区间及真实结构化导入。W05未把局部资料称作完整病史，也未实现后续Issue、检验比较或报告。

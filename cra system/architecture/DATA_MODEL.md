@@ -94,3 +94,17 @@ ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping�
 - `version_activations`：文档版本/规则快照、项目或中心、`starts_on`含当天与`ends_before`不含、revision及更正前驱；重叠区间保留并提示，不自动裁决。
 
 新文档版本形成完整规则快照：未改变的旧规则复制为`unchanged_inheritance`，已确认项不要求再次确认；旧规则在新版未提及仍保留。含义变化缺明确关系证据时登记conflict候选，不自动覆盖。W04未创建患者、问题、检验或报告业务表。
+
+## 9. W05实际患者上下文底座
+
+迁移`0004_subjects_coverage`增加：
+
+- `subjects`与`subject_identifiers`：去标识内部ID、项目/中心范围和来源命名空间/外部ID稳定映射。
+- `clinical_facts`：append-only事实修订，保存value type/raw/JSON值、日期或时间、精度、单位、重复实例、来源类型/核实状态、来源引用和前驱事实；数据库触发器禁止更新或删除。
+- `visit_instances`：从`visit_date`/`planned_visit_date`事实建立的计划/实际访视实例及修订历史。
+- `visit_requirements`：规则版本、事件日、锚点/实际事实、允许窗口、所需事实、允许来源、受影响路径、可继续事项、输入事实修订和输出状态。
+- `fact_change_impacts`：事实新修订影响到的具体访视要求或CheckDecision，用于`needs_review`追踪。
+- `coverage_breakpoints`：患者、类别、范围各自的版本化断点、已核查至位置、正常范围简记及未核实范围。
+- `check_decisions`：患者/事项/期间/规则范围的局部不核查选择、reason、缺失键、影响路径、可继续事项、恢复可用标记和显式恢复历史。
+
+确定性事实计算仅使用`original_record`/`cra_confirmed`；`reported_by_other`和`model_candidate`保留但不覆盖事实或生成确定性日期。W05不创建Issue、检验比较或报告表。

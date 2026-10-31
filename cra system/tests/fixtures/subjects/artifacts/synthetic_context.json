@@ -1,0 +1,139 @@
+{
+  "rows": [
+    {
+      "subject_external_id": "SYN-001",
+      "fact_key": "study_phase",
+      "value_raw": "treatment",
+      "value_type": "string",
+      "observed_on": "2021-01-01",
+      "precision": "date",
+      "repeat_instance": "_",
+      "visit_key": "V1",
+      "source_kind": "original_record",
+      "source_ref": {
+        "source_type": "edc_row",
+        "source_id": "synthetic-context:2",
+        "locator": "synthetic_export!row=2",
+        "quote": "Pure synthetic W05 context fixture"
+      }
+    },
+    {
+      "subject_external_id": "SYN-001",
+      "fact_key": "treatment_due",
+      "value_raw": "true",
+      "value_type": "boolean",
+      "observed_on": "2021-01-01",
+      "precision": "date",
+      "repeat_instance": "_",
+      "visit_key": "V1",
+      "source_kind": "original_record",
+      "source_ref": {
+        "source_type": "edc_row",
+        "source_id": "synthetic-context:2b",
+        "locator": "synthetic_export!row=2b",
+        "quote": "Pure synthetic W05 context fixture"
+      }
+    },
+    {
+      "subject_external_id": "SYN-001",
+      "fact_key": "infusion_date",
+      "value_raw": "2021-01-01",
+      "value_type": "date",
+      "observed_on": "2021-01-01",
+      "precision": "date",
+      "repeat_instance": "_",
+      "source_kind": "original_record",
+      "source_ref": {
+        "source_type": "edc_row",
+        "source_id": "synthetic-context:3",
+        "locator": "synthetic_export!row=3",
+        "quote": "Pure synthetic W05 context fixture"
+      }
+    },
+    {
+      "subject_external_id": "SYN-001",
+      "fact_key": "visit_date",
+      "value_raw": "2021-01-02",
+      "value_type": "date",
+      "observed_on": "2021-01-02",
+      "precision": "date",
+      "repeat_instance": "_",
+      "visit_key": "V1",
+      "source_kind": "original_record",
+      "source_ref": {
+        "source_type": "edc_row",
+        "source_id": "synthetic-context:4",
+        "locator": "synthetic_export!row=4",
+        "quote": "Pure synthetic W05 context fixture"
+      }
+    },
+    {
+      "subject_external_id": "SYN-001",
+      "fact_key": "lab_hemoglobin",
+      "value_raw": "121",
+      "value_type": "decimal",
+      "unit": "g/L",
+      "observed_on": "2021-01-02",
+      "precision": "unknown",
+      "repeat_instance": "_",
+      "source_kind": "original_record",
+      "source_ref": {
+        "source_type": "edc_row",
+        "source_id": "synthetic-context:5",
+        "locator": "synthetic_export!row=5",
+        "quote": "Pure synthetic W05 context fixture"
+      }
+    },
+    {
+      "subject_external_id": "SYN-002",
+      "fact_key": "study_phase",
+      "value_raw": "treatment",
+      "value_type": "string",
+      "observed_on": "2021-01-03",
+      "precision": "date",
+      "repeat_instance": "_",
+      "visit_key": "V1",
+      "source_kind": "original_record",
+      "source_ref": {
+        "source_type": "edc_row",
+        "source_id": "synthetic-context:6",
+        "locator": "synthetic_export!row=6",
+        "quote": "Pure synthetic W05 context fixture"
+      }
+    },
+    {
+      "subject_external_id": "SYN-002",
+      "fact_key": "treatment_due",
+      "value_raw": "true",
+      "value_type": "boolean",
+      "observed_on": "2021-01-03",
+      "precision": "date",
+      "repeat_instance": "_",
+      "visit_key": "V1",
+      "source_kind": "original_record",
+      "source_ref": {
+        "source_type": "edc_row",
+        "source_id": "synthetic-context:6b",
+        "locator": "synthetic_export!row=6b",
+        "quote": "Pure synthetic W05 context fixture"
+      }
+    },
+    {
+      "subject_external_id": "SYN-002",
+      "fact_key": "lab_hemoglobin",
+      "value_raw": "118",
+      "value_type": "decimal",
+      "unit": "g/L",
+      "observed_on": "2021-01-03",
+      "precision": "unknown",
+      "repeat_instance": "_",
+      "source_kind": "original_record",
+      "source_ref": {
+        "source_type": "edc_row",
+        "source_id": "synthetic-context:7",
+        "locator": "synthetic_export!row=7",
+        "quote": "Pure synthetic W05 context fixture"
+      }
+    }
+  ]
+}

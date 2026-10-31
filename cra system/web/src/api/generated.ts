@@ -158,6 +158,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/facts/{fact_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm Fact */
+        post: operations["confirm_fact_api_v1_facts__fact_id__confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/jobs/{job_id}": {
         parameters: {
             query?: never;
@@ -312,6 +329,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/studies/{study_id}/facts/import": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Import Facts */
+        post: operations["import_facts_api_v1_studies__study_id__facts_import_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/studies/{study_id}/facts/import-file": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Import Fact File */
+        post: operations["import_fact_file_api_v1_studies__study_id__facts_import_file_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/studies/{study_id}/rules": {
         parameters: {
             query?: never;
@@ -323,6 +374,129 @@ export interface paths {
         get: operations["list_rules_api_v1_studies__study_id__rules_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/studies/{study_id}/subjects": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Subjects */
+        get: operations["list_subjects_api_v1_studies__study_id__subjects_get"];
+        put?: never;
+        /** Create Subject */
+        post: operations["create_subject_api_v1_studies__study_id__subjects_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/subjects/{subject_id}/check-decisions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Check Decisions */
+        get: operations["list_check_decisions_api_v1_subjects__subject_id__check_decisions_get"];
+        put?: never;
+        /** Create Check Decision */
+        post: operations["create_check_decision_api_v1_subjects__subject_id__check_decisions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/subjects/{subject_id}/check-decisions/{decision_id}/resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resume Check Decision */
+        post: operations["resume_check_decision_api_v1_subjects__subject_id__check_decisions__decision_id__resume_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/subjects/{subject_id}/coverage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Coverage */
+        get: operations["list_coverage_api_v1_subjects__subject_id__coverage_get"];
+        put?: never;
+        /** Save Coverage */
+        post: operations["save_coverage_api_v1_subjects__subject_id__coverage_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/subjects/{subject_id}/identifiers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Map Subject Identifier */
+        post: operations["map_subject_identifier_api_v1_subjects__subject_id__identifiers_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/subjects/{subject_id}/timeline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Subject Timeline */
+        get: operations["subject_timeline_api_v1_subjects__subject_id__timeline_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/subjects/{subject_id}/visit-requirements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Visit Requirements */
+        get: operations["list_visit_requirements_api_v1_subjects__subject_id__visit_requirements_get"];
+        put?: never;
+        /** Evaluate Visit Requirements */
+        post: operations["evaluate_visit_requirements_api_v1_subjects__subject_id__visit_requirements_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -605,6 +779,23 @@ export interface components {
             /** Version Label */
             version_label: string;
         };
+        /** Body_import_fact_file_api_v1_studies__study_id__facts_import_file_post */
+        Body_import_fact_file_api_v1_studies__study_id__facts_import_file_post: {
+            /** File */
+            file: string;
+            /** Identity Namespace */
+            identity_namespace: string;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Source Kind
+             * @default original_record
+             */
+            source_kind: string;
+        };
         /** BranchEvaluation */
         BranchEvaluation: {
             /** Actions */
@@ -654,6 +845,89 @@ export interface components {
              */
             schema_version: 1;
         };
+        /** CheckDecisionRequest */
+        CheckDecisionRequest: {
+            /** Affected Paths */
+            affected_paths: string[];
+            /** Can Continue */
+            can_continue?: string[];
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "laboratory" | "documents" | "consent" | "medication" | "safety" | "visit_window" | "other";
+            /** Check Type */
+            check_type: string;
+            /**
+             * Expected Revision
+             * @default 0
+             * @constant
+             */
+            expected_revision: 0;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Missing Keys */
+            missing_keys: string[];
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "declined_missing_data" | "unreadable_skip";
+            /** Rule Version Id */
+            rule_version_id?: string | null;
+            /** Scope End */
+            scope_end?: string | null;
+            /** Scope Start */
+            scope_start?: string | null;
+        };
+        /** CheckDecisionView */
+        CheckDecisionView: {
+            /** Affected Paths */
+            affected_paths: string[];
+            /** Can Continue */
+            can_continue: string[];
+            /** Category */
+            category: string;
+            /** Check Type */
+            check_type: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Created By */
+            created_by: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Missing Keys */
+            missing_keys: string[];
+            /** Reason */
+            reason: string;
+            /** Recovery Available */
+            recovery_available: boolean;
+            /** Resumed At */
+            resumed_at: string | null;
+            /** Resumed By */
+            resumed_by: string | null;
+            /** Revision */
+            revision: number;
+            /** Rule Version Id */
+            rule_version_id: string | null;
+            /** Scope End */
+            scope_end: string | null;
+            /** Scope Start */
+            scope_start: string | null;
+            /** State */
+            state: string;
+            /**
+             * Subject Id
+             * Format: uuid
+             */
+            subject_id: string;
+        };
         /** Claim */
         Claim: {
             /**
@@ -682,6 +956,67 @@ export interface components {
              * @enum {string}
              */
             verification_status: "unverified" | "auto_extracted" | "needs_review" | "cra_confirmed" | "medical_confirmed" | "not_checked";
+        };
+        /** ClinicalFactView */
+        ClinicalFactView: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Created By */
+            created_by: string;
+            /** Fact Key */
+            fact_key: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Current */
+            is_current: boolean;
+            /** Observed At */
+            observed_at: string | null;
+            /** Observed On */
+            observed_on: string | null;
+            /** Precision */
+            precision: string;
+            /** Repeat Instance */
+            repeat_instance: string;
+            /** Revision */
+            revision: number;
+            /** Source Kind */
+            source_kind: string;
+            /** Source Ref */
+            source_ref: {
+                [key: string]: unknown;
+            };
+            /**
+             * Subject Id
+             * Format: uuid
+             */
+            subject_id: string;
+            /** Supersedes Fact Id */
+            supersedes_fact_id: string | null;
+            /** Unit */
+            unit: string | null;
+            /** Value */
+            value: unknown;
+            /** Value Raw */
+            value_raw: string;
+            /** Value Type */
+            value_type: string;
+            /** Verification Status */
+            verification_status: string;
+        };
+        /** ConfirmFactRequestBody */
+        ConfirmFactRequestBody: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Note */
+            note?: string | null;
         };
         /** ConfirmRuleRequest */
         ConfirmRuleRequest: {
@@ -750,6 +1085,65 @@ export interface components {
             /** Source Refs */
             source_refs?: components["schemas"]["SourceRef"][];
         };
+        /** CoverageBreakpointRequest */
+        CoverageBreakpointRequest: {
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "laboratory" | "documents" | "consent" | "medication" | "safety" | "visit_window" | "other";
+            /** Checked Through */
+            checked_through?: string | null;
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Normal Scope Note */
+            normal_scope_note?: string | null;
+            /** Scope Key */
+            scope_key: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "in_progress" | "complete" | "not_checked";
+            /** Unverified Scope */
+            unverified_scope?: string[];
+        };
+        /** CoverageBreakpointView */
+        CoverageBreakpointView: {
+            /** Category */
+            category: string;
+            /** Checked Through */
+            checked_through: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Created By */
+            created_by: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Normal Scope Note */
+            normal_scope_note: string | null;
+            /** Revision */
+            revision: number;
+            /** Scope Key */
+            scope_key: string;
+            /** Status */
+            status: string;
+            /**
+             * Subject Id
+             * Format: uuid
+             */
+            subject_id: string;
+            /** Unverified Scope */
+            unverified_scope: string[];
+        };
         /** CoverageView */
         CoverageView: {
             /** Anchor Id */
@@ -805,6 +1199,50 @@ export interface components {
             /** Supersedes Activation Id */
             supersedes_activation_id?: string | null;
         };
+        /** CreateSubjectCommand */
+        CreateSubjectCommand: {
+            /** Deidentified Label */
+            deidentified_label?: string | null;
+            /**
+             * Expected Revision
+             * @default 0
+             * @constant
+             */
+            expected_revision: 0;
+            /** External Id */
+            external_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Identity Namespace */
+            identity_namespace: string;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+        };
+        /** CreateSubjectResponse */
+        CreateSubjectResponse: {
+            /** Deidentified Label */
+            deidentified_label: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+        };
         /** DependencyState */
         DependencyState: {
             /** Detail */
@@ -846,6 +1284,27 @@ export interface components {
             tenant_id: string;
             /** Title */
             title: string;
+        };
+        /** EvaluateVisitRequirementsCommand */
+        EvaluateVisitRequirementsCommand: {
+            /**
+             * Event Date
+             * Format: date
+             */
+            event_date: string;
+            /**
+             * Jurisdiction
+             * @default synthetic
+             */
+            jurisdiction: string;
+        };
+        /** EvaluateVisitRequirementsResponse */
+        EvaluateVisitRequirementsResponse: {
+            envelope: components["schemas"]["OutputEnvelope"];
+            /** Instances */
+            instances: components["schemas"]["VisitInstanceView"][];
+            /** Requirements */
+            requirements: components["schemas"]["VisitRequirementResult"][];
         };
         /** EvaluationResult */
         EvaluationResult: {
@@ -895,6 +1354,52 @@ export interface components {
              */
             status: "ready" | "needs_review" | "invalid";
         };
+        /** FactImportRow */
+        FactImportRow: {
+            /** Fact Key */
+            fact_key: string;
+            /** Observed At */
+            observed_at?: string | null;
+            /** Observed On */
+            observed_on?: string | null;
+            /** Precision */
+            precision?: ("date" | "minute" | "second" | "unknown") | null;
+            /** Repeat Instance */
+            repeat_instance?: string | null;
+            /**
+             * Source Kind
+             * @default original_record
+             * @enum {string}
+             */
+            source_kind: "original_record" | "cra_confirmation" | "other_response" | "model_suggestion";
+            source_ref: components["schemas"]["FactSourceRef"];
+            /** Subject External Id */
+            subject_external_id: string;
+            /** Unit */
+            unit?: string | null;
+            /** Value Raw */
+            value_raw: string;
+            /** Value Type */
+            value_type?: ("date" | "datetime" | "decimal" | "string" | "boolean" | "json") | null;
+            /** Verification Status */
+            verification_status?: ("original_record" | "cra_confirmed" | "reported_by_other" | "model_candidate") | null;
+            /** Visit Key */
+            visit_key?: string | null;
+        };
+        /** FactSourceRef */
+        FactSourceRef: {
+            /** Locator */
+            locator?: string | null;
+            /** Quote */
+            quote?: string | null;
+            /** Source Id */
+            source_id: string;
+            /**
+             * Source Type
+             * @enum {string}
+             */
+            source_type: "edc_row" | "document_anchor" | "user_action" | "record" | "external_query";
+        };
         /** FactValue */
         FactValue: {
             /** Precision */
@@ -920,6 +1425,43 @@ export interface components {
              * @enum {string}
              */
             mode: "synthetic" | "oidc";
+        };
+        /** ImportFactsRequest */
+        ImportFactsRequest: {
+            /**
+             * Expected Revision
+             * @default 0
+             * @constant
+             */
+            expected_revision: 0;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Identity Namespace */
+            identity_namespace: string;
+            /** Rows */
+            rows: components["schemas"]["FactImportRow"][];
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Source Kind
+             * @default original_record
+             * @enum {string}
+             */
+            source_kind: "original_record" | "cra_confirmation" | "other_response" | "model_suggestion";
+        };
+        /** ImportFactsResponse */
+        ImportFactsResponse: {
+            /** Inserted Facts */
+            inserted_facts: number;
+            /** Replayed */
+            replayed: boolean;
+            /** Subject Ids */
+            subject_ids: string[];
+            /** Superseded Facts */
+            superseded_facts: number;
         };
         /** InputRevision */
         InputRevision: {
@@ -987,6 +1529,34 @@ export interface components {
              * @constant
              */
             status: "ok";
+        };
+        /** MapIdentifierResponse */
+        MapIdentifierResponse: {
+            /** External Id */
+            external_id: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Identity Namespace */
+            identity_namespace: string;
+            /**
+             * Subject Id
+             * Format: uuid
+             */
+            subject_id: string;
+        };
+        /** MapSubjectIdentifierCommand */
+        MapSubjectIdentifierCommand: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** External Id */
+            external_id: string;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Identity Namespace */
+            identity_namespace: string;
         };
         /** ModuleCapability */
         ModuleCapability: {
@@ -1184,6 +1754,15 @@ export interface components {
              * @enum {string}
              */
             status: "ready" | "unavailable";
+        };
+        /** ResumeCheckDecisionRequest */
+        ResumeCheckDecisionRequest: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Reason */
+            reason: string;
         };
         /** RetryResponse */
         RetryResponse: {
@@ -1633,6 +2212,44 @@ export interface components {
              */
             version: string | null;
         };
+        /** SubjectIdentifierView */
+        SubjectIdentifierView: {
+            /** External Id */
+            external_id: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Identity Namespace */
+            identity_namespace: string;
+        };
+        /** SubjectView */
+        SubjectView: {
+            /** Current Stage */
+            current_stage: string;
+            /** Deidentified Label */
+            deidentified_label: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Identifiers */
+            identifiers: components["schemas"]["SubjectIdentifierView"][];
+            /** Revision */
+            revision: number;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+        };
         /** UnknownItem */
         UnknownItem: {
             /** Affected Scope */
@@ -1722,6 +2339,89 @@ export interface components {
             user_starts_on: string | null;
             /** Version Label */
             version_label: string;
+        };
+        /** VisitInstanceView */
+        VisitInstanceView: {
+            /** Actual On */
+            actual_on: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Planned On */
+            planned_on: string | null;
+            /** Precision */
+            precision: string;
+            /** Repeat Instance */
+            repeat_instance: string;
+            /** Revision */
+            revision: number;
+            /** Stage */
+            stage: string | null;
+            /** Visit Key */
+            visit_key: string;
+        };
+        /** VisitRequirementResult */
+        VisitRequirementResult: {
+            requirement: components["schemas"]["VisitRequirementView"];
+            /** Rule Summary */
+            rule_summary: string;
+            /** Window Status */
+            window_status: string;
+        };
+        /** VisitRequirementView */
+        VisitRequirementView: {
+            /** Actual Date */
+            actual_date: string | null;
+            /** Affected Paths */
+            affected_paths: string[];
+            /** Allowed Sources */
+            allowed_sources: string[];
+            /** Anchor Date */
+            anchor_date: string | null;
+            /** Anchor Fact Key */
+            anchor_fact_key: string;
+            /** Can Continue */
+            can_continue: string[];
+            /**
+             * Event Date
+             * Format: date
+             */
+            event_date: string;
+            /** Event Fact Key */
+            event_fact_key: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Inclusive */
+            inclusive: boolean;
+            /** Max Days */
+            max_days: number;
+            /** Min Days */
+            min_days: number;
+            /** Required Fact Keys */
+            required_fact_keys: string[];
+            /**
+             * Rule Version Id
+             * Format: uuid
+             */
+            rule_version_id: string;
+            /** Stage */
+            stage: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ready" | "in_window" | "out_of_window" | "unknown_anchor" | "unknown_actual" | "not_checked_by_user" | "needs_review";
+            /** Visit Key */
+            visit_key: string;
+            /** Window End */
+            window_end: string | null;
+            /** Window Start */
+            window_start: string | null;
         };
     };
     responses: never;
@@ -2012,6 +2712,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UploadResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    confirm_fact_api_v1_facts__fact_id__confirm_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                fact_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConfirmFactRequestBody"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClinicalFactView"];
                 };
             };
             /** @description Validation Error */
@@ -2350,6 +3087,81 @@ export interface operations {
             };
         };
     };
+    import_facts_api_v1_studies__study_id__facts_import_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImportFactsRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportFactsResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    import_fact_file_api_v1_studies__study_id__facts_import_file_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_import_fact_file_api_v1_studies__study_id__facts_import_file_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportFactsResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_rules_api_v1_studies__study_id__rules_get: {
         parameters: {
             query?: {
@@ -2370,6 +3182,388 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RuleListItemView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_subjects_api_v1_studies__study_id__subjects_get: {
+        parameters: {
+            query: {
+                site_id: string;
+            };
+            header?: never;
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubjectView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_subject_api_v1_studies__study_id__subjects_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateSubjectCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateSubjectResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_check_decisions_api_v1_subjects__subject_id__check_decisions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subject_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckDecisionView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_check_decision_api_v1_subjects__subject_id__check_decisions_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                subject_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CheckDecisionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckDecisionView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resume_check_decision_api_v1_subjects__subject_id__check_decisions__decision_id__resume_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                subject_id: string;
+                decision_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResumeCheckDecisionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckDecisionView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_coverage_api_v1_subjects__subject_id__coverage_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subject_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CoverageBreakpointView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    save_coverage_api_v1_subjects__subject_id__coverage_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                subject_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CoverageBreakpointRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CoverageBreakpointView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    map_subject_identifier_api_v1_subjects__subject_id__identifiers_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                subject_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MapSubjectIdentifierCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MapIdentifierResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    subject_timeline_api_v1_subjects__subject_id__timeline_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                subject_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClinicalFactView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_visit_requirements_api_v1_subjects__subject_id__visit_requirements_get: {
+        parameters: {
+            query: {
+                event_date: string;
+            };
+            header?: never;
+            path: {
+                subject_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VisitRequirementView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    evaluate_visit_requirements_api_v1_subjects__subject_id__visit_requirements_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                subject_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EvaluateVisitRequirementsCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvaluateVisitRequirementsResponse"];
                 };
             };
             /** @description Validation Error */

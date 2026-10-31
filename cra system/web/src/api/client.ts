@@ -26,6 +26,17 @@ export type ApplicabilityResponse =
   components["schemas"]["ApplicabilityResponse"];
 export type ActivationResponse =
   components["schemas"]["ActivationResponse"];
+export type SubjectView = components["schemas"]["SubjectView"];
+export type ClinicalFactView =
+  components["schemas"]["ClinicalFactView"];
+export type EvaluateVisitRequirementsResponse =
+  components["schemas"]["EvaluateVisitRequirementsResponse"];
+export type CoverageBreakpointView =
+  components["schemas"]["CoverageBreakpointView"];
+export type CheckDecisionView =
+  components["schemas"]["CheckDecisionView"];
+export type ImportFactsResponse =
+  components["schemas"]["ImportFactsResponse"];
 
 type ErrorEnvelope = {
   error?: {
@@ -309,4 +320,265 @@ export function getApplicableRules(values: {
       facts: values.facts
     })
   });
+}
+
+export function getSubjects(
+  studyId: string,
+  siteId: string
+): Promise<SubjectView[]> {
+  return request<SubjectView[]>(
+    `/api/v1/studies/${studyId}/subjects?site_id=${encodeURIComponent(siteId)}`
+  );
+}
+
+export function createSubject(values: {
+  studyId: string;
+  siteId: string;
+  externalId: string;
+  namespace: string;
+}): Promise<{ id: string; revision: number }> {
+  return request(`/api/v1/studies/${values.studyId}/subjects`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: crypto.randomUUID(),
+      site_id: values.siteId,
+      external_id: values.externalId,
+      identity_namespace: values.namespace,
+      deidentified_label: values.externalId
+    })
+  });
+}
+
+export type SubjectFactInput = {
+  subject_external_id: string;
+  fact_key: string;
+  value_raw: string;
+  value_type?: string;
+  observed_on?: string | null;
+  observed_at?: string | null;
+  precision?: string;
+  unit?: string | null;
+  repeat_instance?: string | null;
+  visit_key?: string | null;
+  source_kind?: string;
+  source_ref: {
+    source_type: string;
+    source_id: string;
+    locator?: string | null;
+    quote?: string | null;
+  };
+};
+
+export function importSubjectFacts(values: {
+  studyId: string;
+  siteId: string;
+  namespace: string;
+  sourceKind: string;
+  rows: SubjectFactInput[];
+}): Promise<ImportFactsResponse> {
+  return request<ImportFactsResponse>(
+    `/api/v1/studies/${values.studyId}/facts/import`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: 0,
+        idempotency_key: crypto.randomUUID(),
+        site_id: values.siteId,
+        identity_namespace: values.namespace,
+        source_kind: values.sourceKind,
+        rows: values.rows
+      })
+    }
+  );
+}
+
+export function importSubjectFile(values: {
+  studyId: string;
+  siteId: string;
+  namespace: string;
+  sourceKind: string;
+  file: File;
+}): Promise<ImportFactsResponse> {
+  const body = new FormData();
+  body.set("site_id", values.siteId);
+  body.set("identity_namespace", values.namespace);
+  body.set("source_kind", values.sourceKind);
+  body.set("file", values.file);
+  return request<ImportFactsResponse>(
+    `/api/v1/studies/${values.studyId}/facts/import-file`,
+    {
+      method: "POST",
+      headers: {
+        "Idempotency-Key": crypto.randomUUID(),
+        "X-CSRF-Token": csrfToken()
+      },
+      body
+    }
+  );
+}
+
+export function getSubjectTimeline(
+  subjectId: string
+): Promise<ClinicalFactView[]> {
+  return request<ClinicalFactView[]>(
+    `/api/v1/subjects/${subjectId}/timeline`
+  );
+}
+
+export function confirmSubjectFact(
+  factId: string,
+  expectedRevision: number
+): Promise<ClinicalFactView> {
+  return request<ClinicalFactView>(`/api/v1/facts/${factId}/confirm`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: expectedRevision,
+      idempotency_key: crypto.randomUUID(),
+      note: "CRA在工作台确认患者事实"
+    })
+  });
+}
+
+export function evaluateSubjectVisitRequirements(
+  subjectId: string,
+  eventDate: string
+): Promise<EvaluateVisitRequirementsResponse> {
+  return request<EvaluateVisitRequirementsResponse>(
+    `/api/v1/subjects/${subjectId}/visit-requirements`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        event_date: eventDate,
+        jurisdiction: "synthetic"
+      })
+    }
+  );
+}
+
+export function getSubjectCoverage(
+  subjectId: string
+): Promise<CoverageBreakpointView[]> {
+  return request<CoverageBreakpointView[]>(
+    `/api/v1/subjects/${subjectId}/coverage`
+  );
+}
+
+export function saveSubjectCoverage(
+  subjectId: string,
+  values: {
+    expectedRevision: number;
+    category: string;
+    scopeKey: string;
+    status: string;
+    checkedThrough: string;
+    normalScopeNote: string;
+    unverifiedScope: string[];
+  }
+): Promise<CoverageBreakpointView> {
+  return request<CoverageBreakpointView>(
+    `/api/v1/subjects/${subjectId}/coverage`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: values.expectedRevision,
+        idempotency_key: crypto.randomUUID(),
+        category: values.category,
+        scope_key: values.scopeKey,
+        status: values.status,
+        checked_through: values.checkedThrough || null,
+        normal_scope_note: values.normalScopeNote || null,
+        unverified_scope: values.unverifiedScope
+      })
+    }
+  );
+}
+
+export function getCheckDecisions(
+  subjectId: string
+): Promise<CheckDecisionView[]> {
+  return request<CheckDecisionView[]>(
+    `/api/v1/subjects/${subjectId}/check-decisions`
+  );
+}
+
+export function createCheckDecision(
+  subjectId: string,
+  values: {
+    category: string;
+    checkType: string;
+    reason: string;
+    scopeStart: string;
+    scopeEnd: string;
+    missingKeys: string[];
+    affectedPaths: string[];
+    canContinue: string[];
+    ruleVersionId: string | null;
+  }
+): Promise<CheckDecisionView> {
+  return request<CheckDecisionView>(
+    `/api/v1/subjects/${subjectId}/check-decisions`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: 0,
+        idempotency_key: crypto.randomUUID(),
+        category: values.category,
+        check_type: values.checkType,
+        reason: values.reason,
+        scope_start: values.scopeStart || null,
+        scope_end: values.scopeEnd || null,
+        missing_keys: values.missingKeys,
+        affected_paths: values.affectedPaths,
+        can_continue: values.canContinue,
+        rule_version_id: values.ruleVersionId
+      })
+    }
+  );
+}
+
+export function resumeCheckDecision(
+  subjectId: string,
+  decisionId: string,
+  expectedRevision: number
+): Promise<CheckDecisionView> {
+  return request<CheckDecisionView>(
+    `/api/v1/subjects/${subjectId}/check-decisions/${decisionId}/resume`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: expectedRevision,
+        idempotency_key: crypto.randomUUID(),
+        reason: "CRA恢复核查该局部路径"
+      })
+    }
+  );
 }

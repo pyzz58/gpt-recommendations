@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W04。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -28,6 +28,7 @@
 | `web/src/features/subjects/SubjectTimeline.tsx` | code | 患者时间线 |
 | `tests/integration/test_subjects.py` | test | 日期精度及分类断点 |
 | `backend/cra_app/subjects/context_import.py` | code | 患者锚点与允许结构化上下文导入 |
+| `migrations/versions/0004_subjects_coverage.py` | migration | 患者身份映射、不可变事实修订、访视要求、分类断点和局部核查决定 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -73,10 +74,22 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 锚点、日期缺失、修订及断点
+- [available] 锚点、日期缺失、修订及断点
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_subjects.py
+```
+
+- [available] 患者事实、访视窗口、断点和局部核查决定的OpenAPI/前端契约
+
+```bash
+npm --prefix web run api:check
+```
+
+- [available] 患者时间线、局部跳过恢复和分类断点前端
+
+```bash
+npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run build
 ```
 
 ## 完成标准

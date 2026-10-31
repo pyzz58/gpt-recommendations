@@ -150,6 +150,11 @@ def capabilities(request: Request) -> CapabilityResponse:
                 status="implemented",
             ),
             ModuleCapability(
+                module_id="M04",
+                label="患者事实、访视时间线与断点",
+                status="implemented",
+            ),
+            ModuleCapability(
                 module_id="M05",
                 label="受试者监查工作区",
                 status="not_implemented",

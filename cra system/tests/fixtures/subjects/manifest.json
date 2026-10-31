@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "group": "development_and_independent_expectations",
+  "artifacts": [
+    {
+      "artifact_id": "SYNTHETIC-CONTEXT-CSV",
+      "file": "artifacts/synthetic_context.csv",
+      "source": "pure_synthetic",
+      "sha256": "7dccc6be113ad5b7e429be8f35561789a7ae852ce0983f4e9bb0e7af574f71c9"
+    },
+    {
+      "artifact_id": "SYNTHETIC-CONTEXT-JSON",
+      "file": "artifacts/synthetic_context.json",
+      "source": "pure_synthetic",
+      "sha256": "a3815fdaf5f69c6e11e345edec497be0c1f52a967a1e1fa8fc2cb7f0e10e86e3"
+    },
+    {
+      "artifact_id": "SYNTHETIC-CONTEXT-XLSX",
+      "file": "artifacts/synthetic_context.xlsx",
+      "source": "pure_synthetic",
+      "sha256": "b9d81fbfefbdca06433a5a3107e14086b314937277891a012a2750d9e5fd4207"
+    },
+    {
+      "artifact_id": "SYNTHETIC-VISIT-RULE-DOCX",
+      "file": "artifacts/synthetic_visit_rule.docx",
+      "source": "pure_synthetic",
+      "sha256": "6daea90f3250d6f3033f0138fd965e7fb2803c7a6a31b6967fa18d3190fbae3a"
+    }
+  ],
+  "expected_fact_keys": [
+    "infusion_date",
+    "lab_hemoglobin",
+    "study_phase",
+    "treatment_due",
+    "visit_date"
+  ],
+  "expected_subjects": [
+    "SYN-001",
+    "SYN-002"
+  ]
+}

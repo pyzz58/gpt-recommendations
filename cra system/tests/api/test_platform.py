@@ -180,6 +180,8 @@ def test_health_capabilities_and_openapi(
             for module in body["modules"]
         }
         assert module_status["M01"] == "implemented"
+        assert module_status["M03"] == "implemented"
+        assert module_status["M04"] == "implemented"
         assert module_status["M08"] == "not_implemented"
 
         openapi = client.get("/api/v1/openapi.json")
