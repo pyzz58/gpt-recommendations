@@ -4,7 +4,7 @@
 
 ## 1. 共同约定
 
-API前缀/api/v1。身份来自获验证的OIDC会话，服务端推导授权范围。浏览器使用同源会话或经批准的令牌模式；采用Cookie时配置CSRF、SameSite及安全属性。所有写入接收幂等键及expected_revision，审计与业务事务一致提交。请求中不能自行指定操作者冒充其他角色。
+API前缀/api/v1。身份来自获验证的OIDC会话；无正式身份源时只允许`synthetic`/`test`环境使用服务端配置的合成会话，生产环境拒绝合成登录。服务端从签名会话推导actor和tenant，再查W01项目/中心授权，不接受客户端通过请求头、查询参数或JSON自报操作者。浏览器使用同源HttpOnly Cookie；正式写入仍需按用途配置CSRF。所有写入接收幂等键及expected_revision，审计与业务事务一致提交。
 
 回复包含resource_id、revision、status及可核实的source_refs；缺少、未验证、跳过、冲突分别表达。错误至少区分范围不允许、版本冲突、条件不全、匹配歧义、服务不可用、配额耗尽及格式不支持。错误日志避免包含原文件内容。重试不会重复创建问题或报告。
 
@@ -65,3 +65,15 @@ ApplicableRule补充preconditions、trigger、branches、follow_up、completion�
 ## 6. v0.4执行契约
 
 共同回复采用[EXECUTION_CONTRACTS](EXECUTION_CONTRACTS.md)的OutputEnvelope，按用途提供政策版本、事实/候选/用户确认分类与unknowns/not_checked；临床/时间/模板最低输入按同文定义。CommonPolicySet使用实际原文而非模型记忆。自动检验端口支持范围、值类型和实测指标见[LAB_AUTOMATION](LAB_AUTOMATION.md)。
+
+## 7. W02已实现入口
+
+| 接口 | 实现约束 |
+| --- | --- |
+| `POST /api/v1/auth/synthetic/session` | 仅在synthetic/test启用；actor与tenant来自服务端配置，响应设置签名HttpOnly Cookie |
+| `GET /api/v1/auth/oidc/login`；`GET /api/v1/auth/oidc/callback` | Authlib授权码/OIDC适配；未配置issuer、client和secret时明确返回503；实际身份源尚未提供，不能称正式登录已验证 |
+| `POST /api/v1/auth/logout` | 删除CRA签名会话 |
+| `GET /api/v1/me/scopes` | 从可信身份调用W01授权服务，仅返回可访问项目/中心及角色 |
+| `GET /health/live`；`GET /health/ready`；`GET /capabilities` | 分别表示进程、PostgreSQL依赖和真实已配置能力，不用服务在线替代功能验证 |
+
+错误统一包含`error.code`、`error.message`、`retryable`及可选安全详情，HTTP状态区分401、403、409、422和503。`contracts/openapi.json`从实际FastAPI应用生成，`web/src/api/generated.ts`从该契约生成；两者由`npm --prefix web run api:check`阻止漂移。OutputEnvelope作为OpenAPI组件与运行时Pydantic模型共用同一源。

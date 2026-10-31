@@ -98,15 +98,28 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
         "CRA-R036",
         "CRA-R040"
       ],
-      "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41177038097；CRA-W01专属job的migrate和test步骤在PostgreSQL 18.6上通过，6项集成测试及40项基线测试通过；被测提交ffe71849c9046d5f070bae1eb43aafd562a26cff。详见validation/W01_STATUS.md。"
+      "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-10-31",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41177038097；CRA-W01专属job的migrate和test步骤在PostgreSQL 18.6上通过，6项集成测试及40项基线测试通过；被测提交ffe71849c9046d5f070bae1eb43aafd562a26cff。详见validation/W01_STATUS.md。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W01",
+            "run_id": 41177038097,
+            "tested_commit": "ffe71849c9046d5f070bae1eb43aafd562a26cff",
+            "subject_digest": "5c00b0745688cb459427b1e875d93377fec217ac9b388fcfe50baec2c8d3ae7f"
+          }
+        }
       ],
       "track": "v1a",
       "instruction_path": "plan/work_packages/CRA-W01.md",
@@ -237,13 +250,6 @@
       "handoff_outputs": [
         "数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W01",
-        "run_id": 41177038097,
-        "tested_commit": "ffe71849c9046d5f070bae1eb43aafd562a26cff",
-        "subject_digest": "5c00b0745688cb459427b1e875d93377fec217ac9b388fcfe50baec2c8d3ae7f"
-      },
       "verification_profile": "CRA-W01"
     },
     {
@@ -256,7 +262,7 @@
         "M01",
         "M14"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
       "requirement_ids": [
         "CRA-R035",
@@ -392,8 +398,23 @@
           "availability": "to_implement"
         },
         {
+          "command": "npm --prefix web run test",
+          "purpose": "项目/中心刷新上下文",
+          "availability": "to_implement"
+        },
+        {
           "command": "npm --prefix web run api:check",
           "purpose": "接口契约与前端类型一致",
+          "availability": "to_implement"
+        },
+        {
+          "command": "bash tools/smoke_w02.sh",
+          "purpose": "实际启动API、登录、授权范围和Vite页面",
+          "availability": "to_implement"
+        },
+        {
+          "command": "npx --yes @devcontainers/cli@0.90.0 up --workspace-folder \"$GITHUB_WORKSPACE\" --config \"$GITHUB_WORKSPACE/.devcontainer/cra-system/devcontainer.json\" --remove-existing-container",
+          "purpose": "实际启动Codespace兼容开发容器",
           "availability": "to_implement"
         }
       ],

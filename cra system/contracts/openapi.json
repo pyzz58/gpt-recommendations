@@ -1,0 +1,1025 @@
+{
+  "components": {
+    "schemas": {
+      "CapabilityResponse": {
+        "properties": {
+          "automatic_completion_allowed": {
+            "const": false,
+            "default": false,
+            "title": "Automatic Completion Allowed",
+            "type": "boolean"
+          },
+          "environment": {
+            "title": "Environment",
+            "type": "string"
+          },
+          "generated_at": {
+            "format": "date-time",
+            "title": "Generated At",
+            "type": "string"
+          },
+          "identity_configured": {
+            "title": "Identity Configured",
+            "type": "boolean"
+          },
+          "identity_mode": {
+            "enum": [
+              "synthetic",
+              "oidc"
+            ],
+            "title": "Identity Mode",
+            "type": "string"
+          },
+          "modules": {
+            "items": {
+              "$ref": "#/components/schemas/ModuleCapability"
+            },
+            "title": "Modules",
+            "type": "array"
+          },
+          "providers": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ProviderCapability"
+            },
+            "title": "Providers",
+            "type": "object"
+          },
+          "schema_version": {
+            "const": 1,
+            "default": 1,
+            "title": "Schema Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "environment",
+          "generated_at",
+          "identity_mode",
+          "identity_configured",
+          "providers",
+          "modules"
+        ],
+        "title": "CapabilityResponse",
+        "type": "object"
+      },
+      "Claim": {
+        "additionalProperties": false,
+        "properties": {
+          "calculation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Calculation"
+          },
+          "claim_id": {
+            "minLength": 1,
+            "title": "Claim Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "fact",
+              "auto_candidate",
+              "inference",
+              "user_confirmation"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "$ref": "#/components/schemas/SourceRef"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "value": {
+            "default": null,
+            "title": "Value"
+          },
+          "verification_status": {
+            "enum": [
+              "unverified",
+              "auto_extracted",
+              "needs_review",
+              "cra_confirmed",
+              "medical_confirmed",
+              "not_checked"
+            ],
+            "title": "Verification Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "claim_id",
+          "kind",
+          "label",
+          "verification_status"
+        ],
+        "title": "Claim",
+        "type": "object"
+      },
+      "ConflictItem": {
+        "additionalProperties": false,
+        "properties": {
+          "conflict_id": {
+            "minLength": 1,
+            "title": "Conflict Id",
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "title": "Description",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "$ref": "#/components/schemas/SourceRef"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "conflict_id",
+          "description"
+        ],
+        "title": "ConflictItem",
+        "type": "object"
+      },
+      "DependencyState": {
+        "properties": {
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "status": {
+            "enum": [
+              "ready",
+              "unavailable"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "DependencyState",
+        "type": "object"
+      },
+      "IdentityView": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "authentication_source": {
+            "title": "Authentication Source",
+            "type": "string"
+          },
+          "mode": {
+            "enum": [
+              "synthetic",
+              "oidc"
+            ],
+            "title": "Mode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "actor_id",
+          "mode",
+          "authentication_source"
+        ],
+        "title": "IdentityView",
+        "type": "object"
+      },
+      "InputRevision": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Digest"
+          },
+          "resource_id": {
+            "minLength": 1,
+            "title": "Resource Id",
+            "type": "string"
+          },
+          "resource_type": {
+            "minLength": 1,
+            "title": "Resource Type",
+            "type": "string"
+          },
+          "revision": {
+            "minimum": 1,
+            "title": "Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "resource_type",
+          "resource_id",
+          "revision"
+        ],
+        "title": "InputRevision",
+        "type": "object"
+      },
+      "LiveResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "service": {
+            "default": "cra-system",
+            "title": "Service",
+            "type": "string"
+          },
+          "status": {
+            "const": "ok",
+            "default": "ok",
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "title": "LiveResponse",
+        "type": "object"
+      },
+      "ModuleCapability": {
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "module_id": {
+            "title": "Module Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "implemented",
+              "configured",
+              "validated",
+              "limited",
+              "not_implemented"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "module_id",
+          "label",
+          "status"
+        ],
+        "title": "ModuleCapability",
+        "type": "object"
+      },
+      "NotCheckedItem": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "minLength": 1,
+            "title": "Code",
+            "type": "string"
+          },
+          "decision_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Decision Ref"
+          },
+          "reason": {
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          },
+          "scope": {
+            "minLength": 1,
+            "title": "Scope",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "scope",
+          "reason"
+        ],
+        "title": "NotCheckedItem",
+        "type": "object"
+      },
+      "OutputCapability": {
+        "additionalProperties": false,
+        "properties": {
+          "capability_id": {
+            "minLength": 1,
+            "title": "Capability Id",
+            "type": "string"
+          },
+          "level": {
+            "enum": [
+              "implemented",
+              "configured",
+              "validated",
+              "limited",
+              "unavailable",
+              "not_implemented"
+            ],
+            "title": "Level",
+            "type": "string"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "validated": {
+            "default": false,
+            "title": "Validated",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "capability_id",
+          "level"
+        ],
+        "title": "OutputCapability",
+        "type": "object"
+      },
+      "OutputEnvelope": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "minLength": 1,
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "capabilities": {
+            "items": {
+              "$ref": "#/components/schemas/OutputCapability"
+            },
+            "title": "Capabilities",
+            "type": "array"
+          },
+          "claims": {
+            "items": {
+              "$ref": "#/components/schemas/Claim"
+            },
+            "title": "Claims",
+            "type": "array"
+          },
+          "conflicts": {
+            "items": {
+              "$ref": "#/components/schemas/ConflictItem"
+            },
+            "title": "Conflicts",
+            "type": "array"
+          },
+          "evidence_refs": {
+            "items": {
+              "$ref": "#/components/schemas/SourceRef"
+            },
+            "title": "Evidence Refs",
+            "type": "array"
+          },
+          "generated_at": {
+            "format": "date-time",
+            "title": "Generated At",
+            "type": "string"
+          },
+          "input_revisions": {
+            "items": {
+              "$ref": "#/components/schemas/InputRevision"
+            },
+            "title": "Input Revisions",
+            "type": "array"
+          },
+          "not_checked": {
+            "items": {
+              "$ref": "#/components/schemas/NotCheckedItem"
+            },
+            "title": "Not Checked",
+            "type": "array"
+          },
+          "output_id": {
+            "format": "uuid",
+            "title": "Output Id",
+            "type": "string"
+          },
+          "policy_versions": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyVersion"
+            },
+            "title": "Policy Versions",
+            "type": "array"
+          },
+          "purpose": {
+            "enum": [
+              "rule_candidate",
+              "visit_window",
+              "lab_comparison",
+              "safety_analysis",
+              "carryover_reminder",
+              "directory_review",
+              "report_draft",
+              "platform_scope"
+            ],
+            "title": "Purpose",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": 1,
+            "default": 1,
+            "title": "Schema Version",
+            "type": "integer"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/OutputScope"
+          },
+          "status": {
+            "enum": [
+              "ready_to_review",
+              "limited",
+              "needs_clarification",
+              "failed"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "unknowns": {
+            "items": {
+              "$ref": "#/components/schemas/UnknownItem"
+            },
+            "title": "Unknowns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "output_id",
+          "purpose",
+          "scope",
+          "status",
+          "generated_at",
+          "actor_id"
+        ],
+        "title": "OutputEnvelope",
+        "type": "object"
+      },
+      "OutputScope": {
+        "additionalProperties": false,
+        "properties": {
+          "site_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Site Id"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          },
+          "subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Subject Id"
+          },
+          "tenant_id": {
+            "minLength": 1,
+            "title": "Tenant Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tenant_id",
+          "study_id"
+        ],
+        "title": "OutputScope",
+        "type": "object"
+      },
+      "PolicyVersion": {
+        "additionalProperties": false,
+        "properties": {
+          "activation_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Activation Date"
+          },
+          "layer": {
+            "enum": [
+              "common",
+              "study",
+              "site"
+            ],
+            "title": "Layer",
+            "type": "string"
+          },
+          "policy_id": {
+            "minLength": 1,
+            "title": "Policy Id",
+            "type": "string"
+          },
+          "version": {
+            "minLength": 1,
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "layer",
+          "policy_id",
+          "version"
+        ],
+        "title": "PolicyVersion",
+        "type": "object"
+      },
+      "ProviderCapability": {
+        "properties": {
+          "automatic_completion_allowed": {
+            "default": false,
+            "title": "Automatic Completion Allowed",
+            "type": "boolean"
+          },
+          "limitation": {
+            "title": "Limitation",
+            "type": "string"
+          },
+          "provider": {
+            "title": "Provider",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "not_configured",
+              "configured"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "validated": {
+            "default": false,
+            "title": "Validated",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "provider",
+          "status",
+          "limitation"
+        ],
+        "title": "ProviderCapability",
+        "type": "object"
+      },
+      "ReadyResponse": {
+        "properties": {
+          "dependencies": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DependencyState"
+            },
+            "title": "Dependencies",
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "ready",
+              "unavailable"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "dependencies"
+        ],
+        "title": "ReadyResponse",
+        "type": "object"
+      },
+      "ScopeResponse": {
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "authentication_mode": {
+            "enum": [
+              "synthetic",
+              "oidc"
+            ],
+            "title": "Authentication Mode",
+            "type": "string"
+          },
+          "studies": {
+            "items": {
+              "$ref": "#/components/schemas/ScopeStudy"
+            },
+            "title": "Studies",
+            "type": "array"
+          }
+        },
+        "required": [
+          "actor_id",
+          "authentication_mode",
+          "studies"
+        ],
+        "title": "ScopeResponse",
+        "type": "object"
+      },
+      "ScopeSite": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "name",
+          "revision"
+        ],
+        "title": "ScopeSite",
+        "type": "object"
+      },
+      "ScopeStudy": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "roles": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Roles",
+            "type": "array"
+          },
+          "sites": {
+            "items": {
+              "$ref": "#/components/schemas/ScopeSite"
+            },
+            "title": "Sites",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "title",
+          "revision",
+          "roles",
+          "sites"
+        ],
+        "title": "ScopeStudy",
+        "type": "object"
+      },
+      "SessionView": {
+        "properties": {
+          "authenticated": {
+            "const": true,
+            "default": true,
+            "title": "Authenticated",
+            "type": "boolean"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/IdentityView"
+          }
+        },
+        "required": [
+          "identity"
+        ],
+        "title": "SessionView",
+        "type": "object"
+      },
+      "SourceRef": {
+        "additionalProperties": false,
+        "properties": {
+          "locator": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Locator"
+          },
+          "quote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Quote"
+          },
+          "source_id": {
+            "minLength": 1,
+            "title": "Source Id",
+            "type": "string"
+          },
+          "source_type": {
+            "enum": [
+              "document",
+              "document_anchor",
+              "edc_row",
+              "image_region",
+              "user_action",
+              "record",
+              "external_query"
+            ],
+            "title": "Source Type",
+            "type": "string"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Version"
+          }
+        },
+        "required": [
+          "source_type",
+          "source_id"
+        ],
+        "title": "SourceRef",
+        "type": "object"
+      },
+      "UnknownItem": {
+        "additionalProperties": false,
+        "properties": {
+          "affected_scope": {
+            "minLength": 1,
+            "title": "Affected Scope",
+            "type": "string"
+          },
+          "code": {
+            "minLength": 1,
+            "title": "Code",
+            "type": "string"
+          },
+          "reason": {
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "reason",
+          "affected_scope"
+        ],
+        "title": "UnknownItem",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Synthetic-first CRA monitoring workbench API. Service health and implemented capabilities are reported separately from clinical use.",
+    "title": "CRA System API",
+    "version": "0.2.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "logout_api_v1_auth_logout_post",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Logout",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/api/v1/auth/oidc/login": {
+      "get": {
+        "operationId": "oidc_login_api_v1_auth_oidc_login_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Oidc Login",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/api/v1/auth/synthetic/session": {
+      "post": {
+        "operationId": "create_synthetic_session_api_v1_auth_synthetic_session_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "description": "Synthetic identity is disabled"
+          }
+        },
+        "summary": "Create Synthetic Session",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/api/v1/me/scopes": {
+      "get": {
+        "operationId": "get_my_scopes_api_v1_me_scopes_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScopeResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "summary": "Get My Scopes",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/capabilities": {
+      "get": {
+        "operationId": "capabilities_capabilities_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CapabilityResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Capabilities",
+        "tags": [
+          "platform"
+        ]
+      }
+    },
+    "/health/live": {
+      "get": {
+        "operationId": "live_health_live_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiveResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Live",
+        "tags": [
+          "platform"
+        ]
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "operationId": "ready_health_ready_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadyResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "503": {
+            "description": "Database unavailable"
+          }
+        },
+        "summary": "Ready",
+        "tags": [
+          "platform"
+        ]
+      }
+    }
+  }
+}

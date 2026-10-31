@@ -99,6 +99,24 @@ class CommandResult:
     replayed: bool
 
 
+@dataclass(frozen=True)
+class WorkspaceSite:
+    id: uuid.UUID
+    code: str
+    name: str
+    revision: int
+
+
+@dataclass(frozen=True)
+class WorkspaceStudy:
+    id: uuid.UUID
+    code: str
+    title: str
+    revision: int
+    roles: tuple[str, ...]
+    sites: tuple[WorkspaceSite, ...]
+
+
 class GovernanceError(Exception):
     """Base class for expected governance failures."""
 
@@ -768,6 +786,106 @@ class GovernanceService:
                     .order_by(Site.code)
                 )
             )
+
+    def list_authorized_workspaces(
+        self, scope: ScopeContext
+    ) -> tuple[WorkspaceStudy, ...]:
+        """Return only study and site metadata the trusted actor may select."""
+        with self._session_factory() as session:
+            membership_rows = list(
+                session.scalars(
+                    select(Membership)
+                    .where(
+                        Membership.tenant_id == scope.tenant_id,
+                        Membership.actor_id == scope.actor_id,
+                    )
+                    .order_by(Membership.study_id)
+                )
+            )
+            if self._is_platform_admin(scope):
+                studies = list(
+                    session.scalars(
+                        select(Study)
+                        .where(Study.tenant_id == scope.tenant_id)
+                        .order_by(Study.code)
+                    )
+                )
+            else:
+                study_ids = {row.study_id for row in membership_rows}
+                studies = (
+                    list(
+                        session.scalars(
+                            select(Study)
+                            .where(
+                                Study.tenant_id == scope.tenant_id,
+                                Study.id.in_(study_ids),
+                            )
+                            .order_by(Study.code)
+                        )
+                    )
+                    if study_ids
+                    else []
+                )
+
+            result: list[WorkspaceStudy] = []
+            for study in studies:
+                if self._is_platform_admin(scope):
+                    roles = ("platform_admin",)
+                    sites = list(
+                        session.scalars(
+                            select(Site)
+                            .where(
+                                Site.tenant_id == scope.tenant_id,
+                                Site.study_id == study.id,
+                            )
+                            .order_by(Site.code)
+                        )
+                    )
+                else:
+                    study_memberships = [
+                        row for row in membership_rows if row.study_id == study.id
+                    ]
+                    roles = tuple(
+                        sorted({row.role for row in study_memberships})
+                    )
+                    study_wide = any(
+                        row.site_id is None for row in study_memberships
+                    )
+                    site_ids = {
+                        row.site_id
+                        for row in study_memberships
+                        if row.site_id is not None
+                    }
+                    site_statement = select(Site).where(
+                        Site.tenant_id == scope.tenant_id,
+                        Site.study_id == study.id,
+                    )
+                    if not study_wide:
+                        site_statement = site_statement.where(
+                            Site.id.in_(site_ids)
+                        )
+                    sites = list(
+                        session.scalars(site_statement.order_by(Site.code))
+                    )
+                result.append(
+                    WorkspaceStudy(
+                        id=study.id,
+                        code=study.code,
+                        title=study.title,
+                        revision=study.revision,
+                        roles=roles,
+                        sites=tuple(
+                            WorkspaceSite(
+                                id=site.id,
+                                code=site.code,
+                                name=site.name,
+                                revision=site.revision,
+                            )
+                            for site in sites
+                        ),
+                    )
+                )
+            return tuple(result)
 
     def authorize(
         self,

@@ -21,9 +21,44 @@ class Settings(BaseSettings):
         populate_by_name=True,
     )
 
-    environment: Literal["synthetic", "test", "development"] = "synthetic"
+    environment: Literal["synthetic", "test", "development", "production"] = Field(
+        default="synthetic", alias="CRA_ENV"
+    )
     database_url: SecretStr = Field(alias="CRA_DATABASE_URL")
     database_echo: bool = Field(default=False, alias="CRA_DATABASE_ECHO")
+    session_secret: SecretStr | None = Field(
+        default=None, alias="CRA_SESSION_SECRET"
+    )
+    session_cookie_secure: bool | None = Field(
+        default=None, alias="CRA_SESSION_COOKIE_SECURE"
+    )
+    session_max_age_seconds: int = Field(
+        default=28800, ge=300, le=86400, alias="CRA_SESSION_MAX_AGE_SECONDS"
+    )
+    synthetic_actor_id: str = Field(
+        default="synthetic-cra", alias="CRA_SYNTHETIC_ACTOR_ID"
+    )
+    synthetic_tenant_id: str = Field(
+        default="synthetic", alias="CRA_SYNTHETIC_TENANT_ID"
+    )
+    oidc_issuer: str | None = Field(default=None, alias="CRA_OIDC_ISSUER")
+    oidc_client_id: str | None = Field(
+        default=None, alias="CRA_OIDC_CLIENT_ID"
+    )
+    oidc_client_secret: SecretStr | None = Field(
+        default=None, alias="CRA_OIDC_CLIENT_SECRET"
+    )
+    oidc_actor_claim: str = Field(default="sub", alias="CRA_OIDC_ACTOR_CLAIM")
+    oidc_tenant_claim: str = Field(
+        default="tenant_id", alias="CRA_OIDC_TENANT_CLAIM"
+    )
+    public_base_url: str = Field(
+        default="http://localhost:5173", alias="CRA_PUBLIC_BASE_URL"
+    )
+    model_provider: str = Field(
+        default="disabled", alias="CRA_MODEL_PROVIDER"
+    )
+    ocr_provider: str = Field(default="disabled", alias="CRA_OCR_PROVIDER")
 
     def sqlalchemy_url(self) -> str:
         value = self.database_url.get_secret_value()
@@ -32,6 +67,27 @@ class Settings(BaseSettings):
         if value.startswith("postgresql://"):
             return "postgresql+psycopg://" + value.removeprefix("postgresql://")
         return value
+
+    def resolved_session_secret(self) -> str:
+        if self.session_secret is not None:
+            return self.session_secret.get_secret_value()
+        if self.environment in {"synthetic", "test"}:
+            return "synthetic-only-session-secret-not-for-production"
+        raise ValueError("CRA_SESSION_SECRET is required outside synthetic mode")
+
+    def resolved_cookie_secure(self) -> bool:
+        if self.session_cookie_secure is not None:
+            return self.session_cookie_secure
+        return self.environment not in {"synthetic", "test"}
+
+    def oidc_configured(self) -> bool:
+        return all(
+            (
+                self.oidc_issuer,
+                self.oidc_client_id,
+                self.oidc_client_secret,
+            )
+        )
 
 
 @lru_cache(maxsize=1)

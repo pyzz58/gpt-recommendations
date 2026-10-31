@@ -15,6 +15,8 @@ from .service import (
     ScopeContext,
     UpdateSite,
     UpdateStudy,
+    WorkspaceSite,
+    WorkspaceStudy,
 )
 
 __all__ = [
@@ -32,4 +34,6 @@ __all__ = [
     "ScopeContext",
     "UpdateSite",
     "UpdateStudy",
+    "WorkspaceSite",
+    "WorkspaceStudy",
 ]

@@ -3,6 +3,26 @@
   "image": "mcr.microsoft.com/devcontainers/python:3.13-bookworm",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/cra system",
   "remoteUser": "vscode",
+  "features": {
+    "ghcr.io/devcontainers/features/node:2.1.1": {
+      "version": "24.22.2",
+      "pnpmVersion": "none"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:4.1.3": {
+      "version": "28.5.1",
+      "moby": true,
+      "dockerDashComposeVersion": "v2",
+      "installDockerBuildx": true
+    }
+  },
+  "containerEnv": {
+    "CRA_ENV": "synthetic",
+    "CRA_DATABASE_URL": "postgresql+psycopg://cra:synthetic@localhost:5432/cra",
+    "CRA_TEST_DATABASE_URL": "postgresql+psycopg://cra:synthetic@localhost:5432/cra_test",
+    "CRA_SESSION_SECRET": "synthetic-only-codespaces-session-secret",
+    "CRA_SYNTHETIC_ACTOR_ID": "synthetic-cra",
+    "CRA_SYNTHETIC_TENANT_ID": "synthetic"
+  },
   "forwardPorts": [
     8000,
     5173
@@ -19,7 +39,8 @@
       "onAutoForward": "silent"
     }
   },
-  "postCreateCommand": "python3 tools/check_traceability.py",
+  "postCreateCommand": "bash ../.devcontainer/cra-system/bootstrap.sh",
+  "postStartCommand": "bash ../.devcontainer/cra-system/start-database.sh",
   "customizations": {
     "vscode": {
       "settings": {

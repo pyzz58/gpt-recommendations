@@ -7,8 +7,8 @@
 | 工作包 | 内容 | 前置 | 模块 | 状态 |
 | --- | --- | --- | --- | --- |
 | CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
-| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | verified |
-| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | planned |
+| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | in_progress |
+| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | in_progress |
 | CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | planned |
 | CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | planned |
 | CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | planned |
@@ -36,8 +36,6 @@
 验收：PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。
 
 对应理论：CRA-R002、CRA-R036、CRA-R040
-
-实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41177038097；CRA-W01专属job的migrate和test步骤在PostgreSQL 18.6上通过，6项集成测试及40项基线测试通过；被测提交ffe71849c9046d5f070bae1eb43aafd562a26cff。详见validation/W01_STATUS.md。
 
 ## CRA-W02 建立云上API和界面框架
 

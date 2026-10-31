@@ -6,14 +6,19 @@ readme = "README.md"
 requires-python = ">=3.13.15,<3.14"
 dependencies = [
     "alembic>=1.16,<2",
+    "authlib>=1.9,<2",
+    "fastapi>=0.162,<1",
+    "itsdangerous>=2.2,<3",
     "psycopg[binary]>=3.2,<4",
     "pydantic>=2.11,<3",
     "pydantic-settings>=2.10,<3",
     "sqlalchemy>=2.0.41,<2.1",
+    "uvicorn[standard]>=0.54,<1",
 ]
 
 [dependency-groups]
 dev = [
+    "httpx2>=2.16,<3",
     "pytest>=8.4,<10",
 ]
 
