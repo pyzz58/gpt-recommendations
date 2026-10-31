@@ -23,6 +23,7 @@ import director_department_command as director_command
 import director_visual_language as visual_language
 import director_artistic_methods as artistic_methods
 import director_acting as acting_contract
+import director_photography as photography_contract
 
 CONTRACT_VERSION = "1.0"
 MAX_CONTEXT_CHARS = 220_000
@@ -383,6 +384,58 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
                 staging["properties"]["environment_state"] = {"type": "object"}
                 staging["properties"]["production_feasibility"] = {"type": "object"}
                 staging["required"].extend(["physical_state", "relationship_map"])
+    photography_mode = base.get("photography_contract_mode")
+    if photography_mode is not None:
+        if photography_mode != photography_contract.MODE:
+            raise ValueError("CREW_PHOTOGRAPHY_CONTRACT_MODE_INVALID")
+        if task_id == "camera_art":
+            shot_properties = schema["properties"]["shots"]["properties"]
+            for shot_schema in shot_properties.values():
+                camera = shot_schema["properties"]["camera"]
+                camera["properties"].update({
+                    "shot_size": {"type": "string",
+                                  "enum": sorted(photography_contract.VIDEO_SHOT_SIZES)},
+                    "focal_length_mm": {"type": "number", "minimum": 14, "maximum": 135},
+                    "screen_axis": {"type": "string", "minLength": 6},
+                    "camera_side": {"type": "string",
+                                    "enum": sorted(photography_contract.SCREEN_SIDES)},
+                    "eyeline": {"type": "string", "minLength": 1},
+                    "movement_trigger_event": {"type": "string", "minLength": 1},
+                    "axis_break_reason": {"type": "string"},
+                })
+                camera["required"].extend([
+                    "shot_size", "focal_length_mm", "screen_axis", "camera_side",
+                    "eyeline", "movement_trigger_event",
+                ])
+                art = shot_schema["properties"]["art"]
+                art["properties"].update({
+                    "lighting_state": {"type": "string",
+                                       "enum": sorted(photography_contract.LIGHTING_STATES)},
+                    "practical_sources": {
+                        "type": "array", "minItems": 1,
+                        "items": {"type": "string", "minLength": 1}},
+                    "lighting_change_reason": {"type": "string", "minLength": 6},
+                    "key_light_position": {"type": "string", "minLength": 1},
+                    "key_light_direction": {"type": "string", "minLength": 1},
+                    "safe_area": {"type": "string", "minLength": 1},
+                    "scene_geometry": {
+                        "type": "object",
+                        "required": ["anchor_positions", "key_light_position", "camera_axis"],
+                        "properties": {
+                            "anchor_positions": {
+                                "type": "object", "minProperties": 2,
+                                "additionalProperties": {"type": "string", "minLength": 1}},
+                            "key_light_position": {"type": "string", "minLength": 1},
+                            "camera_axis": {"type": "string", "minLength": 1},
+                        },
+                        "additionalProperties": False,
+                    },
+                })
+                art["required"].extend([
+                    "lighting_state", "practical_sources", "lighting_change_reason",
+                    "key_light_position", "key_light_direction", "safe_area",
+                    "scene_geometry",
+                ])
     if editorial_handoff is not None:
         creative_bridge.inspect_preproduction(base, editorial_handoff)
         if (editorial_handoff.get("episode_source_digest") !=
@@ -709,6 +762,21 @@ def build_role_messages(base, state, task_id, *, source_text=None,
                 "没有真实测试时 capability_evidence 只能写 none；不得把文档或推测写成实测。"
                 "零演员图文镜在 performance 写 no_performer_reason，character_contracts 为空对象。"
                 "不得新增未在剧本中的故事事实；表演合同必须来自当前 director_lock 的 performance_bible。")
+    photography_mode = base.get("photography_contract_mode")
+    if photography_mode is not None:
+        if photography_mode != photography_contract.MODE:
+            raise ValueError("CREW_PHOTOGRAPHY_CONTRACT_MODE_INVALID")
+        if task_id == "camera_art":
+            boundary += (
+                "\n\n【F02 摄影/灯光/美术合同】camera 必须写 shot_size、"
+                "focal_length_mm(14–135)、screen_axis、camera_side(left/right/center)、"
+                "eyeline、movement_trigger_event、start_frame、movement、move_trigger_s、"
+                "end_frame、lens_feel、reason；art 必须写 environment、light_source、"
+                "lighting_state、practical_sources、lighting_change_reason、"
+                "key_light_position、key_light_direction、color_path、safe_area、"
+                "texture、scene_geometry(anchor_positions/key_light_position/camera_axis)。"
+                "同一场景的几何与主光方向必须连续；跨轴必须写 axis_break_reason 并进入人工复核。"
+                "不得只写“电影感/高级感/视觉冲击”等空词替代具体摄影选择。")
     serialized = json.dumps(request, ensure_ascii=False, sort_keys=True,
                             separators=(",", ":"), allow_nan=False)
     _check_json_size(serialized, MAX_CONTEXT_CHARS, "private prompt")
@@ -761,6 +829,9 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
     acting_mode = base.get("acting_contract_mode")
     if acting_mode is not None and acting_mode != acting_contract.MODE:
         raise ValueError("CREW_ACTING_CONTRACT_MODE_INVALID")
+    photography_mode = base.get("photography_contract_mode")
+    if photography_mode is not None and photography_mode != photography_contract.MODE:
+        raise ValueError("CREW_PHOTOGRAPHY_CONTRACT_MODE_INVALID")
     # The production adapter cannot accept a downstream specialist's result
     # without the same locked director work order used to prepare its prompt.
     if task_id in director_command.DEPARTMENTS:
@@ -980,6 +1051,10 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
             report = acting_contract.inspect_delivery(base, state, payload)
             if report["blockers"]:
                 raise ValueError("CREW_ACTING_CONTRACT_BLOCKED")
+    if photography_mode is not None and task_id == "camera_art":
+        report = photography_contract.inspect_delivery(base, payload)
+        if report["blockers"]:
+            raise ValueError("CREW_PHOTOGRAPHY_CONTRACT_BLOCKED")
     # After existing domain-specific checks, enforce the EXACT schema that
     # the model received, including the bridged camera extensions. Preserve
     # existing informative static domain error codes but reject any remaining

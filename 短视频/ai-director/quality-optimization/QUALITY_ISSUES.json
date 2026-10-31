@@ -1540,7 +1540,7 @@
       "priority": "P1",
       "status": "audit_pending",
       "title": "摄影/灯光/美术世界观专业审计",
-      "observed_in": "agent_role_contracts camera_art; director_v2",
+      "observed_in": "agent_role_contracts camera_art; director_v2; director_photography.py; screenplay_series_delivery.build_per_episode_crew photography_contract_mode",
       "problem": "尚未独立以职业摄影指导标准审查可拍性、空间/摄影系统及 AI 参考图规划",
       "root_cause": "摄影任务结构字段覆盖不证明实际视觉品格",
       "solution": "梳理景别轴线、光源、反差、运动触发、镜头参考与不同模型光影保持能力",
@@ -1555,7 +1555,7 @@
       "evidence": {
         "implementation_pr": "",
         "commit_sha": "",
-        "automated_test": "",
+        "automated_test": "tests/test_director_photography.py::test_public_dialogue_scene_passes; tests/test_director_photography.py::test_axis_break_blocks_without_reason_and_reviews_with_reason; tests/test_director_photography.py::test_light_direction_jump_requires_motivated_change; tests/test_director_photography.py::test_scene_geometry_drift_blocks; tests/test_director_photography.py::test_missing_focal_length_blocks; tests/test_director_photography.py::test_generic_photography_language_is_review; tests/test_director_photography.py::test_schema_requires_photography_fields; tests/test_director_photography.py::test_strict_photography_validation_is_wired; tests/test_director_photography.py::test_legacy_mode_is_not_forced",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1566,6 +1566,12 @@
           "date": "2026-10-13",
           "status": "audit_pending",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-31",
+          "status": "audit_pending",
+          "note": "F02-00软件基线/严格合同：新增photography_contract_mode、director_photography；camera强制shot_size/焦距/screen_axis/camera_side/eyeline/movement_trigger_event，art强制lighting_state/practical_sources/key_light_position/direction/safe_area/scene_geometry；同场景几何漂移、无理由越轴、主光跳变阻断，有理由越轴/主光变化进入review，泛词进入review。公开合成双镜正反回归通过；独立摄影审片和真实媒体未完成，QO-F02保持audit_pending。",
           "evidence_ref": ""
         }
       ]

@@ -367,6 +367,9 @@ def build_per_episode_crew(handoff, dossier, breakdown):
         sub["acting_contract_mode"] = {
             "kind": "source_bound_acting_bible_required",
             "version": 1}
+        sub["photography_contract_mode"] = {
+            "kind": "source_bound_photography_plan_required",
+            "version": 1}
         sub["series_context"] = {
             "kind": "director_episode_from_complete_screenplay",
             "episode_id": episode["episode_id"],
