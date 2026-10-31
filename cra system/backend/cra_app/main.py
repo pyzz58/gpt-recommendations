@@ -82,6 +82,13 @@ from cra_app.safety.service import (
     SafetyService,
     SafetyValidationError,
 )
+from cra_app.site_files.api import router as site_files_router
+from cra_app.site_files.service import (
+    SiteFileConflict,
+    SiteFileNotFound,
+    SiteFileService,
+    SiteFileValidationError,
+)
 from cra_app.shared.api_contract import ErrorDetail, ErrorEnvelope
 from cra_app.shared.config import Settings, get_settings
 from cra_app.shared.db import (
@@ -123,6 +130,7 @@ def create_app(
     edc_import_service: EDCImportService | None = None,
     laboratory_service: LaboratoryService | None = None,
     safety_service: SafetyService | None = None,
+    site_file_service: SiteFileService | None = None,
 ) -> FastAPI:
     resolved_settings = settings or get_settings()
     own_engine = None
@@ -206,6 +214,14 @@ def create_app(
             ),
             queue=document_service.queue,
         )
+    if site_file_service is None:
+        site_file_service = SiteFileService(
+            session_factory,
+            governance=governance_service,
+            documents=document_service,
+            issues=issue_service,
+            monitoring=monitoring_service,
+        )
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -237,6 +253,7 @@ def create_app(
     application.state.edc_import_service = edc_import_service
     application.state.laboratory_service = laboratory_service
     application.state.safety_service = safety_service
+    application.state.site_file_service = site_file_service
 
     application.add_middleware(
         SessionMiddleware,
@@ -524,6 +541,33 @@ def create_app(
             content=_error("safety_conflict", str(exc)),
         )
 
+    @application.exception_handler(SiteFileNotFound)
+    async def site_file_not_found_error(
+        request: Request, exc: SiteFileNotFound
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=_error("site_file_not_found", str(exc)),
+        )
+
+    @application.exception_handler(SiteFileValidationError)
+    async def site_file_validation_error(
+        request: Request, exc: SiteFileValidationError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            content=_error("site_file_validation_failed", str(exc)),
+        )
+
+    @application.exception_handler(SiteFileConflict)
+    async def site_file_conflict_error(
+        request: Request, exc: SiteFileConflict
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=_error("site_file_conflict", str(exc)),
+        )
+
     @application.exception_handler(RequestValidationError)
     async def validation_error(
         request: Request, exc: RequestValidationError
@@ -590,6 +634,7 @@ def create_app(
     application.include_router(edc_import_router)
     application.include_router(laboratory_router)
     application.include_router(safety_router)
+    application.include_router(site_files_router)
 
     def custom_openapi():
         if application.openapi_schema:

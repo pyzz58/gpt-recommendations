@@ -437,6 +437,168 @@
         "title": "AddActionCommand",
         "type": "object"
       },
+      "AddDirectoryItemCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "acquisition_status": {
+            "default": "not_seen",
+            "enum": [
+              "not_seen",
+              "provided",
+              "unknown"
+            ],
+            "title": "Acquisition Status",
+            "type": "string"
+          },
+          "applicability_status": {
+            "default": "required",
+            "enum": [
+              "required",
+              "not_required",
+              "unknown"
+            ],
+            "title": "Applicability Status",
+            "type": "string"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "item_key": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$",
+            "title": "Item Key",
+            "type": "string"
+          },
+          "linked_action_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Action Id"
+          },
+          "linked_issue_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Issue Id"
+          },
+          "requirement": {
+            "anyOf": [
+              {
+                "maxLength": 10000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirement"
+          },
+          "source_anchor_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Anchor Id"
+          },
+          "source_refs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "title": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "verification_note": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verification Note"
+          },
+          "verification_status": {
+            "default": "pending",
+            "enum": [
+              "pending",
+              "qualified",
+              "unknown"
+            ],
+            "title": "Verification Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "item_key",
+          "title",
+          "source_refs"
+        ],
+        "title": "AddDirectoryItemCommand",
+        "type": "object"
+      },
+      "AddStageChecklistItemCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "item": {
+            "$ref": "#/components/schemas/StageChecklistItemInput"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "item"
+        ],
+        "title": "AddStageChecklistItemCommand",
+        "type": "object"
+      },
       "AnchorView": {
         "additionalProperties": false,
         "properties": {
@@ -2732,6 +2894,67 @@
         "title": "CreateActivationCommand",
         "type": "object"
       },
+      "CreateDirectoryReferenceCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "annotations": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 200,
+            "title": "Annotations",
+            "type": "array"
+          },
+          "directory_kind": {
+            "enum": [
+              "isf",
+              "tmf",
+              "combined",
+              "other"
+            ],
+            "title": "Directory Kind",
+            "type": "string"
+          },
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "label": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Label",
+            "type": "string"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "site_id",
+          "source_document_version_id",
+          "directory_kind",
+          "label"
+        ],
+        "title": "CreateDirectoryReferenceCommand",
+        "type": "object"
+      },
       "CreateIssueCommand": {
         "additionalProperties": false,
         "properties": {
@@ -3255,6 +3478,71 @@
         "title": "CreateSafetyAssessmentCommand",
         "type": "object"
       },
+      "CreateStageChecklistCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StageChecklistItemInput"
+            },
+            "maxItems": 200,
+            "minItems": 1,
+            "title": "Items",
+            "type": "array"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "stage": {
+            "enum": [
+              "startup",
+              "closeout"
+            ],
+            "title": "Stage",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "site_id",
+          "stage",
+          "title",
+          "source_refs",
+          "items"
+        ],
+        "title": "CreateStageChecklistCommand",
+        "type": "object"
+      },
       "CreateSubjectCommand": {
         "additionalProperties": false,
         "properties": {
@@ -3371,6 +3659,55 @@
           "status"
         ],
         "title": "DependencyState",
+        "type": "object"
+      },
+      "DirectoryHistoryView": {
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "details": {
+            "additionalProperties": true,
+            "title": "Details",
+            "type": "object"
+          },
+          "event_type": {
+            "title": "Event Type",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "site_file_item_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Site File Item Id"
+          }
+        },
+        "required": [
+          "id",
+          "site_file_item_id",
+          "event_type",
+          "actor_id",
+          "details",
+          "occurred_at"
+        ],
+        "title": "DirectoryHistoryView",
         "type": "object"
       },
       "DirectoryReferenceView": {
@@ -5164,6 +5501,230 @@
           }
         },
         "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HandoverActionView": {
+        "properties": {
+          "action_key": {
+            "title": "Action Key",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "requirement": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirement"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "action_key",
+          "kind",
+          "status",
+          "requirement"
+        ],
+        "title": "HandoverActionView",
+        "type": "object"
+      },
+      "HandoverChecklistItemView": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "stage_checklist_id": {
+            "format": "uuid",
+            "title": "Stage Checklist Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "status",
+          "stage_checklist_id"
+        ],
+        "title": "HandoverChecklistItemView",
+        "type": "object"
+      },
+      "HandoverIssueView": {
+        "properties": {
+          "actions": {
+            "items": {
+              "$ref": "#/components/schemas/HandoverActionView"
+            },
+            "title": "Actions",
+            "type": "array"
+          },
+          "aggregate_status": {
+            "title": "Aggregate Status",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "issue_number": {
+            "title": "Issue Number",
+            "type": "string"
+          },
+          "known_progress": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Known Progress"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "next_steps": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Next Steps",
+            "type": "array"
+          },
+          "original_finding": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Finding"
+          },
+          "source_refs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "issue_number",
+          "original_finding",
+          "location",
+          "known_progress",
+          "aggregate_status",
+          "source_refs",
+          "actions",
+          "next_steps"
+        ],
+        "title": "HandoverIssueView",
+        "type": "object"
+      },
+      "HandoverSummaryView": {
+        "properties": {
+          "center_close_approved": {
+            "default": false,
+            "title": "Center Close Approved",
+            "type": "boolean"
+          },
+          "generated_at": {
+            "format": "date-time",
+            "title": "Generated At",
+            "type": "string"
+          },
+          "has_carryover": {
+            "title": "Has Carryover",
+            "type": "boolean"
+          },
+          "incomplete_checklist_items": {
+            "items": {
+              "$ref": "#/components/schemas/HandoverChecklistItemView"
+            },
+            "title": "Incomplete Checklist Items",
+            "type": "array"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/HandoverIssueView"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "limitation": {
+            "title": "Limitation",
+            "type": "string"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "visit_id": {
+            "format": "uuid",
+            "title": "Visit Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "visit_id",
+          "study_id",
+          "site_id",
+          "generated_at",
+          "has_carryover",
+          "summary",
+          "issues",
+          "incomplete_checklist_items",
+          "limitation"
+        ],
+        "title": "HandoverSummaryView",
         "type": "object"
       },
       "IdentityView": {
@@ -9761,6 +10322,309 @@
         "title": "SessionView",
         "type": "object"
       },
+      "SiteDirectoryReferenceView": {
+        "additionalProperties": false,
+        "properties": {
+          "annotations": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Annotations",
+            "type": "array"
+          },
+          "change_status": {
+            "title": "Change Status",
+            "type": "string"
+          },
+          "changed_item_keys": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Changed Item Keys",
+            "type": "array"
+          },
+          "content_url": {
+            "title": "Content Url",
+            "type": "string"
+          },
+          "coverage_note": {
+            "title": "Coverage Note",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "directory_kind": {
+            "title": "Directory Kind",
+            "type": "string"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/DirectoryHistoryView"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SiteFileItemView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "missing_item_keys": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Item Keys",
+            "type": "array"
+          },
+          "mode": {
+            "title": "Mode",
+            "type": "string"
+          },
+          "new_item_keys": {
+            "items": {
+              "type": "string"
+            },
+            "title": "New Item Keys",
+            "type": "array"
+          },
+          "original_filename": {
+            "title": "Original Filename",
+            "type": "string"
+          },
+          "pending_verification_item_keys": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Pending Verification Item Keys",
+            "type": "array"
+          },
+          "previous_reference_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Reference Id"
+          },
+          "removed_item_keys": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Removed Item Keys",
+            "type": "array"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "study_id",
+          "site_id",
+          "source_document_version_id",
+          "original_filename",
+          "content_url",
+          "directory_kind",
+          "label",
+          "mode",
+          "annotations",
+          "revision",
+          "created_by",
+          "created_at",
+          "items",
+          "history",
+          "missing_item_keys",
+          "pending_verification_item_keys",
+          "coverage_note",
+          "previous_reference_id",
+          "change_status",
+          "new_item_keys",
+          "removed_item_keys",
+          "changed_item_keys"
+        ],
+        "title": "SiteDirectoryReferenceView",
+        "type": "object"
+      },
+      "SiteFileItemView": {
+        "properties": {
+          "acquisition_status": {
+            "title": "Acquisition Status",
+            "type": "string"
+          },
+          "applicability_status": {
+            "title": "Applicability Status",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "item_key": {
+            "title": "Item Key",
+            "type": "string"
+          },
+          "linked_action_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Action Id"
+          },
+          "linked_issue_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Issue Id"
+          },
+          "requirement": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirement"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "source_anchor_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Anchor Id"
+          },
+          "source_refs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "verification_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verification Note"
+          },
+          "verification_status": {
+            "title": "Verification Status",
+            "type": "string"
+          },
+          "verified_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verified At"
+          },
+          "verified_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verified By"
+          }
+        },
+        "required": [
+          "id",
+          "item_key",
+          "title",
+          "requirement",
+          "applicability_status",
+          "acquisition_status",
+          "verification_status",
+          "verification_note",
+          "source_anchor_id",
+          "source_refs",
+          "linked_issue_id",
+          "linked_action_id",
+          "verified_by",
+          "verified_at",
+          "revision"
+        ],
+        "title": "SiteFileItemView",
+        "type": "object"
+      },
       "SourceRef": {
         "additionalProperties": false,
         "properties": {
@@ -9824,6 +10688,309 @@
           "source_id"
         ],
         "title": "SourceRef",
+        "type": "object"
+      },
+      "StageChecklistHistoryView": {
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "details": {
+            "additionalProperties": true,
+            "title": "Details",
+            "type": "object"
+          },
+          "event_type": {
+            "title": "Event Type",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "stage_checklist_item_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stage Checklist Item Id"
+          }
+        },
+        "required": [
+          "id",
+          "stage_checklist_item_id",
+          "event_type",
+          "actor_id",
+          "details",
+          "occurred_at"
+        ],
+        "title": "StageChecklistHistoryView",
+        "type": "object"
+      },
+      "StageChecklistItemInput": {
+        "additionalProperties": false,
+        "properties": {
+          "item_key": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$",
+            "title": "Item Key",
+            "type": "string"
+          },
+          "requirement": {
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Requirement",
+            "type": "string"
+          },
+          "source_anchor_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Anchor Id"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "title": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "item_key",
+          "title",
+          "requirement",
+          "source_document_version_id",
+          "source_refs"
+        ],
+        "title": "StageChecklistItemInput",
+        "type": "object"
+      },
+      "StageChecklistItemView": {
+        "properties": {
+          "completed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed At"
+          },
+          "completed_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed By"
+          },
+          "completion_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completion Note"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "item_key": {
+            "title": "Item Key",
+            "type": "string"
+          },
+          "requirement": {
+            "title": "Requirement",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "source_anchor_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Anchor Id"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "item_key",
+          "title",
+          "requirement",
+          "source_document_version_id",
+          "source_anchor_id",
+          "source_refs",
+          "status",
+          "completion_note",
+          "completed_by",
+          "completed_at",
+          "revision"
+        ],
+        "title": "StageChecklistItemView",
+        "type": "object"
+      },
+      "StageChecklistView": {
+        "properties": {
+          "all_items_confirmed": {
+            "title": "All Items Confirmed",
+            "type": "boolean"
+          },
+          "center_close_approved": {
+            "default": false,
+            "title": "Center Close Approved",
+            "type": "boolean"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/StageChecklistHistoryView"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StageChecklistItemView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "limitation": {
+            "title": "Limitation",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "stage": {
+            "title": "Stage",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "study_id",
+          "site_id",
+          "stage",
+          "title",
+          "source_refs",
+          "revision",
+          "created_by",
+          "created_at",
+          "items",
+          "history",
+          "all_items_confirmed",
+          "limitation"
+        ],
+        "title": "StageChecklistView",
         "type": "object"
       },
       "SubjectIdentifierView": {
@@ -10152,6 +11319,145 @@
           "type"
         ],
         "title": "ValidationError",
+        "type": "object"
+      },
+      "VerifyFileCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "acquisition_status": {
+            "default": "not_seen",
+            "enum": [
+              "not_seen",
+              "provided",
+              "unknown"
+            ],
+            "title": "Acquisition Status",
+            "type": "string"
+          },
+          "applicability_status": {
+            "default": "required",
+            "enum": [
+              "required",
+              "not_required",
+              "unknown"
+            ],
+            "title": "Applicability Status",
+            "type": "string"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "linked_action_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Action Id"
+          },
+          "linked_issue_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Issue Id"
+          },
+          "site_file_item_id": {
+            "format": "uuid",
+            "title": "Site File Item Id",
+            "type": "string"
+          },
+          "verification_note": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verification Note"
+          },
+          "verification_status": {
+            "default": "pending",
+            "enum": [
+              "pending",
+              "qualified",
+              "unknown"
+            ],
+            "title": "Verification Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "site_file_item_id"
+        ],
+        "title": "VerifyFileCommand",
+        "type": "object"
+      },
+      "VerifyStageItemCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "status": {
+            "enum": [
+              "open",
+              "confirmed",
+              "not_applicable",
+              "unknown"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "status"
+        ],
+        "title": "VerifyStageItemCommand",
         "type": "object"
       },
       "VersionView": {
@@ -10971,6 +12277,177 @@
         ]
       }
     },
+    "/api/v1/directory-references/{reference_id}": {
+      "get": {
+        "operationId": "directory_reference_api_v1_directory_references__reference_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "reference_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Reference Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDirectoryReferenceView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Directory Reference",
+        "tags": [
+          "site-files"
+        ]
+      }
+    },
+    "/api/v1/document-directories": {
+      "post": {
+        "operationId": "create_directory_reference_api_v1_document_directories_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDirectoryReferenceCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDirectoryReferenceView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Directory Reference",
+        "tags": [
+          "site-files"
+        ]
+      }
+    },
+    "/api/v1/document-directories/{reference_id}/items": {
+      "post": {
+        "operationId": "add_directory_item_api_v1_document_directories__reference_id__items_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "reference_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Reference Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddDirectoryItemCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDirectoryReferenceView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Add Directory Item",
+        "tags": [
+          "site-files"
+        ]
+      }
+    },
     "/api/v1/document-versions/{document_version_id}/rule-candidates": {
       "post": {
         "operationId": "extract_rule_candidates_api_v1_document_versions__document_version_id__rule_candidates_post",
@@ -11679,6 +13156,65 @@
         "summary": "Confirm Fact",
         "tags": [
           "subjects"
+        ]
+      }
+    },
+    "/api/v1/file-verifications": {
+      "post": {
+        "operationId": "verify_file_api_v1_file_verifications_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyFileCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteDirectoryReferenceView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Verify File",
+        "tags": [
+          "site-files"
         ]
       }
     },
@@ -12548,6 +14084,49 @@
         ]
       }
     },
+    "/api/v1/monitoring-visits/{visit_id}/handover-summary": {
+      "get": {
+        "operationId": "handover_summary_api_v1_monitoring_visits__visit_id__handover_summary_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "visit_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Visit Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HandoverSummaryView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Handover Summary",
+        "tags": [
+          "site-files"
+        ]
+      }
+    },
     "/api/v1/monitoring-visits/{visit_id}/previsit-selection": {
       "post": {
         "operationId": "select_previsit_issues_api_v1_monitoring_visits__visit_id__previsit_selection_post",
@@ -13341,6 +14920,258 @@
         "summary": "Record Medical Safety Response",
         "tags": [
           "safety"
+        ]
+      }
+    },
+    "/api/v1/site-file-status": {
+      "get": {
+        "operationId": "site_file_status_api_v1_site_file_status_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Site Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SiteDirectoryReferenceView"
+                  },
+                  "title": "Response Site File Status Api V1 Site File Status Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Site File Status",
+        "tags": [
+          "site-files"
+        ]
+      }
+    },
+    "/api/v1/stage-checklist-items/{item_id}/verification": {
+      "post": {
+        "operationId": "verify_stage_checklist_item_api_v1_stage_checklist_items__item_id__verification_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyStageItemCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageChecklistView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Verify Stage Checklist Item",
+        "tags": [
+          "site-files"
+        ]
+      }
+    },
+    "/api/v1/stage-checklists": {
+      "get": {
+        "operationId": "stage_checklists_api_v1_stage_checklists_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Site Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/StageChecklistView"
+                  },
+                  "title": "Response Stage Checklists Api V1 Stage Checklists Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Stage Checklists",
+        "tags": [
+          "site-files"
+        ]
+      }
+    },
+    "/api/v1/stage-checklists/{checklist_id}/items": {
+      "post": {
+        "operationId": "add_stage_checklist_item_api_v1_stage_checklists__checklist_id__items_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "checklist_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Checklist Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddStageChecklistItemCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageChecklistView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Add Stage Checklist Item",
+        "tags": [
+          "site-files"
         ]
       }
     },
@@ -14373,6 +16204,75 @@
         "summary": "List Safety Assessments",
         "tags": [
           "safety"
+        ]
+      }
+    },
+    "/api/v1/studies/{study_id}/stage-checklists": {
+      "post": {
+        "operationId": "create_stage_checklist_api_v1_studies__study_id__stage_checklists_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStageChecklistCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageChecklistView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Stage Checklist",
+        "tags": [
+          "site-files"
         ]
       }
     },

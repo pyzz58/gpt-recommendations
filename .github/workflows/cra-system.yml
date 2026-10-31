@@ -13,6 +13,72 @@ concurrency:
   group: cra-system-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  cra-w10:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: 'cra system'
+    services:
+      postgres:
+        image: postgres:18.6-bookworm@sha256:5c4783a8cc3f0074912164f94dfa1be4e043438f0f707cf968d7af9a0d31a2c8
+        env:
+          POSTGRES_DB: cra_w10
+          POSTGRES_USER: cra
+          POSTGRES_PASSWORD: synthetic
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U cra -d cra_w10"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      CRA_ENV: test
+      CRA_DATABASE_URL: postgresql+psycopg://cra:synthetic@127.0.0.1:5432/cra_w10
+      CRA_TEST_DATABASE_URL: postgresql+psycopg://cra:synthetic@127.0.0.1:5432/cra_w10
+      CRA_COMMON_POLICY_PATH: tests/fixtures/rules/common_policy.json
+      CRA_MODEL_PROVIDER: disabled
+      CRA_OCR_PROVIDER: disabled
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13.15'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24.22.2'
+          cache: npm
+          cache-dependency-path: 'cra system/web/package-lock.json'
+      - name: Install locked dependencies
+        run: |
+          python -m pip install uv==0.12.13
+          uv sync --frozen --group dev
+          npm --prefix web ci
+      - name: migrate
+        run: uv run --frozen alembic upgrade head
+      - name: migration-roundtrip
+        run: |
+          uv run --frozen alembic downgrade 0009_review_remediation
+          uv run --frozen alembic upgrade head
+      - name: test
+        run: uv run --frozen pytest -vv tests/integration/test_site_files.py
+      - name: review-gate-self-test
+        run: >-
+          uv run --frozen pytest -vv
+          tests/test_review_gate.py
+          tests/test_task_evidence.py
+      - name: contracts
+        run: npm --prefix web run api:check
+      - name: frontend
+        run: |
+          npm --prefix web test
+          npm --prefix web run typecheck
+          npm --prefix web run build
+
   cra-w09:
     runs-on: ubuntu-24.04
     timeout-minutes: 75
@@ -138,9 +204,9 @@ jobs:
         run: uv run --frozen alembic upgrade head
       - name: test
         run: |
-          uv run --frozen pytest -q tests/integration/test_review_units.py
-          uv run --frozen pytest -q tests/integration/test_laboratory.py
-          uv run --frozen pytest -q tests/integration/test_recognition.py
+          uv run --frozen pytest -vv tests/integration/test_review_units.py
+          uv run --frozen pytest -vv tests/integration/test_laboratory.py
+          uv run --frozen pytest -vv tests/integration/test_recognition.py
       - name: lab-provider-evaluation
         run: >-
           uv run --frozen python -m cra_app.providers.evaluate_labs
@@ -311,9 +377,12 @@ jobs:
       - name: migrate
         run: uv run --frozen alembic upgrade head
       - name: test
-        run: uv run --frozen pytest -q tests/integration/test_subjects.py
+        run: uv run --frozen pytest -vv tests/integration/test_subjects.py
       - name: review-gate-self-test
-        run: uv run --frozen pytest -q tests/test_review_gate.py
+        run: >-
+          uv run --frozen pytest -vv
+          tests/test_review_gate.py
+          tests/test_task_evidence.py
       - name: contracts
         run: npm --prefix web run api:check
       - name: frontend
@@ -369,7 +438,7 @@ jobs:
         run: uv run --frozen alembic upgrade head
       - name: test
         run: >-
-          uv run --frozen pytest -q
+          uv run --frozen pytest -vv
           tests/integration/test_review_units.py
           tests/integration/test_rules.py
       - name: rule-provider-evaluation

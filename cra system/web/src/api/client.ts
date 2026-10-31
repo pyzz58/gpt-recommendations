@@ -70,6 +70,15 @@ export type SafetyQuestionView =
   components["schemas"]["SafetyQuestionView"];
 export type TimelySafetyAlertView =
   components["schemas"]["TimelySafetyAlertView"];
+export type DirectoryReferenceView =
+  components["schemas"]["SiteDirectoryReferenceView"];
+export type SiteFileItemView = components["schemas"]["SiteFileItemView"];
+export type StageChecklistView =
+  components["schemas"]["StageChecklistView"];
+export type StageChecklistItemView =
+  components["schemas"]["StageChecklistItemView"];
+export type HandoverSummaryView =
+  components["schemas"]["HandoverSummaryView"];
 
 type ErrorEnvelope = {
   error?: {
@@ -124,6 +133,251 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export function getCapabilities(): Promise<CapabilityResponse> {
   return request<CapabilityResponse>("/capabilities");
+}
+
+export function getSiteFileStatus(
+  studyId: string,
+  siteId: string
+): Promise<DirectoryReferenceView[]> {
+  return request<DirectoryReferenceView[]>(
+    `/api/v1/site-file-status?study_id=${encodeURIComponent(studyId)}&site_id=${encodeURIComponent(siteId)}`
+  );
+}
+
+export function createDirectoryReference(values: {
+  siteId: string;
+  sourceDocumentVersionId: string;
+  directoryKind: string;
+  label: string;
+  idempotencyKey: string;
+}): Promise<DirectoryReferenceView> {
+  return request<DirectoryReferenceView>("/api/v1/document-directories", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: values.idempotencyKey,
+      site_id: values.siteId,
+      source_document_version_id: values.sourceDocumentVersionId,
+      directory_kind: values.directoryKind,
+      label: values.label,
+      annotations: []
+    })
+  });
+}
+
+export function addDirectoryItem(
+  reference: DirectoryReferenceView,
+  values: {
+    itemKey: string;
+    title: string;
+    requirement: string;
+    applicabilityStatus: string;
+    acquisitionStatus: string;
+    verificationStatus: string;
+    sourceLocator: string;
+    issueId: string;
+    actionId: string;
+    idempotencyKey: string;
+  }
+): Promise<DirectoryReferenceView> {
+  return request<DirectoryReferenceView>(
+    `/api/v1/document-directories/${reference.id}/items`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: reference.revision,
+        idempotency_key: values.idempotencyKey,
+        item_key: values.itemKey,
+        title: values.title,
+        requirement: values.requirement || null,
+        applicability_status: values.applicabilityStatus,
+        acquisition_status: values.acquisitionStatus,
+        verification_status: values.verificationStatus,
+        verification_note: null,
+        source_refs: [
+          {
+            source_type: "directory_reference",
+            document_version_id: reference.source_document_version_id,
+            locator: values.sourceLocator || "原目录文件"
+          }
+        ],
+        linked_issue_id: values.issueId || null,
+        linked_action_id: values.actionId || null
+      })
+    }
+  );
+}
+
+export function verifySiteFile(
+  item: SiteFileItemView,
+  values: {
+    applicabilityStatus: string;
+    acquisitionStatus: string;
+    verificationStatus: string;
+    note: string;
+    issueId: string;
+    actionId: string;
+    idempotencyKey: string;
+  }
+): Promise<DirectoryReferenceView> {
+  return request<DirectoryReferenceView>("/api/v1/file-verifications", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: item.revision,
+      idempotency_key: values.idempotencyKey,
+      site_file_item_id: item.id,
+      applicability_status: values.applicabilityStatus,
+      acquisition_status: values.acquisitionStatus,
+      verification_status: values.verificationStatus,
+      verification_note: values.note || null,
+      linked_issue_id: values.issueId || null,
+      linked_action_id: values.actionId || null
+    })
+  });
+}
+
+export function getStageChecklists(
+  studyId: string,
+  siteId: string
+): Promise<StageChecklistView[]> {
+  return request<StageChecklistView[]>(
+    `/api/v1/stage-checklists?study_id=${encodeURIComponent(studyId)}&site_id=${encodeURIComponent(siteId)}`
+  );
+}
+
+export function createStageChecklist(values: {
+  studyId: string;
+  siteId: string;
+  stage: "startup" | "closeout";
+  title: string;
+  sourceDocumentVersionId: string;
+  itemKey: string;
+  itemTitle: string;
+  requirement: string;
+  sourceLocator: string;
+  idempotencyKey: string;
+}): Promise<StageChecklistView> {
+  const sourceRefs = [
+    {
+      source_type: "project_document",
+      document_version_id: values.sourceDocumentVersionId,
+      locator: values.sourceLocator || "项目资料"
+    }
+  ];
+  return request<StageChecklistView>(
+    `/api/v1/studies/${values.studyId}/stage-checklists`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: 0,
+        idempotency_key: values.idempotencyKey,
+        site_id: values.siteId,
+        stage: values.stage,
+        title: values.title,
+        source_refs: sourceRefs,
+        items: [
+          {
+            item_key: values.itemKey,
+            title: values.itemTitle,
+            requirement: values.requirement,
+            source_document_version_id: values.sourceDocumentVersionId,
+            source_refs: sourceRefs
+          }
+        ]
+      })
+    }
+  );
+}
+
+export function addStageChecklistItem(
+  checklist: StageChecklistView,
+  values: {
+    sourceDocumentVersionId: string;
+    itemKey: string;
+    itemTitle: string;
+    requirement: string;
+    sourceLocator: string;
+    idempotencyKey: string;
+  }
+): Promise<StageChecklistView> {
+  const sourceRefs = [
+    {
+      source_type: "project_document",
+      document_version_id: values.sourceDocumentVersionId,
+      locator: values.sourceLocator || "项目资料"
+    }
+  ];
+  return request<StageChecklistView>(
+    `/api/v1/stage-checklists/${checklist.id}/items`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: checklist.revision,
+        idempotency_key: values.idempotencyKey,
+        item: {
+          item_key: values.itemKey,
+          title: values.itemTitle,
+          requirement: values.requirement,
+          source_document_version_id: values.sourceDocumentVersionId,
+          source_refs: sourceRefs
+        }
+      })
+    }
+  );
+}
+
+export function verifyStageChecklistItem(
+  item: StageChecklistItemView,
+  values: {
+    status: string;
+    note: string;
+    idempotencyKey: string;
+  }
+): Promise<StageChecklistView> {
+  return request<StageChecklistView>(
+    `/api/v1/stage-checklist-items/${item.id}/verification`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: item.revision,
+        idempotency_key: values.idempotencyKey,
+        status: values.status,
+        note: values.note || null
+      })
+    }
+  );
+}
+
+export function getHandoverSummary(
+  visitId: string
+): Promise<HandoverSummaryView> {
+  return request<HandoverSummaryView>(
+    `/api/v1/monitoring-visits/${visitId}/handover-summary`
+  );
 }
 
 export function getScopes(): Promise<ScopeResponse> {

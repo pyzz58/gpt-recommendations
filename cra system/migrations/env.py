@@ -20,6 +20,7 @@ from cra_app.laboratory import models as laboratory_models  # noqa: E402,F401
 from cra_app.platform import jobs as platform_jobs  # noqa: E402,F401
 from cra_app.safety import models as safety_models  # noqa: E402,F401
 from cra_app.rules import models as rule_models  # noqa: E402,F401
+from cra_app.site_files import models as site_file_models  # noqa: E402,F401
 from cra_app.subjects import models as subject_models  # noqa: E402,F401
 from cra_app.shared.config import get_settings  # noqa: E402
 from cra_app.shared.db import Base  # noqa: E402

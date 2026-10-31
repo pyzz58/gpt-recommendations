@@ -163,3 +163,15 @@ ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping�
 - `safety_provider_runs`：模型解释的独立持久运行、请求快照、租约、尝试、provider/model/权重哈希、原文输出、grounding结果和错误；模型结果不能覆盖确定性维度或修改Action。
 
 分析键绑定事件事实范围、事实修订、研究配置法域、适用规则版本、检验比较revision、provider和活动安全跳过决定。相同输入幂等复用；provider替换或新事实/规则/跳过范围可产生新分析，旧维度、复核和医学答复保留。模型解释只能产生独立provider run和`limited/validated=false`能力状态，不能成为最终医学结论或自动完成依据。
+
+## 14. W10实际目录与阶段清单底座
+
+迁移`0010_site_files`增加：
+
+- `site_directory_references`：中心、M02目录文档版本、ISF/TMF类型、`reference_only/structured`模式、原目录锚点注释、revision和操作者。同一中心同一目录版本只建立一个参照。
+- `site_file_items`：目录参照下增量条目，分别保存`applicability_status`、`acquisition_status`和`verification_status`，附要求、来源锚点/位置、核实说明及可选M06 Issue/Action关联；取得与核实分列，数据库拒绝“未取得却已核实合格”。
+- `site_file_history`：参照创建、条目创建和状态更新的append-only历史，保存前后状态、操作者和时间；数据库触发器禁止更新/删除。
+- `stage_checklists`与`stage_checklist_items`：中心startup/closeout项目清单、每项要求、M02文档版本/锚点/原文位置、CRA确认状态和操作者/时间。每项必须有具体项目来源。
+- `stage_checklist_history`：清单及逐项状态历史，append-only；清单完成没有中心关闭批准字段。
+
+状态更新锁定目录参照或清单Item并使用显式revision，所有写命令与audit/idempotency同事务。目录更新不修改M06 Issue/Action；显式关联仅验证同中心和归属关系。交接摘要由M05阶段策略实时组合未完Issue和未完清单项，不另存审批或中心关闭状态。

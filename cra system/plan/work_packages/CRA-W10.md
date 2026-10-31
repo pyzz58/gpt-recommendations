@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W04、CRA-W06。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -25,6 +25,7 @@
 | `backend/cra_app/site_files/service.py` | code | 缺件、更新及复核 |
 | `backend/cra_app/site_files/api.py` | code | 目录接口 |
 | `backend/cra_app/monitoring/stages.py` | code | 阶段策略 |
+| `migrations/versions/0010_site_files.py` | migration | 目录状态、历史与阶段清单 |
 | `web/src/features/site-files/DirectoryReview.tsx` | code | 目录核查 |
 | `web/src/features/monitoring/StageChecklist.tsx` | code | 分阶段清单 |
 | `tests/integration/test_site_files.py` | test | 目录、阶段和交接 |
@@ -70,7 +71,7 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 目录新增、补齐和阶段复用
+- [available] 目录新增、补齐和阶段复用
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_site_files.py

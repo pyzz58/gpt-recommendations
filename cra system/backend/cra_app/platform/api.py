@@ -210,6 +210,11 @@ def capabilities(request: Request) -> CapabilityResponse:
                 status="limited",
             ),
             ModuleCapability(
+                module_id="M10",
+                label="ISF/TMF目录与阶段清单",
+                status="implemented",
+            ),
+            ModuleCapability(
                 module_id="M12",
                 label="可替换分析与识别provider",
                 status="limited",

@@ -459,10 +459,13 @@
       "task_id": "CRA-W10",
       "required_job": "cra-w10",
       "required_steps": [
-        "test"
+        "test",
+        "review-gate-self-test",
+        "contracts",
+        "frontend"
       ],
       "workflow_path": ".github/workflows/cra-system.yml",
-      "implementation_status": "to_implement",
+      "implementation_status": "implemented",
       "evidence_kind": "github_actions",
       "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
       "binding_paths": [
@@ -473,6 +476,11 @@
         "backend/cra_app/subjects/",
         "backend/cra_app/issues/",
         "backend/cra_app/site_files/",
+        "migrations/versions/0010_site_files.py",
+        "web/src/features/site-files/",
+        "web/src/features/monitoring/",
+        "web/src/api/",
+        "web/src/site-files.css",
         "pyproject.toml",
         "uv.lock",
         "tests/fixtures/"

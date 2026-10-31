@@ -203,3 +203,22 @@ Issue聚合状态只用于展示；Action分别保存`open/reported_done/complet
 | `POST /api/v1/safety-assessments/{id}/analysis-retry` | 失败或拒绝的独立模型解释运行重新持久入队；不重算或改写确定性候选，除非输入发生变化后创建新分析 |
 
 分析记录不可变；CRA复核、医学答复、M06关联和模型运行以独立记录追加。请求必须通过`event_fact_id`或其可唯一确定的AE事实限定事件范围，并可显式加入相关事实；同一患者不同AE和访视不能按fact_key混用。AE收集、分级、SAE严重性、相关性、预期性、AESI、DLT、PD及时报告分别保存。缺AESI/DLT/IB/知悉时间或项目时限时保持unknown，不从检验一致推断未发生AE或临床安全。检验一致但超出参考范围仍进入安全线索；字段跳过和stale比较分别处理。模型自由文本、虚拟引用、越界数字/结论均被拒绝，程序问题和未知保留。
+
+## 15. W10已实现目录与阶段清单入口
+
+目录和阶段清单写命令要求有效会话、服务端项目/中心范围、CSRF及幂等键。M10通过M02公开文档版本/内容读取原目录，通过M06公开Issue详情验证关联，不直接修改Issue或Action状态。
+
+| 接口 | 实现约束 |
+| --- | --- |
+| `POST /api/v1/document-directories` | 绑定当前中心一份`purpose=directory`的M02版本；首建为`reference_only`，原文件可直接对照 |
+| `GET /api/v1/directory-references/{id}` | 返回原文件只读入口、已建条目、状态历史、缺件和待核实项；未结构化范围不称全部合格 |
+| `GET /api/v1/site-file-status?study_id=&site_id=` | 按目录类型比较前一结构化版本，返回新增、不再列出和状态变化；任一版本未结构化时明确不能生成完整变化 |
+| `POST /api/v1/document-directories/{id}/items` | 增量建立条目，分别保存适用性、取得状态和核实状态；不得以已取得代替已核实合格 |
+| `POST /api/v1/file-verifications` | CRA点击保存状态，服务器记录actor/time；同一item revision不得静默覆盖，状态历史append-only |
+| `POST /api/v1/studies/{study_id}/stage-checklists` | 按项目资料建立startup或closeout清单；每项必须指回M02版本，可附锚点及原文位置 |
+| `GET /api/v1/stage-checklists?study_id=&site_id=` | 返回启动/关闭清单、来源、完成状态和append-only历史 |
+| `POST /api/v1/stage-checklists/{id}/items` | 从项目资料增量补充阶段要求，不覆盖原清单历史 |
+| `POST /api/v1/stage-checklist-items/{id}/verification` | 保存CRA对清单项的确认、不适用或未知；清单完成不生成中心关闭批准 |
+| `GET /api/v1/monitoring-visits/{id}/handover-summary` | 实时复用未完M06 Issue、原进展、后续Action及未完阶段清单；无遗留时可简述，不新增审批链 |
+
+目录条目的`applicability_status`、`acquisition_status`、`verification_status`分别取值`required/not_required/unknown`、`not_seen/provided/unknown`、`pending/qualified/unknown`；数据库拒绝“未取得却已核实合格”。M06 Action仅作为显式关联，M10更新文件状态不会自动关闭或重开Action。新增目录版本另建参照，旧版本和每次状态变化保留。阶段清单完成、handover生成和数据库状态都不代表中心获准关闭。

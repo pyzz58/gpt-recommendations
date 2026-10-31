@@ -140,6 +140,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/directory-references/{reference_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Directory Reference */
+        get: operations["directory_reference_api_v1_directory_references__reference_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/document-directories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Directory Reference */
+        post: operations["create_directory_reference_api_v1_document_directories_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/document-directories/{reference_id}/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Directory Item */
+        post: operations["add_directory_item_api_v1_document_directories__reference_id__items_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/document-versions/{document_version_id}/rule-candidates": {
         parameters: {
             query?: never;
@@ -339,6 +390,23 @@ export interface paths {
         put?: never;
         /** Confirm Fact */
         post: operations["confirm_fact_api_v1_facts__fact_id__confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/file-verifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify File */
+        post: operations["verify_file_api_v1_file_verifications_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -600,6 +668,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/monitoring-visits/{visit_id}/handover-summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Handover Summary */
+        get: operations["handover_summary_api_v1_monitoring_visits__visit_id__handover_summary_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/monitoring-visits/{visit_id}/previsit-selection": {
         parameters: {
             query?: never;
@@ -838,6 +923,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/site-file-status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Site File Status */
+        get: operations["site_file_status_api_v1_site_file_status_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/stage-checklist-items/{item_id}/verification": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify Stage Checklist Item */
+        post: operations["verify_stage_checklist_item_api_v1_stage_checklist_items__item_id__verification_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/stage-checklists": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stage Checklists */
+        get: operations["stage_checklists_api_v1_stage_checklists_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/stage-checklists/{checklist_id}/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Stage Checklist Item */
+        post: operations["add_stage_checklist_item_api_v1_stage_checklists__checklist_id__items_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/studies/{study_id}/carryover-imports/preview-text": {
         parameters: {
             query?: never;
@@ -1039,6 +1192,23 @@ export interface paths {
         get: operations["list_safety_assessments_api_v1_studies__study_id__safety_assessments_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/studies/{study_id}/stage-checklists": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Stage Checklist */
+        post: operations["create_stage_checklist_api_v1_studies__study_id__stage_checklists_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1391,6 +1561,57 @@ export interface components {
             expected_revision: number;
             /** Idempotency Key */
             idempotency_key: string;
+        };
+        /** AddDirectoryItemCommand */
+        AddDirectoryItemCommand: {
+            /**
+             * Acquisition Status
+             * @default not_seen
+             * @enum {string}
+             */
+            acquisition_status: "not_seen" | "provided" | "unknown";
+            /**
+             * Applicability Status
+             * @default required
+             * @enum {string}
+             */
+            applicability_status: "required" | "not_required" | "unknown";
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Item Key */
+            item_key: string;
+            /** Linked Action Id */
+            linked_action_id?: string | null;
+            /** Linked Issue Id */
+            linked_issue_id?: string | null;
+            /** Requirement */
+            requirement?: string | null;
+            /** Source Anchor Id */
+            source_anchor_id?: string | null;
+            /** Source Refs */
+            source_refs: {
+                [key: string]: unknown;
+            }[];
+            /** Title */
+            title: string;
+            /** Verification Note */
+            verification_note?: string | null;
+            /**
+             * Verification Status
+             * @default pending
+             * @enum {string}
+             */
+            verification_status: "pending" | "qualified" | "unknown";
+        };
+        /** AddStageChecklistItemCommand */
+        AddStageChecklistItemCommand: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            item: components["schemas"]["StageChecklistItemInput"];
         };
         /** AnchorView */
         AnchorView: {
@@ -2170,6 +2391,38 @@ export interface components {
             /** Supersedes Activation Id */
             supersedes_activation_id?: string | null;
         };
+        /** CreateDirectoryReferenceCommand */
+        CreateDirectoryReferenceCommand: {
+            /** Annotations */
+            annotations?: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Directory Kind
+             * @enum {string}
+             */
+            directory_kind: "isf" | "tmf" | "combined" | "other";
+            /**
+             * Expected Revision
+             * @default 0
+             * @constant
+             */
+            expected_revision: 0;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Label */
+            label: string;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Source Document Version Id
+             * Format: uuid
+             */
+            source_document_version_id: string;
+        };
         /** CreateIssueCommand */
         CreateIssueCommand: {
             /** Actions */
@@ -2343,6 +2596,35 @@ export interface components {
              */
             subject_id: string;
         };
+        /** CreateStageChecklistCommand */
+        CreateStageChecklistCommand: {
+            /**
+             * Expected Revision
+             * @default 0
+             * @constant
+             */
+            expected_revision: 0;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Items */
+            items: components["schemas"]["StageChecklistItemInput"][];
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /** Source Refs */
+            source_refs: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Stage
+             * @enum {string}
+             */
+            stage: "startup" | "closeout";
+            /** Title */
+            title: string;
+        };
         /** CreateSubjectCommand */
         CreateSubjectCommand: {
             /** Deidentified Label */
@@ -2396,6 +2678,29 @@ export interface components {
              * @enum {string}
              */
             status: "ready" | "unavailable";
+        };
+        /** DirectoryHistoryView */
+        DirectoryHistoryView: {
+            /** Actor Id */
+            actor_id: string;
+            /** Details */
+            details: {
+                [key: string]: unknown;
+            };
+            /** Event Type */
+            event_type: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /** Site File Item Id */
+            site_file_item_id: string | null;
         };
         /** DirectoryReferenceView */
         DirectoryReferenceView: {
@@ -3020,6 +3325,103 @@ export interface components {
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** HandoverActionView */
+        HandoverActionView: {
+            /** Action Key */
+            action_key: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Kind */
+            kind: string;
+            /** Requirement */
+            requirement: string | null;
+            /** Status */
+            status: string;
+        };
+        /** HandoverChecklistItemView */
+        HandoverChecklistItemView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Stage Checklist Id
+             * Format: uuid
+             */
+            stage_checklist_id: string;
+            /** Status */
+            status: string;
+            /** Title */
+            title: string;
+        };
+        /** HandoverIssueView */
+        HandoverIssueView: {
+            /** Actions */
+            actions: components["schemas"]["HandoverActionView"][];
+            /** Aggregate Status */
+            aggregate_status: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Issue Number */
+            issue_number: string;
+            /** Known Progress */
+            known_progress: string | null;
+            /** Location */
+            location: string | null;
+            /** Next Steps */
+            next_steps: string[];
+            /** Original Finding */
+            original_finding: string | null;
+            /** Source Refs */
+            source_refs: {
+                [key: string]: unknown;
+            }[];
+        };
+        /** HandoverSummaryView */
+        HandoverSummaryView: {
+            /**
+             * Center Close Approved
+             * @default false
+             */
+            center_close_approved: boolean;
+            /**
+             * Generated At
+             * Format: date-time
+             */
+            generated_at: string;
+            /** Has Carryover */
+            has_carryover: boolean;
+            /** Incomplete Checklist Items */
+            incomplete_checklist_items: components["schemas"]["HandoverChecklistItemView"][];
+            /** Issues */
+            issues: components["schemas"]["HandoverIssueView"][];
+            /** Limitation */
+            limitation: string;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+            /** Summary */
+            summary: string;
+            /**
+             * Visit Id
+             * Format: uuid
+             */
+            visit_id: string;
         };
         /** IdentityView */
         IdentityView: {
@@ -4622,6 +5024,110 @@ export interface components {
             authenticated: true;
             identity: components["schemas"]["IdentityView"];
         };
+        /** SiteDirectoryReferenceView */
+        SiteDirectoryReferenceView: {
+            /** Annotations */
+            annotations: {
+                [key: string]: unknown;
+            }[];
+            /** Change Status */
+            change_status: string;
+            /** Changed Item Keys */
+            changed_item_keys: string[];
+            /** Content Url */
+            content_url: string;
+            /** Coverage Note */
+            coverage_note: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Created By */
+            created_by: string;
+            /** Directory Kind */
+            directory_kind: string;
+            /** History */
+            history: components["schemas"]["DirectoryHistoryView"][];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Items */
+            items: components["schemas"]["SiteFileItemView"][];
+            /** Label */
+            label: string;
+            /** Missing Item Keys */
+            missing_item_keys: string[];
+            /** Mode */
+            mode: string;
+            /** New Item Keys */
+            new_item_keys: string[];
+            /** Original Filename */
+            original_filename: string;
+            /** Pending Verification Item Keys */
+            pending_verification_item_keys: string[];
+            /** Previous Reference Id */
+            previous_reference_id: string | null;
+            /** Removed Item Keys */
+            removed_item_keys: string[];
+            /** Revision */
+            revision: number;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Source Document Version Id
+             * Format: uuid
+             */
+            source_document_version_id: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+        };
+        /** SiteFileItemView */
+        SiteFileItemView: {
+            /** Acquisition Status */
+            acquisition_status: string;
+            /** Applicability Status */
+            applicability_status: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Item Key */
+            item_key: string;
+            /** Linked Action Id */
+            linked_action_id: string | null;
+            /** Linked Issue Id */
+            linked_issue_id: string | null;
+            /** Requirement */
+            requirement: string | null;
+            /** Revision */
+            revision: number;
+            /** Source Anchor Id */
+            source_anchor_id: string | null;
+            /** Source Refs */
+            source_refs: {
+                [key: string]: unknown;
+            }[];
+            /** Title */
+            title: string;
+            /** Verification Note */
+            verification_note: string | null;
+            /** Verification Status */
+            verification_status: string;
+            /** Verified At */
+            verified_at: string | null;
+            /** Verified By */
+            verified_by: string | null;
+        };
         /** SourceRef */
         SourceRef: {
             /**
@@ -4646,6 +5152,132 @@ export interface components {
              * @default null
              */
             version: string | null;
+        };
+        /** StageChecklistHistoryView */
+        StageChecklistHistoryView: {
+            /** Actor Id */
+            actor_id: string;
+            /** Details */
+            details: {
+                [key: string]: unknown;
+            };
+            /** Event Type */
+            event_type: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /** Stage Checklist Item Id */
+            stage_checklist_item_id: string | null;
+        };
+        /** StageChecklistItemInput */
+        StageChecklistItemInput: {
+            /** Item Key */
+            item_key: string;
+            /** Requirement */
+            requirement: string;
+            /** Source Anchor Id */
+            source_anchor_id?: string | null;
+            /**
+             * Source Document Version Id
+             * Format: uuid
+             */
+            source_document_version_id: string;
+            /** Source Refs */
+            source_refs: {
+                [key: string]: unknown;
+            }[];
+            /** Title */
+            title: string;
+        };
+        /** StageChecklistItemView */
+        StageChecklistItemView: {
+            /** Completed At */
+            completed_at: string | null;
+            /** Completed By */
+            completed_by: string | null;
+            /** Completion Note */
+            completion_note: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Item Key */
+            item_key: string;
+            /** Requirement */
+            requirement: string;
+            /** Revision */
+            revision: number;
+            /** Source Anchor Id */
+            source_anchor_id: string | null;
+            /**
+             * Source Document Version Id
+             * Format: uuid
+             */
+            source_document_version_id: string;
+            /** Source Refs */
+            source_refs: {
+                [key: string]: unknown;
+            }[];
+            /** Status */
+            status: string;
+            /** Title */
+            title: string;
+        };
+        /** StageChecklistView */
+        StageChecklistView: {
+            /** All Items Confirmed */
+            all_items_confirmed: boolean;
+            /**
+             * Center Close Approved
+             * @default false
+             */
+            center_close_approved: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Created By */
+            created_by: string;
+            /** History */
+            history: components["schemas"]["StageChecklistHistoryView"][];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Items */
+            items: components["schemas"]["StageChecklistItemView"][];
+            /** Limitation */
+            limitation: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /** Source Refs */
+            source_refs: {
+                [key: string]: unknown;
+            }[];
+            /** Stage */
+            stage: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+            /** Title */
+            title: string;
         };
         /** SubjectIdentifierView */
         SubjectIdentifierView: {
@@ -4769,6 +5401,56 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+        };
+        /** VerifyFileCommand */
+        VerifyFileCommand: {
+            /**
+             * Acquisition Status
+             * @default not_seen
+             * @enum {string}
+             */
+            acquisition_status: "not_seen" | "provided" | "unknown";
+            /**
+             * Applicability Status
+             * @default required
+             * @enum {string}
+             */
+            applicability_status: "required" | "not_required" | "unknown";
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Linked Action Id */
+            linked_action_id?: string | null;
+            /** Linked Issue Id */
+            linked_issue_id?: string | null;
+            /**
+             * Site File Item Id
+             * Format: uuid
+             */
+            site_file_item_id: string;
+            /** Verification Note */
+            verification_note?: string | null;
+            /**
+             * Verification Status
+             * @default pending
+             * @enum {string}
+             */
+            verification_status: "pending" | "qualified" | "unknown";
+        };
+        /** VerifyStageItemCommand */
+        VerifyStageItemCommand: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Note */
+            note?: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "open" | "confirmed" | "not_applicable" | "unknown";
         };
         /** VersionView */
         VersionView: {
@@ -5148,6 +5830,109 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CarryoverResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    directory_reference_api_v1_directory_references__reference_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                reference_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteDirectoryReferenceView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_directory_reference_api_v1_document_directories_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateDirectoryReferenceCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteDirectoryReferenceView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_directory_item_api_v1_document_directories__reference_id__items_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                reference_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddDirectoryItemCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteDirectoryReferenceView"];
                 };
             };
             /** @description Validation Error */
@@ -5584,6 +6369,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ClinicalFactView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verify_file_api_v1_file_verifications_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerifyFileCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteDirectoryReferenceView"];
                 };
             };
             /** @description Validation Error */
@@ -6109,6 +6929,37 @@ export interface operations {
             };
         };
     };
+    handover_summary_api_v1_monitoring_visits__visit_id__handover_summary_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                visit_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HandoverSummaryView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     select_previsit_issues_api_v1_monitoring_visits__visit_id__previsit_selection_post: {
         parameters: {
             query?: never;
@@ -6574,6 +7425,144 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SafetyAssessmentView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    site_file_status_api_v1_site_file_status_get: {
+        parameters: {
+            query: {
+                study_id: string;
+                site_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteDirectoryReferenceView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verify_stage_checklist_item_api_v1_stage_checklist_items__item_id__verification_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerifyStageItemCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StageChecklistView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    stage_checklists_api_v1_stage_checklists_get: {
+        parameters: {
+            query: {
+                study_id: string;
+                site_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StageChecklistView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_stage_checklist_item_api_v1_stage_checklists__checklist_id__items_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                checklist_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddStageChecklistItemCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StageChecklistView"];
                 };
             };
             /** @description Validation Error */
@@ -7108,6 +8097,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SafetyAssessmentSummaryView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_stage_checklist_api_v1_studies__study_id__stage_checklists_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateStageChecklistCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StageChecklistView"];
                 };
             };
             /** @description Validation Error */

@@ -6,8 +6,10 @@ import { ImportPreview } from "../edc/ImportPreview";
 import { CarryoverReview } from "../issues/CarryoverReview";
 import { LabComparison } from "../laboratory/LabComparison";
 import { RecognitionReview } from "../laboratory/RecognitionReview";
+import { StageChecklist } from "../monitoring/StageChecklist";
 import { AssessmentPanel } from "../safety/AssessmentPanel";
 import { RuleWorkspace } from "../rules/RuleWorkspace";
+import { DirectoryReview } from "../site-files/DirectoryReview";
 import { SubjectTimeline } from "../subjects/SubjectTimeline";
 import {
   type WorkspaceSelection,
@@ -195,15 +197,15 @@ export function WorkspaceSelector({
           </article>
           <article className="context-card placeholder">
             <p className="eyebrow">当前模块</p>
-            <h2>资料、规则、患者、遗留、检验核对与安全教育</h2>
+            <h2>资料、规则、患者、遗留、目录、阶段清单与检验核对</h2>
             <p>
               上传私有合成资料，查看不可变版本和可回查原文；规则候选经用户确认后
               按事件日期解析适用版本；患者和类别断点分别续接，并从历史报告或
               track 带入本次遗留，从 EDC Excel 建立带范围的标准检验快照，
-              再把源检验自动读取候选先匹配实例、后核对字段；安全线索按AE、
-              分级、严重性、相关性、预期性、AESI、DLT及及时报告分别展开。
+              再把源检验自动读取候选先匹配实例、后核对字段；ISF/TMF原目录可先
+              直接对照，启动/关闭清单保留来源，交接复用原问题与当前进展。
             </p>
-            <span className="status-chip">W09 已接入</span>
+            <span className="status-chip">W10 已接入</span>
           </article>
         </section>
 
@@ -222,6 +224,14 @@ export function WorkspaceSelector({
               siteId={selectedSite.id}
             />
             <CarryoverReview
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+            <DirectoryReview
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+            <StageChecklist
               studyId={selectedStudy.id}
               siteId={selectedSite.id}
             />
