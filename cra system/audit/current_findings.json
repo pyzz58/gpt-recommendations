@@ -32,8 +32,8 @@
       ],
       "closure_evidence": {
         "kind": "github_actions",
-        "run_id": 41251079001,
-        "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
+        "run_id": 41254143718,
+        "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
         "job_name": "cra-w05",
         "test_cases": [
           "tests/integration/test_subjects.py::test_branch_target_preserves_window_and_selection_context",
@@ -64,8 +64,8 @@
       ],
       "closure_evidence": {
         "kind": "github_actions",
-        "run_id": 41248250769,
-        "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+        "run_id": 41254143718,
+        "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
         "job_name": "cra-w04",
         "test_cases": [
           "tests/integration/test_rules.py::test_shared_project_rule_can_have_independent_site_adoption_dates",
@@ -96,8 +96,8 @@
       ],
       "closure_evidence": {
         "kind": "github_actions",
-        "run_id": 41248250769,
-        "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+        "run_id": 41254143718,
+        "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
         "job_name": "cra-w08",
         "test_cases": [
           "tests/integration/test_laboratory.py::test_succeeded_job_redelivery_is_noop_before_provider",

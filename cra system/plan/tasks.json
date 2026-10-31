@@ -98,7 +98,7 @@
         "M01",
         "M14"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
@@ -106,7 +106,8 @@
         "CRA-R040"
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w01 的真实 PostgreSQL 18.6 migrate/test 在 2026-11-01 复核迁移和共享授权/事务依赖后通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w01 的真实 PostgreSQL 18.6 migrate/test 在 2026-11-01 复核迁移和共享授权/事务依赖后通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w01 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
       ],
       "completion_history": [
         {
@@ -246,6 +247,21 @@
             "tested_commit": "5148684064a57e50077dd32d02e76b57b2221fc4",
             "subject_digest": "560355fd4a8c8d5bc184f312c46c3108638c704e5305482e92f288137db3eccc"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W10 shared integration, migration, API and frontend regression revalidation completed.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w01 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W01",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "352e724ff4a0f143a896ef75b004219901bad63e8ab7e36a95e99e6463f76a6e"
+          }
         }
       ],
       "track": "v1a",
@@ -377,7 +393,14 @@
       "handoff_outputs": [
         "数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。"
       ],
-      "verification_profile": "CRA-W01"
+      "verification_profile": "CRA-W01",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W01",
+        "run_id": 41254143718,
+        "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+        "subject_digest": "352e724ff4a0f143a896ef75b004219901bad63e8ab7e36a95e99e6463f76a6e"
+      }
     },
     {
       "id": "CRA-W02",
@@ -389,7 +412,7 @@
         "M01",
         "M14"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
       "requirement_ids": [
         "CRA-R035",
@@ -397,7 +420,8 @@
         "CRA-R040"
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w02 的 PostgreSQL API、13 个前端测试、typecheck、build、OpenAPI contract、runtime smoke 和 devcontainer smoke 全部通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w02 的 PostgreSQL API、13 个前端测试、typecheck、build、OpenAPI contract、runtime smoke 和 devcontainer smoke 全部通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w02 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
       ],
       "completion_history": [
         {
@@ -522,6 +546,21 @@
             "run_id": 41245438323,
             "tested_commit": "5148684064a57e50077dd32d02e76b57b2221fc4",
             "subject_digest": "3ba23f147f7055c666f71083328a5c3f84a7adef1815e3a54487f9e7bc714fb0"
+          }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W10 shared integration, migration, API and frontend regression revalidation completed.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w02 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W02",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "fa75b9c391bf9ec38514369664872638f10a4e0d5b097f8958b235582ee5422e"
           }
         }
       ],
@@ -686,7 +725,14 @@
       "handoff_outputs": [
         "可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。"
       ],
-      "verification_profile": "CRA-W02"
+      "verification_profile": "CRA-W02",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W02",
+        "run_id": 41254143718,
+        "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+        "subject_digest": "fa75b9c391bf9ec38514369664872638f10a4e0d5b097f8958b235582ee5422e"
+      }
     },
     {
       "id": "CRA-W03",
@@ -698,7 +744,7 @@
         "M02",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。",
       "requirement_ids": [
         "CRA-R003",
@@ -709,7 +755,8 @@
         "CRA-R038"
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w03 的真实 PostgreSQL/S3 文档工作流、provider probe、contract 和前端检查全部通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w03 的真实 PostgreSQL/S3 文档工作流、provider probe、contract 和前端检查全部通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w03 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
       ],
       "completion_history": [
         {
@@ -820,6 +867,21 @@
             "run_id": 41245438323,
             "tested_commit": "5148684064a57e50077dd32d02e76b57b2221fc4",
             "subject_digest": "42e40fdf577419a6f291f87d440e0d0ad82d711c22df3ec120702675e277ce28"
+          }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W10 shared integration, migration, API and frontend regression revalidation completed.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w03 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W03",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "62a2aef232976196d267cd62956bd30fb4a0931eb7a1860c35726912797bf5f2"
           }
         }
       ],
@@ -980,7 +1042,14 @@
       "handoff_outputs": [
         "文件/锚点/作业接口，合成资料集和OCR依赖/资源可行性探测记录。"
       ],
-      "verification_profile": "CRA-W03"
+      "verification_profile": "CRA-W03",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W03",
+        "run_id": 41254143718,
+        "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+        "subject_digest": "62a2aef232976196d267cd62956bd30fb4a0931eb7a1860c35726912797bf5f2"
+      }
     },
     {
       "id": "CRA-W04",
@@ -992,7 +1061,7 @@
         "M03",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。",
       "requirement_ids": [
         "CRA-R002",
@@ -1011,7 +1080,8 @@
         "CRA-R041"
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；17项review-unit/规则PostgreSQL测试、规则provider评估、契约和前端通过；同源中心采用日与独立中心同编号规则并存验证完成。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；17项review-unit/规则PostgreSQL测试、规则provider评估、契约和前端通过；同源中心采用日与独立中心同编号规则并存验证完成。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w04 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
       ],
       "completion_history": [
         {
@@ -1122,6 +1192,21 @@
             "run_id": 41248250769,
             "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
             "subject_digest": "13521d2ec37a9c11fce187c210e87dd06858dd7ca4c29f8f299c60bb092ac594"
+          }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W10 shared integration, migration, API and frontend regression revalidation completed.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w04 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W04",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "13bc6100149e804a6bd25b607d560eed865cec6dd5ef3a99745e561ef43027d8"
           }
         }
       ],
@@ -1277,7 +1362,14 @@
       "handoff_outputs": [
         "候选规则树、用户修正、版本启用解析及独立条件反例结果。"
       ],
-      "verification_profile": "CRA-W04"
+      "verification_profile": "CRA-W04",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W04",
+        "run_id": 41254143718,
+        "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+        "subject_digest": "13bc6100149e804a6bd25b607d560eed865cec6dd5ef3a99745e561ef43027d8"
+      }
     },
     {
       "id": "CRA-W05",
@@ -1300,7 +1392,8 @@
         "CRA-R045"
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；15项PostgreSQL/API分支目标测试和4项review-gate自测通过；直接/容器目标、false/unknown/true、真实超窗、兄弟路径和多入口OR语义验证完成。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；15项PostgreSQL/API分支目标测试和4项review-gate自测通过；直接/容器目标、false/unknown/true、真实超窗、兄弟路径和多入口OR语义验证完成。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w05 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
       ],
       "completion_history": [
         {
@@ -1411,6 +1504,33 @@
             "run_id": 41251079001,
             "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
             "subject_digest": "2712bc34d2f6d3afda66c48e823d8333617b2981695f9332006828581e93e29e"
+          }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W10 shared integration, migration, API and frontend regression revalidation completed.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w05 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W05",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "42cf836cf602a822200a62d03f626f52d9a409f6c2b87a18f3af406b14ee07fb"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "Exact closed-finding CI-log verification changed a W05-bound tool; remain in progress until the tool source run is rebound.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W05",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "42cf836cf602a822200a62d03f626f52d9a409f6c2b87a18f3af406b14ee07fb"
           }
         }
       ],
@@ -1564,7 +1684,8 @@
         "CRA-R045"
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；W05依赖链重新验证后，遗留复核、一次确认整改和分项状态真实PostgreSQL回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；W05依赖链重新验证后，遗留复核、一次确认整改和分项状态真实PostgreSQL回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w06 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
       ],
       "completion_history": [
         {
@@ -1661,6 +1782,33 @@
             "run_id": 41251079001,
             "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
             "subject_digest": "2c592b02f72172fae7d717c2236755b30e7419a1f099a1bab4e89f437a6825e0"
+          }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W10 shared integration, migration, API and frontend regression revalidation completed.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w06 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W06",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "4cfc3204c73f4f934db2a34d006b1346689e545e2142a1e9b0def663388c7aab"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "Exact closed-finding CI-log verification changed a W05-bound tool; W05-W10 remain in progress until the tool source run is rebound.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W06",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "4cfc3204c73f4f934db2a34d006b1346689e545e2142a1e9b0def663388c7aab"
           }
         }
       ],
@@ -1819,7 +1967,8 @@
         "CRA-R034"
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；W05依赖链重新验证后，真实XLSX导入、不可变快照、契约和前端回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；W05依赖链重新验证后，真实XLSX导入、不可变快照、契约和前端回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w07 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
       ],
       "completion_history": [
         {
@@ -1902,6 +2051,33 @@
             "run_id": 41251079001,
             "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
             "subject_digest": "a375158e26881828e16e1eda8e9d3ae5da0685f5ef55c640b303903c3759f128"
+          }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W10 shared integration, migration, API and frontend regression revalidation completed.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w07 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W07",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "c984728bdb66bd14706309b55d528bb337d8d7f5d02d9daef2930d34454508ce"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "Exact closed-finding CI-log verification changed a W05-bound tool; W05-W10 remain in progress until the tool source run is rebound.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W07",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "c984728bdb66bd14706309b55d528bb337d8d7f5d02d9daef2930d34454508ce"
           }
         }
       ],
@@ -2028,7 +2204,8 @@
         "CRA-R038"
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；7项复核、13项检验和4项识别测试通过；真实Docling评估及既有关闭的复投/租约修正回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；7项复核、13项检验和4项识别测试通过；真实Docling评估及既有关闭的复投/租约修正回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w08 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
       ],
       "completion_history": [
         {
@@ -2097,6 +2274,33 @@
             "run_id": 41251079001,
             "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
             "subject_digest": "ceb19f83da8dc43ea211530a5a0e1f4120e5580766ed45e8f627e85178fe97e7"
+          }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W10 shared integration, migration, API and frontend regression revalidation completed.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w08 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W08",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "343176c0bf0af3b72dcf1e355bd3dbb30f35696f5f37d60576ede0d97af75ba5"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "Exact closed-finding CI-log verification changed a W05-bound tool; W05-W10 remain in progress until the tool source run is rebound.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W08",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "343176c0bf0af3b72dcf1e355bd3dbb30f35696f5f37d60576ede0d97af75ba5"
           }
         }
       ],
@@ -2414,7 +2618,8 @@
       ],
       "verification_profile": "CRA-W09",
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；65项受影响PostgreSQL/API测试、真实Qwen与Docling评估、契约和前端通过；W05分支目标修正已继承验证。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；65项受影响PostgreSQL/API测试、真实Qwen与Docling评估、契约和前端通过；W05分支目标修正已继承验证。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w09 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
       ],
       "completion_history": [
         {
@@ -2470,6 +2675,33 @@
             "tested_commit": "12a7b38d577066424cb7cec9e29378923eeef406",
             "subject_digest": "b604f28c0dccebbd5b5aad58264101e350e3dcebb2b325f486b68684f1fa8747"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W10 shared integration, migration, API and frontend regression revalidation completed.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w09 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W09",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "d134f1a27ee0824eae6351cc30c006f3c61b4a79a6d54b3d1c26cb3e38677361"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "Exact closed-finding CI-log verification changed a W05-bound tool; W05-W10 remain in progress until the tool source run is rebound.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W09",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "d134f1a27ee0824eae6351cc30c006f3c61b4a79a6d54b3d1c26cb3e38677361"
+          }
         }
       ]
     },
@@ -2484,7 +2716,7 @@
         "M05",
         "M10"
       ],
-    "status": "in_progress",
+      "status": "in_progress",
       "acceptance": "原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。",
       "requirement_ids": [
         "CRA-R001",
@@ -2594,7 +2826,39 @@
       "handoff_outputs": [
         "原目录直接对照及简单缺件状态，启动/关闭/交接复用已有资料和问题。"
       ],
-      "verification_profile": "CRA-W10"
+      "verification_profile": "CRA-W10",
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w10 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
+      ],
+      "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W10 shared integration, migration, API and frontend regression revalidation completed.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w10 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W10",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "6f210cdf0b6a27d7af27f9bc38c23aafe5becdce948aa50ae7af53f11bdb4b06"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "Exact closed-finding CI-log verification changed a W05-bound tool; W05-W10 remain in progress until the tool source run is rebound.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W10",
+            "run_id": 41254143718,
+            "tested_commit": "8c733e97ac35496ca463b171dd1cecfce73246a8",
+            "subject_digest": "6f210cdf0b6a27d7af27f9bc38c23aafe5becdce948aa50ae7af53f11bdb4b06"
+          }
+        }
+      ]
     },
     {
       "id": "CRA-W11",

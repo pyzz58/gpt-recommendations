@@ -7,10 +7,10 @@
 | 工作包 | 内容 | 前置 | 模块 | 状态 |
 | --- | --- | --- | --- | --- |
 | CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
-| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | in_progress |
-| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | in_progress |
-| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | in_progress |
-| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | in_progress |
+| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | verified |
+| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | verified |
+| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | verified |
+| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | verified |
 | CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | in_progress |
 | CRA-W06 | 实现遗留整理、提醒与点击确认整改 | CRA-W05 | M05、M06 | in_progress |
 | CRA-W07 | 实现EDC Excel检验快照导入 | CRA-W05 | M07 | in_progress |
@@ -39,6 +39,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w01 的真实 PostgreSQL 18.6 migrate/test 在 2026-11-01 复核迁移和共享授权/事务依赖后通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w01 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。
+
 ## CRA-W02 建立云上API和界面框架
 
 验收：在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。
@@ -46,6 +48,8 @@
 对应理论：CRA-R035、CRA-R036、CRA-R040
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w02 的 PostgreSQL API、13 个前端测试、typecheck、build、OpenAPI contract、runtime smoke 和 devcontainer smoke 全部通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w02 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。
 
 ## CRA-W03 实现资料接收、解析和来源定位
 
@@ -55,6 +59,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w03 的真实 PostgreSQL/S3 文档工作流、provider probe、contract 和前端检查全部通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w03 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。
+
 ## CRA-W04 实现规则候选提取及分层list
 
 验收：从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。
@@ -62,6 +68,8 @@
 对应理论：CRA-R002、CRA-R004、CRA-R005、CRA-R006、CRA-R007、CRA-R008、CRA-R009、CRA-R011、CRA-R019、CRA-R034、CRA-R035、CRA-R036、CRA-R038、CRA-R041
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；17项review-unit/规则PostgreSQL测试、规则provider评估、契约和前端通过；同源中心采用日与独立中心同编号规则并存验证完成。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w04 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。
 
 ## CRA-W05 实现患者事实、锚点与核查断点
 
@@ -71,6 +79,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；15项PostgreSQL/API分支目标测试和4项review-gate自测通过；直接/容器目标、false/unknown/true、真实超窗、兄弟路径和多入口OR语义验证完成。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w05 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。
+
 ## CRA-W06 实现遗留整理、提醒与点击确认整改
 
 验收：上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。
@@ -78,6 +88,8 @@
 对应理论：CRA-R001、CRA-R009、CRA-R012、CRA-R020、CRA-R021、CRA-R022、CRA-R023、CRA-R025、CRA-R026、CRA-R027、CRA-R028、CRA-R031、CRA-R041、CRA-R043、CRA-R045
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；W05依赖链重新验证后，遗留复核、一次确认整改和分项状态真实PostgreSQL回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w06 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。
 
 ## CRA-W07 实现EDC Excel检验快照导入
 
@@ -87,6 +99,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；W05依赖链重新验证后，真实XLSX导入、不可变快照、契约和前端回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w07 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。
+
 ## CRA-W08 实现检验源文件自动读取与EDC核对
 
 验收：支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。
@@ -94,6 +108,8 @@
 对应理论：CRA-R013、CRA-R015、CRA-R016、CRA-R017、CRA-R034、CRA-R035、CRA-R038
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；7项复核、13项检验和4项识别测试通过；真实Docling评估及既有关闭的复投/租约修正回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w08 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。
 
 ## CRA-W09 实现有依据的AE及PD分析
 
@@ -103,11 +119,15 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；65项受影响PostgreSQL/API测试、真实Qwen与Docling评估、契约和前端通过；W05分支目标修正已继承验证。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w09 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。
+
 ## CRA-W10 实现中心文件目录和其他阶段清单
 
 验收：原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。
 
 对应理论：CRA-R001、CRA-R003、CRA-R006、CRA-R024、CRA-R028、CRA-R032、CRA-R033、CRA-R045
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w10 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。
 
 ## CRA-W11 实现访视信、报告和Excel导出
 
