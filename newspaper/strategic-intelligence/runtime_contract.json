@@ -45,7 +45,9 @@
     "intelligence/editorial.py",
     "tests_runtime/test_editorial.py",
     "intelligence/original.py",
-    "tests_runtime/test_original.py"
+    "tests_runtime/test_original.py",
+    "intelligence/evidence.py",
+    "tests_runtime/test_evidence.py"
   ],
   "data_files": [
     "SOURCE_REGISTRY.json",
@@ -64,5 +66,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "5b6e5f86c85ba193edeb99f8e7c578dd5432245a5ce1f6cd7cd9d2dab851b5f6"
+  "spec_sha256": "4f6b0f7398a526030623ba97b7e416a1baee1756cf89525def734553ff9a340c"
 }

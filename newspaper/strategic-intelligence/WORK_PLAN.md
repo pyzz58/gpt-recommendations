@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`5b6e5f86c85ba193edeb99f8e7c578dd5432245a5ce1f6cd7cd9d2dab851b5f6`。
+当前规范SHA-256：`4f6b0f7398a526030623ba97b7e416a1baee1756cf89525def734553ff9a340c`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收12包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收13包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -60,7 +60,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 23 | [W22 独立参照与覆盖缺口接口](#w22) | 代码与接口工作包 | T02/T03 | [W20](#w20)、[W21](#w21) | 进行中 / CURRENT_BINDING |
 | 24 | [W23 初选、S8与当期取舍记录](#w23) | 代码与接口工作包 | T03 | [W15](#w15)、[W21](#w21) | 进行中 / CURRENT_BINDING |
 | 25 | [W24 原件取得、结构提取与用途控制](#w24) | 代码与接口工作包 | T04 | [W13](#w13)、[W17](#w17)、[W18](#w18)、[W23](#w23) | 进行中 / CURRENT_BINDING |
-| 26 | [W25 主张支持、计算与定向补证接口](#w25) | 代码与接口工作包 | T04/T05/R04 | [W24](#w24)、[W16](#w16) | 待开始 / CURRENT_BINDING |
+| 26 | [W25 主张支持、计算与定向补证接口](#w25) | 代码与接口工作包 | T04/T05/R04 | [W24](#w24)、[W16](#w16) | 进行中 / CURRENT_BINDING |
 | 27 | [W26 入选中文、节选边界与重要更新](#w26) | 代码与接口工作包 | T04/T03 | [W24](#w24)、[W25](#w25)、[W23](#w23) | 待开始 / CURRENT_BINDING |
 | 28 | [W27 M工序、共同研究与有限收口接口](#w27) | 代码与接口工作包 | T05/T07/R04 | [W16](#w16)、[W25](#w25)、[W19](#w19) | 待开始 / CURRENT_BINDING |
 | 29 | [W28 顾问任务、判断与增益提交](#w28) | 代码与接口工作包 | T06 | [W27](#w27) | 待开始 / CURRENT_BINDING |
@@ -1016,7 +1016,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：26/59；阶段：2；类型：代码与接口工作包。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W24](#w24)、[W16](#w16)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W24](#w24)、[W16](#w16)。
 
 前置尚未验收：[W16](#w16)、[W24](#w24)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -1046,7 +1046,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W25-EVIDENCE-AUDIT-20261031-001", "artifact_refs": ["intelligence/evidence.py", "intelligence/original.py", "intelligence/discovery.py", "intelligence/contracts.py", "tests_runtime/test_evidence.py", "audits/pr76-review-remediation-w25-20261031.json"], "validation_refs": ["tests_runtime/test_evidence.py (12 actual passing W25 tests)", "audits/pr76-review-remediation-w25-20261031.json"], "reviewer": "当前执行者实际离线检查精确节点、来源根、支持范围、十进制计算和补证结果；非真实语义支持、外部检索、专家、审稿或阶段批准", "result": "IN_PROGRESS", "scope": "W25离线接口：Claim与Evidence绑定W24的精确SourceIntake、结构节点和哈希；来源根从W21事件簇成员读取，同一根重复证据不增加独立根数。ClaimEvidenceAssessment显式记录支持/部分支持/反证/仅背景/无关/未决、适用范围、条件、不支持面、反证和未知，并只声明locator replay。CalculationRecord只运行受控Decimal加、减、乘、除和百分比变化，核节点值文本、单位文本、维度声明、源数据期、舍入和实际结果，不接受任意生成代码。SupplementRequest/Result可记录无新增证据、部分结果和实际新增SourceIntake/Evidence/Assessment，前后关系与影响分开；对象或范围变化强制S8复核。GPT Researcher试用适配未实现，当前明确拒绝而非伪造调用。十二项回归覆盖支持/部分/无关、同源重复、W16 Evidence交接、计算正反例、未执行代码、真实补证前后及S8标记。真实内容语义、W27条件失配、外部适配/预算和W38整链仍未验，整包不ACCEPTED。"}]
 
 <a id="w26"></a>
 ## W26｜入选中文、节选边界与重要更新
