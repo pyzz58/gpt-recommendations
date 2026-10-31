@@ -112,4 +112,4 @@ Browser checks against the local API and Vite used only synthetic data:
   email, report or EDC write-back was used. Real-format coverage, clinical
   appropriateness and time-saving benefit remain unvalidated.
 
-Next task by dependency after W08: CRA-W09.
+Next task by dependency after W09: CRA-W10.

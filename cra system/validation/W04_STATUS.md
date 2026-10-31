@@ -103,4 +103,4 @@ v2 with E3, and selecting candidate v3 opened it read-only.
 - No real clinical document, external model, patient fact, OCR, report or EDC
   write-back was used. W04 does not add those workflows.
 
-Next task by dependency after W08: CRA-W09.
+Next task by dependency after W09: CRA-W10.

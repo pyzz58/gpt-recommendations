@@ -120,9 +120,10 @@ rectangle at page 1/table 1/row 3. The comparison explicitly displayed
 - Only one synthetic text PDF and one independent synthetic image were used.
   There is no real-format clinical accuracy, approved trial, key-error threshold
   or full manual-workflow time comparison.
-- W09 medical/safety analysis, W11 reports, W14 difficult formats and EDC
-  write-back are not implemented. M06 receives only an explicitly selected
-  `edc_correction` action, not a PD or safety conclusion.
+- W09 medical/safety analysis was completed separately after this W08 record.
+  W11 reports, W14 difficult formats and EDC write-back remain unimplemented.
+  M06 receives only an explicitly selected `edc_correction` action from W08,
+  not a PD or safety conclusion.
 - Vite still warns about a main JavaScript chunk of approximately 2.1 MB.
 
-Next task by dependency after W08: CRA-W09.
+Next task by dependency after W09: CRA-W10.

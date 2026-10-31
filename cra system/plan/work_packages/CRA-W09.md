@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：in_progress；分支路线：v1a。
+状态：verified；分支路线：v1a。
 前置：CRA-W04、CRA-W06、CRA-W08。必须按实际verified状态核实。
 
 ## 临床工作目标

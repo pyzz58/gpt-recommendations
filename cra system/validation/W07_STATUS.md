@@ -113,4 +113,4 @@ actual UI confirmation.
   main JavaScript bundle is about 2.1 MB. This is a delivery/maintenance limit,
   not a correctness result.
 
-Next task by dependency after W08: CRA-W09.
+Next task by dependency after W09: CRA-W10.

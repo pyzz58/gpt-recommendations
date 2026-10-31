@@ -96,4 +96,4 @@ retention were visually checked.
 - W02 has no subject monitoring, documents, rules, laboratory OCR/comparison,
   reports or real clinical trial data. Those remain W03 onward.
 
-Next task by dependency after W08: CRA-W09.
+Next task by dependency after W09: CRA-W10.
