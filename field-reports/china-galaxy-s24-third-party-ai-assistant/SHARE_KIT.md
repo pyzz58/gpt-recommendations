@@ -3,9 +3,9 @@
 **Purpose:** Help others reproduce and critique an anonymized, paused Samsung Galaxy S24 assistant experiment. These are **drafts, not proof of an external posting**. Please follow the current rules of each destination before submitting. Avoid posting substantially identical messages to multiple communities.
 
 **Existing public report:** [Galaxy S24 China-market assistant field report](README.md)  
-**Proposed standalone repository:** \`galaxy-s24-china-ai-assistant-experiment\`  
+**Proposed standalone repository:** `galaxy-s24-china-ai-assistant-experiment`  
 **Repository description:** "Real-device Galaxy S24 CHC / One UI 8.5 experiment: side-key 101 vs 5, failed voice session, working ACTION_ASSIST, and STT limitations."  
-**Suggested GitHub Topics:** \`samsung\`, \`galaxy-s24\`, \`one-ui\`, \`android-16\`, \`android-assistant\`, \`bixby\`, \`action-assist\`, \`adb\`.
+**Suggested GitHub Topics:** `samsung`, `galaxy-s24`, `one-ui`, `android-16`, `android-assistant`, `bixby`, `action-assist`, `adb`.
 
 ## 1. SideKey GitHub issue — actual device findings
 
@@ -15,9 +15,9 @@
 
 > I tested the standard assistant route on a China-market Samsung Galaxy S24 (SM-S9210, CHC, Android 16 / One UI 8.5) and wanted to contribute a second device observation to the work documented by SideKey.
 >
-> Observed original settings: \`function_key_config_longpress_selected_item=long_press_wake_bixby\` and \`power_button_long_press=101\`. Selecting a third-party default assistant alone did not redirect the physical long press; Bixby still opened.
+> Observed original settings: `function_key_config_longpress_selected_item=long_press_wake_bixby` and `power_button_long_press=101`. Selecting a third-party default assistant alone did not redirect the physical long press; Bixby still opened.
 >
-> After temporarily setting \`power_button_long_press=5\` through ADB, SystemUI began invoking the selected third-party assistant. My conventional VoiceInteractionService could be invoked but its SessionService failed to bind with \`not found\` (exact cause unresolved). A separate Activity-only assistant using \`android.intent.action.ASSIST\` **did** work on the same device; SystemUI opened its AssistActivity and MainActivity. The same launch path later worked in the main app. The original setting (101) was restored after testing.
+> After temporarily setting `power_button_long_press=5` through ADB, SystemUI began invoking the selected third-party assistant. My conventional VoiceInteractionService could be invoked but its SessionService failed to bind with `not found` (exact cause unresolved). A separate Activity-only assistant using `android.intent.action.ASSIST` **did** work on the same device; SystemUI opened its AssistActivity and MainActivity. The same launch path later worked in the main app. The original setting (101) was restored after testing.
 >
 > This observation applies only to SM-S9210 / CHC / One UI 8.5. Reboot persistence was not tested. The app's cloud speech recognition did not complete, so this is a system-launch observation, **not** a finished Bixby replacement.
 >
@@ -35,9 +35,9 @@
 
 > I tried to make the physical side-key long press start a custom Android digital assistant on a Chinese-market Galaxy S24 (SM-S9210, Android 16 / One UI 8.5).
 >
-> I hit two distinct blockers. First, simply selecting my app as the default assistant did not override Samsung's \`power_button_long_press=101\` Bixby route. Temporarily using the framework assistant value \`5\` made SystemUI call the selected assistant. Second, my VoiceInteractionService was invoked, but Android failed to bind VoiceInteractionSessionService with \`not found\` even though the component existed in the installed APK. A different third-party assistant could bind its session, so I couldn't honestly call it a universal firmware ban.
+> I hit two distinct blockers. First, simply selecting my app as the default assistant did not override Samsung's `power_button_long_press=101` Bixby route. Temporarily using the framework assistant value `5` made SystemUI call the selected assistant. Second, my VoiceInteractionService was invoked, but Android failed to bind VoiceInteractionSessionService with `not found` even though the component existed in the installed APK. A different third-party assistant could bind its session, so I couldn't honestly call it a universal firmware ban.
 >
-> The surprising part: I removed the voice-service registration and instead exposed a standard \`ACTION_ASSIST\` Activity. The same phone then successfully launched my app through SystemUI from the physical side key, including in the main app package.
+> The surprising part: I removed the voice-service registration and instead exposed a standard `ACTION_ASSIST` Activity. The same phone then successfully launched my app through SystemUI from the physical side key, including in the main app package.
 >
 > The full Chinese voice pipeline still **did not** work: there was no usable standard RecognitionService, and cloud STT attempts eventually returned HTTP 401. The project is paused, but the side-key/Activity-only result may help others debugging Samsung assistant integration.
 >
