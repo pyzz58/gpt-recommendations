@@ -332,10 +332,12 @@
       "task_id": "CRA-W07",
       "required_job": "cra-w07",
       "required_steps": [
-        "test"
+        "test",
+        "contracts",
+        "frontend"
       ],
       "workflow_path": ".github/workflows/cra-system.yml",
-      "implementation_status": "to_implement",
+      "implementation_status": "implemented",
       "evidence_kind": "github_actions",
       "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
       "binding_paths": [
@@ -344,6 +346,16 @@
         "backend/cra_app/subjects/",
         "backend/cra_app/rules/",
         "backend/cra_app/documents/",
+      "backend/cra_app/edc_import/",
+      "backend/cra_app/main.py",
+      "backend/cra_app/platform/api.py",
+      "backend/cra_app/shared/config.py",
+      "migrations/env.py",
+      "migrations/versions/0006_edc_import.py",
+      "web/",
+      "contracts/",
+      "tests/integration/test_edc_import.py",
+      "validation/W07_DEPENDENCIES.md",
         "pyproject.toml",
         "uv.lock",
         "tests/fixtures/"

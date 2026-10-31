@@ -21,6 +21,13 @@ from cra_app.documents.service import (
     DocumentValidationError,
 )
 from cra_app.documents.storage import build_private_storage
+from cra_app.edc_import.api import router as edc_import_router
+from cra_app.edc_import.service import (
+    EDCConflict,
+    EDCImportService,
+    EDCNotFound,
+    EDCValidationError,
+)
 from cra_app.governance.api import router as governance_router
 from cra_app.governance.identity import IdentityProvider, build_identity_provider
 from cra_app.governance.service import (
@@ -97,6 +104,7 @@ def create_app(
     subject_service: SubjectService | None = None,
     issue_service: IssueService | None = None,
     monitoring_service: MonitoringService | None = None,
+    edc_import_service: EDCImportService | None = None,
 ) -> FastAPI:
     resolved_settings = settings or get_settings()
     own_engine = None
@@ -143,6 +151,12 @@ def create_app(
             documents=document_service,
             governance=governance_service,
         )
+    if edc_import_service is None:
+        edc_import_service = EDCImportService(
+            session_factory,
+            documents=document_service,
+            governance=governance_service,
+        )
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -171,6 +185,7 @@ def create_app(
     application.state.subject_service = subject_service
     application.state.issue_service = issue_service
     application.state.monitoring_service = monitoring_service
+    application.state.edc_import_service = edc_import_service
 
     application.add_middleware(
         SessionMiddleware,
@@ -377,6 +392,33 @@ def create_app(
             content=_error("issue_conflict", str(exc)),
         )
 
+    @application.exception_handler(EDCNotFound)
+    async def edc_not_found_error(
+        request: Request, exc: EDCNotFound
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=_error("edc_import_not_found", str(exc)),
+        )
+
+    @application.exception_handler(EDCValidationError)
+    async def edc_validation_error(
+        request: Request, exc: EDCValidationError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            content=_error("edc_import_validation_failed", str(exc)),
+        )
+
+    @application.exception_handler(EDCConflict)
+    async def edc_conflict_error(
+        request: Request, exc: EDCConflict
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=_error("edc_import_conflict", str(exc)),
+        )
+
     @application.exception_handler(RequestValidationError)
     async def validation_error(
         request: Request, exc: RequestValidationError
@@ -440,6 +482,7 @@ def create_app(
     application.include_router(subjects_router)
     application.include_router(issues_router)
     application.include_router(monitoring_router)
+    application.include_router(edc_import_router)
 
     def custom_openapi():
         if application.openapi_schema:

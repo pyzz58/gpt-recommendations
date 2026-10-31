@@ -14,6 +14,7 @@ if str(BACKEND_ROOT) not in sys.path:
 
 from cra_app.governance import models as governance_models  # noqa: E402,F401
 from cra_app.documents import models as document_models  # noqa: E402,F401
+from cra_app.edc_import import models as edc_import_models  # noqa: E402,F401
 from cra_app.issues import models as issue_models  # noqa: E402,F401
 from cra_app.platform import jobs as platform_jobs  # noqa: E402,F401
 from cra_app.rules import models as rule_models  # noqa: E402,F401

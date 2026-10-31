@@ -695,6 +695,137 @@ button:focus-visible {
   align-items: center;
 }
 
+.edc-workspace {
+  margin-top: 28px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: rgba(255, 254, 249, 0.84);
+}
+
+.edc-upload-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #f8f5ed;
+}
+
+.edc-upload-form label,
+.edc-mapping-panel > label,
+.edc-mapping-sheet label,
+.edc-row-settings label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.edc-upload-form button {
+  align-self: end;
+}
+
+.edc-preview-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.8fr);
+  gap: 18px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+.edc-preview-panel,
+.edc-mapping-panel,
+.edc-snapshot {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fffefa;
+}
+
+.edc-sheet-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.edc-sheet-tabs button {
+  display: grid;
+  gap: 2px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--green);
+  background: #f5f2e9;
+}
+
+.edc-sheet-tabs button.active {
+  color: #fff;
+  border-color: var(--green);
+  background: var(--green);
+}
+
+.edc-sheet-tabs small {
+  opacity: 0.68;
+}
+
+.edc-grid {
+  width: 100%;
+  height: auto;
+  min-height: 220px;
+  margin-top: 12px;
+  --ag-font-size: 12px;
+  --ag-header-background-color: #f2eee3;
+  --ag-border-color: #ded7c7;
+}
+
+.edc-mapping-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.edc-mapping-sheet {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #faf7ef;
+}
+
+.edc-mapping-sheet > summary {
+  cursor: pointer;
+}
+
+.edc-row-settings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.edc-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.inline-warning {
+  color: #7b5a1f;
+  font-size: 13px;
+}
+
+.formula-details {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.edc-snapshot {
+  margin-top: 20px;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -716,7 +847,11 @@ button:focus-visible {
   .login-page,
   .carryover-layout,
   .query-form,
-  .preview-candidate {
+  .preview-candidate,
+  .edc-upload-form,
+  .edc-preview-layout,
+  .edc-field-grid,
+  .edc-row-settings {
     grid-template-columns: 1fr;
   }
 

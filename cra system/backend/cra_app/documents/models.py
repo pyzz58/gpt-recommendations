@@ -26,6 +26,7 @@ from cra_app.shared.db import Base
 DOCUMENT_PURPOSES = (
     "rule",
     "fact",
+    "edc_export",
     "carryover_report",
     "track",
     "directory",
@@ -41,6 +42,7 @@ DOCUMENT_TYPES = (
     "manual",
     "report",
     "track",
+    "edc_export",
     "directory",
     "template",
     "text",
@@ -67,13 +69,14 @@ class SourceDocument(Base):
             "tenant_id", "study_id", "id", name="uq_source_documents_study_id"
         ),
         CheckConstraint(
-            "purpose IN ('rule','fact','carryover_report','track',"
+            "purpose IN ('rule','fact','edc_export','carryover_report','track',"
             "'directory','template','other')",
             name="ck_source_documents_purpose",
         ),
         CheckConstraint(
             "document_type IN ('protocol','ib','sop','monitoring_plan','qa',"
-            "'manual','report','track','directory','template','text','other')",
+            "'manual','report','track','edc_export','directory','template',"
+            "'text','other')",
             name="ck_source_documents_type",
         ),
         CheckConstraint("revision >= 1", name="ck_source_documents_revision"),

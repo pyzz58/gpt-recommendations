@@ -153,3 +153,18 @@ Issue、Action、Query和carryover写入要求有效会话、服务端项目/中
 | `GET /api/v1/carryover-imports/{id}`；`POST /api/v1/carryover-imports/{id}/confirm` | 预览→用户修正→确认导入；相同来源哈希和原编号幂等映射，已有Issue复用编号并追加来源/历史 |
 
 Issue聚合状态只用于展示；Action分别保存`open/reported_done/completed/needs_correction`。PD上报与数据更正可一完成一待办。导入候选的缺项保持unknown，用户修正与原文位置分别保存；重复文件不会重复建Issue。W06不接入或伪装M10目录全量状态，也不正式提交Query、外发或生成模板化信件。
+
+## 12. W07已实现EDC Excel入口
+
+预览上传先经W03文件签名/大小检查并存入私有源版本；actor、项目/中心和导出范围由服务端鉴权保存。公式只读取工作簿缓存，不执行公式、宏或嵌入内容。
+
+| 接口 | 实现约束 |
+| --- | --- |
+| `POST /api/v1/studies/{study_id}/edc-imports/preview` | multipart上传macro-free `.xlsx`，保存导出起止时间、范围声明、sheet/row/cell、原值、公式、缓存和建议列映射；相同幂等键不重复预览 |
+| `GET /api/v1/edc-imports/{id}` | 返回全部sheet元数据、采样行、公式缓存及同表头已确认映射 |
+| `POST /api/v1/edc-imports/{id}/confirm` | 用户确认sheet、表头和标准字段映射后，事务创建不可变快照、原始行及标准检验记录；可保存映射供同表头复用 |
+| `GET /api/v1/edc-snapshots/{id}` | 返回快照范围、sheet清单、原始行定位、公式/缓存及标准记录；不返回医学整体结论 |
+| `POST /api/v1/edc-snapshots/{id}/lookup` | 未命中固定返回`not_seen_in_export`和`edc_omission_inferred=false`，不得改写为EDC漏录 |
+| `GET /api/v1/studies/{study_id}/edc-import-mappings` | 按中心及可选表头指纹返回已确认映射，新导出预览复用而非重建 |
+
+映射至少覆盖受试者外部ID、检验项目、结果、采样日期或时间，以及初检/复查实例；同日初检与复查分别保存。标准记录保留operator、Decimal值、原文、单位、采样时间、报告日期、实例键、身份映射状态、验证问题及Excel行定位。相同源哈希、映射和导出范围重复确认返回原快照；更正导出另建快照。

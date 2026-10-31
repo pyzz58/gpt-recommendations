@@ -16,6 +16,8 @@
     "api:check": "npm run api:generate --silent && git -C .. diff --exit-code -- contracts/openapi.json web/src/api/generated.ts"
   },
   "dependencies": {
+    "ag-grid-community": "36.2.0",
+    "ag-grid-react": "36.2.0",
     "pdfjs-dist": "6.3.289",
     "react": "19.3.1",
     "react-dom": "19.3.1",

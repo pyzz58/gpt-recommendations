@@ -122,3 +122,16 @@ ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping�
 - `carryover_candidates`：候选原编号/问题/位置/建议/进展/行动、原文件source_refs、unknown字段、用户修正及导入Issue映射；相同来源、原编号和确认命令幂等。
 
 `Issue`聚合完成状态由Action派生，不是替代各Action的通用closed字段。`confirm-corrected`记录`completion_basis=user_confirmation`并由服务器取actor/time；`confirm-reported`仅用于PD上报。来源文件或文字缺位置、建议或行动时保持unknown。W06没有M10目录状态表、报告/信件表、Query自动提交或EDC写回。
+
+## 11. W07实际EDC Excel快照底座
+
+迁移`0006_edc_import`增加：
+
+- `edc_import_previews`：W03源文档版本、源哈希、导出起止时间/范围声明、表头指纹、解析器版本、建议映射、状态和revision。
+- `edc_preview_sheets`与`edc_preview_cells`：sheet状态、列标题、行列数量及原始文本、公式、缓存值、单元格类型和格式；不执行工作簿内容。
+- `edc_import_mappings`：按项目/中心与表头指纹保存已确认列映射，供后续同格式导出复用。
+- `edc_snapshots`：源哈希、映射/范围digest、导出范围、sheet清单、行/记录数量、映射revision和固定的`not_seen_in_export`语义；数据库触发器禁止更新/删除。
+- `edc_snapshot_rows`：每行原始值、公式、缓存值、Excel行anchor和内容哈希；不可变。
+- `edc_lab_records`：从用户确认映射形成的一行一检验项目标准记录，保留受试者映射、访视、原始/数值/operator、单位、采样精度、初检/复查实例键、报告日期、参考上下限、身份/验证状态及来源位置；不可变。
+
+来源资料用途和类型新增强制值`edc_export`。预览范围未知或为过滤导出时仍可保存快照，但本次未见只表达`not_seen_in_export`；不创建EDC漏录事实。W07不进行M08对象匹配或报告结论，不写回EDC。

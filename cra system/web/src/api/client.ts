@@ -43,6 +43,12 @@ export type QueryLinkView = components["schemas"]["QueryLinkView"];
 export type CarryoverResponse =
   components["schemas"]["CarryoverResponse"];
 export type WorkbenchView = components["schemas"]["WorkbenchView"];
+export type EDCPreviewView = components["schemas"]["EDCPreviewView"];
+export type EDCSnapshotView = components["schemas"]["EDCSnapshotView"];
+export type EDCMappingProfileView =
+  components["schemas"]["EDCMappingProfileView"];
+export type EDCSnapshotLookupView =
+  components["schemas"]["EDCSnapshotLookupView"];
 
 type ErrorEnvelope = {
   error?: {
@@ -888,6 +894,126 @@ export function confirmCarryoverImport(
         expected_revision: preview.import_record.revision,
         idempotency_key: crypto.randomUUID(),
         corrections
+      })
+    }
+  );
+}
+
+export function getEdcMappings(
+  studyId: string,
+  siteId: string,
+  headerSignature?: string
+): Promise<EDCMappingProfileView[]> {
+  const params = new URLSearchParams({ site_id: siteId });
+  if (headerSignature) {
+    params.set("header_signature", headerSignature);
+  }
+  return request<EDCMappingProfileView[]>(
+    `/api/v1/studies/${studyId}/edc-import-mappings?${params.toString()}`
+  );
+}
+
+export function previewEdcImport(values: {
+  studyId: string;
+  siteId: string;
+  title: string;
+  file: File;
+  exportScope: Record<string, unknown>;
+  exportStartedAt: string;
+  exportCompletedAt: string;
+  includedSheets: string[];
+  mappingProfileId?: string;
+  identityNamespace?: string;
+}): Promise<EDCPreviewView> {
+  const body = new FormData();
+  body.set("site_id", values.siteId);
+  body.set("title", values.title);
+  body.set("file", values.file);
+  body.set("export_scope_json", JSON.stringify(values.exportScope));
+  body.set("included_sheets_json", JSON.stringify(values.includedSheets));
+  body.set("identity_namespace", values.identityNamespace || "edc");
+  if (values.exportStartedAt) {
+    body.set("export_started_at", values.exportStartedAt);
+  }
+  if (values.exportCompletedAt) {
+    body.set("export_completed_at", values.exportCompletedAt);
+  }
+  if (values.mappingProfileId) {
+    body.set("mapping_profile_id", values.mappingProfileId);
+  }
+  return request<EDCPreviewView>(
+    `/api/v1/studies/${values.studyId}/edc-imports/preview`,
+    {
+      method: "POST",
+      headers: {
+        "Idempotency-Key": crypto.randomUUID(),
+        "X-CSRF-Token": csrfToken()
+      },
+      body
+    }
+  );
+}
+
+export function getEdcPreview(
+  previewId: string
+): Promise<EDCPreviewView> {
+  return request<EDCPreviewView>(`/api/v1/edc-imports/${previewId}`);
+}
+
+export function confirmEdcImport(values: {
+  preview: EDCPreviewView;
+  mapping: Record<string, unknown>;
+  exportScope: Record<string, unknown>;
+  identityNamespace: string;
+  saveMappingName: string;
+}): Promise<EDCSnapshotView> {
+  return request<EDCSnapshotView>(
+    `/api/v1/edc-imports/${values.preview.id}/confirm`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: values.preview.revision,
+        idempotency_key: crypto.randomUUID(),
+        mapping: values.mapping,
+        export_scope: values.exportScope,
+        identity_namespace: values.identityNamespace,
+        save_mapping_name: values.saveMappingName || null
+      })
+    }
+  );
+}
+
+export function getEdcSnapshot(
+  snapshotId: string
+): Promise<EDCSnapshotView> {
+  return request<EDCSnapshotView>(
+    `/api/v1/edc-snapshots/${snapshotId}`
+  );
+}
+
+export function lookupEdcSnapshot(
+  snapshotId: string,
+  values: {
+    subjectExternalId: string;
+    analyte: string;
+    collectedOn?: string;
+    instanceType?: string;
+  }
+): Promise<EDCSnapshotLookupView> {
+  return request<EDCSnapshotLookupView>(
+    `/api/v1/edc-snapshots/${snapshotId}/lookup`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        subject_external_id: values.subjectExternalId,
+        analyte: values.analyte,
+        collected_on: values.collectedOn || null,
+        instance_type: values.instanceType || null
       })
     }
   );

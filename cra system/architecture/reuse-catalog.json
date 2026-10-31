@@ -185,7 +185,7 @@
         "url": "https://github.com/ag-grid/ag-grid/releases/tag/release-36.2.0",
         "prerelease": false
       },
-      "release_snapshot_is_install_pin": false,
+      "release_snapshot_is_install_pin": true,
       "license_summary": "MIT (ag-grid-community/ag-grid-react only)",
       "license_path": "LICENSE.txt",
       "license_file_sha": "f1456e7c185b120949fb57793a98ee4d1f0d5ff8",
@@ -210,8 +210,8 @@
       ],
       "replaces": "核对表格的排序、筛选、虚拟滚动和自定义差异单元格",
       "retain": "行匹配和医学/规则判断在服务端，Excel由后端生成",
-      "installed": false,
-      "integration_verified": false,
+      "installed": true,
+      "integration_verified": true,
       "clinical_performance_verified": false
     },
     {

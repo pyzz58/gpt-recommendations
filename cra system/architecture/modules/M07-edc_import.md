@@ -1,6 +1,6 @@
 # M07 EDC检验数据导入与范围
 
-版本：4；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/edc_import/`。
+版本：4；状态：W07已实现macro-free XLSX多sheet预览、公式/缓存区分、确认列映射、导出范围、不可变原始行和标准检验记录；实际EDC格式覆盖及M08匹配比较仍待后续工作包。代码位置：`backend/cra_app/edc_import/`。
 
 ## 对应理论和任务
 

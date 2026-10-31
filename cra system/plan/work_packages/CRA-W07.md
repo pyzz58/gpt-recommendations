@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W05。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -27,6 +27,8 @@
 | `backend/cra_app/edc_import/api.py` | code | 导入接口 |
 | `web/src/features/edc/ImportPreview.tsx` | code | 映射、实例和范围 |
 | `tests/integration/test_edc_import.py` | test | 多sheet、公式及导出范围 |
+| `migrations/versions/0006_edc_import.py` | migration | EDC预览、可复用映射、不可变快照、原始行和标准检验记录 |
+| `validation/W07_DEPENDENCIES.md` | document | openpyxl及AG Grid Community/React版本、许可和复用边界 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -70,7 +72,7 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 映射、范围、复导和公式
+- [available] 映射、范围、复导和公式
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_edc_import.py

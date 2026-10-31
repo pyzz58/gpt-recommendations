@@ -260,6 +260,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/edc-imports/{preview_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Edc Preview */
+        get: operations["get_edc_preview_api_v1_edc_imports__preview_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/edc-imports/{preview_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm Edc Import */
+        post: operations["confirm_edc_import_api_v1_edc_imports__preview_id__confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/edc-snapshots/{snapshot_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Edc Snapshot */
+        get: operations["get_edc_snapshot_api_v1_edc_snapshots__snapshot_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/edc-snapshots/{snapshot_id}/lookup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Lookup Edc Snapshot */
+        post: operations["lookup_edc_snapshot_api_v1_edc_snapshots__snapshot_id__lookup_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/facts/{fact_id}/confirm": {
         parameters: {
             query?: never;
@@ -561,6 +629,40 @@ export interface paths {
         put?: never;
         /** Create Document */
         post: operations["create_document_api_v1_studies__study_id__documents_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/studies/{study_id}/edc-import-mappings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Edc Mappings */
+        get: operations["list_edc_mappings_api_v1_studies__study_id__edc_import_mappings_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/studies/{study_id}/edc-imports/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Edc Import */
+        post: operations["preview_edc_import_api_v1_studies__study_id__edc_imports_preview_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1154,6 +1256,39 @@ export interface components {
              */
             source_kind: string;
         };
+        /** Body_preview_edc_import_api_v1_studies__study_id__edc_imports_preview_post */
+        Body_preview_edc_import_api_v1_studies__study_id__edc_imports_preview_post: {
+            /** Export Completed At */
+            export_completed_at?: string | null;
+            /**
+             * Export Scope Json
+             * @default {}
+             */
+            export_scope_json: string;
+            /** Export Started At */
+            export_started_at?: string | null;
+            /** File */
+            file: string;
+            /**
+             * Identity Namespace
+             * @default edc
+             */
+            identity_namespace: string;
+            /**
+             * Included Sheets Json
+             * @default []
+             */
+            included_sheets_json: string;
+            /** Mapping Profile Id */
+            mapping_profile_id?: string | null;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /** Title */
+            title: string;
+        };
         /** BranchEvaluation */
         BranchEvaluation: {
             /** Actions */
@@ -1485,6 +1620,22 @@ export interface components {
             idempotency_key: string;
             /** Optional Note */
             optional_note?: string | null;
+        };
+        /** ConfirmEDCImportCommand */
+        ConfirmEDCImportCommand: {
+            /** Expected Revision */
+            expected_revision: number;
+            export_scope?: components["schemas"]["EDCExportScope"] | null;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Identity Namespace
+             * @default edc
+             */
+            identity_namespace: string;
+            mapping: components["schemas"]["EDCWorkbookMapping"];
+            /** Save Mapping Name */
+            save_mapping_name?: string | null;
         };
         /** ConfirmFactRequestBody */
         ConfirmFactRequestBody: {
@@ -1900,6 +2051,402 @@ export interface components {
             tenant_id: string;
             /** Title */
             title: string;
+        };
+        /** EDCExportScope */
+        EDCExportScope: {
+            /** Date End */
+            date_end?: string | null;
+            /** Date Start */
+            date_start?: string | null;
+            /**
+             * Declared Complete
+             * @default false
+             */
+            declared_complete: boolean;
+            /** Filters */
+            filters?: {
+                [key: string]: unknown;
+            };
+            /** Forms */
+            forms?: string[];
+            /** Note */
+            note?: string | null;
+            /** Sites */
+            sites?: string[];
+            /**
+             * Status
+             * @default unknown
+             * @enum {string}
+             */
+            status: "declared" | "unknown";
+            /** Subjects */
+            subjects?: string[];
+        };
+        /** EDCLabRecordView */
+        EDCLabRecordView: {
+            /** Analyte */
+            analyte: string;
+            /** Collected At */
+            collected_at: string | null;
+            /** Collected On */
+            collected_on: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Identity Status */
+            identity_status: string;
+            /** Instance Key */
+            instance_key: string;
+            /** Instance Type */
+            instance_type: string;
+            /** Instance Type Raw */
+            instance_type_raw: string | null;
+            /** Issues */
+            issues: string[];
+            /** Lower Limit */
+            lower_limit: string | null;
+            /** Numeric Value */
+            numeric_value: string | null;
+            /** Operator */
+            operator: string | null;
+            /** Precision */
+            precision: string;
+            /** Repeat Instance */
+            repeat_instance: string;
+            /** Report On */
+            report_on: string | null;
+            /**
+             * Snapshot Row Id
+             * Format: uuid
+             */
+            snapshot_row_id: string;
+            /** Source Ref */
+            source_ref: {
+                [key: string]: unknown;
+            };
+            /** Specimen */
+            specimen: string | null;
+            /** Subject External Id */
+            subject_external_id: string | null;
+            /** Subject Id */
+            subject_id: string | null;
+            /** Timezone Status */
+            timezone_status: string;
+            /** Unit Raw */
+            unit_raw: string | null;
+            /** Upper Limit */
+            upper_limit: string | null;
+            /** Validation Status */
+            validation_status: string;
+            /** Value Raw */
+            value_raw: string | null;
+            /** Value Type */
+            value_type: string;
+            /** Visit Key */
+            visit_key: string | null;
+        };
+        /** EDCMappingProfileView */
+        EDCMappingProfileView: {
+            /** Header Signature */
+            header_signature: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Mapping */
+            mapping: {
+                [key: string]: unknown;
+            };
+            /** Name */
+            name: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** EDCPreviewCellView */
+        EDCPreviewCellView: {
+            /** Cached Text */
+            cached_text: string | null;
+            /** Cell Type */
+            cell_type: string;
+            /** Coordinate */
+            coordinate: string;
+            /** Formula */
+            formula: string | null;
+            /** Number Format */
+            number_format: string | null;
+            /** Raw Text */
+            raw_text: string | null;
+        };
+        /** EDCPreviewRowView */
+        EDCPreviewRowView: {
+            /** Anchor */
+            anchor: string;
+            /** Cached Values */
+            cached_values: {
+                [key: string]: string | null;
+            };
+            /** Display Values */
+            display_values: {
+                [key: string]: string | null;
+            };
+            /** Formulas */
+            formulas: {
+                [key: string]: string;
+            };
+            /** Raw Values */
+            raw_values: {
+                [key: string]: string | null;
+            };
+            /** Row Number */
+            row_number: number;
+        };
+        /** EDCPreviewSheetView */
+        EDCPreviewSheetView: {
+            /** Formula Cells */
+            formula_cells: components["schemas"]["EDCPreviewCellView"][];
+            /** Header Row */
+            header_row: number | null;
+            /** Headers */
+            headers: string[];
+            /** Max Column */
+            max_column: number;
+            /** Max Row */
+            max_row: number;
+            /** Name */
+            name: string;
+            /** Ordinal */
+            ordinal: number;
+            /** Populated Rows */
+            populated_rows: number;
+            /** Preview Truncated */
+            preview_truncated: boolean;
+            /** Previewed Rows */
+            previewed_rows: number;
+            /** Rows */
+            rows: components["schemas"]["EDCPreviewRowView"][];
+            /** State */
+            state: string;
+            /** Value Types */
+            value_types: {
+                [key: string]: number;
+            };
+            /** Warnings */
+            warnings: string[];
+        };
+        /** EDCPreviewView */
+        EDCPreviewView: {
+            /** Export Completed At */
+            export_completed_at: string | null;
+            /** Export Scope */
+            export_scope: {
+                [key: string]: unknown;
+            };
+            /** Export Started At */
+            export_started_at: string | null;
+            /** Header Signature */
+            header_signature: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Identity Namespace */
+            identity_namespace: string;
+            /** Included Sheets */
+            included_sheets: string[];
+            /** Mapping Profile Id */
+            mapping_profile_id: string | null;
+            /** Mapping Profiles */
+            mapping_profiles: components["schemas"]["EDCMappingProfileView"][];
+            /** Parser Name */
+            parser_name: string;
+            /** Parser Version */
+            parser_version: string;
+            /** Replayed */
+            replayed: boolean;
+            /** Revision */
+            revision: number;
+            /**
+             * Scope Status
+             * @enum {string}
+             */
+            scope_status: "declared" | "unknown";
+            /** Sheets */
+            sheets: components["schemas"]["EDCPreviewSheetView"][];
+            /** Snapshot Id */
+            snapshot_id: string | null;
+            /**
+             * Source Document Version Id
+             * Format: uuid
+             */
+            source_document_version_id: string;
+            /** Source Sha256 */
+            source_sha256: string;
+            /** State */
+            state: string;
+            /** Suggested Mapping */
+            suggested_mapping: {
+                [key: string]: unknown;
+            };
+        };
+        /** EDCSheetMapping */
+        EDCSheetMapping: {
+            /** Columns */
+            columns?: {
+                [key: string]: string;
+            };
+            /** Data Start Row */
+            data_start_row: number;
+            /** Header Row */
+            header_row: number;
+            /**
+             * Included
+             * @default true
+             */
+            included: boolean;
+        };
+        /** EDCSnapshotLookupCommand */
+        EDCSnapshotLookupCommand: {
+            /** Analyte */
+            analyte: string;
+            /** Collected On */
+            collected_on?: string | null;
+            /** Instance Type */
+            instance_type?: string | null;
+            /** Subject External Id */
+            subject_external_id: string;
+        };
+        /** EDCSnapshotLookupView */
+        EDCSnapshotLookupView: {
+            /**
+             * Absence Semantics
+             * @default not_seen_in_export
+             * @constant
+             */
+            absence_semantics: "not_seen_in_export";
+            /**
+             * Edc Omission Inferred
+             * @default false
+             * @constant
+             */
+            edc_omission_inferred: false;
+            /** Record Ids */
+            record_ids: string[];
+            /**
+             * Scope Status
+             * @enum {string}
+             */
+            scope_status: "declared" | "unknown";
+            /**
+             * Snapshot Id
+             * Format: uuid
+             */
+            snapshot_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "seen_in_export" | "not_seen_in_export";
+        };
+        /** EDCSnapshotRowView */
+        EDCSnapshotRowView: {
+            /** Cached Values */
+            cached_values: {
+                [key: string]: unknown;
+            };
+            /** Formulas */
+            formulas: {
+                [key: string]: unknown;
+            };
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Raw Values */
+            raw_values: {
+                [key: string]: unknown;
+            };
+            /** Row Anchor */
+            row_anchor: string;
+            /** Row Hash */
+            row_hash: string;
+            /** Row Number */
+            row_number: number;
+            /** Sheet Name */
+            sheet_name: string;
+        };
+        /** EDCSnapshotView */
+        EDCSnapshotView: {
+            /**
+             * Absence Semantics
+             * @default not_seen_in_export
+             * @constant
+             */
+            absence_semantics: "not_seen_in_export";
+            /** Export Completed At */
+            export_completed_at: string | null;
+            /** Export Scope */
+            export_scope: {
+                [key: string]: unknown;
+            };
+            /** Export Started At */
+            export_started_at: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Mapping Profile Id */
+            mapping_profile_id: string | null;
+            /** Mapping Revision */
+            mapping_revision: number | null;
+            /**
+             * Preview Id
+             * Format: uuid
+             */
+            preview_id: string;
+            /** Record Count */
+            record_count: number;
+            /** Records */
+            records: components["schemas"]["EDCLabRecordView"][];
+            /** Replayed */
+            replayed: boolean;
+            /** Row Count */
+            row_count: number;
+            /** Rows */
+            rows: components["schemas"]["EDCSnapshotRowView"][];
+            /**
+             * Scope Status
+             * @enum {string}
+             */
+            scope_status: "declared" | "unknown";
+            /** Sheet Manifest */
+            sheet_manifest: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Source Document Version Id
+             * Format: uuid
+             */
+            source_document_version_id: string;
+            /** Source Sha256 */
+            source_sha256: string;
+        };
+        /** EDCWorkbookMapping */
+        EDCWorkbookMapping: {
+            /** Sheets */
+            sheets: {
+                [key: string]: components["schemas"]["EDCSheetMapping"];
+            };
         };
         /** EvaluateVisitRequirementsCommand */
         EvaluateVisitRequirementsCommand: {
@@ -3794,6 +4341,140 @@ export interface operations {
             };
         };
     };
+    get_edc_preview_api_v1_edc_imports__preview_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                preview_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EDCPreviewView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    confirm_edc_import_api_v1_edc_imports__preview_id__confirm_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                preview_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConfirmEDCImportCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EDCSnapshotView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_edc_snapshot_api_v1_edc_snapshots__snapshot_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                snapshot_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EDCSnapshotView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    lookup_edc_snapshot_api_v1_edc_snapshots__snapshot_id__lookup_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                snapshot_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EDCSnapshotLookupCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EDCSnapshotLookupView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     confirm_fact_api_v1_facts__fact_id__confirm_post: {
         parameters: {
             query?: never;
@@ -4427,6 +5108,78 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UploadResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_edc_mappings_api_v1_studies__study_id__edc_import_mappings_get: {
+        parameters: {
+            query: {
+                site_id: string;
+                header_signature?: string | null;
+            };
+            header?: never;
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EDCMappingProfileView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    preview_edc_import_api_v1_studies__study_id__edc_imports_preview_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_preview_edc_import_api_v1_studies__study_id__edc_imports_preview_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EDCPreviewView"];
                 };
             };
             /** @description Validation Error */

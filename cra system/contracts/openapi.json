@@ -857,6 +857,80 @@
         "title": "Body_import_fact_file_api_v1_studies__study_id__facts_import_file_post",
         "type": "object"
       },
+      "Body_preview_edc_import_api_v1_studies__study_id__edc_imports_preview_post": {
+        "properties": {
+          "export_completed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Export Completed At"
+          },
+          "export_scope_json": {
+            "default": "{}",
+            "title": "Export Scope Json",
+            "type": "string"
+          },
+          "export_started_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Export Started At"
+          },
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "type": "string"
+          },
+          "identity_namespace": {
+            "default": "edc",
+            "title": "Identity Namespace",
+            "type": "string"
+          },
+          "included_sheets_json": {
+            "default": "[]",
+            "title": "Included Sheets Json",
+            "type": "string"
+          },
+          "mapping_profile_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mapping Profile Id"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "site_id",
+          "title"
+        ],
+        "title": "Body_preview_edc_import_api_v1_studies__study_id__edc_imports_preview_post",
+        "type": "object"
+      },
       "BranchEvaluation": {
         "additionalProperties": false,
         "properties": {
@@ -1842,6 +1916,61 @@
           "actions"
         ],
         "title": "ConfirmCorrectedCommand",
+        "type": "object"
+      },
+      "ConfirmEDCImportCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "export_scope": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EDCExportScope"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "identity_namespace": {
+            "default": "edc",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Identity Namespace",
+            "type": "string"
+          },
+          "mapping": {
+            "$ref": "#/components/schemas/EDCWorkbookMapping"
+          },
+          "save_mapping_name": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Save Mapping Name"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "mapping"
+        ],
+        "title": "ConfirmEDCImportCommand",
         "type": "object"
       },
       "ConfirmFactRequestBody": {
@@ -3093,6 +3222,1145 @@
           "created_at"
         ],
         "title": "DocumentView",
+        "type": "object"
+      },
+      "EDCExportScope": {
+        "additionalProperties": false,
+        "properties": {
+          "date_end": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date End"
+          },
+          "date_start": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date Start"
+          },
+          "declared_complete": {
+            "default": false,
+            "title": "Declared Complete",
+            "type": "boolean"
+          },
+          "filters": {
+            "additionalProperties": true,
+            "title": "Filters",
+            "type": "object"
+          },
+          "forms": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 100,
+            "title": "Forms",
+            "type": "array"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "sites": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 500,
+            "title": "Sites",
+            "type": "array"
+          },
+          "status": {
+            "default": "unknown",
+            "enum": [
+              "declared",
+              "unknown"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "subjects": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 5000,
+            "title": "Subjects",
+            "type": "array"
+          }
+        },
+        "title": "EDCExportScope",
+        "type": "object"
+      },
+      "EDCLabRecordView": {
+        "properties": {
+          "analyte": {
+            "title": "Analyte",
+            "type": "string"
+          },
+          "collected_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collected At"
+          },
+          "collected_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collected On"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "identity_status": {
+            "title": "Identity Status",
+            "type": "string"
+          },
+          "instance_key": {
+            "title": "Instance Key",
+            "type": "string"
+          },
+          "instance_type": {
+            "title": "Instance Type",
+            "type": "string"
+          },
+          "instance_type_raw": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instance Type Raw"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "lower_limit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lower Limit"
+          },
+          "numeric_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Numeric Value"
+          },
+          "operator": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Operator"
+          },
+          "precision": {
+            "title": "Precision",
+            "type": "string"
+          },
+          "repeat_instance": {
+            "title": "Repeat Instance",
+            "type": "string"
+          },
+          "report_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Report On"
+          },
+          "snapshot_row_id": {
+            "format": "uuid",
+            "title": "Snapshot Row Id",
+            "type": "string"
+          },
+          "source_ref": {
+            "additionalProperties": true,
+            "title": "Source Ref",
+            "type": "object"
+          },
+          "specimen": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specimen"
+          },
+          "subject_external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject External Id"
+          },
+          "subject_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Id"
+          },
+          "timezone_status": {
+            "title": "Timezone Status",
+            "type": "string"
+          },
+          "unit_raw": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Raw"
+          },
+          "upper_limit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Upper Limit"
+          },
+          "validation_status": {
+            "title": "Validation Status",
+            "type": "string"
+          },
+          "value_raw": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value Raw"
+          },
+          "value_type": {
+            "title": "Value Type",
+            "type": "string"
+          },
+          "visit_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Visit Key"
+          }
+        },
+        "required": [
+          "id",
+          "snapshot_row_id",
+          "subject_id",
+          "subject_external_id",
+          "visit_key",
+          "analyte",
+          "value_raw",
+          "value_type",
+          "operator",
+          "numeric_value",
+          "unit_raw",
+          "collected_on",
+          "collected_at",
+          "precision",
+          "timezone_status",
+          "instance_type_raw",
+          "instance_type",
+          "repeat_instance",
+          "instance_key",
+          "report_on",
+          "specimen",
+          "lower_limit",
+          "upper_limit",
+          "identity_status",
+          "validation_status",
+          "issues",
+          "source_ref"
+        ],
+        "title": "EDCLabRecordView",
+        "type": "object"
+      },
+      "EDCMappingProfileView": {
+        "properties": {
+          "header_signature": {
+            "title": "Header Signature",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "mapping": {
+            "additionalProperties": true,
+            "title": "Mapping",
+            "type": "object"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "header_signature",
+          "mapping",
+          "revision",
+          "updated_at"
+        ],
+        "title": "EDCMappingProfileView",
+        "type": "object"
+      },
+      "EDCPreviewCellView": {
+        "properties": {
+          "cached_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cached Text"
+          },
+          "cell_type": {
+            "title": "Cell Type",
+            "type": "string"
+          },
+          "coordinate": {
+            "title": "Coordinate",
+            "type": "string"
+          },
+          "formula": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Formula"
+          },
+          "number_format": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Number Format"
+          },
+          "raw_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Text"
+          }
+        },
+        "required": [
+          "coordinate",
+          "raw_text",
+          "formula",
+          "cached_text",
+          "cell_type",
+          "number_format"
+        ],
+        "title": "EDCPreviewCellView",
+        "type": "object"
+      },
+      "EDCPreviewRowView": {
+        "properties": {
+          "anchor": {
+            "title": "Anchor",
+            "type": "string"
+          },
+          "cached_values": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Cached Values",
+            "type": "object"
+          },
+          "display_values": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Display Values",
+            "type": "object"
+          },
+          "formulas": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Formulas",
+            "type": "object"
+          },
+          "raw_values": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Raw Values",
+            "type": "object"
+          },
+          "row_number": {
+            "title": "Row Number",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "row_number",
+          "anchor",
+          "display_values",
+          "raw_values",
+          "formulas",
+          "cached_values"
+        ],
+        "title": "EDCPreviewRowView",
+        "type": "object"
+      },
+      "EDCPreviewSheetView": {
+        "properties": {
+          "formula_cells": {
+            "items": {
+              "$ref": "#/components/schemas/EDCPreviewCellView"
+            },
+            "title": "Formula Cells",
+            "type": "array"
+          },
+          "header_row": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Header Row"
+          },
+          "headers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Headers",
+            "type": "array"
+          },
+          "max_column": {
+            "title": "Max Column",
+            "type": "integer"
+          },
+          "max_row": {
+            "title": "Max Row",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "ordinal": {
+            "title": "Ordinal",
+            "type": "integer"
+          },
+          "populated_rows": {
+            "title": "Populated Rows",
+            "type": "integer"
+          },
+          "preview_truncated": {
+            "title": "Preview Truncated",
+            "type": "boolean"
+          },
+          "previewed_rows": {
+            "title": "Previewed Rows",
+            "type": "integer"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/EDCPreviewRowView"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          },
+          "value_types": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Value Types",
+            "type": "object"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "ordinal",
+          "state",
+          "max_row",
+          "max_column",
+          "header_row",
+          "headers",
+          "populated_rows",
+          "previewed_rows",
+          "preview_truncated",
+          "value_types",
+          "warnings",
+          "rows",
+          "formula_cells"
+        ],
+        "title": "EDCPreviewSheetView",
+        "type": "object"
+      },
+      "EDCPreviewView": {
+        "additionalProperties": false,
+        "properties": {
+          "export_completed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Export Completed At"
+          },
+          "export_scope": {
+            "additionalProperties": true,
+            "title": "Export Scope",
+            "type": "object"
+          },
+          "export_started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Export Started At"
+          },
+          "header_signature": {
+            "title": "Header Signature",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "identity_namespace": {
+            "title": "Identity Namespace",
+            "type": "string"
+          },
+          "included_sheets": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Included Sheets",
+            "type": "array"
+          },
+          "mapping_profile_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mapping Profile Id"
+          },
+          "mapping_profiles": {
+            "items": {
+              "$ref": "#/components/schemas/EDCMappingProfileView"
+            },
+            "title": "Mapping Profiles",
+            "type": "array"
+          },
+          "parser_name": {
+            "title": "Parser Name",
+            "type": "string"
+          },
+          "parser_version": {
+            "title": "Parser Version",
+            "type": "string"
+          },
+          "replayed": {
+            "title": "Replayed",
+            "type": "boolean"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "scope_status": {
+            "enum": [
+              "declared",
+              "unknown"
+            ],
+            "title": "Scope Status",
+            "type": "string"
+          },
+          "sheets": {
+            "items": {
+              "$ref": "#/components/schemas/EDCPreviewSheetView"
+            },
+            "title": "Sheets",
+            "type": "array"
+          },
+          "snapshot_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Id"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          },
+          "suggested_mapping": {
+            "additionalProperties": true,
+            "title": "Suggested Mapping",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "source_document_version_id",
+          "source_sha256",
+          "parser_name",
+          "parser_version",
+          "header_signature",
+          "export_scope",
+          "scope_status",
+          "export_started_at",
+          "export_completed_at",
+          "included_sheets",
+          "suggested_mapping",
+          "mapping_profile_id",
+          "identity_namespace",
+          "state",
+          "revision",
+          "snapshot_id",
+          "sheets",
+          "mapping_profiles",
+          "replayed"
+        ],
+        "title": "EDCPreviewView",
+        "type": "object"
+      },
+      "EDCSheetMapping": {
+        "additionalProperties": false,
+        "properties": {
+          "columns": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "propertyNames": {
+              "enum": [
+                "subject_external_id",
+                "visit_key",
+                "analyte",
+                "value_raw",
+                "unit",
+                "collected_on",
+                "collected_at",
+                "precision",
+                "instance_type",
+                "repeat_instance",
+                "report_on",
+                "specimen",
+                "lower_limit",
+                "upper_limit"
+              ]
+            },
+            "title": "Columns",
+            "type": "object"
+          },
+          "data_start_row": {
+            "maximum": 1000000.0,
+            "minimum": 2.0,
+            "title": "Data Start Row",
+            "type": "integer"
+          },
+          "header_row": {
+            "maximum": 10000.0,
+            "minimum": 1.0,
+            "title": "Header Row",
+            "type": "integer"
+          },
+          "included": {
+            "default": true,
+            "title": "Included",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "header_row",
+          "data_start_row"
+        ],
+        "title": "EDCSheetMapping",
+        "type": "object"
+      },
+      "EDCSnapshotLookupCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "analyte": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Analyte",
+            "type": "string"
+          },
+          "collected_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collected On"
+          },
+          "instance_type": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instance Type"
+          },
+          "subject_external_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Subject External Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subject_external_id",
+          "analyte"
+        ],
+        "title": "EDCSnapshotLookupCommand",
+        "type": "object"
+      },
+      "EDCSnapshotLookupView": {
+        "properties": {
+          "absence_semantics": {
+            "const": "not_seen_in_export",
+            "default": "not_seen_in_export",
+            "title": "Absence Semantics",
+            "type": "string"
+          },
+          "edc_omission_inferred": {
+            "const": false,
+            "default": false,
+            "title": "Edc Omission Inferred",
+            "type": "boolean"
+          },
+          "record_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Record Ids",
+            "type": "array"
+          },
+          "scope_status": {
+            "enum": [
+              "declared",
+              "unknown"
+            ],
+            "title": "Scope Status",
+            "type": "string"
+          },
+          "snapshot_id": {
+            "format": "uuid",
+            "title": "Snapshot Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "seen_in_export",
+              "not_seen_in_export"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "snapshot_id",
+          "status",
+          "scope_status",
+          "record_ids"
+        ],
+        "title": "EDCSnapshotLookupView",
+        "type": "object"
+      },
+      "EDCSnapshotRowView": {
+        "properties": {
+          "cached_values": {
+            "additionalProperties": true,
+            "title": "Cached Values",
+            "type": "object"
+          },
+          "formulas": {
+            "additionalProperties": true,
+            "title": "Formulas",
+            "type": "object"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "raw_values": {
+            "additionalProperties": true,
+            "title": "Raw Values",
+            "type": "object"
+          },
+          "row_anchor": {
+            "title": "Row Anchor",
+            "type": "string"
+          },
+          "row_hash": {
+            "title": "Row Hash",
+            "type": "string"
+          },
+          "row_number": {
+            "title": "Row Number",
+            "type": "integer"
+          },
+          "sheet_name": {
+            "title": "Sheet Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "sheet_name",
+          "row_number",
+          "row_anchor",
+          "raw_values",
+          "formulas",
+          "cached_values",
+          "row_hash"
+        ],
+        "title": "EDCSnapshotRowView",
+        "type": "object"
+      },
+      "EDCSnapshotView": {
+        "properties": {
+          "absence_semantics": {
+            "const": "not_seen_in_export",
+            "default": "not_seen_in_export",
+            "title": "Absence Semantics",
+            "type": "string"
+          },
+          "export_completed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Export Completed At"
+          },
+          "export_scope": {
+            "additionalProperties": true,
+            "title": "Export Scope",
+            "type": "object"
+          },
+          "export_started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Export Started At"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "mapping_profile_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mapping Profile Id"
+          },
+          "mapping_revision": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mapping Revision"
+          },
+          "preview_id": {
+            "format": "uuid",
+            "title": "Preview Id",
+            "type": "string"
+          },
+          "record_count": {
+            "title": "Record Count",
+            "type": "integer"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/EDCLabRecordView"
+            },
+            "title": "Records",
+            "type": "array"
+          },
+          "replayed": {
+            "title": "Replayed",
+            "type": "boolean"
+          },
+          "row_count": {
+            "title": "Row Count",
+            "type": "integer"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/EDCSnapshotRowView"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "scope_status": {
+            "enum": [
+              "declared",
+              "unknown"
+            ],
+            "title": "Scope Status",
+            "type": "string"
+          },
+          "sheet_manifest": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Sheet Manifest",
+            "type": "array"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "preview_id",
+          "source_document_version_id",
+          "source_sha256",
+          "mapping_profile_id",
+          "mapping_revision",
+          "export_scope",
+          "scope_status",
+          "export_started_at",
+          "export_completed_at",
+          "sheet_manifest",
+          "row_count",
+          "record_count",
+          "rows",
+          "records",
+          "replayed"
+        ],
+        "title": "EDCSnapshotView",
+        "type": "object"
+      },
+      "EDCWorkbookMapping": {
+        "additionalProperties": false,
+        "properties": {
+          "sheets": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/EDCSheetMapping"
+            },
+            "minProperties": 1,
+            "title": "Sheets",
+            "type": "object"
+          }
+        },
+        "required": [
+          "sheets"
+        ],
+        "title": "EDCWorkbookMapping",
         "type": "object"
       },
       "EvaluateVisitRequirementsCommand": {
@@ -7870,6 +9138,214 @@
         ]
       }
     },
+    "/api/v1/edc-imports/{preview_id}": {
+      "get": {
+        "operationId": "get_edc_preview_api_v1_edc_imports__preview_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "preview_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Preview Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EDCPreviewView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Edc Preview",
+        "tags": [
+          "edc-import"
+        ]
+      }
+    },
+    "/api/v1/edc-imports/{preview_id}/confirm": {
+      "post": {
+        "operationId": "confirm_edc_import_api_v1_edc_imports__preview_id__confirm_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "preview_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Preview Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmEDCImportCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EDCSnapshotView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Confirm Edc Import",
+        "tags": [
+          "edc-import"
+        ]
+      }
+    },
+    "/api/v1/edc-snapshots/{snapshot_id}": {
+      "get": {
+        "operationId": "get_edc_snapshot_api_v1_edc_snapshots__snapshot_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Snapshot Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EDCSnapshotView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Edc Snapshot",
+        "tags": [
+          "edc-import"
+        ]
+      }
+    },
+    "/api/v1/edc-snapshots/{snapshot_id}/lookup": {
+      "post": {
+        "operationId": "lookup_edc_snapshot_api_v1_edc_snapshots__snapshot_id__lookup_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Snapshot Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EDCSnapshotLookupCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EDCSnapshotLookupView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Lookup Edc Snapshot",
+        "tags": [
+          "edc-import"
+        ]
+      }
+    },
     "/api/v1/facts/{fact_id}/confirm": {
       "post": {
         "operationId": "confirm_fact_api_v1_facts__fact_id__confirm_post",
@@ -8949,6 +10425,158 @@
         "summary": "Create Document",
         "tags": [
           "documents"
+        ]
+      }
+    },
+    "/api/v1/studies/{study_id}/edc-import-mappings": {
+      "get": {
+        "operationId": "list_edc_mappings_api_v1_studies__study_id__edc_import_mappings_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Site Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "header_signature",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 64,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Header Signature"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EDCMappingProfileView"
+                  },
+                  "title": "Response List Edc Mappings Api V1 Studies  Study Id  Edc Import Mappings Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Edc Mappings",
+        "tags": [
+          "edc-import"
+        ]
+      }
+    },
+    "/api/v1/studies/{study_id}/edc-imports/preview": {
+      "post": {
+        "operationId": "preview_edc_import_api_v1_studies__study_id__edc_imports_preview_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_preview_edc_import_api_v1_studies__study_id__edc_imports_preview_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EDCPreviewView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Preview Edc Import",
+        "tags": [
+          "edc-import"
         ]
       }
     },

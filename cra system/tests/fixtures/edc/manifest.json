@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "source": "pure_synthetic",
+  "generator": "tests/fixtures/edc/generate_fixtures.py",
+  "artifacts": [
+    {
+      "artifact_id": "EDC-LAB-XLSX-DEV",
+      "file": "edc/artifacts/synthetic_edc_lab.xlsx",
+      "format": "xlsx",
+      "sha256": "4ddc541175828b38fd1667d9226f28a8fba9a5c57dddc06816e0392409bb1a7b",
+      "expected": {
+        "sheets": [
+          "Hematology",
+          "Chemistry",
+          "Internal Notes"
+        ],
+        "cached_formula": {
+          "coordinate": "Hematology!D3",
+          "formula": "=IF(1=1,119,0)",
+          "cached": "119"
+        },
+        "missing_formula_cache": "Chemistry!D2",
+        "same_day_instances": [
+          "Initial",
+          "Repeat"
+        ]
+      }
+    }
+  ]
+}

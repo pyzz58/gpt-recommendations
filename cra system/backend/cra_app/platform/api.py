@@ -165,6 +165,11 @@ def capabilities(request: Request) -> CapabilityResponse:
                 status="implemented",
             ),
             ModuleCapability(
+                module_id="M07",
+                label="EDC Excel检验快照导入",
+                status="implemented",
+            ),
+            ModuleCapability(
                 module_id="M08",
                 label="检验自动读取与核对",
                 status="not_implemented",
