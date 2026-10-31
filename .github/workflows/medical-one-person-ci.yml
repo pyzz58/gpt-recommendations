@@ -67,8 +67,18 @@ jobs:
         run: |
           uv run --project services/core --frozen ruff check services/core
           uv run --project services/core --frozen mypy services/core/src
+      - name: Migration round-trip
+        env:
+          MEDICAL_ONE_MIGRATION_DATABASE_URL: postgresql+psycopg://postgres:postgres@127.0.0.1:5432/medical_one_test
+        run: |
+          cd services/core
+          uv run --frozen alembic upgrade head
+          uv run --frozen alembic downgrade b2e7d4a9c310
+          uv run --frozen alembic upgrade head
       - name: Web checks
         run: |
           pnpm --dir apps/web lint
           pnpm --dir apps/web typecheck
           pnpm --dir apps/web build
+      - name: Traceability self-tests
+        run: python3 tools/test_traceability.py
