@@ -1,8 +1,8 @@
 {
   "record_id": "W32-PRESENTATION-AUDIT-20261031-001",
-  "checked_at": "2026-10-31T22:28:19+13:00",
+  "checked_at": "2026-10-31T22:34:50+13:00",
   "reviewed_parent": "6cc9b3b",
-  "spec_sha256": "e4263d2ffc3d931d6eaa1a2cfd6acbe6f294c47c6f479c6cb83e24207a5fbe55",
+  "spec_sha256": "f0102ec6704115c480617cca914011b4e24a2b6fb08d7ff18606dcdb6f9bae1c",
   "implemented": {
     "reviewed_edition_sources": {
       "status": "VERIFIED_OFFLINE",
@@ -45,7 +45,7 @@
   },
   "regressions": {
     "w32_tests": 10,
-    "runtime_tests": 257,
+    "runtime_tests": 268,
     "maintenance_tests": 52,
     "runtime_result": "PASS",
     "maintenance_result": "PASS",
@@ -71,10 +71,10 @@
     "intelligence/editorial.py": "a5aff3e57cff2bc96f2e725e0afadc6135c0b5b04f1529da6c7784f6787bab1d",
     "intelligence/materials.py": "7542d9e397403fae23a10eccd8a820c34768a604069215902de867a78c5f52c0",
     "intelligence/adoption.py": "95c7b97c146242f8227abb1c93048e73004b916ffb59025c7b9f64ea18cd9c85",
-    "intelligence/contracts.py": "b72df9ec069383bc8b9d1fb86e43920d71137fbba483cf97822e35a4fb20341c",
+    "intelligence/contracts.py": "cc80f92efdb53c91b88770a1baae82f77a3a4d681b569a0b0cb82a02e8036a0b",
     "pyproject.toml": "f1953b2d1b5e90a584e8ecb87b438576620fd28197d77cc25f5dab7ea41d3c3e",
     "uv.lock": "880b6ab9867c16986a57414f40e768eda59eff3df72b3fb8608e068ca71133ec",
-    "CANONICAL_SYSTEM_SPEC_V5.md": "e4263d2ffc3d931d6eaa1a2cfd6acbe6f294c47c6f479c6cb83e24207a5fbe55"
+    "CANONICAL_SYSTEM_SPEC_V5.md": "f0102ec6704115c480617cca914011b4e24a2b6fb08d7ff18606dcdb6f9bae1c"
   },
   "work_states": {
     "W13": "IN_PROGRESS",
@@ -97,7 +97,7 @@
     "W30": "IN_PROGRESS",
     "W31": "IN_PROGRESS",
     "W32": "IN_PROGRESS",
-    "W33": "NOT_STARTED"
+    "W33": "IN_PROGRESS"
   },
   "limits": [
     "No real publication draft or complete weekly edition was composed or read",

@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`e4263d2ffc3d931d6eaa1a2cfd6acbe6f294c47c6f479c6cb83e24207a5fbe55`。
+当前规范SHA-256：`f0102ec6704115c480617cca914011b4e24a2b6fb08d7ff18606dcdb6f9bae1c`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收20包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收21包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -68,7 +68,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 31 | [W30 条件路径与原判断检验条件](#w30) | 代码与接口工作包 | T08 | [W28](#w28)、[W29](#w29) | 进行中 / CURRENT_BINDING |
 | 32 | [W31 独立核查、意见闭环与审核决定](#w31) | 代码与接口工作包 | T09/T01 | [W28](#w28)、[W29](#w29)、[W30](#w30)、[W19](#w19)、[W15](#w15) | 进行中 / CURRENT_BINDING |
 | 33 | [W32 连续文章、卷首与审后变更承接](#w32) | 代码与接口工作包 | T10/T03 | [W31](#w31)、[W23](#w23)、[W26](#w26) | 进行中 / CURRENT_BINDING |
-| 34 | [W33 原文档案、双模式查询与知识复用](#w33) | 代码与接口工作包 | T11 | [W13](#w13)、[W16](#w16)、[W32](#w32) | 待开始 / CURRENT_BINDING |
+| 34 | [W33 原文档案、双模式查询与知识复用](#w33) | 代码与接口工作包 | T11 | [W13](#w13)、[W16](#w16)、[W32](#w32) | 进行中 / CURRENT_BINDING |
 | 35 | [W34 更正影响、限制采用与有限恢复](#w34) | 代码与接口工作包 | T11/T01 | [W33](#w33)、[W25](#w25)、[W31](#w31)、[W15](#w15) | 待开始 / CURRENT_BINDING |
 | 36 | [W35 必要时的原文任务视图与分段装载](#w35) | 条件能力 | T01/T13/R07 | [W14](#w14)、[W17](#w17) | 待开始 / CURRENT_BINDING |
 | 37 | [W36 最小深度主题闭环与中断重接](#w36) | 路线集成验收 | R01/R07/T01/T09/T11/T13 | [W22](#w22)、[W32](#w32)、[W33](#w33)、[W18](#w18) | 待开始 / CURRENT_BINDING |
@@ -1311,7 +1311,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：34/59；阶段：2；类型：代码与接口工作包。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W16](#w16)、[W32](#w32)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W13](#w13)、[W16](#w16)、[W32](#w32)。
 
 前置尚未验收：[W13](#w13)、[W16](#w16)、[W32](#w32)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -1341,7 +1341,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W33-HISTORY-AUDIT-20261031-001", "artifact_refs": ["intelligence/history.py", "intelligence/archive.py", "intelligence/contracts.py", "intelligence/adoption.py", "tests_runtime/test_history.py", "audits/pr76-review-remediation-w33-20261031.json"], "validation_refs": ["tests_runtime/test_history.py (11 actual passing W33 tests)", "audits/pr76-review-remediation-w33-20261031.json"], "reviewer": "当前执行者实际离线检查双as-of、发布时间与recorded_at、正文权限、索引重建和知识复用；非真实跨周截面、完整纠错链、用户历史阅读或阶段批准", "result": "IN_PROGRESS", "scope": "W33离线接口：同一共享Archive提供CURRENT、KNOWN_TO_SYSTEM_AS_OF和PUBLICLY_AVAILABLE_AS_OF。KNOWN只选published_by(t)且真实DB recorded_at≤t的最新版本；PUBLIC可选published_by(t)但recorded_at>t的版本，并固定system_unknown_at_as_of=true，同时另报known_to_system_version_id，两者不混成一段依据。事件时间不代替发布时间；未知、仅部分区间或同日日期精度不能证明精确公开时点，日期型发布时间需原始时区且不推午夜。查询返回所选版本、当时已知版本、当前版本、后续版本列表和recorded/published元数据；正文仅在include_body且当前用途与STORAGE/撤权均通过时从原私有文件读取，INDEX、撤权、缺失或二进制分别如实返回，不拿导航/摘要替代原文。当前查询可核可选W15决定在查询时是否仍current及覆盖scope，但查询本身固定current_use_authorized=false，不授予采用。导航索引可从Archive重建，重建不产生第二事实源。Concept/Background/MethodUse/TransmissionLink共用同一版本查询；KnowledgeReuse追加记录精确旧来源、当前来源、目标Article、原/现条件差异、SUPPORTED/NARROWED/CONTRADICTED/UNRESOLVED、证据及does_not_prove，幂等且不记录读者掌握/学习状态。十一项回归覆盖KNOWN/PUBLIC隔离、后录修正、事件早于发布、日期午夜、未知发布、当前最新、撤权正文、索引重建、知识复用/当前版分离和TransmissionLink历史。真实两个不同周截面、自然更正传播、W39/W40/W52实际复用、长期宿主/备份恢复和阶段门未完成，整包不ACCEPTED。"}]
 
 <a id="w34"></a>
 ## W34｜更正影响、限制采用与有限恢复

@@ -43,6 +43,8 @@ class ObjectKind(str, Enum):
     TEACHER_OUTPUT = "TeacherOutput"
     CONDITIONAL_OUTPUT = "ConditionalOutput"
     REVIEW_CASE = "ReviewCase"
+    TRANSMISSION_LINK = "TransmissionLink"
+    KNOWLEDGE_REUSE = "KnowledgeReuse"
     ARTIFACT_LINK = "ResearchArtifactLink"
     ARTIFACT_COMPATIBILITY = "ResearchArtifactCompatibility"
     RESEARCH_COMMIT = "ResearchCommit"

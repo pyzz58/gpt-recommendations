@@ -1,8 +1,8 @@
 {
   "record_id": "W31-EDITORIAL-REVIEW-AUDIT-20261031-001",
-  "checked_at": "2026-10-31T22:28:19+13:00",
+  "checked_at": "2026-10-31T22:34:50+13:00",
   "reviewed_parent": "6fc64bf",
-  "spec_sha256": "e4263d2ffc3d931d6eaa1a2cfd6acbe6f294c47c6f479c6cb83e24207a5fbe55",
+  "spec_sha256": "f0102ec6704115c480617cca914011b4e24a2b6fb08d7ff18606dcdb6f9bae1c",
   "implemented": {
     "fixed_reader_draft": {
       "status": "VERIFIED_OFFLINE",
@@ -57,7 +57,7 @@
   },
   "regressions": {
     "w31_tests": 17,
-    "runtime_tests": 257,
+    "runtime_tests": 268,
     "maintenance_tests": 52,
     "runtime_result": "PASS",
     "maintenance_result": "PASS",
@@ -82,12 +82,12 @@
     "intelligence/prospective.py": "062d4d603f6ee43abf65d498997c1cbf27b0dc5c94326cad3831fa766a1ff8ae",
     "intelligence/advisor.py": "c33589d8e71c8bf31cba966fadc99d85564324e7c14fb5c2c20affa29e3bf1ea",
     "intelligence/teacher.py": "35363a04ce871932700a84312f344bc5a3b6685135010de418d6181bc43a607a",
-    "intelligence/contracts.py": "b72df9ec069383bc8b9d1fb86e43920d71137fbba483cf97822e35a4fb20341c",
+    "intelligence/contracts.py": "cc80f92efdb53c91b88770a1baae82f77a3a4d681b569a0b0cb82a02e8036a0b",
     "intelligence/research.py": "e091655d59cacf9300bad4441454409ac2469f825533e5b02bdeab29174e9b7d",
     "intelligence/model_admission.py": "8c5d0122523bf1b05d5996cf48836e3efae437392a16b4a9c6d9ecbf45dc3c63",
     "intelligence/operations.py": "a6e5416b604d38f9955762d03d82efd2b719417e7949702dd56285324a9fb7c6",
     "intelligence/workflow.py": "3151dc0398016fd025f57eac60ddcea5b198befe4989184f5bd32ad21cdbcb46",
-    "CANONICAL_SYSTEM_SPEC_V5.md": "e4263d2ffc3d931d6eaa1a2cfd6acbe6f294c47c6f479c6cb83e24207a5fbe55"
+    "CANONICAL_SYSTEM_SPEC_V5.md": "f0102ec6704115c480617cca914011b4e24a2b6fb08d7ff18606dcdb6f9bae1c"
   },
   "work_states": {
     "W13": "IN_PROGRESS",
@@ -109,7 +109,8 @@
     "W29": "IN_PROGRESS",
     "W30": "IN_PROGRESS",
     "W31": "IN_PROGRESS",
-    "W32": "IN_PROGRESS"
+    "W32": "IN_PROGRESS",
+    "W33": "IN_PROGRESS"
   },
   "limits": [
     "No real independent human or model review of an actual publication draft was performed",
