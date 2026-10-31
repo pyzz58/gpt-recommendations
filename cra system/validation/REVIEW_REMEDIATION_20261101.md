@@ -1,7 +1,8 @@
 # 2026-11-01 review remediation record
 
-Status: implementation complete locally; source-bound cloud verification is
-recorded in `W09_STATUS.md` after the remediation commit passes CI.
+Status: verified. Source-bound cloud verification:
+https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323,
+tested commit `5148684064a57e50077dd32d02e76b57b2221fc4`.
 
 The reviewed implementation claims were reopened rather than silently retaining
 the earlier W01-W09 `verified` state. Old completion evidence remains in
@@ -39,6 +40,25 @@ the earlier W01-W09 `verified` state. Old completion evidence remains in
   emitted the selected OCR lock and Docling model-manifest hashes.
 - Frontend tests, TypeScript and production build passed.
 
-The authoritative remediation commit, CI run and final source digest are kept
-in `W09_STATUS.md`; local success is not substituted for the task-specific CI
-evidence gate.
+## Authoritative cloud result
+
+The complete CRA workflow run finished successfully with baseline and
+`cra-w01` through `cra-w09` all green. The W09 task job ran the 0009→0008→head
+migration round trip, 54 affected PostgreSQL/API tests, the real pinned Qwen
+evaluation and the real Docling/PDF evaluation, then the OpenAPI drift check,
+13 frontend tests, TypeScript and production build. W08 independently passed
+its 7 review-unit, 10 laboratory and 4 recognition tests plus the same real
+Docling evaluation.
+
+The Linux Qwen run emitted lock SHA-256
+`0e94391c3ffb1d11612bc37bf0000ece9e1d96f1e3b3c3ebb6d0300dbf48b6d1`
+and model-weight SHA-256
+`fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe`.
+The Linux Docling run emitted OCR lock SHA-256
+`b63ebded2cb330b5b68a67f24988c28733798336874cabc5d157983f5c7b1e01`
+and model-manifest SHA-256
+`c5309aff4606055d82f24f07da522ce6830de7d664faaeb4f9fa44cd10d0705b`.
+
+Task evidence was rebound to the tested commit with nine source/subject digests;
+`tools/task_evidence.py` reports 9 checked tasks and authoritative verification
+true. Local success is not substituted for this task-specific CI gate.

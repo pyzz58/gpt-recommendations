@@ -1,6 +1,12 @@
 # CRA-W01 completion record
 
-Status: revalidation in progress for the 2026-11-01 review remediation.
+Status: verified. Date: 2026-11-01.
+
+2026-11-01 review-remediation revalidation supersedes the older evidence
+below: run
+https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323,
+tested commit `5148684064a57e50077dd32d02e76b57b2221fc4`, digest
+`560355fd4a8c8d5bc184f312c46c3108638c704e5305482e92f288137db3eccc`.
 
 Revalidated after W08 added laboratory recognition/comparison migrations,
 shared API entrypoints and frontend workflows. Current evidence: run
