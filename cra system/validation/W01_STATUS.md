@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W07 added the EDC snapshot migration, shared API entrypoints
+and AG Grid frontend dependency. Current evidence: run `41189767787`, tested
+commit `9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59`, digest
+`183816f704d3f669954aaf24bd1a71a311dcc8410634d26af699cef0418d78f4`.
+
 Revalidated after W05 added the subject/checkpoint migration. Current evidence:
 run `41185363902`, tested commit
 `f97fb13fe4557f9aa5fecef838ce596c8571f0a8`, digest
@@ -78,4 +83,4 @@ upgrade to head and all tests were rerun successfully.
 - No OCR, provider, report, EDC integration, production deployment or clinical
   effectiveness/time-saving claim is made.
 
-Next task by dependency after W06: CRA-W07.
+Next task by dependency after W07: CRA-W08.

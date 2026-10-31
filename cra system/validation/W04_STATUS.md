@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W07 expanded the shared API and frontend. Current evidence:
+run `41189767787`, tested commit
+`9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59`, digest
+`52e7d957f3d16a4284d22d730e543f4677dbef149e15a9726116d238aab5d4b6`.
+
 Revalidated after W05 began consuming rule versions and date windows. Current
 evidence: run `41185363902`, tested commit
 `f97fb13fe4557f9aa5fecef838ce596c8571f0a8`, digest
@@ -93,4 +98,4 @@ v2 with E3, and selecting candidate v3 opened it read-only.
 - No real clinical document, external model, patient fact, OCR, report or EDC
   write-back was used. W04 does not add those workflows.
 
-Next task by dependency after W06: CRA-W07.
+Next task by dependency after W07: CRA-W08.

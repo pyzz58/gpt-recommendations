@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W07 connected EDC upload, mapping confirmation and the AG Grid
+preview to the shared API and workbench. Current evidence: run `41189767787`,
+tested commit `9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59`, digest
+`e7772f4727c070a186194da356446fc11c32fa6384d2651030d67e2d6c9481f7`.
+
 Revalidated after W05 added the subject timeline and expanded generated API
 types. Current evidence: run `41185363902`, tested commit
 `f97fb13fe4557f9aa5fecef838ce596c8571f0a8`, digest
@@ -86,4 +91,4 @@ retention were visually checked.
 - W02 has no subject monitoring, documents, rules, laboratory OCR/comparison,
   reports or real clinical trial data. Those remain W03 onward.
 
-Next task by dependency after W06: CRA-W07.
+Next task by dependency after W07: CRA-W08.

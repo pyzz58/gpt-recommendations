@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W07 expanded the shared migration, API and frontend. Current
+evidence: run `41189767787`, tested commit
+`9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59`, digest
+`29aecbbff62cf1ea4bbcbd7cdf02949b293ef4156c49cdece7ff304ec5af44dc`.
+
 This record covers carryover from synthetic historical reports, tracks and issue
 text; stable Issue and per-action history; CRA click confirmation; Query draft
 versus formal identity and deadline evidence; and the initial monitoring-visit
@@ -102,4 +107,4 @@ Browser checks against the local API and Vite used only synthetic data:
   email, report or EDC write-back was used. Real-format coverage, clinical
   appropriateness and time-saving benefit remain unvalidated.
 
-Next task by dependency after W06: CRA-W07.
+Next task by dependency after W07: CRA-W08.

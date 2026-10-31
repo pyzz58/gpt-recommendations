@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W07 expanded shared dependencies, API and frontend. Current
+evidence: run `41189767787`, tested commit
+`9fe48b4de8932ef3e4bbe250dbdddb1d6968fc59`, digest
+`9c4a2997db86c8e38bfe326d5d03d9f438d85197c1a0f8f6f05bf2ddef1d3c22`.
+
 Revalidated after W05 changed shared migration/runtime configuration. Current
 evidence: run `41185363902`, tested commit
 `f97fb13fe4557f9aa5fecef838ce596c8571f0a8`, digest
@@ -88,4 +93,4 @@ Current evidence: run `41183652961`, tested commit
 - No real clinical document, model credential, EDC write-back or external
   provider run was used.
 
-Next task by dependency after W06: CRA-W07.
+Next task by dependency after W07: CRA-W08.

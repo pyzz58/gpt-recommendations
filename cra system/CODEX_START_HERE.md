@@ -4,14 +4,14 @@
 
 ## 最新技术复核
 
-先读[第一性原理v0.4结论](audit/FIRST_PRINCIPLES_REVIEW_V04.md)、[完整实施路径](plan/IMPLEMENTATION_PATH.md)和当前任务的design_refs/entry_conditions/handoff_outputs。W01—W06已完成真实PostgreSQL、S3、API/工作台、资料解析/来源定位、规则候选/确认/启用日、隔离provider探测、结构化患者事实/访视断点及历史遗留/分项确认；任意真实规则或报告文本的完整语义、实际患者数据格式、临床性能和节时证据仍待后续工作验证。原业务要求和任务编号保持。
+先读[第一性原理v0.4结论](audit/FIRST_PRINCIPLES_REVIEW_V04.md)、[完整实施路径](plan/IMPLEMENTATION_PATH.md)和当前任务的design_refs/entry_conditions/handoff_outputs。W01—W07已完成真实PostgreSQL、S3、API/工作台、资料解析/来源定位、规则候选/确认/启用日、隔离provider探测、结构化患者事实/访视断点、历史遗留/分项确认及EDC检验Excel不可变快照；任意真实规则或报告文本的完整语义、实际患者数据格式、临床性能、源报告与EDC自动核对和节时证据仍待后续工作验证。原业务要求和任务编号保持。
 
 
 编码和宣称完成前阅读[audit/TECHNICAL_ROUTE_REVIEW_20261029.md](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)及[开放项](audit/findings.json)。本次八点澄清已修改14条理论及相应设计/任务，见[最新决定](theory/DECISIONS_20261029.md)；W04完成的是有来源的规则候选、有限AST、用户确认和启用日，不代表任意方案自动理解或检验核对。历史导入、真实格式覆盖和获准试用等缺口仍须在相应功能交付前修订，不能因为基础CI绿色就忽略。
 
 ## 当前状态和第一步
 
-已完成CRA-W00技术基线、**CRA-W01数据/权限底座**、**CRA-W02 API/工作台壳**、**CRA-W03资料与来源定位**、**CRA-W04规则候选与分层list**、**CRA-W05患者事实/锚点/核查断点**和**CRA-W06遗留复核/分项确认**。选择器当前应定位W07；后续EDC Excel检验快照、检验自动读取与核对代码仍待实现。
+已完成CRA-W00技术基线、**CRA-W01数据/权限底座**、**CRA-W02 API/工作台壳**、**CRA-W03资料与来源定位**、**CRA-W04规则候选与分层list**、**CRA-W05患者事实/锚点/核查断点**、**CRA-W06遗留复核/分项确认**和**CRA-W07 EDC检验Excel快照导入**。选择器当前应定位W08；检验源文件自动读取、匹配与EDC核对仍待实现。
 
 先运行只读选择器：
 
@@ -35,7 +35,7 @@ python3 tools/next_task.py
 
 ## 可直接交给Codex的首轮指令
 
-使用[plan/CODEX_FIRST_MESSAGE.md](plan/CODEX_FIRST_MESSAGE.md)中的完整指令；先读[复用选择](architecture/REUSE_ASSESSMENT.md)。W01—W06已交付并停止；后续从W07继续，不因规则provider、患者上下文或遗留导入的合成验证跳过后面的检验OCR/模型或部署。
+使用[plan/CODEX_FIRST_MESSAGE.md](plan/CODEX_FIRST_MESSAGE.md)中的完整指令；先读[复用选择](architecture/REUSE_ASSESSMENT.md)。W01—W07已交付并停止；后续从W08继续，不因规则provider、患者上下文、遗留导入或EDC Excel快照的合成验证跳过后面的检验OCR/模型或部署。
 
 后续用户说“继续”，先运行next_task并按实际状态接续；不得只机械把任务号加一。默认推进V1A。若用户指定其他工作包，先核实其依赖，说明未完成前置，不隐瞒或擅改理论。
 
@@ -49,4 +49,4 @@ python3 tools/next_task.py
 
 业务理论按固定CRA-R编号和来源维护，改动后执行既有SYNC_POLICY。技术文件布局、任务细化或依赖工具选择的调整，不应伪造新的临床决定。接口、存储或供应商变化按实际受影响模块更新，保留历史事实和已签发报告。
 
-最新业务决定：遗留逐项展开，CRA点击确认整改即可；缺数据用户可拒绝并跳过相关路径；list含前后条件和分支；版本手动设开始使用日；目录可直接作对照文件；W08自动检验读取属于主线，手工仅少量例外。45个理论编号保持，14条提高revision。W01—W06已按工程范围实现，W07及之后仍待实现，不能沿用旧的人工V1A验收口径。
+最新业务决定：遗留逐项展开，CRA点击确认整改即可；缺数据用户可拒绝并跳过相关路径；list含前后条件和分支；版本手动设开始使用日；目录可直接作对照文件；W08自动检验读取属于主线，手工仅少量例外。45个理论编号保持，14条提高revision。W01—W07已按工程范围实现，W08及之后仍待实现，不能沿用旧的人工V1A验收口径。
