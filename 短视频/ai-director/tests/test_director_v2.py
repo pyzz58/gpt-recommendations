@@ -132,7 +132,7 @@ class ProfessionalDirectorTests(unittest.TestCase):
             card=base["shots"][-1]
             self.assertEqual(card["purpose"],"sources")
             self.assertEqual(card["visual_type"],"text_card")
-            self.assertEqual(card["duration"],5)
+            self.assertEqual(card["duration"],1.8)
             self.assertEqual(card["narration"],"")
             self.assertGreaterEqual(len(card["claim_ids"]),2)
             self.assertLessEqual(len(card["claim_ids"]),3)
@@ -140,15 +140,15 @@ class ProfessionalDirectorTests(unittest.TestCase):
             self.assertTrue(any("PUBLISH BLOCKED" in w for w in warnings))
             self.assertFalse(v2.compile_package(base,directions)["publishing_allowed"])
 
-    def test_credits_reject_six_seconds_even_with_matching_timeline(self):
+    def test_credits_reject_legacy_five_seconds_even_with_matching_timeline(self):
         folder=ROOT/"examples"/"energy-trilogy"/"ep01-attention"
         base=v2.read_json(folder/"plan.json")
         directions=v2.read_json(folder/"direction_v02.json")
-        base["shots"][-1]["duration"]=6
-        base["duration"]+=1
-        directions["shots"][-1]["beats"][-1]["to_s"]=6
+        base["shots"][-1]["duration"]=5
+        base["duration"]+=3.2
+        directions["shots"][-1]["beats"][-1]["to_s"]=5
         errors,_=v2.validate(base,directions)
-        self.assertTrue(any("source credit card must be 5 seconds" in e for e in errors))
+        self.assertTrue(any("source credit card must be 1.8 seconds" in e for e in errors))
 
     def test_credits_reject_more_than_three_sources(self):
         folder=ROOT/"examples"/"energy-trilogy"/"ep01-attention"

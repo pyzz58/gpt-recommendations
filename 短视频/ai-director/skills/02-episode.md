@@ -11,7 +11,7 @@
 7. 确保每镜时间轴连续、总时长准确、每个人物角色ID来自 series.json。
 ## v0.3 P0 · 研究卡文献账本必填
 
-如果输出 `purpose=sources` 的5秒静态卡，`plan.json` 除 `claims` 外**必须新增**顶层 `references` 数组，每项按照卡片的 `claim_ids` 逐个建立可追溯书目：
+如果输出 `purpose=sources` 的1.8秒（现行1–2秒规则）静态卡，`plan.json` 除 `claims` 外**必须新增**顶层 `references` 数组，每项按照卡片的 `claim_ids` 逐个建立可追溯书目：
 
 ```json
 {"references":[{"claim_id":"C01","author":"首作者","year":2023,"journal":"期刊名","study_type":"RCT / 观察 / 系统综述","url":"https://doi.org/...","status":"needs_review","limitation":"研究局限"}]}

@@ -411,8 +411,8 @@
       "opened_on": "2026-10-13",
       "evidence": {
         "implementation_pr": "",
-        "commit_sha": "",
-        "automated_test": "",
+        "commit_sha": "450df9bc81200280f7056e5cdb6f4b8a691e689b",
+        "automated_test": "tests/test_local_director.py::test_prepare_is_offline_and_refuses_overwrite; tests/test_director_v2.py::test_long_script_compact_credit_examples; tests/test_director_v2.py::test_credits_reject_legacy_five_seconds_even_with_matching_timeline",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -423,6 +423,12 @@
           "date": "2026-10-13",
           "status": "partially_addressed",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-26",
+          "status": "partially_addressed",
+          "note": "活跃任务与校验器的来源页时长已从旧5秒统一为1.8秒（1–2秒规则），并明确无真实来源不生成卡片；状态保持partially_addressed，真实来源核查与艺术质量仍未完成。",
           "evidence_ref": ""
         }
       ]
@@ -1146,8 +1152,8 @@
       "opened_on": "2026-10-13",
       "evidence": {
         "implementation_pr": "https://github.com/pyzz58/gpt-recommendations/pull/42",
-        "commit_sha": "",
-        "automated_test": "tests/test_screenplay_series_delivery.py and tests/test_series_final_timeline.py; explicit intro/recap/bridge/outro/card absolute timeline, forged planned seconds, fake missing source, 90+1.8 overflow, optional last credit page; GitHub Actions 791/791 passed on precursor commit",
+        "commit_sha": "450df9bc81200280f7056e5cdb6f4b8a691e689b",
+        "automated_test": "tests/test_screenplay_series_delivery.py and tests/test_series_final_timeline.py; explicit intro/recap/bridge/outro/card absolute timeline, forged planned seconds, fake missing source, 90+1.8 overflow, optional last credit page; GitHub Actions 791/791 passed on precursor commit; tests/test_local_director.py::test_prepare_is_offline_and_refuses_overwrite; tests/test_local_director.py::test_series_allows_more_than_three_episodes; tests/test_local_director.py::test_series_rejects_missing_or_over_90_second_episode; tests/test_director_v2.py::test_long_script_compact_credit_examples; tests/test_director_v2.py::test_credits_reject_legacy_five_seconds_even_with_matching_timeline",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1183,6 +1189,12 @@
           "status": "in_progress",
           "note": "修复剧本故事时间与后期成片总时长脱节：每集保存5项附加预算，operator端用全部绝对时间码重算并强制90秒，真实来源卡仅按导演选择加入且固定1.8秒；需要真实视频和独立观影才能最终关闭",
           "evidence_ref": "https://github.com/pyzz58/gpt-recommendations/pull/42"
+        },
+        {
+          "date": "2026-10-26",
+          "status": "in_progress",
+          "note": "已消除活跃入口的旧1–3集/5秒指令：create_prepare、系列/单集/导演prompt、check_series与v0.2来源卡校验器统一为导演自主集数、每集最终≤90秒、可选1.8秒末页；公开energy-trilogy示例已显式升级。仍保持in_progress，真实成片未验收。",
+          "evidence_ref": ""
         }
       ]
     },
@@ -1451,8 +1463,8 @@
       "opened_on": "2026-10-13",
       "evidence": {
         "implementation_pr": "",
-        "commit_sha": "",
-        "automated_test": "",
+        "commit_sha": "450df9bc81200280f7056e5cdb6f4b8a691e689b",
+        "automated_test": "tests/test_f01_acting_baseline.py::test_public_fixture_is_synthetic_and_contains_no_private_paths; tests/test_f01_acting_baseline.py::test_fixture_satisfies_only_current_structural_acting_minimum; tests/test_f01_acting_baseline.py::test_current_schema_lacks_professional_causal_fields",
         "independent_review": "",
         "media_validation": "",
         "closure_note": "",
@@ -1463,6 +1475,12 @@
           "date": "2026-10-13",
           "status": "audit_pending",
           "note": "质量阶段首次登记；已有代码仅记录为现状，不代表世界一流质量验收完成",
+          "evidence_ref": ""
+        },
+        {
+          "date": "2026-10-26",
+          "status": "audit_pending",
+          "note": "F01-00/01基线记录：锁定既有acting调用链与五类输出，以公开虚构“我没事/藏信”反例证明当前只检查字段与物理动作、缺目标—障碍—策略—潜台词—反应因果；因无独立专业表演审稿，状态保持audit_pending，未新增表演Agent，未进入真实媒体。",
           "evidence_ref": ""
         }
       ]
