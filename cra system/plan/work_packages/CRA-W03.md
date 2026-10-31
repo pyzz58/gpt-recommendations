@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：in_progress；分支路线：v1a。
+状态：verified；分支路线：v1a。
 前置：CRA-W02。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -86,25 +86,25 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 合成文档及作业
+- [available] 合成文档及作业
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_documents.py
 ```
 
-- [to_implement] 可安装、可运行的识别候选探测，不代表全格式准确性
+- [available] 可安装、可运行的识别候选探测，不代表全格式准确性
 
 ```bash
 uv run --frozen python -m cra_app.providers.probe --synthetic
 ```
 
-- [to_implement] 资料接口、前端类型及PDF查看器契约
+- [available] 资料接口、前端类型及PDF查看器契约
 
 ```bash
 npm --prefix web run api:check
 ```
 
-- [to_implement] 资料界面测试、类型和构建
+- [available] 资料界面测试、类型和构建
 
 ```bash
 npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run build

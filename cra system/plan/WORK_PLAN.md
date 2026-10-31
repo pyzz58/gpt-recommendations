@@ -7,9 +7,9 @@
 | 工作包 | 内容 | 前置 | 模块 | 状态 |
 | --- | --- | --- | --- | --- |
 | CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
-| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | in_progress |
-| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | in_progress |
-| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | in_progress |
+| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | verified |
+| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | verified |
+| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | verified |
 | CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | planned |
 | CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | planned |
 | CRA-W06 | 实现遗留整理、提醒与点击确认整改 | CRA-W05 | M05、M06 | planned |
@@ -37,17 +37,23 @@
 
 对应理论：CRA-R002、CRA-R036、CRA-R040
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；W03依赖与契约变更后，cra-w01的migrate/test再次通过；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。
+
 ## CRA-W02 建立云上API和界面框架
 
 验收：在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。
 
 对应理论：CRA-R035、CRA-R036、CRA-R040
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；W03资料界面和契约接入后，cra-w02的API、前端、构建、OpenAPI、运行时及devcontainer smoke全部再次通过；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。
+
 ## CRA-W03 实现资料接收、解析和来源定位
 
 验收：DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。
 
 对应理论：CRA-R003、CRA-R004、CRA-R009、CRA-R024、CRA-R036、CRA-R038
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41181003025；cra-w03的8项PostgreSQL/S3测试、隔离OCR候选探测、OpenAPI契约和前端测试/类型/构建全部成功；被测提交b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb。
 
 ## CRA-W04 实现规则候选提取及分层list
 

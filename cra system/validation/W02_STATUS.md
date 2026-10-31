@@ -2,6 +2,11 @@
 
 Status: verified. Date: 2026-10-31.
 
+Revalidated after W03 added the document/PDF workbench and expanded the shared
+dependency lock. Current evidence: run `41181003025`, tested commit
+`b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb`, digest
+`e2fd12d19f7946a7b35367960fa07e0d6f1f0f7e81d8132ae911fe3e7b525f78`.
+
 This record covers the engineering API and browser shell only. It is not
 clinical-use validation, and it does not implement later document, rule,
 subject, laboratory or report workflows.

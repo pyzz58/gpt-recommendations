@@ -9,6 +9,11 @@ commit `2db8475906b57a1689ca0f6fcc19b02880c67c4f`, current subject digest
 The earlier W01 evidence remains in `plan/tasks.json` under
 `completion_history`; the execution details below record that earlier run.
 
+Revalidated again after W03 changed the shared Python dependency lock and
+synthetic storage configuration. Current evidence: run `41181003025`, tested
+commit `b6ccecb60ae7894bf9ca589509ef0d6aa12d1cdb`, digest
+`c9e4a400a314628a818104c2ca8c79fac86ec500d7c8504f8d50d99e3e78aea5`.
+
 This record covers only the shared data, authorization, revision, idempotency
 and audit foundation. It is engineering and synthetic validation, not clinical
 use validation.
