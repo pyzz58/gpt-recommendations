@@ -82,6 +82,7 @@ class ObjectKind(str, Enum):
     EDITION_PLACEMENT_PROPOSAL = "EditionPlacementProposal"
     ARTICLE_ROUTE = "ArticleRoute"
     SUPPLEMENT_ROUTE = "SupplementRoute"
+    CROSS_WEEK_CONTINUATION = "CrossWeekContinuation"
     MATERIAL_SELECTION = "MaterialSelection"
 
 

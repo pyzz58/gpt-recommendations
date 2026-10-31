@@ -8,7 +8,7 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`64bce268dad3988ae2764595e320b1ff1060276c9adb9823e172483c61827be1`。
+当前规范SHA-256：`64830be28f324e61f1c8b1c928ab692a32db44a46b11137b17974c6d6f6eb976`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
@@ -74,7 +74,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 37 | [W36 最小深度主题闭环与中断重接](#w36) | 路线集成验收 | R01/R07/T01/T09/T11/T13 | [W22](#w22)、[W32](#w32)、[W33](#w33)、[W18](#w18) | 进行中 / CURRENT_BINDING |
 | 38 | [W37 精选、首次事实、进展及更正分支](#w37) | 路线集成验收 | R03/T03/T04/T09/T10 | [W23](#w23)、[W26](#w26)、[W31](#w31)、[W32](#w32)、[W34](#w34) | 进行中 / CURRENT_BINDING |
 | 39 | [W38 定向补证、解释变化与回S8](#w38) | 路线集成验收 | R04/T03/T04/T05 | [W25](#w25)、[W27](#w27)、[W23](#w23)、[W31](#w31) | 进行中 / CURRENT_BINDING |
-| 40 | [W39 真实跨周接续与长期专题入刊](#w39) | 路线集成验收 | R02/T03/T05/T11 | [W33](#w33)、[W27](#w27)、[W23](#w23)、[W36](#w36) | 待开始 / CURRENT_BINDING |
+| 40 | [W39 真实跨周接续与长期专题入刊](#w39) | 路线集成验收 | R02/T03/T05/T11 | [W33](#w33)、[W27](#w27)、[W23](#w23)、[W36](#w36) | 进行中 / CURRENT_BINDING |
 | 41 | [W40 更正、当前采用与历史回放集成](#w40) | 路线集成验收 | R05/T11/T09/T10 | [W34](#w34)、[W39](#w39)、[W31](#w31)、[W32](#w32) | 待开始 / CURRENT_BINDING |
 | 42 | [W41 六份真实跨领域案例与投入联合验收](#w41) | 真实案例与能力验收 | R01/R02/R03/R04/R05/R07/T09/T13 | [W36](#w36)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[W40](#w40) | 待开始 / CURRENT_BINDING |
 | 43 | [G02 第二阶段门：研究闭环、跨周与六例](#g02) | 阶段门 | R01/R02/R03/R04/R05/R07/T01/T02/T03/T04/T05/T06/T07/T08/T09/T10/T11/T13 | [W13](#w13)、[W14](#w14)、[W15](#w15)、[W16](#w16)、[W17](#w17)、[W18](#w18)、[W19](#w19)、[W20](#w20)、[W21](#w21)、[W22](#w22)、[W23](#w23)、[W24](#w24)、[W25](#w25)、[W26](#w26)、[W27](#w27)、[W28](#w28)、[W29](#w29)、[W30](#w30)、[W31](#w31)、[W32](#w32)、[W33](#w33)、[W34](#w34)、[W35](#w35)、[W36](#w36)、[W37](#w37)、[W38](#w38)、[W39](#w39)、[W40](#w40)、[W41](#w41) | 待开始 / CURRENT_BINDING |
@@ -1532,7 +1532,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：40/59；阶段：2；类型：路线集成验收。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W33](#w33)、[W27](#w27)、[W23](#w23)、[W36](#w36)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W33](#w33)、[W27](#w27)、[W23](#w23)、[W36](#w36)。
 
 前置尚未验收：[W23](#w23)、[W27](#w27)、[W33](#w33)、[W36](#w36)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -1560,7 +1560,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W39-CROSS-WEEK-CONTINUATION-20261031-001", "artifact_refs": ["intelligence/weekly_continuation.py", "intelligence/history.py", "intelligence/supplement_route.py", "intelligence/workflow.py", "intelligence/editorial.py", "tests_runtime/test_weekly_continuation.py", "audits/w39-cross-week-continuation-20261031.json"], "validation_refs": ["tests_runtime/test_weekly_continuation.py (5 actual passing W39 tests)", "tests_runtime/test_history.py", "tests_runtime/test_supplement_route.py", "audits/w39-cross-week-continuation-20261031.json"], "reviewer": "当前执行者实际离线检查两周期W33查询、W38补证位置、W27续接、W23成熟重判及历史回填/长期降型反例；非真实第二周、真实用户阅读、独立L5或阶段批准", "result": "IN_PROGRESS", "scope": "W39离线路线：CrossWeekContinuation要求两个非重叠IssueSnapshot。旧Article及精确原话从较早KNOWN_TO_SYSTEM_AS_OF取得，后Article只从较晚PUBLICLY_AVAILABLE_AS_OF取得，并保留system_unknown；旧稿不能用后版回填。W38补证路线必须发生在两截点之间且与新W27 Dossier一致。成熟后必须绑定第二截点之后的当前W23决定及准确publication_basis，长期题不能用SOURCE_SELECTION自动降型。成果固定requires_editorial_placement=true、automatic_issue_addition=false、content_review_required=true、publication_authorized=false。五项回归覆盖两周旧原话、系统未知后稿、成熟T03、回填、重叠、长期降型及暂停/关闭。记录使用合成夹具并固定stage_evidence_eligible=false；真实两个周截面和G02未完成，整包IN_PROGRESS，不ACCEPTED。"}]
 
 <a id="w40"></a>
 ## W40｜更正、当前采用与历史回放集成
