@@ -8,6 +8,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+
 
 class CommonPolicySource(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -89,5 +91,8 @@ def load_common_policy_set(
 ) -> CommonPolicySet | None:
     if not path:
         return None
-    value = json.loads(Path(path).read_text(encoding="utf-8"))
+    resolved = Path(path)
+    if not resolved.is_absolute():
+        resolved = PROJECT_ROOT / resolved
+    value = json.loads(resolved.read_text(encoding="utf-8"))
     return CommonPolicySet.model_validate(value)
