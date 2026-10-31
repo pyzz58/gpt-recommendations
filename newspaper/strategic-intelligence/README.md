@@ -12,4 +12,4 @@
 
 本文件由主说明书自动生成，请勿手工修改。
 
-规范SHA-256：`379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f`
+规范SHA-256：`3d8a0959b3c81d4744160f8afd21ad5d979414ef7ba4b8c5e38fecdddedb79e4`

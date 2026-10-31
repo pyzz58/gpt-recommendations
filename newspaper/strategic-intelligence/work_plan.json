@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f",
+  "spec_sha256": "3d8a0959b3c81d4744160f8afd21ad5d979414ef7ba4b8c5e38fecdddedb79e4",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -4072,8 +4072,25 @@
       ],
       "failure_action": "先人工定位或补原文/拆分，仍不足停止受影响任务；返回原任务后若仍有受阻，保留缺口而不以局部修复冒充完成。",
       "conditional": "仅第二阶段出现经RunLog记录的真实上下文/装载受阻时启用；无受阻依据可有据不适用，不能跳过输入完整性，也不得因W27未完成本身自动启动。",
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "NOT_APPLICABLE",
+      "evidence": [
+        {
+          "record_id": "W35-APPLICABILITY-20261031-001",
+          "artifact_refs": [
+            "audits/w35-applicability-20261031.json",
+            "audits/w14-preparation-20261024.json",
+            "audits/pr76-review-remediation-w27-20261031.json"
+          ],
+          "validation_refs": [
+            "audits/w35-applicability-20261031.json#manual_locator",
+            "audits/w35-applicability-20261031.json#trigger_review",
+            "tests/test_work_plan.py (conditional NOT_APPLICABLE and blocked-repair branch regressions)"
+          ],
+          "reviewer": "当前执行者Codex实际检索现有任务/审计记录、核对实际提供状态并复跑人工定位/重接路径；非用户、独立L5或阶段批准",
+          "result": "NOT_APPLICABLE",
+          "scope": "本轮没有真实RunLog或任务记录显示上下文上限、截断、关键依赖未提供或输出不全，故不建设任务视图/分段器；已核§24.6.1唯一锚点、W35唯一机器条目及从当前规范/任务版本/依赖返回原任务的人工路径。源码探测字节截断、1.07 MB规范准备包和W27离线测试均不单独构成过载。W14/W17及G01—G04未过，未来出现具名真实受阻证据时须重开局部解阻；本记录不产生READY/PASS、W35能力通过、阶段门或生产能力。"
+        }
+      ],
       "reviewed_basis_sha256": "404ee35f588166d5a49637ffd727d0dada34d229fa8dab8652714cd7bea14ae9",
       "order": 36,
       "work_type": "条件能力",
@@ -4955,7 +4972,6 @@
         "W32",
         "W33",
         "W34",
-        "W35",
         "W36",
         "W37",
         "W38",
