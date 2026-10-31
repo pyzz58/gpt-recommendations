@@ -28,6 +28,15 @@ class TraceabilityTests(unittest.TestCase):
             self.project / "traceability/acceptance-records.json",
             self.root / "traceability/acceptance-records.json",
         )
+        (self.root / "tools").mkdir()
+        shutil.copyfile(
+            self.project / "tools/check_traceability.py",
+            self.root / "tools/check_traceability.py",
+        )
+        shutil.copyfile(
+            self.project / "tools/test_traceability.py",
+            self.root / "tools/test_traceability.py",
+        )
         for item in self.manifest().get("supporting_artifacts", []):
             target = self.root / item["path"]
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -75,6 +84,56 @@ class TraceabilityTests(unittest.TestCase):
         evidence = json.loads(path.read_text())
         for record in evidence.get("records", []):
             record["source_commit"] = fixture_commit
+        if not evidence["records"]:
+            requirement = next(
+                item for item in self.manifest()["requirements"] if item["id"] == "RQ-001"
+            )
+            source_scope = ["tools", "services/core/src", "config", "apps/web/src"]
+            evidence["records"].append(
+                {
+                    "id": "ACC-BASELINE-TEST",
+                    "requirements": ["RQ-001"],
+                    "technical_refs": requirement["technical_refs"],
+                    "work_packages": requirement["work_packages"],
+                    "acceptance_refs": requirement["acceptance_refs"],
+                    "source_commit": fixture_commit,
+                    "result": "passed",
+                    "commands": [
+                        {
+                            "cwd": ".",
+                            "command": "python3 tools/check_traceability.py check",
+                            "mode": "mock",
+                            "started_at": "2026-11-01T00:00:00Z",
+                            "finished_at": "2026-11-01T00:00:01Z",
+                            "exit_code": 0,
+                            "artifacts": ["traceability/acceptance-records.json"],
+                        }
+                    ],
+                    "validation_levels": {
+                        "mock": {"status": "passed", "evidence": ["checker"]},
+                        "live": {"status": "not_run", "evidence": []},
+                        "human_expert": {"status": "not_run", "evidence": []},
+                        "real_outsourcing": {"status": "not_run", "evidence": []},
+                    },
+                    "code_paths": [
+                        {
+                            "path": "tools/check_traceability.py",
+                            "sha256": hashlib.sha256(
+                                (self.root / "tools/check_traceability.py").read_bytes()
+                            ).hexdigest(),
+                        }
+                    ],
+                    "artifacts": ["traceability/acceptance-records.json"],
+                    "uncovered": ["No application or real-world validation."],
+                    "source_scope": source_scope,
+                    "source_tree_git_sha256": checker._tree_fingerprint(
+                        self.root, source_scope, fixture_commit
+                    ),
+                    "source_tree_worktree_sha256": checker._tree_fingerprint(
+                        self.root, source_scope
+                    ),
+                }
+            )
         path.write_text(json.dumps(evidence, ensure_ascii=False), encoding="utf-8")
         checker.refresh(
             self.root,
@@ -194,8 +253,7 @@ class TraceabilityTests(unittest.TestCase):
     def test_mock_evidence_cannot_verify_real_outsourcing_requirement(self):
         data = self.manifest()
         requirement = next(item for item in data["requirements"] if item["id"] == "RQ-033")
-        requirement["implementation_status"] = "verified"
-        requirement["implementation_paths"] = ["package.json"]
+        requirement["implementation_paths"] = ["tools/check_traceability.py"]
         self.write_manifest(data)
         evidence_path = self.root / "traceability/acceptance-records.json"
         evidence = json.loads(evidence_path.read_text())
@@ -208,10 +266,15 @@ class TraceabilityTests(unittest.TestCase):
             set(record["acceptance_refs"]) | set(requirement["acceptance_refs"])
         )
         evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
-        checker.refresh(
-            self.root,
-            "隔离反例：mock验收记录被错误用于现实外包要求，不得自动通过。",
-        )
+        data = self.manifest()
+        for artifact in data["supporting_artifacts"]:
+            if artifact["path"] == "traceability/acceptance-records.json":
+                artifact["sha256"] = hashlib.sha256(evidence_path.read_bytes()).hexdigest()
+        self.write_manifest(data)
+        data = self.manifest()
+        requirement = next(item for item in data["requirements"] if item["id"] == "RQ-033")
+        requirement["implementation_status"] = "verified"
+        self.write_manifest(data)
         errors = checker.validate(self.root)
         self.assertTrue(
             any("RQ-033: required real_outsourcing validation" in error for error in errors)
@@ -220,11 +283,28 @@ class TraceabilityTests(unittest.TestCase):
     def test_source_scope_detects_budget_code_change(self):
         data = self.manifest()
         requirement = next(item for item in data["requirements"] if item["id"] == "RQ-002")
-        requirement["implementation_status"] = "verified"
         requirement["implementation_paths"] = [
             "services/core/src/medical_one_person/application/budgets.py"
         ]
         self.write_manifest(data)
+        relative = requirement["implementation_paths"][0]
+        target = self.root / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(self.project / relative, target)
+        subprocess.run(["git", "add", relative], cwd=self.root, check=True)
+        subprocess.run(
+            ["git", "commit", "-m", "include budget source"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+        )
+        source_commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=self.root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
         evidence_path = self.root / "traceability/acceptance-records.json"
         evidence = json.loads(evidence_path.read_text())
         record = evidence["records"][0]
@@ -235,11 +315,25 @@ class TraceabilityTests(unittest.TestCase):
         record["acceptance_refs"] = sorted(
             set(record["acceptance_refs"]) | set(requirement["acceptance_refs"])
         )
+        record["source_commit"] = source_commit
+        record["source_tree_git_sha256"] = checker._tree_fingerprint(
+            self.root,
+            record["source_scope"],
+            source_commit,
+        )
+        record["source_tree_worktree_sha256"] = checker._tree_fingerprint(
+            self.root,
+            record["source_scope"],
+        )
         evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
         checker.refresh(
             self.root,
             "隔离反例：预算代码已被源码树范围覆盖，修改后必须使证据待更新。",
         )
+        data = self.manifest()
+        requirement = next(item for item in data["requirements"] if item["id"] == "RQ-002")
+        requirement["implementation_status"] = "verified"
+        self.write_manifest(data)
         self.assertEqual(checker.validate(self.root), [])
         path = self.root / requirement["implementation_paths"][0]
         path.write_text(
@@ -285,6 +379,9 @@ class TraceabilityTests(unittest.TestCase):
             {
                 "id": "ACC-RQ-006-test",
                 "requirements": ["RQ-006"],
+                "technical_refs": next(
+                    item for item in self.manifest()["requirements"] if item["id"] == "RQ-006"
+                )["technical_refs"],
                 "work_packages": ["W05", "W17"],
                 "acceptance_refs": ["AT-006"],
                 "source_commit": source_commit,
@@ -312,6 +409,16 @@ class TraceabilityTests(unittest.TestCase):
                 "code_paths": [{"path": path, "sha256": file_sha256}],
                 "artifacts": [],
                 "uncovered": ["No live or human expert verification."],
+                "source_scope": ["tools", "services/core/src"],
+                "source_tree_git_sha256": checker._tree_fingerprint(
+                    self.root,
+                    ["tools", "services/core/src"],
+                    source_commit,
+                ),
+                "source_tree_worktree_sha256": checker._tree_fingerprint(
+                    self.root,
+                    ["tools", "services/core/src"],
+                ),
             }
         )
         evidence_path.write_text(json.dumps(evidence), encoding="utf-8")

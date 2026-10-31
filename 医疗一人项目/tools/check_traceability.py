@@ -133,21 +133,26 @@ def _load_evidence(root, manifest):
 
 
 def _tree_fingerprint(root, paths, commit=None):
-    args = ["ls-tree", "-r", "--full-tree"]
     if commit:
-        args.append(commit)
-    args.extend(["--", *paths])
-    result = _git(root, *args)
-    if commit:
+        result = _git(
+            root,
+            "ls-tree",
+            "-r",
+            "--full-tree",
+            commit,
+            "--",
+            *paths,
+        )
         return digest(result.stdout)
-    tracked = result.stdout.decode("utf-8").splitlines()
+    result = _git(root, "ls-files", "-z", "--", *paths)
+    tracked = [
+        value
+        for value in result.stdout.decode("utf-8").split("\0")
+        if value
+    ]
     entries = []
     prefix = _git_prefix(root)
-    for line in tracked:
-        parts = line.split("\t", 1)
-        if len(parts) != 2:
-            continue
-        repo_path = parts[1]
+    for repo_path in tracked:
         if not repo_path.startswith(prefix):
             continue
         local_path = repo_path[len(prefix):]
