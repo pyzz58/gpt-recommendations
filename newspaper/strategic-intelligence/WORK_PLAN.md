@@ -8,13 +8,13 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`a2a17a1c604e608d9810c047b5c89f2a69bdea8aa6f9d5e891ffcbe6a6ecfb25`。
+当前规范SHA-256：`a40955b58f5b2bdbd541eaaf48613a56a97a85d3558b35bcb77e4be76905335e`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
 验收通过：11；有据不适用：0；其余按下表实际状态。
 
-**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收14包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
+**交付类型分开统计**：第一阶段人工准备/内容验证已验收11包；代码与接口工作包已验收0包、进行中/待验收15包。人工验收数量不表示业务模块已编码；模块完成须另核相应代码、接口、测试和适用阶段门。
 
 ## 四阶段与数量
 
@@ -62,7 +62,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 25 | [W24 原件取得、结构提取与用途控制](#w24) | 代码与接口工作包 | T04 | [W13](#w13)、[W17](#w17)、[W18](#w18)、[W23](#w23) | 进行中 / CURRENT_BINDING |
 | 26 | [W25 主张支持、计算与定向补证接口](#w25) | 代码与接口工作包 | T04/T05/R04 | [W24](#w24)、[W16](#w16) | 进行中 / CURRENT_BINDING |
 | 27 | [W26 入选中文、节选边界与重要更新](#w26) | 代码与接口工作包 | T04/T03 | [W24](#w24)、[W25](#w25)、[W23](#w23) | 进行中 / CURRENT_BINDING |
-| 28 | [W27 M工序、共同研究与有限收口接口](#w27) | 代码与接口工作包 | T05/T07/R04 | [W16](#w16)、[W25](#w25)、[W19](#w19) | 待开始 / CURRENT_BINDING |
+| 28 | [W27 M工序、共同研究与有限收口接口](#w27) | 代码与接口工作包 | T05/T07/R04 | [W16](#w16)、[W25](#w25)、[W19](#w19) | 进行中 / CURRENT_BINDING |
 | 29 | [W28 顾问任务、判断与增益提交](#w28) | 代码与接口工作包 | T06 | [W27](#w27) | 待开始 / CURRENT_BINDING |
 | 30 | [W29 帝师研究、连续教学与迁移提交](#w29) | 代码与接口工作包 | T07 | [W27](#w27) | 待开始 / CURRENT_BINDING |
 | 31 | [W30 条件路径与原判断检验条件](#w30) | 代码与接口工作包 | T08 | [W28](#w28)、[W29](#w29) | 待开始 / CURRENT_BINDING |
@@ -1090,7 +1090,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：28/59；阶段：2；类型：代码与接口工作包。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W16](#w16)、[W25](#w25)、[W19](#w19)。
+进度：**进行中**；关联：CURRENT_BINDING；前置：[W16](#w16)、[W25](#w25)、[W19](#w19)。
 
 前置尚未验收：[W16](#w16)、[W19](#w19)、[W25](#w25)。仅供执行者核对，生成器不代为验收阶段。
 
@@ -1120,7 +1120,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：尚无；本轮只制定清单，未据此宣布开发或能力完成。
+实际证据：[{"record_id": "W27-WORKFLOW-AUDIT-20261031-001", "artifact_refs": ["intelligence/workflow.py", "intelligence/research.py", "intelligence/evidence.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/contracts.py", "tests_runtime/test_workflow.py", "audits/pr76-review-remediation-w27-20261031.json"], "validation_refs": ["tests_runtime/test_workflow.py (8 actual passing W27 tests)", "audits/pr76-review-remediation-w27-20261031.json"], "reviewer": "当前执行者实际离线检查M依赖、B1/B2早期问题、MethodUse、版本失效、LangGraph检查和案卷恢复；非真实研究、B1/B2内容、模型或阶段批准", "result": "IN_PROGRESS", "scope": "W27离线接口：同一W16当前修订启动ResearchDossier，Archive中的Dossier快照与ResearchStepRecord为权威，LangGraph官方InMemorySaver只保存可重建导航状态。M01—M12按显式依赖推进而非静态全链启动；M02强制B1/B2各提问题，MethodUse可从M02引入，M07必须汇总至少一个更早方法且不能成为首次选方法。步骤实际产物须引用精确revision；模型执行另需有效W19准入、具体配置、成功OperationReceipt及产物对操作的回指。重提M05只使其下游M07—M12失效，M01—M04/M06保留；M12当期保存有限收口、未知与触发，不等待未来结果。八项回归覆盖并行依赖、B1/B2缺失、方法时序、全周期收口、检查点恢复、下游递归失效、错误revision及未配置模型。真实研究内容、W28/W29产物、持久checkpointer、W31审稿及阶段验收未完成，整包不ACCEPTED。"}]
 
 <a id="w28"></a>
 ## W28｜顾问任务、判断与增益提交

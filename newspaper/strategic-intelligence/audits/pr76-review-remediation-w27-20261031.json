@@ -1,0 +1,98 @@
+{
+  "record_id": "W27-WORKFLOW-AUDIT-20261031-001",
+  "checked_at": "2026-10-31T21:00:56+13:00",
+  "reviewed_parent": "1f799d6fcf91e917deec57bd86cadfbc872b9136",
+  "spec_sha256": "a40955b58f5b2bdbd541eaaf48613a56a97a85d3558b35bcb77e4be76905335e",
+  "implemented": {
+    "authoritative_dossier": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "ResearchDossier snapshots and ResearchStepRecord versions live in the shared Archive and bind the exact current W16 ResearchRevision",
+        "each step artifact must reference that exact revision and retain a non-revoked body with the same specification",
+        "LangGraph InMemorySaver checkpoints are navigation/recovery state only; authoritative state can be rebuilt from Archive snapshots",
+        "dossier snapshots always retain content_review_required=true and publication_authorized=false"
+      ]
+    },
+    "dependency_oriented_steps": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "M01-M12 use explicit dependencies rather than a static all-steps startup gate; independently ready branches can proceed",
+        "M02 requires separate B1 and B2 questions from the problem phase",
+        "MethodUse can be introduced from M02; M07 must consolidate at least one earlier method and cannot be the first method-selection point",
+        "re-submitting M05 recursively removes only downstream M07-M12, preserving M01-M04 and the independent M06 branch",
+        "M12 records bounded closure, unknowns and reopen trigger without waiting for future observed outcomes"
+      ]
+    },
+    "state_and_admission_boundary": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "READY_FOR_NEXT is a workflow disposition, not content PASS; every step record fixes content_verified=false and workflow_ready_is_content_pass=false",
+        "REVISE/BLOCKED requires a concrete next action; LIMITED requires explicit limitations",
+        "CANDIDATE from M05 can feed only comparison steps M07/M08, not final M10 judgment",
+        "admitted-model execution requires a current W19 task/admission, a successful actual OperationReceipt and artifact references back to that operation"
+      ]
+    },
+    "checkpoint_recovery": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "official LangGraph InMemorySaver records completed/active step state under one dossier thread",
+        "checkpoint state is rebuilt from the Archive dossier after controller/process state loss",
+        "checkpoint equality does not replace Archive identity, content review, adoption or publication status"
+      ]
+    }
+  },
+  "regressions": {
+    "w27_tests": 8,
+    "runtime_tests": 186,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS",
+    "spec_check": "PASS",
+    "technical_check": "PASS",
+    "work_plan_check": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W27 card, T05/T07/R04 logic, sections 8.2-8.9 and the registered workflow implementation were reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W16/W19/W25 and earlier packages remain unaccepted; only authorized offline workflow scope was checked",
+    "Q03": "PASS_OFFLINE: revision-bound M01-M12 dossier, B1/B2 early questions, MethodUse, dependency state and bounded closure are implemented",
+    "Q04": "PASS_OFFLINE: parallel branches, missing B1/B2, M07 method timing, full cycle, upstream rework invalidation, checkpoint rebuild, bad artifact and unconfigured model cases were exercised",
+    "Q05": "PASS_LIMITED_RECOVERY: dependency, revision, method, artifact or model-operation failures stop only affected steps and preserve stale/history evidence",
+    "Q06": "PASS_SCOPED_REVIEW: only owned synthetic artifacts and workflow records were used; no real B1/B2 research content was produced or judged",
+    "Q07": "RECORDED_SCOPE: no research model, retrieval API, paid resource, persistent backend, deployment, publication or delivery"
+  },
+  "source_hashes": {
+    "intelligence/workflow.py": "3151dc0398016fd025f57eac60ddcea5b198befe4989184f5bd32ad21cdbcb46",
+    "tests_runtime/test_workflow.py": "ba3234324addc1ccd5ee9c68696bb7c75648a56deb4facb3831cfcecd61ba354",
+    "intelligence/contracts.py": "04b54461bf68a7909b269c3c1e9169432e7b332cabc21bbbb3d218a4f7578796",
+    "intelligence/research.py": "e091655d59cacf9300bad4441454409ac2469f825533e5b02bdeab29174e9b7d",
+    "intelligence/evidence.py": "140258607105138fff04f127a6f7f31b707e964c7117ac63979182fcd862f7fa",
+    "intelligence/model_admission.py": "8c5d0122523bf1b05d5996cf48836e3efae437392a16b4a9c6d9ecbf45dc3c63"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "IN_PROGRESS",
+    "W21": "IN_PROGRESS",
+    "W22": "IN_PROGRESS",
+    "W23": "IN_PROGRESS",
+    "W24": "IN_PROGRESS",
+    "W25": "IN_PROGRESS",
+    "W26": "IN_PROGRESS",
+    "W27": "IN_PROGRESS",
+    "W28": "NOT_STARTED"
+  },
+  "limits": [
+    "No real research question or B1/B2 research content was produced",
+    "The adopted LangGraph checkpointer is in-memory only; persistent process/crash recovery backend remains unimplemented",
+    "W15 adoption decisions and W31 independent review remain separate and were not exercised end-to-end",
+    "Method source adequacy, professional conditions and actual explanation quality remain unverified",
+    "W28 B1, W29 B2, W31 review and W36 route integration remain pending",
+    "Formal prerequisites and G01-G04 remain unaccepted; W27 is not ACCEPTED",
+    "No research model, supplier API, paid resource, deployment, publication, email or delivery was invoked"
+  ]
+}

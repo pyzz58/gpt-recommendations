@@ -5,7 +5,7 @@
 **CURRENT_BINDING仅表示本次关联版本一致；不证明方案正确、程序已实现、内容已审或获准运行。**
 理论或设计/依赖改变会变为REVIEW_REQUIRED；重新生成只刷新事实，不自动改写技术正文或批准新基线。
 
-当前规范SHA-256：`a2a17a1c604e608d9810c047b5c89f2a69bdea8aa6f9d5e891ffcbe6a6ecfb25`。
+当前规范SHA-256：`a40955b58f5b2bdbd541eaaf48613a56a97a85d3558b35bcb77e4be76905335e`。
 
 需复核节点：无；仅限关联新鲜度检查。
 
@@ -23,9 +23,9 @@
 | [T02](#t02) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t02) | CURRENT_BINDING | L1发现职责；第一阶段人工取样；第四阶段生产增量 | W20已离线实现feedparser/Trafilatura/JSON API受控字节入口、CandidateIndex、取得元信息、字段/时间缺口和失败记录，并持久到C02；W21已实现强键事件归并提案、来源血缘/独立根、编辑歧义和探索队列；W22已实现预固定独立参照、范围限定的覆盖比较与七类缺口；W23已消费候选/事件簇/覆盖审计，保存S0—S8取舍。真实来源运行与T03真实内容复核仍待后续 |
 | [T03](#t03) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t03) | CURRENT_BINDING | L2编辑决定；第一阶段人工；第二阶段记录和接口 | C04编辑任务+C02决定+C03 S依赖；W22提供独立参照与覆盖缺口接口，W23已离线实现S0—S8前后决定、S8前置包的实对象绑定、研究准入与刊登准入分离及显式期次建议；分值不自动产生准入或拼刊，真实编辑取舍和W24—W26闭环待验 |
 | [T04](#t04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t04) | CURRENT_BINDING | L3取证/中文核对；第一阶段实际回源；第二阶段适配 | C01已离线复用Trafilatura解析获准HTML字节，并支持纯文本定位；W24持久SOURCE_MATERIAL、SOURCE_STRUCTURE、SOURCE_INTAKE及RIGHTS_RECORD，正文保存、机器处理和后续翻译分别核权；W25已实现节点级Evidence、Claim—Evidence范围/反证/未知、来源血缘根计数、受控十进制计算及补证请求/结果接口；W26已实现S8后版本化入选中文、节选/全文/独立导读分流、源定位映射、关键元素检查及截点更新隔离。PDF/Docling/OCR及真实翻译质量仍未验收，语义支持仍须人工核查；提取/计算不代事实或因果核真 |
-| [T05](#t05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t05) | CURRENT_BINDING | L4联合研究组织；B1/B2从早期参与；第一阶段分步研究；第二阶段可重跑组织 | W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；W25缺口请求与真实补证结果可关联原SourceIntake、Evidence和前后Claim—Evidence评估；C03完整M图、C04研究函数、条件失配回W27及真实模型内容仍待实现 |
+| [T05](#t05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t05) | CURRENT_BINDING | L4联合研究组织；B1/B2从早期参与；第一阶段分步研究；第二阶段可重跑组织 | W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；W25缺口请求与真实补证结果可关联原SourceIntake、Evidence和前后Claim—Evidence评估；W27已离线实现W16修订绑定的M01—M12依赖图、Archive权威案卷快照、官方LangGraph InMemorySaver检查点、早期B1/B2问题、MethodUse积累、递归失效和M12有限收口。真实B1/B2内容、持久检查点后端、条件/专业资料完整分派及模型调用仍待实现 |
 | [T06](#t06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t06) | CURRENT_BINDING | L4顾问职责；第一阶段真实研判；后续按任务验证 | C04 B1任务共用C02/C03和模型接口；实际顾问贡献待内容验收 |
-| [T07](#t07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t07) | CURRENT_BINDING | L4帝师职责；从M02参与；第一阶段真实教学；后续按任务验证 | C04 B2任务共用C02/C03和模型接口；主动知识研究/自足教学仍待独立验收 |
+| [T07](#t07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t07) | CURRENT_BINDING | L4帝师职责；从M02参与；第一阶段真实教学；后续按任务验证 | W27已记录B2在M02提出的早期知识问题、M11依赖与检查点路由；C04 B2实际主动知识研究、连续自足教学和模型内容仍由W29独立实现验收 |
 | [T08](#t08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t08) | CURRENT_BINDING | L4的C与M12准备；当期保存条件；真实结果后来再核 | C04条件任务+C02 ThesisVersion/Theme；无独立预测平台，真实成果待验 |
 | [T09](#t09) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t09) | CURRENT_BINDING | L5独立核查；不自签；第一阶段实际核查；第二阶段能力配置验证 | C04独立核查+C01回源+C02版本+C03返工；W19已离线实现模型/任务配置身份、给定材料/检索/约束增益验证记录和有限使用准入，作者与审稿决定分离。真实审稿能力、模型调用与业务闭环未实现 |
 | [T10](#t10) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t10) | CURRENT_BINDING | L6主编/呈现；新命题回L4/L5；第一阶段实际格式；第四阶段正式渲染/交付 | C05 Jinja+第四阶段WeasyPrint，复用年度呈现；内容/实际文件对应未实现验收 |
@@ -286,7 +286,7 @@
 
 设计目的：问题界定与联合研究组织
 
-责任：L4联合研究组织；B1/B2从早期参与；阶段：第一阶段分步研究；第二阶段可重跑组织；实现：W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；W25缺口请求与真实补证结果可关联原SourceIntake、Evidence和前后Claim—Evidence评估；C03完整M图、C04研究函数、条件失配回W27及真实模型内容仍待实现。
+责任：L4联合研究组织；B1/B2从早期参与；阶段：第一阶段分步研究；第二阶段可重跑组织；实现：W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；W25缺口请求与真实补证结果可关联原SourceIntake、Evidence和前后Claim—Evidence评估；W27已离线实现W16修订绑定的M01—M12依赖图、Archive权威案卷快照、官方LangGraph InMemorySaver检查点、早期B1/B2问题、MethodUse积累、递归失效和M12有限收口。真实B1/B2内容、持久检查点后端、条件/专业资料完整分派及模型调用仍待实现。
 
 理论出处：[§8](CANONICAL_SYSTEM_SPEC_V5.md#th-8)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§12](CANONICAL_SYSTEM_SPEC_V5.md#th-12)、[§16.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-1)、[§16.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-2)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
@@ -326,7 +326,7 @@
 
 设计目的：帝师B2知识研究与教学
 
-责任：L4帝师职责；从M02参与；阶段：第一阶段真实教学；后续按任务验证；实现：C04 B2任务共用C02/C03和模型接口；主动知识研究/自足教学仍待独立验收。
+责任：L4帝师职责；从M02参与；阶段：第一阶段真实教学；后续按任务验证；实现：W27已记录B2在M02提出的早期知识问题、M11依赖与检查点路由；C04 B2实际主动知识研究、连续自足教学和模型内容仍由W29独立实现验收。
 
 理论出处：[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 

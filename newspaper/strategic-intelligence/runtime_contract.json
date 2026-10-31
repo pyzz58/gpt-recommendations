@@ -49,7 +49,9 @@
     "intelligence/evidence.py",
     "tests_runtime/test_evidence.py",
     "intelligence/materials.py",
-    "tests_runtime/test_materials.py"
+    "tests_runtime/test_materials.py",
+    "intelligence/workflow.py",
+    "tests_runtime/test_workflow.py"
   ],
   "data_files": [
     "SOURCE_REGISTRY.json",
@@ -68,5 +70,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "a2a17a1c604e608d9810c047b5c89f2a69bdea8aa6f9d5e891ffcbe6a6ecfb25"
+  "spec_sha256": "a40955b58f5b2bdbd541eaaf48613a56a97a85d3558b35bcb77e4be76905335e"
 }
