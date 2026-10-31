@@ -6,7 +6,7 @@
 
 ## 完整技术实施入口
 
-先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01数据/权限底座、W02 API/工作台壳、W03资料接收/来源定位、W04规则候选/分层list、W05患者事实/锚点/分类断点、W06遗留复核/分项确认、W07 EDC检验Excel快照导入、W08检验源文件读取/EDC核对及W09有依据的AE/PD分析已完成；下一项为W10中心文件目录和其他阶段清单，不代表真实临床用途或后续功能已验证。
+先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01数据/权限底座、W02 API/工作台壳、W03资料接收/来源定位、W04规则候选/分层list、W05患者事实/锚点/分类断点、W06遗留复核/分项确认、W07 EDC检验Excel快照导入、W08检验源文件读取/EDC核对及W09有依据的AE/PD分析已完成；后续独立复核03/04/08残留已引发f66750c新修复和成功CI，当前该源码将W04—W09重开in_progress；以最新关闭/源码绑定证据判断再接续W10。这些工程记录不代表真实临床用途或后续功能已验证。
 
 ## 当前交付和实际状态
 
@@ -16,7 +16,7 @@
 
 W04已在真实PostgreSQL上完成有出处规则候选、项目共享方案的中心独立采用日、普通中文段落/表格/脚注/Q&A保留、三值条件、手动启用日、事件日适用性和四层list；详见[W04交付记录](validation/W04_STATUS.md)。W05已在此底座上完成结构化患者事实、规则驱动访视窗口、门槛/例外与未知日期状态、来源/日期精度保留、分类断点与局部跳过/恢复；详见[W05交付记录](validation/W05_STATUS.md)。W06已完成从合成历史DOCX/XLSX/问题文字预览并确认遗留、稳定Issue与分项Action、PD上报独立确认、CRA点击确认/重开、Query期限依据和访前选择；详见[W06交付记录](validation/W06_STATUS.md)。W07已完成多sheet EDC Excel公式/缓存预览、映射与范围确认、同日初检/复查实例分离及不可变合成检验快照；详见[W07交付记录](validation/W07_STATUS.md)。W08已完成选择文字PDF、清晰合成PNG和中文页眉上下文PDF的实际读取、完整更正链、来源坐标、参考范围独立比较、持久异步识别/重试、集中复核及M06待办关联；详见[W08交付记录](validation/W08_STATUS.md)和[支持范围](validation/LAB_AUTOMATION_SCOPE.md)。W09已完成AE、SAE、相关性、预期性、AESI/DLT及PD维度分离、具体事件事实归属、检验一致异常/跳过/stale衔接、具体问题、医学答复和独立模型运行；固定本地模型只选择允许解释模板和证据ID，不能作最终医学判断；详见[W09交付记录](validation/W09_STATUS.md)。这些provider只验证声明的合成子集，不代表任意方案自动理解、完整病史、真实医院版式、EDC导出完整、安全分析临床质量或临床安全结论。目录、报告及真实授权试用仍待后续工作包。
 
-历史v0.2技术复核：[2026-10-29审查报告](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)。总体架构保留，已登记10项开放问题及修订/关闭标准；含云端复现的任务完成检查缺口。最新[v0.4复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)补齐执行契约、自动检验路径、验证和源码绑定完成门槛。[本轮澄清及设计响应](audit/USER_CLARIFICATION_RESPONSE_20261029.md)已将用户决定同步到对应区域。2026-11-01的13项审查问题已按[关闭映射](validation/REVIEW_REMEDIATION_20261101.md)修复，W01—W09在[run 41245438323](https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323)重新完成源码绑定验证；这不关闭真实临床资料、代表性和节时验证缺口。
+历史v0.2技术复核：[2026-10-29审查报告](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)。总体架构保留，已登记10项开放问题及修订/关闭标准；含云端复现的任务完成检查缺口。最新[v0.4复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)补齐执行契约、自动检验路径、验证和源码绑定完成门槛。[本轮澄清及设计响应](audit/USER_CLARIFICATION_RESPONSE_20261029.md)已将用户决定同步到对应区域。2026-11-01修复已按[开发者记录](validation/REVIEW_REMEDIATION_20261101.md)重新完成W01—W09的[源码绑定CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323)。后续[独立复核快照](audit/REMEDIATION_RECHECK_20261101.md)确认03/04/08残留；随后新增[修复记录](validation/REMEDIATION_RECHECK_CLOSURE_20261101.md)和[CI 41248250769](https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769)。本次文档整理未独立重验新实现，不把旧反例当新版本结论，也不将CI成功单独作为全部问题关闭依据；真实临床资料、代表性和节时验证缺口也继续保留。新增[防复发要求](architecture/REGRESSION_PREVENTION.md)用于后续修复和持续验收。
 
 ## 从哪里看
 
@@ -32,6 +32,7 @@ W04已在真实PostgreSQL上完成有出处规则候选、项目共享方案的�
 | 数据、接口、AI与文件解析怎么做 | [数据模型](architecture/DATA_MODEL.md)、[接口约定](architecture/API_CONTRACTS.md)、[解析与AI方案](architecture/AI_AND_PARSING.md) |
 | 按什么顺序真正开发 | [开发工作计划](plan/WORK_PLAN.md) |
 | 理论变更以后怎样同步 | [同步规则](traceability/SYNC_POLICY.md) |
+| 如何防止已知错误再次出现 | [防复发与回归验收](architecture/REGRESSION_PREVENTION.md)，对应理论、模块及实际测试 |
 | 如何在GitHub云上开发及验收 | [云上开发与发布](architecture/CLOUD_AND_RELEASE.md)、[质量验收](architecture/QUALITY.md) |
 
 ## 第一版范围
@@ -67,6 +68,6 @@ Git中的 `theory/requirements.json` 是开发可执行基线；Notion是本次�
 
 当前没有运行时Notion自动同步凭证或任务。仅修改Notion而未导入Git的内容，CI无法凭空发现；维护人必须先导入，或者后续实现只读差异导入。系统不会自动替人决定新架构或静默改写已签发报告。
 
-最新工程验证为[2026-11-01审查修复及云端证据](validation/REVIEW_REMEDIATION_20261101.md)。W01—W09已按源码绑定和任务专属CI重新完成；W10及之后的临床应用仍待实际编程和对应用途验证。
+工程验证记录为[2026-11-01审查修复及云端证据](validation/REVIEW_REMEDIATION_20261101.md)；原正确性复核见[独立报告](audit/REMEDIATION_RECHECK_20261101.md)，后续新修复另见[开发者记录](validation/REMEDIATION_RECHECK_CLOSURE_20261101.md)。本次没有对新实现独立重验；先核实最新关闭及源码绑定证据，再接续W10，后续临床应用仍待实际编程和对应用途验证。
 
 开源复用修订v0.5：[14项目核对与替代边界](architecture/REUSE_ASSESSMENT.md)，[可直接发给Codex的第一段](plan/CODEX_FIRST_MESSAGE.md)。依赖选择已同步到任务；尚未安装、集成或做临床性能验证。

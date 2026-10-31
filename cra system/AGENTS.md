@@ -6,7 +6,7 @@
 
 1. 读 README、theory/BASELINE.md、theory/REQUIREMENTS.md。
 2. 读 traceability/INDEX.md、architecture/SYSTEM.md，以及本次任务对应的模块文件。
-3. 读 plan/WORK_PLAN.md 和 plan/tasks.json，从依赖已完成的首个未完成工作包推进。W00为工程基线；云端检查通过才可记验证完成。
+3. 读 architecture/REGRESSION_PREVENTION.md、当前审核入口、plan/WORK_PLAN.md 和 plan/tasks.json。先处理与本次任务有关的开放阻断项，再从依赖已完成的首个未完成工作包推进；选择器输出不替代审核状态。W00为工程基线；云端检查通过才可记验证完成。
 4. 实现任务要求的代码和有价值的验收，不要不断重写计划代替开发，不跳过前置数据和权限工作。
 5. 完成一个工作包后更新状态、实际代码/接口路径、测试证据和下一项。未运行的检查明确写未运行。
 
@@ -46,4 +46,12 @@ plan/implementation.json与tasks.json共同生成plan/IMPLEMENTATION_PATH.md及�
 
 W01以后verified除实际交付还需completion_evidence绑定源码/规范、tested_commit、run_id和该任务专属CI job/步骤，CI从GitHub核实。生成器不执行JSON中的任意命令。已验证源码被修改时先标受影响任务/已验证依赖链为in_progress并留completion_history，实际重新测试后再恢复verified，避免旧证据阻断新测试循环。W00仅保留历史bootstrap特例。
 
-本轮设计请求只交设计及工程门槛修补；W01以后仍planned。下一轮实际编程从W01开始，不重复改写整套方案替代代码。临床使用只需要既定操作，不把工程证据流程变成CRA确认整改或PD上报的额外门槛。
+上述“W01以后仍planned”属于初始设计时点，实际进度读取当前任务及审核记录。临床使用只需要既定操作，不把工程证据流程变成CRA确认整改或PD上报的额外门槛。
+
+## 已知错误的持续回归
+
+必读[防复发与回归验收](architecture/REGRESSION_PREVENTION.md)。实现错误通常是未满足既有理论，不随意提高CRA-R修订号或重写最高业务目标。将正确行为落实到相关模块契约、真实消费者测试及任务专属CI；修复同一变更保留原反例、邻近边界和已正确行为。错误版本不能通过正确行为断言，修复后才应通过；未实际执行的验证明确写未执行。
+
+CI成功和源码绑定不证明测试预期正确；诊断探针成功复现缺陷也不等于产品验收通过。不得删除关键断言、改成期待错误、扩大skip或把未解决问题未经同意转成后续范围。保持原始来源、完整更正链、父子条件和三层适用范围，覆盖重复执行、过期恢复及输入更新后旧结果。
+
+2026-11-01当前独立复核：[报告](audit/REMEDIATION_RECHECK_20261101.md)与[接手指令](audit/CODEX_RECHECK_FOLLOWUP_20261101.md)。原复核03/04/08之后已新增f66750c修复及成功CI；先核实最新关闭证据，不重复实现已修部分。现有选择器/完成工具不会仅凭文档自动理解开放发现；工程拦截的接入要求见防复发文件第6节，不能将“已写文档”说成“已自动拦截”。当前要求适用于后续编码，不授权审阅回合擅自启动W10。

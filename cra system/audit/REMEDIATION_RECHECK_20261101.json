@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-01",
+  "timezone": "Pacific/Auckland",
+  "repository": "pyzz58/gpt-recommendations",
+  "project": "cra system",
+  "reviewed_source_commit": "5148684064a57e50077dd32d02e76b57b2221fc4",
+  "reviewed_final_status_commit": "6b2fa75fcc55d0738bbf6b97372db89b22a58dd5",
+  "original_review": "https://github.com/pyzz58/gpt-recommendations/blob/ec5ba1e4ed54ca3745d1681a47970981225bc16d/cra%20system/audit/DEVELOPMENT_REVIEW_20261101.md",
+  "existing_runs": [
+    {
+      "id": 41245438323,
+      "head_sha": "5148684064a57e50077dd32d02e76b57b2221fc4",
+      "conclusion": "success",
+      "jobs": 10
+    },
+    {
+      "id": 41245900472,
+      "head_sha": "6b2fa75fcc55d0738bbf6b97372db89b22a58dd5",
+      "conclusion": "success",
+      "jobs": 10,
+      "task_evidence_checked": 9,
+      "authoritative_verification": true
+    }
+  ],
+  "independent_diagnostics": {
+    "run_id": 41247079903,
+    "job_id": 124672626722,
+    "execution_commit": "e257602a5445b352c301958a057cce3ac1d36c0f",
+    "source_unchanged_from": "5148684064a57e50077dd32d02e76b57b2221fc4",
+    "db": "disposable PostgreSQL 18.6",
+    "cases": 5,
+    "reproduced": 5,
+    "diagnostic_execution_succeeded": true,
+    "acceptance_passed": false
+  },
+  "verdict": "Most remediation is substantive. Do not close findings 03/04/08; three existing-scope residuals were independently reproduced in five cases. W10 remains unstarted.",
+  "closure_map": [
+    {
+      "id": "CRA-REV-20261101-01",
+      "status": "verified_targeted_fix",
+      "assessment": "有效值按完整更正链折叠；单项确认、连续局部更正与批量确认有真实API回归。"
+    },
+    {
+      "id": "CRA-REV-20261101-02",
+      "status": "verified_targeted_fix",
+      "assessment": "未知例外和带单位的数值比较缺单位时保留unknown；原问题的针对性修复有效。"
+    },
+    {
+      "id": "CRA-REV-20261101-03",
+      "status": "open_residual_confirmed",
+      "assessment": "同层门槛和未知日期已修；父级前提/例外仍不传给更深子清单，独立组件反例复现。"
+    },
+    {
+      "id": "CRA-REV-20261101-04",
+      "status": "open_residual_confirmed",
+      "assessment": "共享方案可以按中心采用；但按相同rule_key一律删除项目默认，独立中心文件可静默遮掉项目要求，真实PostgreSQL复现。"
+    },
+    {
+      "id": "CRA-REV-20261101-05",
+      "status": "scoped_improvement_not_full_semantic_validation",
+      "assessment": "普通中文要求进入有来源的analysis_required候选及中英用途标签；这部分修复有效，不等于自动生成完整可执行条件，保持用户本轮明确限制。"
+    },
+    {
+      "id": "CRA-REV-20261101-06",
+      "status": "verified_targeted_fix",
+      "assessment": "参考上下限、报告日期和修订号增加独立比较，原本同标志漏范围差异的问题已修；等价值格式等减负表现仍需代表性验收。"
+    },
+    {
+      "id": "CRA-REV-20261101-07",
+      "status": "verified_context_fix_limited_formats",
+      "assessment": "页眉上下文及行/页眉冲突保留，清晰中文合成文字PDF有实测；真实照片/复杂版式及总人工负担不在本轮已验证范围。"
+    },
+    {
+      "id": "CRA-REV-20261101-08",
+      "status": "open_residual_confirmed",
+      "assessment": "Job/Outbox/队列及独立模型run有实质实现；完成任务复投仍再次识别触发IntegrityError，已过期running的公共重试入口仍409。"
+    },
+    {
+      "id": "CRA-REV-20261101-09",
+      "status": "addressed_with_release_followup",
+      "assessment": "隔离环境完整哈希锁和Qwen权重校验已落实；Docling记录模型清单摘要。固定获准模型清单、镜像/冷启动和恢复等仍应在发布门槛逐项核实，不能将运行后摘要当运行前白名单。"
+    },
+    {
+      "id": "CRA-REV-20261101-10",
+      "status": "tracked_not_device_validated",
+      "assessment": "iPad/电脑/弱网/跨设备已纳入W12/W15等任务；这是追踪闭环，当前没有真实设备验收。"
+    },
+    {
+      "id": "CRA-REV-20261101-11",
+      "status": "verified_targeted_fix",
+      "assessment": "一致但异常继续进入安全核查；跳过/陈旧比较区分处理，有针对性集成回归；仍非临床准确性验证。"
+    },
+    {
+      "id": "CRA-REV-20261101-12",
+      "status": "verified_targeted_fix",
+      "assessment": "可信研究法域、上游unknown继承、服务端数据分类及limited/validated=false已落实。"
+    },
+    {
+      "id": "CRA-REV-20261101-13",
+      "status": "verified_targeted_fix",
+      "assessment": "事件事实/重复实例与显式相关历史分开，有多事件、历史相关事实和空实例的回归。"
+    }
+  ],
+  "remaining": [
+    {
+      "id": "CRA-REV-20261101-03",
+      "priority": "P1",
+      "code_refs": [
+        "https://github.com/pyzz58/gpt-recommendations/blob/5148684064a57e50077dd32d02e76b57b2221fc4/cra%20system/backend/cra_app/subjects/calendar.py#L96",
+        "https://github.com/pyzz58/gpt-recommendations/blob/5148684064a57e50077dd32d02e76b57b2221fc4/cra%20system/backend/cra_app/subjects/calendar.py#L127",
+        "https://github.com/pyzz58/gpt-recommendations/blob/5148684064a57e50077dd32d02e76b57b2221fc4/cra%20system/backend/cra_app/subjects/calendar.py#L141"
+      ],
+      "required_fix": "Carry explicit applicability/exception context through nested RuleNode children and preserve path identity during deduplication; distinguish obligations being checked from applicability conditions.",
+      "forward_regressions": [
+        "False parent prerequisite and true parent exception suppress the dependent child obligation.",
+        "Unknown ancestor applicability stays unknown in the child.",
+        "Sibling branches with equal intervals but distinct conditions are not silently merged.",
+        "An applicable obligation outside its window still reports out_of_window; do not mask real deviations."
+      ],
+      "observations": [
+        {
+          "case": "false_parent_precondition",
+          "original_finding": "CRA-REV-20261101-03",
+          "expected_correct_behavior": "The child obligation inherits the parent's false prerequisite or effective waiver.",
+          "observed": {
+            "parent_evaluation": "not_applicable",
+            "child_gate_count": 0,
+            "child_window_status": "out_of_window"
+          },
+          "finding_reproduced": true,
+          "acceptance_passed": false,
+          "evidence_kind": "actual_calendar_and_requirement_components_plus_static_caller_trace",
+          "reviewed_source_commit": "5148684064a57e50077dd32d02e76b57b2221fc4"
+        },
+        {
+          "case": "true_parent_exception",
+          "original_finding": "CRA-REV-20261101-03",
+          "expected_correct_behavior": "The child obligation inherits the parent's false prerequisite or effective waiver.",
+          "observed": {
+            "parent_evaluation": "exception",
+            "child_gate_count": 0,
+            "child_window_status": "out_of_window"
+          },
+          "finding_reproduced": true,
+          "acceptance_passed": false,
+          "evidence_kind": "actual_calendar_and_requirement_components_plus_static_caller_trace",
+          "reviewed_source_commit": "5148684064a57e50077dd32d02e76b57b2221fc4"
+        }
+      ]
+    },
+    {
+      "id": "CRA-REV-20261101-04",
+      "priority": "P1",
+      "code_refs": [
+        "https://github.com/pyzz58/gpt-recommendations/blob/5148684064a57e50077dd32d02e76b57b2221fc4/cra%20system/backend/cra_app/rules/service.py#L1822"
+      ],
+      "required_fix": "Restrict center adoption/default selection to explicit same-lineage project versions; independent site SOP/rules must participate or surface a conflict, never silently erase a project rule just because rule_key matches.",
+      "forward_regressions": [
+        "Shared project version retains distinct center adoption dates.",
+        "Independent site document with same key cannot remove project requirement.",
+        "A weaker/incompatible site requirement surfaces both sources and unresolved impact.",
+        "No latest/strictest/center-priority shortcut resolves a true conflict."
+      ],
+      "observations": [
+        {
+          "case": "site_same_key_masks_project",
+          "original_finding": "CRA-REV-20261101-04",
+          "expected_correct_behavior": "Independent project requirements remain or an explicit source conflict is raised; a site document cannot silently waive them.",
+          "observed": {
+            "project_rule_ids_before": [
+              "47433556-80b1-4283-a29b-9a7cd1d63acf"
+            ],
+            "visible_after": [
+              {
+                "id": "51a67685-6884-4b5b-ac49-f49e87252bd6",
+                "layer": "site",
+                "summary": "Synthetic site review instruction"
+              }
+            ],
+            "conflicts": []
+          },
+          "finding_reproduced": true,
+          "acceptance_passed": false,
+          "evidence_kind": "actual_document_extraction_activation_and_applicability_services_with_PostgreSQL",
+          "reviewed_source_commit": "5148684064a57e50077dd32d02e76b57b2221fc4"
+        }
+      ]
+    },
+    {
+      "id": "CRA-REV-20261101-08",
+      "priority": "P1",
+      "code_refs": [
+        "https://github.com/pyzz58/gpt-recommendations/blob/5148684064a57e50077dd32d02e76b57b2221fc4/cra%20system/backend/cra_app/laboratory/service.py#L731",
+        "https://github.com/pyzz58/gpt-recommendations/blob/5148684064a57e50077dd32d02e76b57b2221fc4/cra%20system/backend/cra_app/laboratory/service.py#L780",
+        "https://github.com/pyzz58/gpt-recommendations/blob/5148684064a57e50077dd32d02e76b57b2221fc4/cra%20system/backend/cra_app/laboratory/service.py#L828",
+        "https://github.com/pyzz58/gpt-recommendations/blob/5148684064a57e50077dd32d02e76b57b2221fc4/cra%20system/backend/cra_app/laboratory/service.py#L941"
+      ],
+      "required_fix": "A succeeded job must return its existing result before reading/inference/persistence. Explicit retry may safely requeue an expired running lease, fencing its old attempt; protect live leases and preserve original candidates/reviews.",
+      "forward_regressions": [
+        "Completed redelivery has zero additional provider calls, rows, revisions or completion audits.",
+        "The public retry endpoint recovers an expired running lease; a live lease remains protected.",
+        "A late result from an obsolete lease cannot overwrite the active attempt.",
+        "Recovery and repeat delivery do not duplicate observations or lose CRA corrections."
+      ],
+      "observations": [
+        {
+          "case": "completed_job_reexecuted",
+          "original_finding": "CRA-REV-20261101-08",
+          "expected_correct_behavior": "A repeated delivery of a succeeded job returns the existing result without inference, duplicate rows, or another completion audit.",
+          "observed": {
+            "provider_calls_on_redelivery": 1,
+            "exception_type": "IntegrityError",
+            "revision_before": 2,
+            "revision_after": 2,
+            "observation_count_after": 5
+          },
+          "finding_reproduced": true,
+          "acceptance_passed": false,
+          "evidence_kind": "actual_laboratory_service_or_public_API_with_PostgreSQL",
+          "reviewed_source_commit": "5148684064a57e50077dd32d02e76b57b2221fc4"
+        },
+        {
+          "case": "expired_running_job_retry_denied",
+          "original_finding": "CRA-REV-20261101-08",
+          "expected_correct_behavior": "An explicitly retried job whose lease expired can be safely requeued after fencing the old attempt; an unexpired active lease stays protected.",
+          "observed": {
+            "retry_status": 409,
+            "retry_body": {
+              "error": {
+                "code": "laboratory_conflict",
+                "message": "running laboratory recognition cannot be retried",
+                "retryable": false,
+                "details": null
+              }
+            },
+            "lease_was_expired": true
+          },
+          "finding_reproduced": true,
+          "acceptance_passed": false,
+          "evidence_kind": "actual_laboratory_service_or_public_API_with_PostgreSQL",
+          "reviewed_source_commit": "5148684064a57e50077dd32d02e76b57b2221fc4"
+        }
+      ]
+    }
+  ],
+  "boundaries": [
+    "No product code, task state or developer branch was changed by this review.",
+    "No W10 implementation, merge, deployment or real clinical data processing.",
+    "Existing actual Qwen/Docling CI logs were read; independent probes use existing text-PDF fixtures and do not invoke those models.",
+    "Five diagnostic pytest cases passing means expected defective behavior was reproduced, not that business acceptance passed."
+  ]
+}
