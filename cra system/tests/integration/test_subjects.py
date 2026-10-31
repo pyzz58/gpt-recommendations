@@ -26,7 +26,15 @@ from cra_app.governance.service import (
 from cra_app.main import create_app
 from cra_app.platform.jobs import ProcrastinateQueue
 from cra_app.rules.common_policy import load_common_policy_set
-from cra_app.rules.contracts import ConfirmationOperation
+from cra_app.rules.contracts import (
+    ConfirmationOperation,
+    FactValue,
+    RuleCondition,
+    RuleNode,
+    RuleOperand,
+    RuleSourceRef,
+)
+from cra_app.rules.evaluator import evaluate_condition
 from cra_app.rules.service import (
     ConfirmRuleCommand,
     CreateActivationCommand,
@@ -36,6 +44,7 @@ from cra_app.rules.service import (
 from cra_app.shared.config import Settings
 from cra_app.shared.db import build_engine, build_session_factory
 from cra_app.subjects.context_import import parse_context_file
+from cra_app.subjects.calendar import extract_date_interval_specs
 from cra_app.subjects.contracts import (
     CheckDecisionCommand,
     CoverageBreakpointCommand,
@@ -448,6 +457,96 @@ def _confirm_nested_window_rule(api: TestClient, services: dict) -> None:
     assert confirmed.status_code == 200, confirmed.text
 
 
+def _confirm_branch_linked_window(
+    api: TestClient,
+    services: dict,
+    *,
+    shape: str,
+) -> None:
+    _upload_gated_text_window_rule(api, services)
+    listed = api.get(
+        f"/api/v1/studies/{services['study']}/rules",
+        params={"site_id": str(services["site_a"])},
+    )
+    assert listed.status_code == 200, listed.text
+    item = next(
+        rule
+        for rule in listed.json()
+        if rule["rule_key"] == "R-WINDOW-GATED-01"
+    )
+    version_id = item["current_version"]["id"]
+    detail = api.get(f"/api/v1/rule-versions/{version_id}")
+    assert detail.status_code == 200, detail.text
+    source_refs = detail.json()["tree"]["source_refs"]
+    interval = {
+        "op": "date_interval",
+        "fact_key": "visit_date",
+        "anchor_fact_key": "infusion_date",
+        "min_days": -2,
+        "max_days": 2,
+        "inclusive": True,
+    }
+    leaf = {
+        "node_key": "RECHECK-BRANCH-WINDOW",
+        "summary": "Pure synthetic branch-linked check",
+        "trigger": interval,
+        "required_facts": ["infusion_date", "visit_date"],
+        "source_refs": source_refs,
+    }
+    target = (
+        leaf
+        if shape == "direct"
+        else {
+            "node_key": "RECHECK-BRANCH-CONTAINER",
+            "summary": "Pure synthetic branch-selected child list",
+            "children": [leaf],
+            "source_refs": source_refs,
+        }
+    )
+    group = {
+        "node_key": "RECHECK-BRANCH-GROUP",
+        "summary": "Pure synthetic conditional child list",
+        "trigger": {
+            "op": "eq",
+            "left": {
+                "kind": "fact_ref",
+                "fact_key": "screening_active",
+            },
+            "right": {"kind": "literal", "value": True},
+        },
+        "branches": [
+            {
+                "branch_key": "RECHECK-SELECT",
+                "label": "Synthetic eligible branch",
+                "condition": {
+                    "op": "eq",
+                    "left": {
+                        "kind": "fact_ref",
+                        "fact_key": "gate_ok",
+                    },
+                    "right": {"kind": "literal", "value": True},
+                },
+                "target_node_ids": [target["node_key"]],
+                "source_refs": source_refs,
+            }
+        ],
+        "children": [target],
+        "source_refs": source_refs,
+    }
+    confirmed = api.post(
+        f"/api/v1/rules/{item['id']}/confirmation",
+        json={
+            "expected_revision": item["revision"],
+            "idempotency_key": "w05-branch-linked-window-confirm",
+            "base_version_id": version_id,
+            "reason": "Pure synthetic branch selection and child window",
+            "operations": [{"op": "add_child", "child": group}],
+        },
+        headers={"X-CSRF-Token": api.cookies.get("cra_csrf")},
+    )
+    assert confirmed.status_code == 200, confirmed.text
+
+
 def _context_rows(filename: str) -> list[FactImportRow]:
     return parse_context_file(
         filename, (SUBJECT_FIXTURES / filename).read_bytes()
@@ -842,6 +941,139 @@ def test_sibling_equal_visit_windows_keep_distinct_condition_paths(
         "R-WINDOW-SIBLINGS-01:branch:B1",
         "R-WINDOW-SIBLINGS-01:branch:B2",
     }
+
+
+@pytest.mark.parametrize(
+    "shape,gate,expected",
+    [
+        ("direct", True, "out_of_window"),
+        ("container", False, "not_applicable"),
+        ("container", None, "unknown_applicability"),
+        ("container", True, "out_of_window"),
+    ],
+    ids=[
+        "direct-selected-window",
+        "container-false",
+        "container-unknown",
+        "container-true-control",
+    ],
+)
+def test_branch_target_preserves_window_and_selection_context(
+    api, services, shape, gate, expected
+):
+    _confirm_branch_linked_window(api, services, shape=shape)
+    source = {
+        "source_type": "record",
+        "source_id": "synthetic-branch-linked-window-source",
+        "locator": "synthetic/branch-linked-window",
+        "quote": "Pure synthetic eligibility and date facts",
+    }
+    values = [
+        ("screening_active", "true", "boolean"),
+        ("infusion_date", "2026-01-01", "date"),
+        ("visit_date", "2026-01-10", "date"),
+    ]
+    if gate is not None:
+        values.append(("gate_ok", str(gate).lower(), "boolean"))
+    _import_rows(
+        services,
+        [
+            FactImportRow(
+                subject_external_id="SYN-BRANCH-LINK",
+                fact_key=key,
+                value_raw=value,
+                value_type=value_type,
+                observed_on=date(2026, 1, 1),
+                source_ref=source,
+            )
+            for key, value, value_type in values
+        ],
+        key="w05-branch-linked-window-facts",
+    )
+    subject = _subject_by_external(api, services, "SYN-BRANCH-LINK")
+    body = _evaluate(api, subject["id"], "2026-01-10")
+    selected = [
+        item
+        for item in body["requirements"]
+        if "RECHECK-BRANCH-WINDOW" in item["requirement"]["visit_key"]
+    ]
+    assert len(selected) == 1
+    assert selected[0]["window_status"] == expected
+
+
+def test_multiple_branch_entries_to_one_target_use_or_semantics():
+    source_ref = RuleSourceRef(
+        anchor_key="synthetic-multi-entry",
+        quote="Synthetic alternate branch target",
+    )
+
+    def eq(key: str) -> RuleCondition:
+        return RuleCondition(
+            op="eq",
+            left=RuleOperand(kind="fact_ref", fact_key=key),
+            right=RuleOperand(kind="literal", value=True),
+        )
+
+    leaf = RuleNode(
+        node_key="synthetic-leaf",
+        summary="Synthetic date obligation",
+        trigger=RuleCondition(
+            op="date_interval",
+            anchor_fact_key="anchor_date",
+            fact_key="actual_date",
+            min_days=-2,
+            max_days=2,
+        ),
+        source_refs=[source_ref],
+    )
+    container = RuleNode(
+        node_key="synthetic-container",
+        summary="Synthetic shared branch target",
+        children=[leaf],
+        source_refs=[source_ref],
+    )
+    group = RuleNode(
+        node_key="synthetic-group",
+        summary="Synthetic alternate entry group",
+        trigger=eq("group_ready"),
+        branches=[
+            {
+                "branch_key": "A",
+                "label": "Entry A",
+                "condition": eq("entry_a"),
+                "target_node_ids": [container.node_key],
+                "source_refs": [source_ref],
+            },
+            {
+                "branch_key": "B",
+                "label": "Entry B",
+                "condition": eq("entry_b"),
+                "target_node_ids": [container.node_key],
+                "source_refs": [source_ref],
+            },
+        ],
+        children=[container],
+        source_refs=[source_ref],
+    )
+    specs = extract_date_interval_specs(group)
+    assert len(specs) == 1
+    alternatives = next(
+        condition
+        for condition in specs[0].gate_conditions
+        if condition.op == "any"
+    )
+    assert len(alternatives.children) == 2
+    assert evaluate_condition(
+        alternatives,
+        {"entry_a": FactValue(value=False)},
+    ).result == "unknown"
+    assert evaluate_condition(
+        alternatives,
+        {
+            "entry_a": FactValue(value=True),
+            "entry_b": FactValue(value=False),
+        },
+    ).result == "true"
 
 
 def test_structured_context_json_csv_and_xlsx_parse_same_subjects():

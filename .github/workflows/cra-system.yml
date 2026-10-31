@@ -312,6 +312,8 @@ jobs:
         run: uv run --frozen alembic upgrade head
       - name: test
         run: uv run --frozen pytest -q tests/integration/test_subjects.py
+      - name: review-gate-self-test
+        run: uv run --frozen pytest -q tests/test_review_gate.py
       - name: contracts
         run: npm --prefix web run api:check
       - name: frontend

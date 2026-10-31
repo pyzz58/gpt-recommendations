@@ -6,7 +6,7 @@
 
 ## 完整技术实施入口
 
-先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01数据/权限底座、W02 API/工作台壳、W03资料接收/来源定位、W04规则候选/分层list、W05患者事实/锚点/分类断点、W06遗留复核/分项确认、W07 EDC检验Excel快照导入、W08检验源文件读取/EDC核对及W09有依据的AE/PD分析已完成；下一项为W10中心文件目录和其他阶段清单，不代表真实临床用途或后续功能已验证。
+先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01—W04保持已验证；当前原03分支目标残留使W05—W09处于重新验证，选择器返回`review_required`并指向W05。审核门禁关闭且专属CI通过后才进入W10。
 
 ## 当前交付和实际状态
 

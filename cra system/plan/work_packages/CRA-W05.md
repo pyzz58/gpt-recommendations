@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W04。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -59,6 +59,7 @@
 7. 保存可恢复的跳过选择，输入变化仅提示可恢复，不自动取消；不用跳过产生待整改Issue。
 8. 区分适用前提/触发和待核查的时间断言，继承上游unknown/conflict；自动窗口候选不写成CRA已确认。
 9. 递归子清单继承全部祖先前提、例外和非日期分支条件；同窗口不同条件路径按路径身份分别保留，真正适用后超窗仍输出out_of_window。
+10. RuleBranch按target_node_ids把选择条件传给实际目标；目标自身日期trigger作为待查义务保留，重复表达才去重，多入口采用OR可达语义。
 
 ## 验证命令
 
@@ -104,6 +105,7 @@ npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run 
 - 缺输注日拒绝补充后时间窗路径停止，已具备身份的检验数值核对仍可运行；选择不被扩大到全部患者。
 - 前提false不生成窗口任务；前提/例外unknown保持unknown_applicability；未知实际日期不输出超窗；not_applicable路径仍可查看但不作为待办。
 - 父级false、父级例外true、祖先unknown和兄弟同窗路径均经实际API验证；门控通过但日期超窗仍保留偏离。
+- 分支直接指向日期子项、经容器间接指向、分支false/unknown/true和真实超窗四项正向API通过；开放审核发现的工程门禁已接入next_task与task_evidence。
 
 关联完整场景：CRA-S08、CRA-S09、CRA-S36。局部测试通过不自动把全部场景标为verified。
 

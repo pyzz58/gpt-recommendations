@@ -139,12 +139,21 @@ def extract_date_interval_specs(node: RuleNode) -> list[DateIntervalSpec]:
             )
         if not suppress_trigger:
             add(current.trigger, "trigger", base_gates)
+        children_by_key = {
+            child.node_key: child for child in current.children
+        }
+        target_entries: dict[str, list[RuleCondition]] = {}
         for branch in current.branches:
             add(
                 branch.condition,
                 f"branch:{branch.branch_key}",
                 branch_gates,
             )
+            for target in branch.target_node_ids:
+                if target in children_by_key:
+                    target_entries.setdefault(target, []).append(
+                        branch.condition
+                    )
         for exception in current.exceptions:
             add(
                 exception.condition,
@@ -161,17 +170,44 @@ def extract_date_interval_specs(node: RuleNode) -> list[DateIntervalSpec]:
                     )
                 ),
             )
-        branch_targets = {
-            target
-            for branch in current.branches
-            for target in branch.target_node_ids
-        }
         for child in current.children:
+            selection_conditions = target_entries.get(child.node_key, [])
+            has_duplicate_trigger_path = bool(
+                child.trigger is not None
+                and any(
+                    condition_signature(condition)
+                    == condition_signature(child.trigger)
+                    for condition in selection_conditions
+                )
+            )
+            distinct_selection_conditions = [
+                condition
+                for condition in selection_conditions
+                if child.trigger is None
+                or condition_signature(condition)
+                != condition_signature(child.trigger)
+            ]
+            selection_gates: tuple[RuleCondition, ...] = ()
+            if (
+                not has_duplicate_trigger_path
+                and len(distinct_selection_conditions) == 1
+            ):
+                selection_gates = (distinct_selection_conditions[0],)
+            elif (
+                not has_duplicate_trigger_path
+                and len(distinct_selection_conditions) > 1
+            ):
+                selection_gates = (
+                    RuleCondition(
+                        op="any",
+                        children=distinct_selection_conditions,
+                    ),
+                )
             extract(
                 child,
-                inherited_gates=branch_gates,
+                inherited_gates=branch_gates + selection_gates,
                 path_prefix=f"{path_prefix}{child.node_key}:",
-                suppress_trigger=child.node_key in branch_targets,
+                suppress_trigger=has_duplicate_trigger_path,
             )
 
     extract(

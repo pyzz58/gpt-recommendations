@@ -10,12 +10,14 @@
 
 第二轮复核确认的03/04/08残留已按[补充关闭记录](validation/REMEDIATION_RECHECK_CLOSURE_20261101.md)修复，W04—W09在[run 41248250769](https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769)重新完成专属CI。诊断探针通过只表示复现预期缺陷，不构成验收。
 
+后续独立正向验收又发现原03的分支目标残留；当前状态和阻断以[防复发规范](architecture/REGRESSION_PREVENTION.md)及[当前审核入口](audit/current_findings.json)为准。只补该范围后再进入W10。
+
 
 编码和宣称完成前阅读[audit/TECHNICAL_ROUTE_REVIEW_20261029.md](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)及[开放项](audit/findings.json)。本次八点澄清已修改14条理论及相应设计/任务，见[最新决定](theory/DECISIONS_20261029.md)；W04完成的是有来源的规则候选、有限AST、用户确认和启用日，不代表任意方案自动理解或检验核对。历史导入、真实格式覆盖和获准试用等缺口仍须在相应功能交付前修订，不能因为基础CI绿色就忽略。
 
 ## 当前状态和第一步
 
-已完成CRA-W00技术基线、**CRA-W01数据/权限底座**、**CRA-W02 API/工作台壳**、**CRA-W03资料与来源定位**、**CRA-W04规则候选与分层list**、**CRA-W05患者事实/锚点/核查断点**、**CRA-W06遗留复核/分项确认**、**CRA-W07 EDC检验Excel快照导入**、**CRA-W08检验源文件读取与EDC核对**和**CRA-W09有依据的AE/PD分析**。选择器当前应定位W10；W10尚未实现。
+已完成CRA-W00技术基线、**CRA-W01数据/权限底座**、**CRA-W02 API/工作台壳**、**CRA-W03资料与来源定位**和**CRA-W04规则候选与分层list**。原03分支目标残留使W05—W09处于重新验证；选择器当前返回`review_required`并定位W05。完成该门禁和源码绑定CI后才进入W10；W10尚未实现。
 
 先运行只读选择器：
 
@@ -32,14 +34,14 @@ python3 tools/next_task.py
 2. theory/BASELINE.md及theory/REQUIREMENTS.md。
 3. architecture/SYSTEM.md及architecture/IMPLEMENTATION_ROUTE.md。
 4. traceability/INDEX.md，确认当前理论对应的模块。
-5. plan/CODEX_TASKS.md、plan/tasks.json和当前任务的plan/work_packages/CRA-Wxx.md。
+5. architecture/REGRESSION_PREVENTION.md、audit/current_findings.json，再读plan/CODEX_TASKS.md、plan/tasks.json和当前任务的plan/work_packages/CRA-Wxx.md。
 6. 当前任务引用的模块设计、architecture/DATA_MODEL.md和API_CONTRACTS.md。
 
 当前用户若只要求设计或审阅，就完成该请求，不把任务擅自标为业务已实现。进入编程时，必须交付实际可运行代码，不能用另一份说明、空接口或静态mock页面代替。
 
 ## 可直接交给Codex的首轮指令
 
-使用[plan/CODEX_FIRST_MESSAGE.md](plan/CODEX_FIRST_MESSAGE.md)中的完整指令；先读[复用选择](architecture/REUSE_ASSESSMENT.md)。W01—W09已交付并停止；后续从W10继续，不因合成安全分析provider的验证跳过后面的目录、报告或部署。
+使用[plan/CODEX_FIRST_MESSAGE.md](plan/CODEX_FIRST_MESSAGE.md)中的完整指令；先读[复用选择](architecture/REUSE_ASSESSMENT.md)。W01—W04已完成；W05—W09等待原03分支目标门禁关闭并重新绑定CI，之后再从W10继续，不因合成安全分析provider的验证跳过后面的目录、报告或部署。
 
 后续用户说“继续”，先运行next_task并按实际状态接续；不得只机械把任务号加一。默认推进V1A。若用户指定其他工作包，先核实其依赖，说明未完成前置，不隐瞒或擅改理论。
 

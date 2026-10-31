@@ -1,6 +1,6 @@
 # CRA-W05 completion record
 
-Status: verified. Date: 2026-11-01.
+Status: revalidation in progress for the branch-target residual and prevention integration.
 
 2026-11-01 independent remediation-recheck closure supersedes the evidence
 below: run

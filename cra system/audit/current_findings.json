@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-01",
+  "sources": {
+    "original_review": "https://github.com/pyzz58/gpt-recommendations/blob/ec5ba1e4ed54ca3745d1681a47970981225bc16d/cra%20system/audit/DEVELOPMENT_REVIEW_20261101.md",
+    "residual_recheck": "https://github.com/pyzz58/gpt-recommendations/blob/eea0da43e3468d04e4b12397c5b20ff2143e7323/cra%20system/audit/RESIDUAL_CLOSURE_REVIEW_20261101.md",
+    "forward_acceptance_run": "https://github.com/pyzz58/gpt-recommendations/actions/runs/41249314958",
+    "regression_policy": "architecture/REGRESSION_PREVENTION.md"
+  },
+  "findings": [
+    {
+      "id": "CRA-REV-20261101-03",
+      "guard": "CRA-GUARD-01",
+      "status": "open",
+      "blocking": true,
+      "summary": "RuleBranch target selection must reach the target's own window and descendants without deleting the window.",
+      "affected_tasks": [
+        "CRA-W05"
+      ],
+      "repair_path": "plan/work_packages/CRA-W05.md",
+      "closure_criteria": [
+        "Direct branch target retains its distinct date window.",
+        "Container-target false and unknown selection prevents an out-of-window task.",
+        "Container-target true still reports a genuine out-of-window result.",
+        "Previously fixed ancestor, waiver, sibling-path and applicable-window cases remain passing."
+      ],
+      "required_tests": [
+        "tests/integration/test_subjects.py::test_branch_target_preserves_window_and_selection_context",
+        "tests/integration/test_subjects.py::test_nested_visit_windows_inherit_parent_gates_and_keep_out_of_window",
+        "tests/integration/test_subjects.py::test_sibling_equal_visit_windows_keep_distinct_condition_paths"
+      ],
+      "closure_evidence": null
+    },
+    {
+      "id": "CRA-REV-20261101-04",
+      "guard": "CRA-GUARD-02",
+      "status": "closed",
+      "blocking": true,
+      "summary": "Independent same-key site SOPs must not erase project rules.",
+      "affected_tasks": [
+        "CRA-W04"
+      ],
+      "repair_path": "plan/work_packages/CRA-W04.md",
+      "closure_criteria": [
+        "Shared project versions keep center adoption dates.",
+        "Independent project and site rules with the same key remain visible."
+      ],
+      "required_tests": [
+        "tests/integration/test_rules.py::test_shared_project_rule_can_have_independent_site_adoption_dates",
+        "tests/integration/test_rules.py::test_independent_site_rule_cannot_hide_same_key_project_rule"
+      ],
+      "closure_evidence": {
+        "kind": "github_actions",
+        "run_id": 41248250769,
+        "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+        "job_name": "cra-w04",
+        "test_cases": [
+          "tests/integration/test_rules.py::test_shared_project_rule_can_have_independent_site_adoption_dates",
+          "tests/integration/test_rules.py::test_independent_site_rule_cannot_hide_same_key_project_rule"
+        ],
+        "acceptance_passed": true
+      }
+    },
+    {
+      "id": "CRA-REV-20261101-08",
+      "guard": "CRA-GUARD-05",
+      "status": "closed",
+      "blocking": true,
+      "summary": "Recognition replay must be a no-op and expired lease retry must use attempt fencing.",
+      "affected_tasks": [
+        "CRA-W08"
+      ],
+      "repair_path": "plan/work_packages/CRA-W08.md",
+      "closure_criteria": [
+        "Completed job replay does not invoke the provider or add records.",
+        "Expired retry recovers while a live lease stays protected.",
+        "An obsolete attempt cannot overwrite the new result or CRA correction."
+      ],
+      "required_tests": [
+        "tests/integration/test_laboratory.py::test_succeeded_job_redelivery_is_noop_before_provider",
+        "tests/integration/test_laboratory.py::test_public_retry_recovers_expired_lease_but_protects_live_lease",
+        "tests/integration/test_laboratory.py::test_obsolete_attempt_cannot_overwrite_new_result_or_cra_correction"
+      ],
+      "closure_evidence": {
+        "kind": "github_actions",
+        "run_id": 41248250769,
+        "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+        "job_name": "cra-w08",
+        "test_cases": [
+          "tests/integration/test_laboratory.py::test_succeeded_job_redelivery_is_noop_before_provider",
+          "tests/integration/test_laboratory.py::test_public_retry_recovers_expired_lease_but_protects_live_lease",
+          "tests/integration/test_laboratory.py::test_obsolete_attempt_cannot_overwrite_new_result_or_cra_correction"
+        ],
+        "acceptance_passed": true
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # CRA-W06 completion record
 
-Status: verified. Date: 2026-11-01.
+Status: revalidation in progress because W05 is being revalidated.
 
 2026-11-01 dependent revalidation after the W05 residual fix supersedes the evidence
 below: run

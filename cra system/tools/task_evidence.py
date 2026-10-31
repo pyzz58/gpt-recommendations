@@ -12,6 +12,7 @@ import re
 import subprocess
 from pathlib import Path
 from urllib.request import Request, urlopen
+from review_gate import task_evidence_errors, validate_findings
 
 WORKFLOW = ".github/workflows/cra-system.yml"
 
@@ -119,11 +120,16 @@ def remote_errors(repository, task, profile, get_json):
 def verify(root, repository, get_json):
     tasks = json.loads((root / "plan/tasks.json").read_text())["tasks"]
     profiles = {p["task_id"]: p for p in json.loads((root / "plan/implementation.json").read_text())["verification_profiles"]}
-    errors, checked = [], 0
+    errors = [
+        "review gate: " + error
+        for error in validate_findings(root)
+    ]
+    checked = 0
     for task in tasks:
         if task["status"] != "verified" or task["id"] == "CRA-W00":
             continue
         checked += 1
+        errors.extend(task_evidence_errors(root, task))
         profile = profiles[task["id"]]
         local = record_errors(root, task, profile)
         if local:

@@ -3,6 +3,7 @@ import argparse
 import json
 from pathlib import Path
 from execution_plan import next_task
+from review_gate import apply_review_gate
 from traceability_lib import validate
 
 def main():
@@ -15,7 +16,7 @@ def main():
         print(json.dumps({"state": "invalid_plan", "errors": errors}, ensure_ascii=False, indent=2))
         return 1
     tasks = json.loads((root / "plan/tasks.json").read_text(encoding="utf-8"))["tasks"]
-    result = next_task(tasks, args.track)
+    result = apply_review_gate(root, next_task(tasks, args.track))
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 

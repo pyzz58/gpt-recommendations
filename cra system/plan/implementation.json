@@ -272,6 +272,7 @@
       "required_job": "cra-w05",
       "required_steps": [
         "test",
+        "review-gate-self-test",
         "contracts",
         "frontend"
       ],
@@ -292,6 +293,12 @@
         "migrations/versions/0004_subjects_coverage.py",
         "web/",
         "contracts/",
+        "architecture/REGRESSION_PREVENTION.md",
+        "tools/review_gate.py",
+        "tools/next_task.py",
+        "tools/task_evidence.py",
+        "tests/test_review_gate.py",
+        "tests/integration/test_subjects.py",
         "pyproject.toml",
         "uv.lock",
         "tests/fixtures/"
@@ -436,6 +443,10 @@
         "web/",
         "contracts/",
         "tests/integration/test_review_units.py",
+        "tests/integration/test_rules.py",
+        "tests/integration/test_subjects.py",
+        "tests/integration/test_laboratory.py",
+        "tests/integration/test_recognition.py",
         "tests/integration/test_safety.py",
         "tests/api/test_platform.py",
         "tests/fixtures/safety/",

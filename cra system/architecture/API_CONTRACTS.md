@@ -110,7 +110,7 @@ ApplicableRule补充preconditions、trigger、branches、follow_up、completion�
 | `POST /api/v1/version-activations/{id}/preview-change` | 预览更正区间、重叠和受影响规则/版本；不追溯重判历史 |
 | `POST /api/v1/rules/applicable` | 按项目、中心、临床事件日和事实返回当前确认规则及OutputEnvelope；同源Rule沿革可按中心采用日选择，独立中心同编号规则仍与项目规则并列；同层真实重叠展示冲突，不自动取最新/更严 |
 
-`RuleNode`包含summary、preconditions、trigger、branches、exceptions、follow_up、completion、required_facts、children和source_refs。条件使用closed AST及true/false/unknown；无结构自由文本返回analysis_required。W04确定性provider仅支持任务卡声明的规则语句子集，不能表述为通用临床文本理解。
+`RuleNode`包含summary、preconditions、trigger、branches、exceptions、follow_up、completion、required_facts、children和source_refs。条件使用closed AST及true/false/unknown；无结构自由文本返回analysis_required。`RuleBranch.target_node_ids`的选择条件沿实际目标及后代传播；目标自身日期窗口独立保留，多个入口按OR可达语义处理。W04确定性provider仅支持任务卡声明的规则语句子集，不能表述为通用临床文本理解。
 
 ## 10. W05已实现患者入口
 

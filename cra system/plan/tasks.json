@@ -1268,7 +1268,7 @@
       "module_ids": [
         "M04"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。",
       "requirement_ids": [
         "CRA-R010",
@@ -1279,10 +1279,22 @@
         "CRA-R041",
         "CRA-R045"
       ],
-      "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；10项PostgreSQL/API测试通过；父级false、父级例外true、祖先unknown、兄弟同窗路径及真正超窗验证完成。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。"
-      ],
+      "evidence": [],
       "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；10项PostgreSQL/API测试通过；父级false、父级例外true、祖先unknown、兄弟同窗路径及真正超窗验证完成。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W05",
+            "run_id": 41248250769,
+            "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+            "subject_digest": "0057da1039e992312002af5c7e324edb32dae2529088ab42579cd3a8df63ad66"
+          }
+        },
         {
           "recorded_status": "verified",
           "recorded_at": "2026-11-01",
@@ -1427,7 +1439,8 @@
         "缺锚点等关键数据只提示相应缺口，提供补充或不核查相关路径；拒绝后不再后台推断该缺失数据，其他工作继续。",
         "保存可恢复的跳过选择，输入变化仅提示可恢复，不自动取消；不用跳过产生待整改Issue。",
         "区分适用前提/触发和待核查的时间断言，继承上游unknown/conflict；自动窗口候选不写成CRA已确认。",
-        "递归子清单继承全部祖先前提、例外和非日期分支条件；同窗口不同条件路径按路径身份分别保留，真正适用后超窗仍输出out_of_window。"
+        "递归子清单继承全部祖先前提、例外和非日期分支条件；同窗口不同条件路径按路径身份分别保留，真正适用后超窗仍输出out_of_window。",
+        "RuleBranch按target_node_ids把选择条件传给实际目标；目标自身日期trigger作为待查义务保留，重复表达才去重，多入口采用OR可达语义。"
       ],
       "done_when": [
         "不同患者及类别断点不混用。",
@@ -1435,7 +1448,8 @@
         "日期计算和未知结果均解释来源与版本。",
         "缺输注日拒绝补充后时间窗路径停止，已具备身份的检验数值核对仍可运行；选择不被扩大到全部患者。",
         "前提false不生成窗口任务；前提/例外unknown保持unknown_applicability；未知实际日期不输出超窗；not_applicable路径仍可查看但不作为待办。",
-        "父级false、父级例外true、祖先unknown和兄弟同窗路径均经实际API验证；门控通过但日期超窗仍保留偏离。"
+        "父级false、父级例外true、祖先unknown和兄弟同窗路径均经实际API验证；门控通过但日期超窗仍保留偏离。",
+        "分支直接指向日期子项、经容器间接指向、分支false/unknown/true和真实超窗四项正向API通过；开放审核发现的工程门禁已接入next_task与task_evidence。"
       ],
       "not_in_scope": [
         "不把上传的局部资料称作完整病史。"
@@ -1484,13 +1498,7 @@
       "handoff_outputs": [
         "患者/锚点/分类断点及缺口拒绝/恢复契约，日期精度和来源保留。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W05",
-        "run_id": 41248250769,
-        "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
-        "subject_digest": "0057da1039e992312002af5c7e324edb32dae2529088ab42579cd3a8df63ad66"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W05"
     },
     {
@@ -1503,7 +1511,7 @@
         "M05",
         "M06"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。",
       "requirement_ids": [
         "CRA-R001",
@@ -1522,10 +1530,22 @@
         "CRA-R043",
         "CRA-R045"
       ],
-      "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；W05依赖链重新验证后，遗留复核、一次确认整改和分项状态真实PostgreSQL回归通过。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。"
-      ],
+      "evidence": [],
       "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；W05依赖链重新验证后，遗留复核、一次确认整改和分项状态真实PostgreSQL回归通过。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W06",
+            "run_id": 41248250769,
+            "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+            "subject_digest": "2df3d12dbbe1dc7ae1492623fc6119878a94715965ba3b34e2a69b3229226157"
+          }
+        },
         {
           "recorded_status": "verified",
           "recorded_at": "2026-11-01",
@@ -1732,13 +1752,7 @@
       "handoff_outputs": [
         "历史文件整理→遗留提醒/展开→点击确认→下次接续，正式Query与草稿区分。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W06",
-        "run_id": 41248250769,
-        "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
-        "subject_digest": "2df3d12dbbe1dc7ae1492623fc6119878a94715965ba3b34e2a69b3229226157"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W06"
     },
     {
@@ -1750,7 +1764,7 @@
       "module_ids": [
         "M07"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。",
       "requirement_ids": [
         "CRA-R013",
@@ -1758,10 +1772,22 @@
         "CRA-R015",
         "CRA-R034"
       ],
-      "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；W05依赖链重新验证后，真实XLSX导入、不可变快照、契约和前端回归通过。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。"
-      ],
+      "evidence": [],
       "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；W05依赖链重新验证后，真实XLSX导入、不可变快照、契约和前端回归通过。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W07",
+            "run_id": 41248250769,
+            "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+            "subject_digest": "4e7c96f9cee4dc2730b99ea2a34287e732efc91123205850487e5ae3b7a938fd"
+          }
+        },
         {
           "recorded_status": "verified",
           "recorded_at": "2026-11-01",
@@ -1917,13 +1943,7 @@
       "handoff_outputs": [
         "真实Excel输入、可复用列映射和不可变标准检验快照。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W07",
-        "run_id": 41248250769,
-        "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
-        "subject_digest": "4e7c96f9cee4dc2730b99ea2a34287e732efc91123205850487e5ae3b7a938fd"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W07"
     },
     {
@@ -1937,7 +1957,7 @@
         "M08",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。",
       "requirement_ids": [
         "CRA-R013",
@@ -1948,10 +1968,22 @@
         "CRA-R035",
         "CRA-R038"
       ],
-      "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；7项review-unit、13项检验和4项识别PostgreSQL测试通过；真实Docling评估通过，完成态复投、过期/活跃租约和旧attempt fencing验证完成。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。"
-      ],
+      "evidence": [],
       "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；7项review-unit、13项检验和4项识别PostgreSQL测试通过；真实Docling评估通过，完成态复投、过期/活跃租约和旧attempt fencing验证完成。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W08",
+            "run_id": 41248250769,
+            "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+            "subject_digest": "d92da00ab44a893f7f5bfbd6195eca4ded8bcfbd9921927f0e2587cc3f4c0932"
+          }
+        },
         {
           "recorded_status": "verified",
           "recorded_at": "2026-11-01",
@@ -2151,13 +2183,7 @@
       "handoff_outputs": [
         "自动源文件读取→匹配→比较→差异/未知与待办、实际provider证据、人工负担和支持范围。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W08",
-        "run_id": 41248250769,
-        "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
-        "subject_digest": "d92da00ab44a893f7f5bfbd6195eca4ded8bcfbd9921927f0e2587cc3f4c0932"
-      },
+      "completion_evidence": null,
       "verification_profile": "CRA-W08"
     },
     {
@@ -2172,7 +2198,7 @@
         "M09",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。",
       "requirement_ids": [
         "CRA-R007",
@@ -2315,17 +2341,23 @@
         "按项目标准区分医学维度的候选分析、具体问题及必要及时线索，不自动作最终医学结论。"
       ],
       "verification_profile": "CRA-W09",
-      "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；60项受影响PostgreSQL/API测试、真实Qwen与Docling评估、契约和前端通过；上游窗口和中心规则修正已继承验证。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。"
-      ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W09",
-        "run_id": 41248250769,
-        "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
-        "subject_digest": "72c1ade1c9a043e30ea9838d2fdaa10463955cc65eb10aa08bc2b1107919dfd7"
-      },
+      "evidence": [],
+      "completion_evidence": null,
       "completion_history": [
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；60项受影响PostgreSQL/API测试、真实Qwen与Docling评估、契约和前端通过；上游窗口和中心规则修正已继承验证。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W09",
+            "run_id": 41248250769,
+            "tested_commit": "f66750c9fac58dbf2e03189582a3544fc039bfd4",
+            "subject_digest": "72c1ade1c9a043e30ea9838d2fdaa10463955cc65eb10aa08bc2b1107919dfd7"
+          }
+        },
         {
           "recorded_status": "verified",
           "recorded_at": "2026-11-01",

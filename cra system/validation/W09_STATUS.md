@@ -1,6 +1,6 @@
 # CRA-W09 completion record
 
-Status: verified. Date: 2026-11-01.
+Status: revalidation in progress because W05 and W08 are being revalidated.
 
 This record covers evidence-grounded AE, SAE, special-standard and
 protocol-deviation analysis support for the declared synthetic/provider scope.

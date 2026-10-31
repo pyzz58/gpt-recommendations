@@ -20,6 +20,8 @@ class EvidenceTests(unittest.TestCase):
         self.root.mkdir()
         (self.root / "plan").mkdir()
         (self.root / "theory").mkdir()
+        (self.root / "audit").mkdir()
+        (self.root / "tests").mkdir()
         self.task = {
             "id": "CRA-W01", "status": "planned", "depends_on": [],
             "clinical_goal": "synthetic provenance test, not a real business task",
@@ -31,6 +33,44 @@ class EvidenceTests(unittest.TestCase):
         self.profile = {"task_id": "CRA-W01", "required_job": "cra-w01", "required_steps": ["test"], "workflow_path": ".github/workflows/cra-system.yml", "binding_paths": ["implementation.py"]}
         (self.root / "implementation.py").write_text("def add_one(value):\n    return value + 1\n")
         (self.root / "theory/requirements.json").write_text('{"requirements": []}')
+        (self.root / "tests/test_feature.py").write_text(
+            "def test_correct_behavior():\n    assert True\n",
+            encoding="utf-8",
+        )
+        (self.root / "audit/current_findings.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "sources": {},
+                    "findings": [
+                        {
+                            "id": "CRA-REV-SYNTHETIC-01",
+                            "guard": "CRA-GUARD-01",
+                            "status": "closed",
+                            "blocking": True,
+                            "summary": "Synthetic closed finding",
+                            "affected_tasks": ["CRA-W01"],
+                            "repair_path": "plan/tasks.json",
+                            "closure_criteria": ["Synthetic behavior"],
+                            "required_tests": [
+                                "tests/test_feature.py::test_correct_behavior"
+                            ],
+                            "closure_evidence": {
+                                "kind": "github_actions",
+                                "run_id": 123,
+                                "tested_commit": "a" * 40,
+                                "job_name": "cra-w01",
+                                "test_cases": [
+                                    "tests/test_feature.py::test_correct_behavior"
+                                ],
+                                "acceptance_passed": True,
+                            },
+                        }
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
         self.save_plan()
 
     def tearDown(self):
