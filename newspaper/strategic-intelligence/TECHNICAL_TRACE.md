@@ -5,7 +5,7 @@
 **CURRENT_BINDING仅表示本次关联版本一致；不证明方案正确、程序已实现、内容已审或获准运行。**
 理论或设计/依赖改变会变为REVIEW_REQUIRED；重新生成只刷新事实，不自动改写技术正文或批准新基线。
 
-当前规范SHA-256：`f49633ac65b8e60e858b30c5bd6b321b594f90ed203444e3b0bf76945f5da7e2`。
+当前规范SHA-256：`b4f4d15809df5c7930c346bdf40f7d9bb597c7a4062b3abd1f6160666ff2fa86`。
 
 需复核节点：无；仅限关联新鲜度检查。
 
@@ -25,7 +25,7 @@
 | [T04](#t04) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t04) | CURRENT_BINDING | L3取证/中文核对；第一阶段实际回源；第二阶段适配 | C01已离线复用Trafilatura解析获准HTML字节，并支持纯文本定位；W24持久SOURCE_MATERIAL、SOURCE_STRUCTURE、SOURCE_INTAKE及RIGHTS_RECORD，正文保存、机器处理和后续翻译分别核权；W25已实现节点级Evidence、Claim—Evidence范围/反证/未知、来源血缘根计数、受控十进制计算及补证请求/结果接口；W26已实现S8后版本化入选中文、节选/全文/独立导读分流、源定位映射、关键元素检查及截点更新隔离。PDF/Docling/OCR及真实翻译质量仍未验收，语义支持仍须人工核查；提取/计算不代事实或因果核真 |
 | [T05](#t05) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t05) | CURRENT_BINDING | L4联合研究组织；B1/B2从早期参与；第一阶段分步研究；第二阶段可重跑组织 | W16同一Theme修订/输出链接/组合提交与CAS冲突边界已离线实现；W25缺口请求与真实补证结果可关联原SourceIntake、Evidence和前后Claim—Evidence评估；W27已离线实现W16修订绑定的M01—M12依赖图、Archive权威案卷快照、官方LangGraph InMemorySaver检查点、早期B1/B2问题、MethodUse积累、递归失效和M12有限收口。真实B1/B2内容、持久检查点后端、条件/专业资料完整分派及模型调用仍待实现 |
 | [T06](#t06) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t06) | CURRENT_BINDING | L4顾问职责；第一阶段真实研判；后续按任务验证 | W28已离线实现C04 B1的W27案卷/M09、当前W16修订、当前W25 Claim/Evidence/评估精确绑定，原作与本刊贡献分离、有界判断、仅真实决策给至少两个完整行动选项及M10记录；人工成果不得携带模型身份，模型成果另核W19准入、绑定全部输入的OperationRequest与成功OperationReceipt。实际顾问内容、独立审稿和真实任务增益仍待W12/W31及真实案例验收 |
-| [T07](#t07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t07) | CURRENT_BINDING | L4帝师职责；从M02参与；第一阶段真实教学；后续按任务验证 | W27已记录B2在M02提出的早期知识问题、M11依赖与检查点路由；C04 B2实际主动知识研究、连续自足教学和模型内容仍由W29独立实现验收 |
+| [T07](#t07) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t07) | CURRENT_BINDING | L4帝师职责；从M02参与；第一阶段真实教学；后续按任务验证 | W29已离线实现C04 B2的M02早期知识问题、当前W16修订、W25 Claim/Evidence/评估、MethodUse和按需Concept精确绑定；M11要求实际事实、必要基础、至少两段过程连接、边界/反例、知识总结与迁移条件段落，专业术语必须先解释后命名，必要回顾须有实际RECAP段落。可选B1只接受当前M10与B1版本且B2增益不得重标B1；人工成果禁止模型身份，模型成果另核W19 TEACHER准入、绑定全部输入的M11 OperationRequest与成功OperationReceipt。真实教学文字、内容审稿、读者效果、模型能力和阶段门仍未验收 |
 | [T08](#t08) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t08) | CURRENT_BINDING | L4的C与M12准备；当期保存条件；真实结果后来再核 | C04条件任务+C02 ThesisVersion/Theme；无独立预测平台，真实成果待验 |
 | [T09](#t09) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t09) | CURRENT_BINDING | L5独立核查；不自签；第一阶段实际核查；第二阶段能力配置验证 | C04独立核查+C01回源+C02版本+C03返工；W19已离线实现模型/任务配置身份、给定材料/检索/约束增益验证记录和有限使用准入，作者与审稿决定分离。真实审稿能力、模型调用与业务闭环未实现 |
 | [T10](#t10) | [原文](CANONICAL_SYSTEM_SPEC_V5.md#tech-t10) | CURRENT_BINDING | L6主编/呈现；新命题回L4/L5；第一阶段实际格式；第四阶段正式渲染/交付 | C05 Jinja+第四阶段WeasyPrint，复用年度呈现；内容/实际文件对应未实现验收 |
@@ -326,7 +326,7 @@
 
 设计目的：帝师B2知识研究与教学
 
-责任：L4帝师职责；从M02参与；阶段：第一阶段真实教学；后续按任务验证；实现：W27已记录B2在M02提出的早期知识问题、M11依赖与检查点路由；C04 B2实际主动知识研究、连续自足教学和模型内容仍由W29独立实现验收。
+责任：L4帝师职责；从M02参与；阶段：第一阶段真实教学；后续按任务验证；实现：W29已离线实现C04 B2的M02早期知识问题、当前W16修订、W25 Claim/Evidence/评估、MethodUse和按需Concept精确绑定；M11要求实际事实、必要基础、至少两段过程连接、边界/反例、知识总结与迁移条件段落，专业术语必须先解释后命名，必要回顾须有实际RECAP段落。可选B1只接受当前M10与B1版本且B2增益不得重标B1；人工成果禁止模型身份，模型成果另核W19 TEACHER准入、绑定全部输入的M11 OperationRequest与成功OperationReceipt。真实教学文字、内容审稿、读者效果、模型能力和阶段门仍未验收。
 
 理论出处：[§8.4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-8-4-1)、[§9.1](CANONICAL_SYSTEM_SPEC_V5.md#th-9-1)、[§10](CANONICAL_SYSTEM_SPEC_V5.md#th-10)。另继承全局约束，完整哈希及依赖见technical_trace.json。
 
