@@ -30,6 +30,10 @@ ENVIRONMENT_STATES = frozenset({"open", "closed"})
 COMPLEXITIES = frozenset({"low", "medium", "high"})
 CAPABILITY_EVIDENCE = frozenset({"none", "documented", "tested"})
 GENERIC_FALLBACK_SIGNALS = ("TODO", "待定", "后续处理", "考虑一下", "以后再")
+DOWNSTREAM_CONSUMERS = frozenset({
+    "camera_art", "sound", "editing_animation", "ai_technical",
+    "quality_review", "director_final",
+})
 GENERIC_PHRASES = (
     "自然地", "自然表演", "表演自然", "情绪到位", "悲伤地看着",
     "很悲伤", "很生气", "开心地看着", "正常地",
@@ -668,6 +672,76 @@ def _inspect_production_feasibility(source, shot, cast, report):
             _add(report["reviews"], "ACTING_SINGLE_TAKE_REVIEW",
                  "high-complexity single take is a rehearsal risk, not a proven model failure",
                  shot_id=sid)
+
+
+def downstream_context(base, state, task_id):
+    """Versioned acting context for downstream departments; no new DAG edge."""
+    if task_id not in DOWNSTREAM_CONSUMERS:
+        return None
+    mode = base.get("acting_contract_mode")
+    if mode is None:
+        return None
+    if mode != MODE:
+        return {
+            "contract_version": VERSION,
+            "consumer_task": task_id,
+            "status": "blocked",
+            "instruction": "acting_contract_mode is invalid; do not dispatch downstream work",
+        }
+    lock = ((state.get("tasks", {}).get("director_lock", {})
+             .get("deliverable")) or {})
+    global_direction = lock.get("global_direction") if isinstance(lock, dict) else None
+    bible = ((global_direction or {}).get("performance_bible")
+             if isinstance(global_direction, dict) else None)
+    bible_digest = digest(bible) if isinstance(bible, dict) else None
+    acting_task = state.get("tasks", {}).get("acting", {})
+    acting = acting_task.get("deliverable")
+    status = acting_task.get("status")
+    scope = acting_task.get("revision_scope")
+    revision = acting_task.get("revision")
+    completed = status == "completed" and scope is None and isinstance(acting, dict)
+    acting_digest = digest(acting) if completed else None
+    previous_digest = digest(acting) if isinstance(acting, dict) else None
+    contract_digest = digest({
+        "mode": MODE,
+        "source_digest": state.get("source_digest"),
+        "performance_bible": bible,
+        "acting_status": status,
+        "acting_revision": revision,
+        "acting_revision_scope": scope,
+        "acting_delivery": acting if completed else None,
+    })
+    if completed:
+        instruction = (
+            "Use the completed versioned acting delivery. Preserve its physical continuity, "
+            "hand/prop states and per-shot performance intent; do not rewrite the source story."
+        )
+    elif status == "needs_revision":
+        instruction = (
+            "The acting deliverable is being revised. Do not reuse the previous acting delivery "
+            "for the listed revision shots; use the locked performance_bible for context and wait "
+            "or rework only the necessary downstream scopes."
+        )
+    else:
+        instruction = (
+            "Acting is not complete yet. Use only the locked performance_bible and director intent "
+            "for planning; do not invent final acting beats or treat the plan as approved footage."
+        )
+    return {
+        "contract_version": VERSION,
+        "mode": deepcopy(MODE),
+        "consumer_task": task_id,
+        "status": "completed" if completed else (
+            "needs_revision" if status == "needs_revision" else "planning_only"),
+        "source_digest": state.get("source_digest"),
+        "performance_bible_digest": bible_digest,
+        "acting_delivery_digest": acting_digest,
+        "previous_acting_delivery_digest": previous_digest,
+        "acting_revision": revision,
+        "acting_revision_scope": deepcopy(scope),
+        "contract_digest": contract_digest,
+        "instruction": instruction,
+    }
 
 
 def inspect_delivery(base, state, payload):

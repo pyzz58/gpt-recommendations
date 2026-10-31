@@ -507,6 +507,9 @@ def build_role_messages(base, state, task_id, *, source_text=None,
         "output_json_schema": execution_output_schema(
             base, state, task_id, editorial_handoff=editorial_handoff),
     }
+    acting_context = acting_contract.downstream_context(base, state, task_id)
+    if acting_context is not None:
+        request["acting_contract_context"] = acting_context
     if editorial_handoff is not None:
         # Preserve the first director's vision across the v0.1 -> ten-role
         # handoff, even though those initial stages restart for a NEW plan.

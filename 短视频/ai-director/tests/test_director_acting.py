@@ -531,6 +531,12 @@ class DirectorActingContractTests(unittest.TestCase):
 class StrictActingPipelineTests(ProfessionalRoleContractsTests):
     """Reuse the existing ten-role fixture with the strict F01 mode enabled."""
 
+    def _acting_context(self, packet):
+        marker = "\n仅返回符合 output_json_schema 的 JSON，内容还必须满足专业岗位细则：\n"
+        _, _, encoded = packet["messages"][1]["content"].partition(marker)
+        self.assertTrue(encoded)
+        return json.loads(encoded)["acting_contract_context"]
+
     def setUp(self):
         super().setUp()
         self.base["characters"] = [
@@ -640,6 +646,59 @@ class StrictActingPipelineTests(ProfessionalRoleContractsTests):
         self.assertEqual(agent_team.ready(self.state), [])
         self.assertFalse(self.state["release"]["human_approved"])
         self.assertFalse(self.state["release"]["paid_api_authorized"])
+
+    def test_downstream_roles_receive_versioned_acting_context(self):
+        self.advance("director_lock")
+        planning = roles.build_role_messages(
+            self.base, self.state, "camera_art", source_text=self.original)
+        context = self._acting_context(planning)
+        self.assertEqual(context["status"], "planning_only")
+        self.assertTrue(context["performance_bible_digest"])
+        self.assertIsNone(context["acting_delivery_digest"])
+
+        self.state = agent_team.start(self.base, source_text=self.original)
+        self.advance("acting")
+        for task_id in ("camera_art", "sound"):
+            packet = roles.build_role_messages(
+                self.base, self.state, task_id, source_text=self.original)
+            context = self._acting_context(packet)
+            self.assertEqual(context["status"], "completed")
+            self.assertTrue(context["acting_delivery_digest"])
+            self.assertEqual(context["consumer_task"], task_id)
+
+        self.state = agent_team.start(self.base, source_text=self.original)
+        self.advance("editing_animation")
+        packet = roles.build_role_messages(
+            self.base, self.state, "ai_technical", source_text=self.original)
+        self.assertEqual(self._acting_context(packet)["status"], "completed")
+
+        self.state = agent_team.start(self.base, source_text=self.original)
+        self.advance("ai_technical")
+        packet = roles.build_role_messages(
+            self.base, self.state, "quality_review", source_text=self.original)
+        self.assertEqual(self._acting_context(packet)["status"], "completed")
+
+    def test_scoped_acting_revision_scopes_downstream_context(self):
+        self.advance()
+        before = director_acting.downstream_context(
+            self.base, self.state, "editing_animation")
+        revised = agent_team.request_revision(
+            self.state, "acting", ["S02"], "Correct the right-hand handoff")
+        self.state = revised
+        self.assertEqual(self.state["tasks"]["camera_art"]["status"], "completed")
+        self.assertEqual(self.state["tasks"]["sound"]["status"], "completed")
+        for task_id in ("editing_animation", "ai_technical",
+                        "quality_review", "director_final"):
+            self.assertEqual(self.state["tasks"][task_id]["status"], "stale")
+        after = director_acting.downstream_context(
+            self.base, self.state, "editing_animation")
+        self.assertEqual(after["status"], "needs_revision")
+        self.assertEqual(after["acting_revision_scope"], ["S02"])
+        self.assertIsNone(after["acting_delivery_digest"])
+        self.assertTrue(after["previous_acting_delivery_digest"])
+        self.assertNotEqual(before["contract_digest"], after["contract_digest"])
+        self.assertIn("S02",
+                      self.state["tasks"]["editing_animation"]["revision_scope"])
 
 
 if __name__ == "__main__":

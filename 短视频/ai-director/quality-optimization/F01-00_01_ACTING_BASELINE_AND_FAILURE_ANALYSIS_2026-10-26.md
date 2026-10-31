@@ -2,7 +2,7 @@
 
 日期：2026-10-26  
 范围：`短视频/ai-director/`，现有 acting / acting_coach 岗位与离线校验链。  
-状态：**F01-00/01 基线已完成；F01-02/03 严格表演合同已实现；F01-04 的实体状态、关系对位、交物/姿态与环境跨镜门禁已完成软件层；F01-05 的制作可行性/替代方案已实现部分；F01-06 至 F01-09 与独立专业审稿仍待完成。QO-F01 仍保持 `audit_pending`。**
+状态：**F01-00/01 基线已完成；F01-02/03 严格表演合同已实现；F01-04 的实体状态、关系对位、交物/姿态与环境跨镜门禁已完成软件层；F01-05 的制作可行性/替代方案已实现部分；F01-06 的下游同源上下文与定点失效已实现部分；F01-07 至 F01-09 与独立专业审稿仍待完成。QO-F01 仍保持 `audit_pending`。**
 
 本文件不是艺术验收，不新增第二套质量账本。状态仍以 [QUALITY_ISSUES.json](QUALITY_ISSUES.json) 的 QO-F01 为准；本轮将其从 `audit_pending` 推进为 `in_progress`，不标 `complete`。
 
@@ -155,3 +155,14 @@ agent_team (acting / acting_coach DAG)
 - 既有 [director_shootability.py](../director_shootability.py) 继续负责逐动作时间、手/道具、动作密度和单镜失败信号的物理预检；本项只补“表演意图 vs 模型能力”的分离，不重复其逻辑。
 
 仍未完成：经验证的供应商能力表、真实模型试拍、真实表演/手部/口型审片。F01-05 保持部分实现，不能因结构测试通过而关闭。
+
+## 11. F01-06 部分实现：下游同源上下文与定点失效（2026-10-31）
+
+不改变原十岗位 DAG，在现有 `build_role_messages` 中注入版本化的 `acting_contract_context`：
+
+- `camera_art`、`sound`：在表演稿尚未完成时收到 locked `performance_bible` 的 planning context，明确不能把计划当成最终表演；表演完成后收到 completed 的 acting delivery digest。
+- `editing_animation`、`ai_technical`、`quality_review`、`director_final`：收到已完成表演稿的 contract digest、acting revision、acting revision scope 与使用说明。
+- 上下文包含 `performance_bible_digest`、`acting_delivery_digest`、`previous_acting_delivery_digest`、`contract_digest`、`acting_status`、`acting_revision_scope`；源/版本不一致时可追溯。
+- 定向返修：`request_revision` 已按现有 DAG 将 editing/ai/QA/final 标为 stale；camera_art/sound 不被无关 acting 返修错误作废；editing 的 revision scope 含目标镜及相邻镜。新上下文在 needs_revision 时禁止把旧 acting delivery 复用于目标镜，并保留 previous digest 以便追溯。
+
+仍未完成：真实跨岗位模型消息的语义遵从、摄影/声音实际重做、人工冲突仲裁与真实媒体验收。F01-06 保持部分实现；不把“消息带上了”当作专业岗位实际使用了它。
