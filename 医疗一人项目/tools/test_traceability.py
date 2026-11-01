@@ -324,7 +324,14 @@ class TraceabilityTests(unittest.TestCase):
         relative = requirement["implementation_paths"][0]
         target = self.root / relative
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(self.project / relative, target)
+        if target.exists():
+            target.write_text(
+                target.read_text(encoding="utf-8")
+                + "\n# isolated source-scope fixture\n",
+                encoding="utf-8",
+            )
+        else:
+            shutil.copyfile(self.project / relative, target)
         subprocess.run(["git", "add", relative], cwd=self.root, check=True)
         subprocess.run(
             ["git", "commit", "-m", "include budget source"],
@@ -352,6 +359,9 @@ class TraceabilityTests(unittest.TestCase):
         )
         for record in evidence["records"]:
             record["source_commit"] = source_commit
+            for item in record.get("code_paths", []):
+                if item["path"] == relative:
+                    item["sha256"] = hashlib.sha256(target.read_bytes()).hexdigest()
             record["source_tree_git_sha256"] = checker._tree_fingerprint(
                 self.root,
                 record["source_scope"],
