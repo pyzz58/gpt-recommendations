@@ -98,7 +98,7 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
@@ -306,6 +306,33 @@
             "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
             "subject_digest": "3178b7953244d62d49a456ffc52365553013b5a3c3d22f18141f021fbde30a47"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W01",
+            "run_id": 41257509611,
+            "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+            "subject_digest": "3178b7953244d62d49a456ffc52365553013b5a3c3d22f18141f021fbde30a47"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
         }
       ],
       "track": "v1a",
@@ -437,14 +464,7 @@
       "handoff_outputs": [
         "数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。"
       ],
-      "verification_profile": "CRA-W01",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W01",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
-        "subject_digest": "3178b7953244d62d49a456ffc52365553013b5a3c3d22f18141f021fbde30a47"
-      }
+      "verification_profile": "CRA-W01"
     },
     {
       "id": "CRA-W02",
@@ -456,7 +476,7 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
       "requirement_ids": [
         "CRA-R035",
@@ -650,6 +670,33 @@
             "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
             "subject_digest": "fdf82b3502f4e5c9f4cc4c8e2424e2ce35d1eed6d2baead4ad4c18ec273385d7"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W02",
+            "run_id": 41257509611,
+            "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+            "subject_digest": "fdf82b3502f4e5c9f4cc4c8e2424e2ce35d1eed6d2baead4ad4c18ec273385d7"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
         }
       ],
       "track": "v1a",
@@ -813,14 +860,7 @@
       "handoff_outputs": [
         "可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。"
       ],
-      "verification_profile": "CRA-W02",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W02",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
-        "subject_digest": "fdf82b3502f4e5c9f4cc4c8e2424e2ce35d1eed6d2baead4ad4c18ec273385d7"
-      }
+      "verification_profile": "CRA-W02"
     },
     {
       "id": "CRA-W03",
@@ -832,7 +872,7 @@
         "M02",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。",
       "requirement_ids": [
         "CRA-R003",
@@ -1015,6 +1055,33 @@
             "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
             "subject_digest": "ec2f133b75175dc0afecab2ca4aa302403f1f0777fdb41054f3a7bc6efbc9107"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W03",
+            "run_id": 41257509611,
+            "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+            "subject_digest": "ec2f133b75175dc0afecab2ca4aa302403f1f0777fdb41054f3a7bc6efbc9107"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
         }
       ],
       "track": "v1a",
@@ -1174,14 +1241,7 @@
       "handoff_outputs": [
         "文件/锚点/作业接口，合成资料集和OCR依赖/资源可行性探测记录。"
       ],
-      "verification_profile": "CRA-W03",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W03",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
-        "subject_digest": "ec2f133b75175dc0afecab2ca4aa302403f1f0777fdb41054f3a7bc6efbc9107"
-      }
+      "verification_profile": "CRA-W03"
     },
     {
       "id": "CRA-W04",
@@ -1193,7 +1253,7 @@
         "M03",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。",
       "requirement_ids": [
         "CRA-R002",
@@ -1384,6 +1444,33 @@
             "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
             "subject_digest": "b6d5da8c5c2411026f87212283f1d9b35f9dcb6cb418018f061e51e727c3ffc3"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W04",
+            "run_id": 41257509611,
+            "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+            "subject_digest": "b6d5da8c5c2411026f87212283f1d9b35f9dcb6cb418018f061e51e727c3ffc3"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
         }
       ],
       "track": "v1a",
@@ -1538,14 +1625,7 @@
       "handoff_outputs": [
         "候选规则树、用户修正、版本启用解析及独立条件反例结果。"
       ],
-      "verification_profile": "CRA-W04",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W04",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
-        "subject_digest": "b6d5da8c5c2411026f87212283f1d9b35f9dcb6cb418018f061e51e727c3ffc3"
-      }
+      "verification_profile": "CRA-W04"
     },
     {
       "id": "CRA-W05",
@@ -1556,7 +1636,7 @@
       "module_ids": [
         "M04"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。",
       "requirement_ids": [
         "CRA-R010",
@@ -1752,6 +1832,33 @@
             "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
             "subject_digest": "3a7fe68d60e46dcd356216cd78877c7f4da8cc4637a2c9e8594686438c32ffa0"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W05",
+            "run_id": 41257509611,
+            "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+            "subject_digest": "3a7fe68d60e46dcd356216cd78877c7f4da8cc4637a2c9e8594686438c32ffa0"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
         }
       ],
       "track": "v1a",
@@ -1872,14 +1979,7 @@
       "handoff_outputs": [
         "患者/锚点/分类断点及缺口拒绝/恢复契约，日期精度和来源保留。"
       ],
-      "verification_profile": "CRA-W05",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W05",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
-        "subject_digest": "3a7fe68d60e46dcd356216cd78877c7f4da8cc4637a2c9e8594686438c32ffa0"
-      }
+      "verification_profile": "CRA-W05"
     },
     {
       "id": "CRA-W06",
@@ -1891,7 +1991,7 @@
         "M05",
         "M06"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。",
       "requirement_ids": [
         "CRA-R001",
@@ -2081,6 +2181,33 @@
             "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
             "subject_digest": "f128153c98aa02c266ad375f21350a712fa666f0864a7edd897bb4ee31821883"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W06",
+            "run_id": 41257509611,
+            "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+            "subject_digest": "f128153c98aa02c266ad375f21350a712fa666f0864a7edd897bb4ee31821883"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
         }
       ],
       "track": "v1a",
@@ -2218,14 +2345,7 @@
       "handoff_outputs": [
         "历史文件整理→遗留提醒/展开→点击确认→下次接续，正式Query与草稿区分。"
       ],
-      "verification_profile": "CRA-W06",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W06",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
-        "subject_digest": "f128153c98aa02c266ad375f21350a712fa666f0864a7edd897bb4ee31821883"
-      }
+      "verification_profile": "CRA-W06"
     },
     {
       "id": "CRA-W07",
@@ -2236,7 +2356,7 @@
       "module_ids": [
         "M07"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。",
       "requirement_ids": [
         "CRA-R013",
@@ -2401,6 +2521,33 @@
             "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
             "subject_digest": "bc0b733ffae9f1a3787a60ded850fa50748181f6313def172eff1bb7241347ba"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W07",
+            "run_id": 41257509611,
+            "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+            "subject_digest": "bc0b733ffae9f1a3787a60ded850fa50748181f6313def172eff1bb7241347ba"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
         }
       ],
       "track": "v1a",
@@ -2501,14 +2648,7 @@
       "handoff_outputs": [
         "真实Excel输入、可复用列映射和不可变标准检验快照。"
       ],
-      "verification_profile": "CRA-W07",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W07",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
-        "subject_digest": "bc0b733ffae9f1a3787a60ded850fa50748181f6313def172eff1bb7241347ba"
-      }
+      "verification_profile": "CRA-W07"
     },
     {
       "id": "CRA-W08",
@@ -2521,7 +2661,7 @@
         "M08",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。",
       "requirement_ids": [
         "CRA-R013",
@@ -2675,6 +2815,33 @@
             "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
             "subject_digest": "5c4bb55d82d886d41054db9b6858ecda137e477ae7b103b85eb311312670cf59"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W08",
+            "run_id": 41257509611,
+            "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+            "subject_digest": "5c4bb55d82d886d41054db9b6858ecda137e477ae7b103b85eb311312670cf59"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
         }
       ],
       "track": "v1a",
@@ -2833,14 +3000,7 @@
       "handoff_outputs": [
         "自动源文件读取→匹配→比较→差异/未知与待办、实际provider证据、人工负担和支持范围。"
       ],
-      "verification_profile": "CRA-W08",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W08",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
-        "subject_digest": "5c4bb55d82d886d41054db9b6858ecda137e477ae7b103b85eb311312670cf59"
-      }
+      "verification_profile": "CRA-W08"
     },
     {
       "id": "CRA-W09",
@@ -2854,7 +3014,7 @@
         "M09",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。",
       "requirement_ids": [
         "CRA-R007",
@@ -3126,15 +3286,35 @@
             "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
             "subject_digest": "d8b38c3f23d505bc73c6b19027af9803f118d41513a5038123b283bb420fba9d"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W09",
+            "run_id": 41257509611,
+            "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+            "subject_digest": "d8b38c3f23d505bc73c6b19027af9803f118d41513a5038123b283bb420fba9d"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
         }
-      ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W09",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
-        "subject_digest": "d8b38c3f23d505bc73c6b19027af9803f118d41513a5038123b283bb420fba9d"
-      }
+      ]
     },
     {
       "id": "CRA-W10",
@@ -3147,7 +3327,7 @@
         "M05",
         "M10"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。",
       "requirement_ids": [
         "CRA-R001",
@@ -3332,15 +3512,35 @@
             "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
             "subject_digest": "37a56f15ce6fbfbd6d5490bf0fb89040c8e0b82e20f852d49f00a74c52d92f40"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W10",
+            "run_id": 41257509611,
+            "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+            "subject_digest": "37a56f15ce6fbfbd6d5490bf0fb89040c8e0b82e20f852d49f00a74c52d92f40"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
         }
-      ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W10",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
-        "subject_digest": "37a56f15ce6fbfbd6d5490bf0fb89040c8e0b82e20f852d49f00a74c52d92f40"
-      }
+      ]
     },
     {
       "id": "CRA-W11",
@@ -3353,7 +3553,7 @@
       "module_ids": [
         "M11"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。",
       "requirement_ids": [
         "CRA-R009",
@@ -3502,15 +3702,35 @@
             "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
             "subject_digest": "412852f18c92c14b463aba351e86ba3df14485a9b073bf44ba82a285a3d88cde"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W11",
+            "run_id": 41257509611,
+            "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+            "subject_digest": "412852f18c92c14b463aba351e86ba3df14485a9b073bf44ba82a285a3d88cde"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
         }
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W11",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
-        "subject_digest": "412852f18c92c14b463aba351e86ba3df14485a9b073bf44ba82a285a3d88cde"
-      },
       "evidence": [
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w11 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
       ]
@@ -3527,7 +3747,7 @@
       "module_ids": [
         "M05"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "acceptance": "模拟前次报告→访前信→到中心复核→新受试者核查→报告→下一次接续全部完成；用户只需临床操作。",
       "requirement_ids": [
         "CRA-R001",
@@ -3574,6 +3794,21 @@
           "path": "tests/integration/test_visit_continuity.py",
           "kind": "test",
           "purpose": "刷新及重新登录接续"
+        },
+        {
+          "path": "backend/cra_app/monitoring/journey.py",
+          "kind": "code",
+          "purpose": "服务端四阶段旅程汇总"
+        },
+        {
+          "path": "tests/fixtures/w12/seed_e2e.py",
+          "kind": "test",
+          "purpose": "真实浏览器专属合成授权底座"
+        },
+        {
+          "path": "web/src/journey.css",
+          "kind": "code",
+          "purpose": "四阶段工作流样式"
         }
       ],
       "contracts": [
@@ -3628,22 +3863,22 @@
         {
           "command": "npm --prefix web run typecheck",
           "purpose": "界面类型",
-          "availability": "to_implement"
+          "availability": "available"
         },
         {
           "command": "npm --prefix web run build",
           "purpose": "界面构建",
-          "availability": "to_implement"
+          "availability": "available"
         },
         {
           "command": "npm --prefix web run test:e2e -- --project=chromium",
           "purpose": "真实API两次监查",
-          "availability": "to_implement"
+          "availability": "available"
         },
         {
           "command": "uv run --frozen pytest -q tests/integration/test_visit_continuity.py",
           "purpose": "持久化和接续",
-          "availability": "to_implement"
+          "availability": "available"
         }
       ],
       "phase_id": "P5",
@@ -3658,7 +3893,29 @@
       "handoff_outputs": [
         "两次监查浏览器流程、刷新/重登/切中心/重试不丢状态，缺口和异常不混同。"
       ],
-      "verification_profile": "CRA-W12"
+      "verification_profile": "CRA-W12",
+      "completion_history": [
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared monitoring API/application and frontend workflow; all affected tasks require task-specific CI revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application/bootstrap, monitoring, API/OpenAPI and frontend composition; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changed shared application bootstrap, monitoring API, frontend composition and E2E dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        }
+      ]
     },
     {
       "id": "CRA-W13",

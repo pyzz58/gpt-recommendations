@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W08、CRA-W09、CRA-W10、CRA-W11。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -27,6 +27,9 @@ CRA能连续完成一次监查，并在下一次按原问题继续跟进。
 | `web/playwright.config.ts` | config | 实际API端到端配置 |
 | `web/tests/e2e/monitoring-flow.spec.ts` | test | 两次监查完整路径 |
 | `tests/integration/test_visit_continuity.py` | test | 刷新及重新登录接续 |
+| `backend/cra_app/monitoring/journey.py` | code | 服务端四阶段旅程汇总 |
+| `tests/fixtures/w12/seed_e2e.py` | test | 真实浏览器专属合成授权底座 |
+| `web/src/journey.css` | code | 四阶段工作流样式 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -70,25 +73,25 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 界面类型
+- [available] 界面类型
 
 ```bash
 npm --prefix web run typecheck
 ```
 
-- [to_implement] 界面构建
+- [available] 界面构建
 
 ```bash
 npm --prefix web run build
 ```
 
-- [to_implement] 真实API两次监查
+- [available] 真实API两次监查
 
 ```bash
 npm --prefix web run test:e2e -- --project=chromium
 ```
 
-- [to_implement] 持久化和接续
+- [available] 持久化和接续
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_visit_continuity.py

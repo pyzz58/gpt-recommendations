@@ -188,3 +188,15 @@ ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping�
 - `report_events`：快照后的`sent/submitted/archived`用户动作，append-only并与内容快照分离。
 
 报告与track从同一快照内容渲染，一个输出来源不被另一份材料重新拼装。存在missing/unknown/not_checked时要求用户明确确认未知才能签发；跳过和未覆盖范围不会改写成正常。模板不接受任意表达式、宏、文件/网络访问，仅支持声明字段和受限循环。
+
+## 16. W12连续监查聚合
+
+W12不新增业务表。`MonitoringVisit.stage/status/revision`作为导航状态，`MonitoringJourneyService`只读聚合既有M05/M06/M08/M10/M11记录：
+
+- 当前访视和访前选择；
+- 完整未完Issue、紧急PD/安全提醒；
+- 患者、覆盖和主动跳过；
+- 源检验报告、EDC快照；
+- 目录缺件、阶段清单、报告草稿与不可变快照。
+
+阶段切换继续使用`monitoring_visits`显式revision、幂等和AuditEvent，不创建审批锁或第二份状态表。服务端visits列表使刷新、重新登录、换中心或清理localStorage后仍能找到原记录。聚合值可随原模块记录变化，历史报告/快照自身仍不可变。

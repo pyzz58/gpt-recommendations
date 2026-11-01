@@ -599,6 +599,40 @@
         "title": "AddStageChecklistItemCommand",
         "type": "object"
       },
+      "AdvanceMonitoringStageCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "stage": {
+            "enum": [
+              "previsit",
+              "carryover_review",
+              "subject_review",
+              "closeout",
+              "handover"
+            ],
+            "title": "Stage",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "stage"
+        ],
+        "title": "AdvanceMonitoringStageCommand",
+        "type": "object"
+      },
       "AnchorView": {
         "additionalProperties": false,
         "properties": {
@@ -6464,6 +6498,44 @@
         "title": "JobView",
         "type": "object"
       },
+      "JourneyStageView": {
+        "properties": {
+          "blocking": {
+            "title": "Blocking",
+            "type": "boolean"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "primary_action": {
+            "title": "Primary Action",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "status",
+          "summary",
+          "primary_action",
+          "blocking"
+        ],
+        "title": "JourneyStageView",
+        "type": "object"
+      },
       "LabComparisonFieldView": {
         "properties": {
           "candidate_record_ids": {
@@ -7666,6 +7738,135 @@
           "status"
         ],
         "title": "ModuleCapability",
+        "type": "object"
+      },
+      "MonitoringJourneyView": {
+        "properties": {
+          "active_skip_count": {
+            "title": "Active Skip Count",
+            "type": "integer"
+          },
+          "carryover": {
+            "items": {
+              "$ref": "#/components/schemas/IssueView"
+            },
+            "title": "Carryover",
+            "type": "array"
+          },
+          "coverage_count": {
+            "title": "Coverage Count",
+            "type": "integer"
+          },
+          "directory_missing_count": {
+            "title": "Directory Missing Count",
+            "type": "integer"
+          },
+          "edc_snapshot_count": {
+            "title": "Edc Snapshot Count",
+            "type": "integer"
+          },
+          "generated_at": {
+            "format": "date-time",
+            "title": "Generated At",
+            "type": "string"
+          },
+          "laboratory_report_count": {
+            "title": "Laboratory Report Count",
+            "type": "integer"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "metrics": {
+            "additionalProperties": true,
+            "title": "Metrics",
+            "type": "object"
+          },
+          "not_checked_count": {
+            "title": "Not Checked Count",
+            "type": "integer"
+          },
+          "recommended_stage": {
+            "title": "Recommended Stage",
+            "type": "string"
+          },
+          "remaining_issue_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Remaining Issue Ids",
+            "type": "array"
+          },
+          "remaining_issue_numbers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Remaining Issue Numbers",
+            "type": "array"
+          },
+          "report_draft_count": {
+            "title": "Report Draft Count",
+            "type": "integer"
+          },
+          "report_snapshot_count": {
+            "title": "Report Snapshot Count",
+            "type": "integer"
+          },
+          "selected_issue_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Selected Issue Ids",
+            "type": "array"
+          },
+          "stages": {
+            "items": {
+              "$ref": "#/components/schemas/JourneyStageView"
+            },
+            "title": "Stages",
+            "type": "array"
+          },
+          "subject_count": {
+            "title": "Subject Count",
+            "type": "integer"
+          },
+          "urgent_action_count": {
+            "title": "Urgent Action Count",
+            "type": "integer"
+          },
+          "visit": {
+            "$ref": "#/components/schemas/MonitoringVisitView"
+          }
+        },
+        "required": [
+          "visit",
+          "stages",
+          "recommended_stage",
+          "carryover",
+          "selected_issue_ids",
+          "remaining_issue_ids",
+          "remaining_issue_numbers",
+          "urgent_action_count",
+          "subject_count",
+          "coverage_count",
+          "not_checked_count",
+          "active_skip_count",
+          "laboratory_report_count",
+          "edc_snapshot_count",
+          "report_draft_count",
+          "report_snapshot_count",
+          "directory_missing_count",
+          "metrics",
+          "limitations",
+          "generated_at"
+        ],
+        "title": "MonitoringJourneyView",
         "type": "object"
       },
       "MonitoringVisitView": {
@@ -15159,6 +15360,49 @@
         ]
       }
     },
+    "/api/v1/monitoring-visits/{visit_id}/journey": {
+      "get": {
+        "operationId": "monitoring_journey_api_v1_monitoring_visits__visit_id__journey_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "visit_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Visit Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonitoringJourneyView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Monitoring Journey",
+        "tags": [
+          "monitoring"
+        ]
+      }
+    },
     "/api/v1/monitoring-visits/{visit_id}/previsit-selection": {
       "post": {
         "operationId": "select_previsit_issues_api_v1_monitoring_visits__visit_id__previsit_selection_post",
@@ -15292,6 +15536,75 @@
           }
         },
         "summary": "Update Monitoring Scope",
+        "tags": [
+          "monitoring"
+        ]
+      }
+    },
+    "/api/v1/monitoring-visits/{visit_id}/stage": {
+      "post": {
+        "operationId": "advance_monitoring_stage_api_v1_monitoring_visits__visit_id__stage_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "visit_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Visit Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdvanceMonitoringStageCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonitoringJourneyView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Advance Monitoring Stage",
         "tags": [
           "monitoring"
         ]
@@ -17476,6 +17789,61 @@
       }
     },
     "/api/v1/studies/{study_id}/monitoring-visits": {
+      "get": {
+        "operationId": "list_monitoring_visits_api_v1_studies__study_id__monitoring_visits_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Site Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MonitoringVisitView"
+                  },
+                  "title": "Response List Monitoring Visits Api V1 Studies  Study Id  Monitoring Visits Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Monitoring Visits",
+        "tags": [
+          "monitoring"
+        ]
+      },
       "post": {
         "operationId": "create_monitoring_visit_api_v1_studies__study_id__monitoring_visits_post",
         "parameters": [

@@ -9,4 +9,6 @@ dist/
 data/
 uploads/
 runtime/
+test-results/
+playwright-report/
 *.sqlite3

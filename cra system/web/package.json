@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "build": "vite build",
     "api:generate": "uv run --project .. --frozen python ../tools/export_openapi.py --write && openapi-typescript ../contracts/openapi.json -o src/api/generated.ts",
-    "api:check": "npm run api:generate --silent && git -C .. diff --exit-code -- contracts/openapi.json web/src/api/generated.ts"
+    "api:check": "npm run api:generate --silent && git -C .. diff --exit-code -- contracts/openapi.json web/src/api/generated.ts",
+    "test:e2e": "playwright test --project=chromium"
   },
   "dependencies": {
     "ag-grid-community": "36.2.0",
@@ -24,6 +25,7 @@
     "react-pdf": "11.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.1",
     "@types/node": "24.19.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",

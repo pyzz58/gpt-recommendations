@@ -1,17 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import type { CapabilityResponse, ScopeResponse } from "../../api/client";
-import { DocumentWorkspace } from "../documents/DocumentWorkspace";
-import { ImportPreview } from "../edc/ImportPreview";
-import { CarryoverReview } from "../issues/CarryoverReview";
-import { LabComparison } from "../laboratory/LabComparison";
-import { RecognitionReview } from "../laboratory/RecognitionReview";
-import { StageChecklist } from "../monitoring/StageChecklist";
-import { AssessmentPanel } from "../safety/AssessmentPanel";
-import { ReportPreview } from "../reports/ReportPreview";
-import { RuleWorkspace } from "../rules/RuleWorkspace";
-import { DirectoryReview } from "../site-files/DirectoryReview";
-import { SubjectTimeline } from "../subjects/SubjectTimeline";
+import { MonitoringVisitPage } from "../../pages/MonitoringVisitPage";
 import {
   type WorkspaceSelection,
   readStoredSelection,
@@ -198,66 +188,20 @@ export function WorkspaceSelector({
           </article>
           <article className="context-card placeholder">
             <p className="eyebrow">当前模块</p>
-            <h2>资料、规则、患者、遗留、目录、检验核对与报告输出</h2>
+            <h2>四阶段连续监查工作区</h2>
             <p>
-              上传私有合成资料，查看不可变版本和可回查原文；规则候选经用户确认后
-              按事件日期解析适用版本；患者和类别断点分别续接，并从历史报告或
-              track 带入本次遗留，从 EDC Excel 建立带范围的标准检验快照，
-              再把源检验自动读取候选先匹配实例、后核对字段；ISF/TMF原目录可先
-              直接对照，启动/关闭清单保留来源，交接复用原问题与当前进展；
-              访视信、报告和track从同一记录生成并保留签发快照。
+              访前选择、中心遗留复核、逐患者核查、报告与交接按服务端状态连续推进。
+              资料和规则底稿保留在访前技术详情中，里程碑不阻断紧急事项。
             </p>
-            <span className="status-chip">W11 已接入</span>
+            <span className="status-chip">W12 已接入</span>
           </article>
         </section>
 
         {selectedStudy && selectedSite && (
-          <>
-            <DocumentWorkspace
-              studyId={selectedStudy.id}
-              siteId={selectedSite.id}
-            />
-            <RuleWorkspace
-              studyId={selectedStudy.id}
-              siteId={selectedSite.id}
-            />
-            <SubjectTimeline
-              studyId={selectedStudy.id}
-              siteId={selectedSite.id}
-            />
-            <CarryoverReview
-              studyId={selectedStudy.id}
-              siteId={selectedSite.id}
-            />
-            <DirectoryReview
-              studyId={selectedStudy.id}
-              siteId={selectedSite.id}
-            />
-            <StageChecklist
-              studyId={selectedStudy.id}
-              siteId={selectedSite.id}
-            />
-            <ImportPreview
-              studyId={selectedStudy.id}
-              siteId={selectedSite.id}
-            />
-            <RecognitionReview
-              studyId={selectedStudy.id}
-              siteId={selectedSite.id}
-            />
-            <LabComparison
-              studyId={selectedStudy.id}
-              siteId={selectedSite.id}
-            />
-            <AssessmentPanel
-              studyId={selectedStudy.id}
-              siteId={selectedSite.id}
-            />
-            <ReportPreview
-              studyId={selectedStudy.id}
-              siteId={selectedSite.id}
-            />
-          </>
+          <MonitoringVisitPage
+            studyId={selectedStudy.id}
+            siteId={selectedSite.id}
+          />
         )}
       </main>
     </div>

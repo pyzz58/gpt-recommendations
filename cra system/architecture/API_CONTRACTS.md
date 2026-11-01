@@ -242,3 +242,15 @@ Issue聚合状态只用于展示；Action分别保存`open/reported_done/complet
 | `POST /api/v1/report-snapshots/{id}/events` | 用户明确记录`sent`/`submitted`/`archived`；不改快照内容，不自动外发 |
 
 快照`prepared`与`issued`分离；发送、提交、归档另存append-only事件。报告与track均读取同一快照内容。存在missing/unknown/not_checked时，未经用户确认不得标记`issued`。模板解释仅支持文档声明的字段/循环；同run分割、内容控件、宏、任意表达式等不在支持范围。
+
+## 17. W12已实现连续监查入口
+
+阶段推进只保存当前导航阶段，不建立全局锁。列表和刷新由服务端记录重建，不以浏览器localStorage作为唯一状态来源。
+
+| 接口 | 实现约束 |
+| --- | --- |
+| `GET /api/v1/studies/{study_id}/monitoring-visits?site_id=` | 重新登录、换设备或清理浏览器存储后，从服务端列出该授权中心本次/历史监查 |
+| `GET /api/v1/monitoring-visits/{id}/journey` | 汇总访前选择、未完Issue、紧急Action、患者覆盖/跳过、检验、EDC、目录、报告草稿/快照；返回阶段建议但不阻断其他工作 |
+| `POST /api/v1/monitoring-visits/{id}/stage` | expected_revision和幂等键绑定实际阶段切换；未完成遗留和unknown不因阶段推进改变 |
+
+阶段卡片区分`complete/attention/recorded/not_started`等事实状态；不把“已进入下一阶段”写成临床完成。每次阶段切换写AuditEvent，`global_lock_created=false`。页面复用M05/M06/M08/M10/M11组件，不维护第二套行动完成算法。

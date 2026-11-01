@@ -1,0 +1,103 @@
+.monitoring-journey {
+  scroll-margin-top: 1rem;
+}
+
+.journey-toolbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+.journey-stage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.journey-stage-grid button {
+  display: grid;
+  gap: 0.35rem;
+  min-height: 9rem;
+  padding: 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--panel) 94%, white);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.journey-stage-grid button.active {
+  border-color: var(--accent);
+  box-shadow: inset 0 3px 0 var(--accent);
+}
+
+.journey-stage-grid span,
+.journey-stage-grid small {
+  color: var(--muted);
+}
+
+.journey-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.journey-metrics span {
+  padding: 0.45rem 0.7rem;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--panel) 76%, var(--accent) 5%);
+}
+
+.technical-details {
+  margin-top: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 0.8rem;
+}
+
+.technical-details > summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.subject-review-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 1rem 0;
+}
+
+.subject-review-tabs button {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.subject-review-tabs button.active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--panel) 78%, var(--accent) 10%);
+}
+
+.journey-limitations {
+  margin-top: 1rem;
+}
+
+@media (max-width: 1000px) {
+  .journey-stage-grid {
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .journey-stage-grid {
+    grid-template-columns: 1fr;
+  }
+}

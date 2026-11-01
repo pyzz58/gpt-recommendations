@@ -55,6 +55,7 @@ from cra_app.laboratory.service import (
     LaboratoryValidationError,
 )
 from cra_app.monitoring.api import router as monitoring_router
+from cra_app.monitoring.journey import MonitoringJourneyService
 from cra_app.monitoring.service import MonitoringService
 from cra_app.platform.api import router as platform_router
 from cra_app.platform.jobs import ProcrastinateQueue
@@ -139,6 +140,7 @@ def create_app(
     safety_service: SafetyService | None = None,
     site_file_service: SiteFileService | None = None,
     report_service: ReportService | None = None,
+    monitoring_journey_service: MonitoringJourneyService | None = None,
 ) -> FastAPI:
     resolved_settings = settings or get_settings()
     own_engine = None
@@ -242,6 +244,17 @@ def create_app(
             safety=safety_service,
             site_files=site_file_service,
         )
+    if monitoring_journey_service is None:
+        monitoring_journey_service = MonitoringJourneyService(
+            monitoring=monitoring_service,
+            issues=issue_service,
+            subjects=subject_service,
+            laboratory=laboratory_service,
+            edc_imports=edc_import_service,
+            safety=safety_service,
+            site_files=site_file_service,
+            reports=report_service,
+        )
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -275,6 +288,9 @@ def create_app(
     application.state.safety_service = safety_service
     application.state.site_file_service = site_file_service
     application.state.report_service = report_service
+    application.state.monitoring_journey_service = (
+        monitoring_journey_service
+    )
 
     application.add_middleware(
         SessionMiddleware,

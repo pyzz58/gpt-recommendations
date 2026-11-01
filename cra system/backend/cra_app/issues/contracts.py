@@ -190,6 +190,12 @@ class UpdateMonitoringScopeCommand(IssueContract):
     status: Literal["draft", "in_progress", "completed"] | None = None
 
 
+class AdvanceMonitoringStageCommand(IssueContract):
+    expected_revision: int = Field(ge=1)
+    idempotency_key: str = Field(min_length=1, max_length=128)
+    stage: MonitoringStage
+
+
 class SelectPrevisitIssuesCommand(IssueContract):
     expected_revision: int = Field(ge=1)
     idempotency_key: str = Field(min_length=1, max_length=128)

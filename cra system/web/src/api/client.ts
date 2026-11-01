@@ -43,6 +43,8 @@ export type QueryLinkView = components["schemas"]["QueryLinkView"];
 export type CarryoverResponse =
   components["schemas"]["CarryoverResponse"];
 export type WorkbenchView = components["schemas"]["WorkbenchView"];
+export type MonitoringJourneyView =
+  components["schemas"]["MonitoringJourneyView"];
 export type EDCPreviewView = components["schemas"]["EDCPreviewView"];
 export type EDCSnapshotView = components["schemas"]["EDCSnapshotView"];
 export type EDCSnapshotSummaryView =
@@ -1416,6 +1418,44 @@ export function getMonitoringWorkbench(
 ): Promise<WorkbenchView> {
   return request<WorkbenchView>(
     `/api/v1/monitoring-visits/${visitId}/workbench`
+  );
+}
+
+export function getMonitoringVisits(
+  studyId: string,
+  siteId: string
+): Promise<components["schemas"]["MonitoringVisitView"][]> {
+  return request<components["schemas"]["MonitoringVisitView"][]>(
+    `/api/v1/studies/${studyId}/monitoring-visits?site_id=${encodeURIComponent(siteId)}`
+  );
+}
+
+export function getMonitoringJourney(
+  visitId: string
+): Promise<MonitoringJourneyView> {
+  return request<MonitoringJourneyView>(
+    `/api/v1/monitoring-visits/${visitId}/journey`
+  );
+}
+
+export function advanceMonitoringStage(
+  visit: components["schemas"]["MonitoringVisitView"],
+  stage: string
+): Promise<MonitoringJourneyView> {
+  return request<MonitoringJourneyView>(
+    `/api/v1/monitoring-visits/${visit.id}/stage`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: visit.revision,
+        idempotency_key: crypto.randomUUID(),
+        stage
+      })
+    }
   );
 }
 

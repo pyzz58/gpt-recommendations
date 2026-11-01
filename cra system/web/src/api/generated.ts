@@ -719,6 +719,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/monitoring-visits/{visit_id}/journey": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Monitoring Journey */
+        get: operations["monitoring_journey_api_v1_monitoring_visits__visit_id__journey_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/monitoring-visits/{visit_id}/previsit-selection": {
         parameters: {
             query?: never;
@@ -747,6 +764,23 @@ export interface paths {
         put?: never;
         /** Update Monitoring Scope */
         post: operations["update_monitoring_scope_api_v1_monitoring_visits__visit_id__scope_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/monitoring-visits/{visit_id}/stage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Advance Monitoring Stage */
+        post: operations["advance_monitoring_stage_api_v1_monitoring_visits__visit_id__stage_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1324,7 +1358,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** List Monitoring Visits */
+        get: operations["list_monitoring_visits_api_v1_studies__study_id__monitoring_visits_get"];
         put?: never;
         /** Create Monitoring Visit */
         post: operations["create_monitoring_visit_api_v1_studies__study_id__monitoring_visits_post"];
@@ -1834,6 +1869,18 @@ export interface components {
             /** Idempotency Key */
             idempotency_key: string;
             item: components["schemas"]["StageChecklistItemInput"];
+        };
+        /** AdvanceMonitoringStageCommand */
+        AdvanceMonitoringStageCommand: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Stage
+             * @enum {string}
+             */
+            stage: "previsit" | "carryover_review" | "subject_review" | "closeout" | "handover";
         };
         /** AnchorView */
         AnchorView: {
@@ -3948,6 +3995,21 @@ export interface components {
              */
             updated_at: string;
         };
+        /** JourneyStageView */
+        JourneyStageView: {
+            /** Blocking */
+            blocking: boolean;
+            /** Key */
+            key: string;
+            /** Label */
+            label: string;
+            /** Primary Action */
+            primary_action: string;
+            /** Status */
+            status: string;
+            /** Summary */
+            summary: string;
+        };
         /** LabComparisonFieldView */
         LabComparisonFieldView: {
             /** Candidate Record Ids */
@@ -4345,6 +4407,53 @@ export interface components {
              * @enum {string}
              */
             status: "implemented" | "configured" | "validated" | "limited" | "not_implemented";
+        };
+        /** MonitoringJourneyView */
+        MonitoringJourneyView: {
+            /** Active Skip Count */
+            active_skip_count: number;
+            /** Carryover */
+            carryover: components["schemas"]["IssueView"][];
+            /** Coverage Count */
+            coverage_count: number;
+            /** Directory Missing Count */
+            directory_missing_count: number;
+            /** Edc Snapshot Count */
+            edc_snapshot_count: number;
+            /**
+             * Generated At
+             * Format: date-time
+             */
+            generated_at: string;
+            /** Laboratory Report Count */
+            laboratory_report_count: number;
+            /** Limitations */
+            limitations: string[];
+            /** Metrics */
+            metrics: {
+                [key: string]: unknown;
+            };
+            /** Not Checked Count */
+            not_checked_count: number;
+            /** Recommended Stage */
+            recommended_stage: string;
+            /** Remaining Issue Ids */
+            remaining_issue_ids: string[];
+            /** Remaining Issue Numbers */
+            remaining_issue_numbers: string[];
+            /** Report Draft Count */
+            report_draft_count: number;
+            /** Report Snapshot Count */
+            report_snapshot_count: number;
+            /** Selected Issue Ids */
+            selected_issue_ids: string[];
+            /** Stages */
+            stages: components["schemas"]["JourneyStageView"][];
+            /** Subject Count */
+            subject_count: number;
+            /** Urgent Action Count */
+            urgent_action_count: number;
+            visit: components["schemas"]["MonitoringVisitView"];
         };
         /** MonitoringVisitView */
         MonitoringVisitView: {
@@ -7678,6 +7787,37 @@ export interface operations {
             };
         };
     };
+    monitoring_journey_api_v1_monitoring_visits__visit_id__journey_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                visit_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MonitoringJourneyView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     select_previsit_issues_api_v1_monitoring_visits__visit_id__previsit_selection_post: {
         parameters: {
             query?: never;
@@ -7739,6 +7879,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["WorkbenchView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    advance_monitoring_stage_api_v1_monitoring_visits__visit_id__stage_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                visit_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdvanceMonitoringStageCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MonitoringJourneyView"];
                 };
             };
             /** @description Validation Error */
@@ -8981,6 +9158,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LabReportView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_monitoring_visits_api_v1_studies__study_id__monitoring_visits_get: {
+        parameters: {
+            query: {
+                site_id: string;
+            };
+            header?: never;
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MonitoringVisitView"][];
                 };
             };
             /** @description Validation Error */

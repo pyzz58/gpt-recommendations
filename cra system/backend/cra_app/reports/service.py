@@ -1141,7 +1141,7 @@ class ReportService:
                         ReportDraft.study_id == study_id,
                         ReportDraft.site_id == site_id,
                     )
-                    .order_by(ReportDraft.created_at.desc())
+                    .order_by(ReportDraft.generated_at.desc())
                 )
             )
             return [self._draft_detail_in_session(session, row) for row in rows]
@@ -1409,6 +1409,29 @@ class ReportService:
                 scope, "read_site", snapshot.study_id, snapshot.site_id
             )
             return self._snapshot_detail_in_session(session, snapshot)
+
+    def list_snapshots(
+        self,
+        scope: ScopeContext,
+        study_id: uuid.UUID,
+        site_id: uuid.UUID,
+    ) -> list[ReportSnapshot]:
+        self.governance.authorize(scope, "read_site", study_id, site_id)
+        with self.session_factory() as session:
+            return list(
+                session.scalars(
+                    select(ReportSnapshot)
+                    .where(
+                        ReportSnapshot.tenant_id == scope.tenant_id,
+                        ReportSnapshot.study_id == study_id,
+                        ReportSnapshot.site_id == site_id,
+                    )
+                    .order_by(
+                        ReportSnapshot.created_at.desc(),
+                        ReportSnapshot.id,
+                    )
+                )
+            )
 
     @staticmethod
     def _safe_filename(value: str, extension: str) -> str:

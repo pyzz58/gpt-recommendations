@@ -18,6 +18,7 @@ from cra_app.governance.service import (
     ScopeContext,
 )
 from cra_app.issues.contracts import (
+    AdvanceMonitoringStageCommand,
     CreateMonitoringVisitCommand,
     SelectPrevisitIssuesCommand,
     UpdateMonitoringScopeCommand,
@@ -271,6 +272,29 @@ class MonitoringService:
         )
         return visit
 
+    def list_visits(
+        self,
+        scope: ScopeContext,
+        study_id: uuid.UUID,
+        site_id: uuid.UUID,
+    ) -> list[MonitoringVisit]:
+        self.governance.authorize(scope, "read_site", study_id, site_id)
+        with self.session_factory() as session:
+            return list(
+                session.scalars(
+                    select(MonitoringVisit)
+                    .where(
+                        MonitoringVisit.tenant_id == scope.tenant_id,
+                        MonitoringVisit.study_id == study_id,
+                        MonitoringVisit.site_id == site_id,
+                    )
+                    .order_by(
+                        MonitoringVisit.created_at.desc(),
+                        MonitoringVisit.id,
+                    )
+                )
+            )
+
     def _selection_ids(
         self, session: Session, visit_id: uuid.UUID
     ) -> tuple[uuid.UUID, ...]:
@@ -477,4 +501,69 @@ class MonitoringService:
                     )
                     self._complete(record, visit.id, visit.revision)
                 session.flush()
+            return self._workbench_in_session(session, scope, visit)
+
+    def advance_stage(
+        self,
+        scope: ScopeContext,
+        visit_id: uuid.UUID,
+        command: AdvanceMonitoringStageCommand,
+    ) -> WorkbenchData:
+        visit = self._load_visit(scope, visit_id)
+        self.governance.authorize(
+            scope, "write_site", visit.study_id, visit.site_id
+        )
+        with self.session_factory() as session:
+            session.expire_on_commit = False
+            with session.begin():
+                visit = session.scalar(
+                    select(MonitoringVisit)
+                    .where(
+                        MonitoringVisit.id == visit_id,
+                        MonitoringVisit.tenant_id == scope.tenant_id,
+                    )
+                    .with_for_update()
+                )
+                if visit is None:
+                    raise IssueNotFound("monitoring visit was not found")
+                record, replayed = self._reserve(
+                    session,
+                    scope=scope,
+                    study_id=visit.study_id,
+                    site_id=visit.site_id,
+                    command_name="monitoring.visits.advance_stage",
+                    command=command,
+                    request_payload={"visit_id": str(visit.id)},
+                )
+                if not replayed:
+                    if visit.revision != command.expected_revision:
+                        raise RevisionConflict(visit.revision)
+                    before = visit.stage
+                    visit.stage = command.stage
+                    if visit.status == "draft":
+                        visit.status = "in_progress"
+                    visit.revision += 1
+                    visit.updated_by = scope.actor_id
+                    session.add(
+                        AuditEvent(
+                            id=uuid.uuid4(),
+                            tenant_id=scope.tenant_id,
+                            study_id=visit.study_id,
+                            site_id=visit.site_id,
+                            actor_id=scope.actor_id,
+                            action="monitoring.visits.advance_stage",
+                            resource_type="monitoring_visit",
+                            resource_id=visit.id,
+                            revision_before=command.expected_revision,
+                            revision_after=visit.revision,
+                            before_state={"stage": before},
+                            after_state={
+                                "stage": visit.stage,
+                                "global_lock_created": False,
+                            },
+                            command_name="monitoring.visits.advance_stage",
+                            correlation_id=record.id,
+                        )
+                    )
+                    self._complete(record, visit.id, visit.revision)
             return self._workbench_in_session(session, scope, visit)
