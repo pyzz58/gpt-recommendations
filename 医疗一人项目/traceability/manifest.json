@@ -1464,8 +1464,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-10-31T23:58:38.768165+00:00",
-    "note": "W19与C01最终源码、真实PostgreSQL、前端、迁移及22项追踪验收全部完成并绑定。",
+    "at": "2026-11-01T00:05:22.622488+00:00",
+    "note": "CI发现的数据型迁移往返问题已修复；W19与C01最终源码重新完成全量本地验收和证据绑定。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -2897,7 +2897,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "fca9e8a5c1cea10e05f42265fcf93f195eca1bf090a1262db476729dbea78e86"
+      "sha256": "89ec5af11a9e4ef20f10a424fb85c4a233c1a74dfaf9fc0630ee7db3c15ae0ef"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
