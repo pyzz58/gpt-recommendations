@@ -1420,9 +1420,9 @@
     }
   ],
   "theory_version": "V0.10",
-  "roadmap_version": "V1.17",
+  "roadmap_version": "V1.18",
   "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "cffcc3966dc6c897eb8e0db5c61c8a37c2498fbe9619de875eed30d75a47767a",
+  "roadmap_sha256": "05a3633fe7a8cc530f4e61093a652e40aed52f22d1fe9b5eb8a2da1afec6de5d",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1534,8 +1534,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-01T03:52:18.434319+00:00",
-    "note": "W20最终源码与真实验收日志重新绑定；预算、全链审计、外部unknown、性能和RLS证据保持一致。",
+    "at": "2026-11-01T04:08:20.944286+00:00",
+    "note": "W21双项目端到端、外部合成交付、真实XLSX、重启与停止已通过最终源码验收。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -2837,7 +2837,7 @@
         "RQ-009",
         "RQ-027"
       ],
-      "sha256": "bf779a1e2aeeb839d807880827e642822b09c6f023f64054adae5fb6f7303088"
+      "sha256": "351a5575702dfb835f03172378daa673ed8a754b32245e934a4cd63fed2e7b69"
     },
     {
       "path": "docs/w01-w18-delivery-status.md",
@@ -2848,7 +2848,7 @@
         "RQ-032",
         "RQ-033"
       ],
-      "sha256": "9cb55ba339145093d87de5588645dfb3ffc7484f228795b1cae0f2685df5982a"
+      "sha256": "2b13e3cf44fff827d2a8dbda6bac1f00d3f8224166d06fe6c190d0794cd427a1"
     },
     {
       "path": "docs/w01-w18-validation.md",
@@ -2859,7 +2859,7 @@
         "RQ-032",
         "RQ-033"
       ],
-      "sha256": "701cff84ea8bbac4658fa89cf0cefb17808bb4871d20aa1e8e431ab36da28bbc"
+      "sha256": "e5b8fa04db11c288296f3f5bf0126ec4f417ed3db66ef981d9dacd78f8fa768f"
     },
     {
       "path": "docs/w24-pilot-charter.md",
@@ -2967,7 +2967,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "04c830595446fdcb2281404810f5d1c33a625f3b33f7b5b857cab27743933848"
+      "sha256": "e03b79d1208fb67082a1d25a0a5d950b606a79186731a53d4b188c0700ccffda"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -3028,7 +3028,7 @@
         "RQ-014",
         "RQ-029"
       ],
-      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      "sha256": "710bd2f8a5b12a45045fe2abb0f32fccea6801ac7a18cb729cd45c5a6b085d1c"
     }
   ]
 }
