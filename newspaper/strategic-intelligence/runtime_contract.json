@@ -92,5 +92,5 @@
     "minimum_delay_seconds": 2.0,
     "default_output": "audits/source_probe_results.json"
   },
-  "spec_sha256": "566a4dafca2389e09e7b7db349789d6d1341feacef59528c43755fe58f8004d2"
+  "spec_sha256": "cb6ee4ffcf92e3d1b0e70081e50ec231636a4c37657a1d653e890243caf2789d"
 }

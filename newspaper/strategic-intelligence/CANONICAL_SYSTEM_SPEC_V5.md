@@ -12,6 +12,8 @@
 
 > **2026-11-01 W40离线接续**：W40已补更正限制沿W15全部依赖的当前性检查、当前/历史正文分列及旧PASS/Edition阻断；测试为301项运行、52项维护。W40仍为`IN_PROGRESS`，合成更正和有限恢复不构成自然更正或G02证据。
 
+> **2026-11-01 W41前置核查**：现有真实材料仅有1条可条件计入的深度链候选，尚缺至少5份真实跨领域完整案例、逐例独立Review及指定覆盖；W41记`BLOCKED`，合成夹具不计入六例。
+
 <a id="th-0"></a>
 ## 0. 效力、定义与阅读方式
 
@@ -3508,6 +3510,8 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
 **2026-11-01 W39接续更新**：新增CrossWeekContinuation，要求两个互不重叠的周截面；旧判断只从较早KNOWN_TO_SYSTEM_AS_OF取回，后稿只从较晚PUBLICLY_AVAILABLE_AS_OF取得，并保留后录公开稿system_unknown。旧原话必须在较早版本实际出现，后稿不能回填旧截面。W38补证路线须位于两周之间并绑定新旧W27 Dossier；成熟后必须由第二截点之后的当前W23决定重新核本期/长期依据，但仍requires_editorial_placement=true、automatic_issue_addition=false。合成周期记录固定stage_evidence_eligible=false，不能计入G02。五项W39测试覆盖两周旧原话、W38续接、系统未知后稿、成熟后T03、回填/重叠/长期降型/强制发刊反例；真实第二周仍未取得。
 
 **2026-11-01 W40接续更新**：更正实测从W36/W32完整深度链的Evidence进入，沿ResearchRevision、B1/B2/C、Review、Article、Edition显式依赖传播；旧W15采用失效，W33 CURRENT正文/Edition正文按更正scope拒绝，KNOWN historical正文仍可回放，W32新旧页面组合被拦。共享W15 current检查现进一步核subject、Review及全部input/evidence的更正限制，只有精确恢复目标、Review、scope和allowed decision能解除；仅恢复Article而M10/M11/M12仍受限时，新决定仍非当前。两项W40测试覆盖当前/历史分列、旧PASS/Edition阻断、部分恢复和上游依赖限制。合成更正测试副本不等于自然更正，真实W31全稿重审、生产备份恢复及G02未完成。
+
+**2026-11-01 W41前置核查**：W01—W11的11个ACCEPTED包主要覆盖同一周同一深度链C004/TH-SI-W42-POWER-001，不能把包数当案例数。该链有M01—M12、B1/B2/C和有限Review，可作为一个条件候选，但审稿由同一已见写作上下文的执行者完成而非独立L5；W12用户阅读未取得。W02/W03候选与W05短材料不构成完整深度案例，W36—W40均为合成测试。当前可完整计入W41的案例仍为0个；即使该候选后续满足，也至少还缺5个真实跨领域案例，并缺非金融/非创业/非中美、机构前后变化、逐环跨域传导及逐例真实基线/投入证据。W41因此`BLOCKED`，不得用模拟补数或代码测试替代六例。
 
 <!-- END ISSUE_LEDGER -->
 
@@ -10173,8 +10177,25 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
       ],
       "failure_action": "缺哪例/哪责任就补对应真实研究；不为数量挑无价值新闻，不以代码绿灯越过G02。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "BLOCKED",
+      "evidence": [
+        {
+          "record_id": "W41-SIX-CASE-READINESS-20261031-001",
+          "artifact_refs": [
+            "audits/w41-six-case-readiness-20261031.json",
+            "audits/w12-sample-20261023.json",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w11-20261023"
+          ],
+          "validation_refs": [
+            "audits/w41-six-case-readiness-20261031.json#case_inventory",
+            "audits/w41-six-case-readiness-20261031.json#coverage_check",
+            "work_plan.json (W01-W12 and W36-W40 actual states)"
+          ],
+          "reviewer": "当前执行者实际盘点W01—W12及W36—W40证据；没有另造六例、独立L5、用户阅读或阶段批准",
+          "result": "BLOCKED",
+          "scope": "W41六例前置核查：W01—W11的11个ACCEPTED包主要服务于同一周同一深度链C004/TH-SI-W42-POWER-001，不能把工作包数量当案例数量。该真实链可作为一个条件候选，但W11审稿由已见写作上下文的同一执行者完成而非独立L5，W12仍未取得用户实际阅读；W02/W03候选、W05短材料和W36—W40合成夹具均不能补六例。当前完整计入W41的案例为0，至少还缺5个真实跨领域案例，并缺非金融/非创业/非中美、机构前后变化、逐环跨域传导、逐例独立Review及同题真实基线/投入。W12/G01、W36—W40和G02仍未验收；本轮未调用模型、付费来源或进行新研究。"
+        }
+      ],
       "reviewed_basis_sha256": "29b0dd983ba72c1444e066e338d5e47e7493a845726d1bc90b1cde3f8884b658",
       "order": 42,
       "work_type": "真实案例与能力验收"

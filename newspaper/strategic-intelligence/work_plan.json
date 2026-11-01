@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "spec_sha256": "566a4dafca2389e09e7b7db349789d6d1341feacef59528c43755fe58f8004d2",
+  "spec_sha256": "cb6ee4ffcf92e3d1b0e70081e50ec231636a4c37657a1d653e890243caf2789d",
   "counts": {
     "functional_modules": 13,
     "routes": 8,
@@ -4885,8 +4885,25 @@
       ],
       "failure_action": "缺哪例/哪责任就补对应真实研究；不为数量挑无价值新闻，不以代码绿灯越过G02。",
       "conditional": null,
-      "progress": "NOT_STARTED",
-      "evidence": [],
+      "progress": "BLOCKED",
+      "evidence": [
+        {
+          "record_id": "W41-SIX-CASE-READINESS-20261031-001",
+          "artifact_refs": [
+            "audits/w41-six-case-readiness-20261031.json",
+            "audits/w12-sample-20261023.json",
+            "CANONICAL_SYSTEM_SPEC_V5.md#run-w11-20261023"
+          ],
+          "validation_refs": [
+            "audits/w41-six-case-readiness-20261031.json#case_inventory",
+            "audits/w41-six-case-readiness-20261031.json#coverage_check",
+            "work_plan.json (W01-W12 and W36-W40 actual states)"
+          ],
+          "reviewer": "当前执行者实际盘点W01—W12及W36—W40证据；没有另造六例、独立L5、用户阅读或阶段批准",
+          "result": "BLOCKED",
+          "scope": "W41六例前置核查：W01—W11的11个ACCEPTED包主要服务于同一周同一深度链C004/TH-SI-W42-POWER-001，不能把工作包数量当案例数量。该真实链可作为一个条件候选，但W11审稿由已见写作上下文的同一执行者完成而非独立L5，W12仍未取得用户实际阅读；W02/W03候选、W05短材料和W36—W40合成夹具均不能补六例。当前完整计入W41的案例为0，至少还缺5个真实跨领域案例，并缺非金融/非创业/非中美、机构前后变化、逐环跨域传导、逐例独立Review及同题真实基线/投入。W12/G01、W36—W40和G02仍未验收；本轮未调用模型、付费来源或进行新研究。"
+        }
+      ],
       "reviewed_basis_sha256": "29b0dd983ba72c1444e066e338d5e47e7493a845726d1bc90b1cde3f8884b658",
       "order": 42,
       "work_type": "真实案例与能力验收",
