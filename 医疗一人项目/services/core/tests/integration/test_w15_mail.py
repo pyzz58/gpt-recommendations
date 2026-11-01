@@ -12,6 +12,7 @@ from medical_one_person.application.artifacts import ArtifactService
 from medical_one_person.application.errors import NotFoundError
 from medical_one_person.application.mail import MailAuthorizationError, MailService
 from medical_one_person.application.projects import ProjectService
+from medical_one_person.application.reliability import ReliabilityService
 from medical_one_person.domain.artifacts import ArtifactMode, ArtifactOrigin
 from medical_one_person.domain.mail import (
     MailAttachmentSource,
@@ -336,6 +337,14 @@ def test_unknown_send_requires_reconciliation_and_does_not_resend(
     )
     assert replay.attempt.id == unknown.attempt.id
     assert replay.attempt.state.value == "outcome_unknown"
+    blocked = ReliabilityService(session_factory).evaluate(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+    )
+    assert blocked.status == "blocked"
+    assert "EXTERNAL_SEND_OUTCOME_UNKNOWN" in {
+        item.code for item in blocked.findings
+    }
 
     reconciled = service.reconcile(
         project_id=project.id,
@@ -344,6 +353,11 @@ def test_unknown_send_requires_reconciliation_and_does_not_resend(
     )
     assert reconciled.attempt.state.value == "sent"
     assert reconciled.draft_state == MailDraftState.SENT
+    recovered = ReliabilityService(session_factory).evaluate(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+    )
+    assert recovered.status == "passed"
 
 
 def test_w15_mail_tables_are_forced_through_rls(database: Engine) -> None:
@@ -371,4 +385,4 @@ def test_w15_mail_tables_are_forced_through_rls(database: Engine) -> None:
         )
     assert len(tables) == 7
     assert all(row.relrowsecurity and row.relforcerowsecurity for row in tables)
-    assert policies == 83
+    assert policies == 84

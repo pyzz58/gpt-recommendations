@@ -5725,6 +5725,92 @@
           }
         }
       }
+    },
+    "/api/v1/projects/{project_id}/reliability": {
+      "get": {
+        "tags": [
+          "reliability"
+        ],
+        "summary": "Project Reliability",
+        "operationId": "project_reliability_api_v1_projects__project_id__reliability_get",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReliabilityProjectView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/reliability/evaluate": {
+      "post": {
+        "tags": [
+          "reliability"
+        ],
+        "summary": "Evaluate Project Reliability",
+        "operationId": "evaluate_project_reliability_api_v1_projects__project_id__reliability_evaluate_post",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReliabilityEvaluationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -13721,6 +13807,237 @@
           "limitations"
         ],
         "title": "RecoveryWorkspaceView"
+      },
+      "ReliabilityEvaluationView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "policy_bundle_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy Bundle Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/ReliabilityMetrics"
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/ReliabilityFinding"
+            },
+            "type": "array",
+            "title": "Findings"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "project_id",
+          "policy_bundle_id",
+          "status",
+          "metrics",
+          "findings",
+          "limitations",
+          "created_at"
+        ],
+        "title": "ReliabilityEvaluationView"
+      },
+      "ReliabilityFinding": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "severity": {
+            "type": "string",
+            "title": "Severity"
+          },
+          "object_type": {
+            "type": "string",
+            "title": "Object Type"
+          },
+          "object_id": {
+            "type": "string",
+            "title": "Object Id"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "severity",
+          "object_type",
+          "object_id",
+          "detail"
+        ],
+        "title": "ReliabilityFinding"
+      },
+      "ReliabilityMetrics": {
+        "properties": {
+          "tasks": {
+            "type": "integer",
+            "title": "Tasks"
+          },
+          "open_tasks": {
+            "type": "integer",
+            "title": "Open Tasks"
+          },
+          "jobs": {
+            "type": "integer",
+            "title": "Jobs"
+          },
+          "running_jobs": {
+            "type": "integer",
+            "title": "Running Jobs"
+          },
+          "expired_leases": {
+            "type": "integer",
+            "title": "Expired Leases"
+          },
+          "attempts": {
+            "type": "integer",
+            "title": "Attempts"
+          },
+          "agent_runs": {
+            "type": "integer",
+            "title": "Agent Runs"
+          },
+          "succeeded_agent_runs": {
+            "type": "integer",
+            "title": "Succeeded Agent Runs"
+          },
+          "skill_runs": {
+            "type": "integer",
+            "title": "Skill Runs"
+          },
+          "tool_audits": {
+            "type": "integer",
+            "title": "Tool Audits"
+          },
+          "unresolved_tool_audits": {
+            "type": "integer",
+            "title": "Unresolved Tool Audits"
+          },
+          "policy_impact_count": {
+            "type": "integer",
+            "title": "Policy Impact Count"
+          },
+          "migrated_policy_count": {
+            "type": "integer",
+            "title": "Migrated Policy Count"
+          },
+          "budget_reserved": {
+            "type": "string",
+            "title": "Budget Reserved"
+          },
+          "budget_spent": {
+            "type": "string",
+            "title": "Budget Spent"
+          },
+          "uncertain_budget_reservations": {
+            "type": "integer",
+            "title": "Uncertain Budget Reservations"
+          },
+          "outcome_unknown_mail_attempts": {
+            "type": "integer",
+            "title": "Outcome Unknown Mail Attempts"
+          },
+          "open_audit_findings": {
+            "type": "integer",
+            "title": "Open Audit Findings"
+          },
+          "task_list_p95_ms": {
+            "type": "number",
+            "title": "Task List P95 Ms"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "tasks",
+          "open_tasks",
+          "jobs",
+          "running_jobs",
+          "expired_leases",
+          "attempts",
+          "agent_runs",
+          "succeeded_agent_runs",
+          "skill_runs",
+          "tool_audits",
+          "unresolved_tool_audits",
+          "policy_impact_count",
+          "migrated_policy_count",
+          "budget_reserved",
+          "budget_spent",
+          "uncertain_budget_reservations",
+          "outcome_unknown_mail_attempts",
+          "open_audit_findings",
+          "task_list_p95_ms"
+        ],
+        "title": "ReliabilityMetrics"
+      },
+      "ReliabilityProjectView": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "latest": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReliabilityEvaluationView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "evidence": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Evidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "project_id",
+          "latest",
+          "evidence"
+        ],
+        "title": "ReliabilityProjectView"
       },
       "RestoreCheckRequest": {
         "properties": {

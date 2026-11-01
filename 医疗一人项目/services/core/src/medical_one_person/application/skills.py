@@ -148,6 +148,8 @@ class SkillRunner:
                 requested_project_id=subject.project_id,
                 target=f"skill:{skill_id}",
                 parameters=parameters,
+                task_id=task_id,
+                correlation_id=run_id,
             )
             assert registered.executor is not None
             output = registered.executor.output_model.model_validate(result.data)

@@ -436,6 +436,52 @@ class PolicyMigrationOperation(Base):
     rolled_back_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
+class ReliabilityEvaluation(Base):
+    __tablename__ = "reliability_evaluations"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["workspace_id", "project_id"],
+            ["projects.workspace_id", "projects.id"],
+            name="reliability_evaluation_same_project",
+        ),
+        ForeignKeyConstraint(
+            ["workspace_id", "policy_bundle_id"],
+            ["policy_bundles.workspace_id", "policy_bundles.id"],
+            name="reliability_evaluation_policy_bundle",
+        ),
+        UniqueConstraint(
+            "workspace_id",
+            "project_id",
+            "id",
+            name="uq_reliability_evaluations_workspace_project_id",
+        ),
+        CheckConstraint(
+            "status IN ('passed', 'blocked')",
+            name="reliability_evaluation_status",
+        ),
+        Index(
+            "ix_reliability_evaluations_project_created",
+            "project_id",
+            "created_at",
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True)
+    workspace_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
+    project_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
+    policy_bundle_id: Mapped[str | None] = mapped_column(String(64))
+    status: Mapped[str] = mapped_column(String(20), nullable=False)
+    metrics: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    findings: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, nullable=False)
+    limitations: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
+    created_by_user_id: Mapped[UUID] = mapped_column(
+        PGUUID(as_uuid=True), ForeignKey("users.id"), nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False
+    )
+
+
 class Conversation(Base):
     __tablename__ = "conversations"
     __table_args__ = (
@@ -1968,6 +2014,16 @@ class ToolAuditEvent(Base):
             ["projects.workspace_id", "projects.id"],
             name="tool_audit_same_workspace",
         ),
+        ForeignKeyConstraint(
+            ["workspace_id", "project_id", "task_id"],
+            ["tasks.workspace_id", "tasks.project_id", "tasks.id"],
+            name="tool_audit_same_task",
+        ),
+        ForeignKeyConstraint(
+            ["workspace_id", "project_id", "job_id"],
+            ["jobs.workspace_id", "jobs.project_id", "jobs.id"],
+            name="tool_audit_same_job",
+        ),
         CheckConstraint(
             "state IN ('authorized', 'succeeded', 'failed', 'denied')",
             name="tool_audit_state",
@@ -1982,6 +2038,9 @@ class ToolAuditEvent(Base):
         PGUUID(as_uuid=True), ForeignKey("users.id"), nullable=False
     )
     role_id: Mapped[str] = mapped_column(String(20), nullable=False)
+    task_id: Mapped[UUID | None] = mapped_column(PGUUID(as_uuid=True))
+    job_id: Mapped[UUID | None] = mapped_column(PGUUID(as_uuid=True))
+    correlation_id: Mapped[UUID | None] = mapped_column(PGUUID(as_uuid=True))
     tool_id: Mapped[str] = mapped_column(String(100), nullable=False)
     action: Mapped[str] = mapped_column(String(50), nullable=False)
     target_hash: Mapped[str] = mapped_column(String(64), nullable=False)
@@ -2212,6 +2271,16 @@ class BudgetReservation(Base):
             ["budgets.workspace_id", "budgets.project_id", "budgets.id"],
             name="budget_reservation_same_budget",
         ),
+        ForeignKeyConstraint(
+            ["workspace_id", "project_id", "task_id"],
+            ["tasks.workspace_id", "tasks.project_id", "tasks.id"],
+            name="budget_reservation_same_task",
+        ),
+        ForeignKeyConstraint(
+            ["workspace_id", "project_id", "job_id"],
+            ["jobs.workspace_id", "jobs.project_id", "jobs.id"],
+            name="budget_reservation_same_job",
+        ),
         CheckConstraint("amount > 0", name="reservation_amount_positive"),
         CheckConstraint(
             f"state IN ({RESERVATION_STATE_VALUES})",
@@ -2224,6 +2293,8 @@ class BudgetReservation(Base):
     workspace_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
     project_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
     budget_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
+    task_id: Mapped[UUID | None] = mapped_column(PGUUID(as_uuid=True))
+    job_id: Mapped[UUID | None] = mapped_column(PGUUID(as_uuid=True))
     operation_key: Mapped[str] = mapped_column(String(200), nullable=False)
     amount: Mapped[decimal.Decimal] = mapped_column(Numeric(18, 6), nullable=False)
     currency: Mapped[str] = mapped_column(String(3), nullable=False)

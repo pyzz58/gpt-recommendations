@@ -131,6 +131,8 @@ def test_builtin_skill_is_authorized_schema_validated_audited_and_idempotent(
     assert runs[0].output is not None
     assert len(audits) == 1
     assert audits[0].state == "succeeded"
+    assert audits[0].task_id == task.id
+    assert audits[0].correlation_id == runs[0].id
 
 
 def test_skill_denials_and_missing_dependency_are_recorded(

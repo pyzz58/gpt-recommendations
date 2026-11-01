@@ -38,6 +38,9 @@ class UnknownToolError(ToolGatewayError):
 class ToolContext:
     subject: SubjectContext
     parameters_digest: str
+    task_id: UUID | None
+    job_id: UUID | None
+    correlation_id: UUID | None
 
 
 @dataclass(frozen=True)
@@ -91,6 +94,9 @@ class ToolGateway:
         requested_project_id: UUID,
         target: str,
         parameters: Mapping[str, Any],
+        task_id: UUID | None = None,
+        job_id: UUID | None = None,
+        correlation_id: UUID | None = None,
     ) -> ToolResult:
         spec = self._tools.get(tool_id)
         if spec is None:
@@ -127,13 +133,34 @@ class ToolGateway:
 
         audit_id = uuid4()
         if not decision.allowed:
-            self._write_denied_audit(audit_id, subject, SpecRequest(spec, request), decision)
+            self._write_denied_audit(
+                audit_id,
+                subject,
+                SpecRequest(spec, request),
+                decision,
+                task_id=task_id,
+                job_id=job_id,
+                correlation_id=correlation_id,
+            )
             raise ToolDeniedError(decision.reason_code)
 
-        self._write_authorized_audit(audit_id, subject, SpecRequest(spec, request))
+        self._write_authorized_audit(
+            audit_id,
+            subject,
+            SpecRequest(spec, request),
+            task_id=task_id,
+            job_id=job_id,
+            correlation_id=correlation_id,
+        )
         try:
             result = spec.handler(
-                ToolContext(subject=subject, parameters_digest=parameters_digest),
+                ToolContext(
+                    subject=subject,
+                    parameters_digest=parameters_digest,
+                    task_id=task_id,
+                    job_id=job_id,
+                    correlation_id=correlation_id,
+                ),
                 parameters,
             )
         except Exception:
@@ -148,7 +175,14 @@ class ToolGateway:
         return result
 
     def _write_authorized_audit(
-        self, audit_id: UUID, subject: SubjectContext, request: SpecRequest
+        self,
+        audit_id: UUID,
+        subject: SubjectContext,
+        request: SpecRequest,
+        *,
+        task_id: UUID | None,
+        job_id: UUID | None,
+        correlation_id: UUID | None,
     ) -> None:
         self._insert_audit(
             audit_id=audit_id,
@@ -156,6 +190,9 @@ class ToolGateway:
             request=request,
             state="authorized",
             reason_code="ALLOWED",
+            task_id=task_id,
+            job_id=job_id,
+            correlation_id=correlation_id,
         )
 
     def _write_denied_audit(
@@ -164,6 +201,10 @@ class ToolGateway:
         subject: SubjectContext,
         request: SpecRequest,
         decision: PolicyDecision,
+        *,
+        task_id: UUID | None,
+        job_id: UUID | None,
+        correlation_id: UUID | None,
     ) -> None:
         self._insert_audit(
             audit_id=audit_id,
@@ -171,6 +212,9 @@ class ToolGateway:
             request=request,
             state="denied",
             reason_code=decision.reason_code,
+            task_id=task_id,
+            job_id=job_id,
+            correlation_id=correlation_id,
         )
 
     def _insert_audit(
@@ -181,6 +225,9 @@ class ToolGateway:
         request: SpecRequest,
         state: str,
         reason_code: str,
+        task_id: UUID | None,
+        job_id: UUID | None,
+        correlation_id: UUID | None,
     ) -> None:
         now = datetime.now(UTC)
         with self._session_factory.begin() as session:
@@ -196,6 +243,9 @@ class ToolGateway:
                     project_id=subject.project_id,
                     actor_user_id=subject.user_id,
                     role_id=subject.role_id,
+                    task_id=task_id,
+                    job_id=job_id,
+                    correlation_id=correlation_id,
                     tool_id=request.spec.tool_id,
                     action=request.spec.action.value,
                     target_hash=_digest_text(request.policy.target),

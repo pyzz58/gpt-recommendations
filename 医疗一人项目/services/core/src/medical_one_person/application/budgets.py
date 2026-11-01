@@ -23,7 +23,9 @@ from medical_one_person.infrastructure.db.models import (
     Budget,
     BudgetLedgerEntry,
     BudgetReservation,
+    Job,
     Project,
+    Task,
     User,
 )
 
@@ -80,6 +82,8 @@ class BudgetService:
         budget_id: UUID,
         amount: Decimal,
         operation_key: str,
+        task_id: UUID | None = None,
+        job_id: UUID | None = None,
     ) -> ReservationRecord:
         _validate_positive_amount(amount, "Reservation amount")
         if not operation_key.strip():
@@ -91,6 +95,8 @@ class BudgetService:
                 budget_id=budget_id,
                 amount=amount,
                 operation_key=operation_key,
+                task_id=task_id,
+                job_id=job_id,
             )
         except IntegrityError:
             with self._session_factory.begin() as session:
@@ -108,6 +114,10 @@ class BudgetService:
                     raise ConflictingOperationError(
                         "Reservation operation key was reused with a different amount"
                     ) from None
+                if (existing.task_id, existing.job_id) != (task_id, job_id):
+                    raise ConflictingOperationError(
+                        "Reservation operation key was reused with a different run scope"
+                    ) from None
                 return _reservation_record(existing)
 
     def _reserve_once(
@@ -118,6 +128,8 @@ class BudgetService:
         budget_id: UUID,
         amount: Decimal,
         operation_key: str,
+        task_id: UUID | None,
+        job_id: UUID | None,
     ) -> ReservationRecord:
         with self._session_factory.begin() as session:
             actor = self._actor(session, actor_user_id)
@@ -133,7 +145,35 @@ class BudgetService:
                     raise ConflictingOperationError(
                         "Reservation operation key was reused with a different amount"
                     )
+                if (existing.task_id, existing.job_id) != (task_id, job_id):
+                    raise ConflictingOperationError(
+                        "Reservation operation key was reused with a different run scope"
+                    )
                 return _reservation_record(existing)
+
+            task = None
+            if task_id is not None:
+                task = session.scalar(
+                    select(Task).where(
+                        Task.id == task_id,
+                        Task.project_id == project_id,
+                    )
+                )
+                if task is None:
+                    raise NotFoundError("Task not found for reservation")
+            if job_id is not None:
+                job = session.scalar(
+                    select(Job).where(
+                        Job.id == job_id,
+                        Job.project_id == project_id,
+                    )
+                )
+                if job is None:
+                    raise NotFoundError("Job not found for reservation")
+                if task is not None and job.task_id != task.id:
+                    raise ConflictingOperationError(
+                        "Reservation task and job refer to different work"
+                    )
 
             budget = session.scalar(
                 select(Budget)
@@ -157,6 +197,8 @@ class BudgetService:
                 workspace_id=budget.workspace_id,
                 project_id=budget.project_id,
                 budget_id=budget.id,
+                task_id=task_id,
+                job_id=job_id,
                 operation_key=operation_key,
                 amount=amount,
                 currency=budget.currency,

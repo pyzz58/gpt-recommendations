@@ -77,8 +77,19 @@
         "services/core/src/medical_one_person/application/budgets.py",
         "services/core/migrations/versions/c7296a4b69d8_w04_tasks_jobs_budgets.py"
       ],
-      "implementation_status": "in_progress",
-      "source_sha256": "32b1ea0ec553bf09bed81e18f40368c70accce80c16a4c9127c4d0bac8af076b"
+      "implementation_status": "verified",
+      "source_sha256": "32b1ea0ec553bf09bed81e18f40368c70accce80c16a4c9127c4d0bac8af076b",
+      "implementation_paths": [
+        "services/core/src/medical_one_person/domain/budgets.py",
+        "services/core/src/medical_one_person/application/budgets.py",
+        "services/core/src/medical_one_person/application/reliability.py",
+        "services/core/tests/integration/test_w04_scheduling.py",
+        "services/core/tests/integration/test_w20_reliability.py",
+        "services/core/migrations/versions/e3b8c4d5f601_w20_reliability_regression.py"
+      ],
+      "required_validation": [
+        "mock"
+      ]
     },
     {
       "id": "RQ-003",
@@ -207,8 +218,18 @@
         "services/core/migrations/versions/7994d0dd6e2c_w03_rls_tool_audit.py",
         "services/core/migrations/versions/42dc5908196f_w05_agents_runs.py"
       ],
-      "implementation_status": "in_progress",
-      "source_sha256": "52d0b45c53b7e6ee08b8e03c754550c423f1b1c7a63be2b6002894a8c8be6abc"
+      "implementation_status": "implemented",
+      "source_sha256": "52d0b45c53b7e6ee08b8e03c754550c423f1b1c7a63be2b6002894a8c8be6abc",
+      "implementation_paths": [
+        "services/core/src/medical_one_person/domain/reliability.py",
+        "services/core/src/medical_one_person/application/reliability.py",
+        "services/core/src/medical_one_person/api/reliability.py",
+        "services/core/src/medical_one_person/infrastructure/tool_gateway.py",
+        "services/core/src/medical_one_person/application/budgets.py",
+        "services/core/migrations/versions/e3b8c4d5f601_w20_reliability_regression.py",
+        "services/core/tests/integration/test_w20_reliability.py",
+        "services/core/tests/integration/test_w03_isolation.py"
+      ]
     },
     {
       "id": "RQ-006",
@@ -1015,8 +1036,21 @@
         "services/core/src/medical_one_person/application/scheduling.py",
         "services/core/migrations/versions/c7296a4b69d8_w04_tasks_jobs_budgets.py"
       ],
-      "implementation_status": "in_progress",
-      "source_sha256": "145641c52e0e5aa3e0be46e7d0dc7c4ddb581d8c2b15c690efdadb137d8903ec"
+      "implementation_status": "implemented",
+      "source_sha256": "145641c52e0e5aa3e0be46e7d0dc7c4ddb581d8c2b15c690efdadb137d8903ec",
+      "implementation_paths": [
+        "services/core/src/medical_one_person/domain/reliability.py",
+        "services/core/src/medical_one_person/application/reliability.py",
+        "services/core/src/medical_one_person/api/reliability.py",
+        "services/core/src/medical_one_person/infrastructure/tool_gateway.py",
+        "services/core/src/medical_one_person/application/budgets.py",
+        "services/core/migrations/versions/e3b8c4d5f601_w20_reliability_regression.py",
+        "services/core/tests/integration/test_w20_reliability.py",
+        "services/core/src/medical_one_person/agents/runner.py",
+        "services/core/src/medical_one_person/application/scheduling.py",
+        "services/core/src/medical_one_person/application/worker_loop.py",
+        "services/core/tests/integration/test_w04_scheduling.py"
+      ]
     },
     {
       "id": "RQ-028",
@@ -1097,8 +1131,19 @@
         "services/core/src/medical_one_person/application/external.py",
         "apps/web/src/app/projects/[id]/external/page.tsx"
       ],
-      "implementation_status": "in_progress",
-      "source_sha256": "a6f569eee21d7693def322c9b8ec51204693b60eb69d8a116cd14897feb3e30d"
+      "implementation_status": "implemented",
+      "source_sha256": "a6f569eee21d7693def322c9b8ec51204693b60eb69d8a116cd14897feb3e30d",
+      "implementation_paths": [
+        "services/core/src/medical_one_person/domain/reliability.py",
+        "services/core/src/medical_one_person/application/reliability.py",
+        "services/core/src/medical_one_person/api/reliability.py",
+        "services/core/src/medical_one_person/infrastructure/tool_gateway.py",
+        "services/core/src/medical_one_person/application/budgets.py",
+        "services/core/migrations/versions/e3b8c4d5f601_w20_reliability_regression.py",
+        "services/core/tests/integration/test_w20_reliability.py",
+        "services/core/src/medical_one_person/application/mail.py",
+        "services/core/tests/integration/test_w15_mail.py"
+      ]
     },
     {
       "id": "RQ-030",
@@ -2938,6 +2983,16 @@
         "RQ-032"
       ],
       "sha256": "c1f859452856637c7c0966112ef2a5d58b366e3e18a25289e01c38a5c866eb29"
+    },
+    {
+      "path": "docs/w20-reliability-report.md",
+      "requirement_ids": [
+        "RQ-002",
+        "RQ-005",
+        "RQ-027",
+        "RQ-029"
+      ],
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
     }
   ]
 }

@@ -22,6 +22,7 @@ from medical_one_person.api.mail import build_mail_router
 from medical_one_person.api.plans import build_plan_router
 from medical_one_person.api.policies import build_policy_router
 from medical_one_person.api.recovery import build_recovery_router
+from medical_one_person.api.reliability import build_reliability_router
 from medical_one_person.api.session import (
     build_principal_dependency,
     build_session_router,
@@ -312,6 +313,12 @@ def create_app(
     app.include_router(
         build_recovery_router(
             recovery,
+            current_principal,
+        )
+    )
+    app.include_router(
+        build_reliability_router(
+            session_factory,
             current_principal,
         )
     )

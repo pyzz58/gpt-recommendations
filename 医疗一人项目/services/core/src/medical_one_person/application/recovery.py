@@ -79,6 +79,7 @@ from medical_one_person.infrastructure.db.models import (
     ProjectEvent,
     ProjectVersion,
     ProvenanceEdge,
+    ReliabilityEvaluation,
     RestoreCheck,
     RetrievalSnapshot,
     SourcePassage,
@@ -709,6 +710,7 @@ _PROJECT_TABLES: tuple[type[Any], ...] = (
     AuditRun,
     AuditFinding,
     AuditEvaluation,
+    ReliabilityEvaluation,
     TrashEntry,
 )
 
