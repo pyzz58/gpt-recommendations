@@ -8,7 +8,7 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`9d7547bba072072920618ccf3f8b2341b10ce4d0bab9fc5a850e7d0905d9d069`。
+当前规范SHA-256：`8d2b75fe9b91550c6b1336993b39ddaf06780e535408faa2c399bd1e041f822f`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
@@ -1630,7 +1630,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W41-SIX-CASE-READINESS-20261031-001", "artifact_refs": ["audits/w41-six-case-readiness-20261031.json", "audits/w12-sample-20261023.json", "CANONICAL_SYSTEM_SPEC_V5.md#run-w11-20261023"], "validation_refs": ["audits/w41-six-case-readiness-20261031.json#case_inventory", "audits/w41-six-case-readiness-20261031.json#coverage_check", "work_plan.json (W01-W12 and W36-W40 actual states)"], "reviewer": "当前执行者实际盘点W01—W12及W36—W40证据；没有另造六例、独立L5、用户阅读或阶段批准", "result": "BLOCKED", "scope": "W41六例前置核查：W01—W11的11个ACCEPTED包主要服务于同一周同一深度链C004/TH-SI-W42-POWER-001，不能把工作包数量当案例数量。该真实链可作为一个条件候选，但W11审稿由已见写作上下文的同一执行者完成而非独立L5，W12仍未取得用户实际阅读；W02/W03候选、W05短材料和W36—W40合成夹具均不能补六例。当前完整计入W41的案例为0，至少还缺5个真实跨领域案例，并缺非金融/非创业/非中美、机构前后变化、逐环跨域传导、逐例独立Review及同题真实基线/投入。W12/G01、W36—W40和G02仍未验收；本轮未调用模型、付费来源或进行新研究。"}]
+实际证据：[{"record_id": "W41-SIX-CASE-READINESS-20261031-001", "artifact_refs": ["audits/w41-six-case-readiness-20261031.json", "audits/w12-sample-20261023.json", "CANONICAL_SYSTEM_SPEC_V5.md#run-w11-20261023"], "validation_refs": ["audits/w41-six-case-readiness-20261031.json#case_inventory", "audits/w41-six-case-readiness-20261031.json#coverage_check", "work_plan.json (W01-W12 and W36-W40 actual states)"], "reviewer": "当前执行者实际盘点W01—W12及W36—W40证据；没有另造六例、独立L5、用户阅读或阶段批准", "result": "BLOCKED", "scope": "W41六例前置核查：W01—W11的11个ACCEPTED包主要服务于同一周同一深度链C004/TH-SI-W42-POWER-001，不能把工作包数量当案例数量。该真实链可作为一个条件候选，但W11审稿由已见写作上下文的同一执行者完成而非独立L5，W12仍未取得用户实际阅读；W02/W03候选、W05短材料和W36—W40合成夹具均不能补六例。当前完整计入W41的案例为0，至少还缺5个真实跨领域案例，并缺非金融/非创业/非中美、机构前后变化、逐环跨域传导、逐例独立Review及同题真实基线/投入。W12/G01、W36—W40和G02仍未验收；本轮未调用模型、付费来源或进行新研究。"}, {"record_id": "W41-CBAM-CANDIDATE-20261101-001", "artifact_refs": ["audits/w41-cbam-candidate-intake-20261101.json", "private:/内参-private/w41-case-cbam-20261101.zip#case-article-v001.md", "private:/内参-private/w41-case-cbam-20261101.zip#source-register-v001.json", "private:/内参-private/w41-case-cbam-20261101.zip#evidence-map-v001.json"], "validation_refs": ["audits/w41-cbam-candidate-intake-20261101.json#coverage_check", "audits/w41-cbam-candidate-intake-20261101.json#readiness_check", "private package manifest and ZIP integrity check"], "reviewer": "当前执行者实际检索欧洲委员会、World Bank、Crossref与IOP公开材料并编写候选稿；非独立L5、用户阅读或阶段批准", "result": "BLOCKED", "scope": "W41第二个真实案例候选C027/CBAM：基于2026年正式期官方法规执行说明、土耳其企业公告期实证、全球钢铁情景模型及World Bank暴露指标，形成候选正文、同题基线对照、逐主张证据映射和失败/资源记录。候选明确区分已实施规则、公告期企业观察、模型预测和尚未观察到的2027结算结果，覆盖非金融/非创业/非中美、机构前后变化和逐环跨域传导。私有包15224字节、SHA-256 4735c884…，六文件清单和ZIP完整性通过。因无独立审稿、独立基线增益判断、用户阅读及完整2026结果，不计入六例；完全可计入数仍为0，W41仍BLOCKED，G02/W42不启动。"}]
 
 <a id="g02"></a>
 ## G02｜第二阶段门：研究闭环、跨周与六例

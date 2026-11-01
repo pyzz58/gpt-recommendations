@@ -10210,6 +10210,23 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "reviewer": "当前执行者实际盘点W01—W12及W36—W40证据；没有另造六例、独立L5、用户阅读或阶段批准",
           "result": "BLOCKED",
           "scope": "W41六例前置核查：W01—W11的11个ACCEPTED包主要服务于同一周同一深度链C004/TH-SI-W42-POWER-001，不能把工作包数量当案例数量。该真实链可作为一个条件候选，但W11审稿由已见写作上下文的同一执行者完成而非独立L5，W12仍未取得用户实际阅读；W02/W03候选、W05短材料和W36—W40合成夹具均不能补六例。当前完整计入W41的案例为0，至少还缺5个真实跨领域案例，并缺非金融/非创业/非中美、机构前后变化、逐环跨域传导、逐例独立Review及同题真实基线/投入。W12/G01、W36—W40和G02仍未验收；本轮未调用模型、付费来源或进行新研究。"
+        },
+        {
+          "record_id": "W41-CBAM-CANDIDATE-20261101-001",
+          "artifact_refs": [
+            "audits/w41-cbam-candidate-intake-20261101.json",
+            "private:/内参-private/w41-case-cbam-20261101.zip#case-article-v001.md",
+            "private:/内参-private/w41-case-cbam-20261101.zip#source-register-v001.json",
+            "private:/内参-private/w41-case-cbam-20261101.zip#evidence-map-v001.json"
+          ],
+          "validation_refs": [
+            "audits/w41-cbam-candidate-intake-20261101.json#coverage_check",
+            "audits/w41-cbam-candidate-intake-20261101.json#readiness_check",
+            "private package manifest and ZIP integrity check"
+          ],
+          "reviewer": "当前执行者实际检索欧洲委员会、World Bank、Crossref与IOP公开材料并编写候选稿；非独立L5、用户阅读或阶段批准",
+          "result": "BLOCKED",
+          "scope": "W41第二个真实案例候选C027/CBAM：基于2026年正式期官方法规执行说明、土耳其企业公告期实证、全球钢铁情景模型及World Bank暴露指标，形成候选正文、同题基线对照、逐主张证据映射和失败/资源记录。候选明确区分已实施规则、公告期企业观察、模型预测和尚未观察到的2027结算结果，覆盖非金融/非创业/非中美、机构前后变化和逐环跨域传导。私有包15224字节、SHA-256 4735c884…，六文件清单和ZIP完整性通过。因无独立审稿、独立基线增益判断、用户阅读及完整2026结果，不计入六例；完全可计入数仍为0，W41仍BLOCKED，G02/W42不启动。"
         }
       ],
       "reviewed_basis_sha256": "29b0dd983ba72c1444e066e338d5e47e7493a845726d1bc90b1cde3f8884b658",
