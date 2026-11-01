@@ -1,4 +1,4 @@
-"""Offline W13 CLI; no source fetching, model calls, approval or delivery.
+"""Private archive CLI and explicitly admitted source/model pilot execution.
 
 uv run --locked python -m intelligence --root /private/archive init
 uv run --locked python -m intelligence --root /private/archive put --metadata record.json --body draft.md
@@ -42,7 +42,7 @@ def main(argv=None) -> int:
     schema = commands.add_parser("schema")
     schema.add_argument("--contract",
         choices=("version", "reference-read", "preparation", "step-submission",
-                 "adoption-decision", "operation-request", "tool-response"),
+                 "adoption-decision", "operation-request", "tool-response", "pilot", "fetch", "http-adapter"),
         default="version")
     put = commands.add_parser("put")
     put.add_argument("--metadata", required=True, type=Path)
@@ -60,6 +60,14 @@ def main(argv=None) -> int:
     verify = commands.add_parser("verify-preparation", help="Recheck current inputs; does not approve content")
     verify.add_argument("bundle", type=Path)
     verify.add_argument("--spec-root", type=Path, default=Path(__file__).resolve().parents[1])
+    pilot = commands.add_parser("make-pilot", help="Generate a private draft through five admitted HTTP calls; no publication")
+    pilot.add_argument("--request", required=True, type=Path)
+    pilot.add_argument("--journal-rights", required=True, type=Path)
+    pilot.add_argument("--output", required=True, type=Path)
+    pilot.add_argument("--spec-root", type=Path, default=Path(__file__).resolve().parents[1])
+    fetch = commands.add_parser("fetch-material", help="Fetch one exact admitted HTTPS source into the private archive")
+    fetch.add_argument("--request", required=True, type=Path)
+    fetch.add_argument("--journal-rights", required=True, type=Path)
     submit_step = commands.add_parser("submit-step", help="Record a producer submission without an adoption decision")
     submit_step.add_argument("--record", required=True, type=Path)
     submit_step.add_argument("--rights", required=True, type=Path)
@@ -86,7 +94,13 @@ def main(argv=None) -> int:
     revoke_use.add_argument("--reason", required=True)
     args = parser.parse_args(argv)
     if args.command == "schema":
-        if args.contract == "preparation":
+        if args.contract in ("pilot", "fetch"):
+            from .pilot import PilotRequest, FetchRequest
+            contract = PilotRequest if args.contract == "pilot" else FetchRequest
+        elif args.contract == "http-adapter":
+            from .http_adapter import HttpAdapterConfig
+            contract = HttpAdapterConfig
+        elif args.contract == "preparation":
             from .preparation import PreparationRequest
             contract = PreparationRequest
         elif args.contract == "step-submission":
@@ -111,6 +125,19 @@ def main(argv=None) -> int:
         with Archive(args.root) as archive:
             if args.command == "init":
                 result = {"schema_version": archive.schema_version(), "interface": "offline_archive"}
+            elif args.command in ("make-pilot", "fetch-material"):
+                from .pilot import PilotRunner, PilotRequest, FetchRequest, fetch_material
+                rights = RightsGrant.model_validate_json(args.journal_rights.read_bytes())
+                if args.command == "make-pilot":
+                    result = PilotRunner(archive, rights).run(
+                        PilotRequest.model_validate_json(args.request.read_bytes()),
+                        args.output, args.spec_root)
+                else:
+                    stored = fetch_material(archive, rights,
+                        FetchRequest.model_validate_json(args.request.read_bytes()))
+                    result = {"version_id": stored.submission.version_id,
+                              "body_sha256": stored.body_sha256, "body_bytes": stored.body_bytes,
+                              "publication_authorized": False}
             elif args.command == "put":
                 sub = VersionSubmission.model_validate_json(args.metadata.read_bytes())
                 result = archive.append(sub, args.body.read_bytes() if args.body else None).model_dump(mode="json")
