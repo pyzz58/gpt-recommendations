@@ -222,3 +222,23 @@ Issue聚合状态只用于展示；Action分别保存`open/reported_done/complet
 | `GET /api/v1/monitoring-visits/{id}/handover-summary` | 实时复用未完M06 Issue、原进展、后续Action及未完阶段清单；无遗留时可简述，不新增审批链 |
 
 目录条目的`applicability_status`、`acquisition_status`、`verification_status`分别取值`required/not_required/unknown`、`not_seen/provided/unknown`、`pending/qualified/unknown`；数据库拒绝“未取得却已核实合格”。M06 Action仅作为显式关联，M10更新文件状态不会自动关闭或重开Action。新增目录版本另建参照，旧版本和每次状态变化保留。阶段清单完成、handover生成和数据库状态都不代表中心获准关闭。
+
+## 16. W11已实现模板输出入口
+
+模板、草稿、快照、导出和实际交付事件分别保存。所有写命令要求会话范围、CSRF及幂等键；模板、草稿和下载在读取前重新授权。
+
+| 接口 | 实现约束 |
+| --- | --- |
+| `POST /api/v1/template-versions` | 绑定M02 `template`版本；只接受声明的DOCX字段/for循环或XLSX单元格/表格区，拒绝任意Jinja控制或代码 |
+| `GET /api/v1/template-versions/{id}`；`GET /api/v1/template-versions?study_id=&site_id=` | 返回受支持字段、循环源、必填变量和不可变模板来源版本 |
+| `POST /api/v1/letters/draft` | 只渲染明确选中的Issue；不删除或修改完整Issue清单。前次问题、新发现和后续事项不混为另一份状态 |
+| `POST /api/v1/reports/draft` | 以同一次监查组成上次问题处理、本次发现、覆盖、事实、规则、安全分析与后续行动；未知/未核查保持明确 |
+| `GET /api/v1/studies/{study_id}/report-drafts?site_id=`；`GET /api/v1/report-drafts/{id}` | 返回草稿内容、输入修订、missing/unknown/not_checked和文案历史 |
+| `POST /api/v1/report-drafts/{id}/text` | 只修改CRA说明/范围文字/结论，标记事实未修改；不会回写Issue、事实或规则 |
+| `POST /api/v1/reports/{draft_id}/snapshot` | 固定草稿revision、内容、事实/规则/问题/覆盖引用和SHA-256；`issued`必须有用户明确声明，存在unknown时须显式确认 |
+| `GET /api/v1/report-snapshots/{id}` | 返回不可变快照、导出文件和实际交付事件；后续Issue变化不改写 |
+| `POST /api/v1/exports` | 用同一快照和声明的DOCX/XLSX模板生成真实Office文件，存入私有存储，返回文件摘要与定位；导出不代表已发送 |
+| `GET /api/v1/report-exports/{id}/content` | 重新授权后以`no-store`私有下载实际文件 |
+| `POST /api/v1/report-snapshots/{id}/events` | 用户明确记录`sent`/`submitted`/`archived`；不改快照内容，不自动外发 |
+
+快照`prepared`与`issued`分离；发送、提交、归档另存append-only事件。报告与track均读取同一快照内容。存在missing/unknown/not_checked时，未经用户确认不得标记`issued`。模板解释仅支持文档声明的字段/循环；同run分割、内容控件、宏、任意表达式等不在支持范围。

@@ -1,0 +1,20 @@
+{
+  "synthetic_only": true,
+  "documents": [
+    {
+      "file": "artifacts/synthetic_visit_letter.docx",
+      "purpose": "template",
+      "output_kind": "letter"
+    },
+    {
+      "file": "artifacts/synthetic_monitoring_report.docx",
+      "purpose": "template",
+      "output_kind": "report"
+    },
+    {
+      "file": "artifacts/synthetic_track_template.xlsx",
+      "purpose": "template",
+      "output_kind": "track"
+    }
+  ]
+}

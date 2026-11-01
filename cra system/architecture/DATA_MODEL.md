@@ -175,3 +175,16 @@ ExecutionContext/OutputEnvelope、ContextImport/SafetyContext、TemplateMapping�
 - `stage_checklist_history`：清单及逐项状态历史，append-only；清单完成没有中心关闭批准字段。
 
 状态更新锁定目录参照或清单Item并使用显式revision，所有写命令与audit/idempotency同事务。目录更新不修改M06 Issue/Action；显式关联仅验证同中心和归属关系。交接摘要由M05阶段策略实时组合未完Issue和未完清单项，不另存审批或中心关闭状态。
+
+## 15. W11实际模板与报告输出底座
+
+迁移`0011_reports_outputs`增加：
+
+- `report_template_versions`：M02模板版本、letter/report/track输出类型、DOCX/XLSX格式、显式字段/循环/单元格/表格映射、支持字段和必填变量。
+- `report_drafts`：中心监查、模板、输出类型、组合后的同一业务内容、Issue/覆盖/事实/规则/安全分析/目录输入revision、unknown/not_checked/missing字段和独立CRA文案。
+- `report_draft_history`：草稿生成、文案修改和可审阅状态变化，append-only。
+- `report_snapshots`：固定draft revision、模板、完整内容、输入引用和SHA-256；`prepared/issued`分开，签发保存实际用户声明、actor和time；触发器禁止更新或删除。
+- `report_exports`：快照、模板、实际DOCX/XLSX、私有storage key、大小/SHA-256和Excel行定位；导出记录不等于发送。
+- `report_events`：快照后的`sent/submitted/archived`用户动作，append-only并与内容快照分离。
+
+报告与track从同一快照内容渲染，一个输出来源不被另一份材料重新拼装。存在missing/unknown/not_checked时要求用户明确确认未知才能签发；跳过和未覆盖范围不会改写成正常。模板不接受任意表达式、宏、文件/网络访问，仅支持声明字段和受限循环。

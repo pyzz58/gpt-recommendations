@@ -1,6 +1,6 @@
 # M11 访视信、监查报告与Excel输出
 
-版本：4；状态：已设计，完整实现待工作包完成。计划代码位置：`backend/cra_app/reports/`。
+版本：5；状态：W11已实现模板映射、访视信/监查报告草稿、不可变快照、真实DOCX/XLSX导出和独立交付事件；报告临床性能与真实模板覆盖仍待W12/W15。代码位置：`backend/cra_app/reports/`。
 
 ## 对应理论和任务
 
@@ -45,3 +45,12 @@
 ## v0.5成熟组件复用
 
 Word信件/报告优先docxtpl并映射模板；Excel继续openpyxl，XlsxWriter仅全新导出需求时另评估；保留事实/覆盖/来源/快照。 具体上游、许可、替代范围和任务接法见[复用评估](../REUSE_ASSESSMENT.md)及[目录](../reuse-catalog.json)。本轮仅选型和来源核对，尚未安装/集成验证。
+
+## W11实现
+
+- `report_template_versions`绑定M02模板并保存受控映射；DOCX只接受声明字段和for/endfor循环，使用沙箱环境渲染；XLSX用openpyxl在既有模板上填单元格和track行。
+- 访视信只使用用户选择Issue；报告从旧问题、新发现、覆盖、事实、规则、安全分析和目录状态组合。后续行动变化不改写已签发快照。
+- `report_snapshots`不可变，`prepared/issued`分离；unknown/not_checked/missing时签发需明确确认。
+- `report_exports`保存真实私有文件，track和报告共享同一快照；`report_events`独立记录实际发送/提交/归档。
+
+实际锁定的docxtpl版本、许可和已知格式限制见`validation/W11_STATUS.md`。

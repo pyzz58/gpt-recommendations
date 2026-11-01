@@ -189,6 +189,7 @@ def test_health_capabilities_and_openapi(
         assert module_status["M08"] == "limited"
         assert module_status["M09"] == "limited"
         assert module_status["M10"] == "implemented"
+        assert module_status["M11"] == "implemented"
         assert module_status["M12"] == "limited"
 
         openapi = client.get("/api/v1/openapi.json")

@@ -2955,6 +2955,95 @@
         "title": "CreateDirectoryReferenceCommand",
         "type": "object"
       },
+      "CreateDraftCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "monitoring_visit_id": {
+            "format": "uuid",
+            "title": "Monitoring Visit Id",
+            "type": "string"
+          },
+          "selected_issue_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 500,
+            "title": "Selected Issue Ids",
+            "type": "array"
+          },
+          "template_version_id": {
+            "format": "uuid",
+            "title": "Template Version Id",
+            "type": "string"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "monitoring_visit_id",
+          "template_version_id"
+        ],
+        "title": "CreateDraftCommand",
+        "type": "object"
+      },
+      "CreateExportCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "snapshot_id": {
+            "format": "uuid",
+            "title": "Snapshot Id",
+            "type": "string"
+          },
+          "template_version_id": {
+            "format": "uuid",
+            "title": "Template Version Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "snapshot_id",
+          "template_version_id"
+        ],
+        "title": "CreateExportCommand",
+        "type": "object"
+      },
       "CreateIssueCommand": {
         "additionalProperties": false,
         "properties": {
@@ -3478,6 +3567,54 @@
         "title": "CreateSafetyAssessmentCommand",
         "type": "object"
       },
+      "CreateSnapshotCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "acknowledge_unknowns": {
+            "default": false,
+            "title": "Acknowledge Unknowns",
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "prepared",
+              "issued"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "user_statement": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Statement"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "status"
+        ],
+        "title": "CreateSnapshotCommand",
+        "type": "object"
+      },
       "CreateStageChecklistCommand": {
         "additionalProperties": false,
         "properties": {
@@ -3631,6 +3768,45 @@
           "revision"
         ],
         "title": "CreateSubjectResponse",
+        "type": "object"
+      },
+      "CreateTemplateVersionCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "mapping": {
+            "$ref": "#/components/schemas/TemplateMappingSpec"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "source_document_version_id",
+          "title",
+          "mapping"
+        ],
+        "title": "CreateTemplateVersionCommand",
         "type": "object"
       },
       "DependencyState": {
@@ -3849,6 +4025,78 @@
           "created_at"
         ],
         "title": "DocumentView",
+        "type": "object"
+      },
+      "DocxTemplateMapping": {
+        "additionalProperties": false,
+        "properties": {
+          "fields": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "maxProperties": 100,
+            "title": "Fields",
+            "type": "object"
+          },
+          "loops": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "maxProperties": 20,
+            "title": "Loops",
+            "type": "object"
+          },
+          "required_variables": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 100,
+            "title": "Required Variables",
+            "type": "array"
+          }
+        },
+        "title": "DocxTemplateMapping",
+        "type": "object"
+      },
+      "DraftHistoryView": {
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "details": {
+            "additionalProperties": true,
+            "title": "Details",
+            "type": "object"
+          },
+          "event_type": {
+            "title": "Event Type",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "ordinal": {
+            "title": "Ordinal",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "event_type",
+          "actor_id",
+          "ordinal",
+          "details",
+          "occurred_at"
+        ],
+        "title": "DraftHistoryView",
         "type": "object"
       },
       "EDCExportScope": {
@@ -8199,6 +8447,45 @@
         "title": "RecordReplyCommand",
         "type": "object"
       },
+      "RecordReportEventCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "event_type": {
+            "enum": [
+              "sent",
+              "submitted",
+              "archived"
+            ],
+            "title": "Event Type",
+            "type": "string"
+          },
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "user_statement": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "User Statement",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "event_type",
+          "user_statement"
+        ],
+        "title": "RecordReportEventCommand",
+        "type": "object"
+      },
       "ReopenActionCommand": {
         "additionalProperties": false,
         "properties": {
@@ -8226,6 +8513,387 @@
           "reason"
         ],
         "title": "ReopenActionCommand",
+        "type": "object"
+      },
+      "ReportDraftView": {
+        "properties": {
+          "content": {
+            "additionalProperties": true,
+            "title": "Content",
+            "type": "object"
+          },
+          "generated_at": {
+            "format": "date-time",
+            "title": "Generated At",
+            "type": "string"
+          },
+          "generated_by": {
+            "title": "Generated By",
+            "type": "string"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/DraftHistoryView"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "input_refs": {
+            "additionalProperties": true,
+            "title": "Input Refs",
+            "type": "object"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Fields",
+            "type": "array"
+          },
+          "monitoring_visit_id": {
+            "format": "uuid",
+            "title": "Monitoring Visit Id",
+            "type": "string"
+          },
+          "not_checked": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Not Checked",
+            "type": "array"
+          },
+          "output_kind": {
+            "title": "Output Kind",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          },
+          "template_version_id": {
+            "format": "uuid",
+            "title": "Template Version Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "unknowns": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Unknowns",
+            "type": "array"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "updated_by": {
+            "title": "Updated By",
+            "type": "string"
+          },
+          "user_text": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "User Text",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "study_id",
+          "site_id",
+          "monitoring_visit_id",
+          "template_version_id",
+          "output_kind",
+          "title",
+          "content",
+          "input_refs",
+          "unknowns",
+          "not_checked",
+          "missing_fields",
+          "user_text",
+          "status",
+          "revision",
+          "generated_by",
+          "generated_at",
+          "updated_by",
+          "updated_at",
+          "history"
+        ],
+        "title": "ReportDraftView",
+        "type": "object"
+      },
+      "ReportEventView": {
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "event_type": {
+            "title": "Event Type",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "user_statement": {
+            "title": "User Statement",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "event_type",
+          "actor_id",
+          "user_statement",
+          "occurred_at"
+        ],
+        "title": "ReportEventView",
+        "type": "object"
+      },
+      "ReportExportView": {
+        "properties": {
+          "actual_send_status": {
+            "const": "not_sent",
+            "default": "not_sent",
+            "title": "Actual Send Status",
+            "type": "string"
+          },
+          "content_url": {
+            "title": "Content Url",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "generated_by": {
+            "title": "Generated By",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "output_format": {
+            "title": "Output Format",
+            "type": "string"
+          },
+          "row_refs": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Row Refs",
+            "type": "array"
+          },
+          "sha256": {
+            "title": "Sha256",
+            "type": "string"
+          },
+          "size_bytes": {
+            "title": "Size Bytes",
+            "type": "integer"
+          },
+          "snapshot_id": {
+            "format": "uuid",
+            "title": "Snapshot Id",
+            "type": "string"
+          },
+          "template_version_id": {
+            "format": "uuid",
+            "title": "Template Version Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "snapshot_id",
+          "template_version_id",
+          "output_format",
+          "filename",
+          "sha256",
+          "size_bytes",
+          "row_refs",
+          "generated_by",
+          "created_at",
+          "content_url"
+        ],
+        "title": "ReportExportView",
+        "type": "object"
+      },
+      "ReportSnapshotView": {
+        "properties": {
+          "content": {
+            "additionalProperties": true,
+            "title": "Content",
+            "type": "object"
+          },
+          "content_hash": {
+            "title": "Content Hash",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "draft_id": {
+            "format": "uuid",
+            "title": "Draft Id",
+            "type": "string"
+          },
+          "draft_revision": {
+            "title": "Draft Revision",
+            "type": "integer"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/ReportEventView"
+            },
+            "title": "Events",
+            "type": "array"
+          },
+          "exports": {
+            "items": {
+              "$ref": "#/components/schemas/ReportExportView"
+            },
+            "title": "Exports",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "input_refs": {
+            "additionalProperties": true,
+            "title": "Input Refs",
+            "type": "object"
+          },
+          "issued_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issued At"
+          },
+          "issued_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issued By"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Fields",
+            "type": "array"
+          },
+          "snapshot_number": {
+            "title": "Snapshot Number",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "template_version_id": {
+            "format": "uuid",
+            "title": "Template Version Id",
+            "type": "string"
+          },
+          "unknown_acknowledged": {
+            "title": "Unknown Acknowledged",
+            "type": "boolean"
+          },
+          "user_statement": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Statement"
+          }
+        },
+        "required": [
+          "id",
+          "draft_id",
+          "draft_revision",
+          "template_version_id",
+          "snapshot_number",
+          "status",
+          "content",
+          "input_refs",
+          "content_hash",
+          "missing_fields",
+          "unknown_acknowledged",
+          "issued_by",
+          "issued_at",
+          "user_statement",
+          "created_by",
+          "created_at",
+          "exports",
+          "events"
+        ],
+        "title": "ReportSnapshotView",
         "type": "object"
       },
       "ResumeCheckDecisionRequest": {
@@ -11068,6 +11736,140 @@
         "title": "SubjectView",
         "type": "object"
       },
+      "TemplateMappingSpec": {
+        "additionalProperties": false,
+        "properties": {
+          "docx": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocxTemplateMapping"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "output_format": {
+            "enum": [
+              "docx",
+              "xlsx"
+            ],
+            "title": "Output Format",
+            "type": "string"
+          },
+          "output_kind": {
+            "enum": [
+              "letter",
+              "report",
+              "track"
+            ],
+            "title": "Output Kind",
+            "type": "string"
+          },
+          "xlsx": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/XlsxTemplateMapping"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "output_kind",
+          "output_format"
+        ],
+        "title": "TemplateMappingSpec",
+        "type": "object"
+      },
+      "TemplateVersionView": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "mapping": {
+            "additionalProperties": true,
+            "title": "Mapping",
+            "type": "object"
+          },
+          "output_format": {
+            "title": "Output Format",
+            "type": "string"
+          },
+          "output_kind": {
+            "title": "Output Kind",
+            "type": "string"
+          },
+          "required_variables": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Required Variables",
+            "type": "array"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          },
+          "supported_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Supported Fields",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "study_id",
+          "site_id",
+          "source_document_version_id",
+          "title",
+          "output_kind",
+          "output_format",
+          "mapping",
+          "supported_fields",
+          "required_variables",
+          "revision",
+          "created_by",
+          "created_at"
+        ],
+        "title": "TemplateVersionView",
+        "type": "object"
+      },
       "TimelySafetyAlertView": {
         "additionalProperties": false,
         "properties": {
@@ -11188,6 +11990,53 @@
           "affected_scope"
         ],
         "title": "UnknownItem",
+        "type": "object"
+      },
+      "UpdateDraftTextCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "draft",
+                  "ready"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "text_updates": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "maxProperties": 10,
+            "minProperties": 1,
+            "title": "Text Updates",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "text_updates"
+        ],
+        "title": "UpdateDraftTextCommand",
         "type": "object"
       },
       "UpdateMonitoringScopeCommand": {
@@ -11900,6 +12749,71 @@
           "envelope"
         ],
         "title": "WorkbenchView",
+        "type": "object"
+      },
+      "XlsxTableMapping": {
+        "additionalProperties": false,
+        "properties": {
+          "columns": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "maxProperties": 50,
+            "minProperties": 1,
+            "title": "Columns",
+            "type": "object"
+          },
+          "sheet": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Sheet",
+            "type": "string"
+          },
+          "start_row": {
+            "minimum": 1.0,
+            "title": "Start Row",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "sheet",
+          "start_row",
+          "columns"
+        ],
+        "title": "XlsxTableMapping",
+        "type": "object"
+      },
+      "XlsxTemplateMapping": {
+        "additionalProperties": false,
+        "properties": {
+          "cells": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "maxProperties": 100,
+            "title": "Cells",
+            "type": "object"
+          },
+          "required_variables": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 100,
+            "title": "Required Variables",
+            "type": "array"
+          },
+          "table": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/XlsxTableMapping"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "XlsxTemplateMapping",
         "type": "object"
       }
     }
@@ -13090,6 +14004,65 @@
         ]
       }
     },
+    "/api/v1/exports": {
+      "post": {
+        "operationId": "create_report_export_api_v1_exports_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExportCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportExportView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Report Export",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
     "/api/v1/facts/{fact_id}/confirm": {
       "post": {
         "operationId": "confirm_fact_api_v1_facts__fact_id__confirm_post",
@@ -14060,6 +15033,65 @@
         ]
       }
     },
+    "/api/v1/letters/draft": {
+      "post": {
+        "operationId": "create_letter_draft_api_v1_letters_draft_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDraftCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDraftView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Letter Draft",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
     "/api/v1/me/scopes": {
       "get": {
         "operationId": "get_my_scopes_api_v1_me_scopes_get",
@@ -14305,6 +15337,442 @@
         "summary": "Workbench",
         "tags": [
           "monitoring"
+        ]
+      }
+    },
+    "/api/v1/report-drafts/{draft_id}": {
+      "get": {
+        "operationId": "get_report_draft_api_v1_report_drafts__draft_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Draft Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDraftView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Report Draft",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/report-drafts/{draft_id}/text": {
+      "post": {
+        "operationId": "update_report_draft_text_api_v1_report_drafts__draft_id__text_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Draft Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDraftTextCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDraftView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Report Draft Text",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/report-exports/{export_id}": {
+      "get": {
+        "operationId": "get_report_export_api_v1_report_exports__export_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "export_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Export Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportExportView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Report Export",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/report-exports/{export_id}/content": {
+      "get": {
+        "operationId": "download_report_export_api_v1_report_exports__export_id__content_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "export_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Export Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Download Report Export",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/report-snapshots/{snapshot_id}": {
+      "get": {
+        "operationId": "get_report_snapshot_api_v1_report_snapshots__snapshot_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Snapshot Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportSnapshotView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Report Snapshot",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/report-snapshots/{snapshot_id}/events": {
+      "post": {
+        "operationId": "record_report_event_api_v1_report_snapshots__snapshot_id__events_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "snapshot_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Snapshot Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordReportEventCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportSnapshotView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Record Report Event",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/draft": {
+      "post": {
+        "operationId": "create_report_draft_api_v1_reports_draft_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDraftCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDraftView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Report Draft",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/{draft_id}/snapshot": {
+      "post": {
+        "operationId": "create_report_snapshot_api_v1_reports__draft_id__snapshot_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "draft_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Draft Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSnapshotCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportSnapshotView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Report Snapshot",
+        "tags": [
+          "reports"
         ]
       }
     },
@@ -16076,6 +17544,63 @@
         ]
       }
     },
+    "/api/v1/studies/{study_id}/report-drafts": {
+      "get": {
+        "operationId": "list_report_drafts_api_v1_studies__study_id__report_drafts_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Site Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ReportDraftView"
+                  },
+                  "title": "Response List Report Drafts Api V1 Studies  Study Id  Report Drafts Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Report Drafts",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
     "/api/v1/studies/{study_id}/rules": {
       "get": {
         "operationId": "list_rules_api_v1_studies__study_id__rules_get",
@@ -16944,6 +18469,163 @@
         "summary": "Evaluate Visit Requirements",
         "tags": [
           "subjects"
+        ]
+      }
+    },
+    "/api/v1/template-versions": {
+      "get": {
+        "operationId": "list_template_versions_api_v1_template_versions_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Site Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TemplateVersionView"
+                  },
+                  "title": "Response List Template Versions Api V1 Template Versions Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Template Versions",
+        "tags": [
+          "reports"
+        ]
+      },
+      "post": {
+        "operationId": "create_template_version_api_v1_template_versions_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTemplateVersionCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateVersionView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Template Version",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/template-versions/{template_id}": {
+      "get": {
+        "operationId": "get_template_version_api_v1_template_versions__template_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Template Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateVersionView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Template Version",
+        "tags": [
+          "reports"
         ]
       }
     },

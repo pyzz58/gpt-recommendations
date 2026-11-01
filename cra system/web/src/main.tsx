@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import { Router } from "./app/Router";
 import "./documents.css";
 import "./laboratory.css";
+import "./reports.css";
 import "./rules.css";
 import "./safety.css";
 import "./site-files.css";

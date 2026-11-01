@@ -98,7 +98,7 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
@@ -278,6 +278,18 @@
             "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
             "subject_digest": "352e724ff4a0f143a896ef75b004219901bad63e8ab7e36a95e99e6463f76a6e"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W11 changed shared API/application/frontend/contracts plus the report migration; complete task-specific regression before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W01",
+            "run_id": 41254636286,
+            "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
+            "subject_digest": "352e724ff4a0f143a896ef75b004219901bad63e8ab7e36a95e99e6463f76a6e"
+          }
         }
       ],
       "track": "v1a",
@@ -409,14 +421,7 @@
       "handoff_outputs": [
         "数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。"
       ],
-      "verification_profile": "CRA-W01",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W01",
-        "run_id": 41254636286,
-        "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
-        "subject_digest": "352e724ff4a0f143a896ef75b004219901bad63e8ab7e36a95e99e6463f76a6e"
-      }
+      "verification_profile": "CRA-W01"
     },
     {
       "id": "CRA-W02",
@@ -428,7 +433,7 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
       "requirement_ids": [
         "CRA-R035",
@@ -588,6 +593,18 @@
             "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w02 在 W10 集成和 CI 日志绑定源码上重新通过；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。"
           ],
           "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W02",
+            "run_id": 41254636286,
+            "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
+            "subject_digest": "fa75b9c391bf9ec38514369664872638f10a4e0d5b097f8958b235582ee5422e"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W11 changed shared API/application/frontend/contracts plus the report migration; complete task-specific regression before restoring verified.",
+          "previous_completion_evidence": {
             "kind": "github_actions",
             "profile_id": "CRA-W02",
             "run_id": 41254636286,
@@ -757,14 +774,7 @@
       "handoff_outputs": [
         "可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。"
       ],
-      "verification_profile": "CRA-W02",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W02",
-        "run_id": 41254636286,
-        "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
-        "subject_digest": "fa75b9c391bf9ec38514369664872638f10a4e0d5b097f8958b235582ee5422e"
-      }
+      "verification_profile": "CRA-W02"
     },
     {
       "id": "CRA-W03",
@@ -776,7 +786,7 @@
         "M02",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。",
       "requirement_ids": [
         "CRA-R003",
@@ -925,6 +935,18 @@
             "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w03 在 W10 集成和 CI 日志绑定源码上重新通过；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。"
           ],
           "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W03",
+            "run_id": 41254636286,
+            "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
+            "subject_digest": "62a2aef232976196d267cd62956bd30fb4a0931eb7a1860c35726912797bf5f2"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W11 changed shared API/application/frontend/contracts plus the report migration; complete task-specific regression before restoring verified.",
+          "previous_completion_evidence": {
             "kind": "github_actions",
             "profile_id": "CRA-W03",
             "run_id": 41254636286,
@@ -1090,14 +1112,7 @@
       "handoff_outputs": [
         "文件/锚点/作业接口，合成资料集和OCR依赖/资源可行性探测记录。"
       ],
-      "verification_profile": "CRA-W03",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W03",
-        "run_id": 41254636286,
-        "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
-        "subject_digest": "62a2aef232976196d267cd62956bd30fb4a0931eb7a1860c35726912797bf5f2"
-      }
+      "verification_profile": "CRA-W03"
     },
     {
       "id": "CRA-W04",
@@ -1109,7 +1124,7 @@
         "M03",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。",
       "requirement_ids": [
         "CRA-R002",
@@ -1272,6 +1287,18 @@
             "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
             "subject_digest": "13bc6100149e804a6bd25b607d560eed865cec6dd5ef3a99745e561ef43027d8"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W11 changed shared API/application/frontend/contracts plus the report migration; complete task-specific regression before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W04",
+            "run_id": 41254636286,
+            "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
+            "subject_digest": "13bc6100149e804a6bd25b607d560eed865cec6dd5ef3a99745e561ef43027d8"
+          }
         }
       ],
       "track": "v1a",
@@ -1426,14 +1453,7 @@
       "handoff_outputs": [
         "候选规则树、用户修正、版本启用解析及独立条件反例结果。"
       ],
-      "verification_profile": "CRA-W04",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W04",
-        "run_id": 41254636286,
-        "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
-        "subject_digest": "13bc6100149e804a6bd25b607d560eed865cec6dd5ef3a99745e561ef43027d8"
-      }
+      "verification_profile": "CRA-W04"
     },
     {
       "id": "CRA-W05",
@@ -1444,7 +1464,7 @@
       "module_ids": [
         "M04"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。",
       "requirement_ids": [
         "CRA-R010",
@@ -1612,6 +1632,18 @@
             "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
             "subject_digest": "28e53e98af205efb3f37341a6b011d409fb41273f4b7576e1f61b87241553f70"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W11 changed shared API/application/frontend/contracts plus the report migration; complete task-specific regression before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W05",
+            "run_id": 41254636286,
+            "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
+            "subject_digest": "28e53e98af205efb3f37341a6b011d409fb41273f4b7576e1f61b87241553f70"
+          }
         }
       ],
       "track": "v1a",
@@ -1732,14 +1764,7 @@
       "handoff_outputs": [
         "患者/锚点/分类断点及缺口拒绝/恢复契约，日期精度和来源保留。"
       ],
-      "verification_profile": "CRA-W05",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W05",
-        "run_id": 41254636286,
-        "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
-        "subject_digest": "28e53e98af205efb3f37341a6b011d409fb41273f4b7576e1f61b87241553f70"
-      }
+      "verification_profile": "CRA-W05"
     },
     {
       "id": "CRA-W06",
@@ -1751,7 +1776,7 @@
         "M05",
         "M06"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。",
       "requirement_ids": [
         "CRA-R001",
@@ -1913,6 +1938,18 @@
             "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
             "subject_digest": "4cfc3204c73f4f934db2a34d006b1346689e545e2142a1e9b0def663388c7aab"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W11 changed shared API/application/frontend/contracts plus the report migration; complete task-specific regression before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W06",
+            "run_id": 41254636286,
+            "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
+            "subject_digest": "4cfc3204c73f4f934db2a34d006b1346689e545e2142a1e9b0def663388c7aab"
+          }
         }
       ],
       "track": "v1a",
@@ -2050,14 +2087,7 @@
       "handoff_outputs": [
         "历史文件整理→遗留提醒/展开→点击确认→下次接续，正式Query与草稿区分。"
       ],
-      "verification_profile": "CRA-W06",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W06",
-        "run_id": 41254636286,
-        "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
-        "subject_digest": "4cfc3204c73f4f934db2a34d006b1346689e545e2142a1e9b0def663388c7aab"
-      }
+      "verification_profile": "CRA-W06"
     },
     {
       "id": "CRA-W07",
@@ -2068,7 +2098,7 @@
       "module_ids": [
         "M07"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。",
       "requirement_ids": [
         "CRA-R013",
@@ -2205,6 +2235,18 @@
             "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
             "subject_digest": "c984728bdb66bd14706309b55d528bb337d8d7f5d02d9daef2930d34454508ce"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W11 changed shared API/application/frontend/contracts plus the report migration; complete task-specific regression before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W07",
+            "run_id": 41254636286,
+            "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
+            "subject_digest": "c984728bdb66bd14706309b55d528bb337d8d7f5d02d9daef2930d34454508ce"
+          }
         }
       ],
       "track": "v1a",
@@ -2305,14 +2347,7 @@
       "handoff_outputs": [
         "真实Excel输入、可复用列映射和不可变标准检验快照。"
       ],
-      "verification_profile": "CRA-W07",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W07",
-        "run_id": 41254636286,
-        "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
-        "subject_digest": "c984728bdb66bd14706309b55d528bb337d8d7f5d02d9daef2930d34454508ce"
-      }
+      "verification_profile": "CRA-W07"
     },
     {
       "id": "CRA-W08",
@@ -2325,7 +2360,7 @@
         "M08",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。",
       "requirement_ids": [
         "CRA-R013",
@@ -2445,6 +2480,18 @@
             "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w08 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。"
           ],
           "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W08",
+            "run_id": 41254636286,
+            "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
+            "subject_digest": "343176c0bf0af3b72dcf1e355bd3dbb30f35696f5f37d60576ede0d97af75ba5"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W11 changed shared API/application/frontend/contracts plus the report migration; complete task-specific regression before restoring verified.",
+          "previous_completion_evidence": {
             "kind": "github_actions",
             "profile_id": "CRA-W08",
             "run_id": 41254636286,
@@ -2609,14 +2656,7 @@
       "handoff_outputs": [
         "自动源文件读取→匹配→比较→差异/未知与待办、实际provider证据、人工负担和支持范围。"
       ],
-      "verification_profile": "CRA-W08",
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W08",
-        "run_id": 41254636286,
-        "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
-        "subject_digest": "343176c0bf0af3b72dcf1e355bd3dbb30f35696f5f37d60576ede0d97af75ba5"
-      }
+      "verification_profile": "CRA-W08"
     },
     {
       "id": "CRA-W09",
@@ -2630,7 +2670,7 @@
         "M09",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。",
       "requirement_ids": [
         "CRA-R007",
@@ -2874,15 +2914,20 @@
             "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
             "subject_digest": "d134f1a27ee0824eae6351cc30c006f3c61b4a79a6d54b3d1c26cb3e38677361"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W11 changed shared API/application/frontend/contracts plus the report migration; complete task-specific regression before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W09",
+            "run_id": 41254636286,
+            "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
+            "subject_digest": "d134f1a27ee0824eae6351cc30c006f3c61b4a79a6d54b3d1c26cb3e38677361"
+          }
         }
-      ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W09",
-        "run_id": 41254636286,
-        "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
-        "subject_digest": "d134f1a27ee0824eae6351cc30c006f3c61b4a79a6d54b3d1c26cb3e38677361"
-      }
+      ]
     },
     {
       "id": "CRA-W10",
@@ -2895,7 +2940,7 @@
         "M05",
         "M10"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。",
       "requirement_ids": [
         "CRA-R001",
@@ -3052,15 +3097,20 @@
             "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
             "subject_digest": "6f210cdf0b6a27d7af27f9bc38c23aafe5becdce948aa50ae7af53f11bdb4b06"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W11 changed shared API/application/frontend/contracts plus the report migration; complete task-specific regression before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W10",
+            "run_id": 41254636286,
+            "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
+            "subject_digest": "6f210cdf0b6a27d7af27f9bc38c23aafe5becdce948aa50ae7af53f11bdb4b06"
+          }
         }
-      ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W10",
-        "run_id": 41254636286,
-        "tested_commit": "79ee1a1743946dcab4125acc9c6250d67b8f3ede",
-        "subject_digest": "6f210cdf0b6a27d7af27f9bc38c23aafe5becdce948aa50ae7af53f11bdb4b06"
-      }
+      ]
     },
     {
       "id": "CRA-W11",
@@ -3073,7 +3123,7 @@
       "module_ids": [
         "M11"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "acceptance": "模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。",
       "requirement_ids": [
         "CRA-R009",
@@ -3128,6 +3178,21 @@
           "path": "backend/cra_app/reports/template_mapping.py",
           "kind": "code",
           "purpose": "受支持DOCX/XLSX字段与循环区映射，不承诺任意模板自动完美还原"
+        },
+        {
+          "path": "migrations/versions/0011_reports_outputs.py",
+          "kind": "migration",
+          "purpose": "模板、草稿、不可变快照、导出和交付事件"
+        },
+        {
+          "path": "tests/fixtures/reports/artifacts/synthetic_monitoring_report.docx",
+          "kind": "test",
+          "purpose": "可公开合成中文报告模板"
+        },
+        {
+          "path": "tests/fixtures/reports/artifacts/synthetic_track_template.xlsx",
+          "kind": "test",
+          "purpose": "可公开合成 Excel track 模板"
         }
       ],
       "contracts": [
@@ -3171,7 +3236,7 @@
         {
           "command": "uv run --frozen pytest -q tests/integration/test_reports.py",
           "purpose": "模板、快照、覆盖及实际文件",
-          "availability": "to_implement"
+          "availability": "available"
         }
       ],
       "phase_id": "P4",
@@ -3186,7 +3251,14 @@
       "handoff_outputs": [
         "可打开的模板信件、监查报告、track及不可变快照，多份输出同一事实。"
       ],
-      "verification_profile": "CRA-W11"
+      "verification_profile": "CRA-W11",
+      "completion_history": [
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-01",
+          "reason": "W11 changed shared API/application/frontend/contracts plus the report migration; complete task-specific regression before restoring verified."
+        }
+      ]
     },
     {
       "id": "CRA-W12",

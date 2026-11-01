@@ -68,6 +68,13 @@ from cra_app.rules.service import (
     RuleStateConflict,
     RuleValidationError,
 )
+from cra_app.reports.api import router as reports_router
+from cra_app.reports.service import (
+    ReportConflict,
+    ReportNotFound,
+    ReportService,
+    ReportValidationError,
+)
 from cra_app.subjects.api import router as subjects_router
 from cra_app.subjects.service import (
     SubjectConflict,
@@ -131,6 +138,7 @@ def create_app(
     laboratory_service: LaboratoryService | None = None,
     safety_service: SafetyService | None = None,
     site_file_service: SiteFileService | None = None,
+    report_service: ReportService | None = None,
 ) -> FastAPI:
     resolved_settings = settings or get_settings()
     own_engine = None
@@ -222,6 +230,18 @@ def create_app(
             issues=issue_service,
             monitoring=monitoring_service,
         )
+    if report_service is None:
+        report_service = ReportService(
+            session_factory,
+            governance=governance_service,
+            documents=document_service,
+            issues=issue_service,
+            monitoring=monitoring_service,
+            subjects=subject_service,
+            rules=rule_service,
+            safety=safety_service,
+            site_files=site_file_service,
+        )
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -254,6 +274,7 @@ def create_app(
     application.state.laboratory_service = laboratory_service
     application.state.safety_service = safety_service
     application.state.site_file_service = site_file_service
+    application.state.report_service = report_service
 
     application.add_middleware(
         SessionMiddleware,
@@ -568,6 +589,33 @@ def create_app(
             content=_error("site_file_conflict", str(exc)),
         )
 
+    @application.exception_handler(ReportNotFound)
+    async def report_not_found_error(
+        request: Request, exc: ReportNotFound
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=_error("report_not_found", str(exc)),
+        )
+
+    @application.exception_handler(ReportValidationError)
+    async def report_validation_error(
+        request: Request, exc: ReportValidationError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            content=_error("report_validation_failed", str(exc)),
+        )
+
+    @application.exception_handler(ReportConflict)
+    async def report_conflict_error(
+        request: Request, exc: ReportConflict
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=_error("report_conflict", str(exc)),
+        )
+
     @application.exception_handler(RequestValidationError)
     async def validation_error(
         request: Request, exc: RequestValidationError
@@ -635,6 +683,7 @@ def create_app(
     application.include_router(laboratory_router)
     application.include_router(safety_router)
     application.include_router(site_files_router)
+    application.include_router(reports_router)
 
     def custom_openapi():
         if application.openapi_schema:

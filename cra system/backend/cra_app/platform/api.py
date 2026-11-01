@@ -222,7 +222,7 @@ def capabilities(request: Request) -> CapabilityResponse:
             ModuleCapability(
                 module_id="M11",
                 label="报告与输出",
-                status="not_implemented",
+                status="implemented",
             ),
         ],
     )

@@ -79,6 +79,13 @@ export type StageChecklistItemView =
   components["schemas"]["StageChecklistItemView"];
 export type HandoverSummaryView =
   components["schemas"]["HandoverSummaryView"];
+export type TemplateVersionView =
+  components["schemas"]["TemplateVersionView"];
+export type ReportDraftView = components["schemas"]["ReportDraftView"];
+export type ReportSnapshotView =
+  components["schemas"]["ReportSnapshotView"];
+export type ReportExportView =
+  components["schemas"]["ReportExportView"];
 
 type ErrorEnvelope = {
   error?: {
@@ -377,6 +384,206 @@ export function getHandoverSummary(
 ): Promise<HandoverSummaryView> {
   return request<HandoverSummaryView>(
     `/api/v1/monitoring-visits/${visitId}/handover-summary`
+  );
+}
+
+export function getTemplateVersions(
+  studyId: string,
+  siteId: string
+): Promise<TemplateVersionView[]> {
+  return request<TemplateVersionView[]>(
+    `/api/v1/template-versions?study_id=${encodeURIComponent(studyId)}&site_id=${encodeURIComponent(siteId)}`
+  );
+}
+
+export function createTemplateVersion(values: {
+  sourceDocumentVersionId: string;
+  title: string;
+  outputKind: "letter" | "report" | "track";
+  mapping: Record<string, unknown>;
+  idempotencyKey: string;
+}): Promise<TemplateVersionView> {
+  return request<TemplateVersionView>("/api/v1/template-versions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: values.idempotencyKey,
+      source_document_version_id: values.sourceDocumentVersionId,
+      title: values.title,
+      mapping: {
+        output_kind: values.outputKind,
+        output_format: values.outputKind === "track" ? "xlsx" : "docx",
+        ...values.mapping
+      }
+    })
+  });
+}
+
+export function createLetterDraft(values: {
+  visitId: string;
+  templateVersionId: string;
+  selectedIssueIds: string[];
+  title?: string;
+  idempotencyKey: string;
+}): Promise<ReportDraftView> {
+  return request<ReportDraftView>("/api/v1/letters/draft", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: values.idempotencyKey,
+      monitoring_visit_id: values.visitId,
+      template_version_id: values.templateVersionId,
+      title: values.title || null,
+      selected_issue_ids: values.selectedIssueIds
+    })
+  });
+}
+
+export function createReportDraft(values: {
+  visitId: string;
+  templateVersionId: string;
+  title?: string;
+  idempotencyKey: string;
+}): Promise<ReportDraftView> {
+  return request<ReportDraftView>("/api/v1/reports/draft", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: values.idempotencyKey,
+      monitoring_visit_id: values.visitId,
+      template_version_id: values.templateVersionId,
+      title: values.title || null,
+      selected_issue_ids: []
+    })
+  });
+}
+
+export function getReportDrafts(
+  studyId: string,
+  siteId: string
+): Promise<ReportDraftView[]> {
+  return request<ReportDraftView[]>(
+    `/api/v1/studies/${studyId}/report-drafts?site_id=${encodeURIComponent(siteId)}`
+  );
+}
+
+export function updateReportDraftText(
+  draft: ReportDraftView,
+  values: {
+    textUpdates: Record<string, string>;
+    status?: "draft" | "ready";
+    idempotencyKey: string;
+  }
+): Promise<ReportDraftView> {
+  return request<ReportDraftView>(
+    `/api/v1/report-drafts/${draft.id}/text`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: draft.revision,
+        idempotency_key: values.idempotencyKey,
+        text_updates: values.textUpdates,
+        status: values.status ?? null
+      })
+    }
+  );
+}
+
+export function createReportSnapshot(
+  draft: ReportDraftView,
+  values: {
+    status: "prepared" | "issued";
+    acknowledgeUnknowns: boolean;
+    userStatement: string;
+    idempotencyKey: string;
+  }
+): Promise<ReportSnapshotView> {
+  return request<ReportSnapshotView>(
+    `/api/v1/reports/${draft.id}/snapshot`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: draft.revision,
+        idempotency_key: values.idempotencyKey,
+        status: values.status,
+        acknowledge_unknowns: values.acknowledgeUnknowns,
+        user_statement: values.userStatement || null
+      })
+    }
+  );
+}
+
+export function getReportSnapshot(
+  snapshotId: string
+): Promise<ReportSnapshotView> {
+  return request<ReportSnapshotView>(
+    `/api/v1/report-snapshots/${snapshotId}`
+  );
+}
+
+export function createReportExport(values: {
+  snapshotId: string;
+  templateVersionId: string;
+  idempotencyKey: string;
+}): Promise<ReportExportView> {
+  return request<ReportExportView>("/api/v1/exports", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: values.idempotencyKey,
+      snapshot_id: values.snapshotId,
+      template_version_id: values.templateVersionId
+    })
+  });
+}
+
+export function recordReportEvent(
+  snapshot: ReportSnapshotView,
+  values: {
+    eventType: "sent" | "submitted" | "archived";
+    userStatement: string;
+    idempotencyKey: string;
+  }
+): Promise<ReportSnapshotView> {
+  return request<ReportSnapshotView>(
+    `/api/v1/report-snapshots/${snapshot.id}/events`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: 0,
+        idempotency_key: values.idempotencyKey,
+        event_type: values.eventType,
+        user_statement: values.userStatement
+      })
+    }
   );
 }
 

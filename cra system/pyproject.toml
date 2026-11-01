@@ -8,6 +8,7 @@ dependencies = [
     "alembic>=1.16,<2",
     "authlib>=1.9,<2",
     "boto3>=1.43,<2",
+    "docxtpl>=0.20,<0.21",
     "fastapi>=0.162,<1",
     "itsdangerous>=2.2,<3",
     "openpyxl>=3.1,<4",

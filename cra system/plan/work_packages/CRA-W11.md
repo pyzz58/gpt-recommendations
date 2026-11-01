@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W06、CRA-W09、CRA-W10。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -29,6 +29,9 @@
 | `web/src/features/reports/ReportPreview.tsx` | code | 报告预览 |
 | `tests/integration/test_reports.py` | test | 范围、文件和历史快照 |
 | `backend/cra_app/reports/template_mapping.py` | code | 受支持DOCX/XLSX字段与循环区映射，不承诺任意模板自动完美还原 |
+| `migrations/versions/0011_reports_outputs.py` | migration | 模板、草稿、不可变快照、导出和交付事件 |
+| `tests/fixtures/reports/artifacts/synthetic_monitoring_report.docx` | test | 可公开合成中文报告模板 |
+| `tests/fixtures/reports/artifacts/synthetic_track_template.xlsx` | test | 可公开合成 Excel track 模板 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -74,7 +77,7 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 模板、快照、覆盖及实际文件
+- [available] 模板、快照、覆盖及实际文件
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_reports.py
