@@ -121,6 +121,9 @@ class PilotTests(unittest.TestCase):
         self.assertIn('owned-reviewer-key',self.calls[-1][2])
         self.assertEqual(len(self.calls[-1][1]['messages']),2)
         self.assertIn('SOURCE',self.calls[-1][1]['messages'][1]['content'])
+        supplied=json.loads(self.calls[-1][1]['messages'][1]['content'])
+        self.assertEqual(supplied['task_instruction']['text'],'Owned finite pilot task')
+        self.assertNotIn('TASK',[m['version_id'] for m in supplied['materials_are_data']])
         before=self.gate.ledger.state('BUDGET').consumed
         self.runner().run(self.req,self.base/'restarted.html')
         self.assertEqual(len(self.calls),5);self.assertEqual(before,self.gate.ledger.state('BUDGET').consumed)
@@ -183,6 +186,25 @@ class PilotTests(unittest.TestCase):
         with self.assertRaises(GatingError):
             self.runner().run(self.req.model_copy(update={'reviewer':bad}),self.base/'wrong-reviewer.html')
         self.assertEqual(self.calls,[])
+
+    def test_explicit_translation_does_not_require_translating_task_instructions(self):
+        permission=UsePermission(use=U.TRANSLATE,state=PermissionState.ALLOWED,
+            validity=ValidityMode.OPEN_ENDED,territories=Scope(mode=ScopeMode.ANY),
+            providers=Scope(mode=ScopeMode.ANY),content_scope=Scope(mode=ScopeMode.ANY))
+        rights=self.rights.model_copy(update={'rights_id':'TRANSLATION-SOURCE',
+            'allowed_uses':self.rights.allowed_uses|{U.TRANSLATE},
+            'permissions':(*self.rights.permissions,permission)})
+        self.archive.append(VersionSubmission(object_id='TRANSLATABLE',version_id='TRANSLATABLE',
+            kind=K.DOCUMENT,title='Owned English fixture',spec_sha256=self.spec,created_at=self.now,
+            rights=rights,representation=Representation.FULL_BODY),b'Owned English text')
+        admission=self.gate.load_admission('W').model_copy(update={'admission_id':'WT',
+            'operation_kinds':(OperationKind.MODEL,OperationKind.TRANSLATE),
+            'material_uses':(U.MODEL_PROCESS,U.TRANSLATE)})
+        self.gate.append_admission(admission)
+        result=self.runner().run(self.req.model_copy(update={'translation_requested':True,
+            'source_version_ids':('TRANSLATABLE',),'writer_admission_id':'WT'}),self.base/'translated.html')
+        self.assertEqual(result['state'],'DRAFT_AWAITING_REVIEW')
+        self.assertEqual(len(self.calls),5)
 
     def test_source_http_acquisition_and_explicit_storage(self):
         cfg=HttpAdapterConfig(tool_id='source-fetch',provider_id='public-source',kind='FETCH',

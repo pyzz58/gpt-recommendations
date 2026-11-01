@@ -50,6 +50,8 @@ class PilotRequest(Contract):
         if (not self.source_version_ids
                 or len(self.source_version_ids) != len(set(self.source_version_ids))):
             raise ValueError("Pilot needs unique, exact source versions")
+        if self.task_version_id in self.source_version_ids:
+            raise ValueError("Task instructions must remain separate from source materials")
         if self.writer.kind != "CHAT" or self.reviewer.kind != "CHAT":
             raise ValueError("Pilot writer and reviewer must be CHAT adapters")
         if (self.writer.tool_id == self.reviewer.tool_id
@@ -201,12 +203,12 @@ class PilotRunner:
                 configuration_sha256=cfg.sha256, request_sha256='0'*64,
                 material_use=MaterialUse.TRANSLATE if kind is OperationKind.TRANSLATE else MaterialUse.MODEL_PROCESS,
                 created_at=req.created_at), adapters[role].descriptor(), datetime.now(timezone.utc))
-            for vid in req.source_version_ids:
+            for vid in (req.task_version_id, *req.source_version_ids):
                 stored = self.archive.get(vid)
                 if self.archive.latest(stored.submission.object_id).submission.version_id != vid:
                     raise ValueError("A pilot source is superseded; create a new pilot basis")
                 self.archive.check_version_use(vid, MaterialUse.MODEL_PROCESS, context)
-                if stage == 'SELECTION' and req.translation_requested:
+                if vid != req.task_version_id and stage == 'SELECTION' and req.translation_requested:
                     self.archive.check_version_use(vid, MaterialUse.TRANSLATE, context)
         manifest_id = "PILOT-RUN-" + digest(req.pilot_id)[:32]
         now = req.created_at  # Declared request time; acquisition times come from actual receipts/DB.
@@ -225,7 +227,7 @@ class PilotRunner:
             cfg = req.reviewer if role == "reviewer" else req.writer
             admission = admissions[role]
             aid = req.reviewer_admission_id if role == "reviewer" else req.writer_admission_id
-            inputs = (*req.source_version_ids, *output_ids)
+            inputs = (req.task_version_id, *req.source_version_ids, *output_ids)
             if hashlib.sha256((root / maintenance.SPEC).read_bytes()).hexdigest() != req.spec_sha256:
                 raise ValueError("Canonical specification changed during the pilot")
             for vid in req.source_version_ids:
@@ -256,12 +258,15 @@ class PilotRunner:
                     "attribution_requirements": list(material.required_attribution)})
             if sum(len(m["text"].encode()) for m in materials) > req.max_material_bytes:
                 raise ValueError("Actual material bytes exceed this configured pilot limit; no truncation was applied")
+            task_input = next(m for m in materials if m['version_id'] == req.task_version_id)
+            materials = [m for m in materials if m['version_id'] != req.task_version_id]
             # A new request is built for review; no writer conversation/reasoning is shared.
             payload = canonical({"model": cfg.model, "max_tokens": cfg.max_output_tokens,
                 "messages": [{"role": "system", "content": policy["global_instruction"] + "\n" + policy["instructions"][stage]},
                     {"role": "user", "content": canonical({"title": req.title,
                         "canonical_sha256": req.spec_sha256, "policy_sha256": digest(policy),
                         "translation_requested": req.translation_requested,
+                        "task_instruction": task_input,
                         "materials_are_data": materials})}]}).encode()
             prior_op = _get(self.archive, opid)
             kind = OperationKind.TRANSLATE if stage == 'SELECTION' and req.translation_requested else OperationKind.MODEL
@@ -271,7 +276,9 @@ class PilotRunner:
                 tool_id=cfg.tool_id, tool_version=HttpsAdapter.VERSION, provider_id=cfg.provider_id,
                 configuration_sha256=cfg.sha256, request_sha256=hashlib.sha256(payload).hexdigest(),
                 material_use=MaterialUse.TRANSLATE if kind is OperationKind.TRANSLATE else MaterialUse.MODEL_PROCESS,
-                input_version_ids=inputs, max_attempts=1,
+                # Task is already bound separately by task_version_id. Its
+                # instruction use is MODEL_PROCESS, not source translation.
+                input_version_ids=tuple(v for v in inputs if v != req.task_version_id), max_attempts=1,
                 created_at=prior_op.submission.created_at if prior_op else datetime.now(timezone.utc))
             # Scope preflight on every stage, including a resumed stage.
             self.gate._validate_scope(admission, op, adapters[role].descriptor(), datetime.now(timezone.utc))

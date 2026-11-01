@@ -1,6 +1,6 @@
 {
   "record_id": "SI-PILOT-EXECUTION-20261101-001",
-  "checked_at": "2026-11-01T04:38:04.442585+00:00",
+  "checked_at": "2026-11-01T04:47:48.056135+00:00",
   "base_pr": 76,
   "base_commit": "6dab1036dcbee79df9633f3d7a9f91e46cef17db",
   "scope": "Code-level repair for the missing controlled content execution entry point and weekly/annual delivery ordering; no formal production or content approval",
@@ -12,16 +12,17 @@
     "Exact restart readback without new HTTP calls or new budget charge; UNKNOWN and incomplete responses do not silently retry",
     "Translation is separate permission/admission; current source/task/spec checks and no byte truncation",
     "Three existing-work delivery tracks and preparation-only prerequisites; W55 no longer depends on W54",
-    "Mechanical regression rejects annual dependencies, pilot publication grants and formal acceptance without original gates"
+    "Mechanical regression rejects annual dependencies, pilot publication grants and formal acceptance without original gates",
+    "Exact Task instruction is supplied separately from source data; Task processing and original translation permissions are checked independently"
   ],
   "verification": {
     "runtime": {
       "command": "python -m unittest discover -s tests_runtime -v",
-      "tests": 312,
-      "seconds": 194.289,
+      "tests": 313,
+      "seconds": 188.53,
       "exit_code": 0,
       "result": "PASS",
-      "log_sha256": "654f9bc8f0722c736e9b361f0c6baf56c1b4339e19e6c5ad836dde28318369fc"
+      "log_sha256": "e043c613ead34a9d47f75cd6b2c26366ac866b9d4a11db125b6ca3b7c2c8cd96"
     },
     "maintenance": {
       "command": "python -m unittest discover -s tests -v",
@@ -124,10 +125,10 @@
   "test_method": "Actual loopback HTTP server and SQLAlchemy/SQLite/private file I/O; response prose and usage are owned fixtures, not real LLM output or a real provider invoice",
   "source_sha256": {
     "intelligence/http_adapter.py": "abe92b47a32b94a9b9375e615be85c55c426342c85529d19c8c4500eb3c96d86",
-    "intelligence/pilot.py": "3377e71cb8411a68ffa6d97479cc9d94bc191f82e9351e8aae689a47950bdafa",
+    "intelligence/pilot.py": "0ac4184ab71041728984093988f67d5fd739b57b4b81d7a5ff49e6136a83d9b2",
     "intelligence/__main__.py": "c8e480653e1c72020fc9881671b02ceba6e5f342ccd6cbb3bfb84556713074e7",
     "intelligence/contracts.py": "2dd7291d050433ff698c25a829943eb793b4bfb761059865100caba2a5ae97ea",
-    "tests_runtime/test_pilot.py": "6626ba6336cea63dd60b7e93066a3f2366278c59f1e45a42ba511c5e2bfd2cc5",
+    "tests_runtime/test_pilot.py": "bcb2735a3cd6765b805984cb643864cc661653af7469c8be121fdff39b2571b6",
     "tools/work_plan.py": "842347561b97c5ffc9b12e0500cecf2c8188d2c13fa609b91f6a120043e09e60",
     "tests/test_work_plan.py": "9fca66ff402cae0f78d3cb5ccddd41333ba74600b253802329fc01fea779dc34"
   },
@@ -143,5 +144,42 @@
     "G03": "NOT_STARTED",
     "G04": "NOT_STARTED"
   },
-  "next_deliverable": "Codex uses these entry points with one genuinely approved finite source/model configuration, produces the first real draft, then connects actual results to the existing formal article/review/edition interfaces instead of another generator or contract expansion."
+  "next_deliverable": "Codex uses these entry points with one genuinely approved finite source/model configuration, produces the first real draft, then connects actual results to the existing formal article/review/edition interfaces instead of another generator or contract expansion.",
+  "prior_verification_5207cad": {
+    "runtime": {
+      "command": "python -m unittest discover -s tests_runtime -v",
+      "tests": 312,
+      "seconds": 194.289,
+      "exit_code": 0,
+      "result": "PASS",
+      "log_sha256": "654f9bc8f0722c736e9b361f0c6baf56c1b4339e19e6c5ad836dde28318369fc"
+    },
+    "maintenance": {
+      "command": "python -m unittest discover -s tests -v",
+      "tests": 56,
+      "seconds": 30.395,
+      "exit_code": 0,
+      "result": "PASS",
+      "log_sha256": "6f15070d3984493f1289ed69cc497ecb71ea9b5e1bd8b1d3e3277ed09a0bd710"
+    }
+  },
+  "prior_source_sha256_5207cad": {
+    "intelligence/http_adapter.py": "abe92b47a32b94a9b9375e615be85c55c426342c85529d19c8c4500eb3c96d86",
+    "intelligence/pilot.py": "3377e71cb8411a68ffa6d97479cc9d94bc191f82e9351e8aae689a47950bdafa",
+    "intelligence/__main__.py": "c8e480653e1c72020fc9881671b02ceba6e5f342ccd6cbb3bfb84556713074e7",
+    "intelligence/contracts.py": "2dd7291d050433ff698c25a829943eb793b4bfb761059865100caba2a5ae97ea",
+    "tests_runtime/test_pilot.py": "6626ba6336cea63dd60b7e93066a3f2366278c59f1e45a42ba511c5e2bfd2cc5",
+    "tools/work_plan.py": "842347561b97c5ffc9b12e0500cecf2c8188d2c13fa609b91f6a120043e09e60",
+    "tests/test_work_plan.py": "9fca66ff402cae0f78d3cb5ccddd41333ba74600b253802329fc01fea779dc34"
+  },
+  "independent_newspaper_baseline": {
+    "result": "EXISTING_FAILURE_REPRODUCED",
+    "tests": 2,
+    "errors": 1,
+    "exception": "ValueError: substring not found",
+    "file": "newspaper/test_mail_secret_boundary.py:18",
+    "missing_workflow_step": "Restore prebuilt verified edition",
+    "source_files_changed": false,
+    "log_sha256": "d9e6f7dde784c53a0260c060e7236358e5af5377ea0a4322486a5a362df3f458"
+  }
 }
