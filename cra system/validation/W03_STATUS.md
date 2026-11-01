@@ -2,6 +2,10 @@
 
 Status: verified. Date: 2026-11-01.
 
+Final W10 source-bound evidence uses [run 41254636286](https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286) at tested commit `79ee1a1743946dcab4125acc9c6250d67b8f3ede`; the same run passed W10, all affected task jobs and exact closed-finding log checks.
+
+2026-11-01 W10 integration revalidation: all task-specific checks passed in [run 41254143718](https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718) against tested commit `8c733e97ac35496ca463b171dd1cecfce73246a8`. W01-W09 source digests were rebound after adding the directory/stage-check integration; the previous evidence remains in `completion_history`.
+
 2026-11-01 review-remediation revalidation supersedes the older evidence
 below: run
 https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323,

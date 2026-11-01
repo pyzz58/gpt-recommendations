@@ -4,7 +4,7 @@
 
 ## 最新技术复核
 
-先读[第一性原理v0.4结论](audit/FIRST_PRINCIPLES_REVIEW_V04.md)、[完整实施路径](plan/IMPLEMENTATION_PATH.md)和当前任务的design_refs/entry_conditions/handoff_outputs。W01—W09已完成真实PostgreSQL、S3、API/工作台、资料解析/来源定位、规则候选/确认/启用日、隔离provider探测、结构化患者事实/访视断点、历史遗留/分项确认、EDC快照、源检验文件读取/坐标、先匹配后比较及有依据的安全分析；任意真实规则或报告文本的完整语义、实际医院版式、安全分析临床性能、全流程节时和真实授权试用仍待后续工作验证。原业务要求和任务编号保持。
+先读[第一性原理v0.4结论](audit/FIRST_PRINCIPLES_REVIEW_V04.md)、[完整实施路径](plan/IMPLEMENTATION_PATH.md)和当前任务的design_refs/entry_conditions/handoff_outputs。W01—W10已完成真实PostgreSQL、S3、API/工作台、资料解析/来源定位、规则候选/确认/启用日、隔离provider探测、结构化患者事实/访视断点、历史遗留/分项确认、EDC快照、源检验文件读取/坐标、先匹配后比较、有依据的安全分析、原ISF/TMF目录对照及有来源的启动/关闭/交接清单；任意真实规则或报告文本的完整语义、实际医院版式、安全分析临床性能、全流程节时和真实授权试用仍待后续工作验证。原业务要求和任务编号保持。
 
 2026-11-01独立审查提出的13项问题已按[关闭映射](validation/REVIEW_REMEDIATION_20261101.md)修复，并在[run 41245438323](https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323)重新完成W01—W09源码绑定CI；旧完成证据保留在`completion_history`。
 
@@ -12,12 +12,14 @@
 
 后续独立正向验收发现的原03分支目标残留已关闭，工程门禁已接入[防复发规范](architecture/REGRESSION_PREVENTION.md)、[当前审核入口](audit/current_findings.json)、选择器和任务证据工具。关闭证据见[分支门禁记录](validation/BRANCH_GATE_AND_PREVENTION_20261101.md)。
 
+W10完成后已在[run 41254636286](https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286)重新绑定W01—W10源码证据；关闭发现现在还会核对成功job日志中的具体`test::case`。
+
 
 编码和宣称完成前阅读[audit/TECHNICAL_ROUTE_REVIEW_20261029.md](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)及[开放项](audit/findings.json)。本次八点澄清已修改14条理论及相应设计/任务，见[最新决定](theory/DECISIONS_20261029.md)；W04完成的是有来源的规则候选、有限AST、用户确认和启用日，不代表任意方案自动理解或检验核对。历史导入、真实格式覆盖和获准试用等缺口仍须在相应功能交付前修订，不能因为基础CI绿色就忽略。
 
 ## 当前状态和第一步
 
-已完成CRA-W00技术基线和**CRA-W01至W09**。W05分支目标与防复发门禁已在[run 41251079001](https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001)重新通过源码绑定CI；选择器当前定位W10。W10尚未实现。
+已完成CRA-W00技术基线和**CRA-W01至W10**。W10目录、阶段清单和交接及既有任务已在[run 41254636286](https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286)重新通过源码绑定CI；选择器当前定位W11。本轮完成后停止，未开始W11。
 
 先运行只读选择器：
 
@@ -41,7 +43,7 @@ python3 tools/next_task.py
 
 ## 可直接交给Codex的首轮指令
 
-使用[plan/CODEX_FIRST_MESSAGE.md](plan/CODEX_FIRST_MESSAGE.md)中的完整指令；先读[复用选择](architecture/REUSE_ASSESSMENT.md)。W01—W09已完成并从W10继续，不因合成安全分析provider的验证跳过后面的目录、报告或部署。
+使用[plan/CODEX_FIRST_MESSAGE.md](plan/CODEX_FIRST_MESSAGE.md)中的完整指令；先读[复用选择](architecture/REUSE_ASSESSMENT.md)。W01—W10已完成；只有在用户明确继续时才从W11报告输出开始，不因合成provider限制跳过后续主线。
 
 后续用户说“继续”，先运行next_task并按实际状态接续；不得只机械把任务号加一。默认推进V1A。若用户指定其他工作包，先核实其依赖，说明未完成前置，不隐瞒或擅改理论。
 
@@ -55,4 +57,4 @@ python3 tools/next_task.py
 
 业务理论按固定CRA-R编号和来源维护，改动后执行既有SYNC_POLICY。技术文件布局、任务细化或依赖工具选择的调整，不应伪造新的临床决定。接口、存储或供应商变化按实际受影响模块更新，保留历史事实和已签发报告。
 
-最新业务决定：遗留逐项展开，CRA点击确认整改即可；缺数据用户可拒绝并跳过相关路径；list含前后条件和分支；版本手动设开始使用日；目录可直接作对照文件；W08自动检验读取属于主线，手工仅少量例外。45个理论编号保持，14条提高revision。W01—W09已按工程范围实现，W10及之后仍待实现，不能沿用旧的人工V1A验收口径。
+最新业务决定：遗留逐项展开，CRA点击确认整改即可；缺数据用户可拒绝并跳过相关路径；list含前后条件和分支；版本手动设开始使用日；目录可直接作对照文件；W08自动检验读取属于主线，手工仅少量例外。45个理论编号保持，14条提高revision。W01—W10已按工程范围实现，W11及之后仍待实现，不能沿用旧的人工V1A验收口径。

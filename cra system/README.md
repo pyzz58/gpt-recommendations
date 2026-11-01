@@ -6,7 +6,7 @@
 
 ## 完整技术实施入口
 
-先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01—W09已完成；原03分支目标残留和防复发门禁接入已通过[源码绑定CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001)，选择器当前定位W10。W10尚未实现。
+先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01—W10已完成；目录、阶段清单与既有任务在[W10源码绑定CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286)重新通过，选择器当前定位W11。
 
 ## 当前交付和实际状态
 
@@ -14,7 +14,7 @@
 
 **这些还不是可投入真实监查的完整应用。** 数据库、界面、资料自动提取、OCR、模型、导出和实际部署的开发状态以[工作计划](plan/WORK_PLAN.md)为准；不能把“已设计”记为“已实现”，也不能把基础代码检查通过记为临床试用通过。
 
-W04已在真实PostgreSQL上完成有出处规则候选、项目共享方案的中心独立采用日、普通中文段落/表格/脚注/Q&A保留、三值条件、手动启用日、事件日适用性和四层list；详见[W04交付记录](validation/W04_STATUS.md)。W05已在此底座上完成结构化患者事实、规则驱动访视窗口、门槛/例外与未知日期状态、来源/日期精度保留、分类断点与局部跳过/恢复；详见[W05交付记录](validation/W05_STATUS.md)。W06已完成从合成历史DOCX/XLSX/问题文字预览并确认遗留、稳定Issue与分项Action、PD上报独立确认、CRA点击确认/重开、Query期限依据和访前选择；详见[W06交付记录](validation/W06_STATUS.md)。W07已完成多sheet EDC Excel公式/缓存预览、映射与范围确认、同日初检/复查实例分离及不可变合成检验快照；详见[W07交付记录](validation/W07_STATUS.md)。W08已完成选择文字PDF、清晰合成PNG和中文页眉上下文PDF的实际读取、完整更正链、来源坐标、参考范围独立比较、持久异步识别/重试、集中复核及M06待办关联；详见[W08交付记录](validation/W08_STATUS.md)和[支持范围](validation/LAB_AUTOMATION_SCOPE.md)。W09已完成AE、SAE、相关性、预期性、AESI/DLT及PD维度分离、具体事件事实归属、检验一致异常/跳过/stale衔接、具体问题、医学答复和独立模型运行；固定本地模型只选择允许解释模板和证据ID，不能作最终医学判断；详见[W09交付记录](validation/W09_STATUS.md)。这些provider只验证声明的合成子集，不代表任意方案自动理解、完整病史、真实医院版式、EDC导出完整、安全分析临床质量或临床安全结论。目录、报告及真实授权试用仍待后续工作包。
+W04已在真实PostgreSQL上完成有出处规则候选、项目共享方案的中心独立采用日、普通中文段落/表格/脚注/Q&A保留、三值条件、手动启用日、事件日适用性和四层list；详见[W04交付记录](validation/W04_STATUS.md)。W05已在此底座上完成结构化患者事实、规则驱动访视窗口、门槛/例外与未知日期状态、来源/日期精度保留、分类断点与局部跳过/恢复；详见[W05交付记录](validation/W05_STATUS.md)。W06已完成从合成历史DOCX/XLSX/问题文字预览并确认遗留、稳定Issue与分项Action、PD上报独立确认、CRA点击确认/重开、Query期限依据和访前选择；详见[W06交付记录](validation/W06_STATUS.md)。W07已完成多sheet EDC Excel公式/缓存预览、映射与范围确认、同日初检/复查实例分离及不可变合成检验快照；详见[W07交付记录](validation/W07_STATUS.md)。W08已完成选择文字PDF、清晰合成PNG和中文页眉上下文PDF的实际读取、完整更正链、来源坐标、参考范围独立比较、持久异步识别/重试、集中复核及M06待办关联；详见[W08交付记录](validation/W08_STATUS.md)和[支持范围](validation/LAB_AUTOMATION_SCOPE.md)。W09已完成AE、SAE、相关性、预期性、AESI/DLT及PD维度分离、具体事件事实归属、检验一致异常/跳过/stale衔接、具体问题、医学答复和独立模型运行；固定本地模型只选择允许解释模板和证据ID，不能作最终医学判断；详见[W09交付记录](validation/W09_STATUS.md)。W10已完成原ISF/TMF目录直接对照、增量缺件/补齐/核实状态、跨版本变化、项目来源启动/关闭清单和简洁交接摘要；详见[W10交付记录](validation/W10_STATUS.md)。这些provider只验证声明的合成子集，不代表任意方案自动理解、完整病史、真实医院版式、EDC导出完整、安全分析临床质量或临床安全结论。完整自动检验主线、报告/导出、串联验收和真实授权试用仍待后续工作包。
 
 历史v0.2技术复核：[2026-10-29审查报告](audit/TECHNICAL_ROUTE_REVIEW_20261029.md)。总体架构保留，已登记10项开放问题及修订/关闭标准；含云端复现的任务完成检查缺口。最新[v0.4复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)补齐执行契约、自动检验路径、验证和源码绑定完成门槛。[本轮澄清及设计响应](audit/USER_CLARIFICATION_RESPONSE_20261029.md)已将用户决定同步到对应区域。2026-11-01的13项审查问题已按[关闭映射](validation/REVIEW_REMEDIATION_20261101.md)修复，W01—W09在[run 41245438323](https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323)重新完成源码绑定验证；这不关闭真实临床资料、代表性和节时验证缺口。
 
@@ -71,6 +71,6 @@ Git中的 `theory/requirements.json` 是开发可执行基线；Notion是本次�
 
 当前没有运行时Notion自动同步凭证或任务。仅修改Notion而未导入Git的内容，CI无法凭空发现；维护人必须先导入，或者后续实现只读差异导入。系统不会自动替人决定新架构或静默改写已签发报告。
 
-最新工程验证为[2026-11-01审查修复及云端证据](validation/REVIEW_REMEDIATION_20261101.md)。W01—W09已按源码绑定和任务专属CI重新完成；W10及之后的临床应用仍待实际编程和对应用途验证。
+最新工程验证为[W10最终源码绑定CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286)。W01—W10已按源码绑定、任务专属CI及关闭发现逐条日志校验重新完成；真实临床资料、完整自动检验主线、报告输出、实际部署和获准试用仍待后续验证。
 
 开源复用修订v0.5：[14项目核对与替代边界](architecture/REUSE_ASSESSMENT.md)，[可直接发给Codex的第一段](plan/CODEX_FIRST_MESSAGE.md)。依赖选择已同步到任务；尚未安装、集成或做临床性能验证。
