@@ -270,6 +270,10 @@ def downgrade() -> None:
         op.execute(f"DROP POLICY IF EXISTS workspace_isolation ON {table}")
         op.execute(f"ALTER TABLE {table} DISABLE ROW LEVEL SECURITY")
 
+    # Policy references cannot survive removal of the immutable bundle table.
+    # Clear them explicitly so a downgrade followed by upgrade is deterministic.
+    op.execute("UPDATE projects SET policy_bundle_id = NULL")
+    op.execute("UPDATE project_versions SET policy_bundle_id = NULL")
     op.drop_constraint("skill_run_policy_bundle", "skill_runs", type_="foreignkey")
     op.drop_constraint("agent_run_policy_bundle_id", "agent_runs", type_="foreignkey")
     op.drop_constraint("plan_policy_bundle", "plans", type_="foreignkey")
