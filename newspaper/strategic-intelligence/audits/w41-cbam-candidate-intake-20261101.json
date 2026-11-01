@@ -113,5 +113,12 @@
     "No claim is made that CBAM has already delivered the modelled global emission reduction.",
     "No claim is made that the European Commission, World Bank or IOP endorses this article.",
     "No user reading, stage gate or publication authorization is inferred."
-  ]
+  ],
+  "interpretation_correction_20261101": {
+    "basis": "W41 original card and canonical bounded-closure/qualified-unknown rules",
+    "future_outcomes_are_not_a_universal_acceptance_precondition": true,
+    "scope": "Prior statements about unobserved future outcomes limit those outcome claims, not the eligibility of all bounded current research. Independent Review, baseline/gain and required coverage remain actual missing inputs.",
+    "case_acceptance_changed": false,
+    "work_state_changed": false
+  }
 }

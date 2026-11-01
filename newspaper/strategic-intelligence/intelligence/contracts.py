@@ -22,6 +22,7 @@ class Contract(BaseModel):
 
 
 class ObjectKind(str, Enum):
+    PILOT_DRAFT = "PilotDraft"
     TASK = "Task"
     SOURCE = "Source"
     DOCUMENT = "Document"

@@ -32,6 +32,18 @@ def unique_strings(value, field, allow_empty=False):
 
 
 def build(text, spec_sha256, trace, trace_module):
+    pilot = trace_module.fenced_block(text, 'PILOT_RUNTIME')
+    stages = ['SELECTION', 'ADVISER', 'TEACHER', 'CONDITIONS', 'REVIEW']
+    if (pilot.get('schema_version') != 1 or pilot.get('stages') != stages
+            or pilot.get('publication_authorized') is not False):
+        raise ValueError('Invalid controlled-pilot policy; publication is never granted here')
+    require_text(pilot.get('global_instruction'), 'pilot.global_instruction')
+    for group in ('instructions', 'labels'):
+        values = pilot.get(group)
+        if not isinstance(values, dict) or set(values) != set(stages):
+            raise ValueError('Missing pilot stage ' + group)
+        for stage in stages:
+            require_text(values[stage], 'pilot.' + group + '.' + stage)
     config = trace_module.fenced_block(text, 'WORK_PLAN')
     if config.get('schema_version') != 1:
         raise ValueError('Unsupported work-plan schema')
@@ -88,6 +100,9 @@ def build(text, spec_sha256, trace, trace_module):
             raise ValueError('Unknown/self work-plan dependency: ' + wid)
         if any(by_id[d]['order'] >= w['order'] or by_id[d]['phase'] > w['phase'] for d in deps):
             raise ValueError('Cyclic/forward work-plan dependency: ' + wid)
+        prep = unique_strings(w.get('preparation_depends_on', []), wid + '.preparation_depends_on', allow_empty=True)
+        if prep and (w['kind'] != 'WORK' or any(d not in by_id or by_id[d]['order'] >= w['order'] for d in prep)):
+            raise ValueError('Invalid preparation-only dependency: ' + wid)
         conditional = w.get('conditional')
         if conditional is not None:
             require_text(conditional, wid + '.conditional')
@@ -145,6 +160,21 @@ def build(text, spec_sha256, trace, trace_module):
             raise ValueError('Work package bypasses previous phase gate: ' + w['id'])
         if w['progress'] == 'ACCEPTED' and any(by_id[d]['progress'] not in ('ACCEPTED', 'NOT_APPLICABLE') for d in w['depends_on']):
             raise ValueError('Cannot accept work before its dependencies: ' + w['id'])
+    # Product-specific separation: yearly replay cannot hold weekly reliability
+    # hostage again, even through an indirect dependency.
+    if {'W52', 'W53', 'W54'} & ancestors('W55'):
+        raise ValueError('Weekly reliability must not depend on annual replay')
+    tracks = config.get('delivery_tracks', [])
+    if tracks:
+        if [t.get('id') for t in tracks] != ['CONTROLLED_PILOT', 'WEEKLY_TRIAL', 'FULL_PLATFORM']:
+            raise ValueError('Invalid delivery tracks; tracks are not extra stage gates')
+        for track in tracks:
+            require_text(track.get('scope'), 'delivery_track.scope')
+            ids = unique_strings(track.get('work_ids'), 'delivery_track.work_ids')
+            if any(wid not in by_id for wid in ids):
+                raise ValueError('Unknown delivery-track work item')
+        if any(by_id[wid]['id'] in ('W52', 'W53', 'W54') for t in tracks[:2] for wid in t['work_ids']):
+            raise ValueError('Pilot/weekly trial must not require annual work')
     counts = dict(functional_modules=sum(n.startswith('T') for n in technical),
                   routes=sum(n.startswith('R') for n in technical), logic_items=len(logic),
                   work_packages=sum(w['kind'] == 'WORK' for w in items),
@@ -173,7 +203,7 @@ def build(text, spec_sha256, trace, trace_module):
                          'pending_technical_nodes': pending_nodes, 'pending_binding_dependencies': pending_deps,
                          'pending_completion_dependencies': pending_completion,
                          'theory_refs': sorted(refs, key=lambda r: tuple(int(v) for v in trace['theory_to_technical'][r]['section'].split('.')))}
-    return dict(schema_version=1, spec_sha256=spec_sha256, counts=counts, phases=phases,
+    return dict(schema_version=1, spec_sha256=spec_sha256, counts=counts, phases=phases, delivery_tracks=tracks,
                 meaning='Planning correspondence only; no implementation acceptance, stage approval or execution permission.',
                 review_required=[w for w, data in computed.items() if data['binding_status'] != 'CURRENT_BINDING'],
                 items=list(computed.values()), context_sources={r: {k: catalog[r][k] for k in ('section', 'title', 'sha256')} for r in context_refs},
@@ -213,6 +243,13 @@ def report(plan):
               '结果记录复用RunLog/Review/Git与私有成果指针。模板：[§26.3](' + SPEC + '#tech-work-26-3)。验收清单存在或复选框被勾选，不构成实际证据。', '',
               '## 按步骤对照', '',
               '| 顺序 | 工作包/阶段门 | 类型 | T/R | 前置工作包 | 实际进度 / 关联 |', '|---:|---|---|---|---|---|']
+    if plan.get('delivery_tracks'):
+        at = lines.index('## 按步骤对照')
+        delivery = ['## 当前交付路径', '', '路径组织交付优先级，不增加阶段门，也不授予收费、出版或交付权限。', '',
+                    '| 路径 | 当前范围 | 沿用工作包 |', '|---|---|---|']
+        delivery.extend('| ' + t['id'] + ' | ' + cell(t['scope']) + ' | ' + links(t['work_ids']) + ' |'
+                        for t in plan['delivery_tracks'])
+        lines[at:at] = delivery + ['']
     for w in plan['items']:
         lines.append('| ' + str(w['order']) + ' | [' + w['id'] + ' ' + cell(w['title']) + '](#' + w['id'].lower() + ') | ' + cell(w['work_type']) + ' | ' + '/'.join(w['technical_nodes']) + ' | ' + links(w['depends_on']) + ' | ' + LABELS[w['progress']] + ' / ' + w['binding_status'] + ' |')
     for w in plan['items']:
@@ -225,6 +262,9 @@ def report(plan):
                   '理论依据：' + '、'.join('[§' + plan['source_catalog'][r]['section'] + '](' + SPEC + '#' + r + ')' for r in w['theory_refs']) + '。原定义/例外仍须回原文读取。', '',
                   '**输入**：' + w['inputs'], '', '**交付物**：', '']
         lines += ['- ' + d for d in w['deliverables']]
+        if w.get('preparation_depends_on'):
+            lines += ['', '**有限准备依据**：' + links(w['preparation_depends_on'])
+                      + '。允许准备代码/配置与受控试刊；整包验收仍核上列正式前置和真实授权。']
         if w['conditional']:
             lines += ['', '**条件项**：' + w['conditional']]
         lines += ['', '**验收清单**（另核Q01—Q07）：', '']

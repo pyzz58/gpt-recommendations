@@ -137,6 +137,31 @@ class WorkPlanTests(unittest.TestCase):
         self.assertEqual(repaired['W35']['progress'], 'IN_PROGRESS')
         self.assertNotIn('W27', repaired['W35']['pending_completion_dependencies'])
 
+    def test_weekly_reliability_cannot_regress_to_an_annual_dependency(self):
+        self.assertNotIn('W54', next(w for w in self.current()['items'] if w['id']=='W55')['depends_on'])
+        self.mutate_work('W55', lambda w: w['depends_on'].append('W54'))
+        with self.assertRaisesRegex(ValueError, 'Weekly reliability'):
+            self.current()
+
+    def test_preparation_path_does_not_approve_formal_stage(self):
+        item=next(w for w in self.current()['items'] if w['id']=='W46')
+        self.assertEqual(item['preparation_depends_on'], ['W13','W17','W18','W32'])
+        self.assertIn('G03',item['depends_on'])
+        self.mutate_work('W46',lambda w:w.update(progress='ACCEPTED',evidence=self.evidence()))
+        with self.assertRaisesRegex(ValueError,'Cannot accept work'):
+            self.current()
+
+    def test_delivery_tracks_cannot_sneak_annual_work_into_pilot(self):
+        self.assertEqual(len(self.current()['delivery_tracks']),3)
+        self.edit('WORK_PLAN',lambda c:c['delivery_tracks'][0]['work_ids'].append('W54'))
+        with self.assertRaisesRegex(ValueError,'must not require annual'):
+            self.current()
+
+    def test_pilot_policy_cannot_grant_publication(self):
+        self.edit('PILOT_RUNTIME',lambda c:c.update(publication_authorized=True))
+        with self.assertRaisesRegex(ValueError,'publication is never granted'):
+            self.current()
+
     def test_missing_logic_coverage_blocks_all_projection_writes(self):
         before = {name: (self.root / name).read_bytes() for name in sync.OUTPUTS}
         self.edit('WORK_PLAN', lambda c: [w.__setitem__('logic_ids', [s for s in w['logic_ids'] if s != 'T13.L03']) for w in c['items']])

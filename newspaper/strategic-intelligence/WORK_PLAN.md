@@ -8,7 +8,7 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`8d2b75fe9b91550c6b1336993b39ddaf06780e535408faa2c399bd1e041f822f`。
+当前规范SHA-256：`ed13f29a73cae9acbf0498693f85f8fd77f717b717b9488acdcc95243a772dfb`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
@@ -30,6 +30,16 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 各包同时满足[§26.2](CANONICAL_SYSTEM_SPEC_V5.md#tech-work-26-2)的Q01—Q07：依据新鲜、输入/前置有效、实际交付物、正反及衔接结果、失败/限制、相称复核、主要投入与权限。
 
 结果记录复用RunLog/Review/Git与私有成果指针。模板：[§26.3](CANONICAL_SYSTEM_SPEC_V5.md#tech-work-26-3)。验收清单存在或复选框被勾选，不构成实际证据。
+
+## 当前交付路径
+
+路径组织交付优先级，不增加阶段门，也不授予收费、出版或交付权限。
+
+| 路径 | 当前范围 | 沿用工作包 |
+|---|---|---|
+| CONTROLLED_PILOT | 下一里程碑：获准来源/材料→真实模型选读/B1/B2/C→隔离核查→私人待审整刊；无自动出版。 | [W13](#w13)、[W17](#w17)、[W18](#w18)、[W19](#w19)、[W20](#w20)、[W24](#w24)、[W26](#w26)、[W27](#w27)、[W28](#w28)、[W29](#w29)、[W30](#w30)、[W31](#w31)、[W32](#w32) |
+| WEEKLY_TRIAL | 试刊内容与具体授权落实后，接同一执行链的每周启动、持久保存、恢复与交付；不等待年度。 | [W46](#w46)、[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W55](#w55) |
+| FULL_PLATFORM | 保持四阶段全部正式验收，六例/跨周、专业增益、年度双输入分别补真实证据。 | [G01](#g01)、[G02](#g02)、[G03](#g03)、[W52](#w52)、[W53](#w53)、[W54](#w54)、[G04](#g04) |
 
 ## 按步骤对照
 
@@ -92,7 +102,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 | 55 | [W52 年度双输入与旧判断审计](#w52) | 代码与接口工作包 | T12/R06/T11/T04 | [W51](#w51)、[W39](#w39)、[W40](#w40) | 待开始 / CURRENT_BINDING |
 | 56 | [W53 年度新综合、教学与重新独审](#w53) | 代码与接口工作包 | T12/R06/T05/T09/T10 | [W52](#w52)、[W43](#w43)、[W49](#w49) | 待开始 / CURRENT_BINDING |
 | 57 | [W54 R06年度缩区间完整回放](#w54) | 路线集成验收 | R06/T12/T11/T09/T10 | [W52](#w52)、[W53](#w53) | 待开始 / CURRENT_BINDING |
-| 58 | [W55 每周自然触发、连续周刊与漏跑故障验收](#w55) | 路线集成验收 | R08/R01/R03/R05/R07/T01/T10/T11/T13 | [W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W54](#w54) | 待开始 / CURRENT_BINDING |
+| 58 | [W55 每周自然触发、连续周刊与漏跑故障验收](#w55) | 路线集成验收 | R08/R01/R03/R05/R07/T01/T10/T11/T13 | [W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51) | 待开始 / CURRENT_BINDING |
 | 59 | [G04 第四阶段门：生产离线验收与年度回放](#g04) | 阶段门 | R01/R03/R05/R06/R07/R08/T01/T02/T04/T05/T09/T10/T11/T12/T13 | [W46](#w46)、[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W52](#w52)、[W53](#w53)、[W54](#w54)、[W55](#w55) | 待开始 / CURRENT_BINDING |
 
 <a id="w01"></a>
@@ -738,6 +748,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - 操作级重复请求识别、UNKNOWN对账、失败重试绑定及原始用量/费用/耗时记录。
 - 逻辑操作历史、累计实际/估计费用、未知费用次数及耗时汇总；增加operation-summary只读CLI。
 - C03统一任务调用/官方checkpointer；C06锁依赖，库/搜索/模型内置请求接同一权限/预算/操作记录，不增第二重试编排。
+- 明确HTTPS来源/JSON chat适配器、实际响应归档与CLI；无凭证/无准入不自动调用，真实供应商仍待验证。
 
 **验收清单**（另核Q01—Q07）：
 
@@ -754,7 +765,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W17-OPERATIONS-20261025-001", "artifact_refs": ["intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "intelligence/__main__.py", "tests_runtime/test_operations.py", "audits/w17-operations-20261025.json"], "validation_refs": ["tests_runtime/test_operations.py (6 actual passing W17 tests)", "audits/w17-operations-20261025.json"], "reviewer": "当前执行者实际离线适配器、SQLite回执、重试/UNKNOWN与累计费用检查；非真实供应商、独立L5或阶段批准", "result": "IN_PROGRESS", "scope": "OperationRequest/Receipt持久追加、Adapter描述及字节结果校验；重复成功不再调用，仅FAILED可按原上限绑定重试，UNKNOWN先对账，内建重试超限转UNKNOWN，逻辑操作累计可用。W18授权/预算、真实第三方适配、模型内容及生产恢复未验；W13/W15正式前置未过，不ACCEPTED。"}, {"record_id": "W17-PR76-REVIEW-RETURN-20261026-001", "artifact_refs": ["intelligence/operations.py", "tests_runtime/test_operations.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["Codex-PR76-Review-20261025: F07/F08/F11 reproduced", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准", "result": "RETURNED", "scope": "错误供应商请求可对账、旧对账可把成功改为失败并开放重试、Adapter违规时丢失已观测事实，均已复现。原接口不得继续依赖；须先修复NC-060/061/064并补回执CAS交错与观测保留。"}, {"record_id": "W17-PR76-REMEDIATION-20261026-001", "artifact_refs": ["intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "tests_runtime/test_operations.py", "audits/pr76-review-remediation-w17-20261026.json"], "validation_refs": ["tests_runtime/test_operations.py (10 actual passing W17 tests)", "audits/pr76-review-remediation-w17-20261026.json"], "reviewer": "当前执行者实际离线供应商对账身份、回执CAS、Adapter违规观测和累计费用检查；非真实供应商、独立认证或阶段批准", "result": "IN_PROGRESS", "scope": "F07/F08/F11已修复离线范围：UNKNOWN对账绑定原operation、原回执版本、已知provider ID及引用operation的Evidence；不同查询ID须带同版本ProviderRequestMapping。对账以expected-current CAS写回，不覆盖并发成功，失败/失败只留一个当前回执。Adapter违规结果不采用但保留provider ID、实际费用、用量、内部重试、观察状态/结果哈希和违规原因，汇总继续计费。W18授权/预算、真实供应商认证与生产恢复未验，W17整包不ACCEPTED。"}]
+实际证据：[{"record_id": "W17-OPERATIONS-20261025-001", "artifact_refs": ["intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "intelligence/__main__.py", "tests_runtime/test_operations.py", "audits/w17-operations-20261025.json"], "validation_refs": ["tests_runtime/test_operations.py (6 actual passing W17 tests)", "audits/w17-operations-20261025.json"], "reviewer": "当前执行者实际离线适配器、SQLite回执、重试/UNKNOWN与累计费用检查；非真实供应商、独立L5或阶段批准", "result": "IN_PROGRESS", "scope": "OperationRequest/Receipt持久追加、Adapter描述及字节结果校验；重复成功不再调用，仅FAILED可按原上限绑定重试，UNKNOWN先对账，内建重试超限转UNKNOWN，逻辑操作累计可用。W18授权/预算、真实第三方适配、模型内容及生产恢复未验；W13/W15正式前置未过，不ACCEPTED。"}, {"record_id": "W17-PR76-REVIEW-RETURN-20261026-001", "artifact_refs": ["intelligence/operations.py", "tests_runtime/test_operations.py", "audits/pr76-review-remediation-step1-20261026.json"], "validation_refs": ["Codex-PR76-Review-20261025: F07/F08/F11 reproduced", "audits/pr76-review-remediation-step1-20261026.json"], "reviewer": "独立PR #76审查与当前执行者复现；非用户或阶段批准", "result": "RETURNED", "scope": "错误供应商请求可对账、旧对账可把成功改为失败并开放重试、Adapter违规时丢失已观测事实，均已复现。原接口不得继续依赖；须先修复NC-060/061/064并补回执CAS交错与观测保留。"}, {"record_id": "W17-PR76-REMEDIATION-20261026-001", "artifact_refs": ["intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "tests_runtime/test_operations.py", "audits/pr76-review-remediation-w17-20261026.json"], "validation_refs": ["tests_runtime/test_operations.py (10 actual passing W17 tests)", "audits/pr76-review-remediation-w17-20261026.json"], "reviewer": "当前执行者实际离线供应商对账身份、回执CAS、Adapter违规观测和累计费用检查；非真实供应商、独立认证或阶段批准", "result": "IN_PROGRESS", "scope": "F07/F08/F11已修复离线范围：UNKNOWN对账绑定原operation、原回执版本、已知provider ID及引用operation的Evidence；不同查询ID须带同版本ProviderRequestMapping。对账以expected-current CAS写回，不覆盖并发成功，失败/失败只留一个当前回执。Adapter违规结果不采用但保留provider ID、实际费用、用量、内部重试、观察状态/结果哈希和违规原因，汇总继续计费。W18授权/预算、真实供应商认证与生产恢复未验，W17整包不ACCEPTED。"}, {"record_id": "SI-PILOT-EXECUTION-20261101-001", "artifact_refs": ["intelligence/http_adapter.py", "intelligence/pilot.py", "intelligence/__main__.py"], "validation_refs": ["tests_runtime/test_pilot.py", "tests/test_work_plan.py", "audits/pilot-execution-20261101.json"], "reviewer": "本次执行者实际HTTP回环、持久文件及接口正反/恢复检查；非真实供应商能力、独立L5或用户阅读认可", "result": "IN_PROGRESS", "scope": "修复缺真实执行入口：明确HTTPS取材/JSON chat适配、同一W18预算权限门、真实响应归档、选读/B1/B2/C/隔离核查五步私人试刊、0600与重启回读。测试为本地真实HTTP合成响应，无外部付费模型；未接正式Article/Review/Edition采用或生产调度/交付，不使G01—G04及本包ACCEPTED。"}]
 
 <a id="w18"></a>
 ## W18｜调用前权限、预算与能力核验
@@ -778,6 +789,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - 调用前校验、共享预算预留/结算/未知处理及可核拒绝原因。
 - NC-044证据；未配置项和受控试用的有限范围记录。
 - C02/C03共享唯一调用门/预算账，第三方内置搜索、翻译、下载和模型请求也逐项受控，未接入钩子的组件不进入正式链。
+- 真实适配调用沿同一PreCallGate，预留/UNKNOWN/估算费用不绕过；有限试刊须明确CONTROLLED_TRIAL。
 
 **验收清单**（另核Q01—Q07）：
 
@@ -791,7 +803,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W18-PRECALL-GATE-20261026-001", "artifact_refs": ["intelligence/gating.py", "intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "tests_runtime/test_gating.py", "audits/pr76-review-remediation-w18-20261026.json"], "validation_refs": ["tests_runtime/test_gating.py (8 actual passing W18 tests)", "audits/pr76-review-remediation-w18-20261026.json"], "reviewer": "当前执行者实际离线能力准入、材料用途、预算CAS、Adapter调用前拒绝和合成回执检查；非真实供应商、独立L5或阶段批准", "result": "IN_PROGRESS", "scope": "W18离线门禁：CapabilityAdmission精确绑定Task/步骤/供应商/工具/配置/操作/材料/地域/期限/Review和重试；BudgetEnvelope与追加预算事件在执行前预留、执行后按实际/估计结算，未知费用保留，默认并发预留1并由expected-current保护。材料用途/外发/配置/重试不足均在Adapter调用前拒绝；受控试用显式标记人工复核。真实供应商认证/账单、生产预算/W48恢复仍未验，整包不ACCEPTED。"}]
+实际证据：[{"record_id": "W18-PRECALL-GATE-20261026-001", "artifact_refs": ["intelligence/gating.py", "intelligence/operations.py", "intelligence/archive.py", "intelligence/contracts.py", "tests_runtime/test_gating.py", "audits/pr76-review-remediation-w18-20261026.json"], "validation_refs": ["tests_runtime/test_gating.py (8 actual passing W18 tests)", "audits/pr76-review-remediation-w18-20261026.json"], "reviewer": "当前执行者实际离线能力准入、材料用途、预算CAS、Adapter调用前拒绝和合成回执检查；非真实供应商、独立L5或阶段批准", "result": "IN_PROGRESS", "scope": "W18离线门禁：CapabilityAdmission精确绑定Task/步骤/供应商/工具/配置/操作/材料/地域/期限/Review和重试；BudgetEnvelope与追加预算事件在执行前预留、执行后按实际/估计结算，未知费用保留，默认并发预留1并由expected-current保护。材料用途/外发/配置/重试不足均在Adapter调用前拒绝；受控试用显式标记人工复核。真实供应商认证/账单、生产预算/W48恢复仍未验，整包不ACCEPTED。"}, {"record_id": "SI-PILOT-EXECUTION-20261101-001", "artifact_refs": ["intelligence/http_adapter.py", "intelligence/pilot.py", "intelligence/__main__.py"], "validation_refs": ["tests_runtime/test_pilot.py", "tests/test_work_plan.py", "audits/pilot-execution-20261101.json"], "reviewer": "本次执行者实际HTTP回环、持久文件及接口正反/恢复检查；非真实供应商能力、独立L5或用户阅读认可", "result": "IN_PROGRESS", "scope": "修复缺真实执行入口：明确HTTPS取材/JSON chat适配、同一W18预算权限门、真实响应归档、选读/B1/B2/C/隔离核查五步私人试刊、0600与重启回读。测试为本地真实HTTP合成响应，无外部付费模型；未接正式Article/Review/Edition采用或生产调度/交付，不使G01—G04及本包ACCEPTED。"}]
 
 <a id="w19"></a>
 ## W19｜模型任务配置与有限准入证据
@@ -864,7 +876,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W20-SOURCE-ADAPTER-20261031-001", "artifact_refs": ["intelligence/sources.py", "intelligence/contracts.py", "tests_runtime/test_sources.py", "pyproject.toml", "uv.lock", "audits/pr76-review-remediation-w20-20261031.json"], "validation_refs": ["tests_runtime/test_sources.py (6 actual passing W20 tests)", "feedparser 6.0.14; trafilatura 2.3.1; lxml 6.1.3 locked", "audits/pr76-review-remediation-w20-20261031.json"], "reviewer": "当前执行者实际离线Feed/HTML/JSON字节、字段/时间缺口、失败索引、权限边界与Archive往返检查；非真实来源、内容或阶段批准", "result": "IN_PROGRESS", "scope": "W20离线来源入口：仅解析明确许可的既有字节，Feed使用feedparser、HTML使用Trafilatura、JSON API按显式items映射；CandidateIndex保存来源/取得方式/哈希/语言地区所有权、短摘或摘要、时间精度、血缘、缺字段、故障和人工探测性质，原始正文不随候选保存。真实网络来源、覆盖时段、事件归并和W21/W23消费未验，整包不ACCEPTED。"}]
+实际证据：[{"record_id": "W20-SOURCE-ADAPTER-20261031-001", "artifact_refs": ["intelligence/sources.py", "intelligence/contracts.py", "tests_runtime/test_sources.py", "pyproject.toml", "uv.lock", "audits/pr76-review-remediation-w20-20261031.json"], "validation_refs": ["tests_runtime/test_sources.py (6 actual passing W20 tests)", "feedparser 6.0.14; trafilatura 2.3.1; lxml 6.1.3 locked", "audits/pr76-review-remediation-w20-20261031.json"], "reviewer": "当前执行者实际离线Feed/HTML/JSON字节、字段/时间缺口、失败索引、权限边界与Archive往返检查；非真实来源、内容或阶段批准", "result": "IN_PROGRESS", "scope": "W20离线来源入口：仅解析明确许可的既有字节，Feed使用feedparser、HTML使用Trafilatura、JSON API按显式items映射；CandidateIndex保存来源/取得方式/哈希/语言地区所有权、短摘或摘要、时间精度、血缘、缺字段、故障和人工探测性质，原始正文不随候选保存。真实网络来源、覆盖时段、事件归并和W21/W23消费未验，整包不ACCEPTED。"}, {"record_id": "SI-PILOT-EXECUTION-20261101-001", "artifact_refs": ["intelligence/http_adapter.py", "intelligence/pilot.py", "intelligence/__main__.py"], "validation_refs": ["tests_runtime/test_pilot.py", "tests/test_work_plan.py", "audits/pilot-execution-20261101.json"], "reviewer": "本次执行者实际HTTP回环、持久文件及接口正反/恢复检查；非真实供应商能力、独立L5或用户阅读认可", "result": "IN_PROGRESS", "scope": "修复缺真实执行入口：明确HTTPS取材/JSON chat适配、同一W18预算权限门、真实响应归档、选读/B1/B2/C/隔离核查五步私人试刊、0600与重启回读。测试为本地真实HTTP合成响应，无外部付费模型；未接正式Article/Review/Edition采用或生产调度/交付，不使G01—G04及本包ACCEPTED。"}]
 
 <a id="w21"></a>
 ## W21｜事件归并、血缘与探索队列
@@ -1107,6 +1119,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - M01—M12依赖组织及真实中间产物；B1/B2从问题期共同参与。
 - 竞争解释/MethodUse/未知与补证、改题、暂停的有据路由。
 - C03嵌入式LangGraph/官方checkpointer运行M依赖，C04同一组明确任务函数共享C02案卷；不另造研究编排器或接完整报告框架。
+- 有限make-pilot真实内容入口与完整M图责任分开；不得把模型生成的待审试刊计为本卡整包通过。
 
 **验收清单**（另核Q01—Q07）：
 
@@ -1120,7 +1133,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W27-WORKFLOW-AUDIT-20261031-001", "artifact_refs": ["intelligence/workflow.py", "intelligence/research.py", "intelligence/evidence.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/contracts.py", "tests_runtime/test_workflow.py", "audits/pr76-review-remediation-w27-20261031.json"], "validation_refs": ["tests_runtime/test_workflow.py (8 actual passing W27 tests)", "audits/pr76-review-remediation-w27-20261031.json"], "reviewer": "当前执行者实际离线检查M依赖、B1/B2早期问题、MethodUse、版本失效、LangGraph检查和案卷恢复；非真实研究、B1/B2内容、模型或阶段批准", "result": "IN_PROGRESS", "scope": "W27离线接口：同一W16当前修订启动ResearchDossier，Archive中的Dossier快照与ResearchStepRecord为权威，LangGraph官方InMemorySaver只保存可重建导航状态。M01—M12按显式依赖推进而非静态全链启动；M02强制B1/B2各提问题，MethodUse可从M02引入，M07必须汇总至少一个更早方法且不能成为首次选方法。步骤实际产物须引用精确revision；模型执行另需有效W19准入、具体配置、成功OperationReceipt及产物对操作的回指。重提M05只使其下游M07—M12失效，M01—M04/M06保留；M12当期保存有限收口、未知与触发，不等待未来结果。八项回归覆盖并行依赖、B1/B2缺失、方法时序、全周期收口、检查点恢复、下游递归失效、错误revision及未配置模型。真实研究内容、W28/W29产物、持久checkpointer、W31审稿及阶段验收未完成，整包不ACCEPTED。"}]
+实际证据：[{"record_id": "W27-WORKFLOW-AUDIT-20261031-001", "artifact_refs": ["intelligence/workflow.py", "intelligence/research.py", "intelligence/evidence.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/contracts.py", "tests_runtime/test_workflow.py", "audits/pr76-review-remediation-w27-20261031.json"], "validation_refs": ["tests_runtime/test_workflow.py (8 actual passing W27 tests)", "audits/pr76-review-remediation-w27-20261031.json"], "reviewer": "当前执行者实际离线检查M依赖、B1/B2早期问题、MethodUse、版本失效、LangGraph检查和案卷恢复；非真实研究、B1/B2内容、模型或阶段批准", "result": "IN_PROGRESS", "scope": "W27离线接口：同一W16当前修订启动ResearchDossier，Archive中的Dossier快照与ResearchStepRecord为权威，LangGraph官方InMemorySaver只保存可重建导航状态。M01—M12按显式依赖推进而非静态全链启动；M02强制B1/B2各提问题，MethodUse可从M02引入，M07必须汇总至少一个更早方法且不能成为首次选方法。步骤实际产物须引用精确revision；模型执行另需有效W19准入、具体配置、成功OperationReceipt及产物对操作的回指。重提M05只使其下游M07—M12失效，M01—M04/M06保留；M12当期保存有限收口、未知与触发，不等待未来结果。八项回归覆盖并行依赖、B1/B2缺失、方法时序、全周期收口、检查点恢复、下游递归失效、错误revision及未配置模型。真实研究内容、W28/W29产物、持久checkpointer、W31审稿及阶段验收未完成，整包不ACCEPTED。"}, {"record_id": "SI-PILOT-EXECUTION-20261101-001", "artifact_refs": ["intelligence/http_adapter.py", "intelligence/pilot.py", "intelligence/__main__.py"], "validation_refs": ["tests_runtime/test_pilot.py", "tests/test_work_plan.py", "audits/pilot-execution-20261101.json"], "reviewer": "本次执行者实际HTTP回环、持久文件及接口正反/恢复检查；非真实供应商能力、独立L5或用户阅读认可", "result": "IN_PROGRESS", "scope": "修复缺真实执行入口：明确HTTPS取材/JSON chat适配、同一W18预算权限门、真实响应归档、选读/B1/B2/C/隔离核查五步私人试刊、0600与重启回读。测试为本地真实HTTP合成响应，无外部付费模型；未接正式Article/Review/Edition采用或生产调度/交付，不使G01—G04及本包ACCEPTED。"}]
 
 <a id="w28"></a>
 ## W28｜顾问任务、判断与增益提交
@@ -1156,7 +1169,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W28-ADVISER-AUDIT-20261031-001", "artifact_refs": ["intelligence/advisor.py", "intelligence/contracts.py", "intelligence/research.py", "intelligence/evidence.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/workflow.py", "tests_runtime/test_advisor.py", "audits/pr76-review-remediation-w28-20261031.json"], "validation_refs": ["tests_runtime/test_advisor.py (13 actual passing W28 tests)", "audits/pr76-review-remediation-w28-20261031.json"], "reviewer": "当前执行者实际离线检查B1输入/判断/增益/决策选项/M10、W25关系、模型身份与回执、幂等和上游返工；非真实B1内容、独立审稿、读者或阶段批准", "result": "IN_PROGRESS", "scope": "W28离线接口：B1只能以当前W27案卷的活跃M09、当前W16修订及其实际输入中的当前基线原作/文档、W25 Claim、Evidence和ClaimEvidenceAssessment为依据；评估必须精确覆盖所选Claim并共同覆盖同一Evidence集合，撤权、跨theme/spec、旧version、陈修订和陈快照均拒绝。判断强制列明条件、未知、可改变判断的证据与支持范围；原作已有解释和本刊贡献分开，前后增益不得同文重标。只有声明具体行动决策时才要求真实决策者、比较基础和至少两个含行动理由、代价、受益者、其他行动者反应、调整/退出及可观察效果的选项；无行动决策不得夹带臆造选项。BOUNDED提交READY、CANDIDATE仅提交CANDIDATE、LIMITATION_OR_UNKNOWN提交LIMITED，均不是内容PASS；成果固定B1、facts_verified=false、causal_support=false、content_review_required=true、publication_authorized=false。人工成果拒绝模型身份；模型成果须有当前W19职责/领域准入、绑定全部判断输入的MODEL OperationRequest及成功OperationReceipt，并回指操作。重复调用幂等；Archive后M10失败时只保留未采用的确定性attempt，同一basis精确重试可恢复，否则须按变化后basis另立版本；并发不会产生两个活跃M10，上游重做会以旧M10为parent重建。十三项回归覆盖完整M01—M09/B1/M10、陈旧快照/修订/M09、错类型/错关系/撤权、贡献与增益重标、无据条件/未知/falsifier、两类决策上下文、READY/LIMITED/CANDIDATE、人工/模型身份、成功/缺失回执、失败恢复、并发及上游返工。真实B1研究文字、判断质量、决策真实性、独立Review/W31、持久运行和阶段门未完成，整包不ACCEPTED。"}]
+实际证据：[{"record_id": "W28-ADVISER-AUDIT-20261031-001", "artifact_refs": ["intelligence/advisor.py", "intelligence/contracts.py", "intelligence/research.py", "intelligence/evidence.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/workflow.py", "tests_runtime/test_advisor.py", "audits/pr76-review-remediation-w28-20261031.json"], "validation_refs": ["tests_runtime/test_advisor.py (13 actual passing W28 tests)", "audits/pr76-review-remediation-w28-20261031.json"], "reviewer": "当前执行者实际离线检查B1输入/判断/增益/决策选项/M10、W25关系、模型身份与回执、幂等和上游返工；非真实B1内容、独立审稿、读者或阶段批准", "result": "IN_PROGRESS", "scope": "W28离线接口：B1只能以当前W27案卷的活跃M09、当前W16修订及其实际输入中的当前基线原作/文档、W25 Claim、Evidence和ClaimEvidenceAssessment为依据；评估必须精确覆盖所选Claim并共同覆盖同一Evidence集合，撤权、跨theme/spec、旧version、陈修订和陈快照均拒绝。判断强制列明条件、未知、可改变判断的证据与支持范围；原作已有解释和本刊贡献分开，前后增益不得同文重标。只有声明具体行动决策时才要求真实决策者、比较基础和至少两个含行动理由、代价、受益者、其他行动者反应、调整/退出及可观察效果的选项；无行动决策不得夹带臆造选项。BOUNDED提交READY、CANDIDATE仅提交CANDIDATE、LIMITATION_OR_UNKNOWN提交LIMITED，均不是内容PASS；成果固定B1、facts_verified=false、causal_support=false、content_review_required=true、publication_authorized=false。人工成果拒绝模型身份；模型成果须有当前W19职责/领域准入、绑定全部判断输入的MODEL OperationRequest及成功OperationReceipt，并回指操作。重复调用幂等；Archive后M10失败时只保留未采用的确定性attempt，同一basis精确重试可恢复，否则须按变化后basis另立版本；并发不会产生两个活跃M10，上游重做会以旧M10为parent重建。十三项回归覆盖完整M01—M09/B1/M10、陈旧快照/修订/M09、错类型/错关系/撤权、贡献与增益重标、无据条件/未知/falsifier、两类决策上下文、READY/LIMITED/CANDIDATE、人工/模型身份、成功/缺失回执、失败恢复、并发及上游返工。真实B1研究文字、判断质量、决策真实性、独立Review/W31、持久运行和阶段门未完成，整包不ACCEPTED。"}, {"record_id": "SI-PILOT-EXECUTION-20261101-001", "artifact_refs": ["intelligence/http_adapter.py", "intelligence/pilot.py", "intelligence/__main__.py"], "validation_refs": ["tests_runtime/test_pilot.py", "tests/test_work_plan.py", "audits/pilot-execution-20261101.json"], "reviewer": "本次执行者实际HTTP回环、持久文件及接口正反/恢复检查；非真实供应商能力、独立L5或用户阅读认可", "result": "IN_PROGRESS", "scope": "修复缺真实执行入口：明确HTTPS取材/JSON chat适配、同一W18预算权限门、真实响应归档、选读/B1/B2/C/隔离核查五步私人试刊、0600与重启回读。测试为本地真实HTTP合成响应，无外部付费模型；未接正式Article/Review/Edition采用或生产调度/交付，不使G01—G04及本包ACCEPTED。"}]
 
 <a id="w29"></a>
 ## W29｜帝师研究、连续教学与迁移提交
@@ -1193,7 +1206,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W29-TEACHER-AUDIT-20261031-001", "artifact_refs": ["intelligence/teacher.py", "intelligence/advisor.py", "intelligence/contracts.py", "intelligence/research.py", "intelligence/evidence.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/workflow.py", "tests_runtime/test_teacher.py", "audits/pr76-review-remediation-w29-20261031.json"], "validation_refs": ["tests_runtime/test_teacher.py (17 actual passing W29 tests)", "audits/pr76-review-remediation-w29-20261031.json"], "reviewer": "当前执行者实际离线检查B2早期问题、知识依据、连续段落、过程连接、边界/反例、Concept版本、迁移、可选B1、模型身份与M11恢复；非真实教学内容、读者效果、独立审稿或阶段批准", "result": "IN_PROGRESS", "scope": "W29离线接口：B2只能从当前W27案卷的活跃M02 B2问题与M09、当前W16修订及其实际输入中的当前W25 Claim、Evidence和ClaimEvidenceAssessment出发；评估必须精确覆盖所教Claim并共同覆盖同一Evidence集合，撤权、跨theme/spec、旧version、陈快照/修订/M02/M09均拒绝。知识命题须明确类型、条件、范围、未知和反例；正文必须为具体情境、必要基础、至少两段相连中间过程、边界/反例、知识总结和迁移分别提供实际段落。过程步骤绑定真实Evidence且不得超出其PROCESS段落依据；迁移列明共享关系、改变条件、重查事实和不得假定项；专业术语先有日常说明再命名。算例若使用须有假设、步骤、结果、限制；计算还须列值和单位，假设情境须显著标注。MethodUse须在M07经确认并在当前案卷，Concept须为当前且属于精确修订；旧知识若标必要回顾必须有实际RECAP段落，知识卡不能替代讲解。B1可选，但若使用必须是当前M10绑定的精确B1版本，且B2知识贡献不得重标B1。BOUNDED交READY，PARTIAL/LIMITATION交LIMITED且不是内容PASS；成果固定B2、facts_verified=false、causal_support=false、reader_mastery_measured=false、content_review_required=true、publication_authorized=false。人工成果禁止模型身份；模型成果须有当前W19 TEACHER职责/领域准入、绑定全部教学输入的M11 MODEL OperationRequest及成功OperationReceipt，并回指操作。重复调用幂等；Archive后M11失败只保留未采用确定性attempt，同basis精确重试恢复，变化后须另立版本；并发不产生两个活跃M11，上游重做以旧M11为parent重建。十七项回归覆盖完整M01—M09/B2/M11、M02问题、旧快照/修订/M09、必备段落、过程连接与依据绑定、迁移条件、算例单位/假设/假设标识、术语顺序、Method/Concept版本、撤权、可选B1、LIMITED、W19与回执、失败恢复、并发和上游返工。真实B2研究文字、教学连贯性/准确性、读者实际阅读、独立Review/W31、持久运行及阶段门未完成，整包不ACCEPTED。"}]
+实际证据：[{"record_id": "W29-TEACHER-AUDIT-20261031-001", "artifact_refs": ["intelligence/teacher.py", "intelligence/advisor.py", "intelligence/contracts.py", "intelligence/research.py", "intelligence/evidence.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/workflow.py", "tests_runtime/test_teacher.py", "audits/pr76-review-remediation-w29-20261031.json"], "validation_refs": ["tests_runtime/test_teacher.py (17 actual passing W29 tests)", "audits/pr76-review-remediation-w29-20261031.json"], "reviewer": "当前执行者实际离线检查B2早期问题、知识依据、连续段落、过程连接、边界/反例、Concept版本、迁移、可选B1、模型身份与M11恢复；非真实教学内容、读者效果、独立审稿或阶段批准", "result": "IN_PROGRESS", "scope": "W29离线接口：B2只能从当前W27案卷的活跃M02 B2问题与M09、当前W16修订及其实际输入中的当前W25 Claim、Evidence和ClaimEvidenceAssessment出发；评估必须精确覆盖所教Claim并共同覆盖同一Evidence集合，撤权、跨theme/spec、旧version、陈快照/修订/M02/M09均拒绝。知识命题须明确类型、条件、范围、未知和反例；正文必须为具体情境、必要基础、至少两段相连中间过程、边界/反例、知识总结和迁移分别提供实际段落。过程步骤绑定真实Evidence且不得超出其PROCESS段落依据；迁移列明共享关系、改变条件、重查事实和不得假定项；专业术语先有日常说明再命名。算例若使用须有假设、步骤、结果、限制；计算还须列值和单位，假设情境须显著标注。MethodUse须在M07经确认并在当前案卷，Concept须为当前且属于精确修订；旧知识若标必要回顾必须有实际RECAP段落，知识卡不能替代讲解。B1可选，但若使用必须是当前M10绑定的精确B1版本，且B2知识贡献不得重标B1。BOUNDED交READY，PARTIAL/LIMITATION交LIMITED且不是内容PASS；成果固定B2、facts_verified=false、causal_support=false、reader_mastery_measured=false、content_review_required=true、publication_authorized=false。人工成果禁止模型身份；模型成果须有当前W19 TEACHER职责/领域准入、绑定全部教学输入的M11 MODEL OperationRequest及成功OperationReceipt，并回指操作。重复调用幂等；Archive后M11失败只保留未采用确定性attempt，同basis精确重试恢复，变化后须另立版本；并发不产生两个活跃M11，上游重做以旧M11为parent重建。十七项回归覆盖完整M01—M09/B2/M11、M02问题、旧快照/修订/M09、必备段落、过程连接与依据绑定、迁移条件、算例单位/假设/假设标识、术语顺序、Method/Concept版本、撤权、可选B1、LIMITED、W19与回执、失败恢复、并发和上游返工。真实B2研究文字、教学连贯性/准确性、读者实际阅读、独立Review/W31、持久运行及阶段门未完成，整包不ACCEPTED。"}, {"record_id": "SI-PILOT-EXECUTION-20261101-001", "artifact_refs": ["intelligence/http_adapter.py", "intelligence/pilot.py", "intelligence/__main__.py"], "validation_refs": ["tests_runtime/test_pilot.py", "tests/test_work_plan.py", "audits/pilot-execution-20261101.json"], "reviewer": "本次执行者实际HTTP回环、持久文件及接口正反/恢复检查；非真实供应商能力、独立L5或用户阅读认可", "result": "IN_PROGRESS", "scope": "修复缺真实执行入口：明确HTTPS取材/JSON chat适配、同一W18预算权限门、真实响应归档、选读/B1/B2/C/隔离核查五步私人试刊、0600与重启回读。测试为本地真实HTTP合成响应，无外部付费模型；未接正式Article/Review/Edition采用或生产调度/交付，不使G01—G04及本包ACCEPTED。"}]
 
 <a id="w30"></a>
 ## W30｜条件路径与原判断检验条件
@@ -1230,7 +1243,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W30-PROSPECTIVE-AUDIT-20261031-001", "artifact_refs": ["intelligence/prospective.py", "intelligence/advisor.py", "intelligence/teacher.py", "intelligence/contracts.py", "intelligence/research.py", "intelligence/evidence.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/workflow.py", "tests_runtime/test_prospective.py", "audits/pr76-review-remediation-w30-20261031.json"], "validation_refs": ["tests_runtime/test_prospective.py (14 actual passing W30 tests)", "audits/pr76-review-remediation-w30-20261031.json"], "reviewer": "当前执行者实际离线检查B1/B2成果接合、原判断原话、路径分支/传导/时滞、可观察检验、开放问题、M12有限收口、模型身份与恢复；非真实未来结果、内容审稿或阶段批准", "result": "IN_PROGRESS", "scope": "W30离线接口：C必须同时绑定当前W27案卷的活跃M10/M11及其精确AdvisorOutput/TeacherOutput和当前W16修订；条件Claim、Evidence及W25评估须精确并集当前B1/B2依据，MethodUse须在当前案卷。原B1核心判断与支持范围、B2知识命题与范围必须逐字保留，不能改写未来‘预测’。MULTI_PATH至少两条实质不同路径，各有不同分支条件和首个区分观察；每路径至少两段行动者/系统、权限资源、决定/传导、前置、结果、最小时滞、不确定性以及Claim/Evidence连接，并写受益、代价、反馈、失败/退出和‘仍是条件非事实’。SINGLE_LIMITED仅一条路径；NOT_APPLICABLE不得造路径；两类均须具体限制。所有模式均须列缺失信息、为何不能区分和下一区分观察，并保存观察窗口、支持/削弱/推翻条件、机制检查与替代解释检查。开放问题只供读者自行思考，不收答案。当期只保存ReviewWindow、W39/W40复查归属和M12 closure/重开触发，不等待未来；成果固定C、facts_verified=false、causal_support=false、forecast_is_fact=false、observed_outcome_claimed=false、reader_answers_collected=false、content_review_required=true、publication_authorized=false，并将W33标为ThesisVersion保存目标但不冒充已保存。人工成果拒绝模型身份；模型成果须有当前W19 EXPLANATION准入、绑定全部条件输入的M12 MODEL OperationRequest及成功OperationReceipt。重复调用幂等；Archive后M12失败只保留未采用确定性attempt，同basis精确重试恢复；并发不产生两个活跃M12，上游重做以旧M12为parent重建。十四项回归覆盖完整B1/B2/C/M12、原话重写、M10/M11/修订失效、路径数量/分支/两段传导、单一路径/不适用、观察窗口、来源精确、W19回执、失败恢复、并发、上游返工及概率/未来结果偷渡。真实路径质量、到期复查、W33实际保存、W31内容审、持久运行和G02未完成，整包不ACCEPTED。"}]
+实际证据：[{"record_id": "W30-PROSPECTIVE-AUDIT-20261031-001", "artifact_refs": ["intelligence/prospective.py", "intelligence/advisor.py", "intelligence/teacher.py", "intelligence/contracts.py", "intelligence/research.py", "intelligence/evidence.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/workflow.py", "tests_runtime/test_prospective.py", "audits/pr76-review-remediation-w30-20261031.json"], "validation_refs": ["tests_runtime/test_prospective.py (14 actual passing W30 tests)", "audits/pr76-review-remediation-w30-20261031.json"], "reviewer": "当前执行者实际离线检查B1/B2成果接合、原判断原话、路径分支/传导/时滞、可观察检验、开放问题、M12有限收口、模型身份与恢复；非真实未来结果、内容审稿或阶段批准", "result": "IN_PROGRESS", "scope": "W30离线接口：C必须同时绑定当前W27案卷的活跃M10/M11及其精确AdvisorOutput/TeacherOutput和当前W16修订；条件Claim、Evidence及W25评估须精确并集当前B1/B2依据，MethodUse须在当前案卷。原B1核心判断与支持范围、B2知识命题与范围必须逐字保留，不能改写未来‘预测’。MULTI_PATH至少两条实质不同路径，各有不同分支条件和首个区分观察；每路径至少两段行动者/系统、权限资源、决定/传导、前置、结果、最小时滞、不确定性以及Claim/Evidence连接，并写受益、代价、反馈、失败/退出和‘仍是条件非事实’。SINGLE_LIMITED仅一条路径；NOT_APPLICABLE不得造路径；两类均须具体限制。所有模式均须列缺失信息、为何不能区分和下一区分观察，并保存观察窗口、支持/削弱/推翻条件、机制检查与替代解释检查。开放问题只供读者自行思考，不收答案。当期只保存ReviewWindow、W39/W40复查归属和M12 closure/重开触发，不等待未来；成果固定C、facts_verified=false、causal_support=false、forecast_is_fact=false、observed_outcome_claimed=false、reader_answers_collected=false、content_review_required=true、publication_authorized=false，并将W33标为ThesisVersion保存目标但不冒充已保存。人工成果拒绝模型身份；模型成果须有当前W19 EXPLANATION准入、绑定全部条件输入的M12 MODEL OperationRequest及成功OperationReceipt。重复调用幂等；Archive后M12失败只保留未采用确定性attempt，同basis精确重试恢复；并发不产生两个活跃M12，上游重做以旧M12为parent重建。十四项回归覆盖完整B1/B2/C/M12、原话重写、M10/M11/修订失效、路径数量/分支/两段传导、单一路径/不适用、观察窗口、来源精确、W19回执、失败恢复、并发、上游返工及概率/未来结果偷渡。真实路径质量、到期复查、W33实际保存、W31内容审、持久运行和G02未完成，整包不ACCEPTED。"}, {"record_id": "SI-PILOT-EXECUTION-20261101-001", "artifact_refs": ["intelligence/http_adapter.py", "intelligence/pilot.py", "intelligence/__main__.py"], "validation_refs": ["tests_runtime/test_pilot.py", "tests/test_work_plan.py", "audits/pilot-execution-20261101.json"], "reviewer": "本次执行者实际HTTP回环、持久文件及接口正反/恢复检查；非真实供应商能力、独立L5或用户阅读认可", "result": "IN_PROGRESS", "scope": "修复缺真实执行入口：明确HTTPS取材/JSON chat适配、同一W18预算权限门、真实响应归档、选读/B1/B2/C/隔离核查五步私人试刊、0600与重启回读。测试为本地真实HTTP合成响应，无外部付费模型；未接正式Article/Review/Edition采用或生产调度/交付，不使G01—G04及本包ACCEPTED。"}]
 
 <a id="w31"></a>
 ## W31｜独立核查、意见闭环与审核决定
@@ -1267,7 +1280,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W31-EDITORIAL-REVIEW-AUDIT-20261031-001", "artifact_refs": ["intelligence/editorial_review.py", "intelligence/adoption.py", "intelligence/prospective.py", "intelligence/advisor.py", "intelligence/teacher.py", "intelligence/contracts.py", "intelligence/research.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/workflow.py", "tests_runtime/test_editorial_review.py", "audits/pr76-review-remediation-w31-20261031.json"], "validation_refs": ["tests_runtime/test_editorial_review.py (17 actual passing W31 tests)", "audits/pr76-review-remediation-w31-20261031.json"], "reviewer": "当前执行者实际离线检查实际Article正文、独立疑点、作者回应、逐项closure、PASS/REVISE/BLOCK、W15版本决定、模型身份与并发；非真实独立审阅、通用审稿能力、用户阅读或阶段批准", "result": "IN_PROGRESS", "scope": "W31离线接口：先固定当前W27案卷的M10/M11/M12、当前W16修订、B1/B2/C精确输出和实际Article读者稿。Article必须是当前保留全文版本，正文非空且引用精确revision、Task、M10/M11/M12及对应B1/B2/C输出；仅案卷或指针不能冒充读者稿。ReviewCase先记录审稿者独立疑点，再允许声明的作者逐项回应并提交可追到初稿的修订Article。疑点的quoted_text必须真实出现在初稿，类型/严重度、Claim/Evidence/MethodUse精确引用；reviewer不得是author或producer，draft-first不得同时声称看过作者自评/旧Review，缺陷答案键始终不得提供。最终固定reviewer逐项closure；PASS不得保留open/unverified，REVISE至少一项open/unverified，BLOCK至少一项critical未解决；合理accepted dispute可保留而不强迫新结论。最终Review绑定实际修订Article、Task与scope并写ReviewCoverage，再由W15以精确subject/review/scope形成决定：PASS→READY，REVISE→RETURN，BLOCK→BLOCKED；同一Task下不同Article使用独立W15 step槽，禁止后一篇覆盖前一篇当前采用。作者不能签审核，模型审稿须W19 REVIEW独立准入、与writer configuration分离、W31 OperationRequest及成功回执。上游W27修订、B1/B2/C最新版本、Article或case版本变化均使旧Review失效；同一final决定并发幂等且后续Article不能继承旧Review。成果固定author_self_approved=false、model_self_passed=false、publication_authorized=false、review_capability_certified=false。十七项回归覆盖正向PASS/W15、自签、真实正文/引文、问题来源、作者回应顺序、PASS未决拒绝、合理争议、REVISE/BLOCK、critical block、新Article、上游修订、exposure、模型W19/回执、并发、库评分/预定PASS偷渡及同Task多Article采用隔离。真实审稿文字、盲测/新例、跨领域漏检/误拒、完整样刊、W32消费及G02仍未完成，整包不ACCEPTED。"}, {"record_id": "W31-W37-SHORT-FORM-REVIEW-20261031-001", "artifact_refs": ["intelligence/editorial_review.py", "intelligence/article_route.py", "tests_runtime/test_article_route.py", "audits/w37-article-routes-20261031.json"], "validation_refs": ["tests_runtime/test_article_route.py (7 actual passing W37 tests)", "tests_runtime/test_editorial_review.py (17 actual passing W31 tests)", "audits/w37-article-routes-20261031.json"], "reviewer": "当前执行者实际离线检查短稿ArticleRoute、独立疑点/回应/closure及W15；非真实独立L5、盲测、用户阅读或阶段批准", "result": "IN_PROGRESS", "scope": "W37接续为SOURCE_SELECTION与UPDATE_CORRECTION增加schema-v2短稿审稿：ArticleRoute精确绑定W23/W26/W25/W34前置，短稿不强配虚构M10/M11/M12或B1/B2/C；Review仍先固定实际Article和疑点，作者逐项回应，固定reviewer逐项closure，PASS→W15 READY。七项W37测试中含一个真实引文疑点及closure，并验证旧引文缺失、重复旧证据和错误角色不能通过；模型短稿审稿、真实内容识错/误拒及跨领域能力未完成，W31整包不ACCEPTED。"}]
+实际证据：[{"record_id": "W31-EDITORIAL-REVIEW-AUDIT-20261031-001", "artifact_refs": ["intelligence/editorial_review.py", "intelligence/adoption.py", "intelligence/prospective.py", "intelligence/advisor.py", "intelligence/teacher.py", "intelligence/contracts.py", "intelligence/research.py", "intelligence/model_admission.py", "intelligence/operations.py", "intelligence/workflow.py", "tests_runtime/test_editorial_review.py", "audits/pr76-review-remediation-w31-20261031.json"], "validation_refs": ["tests_runtime/test_editorial_review.py (17 actual passing W31 tests)", "audits/pr76-review-remediation-w31-20261031.json"], "reviewer": "当前执行者实际离线检查实际Article正文、独立疑点、作者回应、逐项closure、PASS/REVISE/BLOCK、W15版本决定、模型身份与并发；非真实独立审阅、通用审稿能力、用户阅读或阶段批准", "result": "IN_PROGRESS", "scope": "W31离线接口：先固定当前W27案卷的M10/M11/M12、当前W16修订、B1/B2/C精确输出和实际Article读者稿。Article必须是当前保留全文版本，正文非空且引用精确revision、Task、M10/M11/M12及对应B1/B2/C输出；仅案卷或指针不能冒充读者稿。ReviewCase先记录审稿者独立疑点，再允许声明的作者逐项回应并提交可追到初稿的修订Article。疑点的quoted_text必须真实出现在初稿，类型/严重度、Claim/Evidence/MethodUse精确引用；reviewer不得是author或producer，draft-first不得同时声称看过作者自评/旧Review，缺陷答案键始终不得提供。最终固定reviewer逐项closure；PASS不得保留open/unverified，REVISE至少一项open/unverified，BLOCK至少一项critical未解决；合理accepted dispute可保留而不强迫新结论。最终Review绑定实际修订Article、Task与scope并写ReviewCoverage，再由W15以精确subject/review/scope形成决定：PASS→READY，REVISE→RETURN，BLOCK→BLOCKED；同一Task下不同Article使用独立W15 step槽，禁止后一篇覆盖前一篇当前采用。作者不能签审核，模型审稿须W19 REVIEW独立准入、与writer configuration分离、W31 OperationRequest及成功回执。上游W27修订、B1/B2/C最新版本、Article或case版本变化均使旧Review失效；同一final决定并发幂等且后续Article不能继承旧Review。成果固定author_self_approved=false、model_self_passed=false、publication_authorized=false、review_capability_certified=false。十七项回归覆盖正向PASS/W15、自签、真实正文/引文、问题来源、作者回应顺序、PASS未决拒绝、合理争议、REVISE/BLOCK、critical block、新Article、上游修订、exposure、模型W19/回执、并发、库评分/预定PASS偷渡及同Task多Article采用隔离。真实审稿文字、盲测/新例、跨领域漏检/误拒、完整样刊、W32消费及G02仍未完成，整包不ACCEPTED。"}, {"record_id": "W31-W37-SHORT-FORM-REVIEW-20261031-001", "artifact_refs": ["intelligence/editorial_review.py", "intelligence/article_route.py", "tests_runtime/test_article_route.py", "audits/w37-article-routes-20261031.json"], "validation_refs": ["tests_runtime/test_article_route.py (7 actual passing W37 tests)", "tests_runtime/test_editorial_review.py (17 actual passing W31 tests)", "audits/w37-article-routes-20261031.json"], "reviewer": "当前执行者实际离线检查短稿ArticleRoute、独立疑点/回应/closure及W15；非真实独立L5、盲测、用户阅读或阶段批准", "result": "IN_PROGRESS", "scope": "W37接续为SOURCE_SELECTION与UPDATE_CORRECTION增加schema-v2短稿审稿：ArticleRoute精确绑定W23/W26/W25/W34前置，短稿不强配虚构M10/M11/M12或B1/B2/C；Review仍先固定实际Article和疑点，作者逐项回应，固定reviewer逐项closure，PASS→W15 READY。七项W37测试中含一个真实引文疑点及closure，并验证旧引文缺失、重复旧证据和错误角色不能通过；模型短稿审稿、真实内容识错/误拒及跨领域能力未完成，W31整包不ACCEPTED。"}, {"record_id": "SI-PILOT-EXECUTION-20261101-001", "artifact_refs": ["intelligence/http_adapter.py", "intelligence/pilot.py", "intelligence/__main__.py"], "validation_refs": ["tests_runtime/test_pilot.py", "tests/test_work_plan.py", "audits/pilot-execution-20261101.json"], "reviewer": "本次执行者实际HTTP回环、持久文件及接口正反/恢复检查；非真实供应商能力、独立L5或用户阅读认可", "result": "IN_PROGRESS", "scope": "修复缺真实执行入口：明确HTTPS取材/JSON chat适配、同一W18预算权限门、真实响应归档、选读/B1/B2/C/隔离核查五步私人试刊、0600与重启回读。测试为本地真实HTTP合成响应，无外部付费模型；未接正式Article/Review/Edition采用或生产调度/交付，不使G01—G04及本包ACCEPTED。"}]
 
 <a id="w32"></a>
 ## W32｜连续文章、卷首与审后变更承接
@@ -1291,6 +1304,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - Article/Edition源与实际读者稿、标题/图表/卷首/目录及来源索引。
 - 审后差异、纯呈现承接或语义返审记录；当期文件冻结指针。
 - C05编码优先Jinja，固定模板由最高说明派生；C04形成连续文章/卷首，模板只呈现已审数据，年度复用同一层。
+- 受控试刊复用现有转义呈现和私有文件写入，固定待审且非正式Edition；正式合同承接与视觉验收仍须补齐。
 
 **验收清单**（另核Q01—Q07）：
 
@@ -1304,7 +1318,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W32-PRESENTATION-AUDIT-20261031-001", "artifact_refs": ["intelligence/presentation.py", "intelligence/editorial_review.py", "intelligence/editorial.py", "intelligence/materials.py", "intelligence/adoption.py", "intelligence/contracts.py", "tests_runtime/test_presentation.py", "audits/pr76-review-remediation-w32-20261031.json", "pyproject.toml", "uv.lock"], "validation_refs": ["tests_runtime/test_presentation.py (10 actual passing W32 tests)", "audits/pr76-review-remediation-w32-20261031.json"], "reviewer": "当前执行者实际离线检查Edition组合、PASS Review/W15版本、W23 placement、W26更新、Jinja转义、私有文件、并发和错误路径；非真实整刊内容、用户阅读、视觉/PDF或阶段批准", "result": "IN_PROGRESS", "scope": "W32离线接口：Edition只接收当前W23 EditionPlacementProposal与当前W26 ImportantUpdateCheck；需研究/审稿/改型/更正的更新不能被版面层吞掉，文章Review须晚于该检查。封面与专题各绑定当前Article、PASS Review及当前W15 READY采用；Article必须保留全文且H1与被审版本一致，Review精确覆盖Article及用途，W15 subject/review/scope一致。Feature必须匹配W23 placement和slot；一个Edition不能把同一Article重复冒充多篇。模板只使用Jinja StrictUndefined/autoescape，不加载外部模板或资源；标题、正文、目录和来源标签均转义，来源URL仅允许HTTPS，正文HTML片段与脚本不执行。正文在Archive中保留为EditionRecord，实际读者文件为版本绑定HTML，按O_NOFOLLOW/O_EXCL创建0600私有文件并记录hash/bytes；重试、并发和陈旧版本不覆盖当前Edition。Edition固定content_review_required=true、full_edition_review_required=true、publication_authorized=false、delivery_authorized=false，生成文件不等于内容通过、正式PDF、出版或送达。十项回归覆盖PASS/W15组合、标题篡改、真实原文、W23 placement/slot、W26返回、HTTPS、新稿旧审、仓库内/外来文件、并发幂等、排序重复和HTML转义。真实整刊阅读、标题/图表/卷首审稿、字体分页、视觉呈现、PDF/W49、用户阅读及G01未完成，整包不ACCEPTED。"}, {"record_id": "W32-W36-CURRENT-S8-REVALIDATION-20261031-001", "artifact_refs": ["intelligence/editorial.py", "intelligence/presentation.py", "tests_runtime/test_presentation.py", "tests_runtime/test_route_integration.py", "audits/w36-route-integration-20261031.json"], "validation_refs": ["tests_runtime/test_presentation.py (11 actual passing W32 tests)", "tests_runtime/test_route_integration.py (3 actual passing W36 route tests)", "audits/w36-route-integration-20261031.json"], "reviewer": "当前执行者实际离线检查W36反向用例及W32当前依据重核；非真实跨模块内容、用户阅读或阶段批准", "result": "IN_PROGRESS", "scope": "W36接续修复W32在生成阅读文件前只核Edition方案自身版本、未重核其所依赖当前W23 S8决定/研究准入/S8包的问题。新增load_current_edition_proposal：先确认方案当前，再逐placement用W23同一依赖校验核当前TopicDecision、ResearchAdmission、S8包、候选、覆盖、问题、来源、权利和Evidence；任一变为旧版即退回相应编辑/取证责任，不生成HTML。W32夹具改为真实经过W23控制器的候选/覆盖/S8/准入/方案链，新增后出Evidence使旧S8失效的反例；十一项W32测试通过。真实整刊、用户阅读和G02仍未验，W32整包不ACCEPTED。"}, {"record_id": "W32-W37-SHORT-FORM-PLACEMENT-20261031-001", "artifact_refs": ["intelligence/presentation.py", "intelligence/article_route.py", "tests_runtime/test_article_route.py", "audits/w37-article-routes-20261031.json"], "validation_refs": ["tests_runtime/test_article_route.py (7 actual passing W37 tests)", "tests_runtime/test_presentation.py (11 actual passing W32 tests)", "audits/w37-article-routes-20261031.json"], "reviewer": "当前执行者实际离线检查深度与短稿整刊角色、W23位置、PASS Review/W15及文本输出；非真实整刊内容、用户阅读、视觉或阶段批准", "result": "IN_PROGRESS", "scope": "W37接续要求Edition所有非封面条目都有精确W23 placement；FEATURE只能是DEEP_THEME，UPDATE只能是SOURCE_SELECTION或UPDATE_CORRECTION，禁止短稿替换深度主文或深度稿仅改标签。正例在同一HTML Edition中组合一个DEEP_THEME和INITIAL_FACT/FOLLOW_UP/CORRECTION三条短更新，全部通过当前Review/W15，最终仍publication_authorized=false；真实整刊审阅、视觉、用户阅读和G01继续未验。"}]
+实际证据：[{"record_id": "W32-PRESENTATION-AUDIT-20261031-001", "artifact_refs": ["intelligence/presentation.py", "intelligence/editorial_review.py", "intelligence/editorial.py", "intelligence/materials.py", "intelligence/adoption.py", "intelligence/contracts.py", "tests_runtime/test_presentation.py", "audits/pr76-review-remediation-w32-20261031.json", "pyproject.toml", "uv.lock"], "validation_refs": ["tests_runtime/test_presentation.py (10 actual passing W32 tests)", "audits/pr76-review-remediation-w32-20261031.json"], "reviewer": "当前执行者实际离线检查Edition组合、PASS Review/W15版本、W23 placement、W26更新、Jinja转义、私有文件、并发和错误路径；非真实整刊内容、用户阅读、视觉/PDF或阶段批准", "result": "IN_PROGRESS", "scope": "W32离线接口：Edition只接收当前W23 EditionPlacementProposal与当前W26 ImportantUpdateCheck；需研究/审稿/改型/更正的更新不能被版面层吞掉，文章Review须晚于该检查。封面与专题各绑定当前Article、PASS Review及当前W15 READY采用；Article必须保留全文且H1与被审版本一致，Review精确覆盖Article及用途，W15 subject/review/scope一致。Feature必须匹配W23 placement和slot；一个Edition不能把同一Article重复冒充多篇。模板只使用Jinja StrictUndefined/autoescape，不加载外部模板或资源；标题、正文、目录和来源标签均转义，来源URL仅允许HTTPS，正文HTML片段与脚本不执行。正文在Archive中保留为EditionRecord，实际读者文件为版本绑定HTML，按O_NOFOLLOW/O_EXCL创建0600私有文件并记录hash/bytes；重试、并发和陈旧版本不覆盖当前Edition。Edition固定content_review_required=true、full_edition_review_required=true、publication_authorized=false、delivery_authorized=false，生成文件不等于内容通过、正式PDF、出版或送达。十项回归覆盖PASS/W15组合、标题篡改、真实原文、W23 placement/slot、W26返回、HTTPS、新稿旧审、仓库内/外来文件、并发幂等、排序重复和HTML转义。真实整刊阅读、标题/图表/卷首审稿、字体分页、视觉呈现、PDF/W49、用户阅读及G01未完成，整包不ACCEPTED。"}, {"record_id": "W32-W36-CURRENT-S8-REVALIDATION-20261031-001", "artifact_refs": ["intelligence/editorial.py", "intelligence/presentation.py", "tests_runtime/test_presentation.py", "tests_runtime/test_route_integration.py", "audits/w36-route-integration-20261031.json"], "validation_refs": ["tests_runtime/test_presentation.py (11 actual passing W32 tests)", "tests_runtime/test_route_integration.py (3 actual passing W36 route tests)", "audits/w36-route-integration-20261031.json"], "reviewer": "当前执行者实际离线检查W36反向用例及W32当前依据重核；非真实跨模块内容、用户阅读或阶段批准", "result": "IN_PROGRESS", "scope": "W36接续修复W32在生成阅读文件前只核Edition方案自身版本、未重核其所依赖当前W23 S8决定/研究准入/S8包的问题。新增load_current_edition_proposal：先确认方案当前，再逐placement用W23同一依赖校验核当前TopicDecision、ResearchAdmission、S8包、候选、覆盖、问题、来源、权利和Evidence；任一变为旧版即退回相应编辑/取证责任，不生成HTML。W32夹具改为真实经过W23控制器的候选/覆盖/S8/准入/方案链，新增后出Evidence使旧S8失效的反例；十一项W32测试通过。真实整刊、用户阅读和G02仍未验，W32整包不ACCEPTED。"}, {"record_id": "W32-W37-SHORT-FORM-PLACEMENT-20261031-001", "artifact_refs": ["intelligence/presentation.py", "intelligence/article_route.py", "tests_runtime/test_article_route.py", "audits/w37-article-routes-20261031.json"], "validation_refs": ["tests_runtime/test_article_route.py (7 actual passing W37 tests)", "tests_runtime/test_presentation.py (11 actual passing W32 tests)", "audits/w37-article-routes-20261031.json"], "reviewer": "当前执行者实际离线检查深度与短稿整刊角色、W23位置、PASS Review/W15及文本输出；非真实整刊内容、用户阅读、视觉或阶段批准", "result": "IN_PROGRESS", "scope": "W37接续要求Edition所有非封面条目都有精确W23 placement；FEATURE只能是DEEP_THEME，UPDATE只能是SOURCE_SELECTION或UPDATE_CORRECTION，禁止短稿替换深度主文或深度稿仅改标签。正例在同一HTML Edition中组合一个DEEP_THEME和INITIAL_FACT/FOLLOW_UP/CORRECTION三条短更新，全部通过当前Review/W15，最终仍publication_authorized=false；真实整刊审阅、视觉、用户阅读和G01继续未验。"}, {"record_id": "SI-PILOT-EXECUTION-20261101-001", "artifact_refs": ["intelligence/http_adapter.py", "intelligence/pilot.py", "intelligence/__main__.py"], "validation_refs": ["tests_runtime/test_pilot.py", "tests/test_work_plan.py", "audits/pilot-execution-20261101.json"], "reviewer": "本次执行者实际HTTP回环、持久文件及接口正反/恢复检查；非真实供应商能力、独立L5或用户阅读认可", "result": "IN_PROGRESS", "scope": "修复缺真实执行入口：明确HTTPS取材/JSON chat适配、同一W18预算权限门、真实响应归档、选读/B1/B2/C/隔离核查五步私人试刊、0600与重启回读。测试为本地真实HTTP合成响应，无外部付费模型；未接正式Article/Review/Edition采用或生产调度/交付，不使G01—G04及本包ACCEPTED。"}]
 
 <a id="w33"></a>
 ## W33｜原文档案、双模式查询与知识复用
@@ -1624,6 +1638,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - [ ] 正向：包含非金融、非创业、非中美重大题；至少一例机构前后变化、一例逐环跨域传导，均有真实依据。
 - [ ] 反向：模拟凑六例、只数来源/角色、只报最后成功费用、字符数冒充Token及跨币种直接相加均不通过。
 - [ ] 衔接：与同题真实基线对照具体理解/教学增益；成本未知如实列缺口，阶段门按§19.2/19.7核实际范围。
+- [ ] 真实案例允许按当期证据有限收口及合格未知；尚未发生的未来终局只限制对结果的断言，不能额外成为每例的必过条件。独立Review与规定覆盖仍须实际补齐。
 - [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
 
 **不通过时**：缺哪例/哪责任就补对应真实研究；不为数量挑无价值新闻，不以代码绿灯越过G02。
@@ -1867,7 +1882,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
 
-**输入**：已过阶段门的内容链；用户确认GitHub Actions每周自动执行；具体周历、私有档案及独立观察/告警参数待落实。 仅落实每周开始；完成/停止/发送时刻不设置，已选C01—C06方向按实际兼容组合验证。
+**输入**：已过阶段门的内容链；用户确认GitHub Actions每周自动执行；具体周历、私有档案及独立观察/告警参数待落实。 仅落实每周开始；完成/停止/发送时刻不设置，已选C01—C06方向按实际兼容组合验证。 有限试刊的代码/配置准备可沿preparation_depends_on先行；本卡正式验收仍核原前置和真实授权。
 
 **交付物**：
 
@@ -1876,6 +1891,8 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - GitHub默认分支/运行入口/周历、时区与夏令时、期号/截点、延迟/无进展阈值、有限补跑及实际平台时限的明确配置。
 - 主任务之外的独立漏跑/进展观察与告警位置/最低权限；未落实时标保障范围受限。
 - C06 uv锁Python/实际依赖组合及工具/Actions版本；C03官方持久checkpointer与C02私有业务/文件存储、备份/观察接口落实，共用现有能力。
+
+**有限准备依据**：[W13](#w13)、[W17](#w17)、[W18](#w18)、[W32](#w32)。允许准备代码/配置与受控试刊；整包验收仍核上列正式前置和真实授权。
 
 **验收清单**（另核Q01—Q07）：
 
@@ -1907,7 +1924,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§3](CANONICAL_SYSTEM_SPEC_V5.md#th-3)、[§4](CANONICAL_SYSTEM_SPEC_V5.md#th-4)、[§4.1](CANONICAL_SYSTEM_SPEC_V5.md#th-4-1)、[§4.2](CANONICAL_SYSTEM_SPEC_V5.md#th-4-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-6-1)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.1](CANONICAL_SYSTEM_SPEC_V5.md#th-23-1)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
 
-**输入**：已确认周历/区间/时区、获准来源、真实业务入口、持久应运行期次与最小预算门。
+**输入**：已确认周历/区间/时区、获准来源、真实业务入口、持久应运行期次与最小预算门。 有限试刊的代码/配置准备可沿preparation_depends_on先行；本卡正式验收仍核原前置和真实授权。
 
 **交付物**：
 
@@ -1915,6 +1932,8 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - 预登记期次、原子认领/去重、Run关联、源增量游标及完整R01/R03实际运行结果。
 - §25.13 T13.AUTO01/AUTO02/AUTO03与NC-043任务级重入证据；不与操作/出版/交付身份混用。
 - C06只按开始时间认领，C03持续/跨job续跑到合格完成；C02登记下一周待办，健康前期不取消/覆盖，新期独立身份排队。
+
+**有限准备依据**：[W13](#w13)、[W17](#w17)、[W18](#w18)、[W32](#w32)。允许准备代码/配置与受控试刊；整包验收仍核上列正式前置和真实授权。
 
 **验收清单**（另核Q01—Q07）：
 
@@ -1946,7 +1965,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§8.2.3](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-3)、[§8.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-8-2-4)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2)、[§17.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-1)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§20.3](CANONICAL_SYSTEM_SPEC_V5.md#th-20-3)、[§21](CANONICAL_SYSTEM_SPEC_V5.md#th-21)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23](CANONICAL_SYSTEM_SPEC_V5.md#th-23)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
 
-**输入**：预登记应运行期次、真实Run/开始/进展/结束与成品、持久认领/检查点、操作/用量/额度和独立观察入口。
+**输入**：预登记应运行期次、真实Run/开始/进展/结束与成品、持久认领/检查点、操作/用量/额度和独立观察入口。 有限试刊的代码/配置准备可沿preparation_depends_on先行；本卡正式验收仍核原前置和真实授权。
 
 **交付物**：
 
@@ -1954,6 +1973,8 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - 跨任务预算预留/结算/未知账单、重启对账、旧持有者迟到写入防护及操作幂等证据。
 - 无主Run/被禁用/凭据失效/排队/进展停滞/runner结束/平台故障的区分诊断，实际保障范围与未完成记录。
 - 直接复用C03官方检查点/持久模式与单一重试入口，长节点按真实中间产物拆段；观察区分健康长写作、排队、未知、无进展和资源/内容受阻。
+
+**有限准备依据**：[W13](#w13)、[W17](#w17)、[W18](#w18)、[W32](#w32)。允许准备代码/配置与受控试刊；整包验收仍核上列正式前置和真实授权。
 
 **验收清单**（另核Q01—Q07）：
 
@@ -1986,13 +2007,15 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.5](CANONICAL_SYSTEM_SPEC_V5.md#th-13-5)、[§13.6](CANONICAL_SYSTEM_SPEC_V5.md#th-13-6)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§15](CANONICAL_SYSTEM_SPEC_V5.md#th-15)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.5.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-5-1)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
 
-**输入**：有效终稿/Review、已确定实际输出格式及出版版本。
+**输入**：有效终稿/Review、已确定实际输出格式及出版版本。 有限试刊的代码/配置准备可沿preparation_depends_on先行；本卡正式验收仍核原前置和真实授权。
 
 **交付物**：
 
 - 只消费定稿的正式渲染、实际文件检查、源/文件/Review对应和冻结身份。
 - NC-043中出版版本与纯重渲染的区别，未审语义变化返审。
 - C05 Jinja与按实际格式WeasyPrint共用周刊/年报呈现，中文字体及受控资源实际验；内容/文件合格事件触发归档与后续获准交付。
+
+**有限准备依据**：[W13](#w13)、[W17](#w17)、[W18](#w18)、[W32](#w32)。允许准备代码/配置与受控试刊；整包验收仍核上列正式前置和真实授权。
 
 **验收清单**（另核Q01—Q07）：
 
@@ -2023,13 +2046,15 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-2-1)、[§5.5](CANONICAL_SYSTEM_SPEC_V5.md#th-5-5)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-6-2)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§13](CANONICAL_SYSTEM_SPEC_V5.md#th-13)、[§13.7](CANONICAL_SYSTEM_SPEC_V5.md#th-13-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.1](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-1)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.1](CANONICAL_SYSTEM_SPEC_V5.md#th-19-1)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§22.4](CANONICAL_SYSTEM_SPEC_V5.md#th-22-4)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)。原定义/例外仍须回原文读取。
 
-**输入**：具体刊物/文件版本、渠道/对象及明确交付授权；未授权用隔离测试端。
+**输入**：具体刊物/文件版本、渠道/对象及明确交付授权；未授权用隔离测试端。 有限试刊的代码/配置准备可沿preparation_depends_on先行；本卡正式验收仍核原前置和真实授权。
 
 **交付物**：
 
 - 独立交付身份、发送/查询适配与真实ACCEPTED/CONFIRMED/UNKNOWN记录。
 - NC-043中接受后超时、重试/重渲染/换版本与重复投递的核查证据。
 - C06共用已有操作/回执接口，在文件合格且已有交付授权时立即进入交付，无另一发送钟点；未授权可归档或隔离测试。
+
+**有限准备依据**：[W13](#w13)、[W17](#w17)、[W18](#w18)、[W32](#w32)。允许准备代码/配置与受控试刊；整包验收仍核上列正式前置和真实授权。
 
 **验收清单**（另核Q01—Q07）：
 
@@ -2060,13 +2085,15 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 理论依据：[§0](CANONICAL_SYSTEM_SPEC_V5.md#th-0)、[§1](CANONICAL_SYSTEM_SPEC_V5.md#th-1)、[§2](CANONICAL_SYSTEM_SPEC_V5.md#th-2)、[§6](CANONICAL_SYSTEM_SPEC_V5.md#th-6)、[§10.5](CANONICAL_SYSTEM_SPEC_V5.md#th-10-5)、[§10.6](CANONICAL_SYSTEM_SPEC_V5.md#th-10-6)、[§10.7](CANONICAL_SYSTEM_SPEC_V5.md#th-10-7)、[§16](CANONICAL_SYSTEM_SPEC_V5.md#th-16)、[§16.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-3)、[§16.6](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6)、[§16.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-1)、[§16.6.2](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-2)、[§16.6.3](CANONICAL_SYSTEM_SPEC_V5.md#th-16-6-3)、[§17](CANONICAL_SYSTEM_SPEC_V5.md#th-17)、[§17.2.4](CANONICAL_SYSTEM_SPEC_V5.md#th-17-2-4)、[§18](CANONICAL_SYSTEM_SPEC_V5.md#th-18)、[§19](CANONICAL_SYSTEM_SPEC_V5.md#th-19)、[§19.2](CANONICAL_SYSTEM_SPEC_V5.md#th-19-2)、[§19.7](CANONICAL_SYSTEM_SPEC_V5.md#th-19-7)、[§20](CANONICAL_SYSTEM_SPEC_V5.md#th-20)、[§22](CANONICAL_SYSTEM_SPEC_V5.md#th-22)、[§23.3](CANONICAL_SYSTEM_SPEC_V5.md#th-23-3)、[§24](CANONICAL_SYSTEM_SPEC_V5.md#th-24)、[§24.5](CANONICAL_SYSTEM_SPEC_V5.md#th-24-5)、[§24.6.1](CANONICAL_SYSTEM_SPEC_V5.md#th-24-6-1)。原定义/例外仍须回原文读取。
 
-**输入**：允许保存的真实档案、引用关系、当前限制与备份/恢复目标。
+**输入**：允许保存的真实档案、引用关系、当前限制与备份/恢复目标。 有限试刊的代码/配置准备可沿preparation_depends_on先行；本卡正式验收仍核原前置和真实授权。
 
 **交付物**：
 
 - 实际备份及隔离恢复结果、全文/索引/审核/判断/许可/限制的一致性核对。
 - 密钥/受限原作排除规则的实际检查和已验恢复范围。
 - C02业务/原件档案和C03官方checkpointer按各自真实后端备份/恢复；使用兼容锁版本，新runner共用同一thread/期号。
+
+**有限准备依据**：[W13](#w13)、[W17](#w17)、[W18](#w18)、[W32](#w32)。允许准备代码/配置与受控试刊；整包验收仍核上列正式前置和真实授权。
 
 **验收清单**（另核Q01—Q07）：
 
@@ -2197,9 +2224,9 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 顺序：58/59；阶段：4；类型：路线集成验收。
 
-进度：**待开始**；关联：CURRENT_BINDING；前置：[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W54](#w54)。
+进度：**待开始**；关联：CURRENT_BINDING；前置：[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)。
 
-前置尚未验收：[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)、[W54](#w54)。仅供执行者核对，生成器不代为验收阶段。
+前置尚未验收：[W47](#w47)、[W48](#w48)、[W49](#w49)、[W50](#w50)、[W51](#w51)。仅供执行者核对，生成器不代为验收阶段。
 
 责任模块/路线：[R08](TECHNICAL_TRACE.md#r08)、[R01](TECHNICAL_TRACE.md#r01)、[R03](TECHNICAL_TRACE.md#r03)、[R05](TECHNICAL_TRACE.md#r05)、[R07](TECHNICAL_TRACE.md#r07)、[T01](TECHNICAL_TRACE.md#t01)、[T10](TECHNICAL_TRACE.md#t10)、[T11](TECHNICAL_TRACE.md#t11)、[T13](TECHNICAL_TRACE.md#t13)。
 
@@ -2226,6 +2253,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 - [ ] 独立观察先发现漏跑再同一期号补跑，健康/已完成任务不重复执行；故障时如实告警/未完成，无重复主要调用费用或投递。
 - [ ] 连续预演/真实周运行与实际成品/持久原稿一一对应，未自然经过的周/未覆盖平台故障明确待验，不用模拟充数。
 - [ ] 长任务不因耗时或假定发送时刻强停/降质；续跑保留同一期身份/有效节点/累计预算/回执；新周不取消旧周，持续积压保留并告警，模拟时钟不冒充自然周稳定。
+- [ ] 周刊自然触发/连续运行验收不以年度W52—W54完成为前置；G04仍分别核年度责任，不虚标平台通过。
 - [ ] 填写实际产物/版本、验证结果、复核者及通过范围；未执行保持待验，不能填预期结果冒充实测。
 
 **不通过时**：按具体故障回相应包并重验受影响范围，正式外发/自动发行仍需实际明确授权。
