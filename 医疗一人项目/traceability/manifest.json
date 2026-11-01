@@ -1395,9 +1395,9 @@
     }
   ],
   "theory_version": "V0.10",
-  "roadmap_version": "V1.16",
+  "roadmap_version": "V1.17",
   "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "a6a70bb5f4b08bb40d92a56b25dfbb180ac91c4e2b694c27953e8995c9f12908",
+  "roadmap_sha256": "cffcc3966dc6c897eb8e0db5c61c8a37c2498fbe9619de875eed30d75a47767a",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1509,8 +1509,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-01T00:05:22.622488+00:00",
-    "note": "CI发现的数据型迁移往返问题已修复；W19与C01最终源码重新完成全量本地验收和证据绑定。",
+    "at": "2026-11-01T03:52:18.434319+00:00",
+    "note": "W20最终源码与真实验收日志重新绑定；预算、全链审计、外部unknown、性能和RLS证据保持一致。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -1540,7 +1540,7 @@
       "requirement_ids": [
         "RQ-032"
       ],
-      "sha256": "cf70171b774fbb50c55f0bf6edfc3f28a999feda633f8fdd0619e806105875d1"
+      "sha256": "d4ede3fa93d9ddcf3c544835b8d2f97efa1d6b85d2ef502ff69c8ed0e1404ca6"
     },
     {
       "path": "pnpm-lock.yaml",
@@ -1874,7 +1874,7 @@
         "RQ-028",
         "RQ-031"
       ],
-      "sha256": "6ab1d3491360c2d59f594391cf59ce7ea33d0e0e65679fe4c4fed95122b7aa0e"
+      "sha256": "bce76231a0eae7b2d258ddf748a22e6849e9908c3a37324efb91f5949b3597bc"
     },
     {
       "path": "docs/w09-handoff.md",
@@ -2062,7 +2062,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "c5fb9afeaef9ad2ea2df97ed35379265a751f30a6d2a28c89c323fe812365733"
+      "sha256": "afc6ea94a9974bb5d77a2ad131d9b31a80351166f59974d121d385fd724dcaf7"
     },
     {
       "path": "services/core/tests/integration/test_w11_plan_api.py",
@@ -2206,7 +2206,7 @@
         "RQ-018",
         "RQ-031"
       ],
-      "sha256": "6f13e83011ac5634ec9ebf2398fab3f97640371f56741be608e4f1f8c66be301"
+      "sha256": "8de6698fc95e58949f27b9b5d9a5e0cd33421a323adf889b900c1b8835d10edf"
     },
     {
       "path": "services/core/tests/integration/test_w12_workflow_api.py",
@@ -2323,7 +2323,7 @@
       "requirement_ids": [
         "RQ-017"
       ],
-      "sha256": "d36a3e43344473747934cefeae27456d3a6dc1063b99fba6f33373a01b6fbdc3"
+      "sha256": "5d5113ac167ddf43148c7d143ed557e0de754e316152fd27c561809a3cb1f161"
     },
     {
       "path": "services/core/tests/integration/test_w13_dataset_api.py",
@@ -2615,7 +2615,7 @@
         "RQ-024",
         "RQ-031"
       ],
-      "sha256": "790ef2865680a4598892a47b10039adbff8183aa44b30e62326434ca7ff1aea4"
+      "sha256": "63c2d0f2e29a9b99546d7f712f446062b85ad7f844b439a7cdc3830a7a2d5be2"
     },
     {
       "path": "services/core/tests/integration/test_w17_audit_api.py",
@@ -2708,7 +2708,7 @@
         "RQ-027",
         "RQ-034"
       ],
-      "sha256": "2e37677683c16df331e9f7c0a9d1c4e89cfc34765665c722df1783677f37ef76"
+      "sha256": "6e20bf3fda8473e0ba9a8ab5853489438f299514a85ecb1d131f6567a8c7e2fc"
     },
     {
       "path": "services/core/src/medical_one_person/api/recovery.py",
@@ -2735,7 +2735,7 @@
         "RQ-027",
         "RQ-034"
       ],
-      "sha256": "9bc30884cb5b54fdbb6b1e2865b4ce7b6dcc0a2dc7da95129279aa59824dfce3"
+      "sha256": "258cdc5fdaa15f4f43941efee7ebe191673f17e480c189355f9ac5cfb66d793e"
     },
     {
       "path": "services/core/tests/integration/test_w18_recovery_api.py",
@@ -2823,7 +2823,7 @@
         "RQ-032",
         "RQ-033"
       ],
-      "sha256": "c551aa597a860a33ada1454cee0bc5e4abdee1c49f2488246202e41e8a31afb0"
+      "sha256": "9cb55ba339145093d87de5588645dfb3ffc7484f228795b1cae0f2685df5982a"
     },
     {
       "path": "docs/w01-w18-validation.md",
@@ -2834,7 +2834,7 @@
         "RQ-032",
         "RQ-033"
       ],
-      "sha256": "1dba14fa33c7106c9c44f8e60da4cbb756cf784bc6ce86b9f2121226684a4bd1"
+      "sha256": "701cff84ea8bbac4658fa89cf0cefb17808bb4871d20aa1e8e431ab36da28bbc"
     },
     {
       "path": "docs/w24-pilot-charter.md",
@@ -2942,7 +2942,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "89ec5af11a9e4ef20f10a424fb85c4a233c1a74dfaf9fc0630ee7db3c15ae0ef"
+      "sha256": "04c830595446fdcb2281404810f5d1c33a625f3b33f7b5b857cab27743933848"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -2992,7 +2992,7 @@
         "RQ-027",
         "RQ-029"
       ],
-      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      "sha256": "a36543ff73a0b46c35621d97d1a2522fb46f52574e97d04292074b1edad62f44"
     }
   ]
 }

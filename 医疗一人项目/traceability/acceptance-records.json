@@ -60,16 +60,16 @@
         "AT-029",
         "AT-032"
       ],
-      "source_commit": "6c855153e900a75595ee2a7273dc1b2ebc31f9f6",
+      "source_commit": "f488d5b5b167174c2b88f566ee6ddd31d49ff190",
       "result": "passed",
       "scope": "Mock/local verification for W01–W04; no live or real-world claim.",
       "commands": [
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_6c85515 uv run --frozen alembic upgrade head && ... downgrade c8f1a6d3e720 && ... upgrade head && ... current",
+          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_w20 uv run --frozen alembic upgrade head && ... downgrade d9a7e3f1b420 && ... upgrade head && ... current",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:28Z",
-          "finished_at": "2026-11-01T00:03:30Z",
+          "started_at": "2026-11-01T00:31:43Z",
+          "finished_at": "2026-11-01T00:31:45Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/migration-final.log"
@@ -79,8 +79,8 @@
           "cwd": ".",
           "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test MEDICAL_ONE_OFFICE_SOFFICE_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm uv run --project services/core --frozen pytest services/core/tests -ra --junitxml=traceability/logs/pytest-final.xml",
           "mode": "mock+real_postgresql+office",
-          "started_at": "2026-11-01T00:02:49Z",
-          "finished_at": "2026-11-01T00:03:18Z",
+          "started_at": "2026-11-01T00:31:09Z",
+          "finished_at": "2026-11-01T00:31:38Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/pytest-final.log",
@@ -91,8 +91,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen ruff check services/core",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:50Z",
-          "finished_at": "2026-11-01T00:02:50Z",
+          "started_at": "2026-11-01T00:31:10Z",
+          "finished_at": "2026-11-01T00:31:10Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-core-final.log"
@@ -102,8 +102,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen mypy services/core/src",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:51Z",
-          "finished_at": "2026-11-01T00:02:52Z",
+          "started_at": "2026-11-01T00:31:11Z",
+          "finished_at": "2026-11-01T00:31:11Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/mypy-final.log"
@@ -113,8 +113,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web lint",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:26Z",
-          "finished_at": "2026-11-01T00:03:29Z",
+          "started_at": "2026-11-01T00:31:41Z",
+          "finished_at": "2026-11-01T00:31:44Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-web-final.log"
@@ -124,8 +124,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web typecheck",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:33Z",
-          "finished_at": "2026-11-01T00:03:34Z",
+          "started_at": "2026-11-01T00:31:48Z",
+          "finished_at": "2026-11-01T00:31:50Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/typecheck-web-final.log"
@@ -135,8 +135,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH NEXT_TELEMETRY_DISABLED=1 pnpm --dir apps/web build",
           "mode": "frontend_build",
-          "started_at": "2026-11-01T00:03:38Z",
-          "finished_at": "2026-11-01T00:03:40Z",
+          "started_at": "2026-11-01T00:31:53Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/build-web-final.log"
@@ -144,10 +144,10 @@
         },
         {
           "cwd": ".",
-          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_6c85515 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname in (policy tables) and relrowsecurity and relforcerowsecurity;\"",
+          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_w20 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname=reliability_evaluations and relrowsecurity and relforcerowsecurity;\"",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:39Z",
-          "finished_at": "2026-11-01T00:03:39Z",
+          "started_at": "2026-11-01T00:31:54Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/database-invariants-final.log"
@@ -157,8 +157,8 @@
           "cwd": ".",
           "command": "python3 tools/test_traceability.py",
           "mode": "git_evidence_structure",
-          "started_at": "2026-11-01T00:03:44Z",
-          "finished_at": "2026-11-01T00:05:14Z",
+          "started_at": "2026-11-01T00:37:22Z",
+          "finished_at": "2026-11-01T03:52:05Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/trace-tests-final.log"
@@ -169,10 +169,10 @@
         "mock": {
           "status": "passed",
           "evidence": [
-            "118 backend tests passed with 0 skipped locally",
+            "123 backend tests passed with 0 skipped locally",
             "frontend lint/typecheck/build passed",
-            "PostgreSQL 17.6 migration round-trip and 83 RLS policies",
-            "22 traceability self-tests passed"
+            "PostgreSQL 17.6 migration round-trip and 84 RLS policies",
+            "external unknown blocks and reconciles"
           ]
         },
         "live": {
@@ -207,11 +207,11 @@
         },
         {
           "path": "tools/test_traceability.py",
-          "sha256": "cfb8b443c333432c42c97562d437903337129e89f06dcfe40754fac3eeba8cb1"
+          "sha256": "dbf89e22541f0b384498540580d3dcb7b7543f3375f766f2ad98e4563dc3cd8f"
         },
         {
           "path": "services/core/src/medical_one_person/infrastructure/tool_gateway.py",
-          "sha256": "a3c3806c4f8d80266ef46ab775cb62b253a44985d7e53f45567c181e6afaebdb"
+          "sha256": "98b347c3debbc37fd2019e68f5fd0cd12789e509566bd9979b1f0cb5c260e596"
         },
         {
           "path": "services/core/src/medical_one_person/application/tasks.py",
@@ -294,25 +294,25 @@
         "services/core/requirements.lock",
         "Makefile"
       ],
-      "source_tree_git_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
-      "source_tree_worktree_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
+      "source_tree_git_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
+      "source_tree_worktree_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
       "artifact_hashes": {
         "docs/w01-handoff.md": "e248258bd11d46455a13abaa86bb31da2283849a85dc404aab3167f282f9b4a1",
-        "docs/w01-w18-delivery-status.md": "c551aa597a860a33ada1454cee0bc5e4abdee1c49f2488246202e41e8a31afb0",
-        "docs/w01-w18-validation.md": "1dba14fa33c7106c9c44f8e60da4cbb756cf784bc6ce86b9f2121226684a4bd1",
+        "docs/w01-w18-delivery-status.md": "9cb55ba339145093d87de5588645dfb3ffc7484f228795b1cae0f2685df5982a",
+        "docs/w01-w18-validation.md": "701cff84ea8bbac4658fa89cf0cefb17808bb4871d20aa1e8e431ab36da28bbc",
         "docs/w02-handoff.md": "b4cb7f9f7dfed0edcc921452c3c165bfcf0cfd3c76219afce3e6666965085210",
         "docs/w03-handoff.md": "32870b7ae3a3bc79b0790a194c988bfdd000d39246817496bc4c05d917356e15",
         "docs/w04-handoff.md": "1a19c41d7a4409955b15391ac87b023e4c0475943b1e0e72541c8c793de5e072",
-        "traceability/logs/build-web-final.log": "d270b281c853a4a6e476d8d1e210497f777bbe830b4f58781afe67fcbd9a88b1",
-        "traceability/logs/database-invariants-final.log": "ab72314244d558ca3d8d4a210fec8e7a724f5fe8d325e3242e6eeb70cb1a43fc",
+        "traceability/logs/build-web-final.log": "8cc981847727d31bbd61798d8dea1736b6ab3a650664abf5fc9691b1d0411444",
+        "traceability/logs/database-invariants-final.log": "cd3ce006974499337a6f5a45fe2f2f3901d8137c0ba965c30e5e2eb1b88f99e3",
         "traceability/logs/lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
         "traceability/logs/lint-web-final.log": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
-        "traceability/logs/migration-final.log": "8a3322fbea554b6d4946adf0a841c592e85fb97323f829cea471c718b4d26e97",
-        "traceability/logs/mypy-final.log": "79b3c8416f9f9d31149254e4dbffb8ffc7ddc4950d295c2ec7f2ec31e27c95e1",
-        "traceability/logs/pytest-final.log": "6a725815ee94c3db25b4074b9f6d1617be28e0b3111f2e24b127927a6a765afa",
-        "traceability/logs/pytest-final.xml": "399eed6fd5003fb86c5ace7f54f0433bbced4195d4536951484041af543796d0",
+        "traceability/logs/migration-final.log": "2e6f3aa55576387fd972f3f452420cb0eb4647fa8cd2020575e898cd81e458cf",
+        "traceability/logs/mypy-final.log": "749c760efef02805f6b5a0336f3a75504bd2c15fdd98962720faca6c94956f55",
+        "traceability/logs/pytest-final.log": "2a00735029d2729fda3198a95be609c058ce937cc8cf83e6ea202e4a3b560ec4",
+        "traceability/logs/pytest-final.xml": "b2b60dbab692cc2a75b62a152a33432ab7c7f1df2a86a6675120311ee8cb861a",
         "traceability/logs/trace-check-final.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9",
-        "traceability/logs/trace-tests-final.log": "6be8e3bc8175c696e736d872a4ee85cf490b2680c7e1e2063f984f46e3196d55",
+        "traceability/logs/trace-tests-final.log": "f90ae83ab319fb466673c58f456eea987473b66889b3d4802e1947698d47076a",
         "traceability/logs/typecheck-web-final.log": "99d7c2179cdd316467c51f37901025a0753453664d741214ba56fc631fa6c0bc"
       }
     },
@@ -377,16 +377,16 @@
         "AT-029",
         "AT-034"
       ],
-      "source_commit": "6c855153e900a75595ee2a7273dc1b2ebc31f9f6",
+      "source_commit": "f488d5b5b167174c2b88f566ee6ddd31d49ff190",
       "result": "passed",
       "scope": "Mock/local verification for W05–W08; no live or real-world claim.",
       "commands": [
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_6c85515 uv run --frozen alembic upgrade head && ... downgrade c8f1a6d3e720 && ... upgrade head && ... current",
+          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_w20 uv run --frozen alembic upgrade head && ... downgrade d9a7e3f1b420 && ... upgrade head && ... current",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:28Z",
-          "finished_at": "2026-11-01T00:03:30Z",
+          "started_at": "2026-11-01T00:31:43Z",
+          "finished_at": "2026-11-01T00:31:45Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/migration-final.log"
@@ -396,8 +396,8 @@
           "cwd": ".",
           "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test MEDICAL_ONE_OFFICE_SOFFICE_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm uv run --project services/core --frozen pytest services/core/tests -ra --junitxml=traceability/logs/pytest-final.xml",
           "mode": "mock+real_postgresql+office",
-          "started_at": "2026-11-01T00:02:49Z",
-          "finished_at": "2026-11-01T00:03:18Z",
+          "started_at": "2026-11-01T00:31:09Z",
+          "finished_at": "2026-11-01T00:31:38Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/pytest-final.log",
@@ -408,8 +408,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen ruff check services/core",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:50Z",
-          "finished_at": "2026-11-01T00:02:50Z",
+          "started_at": "2026-11-01T00:31:10Z",
+          "finished_at": "2026-11-01T00:31:10Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-core-final.log"
@@ -419,8 +419,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen mypy services/core/src",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:51Z",
-          "finished_at": "2026-11-01T00:02:52Z",
+          "started_at": "2026-11-01T00:31:11Z",
+          "finished_at": "2026-11-01T00:31:11Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/mypy-final.log"
@@ -430,8 +430,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web lint",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:26Z",
-          "finished_at": "2026-11-01T00:03:29Z",
+          "started_at": "2026-11-01T00:31:41Z",
+          "finished_at": "2026-11-01T00:31:44Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-web-final.log"
@@ -441,8 +441,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web typecheck",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:33Z",
-          "finished_at": "2026-11-01T00:03:34Z",
+          "started_at": "2026-11-01T00:31:48Z",
+          "finished_at": "2026-11-01T00:31:50Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/typecheck-web-final.log"
@@ -452,8 +452,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH NEXT_TELEMETRY_DISABLED=1 pnpm --dir apps/web build",
           "mode": "frontend_build",
-          "started_at": "2026-11-01T00:03:38Z",
-          "finished_at": "2026-11-01T00:03:40Z",
+          "started_at": "2026-11-01T00:31:53Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/build-web-final.log"
@@ -461,10 +461,10 @@
         },
         {
           "cwd": ".",
-          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_6c85515 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname in (policy tables) and relrowsecurity and relforcerowsecurity;\"",
+          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_w20 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname=reliability_evaluations and relrowsecurity and relforcerowsecurity;\"",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:39Z",
-          "finished_at": "2026-11-01T00:03:39Z",
+          "started_at": "2026-11-01T00:31:54Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/database-invariants-final.log"
@@ -474,8 +474,8 @@
           "cwd": ".",
           "command": "python3 tools/test_traceability.py",
           "mode": "git_evidence_structure",
-          "started_at": "2026-11-01T00:03:44Z",
-          "finished_at": "2026-11-01T00:05:14Z",
+          "started_at": "2026-11-01T00:37:22Z",
+          "finished_at": "2026-11-01T03:52:05Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/trace-tests-final.log"
@@ -486,10 +486,10 @@
         "mock": {
           "status": "passed",
           "evidence": [
-            "118 backend tests passed with 0 skipped locally",
+            "123 backend tests passed with 0 skipped locally",
             "frontend lint/typecheck/build passed",
-            "PostgreSQL 17.6 migration round-trip and 83 RLS policies",
-            "22 traceability self-tests passed"
+            "PostgreSQL 17.6 migration round-trip and 84 RLS policies",
+            "external unknown blocks and reconciles"
           ]
         },
         "live": {
@@ -536,7 +536,7 @@
         },
         {
           "path": "services/core/tests/integration/test_w06_skill_runner.py",
-          "sha256": "3eee3f0a42f9550f0e5617732fb8fd16e5b422eb6afde967fb69e75937767f43"
+          "sha256": "90fdeece70e8085146b2992c1c657468c905196bb18905a287e92c8e773ab7c8"
         },
         {
           "path": "services/core/tests/integration/test_w07_uploads.py",
@@ -587,25 +587,25 @@
         "services/core/requirements.lock",
         "Makefile"
       ],
-      "source_tree_git_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
-      "source_tree_worktree_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
+      "source_tree_git_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
+      "source_tree_worktree_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
       "artifact_hashes": {
-        "docs/w01-w18-delivery-status.md": "c551aa597a860a33ada1454cee0bc5e4abdee1c49f2488246202e41e8a31afb0",
-        "docs/w01-w18-validation.md": "1dba14fa33c7106c9c44f8e60da4cbb756cf784bc6ce86b9f2121226684a4bd1",
+        "docs/w01-w18-delivery-status.md": "9cb55ba339145093d87de5588645dfb3ffc7484f228795b1cae0f2685df5982a",
+        "docs/w01-w18-validation.md": "701cff84ea8bbac4658fa89cf0cefb17808bb4871d20aa1e8e431ab36da28bbc",
         "docs/w05-handoff.md": "2ecf237698e5848f34b15c01046ba1a7ac33f17f0f42e01319899c16fc05ff46",
         "docs/w06-handoff.md": "e51c42972c689dbab5889fec2ecfcb758f3c07b5e974df349a9a4e1deedfbac4",
         "docs/w07-handoff.md": "15fa33f0ad8f656f356da012e5077afabfba1b0c7b63a8f787190cdc15d737aa",
         "docs/w08-handoff.md": "e3eaba5c16d57fa531fb387240e6f5173af1989e5ee9120c7aeb20f5eec6ab78",
-        "traceability/logs/build-web-final.log": "d270b281c853a4a6e476d8d1e210497f777bbe830b4f58781afe67fcbd9a88b1",
-        "traceability/logs/database-invariants-final.log": "ab72314244d558ca3d8d4a210fec8e7a724f5fe8d325e3242e6eeb70cb1a43fc",
+        "traceability/logs/build-web-final.log": "8cc981847727d31bbd61798d8dea1736b6ab3a650664abf5fc9691b1d0411444",
+        "traceability/logs/database-invariants-final.log": "cd3ce006974499337a6f5a45fe2f2f3901d8137c0ba965c30e5e2eb1b88f99e3",
         "traceability/logs/lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
         "traceability/logs/lint-web-final.log": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
-        "traceability/logs/migration-final.log": "8a3322fbea554b6d4946adf0a841c592e85fb97323f829cea471c718b4d26e97",
-        "traceability/logs/mypy-final.log": "79b3c8416f9f9d31149254e4dbffb8ffc7ddc4950d295c2ec7f2ec31e27c95e1",
-        "traceability/logs/pytest-final.log": "6a725815ee94c3db25b4074b9f6d1617be28e0b3111f2e24b127927a6a765afa",
-        "traceability/logs/pytest-final.xml": "399eed6fd5003fb86c5ace7f54f0433bbced4195d4536951484041af543796d0",
+        "traceability/logs/migration-final.log": "2e6f3aa55576387fd972f3f452420cb0eb4647fa8cd2020575e898cd81e458cf",
+        "traceability/logs/mypy-final.log": "749c760efef02805f6b5a0336f3a75504bd2c15fdd98962720faca6c94956f55",
+        "traceability/logs/pytest-final.log": "2a00735029d2729fda3198a95be609c058ce937cc8cf83e6ea202e4a3b560ec4",
+        "traceability/logs/pytest-final.xml": "b2b60dbab692cc2a75b62a152a33432ab7c7f1df2a86a6675120311ee8cb861a",
         "traceability/logs/trace-check-final.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9",
-        "traceability/logs/trace-tests-final.log": "6be8e3bc8175c696e736d872a4ee85cf490b2680c7e1e2063f984f46e3196d55",
+        "traceability/logs/trace-tests-final.log": "f90ae83ab319fb466673c58f456eea987473b66889b3d4802e1947698d47076a",
         "traceability/logs/typecheck-web-final.log": "99d7c2179cdd316467c51f37901025a0753453664d741214ba56fc631fa6c0bc"
       }
     },
@@ -669,16 +669,16 @@
         "AT-031",
         "AT-034"
       ],
-      "source_commit": "6c855153e900a75595ee2a7273dc1b2ebc31f9f6",
+      "source_commit": "f488d5b5b167174c2b88f566ee6ddd31d49ff190",
       "result": "passed",
       "scope": "Mock/local verification for W09–W12; no live or real-world claim.",
       "commands": [
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_6c85515 uv run --frozen alembic upgrade head && ... downgrade c8f1a6d3e720 && ... upgrade head && ... current",
+          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_w20 uv run --frozen alembic upgrade head && ... downgrade d9a7e3f1b420 && ... upgrade head && ... current",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:28Z",
-          "finished_at": "2026-11-01T00:03:30Z",
+          "started_at": "2026-11-01T00:31:43Z",
+          "finished_at": "2026-11-01T00:31:45Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/migration-final.log"
@@ -688,8 +688,8 @@
           "cwd": ".",
           "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test MEDICAL_ONE_OFFICE_SOFFICE_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm uv run --project services/core --frozen pytest services/core/tests -ra --junitxml=traceability/logs/pytest-final.xml",
           "mode": "mock+real_postgresql+office",
-          "started_at": "2026-11-01T00:02:49Z",
-          "finished_at": "2026-11-01T00:03:18Z",
+          "started_at": "2026-11-01T00:31:09Z",
+          "finished_at": "2026-11-01T00:31:38Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/pytest-final.log",
@@ -700,8 +700,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen ruff check services/core",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:50Z",
-          "finished_at": "2026-11-01T00:02:50Z",
+          "started_at": "2026-11-01T00:31:10Z",
+          "finished_at": "2026-11-01T00:31:10Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-core-final.log"
@@ -711,8 +711,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen mypy services/core/src",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:51Z",
-          "finished_at": "2026-11-01T00:02:52Z",
+          "started_at": "2026-11-01T00:31:11Z",
+          "finished_at": "2026-11-01T00:31:11Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/mypy-final.log"
@@ -722,8 +722,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web lint",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:26Z",
-          "finished_at": "2026-11-01T00:03:29Z",
+          "started_at": "2026-11-01T00:31:41Z",
+          "finished_at": "2026-11-01T00:31:44Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-web-final.log"
@@ -733,8 +733,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web typecheck",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:33Z",
-          "finished_at": "2026-11-01T00:03:34Z",
+          "started_at": "2026-11-01T00:31:48Z",
+          "finished_at": "2026-11-01T00:31:50Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/typecheck-web-final.log"
@@ -744,8 +744,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH NEXT_TELEMETRY_DISABLED=1 pnpm --dir apps/web build",
           "mode": "frontend_build",
-          "started_at": "2026-11-01T00:03:38Z",
-          "finished_at": "2026-11-01T00:03:40Z",
+          "started_at": "2026-11-01T00:31:53Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/build-web-final.log"
@@ -753,10 +753,10 @@
         },
         {
           "cwd": ".",
-          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_6c85515 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname in (policy tables) and relrowsecurity and relforcerowsecurity;\"",
+          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_w20 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname=reliability_evaluations and relrowsecurity and relforcerowsecurity;\"",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:39Z",
-          "finished_at": "2026-11-01T00:03:39Z",
+          "started_at": "2026-11-01T00:31:54Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/database-invariants-final.log"
@@ -766,8 +766,8 @@
           "cwd": ".",
           "command": "python3 tools/test_traceability.py",
           "mode": "git_evidence_structure",
-          "started_at": "2026-11-01T00:03:44Z",
-          "finished_at": "2026-11-01T00:05:14Z",
+          "started_at": "2026-11-01T00:37:22Z",
+          "finished_at": "2026-11-01T03:52:05Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/trace-tests-final.log"
@@ -778,10 +778,10 @@
         "mock": {
           "status": "passed",
           "evidence": [
-            "118 backend tests passed with 0 skipped locally",
+            "123 backend tests passed with 0 skipped locally",
             "frontend lint/typecheck/build passed",
-            "PostgreSQL 17.6 migration round-trip and 83 RLS policies",
-            "22 traceability self-tests passed"
+            "PostgreSQL 17.6 migration round-trip and 84 RLS policies",
+            "external unknown blocks and reconciles"
           ]
         },
         "live": {
@@ -836,7 +836,7 @@
         },
         {
           "path": "services/core/tests/integration/test_w09_opportunity_service.py",
-          "sha256": "6ab1d3491360c2d59f594391cf59ce7ea33d0e0e65679fe4c4fed95122b7aa0e"
+          "sha256": "bce76231a0eae7b2d258ddf748a22e6849e9908c3a37324efb91f5949b3597bc"
         },
         {
           "path": "services/core/tests/integration/test_w10_ui_api.py",
@@ -844,11 +844,11 @@
         },
         {
           "path": "services/core/tests/integration/test_w11_plans.py",
-          "sha256": "c5fb9afeaef9ad2ea2df97ed35379265a751f30a6d2a28c89c323fe812365733"
+          "sha256": "afc6ea94a9974bb5d77a2ad131d9b31a80351166f59974d121d385fd724dcaf7"
         },
         {
           "path": "services/core/tests/integration/test_w12_workflow_service.py",
-          "sha256": "6f13e83011ac5634ec9ebf2398fab3f97640371f56741be608e4f1f8c66be301"
+          "sha256": "8de6698fc95e58949f27b9b5d9a5e0cd33421a323adf889b900c1b8835d10edf"
         }
       ],
       "artifacts": [
@@ -891,25 +891,25 @@
         "services/core/requirements.lock",
         "Makefile"
       ],
-      "source_tree_git_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
-      "source_tree_worktree_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
+      "source_tree_git_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
+      "source_tree_worktree_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
       "artifact_hashes": {
-        "docs/w01-w18-delivery-status.md": "c551aa597a860a33ada1454cee0bc5e4abdee1c49f2488246202e41e8a31afb0",
-        "docs/w01-w18-validation.md": "1dba14fa33c7106c9c44f8e60da4cbb756cf784bc6ce86b9f2121226684a4bd1",
+        "docs/w01-w18-delivery-status.md": "9cb55ba339145093d87de5588645dfb3ffc7484f228795b1cae0f2685df5982a",
+        "docs/w01-w18-validation.md": "701cff84ea8bbac4658fa89cf0cefb17808bb4871d20aa1e8e431ab36da28bbc",
         "docs/w09-handoff.md": "c7b2201a84e109900a0bde8b85f4870e4eac71201263f9ca9d8ffa0473b00473",
         "docs/w10-handoff.md": "cdbe47a8c88f4c1d94060e10a34e59522ec6ad32a019f385a19b00040cf402bf",
         "docs/w11-handoff.md": "58f276ad85c051e6ee105c0743cad7fcd40b433f9933605b61002ef9c3445dae",
         "docs/w12-handoff.md": "3dbc6c4dde77290dda7d57f36db629b4e9912b93ebfa5a9033539309a0d1daea",
-        "traceability/logs/build-web-final.log": "d270b281c853a4a6e476d8d1e210497f777bbe830b4f58781afe67fcbd9a88b1",
-        "traceability/logs/database-invariants-final.log": "ab72314244d558ca3d8d4a210fec8e7a724f5fe8d325e3242e6eeb70cb1a43fc",
+        "traceability/logs/build-web-final.log": "8cc981847727d31bbd61798d8dea1736b6ab3a650664abf5fc9691b1d0411444",
+        "traceability/logs/database-invariants-final.log": "cd3ce006974499337a6f5a45fe2f2f3901d8137c0ba965c30e5e2eb1b88f99e3",
         "traceability/logs/lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
         "traceability/logs/lint-web-final.log": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
-        "traceability/logs/migration-final.log": "8a3322fbea554b6d4946adf0a841c592e85fb97323f829cea471c718b4d26e97",
-        "traceability/logs/mypy-final.log": "79b3c8416f9f9d31149254e4dbffb8ffc7ddc4950d295c2ec7f2ec31e27c95e1",
-        "traceability/logs/pytest-final.log": "6a725815ee94c3db25b4074b9f6d1617be28e0b3111f2e24b127927a6a765afa",
-        "traceability/logs/pytest-final.xml": "399eed6fd5003fb86c5ace7f54f0433bbced4195d4536951484041af543796d0",
+        "traceability/logs/migration-final.log": "2e6f3aa55576387fd972f3f452420cb0eb4647fa8cd2020575e898cd81e458cf",
+        "traceability/logs/mypy-final.log": "749c760efef02805f6b5a0336f3a75504bd2c15fdd98962720faca6c94956f55",
+        "traceability/logs/pytest-final.log": "2a00735029d2729fda3198a95be609c058ce937cc8cf83e6ea202e4a3b560ec4",
+        "traceability/logs/pytest-final.xml": "b2b60dbab692cc2a75b62a152a33432ab7c7f1df2a86a6675120311ee8cb861a",
         "traceability/logs/trace-check-final.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9",
-        "traceability/logs/trace-tests-final.log": "6be8e3bc8175c696e736d872a4ee85cf490b2680c7e1e2063f984f46e3196d55",
+        "traceability/logs/trace-tests-final.log": "f90ae83ab319fb466673c58f456eea987473b66889b3d4802e1947698d47076a",
         "traceability/logs/typecheck-web-final.log": "99d7c2179cdd316467c51f37901025a0753453664d741214ba56fc631fa6c0bc"
       }
     },
@@ -965,16 +965,16 @@
         "AT-023",
         "AT-029"
       ],
-      "source_commit": "6c855153e900a75595ee2a7273dc1b2ebc31f9f6",
+      "source_commit": "f488d5b5b167174c2b88f566ee6ddd31d49ff190",
       "result": "passed",
       "scope": "Mock/local verification for W13–W16; no live or real-world claim.",
       "commands": [
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_6c85515 uv run --frozen alembic upgrade head && ... downgrade c8f1a6d3e720 && ... upgrade head && ... current",
+          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_w20 uv run --frozen alembic upgrade head && ... downgrade d9a7e3f1b420 && ... upgrade head && ... current",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:28Z",
-          "finished_at": "2026-11-01T00:03:30Z",
+          "started_at": "2026-11-01T00:31:43Z",
+          "finished_at": "2026-11-01T00:31:45Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/migration-final.log"
@@ -984,8 +984,8 @@
           "cwd": ".",
           "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test MEDICAL_ONE_OFFICE_SOFFICE_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm uv run --project services/core --frozen pytest services/core/tests -ra --junitxml=traceability/logs/pytest-final.xml",
           "mode": "mock+real_postgresql+office",
-          "started_at": "2026-11-01T00:02:49Z",
-          "finished_at": "2026-11-01T00:03:18Z",
+          "started_at": "2026-11-01T00:31:09Z",
+          "finished_at": "2026-11-01T00:31:38Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/pytest-final.log",
@@ -996,8 +996,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen ruff check services/core",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:50Z",
-          "finished_at": "2026-11-01T00:02:50Z",
+          "started_at": "2026-11-01T00:31:10Z",
+          "finished_at": "2026-11-01T00:31:10Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-core-final.log"
@@ -1007,8 +1007,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen mypy services/core/src",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:51Z",
-          "finished_at": "2026-11-01T00:02:52Z",
+          "started_at": "2026-11-01T00:31:11Z",
+          "finished_at": "2026-11-01T00:31:11Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/mypy-final.log"
@@ -1018,8 +1018,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web lint",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:26Z",
-          "finished_at": "2026-11-01T00:03:29Z",
+          "started_at": "2026-11-01T00:31:41Z",
+          "finished_at": "2026-11-01T00:31:44Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-web-final.log"
@@ -1029,8 +1029,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web typecheck",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:33Z",
-          "finished_at": "2026-11-01T00:03:34Z",
+          "started_at": "2026-11-01T00:31:48Z",
+          "finished_at": "2026-11-01T00:31:50Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/typecheck-web-final.log"
@@ -1040,8 +1040,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH NEXT_TELEMETRY_DISABLED=1 pnpm --dir apps/web build",
           "mode": "frontend_build",
-          "started_at": "2026-11-01T00:03:38Z",
-          "finished_at": "2026-11-01T00:03:40Z",
+          "started_at": "2026-11-01T00:31:53Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/build-web-final.log"
@@ -1049,10 +1049,10 @@
         },
         {
           "cwd": ".",
-          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_6c85515 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname in (policy tables) and relrowsecurity and relforcerowsecurity;\"",
+          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_w20 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname=reliability_evaluations and relrowsecurity and relforcerowsecurity;\"",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:39Z",
-          "finished_at": "2026-11-01T00:03:39Z",
+          "started_at": "2026-11-01T00:31:54Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/database-invariants-final.log"
@@ -1062,8 +1062,8 @@
           "cwd": ".",
           "command": "python3 tools/test_traceability.py",
           "mode": "git_evidence_structure",
-          "started_at": "2026-11-01T00:03:44Z",
-          "finished_at": "2026-11-01T00:05:14Z",
+          "started_at": "2026-11-01T00:37:22Z",
+          "finished_at": "2026-11-01T03:52:05Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/trace-tests-final.log"
@@ -1074,10 +1074,10 @@
         "mock": {
           "status": "passed",
           "evidence": [
-            "118 backend tests passed with 0 skipped locally",
+            "123 backend tests passed with 0 skipped locally",
             "frontend lint/typecheck/build passed",
-            "PostgreSQL 17.6 migration round-trip and 83 RLS policies",
-            "22 traceability self-tests passed"
+            "PostgreSQL 17.6 migration round-trip and 84 RLS policies",
+            "external unknown blocks and reconciles"
           ]
         },
         "live": {
@@ -1124,7 +1124,7 @@
         },
         {
           "path": "services/core/tests/integration/test_w13_datasets.py",
-          "sha256": "d36a3e43344473747934cefeae27456d3a6dc1063b99fba6f33373a01b6fbdc3"
+          "sha256": "5d5113ac167ddf43148c7d143ed557e0de754e316152fd27c561809a3cb1f161"
         },
         {
           "path": "services/core/tests/integration/test_w14_export_api.py",
@@ -1182,11 +1182,11 @@
         "services/core/requirements.lock",
         "Makefile"
       ],
-      "source_tree_git_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
-      "source_tree_worktree_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
+      "source_tree_git_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
+      "source_tree_worktree_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
       "artifact_hashes": {
-        "docs/w01-w18-delivery-status.md": "c551aa597a860a33ada1454cee0bc5e4abdee1c49f2488246202e41e8a31afb0",
-        "docs/w01-w18-validation.md": "1dba14fa33c7106c9c44f8e60da4cbb756cf784bc6ce86b9f2121226684a4bd1",
+        "docs/w01-w18-delivery-status.md": "9cb55ba339145093d87de5588645dfb3ffc7484f228795b1cae0f2685df5982a",
+        "docs/w01-w18-validation.md": "701cff84ea8bbac4658fa89cf0cefb17808bb4871d20aa1e8e431ab36da28bbc",
         "docs/w13-handoff.md": "e74a4675e2960f7f5dc89d37d2655cd423a88de96c58eff97c2ecaea5b6bf6c8",
         "docs/w14-export-previews.png": "3e4be13f8cc7268c52e57a968d513d5ec21eba9b81001a8eff89cca2c6f92a9b",
         "docs/w14-handoff.md": "abfed8836b4a28de6e5ecf469abed96ba2215f0d69e9ac8f4855f47540ed3660",
@@ -1194,16 +1194,16 @@
         "docs/w15-mail-overview.png": "60ac0e21fc0050f8d7039b28671d01295ae6a5db35c50b53f0f0d17236c27166",
         "docs/w16-external-overview.png": "546bd7ee36e54ef3fa949da036a94c4c8222fbeb50ae9d04db67cf2418c69f17",
         "docs/w16-handoff.md": "17f0b77898503ed10e41b16e1b68f76c0097c26266ed393184ffd156b6b5fdb8",
-        "traceability/logs/build-web-final.log": "d270b281c853a4a6e476d8d1e210497f777bbe830b4f58781afe67fcbd9a88b1",
-        "traceability/logs/database-invariants-final.log": "ab72314244d558ca3d8d4a210fec8e7a724f5fe8d325e3242e6eeb70cb1a43fc",
+        "traceability/logs/build-web-final.log": "8cc981847727d31bbd61798d8dea1736b6ab3a650664abf5fc9691b1d0411444",
+        "traceability/logs/database-invariants-final.log": "cd3ce006974499337a6f5a45fe2f2f3901d8137c0ba965c30e5e2eb1b88f99e3",
         "traceability/logs/lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
         "traceability/logs/lint-web-final.log": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
-        "traceability/logs/migration-final.log": "8a3322fbea554b6d4946adf0a841c592e85fb97323f829cea471c718b4d26e97",
-        "traceability/logs/mypy-final.log": "79b3c8416f9f9d31149254e4dbffb8ffc7ddc4950d295c2ec7f2ec31e27c95e1",
-        "traceability/logs/pytest-final.log": "6a725815ee94c3db25b4074b9f6d1617be28e0b3111f2e24b127927a6a765afa",
-        "traceability/logs/pytest-final.xml": "399eed6fd5003fb86c5ace7f54f0433bbced4195d4536951484041af543796d0",
+        "traceability/logs/migration-final.log": "2e6f3aa55576387fd972f3f452420cb0eb4647fa8cd2020575e898cd81e458cf",
+        "traceability/logs/mypy-final.log": "749c760efef02805f6b5a0336f3a75504bd2c15fdd98962720faca6c94956f55",
+        "traceability/logs/pytest-final.log": "2a00735029d2729fda3198a95be609c058ce937cc8cf83e6ea202e4a3b560ec4",
+        "traceability/logs/pytest-final.xml": "b2b60dbab692cc2a75b62a152a33432ab7c7f1df2a86a6675120311ee8cb861a",
         "traceability/logs/trace-check-final.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9",
-        "traceability/logs/trace-tests-final.log": "6be8e3bc8175c696e736d872a4ee85cf490b2680c7e1e2063f984f46e3196d55",
+        "traceability/logs/trace-tests-final.log": "f90ae83ab319fb466673c58f456eea987473b66889b3d4802e1947698d47076a",
         "traceability/logs/typecheck-web-final.log": "99d7c2179cdd316467c51f37901025a0753453664d741214ba56fc631fa6c0bc"
       }
     },
@@ -1262,16 +1262,16 @@
         "AT-031",
         "AT-034"
       ],
-      "source_commit": "6c855153e900a75595ee2a7273dc1b2ebc31f9f6",
+      "source_commit": "f488d5b5b167174c2b88f566ee6ddd31d49ff190",
       "result": "passed",
       "scope": "Mock/local verification for W17–W18; no live or real-world claim.",
       "commands": [
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_6c85515 uv run --frozen alembic upgrade head && ... downgrade c8f1a6d3e720 && ... upgrade head && ... current",
+          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_w20 uv run --frozen alembic upgrade head && ... downgrade d9a7e3f1b420 && ... upgrade head && ... current",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:28Z",
-          "finished_at": "2026-11-01T00:03:30Z",
+          "started_at": "2026-11-01T00:31:43Z",
+          "finished_at": "2026-11-01T00:31:45Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/migration-final.log"
@@ -1281,8 +1281,8 @@
           "cwd": ".",
           "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test MEDICAL_ONE_OFFICE_SOFFICE_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm uv run --project services/core --frozen pytest services/core/tests -ra --junitxml=traceability/logs/pytest-final.xml",
           "mode": "mock+real_postgresql+office",
-          "started_at": "2026-11-01T00:02:49Z",
-          "finished_at": "2026-11-01T00:03:18Z",
+          "started_at": "2026-11-01T00:31:09Z",
+          "finished_at": "2026-11-01T00:31:38Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/pytest-final.log",
@@ -1293,8 +1293,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen ruff check services/core",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:50Z",
-          "finished_at": "2026-11-01T00:02:50Z",
+          "started_at": "2026-11-01T00:31:10Z",
+          "finished_at": "2026-11-01T00:31:10Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-core-final.log"
@@ -1304,8 +1304,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen mypy services/core/src",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:51Z",
-          "finished_at": "2026-11-01T00:02:52Z",
+          "started_at": "2026-11-01T00:31:11Z",
+          "finished_at": "2026-11-01T00:31:11Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/mypy-final.log"
@@ -1315,8 +1315,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web lint",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:26Z",
-          "finished_at": "2026-11-01T00:03:29Z",
+          "started_at": "2026-11-01T00:31:41Z",
+          "finished_at": "2026-11-01T00:31:44Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-web-final.log"
@@ -1326,8 +1326,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web typecheck",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:33Z",
-          "finished_at": "2026-11-01T00:03:34Z",
+          "started_at": "2026-11-01T00:31:48Z",
+          "finished_at": "2026-11-01T00:31:50Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/typecheck-web-final.log"
@@ -1337,8 +1337,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH NEXT_TELEMETRY_DISABLED=1 pnpm --dir apps/web build",
           "mode": "frontend_build",
-          "started_at": "2026-11-01T00:03:38Z",
-          "finished_at": "2026-11-01T00:03:40Z",
+          "started_at": "2026-11-01T00:31:53Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/build-web-final.log"
@@ -1346,10 +1346,10 @@
         },
         {
           "cwd": ".",
-          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_6c85515 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname in (policy tables) and relrowsecurity and relforcerowsecurity;\"",
+          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_w20 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname=reliability_evaluations and relrowsecurity and relforcerowsecurity;\"",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:39Z",
-          "finished_at": "2026-11-01T00:03:39Z",
+          "started_at": "2026-11-01T00:31:54Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/database-invariants-final.log"
@@ -1359,8 +1359,8 @@
           "cwd": ".",
           "command": "python3 tools/test_traceability.py",
           "mode": "git_evidence_structure",
-          "started_at": "2026-11-01T00:03:44Z",
-          "finished_at": "2026-11-01T00:05:14Z",
+          "started_at": "2026-11-01T00:37:22Z",
+          "finished_at": "2026-11-01T03:52:05Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/trace-tests-final.log"
@@ -1371,10 +1371,10 @@
         "mock": {
           "status": "passed",
           "evidence": [
-            "118 backend tests passed with 0 skipped locally",
+            "123 backend tests passed with 0 skipped locally",
             "frontend lint/typecheck/build passed",
-            "PostgreSQL 17.6 migration round-trip and 83 RLS policies",
-            "22 traceability self-tests passed"
+            "PostgreSQL 17.6 migration round-trip and 84 RLS policies",
+            "external unknown blocks and reconciles"
           ]
         },
         "live": {
@@ -1401,7 +1401,7 @@
         },
         {
           "path": "services/core/src/medical_one_person/application/recovery.py",
-          "sha256": "2e37677683c16df331e9f7c0a9d1c4e89cfc34765665c722df1783677f37ef76"
+          "sha256": "6e20bf3fda8473e0ba9a8ab5853489438f299514a85ecb1d131f6567a8c7e2fc"
         },
         {
           "path": "services/core/src/medical_one_person/application/recovery_database.py",
@@ -1441,11 +1441,11 @@
         },
         {
           "path": "services/core/tests/integration/test_w17_audit_service.py",
-          "sha256": "790ef2865680a4598892a47b10039adbff8183aa44b30e62326434ca7ff1aea4"
+          "sha256": "63c2d0f2e29a9b99546d7f712f446062b85ad7f844b439a7cdc3830a7a2d5be2"
         },
         {
           "path": "services/core/tests/integration/test_w18_recovery_service.py",
-          "sha256": "9bc30884cb5b54fdbb6b1e2865b4ce7b6dcc0a2dc7da95129279aa59824dfce3"
+          "sha256": "258cdc5fdaa15f4f43941efee7ebe191673f17e480c189355f9ac5cfb66d793e"
         }
       ],
       "artifacts": [
@@ -1489,26 +1489,26 @@
         "services/core/requirements.lock",
         "Makefile"
       ],
-      "source_tree_git_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
-      "source_tree_worktree_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
+      "source_tree_git_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
+      "source_tree_worktree_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
       "artifact_hashes": {
-        "docs/w01-w18-delivery-status.md": "c551aa597a860a33ada1454cee0bc5e4abdee1c49f2488246202e41e8a31afb0",
-        "docs/w01-w18-validation.md": "1dba14fa33c7106c9c44f8e60da4cbb756cf784bc6ce86b9f2121226684a4bd1",
+        "docs/w01-w18-delivery-status.md": "9cb55ba339145093d87de5588645dfb3ffc7484f228795b1cae0f2685df5982a",
+        "docs/w01-w18-validation.md": "701cff84ea8bbac4658fa89cf0cefb17808bb4871d20aa1e8e431ab36da28bbc",
         "docs/w17-audit-overview.png": "f0089d7eb53e4c92995f518fb0d5b945475e3ba2ec8603c75d5cc21af3f4bdca",
         "docs/w17-handoff.md": "d91d5f63223099db31e7276a15cf3348355760127de08a6ac4852fe910832b9e",
         "docs/w18-handoff.md": "7ae35ff40c7d4acffe389e2841e637bbabc121d20d7ef02d7818e44d7ef39a65",
         "docs/w18-recovery-backup.png": "ebc0b9756aed90078a6d661964ce6ed26fd8e8d60946510b085aba5ad731a23f",
         "docs/w18-recovery-overview.png": "08314df6bb239503e6b4d2bfaa0d261ef6d7e08e2fc55e9f1d692b8374c5a4c7",
-        "traceability/logs/build-web-final.log": "d270b281c853a4a6e476d8d1e210497f777bbe830b4f58781afe67fcbd9a88b1",
-        "traceability/logs/database-invariants-final.log": "ab72314244d558ca3d8d4a210fec8e7a724f5fe8d325e3242e6eeb70cb1a43fc",
+        "traceability/logs/build-web-final.log": "8cc981847727d31bbd61798d8dea1736b6ab3a650664abf5fc9691b1d0411444",
+        "traceability/logs/database-invariants-final.log": "cd3ce006974499337a6f5a45fe2f2f3901d8137c0ba965c30e5e2eb1b88f99e3",
         "traceability/logs/lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
         "traceability/logs/lint-web-final.log": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
-        "traceability/logs/migration-final.log": "8a3322fbea554b6d4946adf0a841c592e85fb97323f829cea471c718b4d26e97",
-        "traceability/logs/mypy-final.log": "79b3c8416f9f9d31149254e4dbffb8ffc7ddc4950d295c2ec7f2ec31e27c95e1",
-        "traceability/logs/pytest-final.log": "6a725815ee94c3db25b4074b9f6d1617be28e0b3111f2e24b127927a6a765afa",
-        "traceability/logs/pytest-final.xml": "399eed6fd5003fb86c5ace7f54f0433bbced4195d4536951484041af543796d0",
+        "traceability/logs/migration-final.log": "2e6f3aa55576387fd972f3f452420cb0eb4647fa8cd2020575e898cd81e458cf",
+        "traceability/logs/mypy-final.log": "749c760efef02805f6b5a0336f3a75504bd2c15fdd98962720faca6c94956f55",
+        "traceability/logs/pytest-final.log": "2a00735029d2729fda3198a95be609c058ce937cc8cf83e6ea202e4a3b560ec4",
+        "traceability/logs/pytest-final.xml": "b2b60dbab692cc2a75b62a152a33432ab7c7f1df2a86a6675120311ee8cb861a",
         "traceability/logs/trace-check-final.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9",
-        "traceability/logs/trace-tests-final.log": "6be8e3bc8175c696e736d872a4ee85cf490b2680c7e1e2063f984f46e3196d55",
+        "traceability/logs/trace-tests-final.log": "f90ae83ab319fb466673c58f456eea987473b66889b3d4802e1947698d47076a",
         "traceability/logs/typecheck-web-final.log": "99d7c2179cdd316467c51f37901025a0753453664d741214ba56fc631fa6c0bc"
       }
     },
@@ -1554,16 +1554,16 @@
         "AT-030",
         "AT-032"
       ],
-      "source_commit": "6c855153e900a75595ee2a7273dc1b2ebc31f9f6",
+      "source_commit": "f488d5b5b167174c2b88f566ee6ddd31d49ff190",
       "result": "passed",
       "scope": "Mock and real PostgreSQL verification for C01 and W19; no live or real-world claim.",
       "commands": [
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_6c85515 uv run --frozen alembic upgrade head && ... downgrade c8f1a6d3e720 && ... upgrade head && ... current",
+          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_w20 uv run --frozen alembic upgrade head && ... downgrade d9a7e3f1b420 && ... upgrade head && ... current",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:28Z",
-          "finished_at": "2026-11-01T00:03:30Z",
+          "started_at": "2026-11-01T00:31:43Z",
+          "finished_at": "2026-11-01T00:31:45Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/migration-final.log"
@@ -1573,8 +1573,8 @@
           "cwd": ".",
           "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test MEDICAL_ONE_OFFICE_SOFFICE_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm uv run --project services/core --frozen pytest services/core/tests -ra --junitxml=traceability/logs/pytest-final.xml",
           "mode": "mock+real_postgresql+office",
-          "started_at": "2026-11-01T00:02:49Z",
-          "finished_at": "2026-11-01T00:03:18Z",
+          "started_at": "2026-11-01T00:31:09Z",
+          "finished_at": "2026-11-01T00:31:38Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/pytest-final.log",
@@ -1585,8 +1585,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen ruff check services/core",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:50Z",
-          "finished_at": "2026-11-01T00:02:50Z",
+          "started_at": "2026-11-01T00:31:10Z",
+          "finished_at": "2026-11-01T00:31:10Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-core-final.log"
@@ -1596,8 +1596,8 @@
           "cwd": ".",
           "command": "uv run --project services/core --frozen mypy services/core/src",
           "mode": "static",
-          "started_at": "2026-11-01T00:02:51Z",
-          "finished_at": "2026-11-01T00:02:52Z",
+          "started_at": "2026-11-01T00:31:11Z",
+          "finished_at": "2026-11-01T00:31:11Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/mypy-final.log"
@@ -1607,8 +1607,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web lint",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:26Z",
-          "finished_at": "2026-11-01T00:03:29Z",
+          "started_at": "2026-11-01T00:31:41Z",
+          "finished_at": "2026-11-01T00:31:44Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/lint-web-final.log"
@@ -1618,8 +1618,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH pnpm --dir apps/web typecheck",
           "mode": "frontend_static",
-          "started_at": "2026-11-01T00:03:33Z",
-          "finished_at": "2026-11-01T00:03:34Z",
+          "started_at": "2026-11-01T00:31:48Z",
+          "finished_at": "2026-11-01T00:31:50Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/typecheck-web-final.log"
@@ -1629,8 +1629,8 @@
           "cwd": ".",
           "command": "PATH=node-runtime:$PATH NEXT_TELEMETRY_DISABLED=1 pnpm --dir apps/web build",
           "mode": "frontend_build",
-          "started_at": "2026-11-01T00:03:38Z",
-          "finished_at": "2026-11-01T00:03:40Z",
+          "started_at": "2026-11-01T00:31:53Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/build-web-final.log"
@@ -1638,10 +1638,10 @@
         },
         {
           "cwd": ".",
-          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_6c85515 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname in (policy tables) and relrowsecurity and relforcerowsecurity;\"",
+          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_w20 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname=reliability_evaluations and relrowsecurity and relforcerowsecurity;\"",
           "mode": "real_postgresql",
-          "started_at": "2026-11-01T00:03:39Z",
-          "finished_at": "2026-11-01T00:03:39Z",
+          "started_at": "2026-11-01T00:31:54Z",
+          "finished_at": "2026-11-01T00:31:54Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/database-invariants-final.log"
@@ -1651,8 +1651,8 @@
           "cwd": ".",
           "command": "python3 tools/test_traceability.py",
           "mode": "git_evidence_structure",
-          "started_at": "2026-11-01T00:03:44Z",
-          "finished_at": "2026-11-01T00:05:14Z",
+          "started_at": "2026-11-01T00:37:22Z",
+          "finished_at": "2026-11-01T03:52:05Z",
           "exit_code": 0,
           "artifacts": [
             "traceability/logs/trace-tests-final.log"
@@ -1663,10 +1663,10 @@
         "mock": {
           "status": "passed",
           "evidence": [
-            "118 backend tests passed with 0 skipped locally",
+            "123 backend tests passed with 0 skipped locally",
             "frontend lint/typecheck/build passed",
-            "PostgreSQL 17.6 migration round-trip and 83 RLS policies",
-            "22 traceability self-tests passed"
+            "PostgreSQL 17.6 migration round-trip and 84 RLS policies",
+            "external unknown blocks and reconciles"
           ]
         },
         "live": {
@@ -1762,25 +1762,286 @@
         "services/core/requirements.lock",
         "Makefile"
       ],
-      "source_tree_git_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
-      "source_tree_worktree_sha256": "e802d9f85fa3095cacf805d2e99b65173cdccefcf73e8196783e53adba1643ad",
+      "source_tree_git_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
+      "source_tree_worktree_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
       "artifact_hashes": {
         "docs/w19-handoff.md": "c1f859452856637c7c0966112ef2a5d58b366e3e18a25289e01c38a5c866eb29",
-        "traceability/logs/build-web-final.log": "d270b281c853a4a6e476d8d1e210497f777bbe830b4f58781afe67fcbd9a88b1",
-        "traceability/logs/database-invariants-final.log": "ab72314244d558ca3d8d4a210fec8e7a724f5fe8d325e3242e6eeb70cb1a43fc",
+        "traceability/logs/build-web-final.log": "8cc981847727d31bbd61798d8dea1736b6ab3a650664abf5fc9691b1d0411444",
+        "traceability/logs/database-invariants-final.log": "cd3ce006974499337a6f5a45fe2f2f3901d8137c0ba965c30e5e2eb1b88f99e3",
         "traceability/logs/lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
         "traceability/logs/lint-web-final.log": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
-        "traceability/logs/migration-final.log": "8a3322fbea554b6d4946adf0a841c592e85fb97323f829cea471c718b4d26e97",
-        "traceability/logs/mypy-final.log": "79b3c8416f9f9d31149254e4dbffb8ffc7ddc4950d295c2ec7f2ec31e27c95e1",
-        "traceability/logs/pytest-final.log": "6a725815ee94c3db25b4074b9f6d1617be28e0b3111f2e24b127927a6a765afa",
-        "traceability/logs/pytest-final.xml": "399eed6fd5003fb86c5ace7f54f0433bbced4195d4536951484041af543796d0",
+        "traceability/logs/migration-final.log": "2e6f3aa55576387fd972f3f452420cb0eb4647fa8cd2020575e898cd81e458cf",
+        "traceability/logs/mypy-final.log": "749c760efef02805f6b5a0336f3a75504bd2c15fdd98962720faca6c94956f55",
+        "traceability/logs/pytest-final.log": "2a00735029d2729fda3198a95be609c058ce937cc8cf83e6ea202e4a3b560ec4",
+        "traceability/logs/pytest-final.xml": "b2b60dbab692cc2a75b62a152a33432ab7c7f1df2a86a6675120311ee8cb861a",
         "traceability/logs/trace-check-final.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9",
-        "traceability/logs/trace-tests-final.log": "6be8e3bc8175c696e736d872a4ee85cf490b2680c7e1e2063f984f46e3196d55",
+        "traceability/logs/trace-tests-final.log": "f90ae83ab319fb466673c58f456eea987473b66889b3d4802e1947698d47076a",
+        "traceability/logs/typecheck-web-final.log": "99d7c2179cdd316467c51f37901025a0753453664d741214ba56fc631fa6c0bc"
+      }
+    },
+    {
+      "id": "ACC-W20-RELIABILITY-REGRESSION",
+      "requirements": [
+        "RQ-002",
+        "RQ-005",
+        "RQ-027",
+        "RQ-029"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-03",
+        "TR-04",
+        "TR-05",
+        "TR-06",
+        "TR-07",
+        "TR-10",
+        "TR-11",
+        "TR-12",
+        "TR-13",
+        "TR-14",
+        "TR-15",
+        "TR-16",
+        "TR-17",
+        "TR-18",
+        "TR-20",
+        "TR-21",
+        "TR-23",
+        "TR-24"
+      ],
+      "work_packages": [
+        "W02",
+        "W03",
+        "W04",
+        "W05",
+        "W10",
+        "W15",
+        "W16",
+        "W18",
+        "W20",
+        "W21"
+      ],
+      "acceptance_refs": [
+        "AT-002",
+        "AT-005",
+        "AT-027",
+        "AT-029"
+      ],
+      "source_commit": "f488d5b5b167174c2b88f566ee6ddd31d49ff190",
+      "result": "passed",
+      "scope": "Mock/local real-PostgreSQL W20 regression; no production load or real external side effect.",
+      "commands": [
+        {
+          "cwd": "services/core",
+          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_final_w20 uv run --frozen alembic upgrade head && ... downgrade d9a7e3f1b420 && ... upgrade head && ... current",
+          "mode": "real_postgresql",
+          "started_at": "2026-11-01T00:31:43Z",
+          "finished_at": "2026-11-01T00:31:45Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/migration-final.log"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test MEDICAL_ONE_OFFICE_SOFFICE_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm uv run --project services/core --frozen pytest services/core/tests -ra --junitxml=traceability/logs/pytest-final.xml",
+          "mode": "mock+real_postgresql+office",
+          "started_at": "2026-11-01T00:31:09Z",
+          "finished_at": "2026-11-01T00:31:38Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/pytest-final.log",
+            "traceability/logs/pytest-final.xml"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "uv run --project services/core --frozen ruff check services/core",
+          "mode": "static",
+          "started_at": "2026-11-01T00:31:10Z",
+          "finished_at": "2026-11-01T00:31:10Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/lint-core-final.log"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "uv run --project services/core --frozen mypy services/core/src",
+          "mode": "static",
+          "started_at": "2026-11-01T00:31:11Z",
+          "finished_at": "2026-11-01T00:31:11Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/mypy-final.log"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "PATH=node-runtime:$PATH pnpm --dir apps/web lint",
+          "mode": "frontend_static",
+          "started_at": "2026-11-01T00:31:41Z",
+          "finished_at": "2026-11-01T00:31:44Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/lint-web-final.log"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "PATH=node-runtime:$PATH pnpm --dir apps/web typecheck",
+          "mode": "frontend_static",
+          "started_at": "2026-11-01T00:31:48Z",
+          "finished_at": "2026-11-01T00:31:50Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/typecheck-web-final.log"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "PATH=node-runtime:$PATH NEXT_TELEMETRY_DISABLED=1 pnpm --dir apps/web build",
+          "mode": "frontend_build",
+          "started_at": "2026-11-01T00:31:53Z",
+          "finished_at": "2026-11-01T00:31:54Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/build-web-final.log"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "psql -h 127.0.0.1 -p 55432 -U postgres -d medical_one_final_w20 -Atc \"select current_setting(server_version); select count(*) from pg_policies where schemaname=public; select count(*) from pg_class where relname=reliability_evaluations and relrowsecurity and relforcerowsecurity;\"",
+          "mode": "real_postgresql",
+          "started_at": "2026-11-01T00:31:54Z",
+          "finished_at": "2026-11-01T00:31:54Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/database-invariants-final.log"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "python3 tools/test_traceability.py",
+          "mode": "git_evidence_structure",
+          "started_at": "2026-11-01T00:37:22Z",
+          "finished_at": "2026-11-01T03:52:05Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/trace-tests-final.log"
+          ]
+        }
+      ],
+      "validation_levels": {
+        "mock": {
+          "status": "passed",
+          "evidence": [
+            "123 backend tests passed with 0 skipped locally",
+            "30 parallel budget reservations capped atomically",
+            "tool audit and task/job correlation verified",
+            "external send outcome_unknown blocked and reconciled",
+            "task list p95 under configured threshold"
+          ]
+        },
+        "live": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "human_expert": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "real_outsourcing": {
+          "status": "not_run",
+          "evidence": []
+        }
+      },
+      "code_paths": [
+        {
+          "path": "services/core/src/medical_one_person/domain/reliability.py",
+          "sha256": "964bfb1e18477e37299bed95cab3620bec8453a581e49918150c6c7f81ef6110"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/reliability.py",
+          "sha256": "081c5818fa0d302b2e6ea4d1de24c40c50fdbaf1036653a722febcf75c5b47cb"
+        },
+        {
+          "path": "services/core/src/medical_one_person/api/reliability.py",
+          "sha256": "108a67ccc737a8518d43c811fa0a3b5767d62f24c01bce77970a39ffa7ba9013"
+        },
+        {
+          "path": "services/core/src/medical_one_person/infrastructure/tool_gateway.py",
+          "sha256": "98b347c3debbc37fd2019e68f5fd0cd12789e509566bd9979b1f0cb5c260e596"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/budgets.py",
+          "sha256": "d71ec4db3e5b9757cbe1f86007a9ebfbd7eeb30d8cbe7416149020a72b999dc4"
+        },
+        {
+          "path": "services/core/migrations/versions/e3b8c4d5f601_w20_reliability_regression.py",
+          "sha256": "028b8b850ab37b864f97de87776bf7ff579fcdb832a6539f4be68851063ae1ad"
+        },
+        {
+          "path": "services/core/tests/integration/test_w20_reliability.py",
+          "sha256": "6930f340f6480fee8c8773b5ba400c20333a2ff717148f18ba4ed33dd674ce4f"
+        },
+        {
+          "path": "docs/w20-reliability-report.md",
+          "sha256": "a36543ff73a0b46c35621d97d1a2522fb46f52574e97d04292074b1edad62f44"
+        }
+      ],
+      "artifacts": [
+        "docs/w20-reliability-report.md",
+        "traceability/logs/build-web-final.log",
+        "traceability/logs/database-invariants-final.log",
+        "traceability/logs/lint-core-final.log",
+        "traceability/logs/lint-web-final.log",
+        "traceability/logs/migration-final.log",
+        "traceability/logs/mypy-final.log",
+        "traceability/logs/pytest-final.log",
+        "traceability/logs/pytest-final.xml",
+        "traceability/logs/trace-check-final.log",
+        "traceability/logs/trace-tests-final.log",
+        "traceability/logs/typecheck-web-final.log"
+      ],
+      "uncovered": [
+        "production load and sustained concurrency",
+        "forced worker/database restart matrix",
+        "live models, real email and real external side effects"
+      ],
+      "source_scope": [
+        "services/core/src",
+        "services/core/migrations",
+        "services/core/tests",
+        "config",
+        "apps/web/src",
+        "schemas",
+        "fixtures",
+        "package.json",
+        "pnpm-lock.yaml",
+        "services/core/pyproject.toml",
+        "services/core/uv.lock",
+        "services/core/requirements.lock",
+        "Makefile"
+      ],
+      "source_tree_git_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
+      "source_tree_worktree_sha256": "e18a62310e9e6673cd6ba1da565ee7fad0767332d3d8a5da0c5c98752a8aeb12",
+      "artifact_hashes": {
+        "docs/w20-reliability-report.md": "a36543ff73a0b46c35621d97d1a2522fb46f52574e97d04292074b1edad62f44",
+        "traceability/logs/build-web-final.log": "8cc981847727d31bbd61798d8dea1736b6ab3a650664abf5fc9691b1d0411444",
+        "traceability/logs/database-invariants-final.log": "cd3ce006974499337a6f5a45fe2f2f3901d8137c0ba965c30e5e2eb1b88f99e3",
+        "traceability/logs/lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+        "traceability/logs/lint-web-final.log": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
+        "traceability/logs/migration-final.log": "2e6f3aa55576387fd972f3f452420cb0eb4647fa8cd2020575e898cd81e458cf",
+        "traceability/logs/mypy-final.log": "749c760efef02805f6b5a0336f3a75504bd2c15fdd98962720faca6c94956f55",
+        "traceability/logs/pytest-final.log": "2a00735029d2729fda3198a95be609c058ce937cc8cf83e6ea202e4a3b560ec4",
+        "traceability/logs/pytest-final.xml": "b2b60dbab692cc2a75b62a152a33432ab7c7f1df2a86a6675120311ee8cb861a",
+        "traceability/logs/trace-check-final.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9",
+        "traceability/logs/trace-tests-final.log": "f90ae83ab319fb466673c58f456eea987473b66889b3d4802e1947698d47076a",
         "traceability/logs/typecheck-web-final.log": "99d7c2179cdd316467c51f37901025a0753453664d741214ba56fc631fa6c0bc"
       }
     }
   ],
-  "source_commit": "6c855153e900a75595ee2a7273dc1b2ebc31f9f6",
-  "recorded_at": "2026-11-01T00:05:21.095560+00:00",
+  "source_commit": "f488d5b5b167174c2b88f566ee6ddd31d49ff190",
+  "recorded_at": "2026-11-01T03:52:16.075263+00:00",
   "evidence_relationship": "Each record binds commands and artifacts to source_commit. This evidence file may be committed after the tested source so the source SHA remains immutable."
 }
