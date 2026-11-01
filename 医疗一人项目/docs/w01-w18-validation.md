@@ -1,4 +1,4 @@
-# W01—W20 本地验收记录摘要
+# W01—W21 本地验收记录摘要
 
 被测源码：最终PR修复提交（由验收记录绑定）
 
@@ -10,7 +10,7 @@
 | --- | --- | --- | --- | --- |
 | Alembic升级到head→降到`d9a7e3f1b420`→再升级→current | `services/core` | 真实PostgreSQL 17.6 | 0 | head `e3b8c4d5f601` |
 | PostgreSQL版本与RLS计数 | 项目根目录 | 真实PostgreSQL 17.6 | 0 | `server_version=17.6`，84条RLS策略 |
-| `uv run --frozen pytest -ra --junitxml=...` | 项目根目录 | mock + 真实PostgreSQL/API，Office渲染 | 0 | 123 passed，0 skipped；1个Starlette TestClient弃用警告 |
+| `uv run --frozen pytest -ra --junitxml=...` | 项目根目录 | mock + 真实PostgreSQL/API，Office渲染 | 0 | 125 passed，0 skipped；1个Starlette TestClient弃用警告 |
 | `uv run --frozen ruff check .` | `services/core` | 静态检查 | 0 | passed |
 | `uv run --frozen mypy services/core/src` | 项目根目录 | 严格类型检查 | 0 | 118 source files，no issues |
 | `pnpm --dir apps/web lint` | 项目根目录 | Next.js/ESLint | 0 | passed；本地Node 24.22.1，CI锁定22.23.4 |
@@ -40,6 +40,8 @@
 - C01旧worker在新worker成功后不能重置run，成功output/输入快照/结束时间保持不变；
 - W20 task/job预算关联、30路并发上界、工具审计correlation、全链可靠性报告、
   外部发送unknown阻断与reconcile恢复、标准任务列表p95门；
+- W21两个隔离项目的选择、双计划派工、拒收重做、下游执行、外部合成交付、
+  真实XLSX文件、应用重启和停止；陈旧job不会阻塞同批下游任务；
 - W14实际Office/PDF文件、公式重算和页面渲染；
 - 前端生产构建与路由包含W17/W18页面。
 

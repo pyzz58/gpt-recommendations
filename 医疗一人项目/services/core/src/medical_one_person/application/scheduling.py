@@ -122,86 +122,95 @@ class JobQueue:
             )
             if task_ids is not None:
                 query = query.where(Job.task_id.in_(task_ids))
-            job = session.scalar(query)
-            if job is None:
-                return None
-            session.scalar(select(Project).where(Project.id == job.project_id).with_for_update())
-            task = session.scalar(select(Task).where(Task.id == job.task_id).with_for_update())
-            if task is None:
-                job.state = JobState.FAILED.value
-                job.last_error_code = "TASK_MISSING"
-                job.finished_at = now
-                return None
-            plan_status = session.scalar(
-                select(Plan.status)
-                .join(PlanNode, PlanNode.plan_id == Plan.id)
-                .where(PlanNode.task_id == task.id)
-            )
-            if plan_status is not None and plan_status != "active":
-                job.state = JobState.CANCELLED.value
-                job.last_error_code = "PLAN_NOT_ACTIVE"
-                job.finished_at = now
-                job.updated_at = now
-                return None
-            if task.state not in {TaskState.QUEUED.value, TaskState.REWORK.value}:
-                job.state = JobState.CANCELLED.value
-                job.last_error_code = "TASK_NOT_CLAIMABLE"
-                job.finished_at = now
-                return None
-            try:
-                require_current_task_inputs(task, session=session)
-                if active_audit_blockers(
-                    session,
-                    project_id=task.project_id,
-                    task_id=task.id,
-                ):
-                    raise TaskNotReadyError("Task has active independent audit blockers")
-            except TaskNotReadyError:
-                job.state = JobState.CANCELLED.value
-                job.last_error_code = "TASK_INPUT_STALE"
-                job.finished_at = now
-                job.updated_at = now
-                return None
+            jobs = session.scalars(query.limit(100)).all()
+            for job in jobs:
+                session.scalar(
+                    select(Project)
+                    .where(Project.id == job.project_id)
+                    .with_for_update()
+                )
+                task = session.scalar(
+                    select(Task).where(Task.id == job.task_id).with_for_update()
+                )
+                if task is None:
+                    job.state = JobState.FAILED.value
+                    job.last_error_code = "TASK_MISSING"
+                    job.finished_at = now
+                    continue
+                plan_status = session.scalar(
+                    select(Plan.status)
+                    .join(PlanNode, PlanNode.plan_id == Plan.id)
+                    .where(PlanNode.task_id == task.id)
+                )
+                if plan_status is not None and plan_status != "active":
+                    job.state = JobState.CANCELLED.value
+                    job.last_error_code = "PLAN_NOT_ACTIVE"
+                    job.finished_at = now
+                    job.updated_at = now
+                    continue
+                if task.state not in {TaskState.QUEUED.value, TaskState.REWORK.value}:
+                    job.state = JobState.CANCELLED.value
+                    job.last_error_code = "TASK_NOT_CLAIMABLE"
+                    job.finished_at = now
+                    job.updated_at = now
+                    continue
+                try:
+                    require_current_task_inputs(task, session=session)
+                    if active_audit_blockers(
+                        session,
+                        project_id=task.project_id,
+                        task_id=task.id,
+                    ):
+                        raise TaskNotReadyError(
+                            "Task has active independent audit blockers"
+                        )
+                except TaskNotReadyError:
+                    job.state = JobState.CANCELLED.value
+                    job.last_error_code = "TASK_INPUT_STALE"
+                    job.finished_at = now
+                    job.updated_at = now
+                    continue
 
-            job.state = JobState.RUNNING.value
-            job.lease_owner = worker_id
-            job.lease_until = now + timedelta(seconds=lease_seconds)
-            job.fence_token += 1
-            job.attempts += 1
-            job.updated_at = now
-            task_revision = _transition_task(
-                session,
-                task,
-                TaskState.RUNNING,
-                event_type="task.running",
-                now=now,
-            )
-            session.add(
-                TaskAttempt(
-                    id=uuid4(),
+                job.state = JobState.RUNNING.value
+                job.lease_owner = worker_id
+                job.lease_until = now + timedelta(seconds=lease_seconds)
+                job.fence_token += 1
+                job.attempts += 1
+                job.updated_at = now
+                task_revision = _transition_task(
+                    session,
+                    task,
+                    TaskState.RUNNING,
+                    event_type="task.running",
+                    now=now,
+                )
+                session.add(
+                    TaskAttempt(
+                        id=uuid4(),
+                        workspace_id=job.workspace_id,
+                        project_id=job.project_id,
+                        task_id=job.task_id,
+                        job_id=job.id,
+                        attempt_number=job.attempts,
+                        worker_id=worker_id,
+                        fence_token=job.fence_token,
+                        state=AttemptState.RUNNING.value,
+                        started_at=now,
+                    )
+                )
+                session.flush()
+                return JobClaim(
+                    job_id=job.id,
                     workspace_id=job.workspace_id,
                     project_id=job.project_id,
                     task_id=job.task_id,
-                    job_id=job.id,
-                    attempt_number=job.attempts,
                     worker_id=worker_id,
                     fence_token=job.fence_token,
-                    state=AttemptState.RUNNING.value,
-                    started_at=now,
+                    attempt_number=job.attempts,
+                    task_revision=task_revision,
+                    payload=dict(job.payload),
                 )
-            )
-            session.flush()
-            return JobClaim(
-                job_id=job.id,
-                workspace_id=job.workspace_id,
-                project_id=job.project_id,
-                task_id=job.task_id,
-                worker_id=worker_id,
-                fence_token=job.fence_token,
-                attempt_number=job.attempts,
-                task_revision=task_revision,
-                payload=dict(job.payload),
-            )
+            return None
 
     def heartbeat(
         self,

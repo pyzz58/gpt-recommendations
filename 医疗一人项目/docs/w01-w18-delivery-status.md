@@ -28,10 +28,11 @@
 | W18 | IMPLEMENTED | RQ-012、RQ-026、RQ-027、RQ-034 | AT-012、AT-026、AT-027、AT-034 | 离线门、回收站、索引重建、加密备份、输入失效 | PostgreSQL/API/页面/迁移测试 | 活动DB重放、异地、主机故障 |
 | W19 | IMPLEMENTED | RQ-001、RQ-030 | AT-001、AT-030 | 不可变PolicyBundle、运行绑定、影响传播、迁移账本 | PostgreSQL/API/页面/迁移测试 | 生产DDL、异地灾备、现实模式 |
 | W20 | IMPLEMENTED | RQ-002、RQ-005、RQ-027、RQ-029 | AT-002、AT-005、AT-027、AT-029 | 预算task/job关联、ToolAudit correlation、全链可靠性门、性能/故障回归 | PostgreSQL/API/并发/外部unknown测试 | 生产负载、真实DB重启、真实外部副作用 |
+| W21 | VERIFIED（mock/local链） | RQ-007、RQ-008、RQ-010、RQ-014、RQ-029 | AT-007、AT-008、AT-010、AT-014、AT-029 | 双项目选择/派工/退回/外部模拟/真实文件/重启/停止 | API/PostgreSQL/Office/PDF端到端 | live、真实机构、浏览器视觉全集 |
 
 ## 当前后续工作
 
-- W21—W23：PLANNED。跨项目端到端、live连接和部署发布尚未完成。
+- W22—W23：PLANNED。live连接和部署发布尚未完成。
 - W24：PREPARED。没有现实联系、授权、执行、原始交付或验收；见
   [W24试点档案](w24-pilot-charter.md)。
 - 当前分支不合并`main`。任何后续代码变化都要重新运行受影响验收并形成新证据；

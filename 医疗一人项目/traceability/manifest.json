@@ -307,8 +307,14 @@
         "services/core/src/medical_one_person/application/project_views.py",
         "services/core/tests/integration/test_w10_ui_api.py"
       ],
-      "implementation_status": "in_progress",
-      "source_sha256": "9bd6e5a1d92a2665e3ccbb8d2ab2173c8d8092332edf2a189bccec2b32a1ae80"
+      "implementation_status": "implemented",
+      "source_sha256": "9bd6e5a1d92a2665e3ccbb8d2ab2173c8d8092332edf2a189bccec2b32a1ae80",
+      "implementation_paths": [
+        "services/core/tests/integration/test_w21_end_to_end.py",
+        "services/core/src/medical_one_person/api/workspace.py",
+        "apps/web/src/app/projects/page.tsx",
+        "apps/web/src/components/project-shell.tsx"
+      ]
     },
     {
       "id": "RQ-008",
@@ -354,8 +360,14 @@
         "docs/w11-handoff.md",
         "docs/w12-handoff.md"
       ],
-      "implementation_status": "in_progress",
-      "source_sha256": "028f6a5d4078e49fdded14c112439c0635b951d28b926900adebc44be6259211"
+      "implementation_status": "implemented",
+      "source_sha256": "028f6a5d4078e49fdded14c112439c0635b951d28b926900adebc44be6259211",
+      "implementation_paths": [
+        "services/core/tests/integration/test_w21_end_to_end.py",
+        "services/core/src/medical_one_person/application/plans.py",
+        "services/core/src/medical_one_person/application/plan_execution.py",
+        "services/core/tests/integration/test_w11_plans.py"
+      ]
     },
     {
       "id": "RQ-009",
@@ -432,8 +444,14 @@
         "services/core/tests/integration/test_w11_plans.py",
         "services/core/tests/integration/test_w12_workflow_service.py"
       ],
-      "implementation_status": "in_progress",
-      "source_sha256": "c7197af14552c390cc545b1201fd52b18bea9926c1b779b26d2a61cd43c2a03b"
+      "implementation_status": "implemented",
+      "source_sha256": "c7197af14552c390cc545b1201fd52b18bea9926c1b779b26d2a61cd43c2a03b",
+      "implementation_paths": [
+        "services/core/tests/integration/test_w21_end_to_end.py",
+        "services/core/src/medical_one_person/application/plans.py",
+        "services/core/src/medical_one_person/application/plan_execution.py",
+        "services/core/tests/integration/test_w11_plans.py"
+      ]
     },
     {
       "id": "RQ-011",
@@ -578,8 +596,13 @@
         "services/core/tests/integration/test_w14_export_api.py",
         "docs/w14-handoff.md"
       ],
-      "implementation_status": "in_progress",
-      "source_sha256": "61d5eadef7613f12a8e640b2c7b60213ef76552b4b99acf01cc72f2f51cfff1d"
+      "implementation_status": "implemented",
+      "source_sha256": "61d5eadef7613f12a8e640b2c7b60213ef76552b4b99acf01cc72f2f51cfff1d",
+      "implementation_paths": [
+        "services/core/tests/integration/test_w21_end_to_end.py",
+        "services/core/src/medical_one_person/application/exports.py",
+        "services/core/tests/integration/test_w14_export_api.py"
+      ]
     },
     {
       "id": "RQ-015",
@@ -1134,15 +1157,17 @@
       "implementation_status": "implemented",
       "source_sha256": "a6f569eee21d7693def322c9b8ec51204693b60eb69d8a116cd14897feb3e30d",
       "implementation_paths": [
-        "services/core/src/medical_one_person/domain/reliability.py",
-        "services/core/src/medical_one_person/application/reliability.py",
-        "services/core/src/medical_one_person/api/reliability.py",
-        "services/core/src/medical_one_person/infrastructure/tool_gateway.py",
-        "services/core/src/medical_one_person/application/budgets.py",
+        "docs/w21-end-to-end-report.md",
         "services/core/migrations/versions/e3b8c4d5f601_w20_reliability_regression.py",
-        "services/core/tests/integration/test_w20_reliability.py",
+        "services/core/src/medical_one_person/api/reliability.py",
+        "services/core/src/medical_one_person/application/budgets.py",
         "services/core/src/medical_one_person/application/mail.py",
-        "services/core/tests/integration/test_w15_mail.py"
+        "services/core/src/medical_one_person/application/reliability.py",
+        "services/core/src/medical_one_person/domain/reliability.py",
+        "services/core/src/medical_one_person/infrastructure/tool_gateway.py",
+        "services/core/tests/integration/test_w15_mail.py",
+        "services/core/tests/integration/test_w20_reliability.py",
+        "services/core/tests/integration/test_w21_end_to_end.py"
       ]
     },
     {
@@ -2993,6 +3018,17 @@
         "RQ-029"
       ],
       "sha256": "a36543ff73a0b46c35621d97d1a2522fb46f52574e97d04292074b1edad62f44"
+    },
+    {
+      "path": "docs/w21-end-to-end-report.md",
+      "requirement_ids": [
+        "RQ-007",
+        "RQ-008",
+        "RQ-010",
+        "RQ-014",
+        "RQ-029"
+      ],
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
     }
   ]
 }
