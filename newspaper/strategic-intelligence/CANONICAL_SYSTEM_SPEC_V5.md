@@ -9945,6 +9945,22 @@ GitHub仓库/GitHub Actions、每周自动运行及只设开始时间已确认�
           "reviewer": "当前执行者实际离线检查四类短型路由、短稿独立Review/W15、深度主文加短更新整刊及角色反例；非真实稿型内容、独立L5、用户阅读或阶段批准",
           "result": "IN_PROGRESS",
           "scope": "W37离线路线：ArticleRoute绑定当前W23 COVER/研究准入、实际Article、W26精选材料、W25 Evidence、已刊Article或未刊Dossier及W34更正案卷；SOURCE_SELECTION要求材料/背景/限制，INITIAL_FACT禁止造假旧文，FOLLOW_UP须有先前没有的Evidence，CORRECTION须定位旧Article原句并绑定当前更正案卷。短稿走schema-v2独立Review/W15，不强配B1/B2/C。W32要求所有非封面条目绑定W23 placement，FEATURE只能DEEP_THEME，短型只能UPDATE，禁止深度/短稿仅改角色标签。七项W37回归覆盖精选、首次事实、已刊/未刊进展、更正、同刊深度+三项短更新、重复旧证据、错误旧引文及角色错置。真实四类稿型内容、真实独立审稿能力、用户阅读、W40更正完整链及G02未完成，整包IN_PROGRESS，不ACCEPTED。"
+        },
+        {
+          "record_id": "W37-CI-FIXTURE-TIME-20261101-001",
+          "artifact_refs": [
+            "tests_runtime/test_article_route.py",
+            "audits/w37-ci-fixture-time-20261101.json"
+          ],
+          "validation_refs": [
+            "tests_runtime/test_article_route.py (7 actual passing W37 tests)",
+            "tests_runtime (301 actual passing tests)",
+            "tests (52 actual passing maintenance tests)",
+            "audits/w37-ci-fixture-time-20261101.json"
+          ],
+          "reviewer": "当前执行者复现远端固定时间失败、确认is_current业务校验未变并重跑完整离线测试；非模块验收或阶段批准",
+          "result": "IN_PROGRESS",
+          "scope": "W37 CI假失败修复：原W15夹具在2026-11-01T00Z到期，CI于到期后按真实当前时间正确拒绝，并非业务回归。仅将W37测试中的有效许可改为远期固定UTC时间，保留AdoptionController.is_current的过期与依赖检查。七项W37定向、301项运行和52项维护测试通过。W37仍IN_PROGRESS；W41仍BLOCKED，六例与G01—G04状态不变，不启动W42。"
         }
       ],
       "reviewed_basis_sha256": "dceb55097570cf38429445e68511f476cdae0038d1f53b8d4ec182f65fe2de3e",

@@ -208,7 +208,7 @@ class SourceSelectionRouteTests(unittest.TestCase):
                 rationale="The exact opening sentence remains present.",
                 checked_at=BASE + timedelta(minutes=9, seconds=30)),),
             decision_reason="Owned source-selection content review.",
-            expires_at=BASE + timedelta(days=1),
+            expires_at=datetime(2099, 1, 1, tzinfo=timezone.utc),
             decided_at=BASE + timedelta(minutes=10)))
         return controller, result
 
@@ -636,7 +636,7 @@ class UpdateRouteIntegrationTests(unittest.TestCase):
             reviewed_scope=("W37_SHORT_FORM", "WEEKLY"),
             closures=(),
             decision_reason="Owned short-form content review.",
-            expires_at=self.time + timedelta(days=1),
+            expires_at=datetime(2099, 1, 1, tzinfo=timezone.utc),
             decided_at=self.time))
         return result
 

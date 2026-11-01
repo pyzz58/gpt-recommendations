@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "record_id": "W37-CI-FIXTURE-TIME-20261101-001",
+  "work_id": "W37",
+  "checked_at": "2026-11-01T13:32:20+13:00",
+  "source_commit": "1b938c5b36a5604845c4305b3cf0043d9d729de9",
+  "result": "VERIFIED_TEST_FIXTURE_ONLY",
+  "observed_failure": {
+    "location": "tests_runtime/test_article_route.py:241",
+    "test": "test_source_selection_uses_w26_material_and_shared_review_w15",
+    "message": "AssertionError: False is not true",
+    "cause": "The owned W15 fixture expired at 2026-11-01T00:00:00Z while the CI run evaluated is_current after that instant.",
+    "classification": "TIME_DEPENDENT_TEST_FIXTURE"
+  },
+  "change": {
+    "fixture_expiry": "Explicit far-future UTC expiry for the W37 SourceSelection review and the W37 update-route helper.",
+    "business_logic_unchanged": true,
+    "expiry_validation_retained": "AdoptionController.is_current() and its normal expiry/dependency checks were not changed.",
+    "test_file_sha256_after_fix": "27a202cdc499b1e12c07dc2ab6e5238ce00f9910f11cb31e5ebb3f1170aa8c28",
+    "adoption_file_sha256": "777d4c9b7209888890df41f6881838d2a5d13efbc01ecf8dc3f825e19268f8a9"
+  },
+  "validation": {
+    "runner": ".venv/bin/python (Python 3.12.14)",
+    "targeted_w37": {
+      "count": 7,
+      "result": "PASS"
+    },
+    "runtime_tests": {
+      "count": 301,
+      "result": "PASS",
+      "duration_seconds": 34.091
+    },
+    "maintenance_tests": {
+      "count": 52,
+      "result": "PASS",
+      "duration_seconds": 15.483
+    }
+  },
+  "unchanged_boundaries": {
+    "W37": "IN_PROGRESS",
+    "W41": "BLOCKED",
+    "G01_to_G04": "NOT_STARTED",
+    "W42": "NOT_STARTED",
+    "six_real_cases": false
+  },
+  "limits": [
+    "This record verifies only a deterministic test-fixture correction.",
+    "It does not accept W37, clear W41, create real cases, establish independent review, pass a stage gate or authorize W42.",
+    "Remote CI success must be confirmed separately after push."
+  ]
+}
