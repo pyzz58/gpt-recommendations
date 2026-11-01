@@ -34,9 +34,9 @@
 | CRA-S24 安全时限锚点 | CRA-R020、CRA-R042 | 知悉日期未提供时追问关键缺口；提醒不等报告签发。 | planned |
 | CRA-S25 分析引用不可核实 | CRA-R007、CRA-R009、CRA-R034 | 模型虚构条款编号时，证据验证拒绝该确定性结论并保留待核实内容。 | planned |
 | CRA-S26 ISF/TMF上次缺件已补 | CRA-R003、CRA-R024、CRA-R031 | 直接打开上传ISF/TMF目录作对照，无需先重录整本；用户确认补齐即更新简单状态并保留历史，新增要求可继续提醒。 | planned |
-| CRA-S27 访视信只选两条 | CRA-R025、CRA-R029、CRA-R043 | 从三条遗留选两条生成草稿，三条完整清单和状态均保持。 | planned |
-| CRA-S28 已签发报告不可静默变化 | CRA-R029、CRA-R030 | 问题后续完成只更新新材料和track；签发快照及其事实版本不变。 | planned |
-| CRA-S29 报告超出核查覆盖 | CRA-R028、CRA-R030、CRA-R034 | 仅检查某些患者或字段时，报告不得生成全中心所有数据无异常。 | planned |
+| CRA-S27 访视信只选两条 | CRA-R025、CRA-R029、CRA-R043 | 从三条遗留选两条生成草稿，三条完整清单和状态均保持。 | synthetic_validated |
+| CRA-S28 已签发报告不可静默变化 | CRA-R029、CRA-R030 | 问题后续完成只更新新材料和track；签发快照及其事实版本不变。 | synthetic_validated |
+| CRA-S29 报告超出核查覆盖 | CRA-R028、CRA-R030、CRA-R034 | 仅检查某些患者或字段时，报告不得生成全中心所有数据无异常。 | synthetic_validated |
 | CRA-S30 供应商变更不改业务数据 | CRA-R035、CRA-R036、CRA-R038 | 替换provider后复用已确认字段，权限和输出校验仍有效；无凭证不调用外部服务。 | planned |
 | CRA-S31 理论单独更新 | CRA-R039 | 修改一条理论而不更新技术复核指纹，检查必须失败并显示编号和模块。 | planned |
 | CRA-S32 技术同步漏模块或旧变更记录冒用 | CRA-R039 | 一条理论对应两模块时缺一复核即失败；旧指纹的记录不能覆盖新变更。 | planned |

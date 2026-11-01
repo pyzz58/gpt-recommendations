@@ -1,6 +1,6 @@
 # CRA-W11 implementation record
 
-Status: in progress pending task-specific GitHub Actions evidence.
+Status: verified.
 Date: 2026-11-01.
 
 ## Delivered behavior
@@ -52,11 +52,26 @@ Date: 2026-11-01.
 - `tests/integration/test_reports.py`: 3 passed with real PostgreSQL and real
   Office files.
 - Combined governance, rules, subjects, issues, carryover, EDC, laboratory,
-  recognition, safety, site-file, report and platform API suites: 85 passed.
+  recognition, safety, site-file, report and platform API suites: 86 passed.
 - Python unittest discovery: 49 passed.
 - Frontend: 17 passed; TypeScript and production build passed.
 - Synthetic only; no real template, clinical data, external send, signature or
   EDC write-back.
+
+## Authoritative execution
+
+- Tested source commit:
+  `874450d033fbfcda01f9c191e3a76fbfa7caf8c2`.
+- GitHub Actions run:
+  https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611
+- `cra-w11` job: PostgreSQL 18.6 migration and downgrade/upgrade round-trip;
+  3 report/Office acceptance tests; review-gate self-tests; OpenAPI drift check;
+  17 frontend tests; TypeScript and production build.
+- The same run passed all W01-W10 task jobs. Their current digests and
+  completion evidence were rebound to this source commit; prior evidence
+  remains in `completion_history`.
+- Closed findings 03/04/08 remain bound to successful job logs with exact
+  required test names.
 
 ## Remaining limits
 

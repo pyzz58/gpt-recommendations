@@ -307,8 +307,10 @@
         "CRA-R043"
       ],
       "expected": "从三条遗留选两条生成草稿，三条完整清单和状态均保持。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/W11_STATUS.md"
+      ]
     },
     {
       "id": "CRA-S28",
@@ -318,8 +320,10 @@
         "CRA-R030"
       ],
       "expected": "问题后续完成只更新新材料和track；签发快照及其事实版本不变。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/W11_STATUS.md"
+      ]
     },
     {
       "id": "CRA-S29",
@@ -330,8 +334,10 @@
         "CRA-R034"
       ],
       "expected": "仅检查某些患者或字段时，报告不得生成全中心所有数据无异常。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/W11_STATUS.md"
+      ]
     },
     {
       "id": "CRA-S30",
