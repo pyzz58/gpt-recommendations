@@ -7,6 +7,8 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from newsroom import SECTIONS,prepare_pool,select_readable
 from brief_editor import edit_article
 from digest import edition_window,BEIJING_TZ
+from production_policy import POLICY
+from verify_schedule import verify, list_workflow_crons
 
 class EditorialContract(unittest.TestCase):
     def test_approved_seven_sections(self):
@@ -45,21 +47,17 @@ class EditorialContract(unittest.TestCase):
         self.assertIn("not yet approved",result["reading_en"])
         self.assertTrue(result["source_map"])
 
-    def test_v2_midnight_cutoff_and_prepared_0100_send_schedule(self):
+    def test_midnight_cutoff_and_canonical_external_startup(self):
         start, end, day = edition_window(
             dt.datetime(2026, 10, 14, 0, 25, tzinfo=BEIJING_TZ))
         self.assertEqual((start.hour, end.hour), (0, 0))
         self.assertEqual(day, dt.date(2026, 10, 14))
         workflow = (Path(__file__).resolve().parent.parent /
                     ".github/workflows/newspaper.yml").read_text()
-        import re
-        schedules = re.findall(r"cron: '([0-9]+) ([0-9]+) [*] [*] [*]'", workflow)
-        self.assertGreaterEqual(len(schedules), 7)
-        beijing_minutes = [((int(hour) + 8) % 24) * 60 + int(minute)
-                           for minute, hour in schedules]
-        self.assertEqual(len(set(beijing_minutes)), len(schedules))
-        self.assertTrue(all(0 < minute <= 4*60 + 59 for minute in beijing_minutes))
-        self.assertLessEqual(min(beijing_minutes), 10)  # advance preparation
-        self.assertGreaterEqual(max(beijing_minutes), 4*60)  # same-day late send recovery
+        self.assertTrue(verify())
+        self.assertEqual(list_workflow_crons(), [])
+        self.assertEqual(POLICY["startup_mode"], "external-marker-push")
+        self.assertEqual(POLICY["startup_time_bjt"], "00:01")
+        self.assertIn(POLICY["startup_marker_path"], workflow)
 
 if __name__=="__main__": unittest.main()

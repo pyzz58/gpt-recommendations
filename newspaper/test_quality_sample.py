@@ -2,11 +2,11 @@
 import datetime as dt
 import unittest
 import sys
-import re
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from digest import quality_sample_window, edition_window, BEIJING_TZ
 from production_policy import POLICY
+from verify_schedule import verify, list_workflow_crons
 
 
 class QualitySampleTests(unittest.TestCase):
@@ -42,12 +42,16 @@ class QualitySampleTests(unittest.TestCase):
         w=self.workflow
         self.assertIn("python newspaper/digest.py --prepare --output /tmp/newspaper-ready",w)
         self.assertIn("python newspaper/prepared_delivery.py --bundle-dir /tmp/newspaper-ready",w)
-        schedules=re.findall(r"cron: '([0-9]+) ([0-9]+) [*] [*] [*]'",w)
-        self.assertEqual(schedules,[("1","16")])
-        local=[((int(h)+8)%24,int(m)) for m,h in schedules]
-        self.assertTrue(any(hr==0 for hr,_ in local))
-        self.assertTrue(all(hr==0 and m==1 for hr,m in local))
-        self.assertTrue(all(hr in (0,1,2,3,4) for hr,_ in local))
+        self.assertTrue(verify())
+        self.assertEqual(list_workflow_crons(), [])
+        self.assertEqual(POLICY["startup_mode"], "external-marker-push")
+        self.assertIn(POLICY["startup_marker_path"], w)
+        preparing=w.index("      - name: Prepare verified edition (no SMTP credentials)")
+        sending=w.index("      - name: Send verified edition via QQ SMTP")
+        self.assertLess(preparing,sending)
+        preparation=w[preparing:sending]
+        self.assertNotIn("secrets.NEWSPAPER_SMTP_PASSWORD",preparation)
+        self.assertIn("--prepare --output /tmp/newspaper-ready",preparation)
         self.assertNotIn("[newspaper-recovery-20261014]",w)
         self.assertNotIn("[newspaper-v05-send-once]",w)
 

@@ -64,6 +64,12 @@ PR 快速套件也接入 `test_selection_review` 和 `test_edition_budget`；正
 
 前一提交 `f55a261` 的 GitHub 完整检查 [Run 41716562527](https://github.com/pyzz58/gpt-recommendations/actions/runs/41716562527) 结果：quick_check 通过（102 tests，轻量环境跳过1项接线测试），完整套件运行201项、两项失败：`test_editorial_contract.test_v2_midnight_cutoff_and_prepared_0100_send_schedule` 与 `test_quality_sample.test_daily_prepares_then_sends_only_bundle`。二者仍断言旧 GitHub cron，而生产已采用外部启动；不是新增编辑代码的验收通过证据。此轮不修改定时模块，也不把完整 CI 写成绿色。
 
+### 继续收尾：旧断言修正与实时余额复查
+
+两条过期测试现已改为调用 `verify_schedule.verify()`，核对唯一权威 `production_policy.json`、外部启动标记和无原生 GitHub cron 的合同；午夜截稿、先准备后发送、准备步骤不持有 SMTP 密钥的断言继续保留。仅修测试，不更改定时或投递代码。修复后的完整 CI 结果以同一 PR 最新运行记录为准。
+
+2026-11-04 再次重跑原独立诊断 [Run 41712672677](https://github.com/pyzz58/gpt-recommendations/actions/runs/41712672677)，新 job `126289391371`：`balance_http=200`、`balance_available=false`、`result=INSUFFICIENT_BALANCE`。密钥通过认证，但尚无可用余额，因此本次仍未执行真实付费样刊，也没有发送测试邮件。该重跑使用已有一次性诊断记录，没有新增定时器或生产入口。
+
 2026-11-04 本会话独立诊断已确认日报 DeepSeek 凭据对应余额不可用，见 [Run 41712672677](https://github.com/pyzz58/gpt-recommendations/actions/runs/41712672677)。本轮没有取得充值后可用的证据，因此没有重放付费请求，也没有发送测试邮件。
 
 本轮发现的数字表示、短稿段数问题是可复现的误拒类别，**不能据此断言它们解释了此前所有生产拒稿**；生产逐稿原因以前没有汇总。
