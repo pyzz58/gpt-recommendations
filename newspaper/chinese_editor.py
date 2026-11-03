@@ -1,0 +1,107 @@
+"""Context-aware Chinese copy editing within the existing issue budget.
+
+Keeps English sentences/paragraph IDs unchanged. Structural/numeric checks are
+not full semantic verification; each failed article retains its MT draft.
+"""
+from __future__ import annotations
+from collections import Counter
+from decimal import Decimal
+import json
+import logging
+from pathlib import Path
+import re
+import requests
+from edition_budget import BudgetExhausted
+from translation_editor import polish_translation
+
+LOG = logging.getLogger("newspaper.chinese_editor")
+REJECTION_CODES = {"missing_sentences", "invalid_sentence_id", "invalid_translation_length",
+                   "changed_numbers", "translation_qa", "uncertainty_requires_review",
+                   "changed_percent_unit"}
+
+
+def _numbers(text):
+    # Unicode word boundaries would miss a digit immediately following Chinese.
+    return Counter(Decimal(n.replace(",", "")) for n in re.findall(
+        r"\d+(?:,\d{3})*(?:\.\d+)?", text))
+
+
+def edit_chinese_reports(grouped, key, ledger, *, transport=None, before_request=None):
+    """One request per article, no retries; keep the highest-impact stories first.
+
+    All calls use the same issue ledger. Shortage/oversized prompts fall back to
+    the already built draft; no new source fetching, translation model or service.
+    """
+    output = {section: [dict(a) for a in articles] for section, articles in grouped.items()}
+    if not key or ledger is None:
+        return output
+    system = Path(__file__).with_name("CHINESE_NEWS_EDITOR.md").read_text(encoding="utf-8")
+    articles = sorted((a for row in output.values() for a in row
+                       if a.get("source_language") != "zh" and a.get("bilingual_pairs")),
+                      key=lambda a: a.get("importance_score", 0), reverse=True)
+    for article in articles:
+        pairs = article["bilingual_pairs"]
+        records = [{"id": "title", "en": article["title"], "draft_zh": article.get("title_zh", "")}]
+        records.extend({"id": str(i), "paragraph": p.get("paragraph_id", 0),
+                        "en": p["en"], "draft_zh": p["zh"]} for i, p in enumerate(pairs))
+        messages = [{"role": "system", "content": system},
+                    {"role": "user", "content": json.dumps({"sentences": records}, ensure_ascii=False)}]
+        try:
+            raw = ledger.request(messages, 4200, key, purpose="chinese",
+                                 transport=transport, before_request=before_request)
+            translations = json.loads(raw)["translations"]
+            if not isinstance(translations, list) or len(translations) != len(records):
+                raise ValueError("missing_sentences")
+            by_id = {}
+            source = {r["id"]: r["en"] for r in records}
+            for item in translations:
+                identifier, text = item["id"], item["zh"]
+                if not isinstance(identifier, str) or identifier not in source or identifier in by_id:
+                    raise ValueError("invalid_sentence_id")
+                if not isinstance(text, str) or not text.strip() or len(text) > 8 * len(source[identifier]) + 100:
+                    raise ValueError("invalid_translation_length")
+                numeric_source = "\n".join(source.values()) if identifier == "title" else source[identifier]
+                numbers_ok = (_numbers(text) <= _numbers(numeric_source) if identifier == "title"
+                              else _numbers(text) == _numbers(numeric_source))
+                if not numbers_ok:
+                    raise ValueError("changed_numbers")
+                text, flags = polish_translation(source[identifier], text)
+                if flags or not re.search(r"[\u4e00-\u9fff]", text):
+                    raise ValueError("translation_qa")
+                if re.search(r"\b(?:may|might|could|possible|potential|preliminary|expected|subject to|unless)\b", source[identifier], re.I):
+                    if not re.search(r"可能|或许|可以|可望|潜在|初步|预计|预期|有待|取决于|除非|或将|有望", text):
+                        raise ValueError("uncertainty_requires_review")
+                # A percentage symbol must remain attached to the same value;
+                # matching digits alone must not turn 5% into an ordinary count.
+                percentages = re.findall(r"(\d+(?:\.\d+)?)\s*(?:%|percent\b|per cent\b)", source[identifier], re.I)
+                if any(value + "%" not in re.sub(r"\s", "", text) for value in percentages):
+                    raise ValueError("changed_percent_unit")
+                by_id[identifier] = text
+            # Commit only after every sentence/title passes; no mixed half-edited story.
+            article["title_zh"] = by_id["title"]
+            article["title_qa_flags"] = []
+            article["bilingual_pairs"] = [{**p, "zh": by_id[str(i)]} for i, p in enumerate(pairs)]
+            article["reading_zh"] = "\n\n".join(
+                " ".join(by_id[str(i)] for i, p in enumerate(pairs) if p.get("paragraph_id", 0) == pid)
+                for pid in dict.fromkeys(p.get("paragraph_id", 0) for p in pairs))
+            article["translation_qa_flags"] = []
+            article["chinese_editing_mode"] = "context_edited"
+            zh_by_en = {p["en"]: by_id[str(i)] for i, p in enumerate(pairs)}
+            article["grammar_lessons"] = [
+                {**lesson, "sentence_zh": zh_by_en.get(lesson.get("sentence_en"), lesson.get("sentence_zh", ""))}
+                for lesson in (article.get("grammar_lessons") or [])]
+        except BudgetExhausted:
+            LOG.warning("CHINESE_EDITOR_BUDGET_STOP; remaining stories retain MT drafts")
+            break
+        except (RuntimeError, ValueError, TypeError, KeyError, requests.RequestException) as exc:
+            reason = str(exc) if str(exc) in REJECTION_CODES else type(exc).__name__
+            http = re.fullmatch(r"Editorial API HTTP (\d{3})", str(exc))
+            if http:
+                reason = "http_" + http.group(1)
+            LOG.warning("CHINESE_EDITOR_FALLBACK reason=%s", reason)
+            article["chinese_editing_mode"] = "mt_fallback"
+            article["chinese_editing_reason"] = reason
+            # Never replay a potentially billed request or expose provider text.
+    LOG.info("CHINESE_EDITOR_AUDIT=%s", json.dumps(dict(Counter(
+        a.get("chinese_editing_mode", "mt_budget_or_not_attempted") for a in articles)), sort_keys=True))
+    return output

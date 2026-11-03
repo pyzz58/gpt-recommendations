@@ -52,6 +52,18 @@ PR 快速套件也接入 `test_selection_review` 和 `test_edition_budget`；正
 
 ## 尚未验收
 
+### 正文写作追加修正
+
+用户指出核心问题是正文写作，而不仅是选稿。新增 `chinese_editor.py` 和 `CHINESE_NEWS_EDITOR.md`，对已有英文稿及机译进行带整篇上下文的中文编辑，纳入同一整期预算；保持英文句子、段落映射、版式和投递合同。每篇最多一次，不重试；预算不足时余稿保持机译，不能宣称每篇都已得到高质量中文编辑。
+
+追加后的本地快速套件：109 tests 全部通过。7项中文编辑测试验证完整上下文输入、英中映射、原输入不变、标题依据正文数字、逐句数字及百分比、明显否定/不确定性、缺句与异常返回整篇回退、预算和超时不重试。回复中的数字、否定等机械校验不构成完整事实核验；实际中文流畅度尚未通过模型请求验证。
+
+另外尝试本地既有 PDF/语法测试时，环境缺少 spaCy 英文模型及可正确抽取的中文字库，两个环境相关测试未通过；没有修改 PDF、字体或语法模块以绕过这些检查。完整环境结果以 GitHub CI 为准，不能把109项快速测试写成全套测试通过。
+
+`CHINESE_WRITING_SAMPLE_20261104.md` 提供官方同源材料上的直译风格示意与完整编辑稿。样稿为本会话编辑，非生产程序生成；其中新增背景仅来自列出的另一份官方声明。禁止在自动稿没有相应输入时补写。
+
+前一提交 `f55a261` 的 GitHub 完整检查 [Run 41716562527](https://github.com/pyzz58/gpt-recommendations/actions/runs/41716562527) 结果：quick_check 通过（102 tests，轻量环境跳过1项接线测试），完整套件运行201项、两项失败：`test_editorial_contract.test_v2_midnight_cutoff_and_prepared_0100_send_schedule` 与 `test_quality_sample.test_daily_prepares_then_sends_only_bundle`。二者仍断言旧 GitHub cron，而生产已采用外部启动；不是新增编辑代码的验收通过证据。此轮不修改定时模块，也不把完整 CI 写成绿色。
+
 2026-11-04 本会话独立诊断已确认日报 DeepSeek 凭据对应余额不可用，见 [Run 41712672677](https://github.com/pyzz58/gpt-recommendations/actions/runs/41712672677)。本轮没有取得充值后可用的证据，因此没有重放付费请求，也没有发送测试邮件。
 
 本轮发现的数字表示、短稿段数问题是可复现的误拒类别，**不能据此断言它们解释了此前所有生产拒稿**；生产逐稿原因以前没有汇总。

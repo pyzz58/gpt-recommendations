@@ -37,7 +37,7 @@ class EditionBudget:
 
     def request(self, messages, max_tokens, key, *, purpose,
                 transport=None, before_request=None):
-        if purpose not in ("report", "commentary", "selection"):
+        if purpose not in ("report", "commentary", "selection", "chinese"):
             raise ValueError("Unrecognized billable task")
         if not isinstance(max_tokens, int) or not (0 < max_tokens <= 4200):
             raise ValueError("Invalid output cap")

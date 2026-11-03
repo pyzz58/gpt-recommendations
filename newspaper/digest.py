@@ -40,6 +40,7 @@ from market_funnel import report_market_funnel, save_market_funnel
 from prepared_delivery import write_bundle
 from sec_edgar import fetch_filings
 from selection_review import review_candidates
+from chinese_editor import edit_chinese_reports
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -721,6 +722,10 @@ def main():
             grammar_limit=settings.get("grammar_examples_per_article", 3),
             vocab_limit=0,
         )
+        if ledger is not None:
+            grouped = edit_chinese_reports(grouped, ai_key, ledger,
+                                           before_request=before_editorial_request)
+            edition_cost = ledger.snapshot()
     # Count only news articles that will truly appear in the PDF.
     # This audit does not certify factual correctness; shortfalls are not padded.
     quality = edition_quality_report(grouped)
