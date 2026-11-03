@@ -37,7 +37,7 @@ class EditionBudget:
 
     def request(self, messages, max_tokens, key, *, purpose,
                 transport=None, before_request=None):
-        if purpose not in ("report", "commentary"):
+        if purpose not in ("report", "commentary", "selection"):
             raise ValueError("Unrecognized billable task")
         if not isinstance(max_tokens, int) or not (0 < max_tokens <= 4200):
             raise ValueError("Invalid output cap")
@@ -45,7 +45,7 @@ class EditionBudget:
             raise ValueError("Missing editorial model credential")
         worst_tokens = conservative_input_tokens(messages)
         reservation = estimate_peak_cost(MODEL, worst_tokens, max_tokens)
-        protected = COMMENTARY_RESERVE_RMB if purpose == "report" else Decimal("0")
+        protected = COMMENTARY_RESERVE_RMB if purpose != "commentary" else Decimal("0")
         if self.spent_ceiling + reservation + protected > self.cap - SAFETY_MARGIN_RMB:
             raise BudgetExhausted(
                 "Whole-issue DeepSeek upper-bound budget insufficient; no request issued"

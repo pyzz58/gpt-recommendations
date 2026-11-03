@@ -13,6 +13,7 @@ import os
 import re
 import smtplib
 import ssl
+from collections import Counter
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -38,6 +39,7 @@ from selection_audit import make_selection_audit, save_selection_audit
 from market_funnel import report_market_funnel, save_market_funnel
 from prepared_delivery import write_bundle
 from sec_edgar import fetch_filings
+from selection_review import review_candidates
 
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("daily-news")
@@ -170,7 +172,8 @@ def choose_candidates(
         output[category] = ranked
     return output
 
-def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
+def build_readings(candidates: dict, settings: dict, *, key="", ledger=None,
+                   before_request=None) -> tuple[dict, dict]:
     """
     Extract accessible original articles and fill topic quotas from backup sources.
     Skip inaccessible/short/paywalled bodies instead of faking detailed coverage.
@@ -193,6 +196,8 @@ def build_readings(candidates: dict, settings: dict) -> tuple[dict, dict]:
             article = fut.result()
             enriched[url] = article if "中国与美国" in candidates else (trim_extracted_article(article) if article else None)
     if "中国与美国" in candidates:
+        enriched = review_candidates(candidates, enriched, key, ledger,
+                                     before_request=before_request)
         for category, arr in candidates.items():
             candidates_retrieved = [enriched.get(item["url"]) for item in arr]
             LOG.info(
@@ -621,7 +626,14 @@ def main():
             settings["candidate_pool_per_category"],
             news_start=start,
         )
-        readable, diagnostics = build_readings(pool, settings)
+        ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
+        ledger = EditionBudget() if not args.dry_run and ai_key else None
+        def before_editorial_request():
+            if not args.quality_sample:
+                require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
+        readable, diagnostics = build_readings(
+            pool, settings, key=ai_key if ledger is not None else "", ledger=ledger,
+            before_request=before_editorial_request)
         # Report a market story's exact stage of loss; diagnosing a low
         # article count is not permission to manufacture or pad news.
         try:
@@ -661,13 +673,8 @@ def main():
         # All billable requests, including commentary, share one conservative budget ledger.
         # Preview uses no API. A failed article falls back individually with
         # explicit degraded-quality counts; other articles remain eligible.
-        ai_key = os.environ.get("NEWSPAPER_LLM_API_KEY", "")
         editorial_audit["total"] = sum(len(items) for items in readable.values())
-        if not args.dry_run and ai_key:
-            ledger = EditionBudget()
-            def before_editorial_request():
-                if not args.quality_sample:
-                    require_live_delivery_window(dt.datetime.now(BEIJING_TZ), end)
+        if ledger is not None:
             english_reports = {
                 section: [a for a in articles if a.get("source_language") != "zh"]
                 for section, articles in readable.items()
@@ -676,6 +683,12 @@ def main():
                 english_reports, ai_key, ledger,
                 before_request=before_editorial_request)
             readable = apply_reports(readable, plans)
+            rejection_counts = Counter(
+                a["editor_rejection_reason"]
+                for articles in readable.values() for a in articles
+                if a.get("editor_rejection_reason"))
+            editorial_audit["rejection_reasons"] = dict(rejection_counts)
+            LOG.info("NEWSROOM_EDITOR_REJECTIONS=%s", json.dumps(dict(rejection_counts), sort_keys=True))
             editorial_audit["edited"] = sum(
                 a.get("editing_mode") == "evidence_mapped_edited_report"
                 for articles in readable.values() for a in articles)
