@@ -1548,8 +1548,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-05T21:24:39.674006+00:00",
-    "note": "补充暂停期间不得自动继续的科学整合分支；数据库head与启动门同步，并用独立Alembic脚本回归防止漏同步；反馈实现与对应测试保持一致。",
+    "at": "2026-11-05T21:29:12.826535+00:00",
+    "note": "修复科学反馈迁移回退的约束名二次套用命名规则；离线SQL确认回退使用实际约束名，随后在CI完成真实PostgreSQL往返验收。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -3072,7 +3072,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "8f12563f82913a3e1cb143889d72a29d55346f367fadb207999c3289112443d3"
+      "sha256": "fe1646a31708b8d4009642bdeb1bcfeea78303297cfcf273c046ace46db071a8"
     },
     {
       "path": "docs/scientific-feedback-handoff.md",

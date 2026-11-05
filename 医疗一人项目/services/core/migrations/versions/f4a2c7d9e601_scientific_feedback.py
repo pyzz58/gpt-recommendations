@@ -44,8 +44,8 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_constraint("ck_plans_plan_followup_bound", "plans", type_="check")
-    op.drop_constraint("ck_plans_plan_feedback_round", "plans", type_="check")
+    op.drop_constraint(op.f("ck_plans_plan_followup_bound"), "plans", type_="check")
+    op.drop_constraint(op.f("ck_plans_plan_feedback_round"), "plans", type_="check")
     op.drop_constraint("plan_parent_same_project", "plans", type_="foreignkey")
     for name in ("parent_plan_id", "feedback_round", "max_followup_rounds", "scientific_feedback"):
         op.drop_column("plans", name)
