@@ -1436,7 +1436,7 @@
   "theory_version": "V0.10",
   "roadmap_version": "V1.19",
   "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "67e81f95e9d3be4b7aae0a51a638c233865af723d26db6090df4c5277446a860",
+  "roadmap_sha256": "2144d6902d7921746ef65160de57c6193282ed463f7ff6cb9280a711a1f6d4ba",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1548,8 +1548,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-05T21:32:53.686341+00:00",
-    "note": "科学交付共享依赖在一次只读遍历内去重并检测引用环；每次命令重新验证有效性；新增8节点密集依赖回归，防止多岗位数量增加造成指数重复查询。",
+    "at": "2026-11-05T21:38:34.315955+00:00",
+    "note": "绑定b08f770实际通过的应用CI：135通过、3项Office依赖跳过，10个反馈数据库用例、3个合同单测及迁移/网页/追踪检查；存档完整日志和逐项步骤，保持mock与现实验证边界。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -2981,7 +2981,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "246f867f77cfbe61fd392297925d4f498946eff28bcf3d66f62a6e22ed3c8209"
+      "sha256": "87b304b3ac2b44662c0cab9cac69e7131c27bbfcc5ea1be8becc1491533d640f"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -3091,6 +3091,16 @@
         "RQ-027"
       ],
       "sha256": "70e893994325bcea8be2f17a145ebb83738b619b1a23d6425682981b77f1615e"
+    },
+    {
+      "path": "docs/scientific-feedback-acceptance.md",
+      "requirement_ids": [
+        "RQ-008",
+        "RQ-009",
+        "RQ-010",
+        "RQ-022"
+      ],
+      "sha256": "796e8e2ad56978c3d36de41be20a63e763126550bcf3de5202b012f03ec40d07"
     }
   ]
 }

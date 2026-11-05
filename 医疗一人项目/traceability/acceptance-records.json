@@ -1,4 +1,239 @@
 {
   "schema_version": 1,
-  "records": []
+  "records": [
+    {
+      "id": "ACC-SCIENTIFIC-FEEDBACK",
+      "requirements": [
+        "RQ-008",
+        "RQ-009",
+        "RQ-010",
+        "RQ-022"
+      ],
+      "technical_refs": [
+        "TR-04",
+        "TR-05",
+        "TR-06",
+        "TR-08",
+        "TR-12",
+        "TR-16",
+        "TR-17",
+        "TR-18",
+        "TR-19"
+      ],
+      "work_packages": [
+        "W05",
+        "W11",
+        "W21"
+      ],
+      "acceptance_refs": [
+        "AT-008",
+        "AT-009",
+        "AT-010",
+        "AT-022"
+      ],
+      "source_commit": "b08f770797eda8977b531a955a9aad39a6ce15db",
+      "result": "passed",
+      "scope": "Mock software sub-acceptance: reviewed delivery content returns to chief, judgment is independently reviewed, bounded continuation is linked and dispatched. Not full AT or scientific/real-world validation.",
+      "commands": [
+        {
+          "cwd": ".",
+          "command": "uv run --project services/core --frozen pytest services/core/tests --collect-only -q",
+          "mode": "collection_only",
+          "started_at": "2026-11-05T21:35:24.028895+00:00",
+          "finished_at": "2026-11-05T21:35:33.636266+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/scientific-feedback-collection.log"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "uv run --project services/core --frozen pytest services/core/tests -q -ra",
+          "mode": "mock+real_postgresql",
+          "started_at": "2026-11-05T21:34:06Z",
+          "finished_at": "2026-11-05T21:35:18Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/scientific-feedback-ci.log",
+            "traceability/logs/scientific-feedback-ci-summary.json"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "uv run --project services/core --frozen ruff check services/core\nuv run --project services/core --frozen mypy services/core/src",
+          "mode": "static",
+          "started_at": "2026-11-05T21:35:18Z",
+          "finished_at": "2026-11-05T21:35:30Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/scientific-feedback-ci.log",
+            "traceability/logs/scientific-feedback-ci-summary.json"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen alembic upgrade head\nuv run --frozen alembic downgrade b2e7d4a9c310\nuv run --frozen alembic upgrade head",
+          "mode": "real_postgresql",
+          "started_at": "2026-11-05T21:35:30Z",
+          "finished_at": "2026-11-05T21:35:34Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/scientific-feedback-ci.log",
+            "traceability/logs/scientific-feedback-ci-summary.json"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "pnpm --dir apps/web lint\npnpm --dir apps/web typecheck\npnpm --dir apps/web build",
+          "mode": "web_build",
+          "started_at": "2026-11-05T21:35:34Z",
+          "finished_at": "2026-11-05T21:35:58Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/scientific-feedback-ci.log",
+            "traceability/logs/scientific-feedback-ci-summary.json"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "python3 tools/test_traceability.py",
+          "mode": "documentation_tests",
+          "started_at": "2026-11-05T21:35:58Z",
+          "finished_at": "2026-11-05T21:36:17Z",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/scientific-feedback-ci.log",
+            "traceability/logs/scientific-feedback-ci-summary.json"
+          ]
+        }
+      ],
+      "validation_levels": {
+        "mock": {
+          "status": "passed",
+          "evidence": [
+            "docs/scientific-feedback-acceptance.md",
+            "traceability/logs/scientific-feedback-ci.log",
+            "traceability/logs/scientific-feedback-ci-summary.json",
+            "traceability/logs/scientific-feedback-collection.log"
+          ]
+        },
+        "live": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "human_expert": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "real_outsourcing": {
+          "status": "not_run",
+          "evidence": []
+        }
+      },
+      "code_paths": [
+        {
+          "path": "services/core/src/medical_one_person/agents/context.py",
+          "sha256": "50d876b19075637011728bfe424b6c6ef41492df361fe3290d2e0fe9ca6b43e8"
+        },
+        {
+          "path": "services/core/src/medical_one_person/agents/contracts.py",
+          "sha256": "9eb9a29987335d4caadc4a9f13d22a8337f39195c6c112d2c4c41bd19034399f"
+        },
+        {
+          "path": "services/core/src/medical_one_person/agents/runner.py",
+          "sha256": "85649da3bfb08ea4a5329beade84c4ebb09d9285f22a184ac4cd6ba3a120a3fd"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/handoffs.py",
+          "sha256": "eba6f452ba79babb5651a61453c94d58268ac41d6e9675d8e64c5b01f5fdbf09"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/plans.py",
+          "sha256": "022cccdc4ff7bafa231acc060639e101572e2cd670dc2cec8d69f6efb03c78ae"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/tasks.py",
+          "sha256": "6b041ecc39202bdb6707d4f0869356e76cc9dbf1bf9ad623caf37fb6d990ceb6"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/recovery_database.py",
+          "sha256": "fd4fba9a4a78f5a9ab73760330fbf871506bfac4f3e8715168606538bd237be8"
+        },
+        {
+          "path": "services/core/src/medical_one_person/domain/plans.py",
+          "sha256": "3a9bc85e69fc640e496838c49aa1689282b29c86d7e9a7ad1443507bd5e8b108"
+        },
+        {
+          "path": "services/core/src/medical_one_person/infrastructure/db/models.py",
+          "sha256": "f7a9e3f9fa92ac4be80e7da86d22d65b9c8ed0c60d2113df4bdaea2d3e8ed784"
+        },
+        {
+          "path": "services/core/src/medical_one_person/infrastructure/db/engine.py",
+          "sha256": "94fd81c8987a9f084a641689b36f336252dd71a6cc494464f95516704a57fc8e"
+        },
+        {
+          "path": "services/core/src/medical_one_person/providers/fake.py",
+          "sha256": "1c43a132c91e6f0f323662d0320add81dabb38effe1aeb4962a4e30c25398bb3"
+        },
+        {
+          "path": "services/core/migrations/versions/f4a2c7d9e601_scientific_feedback.py",
+          "sha256": "fe1646a31708b8d4009642bdeb1bcfeea78303297cfcf273c046ace46db071a8"
+        },
+        {
+          "path": "services/core/tests/integration/test_scientific_feedback.py",
+          "sha256": "7d5ad29edf260c3ff8d82a6f7b726855d191b1de00a687594bf40742e0b9d867"
+        },
+        {
+          "path": "services/core/tests/unit/test_scientific_update.py",
+          "sha256": "70e893994325bcea8be2f17a145ebb83738b619b1a23d6425682981b77f1615e"
+        },
+        {
+          "path": "apps/web/src/app/projects/[id]/tasks/page.tsx",
+          "sha256": "ad2c7dc30e0c2dd18b0eb03c8cc0f080552f50ae99ae6f562a9e4a7f93cd001c"
+        },
+        {
+          "path": "apps/web/src/lib/api.ts",
+          "sha256": "5aa4f88442b71628085efe11ef51ba1e197747781f36693bc478c349b44c28f7"
+        },
+        {
+          "path": "tools/test_traceability.py",
+          "sha256": "b9efc6c217f14ff28814b2d498218c1f832db36b76afc5b861e237f51af51c56"
+        }
+      ],
+      "source_scope": [
+        "services/core/src",
+        "services/core/tests",
+        "services/core/migrations",
+        "services/core/pyproject.toml",
+        "services/core/uv.lock",
+        "apps/web/src",
+        "apps/web/package.json",
+        "pnpm-lock.yaml",
+        "config",
+        "schemas",
+        "tools"
+      ],
+      "source_tree_git_sha256": "d4461ae09b031b6ba7453197470c6ea99e0a3e0d4fb00dd1390d615b9fa0287b",
+      "source_tree_worktree_sha256": "d4461ae09b031b6ba7453197470c6ea99e0a3e0d4fb00dd1390d615b9fa0287b",
+      "artifacts": [
+        "docs/scientific-feedback-acceptance.md",
+        "traceability/logs/scientific-feedback-ci.log",
+        "traceability/logs/scientific-feedback-ci-summary.json",
+        "traceability/logs/scientific-feedback-collection.log"
+      ],
+      "artifact_hashes": {
+        "docs/scientific-feedback-acceptance.md": "796e8e2ad56978c3d36de41be20a63e763126550bcf3de5202b012f03ec40d07",
+        "traceability/logs/scientific-feedback-ci.log": "bcf2cfd0eaac28850ed36a223d48cb02a7270a0784a8fbd7e837b605453dc710",
+        "traceability/logs/scientific-feedback-ci-summary.json": "b8b7a3087f9b832cdb1b88120a10217da331ef2dcce17ed961a68cad449a1cf7",
+        "traceability/logs/scientific-feedback-collection.log": "0ad81e98e7c6c47230e3324be3c9c910c730ce6249a025784121bd61a50c0c68"
+      },
+      "uncovered": [
+        "No live model, independent professional model judgment, human expert or real outsourcing validation.",
+        "Three Office/Poppler checks skipped in CI; not passed.",
+        "Owner records review under role contracts; not autonomous scientific acceptance.",
+        "Synthetic ADC/cat example supplies no efficacy, safety or clinical-use conclusion.",
+        "Full AT and first-phase real-world R&D workflow remain separate."
+      ]
+    }
+  ]
 }
