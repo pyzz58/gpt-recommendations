@@ -5,7 +5,7 @@ from __future__ import annotations
 from uuid import UUID
 
 import pytest
-from sqlalchemy import select
+from sqlalchemy import event, select
 from test_w11_plans import _roles, _setup
 
 from medical_one_person.agents.runner import AgentRunner
@@ -66,14 +66,14 @@ class ScriptedProvider(FakeModelProvider):
         return result
 
 
-def _start(session_factory, *, rounds=1):
+def _start(session_factory, *, rounds=1, spec=None):
     identity, project, decision_id = _setup(session_factory)
     service = PlanService(session_factory, _roles())
     plan = service.submit_plan(
         project_id=project.id,
         actor_user_id=identity.owner_user_id,
         source_decision_id=decision_id,
-        spec=_spec(rounds=rounds),
+        spec=spec or _spec(rounds=rounds),
         idempotency_key="feedback-plan",
     )
     plan = service.activate_plan(
@@ -304,3 +304,42 @@ def test_reviewed_delivery_is_rechecked_before_reuse(session_factory, failure):
         session.flush()
         with pytest.raises(TaskNotReadyError):
             accepted_run_payload(session, project_id=project.id, run_id=run.id)
+
+
+def test_dense_dependency_graph_validates_shared_deliveries_once_per_traversal(session_factory):
+    spec = _spec()
+    node = spec.nodes[0]
+    keys = [f"research-{i}" for i in range(8)]
+    spec = spec.model_copy(
+        update={
+            "nodes": [
+                node.model_copy(
+                    update={
+                        "key": key,
+                        "depends_on": keys[:index],
+                    }
+                )
+                for index, key in enumerate(keys)
+            ],
+        }
+    )
+    identity, project, service, plan_id = _start(session_factory, spec=spec)
+    for key in keys:
+        delivery = _run(session_factory, identity)
+        _review(service, identity, project, plan_id, key)
+    with session_factory.begin() as session:
+        set_rls_context(session, workspace_id=identity.workspace_id, user_id=identity.owner_user_id)
+        run = session.scalar(select(AgentRun).where(AgentRun.task_id == delivery.task_id))
+        statements = []
+
+        def capture(_conn, _cursor, statement, _parameters, _context, _executemany):
+            statements.append(statement)
+
+        bind = session_factory.kw["bind"]
+        event.listen(bind, "before_cursor_execute", capture)
+        try:
+            packet = accepted_run_payload(session, project_id=project.id, run_id=run.id)
+        finally:
+            event.remove(bind, "before_cursor_execute", capture)
+        assert packet["task_id"] == str(delivery.task_id)
+        assert len(statements) < 250  # An uncached traversal grows exponentially on this DAG.

@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Iterator, Sequence
+from contextlib import contextmanager
+from contextvars import ContextVar
 from typing import Any
 from uuid import UUID
 
@@ -13,6 +16,24 @@ from sqlalchemy.orm import Session
 from medical_one_person.application.errors import TaskNotReadyError
 from medical_one_person.application.readiness import require_no_active_audit_blockers
 from medical_one_person.infrastructure.db.models import AgentRun, Task, TaskReview
+
+_resolution_cache: ContextVar[dict[tuple[int, UUID, UUID], dict[str, Any] | None] | None] = (
+    ContextVar("reviewed_delivery_resolution", default=None)
+)
+
+
+@contextmanager
+def delivery_resolution() -> Iterator[dict[tuple[int, UUID, UUID], dict[str, Any] | None]]:
+    cache = _resolution_cache.get()
+    if cache is not None:
+        yield cache
+        return
+    cache = {}
+    token = _resolution_cache.set(cache)
+    try:
+        yield cache
+    finally:
+        _resolution_cache.reset(token)
 
 
 def payload_hash(value: Any) -> str:
@@ -58,6 +79,39 @@ def submitted_run(session: Session, task: Task) -> AgentRun:
 
 
 def accepted_run_payload(session: Session, *, project_id: UUID, run_id: UUID) -> dict[str, Any]:
+    # Share validation only within this read traversal, never across commands or mutations.
+    with delivery_resolution() as cache:
+        key = (id(session), project_id, run_id)
+        if key in cache:
+            value = cache[key]
+            if value is None:
+                raise TaskNotReadyError("Cyclic reviewed-delivery input references")
+            return value
+        cache[key] = None
+        try:
+            value = _accepted_run_payload(session, project_id=project_id, run_id=run_id)
+        except Exception:
+            cache.pop(key, None)
+            raise
+        cache[key] = value
+        return value
+
+
+def reviewed_deliveries(
+    session: Session,
+    *,
+    project_id: UUID,
+    input_refs: Sequence[str],
+) -> tuple[dict[str, Any], ...]:
+    with delivery_resolution():
+        return tuple(
+            accepted_run_payload(session, project_id=project_id, run_id=UUID(ref.partition(":")[2]))
+            for ref in input_refs
+            if ref.startswith("agent_run:")
+        )
+
+
+def _accepted_run_payload(session: Session, *, project_id: UUID, run_id: UUID) -> dict[str, Any]:
     # Local import avoids a module cycle with the typed task-input resolver.
     from medical_one_person.application.tasks import require_current_task_inputs
 

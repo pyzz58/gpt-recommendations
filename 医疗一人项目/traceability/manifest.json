@@ -1548,8 +1548,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-05T21:29:12.826535+00:00",
-    "note": "修复科学反馈迁移回退的约束名二次套用命名规则；离线SQL确认回退使用实际约束名，随后在CI完成真实PostgreSQL往返验收。",
+    "at": "2026-11-05T21:32:53.686341+00:00",
+    "note": "科学交付共享依赖在一次只读遍历内去重并检测引用环；每次命令重新验证有效性；新增8节点密集依赖回归，防止多岗位数量增加造成指数重复查询。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -2843,7 +2843,7 @@
       "requirement_ids": [
         "RQ-009"
       ],
-      "sha256": "8a70690d25bf637c1f4c73a18f5645e2741098dc0e6aee13a1dd747fc8d19139"
+      "sha256": "6b041ecc39202bdb6707d4f0869356e76cc9dbf1bf9ad623caf37fb6d990ceb6"
     },
     {
       "path": "services/core/src/medical_one_person/application/scheduling.py",
@@ -3052,7 +3052,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "85d9c391141a1c1962da3107315476d1c5407c04a23b8776577d14887a1c2a56"
+      "sha256": "eba6f452ba79babb5651a61453c94d58268ac41d6e9675d8e64c5b01f5fdbf09"
     },
     {
       "path": "services/core/tests/integration/test_scientific_feedback.py",
@@ -3062,7 +3062,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "10ae28202db6d7aaca73e1469c0b0b76200820c252bcd85e6da449827a576ade"
+      "sha256": "7d5ad29edf260c3ff8d82a6f7b726855d191b1de00a687594bf40742e0b9d867"
     },
     {
       "path": "services/core/migrations/versions/f4a2c7d9e601_scientific_feedback.py",
@@ -3082,7 +3082,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "433bb49bb7d6df646cb55b2d51c36a6b4f39614454fbfa167f46bc556dfcc958"
+      "sha256": "b9ba4ead99d494cd58b784396221f6fd6032f1cac0137f2478de422160d9f7f0"
     },
     {
       "path": "services/core/tests/unit/test_scientific_update.py",

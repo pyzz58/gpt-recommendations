@@ -771,6 +771,26 @@ def resolve_task_inputs(
     input_refs: Sequence[str],
     captured_at: datetime,
 ) -> tuple[dict[str, object], str]:
+    from medical_one_person.application.handoffs import delivery_resolution
+
+    with delivery_resolution():
+        return _resolve_task_inputs(
+            session,
+            project_id=project_id,
+            input_version=input_version,
+            input_refs=input_refs,
+            captured_at=captured_at,
+        )
+
+
+def _resolve_task_inputs(
+    session: Session,
+    *,
+    project_id: UUID,
+    input_version: str,
+    input_refs: Sequence[str],
+    captured_at: datetime,
+) -> tuple[dict[str, object], str]:
     entries: list[dict[str, object]] = []
     for ref in input_refs:
         if not ref.strip():

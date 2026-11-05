@@ -19,7 +19,7 @@ from medical_one_person.application.errors import (
     AgentOutputValidationError,
     LeaseConflictError,
 )
-from medical_one_person.application.handoffs import accepted_run_payload
+from medical_one_person.application.handoffs import reviewed_deliveries
 from medical_one_person.application.scheduling import JobQueue
 from medical_one_person.application.tasks import TaskService
 from medical_one_person.domain.tasks import JobClaim, JobState, TaskState
@@ -300,12 +300,10 @@ class AgentRunner:
                 review_feedback=review_feedback,
                 previous_output=previous_run.output if previous_run is not None else None,
                 task_type=task.task_type,
-                upstream_deliveries=tuple(
-                    accepted_run_payload(
-                        session, project_id=task.project_id, run_id=UUID(ref.partition(":")[2])
-                    )
-                    for ref in task.input_refs
-                    if ref.startswith("agent_run:")
+                upstream_deliveries=reviewed_deliveries(
+                    session,
+                    project_id=task.project_id,
+                    input_refs=task.input_refs,
                 ),
             )
             execution = TaskExecutionView(
