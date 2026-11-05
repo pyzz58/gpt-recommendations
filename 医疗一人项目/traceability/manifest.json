@@ -1548,8 +1548,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-05T21:20:56.513008+00:00",
-    "note": "科学反馈代码、审核与有界后续计划及合成回归已同步；修复无当前验收记录时的自测自引用hash及硬编码产物问题。旧源码证据归档，新源码验收执行中。",
+    "at": "2026-11-05T21:24:39.674006+00:00",
+    "note": "补充暂停期间不得自动继续的科学整合分支；数据库head与启动门同步，并用独立Alembic脚本回归防止漏同步；反馈实现与对应测试保持一致。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -2052,7 +2052,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "ee5a6237984159a6ad6c819ba248e2076a75d8fa1df089c3f8ee9d83c64bdf49"
+      "sha256": "022cccdc4ff7bafa231acc060639e101572e2cd670dc2cec8d69f6efb03c78ae"
     },
     {
       "path": "services/core/src/medical_one_person/application/plan_execution.py",
@@ -3062,7 +3062,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "40c048438766e060ee9f46a6ec5a251829eb44ba4f35d120f680ada3d7b9cb3f"
+      "sha256": "10ae28202db6d7aaca73e1469c0b0b76200820c252bcd85e6da449827a576ade"
     },
     {
       "path": "services/core/migrations/versions/f4a2c7d9e601_scientific_feedback.py",
@@ -3083,6 +3083,14 @@
         "RQ-022"
       ],
       "sha256": "433bb49bb7d6df646cb55b2d51c36a6b4f39614454fbfa167f46bc556dfcc958"
+    },
+    {
+      "path": "services/core/tests/unit/test_scientific_update.py",
+      "requirement_ids": [
+        "RQ-010",
+        "RQ-027"
+      ],
+      "sha256": "70e893994325bcea8be2f17a145ebb83738b619b1a23d6425682981b77f1615e"
     }
   ]
 }

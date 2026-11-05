@@ -391,7 +391,7 @@ class PlanService:
             actor_user_id=actor.id,
             payload={
                 "plan_version": plan.plan_version,
-                "node_count": len(spec.nodes),
+                "node_count": len(node_specs),
                 "source_decision_id": str(source_decision_id),
             },
             now=now,
@@ -653,6 +653,7 @@ class PlanService:
                 return TaskReviewView.model_validate(existing.result_payload)
             if plan.status not in {PlanStatus.ACTIVE.value, PlanStatus.PAUSED.value}:
                 raise PlanStateError("Plan is not open for review")
+            allow_advance = plan.status == PlanStatus.ACTIVE.value
             task = session.scalar(
                 select(Task)
                 .join(PlanNode, PlanNode.task_id == Task.id)
@@ -801,6 +802,7 @@ class PlanService:
                             actor_user_id=actor.id,
                             review_id=review.id,
                             now=now,
+                            allow_advance=allow_advance,
                         )
             elif decision == ReviewDecision.CHANGES_REQUESTED:
                 if previous_changes >= plan.max_rework_rounds:
@@ -880,6 +882,7 @@ class PlanService:
         actor_user_id: UUID,
         review_id: UUID,
         now: datetime,
+        allow_advance: bool,
     ) -> None:
         delivery = AgentDelivery.model_validate(run.output)
         update = delivery.scientific_update
@@ -895,7 +898,9 @@ class PlanService:
         proposal_issue: str | None = None
         next_spec = update.next_plan
         if next_spec is not None:
-            if plan.feedback_round >= plan.max_followup_rounds:
+            if not allow_advance:
+                block_reason = "plan_paused"
+            elif plan.feedback_round >= plan.max_followup_rounds:
                 block_reason = "followup_round_limit"
             elif project.policy_bundle_id != plan.policy_bundle_id:
                 block_reason = "policy_changed"

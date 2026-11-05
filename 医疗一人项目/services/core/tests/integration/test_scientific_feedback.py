@@ -233,6 +233,30 @@ def test_outside_scope_proposal_is_retained_but_never_dispatched(session_factory
     assert len(service.list_plans(project_id=project.id, actor_user_id=identity.owner_user_id)) == 1
 
 
+def test_accepting_chief_result_while_paused_does_not_restart_research(session_factory):
+    identity, project, service, plan_id = _start(session_factory)
+    _run(session_factory, identity)
+    _review(service, identity, project, plan_id, "evidence")
+    _run(session_factory, identity)
+    plan = service.get_plan(
+        project_id=project.id, plan_id=plan_id, actor_user_id=identity.owner_user_id
+    )
+    service.pause_plan(
+        project_id=project.id,
+        plan_id=plan_id,
+        actor_user_id=identity.owner_user_id,
+        expected_revision=plan.revision,
+        reason="合成测试：暂停期间只接收判断。",
+    )
+    _review(service, identity, project, plan_id, "chief-integration")
+    plan = service.get_plan(
+        project_id=project.id, plan_id=plan_id, actor_user_id=identity.owner_user_id
+    )
+    assert plan.scientific_updates[0]["block_reason"] == "plan_paused"
+    assert plan.scientific_updates[0]["next_plan_id"] is None
+    assert len(service.list_plans(project_id=project.id, actor_user_id=identity.owner_user_id)) == 1
+
+
 def test_unaccepted_or_foreign_delivery_cannot_enter_chief_context(session_factory):
     identity, project, _, _ = _start(session_factory)
     delivery = _run(session_factory, identity)
