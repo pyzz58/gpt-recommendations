@@ -62,6 +62,8 @@ class PlanSpec(BaseModel):
     objective: str = Field(min_length=1, max_length=10_000)
     nodes: list[PlanNodeSpec] = Field(min_length=1, max_length=20)
     max_rework_rounds: int = Field(default=3, ge=0, le=10)
+    scientific_feedback: bool = True
+    max_followup_rounds: int = Field(default=1, ge=0, le=3)
     workflow_track: Track | None = None
     workflow_id: str | None = None
     workflow_version: int | None = Field(default=None, ge=1)
@@ -69,6 +71,13 @@ class PlanSpec(BaseModel):
 
     @model_validator(mode="after")
     def validate_dag(self) -> PlanSpec:
+        if self.scientific_feedback and len(self.nodes) > 19:
+            raise ValueError("Scientific plans reserve one of 20 nodes for chief integration")
+        if any(
+            node.key == "chief-integration" or node.task_type == "scientific.integration"
+            for node in self.nodes
+        ):
+            raise ValueError("chief-integration is reserved for the host-created feedback task")
         workflow_fields = (
             self.workflow_track,
             self.workflow_id,

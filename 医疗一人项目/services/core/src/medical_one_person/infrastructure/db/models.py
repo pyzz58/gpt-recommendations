@@ -3495,6 +3495,16 @@ class Plan(Base):
             ["decisions.workspace_id", "decisions.project_id", "decisions.id"],
             name="plan_source_same_decision",
         ),
+        ForeignKeyConstraint(
+            ["workspace_id", "project_id", "parent_plan_id"],
+            ["plans.workspace_id", "plans.project_id", "plans.id"],
+            name="plan_parent_same_project",
+        ),
+        CheckConstraint("feedback_round >= 0 AND feedback_round <= 3", name="plan_feedback_round"),
+        CheckConstraint(
+            "max_followup_rounds >= 0 AND max_followup_rounds <= 3",
+            name="plan_followup_bound",
+        ),
         CheckConstraint(f"status IN ({PLAN_STATUS_VALUES})", name="plan_status"),
         CheckConstraint("plan_version >= 1", name="plan_version_positive"),
         CheckConstraint("revision >= 1", name="plan_revision_positive"),
@@ -3537,6 +3547,10 @@ class Plan(Base):
     revision: Mapped[int] = mapped_column(Integer, nullable=False)
     title: Mapped[str] = mapped_column(String(300), nullable=False)
     objective: Mapped[str] = mapped_column(Text, nullable=False)
+    scientific_feedback: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    max_followup_rounds: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    feedback_round: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    parent_plan_id: Mapped[UUID | None] = mapped_column(PGUUID(as_uuid=True))
     source_decision_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
     workflow_track: Mapped[str | None] = mapped_column(String(30))
     workflow_id: Mapped[str | None] = mapped_column(String(64))

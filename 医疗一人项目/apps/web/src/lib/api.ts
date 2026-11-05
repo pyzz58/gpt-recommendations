@@ -358,6 +358,23 @@ export type PlanView = {
   stage_id: string | null;
   pause_reason: string | null;
   max_rework_rounds: number;
+  scientific_feedback: boolean;
+  feedback_round: number;
+  max_followup_rounds: number;
+  parent_plan_id: string | null;
+  scientific_updates: {
+    run_id: string;
+    mode: string;
+    next_plan_id: string | null;
+    block_reason: string | null;
+    update: {
+      answered_questions: string[];
+      judgment_change: string;
+      remaining_unknowns: string[];
+      action: string;
+      rationale: string;
+    };
+  }[];
   nodes: PlanNodeView[];
   reviews: PlanReviewSummary[];
   created_at: string;
@@ -388,6 +405,8 @@ export type PlanSpecInput = {
   objective: string;
   nodes: PlanNodeSpecInput[];
   max_rework_rounds?: number;
+  scientific_feedback?: boolean;
+  max_followup_rounds?: number;
 };
 
 export type PlanDispatchView = {

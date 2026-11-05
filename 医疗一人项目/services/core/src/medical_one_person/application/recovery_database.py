@@ -32,6 +32,9 @@ def restore_manifest_rows(session: Session, manifest: dict[str, Any]) -> dict[st
         if rows is None:
             continue
         converted = [_convert_row(table, row) for row in rows]
+        if table.name == "plans":
+            # Parent plans must exist before their bounded continuation plans.
+            converted.sort(key=lambda row: (row.get("feedback_round", 0), row["plan_version"]))
         if converted:
             session.execute(table.insert(), converted)
         restored[table.name] = len(converted)

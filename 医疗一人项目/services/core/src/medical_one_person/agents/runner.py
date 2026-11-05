@@ -19,6 +19,7 @@ from medical_one_person.application.errors import (
     AgentOutputValidationError,
     LeaseConflictError,
 )
+from medical_one_person.application.handoffs import accepted_run_payload
 from medical_one_person.application.scheduling import JobQueue
 from medical_one_person.application.tasks import TaskService
 from medical_one_person.domain.tasks import JobClaim, JobState, TaskState
@@ -54,6 +55,8 @@ class TaskExecutionView:
     review_id: UUID | None
     review_feedback: tuple[str, ...]
     previous_output: dict[str, Any] | None
+    task_type: str
+    upstream_run_ids: tuple[UUID, ...]
 
 
 @dataclass(frozen=True)
@@ -194,8 +197,7 @@ class AgentRunner:
                 (
                     item
                     for item in bundle.snapshot.get("components", {}).get("agents", [])
-                    if isinstance(item, dict)
-                    and item.get("role_id") == task.assignee_role
+                    if isinstance(item, dict) and item.get("role_id") == task.assignee_role
                 ),
                 None,
             )
@@ -211,21 +213,13 @@ class AgentRunner:
             current_role = self._roles.get(task.assignee_role)
             if current_role is None:
                 raise AgentConfigurationError("Task role is not configured")
-            effective_allow = sorted(
-                set(role.tools_allow) & set(current_role.tools_allow)
-            )
-            revoked_tools = sorted(
-                set(role.tools_allow) - set(current_role.tools_allow)
-            )
-            added_denials = sorted(
-                set(current_role.tools_deny) - set(role.tools_deny)
-            )
+            effective_allow = sorted(set(role.tools_allow) & set(current_role.tools_allow))
+            revoked_tools = sorted(set(role.tools_allow) - set(current_role.tools_allow))
+            added_denials = sorted(set(current_role.tools_deny) - set(role.tools_deny))
             role = role.model_copy(
                 update={
                     "tools_allow": effective_allow,
-                    "tools_deny": sorted(
-                        set(role.tools_deny) | set(current_role.tools_deny)
-                    ),
+                    "tools_deny": sorted(set(role.tools_deny) | set(current_role.tools_deny)),
                 }
             )
             if task.mode != "mock" or self._provider.capabilities().mode != "mock":
@@ -305,6 +299,14 @@ class AgentRunner:
                 ),
                 review_feedback=review_feedback,
                 previous_output=previous_run.output if previous_run is not None else None,
+                task_type=task.task_type,
+                upstream_deliveries=tuple(
+                    accepted_run_payload(
+                        session, project_id=task.project_id, run_id=UUID(ref.partition(":")[2])
+                    )
+                    for ref in task.input_refs
+                    if ref.startswith("agent_run:")
+                ),
             )
             execution = TaskExecutionView(
                 id=task.id,
@@ -321,6 +323,10 @@ class AgentRunner:
                 review_id=latest_review.id if latest_review is not None else None,
                 review_feedback=review_feedback,
                 previous_output=previous_run.output if previous_run is not None else None,
+                task_type=task.task_type,
+                upstream_run_ids=tuple(
+                    UUID(str(item["run_id"])) for item in context.upstream_deliveries
+                ),
             )
             return execution, role, instance_id, context
 
@@ -399,9 +405,7 @@ class AgentRunner:
         with self._session_factory.begin() as session:
             set_rls_context(session, workspace_id=workspace_id, user_id=None)
             self._require_active_claim(session, claim)
-            run = session.scalar(
-                select(AgentRun).where(AgentRun.id == run_id).with_for_update()
-            )
+            run = session.scalar(select(AgentRun).where(AgentRun.id == run_id).with_for_update())
             if run is None:
                 raise AgentConfigurationError("Agent run disappeared")
             run.provider_id = provider_id
@@ -422,9 +426,7 @@ class AgentRunner:
         with self._session_factory.begin() as session:
             set_rls_context(session, workspace_id=workspace_id, user_id=None)
             self._require_active_claim(session, claim)
-            run = session.scalar(
-                select(AgentRun).where(AgentRun.id == run_id).with_for_update()
-            )
+            run = session.scalar(select(AgentRun).where(AgentRun.id == run_id).with_for_update())
             if run is not None:
                 run.state = "failed"
                 run.error_code = error_code
@@ -432,9 +434,7 @@ class AgentRunner:
 
     @staticmethod
     def _require_active_claim(session: Session, claim: JobClaim) -> None:
-        job = session.scalar(
-            select(Job).where(Job.id == claim.job_id).with_for_update()
-        )
+        job = session.scalar(select(Job).where(Job.id == claim.job_id).with_for_update())
         now = datetime.now(UTC)
         if (
             job is None
@@ -444,9 +444,7 @@ class AgentRunner:
             or job.lease_until is None
             or job.lease_until <= now
         ):
-            raise LeaseConflictError(
-                "Job lease is expired or owned by another worker"
-            )
+            raise LeaseConflictError("Job lease is expired or owned by another worker")
 
     def _finish_delivery(self, claim: JobClaim, task_id: UUID, delivery: AgentDelivery) -> None:
         if delivery.task_id != task_id:
@@ -499,6 +497,16 @@ class AgentRunner:
         fact_refs = {ref for fact in delivery.facts for ref in fact.source_refs}
         if not (cited_refs | fact_refs).issubset(input_refs):
             raise AgentOutputValidationError("Delivery cites references outside task inputs")
+        if task.task_type == "scientific.integration":
+            update = delivery.scientific_update
+            if role.role_id != "A02" or update is None:
+                raise AgentOutputValidationError("Chief integration requires a scientific update")
+            if set(update.consumed_run_ids) != set(task.upstream_run_ids):
+                raise AgentOutputValidationError(
+                    "Scientific update omits or invents reviewed inputs"
+                )
+        elif delivery.scientific_update is not None:
+            raise AgentOutputValidationError("Only the chief integration task can update judgment")
 
 
 def _run_key(task: TaskExecutionView, role: AgentRoleConfig) -> str:

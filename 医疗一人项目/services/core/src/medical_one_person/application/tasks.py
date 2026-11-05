@@ -515,9 +515,7 @@ class TaskService:
             task.input_invalidated_reason = None
             task.input_invalidated_by = []
             task.state = (
-                TaskState.READY.value
-                if dependencies_current
-                else TaskState.NEEDS_INPUT.value
+                TaskState.READY.value if dependencies_current else TaskState.NEEDS_INPUT.value
             )
             task.revision += 1
             task.updated_at = now
@@ -797,6 +795,7 @@ def resolve_task_inputs(
             "analysis",
             "deliverable",
             "decision",
+            "agent_run",
         }
         if not separator:
             value = ref
@@ -805,9 +804,7 @@ def resolve_task_inputs(
             try:
                 identifier = UUID(value)
             except ValueError as exc:
-                raise TaskNotReadyError(
-                    f"{kind} input reference must contain a UUID"
-                ) from exc
+                raise TaskNotReadyError(f"{kind} input reference must contain a UUID") from exc
         elif not value.strip():
             raise TaskNotReadyError(f"{kind} input reference must contain a value")
         elif kind == "opaque":
@@ -847,6 +844,19 @@ def resolve_task_inputs(
                     "access_state": "active",
                 }
             )
+        elif kind == "agent_run" and identifier is not None:
+            from medical_one_person.application.handoffs import accepted_run_payload, payload_hash
+
+            payload = accepted_run_payload(session, project_id=project_id, run_id=identifier)
+            entry.update(
+                {
+                    "resolution_status": "resolved",
+                    "object_id": payload["task_id"],
+                    "object_version": payload["run_id"],
+                    "content_sha256": payload_hash(payload),
+                    "access_state": "accepted",
+                }
+            )
         elif kind == "document" and identifier is not None:
             version = session.scalar(
                 select(KnowledgeDocumentVersion).where(
@@ -883,9 +893,7 @@ def resolve_task_inputs(
             if citation is None:
                 raise TaskNotReadyError("Citation input is unavailable in the project")
             if citation.review_status in {"invalid", "disputed"}:
-                raise TaskNotReadyError(
-                    f"Citation input review status is {citation.review_status}"
-                )
+                raise TaskNotReadyError(f"Citation input review status is {citation.review_status}")
             version = session.scalar(
                 select(KnowledgeDocumentVersion).where(
                     KnowledgeDocumentVersion.id == citation.version_id,
@@ -929,9 +937,7 @@ def resolve_task_inputs(
                     "resolution_status": "resolved",
                     "object_id": str(claim.claim_id),
                     "object_version": str(claim.id),
-                    "content_sha256": hashlib.sha256(
-                        claim.statement.encode("utf-8")
-                    ).hexdigest(),
+                    "content_sha256": hashlib.sha256(claim.statement.encode("utf-8")).hexdigest(),
                     "access_state": claim.status,
                 }
             )
@@ -965,9 +971,7 @@ def resolve_task_inputs(
             if deliverable is None:
                 raise TaskNotReadyError("Deliverable input is unavailable in the project")
             if deliverable.state not in {"received", "under_review", "accepted"}:
-                raise TaskNotReadyError(
-                    f"Deliverable input state is {deliverable.state}"
-                )
+                raise TaskNotReadyError(f"Deliverable input state is {deliverable.state}")
             entry.update(
                 {
                     "resolution_status": "resolved",

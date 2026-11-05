@@ -97,6 +97,7 @@ def _create_plan(
             "source_decision_id": decision_id,
             "spec": {
                 "title": f"W21计划-{key}",
+            "scientific_feedback": False,
                 "objective": "验证两个隔离项目中的完整mock研发协作链。",
                 "max_rework_rounds": 2,
                 "nodes": nodes,

@@ -11,12 +11,19 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session, sessionmaker
 
 from medical_one_person.agents.config import AgentRoleConfig
+from medical_one_person.agents.contracts import AgentDelivery
 from medical_one_person.application.errors import (
     ConflictingOperationError,
     NotFoundError,
     PlanStateError,
     ReviewPolicyError,
     RevisionConflictError,
+    TaskNotReadyError,
+)
+from medical_one_person.application.handoffs import (
+    accepted_run_payload,
+    payload_hash,
+    submitted_run,
 )
 from medical_one_person.application.readiness import require_no_active_audit_blockers
 from medical_one_person.application.tasks import (
@@ -36,6 +43,7 @@ from medical_one_person.domain.projects import ProjectStage, ProjectStatus
 from medical_one_person.domain.tasks import TaskState
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.models import (
+    AgentRun,
     CommandReceipt,
     Decision,
     Job,
@@ -85,6 +93,11 @@ class PlanView(BaseModel):
     stage_id: str | None
     pause_reason: str | None
     max_rework_rounds: int
+    scientific_feedback: bool
+    feedback_round: int
+    max_followup_rounds: int
+    parent_plan_id: UUID | None
+    scientific_updates: list[dict[str, Any]]
     nodes: list[PlanNodeView]
     reviews: list[TaskReviewSummary]
     created_at: datetime
@@ -155,6 +168,27 @@ class PlanService:
         spec: PlanSpec,
         idempotency_key: str,
     ) -> PlanView:
+        with self._session_factory.begin() as session:
+            return self._submit_plan(
+                session=session,
+                project_id=project_id,
+                actor_user_id=actor_user_id,
+                source_decision_id=source_decision_id,
+                spec=spec,
+                idempotency_key=idempotency_key,
+            )
+
+    def _submit_plan(
+        self,
+        *,
+        session: Session,
+        project_id: UUID,
+        actor_user_id: UUID,
+        source_decision_id: UUID,
+        spec: PlanSpec,
+        parent_plan: Plan | None = None,
+        idempotency_key: str,
+    ) -> PlanView:
         if not idempotency_key.strip():
             raise ValueError("Plan idempotency key is required")
         request_hash = _digest(
@@ -165,186 +199,217 @@ class PlanService:
             }
         )
         route = f"plans.submit:{project_id}"
-        with self._session_factory.begin() as session:
-            actor = _owner(session, actor_user_id)
-            set_rls_context(session, workspace_id=actor.workspace_id, user_id=actor.id)
-            project = _locked_project(session, project_id, actor.workspace_id)
-            receipt = _find_receipt(session, actor.id, route, idempotency_key)
-            if receipt is not None:
-                return self._replay_receipt(session, receipt, request_hash)
-            _validate_plan_roles(spec, self._roles)
-            decision = _validate_source_decision(session, project.id, source_decision_id)
-            workflow_sha256 = _validate_spec_workflow(
-                spec,
-                selected_track=_decision_track(session, decision),
-                workflows=self._workflows,
-            )
-            if not project.policy_bundle_id:
-                raise PlanStateError("Project has no active policy bundle")
-            now = datetime.now(UTC)
-            plan_version = (
-                session.scalar(
-                    select(func.max(Plan.plan_version)).where(Plan.project_id == project.id)
+        actor = _owner(session, actor_user_id)
+        set_rls_context(session, workspace_id=actor.workspace_id, user_id=actor.id)
+        project = _locked_project(session, project_id, actor.workspace_id)
+        receipt = _find_receipt(session, actor.id, route, idempotency_key)
+        if receipt is not None:
+            return self._replay_receipt(session, receipt, request_hash)
+        _validate_plan_roles(spec, self._roles)
+        decision = _validate_source_decision(session, project.id, source_decision_id)
+        workflow_sha256 = _validate_spec_workflow(
+            spec,
+            selected_track=_decision_track(session, decision),
+            workflows=self._workflows,
+        )
+        if not project.policy_bundle_id:
+            raise PlanStateError("Project has no active policy bundle")
+        now = datetime.now(UTC)
+        plan_version = (
+            session.scalar(select(func.max(Plan.plan_version)).where(Plan.project_id == project.id))
+            or 0
+        ) + 1
+        plan = Plan(
+            id=uuid4(),
+            workspace_id=project.workspace_id,
+            project_id=project.id,
+            plan_version=plan_version,
+            status=PlanStatus.DRAFT.value,
+            revision=1,
+            title=spec.title,
+            objective=spec.objective,
+            scientific_feedback=spec.scientific_feedback,
+            max_followup_rounds=(
+                parent_plan.max_followup_rounds if parent_plan else spec.max_followup_rounds
+            ),
+            feedback_round=(parent_plan.feedback_round + 1 if parent_plan else 0),
+            parent_plan_id=parent_plan.id if parent_plan else None,
+            source_decision_id=source_decision_id,
+            workflow_track=(spec.workflow_track.value if spec.workflow_track is not None else None),
+            workflow_id=spec.workflow_id,
+            workflow_version=spec.workflow_version,
+            workflow_sha256=workflow_sha256,
+            stage_id=spec.stage_id,
+            policy_bundle_id=project.policy_bundle_id,
+            pause_reason=None,
+            max_nodes=20,
+            max_rework_rounds=spec.max_rework_rounds,
+            created_by_user_id=actor.id,
+            created_at=now,
+            updated_at=now,
+        )
+        session.add(plan)
+        session.flush()
+
+        tasks_by_key: dict[str, Task] = {}
+        node_specs = _topological_nodes(spec)
+        if spec.scientific_feedback:
+            node_specs.append(
+                PlanNodeSpec(
+                    key="chief-integration",
+                    task_type="scientific.integration",
+                    purpose="integrate-reviewed-deliveries",
+                    assignee_role="A02",
+                    role_version=str(self._roles["A02"].version),
+                    input_version="feedback-v1",
+                    input_refs=list(
+                        dict.fromkeys(
+                            [
+                                "opaque:reviewed-scientific-feedback",
+                                *(
+                                    ref
+                                    for node in spec.nodes
+                                    for ref in node.input_refs
+                                    if ref.startswith("agent_run:")
+                                ),
+                            ]
+                        )
+                    ),
+                    goal="整合所有已验收交付及审核异议，更新原问题判断、未知与下一步；原问题："
+                    + spec.objective,
+                    deliverable_schema="agent_delivery.v1",
+                    acceptance_policy="independent_review.v1",
+                    depends_on=[node.key for node in node_specs],
                 )
-                or 0
-            ) + 1
-            plan = Plan(
-                id=uuid4(),
+            )
+        for order_index, node_spec in enumerate(node_specs):
+            task_id = uuid4()
+            dependency_tasks = [tasks_by_key[key] for key in node_spec.depends_on]
+            task_state = TaskState.READY if not dependency_tasks else TaskState.NEEDS_INPUT
+            input_refs = list(
+                dict.fromkeys(
+                    [
+                        f"decision:{source_decision_id}",
+                        *node_spec.input_refs,
+                    ]
+                )
+            )
+            input_snapshot, input_snapshot_sha256 = resolve_task_inputs(
+                session,
+                project_id=project.id,
+                input_version=node_spec.input_version,
+                input_refs=input_refs,
+                captured_at=now,
+            )
+            task = Task(
+                id=task_id,
                 workspace_id=project.workspace_id,
                 project_id=project.id,
-                plan_version=plan_version,
-                status=PlanStatus.DRAFT.value,
-                revision=1,
-                title=spec.title,
-                objective=spec.objective,
-                source_decision_id=source_decision_id,
-                workflow_track=(
-                    spec.workflow_track.value if spec.workflow_track is not None else None
+                dedupe_key=_digest(
+                    {
+                        "plan_id": str(plan.id),
+                        "node_key": node_spec.key,
+                        "task_type": node_spec.task_type,
+                        "assignee_role": node_spec.assignee_role,
+                    }
                 ),
-                workflow_id=spec.workflow_id,
-                workflow_version=spec.workflow_version,
-                workflow_sha256=workflow_sha256,
-                stage_id=spec.stage_id,
-                policy_bundle_id=project.policy_bundle_id,
-                pause_reason=None,
-                max_nodes=20,
-                max_rework_rounds=spec.max_rework_rounds,
+                task_type=node_spec.task_type,
+                purpose=node_spec.purpose,
+                assignee_role=node_spec.assignee_role,
+                role_version=node_spec.role_version,
+                policy_bundle_id=plan.policy_bundle_id,
+                input_version=node_spec.input_version,
+                input_refs=input_refs,
+                input_validity="current",
+                input_snapshot=input_snapshot,
+                input_snapshot_sha256=input_snapshot_sha256,
+                input_invalidated_at=None,
+                input_invalidated_reason=None,
+                input_invalidated_by=[],
+                goal=node_spec.goal,
+                deliverable_schema=node_spec.deliverable_schema,
+                acceptance_policy=node_spec.acceptance_policy,
+                mode=node_spec.mode,
+                state=task_state.value,
+                revision=1,
+                max_attempts=node_spec.max_attempts,
                 created_by_user_id=actor.id,
                 created_at=now,
                 updated_at=now,
             )
-            session.add(plan)
+            session.add(task)
             session.flush()
-
-            tasks_by_key: dict[str, Task] = {}
-            for order_index, node_spec in enumerate(_topological_nodes(spec)):
-                task_id = uuid4()
-                dependency_tasks = [tasks_by_key[key] for key in node_spec.depends_on]
-                task_state = TaskState.READY if not dependency_tasks else TaskState.NEEDS_INPUT
-                input_refs = list(
-                    dict.fromkeys(
-                        [
-                            f"decision:{source_decision_id}",
-                            *node_spec.input_refs,
-                        ]
-                    )
-                )
-                input_snapshot, input_snapshot_sha256 = resolve_task_inputs(
-                    session,
-                    project_id=project.id,
-                    input_version=node_spec.input_version,
-                    input_refs=input_refs,
-                    captured_at=now,
-                )
-                task = Task(
-                    id=task_id,
-                    workspace_id=project.workspace_id,
-                    project_id=project.id,
-                    dedupe_key=_digest(
-                        {
-                            "plan_id": str(plan.id),
-                            "node_key": node_spec.key,
-                            "task_type": node_spec.task_type,
-                            "assignee_role": node_spec.assignee_role,
-                        }
-                    ),
-                    task_type=node_spec.task_type,
-                    purpose=node_spec.purpose,
-                    assignee_role=node_spec.assignee_role,
-                    role_version=node_spec.role_version,
-                    policy_bundle_id=plan.policy_bundle_id,
-                    input_version=node_spec.input_version,
-                    input_refs=input_refs,
-                    input_validity="current",
-                    input_snapshot=input_snapshot,
-                    input_snapshot_sha256=input_snapshot_sha256,
-                    input_invalidated_at=None,
-                    input_invalidated_reason=None,
-                    input_invalidated_by=[],
-                    goal=node_spec.goal,
-                    deliverable_schema=node_spec.deliverable_schema,
-                    acceptance_policy=node_spec.acceptance_policy,
-                    mode=node_spec.mode,
-                    state=task_state.value,
-                    revision=1,
-                    max_attempts=node_spec.max_attempts,
-                    created_by_user_id=actor.id,
-                    created_at=now,
-                    updated_at=now,
-                )
-                session.add(task)
-                session.flush()
-                for dependency in dependency_tasks:
-                    session.add(
-                        TaskDependency(
-                            id=uuid4(),
-                            workspace_id=project.workspace_id,
-                            project_id=project.id,
-                            task_id=task.id,
-                            depends_on_task_id=dependency.id,
-                        )
-                    )
-                _append_task_version(session, task, now)
-                _append_event(
-                    session,
-                    project_id=project.id,
-                    workspace_id=project.workspace_id,
-                    event_type="task.created",
-                    object_type="task",
-                    object_id=task.id,
-                    object_revision=task.revision,
-                    actor_user_id=actor.id,
-                    payload={
-                        "state": task.state,
-                        "plan_id": str(plan.id),
-                        "node_key": node_spec.key,
-                    },
-                    now=now,
-                )
+            for dependency in dependency_tasks:
                 session.add(
-                    PlanNode(
+                    TaskDependency(
                         id=uuid4(),
                         workspace_id=project.workspace_id,
                         project_id=project.id,
-                        plan_id=plan.id,
                         task_id=task.id,
-                        node_key=node_spec.key,
-                        order_index=order_index,
-                        created_at=now,
+                        depends_on_task_id=dependency.id,
                     )
                 )
-                tasks_by_key[node_spec.key] = task
-
+            _append_task_version(session, task, now)
             _append_event(
                 session,
                 project_id=project.id,
                 workspace_id=project.workspace_id,
-                event_type="plan.submitted",
-                object_type="plan",
-                object_id=plan.id,
-                object_revision=plan.revision,
+                event_type="task.created",
+                object_type="task",
+                object_id=task.id,
+                object_revision=task.revision,
                 actor_user_id=actor.id,
                 payload={
-                    "plan_version": plan.plan_version,
-                    "node_count": len(spec.nodes),
-                    "source_decision_id": str(source_decision_id),
+                    "state": task.state,
+                    "plan_id": str(plan.id),
+                    "node_key": node_spec.key,
                 },
                 now=now,
             )
             session.add(
-                CommandReceipt(
+                PlanNode(
                     id=uuid4(),
-                    actor_user_id=actor.id,
-                    route=route,
-                    idempotency_key=idempotency_key,
-                    request_hash=request_hash,
-                    response_payload=PlanReceiptPayload(plan_id=plan.id).model_dump(mode="json"),
-                    resource_id=plan.id,
+                    workspace_id=project.workspace_id,
+                    project_id=project.id,
+                    plan_id=plan.id,
+                    task_id=task.id,
+                    node_key=node_spec.key,
+                    order_index=order_index,
                     created_at=now,
                 )
             )
-            session.flush()
-            return self._detail(session, plan)
+            tasks_by_key[node_spec.key] = task
+
+        _append_event(
+            session,
+            project_id=project.id,
+            workspace_id=project.workspace_id,
+            event_type="plan.submitted",
+            object_type="plan",
+            object_id=plan.id,
+            object_revision=plan.revision,
+            actor_user_id=actor.id,
+            payload={
+                "plan_version": plan.plan_version,
+                "node_count": len(spec.nodes),
+                "source_decision_id": str(source_decision_id),
+            },
+            now=now,
+        )
+        session.add(
+            CommandReceipt(
+                id=uuid4(),
+                actor_user_id=actor.id,
+                route=route,
+                idempotency_key=idempotency_key,
+                request_hash=request_hash,
+                response_payload=PlanReceiptPayload(plan_id=plan.id).model_dump(mode="json"),
+                resource_id=plan.id,
+                created_at=now,
+            )
+        )
+        session.flush()
+        return self._detail(session, plan)
 
     def activate_plan(
         self,
@@ -355,50 +420,67 @@ class PlanService:
         expected_revision: int,
     ) -> PlanView:
         with self._session_factory.begin() as session:
-            actor = _owner(session, actor_user_id)
-            set_rls_context(session, workspace_id=actor.workspace_id, user_id=actor.id)
-            project = _locked_project(session, project_id, actor.workspace_id)
-            plan = _locked_plan(session, plan_id, project.id)
-            _expect_plan_revision(plan, expected_revision)
-            if plan.status != PlanStatus.DRAFT.value:
-                raise PlanStateError("Only a draft plan can be activated")
-            decision = _validate_source_decision(session, project.id, plan.source_decision_id)
-            _validate_existing_plan_workflow(
-                plan,
-                selected_track=_decision_track(session, decision),
-                workflows=self._workflows,
+            return self._activate_plan(
+                session=session,
+                project_id=project_id,
+                plan_id=plan_id,
+                actor_user_id=actor_user_id,
+                expected_revision=expected_revision,
             )
-            nodes = self._plan_tasks(session, plan.id, project.id)
-            if not nodes or len(nodes) > plan.max_nodes:
-                raise PlanStateError("Plan node count is outside the configured bound")
-            _validate_materialized_plan(session, plan, nodes, self._roles)
-            now = datetime.now(UTC)
-            plan.status = PlanStatus.ACTIVE.value
-            plan.revision += 1
-            plan.updated_at = now
-            plan.activated_at = now
-            _set_project_state(
-                session,
-                project,
-                stage=ProjectStage.PLANNED,
-                status=ProjectStatus.ACTIVE,
-                actor_user_id=actor.id,
-                now=now,
-            )
-            _append_event(
-                session,
-                project_id=project.id,
-                workspace_id=project.workspace_id,
-                event_type="plan.activated",
-                object_type="plan",
-                object_id=plan.id,
-                object_revision=plan.revision,
-                actor_user_id=actor.id,
-                payload={"plan_version": plan.plan_version},
-                now=now,
-            )
-            session.flush()
-            return self._detail(session, plan)
+
+    def _activate_plan(
+        self,
+        *,
+        session: Session,
+        project_id: UUID,
+        plan_id: UUID,
+        actor_user_id: UUID,
+        expected_revision: int,
+    ) -> PlanView:
+        actor = _owner(session, actor_user_id)
+        set_rls_context(session, workspace_id=actor.workspace_id, user_id=actor.id)
+        project = _locked_project(session, project_id, actor.workspace_id)
+        plan = _locked_plan(session, plan_id, project.id)
+        _expect_plan_revision(plan, expected_revision)
+        if plan.status != PlanStatus.DRAFT.value:
+            raise PlanStateError("Only a draft plan can be activated")
+        decision = _validate_source_decision(session, project.id, plan.source_decision_id)
+        _validate_existing_plan_workflow(
+            plan,
+            selected_track=_decision_track(session, decision),
+            workflows=self._workflows,
+        )
+        nodes = self._plan_tasks(session, plan.id, project.id)
+        if not nodes or len(nodes) > plan.max_nodes:
+            raise PlanStateError("Plan node count is outside the configured bound")
+        _validate_materialized_plan(session, plan, nodes, self._roles)
+        now = datetime.now(UTC)
+        plan.status = PlanStatus.ACTIVE.value
+        plan.revision += 1
+        plan.updated_at = now
+        plan.activated_at = now
+        _set_project_state(
+            session,
+            project,
+            stage=ProjectStage.PLANNED,
+            status=ProjectStatus.ACTIVE,
+            actor_user_id=actor.id,
+            now=now,
+        )
+        _append_event(
+            session,
+            project_id=project.id,
+            workspace_id=project.workspace_id,
+            event_type="plan.activated",
+            object_type="plan",
+            object_id=plan.id,
+            object_revision=plan.revision,
+            actor_user_id=actor.id,
+            payload={"plan_version": plan.plan_version},
+            now=now,
+        )
+        session.flush()
+        return self._detail(session, plan)
 
     def dispatch_plan(
         self,
@@ -409,102 +491,119 @@ class PlanService:
         expected_revision: int,
     ) -> PlanDispatchView:
         with self._session_factory.begin() as session:
-            actor = _owner(session, actor_user_id)
-            set_rls_context(session, workspace_id=actor.workspace_id, user_id=actor.id)
-            project = _locked_project(session, project_id, actor.workspace_id)
-            plan = _locked_plan(session, plan_id, project.id)
-            _expect_plan_revision(plan, expected_revision)
-            if plan.status != PlanStatus.ACTIVE.value:
-                raise PlanStateError("Only an active plan can be dispatched")
-            now = datetime.now(UTC)
-            nodes = self._plan_tasks(session, plan.id, project.id)
-            dependency_map = _dependency_map(session, project.id)
-            tasks_by_id = {task.id: task for task in nodes}
-            dispatched: list[PlanDispatchItem] = []
-            for task in nodes:
-                if task.state not in {
-                    TaskState.READY.value,
-                    TaskState.REWORK.value,
-                }:
-                    continue
-                require_current_task_inputs(task, session=session)
-                require_no_active_audit_blockers(
-                    session,
-                    project_id=project.id,
-                    task_id=task.id,
-                )
-                dependencies = dependency_map.get(task.id, [])
-                if any(
-                    tasks_by_id[dependency_id].state != TaskState.ACCEPTED.value
-                    for dependency_id in dependencies
-                ):
-                    continue
-                task.state = TaskState.QUEUED.value
-                task.revision += 1
-                task.updated_at = now
-                _append_task_version(session, task, now)
-                session.add(
-                    OutboxMessage(
-                        id=uuid4(),
-                        workspace_id=task.workspace_id,
-                        project_id=task.project_id,
-                        task_id=task.id,
-                        unique_key=f"task:{task.id}:queue:{task.revision}",
-                        event_type="task.queue_requested",
-                        payload={
-                            "task_id": str(task.id),
-                            "plan_id": str(plan.id),
-                            "deliverable_schema": task.deliverable_schema,
-                        },
-                        state="pending",
-                        attempts=0,
-                        available_at=now,
-                        created_at=now,
-                    )
-                )
-                _append_event(
-                    session,
-                    project_id=project.id,
-                    workspace_id=project.workspace_id,
-                    event_type="task.queued",
-                    object_type="task",
-                    object_id=task.id,
-                    object_revision=task.revision,
-                    actor_user_id=actor.id,
-                    payload={"state": task.state, "plan_id": str(plan.id)},
-                    now=now,
-                )
-                key = _node_key(session, plan.id, task.id)
-                dispatched.append(
-                    PlanDispatchItem(
-                        task_id=task.id,
-                        node_key=key,
-                        assignee_role=task.assignee_role,
-                        task_state=TaskState(task.state),
-                        task_revision=task.revision,
-                    )
-                )
-            if dispatched:
-                plan.revision += 1
-                plan.updated_at = now
-                _append_event(
-                    session,
-                    project_id=project.id,
-                    workspace_id=project.workspace_id,
-                    event_type="plan.dispatched",
-                    object_type="plan",
-                    object_id=plan.id,
-                    object_revision=plan.revision,
-                    actor_user_id=actor.id,
-                    payload={"task_ids": [str(item.task_id) for item in dispatched]},
-                    now=now,
-                )
-            session.flush()
-            return PlanDispatchView(
-                plan_id=plan.id,
-                plan_revision=plan.revision,
-                dispatched=dispatched,
+            return self._dispatch_plan(
+                session=session,
+                project_id=project_id,
+                plan_id=plan_id,
+                actor_user_id=actor_user_id,
+                expected_revision=expected_revision,
             )
+
+    def _dispatch_plan(
+        self,
+        *,
+        session: Session,
+        project_id: UUID,
+        plan_id: UUID,
+        actor_user_id: UUID,
+        expected_revision: int,
+    ) -> PlanDispatchView:
+        actor = _owner(session, actor_user_id)
+        set_rls_context(session, workspace_id=actor.workspace_id, user_id=actor.id)
+        project = _locked_project(session, project_id, actor.workspace_id)
+        plan = _locked_plan(session, plan_id, project.id)
+        _expect_plan_revision(plan, expected_revision)
+        if plan.status != PlanStatus.ACTIVE.value:
+            raise PlanStateError("Only an active plan can be dispatched")
+        now = datetime.now(UTC)
+        nodes = self._plan_tasks(session, plan.id, project.id)
+        dependency_map = _dependency_map(session, project.id)
+        tasks_by_id = {task.id: task for task in nodes}
+        dispatched: list[PlanDispatchItem] = []
+        for task in nodes:
+            if task.state not in {
+                TaskState.READY.value,
+                TaskState.REWORK.value,
+            }:
+                continue
+            require_current_task_inputs(task, session=session)
+            require_no_active_audit_blockers(
+                session,
+                project_id=project.id,
+                task_id=task.id,
+            )
+            dependencies = dependency_map.get(task.id, [])
+            if any(
+                tasks_by_id[dependency_id].state != TaskState.ACCEPTED.value
+                for dependency_id in dependencies
+            ):
+                continue
+            task.state = TaskState.QUEUED.value
+            task.revision += 1
+            task.updated_at = now
+            _append_task_version(session, task, now)
+            session.add(
+                OutboxMessage(
+                    id=uuid4(),
+                    workspace_id=task.workspace_id,
+                    project_id=task.project_id,
+                    task_id=task.id,
+                    unique_key=f"task:{task.id}:queue:{task.revision}",
+                    event_type="task.queue_requested",
+                    payload={
+                        "task_id": str(task.id),
+                        "plan_id": str(plan.id),
+                        "deliverable_schema": task.deliverable_schema,
+                    },
+                    state="pending",
+                    attempts=0,
+                    available_at=now,
+                    created_at=now,
+                )
+            )
+            _append_event(
+                session,
+                project_id=project.id,
+                workspace_id=project.workspace_id,
+                event_type="task.queued",
+                object_type="task",
+                object_id=task.id,
+                object_revision=task.revision,
+                actor_user_id=actor.id,
+                payload={"state": task.state, "plan_id": str(plan.id)},
+                now=now,
+            )
+            key = _node_key(session, plan.id, task.id)
+            dispatched.append(
+                PlanDispatchItem(
+                    task_id=task.id,
+                    node_key=key,
+                    assignee_role=task.assignee_role,
+                    task_state=TaskState(task.state),
+                    task_revision=task.revision,
+                )
+            )
+        if dispatched:
+            plan.revision += 1
+            plan.updated_at = now
+            _append_event(
+                session,
+                project_id=project.id,
+                workspace_id=project.workspace_id,
+                event_type="plan.dispatched",
+                object_type="plan",
+                object_id=plan.id,
+                object_revision=plan.revision,
+                actor_user_id=actor.id,
+                payload={"task_ids": [str(item.task_id) for item in dispatched]},
+                now=now,
+            )
+        session.flush()
+        return PlanDispatchView(
+            plan_id=plan.id,
+            plan_revision=plan.revision,
+            dispatched=dispatched,
+        )
 
     def review_task(
         self,
@@ -577,6 +676,13 @@ class PlanService:
                 task_id=task.id,
             )
             _validate_reviewer(task, reviewer_role, self._roles)
+            delivery_run = submitted_run(session, task) if plan.scientific_feedback else None
+            if (
+                plan.scientific_feedback
+                and decision == ReviewDecision.ACCEPTED
+                and any(item.severity == FindingSeverity.MAJOR for item in findings)
+            ):
+                raise ReviewPolicyError("A major finding cannot accept a scientific delivery")
             critical = any(item.severity == FindingSeverity.CRITICAL for item in findings)
             if critical and decision != ReviewDecision.CHANGES_REQUESTED:
                 raise ReviewPolicyError("A critical finding requires changes_requested")
@@ -626,7 +732,17 @@ class PlanService:
                 result_payload={},
                 created_at=now,
             )
+            binding = (
+                {
+                    "delivery_run_id": str(delivery_run.id),
+                    "delivery_sha256": payload_hash(delivery_run.output),
+                }
+                if delivery_run is not None
+                else {}
+            )
+            review.result_payload = binding
             session.add(review)
+            session.flush()
 
             unlocked: list[UUID] = []
             if decision == ReviewDecision.ACCEPTED:
@@ -672,6 +788,20 @@ class PlanService:
                         payload={"accepted_tasks": len(nodes)},
                         now=now,
                     )
+                    if plan.scientific_feedback:
+                        if task.task_type != "scientific.integration" or delivery_run is None:
+                            raise ReviewPolicyError(
+                                "Scientific plans must end with reviewed chief integration"
+                            )
+                        self._apply_scientific_update(
+                            session,
+                            plan=plan,
+                            project=project,
+                            run=delivery_run,
+                            actor_user_id=actor.id,
+                            review_id=review.id,
+                            now=now,
+                        )
             elif decision == ReviewDecision.CHANGES_REQUESTED:
                 if previous_changes >= plan.max_rework_rounds:
                     _transition_task(
@@ -736,9 +866,160 @@ class PlanService:
                 unlocked_task_ids=unlocked,
                 plan_status=PlanStatus(plan.status),
             )
-            review.result_payload = result.model_dump(mode="json")
+            review.result_payload = {**result.model_dump(mode="json"), **binding}
             session.flush()
             return result
+
+    def _apply_scientific_update(
+        self,
+        session: Session,
+        *,
+        plan: Plan,
+        project: Project,
+        run: AgentRun,
+        actor_user_id: UUID,
+        review_id: UUID,
+        now: datetime,
+    ) -> None:
+        delivery = AgentDelivery.model_validate(run.output)
+        update = delivery.scientific_update
+        if run.role_id != "A02" or update is None:
+            raise ReviewPolicyError("Chief integration requires a structured scientific update")
+        expected_runs = {
+            item["run_id"] for item in run.input_snapshot.get("upstream_deliveries", [])
+        }
+        if {str(item) for item in update.consumed_run_ids} != expected_runs:
+            raise ReviewPolicyError("Chief must account for every reviewed input delivery")
+        block_reason: str | None = None
+        next_plan_id: UUID | None = None
+        proposal_issue: str | None = None
+        next_spec = update.next_plan
+        if next_spec is not None:
+            if plan.feedback_round >= plan.max_followup_rounds:
+                block_reason = "followup_round_limit"
+            elif project.policy_bundle_id != plan.policy_bundle_id:
+                block_reason = "policy_changed"
+            elif not next_spec.scientific_feedback:
+                block_reason = "feedback_cannot_be_disabled"
+            elif (
+                next_spec.workflow_track
+                != (Track(plan.workflow_track) if plan.workflow_track else None)
+                or next_spec.workflow_id != plan.workflow_id
+                or next_spec.workflow_version != plan.workflow_version
+                or next_spec.stage_id != plan.stage_id
+            ):
+                block_reason = "stage_or_scope_change"
+            elif any(
+                not node.task_type.startswith(("scientific.", "research.", "evidence."))
+                or node.task_type == "scientific.integration"
+                or node.deliverable_schema != "agent_delivery.v1"
+                for node in next_spec.nodes
+            ):
+                block_reason = "outside_desktop_research"
+            elif plan.status != PlanStatus.COMPLETED.value:
+                block_reason = "plan_not_completed"
+            if block_reason is None:
+                # Preserve the user's research objective, selection, phase, policy and round bound.
+                next_spec = next_spec.model_copy(
+                    update={
+                        "objective": plan.objective,
+                        "max_followup_rounds": plan.max_followup_rounds,
+                        "max_rework_rounds": plan.max_rework_rounds,
+                        "nodes": [
+                            node.model_copy(
+                                update={
+                                    "input_refs": list(
+                                        dict.fromkeys([*node.input_refs, f"agent_run:{run.id}"])
+                                    ),
+                                }
+                            )
+                            for node in next_spec.nodes
+                        ],
+                    }
+                )
+                session.flush()
+                try:
+                    _validate_plan_roles(next_spec, self._roles)
+                    decision = _validate_source_decision(
+                        session, project.id, plan.source_decision_id
+                    )
+                    _validate_spec_workflow(
+                        next_spec,
+                        selected_track=_decision_track(session, decision),
+                        workflows=self._workflows,
+                    )
+                    for node in next_spec.nodes:
+                        resolve_task_inputs(
+                            session,
+                            project_id=project.id,
+                            input_version=node.input_version,
+                            input_refs=node.input_refs,
+                            captured_at=now,
+                        )
+                except (ValueError, PlanStateError, ReviewPolicyError, TaskNotReadyError) as exc:
+                    block_reason = "followup_requires_revision"
+                    proposal_issue = str(exc)
+                if block_reason is None:
+                    # The accepted integration is visible to the typed input resolver now.
+                    child = self._submit_plan(
+                        session=session,
+                        project_id=project.id,
+                        actor_user_id=actor_user_id,
+                        source_decision_id=plan.source_decision_id,
+                        spec=next_spec,
+                        parent_plan=plan,
+                        idempotency_key=f"scientific-feedback:{run.id}",
+                    )
+                    activated = self._activate_plan(
+                        session=session,
+                        project_id=project.id,
+                        plan_id=child.id,
+                        actor_user_id=actor_user_id,
+                        expected_revision=child.revision,
+                    )
+                    self._dispatch_plan(
+                        session=session,
+                        project_id=project.id,
+                        plan_id=child.id,
+                        actor_user_id=actor_user_id,
+                        expected_revision=activated.revision,
+                    )
+                    next_plan_id = child.id
+        payload = {
+            "plan_id": str(plan.id),
+            "integration_task_id": str(run.task_id),
+            "run_id": str(run.id),
+            "review_id": str(review_id),
+            "delivery_sha256": payload_hash(run.output),
+            "feedback_round": plan.feedback_round,
+            "update": update.model_dump(mode="json"),
+            "next_plan_id": str(next_plan_id) if next_plan_id else None,
+            "block_reason": block_reason,
+            "proposal_issue": proposal_issue,
+            "mode": run.mode,
+        }
+        _append_event(
+            session,
+            project_id=project.id,
+            workspace_id=project.workspace_id,
+            event_type="scientific.judgment_updated",
+            object_type="plan",
+            object_id=plan.id,
+            object_revision=plan.revision,
+            actor_user_id=actor_user_id,
+            payload=payload,
+            now=now,
+        )
+        if next_plan_id is None:
+            stopped = update.action == "stop" and block_reason is None
+            _set_project_state(
+                session,
+                project,
+                stage=ProjectStage.STOPPED if stopped else ProjectStage.PAUSED,
+                status=ProjectStatus.STOPPED if stopped else ProjectStatus.PAUSED,
+                actor_user_id=actor_user_id,
+                now=now,
+            )
 
     def _queue_for_worker(
         self,
@@ -1041,6 +1322,22 @@ class PlanService:
             revision=plan.revision,
             title=plan.title,
             objective=plan.objective,
+            scientific_feedback=plan.scientific_feedback,
+            feedback_round=plan.feedback_round,
+            max_followup_rounds=plan.max_followup_rounds,
+            parent_plan_id=plan.parent_plan_id,
+            scientific_updates=[
+                event.payload
+                for event in session.scalars(
+                    select(ProjectEvent)
+                    .where(
+                        ProjectEvent.project_id == plan.project_id,
+                        ProjectEvent.object_id == plan.id,
+                        ProjectEvent.type == "scientific.judgment_updated",
+                    )
+                    .order_by(ProjectEvent.project_seq)
+                )
+            ],
             source_decision_id=plan.source_decision_id,
             workflow_track=(
                 Track(plan.workflow_track) if plan.workflow_track is not None else None
@@ -1110,6 +1407,21 @@ class PlanService:
                     tasks_by_id[dependency_id].state == TaskState.ACCEPTED.value
                     for dependency_id in task_dependencies
                 ):
+                    if plan.scientific_feedback:
+                        refs = list(task.input_refs)
+                        for dependency_id in task_dependencies:
+                            upstream = tasks_by_id[dependency_id]
+                            run = submitted_run(session, upstream)
+                            accepted_run_payload(session, project_id=project.id, run_id=run.id)
+                            refs.append(f"agent_run:{run.id}")
+                        task.input_refs = list(dict.fromkeys(refs))
+                        task.input_snapshot, task.input_snapshot_sha256 = resolve_task_inputs(
+                            session,
+                            project_id=project.id,
+                            input_version=task.input_version,
+                            input_refs=task.input_refs,
+                            captured_at=now,
+                        )
                     _transition_task(
                         session,
                         task,

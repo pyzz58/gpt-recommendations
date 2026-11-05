@@ -113,6 +113,8 @@ class TraceabilityTests(unittest.TestCase):
                 for name in sorted(artifact_paths)
             }
         if not evidence["records"]:
+            # A fixture artifact must not hash the evidence file that contains its own hash.
+            (self.root / "traceability/baseline-fixture.log").write_text("synthetic checker fixture\n")
             requirement = next(
                 item for item in self.manifest()["requirements"] if item["id"] == "RQ-001"
             )
@@ -134,7 +136,7 @@ class TraceabilityTests(unittest.TestCase):
                             "started_at": "2026-11-01T00:00:00Z",
                             "finished_at": "2026-11-01T00:00:01Z",
                             "exit_code": 0,
-                            "artifacts": ["traceability/acceptance-records.json"],
+                            "artifacts": ["traceability/baseline-fixture.log"],
                         }
                     ],
                     "validation_levels": {
@@ -151,10 +153,10 @@ class TraceabilityTests(unittest.TestCase):
                             ).hexdigest(),
                         }
                     ],
-                    "artifacts": ["traceability/acceptance-records.json"],
+                    "artifacts": ["traceability/baseline-fixture.log"],
                     "artifact_hashes": {
-                        "traceability/acceptance-records.json": hashlib.sha256(
-                            (self.root / "traceability/acceptance-records.json").read_bytes()
+                        "traceability/baseline-fixture.log": hashlib.sha256(
+                            (self.root / "traceability/baseline-fixture.log").read_bytes()
                         ).hexdigest()
                     },
                     "uncovered": ["No application or real-world validation."],
@@ -441,8 +443,10 @@ class TraceabilityTests(unittest.TestCase):
 
     def test_artifact_hash_detects_post_acceptance_change(self):
         self.assertEqual(checker.validate(self.root), [])
-        (self.root / "docs/w01-w18-validation.md").write_text(
-            (self.root / "docs/w01-w18-validation.md").read_text(encoding="utf-8")
+        evidence = json.loads((self.root / "traceability/acceptance-records.json").read_text())
+        artifact = self.root / evidence["records"][0]["artifacts"][0]
+        artifact.write_text(
+            artifact.read_text(encoding="utf-8")
             + "\n变更后的验收产物。\n",
             encoding="utf-8",
         )

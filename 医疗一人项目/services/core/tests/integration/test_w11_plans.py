@@ -113,6 +113,7 @@ def _spec(*, max_rework_rounds: int = 3, with_audit: bool = True) -> PlanSpec:
     return PlanSpec.model_validate(
         {
             "title": "W11有界核查计划",
+            "scientific_feedback": False,
             "objective": "只验证计划、派工、审核和退回合同。",
             "nodes": nodes,
             "max_rework_rounds": max_rework_rounds,

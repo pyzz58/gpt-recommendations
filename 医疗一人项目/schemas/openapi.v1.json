@@ -11966,6 +11966,18 @@
             "title": "Max Rework Rounds",
             "default": 3
           },
+          "scientific_feedback": {
+            "type": "boolean",
+            "title": "Scientific Feedback",
+            "default": true
+          },
+          "max_followup_rounds": {
+            "type": "integer",
+            "maximum": 3.0,
+            "minimum": 0.0,
+            "title": "Max Followup Rounds",
+            "default": 1
+          },
           "workflow_track": {
             "anyOf": [
               {
@@ -12157,6 +12169,38 @@
             "type": "integer",
             "title": "Max Rework Rounds"
           },
+          "scientific_feedback": {
+            "type": "boolean",
+            "title": "Scientific Feedback"
+          },
+          "feedback_round": {
+            "type": "integer",
+            "title": "Feedback Round"
+          },
+          "max_followup_rounds": {
+            "type": "integer",
+            "title": "Max Followup Rounds"
+          },
+          "parent_plan_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Plan Id"
+          },
+          "scientific_updates": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Scientific Updates"
+          },
           "nodes": {
             "items": {
               "$ref": "#/components/schemas/PlanNodeView"
@@ -12235,6 +12279,11 @@
           "stage_id",
           "pause_reason",
           "max_rework_rounds",
+          "scientific_feedback",
+          "feedback_round",
+          "max_followup_rounds",
+          "parent_plan_id",
+          "scientific_updates",
           "nodes",
           "reviews",
           "created_at",

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from decimal import Decimal
 
 from medical_one_person.contracts import MockSmokeResponse
@@ -83,6 +84,17 @@ class FakeModelProvider:
             ],
             "independent_review": request.independent_context,
         }
+        if request.context_sections.get("task_type") == "scientific.integration":
+            upstream = json.loads(request.context_sections.get("upstream_deliveries", "[]"))
+            output["scientific_update"] = {
+                "consumed_run_ids": [item["run_id"] for item in upstream],
+                "answered_questions": ["模拟交付已回流；尚未回答真实科学问题。"],
+                "judgment_change": "保留未知，模拟输出不构成支持或反对证据。",
+                "remaining_unknowns": ["真实资料核查及专业模型判断未运行。"],
+                "action": "wait",
+                "rationale": "等待真实证据或明确标注的流程测试输入。",
+                "next_plan": None,
+            }
         repair_tokens = len(request.repair_feedback or "")
         return StructuredGenerationResponse(
             provider_id=self.provider_id,

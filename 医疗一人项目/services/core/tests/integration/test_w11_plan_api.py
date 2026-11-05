@@ -73,6 +73,7 @@ def test_plan_api_dispatches_mock_executes_and_records_review(
             "source_decision_id": selected.json()["decision_id"],
             "spec": {
                 "title": "W11 API计划",
+            "scientific_feedback": False,
                 "objective": "只验证本地mock工作流。",
                 "max_rework_rounds": 2,
                 "nodes": [

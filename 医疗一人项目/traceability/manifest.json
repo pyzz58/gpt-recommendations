@@ -77,7 +77,7 @@
         "services/core/src/medical_one_person/application/budgets.py",
         "services/core/migrations/versions/c7296a4b69d8_w04_tasks_jobs_budgets.py"
       ],
-      "implementation_status": "verified",
+      "implementation_status": "implemented",
       "source_sha256": "32b1ea0ec553bf09bed81e18f40368c70accce80c16a4c9127c4d0bac8af076b",
       "implementation_paths": [
         "services/core/src/medical_one_person/domain/budgets.py",
@@ -366,7 +366,10 @@
         "services/core/tests/integration/test_w21_end_to_end.py",
         "services/core/src/medical_one_person/application/plans.py",
         "services/core/src/medical_one_person/application/plan_execution.py",
-        "services/core/tests/integration/test_w11_plans.py"
+        "services/core/tests/integration/test_w11_plans.py",
+        "services/core/src/medical_one_person/application/handoffs.py",
+        "services/core/tests/integration/test_scientific_feedback.py",
+        "services/core/migrations/versions/f4a2c7d9e601_scientific_feedback.py"
       ]
     },
     {
@@ -410,7 +413,12 @@
         "services/core/tests/integration/test_w04_scheduling.py"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "297bba45633eea3f34a0eee2df8e6110640731e7a488fe97d53a84c938953bb9"
+      "source_sha256": "297bba45633eea3f34a0eee2df8e6110640731e7a488fe97d53a84c938953bb9",
+      "implementation_paths": [
+        "services/core/src/medical_one_person/application/handoffs.py",
+        "services/core/tests/integration/test_scientific_feedback.py",
+        "services/core/migrations/versions/f4a2c7d9e601_scientific_feedback.py"
+      ]
     },
     {
       "id": "RQ-010",
@@ -450,7 +458,10 @@
         "services/core/tests/integration/test_w21_end_to_end.py",
         "services/core/src/medical_one_person/application/plans.py",
         "services/core/src/medical_one_person/application/plan_execution.py",
-        "services/core/tests/integration/test_w11_plans.py"
+        "services/core/tests/integration/test_w11_plans.py",
+        "services/core/src/medical_one_person/application/handoffs.py",
+        "services/core/tests/integration/test_scientific_feedback.py",
+        "services/core/migrations/versions/f4a2c7d9e601_scientific_feedback.py"
       ]
     },
     {
@@ -888,7 +899,10 @@
         "fixtures/w17-audit-cases.json",
         "services/core/tests/integration/test_w17_audit_service.py",
         "apps/web/src/app/projects/[id]/audits/page.tsx",
-        "docs/w17-handoff.md"
+        "docs/w17-handoff.md",
+        "services/core/src/medical_one_person/application/handoffs.py",
+        "services/core/tests/integration/test_scientific_feedback.py",
+        "services/core/migrations/versions/f4a2c7d9e601_scientific_feedback.py"
       ],
       "implementation_status": "implemented",
       "source_sha256": "4a38ccd7bd4985b7f2a3caf6c1e25045a6d85783e97be846f9f702e3d27406e7"
@@ -1196,7 +1210,7 @@
         "services/core/src/medical_one_person/application/policy_bundles.py",
         "services/core/src/medical_one_person/api/policies.py"
       ],
-      "implementation_status": "verified",
+      "implementation_status": "implemented",
       "source_sha256": "8e6ee7e14a15142a6d1bd9711a6e2f1c2177caa5c68fdd1693593d48c097f9ca",
       "implementation_paths": [
         "services/core/src/medical_one_person/domain/policy_bundles.py",
@@ -1420,9 +1434,9 @@
     }
   ],
   "theory_version": "V0.10",
-  "roadmap_version": "V1.18",
+  "roadmap_version": "V1.19",
   "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "05a3633fe7a8cc530f4e61093a652e40aed52f22d1fe9b5eb8a2da1afec6de5d",
+  "roadmap_sha256": "67e81f95e9d3be4b7aae0a51a638c233865af723d26db6090df4c5277446a860",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1534,8 +1548,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-01T04:08:20.944286+00:00",
-    "note": "W21双项目端到端、外部合成交付、真实XLSX、重启与停止已通过最终源码验收。",
+    "at": "2026-11-05T21:20:56.513008+00:00",
+    "note": "科学反馈代码、审核与有界后续计划及合成回归已同步；修复无当前验收记录时的自测自引用hash及硬编码产物问题。旧源码证据归档，新源码验收执行中。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -1565,7 +1579,7 @@
       "requirement_ids": [
         "RQ-032"
       ],
-      "sha256": "d4ede3fa93d9ddcf3c544835b8d2f97efa1d6b85d2ef502ff69c8ed0e1404ca6"
+      "sha256": "3555063f7580c314c2f94b3aecc89cba6335a82be4260479e0540fd2abc03c88"
     },
     {
       "path": "pnpm-lock.yaml",
@@ -1668,7 +1682,7 @@
         "RQ-006",
         "RQ-032"
       ],
-      "sha256": "c652eb93dca9494c9c47cb2ebc2d6c8fd1b602204644bb2ccf1147b6997653d5"
+      "sha256": "d5264cbccab6120a791e3679d339734c6099ab3c1056ecfd77393d19a48f4e2b"
     },
     {
       "path": "schemas/agent-roles.v1.schema.json",
@@ -1964,7 +1978,7 @@
         "RQ-029",
         "RQ-034"
       ],
-      "sha256": "d55d5c7b75927a891b566223b6a0541268c787b03dc37a3384980dd4da48cb3d"
+      "sha256": "5aa4f88442b71628085efe11ef51ba1e197747781f36693bc478c349b44c28f7"
     },
     {
       "path": "apps/web/src/components/project-shell.tsx",
@@ -2028,7 +2042,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "0aa7e2adfb9b33febacfb6d8c35cf6921d55223c0b6ce04a788bbec3b1e045ed"
+      "sha256": "3a9bc85e69fc640e496838c49aa1689282b29c86d7e9a7ad1443507bd5e8b108"
     },
     {
       "path": "services/core/src/medical_one_person/application/plans.py",
@@ -2038,7 +2052,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "3300ee368b76c55ad79fa3e3d11fd416ddb822653143b23cdbb9571de12735b6"
+      "sha256": "ee5a6237984159a6ad6c819ba248e2076a75d8fa1df089c3f8ee9d83c64bdf49"
     },
     {
       "path": "services/core/src/medical_one_person/application/plan_execution.py",
@@ -2077,7 +2091,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "c1983a04f07c2b7687ceca32792f8258cf233a33622530bf6835e228382bd1c2"
+      "sha256": "ad2c7dc30e0c2dd18b0eb03c8cc0f080552f50ae99ae6f562a9e4a7f93cd001c"
     },
     {
       "path": "services/core/tests/integration/test_w11_plans.py",
@@ -2087,7 +2101,7 @@
         "RQ-010",
         "RQ-022"
       ],
-      "sha256": "afc6ea94a9974bb5d77a2ad131d9b31a80351166f59974d121d385fd724dcaf7"
+      "sha256": "3cc1e3518f6438f306b123e9c10f7e3769cd9fec70bf4d2f311ea79a2e7e0fdf"
     },
     {
       "path": "services/core/tests/integration/test_w11_plan_api.py",
@@ -2096,7 +2110,7 @@
         "RQ-009",
         "RQ-022"
       ],
-      "sha256": "8b57c88462988dbff4a0ab6c05abc230cc5d9accfb375310d807b7e73ebe7508"
+      "sha256": "1f2cae75064456d7ca767ba062a729b58a3196c8b8b37eb38a0bcd82bbd29612"
     },
     {
       "path": "services/core/tests/unit/test_w11_plan_contract.py",
@@ -2231,7 +2245,7 @@
         "RQ-018",
         "RQ-031"
       ],
-      "sha256": "8de6698fc95e58949f27b9b5d9a5e0cd33421a323adf889b900c1b8835d10edf"
+      "sha256": "045bf26b82c95728f92c6e9bb6ed9bae588f579eb8e5730668f8df8c13e4432f"
     },
     {
       "path": "services/core/tests/integration/test_w12_workflow_api.py",
@@ -2829,7 +2843,7 @@
       "requirement_ids": [
         "RQ-009"
       ],
-      "sha256": "7f9a24ec5b790a79c0ae5d2d31e363fabce3570fc08c3444a9487cc6f22fab26"
+      "sha256": "8a70690d25bf637c1f4c73a18f5645e2741098dc0e6aee13a1dd747fc8d19139"
     },
     {
       "path": "services/core/src/medical_one_person/application/scheduling.py",
@@ -2899,7 +2913,7 @@
         "RQ-027",
         "RQ-034"
       ],
-      "sha256": "53dabb4f253ea6657982e1e1dce0517b72c960ddd3ab9529fbf9de004a850d4e"
+      "sha256": "fd4fba9a4a78f5a9ab73760330fbf871506bfac4f3e8715168606538bd237be8"
     },
     {
       "path": "services/core/src/medical_one_person/worker/__main__.py",
@@ -2967,7 +2981,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "e03b79d1208fb67082a1d25a0a5d950b606a79186731a53d4b188c0700ccffda"
+      "sha256": "246f867f77cfbe61fd392297925d4f498946eff28bcf3d66f62a6e22ed3c8209"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -3029,6 +3043,46 @@
         "RQ-029"
       ],
       "sha256": "710bd2f8a5b12a45045fe2abb0f32fccea6801ac7a18cb729cd45c5a6b085d1c"
+    },
+    {
+      "path": "services/core/src/medical_one_person/application/handoffs.py",
+      "requirement_ids": [
+        "RQ-008",
+        "RQ-009",
+        "RQ-010",
+        "RQ-022"
+      ],
+      "sha256": "85d9c391141a1c1962da3107315476d1c5407c04a23b8776577d14887a1c2a56"
+    },
+    {
+      "path": "services/core/tests/integration/test_scientific_feedback.py",
+      "requirement_ids": [
+        "RQ-008",
+        "RQ-009",
+        "RQ-010",
+        "RQ-022"
+      ],
+      "sha256": "40c048438766e060ee9f46a6ec5a251829eb44ba4f35d120f680ada3d7b9cb3f"
+    },
+    {
+      "path": "services/core/migrations/versions/f4a2c7d9e601_scientific_feedback.py",
+      "requirement_ids": [
+        "RQ-008",
+        "RQ-009",
+        "RQ-010",
+        "RQ-022"
+      ],
+      "sha256": "8f12563f82913a3e1cb143889d72a29d55346f367fadb207999c3289112443d3"
+    },
+    {
+      "path": "docs/scientific-feedback-handoff.md",
+      "requirement_ids": [
+        "RQ-008",
+        "RQ-009",
+        "RQ-010",
+        "RQ-022"
+      ],
+      "sha256": "433bb49bb7d6df646cb55b2d51c36a6b4f39614454fbfa167f46bc556dfcc958"
     }
   ]
 }

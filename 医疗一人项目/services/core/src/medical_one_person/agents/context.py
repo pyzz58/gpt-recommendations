@@ -20,6 +20,8 @@ class AgentContext:
     authorized_collaboration: tuple[str, ...] = ()
     review_feedback: tuple[str, ...] = ()
     previous_output: dict[str, object] | None = None
+    upstream_deliveries: tuple[dict[str, object], ...] = ()
+    task_type: str = ""
 
     def system_instructions(self) -> str:
         responsibilities = "; ".join(self.role.responsibilities)
@@ -37,12 +39,14 @@ class AgentContext:
         return {
             "project_scope": self.project_scope,
             "task_goal": self.goal,
+            "task_type": self.task_type,
+            "upstream_deliveries": json.dumps(
+                self.upstream_deliveries, ensure_ascii=False, sort_keys=True
+            ),
             "input_refs": "\n".join(self.input_refs),
             "authorized_collaboration": "\n".join(self.authorized_collaboration),
             "review_feedback": "\n".join(self.review_feedback),
-            "current_policy_restrictions": "\n".join(
-                self.current_policy_restrictions
-            ),
+            "current_policy_restrictions": "\n".join(self.current_policy_restrictions),
             "previous_output": json.dumps(
                 self.previous_output,
                 ensure_ascii=False,
@@ -60,14 +64,14 @@ class AgentContext:
             "project_id": str(self.project_id),
             "task_id": str(self.task_id),
             "goal": self.goal,
+            "task_type": self.task_type,
+            "upstream_deliveries": list(self.upstream_deliveries),
             "input_refs": list(self.input_refs),
             "project_scope": self.project_scope,
             "authorized_collaboration": list(self.authorized_collaboration),
             "review_feedback": list(self.review_feedback),
             "policy_bundle_id": self.policy_bundle_id,
-            "current_policy_restrictions": list(
-                self.current_policy_restrictions
-            ),
+            "current_policy_restrictions": list(self.current_policy_restrictions),
             "previous_output": self.previous_output,
             "memory_scope": self.role.memory_scope,
         }

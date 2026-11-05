@@ -209,6 +209,7 @@ def test_stage_evidence_gate_blocks_external_stage_until_real_records(
     assert stage_plan.stage_id == workflow.stages[1].stage_id
     assert stage_plan.workflow_sha256
     assert {node.assignee_role for node in stage_plan.nodes} == {
+        "A02",
         "A04",
         "A07",
         "A20",

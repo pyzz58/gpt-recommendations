@@ -370,6 +370,36 @@ export default function TasksPage() {
                 aside={<StatusPill value={selectedPlan.status} />}
               />
               <p className="planObjective">{selectedPlan.objective}</p>
+              {selectedPlan.scientific_feedback && (
+                <p className="mutedText">
+                  本轮交付验收后，由首席科学家整合并复审。当前为模拟流程。
+                  补证轮次 {selectedPlan.feedback_round} / {selectedPlan.max_followup_rounds}
+                </p>
+              )}
+              {selectedPlan.parent_plan_id && (
+                <button type="button" className="button secondary"
+                  onClick={() => setSelectedPlanId(selectedPlan.parent_plan_id ?? "")}>
+                  查看上一轮研究
+                </button>
+              )}
+              {selectedPlan.scientific_updates.map((record) => (
+                <article key={record.run_id} className="surface">
+                  <h3>首席科学家的本轮判断</h3>
+                  <p>{record.update.judgment_change}</p>
+                  <p>已回答：{record.update.answered_questions.join("；")}</p>
+                  <p>仍未知：{record.update.remaining_unknowns.join("；")}</p>
+                  <p>下一步：{record.update.rationale}</p>
+                  {record.block_reason && (
+                    <p className="warningBanner">自动推进已暂停，需要处理范围、配置或轮次限制。</p>
+                  )}
+                  {record.next_plan_id && (
+                    <button type="button" className="button secondary"
+                      onClick={() => setSelectedPlanId(record.next_plan_id ?? "")}>
+                      查看下一轮任务
+                    </button>
+                  )}
+                </article>
+              ))}
               {selectedPlan.workflow_id && (
                 <p className="mutedText">
                   专业流程 {selectedPlan.workflow_id} V
