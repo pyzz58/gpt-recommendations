@@ -1434,9 +1434,9 @@
     }
   ],
   "theory_version": "V0.10",
-  "roadmap_version": "V1.19",
+  "roadmap_version": "V1.20",
   "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "2144d6902d7921746ef65160de57c6193282ed463f7ff6cb9280a711a1f6d4ba",
+  "roadmap_sha256": "f5a12924264600b258e140481732985f509f5b37057dd3d0050fb3c11402eeb9",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1548,8 +1548,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-05T21:38:34.315955+00:00",
-    "note": "绑定b08f770实际通过的应用CI：135通过、3项Office依赖跳过，10个反馈数据库用例、3个合同单测及迁移/网页/追踪检查；存档完整日志和逐项步骤，保持mock与现实验证边界。",
+    "at": "2026-11-07T08:20:11.617248+00:00",
+    "note": "W23最终日志已去除行尾空白和额外空行，证据哈希重新计算。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -2923,7 +2923,7 @@
         "RQ-010",
         "RQ-032"
       ],
-      "sha256": "fafc2c4d90780d7f9372e862ec51b1debfab25cff8018f177133b0aaebf25c89"
+      "sha256": "89284f392a21081eee8a209b4ad83891becf4f428f640a3cc74616317b954b50"
     },
     {
       "path": "services/core/migrations/versions/c8f1a6d3e720_w17_audit_task_links.py",
@@ -2981,7 +2981,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "87b304b3ac2b44662c0cab9cac69e7131c27bbfcc5ea1be8becc1491533d640f"
+      "sha256": "807094281b7c2640f2720a8e5c22601b4589dd8fe5903c22275f87acf47912f7"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -3101,6 +3101,59 @@
         "RQ-022"
       ],
       "sha256": "796e8e2ad56978c3d36de41be20a63e763126550bcf3de5202b012f03ec40d07"
+    },
+    {
+      "path": "scripts/medical-one.sh",
+      "requirement_ids": [
+        "RQ-025",
+        "RQ-026",
+        "RQ-030",
+        "RQ-032"
+      ],
+      "sha256": "f042ada44feb8c31a5d971b2511db092a8699996d5ecf25a0007865528ac80a5"
+    },
+    {
+      "path": "services/core/src/medical_one_person/infrastructure/runtime_health.py",
+      "requirement_ids": [
+        "RQ-026",
+        "RQ-032"
+      ],
+      "sha256": "7bfdbc2c7599da89270615ae0d5c19ac2aa6cecfdf199a343d7b6c46196e261f"
+    },
+    {
+      "path": "tools/check_deployment.py",
+      "requirement_ids": [
+        "RQ-025",
+        "RQ-032"
+      ],
+      "sha256": "bc4cf141429487087c372b104dd80e583422e61f63dd84746aed3e6323a4638b"
+    },
+    {
+      "path": "deploy/compose.yaml",
+      "requirement_ids": [
+        "RQ-025",
+        "RQ-026",
+        "RQ-032"
+      ],
+      "sha256": "7744f42ff01f664ab3de9fb626d7176574aa88b7dd5566d27a8a3c084ebc29ec"
+    },
+    {
+      "path": "services/core/Dockerfile",
+      "requirement_ids": [
+        "RQ-025",
+        "RQ-032"
+      ],
+      "sha256": "716dd4f783819e0ffdffe8be3129d3b397057c3be0f6a229e0cbcb5fccbedb28"
+    },
+    {
+      "path": "docs/w23-handoff.md",
+      "requirement_ids": [
+        "RQ-025",
+        "RQ-026",
+        "RQ-030",
+        "RQ-032"
+      ],
+      "sha256": "739676e4af45af212ef35bb1e441875ee0d87b8bce37646eff280a70cd156aa4"
     }
   ]
 }

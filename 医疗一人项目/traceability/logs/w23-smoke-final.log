@@ -1,0 +1,76 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+{"workspace_id": "e2fa84ab-86b7-4b6c-b4cd-d40ab8ebdacf", "owner_user_id": "abd020a3-0d29-4ac0-b5bb-a2030f1490c9", "mode": "local"}
+PASS: api started with PID 65777
+PASS: API live endpoint responded
+PASS: worker started with PID 65804
+PASS: web started with PID 65825
+PASS: API ready endpoint responded
+PASS: Web page responded
+Started: web=http://127.0.0.1:3000 api=http://127.0.0.1:8000 runtime=/tmp/medical-one-w23b.zZBEps/state
+process api    running pid=65777 log=/tmp/medical-one-w23b.zZBEps/state/logs/api.log
+process worker running pid=65804 log=/tmp/medical-one-w23b.zZBEps/state/logs/worker.log
+process web    running pid=65825 log=/tmp/medical-one-w23b.zZBEps/state/logs/web.log
+{
+    "status": "ok",
+    "mode": "mock",
+    "checks": {
+        "process": {
+            "status": "ready",
+            "detail": "API process is running"
+        }
+    }
+}
+{
+    "status": "ok",
+    "mode": "mock",
+    "checks": {
+        "process": {
+            "status": "ready",
+            "detail": "API process is running"
+        },
+        "mock_provider": {
+            "status": "ready",
+            "detail": "Deterministic network-free adapter"
+        },
+        "database": {
+            "status": "ready",
+            "detail": "PostgreSQL connected at migration f4a2c7d9e601"
+        },
+        "artifact_storage": {
+            "status": "ready",
+            "detail": "5 project storage roots are writable: artifacts, backups, knowledge-staging, restore-checks, runs"
+        },
+        "queue": {
+            "status": "ready",
+            "detail": "Outbox and leased-job tables are available"
+        },
+        "worker": {
+            "status": "ready",
+            "detail": "1 mock worker heartbeat(s) are current"
+        }
+    }
+}
+capabilities mode=mock
+  agents: ready - 26 role contracts loaded; mock provider only
+  artifact_storage: ready - 5 project storage roots are writable: artifacts, backups, knowledge-staging, restore-checks, runs
+  audit_reviews: ready - Deterministic A25/A26 rule reviews, immutable input snapshots, blocking and synthetic evaluation are available; these are not human or non-mock independent-agent reviews
+  database: ready - PostgreSQL connected at migration f4a2c7d9e601
+  datasets: ready - Immutable raw table versions, cleaning derivations, pre-specified deterministic analyses, charts and review records are implemented
+  domain_workflows: ready - Pet repurposing, IVD and device workflow packages define stages, required roles, criteria, failure routes and external gates
+  external_records: ready - Organizations, contacts, experts, engagement scopes, quotes, contract states, deliverables, professional records and explicit external authorizations are connected to project PostgreSQL state
+  knowledge: ready - Project-scoped knowledge browsing, chunked upload, parsing, lexical search snapshots, citations and version impact are connected
+  network: ready - Offline mode blocks remote tools; local database, files, parsing, search and mock workflows remain available
+  opportunities: ready - Versioned opportunity cards, scientific briefs and owner-only selection contracts are connected to the opportunity browser
+  planning: ready - Versioned bounded DAGs, dispatch, mock execution, independent-profile review records, rework, pause/resume and iteration limits are implemented
+  project_interface: ready - Local HttpOnly session, project browser, task/agent scenes, knowledge upload and project event SSE are implemented
+  queue: ready - Outbox and leased-job tables are available
+  recovery: ready - Knowledge trash/restore, safe index rebuild for uncited versions, AES-256-GCM project backups and isolated restore verification are available; active database overwrite is not enabled
+  skills: ready - registry loaded: 2 ready, 10 unavailable
+  sources: not_checked - 4 professional source policies loaded; live scholarly adapters are not connected
+  tool_isolation: not_checked - Native authorization gateway/audit is available; container policy exists, but the runtime sandbox remains unverified
+  worker: ready - 1 mock worker heartbeat(s) are current
+PASS: web stopped
+PASS: worker stopped
+PASS: api stopped
+W23 smoke passed: local API, worker and web started, became ready and stopped.

@@ -1,0 +1,24 @@
+PASS: runtime file 最高思想.md
+PASS: runtime file 技术路线与实施路径.md
+PASS: runtime file traceability/manifest.json
+PASS: runtime file config/agents/roles.yaml
+PASS: runtime file config/skills/catalog.yaml
+PASS: runtime file config/source_policies/catalog.yaml
+PASS: runtime file config/workflows/catalog.yaml
+PASS: runtime file config/templates/catalog.yaml
+PASS: runtime file fixtures/w17-audit-cases.json
+PASS: runtime file schemas/openapi.v1.json
+PASS: runtime file services/core/requirements.lock
+PASS: runtime file services/core/Dockerfile
+PASS: runtime file apps/web/Dockerfile
+PASS: runtime file deploy/compose.yaml
+PASS: runtime file .env.example
+PASS: uv Python 3.12.14
+PASS: pnpm 11.25.0
+WARN: package.json requires Node.js v22.23.4; found v24.22.1
+PASS: no high-confidence credential patterns in tracked files
+PASS: no tracked environment, database, backup or key files
+PASS: deployment files contain the W23 runtime payload and loopback Compose structure; Docker execution is not implied.
+WARN: Docker is not installed; Compose/container execution remains unverified
+WARN: database, storage, worker, Office and Poppler checks skipped in structural-only mode
+Doctor result: READY for the checks performed; Docker execution is not implied.
