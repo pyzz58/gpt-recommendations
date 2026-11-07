@@ -49,7 +49,8 @@ class PilotTests(unittest.TestCase):
         self.writer = HttpAdapterConfig(tool_id='writer',provider_id='test-provider',kind='CHAT',
             endpoint='https://provider.invalid/chat/completions',model='fixture-model',
             api_key_env='SI_PILOT_TEST_WRITER_KEY',input_price_per_million=Decimal('1'),
-            output_price_per_million=Decimal('1'))
+            output_price_per_million=Decimal('1'),thinking_mode='disabled',
+            max_output_tokens=12000)
         self.reviewer = self.writer.model_copy(update={'tool_id':'reviewer','api_key_env':'SI_PILOT_TEST_REVIEWER_KEY'})
         self.gate = PreCallGate(self.archive,self.rights)
         self.gate.create_budget(BudgetEnvelope(budget_id='BUDGET',run_id='RUN',task_version_id='TASK',
@@ -83,6 +84,8 @@ class PilotTests(unittest.TestCase):
                 raw=self.rfile.read(int(self.headers['Content-Length']))
                 case.calls.append(('POST',json.loads(raw),self.headers.get('Authorization')))
                 body=json.dumps({'id':'fixture-request-'+str(len(case.calls)),
+                    'model':'fixture-model-2026-10-17',
+                    'system_fingerprint':'fixture-fingerprint',
                     'choices':[{'finish_reason':case.finish,'message':{'content':
                         'Owned generated section '+str(len(case.calls))+' <script>alert(1)</script>'}}],
                     'usage':{'prompt_tokens':1000,'completion_tokens':100}}).encode()
@@ -118,6 +121,13 @@ class PilotTests(unittest.TestCase):
         body=(self.base/'pilot.html').read_text()
         self.assertIn('Owned generated section',body);self.assertNotIn('<script>',body)
         self.assertEqual((self.base/'pilot.html').stat().st_mode&0o777,0o600)
+        self.assertEqual(self.calls[-1][1]['thinking'],{'type':'disabled'})
+        self.assertEqual(self.calls[-1][1]['max_tokens'],12000)
+        self.assertEqual(result['model_observations'][-1],{
+            'stage':'REVIEW','requested_model':'fixture-model',
+            'observed_model':'fixture-model-2026-10-17',
+            'system_fingerprint':'fixture-fingerprint'})
+        self.assertIn('served=fixture-model-2026-10-17',body)
         self.assertIn('owned-reviewer-key',self.calls[-1][2])
         self.assertEqual(len(self.calls[-1][1]['messages']),2)
         self.assertIn('SOURCE',self.calls[-1][1]['messages'][1]['content'])
@@ -167,6 +177,22 @@ class PilotTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'incomplete'):self.runner().run(self.req,self.base/'cut.html')
         with self.assertRaisesRegex(ValueError,'incomplete'):self.runner().run(self.req,self.base/'cut2.html')
         self.assertEqual(len(self.calls),1);self.assertFalse((self.base/'cut.html').exists())
+
+    def test_reasoning_only_reply_is_not_final_content(self):
+        original=self.server.RequestHandlerClass.do_POST
+        def reasoning_only(handler):
+            raw=handler.rfile.read(int(handler.headers['Content-Length']))
+            self.calls.append(('POST',json.loads(raw),handler.headers.get('Authorization')))
+            body=json.dumps({'id':'reasoning-only','model':'fixture-model-2026-10-17',
+                'choices':[{'finish_reason':'stop','message':{
+                    'content':'','reasoning_content':'private reasoning'}}]}).encode()
+            handler.send_response(200);handler.end_headers();handler.wfile.write(body)
+        self.server.RequestHandlerClass.do_POST=reasoning_only
+        self.addCleanup(setattr,self.server.RequestHandlerClass,'do_POST',original)
+        with self.assertRaisesRegex(ValueError,'empty or incomplete'):
+            self.runner().run(self.req,self.base/'reasoning-only.html')
+        self.assertEqual(len(self.calls),1)
+        self.assertFalse((self.base/'reasoning-only.html').exists())
 
     def test_too_small_budget_refuses_before_http(self):
         estimates=list(self.req.stage_estimates)

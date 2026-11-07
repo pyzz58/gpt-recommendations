@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "record_id": "SI-DEEPSEEK-PILOT-READINESS-20261107-001",
+  "checked_at": "2026-11-07T21:54:57+13:00",
+  "branch": "codex/si-first-real-pilot-20261101",
+  "result": "DEEPSEEK_CONFIG_READY_CREDENTIAL_AND_BUDGET_AUTHORIZATION_MISSING",
+  "selection": {
+    "provider_id": "DeepSeek",
+    "endpoint": "https://api.deepseek.com/chat/completions",
+    "requested_model": "deepseek-flash",
+    "official_model_version": "DeepSeek-V4.1-Flash-1017",
+    "api_key_environment": "DEEPSEEK_API_KEY",
+    "writer_tool_id": "deepseek-flash-writer",
+    "reviewer_tool_id": "deepseek-flash-reviewer",
+    "separate_requests_required": true,
+    "separate_admissions_required": true,
+    "independent_review_capability_claimed": false
+  },
+  "current_identity": {
+    "spec_sha256": "b7d01c53b06e8368d2805ce687e87ff400f14f51f3f7a39ec7798c32550e1942",
+    "task_version_id": "TASK-SI-PILOT-CBAM-20261107-v003",
+    "source_version_id": "DOC-WB-CBAM-11366-20260428-v003",
+    "source_review_id": "CAP-REVIEW-SI-PILOT-CBAM-FETCH-20261107-v003",
+    "source_operation_id": "FETCH-SI-WB-CBAM-11366-20261107-R2",
+    "pilot_id": "PILOT-SI-CBAM-DEEPSEEK-20261107-001",
+    "source_body_bytes": 99024,
+    "source_body_sha256": "60067f3e9c49256fc23428300c1d394421a6dfd6fd396c726a2d27ab35d89276",
+    "source_reused_without_redownload": true
+  },
+  "official_documentation": {
+    "retrieved_at": "2026-11-07T21:54:57+13:00",
+    "pages": [
+      {
+        "url": "https://api-docs.deepseek.com/",
+        "sha256": "986e7e7b2409ecfb21a66b7a0d25214349d9bbf1bed9893748a398bfd12b8f17"
+      },
+      {
+        "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+        "sha256": "af6679690eb9a7838c47727bfc5ffdc4ac91c4445a0c1219741ffe00c076ece5"
+      },
+      {
+        "url": "https://api-docs.deepseek.com/api/create-chat-completion/",
+        "sha256": "b43ca950bd04ae7f6f537b42e6cb729f543d942dcd848ec43ad4e9bfe059fe1f"
+      },
+      {
+        "url": "https://api-docs.deepseek.com/guides/thinking_mode",
+        "sha256": "42151b5f86827bff663a61693080a61cdbf99074dee94af756c9fce855baa7cd"
+      }
+    ],
+    "context_tokens": 1000000,
+    "maximum_output_tokens": 393216,
+    "thinking_default": "enabled",
+    "thinking_default_effort": "high"
+  },
+  "execution_profile": {
+    "thinking_mode": "disabled",
+    "reasoning_effort": null,
+    "max_tokens_per_stage": 12000,
+    "max_material_bytes_per_stage": 320000,
+    "required_finish_reason": "stop",
+    "final_content_required": true,
+    "reasoning_content_may_substitute_for_content": false,
+    "stream": false,
+    "automatic_retries": 0,
+    "attempts_per_operation": 1
+  },
+  "pricing": {
+    "unit": "USD per 1M tokens",
+    "peak_uncached_input": "0.30",
+    "peak_output": "1.20",
+    "off_peak_multiplier": "0.50",
+    "cache_discount_assumed": false,
+    "price_assumption": "All input is charged at the peak cache-miss rate, even if the request occurs off-peak or receives a cache discount."
+  },
+  "budget": {
+    "model_calls_maximum": 5,
+    "existing_approved_pilot_budget_found": false,
+    "proposed_ceiling_usd": "0.60",
+    "worst_case_calculation": {
+      "input_byte_as_token_upper_bound": 1600000,
+      "input_cost_usd_at_peak_cache_miss": "0.48",
+      "output_token_limit": 60000,
+      "output_cost_usd_at_peak": "0.072",
+      "combined_upper_bound_usd": "0.552",
+      "headroom_to_proposed_ceiling_usd": "0.048"
+    },
+    "actual_usage_must_be_reported_separately": true,
+    "provider_invoice_claimed": false
+  },
+  "credential_check": {
+    "location": "current local process environment",
+    "DEEPSEEK_API_KEY": "MISSING",
+    "secret_value_read_or_recorded": false,
+    "github_secret_assumed_available_locally": false,
+    "newspaper_project_budget_reused": false
+  },
+  "external_processing_authorization": {
+    "world_bank_paper_for_deepseek": "AUTHORIZED_BY_USER_INSTRUCTION_2026_11_07",
+    "self_written_task_for_deepseek": "AUTHORIZED_BY_USER_INSTRUCTION_2026_11_07",
+    "publication_or_public_delivery": false
+  },
+  "minimum_compatibility_change": {
+    "adapter_fields": [
+      "thinking_mode",
+      "reasoning_effort"
+    ],
+    "request_behavior": "Only configured thinking controls are sent; existing providers without these fields retain the same payload.",
+    "response_behavior": "Require nonempty served model; require finish_reason=stop and nonempty final content; do not fall back to reasoning_content.",
+    "model_observation": "Record requested model, served model and system fingerprint for every stage and show them in the private HTML."
+  },
+  "verification": {
+    "targeted_pilot_tests": {
+      "count": 13,
+      "result": "PASS"
+    },
+    "full_runtime_tests": {
+      "count": 314,
+      "result": "PASS",
+      "duration_seconds": 49.266
+    },
+    "maintenance_tests": {
+      "count": 56,
+      "result": "PASS",
+      "duration_seconds": 19.835
+    },
+    "config_contract_validation": "PASS",
+    "current_task_and_source_latest_identity": "PASS",
+    "source_hash_matches_preserved_body": true,
+    "source_reused_without_redownload": true,
+    "all_five_stage_receipts_absent": true,
+    "compileall": "PASS",
+    "diff_check": "PASS",
+    "model_call_made": false,
+    "pilot_generated": false
+  },
+  "source_sha256": {
+    "intelligence/http_adapter.py": "0d57628aaae491a5b82411b46a0f11de442af9ae0afa0f8b637581e2e40a336d",
+    "intelligence/pilot.py": "ea72e613f267f8a360444bcecab945990892d8dd215e2df6147faeaed8c24ba6",
+    "tests_runtime/test_pilot.py": "8c96a780d5e9d2772e336d2cc1e1aa2137e4b44d909fdd1d7bc86b5f3f13af7f"
+  },
+  "required_before_paid_call": [
+    "Set DEEPSEEK_API_KEY in the local runtime environment; do not send the value to Git or chat.",
+    "Explicitly approve the proposed USD 0.60 maximum for this controlled trial."
+  ],
+  "unchanged": {
+    "pilot_state": "DRAFT_AWAITING_REVIEW_ONLY",
+    "formal_acceptance": false,
+    "publication_authorized": false,
+    "W41_and_G01_to_G04_changed": false
+  }
+}

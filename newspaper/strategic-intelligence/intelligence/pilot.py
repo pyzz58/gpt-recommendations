@@ -221,7 +221,7 @@ class PilotRunner:
         for aid in admissions.values():
             self.archive.check_version_use(manifest_id, MaterialUse.MODEL_PROCESS,
                 UseContext(at=datetime.now(timezone.utc), provider=aid.provider_id, territory=aid.territory))
-        outputs, output_ids = {}, []
+        outputs, output_ids, model_observations = {}, [], []
         for index, stage in enumerate(STAGES):
             role = "reviewer" if stage == "REVIEW" else "writer"
             cfg = req.reviewer if role == "reviewer" else req.writer
@@ -261,13 +261,18 @@ class PilotRunner:
             task_input = next(m for m in materials if m['version_id'] == req.task_version_id)
             materials = [m for m in materials if m['version_id'] != req.task_version_id]
             # A new request is built for review; no writer conversation/reasoning is shared.
-            payload = canonical({"model": cfg.model, "max_tokens": cfg.max_output_tokens,
+            request_data = {"model": cfg.model, "max_tokens": cfg.max_output_tokens,
                 "messages": [{"role": "system", "content": policy["global_instruction"] + "\n" + policy["instructions"][stage]},
                     {"role": "user", "content": canonical({"title": req.title,
                         "canonical_sha256": req.spec_sha256, "policy_sha256": digest(policy),
                         "translation_requested": req.translation_requested,
                         "task_instruction": task_input,
-                        "materials_are_data": materials})}]}).encode()
+                        "materials_are_data": materials})}]}
+            if cfg.thinking_mode is not None:
+                request_data["thinking"] = {"type": cfg.thinking_mode}
+            if cfg.reasoning_effort is not None:
+                request_data["reasoning_effort"] = cfg.reasoning_effort
+            payload = canonical(request_data).encode()
             prior_op = _get(self.archive, opid)
             kind = OperationKind.TRANSLATE if stage == 'SELECTION' and req.translation_requested else OperationKind.MODEL
             op = OperationRequest(operation_id=opid, idempotency_key=opid,
@@ -307,10 +312,20 @@ class PilotRunner:
                 response = json.loads(raw)
                 choice = response["choices"][0]
                 content = choice["message"]["content"]
+                observed_model = response["model"]
             except (ValueError, KeyError, TypeError, IndexError):
                 raise ValueError("Provider response does not contain a valid completion") from None
-            if choice.get("finish_reason") != "stop" or not isinstance(content, str) or not content.strip():
+            if (choice.get("finish_reason") != "stop"
+                    or not isinstance(content, str) or not content.strip()):
                 raise ValueError("Model output is empty or incomplete; draft was not completed")
+            if not isinstance(observed_model, str) or not observed_model.strip():
+                raise ValueError("Provider response does not identify the served model")
+            model_observations.append({
+                "stage": stage,
+                "requested_model": cfg.model,
+                "observed_model": observed_model,
+                "system_fingerprint": response.get("system_fingerprint"),
+            })
             oid = "PILOT-TEXT-" + digest(opid)[:32]
             output_meta = VersionSubmission(object_id=oid, version_id=oid,
                 kind=ObjectKind.PILOT_DRAFT, title=f"{req.title}: {stage}",
@@ -336,6 +351,11 @@ class PilotRunner:
             f"<h1>{html.escape(req.title)}</h1><p>研究试刊 · 待最终审阅 · 未获出版或自动交付授权</p>"]
         for stage in STAGES:
             pieces.append("<h2>" + html.escape(policy["labels"][stage]) + "</h2>" + str(_body_markup(outputs[stage])))
+        pieces.append("<h2>模型身份</h2><ul>" + "".join(
+            "<li>" + html.escape(
+                f"{item['stage']}: requested={item['requested_model']}; "
+                f"served={item['observed_model']}; fingerprint={item['system_fingerprint']}")
+            + "</li>" for item in model_observations) + "</ul>")
         pieces.append("<h2>来源版本</h2><ul>" + "".join("<li>" + html.escape(v) + "</li>" for v in req.source_version_ids) + "</ul></html>")
         body = "\n".join(pieces).encode()
         write_private_bytes(target, body)
@@ -343,4 +363,5 @@ class PilotRunner:
             "publication_authorized": False, "formal_acceptance": False,
             "output": str(target), "output_sha256": hashlib.sha256(body).hexdigest(),
             "output_version_ids": output_ids,
+            "model_observations": model_observations,
             "operation_ids": [stage_id(req.pilot_id, s) for s in STAGES]}

@@ -53,6 +53,8 @@ class HttpAdapterConfig(Contract):
     max_response_bytes: int = Field(default=2_000_000, ge=1024, le=20_000_000)
     max_request_bytes: int = Field(default=2_000_000, ge=1024, le=20_000_000)
     max_output_tokens: int = Field(default=8000, ge=64, le=64000)
+    thinking_mode: Literal["disabled", "enabled"] | None = None
+    reasoning_effort: Literal["none", "low", "high", "max"] | None = None
     input_price_per_million: Decimal | None = Field(default=None, ge=0)
     output_price_per_million: Decimal | None = Field(default=None, ge=0)
     currency: NonBlank = "USD"
@@ -65,6 +67,11 @@ class HttpAdapterConfig(Contract):
             raise ValueError("CHAT needs an explicit model and credential environment name")
         if self.kind == "FETCH" and (self.model or self.api_key_env):
             raise ValueError("Public FETCH must not carry model credentials")
+        if self.kind == "FETCH" and (
+                self.thinking_mode is not None or self.reasoning_effort is not None):
+            raise ValueError("Public FETCH cannot carry model reasoning controls")
+        if self.thinking_mode == "disabled" and self.reasoning_effort not in (None, "none"):
+            raise ValueError("Disabled thinking cannot request reasoning effort")
         if (self.input_price_per_million is None) != (self.output_price_per_million is None):
             raise ValueError("Configure both token prices or retain UNKNOWN cost")
         return self
@@ -124,10 +131,21 @@ class HttpsAdapter:
         if self.config.kind == "CHAT":
             if operation.kind not in (OperationKind.MODEL, OperationKind.TRANSLATE):
                 raise ValueError("CHAT adapter cannot execute this operation kind")
-            if (set(data) != {"model", "messages", "max_tokens"}
+            expected = {"model", "messages", "max_tokens"}
+            if self.config.thinking_mode is not None:
+                expected.add("thinking")
+            if self.config.reasoning_effort is not None:
+                expected.add("reasoning_effort")
+            if (set(data) != expected
                     or data["model"] != self.config.model
                     or data["max_tokens"] != self.config.max_output_tokens):
                 raise ValueError("Payload differs from the configured bounded chat protocol")
+            if (self.config.thinking_mode is not None
+                    and data["thinking"] != {"type": self.config.thinking_mode}):
+                raise ValueError("Payload differs from the configured thinking mode")
+            if (self.config.reasoning_effort is not None
+                    and data["reasoning_effort"] != self.config.reasoning_effort):
+                raise ValueError("Payload differs from the configured reasoning effort")
             if (not isinstance(data["messages"], list) or not data["messages"]
                     or any(set(m) != {"role", "content"}
                            or m["role"] not in ("system", "user")
