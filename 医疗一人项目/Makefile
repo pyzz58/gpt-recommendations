@@ -2,7 +2,7 @@ SHELL := /bin/sh
 CORE := services/core
 WEB := apps/web
 
-.PHONY: bootstrap doctor start stop status smoke dev-mock dev-api dev-web dev-worker test test-core test-integration test-web lint build schema db-upgrade db-bootstrap trace-check
+.PHONY: bootstrap doctor start stop status smoke pilot-readiness dev-mock dev-api dev-web dev-worker test test-core test-integration test-web lint build schema db-upgrade db-bootstrap trace-check
 
 doctor:
 	./scripts/medical-one.sh doctor
@@ -18,6 +18,9 @@ status:
 
 smoke:
 	./scripts/medical-one.sh smoke
+
+pilot-readiness:
+	@uv run --project services/core --frozen python tools/evaluate_pilot_readiness.py
 
 bootstrap:
 	uv sync --project $(CORE) --locked
