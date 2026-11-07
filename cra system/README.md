@@ -6,9 +6,11 @@
 
 V1A工程主线W01—W13及V1B复杂格式增强W14已完成。W13结论是：合成端到端路径可演示，但真实医院版式、代表性样本、CRA人工总耗时、OIDC/生产恢复和获授权试用仍未完成，不能称为完整临床试用就绪。W14只新增两页扫描和轻度旋转JPEG的声明范围。验收边界见[V1A验收记录](validation/V1A_ACCEPTANCE.md)及[W14评估](validation/OCR_EVALUATION.md)。
 
+W15已完成部署候选、容器冒烟、配置/恢复检查和反馈模板，但状态保持`blocked`：尚未取得获准OIDC租户、私有生产服务、真实恢复环境和授权CRA试用。详见[授权试用记录](validation/AUTHORIZED_TRIAL.md)和[运行手册](deploy/RUNBOOK.md)。
+
 ## 完整技术实施入口
 
-先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01—W14已完成；W14在[专属CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585)通过两页扫描、轻度旋转JPEG、既有格式回归、前端、完整流程和整条依赖链。V1A主线选择器为complete；W15部署与授权试用须单独选择。
+先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01—W14已完成；W15部署候选在[CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771)完成镜像构建、迁移、容器启动和健康检查，但真实授权试用仍阻塞。V1A主线选择器为complete。
 
 ## 当前交付和实际状态
 
@@ -73,6 +75,6 @@ Git中的 `theory/requirements.json` 是开发可执行基线；Notion是本次�
 
 当前没有运行时Notion自动同步凭证或任务。仅修改Notion而未导入Git的内容，CI无法凭空发现；维护人必须先导入，或者后续实现只读差异导入。系统不会自动替人决定新架构或静默改写已签发报告。
 
-最新工程验证为[W14复杂格式源码绑定CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585)。W01—W14已按源码绑定和任务专属CI完成；证据摘要仅纳入Git跟踪或未忽略文件。真实设备/弱网、代表性完整自动检验评估、人工总耗时、实际部署和获准试用仍待后续验证。
+最新工程验证为[W15部署候选源码绑定CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771)。W01—W14已按源码绑定和任务专属CI完成；W15只完成隔离测试容器冒烟，仍为外部条件阻塞。真实设备/弱网、代表性完整自动检验评估、人工总耗时、获准生产部署和授权试用仍待后续验证。
 
 开源复用修订v0.5：[14项目核对与替代边界](architecture/REUSE_ASSESSMENT.md)，[可直接发给Codex的第一段](plan/CODEX_FIRST_MESSAGE.md)。依赖选择已同步到任务；尚未安装、集成或做临床性能验证。
