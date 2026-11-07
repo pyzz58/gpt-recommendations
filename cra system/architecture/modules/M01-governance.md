@@ -43,3 +43,5 @@ Authlib为OIDC客户端首选；Keycloak仅必要时后续配置。临床对象�
 ## W02实现记录
 
 Authlib 1.9.1已接入OIDC授权码适配，签名HttpOnly会话在服务端判定actor/tenant，再由W01 Membership限定可列出的研究和中心。synthetic模式只使用服务端固定身份，生产环境关闭该入口并拒绝模拟头。正式身份源、交互式OIDC验证、中心管理员页面和完整会话撤销仍待后续环境/任务验证；当前实现不等于正式单点登录已上线。
+
+W15部署候选进一步把OIDC issuer/client/secret、HTTPS公开地址、secure cookie和不可变镜像列为生产配置门槛。公开CI使用测试环境合成身份，不连接机构身份源；机构登录、租户claim、登出/撤权和中心范围的真实验证仍为授权试用进入条件。

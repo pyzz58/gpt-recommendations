@@ -179,7 +179,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W13 完成自动检验主线验收与试用准备](work_packages/CRA-W13.md)
 
-状态：verified；前置：CRA-W12。
+状态：in_progress；前置：CRA-W12。
 
 进入条件：W12端到端通过，开发样例与独立评估已分离。
 
@@ -203,7 +203,7 @@ P6为复杂格式增强，P7需实际授权环境。默认继续沿V1A按W01—W
 
 ### [CRA-W15 配置受控云部署并开展授权试用](work_packages/CRA-W15.md)
 
-状态：planned；前置：CRA-W13。
+状态：in_progress；前置：CRA-W13。
 
 进入条件：W13工程验收已汇总，实际服务和资料范围获授权；试用范围要求的provider证据有效。
 

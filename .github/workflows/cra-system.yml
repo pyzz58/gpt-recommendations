@@ -13,6 +13,67 @@ concurrency:
   group: cra-system-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  cra-w15:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    defaults:
+      run:
+        working-directory: 'cra system'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13.15'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24.22.2'
+          cache: npm
+          cache-dependency-path: 'cra system/web/package-lock.json'
+      - name: Install locked Python dependencies
+        run: |
+          python -m pip install uv==0.12.13
+          uv sync --frozen --group dev
+      - name: deployment-check
+        run: |
+          uv run --frozen python tools/check_deployment.py \
+            --check \
+            --env-file deploy/runtime.check.env \
+            --allow-nonproduction
+          docker compose --env-file deploy/runtime.check.env \
+            -f deploy/compose.runtime.yml config --quiet
+          docker compose --env-file deploy/runtime.check.env \
+            -f deploy/compose.runtime.yml build api web
+          cleanup() {
+            docker compose --env-file deploy/runtime.check.env \
+              -f deploy/compose.runtime.yml logs --no-color || true
+            docker compose --env-file deploy/runtime.check.env \
+              -f deploy/compose.runtime.yml down -v --remove-orphans || true
+          }
+          trap cleanup EXIT
+          docker compose --env-file deploy/runtime.check.env \
+            -f deploy/compose.runtime.yml up -d postgres
+          docker compose --env-file deploy/runtime.check.env \
+            -f deploy/compose.runtime.yml run --rm migrate
+          docker compose --env-file deploy/runtime.check.env \
+            -f deploy/compose.runtime.yml up -d api worker web
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8080/health/live \
+              && curl --fail --silent http://127.0.0.1:8080/health/ready; then
+              exit 0
+            fi
+            sleep 2
+          done
+          exit 1
+      - name: trial-record
+        run: |
+          uv run --frozen python tools/check_deployment.py \
+            --trial-record validation/AUTHORIZED_TRIAL.md \
+            | tee /tmp/cra-w15-trial-record.json
+          uv run --frozen python -c "import json; p=json.load(open('/tmp/cra-w15-trial-record.json')); assert p['authorized_trial_ready'] is False; assert p['authorized_trial_record_status'] == 'BLOCKED'"
+
   cra-w14:
     runs-on: ubuntu-24.04
     timeout-minutes: 55

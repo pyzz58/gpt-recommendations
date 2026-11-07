@@ -1,6 +1,6 @@
 # M14 云上开发、部署和质量验证
 
-版本：5；状态：W01/W02工程底座、FastAPI与工作台壳已实现；完整业务、provider验证和获准部署待后续任务。代码位置：`backend/cra_app/platform/`、`web/`、`deploy/`。
+版本：6；状态：W01/W02工程底座、FastAPI与工作台壳已实现；W14复杂格式已验收；W15运行候选、配置/恢复检查已建立，但获准环境、真实恢复和授权试用仍阻塞。代码位置：`backend/cra_app/platform/`、`web/`、`deploy/`。
 
 ## 对应理论和任务
 
@@ -49,3 +49,9 @@ Procrastinate复用队列/worker/锁/重试，业务Outbox、幂等、授权和�
 ## W02实现记录
 
 FastAPI提供统一错误、健康/能力接口和真实OpenAPI；React/Vite工作台按服务端授权范围选择项目/中心。能力接口分别报告provider未配置、已配置和已验证状态，默认不启用自动完成。Codespaces配置固定Node与容器特性并包含PostgreSQL启动、迁移和合成种子步骤；实际Codespaces运行环境需另行验证，不能仅凭构建绿色或服务在线宣称临床模块可用。
+
+## W15运行候选与阻塞记录
+
+新增生产形态Compose候选、API/Web构建文件、同源Nginx代理、环境契约、检查器和运行手册。候选要求生产OIDC、HTTPS公开地址、私有S3文件、摘要固定镜像、只读根文件系统、移除Linux capabilities、内部数据库网络及PostgreSQL不暴露宿主机端口；未批准模型/分析provider保持disabled。
+
+公开CI的容器冒烟只使用`deploy/runtime.check.env`中的明确测试值和合成数据。当前没有获准部署账户、机构OIDC租户、私有服务、真实恢复、物理设备或授权试用，因此`validation/AUTHORIZED_TRIAL.md`保持`BLOCKED`，W15不得标为verified。运行、升级、回退和恢复步骤见[RUNBOOK](../../deploy/RUNBOOK.md)。

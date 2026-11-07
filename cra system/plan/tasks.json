@@ -4751,7 +4751,7 @@
       "module_ids": [
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。",
       "requirement_ids": [
         "CRA-R035",
@@ -4906,13 +4906,7 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42356972071；cra-w13在真实PostgreSQL 18.6上通过W12恢复、13项验收反例、1项Chromium两轮监查及能力报告结构检查；40场景中33项合成验证、3项工程验证、3项未评估、CRA-S34未达标；总人工时间和授权试用明确保留为W15工作；被测提交72fb8dc4853fbf68ccadfc1a0c0f4d2c8726e11b。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w13在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
-      "completion_evidence": {
-        "kind": "github_actions",
-        "profile_id": "CRA-W13",
-        "run_id": 42358464585,
-        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
-        "subject_digest": "d9d21e203bc6b302724eda191688c556b1815be71564b8e736ff54a6ebd56c2c"
-      },
+      "completion_evidence": null,
       "completion_history": [
         {
           "recorded_status": "verified",
@@ -4927,6 +4921,22 @@
             "run_id": 42356972071,
             "tested_commit": "72fb8dc4853fbf68ccadfc1a0c0f4d2c8726e11b",
             "subject_digest": "872316c58ef1c43958579d7ad748679dfa527910717051d6f49ec26f2e65c412"
+          }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-07",
+          "reason": "Demoted before W15 added deployment and authorized-trial validation artifacts bound to the W13 evidence scope.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42356972071；cra-w13在真实PostgreSQL 18.6上通过W12恢复、13项验收反例、1项Chromium两轮监查及能力报告结构检查；40场景中33项合成验证、3项工程验证、3项未评估、CRA-S34未达标；总人工时间和授权试用明确保留为W15工作；被测提交72fb8dc4853fbf68ccadfc1a0c0f4d2c8726e11b。",
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w13在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W13",
+            "run_id": 42358464585,
+            "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+            "subject_digest": "d9d21e203bc6b302724eda191688c556b1815be71564b8e736ff54a6ebd56c2c"
           }
         }
       ]
@@ -5085,7 +5095,7 @@
         "M01",
         "M14"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "acceptance": "在获准环境配置身份、私有数据库/文件服务、备份恢复和模型；确认权限后以真实操作评价，记录风险与反馈。",
       "requirement_ids": [
         "CRA-R035",
@@ -5122,6 +5132,36 @@
           "path": "validation/FEEDBACK_REGISTER.md",
           "kind": "document",
           "purpose": "反馈对应理论及代码"
+        },
+        {
+          "path": "deploy/api.Dockerfile",
+          "kind": "config",
+          "purpose": "锁定依赖的API与worker候选镜像"
+        },
+        {
+          "path": "deploy/web.Dockerfile",
+          "kind": "config",
+          "purpose": "构建静态工作台并由受控反向代理提供"
+        },
+        {
+          "path": "deploy/nginx.runtime.conf",
+          "kind": "config",
+          "purpose": "同源API代理和安全响应头"
+        },
+        {
+          "path": "deploy/runtime.env.example",
+          "kind": "config",
+          "purpose": "无真实密钥的生产配置模板"
+        },
+        {
+          "path": "tools/check_deployment.py",
+          "kind": "code",
+          "purpose": "部署契约、试用证据和阻塞状态检查"
+        },
+        {
+          "path": "tests/acceptance/test_deployment.py",
+          "kind": "test",
+          "purpose": "部署安全、恢复和授权试用反例"
         }
       ],
       "contracts": [
@@ -5168,12 +5208,27 @@
         {
           "command": "uv run --frozen pytest -q tests/acceptance/test_v1a.py",
           "purpose": "部署前既定回归",
-          "availability": "to_implement"
+          "availability": "available"
         },
         {
-          "command": "python3 tools/check_traceability.py",
+          "command": "uv run --frozen pytest -q tests/acceptance/test_deployment.py",
+          "purpose": "部署、恢复和授权试用门槛",
+          "availability": "available"
+        },
+        {
+          "command": "uv run --frozen python tools/check_deployment.py --check --env-file deploy/runtime.check.env --allow-nonproduction",
+          "purpose": "运行配置候选与明确阻塞状态",
+          "availability": "available"
+        },
+        {
+          "command": "docker compose --env-file deploy/runtime.check.env -f deploy/compose.runtime.yml config --quiet",
+          "purpose": "容器编排静态校验",
+          "availability": "available"
+        },
+        {
+          "command": "python3 tools/check_traceability.py && uv run --frozen python tools/check_deployment.py --trial-record validation/AUTHORIZED_TRIAL.md",
           "purpose": "反馈后对应仍完整",
-          "availability": "to_implement"
+          "availability": "available"
         }
       ],
       "phase_id": "P7",

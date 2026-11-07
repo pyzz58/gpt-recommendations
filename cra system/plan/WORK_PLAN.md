@@ -19,9 +19,9 @@
 | CRA-W10 | 实现中心文件目录和其他阶段清单 | CRA-W04、CRA-W06 | M05、M10 | verified |
 | CRA-W11 | 实现访视信、报告和Excel导出 | CRA-W06、CRA-W09、CRA-W10 | M11 | verified |
 | CRA-W12 | 串联四阶段界面与一次完整监查 | CRA-W08、CRA-W09、CRA-W10、CRA-W11 | M05 | verified |
-| CRA-W13 | 完成自动检验主线验收与试用准备 | CRA-W12 | M14 | verified |
+| CRA-W13 | 完成自动检验主线验收与试用准备 | CRA-W12 | M14 | in_progress |
 | CRA-W14 | 增强复杂检验格式与识别效果 | CRA-W08 | M08、M12 | verified |
-| CRA-W15 | 配置受控云部署并开展授权试用 | CRA-W13 | M01、M14 | planned |
+| CRA-W15 | 配置受控云部署并开展授权试用 | CRA-W13 | M01、M14 | in_progress |
 
 ## CRA-W00 建立技术基线与同步检查
 

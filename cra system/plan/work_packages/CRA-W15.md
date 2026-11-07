@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：deployment。
+状态：in_progress；分支路线：deployment。
 前置：CRA-W13。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -26,6 +26,12 @@
 | `deploy/env.schema.json` | config | 配置要求，不含真实密钥 |
 | `validation/AUTHORIZED_TRIAL.md` | document | 实际试用与限制 |
 | `validation/FEEDBACK_REGISTER.md` | document | 反馈对应理论及代码 |
+| `deploy/api.Dockerfile` | config | 锁定依赖的API与worker候选镜像 |
+| `deploy/web.Dockerfile` | config | 构建静态工作台并由受控反向代理提供 |
+| `deploy/nginx.runtime.conf` | config | 同源API代理和安全响应头 |
+| `deploy/runtime.env.example` | config | 无真实密钥的生产配置模板 |
+| `tools/check_deployment.py` | code | 部署契约、试用证据和阻塞状态检查 |
+| `tests/acceptance/test_deployment.py` | test | 部署安全、恢复和授权试用反例 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -71,16 +77,34 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 部署前既定回归
+- [available] 部署前既定回归
 
 ```bash
 uv run --frozen pytest -q tests/acceptance/test_v1a.py
 ```
 
-- [to_implement] 反馈后对应仍完整
+- [available] 部署、恢复和授权试用门槛
 
 ```bash
-python3 tools/check_traceability.py
+uv run --frozen pytest -q tests/acceptance/test_deployment.py
+```
+
+- [available] 运行配置候选与明确阻塞状态
+
+```bash
+uv run --frozen python tools/check_deployment.py --check --env-file deploy/runtime.check.env --allow-nonproduction
+```
+
+- [available] 容器编排静态校验
+
+```bash
+docker compose --env-file deploy/runtime.check.env -f deploy/compose.runtime.yml config --quiet
+```
+
+- [available] 反馈后对应仍完整
+
+```bash
+python3 tools/check_traceability.py && uv run --frozen python tools/check_deployment.py --trial-record validation/AUTHORIZED_TRIAL.md
 ```
 
 ## 完成标准
