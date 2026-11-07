@@ -10,6 +10,7 @@ dependencies = [
     "boto3>=1.43,<2",
     "docxtpl>=0.20,<0.21",
     "fastapi>=0.162,<1",
+    "httpx2>=2.16,<3",
     "itsdangerous>=2.2,<3",
     "openpyxl>=3.1,<4",
     "pdfplumber>=0.11.10,<0.12",
@@ -32,7 +33,6 @@ packages = ["backend/cra_app"]
 
 [dependency-groups]
 dev = [
-    "httpx2>=2.16,<3",
     "pytest>=8.4,<10",
     "reportlab>=4.4,<5",
 ]
