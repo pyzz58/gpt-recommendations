@@ -15,4 +15,4 @@ tests/test_system.py::test_live_mode_is_not_ready_without_a_provider PASSED [100
     from starlette.testclient import TestClient as TestClient  # noqa
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-========================= 2 passed, 1 warning in 0.67s =========================
+========================= 2 passed, 1 warning in 1.19s =========================

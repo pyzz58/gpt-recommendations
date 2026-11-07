@@ -1,0 +1,26 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.14, pytest-9.2.0, pluggy-1.7.0 -- /Users/zz/Documents/ChatGPT/医疗项目/医疗一人项目/services/core/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/zz/Documents/ChatGPT/医疗项目/医疗一人项目/services/core
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 16 items
+
+tests/unit/test_w22_openai_compatible.py::test_openai_compatible_transport_contract_is_offline_and_metered PASSED [  6%]
+tests/unit/test_w22_openai_compatible.py::test_cost_cap_rejects_before_transport_call PASSED [ 12%]
+tests/unit/test_w22_openai_compatible.py::test_authentication_failure_is_explicit PASSED [ 18%]
+tests/unit/test_w22_openai_compatible.py::test_factory_keeps_live_disabled_and_reports_missing_configuration PASSED [ 25%]
+tests/unit/test_w22_openai_compatible.py::test_factory_builds_configured_live_provider_without_network PASSED [ 31%]
+tests/unit/test_w22_smtp.py::test_smtp_send_builds_message_and_is_explicitly_send_only PASSED [ 37%]
+tests/unit/test_w22_smtp.py::test_smtp_recipient_allowlist_rejects_before_connect PASSED [ 43%]
+tests/unit/test_w22_smtp.py::test_smtp_incomplete_or_disabled_config_is_not_ready PASSED [ 50%]
+tests/unit/test_w22_smtp.py::test_smtp_transport_failure_is_unknown_and_reconcile_stays_unknown PASSED [ 56%]
+tests/unit/test_w22_smtp.py::test_smtp_5xx_authentication_is_a_failure_not_unknown PASSED [ 62%]
+tests/integration/test_w22_mail_service.py::test_w22_smtp_send_only_passes_existing_authorization_and_ledger PASSED [ 68%]
+tests/integration/test_w15_mail.py::test_mock_mail_draft_requires_explicit_send_authorization_and_attachment_hash PASSED [ 75%]
+tests/integration/test_w15_mail.py::test_mail_content_revocation_expiry_and_cross_project_attachment_are_rejected PASSED [ 81%]
+tests/integration/test_w15_mail.py::test_unknown_send_requires_reconciliation_and_does_not_resend PASSED [ 87%]
+tests/integration/test_w15_mail.py::test_send_only_provider_unknown_reconcile_keeps_unknown_without_resend PASSED [ 93%]
+tests/integration/test_w15_mail.py::test_w15_mail_tables_are_forced_through_rls PASSED [100%]
+
+============================== 16 passed in 1.05s ==============================
