@@ -22,4 +22,4 @@ RUN uv sync --frozen --no-dev \
 
 USER 10001:10001
 EXPOSE 8000
-CMD ["uv", "run", "--frozen", "uvicorn", "cra_app.main:app", "--app-dir", "backend", "--host", "0.0.0.0", "--port", "8000"]
+CMD [".venv/bin/uvicorn", "cra_app.main:app", "--app-dir", "backend", "--host", "0.0.0.0", "--port", "8000"]

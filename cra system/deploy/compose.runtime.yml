@@ -50,7 +50,7 @@ services:
     build:
       context: ..
       dockerfile: deploy/api.Dockerfile
-    command: ["uv", "run", "--frozen", "alembic", "upgrade", "head"]
+    command: [".venv/bin/alembic", "upgrade", "head"]
     environment: *api-environment
     depends_on:
       postgres:
@@ -73,10 +73,7 @@ services:
       dockerfile: deploy/api.Dockerfile
     command:
       [
-        "uv",
-        "run",
-        "--frozen",
-        "uvicorn",
+        ".venv/bin/uvicorn",
         "cra_app.main:app",
         "--app-dir",
         "backend",
@@ -125,10 +122,7 @@ services:
       dockerfile: deploy/api.Dockerfile
     command:
       [
-        "uv",
-        "run",
-        "--frozen",
-        "python",
+        ".venv/bin/python",
         "-m",
         "cra_app.documents.worker"
       ]
