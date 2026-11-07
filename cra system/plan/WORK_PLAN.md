@@ -7,7 +7,7 @@
 | 工作包 | 内容 | 前置 | 模块 | 状态 |
 | --- | --- | --- | --- | --- |
 | CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
-| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | in_progress |
+| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | verified |
 | CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | in_progress |
 | CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | in_progress |
 | CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | in_progress |
@@ -45,6 +45,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w01 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w01 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
+
 ## CRA-W02 建立云上API和界面框架
 
 验收：在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。
@@ -58,6 +60,8 @@
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w02 在 W10 集成和 CI 日志绑定源码上重新通过；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w02 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w02 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
 
 ## CRA-W03 实现资料接收、解析和来源定位
 
@@ -73,6 +77,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w03 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w03 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
+
 ## CRA-W04 实现规则候选提取及分层list
 
 验收：从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。
@@ -86,6 +92,8 @@
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w04 在 W10 集成和 CI 日志绑定源码上重新通过；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w04 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w04 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
 
 ## CRA-W05 实现患者事实、锚点与核查断点
 
@@ -101,6 +109,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w05 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w05 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
+
 ## CRA-W06 实现遗留整理、提醒与点击确认整改
 
 验收：上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。
@@ -114,6 +124,8 @@
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w06 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w06 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w06 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
 
 ## CRA-W07 实现EDC Excel检验快照导入
 
@@ -129,6 +141,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w07 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w07 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
+
 ## CRA-W08 实现检验源文件自动读取与EDC核对
 
 验收：支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。
@@ -142,6 +156,8 @@
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w08 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w08 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w08 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
 
 ## CRA-W09 实现有依据的AE及PD分析
 
@@ -157,6 +173,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w09 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w09 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
+
 ## CRA-W10 实现中心文件目录和其他阶段清单
 
 验收：原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。
@@ -169,6 +187,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w10 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w10 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
+
 ## CRA-W11 实现访视信、报告和Excel导出
 
 验收：模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。
@@ -177,11 +197,15 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w11 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w11 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
+
 ## CRA-W12 串联四阶段界面与一次完整监查
 
 验收：模拟前次报告→访前信→到中心复核→新受试者核查→报告→下一次接续全部完成；用户只需临床操作。
 
 对应理论：CRA-R001、CRA-R006、CRA-R012、CRA-R017、CRA-R026、CRA-R028、CRA-R032、CRA-R033、CRA-R037、CRA-R045
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w12 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。
 
 ## CRA-W13 完成自动检验主线验收与试用准备
 

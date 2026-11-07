@@ -41,6 +41,59 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
+def _worktree_binding_paths(root, prefix):
+    """List source files that Git considers part of the worktree.
+
+    Runtime output can appear below a bound directory (for example Playwright
+    test-results). Ignored files must not change evidence for otherwise
+    unchanged source, while untracked, non-ignored additions remain binding.
+    """
+    result = subprocess.run(
+        [
+            "git",
+            "ls-files",
+            "-z",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+            "--",
+            prefix,
+        ],
+        cwd=root,
+        capture_output=True,
+    )
+    if result.returncode:
+        # Synthetic traceability fixtures and standalone source snapshots do
+        # not always have Git metadata. Authoritative task verification still
+        # requires an exact Git commit; this fallback only preserves local
+        # digesting for those isolated callers.
+        base = (root / prefix).resolve()
+        if base.is_file():
+            return [prefix]
+        return sorted(
+            path.relative_to(root).as_posix()
+            for path in base.rglob("*")
+            if path.is_file()
+            and not set(path.parts).intersection(
+                {
+                    "__pycache__",
+                    ".venv",
+                    "node_modules",
+                    ".pytest_cache",
+                    "dist",
+                }
+            )
+            and path.suffix != ".pyc"
+        )
+    return sorted(
+        {
+            relative
+            for relative in result.stdout.decode("utf-8").split("\0")
+            if relative
+        }
+    )
+
+
 def subject_digest(root, task, profile, reader=None):
     root = root.resolve()
     files = {}
@@ -59,12 +112,8 @@ def subject_digest(root, task, profile, reader=None):
             raise ValueError("evidence binding outside project")
         if reader:
             paths = reader.paths(prefix)
-        elif base.is_file():
-            paths = [prefix]
         else:
-            paths = [p.relative_to(root).as_posix() for p in base.rglob("*")
-                     if p.is_file() and not set(p.parts).intersection({"__pycache__", ".venv", "node_modules", ".pytest_cache", "dist"})
-                     and p.suffix != ".pyc"]
+            paths = _worktree_binding_paths(root, prefix)
         if not paths:
             raise ValueError("evidence binding has no files: " + prefix)
         for relative in sorted(paths):

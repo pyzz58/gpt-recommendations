@@ -98,7 +98,7 @@
         "M01",
         "M14"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
       "requirement_ids": [
         "CRA-R002",
@@ -109,7 +109,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w01 的真实 PostgreSQL 18.6 migrate/test 在 2026-11-01 复核迁移和共享授权/事务依赖后通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w01 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w01 在 W10 集成和 CI 日志绑定源码上重新通过；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w01 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w01 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w01 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
       ],
       "completion_history": [
         {
@@ -333,6 +334,21 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w01 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W01",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "3178b7953244d62d49a456ffc52365553013b5a3c3d22f18141f021fbde30a47"
+          }
         }
       ],
       "track": "v1a",
@@ -464,7 +480,14 @@
       "handoff_outputs": [
         "数据迁移、授权/事务API、可重现依赖及cra-w01真实数据库CI。"
       ],
-      "verification_profile": "CRA-W01"
+      "verification_profile": "CRA-W01",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W01",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "3178b7953244d62d49a456ffc52365553013b5a3c3d22f18141f021fbde30a47"
+      }
     },
     {
       "id": "CRA-W02",
@@ -487,7 +510,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w02 的 PostgreSQL API、13 个前端测试、typecheck、build、OpenAPI contract、runtime smoke 和 devcontainer smoke 全部通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w02 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w02 在 W10 集成和 CI 日志绑定源码上重新通过；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w02 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w02 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w02 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
       ],
       "completion_history": [
         {
@@ -697,6 +721,33 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w02 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W02",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "0d26a5863e82611e88466258237bf3f9d5307078aec0282d065771f783d45d6e"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-07",
+          "reason": "Evidence digesting now excludes Git-ignored runtime output; bind the corrected source digest to the final task-specific CI run.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W02",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "0d26a5863e82611e88466258237bf3f9d5307078aec0282d065771f783d45d6e"
+          }
         }
       ],
       "track": "v1a",
@@ -860,7 +911,14 @@
       "handoff_outputs": [
         "可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。"
       ],
-      "verification_profile": "CRA-W02"
+      "verification_profile": "CRA-W02",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W02",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "0d26a5863e82611e88466258237bf3f9d5307078aec0282d065771f783d45d6e"
+      }
     },
     {
       "id": "CRA-W03",
@@ -886,7 +944,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323；cra-w03 的真实 PostgreSQL/S3 文档工作流、provider probe、contract 和前端检查全部通过。 被测提交 5148684064a57e50077dd32d02e76b57b2221fc4。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w03 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w03 在 W10 集成和 CI 日志绑定源码上重新通过；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w03 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w03 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w03 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
       ],
       "completion_history": [
         {
@@ -1082,6 +1141,33 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w03 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W03",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "82f13502b16bd859ab428e51a602996a93b4f5456e6105d6104379c2588eab78"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-07",
+          "reason": "Evidence digesting now excludes Git-ignored runtime output; bind the corrected source digest to the final task-specific CI run.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W03",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "82f13502b16bd859ab428e51a602996a93b4f5456e6105d6104379c2588eab78"
+          }
         }
       ],
       "track": "v1a",
@@ -1241,7 +1327,14 @@
       "handoff_outputs": [
         "文件/锚点/作业接口，合成资料集和OCR依赖/资源可行性探测记录。"
       ],
-      "verification_profile": "CRA-W03"
+      "verification_profile": "CRA-W03",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W03",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "82f13502b16bd859ab428e51a602996a93b4f5456e6105d6104379c2588eab78"
+      }
     },
     {
       "id": "CRA-W04",
@@ -1275,7 +1368,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41248250769；17项review-unit/规则PostgreSQL测试、规则provider评估、契约和前端通过；同源中心采用日与独立中心同编号规则并存验证完成。 被测提交 f66750c9fac58dbf2e03189582a3544fc039bfd4。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w04 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w04 在 W10 集成和 CI 日志绑定源码上重新通过；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w04 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w04 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w04 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
       ],
       "completion_history": [
         {
@@ -1471,6 +1565,33 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w04 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W04",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "b0e4168b6a7bdcaffdbfadacad4385405a0b0eed1c103714258e2f063063869a"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-07",
+          "reason": "Evidence digesting now excludes Git-ignored runtime output; bind the corrected source digest to the final task-specific CI run.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W04",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "b0e4168b6a7bdcaffdbfadacad4385405a0b0eed1c103714258e2f063063869a"
+          }
         }
       ],
       "track": "v1a",
@@ -1625,7 +1746,14 @@
       "handoff_outputs": [
         "候选规则树、用户修正、版本启用解析及独立条件反例结果。"
       ],
-      "verification_profile": "CRA-W04"
+      "verification_profile": "CRA-W04",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W04",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "b0e4168b6a7bdcaffdbfadacad4385405a0b0eed1c103714258e2f063063869a"
+      }
     },
     {
       "id": "CRA-W05",
@@ -1651,7 +1779,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；15项PostgreSQL/API分支目标测试和4项review-gate自测通过；直接/容器目标、false/unknown/true、真实超窗、兄弟路径和多入口OR语义验证完成。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w05 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w05 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w05 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w05 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w05 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
       ],
       "completion_history": [
         {
@@ -1859,6 +1988,33 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w05 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W05",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "4205dabc8437f0bc2cf61bee37e16d5f4aacbe34d8d101f9a684fd6cbfc9ce59"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-07",
+          "reason": "The W05-bound evidence tool now excludes Git-ignored runtime output while retaining tracked and untracked non-ignored source changes; task-specific CI and source evidence must be rebound.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W05",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "4205dabc8437f0bc2cf61bee37e16d5f4aacbe34d8d101f9a684fd6cbfc9ce59"
+          }
         }
       ],
       "track": "v1a",
@@ -1979,7 +2135,14 @@
       "handoff_outputs": [
         "患者/锚点/分类断点及缺口拒绝/恢复契约，日期精度和来源保留。"
       ],
-      "verification_profile": "CRA-W05"
+      "verification_profile": "CRA-W05",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W05",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "4205dabc8437f0bc2cf61bee37e16d5f4aacbe34d8d101f9a684fd6cbfc9ce59"
+      }
     },
     {
       "id": "CRA-W06",
@@ -2014,7 +2177,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；W05依赖链重新验证后，遗留复核、一次确认整改和分项状态真实PostgreSQL回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w06 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w06 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w06 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w06 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w06 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
       ],
       "completion_history": [
         {
@@ -2208,6 +2372,33 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w06 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W06",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "63f749b07cfb44ee56cdaec2e58db18b30a3c48a03eb235357bc09181ba0d808"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-07",
+          "reason": "W05 evidence-tool source binding changed; this dependent task must be revalidated in the final source-bound CI run.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W06",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "63f749b07cfb44ee56cdaec2e58db18b30a3c48a03eb235357bc09181ba0d808"
+          }
         }
       ],
       "track": "v1a",
@@ -2345,7 +2536,14 @@
       "handoff_outputs": [
         "历史文件整理→遗留提醒/展开→点击确认→下次接续，正式Query与草稿区分。"
       ],
-      "verification_profile": "CRA-W06"
+      "verification_profile": "CRA-W06",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W06",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "63f749b07cfb44ee56cdaec2e58db18b30a3c48a03eb235357bc09181ba0d808"
+      }
     },
     {
       "id": "CRA-W07",
@@ -2368,7 +2566,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；W05依赖链重新验证后，真实XLSX导入、不可变快照、契约和前端回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w07 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w07 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w07 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w07 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w07 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
       ],
       "completion_history": [
         {
@@ -2548,6 +2747,33 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w07 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W07",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "df4124c0075fd10333640b97c2c8fdce374b82de9f6c6c2dfac30e7095c1286d"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-07",
+          "reason": "W05 evidence-tool source binding changed; this dependent task must be revalidated in the final source-bound CI run.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W07",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "df4124c0075fd10333640b97c2c8fdce374b82de9f6c6c2dfac30e7095c1286d"
+          }
         }
       ],
       "track": "v1a",
@@ -2648,7 +2874,14 @@
       "handoff_outputs": [
         "真实Excel输入、可复用列映射和不可变标准检验快照。"
       ],
-      "verification_profile": "CRA-W07"
+      "verification_profile": "CRA-W07",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W07",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "df4124c0075fd10333640b97c2c8fdce374b82de9f6c6c2dfac30e7095c1286d"
+      }
     },
     {
       "id": "CRA-W08",
@@ -2676,7 +2909,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；7项复核、13项检验和4项识别测试通过；真实Docling评估及既有关闭的复投/租约修正回归通过。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w08 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w08 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w08 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w08 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w08 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
       ],
       "completion_history": [
         {
@@ -2842,6 +3076,33 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w08 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W08",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "226851855810a9d3ebe4db7deec3b1f8f80858ad416a6c0657202d9454809003"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-07",
+          "reason": "W05 evidence-tool source binding changed; this dependent task must be revalidated in the final source-bound CI run.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W08",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "226851855810a9d3ebe4db7deec3b1f8f80858ad416a6c0657202d9454809003"
+          }
         }
       ],
       "track": "v1a",
@@ -3000,7 +3261,14 @@
       "handoff_outputs": [
         "自动源文件读取→匹配→比较→差异/未知与待办、实际provider证据、人工负担和支持范围。"
       ],
-      "verification_profile": "CRA-W08"
+      "verification_profile": "CRA-W08",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W08",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "226851855810a9d3ebe4db7deec3b1f8f80858ad416a6c0657202d9454809003"
+      }
     },
     {
       "id": "CRA-W09",
@@ -3161,7 +3429,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41251079001；65项受影响PostgreSQL/API测试、真实Qwen与Docling评估、契约和前端通过；W05分支目标修正已继承验证。 被测提交 12a7b38d577066424cb7cec9e29378923eeef406。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w09 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w09 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w09 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w09 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w09 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
       ],
       "completion_history": [
         {
@@ -3313,8 +3582,42 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w09 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W09",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "b25c73281f1c268216fa9b5f615a763ba927668b731fb578e66c108345fe6844"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-07",
+          "reason": "W05 evidence-tool source binding changed; this dependent task must be revalidated in the final source-bound CI run.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W09",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "b25c73281f1c268216fa9b5f615a763ba927668b731fb578e66c108345fe6844"
+          }
         }
-      ]
+      ],
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W09",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "b25c73281f1c268216fa9b5f615a763ba927668b731fb578e66c108345fe6844"
+      }
     },
     {
       "id": "CRA-W10",
@@ -3441,7 +3744,8 @@
       "evidence": [
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254143718；cra-w10 的真实 PostgreSQL 18.6、迁移/回归、契约和前端步骤通过；W10目录/阶段清单集成后重新绑定源码；被测提交 8c733e97ac35496ca463b171dd1cecfce73246a8。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w10 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w10 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w10 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w10 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
       ],
       "completion_history": [
         {
@@ -3539,8 +3843,42 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w10 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W10",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "59ad7b876d32c1cd9905f9f46688d7b517a654c83ff06d1974b7e1c16d0a7003"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-07",
+          "reason": "W05 evidence-tool source binding changed; this dependent task must be revalidated in the final source-bound CI run.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W10",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "59ad7b876d32c1cd9905f9f46688d7b517a654c83ff06d1974b7e1c16d0a7003"
+          }
         }
-      ]
+      ],
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W10",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "59ad7b876d32c1cd9905f9f46688d7b517a654c83ff06d1974b7e1c16d0a7003"
+      }
     },
     {
       "id": "CRA-W11",
@@ -3729,11 +4067,46 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w11 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W11",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "a6ce0e6597dc5cc5a7a82976a2252690d0357aa5dace3186289ddc8449c11c80"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-07",
+          "reason": "W05 evidence-tool source binding changed; this dependent task must be revalidated in the final source-bound CI run.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W11",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "a6ce0e6597dc5cc5a7a82976a2252690d0357aa5dace3186289ddc8449c11c80"
+          }
         }
       ],
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w11 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。"
-      ]
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w11 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w11 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+      ],
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W11",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "a6ce0e6597dc5cc5a7a82976a2252690d0357aa5dace3186289ddc8449c11c80"
+      }
     },
     {
       "id": "CRA-W12",
@@ -3914,7 +4287,44 @@
           "recorded_status": "in_progress",
           "recorded_at": "2026-11-01",
           "reason": "W12 changes shared monitoring API/application, frontend composition and Playwright dependencies; affected tasks require task-specific revalidation."
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-01",
+          "reason": "W12 source-bound revalidation.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w12 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W12",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "e6eb8f44d36ef63cd7050ec737d57e2ac1de430ccb4e48dd77442947303ff299"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-07",
+          "reason": "W05 evidence-tool source binding changed; this final integration task must be revalidated in the final source-bound CI run.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W12",
+            "run_id": 41272918165,
+            "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+            "subject_digest": "e6eb8f44d36ef63cd7050ec737d57e2ac1de430ccb4e48dd77442947303ff299"
+          }
         }
+      ],
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W12",
+        "run_id": 41272918165,
+        "tested_commit": "8b85aa2c8a0d26d6ef56d359d691206794199563",
+        "subject_digest": "e6eb8f44d36ef63cd7050ec737d57e2ac1de430ccb4e48dd77442947303ff299"
+      },
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w12 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。"
       ]
     },
     {

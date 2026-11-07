@@ -29,6 +29,7 @@ class EvidenceTests(unittest.TestCase):
         (self.root / "theory").mkdir()
         (self.root / "audit").mkdir()
         (self.root / "tests").mkdir()
+        self.git("init", "-q")
         self.task = {
             "id": "CRA-W01", "status": "planned", "depends_on": [],
             "clinical_goal": "synthetic provenance test, not a real business task",
@@ -152,6 +153,38 @@ class EvidenceTests(unittest.TestCase):
         self.task["status"] = "verified"
         data.write_text('{"value": 2}')
         self.assertTrue(any("stale" in e for e in record_errors(self.root, self.task, self.profile)))
+
+    def test_git_ignored_bound_fixture_does_not_change_digest(self):
+        (self.root / "tests/fixtures").mkdir(parents=True)
+        (self.root / ".gitignore").write_text(
+            "tests/fixtures/generated.json\n",
+            encoding="utf-8",
+        )
+        data = self.root / "tests/fixtures/input.json"
+        data.write_text('{"value": 1}', encoding="utf-8")
+        self.profile["binding_paths"] = ["tests/fixtures/"]
+        before = subject_digest(self.root, self.task, self.profile)
+        (self.root / "tests/fixtures/generated.json").write_text(
+            '{"runtime": "ignored"}',
+            encoding="utf-8",
+        )
+        self.assertEqual(
+            before,
+            subject_digest(self.root, self.task, self.profile),
+        )
+
+    def test_git_tracked_fixture_change_invalidates_digest(self):
+        (self.root / "tests/fixtures").mkdir(parents=True)
+        data = self.root / "tests/fixtures/input.json"
+        data.write_text('{"value": 1}', encoding="utf-8")
+        self.profile["binding_paths"] = ["tests/fixtures/"]
+        self.commit()
+        before = subject_digest(self.root, self.task, self.profile)
+        data.write_text('{"value": 2}', encoding="utf-8")
+        self.assertNotEqual(
+            before,
+            subject_digest(self.root, self.task, self.profile),
+        )
 
     def test_other_repository_or_pr_run_is_rejected(self):
         self.task["completion_evidence"] = self.record()

@@ -298,6 +298,7 @@
         "tools/next_task.py",
         "tools/task_evidence.py",
         "tests/test_review_gate.py",
+        "tests/test_task_evidence.py",
         "tests/integration/test_subjects.py",
         "pyproject.toml",
         "uv.lock",
