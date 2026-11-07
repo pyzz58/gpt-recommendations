@@ -1,0 +1,16 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running downgrade a1c9e7f2d304 -> f4a2c7d9e601, W22 live adapter state
+INFO  [alembic.runtime.migration] Running downgrade f4a2c7d9e601 -> e3b8c4d5f601, Versioned scientific feedback and bounded follow-up plans.
+INFO  [alembic.runtime.migration] Running downgrade e3b8c4d5f601 -> d9a7e3f1b420, W20 reliability correlation and regression ledger
+INFO  [alembic.runtime.migration] Running downgrade d9a7e3f1b420 -> c8f1a6d3e720, W19 immutable policy bundles, impacts, and migration ledger
+INFO  [alembic.runtime.migration] Running downgrade c8f1a6d3e720 -> b2e7d4a9c310, Link audit reviews to affected tasks
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade b2e7d4a9c310 -> c8f1a6d3e720, Link audit reviews to affected tasks
+INFO  [alembic.runtime.migration] Running upgrade c8f1a6d3e720 -> d9a7e3f1b420, W19 immutable policy bundles, impacts, and migration ledger
+INFO  [alembic.runtime.migration] Running upgrade d9a7e3f1b420 -> e3b8c4d5f601, W20 reliability correlation and regression ledger
+INFO  [alembic.runtime.migration] Running upgrade e3b8c4d5f601 -> f4a2c7d9e601, Versioned scientific feedback and bounded follow-up plans.
+INFO  [alembic.runtime.migration] Running upgrade f4a2c7d9e601 -> a1c9e7f2d304, W22 live adapter state
+a1c9e7f2d304
+84

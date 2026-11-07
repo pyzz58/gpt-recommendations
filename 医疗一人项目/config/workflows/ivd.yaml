@@ -1,0 +1,180 @@
+schema_version: 1
+workflow_id: ivd_v1
+version: 1
+track: ivd
+title: 体外诊断产品
+purpose: 从预期用途和样本出发，分离分析性能、临床评价、质量与外部验证。
+applicability:
+  - 检测物、方法或样本类型具有明确预期用途
+  - 需要区分分析性能和临床价值
+non_goals:
+  - 分析灵敏度不等于临床有效性
+  - 模板不构成监管分类或豁免结论
+stages:
+  - stage_id: intended_use
+    sequence: 1
+    title: 预期用途、人群与样本
+    purpose: 定义检测物、样本、使用者、临床决策和参照方法问题。
+    required_roles: [A05, A09, A10, A17]
+    criteria:
+      - {id: intended_use_defined, kind: decision, description: 明确检测物、样本、人群和使用环境, requires_refs: true}
+      - {id: clinical_decision_linked, kind: professional_judgment, description: 检测结果关联具体临床或兽医决策, requires_refs: true}
+      - {id: comparator_question, kind: professional_judgment, description: 记录参照方法或现有路径, requires_refs: true}
+    required_inputs: [investment_brief, opportunity_card, source_cutoff]
+    required_outputs: [intended_use_statement, sample_scope, clinical_decision_question]
+    review_policy: clinical_and_regulatory_review.v1
+    failure_routes:
+      intended_use_unclear: revise
+      no_clinical_decision: stop
+    external_preconditions: []
+    theory_refs: [D-014, SEC:4.3, SEC:10.4]
+    plan_nodes:
+      - key: use_case
+        task_type: ivd.intended_use
+        purpose: ivd-stage1-use
+        assignee_role: A05
+        goal: 明确目标人群或动物、样本、使用场景和临床问题。
+        input_refs: [workflow:ivd_v1:intended_use]
+        acceptance_policy: clinical_review.v1
+      - key: clinical_evaluation_question
+        task_type: ivd.clinical_question
+        purpose: ivd-stage1-clinical
+        assignee_role: A10
+        goal: 定义参照方法、偏倚问题和临床性能证据需求。
+        input_refs: [workflow:ivd_v1:intended_use]
+        acceptance_policy: independent_clinical_review.v1
+        depends_on: [use_case]
+      - key: regulatory_scope
+        task_type: ivd.regulatory_scope
+        purpose: ivd-stage1-regulatory
+        assignee_role: A17
+        goal: 记录目标市场分类、临床评价和来源核查问题。
+        input_refs: [workflow:ivd_v1:intended_use]
+        acceptance_policy: regulatory_review.v1
+        depends_on: [use_case]
+  - stage_id: analytical_plan
+    sequence: 2
+    title: 标志物、方法依据与分析性能
+    purpose: 明确分析性能目标及其可验证方法，不把文献性能当作本地结果。
+    required_roles: [A04, A09, A14, A26]
+    criteria:
+      - {id: method_evidence, kind: evidence, description: 检测物、方法和样本依据已核原文, requires_refs: true}
+      - {id: performance_targets, kind: professional_judgment, description: 分析性能目标与决策阈值明确, requires_refs: true}
+      - {id: statistical_design, kind: review, description: 样本量、重复、偏倚与不确定性已审阅, requires_refs: true}
+    required_inputs: [stage1_output, method_sources, candidate_performance_targets]
+    required_outputs: [method_assessment, performance_targets, analytical_plan, statistical_review]
+    review_policy: analytical_and_statistical_review.v1
+    failure_routes:
+      method_not_supported: revise
+      performance_target_infeasible: gather_evidence
+    external_preconditions: []
+    theory_refs: [D-018, SEC:10.2, SEC:11.4]
+    plan_nodes:
+      - key: method_evidence
+        task_type: ivd.method_evidence
+        purpose: ivd-stage2-method
+        assignee_role: A04
+        goal: 汇总检测方法、样本和分析性能原始证据及反证。
+        input_refs: [workflow:ivd_v1:analytical_plan]
+        acceptance_policy: evidence_review.v1
+      - key: performance_plan
+        task_type: ivd.analytical_plan
+        purpose: ivd-stage2-performance
+        assignee_role: A09
+        goal: 形成分析性能目标、验证项目和适用样本范围。
+        input_refs: [workflow:ivd_v1:analytical_plan]
+        acceptance_policy: analytical_review.v1
+        depends_on: [method_evidence]
+      - key: statistical_review
+        task_type: statistics.analytical_review
+        purpose: ivd-stage2-statistics
+        assignee_role: A14
+        goal: 审阅样本量、重复、偏倚和分析集，不伪造性能数值。
+        input_refs: [workflow:ivd_v1:analytical_plan]
+        acceptance_policy: statistical_review.v1
+        depends_on: [performance_plan]
+  - stage_id: clinical_evaluation_plan
+    sequence: 3
+    title: 临床评价与产品证据计划
+    purpose: 在明确预期用途和分析性能后，设计临床评价与产品质量证据。
+    required_roles: [A09, A10, A13, A14, A17, A26]
+    criteria:
+      - {id: clinical_plan_defined, kind: professional_judgment, description: 人群、参照方法、终点和偏倚控制明确, requires_refs: true}
+      - {id: quality_targets_defined, kind: professional_judgment, description: 批次、稳定性、质量控制目标清楚, requires_refs: true}
+      - {id: regulatory_questions_current, kind: evidence, description: 注册路径问题有目标市场、来源和核查日期, requires_refs: true}
+    required_inputs: [stage2_output, intended_use, regulatory_sources]
+    required_outputs: [clinical_evaluation_plan, quality_targets, prototype_test_requirements, evidence_gap]
+    review_policy: clinical_statistical_regulatory_review.v1
+    failure_routes:
+      clinical_value_not_testable: revise
+      regulatory_route_unclear: gather_evidence
+    external_preconditions: []
+    theory_refs: [D-014, SEC:4.3, SEC:10.4]
+    plan_nodes:
+      - key: clinical_plan
+        task_type: ivd.clinical_evaluation_plan
+        purpose: ivd-stage3-clinical
+        assignee_role: A10
+        goal: 设计临床评价问题、参照方法和偏倚控制。
+        input_refs: [workflow:ivd_v1:clinical_evaluation_plan]
+        acceptance_policy: clinical_review.v1
+      - key: quality_targets
+        task_type: ivd.quality_targets
+        purpose: ivd-stage3-quality
+        assignee_role: A09
+        goal: 形成批次、稳定性、质量控制与样本验证目标。
+        input_refs: [workflow:ivd_v1:clinical_evaluation_plan]
+        acceptance_policy: analytical_review.v1
+      - key: regulatory_check
+        task_type: ivd.regulatory_check
+        purpose: ivd-stage3-regulatory
+        assignee_role: A17
+        goal: 核目标市场、产品范围、日期和官方来源，不作批准承诺。
+        input_refs: [workflow:ivd_v1:clinical_evaluation_plan]
+        acceptance_policy: regulatory_review.v1
+        depends_on: [clinical_plan, quality_targets]
+  - stage_id: external_validation
+    sequence: 4
+    title: 原型与外部验证
+    purpose: 在授权、样本、机构能力和质量条件满足后执行外部验证。
+    required_roles: [A20, A22, A25, A26]
+    criteria:
+      - {id: validation_scope_fixed, kind: decision, description: 样本、性能、地点、交付和验收范围明确, requires_refs: true}
+      - {id: sample_and_site_ready, kind: decision, description: 样本来源、机构和适用前置条件已核实, requires_refs: true}
+      - {id: authorization_recorded, kind: decision, description: 预算、对象和外部动作已获授权, requires_refs: true}
+    required_inputs: [stage3_output, provider_scope, sample_plan, authorization]
+    required_outputs: [prototype_record, external_validation_plan, raw_results, acceptance_review]
+    review_policy: external_quality_and_independent_review.v1
+    failure_routes:
+      sample_unavailable: wait
+      external_scope_changed: revise
+      critical_performance_failure: stop
+    external_preconditions:
+      - {id: sample_authorization, description: 合法样本来源、数量与使用范围已取得, provider_type: sample_provider, evidence_type: sample_authorization}
+      - {id: qualified_lab, description: 外部实验室能力、质量和交付条件已核实, provider_type: laboratory, evidence_type: provider_confirmation}
+      - {id: cost_and_authorization, description: 真实报价、合同和预算授权已完成, provider_type: provider_finance, evidence_type: quote_and_authorization}
+    theory_refs: [D-004, SEC:4.4, SEC:10.4]
+    plan_nodes:
+      - key: validation_package
+        task_type: external.ivd_validation_scope
+        purpose: ivd-stage4-scope
+        assignee_role: A22
+        goal: 准备样本、性能、机构、原始数据和验收范围，不自行委托。
+        input_refs: [workflow:ivd_v1:external_validation]
+        acceptance_policy: external_scope_review.v1
+      - key: budget_gate
+        task_type: budget.ivd_external_gate
+        purpose: ivd-stage4-budget
+        assignee_role: A20
+        goal: 核对样本、检测、复测和机构费用，区分报价与未知。
+        input_refs: [workflow:ivd_v1:external_validation]
+        acceptance_policy: financial_review.v1
+        depends_on: [validation_package]
+      - key: independent_audit
+        task_type: external.ivd_independent_review
+        purpose: ivd-stage4-audit
+        assignee_role: A26
+        goal: 独立检查性能、偏倚、批次、原始交付和不可接收项。
+        input_refs: [workflow:ivd_v1:external_validation]
+        acceptance_policy: independent_review.v1
+        depends_on: [validation_package, budget_gate]

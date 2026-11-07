@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:dataset-cleaning:v1",
+  "additionalProperties": false,
+  "properties": {
+    "select_columns": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Select Columns",
+      "type": "array"
+    },
+    "numeric_columns": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Numeric Columns",
+      "type": "array"
+    },
+    "rename_columns": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Rename Columns",
+      "type": "object"
+    },
+    "drop_missing_columns": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Drop Missing Columns",
+      "type": "array"
+    },
+    "rationale": {
+      "maxLength": 10000,
+      "minLength": 1,
+      "title": "Rationale",
+      "type": "string"
+    }
+  },
+  "required": [
+    "select_columns",
+    "rationale"
+  ],
+  "title": "CleaningSpec",
+  "type": "object",
+  "description": "Versioned table cleaning contract; derivation does not overwrite raw data."
+}

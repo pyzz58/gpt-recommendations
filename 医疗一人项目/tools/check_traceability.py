@@ -5,11 +5,14 @@ import argparse
 import hashlib
 import json
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+VALIDATION_LEVELS = {"mock", "live", "human_expert", "real_outsourcing"}
+EVIDENCE_STATES = {"passed", "failed", "blocked", "not_run", "not_applicable"}
 
 def digest(value):
     return hashlib.sha256(value if isinstance(value, bytes) else value.encode("utf-8")).hexdigest()
@@ -77,6 +80,343 @@ def load_state(root):
     theory, roadmap = theory_bytes.decode("utf-8"), roadmap_bytes.decode("utf-8")
     return path, manifest, theory_bytes, roadmap_bytes, theory, roadmap
 
+
+def _git(root, *args, check=True):
+    result = subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=False,
+        capture_output=True,
+    )
+    if check and result.returncode != 0:
+        detail = result.stderr.decode("utf-8", errors="replace").strip()
+        raise ValueError("Git evidence check failed: " + detail)
+    return result
+
+
+def _git_prefix(root):
+    result = _git(root, "rev-parse", "--show-prefix")
+    return result.stdout.decode("utf-8").strip()
+
+
+def _tracked_path(root, value):
+    result = _git(root, "ls-files", "--", value, check=False)
+    if result.returncode != 0:
+        return False
+    tracked = [
+        line
+        for line in result.stdout.decode("utf-8").splitlines()
+        if line == value or line.startswith(value.rstrip("/") + "/")
+    ]
+    return bool(tracked)
+
+
+def _git_file_digest(root, commit, prefix, value):
+    full_path = prefix + value
+    result = _git(root, "show", f"{commit}:{full_path}", check=False)
+    if result.returncode != 0:
+        return None
+    return digest(result.stdout)
+
+
+def _load_evidence(root, manifest):
+    name = manifest.get("acceptance_evidence_file")
+    if not isinstance(name, str) or not name:
+        raise ValueError("Manifest must name an acceptance evidence file")
+    path = safe_file(root, name)
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("schema_version") != 1:
+        raise ValueError("Unsupported acceptance evidence schema")
+    records = data.get("records")
+    if not isinstance(records, list):
+        raise ValueError("Acceptance evidence records must be a list")
+    return data, records
+
+
+def _tree_fingerprint(root, paths, commit=None):
+    prefix = _git_prefix(root)
+    git_root = Path(
+        _git(root, "rev-parse", "--show-toplevel").stdout.decode("utf-8").strip()
+    )
+    repo_paths = []
+    for value in paths:
+        local_path = safe_file(root, value).relative_to(root.resolve()).as_posix()
+        repo_paths.append(prefix + local_path)
+    if commit:
+        result = _git(
+            git_root,
+            "ls-tree",
+            "-r",
+            "--name-only",
+            "-z",
+            "--full-tree",
+            commit,
+            "--",
+            *repo_paths,
+        )
+        if not result.stdout.strip():
+            raise ValueError("source_scope does not match tracked Git paths")
+        repo_paths_at_commit = [
+            value
+            for value in result.stdout.decode("utf-8").split("\0")
+            if value
+        ]
+        batch = subprocess.run(
+            ["git", "-C", str(git_root), "cat-file", "--batch"],
+            input="".join(
+                f"{commit}:{repo_path}\n" for repo_path in repo_paths_at_commit
+            ).encode("utf-8"),
+            check=False,
+            capture_output=True,
+        )
+        if batch.returncode != 0:
+            detail = batch.stderr.decode("utf-8", errors="replace").strip()
+            raise ValueError("Git evidence check failed: " + detail)
+        entries = []
+        offset = 0
+        for repo_path in repo_paths_at_commit:
+            header_end = batch.stdout.find(b"\n", offset)
+            if header_end < 0:
+                raise ValueError("Git cat-file returned a truncated source tree")
+            header = batch.stdout[offset:header_end].split()
+            if len(header) != 3 or header[1] != b"blob":
+                raise ValueError("Git cat-file returned a non-blob source tree entry")
+            size = int(header[2])
+            content_start = header_end + 1
+            content_end = content_start + size
+            if content_end >= len(batch.stdout) or batch.stdout[content_end] != 0x0A:
+                raise ValueError("Git cat-file returned malformed source content")
+            local_path = repo_path[len(prefix):] if repo_path.startswith(prefix) else repo_path
+            entries.append(
+                local_path + "\0" + digest(batch.stdout[content_start:content_end])
+            )
+            offset = content_end + 1
+        return digest("\n".join(sorted(entries)))
+    result = _git(git_root, "ls-files", "-z", "--", *repo_paths)
+    tracked = [
+        value
+        for value in result.stdout.decode("utf-8").split("\0")
+        if value
+    ]
+    if not tracked:
+        raise ValueError("source_scope does not match tracked Git paths")
+    entries = []
+    for repo_path in tracked:
+        if not repo_path.startswith(prefix):
+            continue
+        local_path = repo_path[len(prefix):]
+        path = safe_file(root, local_path)
+        if path.is_file():
+            entries.append(local_path + "\0" + digest(path.read_bytes()))
+    return digest("\n".join(sorted(entries)))
+
+
+def _artifact_errors(root, record_id, artifacts, artifact_hashes, require_nonempty):
+    errors = []
+    if not isinstance(artifacts, list):
+        return [record_id + ": artifacts must be a list"]
+    if require_nonempty and not artifacts:
+        errors.append(record_id + ": passed evidence requires artifacts")
+    if not isinstance(artifact_hashes, dict):
+        errors.append(record_id + ": artifact_hashes must be an object")
+        artifact_hashes = {}
+    artifact_paths = set()
+    for value in artifacts:
+        if not isinstance(value, str) or not value:
+            errors.append(record_id + ": invalid artifact path")
+            continue
+        artifact_paths.add(value)
+        expected = artifact_hashes.get(value)
+        try:
+            path = safe_file(root, value)
+        except (ValueError, TypeError):
+            errors.append(record_id + ": artifact path escapes project")
+            continue
+        if not path.is_file():
+            errors.append(record_id + ": artifact does not exist: " + value)
+            continue
+        if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
+            errors.append(record_id + ": artifact lacks SHA-256: " + value)
+        elif digest(path.read_bytes()) != expected:
+            errors.append(record_id + ": artifact hash changed: " + value)
+    return errors
+
+
+def _validate_evidence_record(root, record, requirement_ids, requirements, anchors):
+    errors = []
+    record_id = record.get("id", "<missing>")
+    if not isinstance(record_id, str) or not record_id.strip():
+        errors.append("Acceptance record has no identifier")
+    elif not re.fullmatch(r"ACC-[A-Za-z0-9._-]+", record_id):
+        errors.append(record_id + ": invalid acceptance record identifier")
+    refs = record.get("requirements", [])
+    if not refs or len(refs) != len(set(refs)) or set(refs) - requirement_ids:
+        errors.append(record_id + ": invalid requirement references")
+    source_commit = record.get("source_commit", "")
+    if not re.fullmatch(r"[0-9a-f]{40}", source_commit):
+        errors.append(record_id + ": source_commit must be a full SHA")
+        return errors
+    exists = _git(root, "cat-file", "-e", source_commit + "^{commit}", check=False)
+    if exists.returncode != 0:
+        errors.append(record_id + ": source_commit does not exist")
+        return errors
+    ancestor = _git(
+        root,
+        "merge-base",
+        "--is-ancestor",
+        source_commit,
+        "HEAD",
+        check=False,
+    )
+    if ancestor.returncode != 0:
+        errors.append(record_id + ": source_commit is not an ancestor of HEAD")
+    result_value = record.get("result")
+    if result_value not in EVIDENCE_STATES:
+        errors.append(record_id + ": invalid result")
+    commands = record.get("commands")
+    if not isinstance(commands, list):
+        errors.append(record_id + ": commands must be a list")
+        commands = []
+    if result_value == "passed" and not commands:
+        errors.append(record_id + ": passed evidence requires commands")
+    for index, command in enumerate(commands):
+        prefix = f"{record_id}: command {index + 1}"
+        if not isinstance(command, dict):
+            errors.append(prefix + " is invalid")
+            continue
+        for key in ("cwd", "command", "mode", "started_at", "finished_at"):
+            if not isinstance(command.get(key), str) or not command[key].strip():
+                errors.append(prefix + " missing " + key)
+        if not isinstance(command.get("exit_code"), int):
+            errors.append(prefix + " missing integer exit_code")
+        if not isinstance(command.get("artifacts", []), list):
+            errors.append(prefix + " artifacts must be a list")
+        if isinstance(command.get("artifacts"), list):
+            artifact_hashes = record.get("artifact_hashes", {})
+            errors.extend(
+                _artifact_errors(
+                    root,
+                    prefix,
+                    command["artifacts"],
+                    artifact_hashes if isinstance(artifact_hashes, dict) else {},
+                    False,
+                )
+            )
+    levels = record.get("validation_levels")
+    if not isinstance(levels, dict) or set(levels) != VALIDATION_LEVELS:
+        errors.append(record_id + ": validation levels must be explicit")
+    else:
+        for name, value in levels.items():
+            if not isinstance(value, dict) or value.get("status") not in EVIDENCE_STATES:
+                errors.append(record_id + f": invalid {name} validation status")
+            elif value.get("status") == "passed" and not value.get("evidence"):
+                errors.append(record_id + f": passed {name} needs evidence")
+    code_paths = record.get("code_paths")
+    if not isinstance(code_paths, list) or not code_paths:
+        errors.append(record_id + ": code_paths must be non-empty")
+        code_paths = []
+    prefix = _git_prefix(root)
+    for item in code_paths:
+        if not isinstance(item, dict):
+            errors.append(record_id + ": invalid code path entry")
+            continue
+        value = item.get("path", "")
+        expected = item.get("sha256", "")
+        try:
+            path = safe_file(root, value)
+        except (ValueError, TypeError):
+            errors.append(record_id + ": code path escapes project")
+            continue
+        if not path.is_file() or not re.fullmatch(r"[0-9a-f]{64}", str(expected)):
+            errors.append(record_id + ": invalid code path or hash")
+            continue
+        committed = _git_file_digest(root, source_commit, prefix, value)
+        if committed != expected:
+            errors.append(value + ": hash does not match source_commit")
+        if digest(path.read_bytes()) != expected:
+            errors.append(value + ": implementation changed after tested source")
+    source_scope = record.get("source_scope")
+    if not isinstance(source_scope, list) or not source_scope:
+        errors.append(record_id + ": source_scope must be non-empty")
+    else:
+        try:
+            if record.get("source_tree_git_sha256") != _tree_fingerprint(
+                root,
+                source_scope,
+                source_commit,
+            ):
+                errors.append(record_id + ": source tree differs from source_commit")
+            if record.get("source_tree_worktree_sha256") != _tree_fingerprint(
+                root,
+                source_scope,
+            ):
+                errors.append(record_id + ": implementation tree changed after acceptance")
+        except (ValueError, OSError) as exc:
+            errors.append(record_id + ": invalid source tree scope: " + str(exc))
+    validation_levels = record.get("validation_levels", {})
+    if result_value == "passed":
+        for requirement_id in refs:
+            requirement = requirements.get(requirement_id, {})
+            required_levels = requirement.get("required_validation", ["mock"])
+            for level in required_levels:
+                if validation_levels.get(level, {}).get("status") != "passed":
+                    errors.append(
+                        requirement_id + f": required {level} validation is not passed"
+                    )
+            missing_acceptance = set(requirement.get("acceptance_refs", [])) - set(
+                record.get("acceptance_refs", [])
+            )
+            if missing_acceptance:
+                errors.append(
+                    requirement_id
+                    + ": acceptance coverage missing "
+                    + ", ".join(sorted(missing_acceptance))
+                )
+            missing_technical = set(requirement.get("technical_refs", [])) - set(
+                record.get("technical_refs", [])
+            )
+            if missing_technical:
+                errors.append(
+                    requirement_id
+                    + ": technical coverage missing "
+                    + ", ".join(sorted(missing_technical))
+                )
+    errors.extend(
+        _artifact_errors(
+            root,
+            record_id,
+            record.get("artifacts"),
+            record.get("artifact_hashes"),
+            result_value == "passed",
+        )
+    )
+    record_artifacts = {
+        value for value in record.get("artifacts", []) if isinstance(value, str)
+    }
+    for command in commands:
+        if isinstance(command, dict):
+            record_artifacts.update(
+                value
+                for value in command.get("artifacts", [])
+                if isinstance(value, str)
+            )
+    declared_hashes = record.get("artifact_hashes", {})
+    if isinstance(declared_hashes, dict):
+        extra = set(declared_hashes) - record_artifacts
+        if extra:
+            errors.append(
+                record_id
+                + ": artifact_hashes contains undeclared paths: "
+                + ", ".join(sorted(extra))
+            )
+    if not isinstance(record.get("uncovered"), list):
+        errors.append(record_id + ": uncovered must be a list")
+    if result_value == "passed" and any(
+        isinstance(command, dict) and command.get("exit_code") != 0
+        for command in commands
+    ):
+        errors.append(record_id + ": passed evidence contains a failed command")
+    return errors
+
 def validate(root, fingerprints=True):
     errors = []
     try:
@@ -84,7 +424,7 @@ def validate(root, fingerprints=True):
         source_map, declared = sources(theory), anchors(roadmap)
     except (ValueError, KeyError, OSError, UnicodeError) as exc:
         return ["Unreadable traceability input: " + str(exc)]
-    if m.get("schema_version") != 1:
+    if m.get("schema_version") != 2:
         errors.append("Unsupported manifest schema")
     reqs = m.get("requirements", [])
     ids = [r.get("id") for r in reqs]
@@ -94,6 +434,18 @@ def validate(root, fingerprints=True):
         errors.append("Duplicate requirement")
     covered_sources = set()
     covered = {key: set() for key in declared}
+    try:
+        _evidence_document, evidence_records = _load_evidence(root, m)
+    except (ValueError, KeyError, OSError, UnicodeError) as exc:
+        evidence_records = []
+        errors.append("Unreadable acceptance evidence: " + str(exc))
+    evidence_ids = [str(record.get("id")) for record in evidence_records]
+    if len(evidence_ids) != len(set(evidence_ids)):
+        errors.append("Duplicate acceptance evidence identifier")
+    records_by_requirement = {
+        rid: [record for record in evidence_records if rid in record.get("requirements", [])]
+        for rid in ids
+    }
     for r in reqs:
         rid = str(r.get("id"))
         refs = r.get("source_refs", [])
@@ -114,10 +466,41 @@ def validate(root, fingerprints=True):
             errors.append(rid + ": not mentioned in technical document")
         if not r.get("planned_paths"):
             errors.append(rid + ": missing planned implementation path")
-        if r.get("implementation_status") not in {"planned", "documentation_ready", "in_progress", "implemented", "verified", "blocked"}:
+        status = r.get("implementation_status")
+        if status not in {"planned", "documentation_ready", "in_progress", "implemented", "verified", "blocked"}:
             errors.append(rid + ": invalid implementation status")
+        if status in {"implemented", "verified"}:
+            paths = r.get("implementation_paths", [])
+            if not paths:
+                errors.append(rid + ": missing Git implementation paths")
+            for value in paths:
+                try:
+                    safe_file(root, value)
+                except ValueError:
+                    errors.append(rid + ": implementation path escapes project")
+                    continue
+                if not _tracked_path(root, value):
+                    errors.append(rid + ": implementation path is not tracked by Git: " + value)
+        if status == "verified":
+            accepted = [
+                record
+                for record in records_by_requirement.get(rid, [])
+                if record.get("result") == "passed"
+            ]
+            if not accepted:
+                errors.append(rid + ": verified requires passed acceptance evidence")
         if fingerprints and not missing and r.get("source_sha256") != combined(refs, source_map):
             errors.append(rid + ": source fingerprint stale")
+    for record in evidence_records:
+        errors.extend(
+            _validate_evidence_record(
+                root,
+                record,
+                set(ids),
+                {str(item["id"]): item for item in reqs},
+                declared,
+            )
+        )
     artifact_paths = set()
     for item in m.get("supporting_artifacts", []):
         name = item.get("path", "")
@@ -228,7 +611,14 @@ def main():
             result = refresh(DEFAULT_ROOT, args.note)
         else:
             errors = validate(DEFAULT_ROOT)
-            result = {"ok": not errors, "errors": errors, "scope": "Documentation consistency only; application and scientific validation are not implied."}
+            result = {
+                "ok": not errors,
+                "errors": errors,
+                "scope": (
+                    "Documentation, Git implementation-path and acceptance-record "
+                    "structure only; scientific and real-world validity are not implied."
+                ),
+            }
             print(json.dumps(result, ensure_ascii=False, indent=2))
             return 1 if errors else 0
         print(json.dumps(result, ensure_ascii=False, indent=2))

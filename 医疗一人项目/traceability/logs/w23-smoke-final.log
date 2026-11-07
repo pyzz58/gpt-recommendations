@@ -1,0 +1,76 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+{"workspace_id": "f3e1b71b-c994-4fda-bdd1-00ce723bdcd1", "owner_user_id": "39b189af-0fec-47b1-98ce-b11c05462814", "mode": "local"}
+PASS: api started with PID 98579
+PASS: API live endpoint responded with HTTP 200
+PASS: worker started with PID 98603
+PASS: web started with PID 98618
+PASS: API ready endpoint responded with HTTP 200
+PASS: Web page responded with HTTP 307
+Started: web=http://127.0.0.1:13000 api=http://127.0.0.1:18000 runtime=/tmp/medical-one-readiness.wT6kvn/state
+process api    running pid=98579 log=/tmp/medical-one-readiness.wT6kvn/state/logs/api.log
+process worker running pid=98603 log=/tmp/medical-one-readiness.wT6kvn/state/logs/worker.log
+process web    running pid=98618 log=/tmp/medical-one-readiness.wT6kvn/state/logs/web.log
+{
+    "status": "ok",
+    "mode": "mock",
+    "checks": {
+        "process": {
+            "status": "ready",
+            "detail": "API process is running"
+        }
+    }
+}
+{
+    "status": "ok",
+    "mode": "mock",
+    "checks": {
+        "process": {
+            "status": "ready",
+            "detail": "API process is running"
+        },
+        "provider": {
+            "status": "ready",
+            "detail": "Deterministic network-free adapter"
+        },
+        "database": {
+            "status": "ready",
+            "detail": "PostgreSQL connected at migration a1c9e7f2d304"
+        },
+        "artifact_storage": {
+            "status": "ready",
+            "detail": "5 project storage roots are writable: artifacts, backups, knowledge-staging, restore-checks, runs"
+        },
+        "queue": {
+            "status": "ready",
+            "detail": "Outbox and leased-job tables are available"
+        },
+        "worker": {
+            "status": "ready",
+            "detail": "1 mock worker heartbeat(s) are current"
+        }
+    }
+}
+capabilities mode=mock
+  agents: ready - 26 role contracts loaded; provider=fake-deterministic-v1
+  artifact_storage: ready - 5 project storage roots are writable: artifacts, backups, knowledge-staging, restore-checks, runs
+  audit_reviews: ready - Deterministic A25/A26 rule reviews, immutable input snapshots, blocking and synthetic evaluation are available; these are not human or non-mock independent-agent reviews
+  database: ready - PostgreSQL connected at migration a1c9e7f2d304
+  datasets: ready - Immutable raw table versions, cleaning derivations, pre-specified deterministic analyses, charts and review records are implemented
+  domain_workflows: ready - Pet repurposing, IVD and device workflow packages define stages, required roles, criteria, failure routes and external gates
+  external_records: ready - Organizations, contacts, experts, engagement scopes, quotes, contract states, deliverables, professional records and explicit external authorizations are connected to project PostgreSQL state
+  knowledge: ready - Project-scoped knowledge browsing, chunked upload, parsing, lexical search snapshots, citations and version impact are connected
+  network: ready - Offline mode blocks remote tools; local database, files, parsing, search and mock workflows remain available
+  opportunities: ready - Versioned opportunity cards, scientific briefs and owner-only selection contracts are connected to the opportunity browser
+  planning: ready - Versioned bounded DAGs, dispatch, mock execution, independent-profile review records, rework, pause/resume and iteration limits are implemented
+  project_interface: ready - Local HttpOnly session, project browser, task/agent scenes, knowledge upload and project event SSE are implemented
+  queue: ready - Outbox and leased-job tables are available
+  recovery: ready - Knowledge trash/restore, safe index rebuild for uncited versions, AES-256-GCM project backups and isolated restore verification are available; active database overwrite is not enabled
+  skills: ready - registry loaded: 2 ready, 10 unavailable
+  sources: not_checked - 4 professional source policies loaded; live scholarly adapters are not connected
+  tool_isolation: not_checked - Native authorization gateway/audit is available; container policy exists, but the runtime sandbox remains unverified
+  worker: ready - 1 mock worker heartbeat(s) are current
+PASS: web stopped
+PASS: worker stopped
+PASS: api stopped
+W23 smoke passed: local API, worker and web started, became ready and stopped.

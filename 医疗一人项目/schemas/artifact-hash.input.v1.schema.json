@@ -1,0 +1,21 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "content": {
+      "maxLength": 1000000,
+      "title": "Content",
+      "type": "string"
+    },
+    "media_type": {
+      "default": "text/plain",
+      "maxLength": 100,
+      "title": "Media Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "content"
+  ],
+  "title": "ArtifactHashInput",
+  "type": "object"
+}

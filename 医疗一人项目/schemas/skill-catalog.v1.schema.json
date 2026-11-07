@@ -1,0 +1,244 @@
+{
+  "$defs": {
+    "ResourceLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "cpu_count": {
+          "exclusiveMinimum": 0,
+          "maximum": 8,
+          "title": "Cpu Count",
+          "type": "number"
+        },
+        "memory_mb": {
+          "maximum": 32768,
+          "minimum": 64,
+          "title": "Memory Mb",
+          "type": "integer"
+        },
+        "timeout_seconds": {
+          "maximum": 3600,
+          "minimum": 1,
+          "title": "Timeout Seconds",
+          "type": "integer"
+        },
+        "max_input_bytes": {
+          "maximum": 104857600,
+          "minimum": 1,
+          "title": "Max Input Bytes",
+          "type": "integer"
+        },
+        "max_output_bytes": {
+          "maximum": 104857600,
+          "minimum": 1,
+          "title": "Max Output Bytes",
+          "type": "integer"
+        },
+        "max_processes": {
+          "maximum": 512,
+          "minimum": 1,
+          "title": "Max Processes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "cpu_count",
+        "memory_mb",
+        "timeout_seconds",
+        "max_input_bytes",
+        "max_output_bytes",
+        "max_processes"
+      ],
+      "title": "ResourceLimits",
+      "type": "object"
+    },
+    "SkillDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": {
+          "pattern": "^[a-z][a-z0-9_.-]{2,80}$",
+          "title": "Skill Id",
+          "type": "string"
+        },
+        "version": {
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "trigger": {
+          "minLength": 1,
+          "title": "Trigger",
+          "type": "string"
+        },
+        "input_schema": {
+          "minLength": 1,
+          "title": "Input Schema",
+          "type": "string"
+        },
+        "output_schema": {
+          "minLength": 1,
+          "title": "Output Schema",
+          "type": "string"
+        },
+        "theory_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Theory Refs",
+          "type": "array"
+        },
+        "required_tools": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Tools",
+          "type": "array"
+        },
+        "source_scopes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Scopes",
+          "type": "array"
+        },
+        "secret_scopes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Secret Scopes",
+          "type": "array"
+        },
+        "network_policy": {
+          "enum": [
+            "disabled",
+            "allowlisted"
+          ],
+          "title": "Network Policy",
+          "type": "string"
+        },
+        "allowed_network_hosts": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Network Hosts",
+          "type": "array"
+        },
+        "runtime_kind": {
+          "enum": [
+            "builtin",
+            "container",
+            "disabled"
+          ],
+          "title": "Runtime Kind",
+          "type": "string"
+        },
+        "runtime_image_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Runtime Image Digest"
+        },
+        "resource_limits": {
+          "$ref": "#/$defs/ResourceLimits"
+        },
+        "side_effect_class": {
+          "enum": [
+            "none",
+            "internal_write",
+            "external"
+          ],
+          "title": "Side Effect Class",
+          "type": "string"
+        },
+        "license_ref": {
+          "title": "License Ref",
+          "type": "string"
+        },
+        "validation_suite": {
+          "minLength": 1,
+          "title": "Validation Suite",
+          "type": "string"
+        },
+        "declared_status": {
+          "$ref": "#/$defs/SkillState"
+        },
+        "allowed_roles": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Allowed Roles",
+          "type": "array"
+        }
+      },
+      "required": [
+        "skill_id",
+        "version",
+        "description",
+        "trigger",
+        "input_schema",
+        "output_schema",
+        "theory_refs",
+        "required_tools",
+        "source_scopes",
+        "secret_scopes",
+        "network_policy",
+        "allowed_network_hosts",
+        "runtime_kind",
+        "runtime_image_digest",
+        "resource_limits",
+        "side_effect_class",
+        "license_ref",
+        "validation_suite",
+        "declared_status",
+        "allowed_roles"
+      ],
+      "title": "SkillDefinition",
+      "type": "object"
+    },
+    "SkillState": {
+      "enum": [
+        "planned",
+        "installed",
+        "dependency_missing",
+        "unconfigured",
+        "ready",
+        "disabled",
+        "failed_validation"
+      ],
+      "title": "SkillState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "skills": {
+      "items": {
+        "$ref": "#/$defs/SkillDefinition"
+      },
+      "title": "Skills",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "skills"
+  ],
+  "title": "SkillCatalog",
+  "type": "object"
+}
