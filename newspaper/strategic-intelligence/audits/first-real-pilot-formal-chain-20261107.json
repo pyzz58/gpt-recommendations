@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "record_id": "SI-FIRST-REAL-PILOT-FORMAL-CHAIN-20261107-001",
+  "checked_at": "2026-11-07T22:45:00+13:00",
+  "branch": "codex/si-first-real-pilot-20261101",
+  "result": "FORMAL_CHAIN_W31_REVISE",
+  "spec_sha256": "77023b42be35085730f0d9f0012964f2563ba0d315d59a1a74253d841c1ac298",
+  "real_basis": {
+    "source_version_id": "DOC-WB-CBAM-11366-20260428-v004",
+    "source_body_bytes": 99024,
+    "source_body_sha256": "60067f3e9c49256fc23428300c1d394421a6dfd6fd396c726a2d27ab35d89276",
+    "source_redownloaded": false,
+    "pilot_id": "PILOT-SI-CBAM-DEEPSEEK-20261107-001",
+    "pilot_outputs": {
+      "A": "PILOT-TEXT-10727944624f94b22bb4a126b388d774",
+      "B1": "PILOT-TEXT-ea9c5081ccb89038ed79b001dfb63802",
+      "B2": "PILOT-TEXT-304f0c94227132fd1fc5cf2613703f23",
+      "C": "PILOT-TEXT-e0e964031602cd979fe70961639c620f",
+      "REVIEW": "PILOT-TEXT-311adbc5363d4252903aeec21fcb4255"
+    }
+  },
+  "w23_w25": {
+    "s7_decision_id": "DECISION-SI-CBAM-S7-WATCH-20261107",
+    "s8_decision_id": "DECISION-SI-CBAM-S8-COVER-20261107",
+    "research_admission_id": "RESEARCH-ADMISSION-SI-CBAM-20261107",
+    "edition_proposal_id": "EDITION-PROPOSAL-SI-CBAM-20261107",
+    "source_intake_version_id": "SOURCE-INTAKE-59ff5b19af597a1facf6bf5a67325dbc",
+    "source_structure_version_id": "SOURCE-STRUCTURE-36b8417f7eebd06c66964fad8073497a",
+    "evidence_version_ids": [
+      "EVIDENCE-RECORD-b00b09ad280a8c382e03c83fc0f8bfe5",
+      "EVIDENCE-RECORD-c95b6338bfab8e51dc3e7011929ba7f2",
+      "EVIDENCE-RECORD-94441734ea1fb1e1c81c6f6ebdcd38c6",
+      "EVIDENCE-RECORD-9d6451562f4eb577e05b87c84daee3c3"
+    ],
+    "claim_version_ids": [
+      "CLAIM-WB-11366-EXPORTS",
+      "CLAIM-WB-11366-PRICES",
+      "CLAIM-WB-11366-TABLE8-CONFLICT",
+      "CLAIM-WB-11366-POST-MONTHS"
+    ],
+    "assessment_version_ids": [
+      "CLAIM-EVIDENCE-6b7a9acb316b12ef336c8298a71846d5",
+      "CLAIM-EVIDENCE-cc0208080e25d65557becccdfce6d8f2",
+      "CLAIM-EVIDENCE-8987d948ed8920801747ad63bcc5fa8d",
+      "CLAIM-EVIDENCE-1f8ec8e34d4df74037e8bd2a9700edc0"
+    ]
+  },
+  "w16_w27": {
+    "research_revision_id": "REVISION-SI-CBAM-20261107-v001",
+    "dossier_id": "DOSSIER-SI-CBAM-20261107",
+    "active_steps": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06",
+      "M07",
+      "M08",
+      "M09",
+      "M10",
+      "M11",
+      "M12"
+    ],
+    "cycle_state": "LIMITED_CLOSURE",
+    "m11_disposition": "LIMITED"
+  },
+  "w28_w31": {
+    "advisor_output_version_id": "ADVISOR-OUTPUT-71db0220cec6448f7250dbd263544f3e",
+    "m10_step_record_version_id": "RESEARCH-STEP-6beb00058e51712bce71daca9f80b9bc",
+    "teacher_output_version_id": "TEACHER-OUTPUT-41d87ea184f032094ad7b4d130470fd5",
+    "m11_step_record_version_id": "RESEARCH-STEP-d194254c80577c8281d794fe7977f162",
+    "prospective_output_version_id": "CONDITIONAL-OUTPUT-2c79c834d924cdd603b125f044608f87",
+    "m12_step_record_version_id": "RESEARCH-STEP-54c6d138fd07ae18c8c4ba10c5fb2359",
+    "article_v1_version_id": "ARTICLE-SI-CBAM-FORMAL-20261107-v001",
+    "article_v2_version_id": "ARTICLE-SI-CBAM-FORMAL-20261107-v002",
+    "review_case_version_id": "REVIEW-CASE-ba4524c1800a881ea2da43fd79086dec",
+    "review_id": "REVIEW-SI-CBAM-FORMAL-20261107-R1",
+    "review_decision": "REVISE",
+    "adoption_decision_version_id": "W31-REVIEW-DECISION-263a264cda00880b957b6296dd774c74",
+    "adoption_state": "RETURN",
+    "adoption_is_current": false,
+    "author_self_approved": false,
+    "publication_authorized": false
+  },
+  "review_findings": {
+    "critical_or_major": [
+      "The source paper's Table 8 values conflict with section 5.3.2 on the direction of the financial-constraint result.",
+      "The source paper's Table 2 uses >June 2021 while Table 3 uses >July 2021 for the post-announcement indicator."
+    ],
+    "unresolved_in_source": true,
+    "independent_l5_review": false,
+    "review_disclosure": "The formal REVIEW record is a manual source-check derived from the earlier same-provider pilot review; it is not independent L5."
+  },
+  "w32_boundary": {
+    "formal_edition_created": false,
+    "reason": "W31 is REVISE and the W15 adoption decision is not current; W32 requires a current PASS Review and current W15 decision.",
+    "cover_article_not_created": true
+  },
+  "private_preview": {
+    "logical_ref": "private:/si-first-real-pilot/formal-article-v002-review.html",
+    "bytes": 2398,
+    "sha256": "b197e42cfaaa725ce1257f12f89febd8fa8fc39e02a094cdcba47ecbf6d04473",
+    "mode": "0600",
+    "label": "REVISE preview; not a formal Edition"
+  },
+  "model_calls_during_formal_chain": 0,
+  "post_update_validation": {
+    "runtime_tests": {
+      "count": 315,
+      "result": "PASS",
+      "duration_seconds": 39.364
+    },
+    "maintenance_tests": {
+      "count": 56,
+      "result": "PASS",
+      "duration_seconds": 14.897
+    },
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W23_W25_W27_W28_W29_W30_W31_W32_work_plan_checks": "PASS",
+    "json_and_diff_check": "PASS"
+  },
+  "unchanged": {
+    "pilot_state": "DRAFT_AWAITING_REVIEW",
+    "W41": "BLOCKED",
+    "G01_to_G04": "NOT_STARTED",
+    "publication": false,
+    "delivery": false
+  },
+  "next_required": [
+    "Obtain a genuinely independent L5 review or corrected source/author clarification.",
+    "Resolve the Table 8 direction and the Table 2/3 post-month conflict before PASS.",
+    "Only then create a current PASS Review and W15 adoption, cover Article and formal W32 Edition."
+  ]
+}
