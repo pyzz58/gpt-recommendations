@@ -1,3 +1,4 @@
+PASS: configuration source /tmp/medical-one-readiness.wT6kvn/external/medical-one.env
 PASS: runtime file 最高思想.md
 PASS: runtime file 技术路线与实施路径.md
 PASS: runtime file traceability/manifest.json

@@ -1434,9 +1434,9 @@
     }
   ],
   "theory_version": "V0.10",
-  "roadmap_version": "V1.20",
+  "roadmap_version": "V1.21",
   "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "f5a12924264600b258e140481732985f509f5b37057dd3d0050fb3c11402eeb9",
+  "roadmap_sha256": "a52b33c33aef1aeb506864901f5b0cbccef308cf542fb25160470b1f6b816d01",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1548,8 +1548,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-07T08:20:11.617248+00:00",
-    "note": "W23最终日志已去除行尾空白和额外空行，证据哈希重新计算。",
+    "at": "2026-11-07T08:47:29.725673+00:00",
+    "note": "W23最终追踪检查日志已纳入新哈希。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -1595,7 +1595,7 @@
         "RQ-025",
         "RQ-032"
       ],
-      "sha256": "d2e513065017a5ba27ae27579200c720f0bfd42fc945b6069e84fe943bf187b0"
+      "sha256": "c79fa6700c54040c9e58c65efc20b7b32b5d5e59a9e7cdcf0b6093adb67094b6"
     },
     {
       "path": "services/core/requirements.lock",
@@ -2981,7 +2981,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "807094281b7c2640f2720a8e5c22601b4589dd8fe5903c22275f87acf47912f7"
+      "sha256": "9d36a862cab1c7096db3652933ad03706ceff55356ca5a75618698bfe4cd7c02"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -3110,7 +3110,7 @@
         "RQ-030",
         "RQ-032"
       ],
-      "sha256": "f042ada44feb8c31a5d971b2511db092a8699996d5ecf25a0007865528ac80a5"
+      "sha256": "8b24fc2bc1f8fc3f7e390824df666bc080f0b099fce2635bb23aca954e0fa6a4"
     },
     {
       "path": "services/core/src/medical_one_person/infrastructure/runtime_health.py",
@@ -3126,7 +3126,7 @@
         "RQ-025",
         "RQ-032"
       ],
-      "sha256": "bc4cf141429487087c372b104dd80e583422e61f63dd84746aed3e6323a4638b"
+      "sha256": "5ddf2973a2c66197924f539606efec9abd7460f72c6576a7755aeaa74b40f810"
     },
     {
       "path": "deploy/compose.yaml",
@@ -3135,7 +3135,7 @@
         "RQ-026",
         "RQ-032"
       ],
-      "sha256": "7744f42ff01f664ab3de9fb626d7176574aa88b7dd5566d27a8a3c084ebc29ec"
+      "sha256": "d4cde3fc05e01e437f28225fea006784f4e2579d50660df1f96a1c00ea132885"
     },
     {
       "path": "services/core/Dockerfile",
@@ -3153,7 +3153,58 @@
         "RQ-030",
         "RQ-032"
       ],
-      "sha256": "739676e4af45af212ef35bb1e441875ee0d87b8bce37646eff280a70cd156aa4"
+      "sha256": "d16588d927fee62eaf08d4aea69969b2d96269d61060e122cf6a07fd2a81bf59"
+    },
+    {
+      "path": "services/core/src/medical_one_person/config_file.py",
+      "requirement_ids": [
+        "RQ-025",
+        "RQ-026",
+        "RQ-030",
+        "RQ-032"
+      ],
+      "sha256": "a0dae070637f6fd62bb71cc33b9389c0aecb5c031cc43aa92fd289ae5831971b"
+    },
+    {
+      "path": "services/core/src/medical_one_person/config.py",
+      "requirement_ids": [
+        "RQ-030",
+        "RQ-032"
+      ],
+      "sha256": "ec6594d5106bd8a8c0c7c0b78ff9a7fc5a52d7b9ebe48d8eb79adf5627380525"
+    },
+    {
+      "path": "services/core/src/medical_one_person/api/system.py",
+      "requirement_ids": [
+        "RQ-026",
+        "RQ-032"
+      ],
+      "sha256": "b96423b4d5835bc659b6937fe8fc123b11cb6c1a3ae7091813206c16a1d7331a"
+    },
+    {
+      "path": "services/core/tests/test_system.py",
+      "requirement_ids": [
+        "RQ-032"
+      ],
+      "sha256": "b17244bb05f6e3743482149df451b28ca0540e60414ad39a57014d3dcdbacdea"
+    },
+    {
+      "path": "services/core/tests/unit/test_w23_config.py",
+      "requirement_ids": [
+        "RQ-025",
+        "RQ-030",
+        "RQ-032"
+      ],
+      "sha256": "89795b9337aa786a4d421e43a270084d5886f1674c7a871b66394d0a5ae02722"
+    },
+    {
+      "path": "services/core/tests/unit/test_w23_cli.py",
+      "requirement_ids": [
+        "RQ-025",
+        "RQ-030",
+        "RQ-032"
+      ],
+      "sha256": "5c2fe8bba4231a3d591e4db35efae56e996f9c664e9713193c901df484dd2a7f"
     }
   ]
 }

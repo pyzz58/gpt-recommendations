@@ -1,5 +1,7 @@
 {
-  "ok": true,
-  "errors": [],
+  "ok": false,
+  "errors": [
+    "ACC-W23-LOCAL-OPERATIONS: artifact hash changed: traceability/logs/w23-trace-check-final.log"
+  ],
   "scope": "Documentation, Git implementation-path and acceptance-record structure only; scientific and real-world validity are not implied."
 }

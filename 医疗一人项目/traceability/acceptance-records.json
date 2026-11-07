@@ -31,7 +31,7 @@
         "AT-010",
         "AT-022"
       ],
-      "source_commit": "cd5c59bf88b55bc3f7ab1b17b1d00bfbe9394641",
+      "source_commit": "58e0e5ed74d6aa3277e442212eff0e0eb80ee3c9",
       "result": "passed",
       "scope": "Mock software sub-acceptance: reviewed delivery content returns to chief, judgment is independently reviewed, bounded continuation is linked and dispatched. Not full AT or scientific/real-world validation.",
       "commands": [
@@ -225,8 +225,8 @@
         "schemas",
         "tools"
       ],
-      "source_tree_git_sha256": "973f27aa440315b8cd9aa5b692a39e435670192e3a5f6f75589c9d734ed0e03c",
-      "source_tree_worktree_sha256": "973f27aa440315b8cd9aa5b692a39e435670192e3a5f6f75589c9d734ed0e03c",
+      "source_tree_git_sha256": "abab45bb71205e270f075a3eb3d6d114627598b48de5542ace087be8c694d4cf",
+      "source_tree_worktree_sha256": "abab45bb71205e270f075a3eb3d6d114627598b48de5542ace087be8c694d4cf",
       "artifacts": [
         "docs/scientific-feedback-acceptance.md",
         "traceability/logs/scientific-feedback-ci.log",
@@ -238,8 +238,8 @@
         "traceability/logs/scientific-feedback-ci-summary.json": "b8b7a3087f9b832cdb1b88120a10217da331ef2dcce17ed961a68cad449a1cf7",
         "traceability/logs/scientific-feedback-ci.log": "bcf2cfd0eaac28850ed36a223d48cb02a7270a0784a8fbd7e837b605453dc710",
         "traceability/logs/scientific-feedback-collection.log": "0ad81e98e7c6c47230e3324be3c9c910c730ce6249a025784121bd61a50c0c68",
-        "traceability/logs/w23-pytest-final.log": "2b2d6966ab0660ca8747cb6ccd88b02a369754d9bb5ca041fa91ef936bad302f",
-        "traceability/logs/w23-pytest-final.xml": "3b75664fd9dc60a158935984d21fbe9e1c19800ac6b4fe77cd3db69261057a2b"
+        "traceability/logs/w23-pytest-final.log": "3768fff4aa91a49033564cba1d17278f6b7a5e72f8cc4c5604e095cd347545a0",
+        "traceability/logs/w23-pytest-final.xml": "beef4151863be9a1831e7cf6c9e6d1c1854d2f98501aac0f09cb1cfd15ec2cea"
       },
       "uncovered": [
         "No live model, independent professional model judgment, human expert or real outsourcing validation.",
@@ -286,7 +286,7 @@
         "AT-030",
         "AT-032"
       ],
-      "source_commit": "cd5c59bf88b55bc3f7ab1b17b1d00bfbe9394641",
+      "source_commit": "58e0e5ed74d6aa3277e442212eff0e0eb80ee3c9",
       "result": "passed",
       "scope": "W23 local mock deployment sub-acceptance: empty PostgreSQL migration, single-entry start/ready/status/stop, runtime storage and queue checks, worker heartbeat, static Compose packaging, and full application regression. Docker/container execution is not passed.",
       "commands": [
@@ -367,6 +367,28 @@
           "artifacts": [
             "traceability/logs/w23-doctor-final.log"
           ]
+        },
+        {
+          "cwd": ".",
+          "command": "MEDICAL_ONE_CONFIG_FILE=<external-file> ./scripts/medical-one.sh config",
+          "mode": "config+subprocess",
+          "started_at": "2026-11-07T08:45:27.724481+00:00",
+          "finished_at": "2026-11-07T08:45:27.724481+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w23-config-final.log"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen pytest tests/test_system.py::test_missing_worker_is_explicit_503_not_ready tests/test_system.py::test_live_mode_is_not_ready_without_a_provider -vv",
+          "mode": "negative_health",
+          "started_at": "2026-11-07T08:45:36.103557+00:00",
+          "finished_at": "2026-11-07T08:45:36.103557+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w23-readiness-negative-final.log"
+          ]
         }
       ],
       "validation_levels": {
@@ -395,19 +417,27 @@
       "code_paths": [
         {
           "path": "scripts/medical-one.sh",
-          "sha256": "f042ada44feb8c31a5d971b2511db092a8699996d5ecf25a0007865528ac80a5"
+          "sha256": "8b24fc2bc1f8fc3f7e390824df666bc080f0b099fce2635bb23aca954e0fa6a4"
         },
         {
           "path": "tools/check_deployment.py",
-          "sha256": "bc4cf141429487087c372b104dd80e583422e61f63dd84746aed3e6323a4638b"
+          "sha256": "5ddf2973a2c66197924f539606efec9abd7460f72c6576a7755aeaa74b40f810"
         },
         {
           "path": "deploy/compose.yaml",
-          "sha256": "7744f42ff01f664ab3de9fb626d7176574aa88b7dd5566d27a8a3c084ebc29ec"
+          "sha256": "d4cde3fc05e01e437f28225fea006784f4e2579d50660df1f96a1c00ea132885"
         },
         {
           "path": "services/core/Dockerfile",
           "sha256": "716dd4f783819e0ffdffe8be3129d3b397057c3be0f6a229e0cbcb5fccbedb28"
+        },
+        {
+          "path": "services/core/src/medical_one_person/config_file.py",
+          "sha256": "a0dae070637f6fd62bb71cc33b9389c0aecb5c031cc43aa92fd289ae5831971b"
+        },
+        {
+          "path": "services/core/src/medical_one_person/config.py",
+          "sha256": "ec6594d5106bd8a8c0c7c0b78ff9a7fc5a52d7b9ebe48d8eb79adf5627380525"
         },
         {
           "path": "services/core/src/medical_one_person/infrastructure/runtime_health.py",
@@ -415,7 +445,7 @@
         },
         {
           "path": "services/core/src/medical_one_person/api/system.py",
-          "sha256": "bdcb36a42ee53e350e129549a044e29a8dab6f5d50847712af1b46bba4b43fe0"
+          "sha256": "b96423b4d5835bc659b6937fe8fc123b11cb6c1a3ae7091813206c16a1d7331a"
         },
         {
           "path": "services/core/src/medical_one_person/main.py",
@@ -424,6 +454,18 @@
         {
           "path": "services/core/src/medical_one_person/worker/__main__.py",
           "sha256": "89284f392a21081eee8a209b4ad83891becf4f428f640a3cc74616317b954b50"
+        },
+        {
+          "path": "services/core/tests/test_system.py",
+          "sha256": "b17244bb05f6e3743482149df451b28ca0540e60414ad39a57014d3dcdbacdea"
+        },
+        {
+          "path": "services/core/tests/unit/test_w23_config.py",
+          "sha256": "89795b9337aa786a4d421e43a270084d5886f1674c7a871b66394d0a5ae02722"
+        },
+        {
+          "path": "services/core/tests/unit/test_w23_cli.py",
+          "sha256": "5c2fe8bba4231a3d591e4db35efae56e996f9c664e9713193c901df484dd2a7f"
         },
         {
           "path": "services/core/tests/unit/test_w23_runtime_health.py",
@@ -439,34 +481,38 @@
         },
         {
           "path": "docs/w23-handoff.md",
-          "sha256": "739676e4af45af212ef35bb1e441875ee0d87b8bce37646eff280a70cd156aa4"
+          "sha256": "d16588d927fee62eaf08d4aea69969b2d96269d61060e122cf6a07fd2a81bf59"
         }
       ],
       "artifacts": [
         "docs/w23-handoff.md",
+        "traceability/logs/w23-config-final.log",
         "traceability/logs/w23-doctor-final.log",
         "traceability/logs/w23-lint-core-final.log",
         "traceability/logs/w23-migration-final.log",
         "traceability/logs/w23-mypy-final.log",
         "traceability/logs/w23-pytest-final.log",
         "traceability/logs/w23-pytest-final.xml",
+        "traceability/logs/w23-readiness-negative-final.log",
         "traceability/logs/w23-smoke-final.log",
-        "traceability/logs/w23-web-final.log",
+        "traceability/logs/w23-trace-check-final.log",
         "traceability/logs/w23-trace-tests-final.log",
-        "traceability/logs/w23-trace-check-final.log"
+        "traceability/logs/w23-web-final.log"
       ],
       "artifact_hashes": {
-        "docs/w23-handoff.md": "739676e4af45af212ef35bb1e441875ee0d87b8bce37646eff280a70cd156aa4",
-        "traceability/logs/w23-doctor-final.log": "f18029ebd8e2f1e13ad7748ec47b339ae42e80de4e999fc4ae61fc4898b92f44",
+        "docs/w23-handoff.md": "d16588d927fee62eaf08d4aea69969b2d96269d61060e122cf6a07fd2a81bf59",
+        "traceability/logs/w23-config-final.log": "ae373bfa760b918836392e01883206572e9564867b52fec476a53ec8bc88fe05",
+        "traceability/logs/w23-doctor-final.log": "767d5b8a53fe125dc27b1177d5fb7c3441fb25623e19c2d15b6b95bce1a9f1bf",
         "traceability/logs/w23-lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
         "traceability/logs/w23-migration-final.log": "e75ba56f1c4f77eafc6d1bf3593d687b8ff22105e68089e72232eded8e1cea3b",
-        "traceability/logs/w23-mypy-final.log": "a1051ec290fd198fdc01a84ce45195d00fd6617246598e305eb28ab300452773",
-        "traceability/logs/w23-pytest-final.log": "2b2d6966ab0660ca8747cb6ccd88b02a369754d9bb5ca041fa91ef936bad302f",
-        "traceability/logs/w23-pytest-final.xml": "3b75664fd9dc60a158935984d21fbe9e1c19800ac6b4fe77cd3db69261057a2b",
-        "traceability/logs/w23-smoke-final.log": "ebdacfca843154e0d00d430d1c4020fb8c438fae3b9c7121fe0c009c5ab4d140",
-        "traceability/logs/w23-trace-check-final.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9",
-        "traceability/logs/w23-trace-tests-final.log": "7e275ed5a7b38aafd62f6f121b4080424e1784049a315478daf22e9e406b8ae3",
-        "traceability/logs/w23-web-final.log": "1c93407bc3082c8a607a510682675d6c55ba384fd18043808c0c79fb7f744a68"
+        "traceability/logs/w23-mypy-final.log": "0cd98cfd5b35e0e85b86d75459966f02562f9c10fe59fb3d86271d1b9fa33e5c",
+        "traceability/logs/w23-pytest-final.log": "3768fff4aa91a49033564cba1d17278f6b7a5e72f8cc4c5604e095cd347545a0",
+        "traceability/logs/w23-pytest-final.xml": "beef4151863be9a1831e7cf6c9e6d1c1854d2f98501aac0f09cb1cfd15ec2cea",
+        "traceability/logs/w23-readiness-negative-final.log": "5f4e682382796d49e8c4cc6c7462398cebf9e5895dd0a90efefe1128c7891677",
+        "traceability/logs/w23-smoke-final.log": "2ee22f7135eaed590d945f6c9f69ce20b5a297e9bcd872037f736594a3e9c5eb",
+        "traceability/logs/w23-trace-check-final.log": "66eebb89378f17b02e63c5b98006b6c55c7d3b80f351efcac5d87ae035c37afa",
+        "traceability/logs/w23-trace-tests-final.log": "3200e930b2886c2ae6d33002ff5489c4c8ac3f0e7a3fbb116ad7a048f4c7bd34",
+        "traceability/logs/w23-web-final.log": "1d5cbf950cdfd20002a2d537462e5676f7507e073a2bb7a4eb83cddb113690a8"
       },
       "uncovered": [
         "Docker/Compose image build and container start were not run because Docker is unavailable.",
@@ -490,8 +536,8 @@
         "scripts",
         "tools"
       ],
-      "source_tree_git_sha256": "824269822286dffe7958841e5fc6cc3d73ff13907fac69a534503f0e7cef76dd",
-      "source_tree_worktree_sha256": "824269822286dffe7958841e5fc6cc3d73ff13907fac69a534503f0e7cef76dd"
+      "source_tree_git_sha256": "dc952377018c3c81db6acbdda6b70573d95f407f0fe9a61aab03c42360ff007a",
+      "source_tree_worktree_sha256": "dc952377018c3c81db6acbdda6b70573d95f407f0fe9a61aab03c42360ff007a"
     }
   ]
 }

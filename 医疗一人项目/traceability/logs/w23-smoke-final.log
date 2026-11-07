@@ -1,16 +1,16 @@
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
 INFO  [alembic.runtime.migration] Will assume transactional DDL.
-{"workspace_id": "e2fa84ab-86b7-4b6c-b4cd-d40ab8ebdacf", "owner_user_id": "abd020a3-0d29-4ac0-b5bb-a2030f1490c9", "mode": "local"}
-PASS: api started with PID 65777
-PASS: API live endpoint responded
-PASS: worker started with PID 65804
-PASS: web started with PID 65825
-PASS: API ready endpoint responded
-PASS: Web page responded
-Started: web=http://127.0.0.1:3000 api=http://127.0.0.1:8000 runtime=/tmp/medical-one-w23b.zZBEps/state
-process api    running pid=65777 log=/tmp/medical-one-w23b.zZBEps/state/logs/api.log
-process worker running pid=65804 log=/tmp/medical-one-w23b.zZBEps/state/logs/worker.log
-process web    running pid=65825 log=/tmp/medical-one-w23b.zZBEps/state/logs/web.log
+{"workspace_id": "f3e1b71b-c994-4fda-bdd1-00ce723bdcd1", "owner_user_id": "39b189af-0fec-47b1-98ce-b11c05462814", "mode": "local"}
+PASS: api started with PID 1755
+PASS: API live endpoint responded with HTTP 200
+PASS: worker started with PID 1776
+PASS: web started with PID 1791
+PASS: API ready endpoint responded with HTTP 200
+PASS: Web page responded with HTTP 307
+Started: web=http://127.0.0.1:13000 api=http://127.0.0.1:18000 runtime=/tmp/medical-one-readiness.wT6kvn/state
+process api    running pid=1755 log=/tmp/medical-one-readiness.wT6kvn/state/logs/api.log
+process worker running pid=1776 log=/tmp/medical-one-readiness.wT6kvn/state/logs/worker.log
+process web    running pid=1791 log=/tmp/medical-one-readiness.wT6kvn/state/logs/web.log
 {
     "status": "ok",
     "mode": "mock",
