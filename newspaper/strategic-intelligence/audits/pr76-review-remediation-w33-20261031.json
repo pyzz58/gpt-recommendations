@@ -1,0 +1,101 @@
+{
+  "record_id": "W33-HISTORY-AUDIT-20261031-001",
+  "checked_at": "2026-10-31T22:48:22+13:00",
+  "reviewed_parent": "b381b00",
+  "spec_sha256": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f",
+  "implemented": {
+    "dual_as_of_semantics": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "KNOWN_TO_SYSTEM_AS_OF returns only the latest version whose confirmable publication and real Archive recorded_at are both no later than the requested time",
+        "PUBLICLY_AVAILABLE_AS_OF can select a version published by t but recorded later, while keeping the separately known-to-system version ID",
+        "later-recorded public material is marked system_unknown_at_as_of=true and is not mixed into the known result",
+        "event time is never treated as publication time; unknown and incomplete publication times cannot enter an exact as-of",
+        "date-only publication requires its source timezone and is not treated as available during that date merely by inventing midnight"
+      ]
+    },
+    "version_and_body_boundary": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "results return the exact selected and current versions, published/recorded metadata, later version IDs and explicit limitations",
+        "body bytes are read only when requested and current intended-use, storage and revocation checks pass",
+        "INDEX never returns original body; revoked or missing body keeps historical metadata without substituting navigation or summary text",
+        "current query returns the latest version but fixes current_use_authorized=false; history lookup is not W15 adoption authority",
+        "an optional W15 decision is reported current only if decided by the as-of time, remains current and covers the required scope"
+      ]
+    },
+    "index_and_domain_records": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "navigation index can be rebuilt from authoritative Archive versions without creating a second history source",
+        "Concept, Background, MethodUse and TransmissionLink all use the same stable version/history interface",
+        "KnowledgeReuse appends one record referencing the exact old source, current source, target Article and Evidence",
+        "reuse records original/current/changed conditions, conclusion, limits and does_not_prove; they cannot record reader mastery or authorize publication",
+        "identical reuse requests are idempotent"
+      ]
+    }
+  },
+  "regressions": {
+    "w33_tests": 11,
+    "runtime_tests": 276,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS",
+    "compileall_result": "PASS",
+    "spec_check": "PASS",
+    "technical_check_T11": "PASS",
+    "work_plan_check_G01_W32_W33_W34": "PASS",
+    "uv_lock_check": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W33 card, T11.L01-L02, registered implementation and sections 10.5-10.7/16.3/16.6.1/23.3/24.5 were reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W13, W16, W32 and earlier packages remain IN_PROGRESS rather than ACCEPTED; only the authorized offline W33 interface scope was exercised",
+    "Q03": "PASS_OFFLINE: current, known-as-of and publicly-available-as-of history, body-safe retrieval, index rebuild and knowledge reuse are implemented on the shared Archive",
+    "Q04": "PASS_OFFLINE: 11 W33 tests cover known/public isolation, later-recorded corrections, event versus publication, date precision, unknown publication, current latest, rights withdrawal, index rebuild, reuse/current source separation, TransmissionLink history and contract failures",
+    "Q05": "PASS_LIMITED_RECOVERY: unavailable times/body remain explicit limitations; historical metadata is retained without forbidden body fallback; later versions remain separately identified",
+    "Q06": "PASS_SCOPED_REVIEW: owned synthetic historical versions, rights and current Articles were used; no real two-week historical replay, natural correction chain, user reading or W39/W40/W52 consumer test was performed",
+    "Q07": "RECORDED_SCOPE: no real model, supplier/API, external history service, paid resource, production archive, publication, delivery or deployment was invoked"
+  },
+  "source_hashes": {
+    "intelligence/history.py": "73820d286218792d99f7af5bbe4e389dde33e6e1f014f18cde3f3a5373baefcf",
+    "tests_runtime/test_history.py": "a31109a939e6bcc62f87841460fe69b1b17c580a87bdc7129d706be804e6917d",
+    "intelligence/archive.py": "b75f175260b1635b36bfd5f93d07e71aa82dae300587f12f22aca6077479dc73",
+    "intelligence/contracts.py": "f4433cafdf340e13d7b6ca52bc2547f74906501f0bf594a82d1f8237288acefe",
+    "intelligence/adoption.py": "238285a63dd167939334d8b27d144e5f52677ed700986a14bfd514e8cb628c38",
+    "CANONICAL_SYSTEM_SPEC_V5.md": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "IN_PROGRESS",
+    "W21": "IN_PROGRESS",
+    "W22": "IN_PROGRESS",
+    "W23": "IN_PROGRESS",
+    "W24": "IN_PROGRESS",
+    "W25": "IN_PROGRESS",
+    "W26": "IN_PROGRESS",
+    "W27": "IN_PROGRESS",
+    "W28": "IN_PROGRESS",
+    "W29": "IN_PROGRESS",
+    "W30": "IN_PROGRESS",
+    "W31": "IN_PROGRESS",
+    "W32": "IN_PROGRESS",
+    "W33": "IN_PROGRESS",
+    "W34": "IN_PROGRESS"
+  },
+  "limits": [
+    "No real two-different-week historical replay or natural correction case was performed",
+    "The tests use owned synthetic versions with controlled recorded_at clocks; they do not prove a production long-running archive or clock correctness",
+    "Publication intervals are handled conservatively and exact-date support still depends on correct source timezone metadata",
+    "Current rights checks depend on recorded grants and do not authenticate authorization decisions or remote/backup copies",
+    "Navigation index rebuilding is local SQLite; long-term host recovery, backup and corruption recovery remain W46/W51/W52",
+    "No actual W39/W40/W52 consumer was run; reuse records do not prove new content quality or support for a general proposition",
+    "KnowledgeReuse stores research links and conditions, not user mastery, reading behavior or a second knowledge base",
+    "Formal prerequisites and G01-G04 remain unaccepted; W33 is IN_PROGRESS, not ACCEPTED"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "record_id": "W40-CORRECTION-INTEGRATION-20261031-001",
+  "work_id": "W40",
+  "checked_at": "2026-11-01T00:38:00+13:00",
+  "reviewed_basis": {
+    "spec_sha256_at_start": "64830be28f324e61f1c8b1c928ab692a32db44a46b11137b17974c6d6f6eb976",
+    "fixture_scope": "OWNED_SYNTHETIC_CORRECTION_TEST_COPY"
+  },
+  "result": "IN_PROGRESS",
+  "implementation_changes": {
+    "w15_dependency_restrictions": "AdoptionController.is_current now checks active correction restrictions on the exact subject, Review and every required input/evidence version, passing the candidate recovery decision ID so only the exact recovered scope can clear a restriction.",
+    "test_correction_fixture": "The W34 recovery fixture now replaces the superseded Review in the new evidence set instead of retaining it alongside the new Review."
+  },
+  "positive_checks": {
+    "propagation": "A correction in the Evidence used by the W36 deep chain reaches ResearchRevision, AdvisorOutput, TeacherOutput, ConditionalOutput, ReviewCase, Review, Article and Edition through explicit Archive references.",
+    "historical": "The old Article body remains available through KNOWN_TO_SYSTEM_AS_OF.",
+    "scoped_recovery": "A recovery Review binding the exact target and correction case may create a candidate W15 decision; only the recovered scope and decision ID can release the target restriction."
+  },
+  "negative_checks": {
+    "current_body": "CURRENT Article and Edition queries under the affected review scope withhold their bodies.",
+    "old_pass": "The old W15 adoption is not current after the correction.",
+    "new_edition": "W32 cannot recompose the old edition; it stops at the superseded W23 Evidence/current-adoption boundary.",
+    "partial_recovery": "Article-only recovery remains non-current while M10/M11/M12 or other required inputs stay restricted."
+  },
+  "test_scope": {
+    "w40_tests": 2,
+    "w34_tests": 8,
+    "w31_tests": 17,
+    "w32_tests": 11,
+    "runtime_tests": 301,
+    "maintenance_tests": 52
+  },
+  "post_update_validation": {
+    "completed_at": "2026-11-01T10:56:00+13:00",
+    "final_spec_sha256": "566a4dafca2389e09e7b7db349789d6d1341feacef59528c43755fe58f8004d2",
+    "code_sha256": {
+      "intelligence/adoption.py": "777d4c9b7209888890df41f6881838d2a5d13efbc01ecf8dc3f825e19268f8a9",
+      "intelligence/correction.py": "a8c06719d13bfcaef568166d90af5b9a558728704b7037db1beab0690954ceff",
+      "intelligence/history.py": "73820d286218792d99f7af5bbe4e389dde33e6e1f014f18cde3f3a5373baefcf",
+      "tests_runtime/test_correction_integration.py": "8bd6b821a02f743f4d94e793b44c085bc771c39b3a9c20c4cde265e96e43b1ae",
+      "tests_runtime/test_correction.py": "dc603f84af7c566aad1fcf0c600f0e0ae47e2f9d8eb3e27bc381c213612d4c8d"
+    },
+    "runtime_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 301,
+      "result": "PASS",
+      "duration_seconds": 61.104
+    },
+    "maintenance_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 52,
+      "result": "PASS",
+      "duration_seconds": 26.804
+    },
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W40_work_plan_check": "PASS",
+    "compileall_and_json": "PASS",
+    "controlled_binding_refresh": {
+      "technical_nodes": 21,
+      "work_packages_and_gates": 59,
+      "progress_and_evidence_preserved": true,
+      "reason": "The W40 test registration and shared W15 implementation summary changed the conservative managed-file and design binding contexts. All 21/59 bindings were explicitly reviewed; no W/G progress or evidence was reset."
+    },
+    "final_work_states": {
+      "W12": "AWAITING_REVIEW",
+      "W13_to_W39": "IN_PROGRESS_WITH_W35_NOT_APPLICABLE",
+      "W40": "IN_PROGRESS",
+      "W41": "NOT_STARTED",
+      "G01_to_G04": "NOT_STARTED"
+    }
+  },
+  "limits": [
+    "The correction is an explicitly marked owned test copy, not a naturally occurring correction.",
+    "The recovery Review is a bounded integration fixture; full W31 semantic review of the corrected mature content remains unverified.",
+    "No real cross-week archive, external source withdrawal, user reading or production backup was used.",
+    "W40 remains IN_PROGRESS and does not close G02."
+  ]
+}

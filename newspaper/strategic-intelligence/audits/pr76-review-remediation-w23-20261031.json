@@ -1,0 +1,98 @@
+{
+  "record_id": "W23-EDITORIAL-AUDIT-20261031-001",
+  "checked_at": "2026-10-31T20:05:11+13:00",
+  "reviewed_parent": "a175baf7ec97420c2e1d89f9a08c94245da2d820",
+  "spec_sha256": "b2975c8511ec9005745fefb67f050b5f4ea1972121bccd70eb8c590057a3cf80",
+  "implemented": {
+    "selection_history": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "TopicDecision preserves S0-S8 stage, current-week/long-term basis, article type, value bases, reasons, gaps, next action, trial score basis and explicit COVER/REVISE/WATCH/DROP",
+        "S0-S7 decisions remain immutable history and a later S8 decision must name the current previous decision for the same topic and theme",
+        "COVER requires the S8 stage and an existing S8 prerequisite package; trial score never creates research admission or edition placement",
+        "REVISE/WATCH requires a concrete next action; long-term COVER stays DEEP_THEME and UPDATE_CORRECTION stays CURRENT_WEEK"
+      ]
+    },
+    "s8_prerequisite_identity": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "package dependencies are checked against actual QuestionVersion, SourceMaterial/Document, Evidence, RightsRecord and ReadingScopePlan object kinds",
+        "CandidateIndex, EventClusterProposal, CoverageAudit and CoverageReferencePlan are loaded through their owning controllers and identities, specifications, candidate sets and proposal links are checked",
+        "every package dependency must precede the package and still be current; a newer evidence/audit/plan/source version makes the package stale",
+        "TopicDecision candidates and clusters must come from the declared indexes and discovery proposal, not merely from same-shaped identifiers",
+        "record bodies, deterministic version IDs, object IDs, specification hashes and created times must agree"
+      ]
+    },
+    "admission_separation": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "ResearchAdmission can target only the current S8 TopicDecision COVER and must preserve its exact article type",
+        "research_allowed is fixed true while publication_authorized is fixed false",
+        "a newer TopicDecision, evidence version, candidate/coverage dependency or concurrent write invalidates admission creation",
+        "EditionPlacementProposal uses only explicit placements with current COVER decisions and matching live research admissions",
+        "edition proposals remain proposals: publication_authorized is false and content_review_required is true"
+      ]
+    },
+    "atomic_recovery": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "package, decision, admission and proposal appends pass all current dependency object IDs to Archive expected_current checks",
+        "a new evidence version written after context validation but before admission append causes Conflict rather than a stale admission",
+        "historical decisions, packages, admissions and proposals roundtrip through the shared private Archive"
+      ]
+    },
+    "binding_maintenance": {
+      "status": "VERIFIED_MECHANICAL",
+      "checks": [
+        "intelligence/editorial.py and tests_runtime/test_editorial.py are registered in the unique machine contract",
+        "T03 reviewed binding and all work-plan reviewed bases were refreshed only after reviewing the registered files, T03 design/implementation scope and the global section 24 inventory change",
+        "G01 remains NOT_STARTED; W23 is IN_PROGRESS; W24 remains NOT_STARTED"
+      ]
+    }
+  },
+  "regressions": {
+    "w23_tests": 10,
+    "runtime_tests": 144,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS",
+    "spec_check": "PASS",
+    "technical_check": "PASS",
+    "work_plan_check": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W23 card, T03.L01-T03.L03, sections 2, 5, 7.4, 13.1, 22.4 and the linked theory/design dependencies were reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W15/W21 and earlier packages remain unaccepted; only the authorized offline interface scope was checked",
+    "Q03": "PASS_OFFLINE: S0-S8 decision history, S8 package identity, research admission and tentative edition placement are implemented",
+    "Q04": "PASS_OFFLINE: positive history/admission/placement and negative score, wrong type, foreign candidate/cluster, stale dependency/decision, type downgrade and concurrent evidence cases were exercised",
+    "Q05": "PASS_LIMITED_RECOVERY: wrong, stale or missing prerequisites stop the affected admission/placement and retain explicit errors; no fabricated approval or PASS is emitted",
+    "Q06": "PASS_SCOPED_REVIEW: owned synthetic candidate indexes, event clusters, coverage records and decision records only; this is not a real editorial-content review",
+    "Q07": "RECORDED_SCOPE: no real source/network run, research model, supplier/API call, paid resource, publication, deployment or delivery"
+  },
+  "source_hashes": {
+    "intelligence/editorial.py": "a5aff3e57cff2bc96f2e725e0afadc6135c0b5b04f1529da6c7784f6787bab1d",
+    "tests_runtime/test_editorial.py": "138620ebccad55c037231e43e0f551f23bb463af33628879923e2048c2845e08",
+    "intelligence/contracts.py": "8fac42682623852f239865d8fd1983604acc0d9b14e25c74081da84e5276df0f"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "IN_PROGRESS",
+    "W21": "IN_PROGRESS",
+    "W22": "IN_PROGRESS",
+    "W23": "IN_PROGRESS",
+    "W24": "NOT_STARTED"
+  },
+  "limits": [
+    "No real editorial selection, source reading or content review was performed",
+    "W24-W26 evidence/acquisition/Chinese-material consumers do not yet exist",
+    "W31 independent review and W36/W39/W41 route integration remain pending",
+    "Formal prerequisites and G01-G04 remain unaccepted; W23 is not ACCEPTED",
+    "No research model, supplier API, paid resource, deployment, publication, email or delivery was invoked"
+  ]
+}

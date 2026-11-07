@@ -1,0 +1,155 @@
+{
+  "record_id": "W13-W15-REMEDIATION-20261025-001",
+  "checked_at": "2026-10-25T12:56:14+13:00",
+  "source_main_commit": "a69475cb4013c54b2eb373160bcc55a6c18bd604",
+  "inherited_pr": 75,
+  "inherited_pr_head": "b433ed3008e3d098e4835a371c50b2e23d473a41",
+  "scope": "Offline W13/W14 defect remediation, W35 dependency repair and initial W15 adoption journal",
+  "superseded_current_scope": {
+    "record": "audits/pr76-review-remediation-step1-20261026.json",
+    "reason": "Independent PR #76 probes reproduced storage admission, content-selection byte leakage and CLI file-mode defects in this historical implementation."
+  },
+  "changes": {
+    "private_output_boundary": {
+      "result": "VERIFIED_OFFLINE",
+      "coverage": [
+        "archive root",
+        "database and retained bodies via archive root",
+        "get body export",
+        "read-reference body export",
+        "prepared task bundle"
+      ],
+      "checks": [
+        "repository root and nested non-existent paths rejected",
+        "normal repositories and linked-worktree .git files rejected",
+        "resolved symlink aliases into a worktree rejected",
+        "existing in-worktree data preserved and not moved",
+        "outside-worktree archive and body export still work",
+        "overwrite and file-mode controls retained"
+      ],
+      "limits": "The caller-supplied path is checked locally; a separate host or remote service can still enforce a different policy."
+    },
+    "w35_dependency": {
+      "result": "VERIFIED_PLANNING_SCOPE",
+      "new_dependencies": [
+        "W14",
+        "W17"
+      ],
+      "behavior": "A real recorded input blockage can start the local repair branch while W27 is unfinished; later checkpoint, W33, W15 and W36 integration remains required.",
+      "test": "W27 BLOCKED and W35 IN_PROGRESS can coexist without making W35 depend on W27 acceptance."
+    },
+    "rights_contract": {
+      "result": "VERIFIED_OFFLINE_CONTRACT",
+      "covers": [
+        "work and terms identity",
+        "verification evidence",
+        "per-use allowed/denied/unknown",
+        "open-ended, bounded and unknown validity",
+        "territory and provider scope",
+        "covered and excluded content",
+        "conditions and attribution",
+        "per-use revocation",
+        "legacy v1 record readability without widening"
+      ],
+      "limits": "Caller-provided provider, territory and content context is checked but not authenticated; legal conclusions still require real terms evidence."
+    },
+    "time_contract": {
+      "result": "VERIFIED_OFFLINE_CONTRACT",
+      "covers": [
+        "date and instant ranges",
+        "partial ranges with endpoint precision",
+        "inclusive endpoint semantics",
+        "source timezone, provenance and uncertainty",
+        "ordered validation across offsets",
+        "legacy time record readability"
+      ],
+      "limits": "Complete as-of retrieval and real historical revision cases remain W16/W33 work."
+    },
+    "development_environment": {
+      "result": "VERIFIED_OFFLINE_MAINTENANCE",
+      "behavior": "The inventory walk skips declared local environments and caches before traversal; unknown files, registered-source loss, symlinks, stale views and review drift remain errors.",
+      "default_uv_check": "PASS: uv sync created the source-local .venv, specification checks remained valid and all 16 W14 tests passed with that environment."
+    },
+    "derived_count": {
+      "result": "VERIFIED_CURRENT_TEXT",
+      "value": 8
+    },
+    "w15_adoption_journal": {
+      "result": "IN_PROGRESS_OFFLINE_INTERFACE",
+      "implements": [
+        "separate persisted StepSubmission and AdoptionDecision",
+        "exact task, subject, review, input and dependency decision binding",
+        "producer cannot issue the checker decision",
+        "READY requires explicit scope; expiry and current-version checks",
+        "NOT_APPLICABLE remains explicit",
+        "current decision and scoped authorization queries",
+        "offline CLI"
+      ],
+      "limits": "No checker authentication, semantic content review, complete M graph, real-model task validation, publication or delivery authorization."
+    }
+  },
+  "verification": {
+    "runtime_tests": 85,
+    "runtime_result": "PASS",
+    "maintenance_tests": 52,
+    "maintenance_result": "PASS",
+    "canonical_projection": "PASS",
+    "technical_binding": "PASS_FOR_CURRENT_DESIGN_ONLY",
+    "work_plan_binding": "PASS_FOR_CURRENT_DESIGN_ONLY",
+    "source_hashes": {
+      "intelligence/contracts.py": "c4fae8506133984b4f135379bc31ec3ae179fbd641181c955c2459ea0df81aba",
+      "intelligence/archive.py": "b9915263e235e693df9f64a2204472c8ade0146ee7f542bdb3134f5676b48fcb",
+      "intelligence/adoption.py": "c0a16f764e0bda24c87c4bb7050d6f15267b8a6304af17831c22af47e5255d9e",
+      "intelligence/preparation.py": "10d13ecb1f3b281c31bd385b932dbbe3aabce09aea68dc5a25e43c8a96b35c06",
+      "intelligence/__main__.py": "2baad07b723043faba5d2784936aa7d4fd0475c8d63bed6151100e64c32895a9",
+      "tests_runtime/test_archive.py": "e492e74376042890b7f5ba61bdc3b4b4fcf65301e0d3083bc2ca371230b31fc8",
+      "tests_runtime/test_adoption.py": "75f7125b5f44c39f6642c807063d819006f73751d771a31ff0bd57982976886c",
+      "tests_runtime/test_preparation.py": "3f51ef98ec3e409243781e7a22f2f259e4f51587d01f607fa9b6e42549ae6e45",
+      "tools/sync_spec.py": "1f638e3ba9179234e598a325363f1c4d2e8e9153645408091f4ef067bb06d5b0"
+    }
+  },
+  "q_checks": {
+    "W13": {
+      "Q01": "PASS: current §6/§16.3/§24.5/§26 requirements and T01/T04/T11 bindings reviewed",
+      "Q02": "FORMAL_PRECONDITION_PENDING: G01/W12 are not accepted; only authorized offline preparation was checked",
+      "Q03": "PASS_OFFLINE: shared contracts, schema-3 archive, path boundary, rights and time APIs implemented",
+      "Q04": "PASS_OFFLINE: 52 archive/contract/CLI tests cover positive, rejection and compatibility cases",
+      "Q05": "PASS_LIMITED_RECOVERY: partial revocation, body denial, legacy readability and deterministic repair covered",
+      "Q06": "PASS_SCOPED_REVIEW: current executor inspected code, tests and output; no independent legal/content review claimed",
+      "Q07": "RECORDED_SCOPE: no external model, paid API, production or delivery; complete costs unavailable"
+    },
+    "W14": {
+      "Q01": "PASS: current source, W13 dependency and R07/T01 checks inspected",
+      "Q02": "FORMAL_PRECONDITION_PENDING: W13/W12/G01 remain unaccepted",
+      "Q03": "PASS_OFFLINE: full canonical input baseline, task/material separation and external private output implemented",
+      "Q04": "PASS_OFFLINE: 16 W14 tests plus full 74-test suite pass; malformed/stale/injected inputs remain blocked",
+      "Q05": "PASS_LIMITED_RECOVERY: missing input returns repair branch and exact-version restoration is verified",
+      "Q06": "PASS_SCOPED_REVIEW: current executor inspected actual code and commands; no model reception or L5 review claimed",
+      "Q07": "RECORDED_SCOPE: no paid model, deployment, message or publication; total human time not inferred"
+    },
+    "W15": {
+      "Q01": "PASS: current §8.2.3—8.2.4, W15 card and T01 bindings reviewed",
+      "Q02": "FORMAL_PRECONDITION_PENDING: W14 remains IN_PROGRESS, so only the authorized offline interface was advanced",
+      "Q03": "PASS_OFFLINE: append-only submissions and separate decisions, exact bindings, state/scope/expiry checks and CLI implemented",
+      "Q04": "PASS_OFFLINE: 6 W15 tests cover self-signing, review dependency, missing/superseded/expired decisions and scoped adoption",
+      "Q05": "PASS_LIMITED_RECOVERY: a new bound submission/decision can follow RETURN while history and prior decisions remain immutable",
+      "Q06": "PASS_SCOPED_REVIEW: current executor ran interface tests; no authentication, semantic review or independent L5 approval claimed",
+      "Q07": "RECORDED_SCOPE: synthetic owned records only; no model, network, publication fee or production resource used"
+    }
+  },
+  "work_states": {
+    "W12": "AWAITING_REVIEW",
+    "G01": "NOT_STARTED",
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS"
+  },
+  "unchanged_boundaries": {
+    "sample_reading": "POSTPONED_NOT_ACCEPTED",
+    "external_model_calls": 0,
+    "paid_api_calls": 0,
+    "production_enabled": false,
+    "publication_authorized": false,
+    "newspaper_changes": false
+  }
+}

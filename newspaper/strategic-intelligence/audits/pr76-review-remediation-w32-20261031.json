@@ -1,0 +1,114 @@
+{
+  "record_id": "W32-PRESENTATION-AUDIT-20261031-001",
+  "checked_at": "2026-10-31T22:48:22+13:00",
+  "reviewed_parent": "6cc9b3b",
+  "spec_sha256": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f",
+  "implemented": {
+    "reviewed_edition_sources": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "the composition binds a current W23 EditionPlacementProposal and current W26 ImportantUpdateCheck before rendering",
+        "feature entries must match their exact placement ID and slot order; one Article cannot be repeated as separate entries",
+        "every cover/feature Article must retain a current full body, PASS Review and current W15 READY adoption for the declared use scope",
+        "the exact reviewed Article version and H1 are required; a later Article cannot inherit an old Review/adoption",
+        "updates needing research/review/object/type return cannot be converted into a presentation-only activity"
+      ]
+    },
+    "continuous_edition": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "the cover is a separately reviewed Article; the edition title is its exact reviewed H1",
+        "the table of contents and article order derive from explicit reviewed entries rather than a new narrative",
+        "Edition source records bind the proposal, update check, Article, Review and adoption versions",
+        "the final EditionRecord is archived separately from the generated reader artifact and records the actual file path, SHA-256 and byte size"
+      ]
+    },
+    "safe_rendering": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "the fixed Jinja template is extracted from one EDITORIAL_HTML_TEMPLATE block in the canonical specification",
+        "StrictUndefined and autoescape are enabled with no external template loader",
+        "Article headings/paragraphs are escaped before insertion and tested script markup appears as text rather than executable HTML",
+        "source links accept only absolute HTTPS URLs; labels and URLs remain escaped",
+        "the generated HTML is written as a new 0600 private file outside every Git worktree and must match the archived Edition hash/bytes"
+      ]
+    },
+    "recovery_and_state": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "an existing private output is accepted only when mode, exact bytes and Edition identity match",
+        "exact retries and simultaneous writers converge on one current Edition without overwriting it",
+        "a failed archive append removes only the file created by that failed attempt",
+        "the Edition always retains content_review_required=true, full_edition_review_required=true, publication_authorized=false and delivery_authorized=false"
+      ]
+    }
+  },
+  "regressions": {
+    "w32_tests": 10,
+    "runtime_tests": 276,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS",
+    "compileall_result": "PASS",
+    "spec_check": "PASS",
+    "technical_check_T10": "PASS",
+    "work_plan_check_G01_W31_W32_W33": "PASS",
+    "uv_lock_check": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W32 card, T10.L01-L03/T03.L03, registered implementation and sections 13.5-13.7/19.1/22.4 were reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W23, W26, W31, W15 and earlier packages remain IN_PROGRESS rather than ACCEPTED; only the authorized offline W32 interface scope was exercised",
+    "Q03": "PASS_OFFLINE: reviewed cover/feature Edition sources, canonical Jinja HTML rendering, private file output and archived version correspondence are implemented",
+    "Q04": "PASS_OFFLINE: 10 W32 tests cover PASS/W15 composition, title review identity, exact Article body, W23 placement/slot, W26 return handling, HTTPS links, later unreviewed Article, output boundary, concurrent idempotency, ordering/uniqueness and HTML escaping",
+    "Q05": "PASS_LIMITED_RECOVERY: source/update/review failures stop composition; generated private files are retained only with an exact current Edition; no publication or delivery state is inferred from file generation",
+    "Q06": "PASS_SCOPED_REVIEW: owned synthetic Articles, Review/adoption records and a real generated HTML file were inspected structurally; no independent whole-edition content review, browser visual review or user reading was performed",
+    "Q07": "RECORDED_SCOPE: Jinja 3.1.6/MarkupSafe are the only added locked packages; no real model, supplier, paid resource, PDF/WeasyPrint render, publication, delivery or deployment was invoked"
+  },
+  "source_hashes": {
+    "intelligence/presentation.py": "e9f314f2d0a4458bfba11889d137dda7a46e46c1f048cda61882e6029358efa5",
+    "tests_runtime/test_presentation.py": "89abc40b37c759d9ea3000de845bca70af9d7fc2c17a98ef834603ca2d8adce5",
+    "intelligence/editorial_review.py": "f2c9c9036bd2eee0a782bab9a58b35e9177dd1dfcb522fb8568c685bb01ed06d",
+    "intelligence/editorial.py": "a5aff3e57cff2bc96f2e725e0afadc6135c0b5b04f1529da6c7784f6787bab1d",
+    "intelligence/materials.py": "7542d9e397403fae23a10eccd8a820c34768a604069215902de867a78c5f52c0",
+    "intelligence/adoption.py": "238285a63dd167939334d8b27d144e5f52677ed700986a14bfd514e8cb628c38",
+    "intelligence/contracts.py": "f4433cafdf340e13d7b6ca52bc2547f74906501f0bf594a82d1f8237288acefe",
+    "pyproject.toml": "f1953b2d1b5e90a584e8ecb87b438576620fd28197d77cc25f5dab7ea41d3c3e",
+    "uv.lock": "880b6ab9867c16986a57414f40e768eda59eff3df72b3fb8608e068ca71133ec",
+    "CANONICAL_SYSTEM_SPEC_V5.md": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "IN_PROGRESS",
+    "W21": "IN_PROGRESS",
+    "W22": "IN_PROGRESS",
+    "W23": "IN_PROGRESS",
+    "W24": "IN_PROGRESS",
+    "W25": "IN_PROGRESS",
+    "W26": "IN_PROGRESS",
+    "W27": "IN_PROGRESS",
+    "W28": "IN_PROGRESS",
+    "W29": "IN_PROGRESS",
+    "W30": "IN_PROGRESS",
+    "W31": "IN_PROGRESS",
+    "W32": "IN_PROGRESS",
+    "W33": "IN_PROGRESS",
+    "W34": "IN_PROGRESS"
+  },
+  "limits": [
+    "No real publication draft or complete weekly edition was composed or read",
+    "Whole-edition content review, title/deck editorial judgement, cross-article complementarity and reader comprehension remain for real content review/user reading",
+    "The generated HTML was verified structurally and for escaping/private bytes, not in multiple browsers or through PDF visual layout",
+    "The W23 proposal and W26 update check in tests are compatible archived records, not a full real editorial-decision/intake replay",
+    "The fixed HTML template is an offline first-stage presentation surface; fonts, pagination, tables, footnotes, responsive layout and WeasyPrint/PDF belong to W49",
+    "No actual Edition review/approval or delivery receipt exists; generation, adoption of Articles, full-edition review, publication and delivery remain separate",
+    "Identity fields and 0600 file mode do not authenticate users or remote storage systems",
+    "W12 user reading, complete sample edition, production recovery, delivery and stage gates remain pending",
+    "Formal prerequisites and G01-G04 remain unaccepted; W32 is IN_PROGRESS, not ACCEPTED"
+  ]
+}

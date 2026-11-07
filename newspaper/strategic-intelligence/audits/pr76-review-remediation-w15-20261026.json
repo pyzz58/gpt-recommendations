@@ -1,0 +1,83 @@
+{
+  "record_id": "PR76-REMEDIATION-W15-20261026-001",
+  "checked_at": "2026-10-26T13:48:20+13:00",
+  "reviewed_parent": "e8abf19385220dcbf50a59e50084c7008f7dbe90",
+  "review_report_sha256": "a5367ab068c8b3f025a0f5b10b8ba8b8cc32af46d0736293f9ca3eafb49e4ab1",
+  "fixed_in_this_step": {
+    "F03_review_coverage": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-056",
+      "checks": [
+        "ReviewCoverage is restricted to Review versions and uniquely declares exact task, subject and reviewed scope",
+        "Archive rejects dangling coverage targets and a coverage target that is not a Task version",
+        "a Review covering another subject cannot authorize the current subject",
+        "matching task/subject with a different use scope cannot authorize the requested scope",
+        "a multi-subject Review can explicitly list and authorize more than one exact coverage pair"
+      ]
+    },
+    "F04_task_scoped_authority": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-057",
+      "checks": [
+        "StepSubmission and AdoptionDecision schema 2 persist stable Task object identity",
+        "submission and decision storage keys isolate Task object, work and step",
+        "two tasks using the same work/step retain independent READY and RETURN decisions",
+        "current-decision requires a stable Task object identity for new records",
+        "legacy shared-slot history is filtered by exact Task version without rewriting records"
+      ]
+    },
+    "F05_recursive_invalidation": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-058",
+      "checks": [
+        "current authorization recursively validates every required dependency decision",
+        "A RETURN invalidates dependent B and transitively dependent C while unrelated D remains current",
+        "dependency cycles fail closed and expired or superseded dependencies cannot be adopted",
+        "Task, subject, Review, required input and evidence withdrawals block current authorization",
+        "new Task or subject versions require a new exact decision rather than inheriting the old one",
+        "a new checked subject version and replacement decision can restore authorization"
+      ]
+    }
+  },
+  "regressions": {
+    "w15_tests": 12,
+    "runtime_tests": 95,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W15 card, T01.L02/T01.L03, §6, §8.2.3—8.2.4, §16.6.1, §18 and §19.2 reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W14, G01 and W12 remain unaccepted; only the authorized offline W15 boundary was checked",
+    "Q03": "PASS_OFFLINE: structured Review coverage, Task-scoped submission/decision records, recursive current checks and Task-aware CLI are implemented",
+    "Q04": "PASS_OFFLINE: unrelated Review, two Tasks, A-to-B-to-C invalidation, independent branch, withdrawal, supersession and recovery covered",
+    "Q05": "PASS_LIMITED_RECOVERY: failed checks preserve immutable history; replacement records require explicit new checks and decisions",
+    "Q06": "PASS_SCOPED_REVIEW: independent PR report cases were reproduced before repair, then positive, negative, compatibility and linkage regressions passed",
+    "Q07": "RECORDED_SCOPE: synthetic owned fixtures only; no real model, provider, content review, paid call, publication or delivery"
+  },
+  "source_hashes": {
+    "intelligence/contracts.py": "e007315d42f9ff90f9fb009c7a1461641a24d515ae44c7f1681c4cc6e641a859",
+    "intelligence/adoption.py": "95c7b97c146242f8227abb1c93048e73004b916ffb59025c7b9f64ea18cd9c85",
+    "intelligence/archive.py": "6abcec3ea3afa0fbe045e091f75a88654bb59ec8bb5cce7cd66f49cfe3339185",
+    "intelligence/__main__.py": "b4cf98208bc0ce9b1b5fda1ecc3c65f22314ec0eeef7ba61b1116687167d6107",
+    "tests_runtime/test_adoption.py": "2ec7eed89fb9b397063cb2faccf89dd081258dde1e9efed5b2aa4ea54c6b8698"
+  },
+  "work_states": {
+    "W12": "AWAITING_REVIEW",
+    "G01": "NOT_STARTED",
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "RETURNED",
+    "W17": "RETURNED",
+    "W18": "NOT_STARTED"
+  },
+  "limits": [
+    "No checker or caller identity is authenticated",
+    "No real L5 content review, truth judgment or semantic pass was performed",
+    "No complete M-step graph or LangGraph persistent execution was connected",
+    "W14 formal acceptance, W12 user reading and stage gates remain pending",
+    "W16 F06/F09 and W17 F07/F08/F11 remain open",
+    "No real model, provider API, paid call, deployment, publication or delivery occurred"
+  ]
+}
