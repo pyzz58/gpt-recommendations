@@ -1458,9 +1458,9 @@
     }
   ],
   "theory_version": "V0.10",
-  "roadmap_version": "V1.23",
+  "roadmap_version": "V1.24",
   "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "6df9edbc311c7fcddbf3d6641fb739b21684785cff5d82ac198c19a98b5b6ac7",
+  "roadmap_sha256": "f5ae7de8228f62d4232f96841359db02a168a6bb53816ce45decae84225428e2",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1572,8 +1572,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-07T09:11:05.696922+00:00",
-    "note": "W22最终追踪日志已纳入证据哈希。",
+    "at": "2026-11-07T09:20:12.308810+00:00",
+    "note": "W24最终追踪检查日志已纳入证据哈希。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -2908,7 +2908,7 @@
         "RQ-029",
         "RQ-033"
       ],
-      "sha256": "d834893b857b5a18cf332dc31c56559983aa34ee55eee5322f8a37c41a98a638"
+      "sha256": "effcfba94716d1656df726ef3e626900832810865816f67a67d82f04707ff1f3"
     },
     {
       "path": "services/core/src/medical_one_person/application/readiness.py",
@@ -3005,7 +3005,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "302f62c361a4f1447b25b52171764ea26ef38d514c7dc28f46f75547cc117bdb"
+      "sha256": "6a1e4fb5dad3467157ecd966ae1cc72a8b2a51925792de9edc1fba6d0d54344b"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -3332,6 +3332,44 @@
         "RQ-031"
       ],
       "sha256": "1292e2871cee75e282f4e44430afc9e6dd7046d33fda0f68e7f7461fa5d66d66"
+    },
+    {
+      "path": "services/core/src/medical_one_person/domain/phase_validation.py",
+      "requirement_ids": [
+        "RQ-032",
+        "RQ-033"
+      ],
+      "sha256": "183f600e994029ee0fab496c41fe08e93a7e2289712bb1d7db26ac10b5f2b02f"
+    },
+    {
+      "path": "tools/evaluate_pilot_readiness.py",
+      "requirement_ids": [
+        "RQ-032",
+        "RQ-033"
+      ],
+      "sha256": "d620c4fe896621b43a1eee47e323b4cc08ac30900db35515207aaba9f54eaeea"
+    },
+    {
+      "path": "fixtures/w24-pilot-baseline.json",
+      "requirement_ids": [
+        "RQ-033"
+      ],
+      "sha256": "08f36db70848dcd769a14c6b0f1ad9893d99a873d577c1c406e32ddc48fb8195"
+    },
+    {
+      "path": "services/core/tests/unit/test_w24_phase_validation.py",
+      "requirement_ids": [
+        "RQ-032",
+        "RQ-033"
+      ],
+      "sha256": "f0554520a82dc6808c86641dfdead75b65d91f5c9ac7ff4243719520da98644e"
+    },
+    {
+      "path": "docs/w24-readiness-ledger.md",
+      "requirement_ids": [
+        "RQ-033"
+      ],
+      "sha256": "f059aea0afd05dc64a88cc0b1487b4f39383117b0bfa76f7c1bc5869b6abf252"
     }
   ]
 }
