@@ -1576,8 +1576,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-07T09:35:50.180985+00:00",
-    "note": "W22来源API最终追踪日志已纳入哈希。",
+    "at": "2026-11-07T10:13:15.242047+00:00",
+    "note": "W22最终追踪日志已纳入哈希。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -1607,7 +1607,7 @@
       "requirement_ids": [
         "RQ-032"
       ],
-      "sha256": "3555063f7580c314c2f94b3aecc89cba6335a82be4260479e0540fd2abc03c88"
+      "sha256": "332235d6fe847e78a4c0fda24bb6907a9883878ca23946ed85390414ec34702f"
     },
     {
       "path": "pnpm-lock.yaml",
@@ -2006,7 +2006,7 @@
         "RQ-029",
         "RQ-034"
       ],
-      "sha256": "5aa4f88442b71628085efe11ef51ba1e197747781f36693bc478c349b44c28f7"
+      "sha256": "6280af0e1c36978be145b91a4ed49aac006fd25c2f828623feac179229f1090e"
     },
     {
       "path": "apps/web/src/components/project-shell.tsx",
@@ -2039,7 +2039,7 @@
         "RQ-029",
         "RQ-034"
       ],
-      "sha256": "9c17cab6f15abdcfa9f2e2a2e4bdb1b1fc7370fb41a43d8c01ea48e176ec5ef2"
+      "sha256": "9dc686f3e56d21467ed8ca6de7f011bb20713108586b18e3564ade53362c5458"
     },
     {
       "path": "services/core/tests/integration/test_w10_ui_api.py",
@@ -3009,7 +3009,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "b488f792c3512a977552d0dc6ec3448461959d5b809f471e1bb1963f1f950344"
+      "sha256": "06a37043878d87372bf7693d0f7b123861bdd5c81dd0253f18fcbefee8f2b4a5"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -3381,7 +3381,7 @@
         "RQ-011",
         "RQ-031"
       ],
-      "sha256": "c111f9ed5651b2a99d426270f51444d0993fba7f7233a53d3e8272d0d7a0afa6"
+      "sha256": "5a13789ef655ee91a05e4dcb6a66bccf21b19b2b6705f806198016c5d019faf7"
     },
     {
       "path": "services/core/tests/integration/test_w22_source_api.py",
@@ -3389,7 +3389,7 @@
         "RQ-011",
         "RQ-031"
       ],
-      "sha256": "1a83ccad0459421e0d656c3eea33a337108b4f04bd19aed9fdb207765e133234"
+      "sha256": "9a279fa58f6741ea4a0ef26ae9df4d736952e4329fd0525a32f434519f652429"
     }
   ]
 }
