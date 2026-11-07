@@ -61,10 +61,8 @@ jobs:
           prior_responses=iter(json.loads((previous/'responses.json').read_text()))
           for i,row in enumerate(prior_rows):
               if i != 1: saved[row['url']]=next(prior_responses)
-          latest_rows=json.loads((latest/'writing-comparison.json').read_text())
-          latest_responses=iter(json.loads((latest/'responses.json').read_text()))
-          for row in latest_rows:
-              if row['chinese_mode'] != 'context_edited': saved[row['url']]=next(latest_responses)
+          # Revalidate the exact saved response set inspected before this workflow.
+          # Later regeneration was not accepted wholesale; include its costs, not its rejected prose.
           class SavedResponse:
               def __init__(self, raw): self.raw=raw
               def request(self,*args,**kwargs):return self.raw
@@ -87,7 +85,8 @@ jobs:
           assert accepted==12, accepted
           summary=dict(source_sha=os.environ['TESTED_SOURCE_SHA'],stories=len(rows),chinese_edited=accepted,
                        fallback=2,sample_stories=11,cumulative_peak_rmb=budget['estimated_peak_cost_rmb'],
-                       new_paid_requests=0,smtp='NOT_CONFIGURED_NOT_SENT',evidence_runs=[42354444754,42355494635,42355959962])
+                       new_paid_requests=0,smtp='NOT_CONFIGURED_NOT_SENT',validated_response_run=42355494635,
+                       evidence_runs=[42354444754,42355494635,42355959962])
           (out/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2))
           (out/'budget.json').write_text(json.dumps(budget,ensure_ascii=False,indent=2))
           (out/'writing-comparison.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2))
