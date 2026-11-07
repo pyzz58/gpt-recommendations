@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-01",
+  "updated_at": "2026-11-07",
   "sources": {
     "original_review": "https://github.com/pyzz58/gpt-recommendations/blob/ec5ba1e4ed54ca3745d1681a47970981225bc16d/cra%20system/audit/DEVELOPMENT_REVIEW_20261101.md",
     "residual_recheck": "https://github.com/pyzz58/gpt-recommendations/blob/eea0da43e3468d04e4b12397c5b20ff2143e7323/cra%20system/audit/RESIDUAL_CLOSURE_REVIEW_20261101.md",
@@ -32,8 +32,8 @@
       ],
       "closure_evidence": {
         "kind": "github_actions",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+        "run_id": 42354648562,
+        "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9",
         "job_name": "cra-w05",
         "test_cases": [
           "tests/integration/test_subjects.py::test_branch_target_preserves_window_and_selection_context",
@@ -64,8 +64,8 @@
       ],
       "closure_evidence": {
         "kind": "github_actions",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+        "run_id": 42354648562,
+        "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9",
         "job_name": "cra-w04",
         "test_cases": [
           "tests/integration/test_rules.py::test_shared_project_rule_can_have_independent_site_adoption_dates",
@@ -96,8 +96,8 @@
       ],
       "closure_evidence": {
         "kind": "github_actions",
-        "run_id": 41257509611,
-        "tested_commit": "874450d033fbfcda01f9c191e3a76fbfa7caf8c2",
+        "run_id": 42354648562,
+        "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9",
         "job_name": "cra-w08",
         "test_cases": [
           "tests/integration/test_laboratory.py::test_succeeded_job_redelivery_is_noop_before_provider",

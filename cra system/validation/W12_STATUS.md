@@ -1,7 +1,7 @@
 # CRA-W12 implementation record
 
-Status: in progress pending task-specific GitHub Actions evidence.
-Date: 2026-11-01.
+Status: verified.
+Date: 2026-11-07.
 
 ## Delivered behavior
 
@@ -48,9 +48,26 @@ over existing records and `MonitoringVisit` already owns stage/revision/status.
   87 passed.
 - Playwright Chromium full journey: 1 passed. It uses real FastAPI,
   PostgreSQL, private local storage and the background worker, not page mocks.
-- Python unittest discovery: 49 passed.
+- Python unittest discovery: 51 passed.
 - Frontend: 17 passed; TypeScript and production build passed.
 - Synthetic only; no real clinical material, external send or EDC write-back.
+
+## Authoritative execution
+
+- Tested source commit:
+  `7c369da552db7f11d8b794bd9edc19174f8aa6e9`.
+- GitHub Actions run:
+  https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562
+- `cra-w12` job: real PostgreSQL continuity test, Playwright full two-visit
+  journey, browser PDF upload/worker confirmation, OpenAPI drift check,
+  17 frontend tests, TypeScript and production build.
+- The same successful run passed all W01-W11 jobs. Their source digests and
+  completion evidence were rebound to this tested commit; previous evidence
+  remains in `completion_history`.
+- Evidence subject hashing now excludes Git-ignored runtime output while
+  retaining tracked files and untracked non-ignored source changes. Regression
+  tests cover both sides of that boundary.
+- Closed findings remain bound to successful job logs with exact test cases.
 
 ## Remaining limits
 

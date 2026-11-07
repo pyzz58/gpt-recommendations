@@ -1,6 +1,10 @@
 # CRA-W05 completion record
 
-Status: verified. Date: 2026-11-01.
+Status: verified. Date: 2026-11-07.
+
+2026-11-07 final evidence-tool revalidation: [run 42354648562](https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562) passed at tested commit `7c369da552db7f11d8b794bd9edc19174f8aa6e9`; the tool now excludes ignored runtime output while retaining tracked and untracked non-ignored source.
+
+2026-11-01 W12 integration revalidation: [run 41272918165](https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165) passed at tested commit `8b85aa2c8a0d26d6ef56d359d691206794199563`; prior evidence remains in `completion_history`.
 
 2026-11-01 W11 integration revalidation: [run 41257509611](https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611) passed at tested commit `874450d033fbfcda01f9c191e3a76fbfa7caf8c2`; prior evidence remains in `completion_history`.
 
@@ -68,22 +72,24 @@ clinical-use validation, a complete-history import or an EDC integration.
 
 ## Authoritative execution
 
-- Tested commit: `f97fb13fe4557f9aa5fecef838ce596c8571f0a8`.
+- Tested commit: `7c369da552db7f11d8b794bd9edc19174f8aa6e9`.
 - GitHub Actions:
-  https://github.com/pyzz58/gpt-recommendations/actions/runs/41185363902
+  https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562
 - Task job: `cra-w05`.
-- Required steps: `test`, `contracts`, `frontend`.
-- PostgreSQL tests: 7 passed against PostgreSQL 18.6.
+- Required steps: `test`, `review-gate-self-test`, `contracts`, `frontend`.
+- PostgreSQL/API tests: 15 passed against PostgreSQL 18.6.
+- Evidence-tool and review-gate regressions: 16 passed, including the Git
+  ignore boundary for runtime artifacts.
 - The tests covered JSON/CSV/XLSX equivalence, authorized file import,
   identity/timeline reuse and cross-site isolation, rule-driven window
   boundaries and stage selection, missing-anchor skip/recovery while other work
   continues, append-only fact revision and separate category breakpoints, plus
   rejection of model suggestions as factual input.
-- Contracts/frontend: OpenAPI drift check, 6 frontend tests, TypeScript and
+- Contracts/frontend: OpenAPI drift check, 17 frontend tests, TypeScript and
   production build passed.
 - W01-W04 were independently revalidated on the same tested commit and run.
 - Subject digest:
-  `2ce2fd057639285bc0f8343043d216b05e32b37d45dd23f63115932a67aa2f5b`.
+  `0fd1786f1fb5b8ce36e06613761060c3d9ce66d5d318ed3048cde22fc1363eaa`.
 
 Local validation also used an isolated temporary PostgreSQL 18.6 cluster. The
 W05 integration file passed 7 tests, related backend regressions passed 25

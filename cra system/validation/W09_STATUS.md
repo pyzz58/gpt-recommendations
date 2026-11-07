@@ -1,6 +1,10 @@
 # CRA-W09 completion record
 
-Status: verified. Date: 2026-11-01.
+Status: verified. Date: 2026-11-07.
+
+2026-11-07 final evidence-tool revalidation: [run 42354648562](https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562) passed at tested commit `7c369da552db7f11d8b794bd9edc19174f8aa6e9`; ignored runtime artifacts no longer alter the source digest.
+
+2026-11-01 W12 integration revalidation: [run 41272918165](https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165) passed at tested commit `8b85aa2c8a0d26d6ef56d359d691206794199563`; prior evidence remains in `completion_history`.
 
 2026-11-01 W11 integration revalidation: [run 41257509611](https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611) passed at tested commit `874450d033fbfcda01f9c191e3a76fbfa7caf8c2`; prior evidence remains in `completion_history`.
 

@@ -14,7 +14,20 @@ class TraceabilityTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name) / "project"
-        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns("__pycache__", ".git", ".venv", "node_modules"))
+        shutil.copytree(
+            ROOT,
+            self.root,
+            ignore=shutil.ignore_patterns(
+                "__pycache__",
+                ".git",
+                ".pytest_cache",
+                ".venv",
+                "dist",
+                "node_modules",
+                "playwright-report",
+                "test-results",
+            ),
+        )
 
     def tearDown(self):
         self.temp.cleanup()
