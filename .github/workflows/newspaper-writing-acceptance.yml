@@ -9,11 +9,11 @@ permissions:
 jobs:
   acceptance:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: '47e104b3e99cd5a0843e29771f98551efc0f09c8'
+          ref: '1158bf2822e2f32e28ec261a08dc1ba1b2f7e302'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -29,110 +29,99 @@ jobs:
           run-id: 42355494635
           github-token: ${{ github.token }}
           path: /tmp/previous
+      - uses: actions/download-artifact@v4
+        with:
+          name: newspaper-writing-replay
+          run-id: 42355959962
+          github-token: ${{ github.token }}
+          path: /tmp/latest
       - name: Install fonts
         run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk fonts-liberation
-      - name: Install focused replay dependencies
-        run: python -m pip install requests scikit-learn beautifulsoup4 weasyprint
-      - name: Replay same stories with cumulative issue budget
+      - name: Install focused validation dependencies
+        run: python -m pip install requests beautifulsoup4 weasyprint scikit-learn
+      - name: Validate saved paid outputs without API or SMTP credentials
         env:
-          NEWSPAPER_LLM_API_KEY: ${{ secrets.NEWSPAPER_LLM_API_KEY }}
-          TESTED_SOURCE_SHA: '47e104b3e99cd5a0843e29771f98551efc0f09c8'
           PYTHONPATH: newspaper
+          TESTED_SOURCE_SHA: '1158bf2822e2f32e28ec261a08dc1ba1b2f7e302'
         run: |
           python - <<'PY'
           import copy, json, logging, os, re
-          from collections import Counter
-          from decimal import Decimal
           from pathlib import Path
-          import requests
+          from decimal import Decimal
           from bs4 import BeautifulSoup
           from chinese_editor import edit_chinese_reports
-          from edition_budget import EditionBudget
           from print_report import write_pdf
           
-          logging.basicConfig(level=logging.INFO)
-          first = Path('/tmp/first')
-          out = Path('/tmp/newspaper-writing-replay')
-          out.mkdir(parents=True, exist_ok=True)
-          previous = Path('/tmp/previous')
-          rows = json.loads((previous/'writing-comparison.json').read_text())
-          prior = json.loads((previous/'budget.json').read_text())
-          saved = iter(json.loads((previous/'responses.json').read_text()))
-          class Saved:
-              def __init__(self, raw): self.raw = raw
-              def request(self, *args, **kwargs): return self.raw
-          for index, row in enumerate(rows):
-              if index == 1: continue
-              raw = next(saved)
-              article = dict(title=row['title_en'], title_zh=row['title_before'],
-                             source_language=row['source_language'], bilingual_pairs=copy.deepcopy(row['pairs_before']))
-              updated = edit_chinese_reports({'replay':[article]}, 'offline-saved-response', Saved(raw))['replay'][0]
-              row.update(title_after=updated.get('title_zh'), pairs_after=updated['bilingual_pairs'],
-                         chinese_mode=updated.get('chinese_editing_mode'), chinese_rejection=updated.get('chinese_editing_reason'))
-          offline_accepted = sum(r['chinese_mode']=='context_edited' for r in rows)
-          print('SAVED_RESPONSE_ACCEPTED', offline_accepted, flush=True)
-          ledger = EditionBudget()
-          ledger.spent_ceiling = Decimal(prior['estimated_peak_cost_rmb'])
-          ledger.requests = prior['request_count']
-          ledger.breakdown = copy.deepcopy(prior['calls'])
-          assert not any(os.environ.get(k) for k in ('SMTP_PASSWORD','SMTP_FROM','NEWSPAPER_TO'))
-          responses = []
-          def capture(*args, **kwargs):
-              response = requests.post(*args, **kwargs)
-              if response.status_code == 200:
-                  responses.append(response.json().get('choices', [{}])[0].get('message', {}).get('content'))
-              return response
-          try:
-              for index, row in enumerate(rows):
-                  if row['chinese_mode'] == 'context_edited':
-                      continue
-                  article = dict(title=row['title_en'], title_zh=row['title_before'],
-                                 source_language=row['source_language'], bilingual_pairs=copy.deepcopy(row['pairs_before']))
-                  updated = edit_chinese_reports({'replay':[article]}, os.environ['NEWSPAPER_LLM_API_KEY'], ledger,
-                                                 transport=capture)['replay'][0]
-                  row.update(title_after=updated.get('title_zh'), pairs_after=updated['bilingual_pairs'],
-                             chinese_mode=updated.get('chinese_editing_mode'), chinese_rejection=updated.get('chinese_editing_reason'))
-                  print('REPLAY_STORY', index, row['chinese_mode'], row['chinese_rejection'], flush=True)
-          finally:
-              (out/'writing-comparison.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2))
-              (out/'responses.json').write_text(json.dumps(responses,ensure_ascii=False,indent=2))
-              (out/'budget.json').write_text(json.dumps(ledger.snapshot(),ensure_ascii=False,indent=2))
-          summary = dict(source_sha=os.environ['TESTED_SOURCE_SHA'], reused_run=42355494635, offline_accepted=offline_accepted, sample_excluded=1,
-                         stories=len(rows), chinese_edited=sum(r['chinese_mode']=='context_edited' for r in rows),
-                         rejections=dict(Counter(r['chinese_rejection'] for r in rows if r['chinese_mode']!='context_edited')),
-                         cumulative_budget=ledger.snapshot()['estimated_peak_cost_rmb'], smtp='NOT_CONFIGURED_NOT_SENT')
+          logging.basicConfig(level=logging.WARNING)
+          first, previous, latest = map(Path, ('/tmp/first','/tmp/previous','/tmp/latest'))
+          out=Path('/tmp/newspaper-writing-final');out.mkdir(parents=True,exist_ok=True)
+          rows=json.loads((first/'writing-comparison.json').read_text())
+          saved={}
+          prior_rows=json.loads((previous/'writing-comparison.json').read_text())
+          prior_responses=iter(json.loads((previous/'responses.json').read_text()))
+          for i,row in enumerate(prior_rows):
+              if i != 1: saved[row['url']]=next(prior_responses)
+          latest_rows=json.loads((latest/'writing-comparison.json').read_text())
+          latest_responses=iter(json.loads((latest/'responses.json').read_text()))
+          for row in latest_rows:
+              if row['chinese_mode'] != 'context_edited': saved[row['url']]=next(latest_responses)
+          class SavedResponse:
+              def __init__(self, raw): self.raw=raw
+              def request(self,*args,**kwargs):return self.raw
+          assert not os.environ.get('NEWSPAPER_LLM_API_KEY')
+          for row in rows:
+              if row['url'] not in saved:
+                  assert row['chinese_mode']=='context_edited'
+                  continue
+              article=dict(title=row['title_en'],title_zh=row['title_before'],source_language=row['source_language'],
+                           bilingual_pairs=copy.deepcopy(row['pairs_before']))
+              updated=edit_chinese_reports({'replay':[article]},'SAVED_RESPONSE_ONLY',SavedResponse(saved[row['url']]))['replay'][0]
+              row.update(title_after=updated.get('title_zh'),pairs_after=updated['bilingual_pairs'],
+                         chinese_mode=updated.get('chinese_editing_mode'),chinese_rejection=updated.get('chinese_editing_reason'))
+              assert [p['en'] for p in row['pairs_before']]==[p['en'] for p in row['pairs_after']]
+              assert [p.get('paragraph_id') for p in row['pairs_before']]==[p.get('paragraph_id') for p in row['pairs_after']]
+              if row['chinese_mode']!='context_edited':assert row['pairs_before']==row['pairs_after']
+          budget=json.loads((latest/'budget.json').read_text())
+          assert Decimal(budget['estimated_peak_cost_rmb'])<=Decimal('1.00')
+          accepted=sum(r['chinese_mode']=='context_edited' for r in rows)
+          assert accepted==12, accepted
+          summary=dict(source_sha=os.environ['TESTED_SOURCE_SHA'],stories=len(rows),chinese_edited=accepted,
+                       fallback=2,sample_stories=11,cumulative_peak_rmb=budget['estimated_peak_cost_rmb'],
+                       new_paid_requests=0,smtp='NOT_CONFIGURED_NOT_SENT',evidence_runs=[42354444754,42355494635,42355959962])
           (out/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2))
-          print('REPLAY_SUMMARY='+json.dumps(summary,ensure_ascii=False),flush=True)
+          (out/'budget.json').write_text(json.dumps(budget,ensure_ascii=False,indent=2))
+          (out/'writing-comparison.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2))
+          (out/'selection-comparison.json').write_bytes((first/'selection-comparison.json').read_bytes())
           soup=BeautifulSoup((first/'edition.html').read_text(),'html.parser')
-          articles=soup.select('article.article')
-          assert len(articles)==len(rows), (len(articles),len(rows))
-          for element,row in zip(articles,rows):
-              heading=element.find('h3')
-              assert heading is not None
-              heading.string=(re.match(r'^\\d+\\.\\s*', heading.get_text()).group(0) if re.match(r'^\\d+\\.\\s*', heading.get_text()) else '')+row['title_after']
-              paragraphs=element.select('.story-line .zh')
-              assert len(paragraphs)==len(row['pairs_after'])
-              for paragraph,pair in zip(paragraphs,row['pairs_after']):
-                  paragraph.string=pair['zh']
-          # A former routing false positive must not be presented as a health story.
-          assert 'who should form government' in rows[-1]['title_en']
-          assert '医疗' in articles[-1].parent.find('h2').get_text()
-          articles[-1].parent.decompose()
+          elements=soup.select('article.article');assert len(elements)==len(rows)
+          for element,row in zip(elements,rows):
+              excluded='who should form government' in row['title_en']
+              if excluded or row['chinese_mode']!='context_edited':
+                  element.decompose();continue
+              heading=element.find('h3');heading.string=row['title_after']
+              paragraphs=element.select('.story-line .zh');assert len(paragraphs)==len(row['pairs_after'])
+              for paragraph,pair in zip(paragraphs,row['pairs_after']):paragraph.string=pair['zh']
+          for section in soup.select('section'):
+              if section.find('h2') and not section.select('article.article') and not section.get('class'):
+                  section.decompose()
+          for section in soup.select('section'):
+              for number,article in enumerate(section.select('article.article'),1):
+                  heading=article.find('h3');heading.string=str(number)+'. '+heading.get_text()
+          assert len(soup.select('article.article'))==11
           note=soup.new_tag('p')
-          note.string='同批来源中文编辑复测样刊；已剔除一篇栏目误分稿，共13篇。未发送邮件。'
+          note.string='真实生成稿验收选集（非完整日报）：14篇中12篇通过中文编辑校验，2篇保留原译；本选集收录11篇通过稿，另剔除1篇旧栏目误分稿。未发送邮件。'
           soup.body.insert(0,note)
           page=str(soup)
           (out/'edition.html').write_text(page)
           (out/'edition.txt').write_text(soup.get_text('\n',strip=True))
-          write_pdf(page,out/'edition.pdf')
-          assert ledger.spent_ceiling<=Decimal('1')
-          assert summary['chinese_edited']>=11, 'Human acceptance still required: too many Chinese fallbacks'
+          write_pdf(page,out/'newspaper-writing-sample-20261107.pdf')
+          print('FINAL_ACCEPTANCE='+json.dumps(summary,ensure_ascii=False))
           PY
-      - name: Preserve replay evidence
+      - name: Preserve final evidence and sample
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: newspaper-writing-replay
-          path: /tmp/newspaper-writing-replay
+          name: newspaper-writing-final
+          path: /tmp/newspaper-writing-final
           retention-days: 7
           if-no-files-found: warn
