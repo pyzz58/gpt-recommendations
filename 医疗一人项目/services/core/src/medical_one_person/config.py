@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+import os
 from functools import lru_cache
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from medical_one_person.config_file import load_config_values
 from medical_one_person.domain.recovery import NetworkMode
 
 
@@ -15,7 +17,6 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(
         env_prefix="MEDICAL_ONE_",
-        env_file=(".env", "../../.env"),
         extra="ignore",
     )
 
@@ -58,6 +59,22 @@ class Settings(BaseSettings):
         Path(__file__).resolve().parents[4] / "fixtures" / "w17-audit-cases.json"
     )
     theory_path: Path = Path(__file__).resolve().parents[4] / "最高思想.md"
+    model_provider: Literal["mock", "openai_compatible"] = "mock"
+    model_provider_base_url: str | None = None
+    model_provider_api_key: str | None = None
+    model_provider_model: str | None = None
+    model_provider_timeout_seconds: float = 60.0
+    model_provider_input_cost_per_million: float | None = None
+    model_provider_output_cost_per_million: float | None = None
+    model_provider_currency: str | None = None
+    mail_adapter: Literal["mock", "smtp"] = "mock"
+    mail_smtp_host: str | None = None
+    mail_smtp_port: int = 587
+    mail_smtp_username: str | None = None
+    mail_smtp_password: str | None = None
+    mail_smtp_security: Literal["starttls", "ssl"] = "starttls"
+    mail_smtp_from_address: str | None = None
+    mail_smtp_from_name: str = "医疗一人项目"
 
     @field_validator("database_url")
     @classmethod
@@ -98,6 +115,30 @@ class Settings(BaseSettings):
             raise ValueError("Office export limits must be positive")
         return value
 
+    @field_validator("model_provider_timeout_seconds")
+    @classmethod
+    def validate_provider_timeout(cls, value: float) -> float:
+        if value <= 0:
+            raise ValueError("model_provider_timeout_seconds must be positive")
+        return value
+
+    @field_validator(
+        "model_provider_input_cost_per_million",
+        "model_provider_output_cost_per_million",
+    )
+    @classmethod
+    def validate_provider_rates(cls, value: float | None) -> float | None:
+        if value is not None and value < 0:
+            raise ValueError("Provider rates cannot be negative")
+        return value
+
+    @field_validator("mail_smtp_port")
+    @classmethod
+    def validate_smtp_port(cls, value: int) -> int:
+        if not 1 <= value <= 65_535:
+            raise ValueError("mail_smtp_port must be between 1 and 65535")
+        return value
+
     @property
     def allowed_origins(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
@@ -109,4 +150,12 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    _, values = load_config_values()
+    configured: dict[str, Any] = {}
+    for field_name in Settings.model_fields:
+        env_name = "MEDICAL_ONE_" + field_name.upper()
+        if env_name in os.environ:
+            continue
+        if env_name in values:
+            configured[field_name] = values[env_name]
+    return Settings(**configured)

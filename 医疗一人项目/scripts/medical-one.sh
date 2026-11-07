@@ -2,11 +2,6 @@
 set -euo pipefail
 
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-runtime_dir="${MEDICAL_ONE_RUNTIME_DIR:-${XDG_STATE_HOME:-${HOME}/.local/state}/medical-one-person}"
-api_port="${MEDICAL_ONE_API_PORT:-8000}"
-web_port="${MEDICAL_ONE_WEB_PORT:-3000}"
-api_url="http://127.0.0.1:${api_port}"
-web_url="http://127.0.0.1:${web_port}"
 started_here=0
 
 ensure_node_path() {
@@ -23,6 +18,37 @@ ensure_node_path() {
   fi
 }
 
+load_unified_config() {
+  config_path="${MEDICAL_ONE_CONFIG_FILE:-${project_root}/.env}"
+  if [[ "${config_path}" != /* ]]; then
+    config_path="${project_root}/${config_path}"
+  fi
+  export MEDICAL_ONE_CONFIG_FILE="${config_path}"
+  if [[ ! -f "${config_path}" ]]; then
+    return 0
+  fi
+  if ! command -v uv >/dev/null 2>&1; then
+    return 0
+  fi
+  local exported_file
+  exported_file="$(mktemp "${TMPDIR:-/tmp}/medical-one-config.XXXXXX")"
+  if ! (
+    cd "${project_root}" &&
+      uv run --quiet --project services/core --frozen python \
+        -m medical_one_person.config_file shell-export --path "${config_path}" \
+        > "${exported_file}"
+  ); then
+    rm -f "${exported_file}"
+    printf 'Could not parse configuration file: %s\n' "${config_path}" >&2
+    return 1
+  fi
+  local assignment
+  while IFS= read -r -d '' assignment; do
+    export "${assignment}"
+  done < "${exported_file}"
+  rm -f "${exported_file}"
+}
+
 usage() {
   cat <<'EOF'
 Usage: scripts/medical-one.sh <command>
@@ -33,12 +59,15 @@ Commands:
   start [--skip-bootstrap]    Start API, worker and web in the background
   status                      Query live/ready/capabilities and show managed PIDs
   smoke                       Start, verify and stop the complete local mock chain
+  config                      Show the resolved non-secret runtime configuration
   stop                        Stop only processes recorded in the W23 PID files
   logs [api|worker|web]       Follow one process log
 
 Runtime state, logs and PID files default to
 $XDG_STATE_HOME/medical-one-person (or ~/.local/state/medical-one-person).
-Override ports with MEDICAL_ONE_API_PORT and MEDICAL_ONE_WEB_PORT.
+Set MEDICAL_ONE_CONFIG_FILE to use one repository-external dotenv file for
+Shell, Python and Next.js. Override ports with MEDICAL_ONE_API_PORT and
+MEDICAL_ONE_WEB_PORT in that file or the parent process environment.
 EOF
 }
 
@@ -194,10 +223,20 @@ wait_for_url() {
   local label="$1"
   local url="$2"
   local attempts="${3:-60}"
+  local expected_status="${4:-200}"
   local attempt
+  local status_code
   for attempt in $(seq 1 "${attempts}"); do
-    if curl -fsS --max-time 2 "${url}" >/dev/null 2>&1; then
-      ok "${label} responded"
+    status_code="$(
+      curl -sS -o /dev/null -w '%{http_code}' --max-time 2 "${url}" 2>/dev/null || true
+    )"
+    if [[ "${expected_status}" == "web" ]]; then
+      if [[ "${status_code}" =~ ^[23][0-9][0-9]$ ]]; then
+        ok "${label} responded with HTTP ${status_code}"
+        return 0
+      fi
+    elif [[ "${status_code}" == "${expected_status}" ]]; then
+      ok "${label} responded with HTTP ${status_code}"
       return 0
     fi
     sleep 0.5
@@ -223,6 +262,13 @@ doctor() {
     return 1
   fi
   doctor_failed=0
+  if [[ -f "${config_path}" ]]; then
+    ok "configuration source ${config_path}"
+  elif [[ "${structural_only}" -eq 0 ]]; then
+    fail "configuration file does not exist: ${config_path}"
+  else
+    warn "configuration file does not exist: ${config_path}"
+  fi
   local required_files=(
     "最高思想.md"
     "技术路线与实施路径.md"
@@ -332,8 +378,8 @@ doctor() {
   fi
 
   if [[ "${structural_only}" -eq 0 ]]; then
-    if [[ ! -f "${project_root}/.env" ]]; then
-      fail "project .env is required for database-backed doctor checks"
+    if [[ ! -f "${config_path}" ]]; then
+      fail "configuration file is required for database-backed doctor checks"
     else
       local database_probe
       if database_probe="$(
@@ -398,8 +444,8 @@ print("pdftoppm=" + ("ready" if (settings.office_pdftoppm_path and Path(settings
 }
 
 bootstrap() {
-  if [[ ! -f "${project_root}/.env" ]]; then
-    printf 'Create .env from .env.example with local-only credentials before bootstrap.\n' >&2
+  if [[ ! -f "${config_path}" ]]; then
+    printf 'Create the configured dotenv file before bootstrap: %s\n' "${config_path}" >&2
     return 1
   fi
   (
@@ -443,11 +489,11 @@ start() {
   start_service web "${project_root}/apps/web" \
     node node_modules/next/dist/bin/next dev \
     --hostname 127.0.0.1 --port "${web_port}"
-  if ! wait_for_url "API ready endpoint" "${api_url}/health/ready" 60; then
+  if ! wait_for_url "API ready endpoint" "${api_url}/health/ready" 60 200; then
     fail "API did not become ready; inspect doctor/status and process logs"
     return 1
   fi
-  if ! wait_for_url "Web page" "${web_url}" 120; then
+  if ! wait_for_url "Web page" "${web_url}" 120 web; then
     fail "web did not become reachable"
     return 1
   fi
@@ -470,12 +516,16 @@ status() {
   curl -fsS --max-time 3 "${api_url}/health/live" |
     python3 -m json.tool
   local ready_json
+  local ready_status
   if ! ready_json="$(
-    curl -fsS --max-time 3 "${api_url}/health/ready"
+    curl -sS --max-time 3 "${api_url}/health/ready"
   )"; then
     printf 'API ready endpoint is unreachable at %s\n' "${api_url}" >&2
     return 1
   fi
+  ready_status="$(
+    curl -sS -o /dev/null -w '%{http_code}' --max-time 3 "${api_url}/health/ready"
+  )"
   printf '%s\n' "${ready_json}" | python3 -m json.tool
   curl -fsS --max-time 3 "${api_url}/api/v1/system/capabilities" |
     python3 -c '
@@ -491,8 +541,23 @@ for name, item in sorted(body["dependencies"].items()):
     printf 'Web is unreachable at %s\n' "${web_url}" >&2
     return 1
   fi
+  if [[ "${ready_status}" != "200" ]]; then
+    printf 'Readiness FAILED with HTTP %s\n' "${ready_status}" >&2
+    return 1
+  fi
   printf '%s\n' "${ready_json}" |
     python3 -c 'import json,sys; raise SystemExit(0 if json.load(sys.stdin)["status"] == "ok" else 1)'
+}
+
+config() {
+  (
+    cd "${project_root}"
+    uv run --quiet --project services/core --frozen python \
+      -m medical_one_person.config_file --path "${config_path}" summary
+  )
+  printf 'api_url=%s\n' "${api_url}"
+  printf 'web_url=%s\n' "${web_url}"
+  printf 'runtime_dir=%s\n' "${runtime_dir}"
 }
 
 smoke() {
@@ -518,18 +583,25 @@ logs() {
   tail -n 100 -f "$(log_file "${name}")"
 }
 
-command="${1:-}"
 ensure_node_path
+command="${1:-}"
 if [[ -z "${command}" ]]; then
   usage
   exit 2
 fi
+load_unified_config
+runtime_dir="${MEDICAL_ONE_RUNTIME_DIR:-${XDG_STATE_HOME:-${HOME}/.local/state}/medical-one-person}"
+api_port="${MEDICAL_ONE_API_PORT:-8000}"
+web_port="${MEDICAL_ONE_WEB_PORT:-3000}"
+api_url="http://127.0.0.1:${api_port}"
+web_url="http://127.0.0.1:${web_port}"
 shift || true
 case "${command}" in
   doctor) doctor "$@" ;;
   bootstrap) bootstrap ;;
   start) start "$@" ;;
   status) status ;;
+  config) config ;;
   smoke) smoke ;;
   stop)
     ensure_runtime_dir

@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Literal
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Response, status
 
 from medical_one_person.config import Settings
 from medical_one_person.contracts import (
@@ -54,8 +54,13 @@ def build_system_router(
             checks={"process": DependencyStatus(status="ready", detail="API process is running")},
         )
 
-    @router.get("/health/ready", response_model=HealthReport, tags=["system"])
-    def ready() -> HealthReport:
+    @router.get(
+        "/health/ready",
+        response_model=HealthReport,
+        responses={503: {"model": HealthReport}},
+        tags=["system"],
+    )
+    def ready(response: Response) -> HealthReport:
         database = database_checker()
         storage = checked(
             storage_checker,
@@ -77,6 +82,8 @@ def build_system_router(
                 for dependency in (database, storage, queue, worker)
             )
         )
+        if not is_ready:
+            response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
         return HealthReport(
             status="ok" if is_ready else "not_ready",
             mode=settings.app_mode,

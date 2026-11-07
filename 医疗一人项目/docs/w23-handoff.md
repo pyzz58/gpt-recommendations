@@ -12,13 +12,14 @@ TR-23、TR-24、TR-25；W23；AT-025、AT-026、AT-030、AT-032。
 ## 交付范围
 
 - `scripts/medical-one.sh`：统一 `doctor`、`bootstrap`、`start`、`status`、
-  `smoke`、`stop` 和 `logs` 入口；
+  `config`、`smoke`、`stop` 和 `logs` 入口；
 - `deploy/compose.yaml`：PostgreSQL、一次性迁移、API、worker、web 服务，
   端口只绑定 loopback；
 - `services/core/Dockerfile`：包含策略 bundle、审计和运行所需的文档、manifest、
   schemas、全部配置和 W17 fixture；
 - 健康接口报告数据库、文件存储、队列 schema 和 worker 心跳，不再使用静态
-  `not_checked` 冒充 worker 状态；
+  `not_checked` 冒充 worker 状态；未就绪明确返回 HTTP 503 和 `not_ready`；
+- Shell、Python 和由统一入口启动的 Next.js 读取同一份 dotenv；
 - W23 静态检查拒绝错误数据库健康账号、缺失运行资料、缺失备份卷和公网端口；
 - 旧 W01/W02/W03 的 Compose 骨架保留，本包只补真实运行缺口。
 
@@ -26,7 +27,15 @@ TR-23、TR-24、TR-25；W23；AT-025、AT-026、AT-030、AT-032。
 
 1. 安装 uv、pnpm 11.25.0、Python 3.12、Node.js 22.23.4 和 PostgreSQL 17。
    Office/PDF 实际文件验收还需要 LibreOffice 与 Poppler；缺失时这两项明确跳过。
-2. 从 `.env.example` 创建仓库外配置的 `.env`，替换数据库口令，不提交 `.env`。
+2. 从 `.env.example` 创建配置，替换数据库口令，不提交配置。推荐把文件放在
+   仓库外，并在父进程设置：
+
+```bash
+export MEDICAL_ONE_CONFIG_FILE=/absolute/outside/repository/medical-one.env
+```
+
+   未设置时入口只在项目根目录查找 `.env`。父进程已有的同名环境变量优先于
+   文件值。dotenv 不做变量插值；未知键、NUL或敏感值不会静默进入运行环境。
    所有 artifact、run、backup 和 restore 路径必须位于仓库外。
 3. 安装锁定依赖：
 
@@ -47,6 +56,12 @@ make bootstrap
 ./scripts/medical-one.sh doctor
 ```
 
+查看已解析的非敏感配置、自定义端口和运行目录：
+
+```bash
+./scripts/medical-one.sh config
+```
+
 `doctor --structural-only` 只检查源码包、文档、配置、依赖版本和凭据模式，
 用于安装前或 CI。普通 `doctor` 还检查 PostgreSQL 迁移 head、五项存储根、
 worker 心跳和可选 Office/Poppler。
@@ -61,7 +76,9 @@ worker 心跳和可选 Office/Poppler。
 ```
 
 `start` 默认先升级到当前 Alembic head 并幂等创建本地 owner，再启动 API、worker、
-web。`--skip-bootstrap` 只用于已经确认数据库版本的情况。运行目录默认在
+web。只有 `/health/ready` 返回 HTTP 200 且 `status=ok` 才报告启动成功；
+503/`not_ready` 会触发失败并停止本次启动的进程。`--skip-bootstrap` 只用于已经
+确认数据库版本的情况。运行目录默认在
 `$XDG_STATE_HOME/medical-one-person` 或 `~/.local/state/medical-one-person`，
 可用 `MEDICAL_ONE_RUNTIME_DIR` 指定；PID、日志和 worker 心跳不进入 Git。
 
@@ -77,8 +94,9 @@ web。`--skip-bootstrap` 只用于已经确认数据库版本的情况。运行�
 ## 健康与能力状态
 
 - `/health/live` 只表示 API 进程存活；
-- `/health/ready` 同时检查 mock provider、PostgreSQL 迁移版本、五类可写存储、
-  `outbox`/`jobs` schema 以及 15 秒内有效的 worker 心跳；
+- `/health/ready` 同时检查 provider、PostgreSQL 迁移版本、五类可写存储、
+  `outbox`/`jobs` schema 以及 15 秒内有效的 worker 心跳；全部 ready 返回 200，
+  任一依赖未就绪返回 503/`not_ready`，不会用成功 HTTP 表示未就绪；
 - `/api/v1/system/capabilities` 逐项报告 provider、数据库、存储、队列、worker、
   知识库、计划、外部记录、恢复与外部动作边界；
 - worker 每 5 秒原子刷新运行目录中的心跳文件，正常停止或心跳失败时清理并退出；
@@ -86,6 +104,7 @@ web。`--skip-bootstrap` 只用于已经确认数据库版本的情况。运行�
 
 如果 `status` 显示 worker `unavailable`，先查看 `logs worker`。API 进程存在而
 worker 缺失不代表后台任务可执行，不能把“网页可打开”写成完整链 ready。
+启动脚本和 Compose healthcheck 均检查 `/health/ready`，不是只检查进程存活。
 
 ## Compose 使用与边界
 
@@ -123,6 +142,9 @@ Compose 的命名卷、异地副本、密钥丢失恢复和真实主机故障仍
 - 空库升级至 `f4a2c7d9e601`，owner 初始化，API/worker/web 启动并通过
   live、ready 与 capabilities；
 - ready 中数据库、五项存储、`outbox`/`jobs` 和 worker 心跳均为 ready；
+- 仓库外 dotenv 在自定义 API/web 端口 `18000/13000` 和外置运行目录下完成同一
+  `smoke`；Shell 加载的 API URL 已传给 Next.js；
+- worker 心跳缺失和 provider未配置均返回 HTTP 503/`not_ready`；
 - `smoke` 后 API、worker、web 均停止，无测试进程残留；
 - 独立 PostgreSQL 17.6 完成 `f4a2c7d9e601 → b2e7d4a9c310 → f4a2c7d9e601`；
 - 全库 84 条 RLS 策略，应用角色迁移 head 与运行常量一致；

@@ -96,6 +96,16 @@ def validate(root: Path = DEFAULT_ROOT) -> list[str]:
             if volume not in mounts:
                 errors.append(f"{service_name} does not persist the {volume} volume")
 
+    api_healthcheck = " ".join(
+        services["api"].get("healthcheck", {}).get("test", [])
+    )
+    if "/health/ready" not in api_healthcheck:
+        errors.append("API healthcheck must require /health/ready")
+    if services["web"].get("depends_on", {}).get("api", {}).get(
+        "condition"
+    ) != "service_healthy":
+        errors.append("web must wait for a healthy API readiness check")
+
     for service_name in ("migrate", "api", "worker"):
         image = services[service_name].get("image", "")
         if not image.endswith(":w23"):

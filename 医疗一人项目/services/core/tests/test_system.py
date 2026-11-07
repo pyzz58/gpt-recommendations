@@ -15,6 +15,10 @@ def database_unavailable() -> DependencyStatus:
     return DependencyStatus(status="unavailable", detail="test database offline")
 
 
+def worker_unavailable() -> DependencyStatus:
+    return DependencyStatus(status="unavailable", detail="worker heartbeat missing")
+
+
 def test_health_separates_live_and_mock_readiness() -> None:
     client = TestClient(
         create_app(
@@ -114,7 +118,7 @@ def test_live_mode_is_not_ready_without_a_provider() -> None:
 
     response = client.get("/health/ready")
 
-    assert response.status_code == 200
+    assert response.status_code == 503
     assert response.json()["status"] == "not_ready"
     assert response.json()["checks"]["mock_provider"]["status"] == "not_configured"
 
@@ -131,6 +135,27 @@ def test_database_failure_does_not_mislabel_mock_provider() -> None:
 
     response = client.get("/health/ready")
 
+    assert response.status_code == 503
     assert response.json()["status"] == "not_ready"
     assert response.json()["checks"]["mock_provider"]["status"] == "ready"
     assert response.json()["checks"]["database"]["status"] == "unavailable"
+
+
+def test_missing_worker_is_explicit_503_not_ready() -> None:
+    client = TestClient(
+        create_app(
+            database_checker=database_ready,
+            storage_checker_override=database_ready,
+            queue_checker_override=database_ready,
+            worker_checker_override=worker_unavailable,
+        )
+    )
+
+    response = client.get("/health/ready")
+
+    assert response.status_code == 503
+    assert response.json()["status"] == "not_ready"
+    assert response.json()["checks"]["worker"] == {
+        "status": "unavailable",
+        "detail": "worker heartbeat missing",
+    }
