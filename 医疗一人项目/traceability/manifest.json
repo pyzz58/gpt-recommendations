@@ -507,7 +507,9 @@
         "services/core/src/medical_one_person/infrastructure/sources/pubmed_http.py",
         "services/core/src/medical_one_person/infrastructure/sources/factory.py",
         "services/core/tests/unit/test_w22_pubmed_http.py",
-        "docs/w22-handoff.md"
+        "docs/w22-handoff.md",
+        "services/core/src/medical_one_person/api/sources.py",
+        "services/core/tests/integration/test_w22_source_api.py"
       ],
       "implementation_status": "implemented",
       "source_sha256": "84343c325be8fb3b97982afd1d33eeb7aa2570913db564616d803bcf099819b0"
@@ -1298,7 +1300,9 @@
         "docs/w22-handoff.md",
         "services/core/src/medical_one_person/infrastructure/sources/pubmed_http.py",
         "services/core/src/medical_one_person/infrastructure/sources/factory.py",
-        "services/core/tests/unit/test_w22_pubmed_http.py"
+        "services/core/tests/unit/test_w22_pubmed_http.py",
+        "services/core/src/medical_one_person/api/sources.py",
+        "services/core/tests/integration/test_w22_source_api.py"
       ]
     },
     {
@@ -1458,9 +1462,9 @@
     }
   ],
   "theory_version": "V0.10",
-  "roadmap_version": "V1.24",
+  "roadmap_version": "V1.25",
   "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "f5ae7de8228f62d4232f96841359db02a168a6bb53816ce45decae84225428e2",
+  "roadmap_sha256": "c11cdb1b567796b469178a8290434116fb06b2af018e9357d8ffe354c20937ce",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1572,8 +1576,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-07T09:20:12.308810+00:00",
-    "note": "W24最终追踪检查日志已纳入证据哈希。",
+    "at": "2026-11-07T09:35:50.180985+00:00",
+    "note": "W22来源API最终追踪日志已纳入哈希。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -3005,7 +3009,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "6a1e4fb5dad3467157ecd966ae1cc72a8b2a51925792de9edc1fba6d0d54344b"
+      "sha256": "b488f792c3512a977552d0dc6ec3448461959d5b809f471e1bb1963f1f950344"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -3236,7 +3240,7 @@
         "RQ-015",
         "RQ-031"
       ],
-      "sha256": "15b08fca50e9c98fe64726407519e6780fc44216a056578e94cb5a5f5a008520"
+      "sha256": "44815b3772f6f0d4a9ccd96c3648cb7d7e6ce47e71350cc1e9d0df9a88f657d1"
     },
     {
       "path": "docs/w22-offline-acceptance.md",
@@ -3244,7 +3248,7 @@
         "RQ-015",
         "RQ-031"
       ],
-      "sha256": "2274ece3c9ef58b2f5ebce7b7500aa805035fb7abd20da27e9eaed63546f279d"
+      "sha256": "0c23c90b7628ef3ccee4586b7ad7ec775ea7587b4b6b724f22414acf9b844e66"
     },
     {
       "path": "services/core/src/medical_one_person/providers/openai_compatible.py",
@@ -3370,6 +3374,22 @@
         "RQ-033"
       ],
       "sha256": "f059aea0afd05dc64a88cc0b1487b4f39383117b0bfa76f7c1bc5869b6abf252"
+    },
+    {
+      "path": "services/core/src/medical_one_person/api/sources.py",
+      "requirement_ids": [
+        "RQ-011",
+        "RQ-031"
+      ],
+      "sha256": "c111f9ed5651b2a99d426270f51444d0993fba7f7233a53d3e8272d0d7a0afa6"
+    },
+    {
+      "path": "services/core/tests/integration/test_w22_source_api.py",
+      "requirement_ids": [
+        "RQ-011",
+        "RQ-031"
+      ],
+      "sha256": "1a83ccad0459421e0d656c3eea33a337108b4f04bd19aed9fdb207765e133234"
     }
   ]
 }

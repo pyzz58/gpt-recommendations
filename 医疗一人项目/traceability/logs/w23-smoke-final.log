@@ -1,16 +1,16 @@
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
 INFO  [alembic.runtime.migration] Will assume transactional DDL.
 {"workspace_id": "f3e1b71b-c994-4fda-bdd1-00ce723bdcd1", "owner_user_id": "39b189af-0fec-47b1-98ce-b11c05462814", "mode": "local"}
-PASS: api started with PID 56948
+PASS: api started with PID 79260
 PASS: API live endpoint responded with HTTP 200
-PASS: worker started with PID 56984
-PASS: web started with PID 56999
+PASS: worker started with PID 79281
+PASS: web started with PID 79296
 PASS: API ready endpoint responded with HTTP 200
 PASS: Web page responded with HTTP 307
 Started: web=http://127.0.0.1:13000 api=http://127.0.0.1:18000 runtime=/tmp/medical-one-readiness.wT6kvn/state
-process api    running pid=56948 log=/tmp/medical-one-readiness.wT6kvn/state/logs/api.log
-process worker running pid=56984 log=/tmp/medical-one-readiness.wT6kvn/state/logs/worker.log
-process web    running pid=56999 log=/tmp/medical-one-readiness.wT6kvn/state/logs/web.log
+process api    running pid=79260 log=/tmp/medical-one-readiness.wT6kvn/state/logs/api.log
+process worker running pid=79281 log=/tmp/medical-one-readiness.wT6kvn/state/logs/worker.log
+process web    running pid=79296 log=/tmp/medical-one-readiness.wT6kvn/state/logs/web.log
 {
     "status": "ok",
     "mode": "mock",
