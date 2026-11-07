@@ -14,7 +14,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
       - ./init-db.sh:/docker-entrypoint-initdb.d/010-app-role.sh:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U medical_one -d medical_one"]
+      test: ["CMD-SHELL", "pg_isready -U medical_one_migrator -d medical_one"]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -24,7 +24,7 @@ services:
     build:
       context: ..
       dockerfile: services/core/Dockerfile
-    image: medical-one-core:w05
+    image: medical-one-core:w23
     command:
       ["python", "-m", "alembic", "-c", "/app/alembic.ini", "upgrade", "head"]
     environment:
@@ -39,7 +39,7 @@ services:
     build:
       context: ..
       dockerfile: services/core/Dockerfile
-    image: medical-one-core:w05
+    image: medical-one-core:w23
     environment:
       MEDICAL_ONE_APP_MODE: mock
       MEDICAL_ONE_ENVIRONMENT: production
@@ -48,9 +48,14 @@ services:
       MEDICAL_ONE_ARTIFACT_ROOT: /var/lib/medical-one/artifacts
       MEDICAL_ONE_RUN_ROOT: /var/lib/medical-one/runs
       MEDICAL_ONE_KNOWLEDGE_STAGING_ROOT: /var/lib/medical-one/knowledge-staging
+      MEDICAL_ONE_BACKUP_ROOT: /var/lib/medical-one/backups
+      MEDICAL_ONE_RESTORE_ROOT: /var/lib/medical-one/restore-checks
       MEDICAL_ONE_AGENT_CONFIG_PATH: /app/config/agents/roles.yaml
       MEDICAL_ONE_SKILL_CONFIG_PATH: /app/config/skills/catalog.yaml
       MEDICAL_ONE_SOURCE_POLICY_PATH: /app/config/source_policies/catalog.yaml
+      MEDICAL_ONE_WORKFLOW_CATALOG_PATH: /app/config/workflows/catalog.yaml
+      MEDICAL_ONE_EXPORT_TEMPLATE_PATH: /app/config/templates/catalog.yaml
+      MEDICAL_ONE_AUDIT_FIXTURE_PATH: /app/fixtures/w17-audit-cases.json
       MEDICAL_ONE_THEORY_PATH: /app/最高思想.md
     ports:
       - "127.0.0.1:8000:8000"
@@ -58,6 +63,8 @@ services:
       - artifacts:/var/lib/medical-one/artifacts
       - runs:/var/lib/medical-one/runs
       - knowledge-staging:/var/lib/medical-one/knowledge-staging
+      - backups:/var/lib/medical-one/backups
+      - restore-checks:/var/lib/medical-one/restore-checks
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -67,7 +74,7 @@ services:
           "CMD",
           "python",
           "-c",
-          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/live', timeout=2)",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=2)",
         ]
       interval: 10s
       timeout: 3s
@@ -78,7 +85,7 @@ services:
     build:
       context: ..
       dockerfile: services/core/Dockerfile
-    image: medical-one-core:w05
+    image: medical-one-core:w23
     command: ["python", "-m", "medical_one_person.worker"]
     environment:
       MEDICAL_ONE_APP_MODE: mock
@@ -87,14 +94,21 @@ services:
       MEDICAL_ONE_ARTIFACT_ROOT: /var/lib/medical-one/artifacts
       MEDICAL_ONE_RUN_ROOT: /var/lib/medical-one/runs
       MEDICAL_ONE_KNOWLEDGE_STAGING_ROOT: /var/lib/medical-one/knowledge-staging
+      MEDICAL_ONE_BACKUP_ROOT: /var/lib/medical-one/backups
+      MEDICAL_ONE_RESTORE_ROOT: /var/lib/medical-one/restore-checks
       MEDICAL_ONE_AGENT_CONFIG_PATH: /app/config/agents/roles.yaml
       MEDICAL_ONE_SKILL_CONFIG_PATH: /app/config/skills/catalog.yaml
       MEDICAL_ONE_SOURCE_POLICY_PATH: /app/config/source_policies/catalog.yaml
+      MEDICAL_ONE_WORKFLOW_CATALOG_PATH: /app/config/workflows/catalog.yaml
+      MEDICAL_ONE_EXPORT_TEMPLATE_PATH: /app/config/templates/catalog.yaml
+      MEDICAL_ONE_AUDIT_FIXTURE_PATH: /app/fixtures/w17-audit-cases.json
       MEDICAL_ONE_THEORY_PATH: /app/最高思想.md
     volumes:
       - artifacts:/var/lib/medical-one/artifacts
       - runs:/var/lib/medical-one/runs
       - knowledge-staging:/var/lib/medical-one/knowledge-staging
+      - backups:/var/lib/medical-one/backups
+      - restore-checks:/var/lib/medical-one/restore-checks
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -106,7 +120,7 @@ services:
       dockerfile: apps/web/Dockerfile
       args:
         NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:8000
-    image: medical-one-web:w05
+    image: medical-one-web:w23
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
@@ -119,3 +133,5 @@ volumes:
   artifacts:
   runs:
   knowledge-staging:
+  backups:
+  restore-checks:

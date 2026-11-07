@@ -729,7 +729,8 @@ class PolicyBundleService:
 
     @staticmethod
     def _database_revision(session: Session) -> str | None:
-        return session.scalar(text("SELECT version_num FROM alembic_version"))
+        revision = session.scalar(text("SELECT version_num FROM alembic_version"))
+        return str(revision) if revision is not None else None
 
     @staticmethod
     def _actor(session: Session, actor_user_id: UUID) -> User:

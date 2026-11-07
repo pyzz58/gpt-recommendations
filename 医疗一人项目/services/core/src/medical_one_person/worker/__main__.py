@@ -19,6 +19,11 @@ from medical_one_person.application.worker_loop import WorkerLoop
 from medical_one_person.config import get_settings
 from medical_one_person.infrastructure.db.engine import create_database_engine
 from medical_one_person.infrastructure.db.models import Workspace
+from medical_one_person.infrastructure.runtime_health import (
+    WORKER_HEARTBEAT_SECONDS,
+    remove_worker_heartbeat,
+    write_worker_heartbeat,
+)
 from medical_one_person.providers import FakeModelProvider
 
 logger = logging.getLogger(__name__)
@@ -50,6 +55,7 @@ async def run(*, workspace_id: UUID | None, poll_seconds: float) -> None:
     ).require_runtime_ready(workspace_id=workspace_id)
     theory_hash = hashlib.sha256(settings.theory_path.read_bytes()).hexdigest()
     worker_id = f"{socket.gethostname()}:{os.getpid()}"
+    write_worker_heartbeat(settings.run_root, worker_id=worker_id)
     loop_runner = WorkerLoop(
         session_factory,
         FakeModelProvider(),
@@ -62,6 +68,23 @@ async def run(*, workspace_id: UUID | None, poll_seconds: float) -> None:
     for name in (signal.SIGINT, signal.SIGTERM):
         loop.add_signal_handler(name, stop.set)
 
+    async def heartbeat() -> None:
+        while not stop.is_set():
+            try:
+                write_worker_heartbeat(settings.run_root, worker_id=worker_id)
+            except OSError:
+                logger.exception(
+                    "Worker heartbeat could not be persisted; stopping the worker"
+                )
+                stop.set()
+                return
+            with contextlib.suppress(TimeoutError):
+                await asyncio.wait_for(
+                    stop.wait(),
+                    timeout=WORKER_HEARTBEAT_SECONDS,
+                )
+
+    heartbeat_task = asyncio.create_task(heartbeat())
     print(f"medical-one-person mock worker started: {worker_id}", flush=True)
     consecutive_errors = 0
     try:
@@ -95,6 +118,11 @@ async def run(*, workspace_id: UUID | None, poll_seconds: float) -> None:
                 with contextlib.suppress(TimeoutError):
                     await asyncio.wait_for(stop.wait(), timeout=poll_seconds)
     finally:
+        stop.set()
+        heartbeat_task.cancel()
+        with contextlib.suppress(asyncio.CancelledError):
+            await heartbeat_task
+        remove_worker_heartbeat(settings.run_root, worker_id=worker_id)
         engine.dispose()
         print(f"medical-one-person mock worker stopped: {worker_id}")
 

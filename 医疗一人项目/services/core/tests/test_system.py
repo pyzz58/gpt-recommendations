@@ -16,7 +16,14 @@ def database_unavailable() -> DependencyStatus:
 
 
 def test_health_separates_live_and_mock_readiness() -> None:
-    client = TestClient(create_app(database_checker=database_ready))
+    client = TestClient(
+        create_app(
+            database_checker=database_ready,
+            storage_checker_override=database_ready,
+            queue_checker_override=database_ready,
+            worker_checker_override=database_ready,
+        )
+    )
 
     live = client.get("/health/live")
     ready = client.get("/health/ready")
@@ -26,10 +33,20 @@ def test_health_separates_live_and_mock_readiness() -> None:
     assert live.json()["mode"] == "mock"
     assert ready.status_code == 200
     assert ready.json()["checks"]["database"]["status"] == "ready"
+    assert ready.json()["checks"]["artifact_storage"]["status"] == "ready"
+    assert ready.json()["checks"]["queue"]["status"] == "ready"
+    assert ready.json()["checks"]["worker"]["status"] == "ready"
 
 
 def test_capabilities_do_not_invent_external_connections() -> None:
-    client = TestClient(create_app(database_checker=database_ready))
+    client = TestClient(
+        create_app(
+            database_checker=database_ready,
+            storage_checker_override=database_ready,
+            queue_checker_override=database_ready,
+            worker_checker_override=database_ready,
+        )
+    )
 
     response = client.get("/api/v1/system/capabilities")
 
@@ -39,13 +56,23 @@ def test_capabilities_do_not_invent_external_connections() -> None:
     assert body["providers"][0]["mode"] == "mock"
     assert body["external_actions"]["status"] == "ready"
     assert body["dependencies"]["network"]["status"] == "ready"
+    assert body["dependencies"]["worker"]["status"] == "ready"
+    assert body["dependencies"]["queue"]["status"] == "ready"
+    assert body["dependencies"]["artifact_storage"]["status"] == "ready"
     assert "Offline mode" in body["dependencies"]["network"]["detail"]
     assert body["dependencies"]["recovery"]["status"] == "ready"
     assert any("not a complete scientific workflow" in item for item in body["limitations"])
 
 
 def test_mock_smoke_is_deterministic_and_labeled() -> None:
-    client = TestClient(create_app(database_checker=database_ready))
+    client = TestClient(
+        create_app(
+            database_checker=database_ready,
+            storage_checker_override=database_ready,
+            queue_checker_override=database_ready,
+            worker_checker_override=database_ready,
+        )
+    )
     request = {"input": "合成测试输入"}
 
     first = client.post("/api/v1/system/mock-smoke", json=request)
@@ -58,7 +85,14 @@ def test_mock_smoke_is_deterministic_and_labeled() -> None:
 
 
 def test_request_id_is_returned_for_correlation() -> None:
-    client = TestClient(create_app(database_checker=database_ready))
+    client = TestClient(
+        create_app(
+            database_checker=database_ready,
+            storage_checker_override=database_ready,
+            queue_checker_override=database_ready,
+            worker_checker_override=database_ready,
+        )
+    )
 
     response = client.get("/health/live", headers={"X-Request-ID": "w01-test-request"})
 
@@ -86,7 +120,14 @@ def test_live_mode_is_not_ready_without_a_provider() -> None:
 
 
 def test_database_failure_does_not_mislabel_mock_provider() -> None:
-    client = TestClient(create_app(database_checker=database_unavailable))
+    client = TestClient(
+        create_app(
+            database_checker=database_unavailable,
+            storage_checker_override=database_ready,
+            queue_checker_override=database_ready,
+            worker_checker_override=database_ready,
+        )
+    )
 
     response = client.get("/health/ready")
 

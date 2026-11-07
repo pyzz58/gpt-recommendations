@@ -24,9 +24,27 @@ def build_system_router(
     agent_status: DependencyStatus,
     skill_status: DependencyStatus,
     source_status: DependencyStatus,
+    *,
+    storage_checker: Callable[[], DependencyStatus] | None = None,
+    queue_checker: Callable[[], DependencyStatus] | None = None,
+    worker_checker: Callable[[], DependencyStatus] | None = None,
 ) -> APIRouter:
     router = APIRouter()
     fake_provider = FakeModelProvider()
+
+    def checked(
+        checker: Callable[[], DependencyStatus] | None,
+        detail: str,
+    ) -> DependencyStatus:
+        if checker is None:
+            return DependencyStatus(status="not_checked", detail=detail)
+        try:
+            return checker()
+        except Exception:
+            return DependencyStatus(
+                status="unavailable",
+                detail="Runtime dependency check raised an unexpected error",
+            )
 
     @router.get("/health/live", response_model=HealthReport, tags=["system"])
     def live() -> HealthReport:
@@ -39,8 +57,26 @@ def build_system_router(
     @router.get("/health/ready", response_model=HealthReport, tags=["system"])
     def ready() -> HealthReport:
         database = database_checker()
+        storage = checked(
+            storage_checker,
+            "Storage readiness is not injected in this process",
+        )
+        queue = checked(
+            queue_checker,
+            "Queue schema readiness is not injected in this process",
+        )
+        worker = checked(
+            worker_checker,
+            "Worker heartbeat readiness is not injected in this process",
+        )
         provider_ready = settings.app_mode == "mock"
-        is_ready = provider_ready and database.status == "ready"
+        is_ready = (
+            provider_ready
+            and all(
+                dependency.status == "ready"
+                for dependency in (database, storage, queue, worker)
+            )
+        )
         return HealthReport(
             status="ok" if is_ready else "not_ready",
             mode=settings.app_mode,
@@ -53,6 +89,9 @@ def build_system_router(
                     else "Live model provider is not configured",
                 ),
                 "database": database,
+                "artifact_storage": storage,
+                "queue": queue,
+                "worker": worker,
             },
         )
 
@@ -63,6 +102,9 @@ def build_system_router(
     )
     def capabilities() -> CapabilityReport:
         database = database_checker()
+        storage = checked(storage_checker, "Storage check is unavailable")
+        queue = checked(queue_checker, "Queue schema check is unavailable")
+        worker = checked(worker_checker, "Worker heartbeat check is unavailable")
         provider_status: Literal["ready", "not_configured"] = (
             "ready" if settings.app_mode == "mock" else "not_configured"
         )
@@ -90,14 +132,9 @@ def build_system_router(
             ],
             dependencies={
                 "database": database,
-                "worker": DependencyStatus(
-                    status="not_checked",
-                    detail=(
-                        "Native outbox/job leases and recovery are tested; "
-                        "mock plan execution is available on demand; a continuously running "
-                        "background worker remains later"
-                    ),
-                ),
+                "worker": worker,
+                "queue": queue,
+                "artifact_storage": storage,
                 "tool_isolation": DependencyStatus(
                     status="not_checked",
                     detail=(

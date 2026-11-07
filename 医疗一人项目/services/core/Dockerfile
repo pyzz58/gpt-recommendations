@@ -7,7 +7,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN groupadd --system --gid 10001 app \
     && useradd --system --uid 10001 --gid app --create-home app \
     && mkdir -p /var/lib/medical-one/artifacts /var/lib/medical-one/runs \
-       /var/lib/medical-one/knowledge-staging \
+       /var/lib/medical-one/knowledge-staging /var/lib/medical-one/backups \
+       /var/lib/medical-one/restore-checks \
     && chown -R app:app /var/lib/medical-one
 
 WORKDIR /app
@@ -18,10 +19,12 @@ RUN python -m pip install --no-cache-dir --require-hashes -r /tmp/requirements.l
 COPY --chown=app:app services/core/src /app/src
 COPY --chown=app:app services/core/alembic.ini /app/alembic.ini
 COPY --chown=app:app services/core/migrations /app/migrations
-COPY --chown=app:app config/agents /app/config/agents
-COPY --chown=app:app config/skills /app/config/skills
-COPY --chown=app:app config/source_policies /app/config/source_policies
+COPY --chown=app:app config /app/config
+COPY --chown=app:app schemas /app/schemas
+COPY --chown=app:app traceability/manifest.json /app/traceability/manifest.json
+COPY --chown=app:app fixtures/w17-audit-cases.json /app/fixtures/w17-audit-cases.json
 COPY --chown=app:app 最高思想.md /app/最高思想.md
+COPY --chown=app:app 技术路线与实施路径.md /app/技术路线与实施路径.md
 ENV PYTHONPATH=/app/src
 
 USER app

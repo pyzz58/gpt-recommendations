@@ -49,6 +49,11 @@ from medical_one_person.infrastructure.exports.templates import load_export_temp
 from medical_one_person.infrastructure.knowledge.parsers import DocumentParser
 from medical_one_person.infrastructure.knowledge.upload import UploadService
 from medical_one_person.infrastructure.mail.mock import MailAdapter, MockMailAdapter
+from medical_one_person.infrastructure.runtime_health import (
+    queue_schema_status,
+    storage_status,
+    worker_status,
+)
 from medical_one_person.infrastructure.skills.registry import SkillRegistry
 from medical_one_person.infrastructure.sources import load_source_policies
 from medical_one_person.infrastructure.workflows import WorkflowRegistry
@@ -60,6 +65,9 @@ def create_app(
     settings_override: Settings | None = None,
     session_factory_override: sessionmaker[Session] | None = None,
     mail_adapter_override: MailAdapter | None = None,
+    storage_checker_override: Callable[[], DependencyStatus] | None = None,
+    queue_checker_override: Callable[[], DependencyStatus] | None = None,
+    worker_checker_override: Callable[[], DependencyStatus] | None = None,
 ) -> FastAPI:
     settings = settings_override or get_settings()
     roles = load_role_configs(settings.agent_config_path)
@@ -79,12 +87,25 @@ def create_app(
             expire_on_commit=False,
         )
         checker = database_checker or (lambda: database_status(engine))
+        queue_checker = queue_checker_override or (
+            lambda: queue_schema_status(engine)
+        )
     else:
         engine = None
         session_factory = session_factory_override
         if database_checker is None:
             raise ValueError("database_checker is required with an injected session factory")
         checker = database_checker
+        queue_checker = queue_checker_override or (
+            lambda: DependencyStatus(
+                status="not_checked",
+                detail="Injected database session has no queue schema probe",
+            )
+        )
+    storage_checker = storage_checker_override or (lambda: storage_status(settings))
+    worker_checker = worker_checker_override or (
+        lambda: worker_status(settings.run_root)
+    )
 
     sessions = SessionService(session_factory)
     current_principal = build_principal_dependency(sessions)
@@ -214,6 +235,9 @@ def create_app(
                     "live scholarly adapters are not connected"
                 ),
             ),
+            storage_checker=storage_checker,
+            queue_checker=queue_checker,
+            worker_checker=worker_checker,
         )
     )
     app.include_router(
