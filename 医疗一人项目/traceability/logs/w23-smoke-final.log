@@ -1,17 +1,16 @@
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
 INFO  [alembic.runtime.migration] Will assume transactional DDL.
-INFO  [alembic.runtime.migration] Running upgrade f4a2c7d9e601 -> a1c9e7f2d304, W22 live adapter state
 {"workspace_id": "f3e1b71b-c994-4fda-bdd1-00ce723bdcd1", "owner_user_id": "39b189af-0fec-47b1-98ce-b11c05462814", "mode": "local"}
-PASS: api started with PID 21682
+PASS: api started with PID 37659
 PASS: API live endpoint responded with HTTP 200
-PASS: worker started with PID 21705
-PASS: web started with PID 21722
+PASS: worker started with PID 37684
+PASS: web started with PID 37699
 PASS: API ready endpoint responded with HTTP 200
 PASS: Web page responded with HTTP 307
 Started: web=http://127.0.0.1:13000 api=http://127.0.0.1:18000 runtime=/tmp/medical-one-readiness.wT6kvn/state
-process api    running pid=21682 log=/tmp/medical-one-readiness.wT6kvn/state/logs/api.log
-process worker running pid=21705 log=/tmp/medical-one-readiness.wT6kvn/state/logs/worker.log
-process web    running pid=21722 log=/tmp/medical-one-readiness.wT6kvn/state/logs/web.log
+process api    running pid=37659 log=/tmp/medical-one-readiness.wT6kvn/state/logs/api.log
+process worker running pid=37684 log=/tmp/medical-one-readiness.wT6kvn/state/logs/worker.log
+process web    running pid=37699 log=/tmp/medical-one-readiness.wT6kvn/state/logs/web.log
 {
     "status": "ok",
     "mode": "mock",

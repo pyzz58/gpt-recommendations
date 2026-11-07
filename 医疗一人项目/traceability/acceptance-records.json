@@ -31,7 +31,7 @@
         "AT-010",
         "AT-022"
       ],
-      "source_commit": "ecb36c1e32fb0597404c6f1b62bc92185b287683",
+      "source_commit": "db72b5891f989702da2df3fbdf3e058aaef71a01",
       "result": "passed",
       "scope": "Mock software sub-acceptance: reviewed delivery content returns to chief, judgment is independently reviewed, bounded continuation is linked and dispatched. Not full AT or scientific/real-world validation.",
       "commands": [
@@ -225,8 +225,8 @@
         "schemas",
         "tools"
       ],
-      "source_tree_git_sha256": "553af051d13254f73129057e32d9183ca8d661eb88795e3acc15b94f9d6b1364",
-      "source_tree_worktree_sha256": "553af051d13254f73129057e32d9183ca8d661eb88795e3acc15b94f9d6b1364",
+      "source_tree_git_sha256": "3160d9f347b404e343b6b5e0898a44e2894f12de85a835cd3af47c4c4379d87e",
+      "source_tree_worktree_sha256": "3160d9f347b404e343b6b5e0898a44e2894f12de85a835cd3af47c4c4379d87e",
       "artifacts": [
         "docs/scientific-feedback-acceptance.md",
         "traceability/logs/scientific-feedback-ci.log",
@@ -238,8 +238,8 @@
         "traceability/logs/scientific-feedback-ci-summary.json": "b8b7a3087f9b832cdb1b88120a10217da331ef2dcce17ed961a68cad449a1cf7",
         "traceability/logs/scientific-feedback-ci.log": "bcf2cfd0eaac28850ed36a223d48cb02a7270a0784a8fbd7e837b605453dc710",
         "traceability/logs/scientific-feedback-collection.log": "0ad81e98e7c6c47230e3324be3c9c910c730ce6249a025784121bd61a50c0c68",
-        "traceability/logs/w23-pytest-final.log": "717eea275d6e150f586a66448f5156000d867dec130900626b610adcf64e2d12",
-        "traceability/logs/w23-pytest-final.xml": "277bce1bd7c1e39e61953c1d254eb96bada87f41fa30ed94bc336a30f2e6c0eb"
+        "traceability/logs/w23-pytest-final.log": "c8b4d1e1f6f9ace67fca60a7f7f17ac5ad9e36aee77444bd9a76e74097b099e7",
+        "traceability/logs/w23-pytest-final.xml": "cdce23750d7234442924df55f55f9de8bed37ca52e3cbacccdb28e9ed197f791"
       },
       "uncovered": [
         "No live model, independent professional model judgment, human expert or real outsourcing validation.",
@@ -286,7 +286,7 @@
         "AT-030",
         "AT-032"
       ],
-      "source_commit": "ecb36c1e32fb0597404c6f1b62bc92185b287683",
+      "source_commit": "db72b5891f989702da2df3fbdf3e058aaef71a01",
       "result": "passed",
       "scope": "W23 local mock deployment sub-acceptance: empty PostgreSQL migration, single-entry start/ready/status/stop, runtime storage and queue checks, worker heartbeat, static Compose packaging, and full application regression. Docker/container execution is not passed.",
       "commands": [
@@ -437,7 +437,7 @@
         },
         {
           "path": "services/core/src/medical_one_person/config.py",
-          "sha256": "6a04702a1b294f5699c434fa2f5e69b647d13fd1e4392a938f96a3bbd8f7f5e9"
+          "sha256": "f3014dd2a844d34951e6c059689514f530886f597ddee62d416dc35769cde832"
         },
         {
           "path": "services/core/src/medical_one_person/infrastructure/runtime_health.py",
@@ -449,7 +449,7 @@
         },
         {
           "path": "services/core/src/medical_one_person/main.py",
-          "sha256": "c9e32ffef0e74153e7ad56c8004fe11ed978831f8316a5120410ee67173cf6df"
+          "sha256": "d44862d2c43d27b87d414e81ffc5e6c7d6b0d038d1c0bd9d82f612b45ad3e42c"
         },
         {
           "path": "services/core/src/medical_one_person/worker/__main__.py",
@@ -505,14 +505,14 @@
         "traceability/logs/w23-doctor-final.log": "767d5b8a53fe125dc27b1177d5fb7c3441fb25623e19c2d15b6b95bce1a9f1bf",
         "traceability/logs/w23-lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
         "traceability/logs/w23-migration-final.log": "fd410a87403aae2729a89e933bf22130e0e533710d01a1e834c61949d5ff18aa",
-        "traceability/logs/w23-mypy-final.log": "43531f8d6acf1c3f31eebf181d52d94c82589f603ee70847038f931a74a14a09",
-        "traceability/logs/w23-pytest-final.log": "717eea275d6e150f586a66448f5156000d867dec130900626b610adcf64e2d12",
-        "traceability/logs/w23-pytest-final.xml": "277bce1bd7c1e39e61953c1d254eb96bada87f41fa30ed94bc336a30f2e6c0eb",
-        "traceability/logs/w23-readiness-negative-final.log": "8e1f0660c482588262f98b14234dc1354aa9925c2e2a6dc8c69fa40edab24a95",
-        "traceability/logs/w23-smoke-final.log": "da81f98380b8642d9ab62cde23315112216d8c2a0bcd2e065fb908c744e6f7bb",
+        "traceability/logs/w23-mypy-final.log": "5525ee69f7acc60739d39ebd40e8c0169c4d79d0b48708365b122aee5ada2f48",
+        "traceability/logs/w23-pytest-final.log": "c8b4d1e1f6f9ace67fca60a7f7f17ac5ad9e36aee77444bd9a76e74097b099e7",
+        "traceability/logs/w23-pytest-final.xml": "cdce23750d7234442924df55f55f9de8bed37ca52e3cbacccdb28e9ed197f791",
+        "traceability/logs/w23-readiness-negative-final.log": "d44d09362d05721d128e5b363ebf0ab123560d7af22af83c9626defb25d6223f",
+        "traceability/logs/w23-smoke-final.log": "73fd1e159a42b1127553e5eb5c56fc5c4cd0d4a59c5913d10650e3fa30e0ec1a",
         "traceability/logs/w23-trace-check-final.log": "66eebb89378f17b02e63c5b98006b6c55c7d3b80f351efcac5d87ae035c37afa",
         "traceability/logs/w23-trace-tests-final.log": "3200e930b2886c2ae6d33002ff5489c4c8ac3f0e7a3fbb116ad7a048f4c7bd34",
-        "traceability/logs/w23-web-final.log": "22eb3d801049cd52ff0d639b30cc9e0f0880dc608b73d97c0a03d7502d22dab0"
+        "traceability/logs/w23-web-final.log": "b5e7b4d9889d2900f74055a5783a08c280ab5cfe747efd25a46c4d621a4a4d09"
       },
       "uncovered": [
         "Docker/Compose image build and container start were not run because Docker is unavailable.",
@@ -536,12 +536,13 @@
         "scripts",
         "tools"
       ],
-      "source_tree_git_sha256": "60f909ac0d5f77205d1004c9470a2b13325f80988d273da5e67d995bb304827f",
-      "source_tree_worktree_sha256": "60f909ac0d5f77205d1004c9470a2b13325f80988d273da5e67d995bb304827f"
+      "source_tree_git_sha256": "457c87585ed339c54f3af84c0d46e2feacda5bbc72315592dfbee36b5fbb751b",
+      "source_tree_worktree_sha256": "457c87585ed339c54f3af84c0d46e2feacda5bbc72315592dfbee36b5fbb751b"
     },
     {
       "id": "ACC-W22-OFFLINE-ADAPTERS",
       "requirements": [
+        "RQ-011",
         "RQ-015",
         "RQ-031"
       ],
@@ -550,6 +551,7 @@
         "TR-07",
         "TR-08",
         "TR-09",
+        "TR-10",
         "TR-11",
         "TR-13",
         "TR-14",
@@ -559,16 +561,18 @@
         "TR-24"
       ],
       "work_packages": [
+        "W07",
         "W15",
         "W22"
       ],
       "acceptance_refs": [
+        "AT-011",
         "AT-015",
         "AT-031"
       ],
-      "source_commit": "ecb36c1e32fb0597404c6f1b62bc92185b287683",
+      "source_commit": "db72b5891f989702da2df3fbdf3e058aaef71a01",
       "result": "passed",
-      "scope": "W22 offline adapter sub-acceptance: OpenAI-compatible JSON transport, cost/live gates, error classification, SMTP send-only MIME and recipient allowlist, and existing mail authorization/idempotency/unknown reconciliation. Real model and real mailbox calls were not performed.",
+      "scope": "W22 offline adapter sub-acceptance: OpenAI-compatible JSON transport and cost gates, SMTP send-only MIME/recipient/unknown controls, PubMed E-utilities ESearch/EFetch metadata retrieval, and existing authorization/idempotency contracts. No real network call.",
       "commands": [
         {
           "cwd": "services/core",
@@ -682,6 +686,14 @@
           "sha256": "9a207e909b51784d07a21da739f7c9fc18196558b55bcebc72e0d7cb4a9c034f"
         },
         {
+          "path": "services/core/src/medical_one_person/infrastructure/sources/pubmed_http.py",
+          "sha256": "5e20a7ba14d9c3b9441f99a045fa8089ddc1fc3566a883891359b14f6da60b1f"
+        },
+        {
+          "path": "services/core/src/medical_one_person/infrastructure/sources/factory.py",
+          "sha256": "a89cabc8a3c836089c0595de9691586c489e46cb3052bc7f996f7f2c6752b736"
+        },
+        {
           "path": "services/core/src/medical_one_person/application/mail.py",
           "sha256": "5e8410bf961a730194e8c5954e941171a36565293dfab2310fd8b4444d20f58a"
         },
@@ -695,7 +707,7 @@
         },
         {
           "path": "services/core/src/medical_one_person/config.py",
-          "sha256": "6a04702a1b294f5699c434fa2f5e69b647d13fd1e4392a938f96a3bbd8f7f5e9"
+          "sha256": "f3014dd2a844d34951e6c059689514f530886f597ddee62d416dc35769cde832"
         },
         {
           "path": "services/core/migrations/versions/a1c9e7f2d304_w22_live_adapters.py",
@@ -710,6 +722,10 @@
           "sha256": "4781404bc1e025e5d045195cf976a74f48b1e1022c8afd7e4578269a7b516991"
         },
         {
+          "path": "services/core/tests/unit/test_w22_pubmed_http.py",
+          "sha256": "1292e2871cee75e282f4e44430afc9e6dd7046d33fda0f68e7f7461fa5d66d66"
+        },
+        {
           "path": "services/core/tests/integration/test_w22_mail_service.py",
           "sha256": "234e00aec8d65d5e52177cae93a1d0f1fe68a8cb9d35634e6905b0f0af67d82e"
         },
@@ -719,7 +735,7 @@
         },
         {
           "path": "docs/w22-handoff.md",
-          "sha256": "413cd099bcedeb8d9ce8b8dea20c0ed330c8e5a3f3ebe7634a7b2271225d8a71"
+          "sha256": "15b08fca50e9c98fe64726407519e6780fc44216a056578e94cb5a5f5a008520"
         }
       ],
       "artifacts": [
@@ -736,21 +752,22 @@
         "traceability/logs/w22-trace-check-final.log"
       ],
       "artifact_hashes": {
-        "docs/w22-handoff.md": "413cd099bcedeb8d9ce8b8dea20c0ed330c8e5a3f3ebe7634a7b2271225d8a71",
-        "docs/w22-offline-acceptance.md": "111a6ec624e42340a6655e7e68f9007b24ed8bb230765bc6bc79c2cc2d8c1427",
-        "traceability/logs/w22-adapters-final.log": "d1903a407ef35967abfd503dc35cd25bc5249dedb4d91a4a2724615201896065",
+        "docs/w22-handoff.md": "15b08fca50e9c98fe64726407519e6780fc44216a056578e94cb5a5f5a008520",
+        "docs/w22-offline-acceptance.md": "2274ece3c9ef58b2f5ebce7b7500aa805035fb7abd20da27e9eaed63546f279d",
+        "traceability/logs/w22-adapters-final.log": "4ad78ebbe389209c8d370bb0f71b06f5ea2c5d9a80fd5dc0a69e74f0480e7463",
         "traceability/logs/w22-lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
         "traceability/logs/w22-migration-final.log": "61cdafb73262be9a88c36dd5a63656325cdeebbee4147e7a18e22fd98116976a",
-        "traceability/logs/w22-mypy-final.log": "43531f8d6acf1c3f31eebf181d52d94c82589f603ee70847038f931a74a14a09",
-        "traceability/logs/w22-pytest-final.log": "717eea275d6e150f586a66448f5156000d867dec130900626b610adcf64e2d12",
-        "traceability/logs/w22-pytest-final.xml": "277bce1bd7c1e39e61953c1d254eb96bada87f41fa30ed94bc336a30f2e6c0eb",
-        "traceability/logs/w22-trace-tests-final.log": "55fe4a607014fed1ed8701d4e1d98af759dcddb040b3f5e11e612aab4bb64280",
-        "traceability/logs/w22-web-final.log": "22eb3d801049cd52ff0d639b30cc9e0f0880dc608b73d97c0a03d7502d22dab0",
-        "traceability/logs/w22-trace-check-final.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9"
+        "traceability/logs/w22-mypy-final.log": "5525ee69f7acc60739d39ebd40e8c0169c4d79d0b48708365b122aee5ada2f48",
+        "traceability/logs/w22-pytest-final.log": "c8b4d1e1f6f9ace67fca60a7f7f17ac5ad9e36aee77444bd9a76e74097b099e7",
+        "traceability/logs/w22-pytest-final.xml": "cdce23750d7234442924df55f55f9de8bed37ca52e3cbacccdb28e9ed197f791",
+        "traceability/logs/w22-trace-check-final.log": "dd7116f9fbbf6d5d30cd196ac2a5d163dfeca4d3e79cfaa2b741e4323208e897",
+        "traceability/logs/w22-trace-tests-final.log": "85f5969c1cc7ffceff49c7be741a9fb2eb3cb8f735c149ee9356c1b42a1775f2",
+        "traceability/logs/w22-web-final.log": "b5e7b4d9889d2900f74055a5783a08c280ab5cfe747efd25a46c4d621a4a4d09"
       },
       "uncovered": [
         "No real model provider credentials, model ID, approved rates, spending cap or connectivity test.",
         "No real SMTP account, from address, test recipient, credential or send authorization.",
+        "No NCBI allowlisted-network approval, real query or live PubMed response; metadata does not prove fulltext access or study validity.",
         "No live inbox receive: SMTP adapter is send-only and cannot reconcile sent-folder state.",
         "No proof of scientific quality, provider data policy compliance, rate-limit behavior or SMTP exactly-once delivery.",
         "No real expert, institution, contract, payment or experiment."
@@ -765,8 +782,8 @@
         "schemas",
         "tools"
       ],
-      "source_tree_git_sha256": "89fb5b79269dab5cc7640b508365563c6554d0eae5da93d82927e288daa8b9e8",
-      "source_tree_worktree_sha256": "89fb5b79269dab5cc7640b508365563c6554d0eae5da93d82927e288daa8b9e8"
+      "source_tree_git_sha256": "e95a2fe36045d5887c3d21aa4ce405d97d75b18b526c2c09cb18b27e2b25b90e",
+      "source_tree_worktree_sha256": "e95a2fe36045d5887c3d21aa4ce405d97d75b18b526c2c09cb18b27e2b25b90e"
     }
   ]
 }
