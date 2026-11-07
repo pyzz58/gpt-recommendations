@@ -4,7 +4,7 @@ import json
 import unittest
 from unittest.mock import Mock
 import requests
-from chinese_editor import edit_chinese_reports
+from chinese_editor import edit_chinese_reports, _numbers
 from edition_budget import EditionBudget
 
 
@@ -24,7 +24,7 @@ class ChineseEditorTests(unittest.TestCase):
                             {"en": "Revenue rose 5 percent.", "zh": "收入上涨5%。", "paragraph_id": 0},
                             {"en": "The proposal may change costs. It is not approved.",
                              "zh": "提议可能改变成本。尚未获批。", "paragraph_id": 1}]}
-        self.translations = [{"id": "title", "zh": "公司营收增长"},
+        self.translations = [{"id": "title", "zh": "公司营收增长", "source_ids": ["0"]},
                              {"id": "0", "zh": "公司营收增长5%。"},
                              {"id": "1", "zh": "这项提议可能改变成本，但尚未获批。"}]
 
@@ -79,6 +79,42 @@ class ChineseEditorTests(unittest.TestCase):
         rows[0]["zh"] = "公司营收增长9%"
         result, _ = self.edit(rows)
         self.assertEqual(result["chinese_editing_mode"], "mt_fallback")
+
+    def test_exact_month_quarter_and_amount_conversion(self):
+        pairs = [("6 million yuan in October", "10月600万元"),
+                 ("$391.4 million in the third quarter of 2026", "2026年第三季度3.914亿美元"),
+                 ("$35 billion and 3 million cards", "350亿美元和300万张卡"),
+                 ("Q3 revenue of $1.2 billion", "第三季度营收12亿美元")]
+        for en, zh in pairs:
+            with self.subTest(en=en):
+                self.assertEqual(_numbers(en), _numbers(zh))
+        self.assertNotEqual(_numbers("6 million yuan"), _numbers("6000万元"))
+        self.assertEqual(_numbers("may increase"), _numbers("可能增加"))
+
+    def test_real_source_notation_changes_are_accepted_but_wrong_amounts_rejected(self):
+        self.article["bilingual_pairs"][0] = {"en": "Revenue was $391.4 million in October.",
+                                              "zh": "旧译", "paragraph_id": 0}
+        rows = copy.deepcopy(self.translations)
+        rows[1]["zh"] = "10月营收为3.914亿美元。"
+        result, _ = self.edit(rows)
+        self.assertEqual(result["chinese_editing_mode"], "context_edited")
+        rows[1]["zh"] = "10月营收为39.14亿美元。"
+        result, _ = self.edit(rows)
+        self.assertEqual(result["chinese_editing_reason"], "changed_numbers")
+
+    def test_new_headline_checks_its_cited_fact_not_unrelated_original_headline(self):
+        self.article["title"] = "A proposal may change costs; revenue rose"
+        result, _ = self.edit()
+        self.assertEqual(result["chinese_editing_mode"], "context_edited")
+        rows = copy.deepcopy(self.translations)
+        rows[0] = {"id": "title", "zh": "提议改变成本", "source_ids": ["1"]}
+        result, _ = self.edit(rows)
+        self.assertEqual(result["chinese_editing_mode"], "mt_fallback")
+
+    def test_lowercase_who_is_not_world_health_organization(self):
+        from newsroom import sections
+        self.assertNotIn("医疗、生命科学与公共健康", sections({"title": "Israel president to decide who should form government", "summary": "Election results", "source": "Agency", "url": "https://agency.test/politics"}))
+        self.assertIn("医疗、生命科学与公共健康", sections({"title": "WHO declares disease emergency", "summary": "Public health", "source": "WHO", "url": "https://who.int/release"}))
 
     def test_budget_reserves_original_commentary_and_stops_before_request(self):
         api = Mock()

@@ -21,9 +21,20 @@ REJECTION_CODES = {"missing_sentences", "invalid_sentence_id", "invalid_translat
 
 
 def _numbers(text):
-    # Unicode word boundaries would miss a digit immediately following Chinese.
-    return Counter(Decimal(n.replace(",", "")) for n in re.findall(
-        r"\d+(?:,\d{3})*(?:\.\d+)?", text))
+    # Compare quantities, not their language-specific notation. Never round.
+    months = "January February March April May June July August September October November December".split()
+    for month, number in zip(months, range(1, 13)):
+        text = re.sub(r"\b" + month + r"\b", str(number) + "月", text)
+    for number, word in enumerate(("first", "second", "third", "fourth"), 1):
+        text = re.sub(r"\b" + word + r"[- ]+quarter\b", str(number) + "季度", text, flags=re.I)
+        text = text.replace("第" + "一二三四"[number-1] + "季度", str(number) + "季度")
+    text = re.sub(r"\bQ([1-4])\b", r"\1季度", text)
+    scales = {"thousand": 1000, "million": 10**6, "billion": 10**9, "trillion": 10**12,
+              "bn": 10**9, "mn": 10**6, "千": 1000, "万": 10**4, "百万": 10**6,
+              "千万": 10**7, "亿": 10**8, "十亿": 10**9, "万亿": 10**12}
+    pattern = r"(\d+(?:,\d{3})*(?:\.\d+)?)\s*(thousand\b|million\b|billion\b|trillion\b|bn\b|mn\b|万亿|十亿|千万|百万|亿|万|千)?"
+    return Counter(Decimal(n.replace(",", "")) * scales.get((unit or "").lower(), 1)
+                   for n, unit in re.findall(pattern, text, flags=re.I))
 
 
 def edit_chinese_reports(grouped, key, ledger, *, transport=None, before_request=None):
@@ -60,21 +71,34 @@ def edit_chinese_reports(grouped, key, ledger, *, transport=None, before_request
                     raise ValueError("invalid_sentence_id")
                 if not isinstance(text, str) or not text.strip() or len(text) > 8 * len(source[identifier]) + 100:
                     raise ValueError("invalid_translation_length")
-                numeric_source = "\n".join(source.values()) if identifier == "title" else source[identifier]
+                scope = source[identifier]
+                if identifier == "title":
+                    ids = item.get("source_ids", ["title"])
+                    if not isinstance(ids, list) or not ids or any(not isinstance(i, str) or i not in source for i in ids):
+                        raise ValueError("invalid_sentence_id")
+                    scope = "\n".join(source[i] for i in ids)
+                numeric_source = scope
                 numbers_ok = (_numbers(text) <= _numbers(numeric_source) if identifier == "title"
                               else _numbers(text) == _numbers(numeric_source))
                 if not numbers_ok:
                     raise ValueError("changed_numbers")
-                text, flags = polish_translation(source[identifier], text)
+                text, flags = polish_translation(scope, text)
+                # Percentage equivalence is checked below using numeric values.
+                flags = [flag for flag in flags if flag != "percentage_requires_review"]
                 if flags or not re.search(r"[\u4e00-\u9fff]", text):
                     raise ValueError("translation_qa")
-                if re.search(r"\b(?:may|might|could|possible|potential|preliminary|expected|subject to|unless)\b", source[identifier], re.I):
-                    if not re.search(r"可能|或许|可以|可望|潜在|初步|预计|预期|有待|取决于|除非|或将|有望", text):
+                if re.search(r"\b(?:may|might|could|possible|potential|preliminary|expected|subject to|unless)\b", scope, re.I):
+                    if not re.search(r"可能|或许|可以|可望|潜在|初步|预计|预期|有待|取决于|除非|或将|有望|能否|不确定|尚待|未定|拟|计划", text):
                         raise ValueError("uncertainty_requires_review")
                 # A percentage symbol must remain attached to the same value;
                 # matching digits alone must not turn 5% into an ordinary count.
-                percentages = re.findall(r"(\d+(?:\.\d+)?)\s*(?:%|percent\b|per cent\b)", source[identifier], re.I)
-                if any(value + "%" not in re.sub(r"\s", "", text) for value in percentages):
+                percentages = re.findall(r"(\d+(?:\.\d+)?)\s*(?:%|percent\b|per cent\b)", scope, re.I)
+                if identifier == "title":
+                    percentages = [v for v in percentages if Decimal(v) in _numbers(text)]
+                expected_percent = Counter(Decimal(value) for value in percentages)
+                actual_percent = Counter(Decimal(value) for value in re.findall(r"(\d+(?:\.\d+)?)\s*%", text))
+                actual_percent.update(Decimal(value) for value in re.findall(r"百分之\s*(\d+(?:\.\d+)?)", text))
+                if expected_percent != actual_percent:
                     raise ValueError("changed_percent_unit")
                 by_id[identifier] = text
             # Commit only after every sentence/title passes; no mixed half-edited story.
