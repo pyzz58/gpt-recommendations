@@ -1,0 +1,120 @@
+name: Newspaper - one-shot writing acceptance
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/newspaper-writing-acceptance.yml']
+permissions:
+  contents: read
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: '89cf7536d8ba50a9fe4f3610177a3648d7fcf07e'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install print fonts
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk fonts-liberation
+      - name: Install newsroom dependencies
+        run: python -m pip install -r newspaper/requirements.txt
+      - name: Install English model
+        run: python -m spacy download en_core_web_sm
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/argos-translate/packages
+          key: newspaper-argos-translate-en-zh-v1
+      - name: Real writing acceptance without SMTP credentials
+        env:
+          NEWSPAPER_LLM_API_KEY: ${{ secrets.NEWSPAPER_LLM_API_KEY }}
+          TESTED_SOURCE_SHA: '89cf7536d8ba50a9fe4f3610177a3648d7fcf07e'
+          PYTHONPATH: newspaper
+        run: |
+          python - <<'PY'
+          import copy, datetime as dt, hashlib, json, logging, os, sys
+          from pathlib import Path
+          from decimal import Decimal
+          import digest
+          from newsroom import select_readable
+          out = Path("/tmp/newspaper-writing-acceptance")
+          out.mkdir(parents=True, exist_ok=True)
+          assert not any(os.environ.get(k) for k in ("SMTP_PASSWORD", "SMTP_FROM", "NEWSPAPER_TO"))
+          ledgers = []
+          BaseBudget = digest.EditionBudget
+          class CaptureBudget(BaseBudget):
+              def __init__(self, *args, **kwargs):
+                  super().__init__(*args, **kwargs)
+                  ledgers.append(self)
+          digest.EditionBudget = CaptureBudget
+          original_review = digest.review_candidates
+          def review(candidates, enriched, key, ledger, **kwargs):
+              old, _ = select_readable(candidates, enriched)
+              result = original_review(candidates, enriched, key, ledger, **kwargs)
+              new, _ = select_readable(candidates, result)
+              def describe(grouped):
+                  return [{"url": a["url"], "title": a.get("title"), "section": section,
+                           "event_key": a.get("event_key"), "review": a.get("selection_review")}
+                          for section, arr in grouped.items() for a in arr]
+              (out/"selection-comparison.json").write_text(json.dumps(
+                  {"baseline": describe(old), "reviewed": describe(new)}, ensure_ascii=False, indent=2))
+              return result
+          digest.review_candidates = review
+          original_chinese = digest.edit_chinese_reports
+          def chinese(grouped, key, ledger, **kwargs):
+              before = {a["url"]: copy.deepcopy(a) for row in grouped.values() for a in row}
+              result = original_chinese(grouped, key, ledger, **kwargs)
+              rows = []
+              for section, arr in result.items():
+                  for a in arr:
+                      b = before[a["url"]]
+                      rows.append({"url": a["url"], "section": section, "title_en": a.get("title"),
+                          "title_before": b.get("title_zh"), "title_after": a.get("title_zh"),
+                          "source_language": a.get("source_language", "en"),
+                          "english_mode": a.get("editing_mode"), "english_rejection": a.get("editor_rejection_reason"),
+                          "chinese_mode": a.get("chinese_editing_mode"), "chinese_rejection": a.get("chinese_editing_reason"),
+                          "source_sha256": a.get("source_sha256"), "source_map": a.get("source_map"),
+                          "pairs_before": b.get("bilingual_pairs"), "pairs_after": a.get("bilingual_pairs")})
+              (out/"writing-comparison.json").write_text(json.dumps(rows, ensure_ascii=False, indent=2))
+              return result
+          digest.edit_chinese_reports = chinese
+          original_html = digest.build_clippings_html
+          def render(*args, **kwargs):
+              page, plain = original_html(*args, **kwargs)
+              page = page.replace("<body>", "<body><p>真实AI写作验收样刊；未发送邮件；不占用正式刊期回执。</p>", 1)
+              (out/"edition.html").write_text(page, encoding="utf-8")
+              (out/"edition.txt").write_text(plain, encoding="utf-8")
+              return page, plain
+          digest.build_clippings_html = render
+          def no_send(*args, **kwargs):
+              raise RuntimeError("Acceptance must never send SMTP")
+          digest.send_email = no_send
+          sys.argv = ["digest.py", "--prepare", "--output", str(out/"bundle")]
+          try:
+              digest.main()
+          finally:
+              (out/"budget.json").write_text(json.dumps([x.snapshot() for x in ledgers], ensure_ascii=False, indent=2))
+          rows = json.loads((out/"writing-comparison.json").read_text())
+          summary = {"source_sha": os.environ["TESTED_SOURCE_SHA"], "stories": len(rows),
+              "english_edited": sum(a["english_mode"]=="evidence_mapped_edited_report" for a in rows),
+              "chinese_edited": sum(a["chinese_mode"]=="context_edited" for a in rows),
+              "chinese_fallback": sum(a["chinese_mode"]!="context_edited" and a["source_language"]!="zh" for a in rows),
+              "budget": ledgers[0].snapshot()["estimated_peak_cost_rmb"],
+              "smtp": "NOT_CONFIGURED_NOT_SENT"}
+          (out/"summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2))
+          print("WRITING_ACCEPTANCE=" + json.dumps(summary, ensure_ascii=False))
+          assert Decimal(summary["budget"]) <= Decimal("1.00")
+          assert summary["english_edited"] > 0, "No accepted English editorial result"
+          assert summary["chinese_edited"] > 0, "No accepted Chinese contextual editing"
+          PY
+      - name: Preserve acceptance comparison and PDF
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newspaper-writing-acceptance
+          path: /tmp/newspaper-writing-acceptance
+          retention-days: 7
+          if-no-files-found: warn
