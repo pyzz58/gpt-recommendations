@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：planned；分支路线：v1b。
+状态：in_progress；分支路线：v1b。
 前置：CRA-W08。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -25,6 +25,9 @@
 | `backend/cra_app/laboratory/recognition.py` | code | 作业、图像区域和候选 |
 | `web/src/features/laboratory/RecognitionReview.tsx` | code | 原图字段复核 |
 | `tests/integration/test_recognition.py` | test | 误识别、失败和替换 |
+| `backend/cra_app/providers/evaluate_complex_labs.py` | code | 复杂扫描与JPEG的独立provider评估 |
+| `tests/w14_fixtures/manifest.json` | config | 复杂合成样本哈希、预期字段和复核负担 |
+| `tests/w14_fixtures/generate_fixtures.py` | code | 生成两页扫描PDF与轻度旋转JPEG |
 | `validation/OCR_EVALUATION.md` | document | 字段错误和复核负担 |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
@@ -67,13 +70,19 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 识别及人工退化
+- [available] 识别及人工退化
 
 ```bash
 uv run --frozen pytest -q tests/integration/test_recognition.py
 ```
 
-- [to_implement] 接入后的整体流程
+- [available] 复杂扫描、续页、JPEG和字段/复核负担实测
+
+```bash
+uv run --frozen python -m cra_app.providers.evaluate_complex_labs --dataset tests/w14_fixtures/manifest.json
+```
+
+- [available] 接入后的整体流程
 
 ```bash
 npm --prefix web run test:e2e -- --project=chromium

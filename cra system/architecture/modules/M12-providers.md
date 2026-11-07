@@ -1,6 +1,6 @@
 # M12 模型、OCR与检索接入
 
-版本：7；状态：W03统一端口/OCR探测、W04确定性规则提取、W08检验读取与W09受限安全解释provider已实现；尚未完成真实资料与临床用途验证。代码位置：`backend/cra_app/providers/`。
+版本：8；状态：W03统一端口/OCR探测、W04确定性规则提取、W08基础检验读取、W09受限安全解释及W14复杂扫描/JPEG增强已实现；尚未完成真实资料与临床用途验证。代码位置：`backend/cra_app/providers/`。
 
 ## 对应理论和任务
 
@@ -65,3 +65,7 @@ W03先探测兼容与资源，必要时隔离识别环境，W04/W08/W09实际pro
 独立评测只把合成事实、规则证据和确定性维度送入模型，不传正确预期。3/3案例维度与问题主题正确，模型输出3/3通过grounding；伪造引用、越界医学结论、无依据数字/日期和“分级等同严重性”控制均被阻止。评估不是临床质量或节时验证，模型/依赖来源与限制见`validation/W09_DEPENDENCIES.md`和`validation/W09_STATUS.md`。
 
 2026-11-01复核补充：分析、OCR和文档worker使用同一Procrastinate/Outbox约定；隔离环境读取`provider-locks/`中的完整传递依赖哈希锁。Qwen模型提交和`model.safetensors` SHA-256在每个worker启动时核验。API中的模型解释为独立`safety_provider_runs`，不阻塞确定性安全结果，也不以单次accepted升级能力等级。
+
+## W14实现记录
+
+`RoutedLabProvider`继续作为唯一RecognizeLab适配入口，JPEG返回明确的`clear_printed_jpeg`格式，扫描PDF使用`scanned_pdf`。新增独立合成评估样本和`evaluate_complex_labs`入口；Docling 2.145.0实际读取两页扫描与0.5度旋转JPEG，输出坐标、provider/model及完整锁哈希。该增强不改变业务事实、确认、问题或报告格式，见[OCR_EVALUATION](../../validation/OCR_EVALUATION.md)。

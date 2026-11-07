@@ -14,6 +14,7 @@ release makes no time-saving, productivity or reduced-workload claim.
 | Component | Measured | Scope | Evidence |
 | --- | ---: | --- | --- |
 | Recognition and comparison | 53.049 s | Text PDF and clear PNG provider route; W08 synthetic evaluation | [W08 status](W08_STATUS.md) |
+| Complex provider recognition | 25.236 s | Two-page scan and 0.5-degree JPEG; W14 synthetic evaluation | [OCR evaluation](OCR_EVALUATION.md) |
 | Safety analysis provider | 40.534 s | Three synthetic cases plus grounding checks | [W09 status](W09_STATUS.md) |
 | Browser end-to-end step | 16 s | Automated Chromium journey, excluding cloud setup and human reading | [run 42354648562](https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562), `cra-w12` step `e2e` |
 | Human workflow total | not measured | Import, confirmation, focused review, reporting and rework | No authorized representative CRA timing study |
@@ -30,6 +31,11 @@ recovered 12 rows with source coordinates and no declared key-field errors.
 The zero correction/backfill count is limited to that fixture set. Eight review
 items demonstrate expected ambiguity, missing unit/range, absent export rows or
 scope mismatch behavior; they are not silently normal.
+
+The W14 complex set adds 6 expected rows: 6 recovered, zero declared key-field
+errors, 5 structurally usable and one focused review for comma-form output.
+There were no manual corrections/backfills in the synthetic set. This still
+does not measure CRA review time or real-format burden.
 
 Required future counters are:
 

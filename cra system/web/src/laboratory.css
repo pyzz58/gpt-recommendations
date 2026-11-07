@@ -119,6 +119,16 @@
   background: white;
 }
 
+.lab-image-frame {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.lab-image-frame .lab-source-image {
+  max-width: 100%;
+}
+
 .lab-critical-fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

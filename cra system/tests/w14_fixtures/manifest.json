@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "source": "pure_synthetic",
+  "provider_input": "Expected values are never supplied to the provider.",
+  "artifacts": [
+    {
+      "artifact_id": "LAB-W14-MULTIPAGE-SCAN-EVAL",
+      "file": "artifacts/synthetic_lab_multipage_scan.pdf",
+      "format": "pdf",
+      "format_kind": "scanned_pdf_multipage_continuation",
+      "evaluation_group": "independent_synthetic",
+      "sha256": "875413e457f5f168e0281cb3d80cde3b104d961f37c0a89918a702b97c991a31",
+      "expected_row_count": 4,
+      "expected_rows": [
+        {
+          "subject_external_id": "SYN-W14-001",
+          "visit_key": "V3",
+          "analyte": "Hemoglobin",
+          "value_raw": "112",
+          "unit_raw": "g/L",
+          "collected_on": "2026-03-04",
+          "collected_time": "08:10",
+          "instance_type": "initial",
+          "specimen": "Blood",
+          "lower_limit": "110",
+          "upper_limit": "160",
+          "report_revision": "FINAL"
+        },
+        {
+          "subject_external_id": "SYN-W14-001",
+          "visit_key": "V3",
+          "analyte": "ALT",
+          "value_raw": "<12",
+          "unit_raw": "U/L",
+          "collected_on": "2026-03-04",
+          "collected_time": "08:10",
+          "instance_type": "initial",
+          "specimen": "Blood",
+          "lower_limit": "0",
+          "upper_limit": "40",
+          "report_revision": "FINAL"
+        },
+        {
+          "subject_external_id": "SYN-W14-001",
+          "visit_key": "V3",
+          "analyte": "Glucose",
+          "value_raw": "5,1",
+          "unit_raw": "mmol/L",
+          "collected_on": "2026-03-04",
+          "collected_time": "08:10",
+          "instance_type": "initial",
+          "specimen": "Blood",
+          "lower_limit": "3.9",
+          "upper_limit": "5.5",
+          "report_revision": "FINAL"
+        },
+        {
+          "subject_external_id": "SYN-W14-001",
+          "visit_key": "V3",
+          "analyte": "Creatinine",
+          "value_raw": "0.88",
+          "unit_raw": "mg/dL",
+          "collected_on": "2026-03-04",
+          "collected_time": "08:10",
+          "instance_type": "initial",
+          "specimen": "Blood",
+          "lower_limit": "0.6",
+          "upper_limit": "1.2",
+          "report_revision": "FINAL"
+        }
+      ],
+      "expected_review_issues": {
+        "Glucose": [
+          "numeric_value_requires_interpretation"
+        ]
+      }
+    },
+    {
+      "artifact_id": "LAB-W14-MILD-ROTATION-JPEG-EVAL",
+      "file": "artifacts/synthetic_lab_mild_rotation_eval.jpeg",
+      "format": "jpeg",
+      "format_kind": "clear_printed_jpeg_mild_rotation",
+      "evaluation_group": "independent_synthetic",
+      "sha256": "0f8d59a98a6613cdf8eab2c95323b9760ad0455c88426d112c3be10d88773723",
+      "expected_row_count": 2,
+      "expected_rows": [
+        {
+          "subject_external_id": "SYN-W14-002",
+          "visit_key": "V4",
+          "analyte": "Glucose",
+          "value_raw": "92",
+          "unit_raw": "mg/dL",
+          "collected_on": "2026-03-05",
+          "collected_time": "09:00",
+          "instance_type": "Initial",
+          "specimen": "Blood",
+          "lower_limit": "70",
+          "upper_limit": "110",
+          "report_revision": null
+        },
+        {
+          "subject_external_id": "SYN-W14-002",
+          "visit_key": "V4",
+          "analyte": "Creatinine",
+          "value_raw": "1.41",
+          "unit_raw": "mg/dL",
+          "collected_on": "2026-03-05",
+          "collected_time": "09:00",
+          "instance_type": "Initial",
+          "specimen": "Blood",
+          "lower_limit": "0.6",
+          "upper_limit": "1.2",
+          "report_revision": null
+        }
+      ],
+      "expected_review_issues": {}
+    }
+  ]
+}

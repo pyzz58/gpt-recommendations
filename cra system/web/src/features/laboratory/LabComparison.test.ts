@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import type { LabComparisonFieldView } from "../../api/client";
 import {
   comparisonStatusLabel,
+  imageHighlightStyle,
+  isPdfFileFormat,
   reviewableFieldIds
 } from "./review";
 
@@ -22,5 +24,26 @@ describe("laboratory comparison review", () => {
       { id: "unit", result_status: "unit_review" }
     ] as LabComparisonFieldView[];
     expect(reviewableFieldIds(fields)).toEqual(["difference", "unit"]);
+  });
+
+  it("renders scanned and text PDFs in the PDF source viewer", () => {
+    expect(isPdfFileFormat("text_pdf")).toBe(true);
+    expect(isPdfFileFormat("scanned_pdf")).toBe(true);
+    expect(isPdfFileFormat("clear_printed_jpeg")).toBe(false);
+  });
+
+  it("keeps image field coordinates reviewable at display size", () => {
+    expect(
+      imageHighlightStyle([100, 50, 300, 150], {
+        width: 1000,
+        height: 500
+      })
+    ).toEqual({
+      left: "10%",
+      top: "10%",
+      width: "20%",
+      height: "20%"
+    });
+    expect(imageHighlightStyle([300, 50, 100, 150], null)).toBeNull();
   });
 });

@@ -815,7 +815,7 @@
         {"kind": "ci_run", "run_id": 42354648562, "job_name": "cra-w08", "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9", "steps": ["test", "lab-provider-evaluation"]},
         {"kind": "document", "path": "validation/LAB_AUTOMATION_SCOPE.md"}
       ],
-      "remaining_work": ["代表性真实医院版式和更多供应商模板待W14/W15。"]
+      "remaining_work": ["代表性真实医院版式和更多供应商模板待W15。"]
     },
     {
       "id": "lab_clear_image_png",
@@ -829,35 +829,37 @@
       "evidence": [
         {"kind": "ci_run", "run_id": 42354648562, "job_name": "cra-w09", "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9", "steps": ["lab-provider-evaluation"]}
       ],
-      "remaining_work": ["真实照片、扫描、多页续表和医院版式待W14/W15。"]
+      "remaining_work": ["真实照片、无规则版式和代表性医院版式待W15。"]
     },
     {
       "id": "lab_jpeg",
-      "title": "JPEG检验报告路由",
-      "status": "configured",
-      "validated_scope": "same configured image route as PNG; no separate independent JPEG evaluation",
+      "title": "轻度旋转JPEG检验报告识别",
+      "status": "validated",
+      "validated_scope": "one independent clear synthetic JPEG with 0.5-degree rotation using Docling",
       "clinical_validation": false,
       "automatic_completion_allowed": false,
-      "human_step": "未完成独立评估前按需要人工核对或补录。",
-      "limitation": "JPEG格式覆盖未单独验证。",
+      "human_step": "集中复核低可信、单位和异常字段；失败可少量补录或跳过。",
+      "limitation": "只验证0.5度旋转；模糊、反光、透视、手写和真实相机照片未覆盖。",
       "evidence": [
-        {"kind": "document", "path": "validation/LAB_AUTOMATION_SCOPE.md"}
+        {"kind": "document", "path": "validation/OCR_EVALUATION.md"},
+        {"kind": "test", "path": "tests/integration/test_recognition.py", "case": "tests/integration/test_recognition.py::test_w14_complex_fixtures_are_hash_bound_and_independent"}
       ],
-      "remaining_work": ["加入独立JPEG样本并记录格式特有错误。"]
+      "remaining_work": ["真实照片、透视、模糊及医院模板仍需W15评估。"]
     },
     {
       "id": "lab_scanned_pdf",
-      "title": "扫描PDF回退路由",
-      "status": "configured",
-      "validated_scope": "implemented fallback route; no independent scan set",
+      "title": "两页扫描PDF与续页表头",
+      "status": "validated",
+      "validated_scope": "one independent two-page image-only report with key/value context and a continuation table",
       "clinical_validation": false,
       "automatic_completion_allowed": false,
-      "human_step": "扫描识别不可靠时使用少量人工补录或跳过。",
-      "limitation": "扫描PDF不在当前独立评估集。",
+      "human_step": "复核低可信、表头/字段归属和异常；兼容表头仅在结构匹配时继承。",
+      "limitation": "只验证两页和稳定列顺序，不覆盖任意医院多页版式、交错列或透视扫描。",
       "evidence": [
-        {"kind": "document", "path": "validation/LAB_AUTOMATION_SCOPE.md"}
+        {"kind": "document", "path": "validation/OCR_EVALUATION.md"},
+        {"kind": "test", "path": "tests/integration/test_recognition.py", "case": "tests/integration/test_recognition.py::test_headerless_continuation_reuses_compatible_previous_header"}
       ],
-      "remaining_work": ["建立扫描PDF独立样本和关键错误评估。"]
+      "remaining_work": ["三页以上、交错列、透视/模糊扫描和真实医院版式仍需W15评估。"]
     },
     {
       "id": "lab_match_compare",
@@ -977,6 +979,15 @@
       "automatic_correction_or_backfill": 0,
       "review_items_explained_as_scope_behavior": 8
     },
+    "complex_format_coverage": {
+      "source": "validation/OCR_EVALUATION.md",
+      "synthetic_rows_evaluated": 6,
+      "recognized_rows": 6,
+      "key_field_errors": 0,
+      "automatic_usable_rows": 5,
+      "focused_review_rows": 1,
+      "manual_correction_or_backfill": 0
+    },
     "measurements": [
       {
         "id": "provider_recognition_and_comparison",
@@ -1001,6 +1012,14 @@
         "seconds": 16.0,
         "source": "GitHub Actions run 42354648562 job cra-w12 step e2e timestamps",
         "scope": "automated Chromium journey; excludes cloud setup and human comprehension"
+      },
+      {
+        "id": "complex_provider_recognition",
+        "kind": "machine_elapsed_seconds",
+        "status": "measured",
+        "seconds": 25.236,
+        "source": "validation/OCR_EVALUATION.md",
+        "scope": "two-page scan and 0.5-degree JPEG; not user work time"
       },
       {
         "id": "human_workflow_total",

@@ -10,8 +10,8 @@ This is not a clinical-use, all-format or time-saving claim.
 | Text PDF | pdfplumber 0.11.x `pdfplumber-lab-table` | Selectable text, ruled table, clear English columns | supported |
 | Text PDF with report context | Same text route | Clear Chinese header with subject/date/instance/revision and two result rows that do not repeat them | supported for the evaluated synthetic layout |
 | Clear printed image | Docling 2.145.0 in isolated Python 3.12 | Synthetic 3200 x 1800 PNG, horizontal text, ruled table, no rotation/blur | provider validated on one independent sample |
-| JPEG input | Same Docling route | Same clean-print assumption; a separate JPEG sample was not evaluated | implemented but not separately evaluated |
-| Scanned PDF without useful text | Docling fallback | Not included in the current independent evaluation set | experimental |
+| JPEG input | Same Docling route | Clear printed synthetic JPEG with 0.5-degree rotation and separated 12-column table | provider validated in W14; see [OCR_EVALUATION](OCR_EVALUATION.md) |
+| Scanned PDF without useful text | Docling fallback | Independent two-page image-only report with key/value context and a continuation table | provider validated in W14; see [OCR_EVALUATION](OCR_EVALUATION.md) |
 
 The provider is selected by a replaceable `RecognizeLab` adapter. The main
 application remains on CPython 3.13.15 and does not import Docling directly.
@@ -23,10 +23,10 @@ authorization and the current source version, claims a lease, records attempts
 and releases the lease on success or failure. An expired lease can be resumed
 and a failed/provider-unavailable run can be explicitly requeued.
 
-Not supported or validated: handwriting, severe blur/occlusion, arbitrary
-unruled hospital layouts, arbitrary Chinese hospital templates, multi-page
-continuation tables, all vendor revisions, real clinical data or clinical
-safety decisions.
+Not supported or validated: handwriting, severe blur/occlusion, perspective
+distortion, arbitrary unruled hospital layouts, arbitrary Chinese hospital
+templates, more than two pages, unstable/interleaved columns, all vendor
+revisions, real clinical data or clinical safety decisions.
 
 ## Artifact and expected-answer design
 
@@ -124,11 +124,13 @@ The review items are expected scope behavior rather than OCR misses:
 - The evaluated Chinese report is a clear text PDF, not a photograph, complex
   hospital layout, rotated scan or arbitrary template.
 - The independent set contains one clean synthetic image, one text PDF and one
-  Chinese header-context PDF. Real layout distribution, photograph quality and
-  vendor variation remain untested.
+  Chinese header-context PDF. W14 adds one two-page image scan and one
+  0.5-degree JPEG. Real layout distribution, photograph quality and vendor
+  variation remain untested.
 - A full comparison to an existing CRA manual workflow was not performed. The
   recorded review ratio and provider time are not total time-saving proof.
 - Thresholds for acceptable key errors, auto agreement and review burden must
   be set with a representative approved dataset before clinical-use readiness.
 - W09 owns medical/logic analysis; W11 owns reports; W14 may expand difficult
-  formats; W15 owns approved environment deployment and an authorized trial.
+  formats. W14 has expanded only its declared scan/JPEG samples; W15 owns
+  approved environment deployment and an authorized trial.

@@ -17,10 +17,11 @@ from cra_app.laboratory.matching import (
 from cra_app.providers.lab_ocr import (
     LabRecognitionResult,
     ProviderCell,
+    ProviderLine,
     ProviderTable,
 )
 
-SUPPORT_PROFILE_VERSION = "synthetic-lab-v1"
+SUPPORT_PROFILE_VERSION = "synthetic-lab-v2"
 SUPPORT_PROFILE: dict[str, Any] = {
     "version": SUPPORT_PROFILE_VERSION,
     "validated_formats": [
@@ -34,21 +35,38 @@ SUPPORT_PROFILE: dict[str, Any] = {
             "condition": "synthetic clear print, no rotation or blur",
             "provider": "docling",
         },
+        {
+            "kind": "clear_printed_jpeg_mild_rotation",
+            "condition": (
+                "synthetic clear print with 0.5-degree rotation; "
+                "declared independent evaluation sample"
+            ),
+            "provider": "docling",
+        },
+        {
+            "kind": "scanned_pdf_multipage",
+            "condition": (
+                "image-only two-page report with one headerless continuation "
+                "table; declared independent evaluation sample"
+            ),
+            "provider": "docling",
+        },
     ],
     "experimental_formats": [
         {
-            "kind": "image_jpeg",
-            "condition": "same clean-print route as PNG; format coverage not separately evaluated",
+            "kind": "scanned_pdf_more_than_two_pages",
+            "condition": "route exists; no independent multi-page set above two pages",
         },
         {
-            "kind": "scanned_pdf",
-            "condition": "Docling fallback only; not part of the T-above evaluation set",
+            "kind": "unruled_table",
+            "condition": "structure recovery is not accepted without review",
         },
     ],
     "unsupported": [
         "handwriting",
         "severe blur or occlusion",
         "unruled arbitrary hospital layouts",
+        "multi-column interleaved continuation without stable column order",
         "non-laboratory clinical documents",
     ],
     "clinical_use_validated": False,
@@ -241,7 +259,54 @@ def _header_mapping(table: ProviderTable) -> tuple[int, dict[int, str]] | None:
     return None
 
 
-def _extract_report_context(lines: tuple[ProviderLine, ...]) -> ReportContext:
+def _continuation_columns(
+    table: ProviderTable,
+    previous_columns: dict[int, str] | None,
+) -> dict[int, str] | None:
+    """Reuse the previous header only for a structurally compatible table."""
+    if not previous_columns:
+        return None
+    required = {"analyte", "value_raw"}
+    if not required.issubset(previous_columns.values()):
+        return None
+    highest_index = max(previous_columns)
+    if not table.rows or any(
+        len(row.cells) <= highest_index for row in table.rows
+    ):
+        return None
+    return previous_columns
+
+
+def _context_pairs(
+    table: ProviderTable,
+) -> list[tuple[str, str, ProviderCell]]:
+    pairs: list[tuple[str, str, ProviderCell]] = []
+    context_fields = {
+        "subject_external_id",
+        "visit_key",
+        "collected_on",
+        "collected_time",
+        "instance_type",
+        "specimen",
+        "report_on",
+        "report_revision",
+    }
+    for row in table.rows:
+        cells = [
+            cell for cell in row.cells if normalized_text(cell.text)
+        ]
+        if len(cells) != 2:
+            continue
+        field = _field_for_header(cells[0].text)
+        if field in context_fields:
+            pairs.append((field, cells[1].text.strip(), cells[1]))
+    return pairs
+
+
+def _extract_report_context(
+    lines: tuple[ProviderLine, ...],
+    tables: tuple[ProviderTable, ...] = (),
+) -> ReportContext:
     candidates: dict[str, list[tuple[str, ProviderLine]]] = {}
     context_fields = {
         "subject_external_id",
@@ -271,6 +336,22 @@ def _extract_report_context(lines: tuple[ProviderLine, ...]) -> ReportContext:
                     candidates.setdefault(field, []).append(
                         (match.group(1).strip(), line)
                     )
+    table_sources: dict[str, dict[str, Any]] = {}
+    for table in tables:
+        for field, value, cell in _context_pairs(table):
+            line = ProviderLine(
+                text=value,
+                page=table.page,
+                bbox=cell.bbox or table.bbox,
+            )
+            candidates.setdefault(field, []).append((value, line))
+            table_sources[field] = {
+                "text": value,
+                "page": table.page,
+                "bbox": _bbox(cell.bbox or table.bbox),
+                "kind": "report_context_table",
+                "table_index": table.index,
+            }
     values: dict[str, str] = {}
     sources: dict[str, dict[str, Any]] = {}
     ambiguities: list[str] = []
@@ -285,12 +366,15 @@ def _extract_report_context(lines: tuple[ProviderLine, ...]) -> ReportContext:
             continue
         value, line = items[0]
         values[field] = normalized_text(value)
-        sources[field] = {
-            "text": line.text,
-            "page": line.page,
-            "bbox": _bbox(line.bbox),
-            "kind": "report_context",
-        }
+        sources[field] = table_sources.get(
+            field,
+            {
+                "text": line.text,
+                "page": line.page,
+                "bbox": _bbox(line.bbox),
+                "kind": "report_context",
+            },
+        )
     return ReportContext(values, sources, tuple(ambiguities))
 
 
@@ -317,6 +401,7 @@ def _row_from_table(
     provider_name: str,
     provider_version: str,
     report_context: ReportContext,
+    header_table: ProviderTable | None = None,
 ) -> LabRowDraft | None:
     values: dict[str, str | None] = {}
     source_cells: dict[str, dict[str, Any]] = {}
@@ -332,6 +417,16 @@ def _row_from_table(
                 "bbox": _bbox(cell.bbox),
             }
     if not values["analyte"] and not values["value_raw"]:
+        return None
+    if (
+        values["analyte"]
+        and values["value_raw"]
+        and _normalized_header(values["analyte"])
+        == _normalized_header(values["value_raw"])
+    ):
+        # Image models can append a footnote as a structured one-cell row that
+        # is stretched across the grid. Repeating caption text in the analyte
+        # and result columns is not a laboratory observation.
         return None
     issues: list[str] = []
     for context_field in {
@@ -357,6 +452,8 @@ def _row_from_table(
         issues.append("result_missing")
     if not values["unit_raw"]:
         issues.append("unit_missing")
+    elif not re.search(r"[A-Za-z%µμ\u4e00-\u9fff]", values["unit_raw"]):
+        issues.append("unit_unrecognized_or_inconsistent")
     collected_on = _parse_date(values["collected_on"])
     if collected_on is None:
         issues.append("collection_date_missing_or_invalid")
@@ -383,6 +480,15 @@ def _row_from_table(
         "provider_version": provider_version,
         "page": table.page,
         "table_index": table.index,
+        "header_table_index": (
+            header_table.index if header_table is not None else table.index
+        ),
+        "header_page": (
+            header_table.page if header_table is not None else table.page
+        ),
+        "header_inherited": (
+            header_table is not None and header_table.index != table.index
+        ),
         "row_index": row_index,
         "table_bbox": _bbox(table.bbox),
         "cells": source_cells,
@@ -435,19 +541,37 @@ def _row_from_table(
 def extract_observations(
     result: LabRecognitionResult,
 ) -> RecognitionDraft:
-    report_context = _extract_report_context(result.lines)
+    report_context = _extract_report_context(result.lines, result.tables)
     rows: list[LabRowDraft] = []
     warnings = list(result.warnings)
+    previous_table: ProviderTable | None = None
+    previous_columns: dict[int, str] | None = None
     for table in result.tables:
-        header = _header_mapping(table)
-        if header is None:
-            warnings.append(
-                f"table {table.index} has no recognizable laboratory header"
-            )
+        if _context_pairs(table):
             continue
-        header_index, columns = header
+        header = _header_mapping(table)
+        if header is not None:
+            header_index, columns = header
+            header_table = table
+            row_start = header_index + 1
+        else:
+            inherited = _continuation_columns(table, previous_columns)
+            if inherited is None:
+                warnings.append(
+                    f"table {table.index} has no recognizable laboratory header"
+                )
+                previous_table = table
+                previous_columns = None
+                continue
+            columns = inherited
+            header_table = previous_table
+            row_start = 0
+            warnings.append(
+                f"table {table.index} reused the compatible header from "
+                f"table {previous_table.index if previous_table else 'unknown'}"
+            )
         for row_index, row in enumerate(
-            table.rows[header_index + 1 :], start=header_index + 1
+            table.rows[row_start:], start=row_start
         ):
             draft = _row_from_table(
                 table=table,
@@ -458,9 +582,12 @@ def extract_observations(
                 provider_name=result.provider_name,
                 provider_version=result.provider_version,
                 report_context=report_context,
+                header_table=header_table,
             )
             if draft is not None:
                 rows.append(draft)
+        previous_table = table
+        previous_columns = columns
     if result.tables and not rows:
         warnings.append("structured table was present but no data rows validated")
     if not result.tables:

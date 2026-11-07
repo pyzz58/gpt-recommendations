@@ -358,6 +358,8 @@ class DoclingLabProvider:
             file_format=(
                 "scanned_pdf"
                 if media_type == "application/pdf"
+                else "clear_printed_jpeg"
+                if media_type == "image/jpeg"
                 else "clear_printed_image"
             ),
             tables=tables,
@@ -433,5 +435,7 @@ class RoutedLabProvider:
                 content, filename=filename, media_type=media_type
             )
         raise LabProviderUnavailable(
-            f"unsupported laboratory source type: {media_type}"
+            "unsupported laboratory source type: "
+            f"{media_type} ({suffix or 'no extension'}); supported routes are "
+            "text or scanned PDF, PNG and JPEG"
         )

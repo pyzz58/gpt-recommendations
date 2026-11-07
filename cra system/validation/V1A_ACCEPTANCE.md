@@ -82,6 +82,10 @@ unit test passed; the manifest records the specific case used for each claim.
   is never supplied with its expected answers.
 - The W08 rows were 12/12 recovered with source coordinates and no declared
   key-field errors. This small set is not a clinical error-rate estimate.
+- W14 added a two-page image-only scan with report context and continuation
+  structure, plus a clear JPEG with 0.5-degree rotation. Both passed with
+  6/6 rows and zero declared key-field errors; 5/6 rows were structurally
+  usable and one comma-form value stayed in focused review.
 - W09 evaluated three independent synthetic safety cases for dimension
   separation, question topics and grounding. The model output remains a
   limited explanation candidate and cannot close an issue or make a medical
@@ -93,8 +97,10 @@ unit test passed; the manifest records the specific case used for each claim.
 
 ## Automatic coverage and human work
 
-- Every evaluated source row was structurally available for matching. This is
-  true only for the small declared synthetic set.
+- All 12 W08 rows and 5/6 W14 complex rows were structurally available for
+  matching. One W14 row remains focused review because its printed comma is not
+  silently converted to a decimal point. This applies only to the synthetic
+  set.
 - The expected review items concern absent export rows, missing units,
   reference-limit differences and Chinese context rows absent from the current
   EDC export. They are not hidden as normal and do not prove EDC omission.

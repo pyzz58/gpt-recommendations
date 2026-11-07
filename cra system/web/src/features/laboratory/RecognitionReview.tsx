@@ -28,6 +28,10 @@ import {
   reviewLabObservation
 } from "../../api/client";
 import { SourcePdfViewer } from "../../components/SourcePdfViewer";
+import {
+  imageHighlightStyle,
+  isPdfFileFormat
+} from "./review";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -73,6 +77,43 @@ function editableValues(observation: LabObservationView): Record<string, unknown
     lower_limit_raw: observation.lower_limit,
     upper_limit_raw: observation.upper_limit
   };
+}
+
+function LabImageSource({
+  url,
+  bbox,
+  alt
+}: {
+  url: string;
+  bbox: number[] | null;
+  alt: string;
+}) {
+  const [size, setSize] = useState<{ width: number; height: number } | null>(
+    null
+  );
+  const highlightStyle = imageHighlightStyle(bbox, size);
+  return (
+    <div className="lab-image-frame">
+      <img
+        className="lab-source-image"
+        src={url}
+        alt={alt}
+        onLoad={(event) =>
+          setSize({
+            width: event.currentTarget.naturalWidth,
+            height: event.currentTarget.naturalHeight
+          })
+        }
+      />
+      {highlightStyle && (
+        <span
+          className="source-highlight"
+          style={highlightStyle}
+          aria-label="检验原图字段定位"
+        />
+      )}
+    </div>
+  );
 }
 
 export function RecognitionReview({
@@ -359,7 +400,7 @@ export function RecognitionReview({
 
   const source = selected?.source_ref;
   const page = Number(source?.page ?? 1);
-  const isPdf = report?.file_format === "text_pdf";
+  const isPdf = isPdfFileFormat(report?.file_format);
 
   return (
     <section className="lab-workspace" aria-labelledby="recognition-title">
@@ -498,11 +539,9 @@ export function RecognitionReview({
                       bbox={sourceBBox(selected)}
                     />
                   ) : (
-                    <img
-                      className="lab-source-image"
-                      src={documentContentUrl(
-                        report.source_document_version_id
-                      )}
+                    <LabImageSource
+                      url={documentContentUrl(report.source_document_version_id)}
+                      bbox={sourceBBox(selected)}
                       alt="合成检验源图"
                     />
                   )}

@@ -22,3 +22,30 @@ export function reviewableFieldIds(
     .filter((field) => field.result_status !== "agreement")
     .map((field) => field.id);
 }
+
+export function isPdfFileFormat(fileFormat: string | undefined): boolean {
+  return fileFormat === "text_pdf" || fileFormat === "scanned_pdf";
+}
+
+export function imageHighlightStyle(
+  bbox: number[] | null | undefined,
+  size: { width: number; height: number } | null
+): Record<string, string> | null {
+  if (!bbox || bbox.length !== 4 || !size) {
+    return null;
+  }
+  const [x0, y0, x1, y1] = bbox;
+  if (
+    ![x0, y0, x1, y1].every(Number.isFinite) ||
+    x1 <= x0 ||
+    y1 <= y0
+  ) {
+    return null;
+  }
+  return {
+    left: `${(x0 / size.width) * 100}%`,
+    top: `${(y0 / size.height) * 100}%`,
+    width: `${((x1 - x0) / size.width) * 100}%`,
+    height: `${((y1 - y0) / size.height) * 100}%`
+  };
+}
