@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "record_id": "SI-FIRST-REAL-PILOT-SOURCE-PREP-20261107-001",
+  "checked_at": "2026-11-07T21:13:46+13:00",
+  "branch": "codex/si-first-real-pilot-20261101",
+  "base_commit": "3c2b1fa98576665d825863f4c02fb3bf428bf04f",
+  "source_pr": 82,
+  "result": "SOURCE_ACQUISITION_READY_MODEL_AUTHORIZATION_MISSING",
+  "inheritance_check": {
+    "pr82_base": "6dab1036dcbee79df9633f3d7a9f91e46cef17db",
+    "pr82_head": "3c2b1fa98576665d825863f4c02fb3bf428bf04f",
+    "strategic_runtime_ci": "PASS_TWO_JOBS",
+    "spec_ci": "PASS",
+    "unrelated_newspaper_quick_check": "FAIL_EXISTING_MAIL_SECRET_BOUNDARY",
+    "new_branch_from_pr82_head": true,
+    "worktree_clean_before_preparation": true
+  },
+  "environment": {
+    "logical_location": "private:/内参-runtime/si-venv",
+    "python": "3.12.14",
+    "uv": "0.12.13",
+    "locked_sync": true,
+    "workflow_extra": true,
+    "schema_contracts_checked": [
+      "http-adapter",
+      "fetch",
+      "pilot"
+    ]
+  },
+  "real_task": {
+    "current_task_version_id": "TASK-SI-PILOT-CBAM-20261107-v002",
+    "current_spec_sha256": "048d6785be6e70d5f17a420de8e571897f721e365918095ef6a69184a1cbc950",
+    "historical_task_version_id": "TASK-SI-PILOT-CBAM-20261107-v001",
+    "historical_spec_sha256": "ed13f29a73cae9acbf0498693f85f8fd77f717b717b9488acdcc95243a772dfb",
+    "revision_reason": "Recording this preparation changed the canonical specification, so the append-only archive retains the successful v001 history and binds the active v002 Task/source to the final current specification.",
+    "data_cutoff": "2026-11-07 Pacific/Auckland",
+    "title": "Carbon border adjustment exporter-announcement controlled pilot",
+    "scope": "Use World Bank Policy Research Working Paper 11366 to explain observed Turkish exporter behavior after the July 2021 CBAM announcement without treating it as completed 2026 certificate-system evidence."
+  },
+  "source": {
+    "publisher": "World Bank",
+    "title": "Even the Announcement Matters? The Effect of the Carbon Border Adjustment Mechanism on Exporter Behavior",
+    "authors": [
+      "Uğur Aytun",
+      "Gunhild Berg",
+      "Seyit Mümin Cilasun",
+      "Etkin Ozen"
+    ],
+    "publication_date": "2026-04-28",
+    "doi": "10.1596/1813-9450-11366",
+    "handle": "10986/44740",
+    "rights": "CC BY 3.0 IGO according to World Bank repository metadata",
+    "logical_private_ref": "private:/si-first-real-pilot/archive#DOC-WB-CBAM-11366-20260428-v002",
+    "source_version_id": "DOC-WB-CBAM-11366-20260428-v002",
+    "historical_source_version_id": "DOC-WB-CBAM-11366-20260428-v001",
+    "body_bytes": 99024,
+    "body_sha256": "60067f3e9c49256fc23428300c1d394421a6dfd6fd396c726a2d27ab35d89276",
+    "media_type": "text/plain; charset=utf-8",
+    "verified_prefix": "Policy Research Working Paper"
+  },
+  "controlled_fetch": {
+    "task_version_id": "TASK-SI-PILOT-CBAM-20261107-v002",
+    "capability_review_id": "CAP-REVIEW-SI-PILOT-CBAM-FETCH-20261107-v002",
+    "budget_id": "BUDGET-SI-CBAM-SOURCE-20261107-R2",
+    "admission_id": "ADMISSION-SI-CBAM-SOURCE-20261107-R2",
+    "operation_id": "FETCH-SI-WB-CBAM-11366-20261107-R2",
+    "historical_operation_id": "FETCH-SI-WB-CBAM-11366-20261107",
+    "status": "SUCCEEDED",
+    "calls": 1,
+    "attempts": 1,
+    "internal_retries": 0,
+    "provider_request_id": null,
+    "estimated_cost_usd": "0",
+    "actual_cost": "NOT_REPORTED_BY_PROVIDER",
+    "elapsed_seconds": "2.238652"
+  },
+  "rights_boundary": {
+    "source_store_body": "ALLOWED_BY_CC_BY_3_0_IGO",
+    "source_model_process": "ALLOWED_BY_CC_BY_3_0_IGO",
+    "source_translate": "ALLOWED_BY_CC_BY_3_0_IGO",
+    "task_model_process": "OWN_WORK",
+    "private_delivery": false,
+    "publication": false,
+    "attribution_required": true
+  },
+  "not_created": [
+    "No writer model admission",
+    "No reviewer model admission",
+    "No model budget",
+    "No model credential name or value",
+    "No PilotRequest",
+    "No model API call",
+    "No pilot HTML",
+    "No formal Article/Review/Edition adoption",
+    "No publication or delivery"
+  ],
+  "operator_authorization_needed": [
+    "Provider identifier and HTTPS chat/completions-compatible endpoint",
+    "Writer model name and environment-variable credential name",
+    "Separate reviewer role, configuration and environment-variable credential name",
+    "Input and output USD rates, or explicit acceptance that model cost remains UNKNOWN",
+    "Explicit one-time CONTROLLED_TRIAL authorization for at most five model calls and a stated USD ceiling",
+    "Explicit permission for the chosen model provider to process the CC BY 3.0 IGO World Bank text and the self-written Task"
+  ],
+  "validation": {
+    "private_archive_created_outside_git": true,
+    "private_configs_mode": "0600",
+    "private_directories_mode": "0700",
+    "fetch_receipt_verified": true,
+    "source_body_hash_matches_prior_source_identity": true,
+    "fixture_clock_correction": {
+      "file": "tests_runtime/test_gating.py",
+      "cause": "W18 budget/admission validity ended on 2026-11-04 while the test calls the gate using the actual current clock.",
+      "business_behavior_changed": false,
+      "fix": "Moved only the test budget/admission expiry to a far-future fixed time.",
+      "targeted_tests": {
+        "count": 8,
+        "result": "PASS"
+      }
+    },
+    "pilot_runtime_tests": {
+      "count": 12,
+      "result": "PASS",
+      "runner": "/Users/zz/Documents/ChatGPT/内参-runtime/si-venv/bin/python"
+    },
+    "full_runtime_tests": {
+      "count": 313,
+      "result": "PASS",
+      "duration_seconds": 39.757
+    },
+    "maintenance_tests": {
+      "count": 56,
+      "result": "PASS",
+      "duration_seconds": 14.828
+    },
+    "spec_and_binding_checks": "PASS",
+    "no_model_call_made": true
+  },
+  "next_action": "Obtain one explicit model/provider, credential-variable, budget and external-processing authorization package; then create separate writer/reviewer CONTROLLED_TRIAL admissions and run the existing make-pilot entry point."
+}

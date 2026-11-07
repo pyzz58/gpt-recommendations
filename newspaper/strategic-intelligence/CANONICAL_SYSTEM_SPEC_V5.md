@@ -3523,6 +3523,8 @@ NC-041/043/044的实现工作分配见§26.5，仍为OPEN；其它原问题状�
 
 **接续要求**：后续先给真实文件与输入/调用/失败/成本，再汇报代码和测试；不继续扩展年度、通用治理或无触发任务视图替代首刊。禁止以预写夹具充自动生成、模型PASS充真实审核、模拟两周充自然周。每次接口完成与真实内容/读者体验/无人值守分别记录；未测保持未测。正式规则只在本文件维护，入口/问题/清单机械生成。
 
+**2026-11-07第一次真实试刊取源准备**：从PR #82的`3c2b1fa98576665d825863f4c02fb3bf428bf04f`建立`codex/si-first-real-pilot-20261101`接续分支；PR #82基底`6dab1036…`、两job运行CI和规范CI已核通过，日报旧`test_mail_secret_boundary.py`失败仍属独立问题。Git工作树外建立Python 3.12.14锁定环境，`http-adapter`、`fetch`、`pilot`三份合同实际通过。以真实Task `TASK-SI-PILOT-CBAM-20261107-v001`和World Bank Policy Research Working Paper 11366（DOI 10.1596/1813-9450-11366，仓库标注CC BY 3.0 IGO）登记来源、capability Review、零费用预算与单次公开HTTPS取件准入；`FETCH-SI-WB-CBAM-11366-20261107`实际成功，正文99024字节、SHA-256 `60067f3e…`，一次attempt、无内部重试，估计费用USD 0，provider请求ID未返回。当前只有真实取源与配置，尚未创建writer/reviewer模型准入或模型预算，未调用任何模型、未生成试刊HTML、未采用为Article/Review/Edition，也未发布或交付；W46—W51正式状态和G01—G04不变。下一步必须先取得供应商/HTTPS端点/模型、两个具名环境凭证、token费率或UNKNOWN费用接受、至多五次调用的明确USD上限和外部处理授权，再用同一入口生成第一份私人待读试刊；不能沿用日报预算或其他项目API。证据见`audits/first-real-pilot-source-prep-20261107.json`。
+
 <!-- END ISSUE_LEDGER -->
 
 <a id="th-23-3"></a>

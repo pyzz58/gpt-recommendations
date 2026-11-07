@@ -22,6 +22,7 @@ from intelligence.operations import (AdapterDescriptor, AdapterReturn, CostObser
                                      OperationStatus, UsageObservation)
 
 AT=datetime(2026,10,25,0,0,tzinfo=timezone.utc)
+FUTURE=datetime(2099,1,1,tzinfo=timezone.utc)
 SPEC="a"*64
 BODY=b"Owned synthetic W18 gate fixture\n"
 RESULT=b"Owned actual gated result\n"
@@ -102,7 +103,7 @@ class PreCallGateTests(unittest.TestCase):
             task_version_id="TASK-W18-v001",
             quotas=(BudgetLine(metric="cost:USD",amount=Decimal(cost)),
                 BudgetLine(metric="calls",amount=Decimal(calls))),
-            valid_from=AT,valid_until=AT+timedelta(days=10),created_at=AT)
+            valid_from=AT,valid_until=FUTURE,created_at=AT)
 
     def capability_admission(self, *, admission_id="ADMISSION-W18", external=True,
                              max_attempts=1,max_internal=1):
@@ -115,7 +116,7 @@ class PreCallGateTests(unittest.TestCase):
             external_processing_allowed=external,budget_id="BUDGET-W18",
             max_attempts=max_attempts,max_internal_retries=max_internal,
             mode=AdmissionMode.APPROVED,review_version_id="REVIEW-W18-v001",
-            valid_from=AT,valid_until=AT+timedelta(days=10),created_at=AT)
+            valid_from=AT,valid_until=FUTURE,created_at=AT)
 
     @staticmethod
     def request(operation_id="OP-W18-1", *, key="LOGICAL-W18-1",
