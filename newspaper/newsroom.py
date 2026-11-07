@@ -46,7 +46,7 @@ AI = r"\b(?:AI|artificial intelligence|LLMs?|large language model|machine learni
 SCIENCE = r"\b(?:quantum|physics|scientists?|researchers?|semiconductor|chip|robot\w*|spacecraft|satellite|rocket|superconduct\w*|materials science)\b"
 BUSINESS = r"\b(?:startup|start-up|entrepreneur\w*|business model|venture capital|funding|series [a-f]|acquisition|merger|IPO|bankruptcy|restructuring|supply chain|retail|revenue|profit|commerciali\w*|company|companies)\b"
 ENERGY = r"\b(?:energy|oil|gas|OPEC|electricity|power grid|nuclear|fusion|solar|wind power|battery|lithium|copper|rare earth|critical minerals|shipping|supply chain|food exports?|grain|export ban)\b"
-HEALTH = r"\b(?:health|medical|clinical|drug|vaccine|cancer|hospital|biotech|gene|protein|disease|FDA|WHO)\b"
+HEALTH = r"\b(?:health|medical|clinical|drug|vaccine|cancer|hospital|biotech|gene|protein|disease|(?-i:FDA|WHO))\b"
 PROMO = r"\b(?:trailer|celebrity|movie review|coupon|best deals|horoscope|sponsored content|affiliate links)\b"
 ACTION = r"\b(?:announc\w*|approv\w*|enact\w*|launch\w*|cut|hike\w*|votes?|agreed|acquir\w*|report\w*|reveal\w*|signed|ban\w*|strikes?|invad\w*|deploy\w*|discover\w*|demonstrat\w*|limit\w*|restrict\w*|caps?)\b"
 
@@ -397,6 +397,9 @@ def select_readable(candidates, enriched):
     }
     for section, quota in SECTIONS.items():
         available = [enriched[a["url"]] for a in candidates.get(section, []) if enriched.get(a["url"])]
+        if any("selection_review" in a for a in available):
+            available.sort(key=lambda a: (a.get("selection_priority", a.get("importance_score", 0)),
+                                          a.get("representative_quality", 0)), reverse=True)
         selected, families, concentration, exceptions = [], Counter(), Counter(), []
         rejected_attempts = {}
         def reject(a, code, blocker=None):
@@ -497,6 +500,8 @@ def select_readable(candidates, enriched):
                 "readable": bool(enriched.get(url)),
                 "importance_score": item.get("importance_score"),
                 "event_key": item.get("event_key"),
+                "selection_review": (enriched.get(url) or {}).get("selection_review"),
+                "selection_priority": (enriched.get(url) or {}).get("selection_priority"),
             })
         missing = [c for c in ("中国", "美国") if not any(c in a.get("countries", []) for a in selected)] if section == "中国与美国" else []
         diagnostics[section] = {"quota": quota, "candidate_count": len(candidates.get(section, [])),

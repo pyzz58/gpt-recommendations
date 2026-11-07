@@ -7,6 +7,7 @@ The original captured material and span hashes remain in the private checkpoint.
 from __future__ import annotations
 import hashlib
 import re
+from decimal import Decimal
 
 QUALIFIER = re.compile(r"\b(?:however|but|although|unless|only if|subject to|conditional|not yet|denied|disputed|critics?|opponents?|cautioned|uncertain|preliminary|limitations?|could|might|may|not|according to)\b", re.I)
 FACT = re.compile(r"\b(?:\d|announc|approv|vot|enact|effective|deadline|percent|billion|million|previous|last year|scheduled|expected|said|told|reported)", re.I)
@@ -83,6 +84,16 @@ def edit_grouped(grouped, plans=None):
             result[category].append(edited)
     return result
 
+def numeric_claims(text):
+    """Normalize equivalent formatting only; percent remains a distinct unit.
+
+    1,000 == 1000, 5.0 percent == 5%; no scale/currency conversion or rounding.
+    """
+    pattern = r"\b(\d+(?:,\d{3})*(?:\.\d+)?)(\s*(?:%|percent\b|per cent\b))?"
+    return {(Decimal(number.replace(',', '')), bool(unit.strip()))
+            for number, unit in re.findall(pattern, text, flags=re.I)}
+
+
 def validate_rewritten_report(article, paragraphs):
     """Structural/source checks; not a claim of complete semantic verification.
 
@@ -92,10 +103,10 @@ Unknown or rejected results fall back per article instead of publishing them.
 """
     a = prepare_article(article)
     source = a["source_paragraphs"]
-    if not isinstance(paragraphs,list) or not 3 <= len(paragraphs) <= 12:
+    min_paragraphs = 1 if word_count(a["source_reading_en"]) < 300 else 3
+    if not isinstance(paragraphs,list) or not min_paragraphs <= len(paragraphs) <= 12:
         raise ValueError("Expected a complete report with mapped paragraphs")
     covered, blocks, mapping = set(), [], []
-    numbers = lambda s: set(re.findall(r"\b\d+(?:[,.]\d+)*(?:%)?", s))
     uncertainty = re.compile(r"\b(?:could|may|might|would|possible|potential|uncertain|preliminary|expected|forecast|estimate|propos\w*|subject to|if|unless)\b",re.I)
     negative = re.compile(r"\b(?:not|no|never|denied|without|unapproved|unproven)\b",re.I)
     for paragraph in paragraphs:
@@ -106,7 +117,7 @@ Unknown or rejected results fall back per article instead of publishing them.
         if any(type(i) is not int or i < 0 or i >= len(source) for i in ids):
             raise ValueError("Unknown source span")
         evidence = "\n".join(source[i] for i in ids)
-        if not numbers(text) <= numbers(evidence): raise ValueError("Unsupported numeric claim")
+        if not numeric_claims(text) <= numeric_claims(evidence): raise ValueError("Unsupported numeric claim")
         for quote in re.findall(r'["“]([^"”]{8,})["”]',text):
             if quote not in evidence: raise ValueError("Changed direct quotation")
         if negative.search(evidence) and not negative.search(text):
@@ -132,8 +143,14 @@ def apply_reports(grouped, reports):
     for section, articles in grouped.items():
         output[section] = []
         for article in articles:
+            if article.get("source_language") == "zh":
+                # Chinese originals are not submitted to the English report editor.
+                output[section].append(edit_article(article))
+                continue
             try:
                 proposal = reports.get(article.get("event_key", article.get("url")))
+                if proposal is None:
+                    raise ValueError("No accepted report proposal")
                 edited = validate_rewritten_report(article,proposal)
             except (ValueError,TypeError) as exc:
                 edited = edit_article(article)

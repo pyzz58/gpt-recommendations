@@ -15,7 +15,7 @@ class MailSecretsSafetyTests(unittest.TestCase):
         sending=w.index("      - name: Send verified edition via QQ SMTP")
         self.assertLess(receipt,config)
         self.assertLess(config,sending)
-        config_segment=w[config:w.index("      - name: Restore prebuilt verified edition")]
+        config_segment=w[config:w.index("      - name: Install print fonts")]
         send_segment=w[sending:w.index("      - name: Make accepted-mail receipt")]
         for secret in ("secrets.NEWSPAPER_SMTP_PASSWORD","secrets.NEWSPAPER_SMTP_FROM",
                        "secrets.NEWSPAPER_TO"):
