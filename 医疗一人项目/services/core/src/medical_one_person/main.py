@@ -27,6 +27,7 @@ from medical_one_person.api.session import (
     build_principal_dependency,
     build_session_router,
 )
+from medical_one_person.api.sources import build_source_search_router
 from medical_one_person.api.system import build_system_router
 from medical_one_person.api.workflows import build_workflow_router
 from medical_one_person.api.workspace import build_workspace_router
@@ -34,6 +35,7 @@ from medical_one_person.application.knowledge import KnowledgeIndexService
 from medical_one_person.application.knowledge_ingestion import (
     KnowledgeIngestionService,
 )
+from medical_one_person.application.project_views import WorkspaceReader
 from medical_one_person.application.recovery import RecoveryService
 from medical_one_person.application.sessions import SessionService
 from medical_one_person.config import Settings, get_settings
@@ -74,6 +76,7 @@ def create_app(
     storage_checker_override: Callable[[], DependencyStatus] | None = None,
     queue_checker_override: Callable[[], DependencyStatus] | None = None,
     worker_checker_override: Callable[[], DependencyStatus] | None = None,
+    source_router_override: SourceRouter | None = None,
 ) -> FastAPI:
     settings = settings_override or get_settings()
     model_provider = build_model_provider(settings)
@@ -82,7 +85,7 @@ def create_app(
     skills.validate_against_roles(roles)
     source_policies = load_source_policies(settings.source_policy_path)
     source_adapters = build_source_adapters(settings)
-    source_router = SourceRouter(source_policies, source_adapters)
+    source_router = source_router_override or SourceRouter(source_policies, source_adapters)
     workflows = WorkflowRegistry.from_catalog(
         settings.workflow_catalog_path,
         roles,
@@ -282,6 +285,13 @@ def create_app(
             ingestion,
             indexer,
             current_principal,
+        )
+    )
+    app.include_router(
+        build_source_search_router(
+            source_router=source_router,
+            project_reader=WorkspaceReader(session_factory, roles),
+            current_principal=current_principal,
         )
     )
     app.include_router(

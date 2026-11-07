@@ -56,6 +56,12 @@ TR-19、TR-24；W22；AT-015、AT-031。
   阻断，结果保留PubMed元数据、预印本/撤稿标记和全文不可用限制；
 - 默认离线工厂不创建网络adapter，来源能力保持not_checked；
 - 离线测试注入两次transport响应，断言URL、参数和解析，不发起网络请求。
+- 项目级入口为`POST /api/v1/projects/{project_id}/sources/search`，调用前
+  通过本地会话和项目读取校验owner/workspace边界；
+- 未配置adapter返回503，未知/违规策略返回400，429返回限流，transport失败
+  返回502；空adapter不会伪装成“0条结果”；
+- API当前只返回元数据，不自动入库；真实检索以后仍须核对来源、全文状态和
+  项目授权，不能把元数据响应当成科学证据。
 
 ## 配置
 
@@ -92,6 +98,8 @@ TR-19、TR-24；W22；AT-015、AT-031。
   5xx拒绝、网络丢失unknown和reconcile保持unknown；
 - PubMed由注入transport覆盖ESearch→EFetch、参数/日期、官方域名、结果上限、
   预印本标签、非法ID和429，不访问NCBI；
+- 来源API由fake adapter覆盖项目会话、成功响应、未配置503、未知策略400、
+  限流429和项目隔离；
 - MailService数据库回归验证unknown reconcile不新增attempt、不自动重发；
 - 现有科学反馈、W23 readiness/config和全部应用回归继续运行。
 

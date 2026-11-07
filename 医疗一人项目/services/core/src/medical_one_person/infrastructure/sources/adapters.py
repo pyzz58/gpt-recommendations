@@ -22,6 +22,10 @@ class SourcePolicyViolation(ValueError):
     pass
 
 
+class SourceUnavailableError(RuntimeError):
+    pass
+
+
 class PubMedXmlAdapter:
     """Parses cached PubMed XML; network fetching is intentionally separate."""
 
@@ -91,7 +95,13 @@ class SourceRouter:
         self._policies = policies
         self._adapters = adapters
 
+    @property
+    def available(self) -> bool:
+        return bool(self._adapters)
+
     def search(self, request: SourceSearchRequest) -> list[SourceRecord]:
+        if not self._adapters:
+            raise SourceUnavailableError("No live scholarly source adapter is configured")
         policy = self._policies.get(request.policy_id)
         if policy is None:
             raise SourcePolicyViolation("Unknown source policy")
