@@ -88,8 +88,9 @@
     "provider_invoice_claimed": false
   },
   "credential_check": {
-    "location": "current local process environment",
+    "location": "current local process environment and macOS Keychain",
     "DEEPSEEK_API_KEY": "MISSING",
+    "keychain_service_si_deepseek_api": "MISSING",
     "secret_value_read_or_recorded": false,
     "github_secret_assumed_available_locally": false,
     "newspaper_project_budget_reused": false
