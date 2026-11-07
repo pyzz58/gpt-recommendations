@@ -347,7 +347,13 @@ class PilotRunner:
                 self.archive.check_version_use(vid, MaterialUse.MODEL_PROCESS,
                     UseContext(at=datetime.now(timezone.utc), provider=aid.provider_id, territory=aid.territory))
         pieces = [f"<!doctype html><html lang='zh'><meta charset='utf-8'><title>{html.escape(req.title)}</title>",
-            "<style>body{max-width:900px;margin:3em auto;padding:1em;line-height:1.9;font-family:serif}p{white-space:pre-wrap}</style>",
+            "<style>body{max-width:920px;margin:3em auto;padding:1.2em;line-height:1.9;font-family:serif;color:#202124}"
+            "h2{margin-top:2.2em;padding-top:1em;border-top:1px solid #bbb}"
+            "h3,h4{margin-top:1.6em}blockquote{margin:1em 0;padding:.4em 1em;border-left:4px solid #aaa;background:#f6f6f4}"
+            "li{margin:.35em 0}table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.93em}"
+            "th,td{border:1px solid #bbb;padding:.35em .5em;vertical-align:top}th{background:#eee}"
+            "code{background:#f1f1ed;padding:.1em .25em}pre{overflow:auto;background:#f1f1ed;padding:1em}"
+            "hr{border:0;border-top:1px solid #bbb;margin:2em 0}</style>",
             f"<h1>{html.escape(req.title)}</h1><p>研究试刊 · 待最终审阅 · 未获出版或自动交付授权</p>"]
         for stage in STAGES:
             pieces.append("<h2>" + html.escape(policy["labels"][stage]) + "</h2>" + str(_body_markup(outputs[stage])))

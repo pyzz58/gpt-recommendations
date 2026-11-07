@@ -225,32 +225,132 @@ def _title_and_body(text: str) -> tuple[str, str]:
 
 
 def _body_markup(text: str) -> Markup:
-    blocks = []
-    paragraph = []
+    """Render a deliberately small, escaped Markdown subset.
 
-    def flush():
+    Model output remains data. No raw HTML, links or embedded content pass
+    through; unsupported Markdown stays readable as escaped text.
+    """
+    def inline(value: str) -> str:
+        escaped = html.escape(value, quote=True)
+        escaped = re.sub(r"`([^`]+)`", r"<code>\1</code>", escaped)
+        escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
+        escaped = re.sub(
+            r"(?<!\*)\*([^*\n]+)\*(?!\*)", r"<em>\1</em>", escaped)
+        return escaped
+
+    lines = text.splitlines()
+    blocks: list[str] = []
+    paragraph: list[str] = []
+    list_kind: str | None = None
+    list_items: list[str] = []
+
+    def flush_paragraph() -> None:
         if paragraph:
             value = " ".join(part.strip() for part in paragraph).strip()
             if value:
-                blocks.append("<p>" + html.escape(value, quote=True) + "</p>")
+                blocks.append("<p>" + inline(value) + "</p>")
             paragraph.clear()
 
-    for line in text.splitlines():
-        stripped = line.strip()
-        if not stripped:
-            flush()
-            continue
-        heading = re.fullmatch(r"(#{2,4})\s+(.+)", stripped)
-        if heading:
-            flush()
-            level = len(heading.group(1))
+    def flush_list() -> None:
+        nonlocal list_kind
+        if list_kind and list_items:
             blocks.append(
-                f"<h{level}>"
-                + html.escape(heading.group(2).strip(), quote=True)
-                + f"</h{level}>")
-        else:
-            paragraph.append(line)
-    flush()
+                f"<{list_kind}>"
+                + "".join("<li>" + inline(item) + "</li>" for item in list_items)
+                + f"</{list_kind}>")
+        list_kind = None
+        list_items.clear()
+
+    def flush_all() -> None:
+        flush_paragraph()
+        flush_list()
+
+    def table_cells(line_value: str) -> list[str]:
+        value = line_value.strip()
+        if value.startswith("|"):
+            value = value[1:]
+        if value.endswith("|"):
+            value = value[:-1]
+        return [cell.strip() for cell in value.split("|")]
+
+    index = 0
+    while index < len(lines):
+        stripped = lines[index].strip()
+        if not stripped:
+            flush_all()
+            index += 1
+            continue
+        if stripped in ("```", "~~~"):
+            flush_all()
+            fence = stripped
+            code: list[str] = []
+            index += 1
+            while index < len(lines) and lines[index].strip() != fence:
+                code.append(lines[index])
+                index += 1
+            blocks.append("<pre><code>" + html.escape("\n".join(code)) + "</code></pre>")
+            index += 1
+            continue
+        if re.fullmatch(r"(?:-{3,}|\*{3,}|_{3,})", stripped):
+            flush_all()
+            blocks.append("<hr>")
+            index += 1
+            continue
+        heading = re.fullmatch(r"(#{1,6})\s+(.+)", stripped)
+        if heading:
+            flush_all()
+            source_level = len(heading.group(1))
+            level = min(6, source_level + 1)
+            blocks.append(
+                f"<h{level}>" + inline(heading.group(2).strip()) + f"</h{level}>")
+            index += 1
+            continue
+        if "|" in stripped and index + 1 < len(lines):
+            headers = table_cells(stripped)
+            separators = table_cells(lines[index + 1].strip())
+            if (len(headers) == len(separators)
+                    and all(re.fullmatch(r":?-{3,}:?", cell) for cell in separators)):
+                flush_all()
+                index += 2
+                rows: list[list[str]] = []
+                while index < len(lines) and "|" in lines[index]:
+                    cells = table_cells(lines[index])
+                    if len(cells) != len(headers):
+                        break
+                    rows.append(cells)
+                    index += 1
+                blocks.append(
+                    "<table><thead><tr>"
+                    + "".join("<th>" + inline(cell) + "</th>" for cell in headers)
+                    + "</tr></thead><tbody>"
+                    + "".join(
+                        "<tr>" + "".join("<td>" + inline(cell) + "</td>" for cell in row)
+                        + "</tr>" for row in rows)
+                    + "</tbody></table>")
+                continue
+        bullet = re.fullmatch(r"[-*+]\s+(.+)", stripped)
+        ordered = re.fullmatch(r"\d+[.)]\s+(.+)", stripped)
+        if bullet or ordered:
+            flush_paragraph()
+            kind = "ul" if bullet else "ol"
+            if list_kind != kind:
+                flush_list()
+                list_kind = kind
+            list_items.append((bullet or ordered).group(1))
+            index += 1
+            continue
+        if stripped.startswith(">"):
+            flush_all()
+            quote: list[str] = []
+            while index < len(lines) and lines[index].strip().startswith(">"):
+                quote.append(lines[index].strip()[1:].lstrip())
+                index += 1
+            blocks.append("<blockquote><p>" + inline(" ".join(quote)) + "</p></blockquote>")
+            continue
+        flush_list()
+        paragraph.append(lines[index])
+        index += 1
+    flush_all()
     return Markup("\n".join(blocks))
 
 

@@ -23,6 +23,7 @@ from intelligence.gating import (PreCallGate, BudgetEnvelope, BudgetLine, Capabi
 from intelligence.http_adapter import HttpAdapterConfig, HttpsAdapter, _send
 from intelligence.operations import ObservationKind, OperationKind, OperationRequest, OperationStatus
 from intelligence.pilot import PilotRequest, PilotRunner, FetchRequest, fetch_material, stage_id, STAGES
+from intelligence.presentation import _body_markup
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -268,6 +269,20 @@ class PilotTests(unittest.TestCase):
                 cwd=ROOT,capture_output=True,text=True)
             self.assertEqual(result.returncode,0,result.stderr)
             self.assertEqual(json.loads(result.stdout)['type'],'object')
+
+    def test_markdown_subset_is_rendered_but_never_allows_raw_html(self):
+        rendered=str(_body_markup(
+            "# Stage title\n\n## Section\n\n- one\n- **two**\n\n"
+            "1. first\n2. second\n\n> quoted\n\n"
+            "| A | B |\n|---|---|\n| 1 | 2 |\n\n<script>bad()</script>"))
+        self.assertIn('<h2>Stage title</h2>', rendered)
+        self.assertIn('<h3>Section</h3>', rendered)
+        self.assertIn('<ul><li>one</li><li><strong>two</strong></li></ul>', rendered)
+        self.assertIn('<ol><li>first</li><li>second</li></ol>', rendered)
+        self.assertIn('<blockquote><p>quoted</p></blockquote>', rendered)
+        self.assertIn('<th>A</th><th>B</th>', rendered)
+        self.assertIn('<td>1</td><td>2</td>', rendered)
+        self.assertNotIn('<script>', rendered)
 
 
 if __name__=='__main__':unittest.main()

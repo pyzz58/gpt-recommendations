@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "record_id": "SI-FIRST-REAL-PILOT-RUN-20261107-001",
+  "checked_at": "2026-11-07T22:17:30+13:00",
+  "branch": "codex/si-first-real-pilot-20261101",
+  "result": "REAL_DRAFT_GENERATED_AWAITING_REVIEW",
+  "authorization": {
+    "provider": "DeepSeek",
+    "model": "deepseek-flash",
+    "approved_ceiling_usd": "0.60",
+    "user_approved": true,
+    "credential_source": "existing local private file with mode 0600",
+    "credential_value_logged_or_committed": false,
+    "world_bank_text_processing_authorized": true,
+    "task_text_processing_authorized": true,
+    "publication_or_delivery_authorized": false
+  },
+  "execution_basis": {
+    "spec_sha256": "b7d01c53b06e8368d2805ce687e87ff400f14f51f3f7a39ec7798c32550e1942",
+    "task_version_id": "TASK-SI-PILOT-CBAM-20261107-v003",
+    "source_version_id": "DOC-WB-CBAM-11366-20260428-v003",
+    "source_body_bytes": 99024,
+    "source_body_sha256": "60067f3e9c49256fc23428300c1d394421a6dfd6fd396c726a2d27ab35d89276",
+    "source_license": "CC BY 3.0 IGO",
+    "source_redownloaded_for_this_run": false,
+    "pilot_id": "PILOT-SI-CBAM-DEEPSEEK-20261107-001",
+    "budget_id": "BUDGET-DEEPSEEK-PILOT-20261107",
+    "writer_admission_id": "ADMISSION-DEEPSEEK-WRITER-20261107",
+    "reviewer_admission_id": "ADMISSION-DEEPSEEK-REVIEWER-20261107",
+    "thinking_mode": "disabled",
+    "max_tokens_per_stage": 12000,
+    "max_material_bytes_per_stage": 320000,
+    "attempts_per_operation": 1,
+    "internal_retries": 0
+  },
+  "calls": [
+    {
+      "stage": "SELECTION",
+      "operation_id": "PILOT-OP-3e689c4115ff280ed96a1f9c932c7645",
+      "provider_request_id": "3e6be546-f066-4ea6-b400-f7218e98f351",
+      "status": "SUCCEEDED",
+      "input_tokens": 21696,
+      "output_tokens": 4757,
+      "estimated_cost_usd": "0.0122172"
+    },
+    {
+      "stage": "ADVISER",
+      "operation_id": "PILOT-OP-51401af2c41da13043063e81760bd920",
+      "provider_request_id": "7b00ced3-417d-4044-8564-c331b9a57893",
+      "status": "SUCCEEDED",
+      "input_tokens": 26877,
+      "output_tokens": 3156,
+      "estimated_cost_usd": "0.0118503"
+    },
+    {
+      "stage": "TEACHER",
+      "operation_id": "PILOT-OP-86a6f96d777bfbb0b3f3b14ab62b284a",
+      "provider_request_id": "279545bd-ff4d-43ce-ae3d-2fb9776e58fc",
+      "status": "SUCCEEDED",
+      "input_tokens": 30211,
+      "output_tokens": 4794,
+      "estimated_cost_usd": "0.0148161"
+    },
+    {
+      "stage": "CONDITIONS",
+      "operation_id": "PILOT-OP-46665b58343370e4b19426805c221170",
+      "provider_request_id": "5ae76de8-1b1f-40de-a81f-79f8b1ec7939",
+      "status": "SUCCEEDED",
+      "input_tokens": 35246,
+      "output_tokens": 2518,
+      "estimated_cost_usd": "0.0135954"
+    },
+    {
+      "stage": "REVIEW",
+      "operation_id": "PILOT-OP-ee78280531dcfe84583ad48484bd28fd",
+      "provider_request_id": "3e1e36fb-4e55-4f6d-bb2d-80208fa8b979",
+      "status": "SUCCEEDED",
+      "input_tokens": 37978,
+      "output_tokens": 3189,
+      "estimated_cost_usd": "0.0152202"
+    }
+  ],
+  "model_observation": {
+    "requested_model": "deepseek-flash",
+    "all_observed_models": "deepseek-flash",
+    "system_fingerprint": "bc19ba97cbe016479903222bb1578db6",
+    "same_provider_for_writer_and_reviewer": true,
+    "separate_requests": true,
+    "separate_tool_roles": true,
+    "general_independent_review_capability_proven": false
+  },
+  "usage_and_cost": {
+    "calls": 5,
+    "input_tokens": 152008,
+    "output_tokens": 18414,
+    "estimated_cost_usd": "0.0676992",
+    "approved_ceiling_usd": "0.60",
+    "remaining_ceiling_usd": "0.5323008",
+    "unknown_cost_attempts": 0,
+    "cost_basis": "Provider token counts times configured peak uncached rates; estimated, not a provider invoice"
+  },
+  "artifacts": {
+    "raw_html": {
+      "logical_ref": "private:/si-first-real-pilot/first-real-pilot.html",
+      "bytes": 79589,
+      "sha256": "13cb403904a11b39511932e72f128c548514f89d2a5ebada679f4d434bf39ea5"
+    },
+    "readable_html": {
+      "logical_ref": "private:/si-first-real-pilot/first-real-pilot-readable.html",
+      "bytes": 83990,
+      "sha256": "a2d0bc9ee15a034b27d685dc9b912079ab4622980707c0c03a93459dfa8545ec",
+      "description": "Same five persisted responses and no new model call; safe Markdown subset rendering for headings, lists, tables and emphasis."
+    },
+    "raw_result": {
+      "logical_ref": "private:/si-first-real-pilot/first-real-pilot-result.json",
+      "bytes": 9580,
+      "sha256": "a21b16ee3c8daad180118fd854c273f1193ae2b40a23736702b791b309f2d339"
+    },
+    "readable_result": {
+      "logical_ref": "private:/si-first-real-pilot/first-real-pilot-readable-result.json",
+      "bytes": 1877,
+      "sha256": "0b943ed7966cffff90ba932ca7aa07dd7d9db0cf41e877e69590dd05187a5e88"
+    },
+    "all_private_files_mode": "0600"
+  },
+  "post_run_validation": {
+    "runtime_tests": {
+      "count": 315,
+      "result": "PASS",
+      "duration_seconds": 47.118
+    },
+    "maintenance_tests": {
+      "count": 56,
+      "result": "PASS",
+      "duration_seconds": 17.354
+    },
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W17_W18_W32_W41_work_plan_checks": "PASS",
+    "json_and_diff_check": "PASS",
+    "safe_markdown_renderer_test": "PASS",
+    "raw_html_script_tags_after_escaping": 0,
+    "readable_html_literal_bold_markers": 0
+  },
+  "review_findings": {
+    "must_fix": [
+      "The source paper's Table 8 values conflict with section 5.3.2's narrative on which financial-constraint group expands non-EU exports; the draft must expose the source-internal conflict and not assert a direction.",
+      "The source paper uses >June 2021 in Table 2 but >July 2021 in Table 3; the announcement/post start month must remain unresolved in the draft."
+    ],
+    "additional_checks": [
+      "Clarify that 3.2% and 5.5% are semi-elastic approximations.",
+      "Record the source paper's 2023 versus 2025 wording for the approximately 42% EU export share.",
+      "State that green investment is measured through APEC environmental-products purchases and is not an absolute investment measure.",
+      "Treat the source paper's durable-substitute phrase as paraphrase unless quoting verbatim.",
+      "Clarify differing sample populations between Tables 6 and 7."
+    ],
+    "substantive_findings_confirmed": 2,
+    "review_is_model_generated_same_provider": true,
+    "independent_external_review_received": false
+  },
+  "current_state": {
+    "pilot_state": "DRAFT_AWAITING_REVIEW",
+    "formal_acceptance": false,
+    "publication_authorized": false,
+    "formal_article_created": false,
+    "formal_review_created": false,
+    "formal_edition_created": false,
+    "user_reading_received": false,
+    "W41_changed": false,
+    "G01_to_G04_changed": false
+  },
+  "limits": [
+    "The draft interprets one working paper and is not a complete weekly edition or global coverage claim.",
+    "The same-provider reviewer found concrete issues; it is not proof of independent L5 review capability.",
+    "The review did not rerun regressions or verify the paper's external citations and figures.",
+    "The readable HTML was rerendered from stored responses without additional model calls."
+  ]
+}
