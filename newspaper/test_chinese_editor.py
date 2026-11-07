@@ -102,6 +102,33 @@ class ChineseEditorTests(unittest.TestCase):
         result, _ = self.edit(rows)
         self.assertEqual(result["chinese_editing_reason"], "changed_numbers")
 
+    def test_money_abbreviation_decade_day_and_named_term_are_exact(self):
+        for en, zh in (("$446m and £332m", "4.46亿美元和3.32亿英镑"),
+                       ("in the 1970s", "在20世纪70年代"),
+                       ("on Day 1", "在第一天"), ("2000 Y2K boom", "2000年千年虫热潮")):
+            self.assertEqual(_numbers(en), _numbers(zh))
+        self.assertNotEqual(_numbers("3m cable"), _numbers("300万米电缆"))
+        self.assertNotEqual(_numbers("1970s"), _numbers("21世纪70年代"))
+
+    def test_real_language_equivalence_does_not_hide_other_negation_or_prediction(self):
+        cases = [
+            ("They asked not to be named.", "他们要求匿名。", "他们要求具名。"),
+            ("It is early, not least because prices change.", "为时尚早，尤其是因为价格会变化。", None),
+            ("They asked not to be named. It is not approved.", "他们要求匿名。该事项未获批。", "他们要求匿名。该事项已经获批。"),
+            ("The chips are subject to those export controls.", "这些芯片受上述出口管制约束。", "这些芯片将自由出口。"),
+            ("Subject to export controls, it may change.", "受出口管制约束，这可能变化。", "受出口管制约束，这会变化。"),
+            ("The widely expected delay was announced.", "已宣布这一普遍预料之中的推迟。", "已宣布推迟。"),
+            ("It is unclear who could govern.", "目前不清楚谁能执政。", "他将执政。")]
+        for en, good, bad in cases:
+            self.article["bilingual_pairs"] = [{"en": en, "zh": "旧稿", "paragraph_id": 0}]
+            title = {"id": "title", "zh": "公司公布消息", "source_ids": ["title"]}
+            with self.subTest(en=en):
+                accepted, _ = self.edit([title, {"id": "0", "zh": good}])
+                self.assertEqual(accepted["chinese_editing_mode"], "context_edited")
+                if bad:
+                    rejected, _ = self.edit([title, {"id": "0", "zh": bad}])
+                    self.assertEqual(rejected["chinese_editing_mode"], "mt_fallback")
+
     def test_new_headline_checks_its_cited_fact_not_unrelated_original_headline(self):
         self.article["title"] = "A proposal may change costs; revenue rose"
         result, _ = self.edit()
