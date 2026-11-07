@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: '65519a0d56024202beb56d8405e61937111bb678'
+          ref: '47e104b3e99cd5a0843e29771f98551efc0f09c8'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -23,6 +23,12 @@ jobs:
           run-id: 42354444754
           github-token: ${{ github.token }}
           path: /tmp/first
+      - uses: actions/download-artifact@v4
+        with:
+          name: newspaper-writing-replay
+          run-id: 42355494635
+          github-token: ${{ github.token }}
+          path: /tmp/previous
       - name: Install fonts
         run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk fonts-liberation
       - name: Install focused replay dependencies
@@ -30,11 +36,11 @@ jobs:
       - name: Replay same stories with cumulative issue budget
         env:
           NEWSPAPER_LLM_API_KEY: ${{ secrets.NEWSPAPER_LLM_API_KEY }}
-          TESTED_SOURCE_SHA: '65519a0d56024202beb56d8405e61937111bb678'
+          TESTED_SOURCE_SHA: '47e104b3e99cd5a0843e29771f98551efc0f09c8'
           PYTHONPATH: newspaper
         run: |
           python - <<'PY'
-          import copy, json, logging, os
+          import copy, json, logging, os, re
           from collections import Counter
           from decimal import Decimal
           from pathlib import Path
@@ -48,8 +54,23 @@ jobs:
           first = Path('/tmp/first')
           out = Path('/tmp/newspaper-writing-replay')
           out.mkdir(parents=True, exist_ok=True)
-          rows = json.loads((first/'writing-comparison.json').read_text())
-          prior = json.loads((first/'budget.json').read_text())[0]
+          previous = Path('/tmp/previous')
+          rows = json.loads((previous/'writing-comparison.json').read_text())
+          prior = json.loads((previous/'budget.json').read_text())
+          saved = iter(json.loads((previous/'responses.json').read_text()))
+          class Saved:
+              def __init__(self, raw): self.raw = raw
+              def request(self, *args, **kwargs): return self.raw
+          for index, row in enumerate(rows):
+              if index == 1: continue
+              raw = next(saved)
+              article = dict(title=row['title_en'], title_zh=row['title_before'],
+                             source_language=row['source_language'], bilingual_pairs=copy.deepcopy(row['pairs_before']))
+              updated = edit_chinese_reports({'replay':[article]}, 'offline-saved-response', Saved(raw))['replay'][0]
+              row.update(title_after=updated.get('title_zh'), pairs_after=updated['bilingual_pairs'],
+                         chinese_mode=updated.get('chinese_editing_mode'), chinese_rejection=updated.get('chinese_editing_reason'))
+          offline_accepted = sum(r['chinese_mode']=='context_edited' for r in rows)
+          print('SAVED_RESPONSE_ACCEPTED', offline_accepted, flush=True)
           ledger = EditionBudget()
           ledger.spent_ceiling = Decimal(prior['estimated_peak_cost_rmb'])
           ledger.requests = prior['request_count']
@@ -76,7 +97,7 @@ jobs:
               (out/'writing-comparison.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2))
               (out/'responses.json').write_text(json.dumps(responses,ensure_ascii=False,indent=2))
               (out/'budget.json').write_text(json.dumps(ledger.snapshot(),ensure_ascii=False,indent=2))
-          summary = dict(source_sha=os.environ['TESTED_SOURCE_SHA'], reused_run=42354444754,
+          summary = dict(source_sha=os.environ['TESTED_SOURCE_SHA'], reused_run=42355494635, offline_accepted=offline_accepted, sample_excluded=1,
                          stories=len(rows), chinese_edited=sum(r['chinese_mode']=='context_edited' for r in rows),
                          rejections=dict(Counter(r['chinese_rejection'] for r in rows if r['chinese_mode']!='context_edited')),
                          cumulative_budget=ledger.snapshot()['estimated_peak_cost_rmb'], smtp='NOT_CONFIGURED_NOT_SENT')
@@ -88,11 +109,18 @@ jobs:
           for element,row in zip(articles,rows):
               heading=element.find('h3')
               assert heading is not None
-              heading.string=row['title_after']
+              heading.string=(re.match(r'^\\d+\\.\\s*', heading.get_text()).group(0) if re.match(r'^\\d+\\.\\s*', heading.get_text()) else '')+row['title_after']
               paragraphs=element.select('.story-line .zh')
               assert len(paragraphs)==len(row['pairs_after'])
               for paragraph,pair in zip(paragraphs,row['pairs_after']):
                   paragraph.string=pair['zh']
+          # A former routing false positive must not be presented as a health story.
+          assert 'who should form government' in rows[-1]['title_en']
+          assert '医疗' in articles[-1].parent.find('h2').get_text()
+          articles[-1].parent.decompose()
+          note=soup.new_tag('p')
+          note.string='同批来源中文编辑复测样刊；已剔除一篇栏目误分稿，共13篇。未发送邮件。'
+          soup.body.insert(0,note)
           page=str(soup)
           (out/'edition.html').write_text(page)
           (out/'edition.txt').write_text(soup.get_text('\n',strip=True))
