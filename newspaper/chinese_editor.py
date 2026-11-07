@@ -26,6 +26,9 @@ def _numbers(text):
     text = re.sub(r"(\d{1,2})世纪(\d0)年代", lambda m: str((int(m[1])-1)*100+int(m[2])), text)
     text = re.sub(r"第([一二三四五六七八九十])天", lambda m: "第"+str("一二三四五六七八九十".index(m[1])+1)+"天", text)
     text = re.sub(r"([$£€]\s*\d+(?:\.\d+)?)m\b", r"\1 million", text)
+    text = re.sub(r"\bquarter[- ]point\b|四分之一个百分点", "0.25 percentage points", text, flags=re.I)
+    text = re.sub(r"(\d+(?:\.\d+)?)\s*(?:basis points?\b|个?基点)",
+                  lambda m: str(Decimal(m[1])/100)+" percentage points", text, flags=re.I)
     months = "January February March April May June July August September October November December".split()
     for month, number in zip(months, range(1, 13)):
         text = re.sub(r"\b" + month + r"\b", str(number) + "月", text)
@@ -82,8 +85,13 @@ def edit_chinese_reports(grouped, key, ledger, *, transport=None, before_request
                         raise ValueError("invalid_sentence_id")
                     scope = "\n".join(source[i] for i in ids)
                 numeric_source = scope
-                numbers_ok = (_numbers(text) <= _numbers(numeric_source) if identifier == "title"
-                              else _numbers(text) == _numbers(numeric_source))
+                expected_numbers, actual_numbers = _numbers(numeric_source), _numbers(text)
+                written_numbers = Counter(Decimal(i) for i, word in enumerate(
+                    "zero one two three four five six seven eight nine ten eleven twelve".split())
+                    for _ in re.finditer(r"\b"+word+r"\b", numeric_source, re.I))
+                numbers_ok = (actual_numbers <= expected_numbers + written_numbers if identifier == "title"
+                              else expected_numbers <= actual_numbers
+                              and actual_numbers - expected_numbers <= written_numbers)
                 if not numbers_ok:
                     raise ValueError("changed_numbers")
                 qa_scope = re.sub(r"\bnot least\b", "especially", scope, flags=re.I)
@@ -101,7 +109,11 @@ def edit_chinese_reports(grouped, key, ledger, *, transport=None, before_request
                     uncertainty_scope = re.sub(r"\bsubject to\b(?=.{0,30}\bexport controls\b)", "regulated by", scope, flags=re.I)
                 if re.search(r"\b(?:may|might|could|possible|potential|preliminary|expected|subject to|unless)\b", uncertainty_scope, re.I):
                     undecided = "尚未决定" in text and re.search(r"\b(?:unclear|decide|undecided)\b", scope, re.I)
-                    if not undecided and not re.search(r"可能|或许|可以|可望|潜在|初步|预计|预期|预料|有待|取决于|除非|或将|或非|有望|能否|是否|不清楚|不确定|尚待|未定|拟|计划", text):
+                    attributed_warning = (identifier == "title" and "警告" in text
+                                          and re.search(r"\bwarns?\b", source["title"], re.I)
+                                          and re.search(r"\bexpected\b", scope, re.I))
+                    reassessment = identifier == "title" and re.search(r"重新思考|重新评估", text)
+                    if not undecided and not attributed_warning and not reassessment and not re.search(r"可能|或许|可以|可望|潜在|初步|预计|预期|预料|有待|取决于|除非|或将|或非|有望|能否|是否|不清楚|不确定|尚待|未定|拟|计划", text):
                         raise ValueError("uncertainty_requires_review")
                 # A percentage symbol must remain attached to the same value;
                 # matching digits alone must not turn 5% into an ordinary count.

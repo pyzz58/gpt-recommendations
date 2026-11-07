@@ -109,6 +109,16 @@ class ChineseEditorTests(unittest.TestCase):
             self.assertEqual(_numbers(en), _numbers(zh))
         self.assertNotEqual(_numbers("3m cable"), _numbers("300万米电缆"))
         self.assertNotEqual(_numbers("1970s"), _numbers("21世纪70年代"))
+        self.assertEqual(_numbers("quarter-point rise by 8 votes to 1"), _numbers("以8票对1票加息25个基点"))
+        self.assertNotEqual(_numbers("quarter-point rise"), _numbers("加息50个基点"))
+
+    def test_written_count_can_become_digits_but_cannot_add_or_drop_arabic_counts(self):
+        self.article["bilingual_pairs"] = [{"en": "The Joint List has 11, while Ra'am has eight.", "zh": "旧稿", "paragraph_id": 0}]
+        title = {"id": "title", "zh": "议席消息", "source_ids": ["title"]}
+        for text, accepted in (("联合名单有11席，拉姆有8席。", True),
+                               ("联合名单有11席，拉姆有9席。", False), ("拉姆有8席。", False)):
+            result, _ = self.edit([title, {"id": "0", "zh": text}])
+            self.assertEqual(result["chinese_editing_mode"], "context_edited" if accepted else "mt_fallback")
 
     def test_real_language_equivalence_does_not_hide_other_negation_or_prediction(self):
         cases = [
