@@ -107,9 +107,10 @@ jobs:
               for number,article in enumerate(section.select('article.article'),1):
                   heading=article.find('h3');heading.string=str(number)+'. '+heading.get_text()
           assert len(soup.select('article.article'))==11
-          note=soup.new_tag('p')
-          note.string='真实生成稿验收选集（非完整日报）：14篇中12篇通过中文编辑校验，2篇保留原译；本选集收录11篇通过稿，另剔除1篇旧栏目误分稿。未发送邮件。'
-          soup.body.insert(0,note)
+          for note in soup.body.find_all('p',recursive=False):note.decompose()
+          soup.select_one('.cover-title').string='中文写作验收选集'
+          soup.select_one('.cover-subtitle').string='真实生成 · 英中对照 · 11篇通过稿'
+          soup.select_one('.cover-note').string='非完整日报，未发送邮件。14篇中12篇通过校验、2篇回退；本选集另剔除1篇旧栏目误分稿。'
           page=str(soup)
           (out/'edition.html').write_text(page)
           (out/'edition.txt').write_text(soup.get_text('\n',strip=True))
