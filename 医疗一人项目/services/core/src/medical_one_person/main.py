@@ -56,7 +56,11 @@ from medical_one_person.infrastructure.runtime_health import (
     worker_status,
 )
 from medical_one_person.infrastructure.skills.registry import SkillRegistry
-from medical_one_person.infrastructure.sources import load_source_policies
+from medical_one_person.infrastructure.sources import (
+    SourceRouter,
+    build_source_adapters,
+    load_source_policies,
+)
 from medical_one_person.infrastructure.workflows import WorkflowRegistry
 from medical_one_person.providers import build_model_provider
 
@@ -77,6 +81,8 @@ def create_app(
     skills = SkillRegistry.from_catalog(settings.skill_config_path)
     skills.validate_against_roles(roles)
     source_policies = load_source_policies(settings.source_policy_path)
+    source_adapters = build_source_adapters(settings)
+    source_router = SourceRouter(source_policies, source_adapters)
     workflows = WorkflowRegistry.from_catalog(
         settings.workflow_catalog_path,
         roles,
@@ -161,6 +167,7 @@ def create_app(
     app.state.agent_roles = roles
     app.state.skills = skills
     app.state.source_policies = source_policies
+    app.state.source_router = source_router
     app.state.workflows = workflows
     app.state.export_templates = export_templates
     app.state.office_renderer = office_renderer
@@ -238,7 +245,12 @@ def create_app(
                 status="not_checked",
                 detail=(
                     f"{len(source_policies)} professional source policies loaded; "
-                    "live scholarly adapters are not connected"
+                    + (
+                        f"{len(source_adapters)} live scholarly adapter configured; "
+                        "connectivity was not tested"
+                        if source_adapters
+                        else "live scholarly adapters are not connected"
+                    )
                 ),
             ),
             model_provider=model_provider,

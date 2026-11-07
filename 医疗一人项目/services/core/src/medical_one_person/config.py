@@ -49,6 +49,15 @@ class Settings(BaseSettings):
     source_policy_path: Path = (
         Path(__file__).resolve().parents[4] / "config" / "source_policies" / "catalog.yaml"
     )
+    source_pubmed_live_enabled: bool = False
+    source_pubmed_base_url: str = (
+        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
+    )
+    source_pubmed_tool: str | None = None
+    source_pubmed_email: str | None = None
+    source_pubmed_api_key: str | None = None
+    source_pubmed_timeout_seconds: float = 20.0
+    source_pubmed_max_results: int = 20
     workflow_catalog_path: Path = (
         Path(__file__).resolve().parents[4] / "config" / "workflows" / "catalog.yaml"
     )
@@ -144,6 +153,20 @@ class Settings(BaseSettings):
     def validate_smtp_timeout(cls, value: float) -> float:
         if value <= 0:
             raise ValueError("mail_smtp_timeout_seconds must be positive")
+        return value
+
+    @field_validator("source_pubmed_timeout_seconds")
+    @classmethod
+    def validate_source_timeout(cls, value: float) -> float:
+        if value <= 0:
+            raise ValueError("source_pubmed_timeout_seconds must be positive")
+        return value
+
+    @field_validator("source_pubmed_max_results")
+    @classmethod
+    def validate_source_result_limit(cls, value: int) -> int:
+        if not 1 <= value <= 100:
+            raise ValueError("source_pubmed_max_results must be between 1 and 100")
         return value
 
     @field_validator(

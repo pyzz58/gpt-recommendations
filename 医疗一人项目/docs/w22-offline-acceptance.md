@@ -13,6 +13,8 @@ transport替身、假SMTP或配置构造称为live连接。
   认证错误、默认live关闭和完整配置工厂；
 - SMTP send-only：MIME正文/附件、STARTTLS+登录、收件人白名单、配置不全、
   认证5xx拒绝、网络丢失unknown及reconcile保持unknown；
+- PubMed实时适配：官方E-utilities域名、ESearch→EFetch两阶段、查询/日期/
+  结果数/tool/email/API key参数、预印本元数据和429/非法ID错误；
 - MailService：SMTP fake transport通过既有草稿/内容hash/一次性授权/
   幂等attempt/账本；unknown reconcile不新增attempt、不自动重发；
 - 新迁移`a1c9e7f2d304`允许`send_only`账号状态，downgrade保留账号行并保守
@@ -23,6 +25,8 @@ transport替身、假SMTP或配置构造称为live连接。
 
 - 没有真实模型base URL、凭据、model ID、费率、额度或provider数据政策；
 - 没有真实SMTP账号、凭据、发件地址、测试收件或发送授权；
+- 没有NCBI allowlisted网络授权、真实查询或返回结果；全文可用性和医学质量
+  不能从元数据适配器通过推导；
 - 没有真实检索渠道、非mock科学质量、真实收件/线程、真实机构或外包；
 - OpenAI-compatible具体供应商的JSON模式、限流语义和tokenization需在
   W22真实连接时逐项验证；

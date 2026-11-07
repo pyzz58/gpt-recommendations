@@ -42,6 +42,7 @@
 | Docker / Compose | 未安装；W23文件已静态检查 | 本机命令检查 / `tools/check_deployment.py` | BLOCKED；运行资料、卷、路径、loopback端口结构通过静态检查，镜像构建和容器启动未执行 |
 | OpenAI-compatible适配 | Python 3.12 `urllib.request`；provider合同 | 本项目；具体provider待选 | W22离线transport成功/认证/限流/费用门测试；无真实请求 |
 | SMTP send-only适配 | Python 3.12 `smtplib`/`email`；注入式transport | 本项目；具体邮箱待选 | W22离线MIME/STARTTLS/白名单/unknown测试；无真实连接、收件或发送 |
+| PubMed E-utilities适配 | Python 3.12 `urllib.request`、NCBI ESearch JSON/EFetch XML | NCBI官方服务；使用条款待live核验 | W22离线两阶段transport/参数/错误测试；默认关闭，无真实查询 |
 | 真实模型 | 未配置 | 无 | 不可用，不调用 |
 | 邮箱/外部机构 | 未配置/无授权 | 无 | 禁用，不发送 |
 

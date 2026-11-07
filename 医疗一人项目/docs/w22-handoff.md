@@ -44,6 +44,19 @@ TR-19、TR-24；W22；AT-015、AT-031。
   保持未知并要求人工/provider侧核对，不自动重发或恢复草稿。
 - 附件按数据库中的原件版本/hash加载到MIME，不执行邮件正文指令。
 
+## PubMed E-utilities 来源适配
+
+- 仅允许官方 `https://eutils.ncbi.nlm.nih.gov/entrez/eutils`；
+- 必须同时满足 `MEDICAL_ONE_NETWORK_MODE=allowlisted`、
+  `MEDICAL_ONE_SOURCE_PUBMED_LIVE_ENABLED=true`，并配置tool name和联系邮箱；
+  API key可选但只进入请求参数；
+- 先调用ESearch JSON获得数字PMID，再调用EFetch XML，复用既有
+  `PubMedXmlAdapter` 解析；
+- 日期、最大结果数、联系标识和User-Agent显式写入请求；429和非法ID分别
+  阻断，结果保留PubMed元数据、预印本/撤稿标记和全文不可用限制；
+- 默认离线工厂不创建网络adapter，来源能力保持not_checked；
+- 离线测试注入两次transport响应，断言URL、参数和解析，不发起网络请求。
+
 ## 配置
 
 配置沿用W23单一dotenv入口，可由 `MEDICAL_ONE_CONFIG_FILE`放在仓库外。
@@ -63,6 +76,12 @@ TR-19、TR-24；W22；AT-015、AT-031。
 - 用户控制的测试收件地址白名单；
 - 是否授权一封受控测试邮件。
 
+检索方需用户另行确认：
+
+- 是否允许NCBI E-utilities allowlisted网络访问；
+- tool name、联系邮箱、API key保存方式和查询上限；
+- 首轮允许的合成/公开查询及数据使用范围。
+
 这些缺件只阻止live验收，不阻止离线适配测试。
 
 ## 离线测试
@@ -71,6 +90,8 @@ TR-19、TR-24；W22；AT-015、AT-031。
 - 覆盖structured JSON、usage/费率、保守费用上限、认证失败和工厂禁用；
 - SMTP由假连接注入，覆盖MIME/附件、STARTTLS+登录、白名单、配置不全、
   5xx拒绝、网络丢失unknown和reconcile保持unknown；
+- PubMed由注入transport覆盖ESearch→EFetch、参数/日期、官方域名、结果上限、
+  预印本标签、非法ID和429，不访问NCBI；
 - MailService数据库回归验证unknown reconcile不新增attempt、不自动重发；
 - 现有科学反馈、W23 readiness/config和全部应用回归继续运行。
 
@@ -83,6 +104,7 @@ TR-19、TR-24；W22；AT-015、AT-031。
 2. 邮箱：只向用户控制白名单地址发送一封受控测试邮件，验证原始收件、线程/
    Message-ID、失败或unknown核对；SMTP send-only仍不证明收件能力。
 3. 真实检索渠道、专业机构、付款、合同和实验均不属于适配器离线通过。
+   检索真实验收需另记查询、返回元数据、来源策略和全文可用边界。
 
 ## 已知限制
 

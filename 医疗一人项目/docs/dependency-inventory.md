@@ -51,6 +51,7 @@
 | 本地部署/运维 | Bash 3.2+、Python 3.12、pnpm 11.25.0、PostgreSQL 17.6、Docker Compose文件 | 本项目 / 各组件既有许可 | W23统一启停、健康、运行资料打包与备份卷 | 原生PostgreSQL启停和迁移通过；Compose仅静态检查，Docker未安装 |
 | OpenAI-compatible provider | Python 3.12标准库 `urllib.request`；HTTP JSON合同 | PSF / 具体provider条款待核 | W22结构化模型调用、费用上限和错误分类 | 仅fake transport离线测试；无真实provider/凭据/调用 |
 | SMTP send-only | Python 3.12标准库 `smtplib`、`email` | PSF / 具体邮箱服务条款待核 | W22受控发件、附件、白名单和unknown门 | 仅fake SMTP transport离线测试；无真实邮箱/收件/发送 |
+| PubMed E-utilities | Python 3.12标准库 `urllib.request`、NCBI ESearch/EFetch接口 | NCBI服务条款待live核验 | W22专业来源检索、日期/结果上限和来源策略 | 仅fake transport离线测试；无真实查询 |
 
 官方来源：
 
