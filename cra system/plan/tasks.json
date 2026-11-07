@@ -4528,7 +4528,7 @@
       "module_ids": [
         "M14"
       ],
-      "status": "planned",
+      "status": "verified",
       "acceptance": "逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。",
       "requirement_ids": [
         "CRA-R035",
@@ -4678,7 +4678,17 @@
       "handoff_outputs": [
         "40场景实证、逐用途能力/风险记录、自动覆盖和总耗时、明确可试用范围与未达标结论。"
       ],
-      "verification_profile": "CRA-W13"
+      "verification_profile": "CRA-W13",
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42356972071；cra-w13在真实PostgreSQL 18.6上通过W12恢复、13项验收反例、1项Chromium两轮监查及能力报告结构检查；40场景中33项合成验证、3项工程验证、3项未评估、CRA-S34未达标；总人工时间和授权试用明确保留为W15工作；被测提交72fb8dc4853fbf68ccadfc1a0c0f4d2c8726e11b。"
+      ],
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W13",
+        "run_id": 42356972071,
+        "tested_commit": "72fb8dc4853fbf68ccadfc1a0c0f4d2c8726e11b",
+        "subject_digest": "872316c58ef1c43958579d7ad748679dfa527910717051d6f49ec26f2e65c412"
+      }
     },
     {
       "id": "CRA-W14",

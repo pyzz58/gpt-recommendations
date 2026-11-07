@@ -4,7 +4,7 @@
 
 ## 最新技术复核
 
-先读[第一性原理v0.4结论](audit/FIRST_PRINCIPLES_REVIEW_V04.md)、[完整实施路径](plan/IMPLEMENTATION_PATH.md)和当前任务的design_refs/entry_conditions/handoff_outputs。W01—W12已完成真实PostgreSQL、S3、API/工作台、资料解析/来源定位、规则候选/确认/启用日、隔离provider探测、结构化患者事实/访视断点、历史遗留/分项确认、EDC快照、源检验文件读取/坐标、先匹配后比较、有依据的安全分析、原ISF/TMF目录对照、项目阶段/交接清单、受控DOCX/XLSX报告输出及两次连续监查；任意真实规则或报告文本的完整语义、真实模板覆盖、实际医院版式、真实设备和弱网、安全分析临床性能、全流程节时和授权试用仍待后续验证。原业务要求和任务编号保持。
+先读[第一性原理v0.4结论](audit/FIRST_PRINCIPLES_REVIEW_V04.md)、[完整实施路径](plan/IMPLEMENTATION_PATH.md)和当前任务的design_refs/entry_conditions/handoff_outputs。W01—W13已完成真实PostgreSQL、S3、API/工作台、资料解析/来源定位、规则候选/确认/启用日、隔离provider探测、结构化患者事实/访视断点、历史遗留/分项确认、EDC快照、源检验文件读取/坐标、先匹配后比较、有依据的安全分析、原ISF/TMF目录对照、项目阶段/交接清单、受控DOCX/XLSX报告输出、两次连续监查及40场景证据验收；任意真实规则或报告文本的完整语义、真实模板覆盖、实际医院版式、真实设备和弱网、安全分析临床性能、全流程节时和授权试用仍待后续验证。原业务要求和任务编号保持。
 
 2026-11-01独立审查提出的13项问题已按[关闭映射](validation/REVIEW_REMEDIATION_20261101.md)修复，并在[run 41245438323](https://github.com/pyzz58/gpt-recommendations/actions/runs/41245438323)重新完成W01—W09源码绑定CI；旧完成证据保留在`completion_history`。
 
@@ -19,7 +19,7 @@ W12完成后已在[run 42354648562](https://github.com/pyzz58/gpt-recommendation
 
 ## 当前状态和第一步
 
-已完成CRA-W00技术基线和**CRA-W01至W12**。四阶段连续监查、跨刷新/登录/设备恢复及既有任务已在[run 42354648562](https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562)重新通过源码绑定CI；选择器当前定位W13。
+已完成CRA-W00技术基线和**CRA-W01至W13**。V1A验收在[run 42356972071](https://github.com/pyzz58/gpt-recommendations/actions/runs/42356972071)通过源码绑定CI，包含恢复、13项验收反例、Chromium两轮监查和能力报告检查；V1A主线选择器当前为complete。
 
 先运行只读选择器：
 
@@ -28,7 +28,7 @@ cd "cra system"
 python3 tools/next_task.py
 ```
 
-它读取实际计划，不修改任务状态。已阻塞或进行中的当前项不能被自动跳过；完成后更新状态和证据，再定位下一项。V1A/W08必须包括支持格式的自动读取；V1B复杂格式增强与部署路线单独选择，普通继续不自动部署或启用外部模型。
+它读取实际计划，不修改任务状态。已阻塞或进行中的当前项不能被自动跳过；完成后更新状态和证据，再定位下一项。V1A/W08必须包括支持格式的自动读取；V1B复杂格式增强与部署路线单独选择，普通继续不自动部署或启用外部模型。当前W13结论不把V1A标记为临床试用就绪。
 
 ## 必须阅读
 
@@ -39,13 +39,13 @@ python3 tools/next_task.py
 5. architecture/REGRESSION_PREVENTION.md、audit/current_findings.json，再读plan/CODEX_TASKS.md、plan/tasks.json和当前任务的plan/work_packages/CRA-Wxx.md。
 6. 当前任务引用的模块设计、architecture/DATA_MODEL.md和API_CONTRACTS.md。
 
-当前用户若只要求设计或审阅，就完成该请求，不把任务擅自标为业务已实现。进入编程时，必须交付实际可运行代码，不能用另一份说明、空接口或静态mock页面代替。
+当前用户若只要求设计或审阅，就完成该请求，不把任务擅自标为业务已实现。进入编程时，必须交付实际可运行代码，不能用另一份说明、空接口或静态mock页面代替。W15必须有获准环境、身份/私有服务和试用授权后才能开始。
 
 ## 可直接交给Codex的首轮指令
 
-使用[plan/CODEX_FIRST_MESSAGE.md](plan/CODEX_FIRST_MESSAGE.md)中的完整指令；先读[复用选择](architecture/REUSE_ASSESSMENT.md)。W01—W12已完成；只有在用户明确继续时才从W13自动检验主线验收与试用准备开始。
+使用[plan/CODEX_FIRST_MESSAGE.md](plan/CODEX_FIRST_MESSAGE.md)中的完整指令；先读[复用选择](architecture/REUSE_ASSESSMENT.md)。W01—W13已完成；W14复杂格式增强与W15获准部署/试用需用户明确选择，不能从普通“继续”自动进入。
 
-后续用户说“继续”，先运行next_task并按实际状态接续；不得只机械把任务号加一。默认推进V1A。若用户指定其他工作包，先核实其依赖，说明未完成前置，不隐瞒或擅改理论。
+后续用户说“继续”，先运行next_task并按实际状态接续；不得只机械把任务号加一。V1A主线完成后，普通“继续”不自动部署、启用外部模型或处理真实资料。若用户指定其他工作包，先核实其依赖，说明未完成前置，不隐瞒或擅改理论。
 
 ## 每项任务的交付
 
@@ -57,4 +57,4 @@ python3 tools/next_task.py
 
 业务理论按固定CRA-R编号和来源维护，改动后执行既有SYNC_POLICY。技术文件布局、任务细化或依赖工具选择的调整，不应伪造新的临床决定。接口、存储或供应商变化按实际受影响模块更新，保留历史事实和已签发报告。
 
-最新业务决定：遗留逐项展开，CRA点击确认整改即可；缺数据用户可拒绝并跳过相关路径；list含前后条件和分支；版本手动设开始使用日；目录可直接作对照文件；W08自动检验读取属于主线，手工仅少量例外。45个理论编号保持，14条提高revision。W01—W12已按工程范围实现，W13及之后仍待实现，不能沿用旧的人工V1A验收口径。
+最新业务决定：遗留逐项展开，CRA点击确认整改即可；缺数据用户可拒绝并跳过相关路径；list含前后条件和分支；版本手动设开始使用日；目录可直接作对照文件；W08自动检验读取属于主线，手工仅少量例外。45个理论编号保持，14条提高revision。W01—W13已按工程范围完成；W15实际环境和获授权试用仍待实现，不能沿用旧的人工V1A验收口径。

@@ -2,7 +2,7 @@
 
 本页与16份任务卡均由plan/tasks.json生成，编号和状态沿用原计划。先读根目录CODEX_START_HERE.md。
 
-当前V1A默认下一项：CRA-W13；状态：ready。
+当前V1A默认下一项：本路线已完成；状态：complete。
 
 默认按V1A编号顺序推进，遇阻塞先说明，不自动跳项。V1A/W08必须包含支持格式的自动读取；V1B复杂格式增强和获准部署分别选择，不混进普通下一项。
 
@@ -21,7 +21,7 @@
 | CRA-W10 | [实现中心文件目录和其他阶段清单](work_packages/CRA-W10.md) | CRA-W04、CRA-W06 | v1a | verified |
 | CRA-W11 | [实现访视信、报告和Excel导出](work_packages/CRA-W11.md) | CRA-W06、CRA-W09、CRA-W10 | v1a | verified |
 | CRA-W12 | [串联四阶段界面与一次完整监查](work_packages/CRA-W12.md) | CRA-W08、CRA-W09、CRA-W10、CRA-W11 | v1a | verified |
-| CRA-W13 | [完成自动检验主线验收与试用准备](work_packages/CRA-W13.md) | CRA-W12 | v1a | planned |
+| CRA-W13 | [完成自动检验主线验收与试用准备](work_packages/CRA-W13.md) | CRA-W12 | v1a | verified |
 | CRA-W14 | [增强复杂检验格式与识别效果](work_packages/CRA-W14.md) | CRA-W08 | v1b | planned |
 | CRA-W15 | [配置受控云部署并开展授权试用](work_packages/CRA-W15.md) | CRA-W13 | deployment | planned |
 

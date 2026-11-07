@@ -19,7 +19,7 @@
 | CRA-W10 | 实现中心文件目录和其他阶段清单 | CRA-W04、CRA-W06 | M05、M10 | verified |
 | CRA-W11 | 实现访视信、报告和Excel导出 | CRA-W06、CRA-W09、CRA-W10 | M11 | verified |
 | CRA-W12 | 串联四阶段界面与一次完整监查 | CRA-W08、CRA-W09、CRA-W10、CRA-W11 | M05 | verified |
-| CRA-W13 | 完成自动检验主线验收与试用准备 | CRA-W12 | M14 | planned |
+| CRA-W13 | 完成自动检验主线验收与试用准备 | CRA-W12 | M14 | verified |
 | CRA-W14 | 增强复杂检验格式与识别效果 | CRA-W08 | M08、M12 | planned |
 | CRA-W15 | 配置受控云部署并开展授权试用 | CRA-W13 | M01、M14 | planned |
 
@@ -236,6 +236,8 @@
 验收：逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。
 
 对应理论：CRA-R035、CRA-R037、CRA-R040、CRA-R044
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42356972071；cra-w13在真实PostgreSQL 18.6上通过W12恢复、13项验收反例、1项Chromium两轮监查及能力报告结构检查；40场景中33项合成验证、3项工程验证、3项未评估、CRA-S34未达标；总人工时间和授权试用明确保留为W15工作；被测提交72fb8dc4853fbf68ccadfc1a0c0f4d2c8726e11b。
 
 ## CRA-W14 增强复杂检验格式与识别效果
 
