@@ -1213,6 +1213,23 @@ export type KnowledgeSearch = {
   permitted_version_ids: string[];
 };
 
+export type ExternalSourceRecord = {
+  source_id: string;
+  title: string;
+  abstract: string | null;
+  journal: string | null;
+  publication_date: string | null;
+  source_url: string;
+  source_kind: string;
+  peer_reviewed: boolean;
+  preprint: boolean;
+  retracted: boolean;
+  doi: string | null;
+  pmid: string | null;
+  raw_fulltext_available: boolean;
+  limitations: string[];
+};
+
 type UploadStatus = {
   session_id: string;
   filename: string;
@@ -2507,6 +2524,20 @@ export function searchKnowledge(
     {
       method: "POST",
       body: JSON.stringify({ task_id: taskId, query }),
+    },
+  );
+}
+
+export function searchExternalSources(
+  projectId: string,
+  query: string,
+  policyId = "biomedical_primary.v1",
+): Promise<ExternalSourceRecord[]> {
+  return request<ExternalSourceRecord[]>(
+    `/api/v1/projects/${projectId}/sources/search`,
+    {
+      method: "POST",
+      body: JSON.stringify({ query, policy_id: policyId }),
     },
   );
 }

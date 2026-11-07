@@ -44,6 +44,16 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthReport"
+                }
+              }
+            }
           }
         }
       }
@@ -1293,6 +1303,75 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/sources/search": {
+      "post": {
+        "tags": [
+          "sources"
+        ],
+        "summary": "Search Sources",
+        "operationId": "search_sources_api_v1_projects__project_id__sources_search_post",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SourceSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SourceRecord"
+                  },
+                  "title": "Response Search Sources Api V1 Projects  Project Id  Sources Search Post"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unknown or prohibited source policy"
+          },
+          "429": {
+            "description": "Upstream scholarly source rate limit"
+          },
+          "502": {
+            "description": "Upstream scholarly source retrieval failure"
+          },
+          "503": {
+            "description": "No live scholarly source adapter configured"
           },
           "422": {
             "description": "Validation Error",
@@ -10094,6 +10173,7 @@
         "enum": [
           "mock_ready",
           "connected",
+          "send_only",
           "unconfigured",
           "disabled"
         ],
@@ -14331,6 +14411,169 @@
           "expires_at"
         ],
         "title": "SessionView"
+      },
+      "SourceRecord": {
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "title": "Source Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "abstract": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Abstract"
+          },
+          "journal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Journal"
+          },
+          "publication_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publication Date"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url"
+          },
+          "source_kind": {
+            "type": "string",
+            "title": "Source Kind"
+          },
+          "peer_reviewed": {
+            "type": "boolean",
+            "title": "Peer Reviewed"
+          },
+          "preprint": {
+            "type": "boolean",
+            "title": "Preprint"
+          },
+          "retracted": {
+            "type": "boolean",
+            "title": "Retracted"
+          },
+          "doi": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doi"
+          },
+          "pmid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pmid"
+          },
+          "raw_fulltext_available": {
+            "type": "boolean",
+            "title": "Raw Fulltext Available"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source_id",
+          "title",
+          "abstract",
+          "journal",
+          "publication_date",
+          "source_url",
+          "source_kind",
+          "peer_reviewed",
+          "preprint",
+          "retracted",
+          "doi",
+          "pmid",
+          "raw_fulltext_available",
+          "limitations"
+        ],
+        "title": "SourceRecord"
+      },
+      "SourceSearchRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Query"
+          },
+          "policy_id": {
+            "type": "string",
+            "title": "Policy Id"
+          },
+          "date_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date From"
+          },
+          "date_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date To"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "query",
+          "policy_id"
+        ],
+        "title": "SourceSearchRequest"
       },
       "SourceTier": {
         "type": "string",

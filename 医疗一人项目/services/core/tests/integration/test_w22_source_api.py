@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from datetime import date
 from pathlib import Path
 
@@ -13,6 +14,18 @@ from medical_one_person.infrastructure.sources.pubmed_http import SourceRetrieva
 from medical_one_person.main import create_app
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
+
+
+def test_source_search_operation_is_exported_in_openapi() -> None:
+    schema = json.loads(
+        (PROJECT_ROOT / "schemas/openapi.v1.json").read_text(encoding="utf-8")
+    )
+    operation = schema["paths"]["/api/v1/projects/{project_id}/sources/search"]["post"]
+
+    assert operation["responses"]["200"]
+    assert operation["responses"]["400"]
+    assert operation["responses"]["429"]
+    assert operation["responses"]["502"]
 
 
 class _FakeSourceAdapter:

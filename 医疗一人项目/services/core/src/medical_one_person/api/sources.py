@@ -30,7 +30,16 @@ def build_source_search_router(
         tags=["sources"],
     )
 
-    @router.post("/search", response_model=list[SourceRecord])
+    @router.post(
+        "/search",
+        response_model=list[SourceRecord],
+        responses={
+            400: {"description": "Unknown or prohibited source policy"},
+            429: {"description": "Upstream scholarly source rate limit"},
+            502: {"description": "Upstream scholarly source retrieval failure"},
+            503: {"description": "No live scholarly source adapter configured"},
+        },
+    )
     def search_sources(
         project_id: UUID,
         request: SourceSearchRequest,

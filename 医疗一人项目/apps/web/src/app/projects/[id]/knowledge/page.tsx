@@ -9,10 +9,12 @@ import {
   fetchKnowledgeDocuments,
   fetchTasks,
   notifyProjectChanged,
+  searchExternalSources,
   searchKnowledge,
   uploadKnowledgeFile,
 } from "@/lib/api";
 import type {
+  ExternalSourceRecord,
   KnowledgeDocumentDetail,
   KnowledgeDocumentSummary,
   KnowledgeSearch,
@@ -45,12 +47,15 @@ export default function KnowledgePage() {
   const [selectedDocument, setSelectedDocument] =
     useState<KnowledgeDocumentDetail | null>(null);
   const [searchResult, setSearchResult] = useState<KnowledgeSearch | null>(null);
+  const [externalSources, setExternalSources] = useState<ExternalSourceRecord[]>([]);
+  const [externalQuery, setExternalQuery] = useState("");
   const [query, setQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [taskId, setTaskId] = useState("");
   const [uploads, setUploads] = useState<Record<string, UploadProgress>>({});
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
+  const [searchingExternal, setSearchingExternal] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState("");
 
@@ -190,6 +195,29 @@ export default function KnowledgePage() {
       );
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "无法下载原件");
+    }
+  }
+
+  async function runExternalSourceSearch(
+    event: React.FormEvent<HTMLFormElement>,
+  ) {
+    event.preventDefault();
+    if (!externalQuery.trim()) return;
+    setSearchingExternal(true);
+    setError("");
+    try {
+      setExternalSources(
+        await searchExternalSources(projectId, externalQuery.trim()),
+      );
+    } catch (cause) {
+      setExternalSources([]);
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : "无法执行专业来源检索",
+      );
+    } finally {
+      setSearchingExternal(false);
     }
   }
 
@@ -375,6 +403,57 @@ export default function KnowledgePage() {
                   </article>
                 ))
               )}
+            </div>
+          )}
+        </section>
+
+        <section className="surface searchSurface">
+          <SectionHeader
+            eyebrow="PROFESSIONAL SOURCES"
+            title="PubMed 元数据检索"
+          />
+          <p className="mutedText">
+            仅使用生物医学来源政策和官方 E-utilities。默认离线时返回“未配置”，不会用空结果冒充检索成功；元数据不代表全文可用或科学结论。
+          </p>
+          <form
+            className="searchForm"
+            onSubmit={(event) => void runExternalSourceSearch(event)}
+          >
+            <input
+              value={externalQuery}
+              onChange={(event) => setExternalQuery(event.target.value)}
+              placeholder="例如：feline osteoarthritis safety"
+            />
+            <button
+              className="button primary"
+              type="submit"
+              disabled={!externalQuery.trim() || searchingExternal}
+            >
+              {searchingExternal ? "检索中…" : "检索专业来源"}
+            </button>
+          </form>
+          {externalSources.length > 0 && (
+            <div className="searchResults">
+              {externalSources.map((source) => (
+                <article key={`${source.source_id}:${source.doi ?? ""}`}>
+                  <div>
+                    <strong>{source.title}</strong>
+                    <span>
+                      {source.publication_date ?? "日期未知"}
+                      {source.pmid ? ` · PMID ${source.pmid}` : ""}
+                    </span>
+                  </div>
+                  {source.abstract && <p>{source.abstract}</p>}
+                  <small>
+                    {source.peer_reviewed ? "同行评议题录" : "非同行评议/未知"}
+                    {source.preprint ? " · 预印本" : ""}
+                    {source.retracted ? " · 撤稿标记" : ""}
+                    {source.raw_fulltext_available
+                      ? " · 有全文入口"
+                      : " · 全文未取得"}
+                  </small>
+                </article>
+              ))}
             </div>
           )}
         </section>
