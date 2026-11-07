@@ -120,7 +120,7 @@ def test_live_mode_is_not_ready_without_a_provider() -> None:
 
     assert response.status_code == 503
     assert response.json()["status"] == "not_ready"
-    assert response.json()["checks"]["mock_provider"]["status"] == "not_configured"
+    assert response.json()["checks"]["provider"]["status"] == "not_configured"
 
 
 def test_database_failure_does_not_mislabel_mock_provider() -> None:
@@ -137,7 +137,7 @@ def test_database_failure_does_not_mislabel_mock_provider() -> None:
 
     assert response.status_code == 503
     assert response.json()["status"] == "not_ready"
-    assert response.json()["checks"]["mock_provider"]["status"] == "ready"
+    assert response.json()["checks"]["provider"]["status"] == "ready"
     assert response.json()["checks"]["database"]["status"] == "unavailable"
 
 
@@ -159,3 +159,21 @@ def test_missing_worker_is_explicit_503_not_ready() -> None:
         "status": "unavailable",
         "detail": "worker heartbeat missing",
     }
+
+
+def test_smtp_capability_is_send_only_and_not_live_checked() -> None:
+    client = TestClient(
+        create_app(
+            database_checker=database_ready,
+            settings_override=Settings(mail_adapter="smtp"),
+            storage_checker_override=database_ready,
+            queue_checker_override=database_ready,
+            worker_checker_override=database_ready,
+        )
+    )
+
+    response = client.get("/api/v1/system/capabilities")
+
+    assert response.status_code == 200
+    assert response.json()["external_actions"]["status"] == "not_checked"
+    assert "SMTP send-only" in response.json()["external_actions"]["detail"]

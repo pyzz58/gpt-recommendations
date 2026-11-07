@@ -191,11 +191,11 @@ class MailService:
             actor = _owner(session, actor_user_id)
             set_rls_context(session, workspace_id=actor.workspace_id, user_id=actor.id)
             project = _project(session, project_id, actor.workspace_id)
-            account = _ensure_mock_account(session, project, actor)
+            account = _ensure_account(session, project, actor, self._adapter)
             descriptor = _account_descriptor(account)
             state = self._adapter.account_status(descriptor)
             account.state = state.value
-            return _account_view(account, state)
+            return _account_view(account, state, self._adapter)
 
     def sync_mock_inbox(
         self,
@@ -207,7 +207,9 @@ class MailService:
             actor = _owner(session, actor_user_id)
             set_rls_context(session, workspace_id=actor.workspace_id, user_id=actor.id)
             project = _project(session, project_id, actor.workspace_id)
-            account = _ensure_mock_account(session, project, actor)
+            account = _ensure_account(session, project, actor, self._adapter)
+            if not self._adapter.receive_supported:
+                return []
             descriptor = _account_descriptor(account)
             provider_threads = self._adapter.list_threads(descriptor)
             now = datetime.now(UTC)
@@ -273,7 +275,7 @@ class MailService:
             actor = _owner(session, actor_user_id)
             set_rls_context(session, workspace_id=actor.workspace_id, user_id=actor.id)
             project = _project(session, project_id, actor.workspace_id)
-            account = _ensure_mock_account(session, project, actor)
+            account = _ensure_account(session, project, actor, self._adapter)
             return self._thread_views(session, project=project, account=account)
 
     def link_thread(
@@ -288,7 +290,7 @@ class MailService:
             actor = _owner(session, actor_user_id)
             set_rls_context(session, workspace_id=actor.workspace_id, user_id=actor.id)
             project = _project(session, project_id, actor.workspace_id)
-            account = _ensure_mock_account(session, project, actor)
+            account = _ensure_account(session, project, actor, self._adapter)
             thread = session.scalar(
                 select(MailThread)
                 .where(
@@ -332,7 +334,7 @@ class MailService:
             actor = _owner(session, actor_user_id)
             set_rls_context(session, workspace_id=actor.workspace_id, user_id=actor.id)
             project = _project(session, project_id, actor.workspace_id)
-            account = _ensure_mock_account(session, project, actor)
+            account = _ensure_account(session, project, actor, self._adapter)
             existing = session.scalar(
                 select(MailDraft)
                 .where(
@@ -770,7 +772,7 @@ class MailService:
                 project_id=project_id,
                 result=result.result,
             )
-        else:
+        elif result.state == "not_found":
             self._mark_attempt_not_sent(
                 attempt_id=attempt_id,
                 actor_user_id=actor_user_id,
@@ -884,6 +886,7 @@ class MailService:
             if self._adapter.account_status(_account_descriptor(account)) not in {
                 MailAccountState.MOCK_READY,
                 MailAccountState.CONNECTED,
+                MailAccountState.SEND_ONLY,
             }:
                 raise ValueError("Mail account is not available")
             provider_attachments = tuple(
@@ -1365,17 +1368,22 @@ def _project(session: Session, project_id: UUID, workspace_id: UUID) -> Project:
     return project
 
 
-def _ensure_mock_account(
+def _ensure_account(
     session: Session,
     project: Project,
     actor: User,
+    adapter: MailAdapter,
 ) -> MailAccount:
     del project
+    account_mode = MailMode(adapter.account_mode)
+    address = adapter.default_address
+    if address is None:
+        raise ValueError("Mail adapter has no configured sender address")
     account = session.scalar(
         select(MailAccount).where(
             MailAccount.workspace_id == actor.workspace_id,
             MailAccount.owner_user_id == actor.id,
-            MailAccount.mode == MailMode.MOCK.value,
+            MailAccount.mode == account_mode.value,
         )
     )
     if account is None:
@@ -1384,11 +1392,19 @@ def _ensure_mock_account(
             id=uuid4(),
             workspace_id=actor.workspace_id,
             owner_user_id=actor.id,
-            provider_id="mock-mail",
-            address="owner@medical-one.invalid",
-            display_name=f"{actor.display_name}（模拟邮箱）",
-            mode=MailMode.MOCK.value,
-            state=MailAccountState.MOCK_READY.value,
+            provider_id=adapter.adapter_id,
+            address=address,
+            display_name=(
+                f"{actor.display_name}（模拟邮箱）"
+                if account_mode == MailMode.MOCK
+                else f"{actor.display_name}（SMTP发件）"
+            ),
+            mode=account_mode.value,
+            state=(
+                MailAccountState.MOCK_READY.value
+                if account_mode == MailMode.MOCK
+                else MailAccountState.UNCONFIGURED.value
+            ),
             credential_ref=None,
             created_at=now,
             updated_at=now,
@@ -1415,7 +1431,15 @@ def _account_descriptor(account: MailAccount) -> MailAccountDescriptor:
     )
 
 
-def _account_view(account: MailAccount, state: MailAccountState) -> MailAccountView:
+def _account_view(
+    account: MailAccount,
+    state: MailAccountState,
+    adapter: MailAdapter,
+) -> MailAccountView:
+    external_send_enabled = state in {
+        MailAccountState.CONNECTED,
+        MailAccountState.SEND_ONLY,
+    }
     return MailAccountView(
         id=account.id,
         address=account.address,
@@ -1423,10 +1447,15 @@ def _account_view(account: MailAccount, state: MailAccountState) -> MailAccountV
         provider_id=account.provider_id,
         mode=MailMode(account.mode),
         state=state,
-        external_send_enabled=False,
+        external_send_enabled=external_send_enabled,
         note=(
-            "Local deterministic mock mailbox. Draft, authorization and simulated "
-            "delivery are recorded; no external message is sent."
+            "SMTP outbound is configured; inbox receive is unavailable. "
+            "Every send still requires a valid project authorization."
+            if adapter.account_mode == "live"
+            else (
+                "Local deterministic mock mailbox. Draft, authorization and simulated "
+                "delivery are recorded; no external message is sent."
+            )
         ),
     )
 

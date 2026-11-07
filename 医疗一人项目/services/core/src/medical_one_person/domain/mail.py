@@ -17,6 +17,7 @@ class MailMode(StrEnum):
 class MailAccountState(StrEnum):
     MOCK_READY = "mock_ready"
     CONNECTED = "connected"
+    SEND_ONLY = "send_only"
     UNCONFIGURED = "unconfigured"
     DISABLED = "disabled"
 
@@ -162,7 +163,7 @@ class ProviderSendResult:
 
 @dataclass(frozen=True)
 class ProviderReconcileResult:
-    state: Literal["sent", "not_found"]
+    state: Literal["sent", "not_found", "unknown"]
     result: ProviderSendResult | None
 
 

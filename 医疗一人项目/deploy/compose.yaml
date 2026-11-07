@@ -57,6 +57,8 @@ services:
       MEDICAL_ONE_EXPORT_TEMPLATE_PATH: /app/config/templates/catalog.yaml
       MEDICAL_ONE_AUDIT_FIXTURE_PATH: /app/fixtures/w17-audit-cases.json
       MEDICAL_ONE_THEORY_PATH: /app/最高思想.md
+    env_file:
+      - ${MEDICAL_ONE_CONFIG_FILE:-../.env}
     ports:
       - "127.0.0.1:8000:8000"
     volumes:
@@ -103,6 +105,8 @@ services:
       MEDICAL_ONE_EXPORT_TEMPLATE_PATH: /app/config/templates/catalog.yaml
       MEDICAL_ONE_AUDIT_FIXTURE_PATH: /app/fixtures/w17-audit-cases.json
       MEDICAL_ONE_THEORY_PATH: /app/最高思想.md
+    env_file:
+      - ${MEDICAL_ONE_CONFIG_FILE:-../.env}
     volumes:
       - artifacts:/var/lib/medical-one/artifacts
       - runs:/var/lib/medical-one/runs

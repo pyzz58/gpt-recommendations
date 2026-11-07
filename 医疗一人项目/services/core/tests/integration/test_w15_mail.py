@@ -19,6 +19,7 @@ from medical_one_person.domain.mail import (
     MailDraftSpec,
     MailDraftState,
     MailSendAuthorizationSpec,
+    ProviderReconcileResult,
 )
 from medical_one_person.infrastructure.artifacts import LocalArtifactStore
 from medical_one_person.infrastructure.bootstrap import bootstrap_local_owner
@@ -32,6 +33,17 @@ from medical_one_person.infrastructure.mail.mock import (
     MockMailAdapter,
     MockSendOutcome,
 )
+
+
+class _UnknownReconcileAdapter(MockMailAdapter):
+    def reconcile_send(
+        self,
+        *,
+        operation_key: str,
+        provider_message_id: str | None,
+    ) -> ProviderReconcileResult:
+        del operation_key, provider_message_id
+        return ProviderReconcileResult(state="unknown", result=None)
 
 
 def _draft_spec(attachment_id=None) -> MailDraftSpec:
@@ -358,6 +370,62 @@ def test_unknown_send_requires_reconciliation_and_does_not_resend(
         actor_user_id=identity.owner_user_id,
     )
     assert recovered.status == "passed"
+
+
+def test_send_only_provider_unknown_reconcile_keeps_unknown_without_resend(
+    session_factory: sessionmaker[Session],
+    tmp_path: Path,
+) -> None:
+    identity = bootstrap_local_owner(session_factory)
+    project = ProjectService(session_factory).create_project(
+        actor_user_id=identity.owner_user_id,
+        name="W22 SMTP不确定态项目",
+        scope="验证无法查询SMTP发送事实时保持未知。",
+        idempotency_key="w22-smtp-unknown-project",
+    )
+    store = LocalArtifactStore(tmp_path / "mail-artifacts")
+    adapter = _UnknownReconcileAdapter(
+        seed_inbox=False,
+        send_outcome=MockSendOutcome.UNKNOWN_AFTER_DELIVERY,
+    )
+    service = MailService(session_factory, store, adapter)
+    draft = service.create_draft(
+        project_id=project.id,
+        actor_user_id=identity.owner_user_id,
+        spec=_draft_spec(),
+        idempotency_key="w22-smtp-unknown-draft",
+    )
+    authorization = service.authorize_draft(
+        project_id=project.id,
+        draft_id=draft.id,
+        actor_user_id=identity.owner_user_id,
+        spec=MailSendAuthorizationSpec(expires_in_minutes=10, max_sends=1),
+        idempotency_key="w22-smtp-unknown-authorize",
+    )
+    unknown = service.send(
+        project_id=project.id,
+        draft_id=draft.id,
+        authorization_id=authorization.id,
+        actor_user_id=identity.owner_user_id,
+        idempotency_key="w22-smtp-unknown-send",
+    )
+
+    reconciled = service.reconcile(
+        project_id=project.id,
+        attempt_id=unknown.attempt.id,
+        actor_user_id=identity.owner_user_id,
+    )
+
+    assert reconciled.attempt.id == unknown.attempt.id
+    assert reconciled.attempt.state.value == "outcome_unknown"
+    assert reconciled.draft_state == MailDraftState.OUTCOME_UNKNOWN
+    with session_factory.begin() as session:
+        set_rls_context(
+            session,
+            workspace_id=identity.workspace_id,
+            user_id=identity.owner_user_id,
+        )
+        assert session.scalar(select(func.count()).select_from(MailSendAttempt)) == 1
 
 
 def test_w15_mail_tables_are_forced_through_rls(database: Engine) -> None:

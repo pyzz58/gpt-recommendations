@@ -37,6 +37,12 @@ from medical_one_person.providers.base import (
     ModelProvider,
     StructuredGenerationRequest,
 )
+from medical_one_person.providers.errors import (
+    ProviderAuthenticationError,
+    ProviderBudgetExceeded,
+    ProviderRateLimited,
+    ProviderResponseInvalid,
+)
 
 
 @dataclass(frozen=True)
@@ -147,6 +153,33 @@ class AgentRunner:
                         error_code="AGENT_SCHEMA_INVALID",
                         retryable=False,
                     ) from exc
+            except (
+                ProviderAuthenticationError,
+                ProviderBudgetExceeded,
+                ProviderRateLimited,
+                ProviderResponseInvalid,
+            ) as exc:
+                error_code = {
+                    ProviderAuthenticationError: "PROVIDER_AUTH_FAILED",
+                    ProviderBudgetExceeded: "PROVIDER_BUDGET_EXCEEDED",
+                    ProviderRateLimited: "PROVIDER_RATE_LIMITED",
+                    ProviderResponseInvalid: "PROVIDER_RESPONSE_INVALID",
+                }[type(exc)]
+                retryable = isinstance(
+                    exc,
+                    (ProviderRateLimited, ProviderResponseInvalid),
+                )
+                self._mark_failed(
+                    claim=claim,
+                    run_id=run,
+                    workspace_id=claim.workspace_id,
+                    error_code=error_code,
+                )
+                raise AgentExecutionFailure(
+                    str(exc),
+                    error_code=error_code,
+                    retryable=retryable,
+                ) from exc
             except Exception as exc:
                 self._mark_failed(
                     claim=claim,
@@ -351,6 +384,7 @@ class AgentRunner:
                 .with_for_update()
             )
             if persisted is None:
+                capabilities = self._provider.capabilities()
                 run = AgentRun(
                     id=uuid4(),
                     workspace_id=task.workspace_id,
@@ -359,9 +393,9 @@ class AgentRunner:
                     job_id=claim.job_id,
                     agent_instance_id=instance_id,
                     run_key=run_key,
-                    mode="mock",
+                    mode=capabilities.mode,
                     provider_id=self._provider.provider_id,
-                    model_id=self._provider.capabilities().provider_id,
+                    model_id=self._provider.model_id,
                     role_id=role.role_id,
                     role_version=role.version,
                     theory_hash=task.policy_theory_hash,

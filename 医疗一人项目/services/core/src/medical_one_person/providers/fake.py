@@ -17,6 +17,7 @@ class FakeModelProvider:
     """Deterministic, network-free model substitute."""
 
     provider_id = "fake-deterministic-v1"
+    model_id = "fake-deterministic-v1"
 
     def capabilities(self) -> ProviderCapabilities:
         return ProviderCapabilities(
@@ -123,6 +124,10 @@ class FakeModelProvider:
 
 class UnavailableLiveProvider:
     provider_id = "live-unconfigured"
+    model_id = "unconfigured"
+
+    def __init__(self, reason: str = "Live model provider is not configured") -> None:
+        self.reason = reason
 
     def capabilities(self) -> ProviderCapabilities:
         return ProviderCapabilities(

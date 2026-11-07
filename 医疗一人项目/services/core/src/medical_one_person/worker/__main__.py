@@ -24,7 +24,7 @@ from medical_one_person.infrastructure.runtime_health import (
     remove_worker_heartbeat,
     write_worker_heartbeat,
 )
-from medical_one_person.providers import FakeModelProvider
+from medical_one_person.providers import build_model_provider
 
 logger = logging.getLogger(__name__)
 
@@ -55,10 +55,15 @@ async def run(*, workspace_id: UUID | None, poll_seconds: float) -> None:
     ).require_runtime_ready(workspace_id=workspace_id)
     theory_hash = hashlib.sha256(settings.theory_path.read_bytes()).hexdigest()
     worker_id = f"{socket.gethostname()}:{os.getpid()}"
+    provider = build_model_provider(settings)
+    if not provider.capabilities().structured_output:
+        raise RuntimeError(
+            f"Model provider {provider.provider_id} is not configured for structured output"
+        )
     write_worker_heartbeat(settings.run_root, worker_id=worker_id)
     loop_runner = WorkerLoop(
         session_factory,
-        FakeModelProvider(),
+        provider,
         roles,
         theory_hash=theory_hash,
         worker_id=worker_id,

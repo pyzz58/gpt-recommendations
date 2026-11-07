@@ -53,6 +53,9 @@ class StructuredGenerationResponse(BaseModel):
 class ModelProvider(Protocol):
     provider_id: str
 
+    @property
+    def model_id(self) -> str: ...
+
     def capabilities(self) -> ProviderCapabilities:
         """Describe actual provider capabilities without inferring from model names."""
 

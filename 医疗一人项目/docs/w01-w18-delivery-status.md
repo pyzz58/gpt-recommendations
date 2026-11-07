@@ -32,7 +32,8 @@
 
 ## 当前后续工作
 
-- W22—W23：PLANNED。live连接和部署发布尚未完成。
+- W22：IN_PROGRESS。模型与SMTP适配器及离线测试已完成，真实模型/邮箱live未运行。
+- W23：IMPLEMENTED，原生部署/启停/健康局部VERIFIED；Compose/容器未实跑。
 - W24：PREPARED。没有现实联系、授权、执行、原始交付或验收；见
   [W24试点档案](w24-pilot-charter.md)。
 - 当前分支不合并`main`。任何后续代码变化都要重新运行受影响验收并形成新证据；

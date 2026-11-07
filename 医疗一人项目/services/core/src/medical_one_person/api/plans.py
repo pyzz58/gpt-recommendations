@@ -21,6 +21,7 @@ from medical_one_person.application.plans import (
 from medical_one_person.application.sessions import AuthenticatedPrincipal
 from medical_one_person.domain.plans import PlanSpec, ReviewDecision, ReviewFinding
 from medical_one_person.infrastructure.workflows import WorkflowRegistry
+from medical_one_person.providers.base import ModelProvider
 
 
 class PlanCreateRequest(BaseModel):
@@ -58,6 +59,7 @@ def build_plan_router(
     workflows: WorkflowRegistry,
     theory_hash: str,
     current_principal: Callable[[Request], AuthenticatedPrincipal],
+    provider: ModelProvider | None = None,
 ) -> APIRouter:
     router = APIRouter(prefix="/api/v1/projects/{project_id}", tags=["plans"])
     service = PlanService(session_factory, roles, workflows)
@@ -65,6 +67,7 @@ def build_plan_router(
         session_factory,
         roles,
         theory_hash=theory_hash,
+        provider=provider,
     )
 
     @router.get("/plans", response_model=list[PlanView])

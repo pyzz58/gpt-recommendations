@@ -64,6 +64,10 @@ class Settings(BaseSettings):
     model_provider_api_key: str | None = None
     model_provider_model: str | None = None
     model_provider_timeout_seconds: float = 60.0
+    model_provider_live_enabled: bool = False
+    model_provider_max_context_tokens: int = 32_000
+    model_provider_max_output_tokens: int = 4_096
+    model_provider_max_cost_per_call: float | None = None
     model_provider_input_cost_per_million: float | None = None
     model_provider_output_cost_per_million: float | None = None
     model_provider_currency: str | None = None
@@ -75,6 +79,9 @@ class Settings(BaseSettings):
     mail_smtp_security: Literal["starttls", "ssl"] = "starttls"
     mail_smtp_from_address: str | None = None
     mail_smtp_from_name: str = "医疗一人项目"
+    mail_smtp_timeout_seconds: float = 30.0
+    mail_smtp_live_enabled: bool = False
+    mail_smtp_allowed_recipients: str = ""
 
     @field_validator("database_url")
     @classmethod
@@ -123,8 +130,26 @@ class Settings(BaseSettings):
         return value
 
     @field_validator(
+        "model_provider_max_context_tokens",
+        "model_provider_max_output_tokens",
+    )
+    @classmethod
+    def validate_provider_token_limits(cls, value: int) -> int:
+        if value <= 0:
+            raise ValueError("Provider token limits must be positive")
+        return value
+
+    @field_validator("mail_smtp_timeout_seconds")
+    @classmethod
+    def validate_smtp_timeout(cls, value: float) -> float:
+        if value <= 0:
+            raise ValueError("mail_smtp_timeout_seconds must be positive")
+        return value
+
+    @field_validator(
         "model_provider_input_cost_per_million",
         "model_provider_output_cost_per_million",
+        "model_provider_max_cost_per_call",
     )
     @classmethod
     def validate_provider_rates(cls, value: float | None) -> float | None:

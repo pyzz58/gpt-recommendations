@@ -15,7 +15,8 @@ from medical_one_person.contracts import (
     ProviderCapability,
 )
 from medical_one_person.domain.recovery import NetworkMode
-from medical_one_person.providers import FakeModelProvider
+from medical_one_person.providers import FakeModelProvider, UnavailableLiveProvider
+from medical_one_person.providers.base import ModelProvider
 
 
 def build_system_router(
@@ -25,12 +26,17 @@ def build_system_router(
     skill_status: DependencyStatus,
     source_status: DependencyStatus,
     *,
+    model_provider: ModelProvider | None = None,
     storage_checker: Callable[[], DependencyStatus] | None = None,
     queue_checker: Callable[[], DependencyStatus] | None = None,
     worker_checker: Callable[[], DependencyStatus] | None = None,
 ) -> APIRouter:
     router = APIRouter()
-    fake_provider = FakeModelProvider()
+    provider = model_provider or (
+        FakeModelProvider()
+        if settings.app_mode == "mock"
+        else UnavailableLiveProvider()
+    )
 
     def checked(
         checker: Callable[[], DependencyStatus] | None,
@@ -74,7 +80,8 @@ def build_system_router(
             worker_checker,
             "Worker heartbeat readiness is not injected in this process",
         )
-        provider_ready = settings.app_mode == "mock"
+        provider_capabilities = provider.capabilities()
+        provider_ready = provider_capabilities.structured_output
         is_ready = (
             provider_ready
             and all(
@@ -89,11 +96,17 @@ def build_system_router(
             mode=settings.app_mode,
             checks={
                 "process": DependencyStatus(status="ready", detail="API process is running"),
-                "mock_provider": DependencyStatus(
+                "provider": DependencyStatus(
                     status="ready" if provider_ready else "not_configured",
-                    detail="Deterministic network-free adapter"
-                    if settings.app_mode == "mock"
-                    else "Live model provider is not configured",
+                    detail=(
+                        "Deterministic network-free adapter"
+                        if provider_capabilities.mode == "mock"
+                        else (
+                            "Live provider is configured; connectivity was not tested here"
+                            if provider_ready
+                            else "Live model provider configuration is incomplete"
+                        )
+                    ),
                 ),
                 "database": database,
                 "artifact_storage": storage,
@@ -112,13 +125,19 @@ def build_system_router(
         storage = checked(storage_checker, "Storage check is unavailable")
         queue = checked(queue_checker, "Queue schema check is unavailable")
         worker = checked(worker_checker, "Worker heartbeat check is unavailable")
+        provider_capabilities = provider.capabilities()
         provider_status: Literal["ready", "not_configured"] = (
-            "ready" if settings.app_mode == "mock" else "not_configured"
+            "ready" if provider_capabilities.structured_output else "not_configured"
         )
         provider_detail = (
             "Deterministic mock responses only"
-            if settings.app_mode == "mock"
-            else "Configure a reviewed provider adapter before using live mode"
+            if provider_capabilities.mode == "mock"
+            else (
+                "OpenAI-compatible live adapter is configured; no connectivity "
+                "or scientific-quality validation is implied"
+                if provider_capabilities.structured_output
+                else "Configure a reviewed provider adapter before using live mode"
+            )
         )
         return CapabilityReport(
             mode=settings.app_mode,
@@ -131,8 +150,8 @@ def build_system_router(
             ),
             providers=[
                 ProviderCapability(
-                    provider_id=fake_provider.provider_id,
-                    mode="mock",
+                    provider_id=provider.provider_id,
+                    mode=provider_capabilities.mode,
                     status=provider_status,
                     detail=provider_detail,
                 )
@@ -233,12 +252,18 @@ def build_system_router(
                 ),
             },
             external_actions=DependencyStatus(
-                status="ready",
+                status="ready" if settings.mail_adapter == "mock" else "not_checked",
                 detail=(
                     "The local mock mailbox records drafts, explicit authorization, "
                     "simulated delivery and uncertain outcomes; real email, purchases, "
                     "contracts, and experiments remain disabled; W16 records are local "
                     "evidence entries and do not contact providers"
+                    if settings.mail_adapter == "mock"
+                    else (
+                        "SMTP send-only adapter is configured behind explicit live and "
+                        "recipient allowlist gates; inbox receive is unavailable and no "
+                        "live connection has been validated"
+                    )
                 ),
             ),
             limitations=[
@@ -272,6 +297,6 @@ def build_system_router(
                     "message": "The mock smoke endpoint is disabled outside mock mode.",
                 },
             )
-        return fake_provider.smoke(request.input)
+        return provider.smoke(request.input)
 
     return router

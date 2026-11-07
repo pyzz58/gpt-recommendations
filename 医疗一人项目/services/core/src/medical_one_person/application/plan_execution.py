@@ -22,6 +22,7 @@ from medical_one_person.infrastructure.db.models import (
     User,
 )
 from medical_one_person.providers import FakeModelProvider
+from medical_one_person.providers.base import ModelProvider
 
 
 class ExecutedTaskView(BaseModel):
@@ -44,10 +45,12 @@ class MockPlanExecutor:
         roles: dict[str, AgentRoleConfig],
         *,
         theory_hash: str,
+        provider: ModelProvider | None = None,
     ) -> None:
         self._session_factory = session_factory
         self._roles = roles
         self._theory_hash = theory_hash
+        self._provider = provider or FakeModelProvider()
 
     def execute_ready(
         self,
@@ -90,7 +93,7 @@ class MockPlanExecutor:
         queue = JobQueue(self._session_factory)
         runner = AgentRunner(
             self._session_factory,
-            FakeModelProvider(),
+            self._provider,
             self._roles,
             theory_hash=self._theory_hash,
             job_queue=queue,

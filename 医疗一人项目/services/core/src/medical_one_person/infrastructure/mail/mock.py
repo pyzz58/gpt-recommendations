@@ -25,6 +25,15 @@ class MailAdapter(Protocol):
     @property
     def adapter_id(self) -> str: ...
 
+    @property
+    def account_mode(self) -> str: ...
+
+    @property
+    def default_address(self) -> str | None: ...
+
+    @property
+    def receive_supported(self) -> bool: ...
+
     def account_status(self, account: MailAccountDescriptor) -> MailAccountState: ...
 
     def list_threads(self, account: MailAccountDescriptor) -> list[ProviderThread]: ...
@@ -80,6 +89,18 @@ class MockMailAdapter:
     @property
     def adapter_id(self) -> str:
         return self._adapter_id
+
+    @property
+    def account_mode(self) -> str:
+        return "mock"
+
+    @property
+    def default_address(self) -> str | None:
+        return "owner@medical-one.invalid"
+
+    @property
+    def receive_supported(self) -> bool:
+        return True
 
     def account_status(self, account: MailAccountDescriptor) -> MailAccountState:
         if account.mode.value != "mock" or account.address.endswith(".invalid"):

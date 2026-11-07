@@ -48,7 +48,8 @@ from medical_one_person.infrastructure.exports.renderer import OfficeRenderer
 from medical_one_person.infrastructure.exports.templates import load_export_templates
 from medical_one_person.infrastructure.knowledge.parsers import DocumentParser
 from medical_one_person.infrastructure.knowledge.upload import UploadService
-from medical_one_person.infrastructure.mail.mock import MailAdapter, MockMailAdapter
+from medical_one_person.infrastructure.mail.factory import build_mail_adapter
+from medical_one_person.infrastructure.mail.mock import MailAdapter
 from medical_one_person.infrastructure.runtime_health import (
     queue_schema_status,
     storage_status,
@@ -57,6 +58,7 @@ from medical_one_person.infrastructure.runtime_health import (
 from medical_one_person.infrastructure.skills.registry import SkillRegistry
 from medical_one_person.infrastructure.sources import load_source_policies
 from medical_one_person.infrastructure.workflows import WorkflowRegistry
+from medical_one_person.providers import build_model_provider
 
 
 def create_app(
@@ -70,6 +72,7 @@ def create_app(
     worker_checker_override: Callable[[], DependencyStatus] | None = None,
 ) -> FastAPI:
     settings = settings_override or get_settings()
+    model_provider = build_model_provider(settings)
     roles = load_role_configs(settings.agent_config_path)
     skills = SkillRegistry.from_catalog(settings.skill_config_path)
     skills.validate_against_roles(roles)
@@ -136,7 +139,7 @@ def create_app(
         timeout_seconds=settings.office_conversion_timeout_seconds,
         max_pages=settings.office_max_preview_pages,
     )
-    mail_adapter = mail_adapter_override or MockMailAdapter()
+    mail_adapter = mail_adapter_override or build_mail_adapter(settings)
 
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
@@ -218,7 +221,10 @@ def create_app(
             checker,
             DependencyStatus(
                 status="ready",
-                detail=f"{len(roles)} role contracts loaded; mock provider only",
+                detail=(
+                    f"{len(roles)} role contracts loaded; "
+                    f"provider={model_provider.provider_id}"
+                ),
             ),
             DependencyStatus(
                 status="ready",
@@ -235,6 +241,7 @@ def create_app(
                     "live scholarly adapters are not connected"
                 ),
             ),
+            model_provider=model_provider,
             storage_checker=storage_checker,
             queue_checker=queue_checker,
             worker_checker=worker_checker,
@@ -272,6 +279,7 @@ def create_app(
             workflows,
             theory_hash,
             current_principal,
+            provider=model_provider,
         )
     )
     app.include_router(
