@@ -4653,17 +4653,17 @@
         {
           "command": "uv run --frozen pytest -q tests/acceptance/test_v1a.py",
           "purpose": "固定验收反例",
-          "availability": "to_implement"
+          "availability": "available"
         },
         {
           "command": "npm --prefix web run test:e2e -- --project=chromium",
           "purpose": "完整流程回归",
-          "availability": "to_implement"
+          "availability": "available"
         },
         {
           "command": "uv run --frozen python tools/build_validation_report.py --check",
           "purpose": "逐用途能力/证据/风险和未达标项的汇总检查",
-          "availability": "to_implement"
+          "availability": "available"
         }
       ],
       "phase_id": "P5",

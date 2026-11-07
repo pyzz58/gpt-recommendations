@@ -71,19 +71,19 @@ python3 tools/check_traceability.py
 python3 -m unittest discover -s tests -v
 ```
 
-- [to_implement] 固定验收反例
+- [available] 固定验收反例
 
 ```bash
 uv run --frozen pytest -q tests/acceptance/test_v1a.py
 ```
 
-- [to_implement] 完整流程回归
+- [available] 完整流程回归
 
 ```bash
 npm --prefix web run test:e2e -- --project=chromium
 ```
 
-- [to_implement] 逐用途能力/证据/风险和未达标项的汇总检查
+- [available] 逐用途能力/证据/风险和未达标项的汇总检查
 
 ```bash
 uv run --frozen python tools/build_validation_report.py --check

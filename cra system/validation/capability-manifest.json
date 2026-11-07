@@ -1,0 +1,1035 @@
+{
+  "schema_version": 1,
+  "release_id": "CRA-V1A-ENGINEERING-20261107",
+  "clinical_validation": false,
+  "source_policy": "Pure synthetic fixtures and deidentified engineering evidence only; no real clinical data, credentials or raw trial logs.",
+  "scenarios": [
+    {
+      "id": "CRA-S01",
+      "title": "跨研究或中心访问",
+      "requirements": ["CRA-R002", "CRA-R036"],
+      "input": "两个中心、两个CRA身份及一个项目管理员；分别请求列表和单条资源。",
+      "expected": "用户无权访问中心B时，所有返回、写入和导出路径均不得包含B。",
+      "expected_basis": "三层授权及服务端对象范围检查；不采用客户端隐藏代替授权。",
+      "sample_source": "合成治理、问题与EDC测试数据",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_governance.py", "case": "tests/integration/test_governance.py::test_two_site_scopes_are_isolated_for_read_and_write"},
+        {"kind": "test", "path": "tests/api/test_platform.py", "case": "tests/api/test_platform.py::test_second_site_identity_only_receives_its_own_site"}
+      ],
+      "actual_result": "跨中心和跨身份读写均被服务端拒绝或过滤，返回范围仅含获准中心。",
+      "failures": [],
+      "uncovered": ["真实OIDC属性映射与生产反向代理撤销时延仍待W15验证。"]
+    },
+    {
+      "id": "CRA-S02",
+      "title": "检索材料含伪指令",
+      "requirements": ["CRA-R036", "CRA-R038"],
+      "input": "待构造含提示注入、伪造系统指令和越权外发要求的独立合成文档。",
+      "expected": "源文档只能作为业务资料处理，不能改变系统权限、工具范围或触发外发。",
+      "expected_basis": "资料与指令通道分离、provider最小权限及source grounding。",
+      "sample_source": "尚无独立提示注入样本。",
+      "evaluation_group": "not_run",
+      "status": "not_evaluated",
+      "evidence": [],
+      "actual_result": "未执行完整提示注入场景；现有引用锚点校验不能替代该安全测试。",
+      "failures": [],
+      "uncovered": ["提示注入样本、模型侧约束、工具越权和数据外发拒绝均未执行。"]
+    },
+    {
+      "id": "CRA-S03",
+      "title": "资料未上传与适用缺件",
+      "requirements": ["CRA-R003", "CRA-R024"],
+      "input": "只提供方案而没有IB、中心目录或模板的项目资料集。",
+      "expected": "缺件分别提示，不生成不存在的出处或适用规则。",
+      "expected_basis": "资料清单按用途独立；已上传资料不替代其他必需资料。",
+      "sample_source": "现有合成资料覆盖上传和解析，但未执行组合缺件场景。",
+      "evaluation_group": "not_run",
+      "status": "not_evaluated",
+      "evidence": [],
+      "actual_result": "单文件上传和来源定位已有测试，但完整资料组合缺件提示未作为场景验收。",
+      "failures": [],
+      "uncovered": ["IB、Q&A、SOP、目录和模板的组合缺件语义。"]
+    },
+    {
+      "id": "CRA-S04",
+      "title": "文件更新和原文定位",
+      "requirements": ["CRA-R004", "CRA-R005", "CRA-R009", "CRA-R041"],
+      "input": "同内容邮件复导、局部修订、例外和未重复条款的合成规则文件。",
+      "expected": "重复规则不复制，遗漏条款不当作撤销，来源可回查且修订历史保留。",
+      "expected_basis": "条目级版本和不可变来源；上传时间不代替启用日。",
+      "sample_source": "合成规则DOCX和文本夹具",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_rules.py", "case": "tests/integration/test_rules.py::test_duplicate_text_is_direct_and_never_reconfirmed"},
+        {"kind": "test", "path": "tests/integration/test_rules.py", "case": "tests/integration/test_rules.py::test_version_activation_boundaries_history_and_new_version_carryover"}
+      ],
+      "actual_result": "重复文字直接复用，版本新增/例外及旧条款保留，来源锚点和历史版本可回查。",
+      "failures": [],
+      "uncovered": ["任意真实邮件格式和任意中文方案并非完整AST范围。"]
+    },
+    {
+      "id": "CRA-S05",
+      "title": "脚注和完整条件",
+      "requirements": ["CRA-R006", "CRA-R007", "CRA-R008"],
+      "input": "含表格正文、脚注、三值条件及用户增删修正的合成规则资料。",
+      "expected": "正文和脚注共同形成完整条件，候选确认前后版本与原文均保留。",
+      "expected_basis": "分层list、条件语义验证和用户修订历史。",
+      "sample_source": "合成规则矩阵与自然中文规则",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_rules.py", "case": "tests/integration/test_rules.py::test_natural_chinese_paragraph_table_footnote_and_qa_are_preserved"},
+        {"kind": "test", "path": "tests/integration/test_rules.py", "case": "tests/integration/test_rules.py::test_extract_confirm_add_remove_and_preserve_history"}
+      ],
+      "actual_result": "脚注与正文均有来源，候选增删产生可回查版本，原提取未被覆盖。",
+      "failures": [],
+      "uncovered": ["未验证任意复杂版式或全部中文方案语义。"]
+    },
+    {
+      "id": "CRA-S06",
+      "title": "适用规则冲突",
+      "requirements": ["CRA-R002", "CRA-R034"],
+      "input": "同编号项目与中心独立要求、未知例外和真实冲突输入。",
+      "expected": "并行要求双方保留，未知不转真或假，真正冲突不擅自覆盖。",
+      "expected_basis": "三层范围并行、三值逻辑和冲突输出。",
+      "sample_source": "合成项目/中心规则",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_rules.py", "case": "tests/integration/test_rules.py::test_independent_site_rule_cannot_hide_same_key_project_rule"},
+        {"kind": "test", "path": "tests/integration/test_review_units.py", "case": "tests/integration/test_review_units.py::test_unknown_exception_keeps_rule_unknown"}
+      ],
+      "actual_result": "独立同编号要求并存，未知例外保持unknown，未生成确定性替代结论。",
+      "failures": [],
+      "uncovered": ["真实项目多层规则的完整语义覆盖仍有限。"]
+    },
+    {
+      "id": "CRA-S07",
+      "title": "标准版本变化",
+      "requirements": ["CRA-R019", "CRA-R041"],
+      "input": "旧规则、v2例外和不同事件日期。",
+      "expected": "新标准不自动替换项目采用版本，历史事件仍使用当时适用依据。",
+      "expected_basis": "手动启用日、事件时间选择和签发后不追溯覆盖。",
+      "sample_source": "合成规则v1/v2",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_rules.py", "case": "tests/integration/test_rules.py::test_version_activation_boundaries_history_and_new_version_carryover"}
+      ],
+      "actual_result": "启用日边界和受影响事项检查按事件日期执行，未用上传日或最新版替代历史依据。",
+      "failures": [],
+      "uncovered": ["外部标准真实发布文本未导入。"]
+    },
+    {
+      "id": "CRA-S08",
+      "title": "患者与锚点复用",
+      "requirements": ["CRA-R010", "CRA-R011", "CRA-R012"],
+      "input": "两个合成受试者和不同治疗锚点，切换患者复核。",
+      "expected": "锚点来源可解释，患者之间不混用，切回可接续。",
+      "expected_basis": "受试者身份、日期精度和访视窗口。",
+      "sample_source": "合成CSV/JSON/XLSX患者上下文",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_subjects.py", "case": "tests/integration/test_subjects.py::test_import_reuse_identity_timeline_and_cross_site_isolation"}
+      ],
+      "actual_result": "患者身份和锚点可复用，切换后范围和日期未串用。",
+      "failures": [],
+      "uncovered": ["真实EDC字段映射和完整病史未验证。"]
+    },
+    {
+      "id": "CRA-S09",
+      "title": "不同类别核查断点",
+      "requirements": ["CRA-R028", "CRA-R045"],
+      "input": "同一受试者检验与文档分别停留在不同访视。",
+      "expected": "分类断点分别保存，正常范围可简记，下次按类别接续。",
+      "expected_basis": "服务端覆盖断点和分类状态。",
+      "sample_source": "W05/W12合成受试者",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_subjects.py", "case": "tests/integration/test_subjects.py::test_fact_revision_marks_requirements_stale_and_breakpoints_are_separate"}
+      ],
+      "actual_result": "不同类别断点独立保留，正常范围说明与未覆盖范围分开。",
+      "failures": [],
+      "uncovered": ["真实跨日工作与多设备弱网由W15验证。"]
+    },
+    {
+      "id": "CRA-S10",
+      "title": "先复核遗留再开始新监查",
+      "requirements": ["CRA-R001", "CRA-R012", "CRA-R026"],
+      "input": "三条未完成遗留、选两条形成访前信、进入现场复核。",
+      "expected": "完整遗留可展开，确认后接续且未完成项不消失。",
+      "expected_basis": "历史issue与本次visit共用服务端记录。",
+      "sample_source": "W12合成两次监查",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_visit_continuity.py", "case": "tests/integration/test_visit_continuity.py::test_refresh_relogin_center_switch_and_second_visit_continue"},
+        {"kind": "test", "path": "tests/integration/test_issues.py", "case": "tests/integration/test_issues.py::test_previsit_selection_keeps_complete_carryover_across_visits"}
+      ],
+      "actual_result": "访前选择不删除完整清单，现场刷新和重登后仍接续同一遗留。",
+      "failures": [],
+      "uncovered": ["物理iPad和真实弱网未执行。"]
+    },
+    {
+      "id": "CRA-S11",
+      "title": "仍有遗留及紧急事项",
+      "requirements": ["CRA-R020", "CRA-R026"],
+      "input": "未完成普通遗留和安全及时提示并存。",
+      "expected": "遗留不消失，无全局审批锁，紧急事项仍可记录。",
+      "expected_basis": "阶段提醒与安全任务独立。",
+      "sample_source": "合成遗留和安全事件",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_safety.py", "case": "tests/integration/test_safety.py::test_timely_alert_skip_scope_and_cross_site_denial"},
+        {"kind": "test", "path": "tests/integration/test_issues.py", "case": "tests/integration/test_issues.py::test_pd_and_correction_actions_complete_independently"}
+      ],
+      "actual_result": "普通遗留与及时安全提示分别保留，未制造全局阻断。",
+      "failures": [],
+      "uncovered": ["真实安全上报渠道未接入。"]
+    },
+    {
+      "id": "CRA-S12",
+      "title": "启动关闭与简洁交接",
+      "requirements": ["CRA-R001", "CRA-R032", "CRA-R033"],
+      "input": "启动/关闭清单、未完成事项和交接阶段。",
+      "expected": "阶段清单引用资料，无遗留简述，有遗留说明原因、现状和下一步。",
+      "expected_basis": "共享清单、issue与交接摘要。",
+      "sample_source": "合成ISF/TMF目录与阶段记录",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_site_files.py", "case": "tests/integration/test_site_files.py::test_handover_reuses_issue_progress_and_incomplete_checklist"},
+        {"kind": "test", "path": "tests/integration/test_site_files.py", "case": "tests/integration/test_site_files.py::test_stage_checklists_keep_sources_history_and_never_approve_center_close"}
+      ],
+      "actual_result": "阶段清单保留来源和历史，交接复用同一issue状态，未自动审批关闭。",
+      "failures": [],
+      "uncovered": ["真实中心关闭决策仍由项目和责任人完成。"]
+    },
+    {
+      "id": "CRA-S13",
+      "title": "自动范围不扩展",
+      "requirements": ["CRA-R013", "CRA-R037"],
+      "input": "检验报告、非检验图片和人工记录类别。",
+      "expected": "仅检验报告进入自动逐字段核对；其他资料保留人工记录。",
+      "expected_basis": "支持范围在路由和输出层显式限制。",
+      "sample_source": "合成检验与文档",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_documents.py", "case": "tests/integration/test_documents.py::test_pdf_coordinates_unsupported_excel_and_authorized_content"},
+        {"kind": "test", "path": "tests/integration/test_recognition.py", "case": "tests/integration/test_recognition.py::test_ocr_disabled_still_reads_text_pdf_but_not_image"}
+      ],
+      "actual_result": "非检验资料未进入检验字段比较；检验范围与人工路径分开。",
+      "failures": [],
+      "uncovered": ["其他资料仍需要人工引导和维护，不属于首版自动比对。"]
+    },
+    {
+      "id": "CRA-S14",
+      "title": "PD已上报但更正待办未完",
+      "requirements": ["CRA-R021", "CRA-R027", "CRA-R031"],
+      "input": "同一issue含PD上报和EDC更正两个独立action。",
+      "expected": "确认已上报只完成上报action，更正保持待办并跨次保留。",
+      "expected_basis": "分项action状态和用户确认来源。",
+      "sample_source": "W06/W12合成遗留",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_issues.py", "case": "tests/integration/test_issues.py::test_pd_and_correction_actions_complete_independently"},
+        {"kind": "test", "path": "tests/integration/test_visit_continuity.py", "case": "tests/integration/test_visit_continuity.py::test_refresh_relogin_center_switch_and_second_visit_continue"}
+      ],
+      "actual_result": "PD action完成而更正action保持open，第二次监查仍显示。",
+      "failures": [],
+      "uncovered": ["不接入真实监管或EDC外发。"]
+    },
+    {
+      "id": "CRA-S15",
+      "title": "CRA确认完成或认为仍未改好",
+      "requirements": ["CRA-R009", "CRA-R026", "CRA-R027"],
+      "input": "CRA无CRC回复、附件或前后对照表，直接完成或重开整改。",
+      "expected": "一次确认即可完成，自动记录人和时间；重开保留历史。",
+      "expected_basis": "CRA用户确认不等于AI验证，不增加额外证明门槛。",
+      "sample_source": "合成issue action",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_issues.py", "case": "tests/integration/test_issues.py::test_correction_can_be_reopened_without_losing_history"},
+        {"kind": "test", "path": "tests/test_core.py", "case": "tests/test_core.py::IssueTests.test_cra_click_can_complete_without_reply_location_or_attachment"}
+      ],
+      "actual_result": "直接确认可完成，重开保留追加历史，完成依据标为用户确认。",
+      "failures": [],
+      "uncovered": ["真实CRA操作反馈由W15收集。"]
+    },
+    {
+      "id": "CRA-S16",
+      "title": "Query期限未知",
+      "requirements": ["CRA-R022", "CRA-R023"],
+      "input": "系统问题草稿、无正式Query身份或截止日依据。",
+      "expected": "草稿不当作正式Query，无依据不输出超期天数。",
+      "expected_basis": "Query身份和期限来源校验。",
+      "sample_source": "合成site SOP和Query",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_issues.py", "case": "tests/integration/test_issues.py::test_query_requires_actual_identity_and_deadline_source"}
+      ],
+      "actual_result": "缺少正式身份或期限来源时状态为due_date_unknown，不生成超期。",
+      "failures": [],
+      "uncovered": ["真实EDC Query接口未接入。"]
+    },
+    {
+      "id": "CRA-S17",
+      "title": "三次跟进仍是一个问题",
+      "requirements": ["CRA-R028", "CRA-R031"],
+      "input": "同一issue跨三次visit，仅部分action完成。",
+      "expected": "同一编号延续，部分行动完成不改写其他行动。",
+      "expected_basis": "稳定issue编号与分项状态。",
+      "sample_source": "W06跨visit合成记录",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_issues.py", "case": "tests/integration/test_issues.py::test_previsit_selection_keeps_complete_carryover_across_visits"}
+      ],
+      "actual_result": "三次visit共享同一完整遗留，未完成action保持原编号。",
+      "failures": [],
+      "uncovered": ["长期真实项目的跨月追踪未验证。"]
+    },
+    {
+      "id": "CRA-S18",
+      "title": "EDC导出排除了目标表单",
+      "requirements": ["CRA-R014", "CRA-R034"],
+      "input": "声明筛选范围的合成EDC Excel，目标记录不在导出内。",
+      "expected": "仅标本次导出未见，不认证EDC漏录，导出范围可回查。",
+      "expected_basis": "不可变快照、范围声明和absence语义。",
+      "sample_source": "合成多sheet EDC XLSX",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_edc_import.py", "case": "tests/integration/test_edc_import.py::test_preview_confirm_scope_instances_and_source_positions"}
+      ],
+      "actual_result": "快照为not_seen_in_export，declared_complete=false，导出范围与时间保留。",
+      "failures": [],
+      "uncovered": ["真实EDC软件和版本差异未验证。"]
+    },
+    {
+      "id": "CRA-S19",
+      "title": "初检复查和修订误匹配",
+      "requirements": ["CRA-R015", "CRA-R016"],
+      "input": "同日初检/复查、数值相同但实例不同及报告修订。",
+      "expected": "实例优先匹配，一对多候选需核实，数值相近不决定匹配。",
+      "expected_basis": "身份、日期、检验项目、实例和报告版本先于数值比较。",
+      "sample_source": "合成检验PDF/PNG与EDC",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_laboratory.py", "case": "tests/integration/test_laboratory.py::test_text_pdf_initial_repeat_scope_and_issue_link"},
+        {"kind": "test", "path": "tests/test_core.py", "case": "tests/test_core.py::LaboratoryTests.test_duplicate_candidates_are_ambiguous"}
+      ],
+      "actual_result": "同日初检与复查保持两个实例，重复候选标ambiguity，错误匹配未发生。",
+      "failures": [],
+      "uncovered": ["代表性真实医院版式和全部供应商修订版式未验证。"]
+    },
+    {
+      "id": "CRA-S20",
+      "title": "单位与参考范围缺失",
+      "requirements": ["CRA-R016", "CRA-R034"],
+      "input": "EDC缺单位、上限/下限缺失、单位不一致和受限值。",
+      "expected": "缺条件不归一化为一致，不生成安全或正常结论。",
+      "expected_basis": "Decimal/operator/unit/range独立比较。",
+      "sample_source": "合成检验与EDC",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_review_units.py", "case": "tests/integration/test_review_units.py::test_missing_dimensioned_unit_stays_unknown"},
+        {"kind": "test", "path": "tests/integration/test_review_units.py", "case": "tests/integration/test_review_units.py::test_one_sided_reference_range_is_not_dropped"}
+      ],
+      "actual_result": "缺单位返回review，不自动换算；单侧范围和受限值保留unknown语义。",
+      "failures": [],
+      "uncovered": ["获准转换表及真实方法学差异未验证。"]
+    },
+    {
+      "id": "CRA-S21",
+      "title": "无法识别后用户跳过",
+      "requirements": ["CRA-R017", "CRA-R028"],
+      "input": "一字段无法识别，用户选择跳过并继续其他核对，随后主动恢复。",
+      "expected": "跳过仅限选定范围，不记为正常，不重复追问，可恢复。",
+      "expected_basis": "CheckDecision作用域和用户显式决定。",
+      "sample_source": "合成检验字段和W12受试者",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_laboratory.py", "case": "tests/integration/test_laboratory.py::test_skip_is_scope_limited_and_not_normal"},
+        {"kind": "test", "path": "tests/integration/test_subjects.py", "case": "tests/integration/test_subjects.py::test_missing_anchor_skip_recovery_and_other_work_continues"}
+      ],
+      "actual_result": "选定范围标not_checked_by_user，其他路径继续，恢复复用原记录。",
+      "failures": [],
+      "uncovered": ["真实弱网下的恢复交互由W15验证。"]
+    },
+    {
+      "id": "CRA-S22",
+      "title": "OCR或模型不可用",
+      "requirements": ["CRA-R035", "CRA-R038"],
+      "input": "OCR provider禁用时上传文字PDF和清晰PNG。",
+      "expected": "既有资料/问题可继续；文字PDF仍可读；图像保留且少量人工补录，整体自动能力不得宣称完成。",
+      "expected_basis": "provider能力状态和人工兜底范围。",
+      "sample_source": "合成PDF/PNG",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_laboratory.py", "case": "tests/integration/test_laboratory.py::test_ocr_disabled_preserves_file_and_allows_small_manual_fallback"},
+        {"kind": "test", "path": "tests/integration/test_recognition.py", "case": "tests/integration/test_recognition.py::test_ocr_disabled_still_reads_text_pdf_but_not_image"}
+      ],
+      "actual_result": "文字PDF继续自动读取，图像进入provider_unavailable和限定人工补录，发布状态保持未就绪。",
+      "failures": [],
+      "uncovered": ["全量手工兜底明确不满足核心减负目标。"]
+    },
+    {
+      "id": "CRA-S23",
+      "title": "异常分析与医学确认",
+      "requirements": ["CRA-R018", "CRA-R019", "CRA-R042"],
+      "input": "合成AE事实、项目安全规则及需医学确认的维度。",
+      "expected": "事实、候选、问题与医学答复分离，严重性/分级/相关性分别判断。",
+      "expected_basis": "独立维度结果和受控解释模板。",
+      "sample_source": "独立合成安全样本",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_safety.py", "case": "tests/integration/test_safety.py::test_dimensions_timely_alert_reviews_issue_and_immutability"}
+      ],
+      "actual_result": "候选维度、unknown、CRA复核和医学答复分别持久化，未合并为医学结论。",
+      "failures": [],
+      "uncovered": ["真实方案、AESI/DLT标准及临床性能未验证。"]
+    },
+    {
+      "id": "CRA-S24",
+      "title": "安全时限锚点",
+      "requirements": ["CRA-R020", "CRA-R042"],
+      "input": "严重事件存在但知悉时间缺失。",
+      "expected": "及时提示独立于报告签发，关键时间缺失时追问而不臆造期限。",
+      "expected_basis": "事件、知悉、录入和上报时间分离。",
+      "sample_source": "合成安全事件",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_safety.py", "case": "tests/integration/test_safety.py::test_timely_alert_skip_scope_and_cross_site_denial"}
+      ],
+      "actual_result": "提示优先且deadline_status=awareness_time_missing，未输出超期天数。",
+      "failures": [],
+      "uncovered": ["真实项目时限和监管渠道未接入。"]
+    },
+    {
+      "id": "CRA-S25",
+      "title": "分析引用不可核实",
+      "requirements": ["CRA-R007", "CRA-R009", "CRA-R034"],
+      "input": "provider返回虚构锚点、证据ID或无依据确定性结论。",
+      "expected": "校验拒绝确定性输出，保留待核实问题和原始运行错误。",
+      "expected_basis": "grounding和允许模板白名单。",
+      "sample_source": "合成规则与安全provider反例",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_rules.py", "case": "tests/integration/test_rules.py::test_fake_anchor_and_numeric_invention_are_rejected"},
+        {"kind": "test", "path": "tests/integration/test_safety.py", "case": "tests/integration/test_safety.py::test_invalid_provider_reference_is_rejected_without_decision"}
+      ],
+      "actual_result": "虚构出处和证据均被拒绝，provider状态为rejected且业务维度仍unknown。",
+      "failures": [],
+      "uncovered": ["真实模型分布下的未覆盖幻觉类型仍需持续监测。"]
+    },
+    {
+      "id": "CRA-S26",
+      "title": "ISF/TMF上次缺件已补",
+      "requirements": ["CRA-R003", "CRA-R024", "CRA-R031"],
+      "input": "原目录直接对照，首次缺件后补齐并新增要求。",
+      "expected": "不重录整本目录，简单状态更新且历史保留。",
+      "expected_basis": "目录引用、增量条目和追加历史。",
+      "sample_source": "合成目录与SOP",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_site_files.py", "case": "tests/integration/test_site_files.py::test_reference_only_then_incremental_file_status_preserves_history"}
+      ],
+      "actual_result": "目录引用可直接对照，缺件补齐状态更新，新增要求和历史仍保留。",
+      "failures": [],
+      "uncovered": ["真实医院目录版式和文件平台未验证。"]
+    },
+    {
+      "id": "CRA-S27",
+      "title": "访视信只选两条",
+      "requirements": ["CRA-R025", "CRA-R029", "CRA-R043"],
+      "input": "三条遗留中选两条生成草稿和DOCX。",
+      "expected": "草稿只含两条，完整清单和状态保持，生成不等于发送。",
+      "expected_basis": "选取式模板映射和独立交付事件。",
+      "sample_source": "合成DOCX模板与issue",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_reports.py", "case": "tests/integration/test_reports.py::test_letter_report_snapshot_and_track_are_consistent"}
+      ],
+      "actual_result": "信、报告和track同源，仅选定问题进入信件，未标记实际发送。",
+      "failures": [],
+      "uncovered": ["真实用户模板版式和外部邮件服务未验证。"]
+    },
+    {
+      "id": "CRA-S28",
+      "title": "已签发报告不可静默变化",
+      "requirements": ["CRA-R029", "CRA-R030"],
+      "input": "生成报告快照后改变issue状态并生成新材料。",
+      "expected": "后续状态只进入新材料，既有签发快照不变。",
+      "expected_basis": "不可变报告快照与输入版本。",
+      "sample_source": "合成报告输出",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_reports.py", "case": "tests/integration/test_reports.py::test_letter_report_snapshot_and_track_are_consistent"}
+      ],
+      "actual_result": "签发快照固定当时事实，后续状态变化未改写原快照。",
+      "failures": [],
+      "uncovered": ["真实电子签章和长期归档由W15验证。"]
+    },
+    {
+      "id": "CRA-S29",
+      "title": "报告超出核查覆盖",
+      "requirements": ["CRA-R028", "CRA-R030", "CRA-R034"],
+      "input": "只核查部分患者/字段但生成中心报告。",
+      "expected": "报告保留未核查范围，不输出全中心正常结论。",
+      "expected_basis": "覆盖、unknown和not_checked进入报告上下文。",
+      "sample_source": "合成受试者覆盖与报告",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_reports.py", "case": "tests/integration/test_reports.py::test_letter_report_snapshot_and_track_are_consistent"}
+      ],
+      "actual_result": "报告模板上下文保留未核查范围和未知项，没有生成全中心无异常。",
+      "failures": [],
+      "uncovered": ["任意正式医院报告模板未验证。"]
+    },
+    {
+      "id": "CRA-S30",
+      "title": "供应商变更不改业务数据",
+      "requirements": ["CRA-R035", "CRA-R036", "CRA-R038"],
+      "input": "切换识别/分析provider后复用既有字段、权限和输出校验。",
+      "expected": "适配器可替换，业务数据格式不变；无凭证不调用外部服务。",
+      "expected_basis": "provider端口、锁文件和授权边界。",
+      "sample_source": "尚无跨provider数据连续性独立场景。",
+      "evaluation_group": "not_run",
+      "status": "not_evaluated",
+      "evidence": [],
+      "actual_result": "单provider及provider失败已有测试，但未执行变更前后业务记录兼容性场景。",
+      "failures": [],
+      "uncovered": ["provider替换、模型升级后复用已确认字段和完整回归仍待补。"]
+    },
+    {
+      "id": "CRA-S31",
+      "title": "理论单独更新",
+      "requirements": ["CRA-R039"],
+      "input": "只改一条理论文本，不更新技术复核指纹。",
+      "expected": "检查失败并显示理论与模块影响。",
+      "expected_basis": "理论指纹和绑定检查。",
+      "sample_source": "临时复制的合成工程仓库",
+      "evaluation_group": "engineering_record",
+      "status": "engineering_verified",
+      "evidence": [
+        {"kind": "test", "path": "tests/test_traceability.py", "case": "tests/test_traceability.py::TraceabilityTests.test_theory_only_change_is_rejected"}
+      ],
+      "actual_result": "同步检查返回stale technical review并阻止漏同步。",
+      "failures": [],
+      "uncovered": ["运行时Notion自动差异导入不存在。"]
+    },
+    {
+      "id": "CRA-S32",
+      "title": "技术同步漏模块或旧变更记录冒用",
+      "requirements": ["CRA-R039"],
+      "input": "删除一个模块绑定，或改理论后只复写旧指纹。",
+      "expected": "检查失败并拒绝旧变更记录证明新变更。",
+      "expected_basis": "完整绑定和不可复用变更记录。",
+      "sample_source": "临时复制的合成工程仓库",
+      "evaluation_group": "engineering_record",
+      "status": "engineering_verified",
+      "evidence": [
+        {"kind": "test", "path": "tests/test_traceability.py", "case": "tests/test_traceability.py::TraceabilityTests.test_missing_one_module_binding_is_rejected"},
+        {"kind": "test", "path": "tests/test_traceability.py", "case": "tests/test_traceability.py::TraceabilityTests.test_rebinding_without_new_change_record_is_rejected"}
+      ],
+      "actual_result": "缺少模块绑定和无对应变更记录均被拒绝。",
+      "failures": [],
+      "uncovered": ["检查器只能维护已导入的仓库理论，不自动读取Notion。"]
+    },
+    {
+      "id": "CRA-S33",
+      "title": "云上检查与范围隔离",
+      "requirements": ["CRA-R040", "CRA-R037"],
+      "input": "CRA专属GitHub Actions、devcontainer与目录边界。",
+      "expected": "CI仅检查CRA目录和相关工作流，不检查或修改其他项目。",
+      "expected_basis": "工作流path过滤、working-directory和独立devcontainer。",
+      "sample_source": "仓库工作流与W02 devcontainer smoke",
+      "evaluation_group": "engineering_record",
+      "status": "engineering_verified",
+      "evidence": [
+        {"kind": "document", "path": "validation/V1A_ACCEPTANCE.md"},
+        {"kind": "ci_run", "run_id": 42354648562, "job_name": "cra-w02", "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9", "steps": ["devcontainer-smoke"]}
+      ],
+      "actual_result": "CRA专属job在隔离工作目录执行并通过，未包含其他项目文件。",
+      "failures": [],
+      "uncovered": ["GitHub托管Codespaces服务本身仍未在外部实例验证。"]
+    },
+    {
+      "id": "CRA-S34",
+      "title": "质量与总耗时",
+      "requirements": ["CRA-R044", "CRA-R045"],
+      "input": "代表性独立样本及同一任务原流程、新流程人工计时。",
+      "expected": "分别记录关键错误、自动可用、人工更正/补录和完整总时间。",
+      "expected_basis": "同一任务人工基线与新流程直接对照，不以机器耗时替代。",
+      "sample_source": "尚无获授权CRA人工计时研究。",
+      "evaluation_group": "not_run",
+      "status": "unmet",
+      "evidence": [
+        {"kind": "document", "path": "validation/TIME_STUDY.md"}
+      ],
+      "actual_result": "已记录provider、模型和浏览器自动化耗时，但CRA完整人工总耗时及返工负担未测量。",
+      "failures": ["核心减负和节时目标尚无人工证据。"],
+      "uncovered": ["代表性真实样本、人工基线、新流程总时间和差异分析未完成。"]
+    },
+    {
+      "id": "CRA-S35",
+      "title": "点击确认整改无额外门槛",
+      "requirements": ["CRA-R026", "CRA-R027"],
+      "input": "无CRC回复、附件、修改位置或额外审批的合成action。",
+      "expected": "CRA一次确认完成选定action，自动记录人和时间，其他action不变。",
+      "expected_basis": "用户确认作为完成依据，不用AI验证替代。",
+      "sample_source": "合成issue action",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/test_core.py", "case": "tests/test_core.py::IssueTests.test_cra_click_can_complete_without_reply_location_or_attachment"},
+        {"kind": "test", "path": "tests/integration/test_issues.py", "case": "tests/integration/test_issues.py::test_correction_can_be_reopened_without_losing_history"}
+      ],
+      "actual_result": "一次确认完成并记录CRA与时间，无需额外交付物，其他action不受影响。",
+      "failures": [],
+      "uncovered": ["真实角色职责配置由W15确认。"]
+    },
+    {
+      "id": "CRA-S36",
+      "title": "缺锚点拒绝补充与恢复",
+      "requirements": ["CRA-R010", "CRA-R017", "CRA-R045"],
+      "input": "缺输注日期，用户拒绝补充后继续实验室数值核对并主动恢复。",
+      "expected": "只跳过时间窗依赖路径，不猜日期，数值核对继续，恢复复用输入。",
+      "expected_basis": "患者事实、局部CheckDecision和覆盖。",
+      "sample_source": "W05/W12合成受试者",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_subjects.py", "case": "tests/integration/test_subjects.py::test_missing_anchor_skip_recovery_and_other_work_continues"},
+        {"kind": "test", "path": "tests/integration/test_visit_continuity.py", "case": "tests/integration/test_visit_continuity.py::test_refresh_relogin_center_switch_and_second_visit_continue"}
+      ],
+      "actual_result": "时间窗依赖路径not_checked_by_user，其他核查继续，恢复后不重复输入。",
+      "failures": [],
+      "uncovered": ["真实设备交互和弱网未验证。"]
+    },
+    {
+      "id": "CRA-S37",
+      "title": "list前后条件与分支完整",
+      "requirements": ["CRA-R006", "CRA-R007", "CRA-R008"],
+      "input": "独立合成规则C→B、D→F，含前提、例外、否定和unknown。",
+      "expected": "分支按条件展开；丢前提/否定/例外被拒；unknown不默认走另一分支。",
+      "expected_basis": "有限AST、条件验证和三值逻辑。",
+      "sample_source": "独立合成规则DOCX",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_rules.py", "case": "tests/integration/test_rules.py::test_provider_evaluation_and_three_value_ast"},
+        {"kind": "test", "path": "tests/integration/test_review_units.py", "case": "tests/integration/test_review_units.py::test_unknown_exception_keeps_rule_unknown"}
+      ],
+      "actual_result": "独立规则分支与三值条件通过，语义损坏反例被拒。",
+      "failures": [],
+      "uncovered": ["自然语言自由提取不等于完整通用AST。"]
+    },
+    {
+      "id": "CRA-S38",
+      "title": "手动开始使用日与历史依据",
+      "requirements": ["CRA-R005", "CRA-R011", "CRA-R041"],
+      "input": "v3.0手动启用日、前后事件、中心范围和日期更正。",
+      "expected": "起始日含当天，前后事件取相应版本，上传日不替代启用日，旧快照不变。",
+      "expected_basis": "事件时间适用性和中心独立采用日。",
+      "sample_source": "合成规则v1/v2及中心采用日",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_rules.py", "case": "tests/integration/test_rules.py::test_shared_project_rule_can_have_independent_site_adoption_dates"},
+        {"kind": "test", "path": "tests/integration/test_rules.py", "case": "tests/integration/test_rules.py::test_version_activation_boundaries_history_and_new_version_carryover"}
+      ],
+      "actual_result": "项目共享版本可按中心设置采用日，事件日期边界和受影响事项定位通过。",
+      "failures": [],
+      "uncovered": ["真实项目多版本文档和更正流程未验证。"]
+    },
+    {
+      "id": "CRA-S39",
+      "title": "文件自动读取与少量失败兜底",
+      "requirements": ["CRA-R013", "CRA-R015", "CRA-R016", "CRA-R017", "CRA-R035", "CRA-R044", "CRA-R045"],
+      "input": "合成检验PDF/PNG、EDC XLSX、匹配异常、安全线索和报告输出。",
+      "expected": "源文件自动读取/定位→匹配→比较→安全线索→报告，不全量手抄；记录provider和人工负担。",
+      "expected_basis": "核心自动检验主线，比对不等于临床安全。",
+      "sample_source": "独立清晰PNG、中文上下文PDF、文字PDF与合成EDC",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "ci_run", "run_id": 42354648562, "job_name": "cra-w09", "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9", "steps": ["lab-provider-evaluation", "analysis-provider-evaluation"]},
+        {"kind": "test", "path": "tests/integration/test_visit_continuity.py", "case": "tests/integration/test_visit_continuity.py::test_refresh_relogin_center_switch_and_second_visit_continue"}
+      ],
+      "actual_result": "文本PDF与清晰PNG共10/10开发+评估行、中文上下文2/2行恢复且关键字段零错误；浏览器完成合成上传、核对、安全线索和报告接续。",
+      "failures": [],
+      "uncovered": ["代表性医院版式、真实照片、JPEG单独样本、全流程人工总耗时和临床安全性能未验证。"]
+    },
+    {
+      "id": "CRA-S40",
+      "title": "历史报告和track接续遗留",
+      "requirements": ["CRA-R025", "CRA-R026", "CRA-R027", "CRA-R031"],
+      "input": "合成前次DOCX/XLSX/文字遗留，用户修正确认后重复导入并选择信件条目。",
+      "expected": "原编号/位置/来源保留，缺项unknown，重复导入不复制，选信不删完整清单。",
+      "expected_basis": "carryover导入、幂等和完整issue清单。",
+      "sample_source": "合成报告/track/文字",
+      "evaluation_group": "synthetic_independent",
+      "status": "synthetic_validated",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_carryover_import.py", "case": "tests/integration/test_carryover_import.py::test_docx_preview_confirmation_replay_and_preserved_source"},
+        {"kind": "test", "path": "tests/integration/test_carryover_import.py", "case": "tests/integration/test_carryover_import.py::test_text_preview_requires_user_correction_and_does_not_invent_fields"}
+      ],
+      "actual_result": "历史资料预览后由用户确认，重复导入不复制，缺失字段保持unknown，完整清单保留。",
+      "failures": [],
+      "uncovered": ["真实历史报告版式覆盖有限。"]
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "scope_authorization",
+      "title": "项目、中心与服务端对象授权",
+      "status": "validated",
+      "validated_scope": "synthetic two-site API and database isolation",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "用户先选择获准项目/中心，所有后续读取和写入仍由服务端复核。",
+      "limitation": "真实OIDC、生产反向代理和撤权时延尚未验证。",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_governance.py", "case": "tests/integration/test_governance.py::test_two_site_scopes_are_isolated_for_read_and_write"}
+      ],
+      "remaining_work": ["W15验证获准OIDC、TLS、最小权限和撤权。"]
+    },
+    {
+      "id": "synthetic_identity",
+      "title": "合成开发身份",
+      "status": "implemented",
+      "validated_scope": "test and synthetic environments only",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "开发/合成环境使用合成登录；生产环境必须拒绝该路径。",
+      "limitation": "不能用于真实授权或临床身份。",
+      "evidence": [
+        {"kind": "test", "path": "tests/api/test_platform.py", "case": "tests/api/test_platform.py::test_production_rejects_synthetic_identity_and_client_headers"}
+      ],
+      "remaining_work": ["获准OIDC端到端登录仅由W15配置验证。"]
+    },
+    {
+      "id": "document_source_location",
+      "title": "资料解析与来源定位",
+      "status": "validated",
+      "validated_scope": "declared synthetic DOCX, PDF and text structures",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "用户核实候选来源；无法稳定结构化时保留analysis_required。",
+      "limitation": "不等同任意IB、SOP或中文方案的完整语义解析。",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_documents.py", "case": "tests/integration/test_documents.py::test_upload_idempotency_outbox_and_docx_source_locations"}
+      ],
+      "remaining_work": ["真实格式分布和完整语义覆盖待获授权试用。"]
+    },
+    {
+      "id": "rule_candidate_extraction",
+      "title": "规则候选、条件分支和用户修订",
+      "status": "validated",
+      "validated_scope": "independent synthetic anchored rule subset",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "CRA确认、增删和修正候选list。",
+      "limitation": "自然语言候选不等于完整通用AST或项目批准规则。",
+      "evidence": [
+        {"kind": "ci_run", "run_id": 42354648562, "job_name": "cra-w04", "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9", "steps": ["test", "rule-provider-evaluation"]},
+        {"kind": "test", "path": "tests/integration/test_rules.py", "case": "tests/integration/test_rules.py::test_extract_confirm_add_remove_and_preserve_history"}
+      ],
+      "remaining_work": ["真实项目资料完整语义、冲突和修订覆盖需在获准试用中评估。"]
+    },
+    {
+      "id": "subject_context_timeline",
+      "title": "受试者事实、访视窗口和断点",
+      "status": "validated",
+      "validated_scope": "synthetic structured context and deterministic windows",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "缺少锚点时用户可补充或仅在相关路径跳过。",
+      "limitation": "真实EDC映射、完整病史和复杂方案窗口未验证。",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_subjects.py", "case": "tests/integration/test_subjects.py::test_missing_anchor_skip_recovery_and_other_work_continues"}
+      ],
+      "remaining_work": ["真实多中心和复杂日期精度由W15评估。"]
+    },
+    {
+      "id": "issue_lifecycle",
+      "title": "遗留、行动、Query和跨次跟进",
+      "status": "validated",
+      "validated_scope": "synthetic carryover, PD and correction actions",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "CRA确认整改完成或确认PD已上报；其他action独立处理。",
+      "limitation": "不发送正式Query、不写EDC、不请求额外审批。",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_issues.py", "case": "tests/integration/test_issues.py::test_pd_and_correction_actions_complete_independently"}
+      ],
+      "remaining_work": ["真实EDC Query编号和回复状态关联尚未接入。"]
+    },
+    {
+      "id": "edc_excel_snapshot",
+      "title": "EDC Excel检验快照",
+      "status": "validated",
+      "validated_scope": "synthetic multi-sheet XLSX with declared export scope",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "用户确认列映射、范围和重复实例。",
+      "limitation": "真实EDC版本和导出模板未覆盖。",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_edc_import.py", "case": "tests/integration/test_edc_import.py::test_preview_confirm_scope_instances_and_source_positions"}
+      ],
+      "remaining_work": ["真实供应商导出模板和映射复用由W15评估。"]
+    },
+    {
+      "id": "lab_text_pdf",
+      "title": "文字PDF检验报告读取",
+      "status": "validated",
+      "validated_scope": "selectable-text ruled PDFs in the synthetic W08 set",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "低可信、歧义或异常字段集中复核；失败可少量补录或跳过。",
+      "limitation": "不支持手写、严重模糊和任意复杂医院版式。",
+      "evidence": [
+        {"kind": "ci_run", "run_id": 42354648562, "job_name": "cra-w08", "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9", "steps": ["test", "lab-provider-evaluation"]},
+        {"kind": "document", "path": "validation/LAB_AUTOMATION_SCOPE.md"}
+      ],
+      "remaining_work": ["代表性真实医院版式和更多供应商模板待W14/W15。"]
+    },
+    {
+      "id": "lab_clear_image_png",
+      "title": "清晰打印PNG检验报告识别",
+      "status": "validated",
+      "validated_scope": "one independent clear synthetic printed PNG using Docling",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "核对低可信、行列归属、身份/日期和异常候选。",
+      "limitation": "一个清晰合成样本不能证明真实照片、旋转、模糊或复杂表格。",
+      "evidence": [
+        {"kind": "ci_run", "run_id": 42354648562, "job_name": "cra-w09", "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9", "steps": ["lab-provider-evaluation"]}
+      ],
+      "remaining_work": ["真实照片、扫描、多页续表和医院版式待W14/W15。"]
+    },
+    {
+      "id": "lab_jpeg",
+      "title": "JPEG检验报告路由",
+      "status": "configured",
+      "validated_scope": "same configured image route as PNG; no separate independent JPEG evaluation",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "未完成独立评估前按需要人工核对或补录。",
+      "limitation": "JPEG格式覆盖未单独验证。",
+      "evidence": [
+        {"kind": "document", "path": "validation/LAB_AUTOMATION_SCOPE.md"}
+      ],
+      "remaining_work": ["加入独立JPEG样本并记录格式特有错误。"]
+    },
+    {
+      "id": "lab_scanned_pdf",
+      "title": "扫描PDF回退路由",
+      "status": "configured",
+      "validated_scope": "implemented fallback route; no independent scan set",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "扫描识别不可靠时使用少量人工补录或跳过。",
+      "limitation": "扫描PDF不在当前独立评估集。",
+      "evidence": [
+        {"kind": "document", "path": "validation/LAB_AUTOMATION_SCOPE.md"}
+      ],
+      "remaining_work": ["建立扫描PDF独立样本和关键错误评估。"]
+    },
+    {
+      "id": "lab_match_compare",
+      "title": "检验实例匹配与字段比较",
+      "status": "validated",
+      "validated_scope": "synthetic source/EDC instance matching and deterministic field comparison",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "用户集中处理ambiguity、低可信、单位/范围差异和未见项。",
+      "limitation": "字段一致不等于临床安全，真实关键错误阈值未建立。",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_laboratory.py", "case": "tests/integration/test_laboratory.py::test_text_pdf_initial_repeat_scope_and_issue_link"}
+      ],
+      "remaining_work": ["真实代表性样本的关键错误和复核负担待W15评估。"]
+    },
+    {
+      "id": "safety_analysis_support",
+      "title": "AE/SAE/PD分析支持",
+      "status": "validated",
+      "validated_scope": "independent synthetic dimension and grounding evaluation",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "CRA复核候选，研究者或医学责任人独立给出最终判断。",
+      "limitation": "小模型只选择允许模板和证据，不作最终医学结论。",
+      "evidence": [
+        {"kind": "ci_run", "run_id": 42354648562, "job_name": "cra-w09", "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9", "steps": ["analysis-provider-evaluation"]}
+      ],
+      "remaining_work": ["真实项目标准、AESI/DLT定义和临床性能待验证。"]
+    },
+    {
+      "id": "site_directory_and_stages",
+      "title": "ISF/TMF目录、阶段清单和交接",
+      "status": "validated",
+      "validated_scope": "synthetic directory references, stage checklists and handover",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "用户按原目录对照并确认补齐；交接读取同一issue状态。",
+      "limitation": "真实医院目录模板和文件平台未验证。",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_site_files.py", "case": "tests/integration/test_site_files.py::test_handover_reuses_issue_progress_and_incomplete_checklist"}
+      ],
+      "remaining_work": ["真实目录版式、文件留存和权限由W15评估。"]
+    },
+    {
+      "id": "report_outputs",
+      "title": "DOCX访视信、监查报告与XLSX track",
+      "status": "validated",
+      "validated_scope": "synthetic mapped templates and immutable snapshots",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "用户复核、签发和决定实际发送；生成不等于发送。",
+      "limitation": "真实医院模板、电子签章和长期归档未验证。",
+      "evidence": [
+        {"kind": "test", "path": "tests/integration/test_reports.py", "case": "tests/integration/test_reports.py::test_letter_report_snapshot_and_track_are_consistent"}
+      ],
+      "remaining_work": ["真实模板覆盖、签名和归档由W15验证。"]
+    },
+    {
+      "id": "browser_continuous_journey",
+      "title": "四阶段连续浏览器监查",
+      "status": "validated",
+      "validated_scope": "Chromium desktop plus tablet viewport, synthetic two-visit API flow",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "CRA按访前、现场遗产、受试者和报告/交接顺序操作。",
+      "limitation": "Chromium视口不等于物理iPad、触摸和真实弱网。",
+      "evidence": [
+        {"kind": "ci_run", "run_id": 42354648562, "job_name": "cra-w12", "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9", "steps": ["persistence", "e2e"]}
+      ],
+      "remaining_work": ["物理iPad、相机、触摸和弱网由W15验证。"]
+    },
+    {
+      "id": "total_workflow_time_comparison",
+      "title": "CRA原流程与新流程总耗时对照",
+      "status": "disabled",
+      "validated_scope": "none; machine durations are not human workflow time",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "尚无；需代表性用户在获授权环境中完成同一任务计时。",
+      "limitation": "不能宣称节时或核心减负已实现。",
+      "evidence": [],
+      "remaining_work": ["在W15以获授权代表性CRA操作测量原/新流程总时间和返工。"]
+    },
+    {
+      "id": "authorized_deployment",
+      "title": "生产身份、私有数据库/文件、备份恢复",
+      "status": "disabled",
+      "validated_scope": "none",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "仅可在获准环境按W15运行手册部署。",
+      "limitation": "公开仓库和合成CI不能代替生产部署与恢复演练。",
+      "evidence": [],
+      "remaining_work": ["W15配置OIDC、TLS、私有服务、镜像、SBOM、备份恢复和撤权。"]
+    },
+    {
+      "id": "authorized_clinical_trial",
+      "title": "获授权真实资料试用",
+      "status": "disabled",
+      "validated_scope": "none",
+      "clinical_validation": false,
+      "automatic_completion_allowed": false,
+      "human_step": "尚无获授权真实资料或CRA试用。",
+      "limitation": "当前版本只能作为工程/合成演示，不能作为临床用途验证。",
+      "evidence": [],
+      "remaining_work": ["完成W15授权范围、真实资料处理和操作反馈，并建立暂停/恢复记录。"]
+    }
+  ],
+  "time_study": {
+    "human_workflow_comparison_status": "not_measured",
+    "time_saving_claim": false,
+    "coverage_metrics": {
+      "source": "validation/LAB_AUTOMATION_SCOPE.md",
+      "synthetic_rows_evaluated": 12,
+      "recognized_rows": 12,
+      "key_field_errors": 0,
+      "automatic_correction_or_backfill": 0,
+      "review_items_explained_as_scope_behavior": 8
+    },
+    "measurements": [
+      {
+        "id": "provider_recognition_and_comparison",
+        "kind": "machine_elapsed_seconds",
+        "status": "measured",
+        "seconds": 53.049,
+        "source": "validation/W08_STATUS.md and GitHub Actions run 42354648562",
+        "scope": "text PDF plus clear PNG provider route and comparison; not user work time"
+      },
+      {
+        "id": "analysis_model",
+        "kind": "machine_elapsed_seconds",
+        "status": "measured",
+        "seconds": 40.534,
+        "source": "validation/W09_STATUS.md and GitHub Actions run 42354648562",
+        "scope": "three synthetic safety cases plus grounding checks"
+      },
+      {
+        "id": "browser_end_to_end",
+        "kind": "automated_step_elapsed_seconds",
+        "status": "measured",
+        "seconds": 16.0,
+        "source": "GitHub Actions run 42354648562 job cra-w12 step e2e timestamps",
+        "scope": "automated Chromium journey; excludes cloud setup and human comprehension"
+      },
+      {
+        "id": "human_workflow_total",
+        "kind": "human_task_elapsed_seconds",
+        "status": "not_measured",
+        "seconds": null,
+        "reason": "No authorized representative CRA timing study was performed.",
+        "scope": "import, confirmation, comparison review, report and rework"
+      },
+      {
+        "id": "manual_baseline_total",
+        "kind": "human_task_elapsed_seconds",
+        "status": "not_measured",
+        "seconds": null,
+        "reason": "The current manual workflow has not been timed on the same task and sample.",
+        "scope": "same end-to-end monitoring task"
+      }
+    ]
+  },
+  "release_assessment": {
+    "engineering_candidate": true,
+    "v1a_core_automation_met": false,
+    "authorized_trial_ready": false,
+    "clinical_use_ready": false,
+    "reasons": [
+      "Only synthetic engineering evidence exists.",
+      "Representative hospital formats and real-data key-error rates are not established.",
+      "CRA manual workload and total time have not been measured.",
+      "OIDC, production restore, real devices, weak networks and authorized use remain W15 work."
+    ]
+  }
+}

@@ -555,13 +555,23 @@
       "required_job": "cra-w13",
       "required_steps": [
         "acceptance",
+        "recovery",
+        "e2e",
         "capability-report"
       ],
       "workflow_path": ".github/workflows/cra-system.yml",
-      "implementation_status": "to_implement",
+      "implementation_status": "implemented",
       "evidence_kind": "github_actions",
       "source_binding": "declared deliverables + task acceptance/specification + relevant theory + profile",
       "binding_paths": [
+        "architecture/QUALITY.md",
+        "architecture/VALIDATION_AND_RELEASE.md",
+        "architecture/LAB_AUTOMATION.md",
+        "architecture/REUSE_ASSESSMENT.md",
+        "validation/",
+        "deploy/",
+        "tests/acceptance/",
+        "tools/build_validation_report.py",
         "pyproject.toml",
         "uv.lock",
         "tests/fixtures/"

@@ -9,8 +9,10 @@
         "CRA-R036"
       ],
       "expected": "用户无权访问中心B时，列表、文件、检索和导出均不得包含B。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S02",
@@ -20,7 +22,7 @@
         "CRA-R038"
       ],
       "expected": "源资料要求忽略系统限制时，只按文档内容处理，不能获得操作权限或外发资料。",
-      "status": "planned",
+      "status": "not_evaluated",
       "evidence_paths": []
     },
     {
@@ -31,7 +33,7 @@
         "CRA-R024"
       ],
       "expected": "已上传方案而缺IB/目录，分别提示缺口，不臆造规则或文件。",
-      "status": "planned",
+      "status": "not_evaluated",
       "evidence_paths": []
     },
     {
@@ -44,8 +46,10 @@
         "CRA-R041"
       ],
       "expected": "同一邮件复导、局部修订、例外及未再次提及条款分别处理；来源可精确回查。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S05",
@@ -56,8 +60,10 @@
         "CRA-R008"
       ],
       "expected": "表格正文和脚注共同组成规则；用户修正候选后保留原提取及修改历史。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S06",
@@ -67,8 +73,10 @@
         "CRA-R034"
       ],
       "expected": "不同角色并行要求与真正矛盾分别显示；真实冲突不由模型擅自覆盖。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S07",
@@ -78,8 +86,10 @@
         "CRA-R041"
       ],
       "expected": "外部标准发布新版不自动替换项目版本，历史事件不被无依据重判。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S08",
@@ -90,8 +100,10 @@
         "CRA-R012"
       ],
       "expected": "实际治疗日期来自授权记录，计算访视时解释依据；切换患者不混用。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S09",
@@ -183,8 +195,10 @@
         "CRA-R027"
       ],
       "expected": "用户直接点击确认即可完成对应整改，无须预录CRC回复/附件；用户认为仍错误则保留/重开与历史，不冒称AI独立验证。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S16",
@@ -194,8 +208,10 @@
         "CRA-R023"
       ],
       "expected": "问题草稿不等于正式Query；无日期/依据不报超期天数。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S17",
@@ -205,8 +221,10 @@
         "CRA-R031"
       ],
       "expected": "相同问题编号跨次保留，部分行动完成不改写其他事项状态。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S18",
@@ -216,8 +234,10 @@
         "CRA-R034"
       ],
       "expected": "仅标本次导出未见，不能断言漏录，保留导出范围。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S19",
@@ -227,8 +247,10 @@
         "CRA-R016"
       ],
       "expected": "数值相同但实例不同不比较；一对多候选由用户核实。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S20",
@@ -238,8 +260,10 @@
         "CRA-R034"
       ],
       "expected": "未验证单位换算或缺LLN/ULN时不自动给出可比/安全结论。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S21",
@@ -262,8 +286,10 @@
         "CRA-R038"
       ],
       "expected": "既有问题与资料查阅仍可继续；少量失败可人工补录，但全量自动能力不可用时不能宣称核心自动核对验收完成。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S23",
@@ -274,8 +300,10 @@
         "CRA-R042"
       ],
       "expected": "区分事实、候选解释与医学答复；严重性、分级等不相互替代。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S24",
@@ -285,8 +313,10 @@
         "CRA-R042"
       ],
       "expected": "知悉日期未提供时追问关键缺口；提醒不等报告签发。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S25",
@@ -297,8 +327,10 @@
         "CRA-R034"
       ],
       "expected": "模型虚构条款编号时，证据验证拒绝该确定性结论并保留待核实内容。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S26",
@@ -309,8 +341,10 @@
         "CRA-R031"
       ],
       "expected": "直接打开上传ISF/TMF目录作对照，无需先重录整本；用户确认补齐即更新简单状态并保留历史，新增要求可继续提醒。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S27",
@@ -365,7 +399,7 @@
         "CRA-R038"
       ],
       "expected": "替换provider后复用已确认字段，权限和输出校验仍有效；无凭证不调用外部服务。",
-      "status": "planned",
+      "status": "not_evaluated",
       "evidence_paths": []
     },
     {
@@ -375,8 +409,10 @@
         "CRA-R039"
       ],
       "expected": "修改一条理论而不更新技术复核指纹，检查必须失败并显示编号和模块。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "engineering_verified",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S32",
@@ -385,8 +421,10 @@
         "CRA-R039"
       ],
       "expected": "一条理论对应两模块时缺一复核即失败；旧指纹的记录不能覆盖新变更。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "engineering_verified",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S33",
@@ -396,8 +434,10 @@
         "CRA-R037"
       ],
       "expected": "GitHub Actions只检查本项目，开发入口使用Codespaces，不能改动其他项目文件。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "engineering_verified",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S34",
@@ -407,8 +447,10 @@
         "CRA-R045"
       ],
       "expected": "独立代表性样本记录关键错误、自动可用及人工更正/补录比例、原流程与新流程总时间（含导入确认返工）；代码、provider和授权试用证据分开。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "unmet",
+      "evidence_paths": [
+        "validation/TIME_STUDY.md"
+      ]
     },
     {
       "id": "CRA-S35",
@@ -446,8 +488,10 @@
         "CRA-R008"
       ],
       "expected": "独立合成规则C→B、D→F含前提/例外/后续；真实引文但丢前提/否定/且或/例外应被发现；unknown不默认走另一分支，使用中修订保留历史。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S38",
@@ -458,8 +502,10 @@
         "CRA-R041"
       ],
       "expected": "用户设v3.0于2021-01-01启用，之前及当天分别取适用版本；上传日不代替启用日，新报告包含旧事件时仍用当时依据，旧签发快照不变，中心范围与日期更正可追溯。",
-      "status": "planned",
-      "evidence_paths": []
+      "status": "synthetic_validated",
+      "evidence_paths": [
+        "validation/capability-manifest.json"
+      ]
     },
     {
       "id": "CRA-S39",

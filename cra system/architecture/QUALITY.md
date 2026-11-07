@@ -1,6 +1,6 @@
 # 质量验收与场景
 
-以下为端到端验收计划。状态planned表示尚未完成该完整场景，即使已有小范围核心单元测试也不能称整个场景通过。
+以下为端到端验收计划。状态planned/not_evaluated表示尚未完成该完整场景；synthetic_validated表示已有明确合成样本和消费者证据；engineering_verified表示工程记录本身已验证；unmet表示正确预期尚未达到。局部单元测试不能自动把整个场景升级。
 
 发布前同时记录关键遗漏、误配、误报、错误关闭及查找、录入、复核、报告和返工总时间。阈值按具体用途和风险设定，不用一个平均准确率替代。
 
@@ -8,43 +8,43 @@
 
 | 场景 | 对应理论 | 期望结果 | 状态 |
 | --- | --- | --- | --- |
-| CRA-S01 跨研究或中心访问 | CRA-R002、CRA-R036 | 用户无权访问中心B时，列表、文件、检索和导出均不得包含B。 | planned |
-| CRA-S02 检索材料含伪指令 | CRA-R036、CRA-R038 | 源资料要求忽略系统限制时，只按文档内容处理，不能获得操作权限或外发资料。 | planned |
-| CRA-S03 资料未上传与适用缺件 | CRA-R003、CRA-R024 | 已上传方案而缺IB/目录，分别提示缺口，不臆造规则或文件。 | planned |
-| CRA-S04 文件更新和原文定位 | CRA-R004、CRA-R005、CRA-R009、CRA-R041 | 同一邮件复导、局部修订、例外及未再次提及条款分别处理；来源可精确回查。 | planned |
-| CRA-S05 脚注和完整条件 | CRA-R006、CRA-R007、CRA-R008 | 表格正文和脚注共同组成规则；用户修正候选后保留原提取及修改历史。 | planned |
-| CRA-S06 适用规则冲突 | CRA-R002、CRA-R034 | 不同角色并行要求与真正矛盾分别显示；真实冲突不由模型擅自覆盖。 | planned |
-| CRA-S07 标准版本变化 | CRA-R019、CRA-R041 | 外部标准发布新版不自动替换项目版本，历史事件不被无依据重判。 | planned |
-| CRA-S08 患者与锚点复用 | CRA-R010、CRA-R011、CRA-R012 | 实际治疗日期来自授权记录，计算访视时解释依据；切换患者不混用。 | planned |
+| CRA-S01 跨研究或中心访问 | CRA-R002、CRA-R036 | 用户无权访问中心B时，列表、文件、检索和导出均不得包含B。 | synthetic_validated |
+| CRA-S02 检索材料含伪指令 | CRA-R036、CRA-R038 | 源资料要求忽略系统限制时，只按文档内容处理，不能获得操作权限或外发资料。 | not_evaluated |
+| CRA-S03 资料未上传与适用缺件 | CRA-R003、CRA-R024 | 已上传方案而缺IB/目录，分别提示缺口，不臆造规则或文件。 | not_evaluated |
+| CRA-S04 文件更新和原文定位 | CRA-R004、CRA-R005、CRA-R009、CRA-R041 | 同一邮件复导、局部修订、例外及未再次提及条款分别处理；来源可精确回查。 | synthetic_validated |
+| CRA-S05 脚注和完整条件 | CRA-R006、CRA-R007、CRA-R008 | 表格正文和脚注共同组成规则；用户修正候选后保留原提取及修改历史。 | synthetic_validated |
+| CRA-S06 适用规则冲突 | CRA-R002、CRA-R034 | 不同角色并行要求与真正矛盾分别显示；真实冲突不由模型擅自覆盖。 | synthetic_validated |
+| CRA-S07 标准版本变化 | CRA-R019、CRA-R041 | 外部标准发布新版不自动替换项目版本，历史事件不被无依据重判。 | synthetic_validated |
+| CRA-S08 患者与锚点复用 | CRA-R010、CRA-R011、CRA-R012 | 实际治疗日期来自授权记录，计算访视时解释依据；切换患者不混用。 | synthetic_validated |
 | CRA-S09 不同类别核查断点 | CRA-R028、CRA-R045 | 检验查至访视3而其他资料查至访视2，下一次分别接续，正常范围可一句话记。 | synthetic_validated |
 | CRA-S10 先复核遗留再开始新监查 | CRA-R001、CRA-R012、CRA-R026 | 本次开始提醒完整未完遗留，点开显示问题/位置/整改来源与进展；用户确认后接续，未完项不消失。 | synthetic_validated |
 | CRA-S11 仍有遗留及紧急事项 | CRA-R020、CRA-R026 | 未完成项不消失，也不据此制造禁止所有操作的审批锁；紧急事项仍可记录和提示。 | synthetic_validated |
 | CRA-S12 启动关闭与简洁交接 | CRA-R001、CRA-R032、CRA-R033 | 阶段清单取项目资料；无遗留可简述，有遗留直接说明前因后果与下一步。 | synthetic_validated |
 | CRA-S13 自动范围不扩展 | CRA-R013、CRA-R037 | 用药/样本可人工记录，非检验图片不被送入自动核对。 | synthetic_validated |
 | CRA-S14 PD已上报但更正待办未完 | CRA-R021、CRA-R027、CRA-R031 | 用户确认已上报即可完成上报任务，其余更正保持待办并带到下次。 | synthetic_validated |
-| CRA-S15 CRA确认完成或认为仍未改好 | CRA-R009、CRA-R026、CRA-R027 | 用户直接点击确认即可完成对应整改，无须预录CRC回复/附件；用户认为仍错误则保留/重开与历史，不冒称AI独立验证。 | planned |
-| CRA-S16 Query期限未知 | CRA-R022、CRA-R023 | 问题草稿不等于正式Query；无日期/依据不报超期天数。 | planned |
-| CRA-S17 三次跟进仍是一个问题 | CRA-R028、CRA-R031 | 相同问题编号跨次保留，部分行动完成不改写其他事项状态。 | planned |
-| CRA-S18 EDC导出排除了目标表单 | CRA-R014、CRA-R034 | 仅标本次导出未见，不能断言漏录，保留导出范围。 | planned |
-| CRA-S19 初检复查和修订误匹配 | CRA-R015、CRA-R016 | 数值相同但实例不同不比较；一对多候选由用户核实。 | planned |
-| CRA-S20 单位与参考范围缺失 | CRA-R016、CRA-R034 | 未验证单位换算或缺LLN/ULN时不自动给出可比/安全结论。 | planned |
+| CRA-S15 CRA确认完成或认为仍未改好 | CRA-R009、CRA-R026、CRA-R027 | 用户直接点击确认即可完成对应整改，无须预录CRC回复/附件；用户认为仍错误则保留/重开与历史，不冒称AI独立验证。 | synthetic_validated |
+| CRA-S16 Query期限未知 | CRA-R022、CRA-R023 | 问题草稿不等于正式Query；无日期/依据不报超期天数。 | synthetic_validated |
+| CRA-S17 三次跟进仍是一个问题 | CRA-R028、CRA-R031 | 相同问题编号跨次保留，部分行动完成不改写其他事项状态。 | synthetic_validated |
+| CRA-S18 EDC导出排除了目标表单 | CRA-R014、CRA-R034 | 仅标本次导出未见，不能断言漏录，保留导出范围。 | synthetic_validated |
+| CRA-S19 初检复查和修订误匹配 | CRA-R015、CRA-R016 | 数值相同但实例不同不比较；一对多候选由用户核实。 | synthetic_validated |
+| CRA-S20 单位与参考范围缺失 | CRA-R016、CRA-R034 | 未验证单位换算或缺LLN/ULN时不自动给出可比/安全结论。 | synthetic_validated |
 | CRA-S21 无法识别后用户跳过 | CRA-R017、CRA-R028 | 用户选择不管/拒绝补充后停止对应依赖路径和追问；保存未核查范围、不记正常、不作为整改催办，可主动恢复，其他核查继续。 | synthetic_validated |
-| CRA-S22 OCR或模型不可用 | CRA-R035、CRA-R038 | 既有问题与资料查阅仍可继续；少量失败可人工补录，但全量自动能力不可用时不能宣称核心自动核对验收完成。 | planned |
-| CRA-S23 异常分析与医学确认 | CRA-R018、CRA-R019、CRA-R042 | 区分事实、候选解释与医学答复；严重性、分级等不相互替代。 | planned |
-| CRA-S24 安全时限锚点 | CRA-R020、CRA-R042 | 知悉日期未提供时追问关键缺口；提醒不等报告签发。 | planned |
-| CRA-S25 分析引用不可核实 | CRA-R007、CRA-R009、CRA-R034 | 模型虚构条款编号时，证据验证拒绝该确定性结论并保留待核实内容。 | planned |
-| CRA-S26 ISF/TMF上次缺件已补 | CRA-R003、CRA-R024、CRA-R031 | 直接打开上传ISF/TMF目录作对照，无需先重录整本；用户确认补齐即更新简单状态并保留历史，新增要求可继续提醒。 | planned |
+| CRA-S22 OCR或模型不可用 | CRA-R035、CRA-R038 | 既有问题与资料查阅仍可继续；少量失败可人工补录，但全量自动能力不可用时不能宣称核心自动核对验收完成。 | synthetic_validated |
+| CRA-S23 异常分析与医学确认 | CRA-R018、CRA-R019、CRA-R042 | 区分事实、候选解释与医学答复；严重性、分级等不相互替代。 | synthetic_validated |
+| CRA-S24 安全时限锚点 | CRA-R020、CRA-R042 | 知悉日期未提供时追问关键缺口；提醒不等报告签发。 | synthetic_validated |
+| CRA-S25 分析引用不可核实 | CRA-R007、CRA-R009、CRA-R034 | 模型虚构条款编号时，证据验证拒绝该确定性结论并保留待核实内容。 | synthetic_validated |
+| CRA-S26 ISF/TMF上次缺件已补 | CRA-R003、CRA-R024、CRA-R031 | 直接打开上传ISF/TMF目录作对照，无需先重录整本；用户确认补齐即更新简单状态并保留历史，新增要求可继续提醒。 | synthetic_validated |
 | CRA-S27 访视信只选两条 | CRA-R025、CRA-R029、CRA-R043 | 从三条遗留选两条生成草稿，三条完整清单和状态均保持。 | synthetic_validated |
 | CRA-S28 已签发报告不可静默变化 | CRA-R029、CRA-R030 | 问题后续完成只更新新材料和track；签发快照及其事实版本不变。 | synthetic_validated |
 | CRA-S29 报告超出核查覆盖 | CRA-R028、CRA-R030、CRA-R034 | 仅检查某些患者或字段时，报告不得生成全中心所有数据无异常。 | synthetic_validated |
-| CRA-S30 供应商变更不改业务数据 | CRA-R035、CRA-R036、CRA-R038 | 替换provider后复用已确认字段，权限和输出校验仍有效；无凭证不调用外部服务。 | planned |
-| CRA-S31 理论单独更新 | CRA-R039 | 修改一条理论而不更新技术复核指纹，检查必须失败并显示编号和模块。 | planned |
-| CRA-S32 技术同步漏模块或旧变更记录冒用 | CRA-R039 | 一条理论对应两模块时缺一复核即失败；旧指纹的记录不能覆盖新变更。 | planned |
-| CRA-S33 云上检查与范围隔离 | CRA-R040、CRA-R037 | GitHub Actions只检查本项目，开发入口使用Codespaces，不能改动其他项目文件。 | planned |
-| CRA-S34 质量与总耗时 | CRA-R044、CRA-R045 | 独立代表性样本记录关键错误、自动可用及人工更正/补录比例、原流程与新流程总时间（含导入确认返工）；代码、provider和授权试用证据分开。 | planned |
+| CRA-S30 供应商变更不改业务数据 | CRA-R035、CRA-R036、CRA-R038 | 替换provider后复用已确认字段，权限和输出校验仍有效；无凭证不调用外部服务。 | not_evaluated |
+| CRA-S31 理论单独更新 | CRA-R039 | 修改一条理论而不更新技术复核指纹，检查必须失败并显示编号和模块。 | engineering_verified |
+| CRA-S32 技术同步漏模块或旧变更记录冒用 | CRA-R039 | 一条理论对应两模块时缺一复核即失败；旧指纹的记录不能覆盖新变更。 | engineering_verified |
+| CRA-S33 云上检查与范围隔离 | CRA-R040、CRA-R037 | GitHub Actions只检查本项目，开发入口使用Codespaces，不能改动其他项目文件。 | engineering_verified |
+| CRA-S34 质量与总耗时 | CRA-R044、CRA-R045 | 独立代表性样本记录关键错误、自动可用及人工更正/补录比例、原流程与新流程总时间（含导入确认返工）；代码、provider和授权试用证据分开。 | unmet |
 | CRA-S35 点击确认整改无额外门槛 | CRA-R026、CRA-R027 | 没有预录CRC回复、说明、修改位置或附件，CRA一次确认即可完成选定Action；自动记人/时间，其他动作不变，报告写用户确认。 | synthetic_validated |
 | CRA-S36 缺锚点拒绝补充与恢复 | CRA-R010、CRA-R017、CRA-R045 | 缺实际输注日选择不补后，明确范围内时间窗路径not_checked_by_user且停止追问；身份已明确的数值核对继续，不猜日期。用户恢复后复用已有输入，不扩大到全部患者。 | synthetic_validated |
-| CRA-S37 list前后条件与分支完整 | CRA-R006、CRA-R007、CRA-R008 | 独立合成规则C→B、D→F含前提/例外/后续；真实引文但丢前提/否定/且或/例外应被发现；unknown不默认走另一分支，使用中修订保留历史。 | planned |
-| CRA-S38 手动开始使用日与历史依据 | CRA-R005、CRA-R011、CRA-R041 | 用户设v3.0于2021-01-01启用，之前及当天分别取适用版本；上传日不代替启用日，新报告包含旧事件时仍用当时依据，旧签发快照不变，中心范围与日期更正可追溯。 | planned |
+| CRA-S37 list前后条件与分支完整 | CRA-R006、CRA-R007、CRA-R008 | 独立合成规则C→B、D→F含前提/例外/后续；真实引文但丢前提/否定/且或/例外应被发现；unknown不默认走另一分支，使用中修订保留历史。 | synthetic_validated |
+| CRA-S38 手动开始使用日与历史依据 | CRA-R005、CRA-R011、CRA-R041 | 用户设v3.0于2021-01-01启用，之前及当天分别取适用版本；上传日不代替启用日，新报告包含旧事件时仍用当时依据，旧签发快照不变，中心范围与日期更正可追溯。 | synthetic_validated |
 | CRA-S39 文件自动读取与少量失败兜底 | CRA-R013、CRA-R015、CRA-R016、CRA-R017、CRA-R035、CRA-R044、CRA-R045 | 合成检验源文件与EDC Excel从上传自动提取/定位→匹配→一致性/逻辑差异→安全线索→报告，不依靠预制字段JSON；低可信集中复核、正常范围批量确认、少量补录或跳过；记录provider和人工负担，不能以大规模抄录验收。 | synthetic_validated |
 | CRA-S40 历史报告和track接续遗留 | CRA-R025、CRA-R026、CRA-R027、CRA-R031 | 合成前次DOCX报告/XLSX track或问题文字自动整理，用户修正确认后在本次提醒/展开；原编号/位置/来源保留，缺项unknown，重复导入不复制，选信不删除完整清单。 | synthetic_validated |
