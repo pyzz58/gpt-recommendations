@@ -515,7 +515,7 @@
         "M01",
         "M14"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
       "requirement_ids": [
         "CRA-R035",
@@ -528,7 +528,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w02 在 W10 集成和 CI 日志绑定源码上重新通过；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w02 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w02 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w02 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w02 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w02在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
       "completion_history": [
         {
@@ -964,7 +965,13 @@
         "可登录的合成工作台、真实API、能力状态、OpenAPI和前端类型。"
       ],
       "verification_profile": "CRA-W02",
-      "completion_evidence": null
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W02",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "072326c3d8cd12da983aa44be5f347afa67b16b0666a6fe8c835b8a2e97d2f1c"
+      }
     },
     {
       "id": "CRA-W03",
@@ -976,7 +983,7 @@
         "M02",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。",
       "requirement_ids": [
         "CRA-R003",
@@ -992,7 +999,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w03 在 W10 集成和 CI 日志绑定源码上重新通过；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w03 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w03 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w03 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w03 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w03在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
       "completion_history": [
         {
@@ -1410,7 +1418,13 @@
         "文件/锚点/作业接口，合成资料集和OCR依赖/资源可行性探测记录。"
       ],
       "verification_profile": "CRA-W03",
-      "completion_evidence": null
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W03",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "c13f29e65277bea569c0eef1fa48d57ff0e1185ac62a51a649adde8473ffcf24"
+      }
     },
     {
       "id": "CRA-W04",
@@ -1422,7 +1436,7 @@
         "M03",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。",
       "requirement_ids": [
         "CRA-R002",
@@ -1446,7 +1460,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w04 在 W10 集成和 CI 日志绑定源码上重新通过；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w04 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w04 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w04 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w04 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w04在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
       "completion_history": [
         {
@@ -1859,7 +1874,13 @@
         "候选规则树、用户修正、版本启用解析及独立条件反例结果。"
       ],
       "verification_profile": "CRA-W04",
-      "completion_evidence": null
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W04",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "8ec060ce1e4c7da8a097fb45ab43d5c780a39067322f513c7ebc52686f5550da"
+      }
     },
     {
       "id": "CRA-W05",
@@ -1870,7 +1891,7 @@
       "module_ids": [
         "M04"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。",
       "requirement_ids": [
         "CRA-R010",
@@ -1887,7 +1908,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w05 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w05 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w05 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w05 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w05 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w05在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
       "completion_history": [
         {
@@ -2278,7 +2300,13 @@
         "患者/锚点/分类断点及缺口拒绝/恢复契约，日期精度和来源保留。"
       ],
       "verification_profile": "CRA-W05",
-      "completion_evidence": null
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W05",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "619ce3ad00b7e19435857b2861334ad6c5e1dce8fd18a504402cc665973a1e9f"
+      }
     },
     {
       "id": "CRA-W06",
@@ -2290,7 +2318,7 @@
         "M05",
         "M06"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。",
       "requirement_ids": [
         "CRA-R001",
@@ -2315,7 +2343,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w06 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w06 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w06 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w06 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w06 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w06在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
       "completion_history": [
         {
@@ -2709,7 +2738,13 @@
         "历史文件整理→遗留提醒/展开→点击确认→下次接续，正式Query与草稿区分。"
       ],
       "verification_profile": "CRA-W06",
-      "completion_evidence": null
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W06",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "e4f27225bd1a21958f631996984d3c3a3561a01f9258b5e4b0e211bd46438b45"
+      }
     },
     {
       "id": "CRA-W07",
@@ -2720,7 +2755,7 @@
       "module_ids": [
         "M07"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。",
       "requirement_ids": [
         "CRA-R013",
@@ -2734,7 +2769,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w07 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w07 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w07 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w07 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w07 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w07在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
       "completion_history": [
         {
@@ -3077,7 +3113,13 @@
         "真实Excel输入、可复用列映射和不可变标准检验快照。"
       ],
       "verification_profile": "CRA-W07",
-      "completion_evidence": null
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W07",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "94db56dbda895ce67815be3b894121f9c0d070f3b92e84fcf689ce4c213bb94d"
+      }
     },
     {
       "id": "CRA-W08",
@@ -3090,7 +3132,7 @@
         "M08",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。",
       "requirement_ids": [
         "CRA-R013",
@@ -3107,7 +3149,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w08 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w08 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w08 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w08 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w08 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w08在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
       "completion_history": [
         {
@@ -3494,7 +3537,13 @@
         "自动源文件读取→匹配→比较→差异/未知与待办、实际provider证据、人工负担和支持范围。"
       ],
       "verification_profile": "CRA-W08",
-      "completion_evidence": null
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W08",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "3ee2ec259f62ec4aedbd533b01508720eac059fbf03f7234140d6665f46192f6"
+      }
     },
     {
       "id": "CRA-W09",
@@ -3508,7 +3557,7 @@
         "M09",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。",
       "requirement_ids": [
         "CRA-R007",
@@ -3657,7 +3706,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w09 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w09 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w09 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w09 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w09 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w09在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
       "completion_history": [
         {
@@ -3873,7 +3923,13 @@
           }
         }
       ],
-      "completion_evidence": null
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W09",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "bd37699d94c128c460ddc0d74e95294917cabfae924c8f65719cb99381e7361b"
+      }
     },
     {
       "id": "CRA-W10",
@@ -3886,7 +3942,7 @@
         "M05",
         "M10"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。",
       "requirement_ids": [
         "CRA-R001",
@@ -4002,7 +4058,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41254636286；cra-w10 在确切 CI 日志绑定校验器源码上通过；W10 功能、迁移和前端依赖链重新核验；被测提交 79ee1a1743946dcab4125acc9c6250d67b8f3ede。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w10 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w10 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w10 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w10 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w10在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
       "completion_history": [
         {
@@ -4163,7 +4220,13 @@
           }
         }
       ],
-      "completion_evidence": null
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W10",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "59ad7b876d32c1cd9905f9f46688d7b517a654c83ff06d1974b7e1c16d0a7003"
+      }
     },
     {
       "id": "CRA-W11",
@@ -4176,7 +4239,7 @@
       "module_ids": [
         "M11"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。",
       "requirement_ids": [
         "CRA-R009",
@@ -4416,9 +4479,16 @@
       "evidence": [
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w11 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w11 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w11 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w11 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w11在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
-      "completion_evidence": null
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W11",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "a6ce0e6597dc5cc5a7a82976a2252690d0357aa5dace3186289ddc8449c11c80"
+      }
     },
     {
       "id": "CRA-W12",
@@ -4432,7 +4502,7 @@
       "module_ids": [
         "M05"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "模拟前次报告→访前信→到中心复核→新受试者核查→报告→下一次接续全部完成；用户只需临床操作。",
       "requirement_ids": [
         "CRA-R001",
@@ -4659,10 +4729,17 @@
           }
         }
       ],
-      "completion_evidence": null,
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W12",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "e6eb8f44d36ef63cd7050ec737d57e2ac1de430ccb4e48dd77442947303ff299"
+      },
       "evidence": [
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w12 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w12 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w12 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w12在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ]
     },
     {
@@ -4674,7 +4751,7 @@
       "module_ids": [
         "M14"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。",
       "requirement_ids": [
         "CRA-R035",
@@ -4826,9 +4903,16 @@
       ],
       "verification_profile": "CRA-W13",
       "evidence": [
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42356972071；cra-w13在真实PostgreSQL 18.6上通过W12恢复、13项验收反例、1项Chromium两轮监查及能力报告结构检查；40场景中33项合成验证、3项工程验证、3项未评估、CRA-S34未达标；总人工时间和授权试用明确保留为W15工作；被测提交72fb8dc4853fbf68ccadfc1a0c0f4d2c8726e11b。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42356972071；cra-w13在真实PostgreSQL 18.6上通过W12恢复、13项验收反例、1项Chromium两轮监查及能力报告结构检查；40场景中33项合成验证、3项工程验证、3项未评估、CRA-S34未达标；总人工时间和授权试用明确保留为W15工作；被测提交72fb8dc4853fbf68ccadfc1a0c0f4d2c8726e11b。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w13在W14复杂格式增强后的绑定源码上通过专属job；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
       ],
-      "completion_evidence": null,
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W13",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "d9d21e203bc6b302724eda191688c556b1815be71564b8e736ff54a6ebd56c2c"
+      },
       "completion_history": [
         {
           "recorded_status": "verified",
@@ -4857,7 +4941,7 @@
         "M08",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "V1B在W08已有自动读取基础上扩展难版式/图像，沿用同一字段、匹配和比较；按关键错误与总负担实测决定支持范围。",
       "requirement_ids": [
         "CRA-R013",
@@ -4979,7 +5063,17 @@
       "handoff_outputs": [
         "复杂格式新增SupportProfile和独立回归；既有业务数据不变。"
       ],
-      "verification_profile": "CRA-W14"
+      "verification_profile": "CRA-W14",
+      "completion_evidence": {
+        "kind": "github_actions",
+        "profile_id": "CRA-W14",
+        "run_id": 42358464585,
+        "tested_commit": "261b1d0844a68f56e9b3835f6a32e62c22d15dbc",
+        "subject_digest": "8782a11590aba5463d58b92b712b4d14d4d1c0f1e4ed3335d65aef46cb4f8038"
+      },
+      "evidence": [
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w14在真实PostgreSQL下通过23项实验室/识别测试、既有PDF/PNG回归、两页扫描4/4与0.5度JPEG 2/2实际Docling评估（6/6行、关键字段零错误、5行可自动使用、1行逗号小数集中复核）、19项前端测试和1项完整Chromium流程；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。"
+      ]
     },
     {
       "id": "CRA-W15",
