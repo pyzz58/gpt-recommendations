@@ -31,91 +31,76 @@
         "AT-010",
         "AT-022"
       ],
-      "source_commit": "8cd58032df332d72f19ccce8102187926d122069",
+      "source_commit": "1569dc49bded94dad0318cbe9b6e63cf4f2115c7",
       "result": "passed",
       "scope": "Mock software sub-acceptance: reviewed delivery content returns to chief, judgment is independently reviewed, bounded continuation is linked and dispatched. Not full AT or scientific/real-world validation.",
       "commands": [
         {
-          "cwd": ".",
-          "command": "uv run --project services/core --frozen pytest services/core/tests --collect-only -q",
-          "mode": "collection_only",
-          "started_at": "2026-11-05T21:35:24.028895+00:00",
-          "finished_at": "2026-11-05T21:35:33.636266+00:00",
+          "cwd": "services/core",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=... MEDICAL_ONE_OFFICE_SOFFICE_PATH=... MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=... uv run --frozen pytest --junitxml=../../traceability/logs/w22-source-mode-pytest.xml",
+          "mode": "mock+real_postgresql+office",
+          "started_at": "2026-11-08T03:31:03+00:00",
+          "finished_at": "2026-11-08T03:31:41+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/scientific-feedback-collection.log",
-            "traceability/logs/w23-pytest-final.log",
-            "traceability/logs/w23-pytest-final.xml"
-          ]
-        },
-        {
-          "cwd": ".",
-          "command": "uv run --project services/core --frozen pytest services/core/tests -q -ra",
-          "mode": "mock+real_postgresql",
-          "started_at": "2026-11-05T21:34:06Z",
-          "finished_at": "2026-11-05T21:35:18Z",
-          "exit_code": 0,
-          "artifacts": [
-            "traceability/logs/scientific-feedback-ci-summary.json",
-            "traceability/logs/scientific-feedback-ci.log",
-            "traceability/logs/w23-pytest-final.log",
-            "traceability/logs/w23-pytest-final.xml"
-          ]
-        },
-        {
-          "cwd": ".",
-          "command": "uv run --project services/core --frozen ruff check services/core\nuv run --project services/core --frozen mypy services/core/src",
-          "mode": "static",
-          "started_at": "2026-11-05T21:35:18Z",
-          "finished_at": "2026-11-05T21:35:30Z",
-          "exit_code": 0,
-          "artifacts": [
-            "traceability/logs/scientific-feedback-ci-summary.json",
-            "traceability/logs/scientific-feedback-ci.log",
-            "traceability/logs/w23-pytest-final.log",
-            "traceability/logs/w23-pytest-final.xml"
+            "traceability/logs/w22-source-mode-pytest.log",
+            "traceability/logs/w22-source-mode-pytest.xml"
           ]
         },
         {
           "cwd": "services/core",
-          "command": "uv run --frozen alembic upgrade head\nuv run --frozen alembic downgrade b2e7d4a9c310\nuv run --frozen alembic upgrade head",
-          "mode": "real_postgresql",
-          "started_at": "2026-11-05T21:35:30Z",
-          "finished_at": "2026-11-05T21:35:34Z",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=... uv run --frozen pytest tests/integration/test_scientific_feedback.py tests/unit/test_scientific_update.py -vv",
+          "mode": "mock+real_postgresql",
+          "started_at": "2026-11-08T03:35:13+00:00",
+          "finished_at": "2026-11-08T03:35:16+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/scientific-feedback-ci-summary.json",
-            "traceability/logs/scientific-feedback-ci.log",
-            "traceability/logs/w23-pytest-final.log",
-            "traceability/logs/w23-pytest-final.xml"
+            "traceability/logs/scientific-feedback-w22-source-mode.log"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen ruff check src tests migrations && uv run --frozen mypy src",
+          "mode": "static",
+          "started_at": "2026-11-08T03:32:04+00:00",
+          "finished_at": "2026-11-08T03:32:05+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w22-source-mode-ruff.log",
+            "traceability/logs/w22-source-mode-mypy.log"
           ]
         },
         {
           "cwd": ".",
-          "command": "pnpm --dir apps/web lint\npnpm --dir apps/web typecheck\npnpm --dir apps/web build",
+          "command": "PATH=<pnpm-runtime> pnpm --dir apps/web check",
           "mode": "web_build",
-          "started_at": "2026-11-05T21:35:34Z",
-          "finished_at": "2026-11-05T21:35:58Z",
+          "started_at": "2026-11-08T03:32:11+00:00",
+          "finished_at": "2026-11-08T03:32:17+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/scientific-feedback-ci-summary.json",
-            "traceability/logs/scientific-feedback-ci.log",
-            "traceability/logs/w23-pytest-final.log",
-            "traceability/logs/w23-pytest-final.xml"
+            "traceability/logs/w22-source-mode-web.log"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=... uv run --frozen alembic upgrade head && uv run --frozen alembic downgrade f4a2c7d9e601 && uv run --frozen alembic upgrade head",
+          "mode": "real_postgresql",
+          "started_at": "2026-11-08T03:31:53+00:00",
+          "finished_at": "2026-11-08T03:31:54+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w22-source-mode-migration.log"
           ]
         },
         {
           "cwd": ".",
           "command": "python3 tools/test_traceability.py",
-          "mode": "documentation_tests",
-          "started_at": "2026-11-05T21:35:58Z",
-          "finished_at": "2026-11-05T21:36:17Z",
+          "mode": "traceability_selftest",
+          "started_at": "2026-11-08T03:32:11+00:00",
+          "finished_at": "2026-11-08T03:33:48+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/scientific-feedback-ci-summary.json",
-            "traceability/logs/scientific-feedback-ci.log",
-            "traceability/logs/w23-pytest-final.log",
-            "traceability/logs/w23-pytest-final.xml"
+            "traceability/logs/w22-source-mode-trace-tests.log"
           ]
         }
       ],
@@ -124,9 +109,8 @@
           "status": "passed",
           "evidence": [
             "docs/scientific-feedback-acceptance.md",
-            "traceability/logs/scientific-feedback-ci.log",
-            "traceability/logs/scientific-feedback-ci-summary.json",
-            "traceability/logs/scientific-feedback-collection.log"
+            "traceability/logs/scientific-feedback-w22-source-mode.log",
+            "traceability/logs/w22-source-mode-pytest.log"
           ]
         },
         "live": {
@@ -225,21 +209,29 @@
         "schemas",
         "tools"
       ],
-      "source_tree_git_sha256": "36ca3c6cdfbf7c6ecc9755cb1feba9e542f9bb97dad0d3ed891eb4cff7e053e7",
-      "source_tree_worktree_sha256": "36ca3c6cdfbf7c6ecc9755cb1feba9e542f9bb97dad0d3ed891eb4cff7e053e7",
+      "source_tree_git_sha256": "c510e47158aca4085cc5dbc346e55b7ec2f23624fc3eea7e0bb44d1f1ba1bec7",
+      "source_tree_worktree_sha256": "c510e47158aca4085cc5dbc346e55b7ec2f23624fc3eea7e0bb44d1f1ba1bec7",
       "artifacts": [
         "docs/scientific-feedback-acceptance.md",
-        "traceability/logs/scientific-feedback-ci.log",
-        "traceability/logs/scientific-feedback-ci-summary.json",
-        "traceability/logs/scientific-feedback-collection.log"
+        "traceability/logs/scientific-feedback-w22-source-mode.log",
+        "traceability/logs/w22-source-mode-migration.log",
+        "traceability/logs/w22-source-mode-mypy.log",
+        "traceability/logs/w22-source-mode-pytest.log",
+        "traceability/logs/w22-source-mode-pytest.xml",
+        "traceability/logs/w22-source-mode-ruff.log",
+        "traceability/logs/w22-source-mode-trace-tests.log",
+        "traceability/logs/w22-source-mode-web.log"
       ],
       "artifact_hashes": {
         "docs/scientific-feedback-acceptance.md": "796e8e2ad56978c3d36de41be20a63e763126550bcf3de5202b012f03ec40d07",
-        "traceability/logs/scientific-feedback-ci-summary.json": "b8b7a3087f9b832cdb1b88120a10217da331ef2dcce17ed961a68cad449a1cf7",
-        "traceability/logs/scientific-feedback-ci.log": "bcf2cfd0eaac28850ed36a223d48cb02a7270a0784a8fbd7e837b605453dc710",
-        "traceability/logs/scientific-feedback-collection.log": "0ad81e98e7c6c47230e3324be3c9c910c730ce6249a025784121bd61a50c0c68",
-        "traceability/logs/w23-pytest-final.log": "495a6229ae5a8ddf257181c29a11f13da8ff387fdc422f715f457e416954e5e5",
-        "traceability/logs/w23-pytest-final.xml": "717c2a12b38f469354ea80b76fe4d8779116182b5c23a8f37c2e3da11e5b7546"
+        "traceability/logs/scientific-feedback-w22-source-mode.log": "a8ba19e9682bfd96ce2ef9e437412040b4c907de65de42b4654e9daf688ff246",
+        "traceability/logs/w22-source-mode-migration.log": "c57e6bba10ce11bdb50234ecebbe771cc3b4a6e63f207f88c8fdcd574c855c0c",
+        "traceability/logs/w22-source-mode-mypy.log": "45cd732b059538f71b7ce21bbf7979985ada6de5a5ca0cf10f66de2702e36c06",
+        "traceability/logs/w22-source-mode-pytest.log": "eec46fbf9ddb25f3c4c3706ac1b63adb695bd71a6eb9f9735c76472f7308c64f",
+        "traceability/logs/w22-source-mode-pytest.xml": "65886579ed21ed7bc0a372ea4a77b5c9e337cd183c6849b9e893965829f6a128",
+        "traceability/logs/w22-source-mode-ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+        "traceability/logs/w22-source-mode-trace-tests.log": "ff50e965fd19f28f83796397169245cf31ce24b907f2439019671362d1b2b823",
+        "traceability/logs/w22-source-mode-web.log": "4ede41bf54ea78b4c56ab225406c7bd3d3ac716ccc16a72b59a9e92b0c90f434"
       },
       "uncovered": [
         "No live model, independent professional model judgment, human expert or real outsourcing validation.",
@@ -286,108 +278,87 @@
         "AT-030",
         "AT-032"
       ],
-      "source_commit": "8cd58032df332d72f19ccce8102187926d122069",
+      "source_commit": "1569dc49bded94dad0318cbe9b6e63cf4f2115c7",
       "result": "passed",
       "scope": "W23 local mock deployment sub-acceptance: empty PostgreSQL migration, single-entry start/ready/status/stop, runtime storage and queue checks, worker heartbeat, static Compose packaging, and full application regression. Docker/container execution is not passed.",
       "commands": [
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_TEST_DATABASE_URL=... MEDICAL_ONE_OFFICE_SOFFICE_PATH=... MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=... uv run --frozen pytest --junitxml=../../traceability/logs/w23-pytest-final.xml",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=... MEDICAL_ONE_OFFICE_SOFFICE_PATH=... MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=... uv run --frozen pytest --junitxml=../../traceability/logs/w22-source-mode-pytest.xml",
           "mode": "mock+real_postgresql+office",
-          "started_at": "2026-11-07T08:16:57.063717+00:00",
-          "finished_at": "2026-11-07T08:16:57.063717+00:00",
+          "started_at": "2026-11-08T03:31:03+00:00",
+          "finished_at": "2026-11-08T03:31:41+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w23-pytest-final.log",
-            "traceability/logs/w23-pytest-final.xml"
+            "traceability/logs/w22-source-mode-pytest.log",
+            "traceability/logs/w22-source-mode-pytest.xml"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=... uv run --frozen pytest tests/test_system.py tests/unit/test_w23_config.py tests/unit/test_w23_cli.py tests/unit/test_w23_runtime_health.py tests/unit/test_w23_deployment_package.py tests/integration/test_w23_runtime_health_integration.py -vv",
+          "mode": "mock+real_postgresql+subprocess",
+          "started_at": "2026-11-08T03:35:17+00:00",
+          "finished_at": "2026-11-08T03:35:18+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w23-source-mode-tests.log"
           ]
         },
         {
           "cwd": ".",
-          "command": "MEDICAL_ONE_RUNTIME_DIR=<external-state> ./scripts/medical-one.sh smoke",
+          "command": "MEDICAL_ONE_CONFIG_FILE=<external-file> MEDICAL_ONE_RUNTIME_DIR=<external-state> ./scripts/medical-one.sh smoke",
           "mode": "mock+real_postgresql+subprocess",
-          "started_at": "2026-11-07T08:17:04.224980+00:00",
-          "finished_at": "2026-11-07T08:17:04.224980+00:00",
+          "started_at": "2026-11-08T03:35:35+00:00",
+          "finished_at": "2026-11-08T03:35:40+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w23-smoke-final.log"
+            "traceability/logs/w23-source-mode-smoke.log"
           ]
         },
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=... uv run --frozen alembic downgrade b2e7d4a9c310 && uv run --frozen alembic upgrade head && psql revision/RLS checks",
+          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=... uv run --frozen alembic upgrade head && uv run --frozen alembic downgrade f4a2c7d9e601 && uv run --frozen alembic upgrade head; psql revision/RLS checks",
           "mode": "real_postgresql",
-          "started_at": "2026-11-07T08:17:19.624947+00:00",
-          "finished_at": "2026-11-07T08:17:19.624947+00:00",
+          "started_at": "2026-11-08T03:31:53+00:00",
+          "finished_at": "2026-11-08T03:31:54+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w23-migration-final.log"
+            "traceability/logs/w22-source-mode-migration.log"
           ]
         },
         {
           "cwd": "services/core",
-          "command": "uv run --frozen ruff check src tests",
+          "command": "uv run --frozen ruff check src tests migrations && uv run --frozen mypy src",
           "mode": "static",
-          "started_at": "2026-11-07T08:17:08.217185+00:00",
-          "finished_at": "2026-11-07T08:17:08.217185+00:00",
+          "started_at": "2026-11-08T03:32:04+00:00",
+          "finished_at": "2026-11-08T03:32:05+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w23-lint-core-final.log"
-          ]
-        },
-        {
-          "cwd": "services/core",
-          "command": "uv run --frozen mypy src",
-          "mode": "static",
-          "started_at": "2026-11-07T08:17:09.075385+00:00",
-          "finished_at": "2026-11-07T08:17:09.075385+00:00",
-          "exit_code": 0,
-          "artifacts": [
-            "traceability/logs/w23-mypy-final.log"
+            "traceability/logs/w22-source-mode-ruff.log",
+            "traceability/logs/w22-source-mode-mypy.log"
           ]
         },
         {
           "cwd": ".",
           "command": "PATH=<pnpm-runtime> pnpm --dir apps/web check",
           "mode": "web_build",
-          "started_at": "2026-11-07T08:17:14.235710+00:00",
-          "finished_at": "2026-11-07T08:17:14.235710+00:00",
+          "started_at": "2026-11-08T03:32:11+00:00",
+          "finished_at": "2026-11-08T03:32:17+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w23-web-final.log"
+            "traceability/logs/w22-source-mode-web.log"
           ]
         },
         {
           "cwd": ".",
-          "command": "./scripts/medical-one.sh doctor --structural-only && bash -n scripts/medical-one.sh && uv run --project services/core --frozen python tools/check_deployment.py",
+          "command": "uv run --project services/core --frozen python tools/check_deployment.py",
           "mode": "static+subprocess",
-          "started_at": "2026-11-07T08:17:19.883572+00:00",
-          "finished_at": "2026-11-07T08:17:19.883572+00:00",
+          "started_at": "2026-11-08T03:32:11+00:00",
+          "finished_at": "2026-11-08T03:32:11+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w23-doctor-final.log"
-          ]
-        },
-        {
-          "cwd": ".",
-          "command": "MEDICAL_ONE_CONFIG_FILE=<external-file> ./scripts/medical-one.sh config",
-          "mode": "config+subprocess",
-          "started_at": "2026-11-07T08:45:27.724481+00:00",
-          "finished_at": "2026-11-07T08:45:27.724481+00:00",
-          "exit_code": 0,
-          "artifacts": [
-            "traceability/logs/w23-config-final.log"
-          ]
-        },
-        {
-          "cwd": "services/core",
-          "command": "uv run --frozen pytest tests/test_system.py::test_missing_worker_is_explicit_503_not_ready tests/test_system.py::test_live_mode_is_not_ready_without_a_provider -vv",
-          "mode": "negative_health",
-          "started_at": "2026-11-07T08:45:36.103557+00:00",
-          "finished_at": "2026-11-07T08:45:36.103557+00:00",
-          "exit_code": 0,
-          "artifacts": [
-            "traceability/logs/w23-readiness-negative-final.log"
+            "traceability/logs/w22-source-mode-deployment.log"
           ]
         }
       ],
@@ -396,9 +367,9 @@
           "status": "passed",
           "evidence": [
             "docs/w23-handoff.md",
-            "traceability/logs/w23-pytest-final.log",
-            "traceability/logs/w23-smoke-final.log",
-            "traceability/logs/w23-migration-final.log"
+            "traceability/logs/w23-source-mode-tests.log",
+            "traceability/logs/w23-source-mode-smoke.log",
+            "traceability/logs/w22-source-mode-migration.log"
           ]
         },
         "live": {
@@ -486,33 +457,27 @@
       ],
       "artifacts": [
         "docs/w23-handoff.md",
-        "traceability/logs/w23-config-final.log",
-        "traceability/logs/w23-doctor-final.log",
-        "traceability/logs/w23-lint-core-final.log",
-        "traceability/logs/w23-migration-final.log",
-        "traceability/logs/w23-mypy-final.log",
-        "traceability/logs/w23-pytest-final.log",
-        "traceability/logs/w23-pytest-final.xml",
-        "traceability/logs/w23-readiness-negative-final.log",
-        "traceability/logs/w23-smoke-final.log",
-        "traceability/logs/w23-trace-check-final.log",
-        "traceability/logs/w23-trace-tests-final.log",
-        "traceability/logs/w23-web-final.log"
+        "traceability/logs/w22-source-mode-deployment.log",
+        "traceability/logs/w22-source-mode-migration.log",
+        "traceability/logs/w22-source-mode-mypy.log",
+        "traceability/logs/w22-source-mode-pytest.log",
+        "traceability/logs/w22-source-mode-pytest.xml",
+        "traceability/logs/w22-source-mode-ruff.log",
+        "traceability/logs/w22-source-mode-web.log",
+        "traceability/logs/w23-source-mode-smoke.log",
+        "traceability/logs/w23-source-mode-tests.log"
       ],
       "artifact_hashes": {
         "docs/w23-handoff.md": "ff7193c18b93c63257e2bd83c9c3376486da2682a15d9ca74b30bb41f790692e",
-        "traceability/logs/w23-config-final.log": "ae373bfa760b918836392e01883206572e9564867b52fec476a53ec8bc88fe05",
-        "traceability/logs/w23-doctor-final.log": "767d5b8a53fe125dc27b1177d5fb7c3441fb25623e19c2d15b6b95bce1a9f1bf",
-        "traceability/logs/w23-lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
-        "traceability/logs/w23-migration-final.log": "fd410a87403aae2729a89e933bf22130e0e533710d01a1e834c61949d5ff18aa",
-        "traceability/logs/w23-mypy-final.log": "45cd732b059538f71b7ce21bbf7979985ada6de5a5ca0cf10f66de2702e36c06",
-        "traceability/logs/w23-pytest-final.log": "495a6229ae5a8ddf257181c29a11f13da8ff387fdc422f715f457e416954e5e5",
-        "traceability/logs/w23-pytest-final.xml": "717c2a12b38f469354ea80b76fe4d8779116182b5c23a8f37c2e3da11e5b7546",
-        "traceability/logs/w23-readiness-negative-final.log": "9d835fc978139a012e9674262bfff6a492175062d4d34d9e88f04dedd412cddb",
-        "traceability/logs/w23-smoke-final.log": "6ec19c3257b1f2fc3b947421928642fb19a54ca2cdca024af9dc9a0e3f73844d",
-        "traceability/logs/w23-trace-check-final.log": "66eebb89378f17b02e63c5b98006b6c55c7d3b80f351efcac5d87ae035c37afa",
-        "traceability/logs/w23-trace-tests-final.log": "3200e930b2886c2ae6d33002ff5489c4c8ac3f0e7a3fbb116ad7a048f4c7bd34",
-        "traceability/logs/w23-web-final.log": "3e02218bd42de052587a3ae9136f0ea05b1da4e5551463fafe873ee58e6cea8e"
+        "traceability/logs/w22-source-mode-deployment.log": "b6bd68204ab415e8cf7a5ecbc5e50ea9ef781bbecfb87916dba6f0a964c17fd1",
+        "traceability/logs/w22-source-mode-migration.log": "c57e6bba10ce11bdb50234ecebbe771cc3b4a6e63f207f88c8fdcd574c855c0c",
+        "traceability/logs/w22-source-mode-mypy.log": "45cd732b059538f71b7ce21bbf7979985ada6de5a5ca0cf10f66de2702e36c06",
+        "traceability/logs/w22-source-mode-pytest.log": "eec46fbf9ddb25f3c4c3706ac1b63adb695bd71a6eb9f9735c76472f7308c64f",
+        "traceability/logs/w22-source-mode-pytest.xml": "65886579ed21ed7bc0a372ea4a77b5c9e337cd183c6849b9e893965829f6a128",
+        "traceability/logs/w22-source-mode-ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+        "traceability/logs/w22-source-mode-web.log": "4ede41bf54ea78b4c56ab225406c7bd3d3ac716ccc16a72b59a9e92b0c90f434",
+        "traceability/logs/w23-source-mode-smoke.log": "4e2dfe0c8aa5b4b4950fae68e384deaa5bf128310c11826a7e0d8fc05b3f843e",
+        "traceability/logs/w23-source-mode-tests.log": "880d4bde7cb2c7dae551e1e99d581801cd703bb3f6af3f3ca3ea7208b43e6930"
       },
       "uncovered": [
         "Docker/Compose image build and container start were not run because Docker is unavailable.",
@@ -536,8 +501,8 @@
         "scripts",
         "tools"
       ],
-      "source_tree_git_sha256": "a5c0495b9e86850278741376766321b982d66ef98f8d6628e41b0dcc0bd66b56",
-      "source_tree_worktree_sha256": "a5c0495b9e86850278741376766321b982d66ef98f8d6628e41b0dcc0bd66b56"
+      "source_tree_git_sha256": "20a9d7550ec0db4d88bc1c57a5fb5fa5b7ee1d2ce734b278830f938cdeaeb787",
+      "source_tree_worktree_sha256": "20a9d7550ec0db4d88bc1c57a5fb5fa5b7ee1d2ce734b278830f938cdeaeb787"
     },
     {
       "id": "ACC-W22-OFFLINE-ADAPTERS",
@@ -570,75 +535,87 @@
         "AT-015",
         "AT-031"
       ],
-      "source_commit": "8cd58032df332d72f19ccce8102187926d122069",
+      "source_commit": "1569dc49bded94dad0318cbe9b6e63cf4f2115c7",
       "result": "passed",
-      "scope": "W22 offline adapter sub-acceptance: OpenAI-compatible JSON transport and cost gates, SMTP send-only MIME/recipient/unknown controls, PubMed E-utilities ESearch/EFetch metadata retrieval, and existing authorization/idempotency contracts. No real network call.",
+      "scope": "W22 offline adapter sub-acceptance: OpenAI-compatible JSON transport and cost gates, SMTP send-only controls, PubMed E-utilities offline transport, and source snapshots that record only actual participant adapters with explicit mock/live execution mode. Mixed-mode requests fail before retrieval or persistence. No real network call.",
       "commands": [
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_TEST_DATABASE_URL=... uv run --frozen pytest --junitxml=../../traceability/logs/w22-pytest-final.xml",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=... MEDICAL_ONE_OFFICE_SOFFICE_PATH=... MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=... uv run --frozen pytest --junitxml=../../traceability/logs/w22-source-mode-pytest.xml",
           "mode": "mock+real_postgresql+office",
-          "started_at": "2026-11-07T08:56:16.250211+00:00",
-          "finished_at": "2026-11-07T08:56:16.250211+00:00",
+          "started_at": "2026-11-08T03:31:03+00:00",
+          "finished_at": "2026-11-08T03:31:41+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w22-pytest-final.log",
-            "traceability/logs/w22-pytest-final.xml"
+            "traceability/logs/w22-source-mode-pytest.log",
+            "traceability/logs/w22-source-mode-pytest.xml"
           ]
         },
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_TEST_DATABASE_URL=... uv run --frozen pytest tests/unit/test_w22_openai_compatible.py tests/unit/test_w22_smtp.py tests/integration/test_w22_mail_service.py tests/integration/test_w15_mail.py -vv",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=... uv run --frozen pytest tests/unit/test_w07_sources_parsers.py tests/unit/test_w22_pubmed_http.py tests/integration/test_w22_source_api.py -vv",
           "mode": "offline_transport+real_postgresql",
-          "started_at": "2026-11-07T08:56:39.813338+00:00",
-          "finished_at": "2026-11-07T08:56:39.813338+00:00",
+          "started_at": "2026-11-08T03:31:58+00:00",
+          "finished_at": "2026-11-08T03:32:00+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w22-adapters-final.log"
+            "traceability/logs/w22-source-mode-targeted.log"
           ]
         },
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=... uv run --frozen alembic downgrade f4a2c7d9e601 && uv run --frozen alembic upgrade head",
+          "command": "MEDICAL_ONE_MIGRATION_DATABASE_URL=... uv run --frozen alembic upgrade head && uv run --frozen alembic downgrade f4a2c7d9e601 && uv run --frozen alembic upgrade head; psql revision/RLS checks",
           "mode": "real_postgresql",
-          "started_at": "2026-11-07T08:56:22.611749+00:00",
-          "finished_at": "2026-11-07T08:56:22.611749+00:00",
+          "started_at": "2026-11-08T03:31:53+00:00",
+          "finished_at": "2026-11-08T03:31:54+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w22-migration-final.log"
+            "traceability/logs/w22-source-mode-migration.log"
           ]
         },
         {
           "cwd": "services/core",
-          "command": "uv run --frozen ruff check src tests migrations",
+          "command": "uv run --frozen ruff check src tests migrations && uv run --frozen mypy src",
           "mode": "static",
-          "started_at": "2026-11-07T08:55:38.804843+00:00",
-          "finished_at": "2026-11-07T08:55:38.804843+00:00",
+          "started_at": "2026-11-08T03:32:04+00:00",
+          "finished_at": "2026-11-08T03:32:05+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w22-lint-core-final.log"
-          ]
-        },
-        {
-          "cwd": "services/core",
-          "command": "uv run --frozen mypy src",
-          "mode": "static",
-          "started_at": "2026-11-07T08:55:39.173550+00:00",
-          "finished_at": "2026-11-07T08:55:39.173550+00:00",
-          "exit_code": 0,
-          "artifacts": [
-            "traceability/logs/w22-mypy-final.log"
+            "traceability/logs/w22-source-mode-ruff.log",
+            "traceability/logs/w22-source-mode-mypy.log"
           ]
         },
         {
           "cwd": ".",
           "command": "PATH=<pnpm-runtime> pnpm --dir apps/web check",
           "mode": "web_build",
-          "started_at": "2026-11-07T08:55:43.541409+00:00",
-          "finished_at": "2026-11-07T08:55:43.541409+00:00",
+          "started_at": "2026-11-08T03:32:11+00:00",
+          "finished_at": "2026-11-08T03:32:17+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w22-web-final.log"
+            "traceability/logs/w22-source-mode-web.log"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "uv run --project services/core --frozen python tools/check_deployment.py",
+          "mode": "static",
+          "started_at": "2026-11-08T03:32:11+00:00",
+          "finished_at": "2026-11-08T03:32:11+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w22-source-mode-deployment.log"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "python3 tools/test_traceability.py",
+          "mode": "traceability_selftest",
+          "started_at": "2026-11-08T03:32:11+00:00",
+          "finished_at": "2026-11-08T03:33:48+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w22-source-mode-trace-tests.log"
           ]
         }
       ],
@@ -647,8 +624,8 @@
           "status": "passed",
           "evidence": [
             "docs/w22-offline-acceptance.md",
-            "traceability/logs/w22-adapters-final.log",
-            "traceability/logs/w22-pytest-final.log"
+            "traceability/logs/w22-source-mode-targeted.log",
+            "traceability/logs/w22-source-mode-pytest.log"
           ]
         },
         "live": {
@@ -687,11 +664,11 @@
         },
         {
           "path": "services/core/src/medical_one_person/infrastructure/sources/pubmed_http.py",
-          "sha256": "5e20a7ba14d9c3b9441f99a045fa8089ddc1fc3566a883891359b14f6da60b1f"
+          "sha256": "fae20e1cb6a14edb024b8162a2899f5bde65c7129bb9667c8cc02d5783cf84b6"
         },
         {
           "path": "services/core/src/medical_one_person/infrastructure/sources/factory.py",
-          "sha256": "a89cabc8a3c836089c0595de9691586c489e46cb3052bc7f996f7f2c6752b736"
+          "sha256": "a406684dd8dafad9b1a6e02ffd9757adf347be4eb041f4e421b21e3e176b657c"
         },
         {
           "path": "services/core/src/medical_one_person/application/mail.py",
@@ -723,7 +700,11 @@
         },
         {
           "path": "services/core/tests/unit/test_w22_pubmed_http.py",
-          "sha256": "1292e2871cee75e282f4e44430afc9e6dd7046d33fda0f68e7f7461fa5d66d66"
+          "sha256": "dbe740e3c5f668b122bc063e46ff76b6f7ce4bfcda3291aeb3940981dd82a411"
+        },
+        {
+          "path": "services/core/tests/unit/test_w07_sources_parsers.py",
+          "sha256": "e5efc99d24d91e9364649b3006c384011356433b65d490d3537da4721d7274a4"
         },
         {
           "path": "services/core/tests/integration/test_w22_mail_service.py",
@@ -735,19 +716,19 @@
         },
         {
           "path": "docs/w22-handoff.md",
-          "sha256": "691aa8fdd85837046272d8d606016becf6cae99144e36cc3ea3d2fbea3d70643"
+          "sha256": "02983ddb13948fcf94623755d88cacf1282b2729368c2a58859dc1caf4ef3725"
         },
         {
           "path": "services/core/src/medical_one_person/api/sources.py",
-          "sha256": "872b639ebef22ec1b78731f75e964d659be29869116a2ab4a4a0069d1552f2b9"
+          "sha256": "b4ffeae3cb877f9cb689a116a2a688765838c1a44f980ee0e77a73da7b01c043"
         },
         {
           "path": "services/core/src/medical_one_person/infrastructure/sources/adapters.py",
-          "sha256": "a80b00edd714efc51963cbaef900ec74231a23f8be77e78a563d3df2e048ca89"
+          "sha256": "b21a1b14d671238a2fe4290fc0fc8454714de5186ef713e72874ce488ffbe598"
         },
         {
           "path": "services/core/tests/integration/test_w22_source_api.py",
-          "sha256": "1dbaec4cbdb694af80f6fd8bbc958ed23f148347d3fada6ab888a9730fde7c4c"
+          "sha256": "4c05beb208f07d3620f99942148f00f5399eb27d69157036b4f512e921e731a8"
         },
         {
           "path": "apps/web/src/lib/api.ts",
@@ -759,7 +740,7 @@
         },
         {
           "path": "schemas/openapi.v1.json",
-          "sha256": "3ea6dbd34a91d83007294e6bd6695962d18e3e8af1f99ad672b7641c26d47617"
+          "sha256": "cbee3e9bac1fd14b44b53937edaead2c859f08985367019d50df138c54d745c6"
         },
         {
           "path": "services/core/src/medical_one_person/infrastructure/db/models.py",
@@ -777,28 +758,30 @@
       "artifacts": [
         "docs/w22-handoff.md",
         "docs/w22-offline-acceptance.md",
-        "traceability/logs/w22-adapters-final.log",
-        "traceability/logs/w22-lint-core-final.log",
-        "traceability/logs/w22-migration-final.log",
-        "traceability/logs/w22-mypy-final.log",
-        "traceability/logs/w22-pytest-final.log",
-        "traceability/logs/w22-pytest-final.xml",
-        "traceability/logs/w22-web-final.log",
-        "traceability/logs/w22-trace-tests-final.log",
-        "traceability/logs/w22-trace-check-final.log"
+        "traceability/logs/w22-source-mode-deployment.log",
+        "traceability/logs/w22-source-mode-migration.log",
+        "traceability/logs/w22-source-mode-mypy.log",
+        "traceability/logs/w22-source-mode-pytest.log",
+        "traceability/logs/w22-source-mode-pytest.xml",
+        "traceability/logs/w22-source-mode-ruff.log",
+        "traceability/logs/w22-source-mode-targeted.log",
+        "traceability/logs/w22-source-mode-trace-check.log",
+        "traceability/logs/w22-source-mode-trace-tests.log",
+        "traceability/logs/w22-source-mode-web.log"
       ],
       "artifact_hashes": {
-        "docs/w22-handoff.md": "691aa8fdd85837046272d8d606016becf6cae99144e36cc3ea3d2fbea3d70643",
-        "docs/w22-offline-acceptance.md": "a3bae1ca3a0257718acecee00ca1c59151e91aefbe50149c14da05dbaf77b892",
-        "traceability/logs/w22-adapters-final.log": "870c9255e652655087dfb0b1c994e7831009ced454644d021adb998a9bf61eb7",
-        "traceability/logs/w22-lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
-        "traceability/logs/w22-migration-final.log": "31932c53b63c5e82a79f7b0cf0a6fe06ed80eafbfe378fc81019b8ca7f9febca",
-        "traceability/logs/w22-mypy-final.log": "45cd732b059538f71b7ce21bbf7979985ada6de5a5ca0cf10f66de2702e36c06",
-        "traceability/logs/w22-pytest-final.log": "495a6229ae5a8ddf257181c29a11f13da8ff387fdc422f715f457e416954e5e5",
-        "traceability/logs/w22-pytest-final.xml": "717c2a12b38f469354ea80b76fe4d8779116182b5c23a8f37c2e3da11e5b7546",
-        "traceability/logs/w22-trace-check-final.log": "dd7116f9fbbf6d5d30cd196ac2a5d163dfeca4d3e79cfaa2b741e4323208e897",
-        "traceability/logs/w22-trace-tests-final.log": "a39e55c1bcc4fdaee0e311e25b4697fd88fef7993d17e4fb8fc9245d2ca54196",
-        "traceability/logs/w22-web-final.log": "3e02218bd42de052587a3ae9136f0ea05b1da4e5551463fafe873ee58e6cea8e"
+        "docs/w22-handoff.md": "02983ddb13948fcf94623755d88cacf1282b2729368c2a58859dc1caf4ef3725",
+        "docs/w22-offline-acceptance.md": "01fb2e169c60b77c54672076527f0705a0771de459e8e82561ff81c4495e9332",
+        "traceability/logs/w22-source-mode-deployment.log": "b6bd68204ab415e8cf7a5ecbc5e50ea9ef781bbecfb87916dba6f0a964c17fd1",
+        "traceability/logs/w22-source-mode-migration.log": "c57e6bba10ce11bdb50234ecebbe771cc3b4a6e63f207f88c8fdcd574c855c0c",
+        "traceability/logs/w22-source-mode-mypy.log": "45cd732b059538f71b7ce21bbf7979985ada6de5a5ca0cf10f66de2702e36c06",
+        "traceability/logs/w22-source-mode-pytest.log": "eec46fbf9ddb25f3c4c3706ac1b63adb695bd71a6eb9f9735c76472f7308c64f",
+        "traceability/logs/w22-source-mode-pytest.xml": "65886579ed21ed7bc0a372ea4a77b5c9e337cd183c6849b9e893965829f6a128",
+        "traceability/logs/w22-source-mode-ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+        "traceability/logs/w22-source-mode-targeted.log": "7867f50514cfa14b9b0e1491cbf6120c833fc9621575bd9fea23d74adfab7fff",
+        "traceability/logs/w22-source-mode-trace-check.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9",
+        "traceability/logs/w22-source-mode-trace-tests.log": "ff50e965fd19f28f83796397169245cf31ce24b907f2439019671362d1b2b823",
+        "traceability/logs/w22-source-mode-web.log": "4ede41bf54ea78b4c56ab225406c7bd3d3ac716ccc16a72b59a9e92b0c90f434"
       },
       "uncovered": [
         "No real model provider credentials, model ID, approved rates, spending cap or connectivity test.",
@@ -806,7 +789,8 @@
         "No NCBI allowlisted-network approval, real query or live PubMed response; metadata does not prove fulltext access or study validity.",
         "No live inbox receive: SMTP adapter is send-only and cannot reconcile sent-folder state.",
         "No proof of scientific quality, provider data policy compliance, rate-limit behavior or SMTP exactly-once delivery.",
-        "No real expert, institution, contract, payment or experiment."
+        "No real expert, institution, contract, payment or experiment.",
+        "Accessible local medical_one and medical_one_test databases contained no source snapshot rows, so no historical correction record was required there; other environments and production were not inspected."
       ],
       "source_scope": [
         "apps/web/package.json",
@@ -821,8 +805,8 @@
         "services/core/uv.lock",
         "tools"
       ],
-      "source_tree_git_sha256": "36ca3c6cdfbf7c6ecc9755cb1feba9e542f9bb97dad0d3ed891eb4cff7e053e7",
-      "source_tree_worktree_sha256": "36ca3c6cdfbf7c6ecc9755cb1feba9e542f9bb97dad0d3ed891eb4cff7e053e7"
+      "source_tree_git_sha256": "c510e47158aca4085cc5dbc346e55b7ec2f23624fc3eea7e0bb44d1f1ba1bec7",
+      "source_tree_worktree_sha256": "c510e47158aca4085cc5dbc346e55b7ec2f23624fc3eea7e0bb44d1f1ba1bec7"
     },
     {
       "id": "ACC-W24-READINESS-LEDGER",
@@ -853,75 +837,65 @@
         "AT-032",
         "AT-033"
       ],
-      "source_commit": "8cd58032df332d72f19ccce8102187926d122069",
+      "source_commit": "1569dc49bded94dad0318cbe9b6e63cf4f2115c7",
       "result": "not_run",
       "scope": "W24 readiness tooling only: 16-step coverage schema, graded real-evidence references, baseline gap report and anti-false-completion tests. No real contact, authorization, execution, delivery, acceptance or outsourcing validation.",
       "commands": [
         {
           "cwd": "services/core",
-          "command": "MEDICAL_ONE_TEST_DATABASE_URL=... uv run --frozen pytest --junitxml=../../traceability/logs/w24-pytest-final.xml",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=... MEDICAL_ONE_OFFICE_SOFFICE_PATH=... MEDICAL_ONE_OFFICE_PDFTOPPM_PATH=... uv run --frozen pytest --junitxml=../../traceability/logs/w22-source-mode-pytest.xml",
           "mode": "mock+real_postgresql+office",
-          "started_at": "2026-11-07T09:17:08.252717+00:00",
-          "finished_at": "2026-11-07T09:17:08.252717+00:00",
+          "started_at": "2026-11-08T03:31:03+00:00",
+          "finished_at": "2026-11-08T03:31:41+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w24-pytest-final.log",
-            "traceability/logs/w24-pytest-final.xml"
+            "traceability/logs/w22-source-mode-pytest.log",
+            "traceability/logs/w22-source-mode-pytest.xml"
           ]
         },
         {
           "cwd": "services/core",
           "command": "uv run --frozen pytest tests/unit/test_w24_phase_validation.py -vv",
           "mode": "unit",
-          "started_at": "2026-11-07T09:17:12.029787+00:00",
-          "finished_at": "2026-11-07T09:17:12.029787+00:00",
+          "started_at": "2026-11-08T03:35:19+00:00",
+          "finished_at": "2026-11-08T03:35:19+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w24-ledger-final.log"
+            "traceability/logs/w24-source-mode-tests.log"
           ]
         },
         {
           "cwd": ".",
           "command": "make pilot-readiness",
           "mode": "offline_evaluation",
-          "started_at": "2026-11-07T09:17:12.662718+00:00",
-          "finished_at": "2026-11-07T09:17:12.662718+00:00",
+          "started_at": "2026-11-08T03:35:25+00:00",
+          "finished_at": "2026-11-08T03:35:26+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w24-readiness-final.log"
+            "traceability/logs/w24-source-mode-readiness.log"
           ]
         },
         {
           "cwd": "services/core",
-          "command": "uv run --frozen ruff check src tests migrations",
+          "command": "uv run --frozen ruff check src tests migrations && uv run --frozen mypy src",
           "mode": "static",
-          "started_at": "2026-11-07T09:16:30.930241+00:00",
-          "finished_at": "2026-11-07T09:16:30.930241+00:00",
+          "started_at": "2026-11-08T03:32:04+00:00",
+          "finished_at": "2026-11-08T03:32:05+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w24-lint-core-final.log"
-          ]
-        },
-        {
-          "cwd": "services/core",
-          "command": "uv run --frozen mypy src",
-          "mode": "static",
-          "started_at": "2026-11-07T09:16:31.240593+00:00",
-          "finished_at": "2026-11-07T09:16:31.240593+00:00",
-          "exit_code": 0,
-          "artifacts": [
-            "traceability/logs/w24-mypy-final.log"
+            "traceability/logs/w22-source-mode-ruff.log",
+            "traceability/logs/w22-source-mode-mypy.log"
           ]
         },
         {
           "cwd": ".",
           "command": "PATH=<pnpm-runtime> pnpm --dir apps/web check",
           "mode": "web_build",
-          "started_at": "2026-11-07T09:16:36.359719+00:00",
-          "finished_at": "2026-11-07T09:16:36.359719+00:00",
+          "started_at": "2026-11-08T03:32:11+00:00",
+          "finished_at": "2026-11-08T03:32:17+00:00",
           "exit_code": 0,
           "artifacts": [
-            "traceability/logs/w24-web-final.log"
+            "traceability/logs/w22-source-mode-web.log"
           ]
         }
       ],
@@ -930,8 +904,8 @@
           "status": "passed",
           "evidence": [
             "docs/w24-readiness-ledger.md",
-            "traceability/logs/w24-ledger-final.log",
-            "traceability/logs/w24-readiness-final.log"
+            "traceability/logs/w24-source-mode-tests.log",
+            "traceability/logs/w24-source-mode-readiness.log"
           ]
         },
         "live": {
@@ -977,29 +951,25 @@
         "docs/w24-pilot-charter.md",
         "docs/w24-readiness-ledger.md",
         "fixtures/w24-pilot-baseline.json",
-        "traceability/logs/w24-ledger-final.log",
-        "traceability/logs/w24-lint-core-final.log",
-        "traceability/logs/w24-mypy-final.log",
-        "traceability/logs/w24-pytest-final.log",
-        "traceability/logs/w24-pytest-final.xml",
-        "traceability/logs/w24-readiness-final.log",
-        "traceability/logs/w24-web-final.log",
-        "traceability/logs/w24-trace-tests-final.log",
-        "traceability/logs/w24-trace-check-final.log"
+        "traceability/logs/w22-source-mode-mypy.log",
+        "traceability/logs/w22-source-mode-pytest.log",
+        "traceability/logs/w22-source-mode-pytest.xml",
+        "traceability/logs/w22-source-mode-ruff.log",
+        "traceability/logs/w22-source-mode-web.log",
+        "traceability/logs/w24-source-mode-readiness.log",
+        "traceability/logs/w24-source-mode-tests.log"
       ],
       "artifact_hashes": {
         "docs/w24-pilot-charter.md": "effcfba94716d1656df726ef3e626900832810865816f67a67d82f04707ff1f3",
         "docs/w24-readiness-ledger.md": "f059aea0afd05dc64a88cc0b1487b4f39383117b0bfa76f7c1bc5869b6abf252",
         "fixtures/w24-pilot-baseline.json": "08f36db70848dcd769a14c6b0f1ad9893d99a873d577c1c406e32ddc48fb8195",
-        "traceability/logs/w24-ledger-final.log": "7ee84a1e4e5054e316655e990bdf61c6ad7902764e8b3a93c5636e066100a50f",
-        "traceability/logs/w24-lint-core-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
-        "traceability/logs/w24-mypy-final.log": "45cd732b059538f71b7ce21bbf7979985ada6de5a5ca0cf10f66de2702e36c06",
-        "traceability/logs/w24-pytest-final.log": "495a6229ae5a8ddf257181c29a11f13da8ff387fdc422f715f457e416954e5e5",
-        "traceability/logs/w24-pytest-final.xml": "717c2a12b38f469354ea80b76fe4d8779116182b5c23a8f37c2e3da11e5b7546",
-        "traceability/logs/w24-readiness-final.log": "131b8245da12417c543ad99cab7efd036b6ebc5123c8556fafc9f516116f2230",
-        "traceability/logs/w24-trace-check-final.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9",
-        "traceability/logs/w24-trace-tests-final.log": "83bcda881d462904185e7a13ce88e57c674564f27cd665fa9e209511a8d32bf5",
-        "traceability/logs/w24-web-final.log": "3e02218bd42de052587a3ae9136f0ea05b1da4e5551463fafe873ee58e6cea8e"
+        "traceability/logs/w22-source-mode-mypy.log": "45cd732b059538f71b7ce21bbf7979985ada6de5a5ca0cf10f66de2702e36c06",
+        "traceability/logs/w22-source-mode-pytest.log": "eec46fbf9ddb25f3c4c3706ac1b63adb695bd71a6eb9f9735c76472f7308c64f",
+        "traceability/logs/w22-source-mode-pytest.xml": "65886579ed21ed7bc0a372ea4a77b5c9e337cd183c6849b9e893965829f6a128",
+        "traceability/logs/w22-source-mode-ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+        "traceability/logs/w22-source-mode-web.log": "4ede41bf54ea78b4c56ab225406c7bd3d3ac716ccc16a72b59a9e92b0c90f434",
+        "traceability/logs/w24-source-mode-readiness.log": "131b8245da12417c543ad99cab7efd036b6ebc5123c8556fafc9f516116f2230",
+        "traceability/logs/w24-source-mode-tests.log": "dd27f0fc0769fefe9a5245a898ad3ab1199a713ed60f9c5545718f0eef209410"
       },
       "uncovered": [
         "No candidate selection, charter confirmation or pilot budget.",
@@ -1015,8 +985,8 @@
         "fixtures",
         "docs"
       ],
-      "source_tree_git_sha256": "ef77fe58f297427fb7399d1d2e22bacff4c33e695b9220b1ca23561d99c930d6",
-      "source_tree_worktree_sha256": "ef77fe58f297427fb7399d1d2e22bacff4c33e695b9220b1ca23561d99c930d6"
+      "source_tree_git_sha256": "bdf7291c849ec310e8d32d6fb5343afd177107cba177a45f573088a33ff3dc5c",
+      "source_tree_worktree_sha256": "bdf7291c849ec310e8d32d6fb5343afd177107cba177a45f573088a33ff3dc5c"
     }
   ]
 }

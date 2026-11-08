@@ -1462,9 +1462,9 @@
     }
   ],
   "theory_version": "V0.10",
-  "roadmap_version": "V1.27",
+  "roadmap_version": "V1.28",
   "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "4246673027638d27595c8d50f7190ea820286053b53a39fb22703e7ff449dc32",
+  "roadmap_sha256": "9153e3ecb613766a16390a8653131b71dd4d8fdd69f03e7a808043b897064db8",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1576,8 +1576,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-08T02:18:32.709275+00:00",
-    "note": "W22最终追踪日志已纳入哈希。",
+    "at": "2026-11-08T03:38:50.300793+00:00",
+    "note": "W22 source snapshot execution mode correction: actual participant adapters, explicit mock/live, mixed-mode fail closed; no highest-thought change",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -1607,7 +1607,7 @@
       "requirement_ids": [
         "RQ-032"
       ],
-      "sha256": "3ea6dbd34a91d83007294e6bd6695962d18e3e8af1f99ad672b7641c26d47617"
+      "sha256": "cbee3e9bac1fd14b44b53937edaead2c859f08985367019d50df138c54d745c6"
     },
     {
       "path": "pnpm-lock.yaml",
@@ -3009,7 +3009,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "aa294426f0782994883f54513fcc0d0e594135bc6de9dc7b80cc35761d2f49c4"
+      "sha256": "3a166ed570f54f5bb8c26dffb18d47fdf284931213c497592ba4e33f0e967a96"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -3240,7 +3240,7 @@
         "RQ-015",
         "RQ-031"
       ],
-      "sha256": "691aa8fdd85837046272d8d606016becf6cae99144e36cc3ea3d2fbea3d70643"
+      "sha256": "02983ddb13948fcf94623755d88cacf1282b2729368c2a58859dc1caf4ef3725"
     },
     {
       "path": "docs/w22-offline-acceptance.md",
@@ -3248,7 +3248,7 @@
         "RQ-015",
         "RQ-031"
       ],
-      "sha256": "a3bae1ca3a0257718acecee00ca1c59151e91aefbe50149c14da05dbaf77b892"
+      "sha256": "01fb2e169c60b77c54672076527f0705a0771de459e8e82561ff81c4495e9332"
     },
     {
       "path": "services/core/src/medical_one_person/providers/openai_compatible.py",
@@ -3319,7 +3319,7 @@
         "RQ-011",
         "RQ-031"
       ],
-      "sha256": "5e20a7ba14d9c3b9441f99a045fa8089ddc1fc3566a883891359b14f6da60b1f"
+      "sha256": "fae20e1cb6a14edb024b8162a2899f5bde65c7129bb9667c8cc02d5783cf84b6"
     },
     {
       "path": "services/core/src/medical_one_person/infrastructure/sources/factory.py",
@@ -3327,7 +3327,7 @@
         "RQ-011",
         "RQ-031"
       ],
-      "sha256": "a89cabc8a3c836089c0595de9691586c489e46cb3052bc7f996f7f2c6752b736"
+      "sha256": "a406684dd8dafad9b1a6e02ffd9757adf347be4eb041f4e421b21e3e176b657c"
     },
     {
       "path": "services/core/tests/unit/test_w22_pubmed_http.py",
@@ -3335,7 +3335,7 @@
         "RQ-011",
         "RQ-031"
       ],
-      "sha256": "1292e2871cee75e282f4e44430afc9e6dd7046d33fda0f68e7f7461fa5d66d66"
+      "sha256": "dbe740e3c5f668b122bc063e46ff76b6f7ce4bfcda3291aeb3940981dd82a411"
     },
     {
       "path": "services/core/src/medical_one_person/domain/phase_validation.py",
@@ -3381,7 +3381,7 @@
         "RQ-011",
         "RQ-031"
       ],
-      "sha256": "872b639ebef22ec1b78731f75e964d659be29869116a2ab4a4a0069d1552f2b9"
+      "sha256": "b4ffeae3cb877f9cb689a116a2a688765838c1a44f980ee0e77a73da7b01c043"
     },
     {
       "path": "services/core/tests/integration/test_w22_source_api.py",
@@ -3389,7 +3389,7 @@
         "RQ-011",
         "RQ-031"
       ],
-      "sha256": "1dbaec4cbdb694af80f6fd8bbc958ed23f148347d3fada6ab888a9730fde7c4c"
+      "sha256": "4c05beb208f07d3620f99942148f00f5399eb27d69157036b4f512e921e731a8"
     },
     {
       "path": "services/core/migrations/versions/b7d1e4a9c260_w22_external_source_snapshots.py",
