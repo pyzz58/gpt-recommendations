@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "source": "pure_synthetic",
+  "scope": "macOS local loopback experience only",
+  "not_clinical_validation": true,
+  "w15_status": "blocked",
+  "files": [
+    {
+      "purpose": "rule",
+      "path": "tests/fixtures/documents/artifacts/synthetic_rule_protocol.docx",
+      "expected": "规则候选可追溯到原文；自由文本仍需要 CRA 复核"
+    },
+    {
+      "purpose": "rule",
+      "path": "tests/fixtures/documents/artifacts/synthetic_rule_matrix_v2.docx",
+      "expected": "规则矩阵和例外可查看；不能当作已批准的真实项目标准"
+    },
+    {
+      "purpose": "carryover",
+      "path": "tests/fixtures/issues/artifacts/synthetic_carryover_track.xlsx",
+      "expected": "导入 CRA-SYN-101 与 CRA-SYN-103；未知字段保持 unknown"
+    },
+    {
+      "purpose": "laboratory_text_pdf",
+      "path": "tests/fixtures/labs/artifacts/synthetic_lab_report.pdf",
+      "expected": "自动读取 5 行，保留页码、行和字段坐标"
+    },
+    {
+      "purpose": "laboratory_image_ocr_disabled",
+      "path": "tests/fixtures/documents/artifacts/synthetic_lab_report.png",
+      "expected": "原文件保留，状态为 provider_unavailable；不得声称 OCR 已运行"
+    },
+    {
+      "purpose": "edc_export",
+      "path": "tests/fixtures/edc/artifacts/synthetic_edc_lab.xlsx",
+      "expected": "多 sheet 公式/缓存预览、映射确认和不可变快照"
+    },
+    {
+      "purpose": "report_template",
+      "path": "tests/fixtures/reports/artifacts/synthetic_monitoring_report.docx",
+      "expected": "生成老问题与新发现分栏的合成监查报告草稿"
+    },
+    {
+      "purpose": "letter_template",
+      "path": "tests/fixtures/reports/artifacts/synthetic_visit_letter.docx",
+      "expected": "只放入选定的访前事项，不删除完整遗留清单"
+    },
+    {
+      "purpose": "track_template",
+      "path": "tests/fixtures/reports/artifacts/synthetic_track_template.xlsx",
+      "expected": "从同一问题记录生成可打开的 Excel track"
+    }
+  ],
+  "seeded_expectations": {
+    "study_code": "SYNTH-001",
+    "site_code": "S01",
+    "subject_external_id": "SYN-EDC-001",
+    "issues": [
+      "CRA-SYN-101",
+      "CRA-SYN-103",
+      "LOCAL-URGENT"
+    ],
+    "edc_snapshot_count": 1,
+    "text_pdf_report_count": 1,
+    "image_report_state": "provider_unavailable"
+  },
+  "enabled_capabilities": [
+    "text_pdf_laboratory_reading",
+    "anchored_rule_candidate_review",
+    "edc_excel_snapshot",
+    "docx_xlsx_report_generation"
+  ],
+  "disabled_capabilities": [
+    "image_ocr",
+    "safety_analysis_model",
+    "external_send",
+    "electronic_signature",
+    "edc_write_back"
+  ]
+}

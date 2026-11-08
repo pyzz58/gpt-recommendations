@@ -458,6 +458,7 @@ export function CarryoverReview({ studyId, siteId }: Props) {
                       <button
                         type="button"
                         className="carryover-summary"
+                        data-testid={`carryover-summary-${issue.issue_number}`}
                         onClick={() =>
                           setExpanded((current) =>
                             current === issue.id ? null : issue.id
@@ -566,6 +567,7 @@ export function CarryoverReview({ studyId, siteId }: Props) {
                                     <button
                                       className="secondary-button"
                                       type="button"
+                                      data-testid={`carryover-action-${issue.issue_number}-${action.action_key}`}
                                       disabled={busy}
                                       onClick={() =>
                                         void confirmAction(issue, action.id)

@@ -8,6 +8,16 @@ V1A工程主线W01—W13及V1B复杂格式增强W14已完成。W13结论是：�
 
 W15已完成部署候选、容器冒烟、配置/恢复检查和反馈模板，但状态保持`blocked`：尚未取得获准OIDC租户、私有生产服务、真实恢复环境和授权CRA试用。详见[授权试用记录](validation/AUTHORIZED_TRIAL.md)和[运行手册](deploy/RUNBOOK.md)。
 
+## 本机合成体验
+
+在Mac上双击`cra-local.command`，或在终端运行：
+
+```bash
+./cra-local.command start
+```
+
+入口为<http://127.0.0.1:15173>。所有服务只监听本机回环地址，数据库和文件保存在git-ignored的`runtime/`。完整操作顺序、预置资料和实际启用能力见[本机合成体验指南](synthetic_experience/README.md)。这不构成W15试用完成或临床验证。
+
 ## 完整技术实施入口
 
 先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01—W14已完成；W15部署候选在[CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771)完成镜像构建、迁移、容器启动和健康检查，但真实授权试用仍阻塞。V1A主线选择器为complete。

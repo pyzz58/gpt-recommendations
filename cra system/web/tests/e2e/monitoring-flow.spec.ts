@@ -384,7 +384,9 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
   await page.locator(".selector-panel select").nth(0).selectOption(study!.id);
   await page.locator(".selector-panel select").nth(1).selectOption(siteA!.id);
   await expect(page.getByRole("heading", { name: "从访前遗留开始，逐患者核查，最后生成报告" })).toBeVisible();
-  await page.getByRole("button", { name: "开始本次监查" }).click();
+  const startVisit = page.getByTestId("start-monitoring-visit");
+  await expect(startVisit).toBeEnabled();
+  await startVisit.click();
   await expect(page.locator(".previsit-options")).toBeVisible();
 
   for (const issueNumber of ["CRA-SYN-101", "E2E-URGENT"]) {
@@ -397,24 +399,23 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
   await expect(page.getByText("访前选择已保存")).toBeVisible();
   await page.getByTestId("stage-carryover_review").click();
 
-  const urgentSummary = page
-    .locator(".carryover-summary")
-    .filter({ hasText: "E2E-URGENT" });
+  const urgentSummary = page.getByTestId("carryover-summary-E2E-URGENT");
   await urgentSummary.click();
   await page
-    .getByRole("button", { name: "CRA确认PD已上报" })
-    .evaluate((button) => (button as HTMLButtonElement).click());
+    .getByTestId("carryover-action-E2E-URGENT-PD")
+    .click();
   await expect(urgentSummary).toContainText("部分完成");
-  const urgentSummaryAfterPd = page
-    .locator(".carryover-summary")
-    .filter({ hasText: "E2E-URGENT" });
+  const urgentSummaryAfterPd = page.getByTestId(
+    "carryover-summary-E2E-URGENT"
+  );
   if ((await urgentSummaryAfterPd.getAttribute("aria-expanded")) !== "true") {
     await urgentSummaryAfterPd.click();
   }
-  await expect(urgentSummaryAfterPd).toHaveAttribute("aria-expanded", "true");
-  await page
-    .getByRole("button", { name: "CRA确认已整改" })
-    .evaluate((button) => (button as HTMLButtonElement).click());
+  const correctionButton = page.getByTestId(
+    "carryover-action-E2E-URGENT-CORRECT"
+  );
+  await expect(correctionButton).toBeVisible();
+  await correctionButton.click();
   await expect(
     page.locator(".carryover-summary").filter({ hasText: "E2E-URGENT" })
   ).toHaveCount(0);

@@ -39,12 +39,14 @@ export function MonitoringVisitPage({ studyId, siteId }: Props) {
     Awaited<ReturnType<typeof getMonitoringVisits>>
   >([]);
   const [journey, setJourney] = useState<MonitoringJourneyView | null>(null);
+  const [loaded, setLoaded] = useState(false);
   const [creating, setCreating] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
   const load = useCallback(async () => {
+    setLoaded(false);
     setBusy(true);
     setError(null);
     try {
@@ -62,6 +64,7 @@ export function MonitoringVisitPage({ studyId, siteId }: Props) {
     } catch (reason) {
       setError(errorMessage(reason));
     } finally {
+      setLoaded(true);
       setBusy(false);
     }
   }, [siteId, studyId]);
@@ -129,6 +132,18 @@ export function MonitoringVisitPage({ studyId, siteId }: Props) {
     }
   }
 
+  if (!journey && !loaded) {
+    return (
+      <section className="workspace-module monitoring-journey">
+        <div className="module-heading">
+          <p className="eyebrow">W12 · 连续监查</p>
+          <h2>正在从服务端恢复本次监查</h2>
+          <p>只恢复当前已授权项目和中心，不使用浏览器自报身份。</p>
+        </div>
+      </section>
+    );
+  }
+
   if (!journey) {
     return (
       <section className="workspace-module monitoring-journey" id="monitoring-journey">
@@ -143,7 +158,11 @@ export function MonitoringVisitPage({ studyId, siteId }: Props) {
         </div>
         {message && <div className="notice" role="status">{message}</div>}
         {error && <div className="notice notice-error" role="alert">{error}</div>}
-        <form className="subject-import-form" onSubmit={(event) => void startVisit(event)}>
+        <form
+          className="subject-import-form"
+          data-testid="start-monitoring-form"
+          onSubmit={(event) => void startVisit(event)}
+        >
           <label>
             监查标题
             <input name="title" defaultValue="本次中心监查" required />
@@ -156,7 +175,12 @@ export function MonitoringVisitPage({ studyId, siteId }: Props) {
               placeholder="例：上次遗留、本次受试者与检验范围"
             />
           </label>
-          <button className="primary-button compact" type="submit" disabled={busy}>
+          <button
+            className="primary-button compact"
+            type="submit"
+            data-testid="start-monitoring-visit"
+            disabled={busy}
+          >
             开始本次监查
           </button>
         </form>
