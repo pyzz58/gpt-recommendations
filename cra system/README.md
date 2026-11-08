@@ -85,7 +85,7 @@ Git中的 `theory/requirements.json` 是开发可执行基线；Notion是本次�
 
 当前没有运行时Notion自动同步凭证或任务。仅修改Notion而未导入Git的内容，CI无法凭空发现；维护人必须先导入，或者后续实现只读差异导入。系统不会自动替人决定新架构或静默改写已签发报告。
 
-最新工程验证为[本机合成源文件/EDC/安全核查工作台、W12稳定性修复与最终证据审计CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132)。W01—W14已按源码绑定和任务专属CI完成；W12两轮监查端到端在阶段切换竞态修复后通过，W15仍为外部条件阻塞。真实设备/弱网、代表性完整自动检验评估、人工总耗时、获准生产部署和授权试用仍待后续验证。
+最新工程验证为[空白项目、模板驱动逐项核查与两轮监查接续CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237)。W01—W14已按源码绑定和任务专属CI完成；空库浏览器路径、模板配置复用、EDC/源检验对比、问题与报告回填均通过，W15仍为外部条件阻塞。真实设备/弱网、代表性完整自动检验评估、人工总耗时、获准生产部署和授权试用仍待后续验证。
 
 新版空白项目模板驱动工作台见[操作指南](synthetic_experience/WORKBENCH_USER_GUIDE.md)和[实际验收结果](validation/WORKBENCH_USABILITY_ACCEPTANCE.md)；旧完成证据保留在任务历史，W15边界不变。
 

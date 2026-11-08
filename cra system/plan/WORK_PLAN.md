@@ -7,20 +7,20 @@
 | 工作包 | 内容 | 前置 | 模块 | 状态 |
 | --- | --- | --- | --- | --- |
 | CRA-W00 | 建立技术基线与同步检查 | 无 | M13、M14 | verified |
-| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | in_progress |
-| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | in_progress |
-| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | in_progress |
-| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | in_progress |
-| CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | in_progress |
-| CRA-W06 | 实现遗留整理、提醒与点击确认整改 | CRA-W05 | M05、M06 | in_progress |
-| CRA-W07 | 实现EDC Excel检验快照导入 | CRA-W05 | M07 | in_progress |
-| CRA-W08 | 实现检验源文件自动读取与EDC核对 | CRA-W06、CRA-W07 | M08、M12 | in_progress |
-| CRA-W09 | 实现有依据的AE及PD分析 | CRA-W04、CRA-W06、CRA-W08 | M09、M12 | in_progress |
-| CRA-W10 | 实现中心文件目录和其他阶段清单 | CRA-W04、CRA-W06 | M05、M10 | in_progress |
-| CRA-W11 | 实现访视信、报告和Excel导出 | CRA-W06、CRA-W09、CRA-W10 | M11 | in_progress |
-| CRA-W12 | 串联四阶段界面与一次完整监查 | CRA-W08、CRA-W09、CRA-W10、CRA-W11 | M05 | in_progress |
-| CRA-W13 | 完成自动检验主线验收与试用准备 | CRA-W12 | M14 | in_progress |
-| CRA-W14 | 增强复杂检验格式与识别效果 | CRA-W08 | M08、M12 | in_progress |
+| CRA-W01 | 建立数据、权限和历史记录底座 | CRA-W00 | M01、M14 | verified |
+| CRA-W02 | 建立云上API和界面框架 | CRA-W01 | M01、M14 | verified |
+| CRA-W03 | 实现资料接收、解析和来源定位 | CRA-W02 | M02、M12 | verified |
+| CRA-W04 | 实现规则候选提取及分层list | CRA-W03 | M03、M12 | verified |
+| CRA-W05 | 实现患者事实、锚点与核查断点 | CRA-W04 | M04 | verified |
+| CRA-W06 | 实现遗留整理、提醒与点击确认整改 | CRA-W05 | M05、M06 | verified |
+| CRA-W07 | 实现EDC Excel检验快照导入 | CRA-W05 | M07 | verified |
+| CRA-W08 | 实现检验源文件自动读取与EDC核对 | CRA-W06、CRA-W07 | M08、M12 | verified |
+| CRA-W09 | 实现有依据的AE及PD分析 | CRA-W04、CRA-W06、CRA-W08 | M09、M12 | verified |
+| CRA-W10 | 实现中心文件目录和其他阶段清单 | CRA-W04、CRA-W06 | M05、M10 | verified |
+| CRA-W11 | 实现访视信、报告和Excel导出 | CRA-W06、CRA-W09、CRA-W10 | M11 | verified |
+| CRA-W12 | 串联四阶段界面与一次完整监查 | CRA-W08、CRA-W09、CRA-W10、CRA-W11 | M05 | verified |
+| CRA-W13 | 完成自动检验主线验收与试用准备 | CRA-W12 | M14 | verified |
+| CRA-W14 | 增强复杂检验格式与识别效果 | CRA-W08 | M08、M12 | verified |
 | CRA-W15 | 配置受控云部署并开展授权试用 | CRA-W13 | M01、M14 | blocked |
 
 ## CRA-W00 建立技术基线与同步检查
@@ -51,6 +51,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w01在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w01 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
+
 ## CRA-W02 建立云上API和界面框架
 
 验收：在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。本轮还须满足 UX-A01；UX-A04；UX-A05 的正常产品验收。
@@ -78,6 +80,8 @@
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w02 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w02 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w02 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
 
 ## CRA-W03 实现资料接收、解析和来源定位
 
@@ -107,6 +111,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w03 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w03 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
+
 ## CRA-W04 实现规则候选提取及分层list
 
 验收：从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。本轮还须满足 UX-A07 的正常产品验收。
@@ -134,6 +140,8 @@
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w04 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w04 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w04 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
 
 ## CRA-W05 实现患者事实、锚点与核查断点
 
@@ -163,6 +171,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w05 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w05 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
+
 ## CRA-W06 实现遗留整理、提醒与点击确认整改
 
 验收：上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。本轮还须满足 UX-A05；UX-A09；UX-A10 的正常产品验收。
@@ -190,6 +200,8 @@
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w06 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w06 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w06 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
 
 ## CRA-W07 实现EDC Excel检验快照导入
 
@@ -219,6 +231,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w07 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w07 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
+
 ## CRA-W08 实现检验源文件自动读取与EDC核对
 
 验收：支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。本轮还须满足 UX-A08；UX-A09 的正常产品验收。
@@ -246,6 +260,8 @@
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w08 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w08 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w08 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
 
 ## CRA-W09 实现有依据的AE及PD分析
 
@@ -275,6 +291,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w09 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w09 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
+
 ## CRA-W10 实现中心文件目录和其他阶段清单
 
 验收：原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。本轮还须在模板驱动监查工作区中保持原有目录/复杂检验功能，并完成回归。
@@ -301,6 +319,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w10 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w10 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
+
 ## CRA-W11 实现访视信、报告和Excel导出
 
 验收：模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。本轮还须满足 UX-A06；UX-A09；UX-A10 的正常产品验收。
@@ -323,6 +343,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w11 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w11 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
+
 ## CRA-W12 串联四阶段界面与一次完整监查
 
 验收：模拟前次报告→访前信→到中心复核→新受试者核查→报告→下一次接续全部完成；用户只需临床操作。本轮还须满足 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 的正常产品验收。
@@ -343,6 +365,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w12 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w12 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
+
 ## CRA-W13 完成自动检验主线验收与试用准备
 
 验收：逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。本轮还须满足 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 的正常产品验收。
@@ -361,6 +385,8 @@
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w13 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
 
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w13 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
+
 ## CRA-W14 增强复杂检验格式与识别效果
 
 验收：V1B在W08已有自动读取基础上扩展难版式/图像，沿用同一字段、匹配和比较；按关键错误与总负担实测决定支持范围。本轮还须在模板驱动监查工作区中保持原有目录/复杂检验功能，并完成回归。
@@ -376,6 +402,8 @@
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w14 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。
 
 实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w14 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。
+
+实际证据：GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w14 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。
 
 ## CRA-W15 配置受控云部署并开展授权试用
 

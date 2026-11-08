@@ -98,7 +98,7 @@
         "M01",
         "M14"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。本轮还须满足 UX-A01；UX-A02；UX-A03 的正常产品验收。",
       "requirement_ids": [
         "CRA-R002",
@@ -112,7 +112,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41257509611；cra-w01 在 W11 集成及报告迁移后重新通过；被测提交 874450d033fbfcda01f9c191e3a76fbfa7caf8c2。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w01 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562；cra-w01 在证据摘要排除 ignored 运行产物的最终源码上通过；被测提交 7c369da552db7f11d8b794bd9edc19174f8aa6e9。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w01在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w01在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w01 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_history": [
         {
@@ -398,6 +399,21 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "f251e4c797f6606de20bc03c4fbd8a9b0825c5822165d5d4d78877cde7895538"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w01 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W01",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "44a25409ca607c1a887511cf56b22053331e1262e782e3d744bec9646f68c47d"
+          }
         }
       ],
       "track": "v1a",
@@ -540,9 +556,9 @@
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W01",
-        "run_id": 42359819771,
-        "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
-        "subject_digest": "f251e4c797f6606de20bc03c4fbd8a9b0825c5822165d5d4d78877cde7895538"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "44a25409ca607c1a887511cf56b22053331e1262e782e3d744bec9646f68c47d"
       }
     },
     {
@@ -555,7 +571,7 @@
         "M01",
         "M14"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。本轮还须满足 UX-A01；UX-A04；UX-A05 的正常产品验收。",
       "requirement_ids": [
         "CRA-R035",
@@ -573,7 +589,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w02在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w02在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w02 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w02 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w02 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w02 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_history": [
         {
@@ -942,6 +959,21 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "d1780ebd3213d513ec59830471625cf384b78cb7c3910f3c39c09bb2b19eba13"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w02 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W02",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "68953d3be428d1e550bcc6c4e7382b11cfb3796009108c1eb7751fedb4ae3398"
+          }
         }
       ],
       "track": "v1a",
@@ -1116,9 +1148,9 @@
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W02",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "d1780ebd3213d513ec59830471625cf384b78cb7c3910f3c39c09bb2b19eba13"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "68953d3be428d1e550bcc6c4e7382b11cfb3796009108c1eb7751fedb4ae3398"
       }
     },
     {
@@ -1131,7 +1163,7 @@
         "M02",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。本轮还须满足 UX-A06 的正常产品验收。",
       "requirement_ids": [
         "CRA-R003",
@@ -1152,7 +1184,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w03在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w03在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w03 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w03 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w03 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w03 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_history": [
         {
@@ -1507,6 +1540,21 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "f29412fb6c68e99782b6f39e8dc93e7ed4b57a6b895e4f5e2e82eac93a7d3d29"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w03 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W03",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "2c7261800bbf7061884b7057b362a86b305e51fd365c947bbc05cae0ba39e079"
+          }
         }
       ],
       "track": "v1a",
@@ -1677,9 +1725,9 @@
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W03",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "f29412fb6c68e99782b6f39e8dc93e7ed4b57a6b895e4f5e2e82eac93a7d3d29"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "2c7261800bbf7061884b7057b362a86b305e51fd365c947bbc05cae0ba39e079"
       }
     },
     {
@@ -1692,7 +1740,7 @@
         "M03",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。本轮还须满足 UX-A07 的正常产品验收。",
       "requirement_ids": [
         "CRA-R002",
@@ -1721,7 +1769,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w04在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w04在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w04 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w04 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w04 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w04 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_history": [
         {
@@ -2076,6 +2125,21 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "9d30a6d258814bba61f3d8b5826684693e985409f61a1d5026baf572f2a3cf95"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w04 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W04",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "1a567e1d0a2838f8a489f9466c6cad6f788dc13f74b78560671953e7a0e98a69"
+          }
         }
       ],
       "track": "v1a",
@@ -2241,9 +2305,9 @@
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W04",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "9d30a6d258814bba61f3d8b5826684693e985409f61a1d5026baf572f2a3cf95"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "1a567e1d0a2838f8a489f9466c6cad6f788dc13f74b78560671953e7a0e98a69"
       }
     },
     {
@@ -2255,7 +2319,7 @@
       "module_ids": [
         "M04"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。本轮还须满足 UX-A08；UX-A09 的正常产品验收。",
       "requirement_ids": [
         "CRA-R010",
@@ -2277,7 +2341,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w05在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w05在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w05 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w05 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w05 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w05 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_history": [
         {
@@ -2656,6 +2721,21 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "e7c65560a96874cec3cef9c888bf5bdcced6c61726333ba0ca918cfb3564925e"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w05 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W05",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "833254ee5b1756bdc0719ec0b2ec8885c166f98390671f5e902035643c6032fd"
+          }
         }
       ],
       "track": "v1a",
@@ -2787,9 +2867,9 @@
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W05",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "e7c65560a96874cec3cef9c888bf5bdcced6c61726333ba0ca918cfb3564925e"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "833254ee5b1756bdc0719ec0b2ec8885c166f98390671f5e902035643c6032fd"
       }
     },
     {
@@ -2802,7 +2882,7 @@
         "M05",
         "M06"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。本轮还须满足 UX-A05；UX-A09；UX-A10 的正常产品验收。",
       "requirement_ids": [
         "CRA-R001",
@@ -2832,7 +2912,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w06在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w06在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w06 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w06 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w06 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w06 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_history": [
         {
@@ -3197,6 +3278,21 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "1bb74aab977c241210f8f9fd0d7f14c1d77342f6cecc72d30b5d8617fd4bcf07"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w06 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W06",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "8388c0d6516aa323f769fc5c363499588fd30d2cb7fcab6a8e4f1635dabf0ac8"
+          }
         }
       ],
       "track": "v1a",
@@ -3345,9 +3441,9 @@
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W06",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "1bb74aab977c241210f8f9fd0d7f14c1d77342f6cecc72d30b5d8617fd4bcf07"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "8388c0d6516aa323f769fc5c363499588fd30d2cb7fcab6a8e4f1635dabf0ac8"
       }
     },
     {
@@ -3359,7 +3455,7 @@
       "module_ids": [
         "M07"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。本轮还须满足 UX-A08 的正常产品验收。",
       "requirement_ids": [
         "CRA-R013",
@@ -3378,7 +3474,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w07在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w07在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w07 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w07 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w07 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w07 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_history": [
         {
@@ -3729,6 +3826,21 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "08d36b0132d0059ac8faaaff79d80b44be9442e01ef298f70b98171920c12b76"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w07 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W07",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "3b56804a33f784aa64721bddcb7ccba1eed273820eab72cb583aea22595c2d05"
+          }
         }
       ],
       "track": "v1a",
@@ -3840,9 +3952,9 @@
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W07",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "08d36b0132d0059ac8faaaff79d80b44be9442e01ef298f70b98171920c12b76"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "3b56804a33f784aa64721bddcb7ccba1eed273820eab72cb583aea22595c2d05"
       }
     },
     {
@@ -3856,7 +3968,7 @@
         "M08",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。本轮还须满足 UX-A08；UX-A09 的正常产品验收。",
       "requirement_ids": [
         "CRA-R013",
@@ -3878,7 +3990,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w08在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w08在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w08 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w08 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w08 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w08 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_history": [
         {
@@ -4215,6 +4328,21 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "84d7498fd1ac81e3e0024d72b4e69b847292262d0711a77ccfcda17230ab140f"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w08 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W08",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "0cc86f8e21393d15d3d10a6b50266cc384d662ed3c2f9727457fbf0ae3e264f2"
+          }
         }
       ],
       "track": "v1a",
@@ -4384,9 +4512,9 @@
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W08",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "84d7498fd1ac81e3e0024d72b4e69b847292262d0711a77ccfcda17230ab140f"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "0cc86f8e21393d15d3d10a6b50266cc384d662ed3c2f9727457fbf0ae3e264f2"
       }
     },
     {
@@ -4401,7 +4529,7 @@
         "M09",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。本轮还须满足 UX-A09；UX-A10 的正常产品验收。",
       "requirement_ids": [
         "CRA-R007",
@@ -4562,7 +4690,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w09在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w09在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w09 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w09 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w09 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w09 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_history": [
         {
@@ -4885,14 +5014,29 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "3262771a69b04b7141d1fb71f86d86e837e990abcac5f5a6b99f418159c2fa33"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w09 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W09",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "3c9f516b4caf2c6e899afb688ca6f2491d95fca35fa0b0d96ad8ce57de2ad87c"
+          }
         }
       ],
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W09",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "3262771a69b04b7141d1fb71f86d86e837e990abcac5f5a6b99f418159c2fa33"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "3c9f516b4caf2c6e899afb688ca6f2491d95fca35fa0b0d96ad8ce57de2ad87c"
       }
     },
     {
@@ -4906,7 +5050,7 @@
         "M05",
         "M10"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。本轮还须在模板驱动监查工作区中保持原有目录/复杂检验功能，并完成回归。",
       "requirement_ids": [
         "CRA-R001",
@@ -5029,7 +5173,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w10在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w10在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w10 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w10 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w10 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w10 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_history": [
         {
@@ -5295,14 +5440,29 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "9b9e5cee3e1593081dda861edca5674d6fe963a0c9a97e023cc797508e86cfd6"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w10 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W10",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "f1fb3de5492d6223af0895602ce9393f7358fa8e26500a0f10810f149d1aea72"
+          }
         }
       ],
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W10",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "9b9e5cee3e1593081dda861edca5674d6fe963a0c9a97e023cc797508e86cfd6"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "f1fb3de5492d6223af0895602ce9393f7358fa8e26500a0f10810f149d1aea72"
       }
     },
     {
@@ -5316,7 +5476,7 @@
       "module_ids": [
         "M11"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。本轮还须满足 UX-A06；UX-A09；UX-A10 的正常产品验收。",
       "requirement_ids": [
         "CRA-R009",
@@ -5661,6 +5821,21 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "3cf45e6c2ebda0a519bae3922245455dac48633615bb13578ffd59de4a39645b"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w11 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W11",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "f807192039c8900f37ea6301c242d55a7fb68889197efb507df5d0bcef1b5e6a"
+          }
         }
       ],
       "evidence": [
@@ -5671,14 +5846,15 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w11在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w11在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w11 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w11 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w11 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w11 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W11",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "3cf45e6c2ebda0a519bae3922245455dac48633615bb13578ffd59de4a39645b"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "f807192039c8900f37ea6301c242d55a7fb68889197efb507df5d0bcef1b5e6a"
       }
     },
     {
@@ -5693,7 +5869,7 @@
       "module_ids": [
         "M05"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "模拟前次报告→访前信→到中心复核→新受试者核查→报告→下一次接续全部完成；用户只需临床操作。本轮还须满足 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 的正常产品验收。",
       "requirement_ids": [
         "CRA-R001",
@@ -6026,14 +6202,29 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "2c1cdea98ac679eef272feeb7b3d77bf8f291c4713c63ec94fd2a6e6f41fb133"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w12 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W12",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "4747196a843047c3c30d2b50120500706d11f140b0db1c489dbb614a8eb513ce"
+          }
         }
       ],
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W12",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "2c1cdea98ac679eef272feeb7b3d77bf8f291c4713c63ec94fd2a6e6f41fb133"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "4747196a843047c3c30d2b50120500706d11f140b0db1c489dbb614a8eb513ce"
       },
       "evidence": [
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/41272918165；cra-w12 在 W12 四阶段串联后重新通过；被测提交 8b85aa2c8a0d26d6ef56d359d691206794199563。",
@@ -6042,7 +6233,8 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w12在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w12在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w12 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w12 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w12 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w12 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ]
     },
     {
@@ -6054,7 +6246,7 @@
       "module_ids": [
         "M14"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。本轮还须满足 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 的正常产品验收。",
       "requirement_ids": [
         "CRA-R035",
@@ -6218,14 +6410,15 @@
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w13在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w13在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w13 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w13 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w13 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w13 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W13",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "cb53477f5c5c81fbd556934a0b85efb934b74e938b83eb4691593aade4623868"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "157ca72db73354729abd13dd544a98a3d6ad90b17ca9dd3c7978045b45dcf4f2"
       },
       "completion_history": [
         {
@@ -6341,6 +6534,21 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "cb53477f5c5c81fbd556934a0b85efb934b74e938b83eb4691593aade4623868"
           }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w13 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W13",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "157ca72db73354729abd13dd544a98a3d6ad90b17ca9dd3c7978045b45dcf4f2"
+          }
         }
       ]
     },
@@ -6354,7 +6562,7 @@
         "M08",
         "M12"
       ],
-      "status": "in_progress",
+      "status": "verified",
       "acceptance": "V1B在W08已有自动读取基础上扩展难版式/图像，沿用同一字段、匹配和比较；按关键错误与总负担实测决定支持范围。本轮还须在模板驱动监查工作区中保持原有目录/复杂检验功能，并完成回归。",
       "requirement_ids": [
         "CRA-R013",
@@ -6482,16 +6690,17 @@
       "completion_evidence": {
         "kind": "github_actions",
         "profile_id": "CRA-W14",
-        "run_id": 42447288132,
-        "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
-        "subject_digest": "d8ee66ffb5b556257d7053d44e52aef7ebdafff653311918b8b228755968c368"
+        "run_id": 42462436237,
+        "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+        "subject_digest": "06943e7339c9e7da82005bf1531e3d53b1e1e2befcdd625232d1812eec97049c"
       },
       "evidence": [
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42358464585；cra-w14在真实PostgreSQL下通过23项实验室/识别测试、既有PDF/PNG回归、两页扫描4/4与0.5度JPEG 2/2实际Docling评估（6/6行、关键字段零错误、5行可自动使用、1行逗号小数集中复核）、19项前端测试和1项完整Chromium流程；被测提交261b1d0844a68f56e9b3835f6a32e62c22d15dbc。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771；cra-w14在W15部署候选及运行时Authlib传输依赖修正后的绑定源码上通过专属job；被测提交5002880736888e69035d0d62bf62fbb6415b113d。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456；cra-w14在本机合成体验和W12浏览器稳定性修复后的绑定源码上通过专属job；被测提交cae99eda0f2b771f5092c698d69ee304aa41ae29。",
         "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w14 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。",
-        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w14 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w14 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。",
+        "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w14 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
       ],
       "completion_history": [
         {
@@ -6589,6 +6798,21 @@
             "run_id": 42447288132,
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "d8ee66ffb5b556257d7053d44e52aef7ebdafff653311918b8b228755968c368"
+          }
+        },
+        {
+          "recorded_status": "verified",
+          "recorded_at": "2026-11-08",
+          "reason": "Task-specific CI passed after the approved PR #85 blank-project template-driven workbench implementation and related regression.",
+          "evidence": [
+            "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42462436237；cra-w14 在本机空白合成项目、项目/中心浏览器创建、模板章节问句集中配置与复用、逐项核查、EDC/检验核对、问题关联、报告回填和两次监查接续后的绑定源码上通过专属job；被测提交bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549。"
+          ],
+          "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W14",
+            "run_id": 42462436237,
+            "tested_commit": "bbcb96440fb94e7eb7b9f7f94a93f1ea2a77e549",
+            "subject_digest": "06943e7339c9e7da82005bf1531e3d53b1e1e2befcdd625232d1812eec97049c"
           }
         }
       ]
