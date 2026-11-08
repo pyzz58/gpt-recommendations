@@ -3,17 +3,28 @@
 **A public, bilingual, versioned discussion space on AI-assisted national meta-governance.**
 
 **Status:** Research hypothesis / 研究性构想，**not an implemented system**.  
-**Version:** v0.4 · 2026-11-08
+**Version:** v0.5 · 2026-11-08
 
 > The proposed AI leader should not micromanage a country; it should examine whether the *people, organization, incentives, budgets, strategic objectives, and assurance systems* are fit for purpose.
 >
 > **AI 元首不包办治理，而是优化治理国家的人与组织。**
 >
-> **v0.4 / Current:** adds open application and independent nominations for critical senior offices; preregistered role requirements, independent selection panels, multichannel evidence, and audit of who was excluded. Expert cabinet deliberation, protected dissent, independent verification, and bounded AI adjudication remain central. All illustrations are independently constructed fictional administrative scenarios.
+> **v0.5 / Current:** adds open application and independent nominations for critical senior offices; preregistered role requirements, independent selection panels, multichannel evidence, and audit of who was excluded. Expert cabinet deliberation, protected dissent, independent verification, and bounded AI adjudication remain central. All illustrations are independently constructed fictional administrative scenarios.
 >
 > **精英内阁充分议事，AI 秘书全程留痕；一人提出有实质依据的异议，也必须进入最终裁决并可触发独立核验。**
 
 ## Play / 体验文字游戏
+
+**《共和国》是一款根据本研究报告制作的免费文字决策小游戏，欢迎任何人体验、讨论和修改完善。** 玩家模拟虚构 AI 元首，在五轮人事、财政、监察、内阁和组织改革事件中审阅下属奏报、调取独立审计材料并作出选择。全部事件与结果均为虚构，并不代表真实政策效果。
+
+- **在线入口（GitHub Pages 启用并完成部署后）：** https://pyzz58.github.io/gpt-recommendations/
+- **本地离线体验（始终可用）：** [单文件 HTML 游戏](republic-game/README.md)，无需账号及联网。
+- **研究报告：** [中文](REPORT_ZH.md) / [English](REPORT_EN.md)。
+- **欢迎修改：** [讨论帖 #84](https://github.com/pyzz58/gpt-recommendations/issues/84) · [游戏源码](republic-game/index.html) · GitHub Fork / Pull Request。
+
+**发布状态提示：** 游戏和文档已公开提交，但 GitHub Pages 需要仓库管理员首先在 Settings → Pages → Source 选择 GitHub Actions。未经实际部署核验，请勿将上述在线入口视为已上线。
+
+
 
 **[共和国 · Republic — AI 元首五轮决策文字游戏](republic-game/README.md)**  
 单文件 HTML；[查看游戏源码](republic-game/index.html)。GitHub 代码预览不执行 HTML，请按说明保存 Raw 文件并在浏览器本地打开。游戏不联网，指标仅作虚构叙事。
