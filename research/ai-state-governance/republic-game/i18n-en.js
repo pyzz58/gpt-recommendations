@@ -130,3 +130,155 @@ window.REPUBLIC_EN = {
       follow:"Remote routes still require subsidies, and some authorities are preparing cuts to meet their targets. Residents request disclosure of real service frequency and travel times."}
   }
 };
+window.REPUBLIC_EN.options = {
+ crisis:[
+ [
+  ["Give the ministry unlimited emergency purchasing authority","Procurement accelerates and large funds are released immediately.","The authority covers many purchases that were not urgent, leaving some essential services underfunded."],
+  ["Grant limited emergency powers after specialists verify priority needs","Agencies receive time-limited spending powers with defined responsibilities.","The most urgent services improve, although Treasury receives further budget requests."],
+  ["Leave emergency coordination to each ministry","The central emergency budget is largely untouched.","Ministries compete for supplies and follow incompatible standards."],
+  ["Create a joint response group and phase aid using verified evidence","A joint team directs initial help to those most at risk; auditors track approvals.","Shared records improve the next response, although additional coordination costs money."]
+ ],
+ [
+  ["Increase emergency funding and extend authority across the board","Ministries quickly gain more money and discretion.","Some urgent needs are met, but extended emergency powers create fresh concerns."],
+  ["Correct the rollout based on field reports and keep an appeal route","Departments adjust implementation and support affected people.","New evidence reduces waste, though frontline workers face extra work."],
+  ["Declare the crisis controlled and dismiss local complaints","The administration resumes normal procedures quickly.","Unresolved service gaps become visible and public confidence declines."],
+  ["Publish independently verified regional evidence and amend the order","Auditors report differences between local needs and spending.","Departments correct inaccurate reports and build a better response process."]
+ ],
+ [
+  ["Cancel every early emergency contract","Treasury stops disputed payments quickly.","Lawful suppliers seek compensation and some essential deliveries are interrupted."],
+  ["Review each contract against the law and preserve essential services","Legal, audit and delivery teams separate their responsibilities.","Some waste is corrected while necessary contracts remain; the investigation costs money."],
+  ["Ignore the dispute to protect relationships with suppliers","Purchasing continues as before.","Poor long-term commitments remain and questions from the public multiply."],
+  ["Publish releasable audit evidence and review contracts case by case","Auditors release permitted findings while protecting legally confidential materials.","Disputed contracts receive proper review and confidence begins to recover."]
+ ],
+ [
+  ["Put all responsibility into one enormous central agency","A single organization takes over the emergency system.","Concentrated powers remove independent checks and running costs grow."],
+  ["Create shared emergency plans with independent exercises","Departments keep their technical jobs within common emergency standards.","The system responds more reliably, but backup capability has annual costs."],
+  ["Close the crisis file and remove all emergency preparedness","Immediate recurring spending falls.","The next disruption catches ministries without a coordinated plan."],
+  ["Build a tiered reserve and reviewable authorization system","Budgets, operational agencies and auditors receive separate responsibilities.","A system with clear review dates can adapt when evidence changes."]
+ ]
+ ],
+ domestic:{
+ appointments:[
+  ["Appoint the internally nominated candidate immediately","A new director begins work; the procedural dispute remains unresolved.","The outside applicant demands reasons for the changed eligibility standard."],
+  ["Restart the competition using the originally published rules","A deputy temporarily leads while both candidates undergo comparable assessment.","An independent panel gives an evidence-based appointment recommendation."],
+  ["Leave the deputy in charge indefinitely","No controversial appointment is made, but the vacancy remains.","Cross-department coordination suffers without a permanent director."],
+  ["Audit the rules and conduct a time-limited open leadership exercise","Selection and independent review proceed in parallel.","The new rules are easier to defend, but the process costs more."]
+ ],
+ schools:[
+  ["Protect the examination rules without new educational investment","The examinations remain orderly and spending stays controlled.","Existing inequalities in learning opportunities remain."],
+  ["Ask specialists to propose a phased plan for underserved schools","Education and Treasury prepare staged teacher and equipment investments.","Some course access improves, but future budgets face pressure."],
+  ["Abolish standardized examinations and let every school recommend students","Schools gain discretion quickly.","Inconsistent recommendation criteria generate new complaints."],
+  ["Commission an independent review of learning opportunities","Evaluators distinguish exam integrity from resource gaps.","Targeted corrections become possible, with additional inspection costs."]
+ ],
+ water:[
+  ["Fund only the populous first region","Repairs reduce leakage in the main urban network.","An urgent failure in the second region requires additional emergency spending."],
+  ["Protect minimum drinking-water safety and phase the repairs","Highest-risk facilities receive priority while the longer plan is reordered.","Health risks fall, though phased construction is somewhat more expensive."],
+  ["Split the budget equally between the two regions","Both regions start projects with equal allocations.","Critical works in the more dispersed region still lack adequate funds."],
+  ["Independently test all critical sites and set a repair deadline","Inspectors and engineers prioritize verified risks.","Later evidence shows funding aligns better with public safety needs."]
+ ],
+ procurement:[
+  ["Declare corruption proven and punish suppliers immediately","Payments stop and officials announce penalties before the inquiry is complete.","Hospitals face shortages while suppliers challenge the unsupported finding."],
+  ["Investigate independently while essential purchasing continues","Auditors secure evidence and urgent supplies remain available under controls.","Contracts are separated by risk and affected parties retain appeal rights."],
+  ["Accept the department's explanation and close the inquiry","Procurement proceeds quickly.","New links between suppliers emerge and confidence in oversight falls."],
+  ["Require independent price checks and conflict declarations","Necessary procurement continues with clearer checks.","Review costs rise, but unexplained pricing anomalies are narrowed."]
+ ],
+ housing:[
+  ["Subsidize the same new-building program everywhere","Public construction funds are released quickly.","Some new units remain empty while central rents stay high."],
+  ["Let specialists design different housing and transport plans by district","Local teams justify projects against actual need.","Transport improvements and targeted renovation outperform a uniform building plan."],
+  ["Suspend all support and leave allocation to the market","Treasury's short-term spending falls.","Acute housing needs in some districts remain unresolved."],
+  ["Publish demand data and commission independent project review","Projects are reordered with resident input.","Transparency improves, but redesign and investigation cost money."]
+ ],
+ oversight:[
+  ["Give auditors unrestricted permanent access to every database","Wide data feeds become available immediately.","Privacy complaints grow and the watchdog's own power lacks checks."],
+  ["Authorize limited access by case, purpose and time","High-risk investigations obtain controlled data access.","Some irregularities are proven and access rules become clearer."],
+  ["Deny every request for new data access","Potential privacy intrusions are avoided for now.","Investigators miss links between ministries."],
+  ["Create an external body to review audit access and major searches","Investigators and privacy officers retain distinct appeal channels.","Important cases continue, but oversight reviews take time."]
+ ],
+ research:[
+  ["Invest the entire grant in the big shared facility","The facility gains sufficient funding to begin procurement.","Small teams encounter expensive and slow access."],
+  ["Fund both approaches in stages against scientific milestones","Teams receive limited resources to test their ideas.","Evidence improves over time, but major construction is delayed."],
+  ["Suspend every research grant","The treasury avoids new spending.","Researchers lose opportunities for collaboration and equipment access."],
+  ["Have specialists vote under published rules and retain dissent","The expert panel selects a lawful funding path with a review record.","Scientific uncertainty remains, but the decision procedure is credible."]
+ ],
+ cyber:[
+  ["Shut down every public digital service immediately","Security teams can inspect systems without live traffic.","Appointments accumulate and residents lose access to essential services."],
+  ["Isolate the risky interface and keep essential manual services open","Engineers apply a targeted repair plan.","Most public services recover as investigators identify the failure."],
+  ["Keep all systems running with no precautions","Appointments continue without disruption at first.","Suspicious activity spreads and recovery becomes harder."],
+  ["Ask independent security specialists to verify the cause and publish safe notices","Repairs proceed alongside carefully limited public information.","Users receive better recovery information while investigation costs rise."]
+ ],
+ transit:[
+  ["Keep the same passenger-volume target in every region","Reports remain simple and comparable.","Remote authorities cut essential routes with low ridership."],
+  ["Allow different regional indicators, verified independently","Local transport plans are revised for real service needs.","Basic access improves, though evaluation becomes more complex."],
+  ["Remove all performance reviews","Local administrators gain broad discretion.","Underserved routes and waste become harder to identify."],
+  ["Set binding minimum service standards before local indicators","Departments specify essential coverage, then choose appropriate metrics.","Regional disputes decrease but monitoring remains necessary."]
+ ]
+ },
+ follow:[
+  ["Keep the earlier decision and set a fixed review date","The department continues, with a new evidence deadline.","If results fail to improve, the case will need more oversight."],
+  ["Order targeted correction with a deadline for affected people","Specialists revise implementation and publish remedial steps.","Some harm is reduced, with additional administrative costs."],
+  ["Reverse the earlier order without a transition plan","The department stops following the old order immediately.","Existing commitments are disrupted, potentially worsening the problem."],
+  ["Commission an independent performance and procedure review","Investigators examine what happened and who held responsibility.","Public records improve, but the audit cannot solve every underlying issue."]
+ ],
+ review:[
+  ["Merge all review bodies into one authority","Administrative steps become faster, but powers are concentrated.","Weak checks may allow similar failures to return."],
+  ["Remove duplicate steps while preserving independent audit powers","Departments simplify work without merging supervision into procurement.","Costs may fall while the ability to challenge decisions remains."],
+  ["Leave all current procedures unchanged","The same reporting arrangements remain in place.","Repeated forms and unclear accountability keep consuming resources."],
+  ["Order a time-limited independent review and public summary","An external panel maps unresolved issues and responsibilities.","Reform becomes more transparent, even if not every problem is solved immediately."]
+ ]
+};
+window.REPUBLIC_EN.review = {
+ normal:{
+  category:"Organizational oversight · System review",title:"Overlapping approvals across ministries",agency:"Administrative Reform Commission",
+  report:"Six cross-ministry programs use different data forms, and three require entering the same information twice. Treasury estimates shared data entry could lower costs; auditors warn that merging approval and review powers could remove essential checks.",
+  views:"Departments want to simplify every approval. The audit authority argues that a team signing a contract should not also conduct the only review of that contract.",
+  question:"Should duplicate paperwork be eliminated while independent audit powers remain separate?",
+  audit:"Sampling shows that inconsistent form definitions create much of the duplicate effort. Data interfaces can be shared while procurement and independent contract review remain distinct."
+ },
+ final:{
+  category:"Independent oversight · End-of-term handover",title:"Independent review before the handover",agency:"Public Representatives and Audit Panel",
+  report:"The oversight panel has submitted the term-end register. Some programs have been completed, while others still await inspection or a final response. Representatives want every open matter assigned to a responsible office and a deadline.",
+  views:"Departments want to announce the administration's results quickly. Auditors insist that unresolved investigations, contracts and appeals stay in the handover records.",
+  question:"Declare everything finished, or require a clear list of outstanding work, responsible officials and review dates?",
+  audit:"Some measures were implemented but not formally verified. Several appeals must continue under the law. An anonymized public status register is possible."
+ }
+};
+window.REPUBLIC_EN.common={
+  phases:["Emergency response","Implementation gaps","Accountability and contracts","Long-term safeguards"],
+  prior:[
+    "The earlier phase granted broad emergency powers. Action was fast, but spending and procedural questions remain.",
+    "The earlier phase used limited, staged authorization. Some needs improved, but costs and practical obstacles are emerging.",
+    "The earlier phase lacked effective national coordination. Ministries competed for resources, and citizens have filed complaints.",
+    "The earlier phase used independently checked evidence to revise the policy. Some conditions improved, but the new approach has its own costs."
+  ],
+  categoryCrisis:"International crisis · ",
+  categoryDomestic:"Domestic policy and administration",
+  categoryFollow:"Case reopened · Second ruling",
+  followTitle:" · Implementation review",
+  followAgency:" · Audit Secretariat",
+  followReportStart:"Previous order: ",
+  followReportMiddle:". Department's latest report: ",
+  followViews:"The responsible department wants to keep the original plan to avoid transition costs. Auditors say new findings require a responsible officer, deadline and verifiable correction—not just optimistic progress reports.",
+  followQuestion:"Can this case now close, or should the ministry correct its work or face further inquiry?",
+  followAudit:"Auditors checked the earlier order, operational records and a sample of field evidence. Some reports lack clear spending or accountability details. These gaps need correction but do not in themselves prove deliberate wrongdoing.",
+  morningFirst:"Several urgent submissions have reached the cabinet office this morning. They are ordered by decision deadline.",
+  morningLater:"New submissions and implementation reports have arrived. Today's agenda follows.",
+  morningNone:"No earlier case is due today. International and domestic risks are still evolving.",
+  dayTitle:"Day {day} · Cabinet morning report",
+  agendaCount:"{total} matters need decisions today; {follow} are reopened cases.",
+  casePosition:"Day {day} · Matter {num} of {total}",
+  caseSpeaker:" · Submission",
+  clock:"Day {day} of 12 · {status}",
+  clockStatus:{case:"Under review",end:"Term review",other:"State bulletin"},
+  decisionReminder:{
+    crisis:"This decision will shape later crisis stages. Implementation costs and reports will return in subsequent days.",
+    domestic:"This case has been added to the follow-up register. A later report will require another decision.",
+    follow:"This review is recorded. Its result will contribute to the term assessment."
+  },
+  eveningTitle:"Day {day} · Orders issued",
+  reportLabel:"IMPLEMENTATION REPORT · ",
+  crisisReportLabel:"INTERNATIONAL CRISIS FOLLOW-UP · ",
+  endingTitles:["Term review: some institutional gains","Term review: progress with trade-offs","Term review: rising pressure on the Republic"],
+  endingBody:"The Republic has completed twelve working days, with {decisions} rulings and {audits} independent audits. The mean of four fictional indicators is {avg}. There are {pending} unresolved cases. Scores cannot establish which real-world governance model works best.",
+  crisisResume:"World crisis for this administration: ",
+  timelineDay:"Day {day} · "
+};
