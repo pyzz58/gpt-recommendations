@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W06、CRA-W09、CRA-W10。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -32,6 +32,7 @@
 | `migrations/versions/0011_reports_outputs.py` | migration | 模板、草稿、不可变快照、导出和交付事件 |
 | `tests/fixtures/reports/artifacts/synthetic_monitoring_report.docx` | test | 可公开合成中文报告模板 |
 | `tests/fixtures/reports/artifacts/synthetic_track_template.xlsx` | test | 可公开合成 Excel track 模板 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -60,6 +61,7 @@
 3. 校验报告措辞不超实际范围，未知不能润色为无异常；事实更正与文字修改分开。
 4. 实现不可变快照及有记录的修订，新进展只进入后续材料。
 5. 真正生成DOCX/XLSX并核对内容、表格及中文排版，不只创建导出按钮。
+6. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A06；UX-A09；UX-A10，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -85,11 +87,12 @@ uv run --frozen pytest -q tests/integration/test_reports.py
 
 ## 完成标准
 
-原工作包验收：模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。
+原工作包验收：模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。本轮还须满足 UX-A06；UX-A09；UX-A10 的正常产品验收。
 
 - 旧问题处理和新发现都按模板呈现，整改建议来源可回查。
 - 后续行动变化不改写签发报告。
 - 文档和track字段一致且实际文件可打开。
+- UX-A06；UX-A09；UX-A10 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S27、CRA-S28、CRA-S29。局部测试通过不自动把全部场景标为verified。
 

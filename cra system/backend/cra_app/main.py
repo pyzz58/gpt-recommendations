@@ -56,6 +56,13 @@ from cra_app.laboratory.service import (
 )
 from cra_app.monitoring.api import router as monitoring_router
 from cra_app.monitoring.journey import MonitoringJourneyService
+from cra_app.monitoring.review_api import router as template_review_router
+from cra_app.monitoring.review_service import (
+    ReviewConflict,
+    ReviewNotFound,
+    ReviewValidationError,
+    TemplateReviewService,
+)
 from cra_app.monitoring.service import MonitoringService
 from cra_app.platform.api import router as platform_router
 from cra_app.platform.jobs import ProcrastinateQueue
@@ -135,6 +142,7 @@ def create_app(
     subject_service: SubjectService | None = None,
     issue_service: IssueService | None = None,
     monitoring_service: MonitoringService | None = None,
+    template_review_service: TemplateReviewService | None = None,
     edc_import_service: EDCImportService | None = None,
     laboratory_service: LaboratoryService | None = None,
     safety_service: SafetyService | None = None,
@@ -204,6 +212,16 @@ def create_app(
                 ocr_provider=resolved_settings.ocr_provider
             ),
         )
+    if template_review_service is None:
+        template_review_service = TemplateReviewService(
+            session_factory,
+            governance=governance_service,
+            documents=document_service,
+            monitoring=monitoring_service,
+            subjects=subject_service,
+            issues=issue_service,
+            laboratory=laboratory_service,
+        )
     if safety_service is None:
         safety_service = SafetyService(
             session_factory,
@@ -243,6 +261,7 @@ def create_app(
             rules=rule_service,
             safety=safety_service,
             site_files=site_file_service,
+            template_review=template_review_service,
         )
     if monitoring_journey_service is None:
         monitoring_journey_service = MonitoringJourneyService(
@@ -283,6 +302,7 @@ def create_app(
     application.state.subject_service = subject_service
     application.state.issue_service = issue_service
     application.state.monitoring_service = monitoring_service
+    application.state.template_review_service = template_review_service
     application.state.edc_import_service = edc_import_service
     application.state.laboratory_service = laboratory_service
     application.state.safety_service = safety_service
@@ -497,6 +517,33 @@ def create_app(
             content=_error("issue_conflict", str(exc)),
         )
 
+    @application.exception_handler(ReviewNotFound)
+    async def review_not_found_error(
+        request: Request, exc: ReviewNotFound
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content=_error("review_not_found", str(exc)),
+        )
+
+    @application.exception_handler(ReviewValidationError)
+    async def review_validation_error(
+        request: Request, exc: ReviewValidationError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            content=_error("review_validation_failed", str(exc)),
+        )
+
+    @application.exception_handler(ReviewConflict)
+    async def review_conflict_error(
+        request: Request, exc: ReviewConflict
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=_error("review_conflict", str(exc)),
+        )
+
     @application.exception_handler(EDCNotFound)
     async def edc_not_found_error(
         request: Request, exc: EDCNotFound
@@ -690,6 +737,7 @@ def create_app(
 
     application.include_router(platform_router)
     application.include_router(governance_router)
+    application.include_router(template_review_router)
     application.include_router(documents_router)
     application.include_router(rules_router)
     application.include_router(subjects_router)

@@ -913,6 +913,34 @@
         "title": "BatchConfirmLabObservationsCommand",
         "type": "object"
       },
+      "BindReviewTemplateCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "review_template_version_id": {
+            "format": "uuid",
+            "title": "Review Template Version Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "review_template_version_id"
+        ],
+        "title": "BindReviewTemplateCommand",
+        "type": "object"
+      },
       "Body_add_document_version_api_v1_documents__document_id__versions_post": {
         "properties": {
           "expected_revision": {
@@ -3479,6 +3507,60 @@
         "title": "CreateQueryLinkCommand",
         "type": "object"
       },
+      "CreateReviewTemplateCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewTemplateItemInput"
+            },
+            "maxItems": 1000,
+            "minItems": 1,
+            "title": "Items",
+            "type": "array"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 500,
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "source_document_version_id",
+          "title",
+          "items"
+        ],
+        "title": "CreateReviewTemplateCommand",
+        "type": "object"
+      },
       "CreateSafetyAssessmentCommand": {
         "additionalProperties": false,
         "properties": {
@@ -3601,6 +3683,72 @@
         "title": "CreateSafetyAssessmentCommand",
         "type": "object"
       },
+      "CreateSiteCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "code",
+          "name"
+        ],
+        "title": "CreateSiteCommand",
+        "type": "object"
+      },
+      "CreateSiteView": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "study_id",
+          "code",
+          "name",
+          "revision"
+        ],
+        "title": "CreateSiteView",
+        "type": "object"
+      },
       "CreateSnapshotCommand": {
         "additionalProperties": false,
         "properties": {
@@ -3712,6 +3860,71 @@
           "items"
         ],
         "title": "CreateStageChecklistCommand",
+        "type": "object"
+      },
+      "CreateStudyCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "expected_revision": {
+            "const": 0,
+            "default": 0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "jurisdiction": {
+            "default": "synthetic",
+            "title": "Jurisdiction",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "code",
+          "title"
+        ],
+        "title": "CreateStudyCommand",
+        "type": "object"
+      },
+      "CreateStudyView": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "title",
+          "revision"
+        ],
+        "title": "CreateStudyView",
         "type": "object"
       },
       "CreateSubjectCommand": {
@@ -5469,6 +5682,65 @@
           "idempotency_key"
         ],
         "title": "ExtractRuleCommand",
+        "type": "object"
+      },
+      "ExtractedQuestionView": {
+        "properties": {
+          "applicability": {
+            "additionalProperties": true,
+            "title": "Applicability",
+            "type": "object"
+          },
+          "item_key": {
+            "title": "Item Key",
+            "type": "string"
+          },
+          "question_order": {
+            "title": "Question Order",
+            "type": "integer"
+          },
+          "question_text": {
+            "title": "Question Text",
+            "type": "string"
+          },
+          "report_locator": {
+            "title": "Report Locator",
+            "type": "string"
+          },
+          "section_key": {
+            "title": "Section Key",
+            "type": "string"
+          },
+          "section_order": {
+            "title": "Section Order",
+            "type": "integer"
+          },
+          "section_title": {
+            "title": "Section Title",
+            "type": "string"
+          },
+          "source_locator": {
+            "title": "Source Locator",
+            "type": "string"
+          },
+          "source_quote": {
+            "title": "Source Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "item_key",
+          "section_key",
+          "section_order",
+          "section_title",
+          "question_order",
+          "question_text",
+          "source_locator",
+          "source_quote",
+          "report_locator",
+          "applicability"
+        ],
+        "title": "ExtractedQuestionView",
         "type": "object"
       },
       "ExtractionResponse": {
@@ -7869,6 +8141,176 @@
         "title": "MonitoringJourneyView",
         "type": "object"
       },
+      "MonitoringReviewItemView": {
+        "properties": {
+          "applicability": {
+            "additionalProperties": true,
+            "title": "Applicability",
+            "type": "object"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewHistoryView"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "item_key": {
+            "title": "Item Key",
+            "type": "string"
+          },
+          "linked_comparison_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Comparison Id"
+          },
+          "linked_issue_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Issue Id"
+          },
+          "monitoring_visit_id": {
+            "format": "uuid",
+            "title": "Monitoring Visit Id",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "question_order": {
+            "title": "Question Order",
+            "type": "integer"
+          },
+          "question_text": {
+            "title": "Question Text",
+            "type": "string"
+          },
+          "report_locator": {
+            "title": "Report Locator",
+            "type": "string"
+          },
+          "report_section": {
+            "title": "Report Section",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "rule_version_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Rule Version Ids",
+            "type": "array"
+          },
+          "section_key": {
+            "title": "Section Key",
+            "type": "string"
+          },
+          "section_order": {
+            "title": "Section Order",
+            "type": "integer"
+          },
+          "section_title": {
+            "title": "Section Title",
+            "type": "string"
+          },
+          "source_locator": {
+            "title": "Source Locator",
+            "type": "string"
+          },
+          "source_quote": {
+            "title": "Source Quote",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "subject_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Id"
+          },
+          "template_item_id": {
+            "format": "uuid",
+            "title": "Template Item Id",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "updated_by": {
+            "title": "Updated By",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "monitoring_visit_id",
+          "template_item_id",
+          "item_key",
+          "section_key",
+          "section_order",
+          "section_title",
+          "question_order",
+          "question_text",
+          "source_locator",
+          "source_quote",
+          "report_locator",
+          "applicability",
+          "subject_id",
+          "linked_issue_id",
+          "linked_comparison_id",
+          "rule_version_ids",
+          "status",
+          "note",
+          "report_section",
+          "revision",
+          "updated_by",
+          "updated_at",
+          "history"
+        ],
+        "title": "MonitoringReviewItemView",
+        "type": "object"
+      },
       "MonitoringVisitView": {
         "additionalProperties": false,
         "properties": {
@@ -9145,6 +9587,73 @@
         "title": "RetryResponse",
         "type": "object"
       },
+      "ReviewBindingView": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "monitoring_visit_id": {
+            "format": "uuid",
+            "title": "Monitoring Visit Id",
+            "type": "string"
+          },
+          "review_template_version_id": {
+            "format": "uuid",
+            "title": "Review Template Version Id",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "monitoring_visit_id",
+          "review_template_version_id",
+          "revision"
+        ],
+        "title": "ReviewBindingView",
+        "type": "object"
+      },
+      "ReviewHistoryView": {
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "details": {
+            "additionalProperties": true,
+            "title": "Details",
+            "type": "object"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "ordinal": {
+            "title": "Ordinal",
+            "type": "integer"
+          },
+          "recorded_at": {
+            "format": "date-time",
+            "title": "Recorded At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "ordinal",
+          "actor_id",
+          "details",
+          "recorded_at"
+        ],
+        "title": "ReviewHistoryView",
+        "type": "object"
+      },
       "ReviewLabObservationCommand": {
         "additionalProperties": false,
         "properties": {
@@ -9192,6 +9701,279 @@
           "action"
         ],
         "title": "ReviewLabObservationCommand",
+        "type": "object"
+      },
+      "ReviewTemplateItemInput": {
+        "additionalProperties": false,
+        "properties": {
+          "applicability": {
+            "additionalProperties": true,
+            "title": "Applicability",
+            "type": "object"
+          },
+          "item_key": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Item Key",
+            "type": "string"
+          },
+          "question_order": {
+            "minimum": 0.0,
+            "title": "Question Order",
+            "type": "integer"
+          },
+          "question_text": {
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Question Text",
+            "type": "string"
+          },
+          "report_locator": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Report Locator",
+            "type": "string"
+          },
+          "section_key": {
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Section Key",
+            "type": "string"
+          },
+          "section_order": {
+            "minimum": 0.0,
+            "title": "Section Order",
+            "type": "integer"
+          },
+          "section_title": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Section Title",
+            "type": "string"
+          },
+          "source_locator": {
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Source Locator",
+            "type": "string"
+          },
+          "source_quote": {
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Source Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "item_key",
+          "section_key",
+          "section_order",
+          "section_title",
+          "question_order",
+          "question_text",
+          "source_locator",
+          "source_quote",
+          "report_locator"
+        ],
+        "title": "ReviewTemplateItemInput",
+        "type": "object"
+      },
+      "ReviewTemplateItemView": {
+        "properties": {
+          "applicability": {
+            "additionalProperties": true,
+            "title": "Applicability",
+            "type": "object"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "item_key": {
+            "title": "Item Key",
+            "type": "string"
+          },
+          "question_order": {
+            "title": "Question Order",
+            "type": "integer"
+          },
+          "question_text": {
+            "title": "Question Text",
+            "type": "string"
+          },
+          "report_locator": {
+            "title": "Report Locator",
+            "type": "string"
+          },
+          "section_key": {
+            "title": "Section Key",
+            "type": "string"
+          },
+          "section_order": {
+            "title": "Section Order",
+            "type": "integer"
+          },
+          "section_title": {
+            "title": "Section Title",
+            "type": "string"
+          },
+          "source_locator": {
+            "title": "Source Locator",
+            "type": "string"
+          },
+          "source_quote": {
+            "title": "Source Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "item_key",
+          "section_key",
+          "section_order",
+          "section_title",
+          "question_order",
+          "question_text",
+          "source_locator",
+          "source_quote",
+          "report_locator",
+          "applicability"
+        ],
+        "title": "ReviewTemplateItemView",
+        "type": "object"
+      },
+      "ReviewTemplatePreviewView": {
+        "properties": {
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/ExtractedQuestionView"
+            },
+            "title": "Questions",
+            "type": "array"
+          },
+          "sections": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Sections",
+            "type": "array"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "source_document_version_id",
+          "study_id",
+          "site_id",
+          "title",
+          "sections",
+          "questions",
+          "warnings"
+        ],
+        "title": "ReviewTemplatePreviewView",
+        "type": "object"
+      },
+      "ReviewTemplateView": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewTemplateItemView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "site_id": {
+            "format": "uuid",
+            "title": "Site Id",
+            "type": "string"
+          },
+          "source_document_version_id": {
+            "format": "uuid",
+            "title": "Source Document Version Id",
+            "type": "string"
+          },
+          "structure": {
+            "additionalProperties": true,
+            "title": "Structure",
+            "type": "object"
+          },
+          "study_id": {
+            "format": "uuid",
+            "title": "Study Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "study_id",
+          "site_id",
+          "source_document_version_id",
+          "title",
+          "structure",
+          "warnings",
+          "revision",
+          "created_by",
+          "created_at",
+          "items"
+        ],
+        "title": "ReviewTemplateView",
         "type": "object"
       },
       "RuleBranch-Input": {
@@ -11052,6 +11834,13 @@
             "title": "Authentication Mode",
             "type": "string"
           },
+          "platform_roles": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Platform Roles",
+            "type": "array"
+          },
           "studies": {
             "items": {
               "$ref": "#/components/schemas/ScopeStudy"
@@ -11063,6 +11852,7 @@
         "required": [
           "actor_id",
           "authentication_mode",
+          "platform_roles",
           "studies"
         ],
         "title": "ScopeResponse",
@@ -12240,6 +13030,97 @@
         "title": "UpdateDraftTextCommand",
         "type": "object"
       },
+      "UpdateMonitoringReviewItemCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "linked_comparison_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Comparison Id"
+          },
+          "linked_issue_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Issue Id"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 10000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "rule_version_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 100,
+            "title": "Rule Version Ids",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "not_checked",
+              "checked",
+              "needs_clarification",
+              "not_applicable",
+              "skipped"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "subject_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Id"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "status"
+        ],
+        "title": "UpdateMonitoringReviewItemCommand",
+        "type": "object"
+      },
       "UpdateMonitoringScopeCommand": {
         "additionalProperties": false,
         "properties": {
@@ -12288,6 +13169,54 @@
           "idempotency_key"
         ],
         "title": "UpdateMonitoringScopeCommand",
+        "type": "object"
+      },
+      "UpdateSiteCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "name"
+        ],
+        "title": "UpdateSiteCommand",
+        "type": "object"
+      },
+      "UpdateStudyCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "idempotency_key": {
+            "title": "Idempotency Key",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "idempotency_key",
+          "title"
+        ],
+        "title": "UpdateStudyCommand",
         "type": "object"
       },
       "UploadResponse": {
@@ -12901,6 +13830,44 @@
           "rule_version_id"
         ],
         "title": "VisitRequirementView",
+        "type": "object"
+      },
+      "VisitReviewBoardView": {
+        "properties": {
+          "binding": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReviewBindingView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MonitoringReviewItemView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "template": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReviewTemplateView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "binding",
+          "template",
+          "items"
+        ],
+        "title": "VisitReviewBoardView",
         "type": "object"
       },
       "WorkbenchView": {
@@ -13871,6 +14838,65 @@
         "summary": "List Coverage",
         "tags": [
           "documents"
+        ]
+      }
+    },
+    "/api/v1/document-versions/{version_id}/review-template-preview": {
+      "post": {
+        "operationId": "preview_review_template_api_v1_document_versions__version_id__review_template_preview_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "version_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Version Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewTemplatePreviewView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Preview Review Template",
+        "tags": [
+          "template-review"
         ]
       }
     },
@@ -15317,6 +16343,75 @@
         ]
       }
     },
+    "/api/v1/monitoring-review-items/{item_id}": {
+      "patch": {
+        "operationId": "update_monitoring_review_item_api_v1_monitoring_review_items__item_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMonitoringReviewItemCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonitoringReviewItemView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Monitoring Review Item",
+        "tags": [
+          "template-review"
+        ]
+      }
+    },
     "/api/v1/monitoring-visits/{visit_id}/handover-summary": {
       "get": {
         "operationId": "handover_summary_api_v1_monitoring_visits__visit_id__handover_summary_get",
@@ -15469,6 +16564,118 @@
         "summary": "Select Previsit Issues",
         "tags": [
           "monitoring"
+        ]
+      }
+    },
+    "/api/v1/monitoring-visits/{visit_id}/review-items": {
+      "get": {
+        "operationId": "get_monitoring_review_items_api_v1_monitoring_visits__visit_id__review_items_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "visit_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Visit Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VisitReviewBoardView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Monitoring Review Items",
+        "tags": [
+          "template-review"
+        ]
+      }
+    },
+    "/api/v1/monitoring-visits/{visit_id}/review-template": {
+      "post": {
+        "operationId": "bind_review_template_api_v1_monitoring_visits__visit_id__review_template_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "visit_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Visit Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BindReviewTemplateCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VisitReviewBoardView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Bind Review Template",
+        "tags": [
+          "template-review"
         ]
       }
     },
@@ -16086,6 +17293,120 @@
         "summary": "Create Report Snapshot",
         "tags": [
           "reports"
+        ]
+      }
+    },
+    "/api/v1/review-templates": {
+      "get": {
+        "operationId": "list_review_templates_api_v1_review_templates_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Site Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewTemplateView"
+                  },
+                  "title": "Response List Review Templates Api V1 Review Templates Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Review Templates",
+        "tags": [
+          "template-review"
+        ]
+      },
+      "post": {
+        "operationId": "create_review_template_api_v1_review_templates_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewTemplateCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewTemplateView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Review Template",
+        "tags": [
+          "template-review"
         ]
       }
     },
@@ -16953,6 +18274,134 @@
         "summary": "Add Stage Checklist Item",
         "tags": [
           "site-files"
+        ]
+      }
+    },
+    "/api/v1/studies": {
+      "post": {
+        "operationId": "create_study_api_v1_studies_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStudyCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateStudyView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Study",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/api/v1/studies/{study_id}": {
+      "patch": {
+        "operationId": "update_study_api_v1_studies__study_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudyCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateStudyView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Study",
+        "tags": [
+          "governance"
         ]
       }
     },
@@ -18097,6 +19546,154 @@
         "summary": "List Safety Assessments",
         "tags": [
           "safety"
+        ]
+      }
+    },
+    "/api/v1/studies/{study_id}/sites": {
+      "post": {
+        "operationId": "create_site_api_v1_studies__study_id__sites_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSiteCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSiteView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Site",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/api/v1/studies/{study_id}/sites/{site_id}": {
+      "patch": {
+        "operationId": "update_site_api_v1_studies__study_id__sites__site_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "study_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Study Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Site Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Csrf-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSiteCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSiteView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Site",
+        "tags": [
+          "governance"
         ]
       }
     },

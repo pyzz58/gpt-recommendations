@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W01。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -34,6 +34,7 @@
 | `contracts/openapi.json` | config | 从实际API生成的接口契约 |
 | `web/src/api/generated.ts` | code | 从契约生成的前端类型 |
 | `backend/cra_app/shared/output_contract.py` | code | 共用输出范围、依据版本和事实/候选/用户确认类型 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -63,6 +64,7 @@
 6. 从实际API生成contracts/openapi.json及前端类型，增加api:check，后续接口变化同步生成，禁止维护两套手写类型。
 7. 前端按AG Grid Community/React与React-PDF路线准备可复用边界，实际依赖在使用任务加入锁文件；不导入Enterprise，不以完整FastAPI模板覆盖当前SQLAlchemy/授权/证据设计。
 8. 保留iPad Safari、桌面浏览器、刷新和重新登录可用的服务端授权/CSRF边界；实际设备与弱网接续验收登记到W12，不在本任务伪装完成。
+9. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A01；UX-A04；UX-A05，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -130,11 +132,12 @@ npx --yes @devcontainers/cli@0.90.0 up --workspace-folder "$GITHUB_WORKSPACE" --
 
 ## 完成标准
 
-原工作包验收：在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。
+原工作包验收：在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。本轮还须满足 UX-A01；UX-A04；UX-A05 的正常产品验收。
 
 - 可选择授权项目/中心，刷新后上下文正确。
 - 模型/OCR未配置时显示不可用，不显示自动完成。
 - 实际验证Codespaces启动，未运行的部分明确记录。
+- UX-A01；UX-A04；UX-A05 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S01、CRA-S22、CRA-S33。局部测试通过不自动把全部场景标为verified。
 

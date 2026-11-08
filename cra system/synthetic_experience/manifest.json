@@ -41,6 +41,11 @@
       "expected": "生成老问题与新发现分栏的合成监查报告草稿"
     },
     {
+      "purpose": "review_template",
+      "path": "tests/fixtures/reviews/artifacts/synthetic_monitoring_review_v1.docx",
+      "expected": "提取3个章节和7个明确核查问句，集中确认后按项目中心复用"
+    },
+    {
       "purpose": "letter_template",
       "path": "tests/fixtures/reports/artifacts/synthetic_visit_letter.docx",
       "expected": "只放入选定的访前事项，不删除完整遗留清单"
@@ -67,12 +72,15 @@
     "image_report_provider": "docling",
     "active_safety_rules": 9,
     "safety_assessment_status": "needs_clarification",
-    "safety_question_count": 8
+    "safety_question_count": 8,
+    "review_template_sections": 3,
+    "review_template_questions": 7
   },
   "enabled_capabilities": [
     "text_pdf_laboratory_reading",
     "clear_image_laboratory_ocr",
     "anchored_rule_candidate_review",
+    "template_driven_review",
     "edc_excel_snapshot",
     "docx_xlsx_report_generation"
   ],

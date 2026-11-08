@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W04。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -29,6 +29,7 @@
 | `tests/integration/test_subjects.py` | test | 日期精度及分类断点 |
 | `backend/cra_app/subjects/context_import.py` | code | 患者锚点与允许结构化上下文导入 |
 | `migrations/versions/0004_subjects_coverage.py` | migration | 患者身份映射、不可变事实修订、访视要求、分类断点和局部核查决定 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -60,6 +61,7 @@
 8. 区分适用前提/触发和待核查的时间断言，继承上游unknown/conflict；自动窗口候选不写成CRA已确认。
 9. 递归子清单继承全部祖先前提、例外和非日期分支条件；同窗口不同条件路径按路径身份分别保留，真正适用后超窗仍输出out_of_window。
 10. RuleBranch按target_node_ids把选择条件传给实际目标；目标自身日期trigger作为待查义务保留，重复表达才去重，多入口采用OR可达语义。
+11. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A08；UX-A09，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -97,7 +99,7 @@ npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run 
 
 ## 完成标准
 
-原工作包验收：EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。
+原工作包验收：EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。本轮还须满足 UX-A08；UX-A09 的正常产品验收。
 
 - 不同患者及类别断点不混用。
 - 已确认信息不重复填写。
@@ -106,6 +108,7 @@ npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run 
 - 前提false不生成窗口任务；前提/例外unknown保持unknown_applicability；未知实际日期不输出超窗；not_applicable路径仍可查看但不作为待办。
 - 父级false、父级例外true、祖先unknown和兄弟同窗路径均经实际API验证；门控通过但日期超窗仍保留偏离。
 - 分支直接指向日期子项、经容器间接指向、分支false/unknown/true和真实超窗四项正向API通过；开放审核发现的工程门禁已接入next_task与task_evidence。
+- UX-A08；UX-A09 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S08、CRA-S09、CRA-S36。局部测试通过不自动把全部场景标为verified。
 

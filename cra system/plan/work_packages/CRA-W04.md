@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W03。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -33,6 +33,7 @@ list能直接显示具体要求、完整条件和例外，并可展开到原文�
 | `backend/cra_app/providers/evaluate_rules.py` | code | 实际提取器与独立条件预期的评估入口 |
 | `backend/cra_app/rules/common_policy.py` | code | 共性规则包、官方效力与项目/中心启用日分别解析 |
 | `migrations/versions/0003_rules_versions.py` | migration | 规则快照、不可变版本、来源、关系、启用区间和提取覆盖 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -68,6 +69,7 @@ list能直接显示具体要求、完整条件和例外，并可展开到原文�
 9. 把规则用途和安全维度保存为显式元数据，并允许项目共享资料在项目默认或各中心独立采用日生效。
 10. 普通中文要求即使超出有限AST，也保留为带原文、覆盖状态和具体语义缺口的可复核候选。
 11. 中心采用覆盖只限于同一Rule版本沿革；独立中心SOP即使复用rule_key也必须与项目规则共同参与，不能静默删除项目来源。
+12. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A07，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -111,7 +113,7 @@ npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run 
 
 ## 完成标准
 
-原工作包验收：从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。
+原工作包验收：从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。本轮还须满足 UX-A07 的正常产品验收。
 
 - 摘要、完整条件和原文一致，用户修正保留历史。
 - 新版未提及旧条文不自动撤销；重复邮件不重复确认。
@@ -120,6 +122,7 @@ npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run 
 - 自然中文要求不会静默消失；可结构化部分进入条件AST，无法稳定结构化的部分保留analysis_required、原文和具体追问。
 - 同一共享项目方案可按中心不同启用日选择；普通中文要求不会静默变成非规则；unknown例外及单位条件保持unknown。
 - 项目默认、同一共享规则的中心采用和独立中心同编号SOP均有真实PostgreSQL回归；独立SOP不能遮掉项目规则。
+- UX-A07 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S04、CRA-S05、CRA-S06、CRA-S07、CRA-S25、CRA-S37、CRA-S38。局部测试通过不自动把全部场景标为verified。
 

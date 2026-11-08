@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W04、CRA-W06、CRA-W08。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -29,6 +29,7 @@
 | `web/src/features/safety/AssessmentPanel.tsx` | code | 事实、分析、缺口和问题 |
 | `tests/integration/test_safety.py` | test | 判断维度与及时提醒 |
 | `backend/cra_app/providers/evaluate_cases.py` | code | 实际分析模型与独立预期的评估入口 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -61,6 +62,7 @@
 8. 读取研究配置法域并继承W04共同约束unknown/conflict；模型输入分类由受信环境和元数据决定。
 9. 检验一致但异常保留为安全线索；字段跳过不重问，stale比较不得作为新事实。
 10. 模型解释使用独立持久运行、租约和重试；响应accepted只表示grounding通过，不自行升级临床能力。
+11. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A09；UX-A10，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -110,7 +112,7 @@ npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run 
 
 ## 完成标准
 
-原工作包验收：基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。
+原工作包验收：基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。本轮还须满足 UX-A09；UX-A10 的正常产品验收。
 
 - 分析给出具体应核实的问题，而非泛泛问医学。
 - 候选判断不冒充研究者确认，不用分级替代SAE判断。
@@ -118,6 +120,7 @@ npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run 
 - 同一受试者多个AE不混用；unknown例外不生成确定性候选。
 - 一致且异常、不一致、不可比较、跳过及stale分别处理；数据差异不直接认定AE。
 - 模型运行可在worker恢复且模型/依赖/权重版本可复现；输出能力保持limited而非临床validated。
+- UX-A09；UX-A10 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S23、CRA-S24、CRA-S25、CRA-S30。局部测试通过不自动把全部场景标为verified。
 

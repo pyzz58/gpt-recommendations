@@ -663,12 +663,65 @@ class LocalSeed:
             "wordprocessingml.document",
         )
 
+    def seed_review_template(self) -> dict[str, Any]:
+        existing = _expect(
+            self.client.get(
+                "/api/v1/review-templates",
+                params={
+                    "study_id": self.study_id,
+                    "site_id": self.site_id,
+                },
+            )
+        )
+        if existing:
+            return existing[0]
+        upload = self.upload_document(
+            key="local-synthetic-review-template",
+            file=(
+                FIXTURES
+                / "reviews/artifacts/synthetic_monitoring_review_v1.docx"
+            ),
+            title="合成中心监查报告核查模板 V1",
+            document_type="template",
+            purpose="template",
+            media_type="application/vnd.openxmlformats-officedocument."
+            "wordprocessingml.document",
+        )
+        self.wait_parsed(upload["document_version_id"])
+        preview = _expect(
+            self.client.post(
+                f"/api/v1/document-versions/"
+                f"{upload['document_version_id']}/review-template-preview",
+                headers=self._headers(),
+            )
+        )
+        created = _expect(
+            self.client.post(
+                "/api/v1/review-templates",
+                headers=self._headers(),
+                json={
+                    "expected_revision": 0,
+                    "idempotency_key": (
+                        "local-synthetic-review-template-config"
+                    ),
+                    "source_document_version_id": (
+                        upload["document_version_id"]
+                    ),
+                    "title": "合成中心监查核查模板 V1",
+                    "items": preview["questions"],
+                    "warnings": preview["warnings"],
+                },
+            )
+        )
+        return created
+
     def summary(
         self,
         edc: dict[str, Any],
         labs: dict[str, Any],
         safety_rules: dict[str, Any],
         safety: dict[str, Any],
+        review_template: dict[str, Any],
     ) -> dict[str, Any]:
         issues = _expect(
             self.client.get(
@@ -707,6 +760,17 @@ class LocalSeed:
                 "questions": len(safety["questions"]),
                 "provider_status": safety["provider_status"],
             },
+            "review_template": {
+                "id": review_template["id"],
+                "title": review_template["title"],
+                "item_count": len(review_template["items"]),
+                "sections": len(
+                    {
+                        item["section_key"]
+                        for item in review_template["items"]
+                    }
+                ),
+            },
         }
 
 
@@ -723,9 +787,16 @@ def main() -> int:
     edc = seed.seed_edc()
     labs = seed.seed_lab_reports()
     seed.seed_templates()
+    review_template = seed.seed_review_template()
     print(
         json.dumps(
-            seed.summary(edc, labs, safety_rules, safety),
+            seed.summary(
+                edc,
+                labs,
+                safety_rules,
+                safety,
+                review_template,
+            ),
             ensure_ascii=False,
             indent=2,
         )

@@ -17,7 +17,14 @@ from cra_app.governance.identity import (
     OidcIdentityProvider,
     SyntheticIdentityProvider,
 )
-from cra_app.governance.service import GovernanceService, ScopeContext
+from cra_app.governance.service import (
+    CreateSite,
+    CreateStudy,
+    GovernanceService,
+    ScopeContext,
+    UpdateSite,
+    UpdateStudy,
+)
 from cra_app.shared.config import Settings
 
 router = APIRouter(prefix="/api/v1", tags=["governance"])
@@ -56,7 +63,62 @@ class ScopeStudy(BaseModel):
 class ScopeResponse(BaseModel):
     actor_id: str
     authentication_mode: Literal["synthetic", "oidc"]
+    platform_roles: list[str]
     studies: list[ScopeStudy]
+
+
+class CreateStudyView(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: uuid.UUID
+    code: str
+    title: str
+    revision: int
+
+
+class CreateSiteView(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: uuid.UUID
+    study_id: uuid.UUID
+    code: str
+    name: str
+    revision: int
+
+
+class CreateStudyCommand(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    expected_revision: Literal[0] = 0
+    idempotency_key: str
+    code: str
+    title: str
+    jurisdiction: str = "synthetic"
+
+
+class UpdateStudyCommand(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    expected_revision: int
+    idempotency_key: str
+    title: str
+
+
+class CreateSiteCommand(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    expected_revision: Literal[0] = 0
+    idempotency_key: str
+    code: str
+    name: str
+
+
+class UpdateSiteCommand(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    expected_revision: int
+    idempotency_key: str
+    name: str
 
 
 def require_identity(request: Request) -> AuthenticatedIdentity:
@@ -259,6 +321,7 @@ def get_my_scopes(
     return ScopeResponse(
         actor_id=identity.actor_id,
         authentication_mode=identity.mode,
+        platform_roles=sorted(identity.platform_roles),
         studies=[
             ScopeStudy(
                 id=study.id,
@@ -278,4 +341,139 @@ def get_my_scopes(
             )
             for study in workspaces
         ],
+    )
+
+
+@router.post(
+    "/studies",
+    response_model=CreateStudyView,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_csrf)],
+)
+def create_study(
+    command: CreateStudyCommand,
+    request: Request,
+    identity: AuthenticatedIdentity = Depends(require_identity),
+) -> CreateStudyView:
+    service: GovernanceService = request.app.state.governance_service
+    result = service.create_study(
+        scope_from_identity(identity),
+        CreateStudy(
+            expected_revision=command.expected_revision,
+            idempotency_key=command.idempotency_key,
+            code=command.code,
+            title=command.title,
+            jurisdiction=command.jurisdiction,
+        ),
+    )
+    study = service.get_study(
+        scope_from_identity(identity), result.resource_id
+    )
+    return CreateStudyView(
+        id=study.id,
+        code=study.code,
+        title=study.title,
+        revision=study.revision,
+    )
+
+
+@router.patch(
+    "/studies/{study_id}",
+    response_model=CreateStudyView,
+    dependencies=[Depends(require_csrf)],
+)
+def update_study(
+    study_id: uuid.UUID,
+    command: UpdateStudyCommand,
+    request: Request,
+    identity: AuthenticatedIdentity = Depends(require_identity),
+) -> CreateStudyView:
+    service: GovernanceService = request.app.state.governance_service
+    result = service.update_study(
+        scope_from_identity(identity),
+        study_id,
+        UpdateStudy(
+            expected_revision=command.expected_revision,
+            idempotency_key=command.idempotency_key,
+            title=command.title,
+        ),
+    )
+    study = service.get_study(
+        scope_from_identity(identity), result.resource_id
+    )
+    return CreateStudyView(
+        id=study.id,
+        code=study.code,
+        title=study.title,
+        revision=study.revision,
+    )
+
+
+@router.post(
+    "/studies/{study_id}/sites",
+    response_model=CreateSiteView,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_csrf)],
+)
+def create_site(
+    study_id: uuid.UUID,
+    command: CreateSiteCommand,
+    request: Request,
+    identity: AuthenticatedIdentity = Depends(require_identity),
+) -> CreateSiteView:
+    service: GovernanceService = request.app.state.governance_service
+    result = service.create_site(
+        scope_from_identity(identity),
+        study_id,
+        CreateSite(
+            expected_revision=command.expected_revision,
+            idempotency_key=command.idempotency_key,
+            code=command.code,
+            name=command.name,
+        ),
+    )
+    site = service.get_site(
+        scope_from_identity(identity), study_id, result.resource_id
+    )
+    return CreateSiteView(
+        id=site.id,
+        study_id=site.study_id,
+        code=site.code,
+        name=site.name,
+        revision=site.revision,
+    )
+
+
+@router.patch(
+    "/studies/{study_id}/sites/{site_id}",
+    response_model=CreateSiteView,
+    dependencies=[Depends(require_csrf)],
+)
+def update_site(
+    study_id: uuid.UUID,
+    site_id: uuid.UUID,
+    command: UpdateSiteCommand,
+    request: Request,
+    identity: AuthenticatedIdentity = Depends(require_identity),
+) -> CreateSiteView:
+    service: GovernanceService = request.app.state.governance_service
+    result = service.update_site(
+        scope_from_identity(identity),
+        study_id,
+        site_id,
+        UpdateSite(
+            expected_revision=command.expected_revision,
+            idempotency_key=command.idempotency_key,
+            name=command.name,
+        ),
+    )
+    site = service.get_site(
+        scope_from_identity(identity), study_id, result.resource_id
+    )
+    return CreateSiteView(
+        id=site.id,
+        study_id=site.study_id,
+        code=site.code,
+        name=site.name,
+        revision=site.revision,
     )

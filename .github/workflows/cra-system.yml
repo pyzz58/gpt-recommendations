@@ -104,6 +104,7 @@ jobs:
       CRA_MODEL_PROVIDER: disabled
       CRA_OCR_PROVIDER: disabled
       CRA_ANALYSIS_PROVIDER: disabled
+      CRA_SYNTHETIC_PLATFORM_ADMIN: "true"
       CRA_E2E_BASE_URL: http://127.0.0.1:5173
       CRA_E2E_API_URL: http://127.0.0.1:8000
     steps:
@@ -186,6 +187,7 @@ jobs:
       CRA_MODEL_PROVIDER: disabled
       CRA_OCR_PROVIDER: disabled
       CRA_ANALYSIS_PROVIDER: disabled
+      CRA_SYNTHETIC_PLATFORM_ADMIN: "true"
       CRA_E2E_BASE_URL: http://127.0.0.1:5173
       CRA_E2E_API_URL: http://127.0.0.1:8000
     steps:
@@ -258,6 +260,7 @@ jobs:
       CRA_MODEL_PROVIDER: disabled
       CRA_OCR_PROVIDER: disabled
       CRA_ANALYSIS_PROVIDER: disabled
+      CRA_SYNTHETIC_PLATFORM_ADMIN: "true"
       CRA_E2E_BASE_URL: http://127.0.0.1:5173
       CRA_E2E_API_URL: http://127.0.0.1:8000
     steps:

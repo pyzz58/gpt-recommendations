@@ -1,6 +1,21 @@
-import { useEffect, useMemo, useState } from "react";
+import { type FormEvent, useEffect, useMemo, useState } from "react";
 
-import type { CapabilityResponse, ScopeResponse } from "../../api/client";
+import {
+  ApiError,
+  type CapabilityResponse,
+  type ScopeResponse,
+  createSite,
+  createStudy,
+  updateSite,
+  updateStudy
+} from "../../api/client";
+import { DocumentWorkspace } from "../documents/DocumentWorkspace";
+import { CarryoverReview } from "../issues/CarryoverReview";
+import { StageChecklist } from "../monitoring/StageChecklist";
+import { TemplateReviewConfig } from "../monitoring/TemplateReviewConfig";
+import { ReportPreview } from "../reports/ReportPreview";
+import { RuleWorkspace } from "../rules/RuleWorkspace";
+import { DirectoryReview } from "../site-files/DirectoryReview";
 import { MonitoringVisitPage } from "../../pages/MonitoringVisitPage";
 import {
   type WorkspaceSelection,
@@ -12,17 +27,72 @@ import {
 type Props = {
   scopes: ScopeResponse;
   capabilities: CapabilityResponse;
+  onReload: () => Promise<void>;
   onLogout: () => Promise<void>;
 };
+
+type WorkspaceModule =
+  | "documents"
+  | "startup"
+  | "previsit"
+  | "monitoring"
+  | "reports"
+  | "closeout";
+
+const MODULES: { key: WorkspaceModule; label: string; detail: string }[] = [
+  {
+    key: "documents",
+    label: "资料与模板",
+    detail: "报告模板、方案和规则底稿"
+  },
+  {
+    key: "startup",
+    label: "中心启动",
+    detail: "目录、阶段清单和来源核查"
+  },
+  {
+    key: "previsit",
+    label: "访视前",
+    detail: "遗留选择、访前信和范围准备"
+  },
+  {
+    key: "monitoring",
+    label: "本次监查",
+    detail: "按报告章节和问句逐项核查"
+  },
+  {
+    key: "reports",
+    label: "问题与报告",
+    detail: "同源记录、报告草稿和签发"
+  },
+  {
+    key: "closeout",
+    label: "关闭与交接",
+    detail: "阶段清单、遗留和下次接续"
+  }
+];
+
+function errorMessage(reason: unknown): string {
+  return reason instanceof ApiError
+    ? `${reason.message}（${reason.code}）`
+    : reason instanceof Error
+      ? reason.message
+      : "工作台操作失败";
+}
 
 export function WorkspaceSelector({
   scopes,
   capabilities,
+  onReload,
   onLogout
 }: Props) {
   const [selection, setSelection] = useState<WorkspaceSelection | null>(() =>
     resolveStoredSelection(scopes.studies, readStoredSelection())
   );
+  const [module, setModule] = useState<WorkspaceModule>("previsit");
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const resolved = resolveStoredSelection(
@@ -46,15 +116,20 @@ export function WorkspaceSelector({
       null,
     [selectedStudy, selection?.siteId]
   );
+  const platformAdmin = scopes.platform_roles.includes("platform_admin");
+  const canCreateSite =
+    platformAdmin || Boolean(selectedStudy?.roles.includes("study_admin"));
 
   function selectStudy(studyId: string) {
     const study = scopes.studies.find((candidate) => candidate.id === studyId);
-    const site = study?.sites[0];
-    if (!study || !site) {
+    if (!study) {
       setSelection(null);
       return;
     }
-    const next = { studyId: study.id, siteId: site.id };
+    const next = {
+      studyId: study.id,
+      siteId: study.sites[0]?.id ?? null
+    };
     setSelection(next);
     storeSelection(next);
   }
@@ -68,17 +143,185 @@ export function WorkspaceSelector({
     storeSelection(next);
   }
 
-  const unavailableProviders = Object.entries(capabilities.providers)
-    .filter(([, provider]) => provider.status === "not_configured")
-    .map(([name]) =>
-      name === "ocr"
-        ? "检验 OCR"
-        : name === "rule_extractor"
-          ? "规则提取"
-          : name === "analysis"
-            ? "安全分析模型"
-          : "模型分析"
-    );
+  async function saveStudy(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    setBusy(true);
+    setError(null);
+    setMessage(null);
+    try {
+      const created = await createStudy({
+        code: String(form.get("code") ?? "").trim(),
+        title: String(form.get("title") ?? "").trim(),
+        idempotencyKey: crypto.randomUUID()
+      });
+      const next = { studyId: created.id, siteId: null };
+      setSelection(next);
+      storeSelection(next);
+      setModule("startup");
+      await onReload();
+      setMessage("项目已保存。下一步建立至少一个中心。");
+    } catch (reason) {
+      setError(errorMessage(reason));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function saveStudyTitle(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!selectedStudy) {
+      return;
+    }
+    const form = new FormData(event.currentTarget);
+    setBusy(true);
+    setError(null);
+    try {
+      await updateStudy(
+        { id: selectedStudy.id, revision: selectedStudy.revision },
+        String(form.get("title") ?? "").trim()
+      );
+      await onReload();
+      setMessage("项目名称已保存。");
+    } catch (reason) {
+      setError(errorMessage(reason));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function saveSite(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!selectedStudy) {
+      setError("请先建立或选择项目。");
+      return;
+    }
+    const form = new FormData(event.currentTarget);
+    setBusy(true);
+    setError(null);
+    setMessage(null);
+    try {
+      const created = await createSite(selectedStudy.id, {
+        code: String(form.get("code") ?? "").trim(),
+        name: String(form.get("name") ?? "").trim(),
+        idempotencyKey: crypto.randomUUID()
+      });
+      const next = { studyId: selectedStudy.id, siteId: created.id };
+      setSelection(next);
+      storeSelection(next);
+      setModule("startup");
+      await onReload();
+      setMessage("中心已保存并切换为当前范围。");
+    } catch (reason) {
+      setError(errorMessage(reason));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function saveSiteName(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!selectedStudy || !selectedSite) {
+      return;
+    }
+    const form = new FormData(event.currentTarget);
+    setBusy(true);
+    setError(null);
+    try {
+      await updateSite(
+        selectedStudy.id,
+        { id: selectedSite.id, revision: selectedSite.revision },
+        String(form.get("name") ?? "").trim()
+      );
+      await onReload();
+      setMessage("中心名称已保存。");
+    } catch (reason) {
+      setError(errorMessage(reason));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function renderModule() {
+    if (!selectedStudy) {
+      return <EmptyWorkspace />;
+    }
+    if (!selectedSite) {
+      return <NoSiteWorkspace studyTitle={selectedStudy.title} />;
+    }
+    switch (module) {
+      case "documents":
+        return (
+          <div className="module-stack">
+            <DocumentWorkspace
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+            <TemplateReviewConfig
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+            <RuleWorkspace
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+          </div>
+        );
+      case "startup":
+        return (
+          <div className="module-stack">
+            <DirectoryReview
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+            <StageChecklist
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+          </div>
+        );
+      case "previsit":
+        return (
+          <div className="module-stack">
+            <CarryoverReview
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+            <ReportPreview
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+          </div>
+        );
+      case "monitoring":
+        return (
+          <MonitoringVisitPage
+            studyId={selectedStudy.id}
+            siteId={selectedSite.id}
+          />
+        );
+      case "reports":
+        return (
+          <ReportPreview
+            studyId={selectedStudy.id}
+            siteId={selectedSite.id}
+          />
+        );
+      case "closeout":
+        return (
+          <div className="module-stack">
+            <StageChecklist
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+            <CarryoverReview
+              studyId={selectedStudy.id}
+              siteId={selectedSite.id}
+            />
+          </div>
+        );
+    }
+  }
 
   return (
     <div className="workspace-shell">
@@ -93,117 +336,221 @@ export function WorkspaceSelector({
         <div className="identity">
           <span className="identity-dot" aria-hidden="true" />
           <span>{scopes.actor_id}</span>
+          {platformAdmin && <small className="admin-badge">合成管理员</small>}
           <button className="text-button" onClick={() => void onLogout()}>
             退出
           </button>
         </div>
       </header>
 
-      <main>
-        <section className="workspace-heading">
-          <div>
+      <div className="workspace-frame">
+        <aside className="workspace-sidebar" aria-label="当前范围与业务模块">
+          <section className="sidebar-scope">
             <p className="eyebrow">当前工作范围</p>
-            <h1>选择项目与中心</h1>
-            <p>
-              这里只显示服务端授权范围。切换后将作为后续监查工作的上下文。
-            </p>
-          </div>
-          <div className="scope-counts" aria-label="授权范围统计">
-            <span>
-              <strong>{scopes.studies.length}</strong> 个项目
-            </span>
-            <span>
-              <strong>
-                {scopes.studies.reduce(
-                  (total, study) => total + study.sites.length,
-                  0
+            <h1>项目与中心</h1>
+            <label>
+              <span>项目</span>
+              <select
+                aria-label="项目"
+                value={selectedStudy?.id ?? ""}
+                onChange={(event) => selectStudy(event.target.value)}
+                disabled={scopes.studies.length === 0}
+              >
+                {scopes.studies.length === 0 && (
+                  <option value="">尚无项目</option>
                 )}
-              </strong>{" "}
+                {scopes.studies.map((study) => (
+                  <option key={study.id} value={study.id}>
+                    {study.code} · {study.title}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>中心</span>
+              <select
+                aria-label="中心"
+                value={selectedSite?.id ?? ""}
+                onChange={(event) => selectSite(event.target.value)}
+                disabled={!selectedStudy || selectedStudy.sites.length === 0}
+              >
+                {(!selectedStudy || selectedStudy.sites.length === 0) && (
+                  <option value="">尚无中心</option>
+                )}
+                {selectedStudy?.sites.map((site) => (
+                  <option key={site.id} value={site.id}>
+                    {site.code} · {site.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <div className="scope-status">
+              <span>角色</span>
+              <strong>{selectedStudy?.roles.join("、") || "待建立"}</strong>
+            </div>
+          </section>
+
+          <details className="sidebar-create" open={scopes.studies.length === 0}>
+            <summary>新建项目</summary>
+            {platformAdmin ? (
+              <form data-testid="create-study-form" onSubmit={saveStudy}>
+                <label>
+                  项目编号
+                  <input name="code" required maxLength={64} />
+                </label>
+                <label>
+                  项目名称
+                  <input name="title" required maxLength={255} />
+                </label>
+                <button type="submit" disabled={busy}>
+                  保存项目
+                </button>
+              </form>
+            ) : (
+              <p>当前身份无租户项目管理权限。</p>
+            )}
+          </details>
+
+          {selectedStudy && (
+            <details className="sidebar-create">
+              <summary>新建中心</summary>
+              {canCreateSite ? (
+                <form data-testid="create-site-form" onSubmit={saveSite}>
+                  <label>
+                    中心编号
+                    <input name="code" required maxLength={64} />
+                  </label>
+                  <label>
+                    中心名称
+                    <input name="name" required maxLength={255} />
+                  </label>
+                  <button type="submit" disabled={busy}>
+                    保存中心
+                  </button>
+                </form>
+              ) : (
+                <p>当前身份无该项目的中心管理权限。</p>
+              )}
+            </details>
+          )}
+
+          <details className="sidebar-create">
+            <summary>维护当前名称</summary>
+            {selectedStudy && (
+              <form onSubmit={saveStudyTitle}>
+                <label>
+                  项目名称
+                  <input
+                    key={selectedStudy.revision}
+                    name="title"
+                    defaultValue={selectedStudy.title}
+                    required
+                  />
+                </label>
+                <button type="submit" disabled={busy}>
+                  保存项目名称
+                </button>
+              </form>
+            )}
+            {selectedStudy && selectedSite && (
+              <form onSubmit={saveSiteName}>
+                <label>
+                  中心名称
+                  <input
+                    key={selectedSite.revision}
+                    name="name"
+                    defaultValue={selectedSite.name}
+                    required
+                  />
+                </label>
+                <button type="submit" disabled={busy}>
+                  保存中心名称
+                </button>
+              </form>
+            )}
+          </details>
+
+          <nav className="workspace-module-nav" aria-label="业务模块">
+            {MODULES.map((item) => (
+              <button
+                key={item.key}
+                type="button"
+                className={module === item.key ? "active" : ""}
+                data-testid={`workspace-module-${item.key}`}
+                onClick={() => setModule(item.key)}
+              >
+                <strong>{item.label}</strong>
+                <small>{item.detail}</small>
+              </button>
+            ))}
+          </nav>
+        </aside>
+
+        <main className="workspace-main">
+          <section className="workspace-context">
+            <div>
+              <p className="eyebrow">当前范围</p>
+              <h2>{selectedStudy?.title ?? "从空白合成项目开始"}</h2>
+              <p>
+                {selectedSite
+                  ? `${selectedSite.code} · ${selectedSite.name}`
+                  : selectedStudy
+                    ? "该项目尚无中心，请先建立中心。"
+                    : "先建立项目和中心，再进入访视前与逐项核查。"}
+              </p>
+            </div>
+            <span className="status-chip">
+              {scopes.studies.length} 个项目 ·{" "}
+              {scopes.studies.reduce(
+                (total, study) => total + study.sites.length,
+                0
+              )}{" "}
               个中心
             </span>
-          </div>
-        </section>
+          </section>
 
-        <section className="selector-panel" aria-label="项目与中心选择">
-          <label>
-            <span>项目</span>
-            <select
-              value={selectedStudy?.id ?? ""}
-              onChange={(event) => selectStudy(event.target.value)}
-              disabled={scopes.studies.length === 0}
-            >
-              {scopes.studies.map((study) => (
-                <option key={study.id} value={study.id}>
-                  {study.code} · {study.title}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            <span>中心</span>
-            <select
-              value={selectedSite?.id ?? ""}
-              onChange={(event) => selectSite(event.target.value)}
-              disabled={!selectedStudy || selectedStudy.sites.length === 0}
-            >
-              {selectedStudy?.sites.map((site) => (
-                <option key={site.id} value={site.id}>
-                  {site.code} · {site.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className="scope-status">
-            <span>角色</span>
-            <strong>{selectedStudy?.roles.join("、") || "无"}</strong>
-          </div>
-        </section>
+          {message && <div className="notice" role="status">{message}</div>}
+          {error && <div className="notice notice-error" role="alert">{error}</div>}
 
-        {scopes.studies.length === 0 && (
-          <div className="notice notice-error" role="alert">
-            当前账号尚未获授权任何项目或中心。请联系项目管理员配置访问范围。
-          </div>
-        )}
+          {Object.values(capabilities.providers).some(
+            (provider) => provider.status === "not_configured"
+          ) && (
+            <div className="notice" role="status">
+              <strong>部分自动能力未配置</strong>
+              <span>
+                系统会持续显示实际能力状态，不会把人工记录或未知结果标成自动完成。
+              </span>
+            </div>
+          )}
 
-        {unavailableProviders.length > 0 && (
-          <div className="notice" role="status">
-            <strong>自动能力未配置</strong>
-            <span>
-              {unavailableProviders.join("、")}当前不可用，系统不会显示自动完成或
-              正常结论。已有资料和人工路径仍可继续建设。
-            </span>
-          </div>
-        )}
-
-        <section className="workspace-grid">
-          <article className="context-card active">
-            <p className="eyebrow">已选择</p>
-            <h2>{selectedStudy?.title ?? "未选择项目"}</h2>
-            <p>
-              {selectedSite
-                ? `${selectedSite.code} · ${selectedSite.name}`
-                : "没有可用中心"}
-            </p>
-            <span className="status-chip">授权范围已验证</span>
-          </article>
-          <article className="context-card placeholder">
-            <p className="eyebrow">当前模块</p>
-            <h2>四阶段连续监查工作区</h2>
-            <p>
-              访前选择、中心遗留复核、逐患者核查、报告与交接按服务端状态连续推进。
-              资料和规则底稿保留在访前技术详情中，里程碑不阻断紧急事项。
-            </p>
-            <span className="status-chip">W12 已接入</span>
-          </article>
-        </section>
-
-        {selectedStudy && selectedSite && (
-          <MonitoringVisitPage
-            studyId={selectedStudy.id}
-            siteId={selectedSite.id}
-          />
-        )}
-      </main>
+          {renderModule()}
+        </main>
+      </div>
     </div>
+  );
+}
+
+function EmptyWorkspace() {
+  return (
+    <section className="workspace-empty">
+      <p className="eyebrow">空白工作区</p>
+      <h2>建立第一个合成项目</h2>
+      <p>
+        在左上角输入项目编号和名称并保存，然后为该项目建立中心。无需修改种子脚本。
+      </p>
+    </section>
+  );
+}
+
+function NoSiteWorkspace({ studyTitle }: { studyTitle: string }) {
+  return (
+    <section className="workspace-empty">
+      <p className="eyebrow">项目已建立</p>
+      <h2>{studyTitle} 尚无中心</h2>
+      <p>
+        使用左上角“新建中心”保存中心编号和名称。不同项目可以使用相同中心编号，
+        但同一项目内重复编号会被服务端拒绝。
+      </p>
+    </section>
   );
 }

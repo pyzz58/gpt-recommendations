@@ -293,6 +293,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/document-versions/{version_id}/review-template-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Review Template */
+        post: operations["preview_review_template_api_v1_document_versions__version_id__review_template_preview_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/documents/{document_id}/versions": {
         parameters: {
             query?: never;
@@ -702,6 +719,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/monitoring-review-items/{item_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Monitoring Review Item */
+        patch: operations["update_monitoring_review_item_api_v1_monitoring_review_items__item_id__patch"];
+        trace?: never;
+    };
     "/api/v1/monitoring-visits/{visit_id}/handover-summary": {
         parameters: {
             query?: never;
@@ -747,6 +781,40 @@ export interface paths {
         put?: never;
         /** Select Previsit Issues */
         post: operations["select_previsit_issues_api_v1_monitoring_visits__visit_id__previsit_selection_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/monitoring-visits/{visit_id}/review-items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Monitoring Review Items */
+        get: operations["get_monitoring_review_items_api_v1_monitoring_visits__visit_id__review_items_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/monitoring-visits/{visit_id}/review-template": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Bind Review Template */
+        post: operations["bind_review_template_api_v1_monitoring_visits__visit_id__review_template_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -934,6 +1002,24 @@ export interface paths {
         put?: never;
         /** Create Report Snapshot */
         post: operations["create_report_snapshot_api_v1_reports__draft_id__snapshot_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/review-templates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Review Templates */
+        get: operations["list_review_templates_api_v1_review_templates_get"];
+        put?: never;
+        /** Create Review Template */
+        post: operations["create_review_template_api_v1_review_templates_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1195,6 +1281,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/studies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Study */
+        post: operations["create_study_api_v1_studies_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/studies/{study_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Study */
+        patch: operations["update_study_api_v1_studies__study_id__patch"];
+        trace?: never;
+    };
     "/api/v1/studies/{study_id}/carryover-imports/preview-text": {
         parameters: {
             query?: never;
@@ -1418,6 +1538,40 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/v1/studies/{study_id}/sites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Site */
+        post: operations["create_site_api_v1_studies__study_id__sites_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/studies/{study_id}/sites/{site_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Site */
+        patch: operations["update_site_api_v1_studies__study_id__sites__site_id__patch"];
         trace?: never;
     };
     "/api/v1/studies/{study_id}/stage-checklists": {
@@ -1988,6 +2142,22 @@ export interface components {
             note?: string | null;
             /** Observation Ids */
             observation_ids: string[];
+        };
+        /** BindReviewTemplateCommand */
+        BindReviewTemplateCommand: {
+            /**
+             * Expected Revision
+             * @default 0
+             * @constant
+             */
+            expected_revision: 0;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Review Template Version Id
+             * Format: uuid
+             */
+            review_template_version_id: string;
         };
         /** Body_add_document_version_api_v1_documents__document_id__versions_post */
         Body_add_document_version_api_v1_documents__document_id__versions_post: {
@@ -2865,6 +3035,30 @@ export interface components {
             /** Reply Summary */
             reply_summary?: string | null;
         };
+        /** CreateReviewTemplateCommand */
+        CreateReviewTemplateCommand: {
+            /**
+             * Expected Revision
+             * @default 0
+             * @constant
+             */
+            expected_revision: 0;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Items */
+            items: components["schemas"]["ReviewTemplateItemInput"][];
+            /**
+             * Source Document Version Id
+             * Format: uuid
+             */
+            source_document_version_id: string;
+            /** Title */
+            title: string;
+            /** Warnings */
+            warnings?: {
+                [key: string]: unknown;
+            }[];
+        };
         /** CreateSafetyAssessmentCommand */
         CreateSafetyAssessmentCommand: {
             /**
@@ -2911,6 +3105,40 @@ export interface components {
              */
             subject_id: string;
         };
+        /** CreateSiteCommand */
+        CreateSiteCommand: {
+            /** Code */
+            code: string;
+            /**
+             * Expected Revision
+             * @default 0
+             * @constant
+             */
+            expected_revision: 0;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Name */
+            name: string;
+        };
+        /** CreateSiteView */
+        CreateSiteView: {
+            /** Code */
+            code: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Revision */
+            revision: number;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+        };
         /** CreateSnapshotCommand */
         CreateSnapshotCommand: {
             /**
@@ -2956,6 +3184,40 @@ export interface components {
              * @enum {string}
              */
             stage: "startup" | "closeout";
+            /** Title */
+            title: string;
+        };
+        /** CreateStudyCommand */
+        CreateStudyCommand: {
+            /** Code */
+            code: string;
+            /**
+             * Expected Revision
+             * @default 0
+             * @constant
+             */
+            expected_revision: 0;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /**
+             * Jurisdiction
+             * @default synthetic
+             */
+            jurisdiction: string;
+            /** Title */
+            title: string;
+        };
+        /** CreateStudyView */
+        CreateStudyView: {
+            /** Code */
+            code: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Revision */
+            revision: number;
             /** Title */
             title: string;
         };
@@ -3626,6 +3888,31 @@ export interface components {
             expected_revision: number;
             /** Idempotency Key */
             idempotency_key: string;
+        };
+        /** ExtractedQuestionView */
+        ExtractedQuestionView: {
+            /** Applicability */
+            applicability: {
+                [key: string]: unknown;
+            };
+            /** Item Key */
+            item_key: string;
+            /** Question Order */
+            question_order: number;
+            /** Question Text */
+            question_text: string;
+            /** Report Locator */
+            report_locator: string;
+            /** Section Key */
+            section_key: string;
+            /** Section Order */
+            section_order: number;
+            /** Section Title */
+            section_title: string;
+            /** Source Locator */
+            source_locator: string;
+            /** Source Quote */
+            source_quote: string;
         };
         /** ExtractionResponse */
         ExtractionResponse: {
@@ -4455,6 +4742,71 @@ export interface components {
             urgent_action_count: number;
             visit: components["schemas"]["MonitoringVisitView"];
         };
+        /** MonitoringReviewItemView */
+        MonitoringReviewItemView: {
+            /** Applicability */
+            applicability: {
+                [key: string]: unknown;
+            };
+            /** History */
+            history: components["schemas"]["ReviewHistoryView"][];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Item Key */
+            item_key: string;
+            /** Linked Comparison Id */
+            linked_comparison_id: string | null;
+            /** Linked Issue Id */
+            linked_issue_id: string | null;
+            /**
+             * Monitoring Visit Id
+             * Format: uuid
+             */
+            monitoring_visit_id: string;
+            /** Note */
+            note: string | null;
+            /** Question Order */
+            question_order: number;
+            /** Question Text */
+            question_text: string;
+            /** Report Locator */
+            report_locator: string;
+            /** Report Section */
+            report_section: string;
+            /** Revision */
+            revision: number;
+            /** Rule Version Ids */
+            rule_version_ids: string[];
+            /** Section Key */
+            section_key: string;
+            /** Section Order */
+            section_order: number;
+            /** Section Title */
+            section_title: string;
+            /** Source Locator */
+            source_locator: string;
+            /** Source Quote */
+            source_quote: string;
+            /** Status */
+            status: string;
+            /** Subject Id */
+            subject_id: string | null;
+            /**
+             * Template Item Id
+             * Format: uuid
+             */
+            template_item_id: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /** Updated By */
+            updated_by: string;
+        };
         /** MonitoringVisitView */
         MonitoringVisitView: {
             /**
@@ -4995,6 +5347,47 @@ export interface components {
             /** Status */
             status: string;
         };
+        /** ReviewBindingView */
+        ReviewBindingView: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Monitoring Visit Id
+             * Format: uuid
+             */
+            monitoring_visit_id: string;
+            /**
+             * Review Template Version Id
+             * Format: uuid
+             */
+            review_template_version_id: string;
+            /** Revision */
+            revision: number;
+        };
+        /** ReviewHistoryView */
+        ReviewHistoryView: {
+            /** Actor Id */
+            actor_id: string;
+            /** Details */
+            details: {
+                [key: string]: unknown;
+            };
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Ordinal */
+            ordinal: number;
+            /**
+             * Recorded At
+             * Format: date-time
+             */
+            recorded_at: string;
+        };
         /** ReviewLabObservationCommand */
         ReviewLabObservationCommand: {
             /**
@@ -5012,6 +5405,135 @@ export interface components {
             idempotency_key: string;
             /** Note */
             note?: string | null;
+        };
+        /** ReviewTemplateItemInput */
+        ReviewTemplateItemInput: {
+            /** Applicability */
+            applicability?: {
+                [key: string]: unknown;
+            };
+            /** Item Key */
+            item_key: string;
+            /** Question Order */
+            question_order: number;
+            /** Question Text */
+            question_text: string;
+            /** Report Locator */
+            report_locator: string;
+            /** Section Key */
+            section_key: string;
+            /** Section Order */
+            section_order: number;
+            /** Section Title */
+            section_title: string;
+            /** Source Locator */
+            source_locator: string;
+            /** Source Quote */
+            source_quote: string;
+        };
+        /** ReviewTemplateItemView */
+        ReviewTemplateItemView: {
+            /** Applicability */
+            applicability: {
+                [key: string]: unknown;
+            };
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Item Key */
+            item_key: string;
+            /** Question Order */
+            question_order: number;
+            /** Question Text */
+            question_text: string;
+            /** Report Locator */
+            report_locator: string;
+            /** Section Key */
+            section_key: string;
+            /** Section Order */
+            section_order: number;
+            /** Section Title */
+            section_title: string;
+            /** Source Locator */
+            source_locator: string;
+            /** Source Quote */
+            source_quote: string;
+        };
+        /** ReviewTemplatePreviewView */
+        ReviewTemplatePreviewView: {
+            /** Questions */
+            questions: components["schemas"]["ExtractedQuestionView"][];
+            /** Sections */
+            sections: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Source Document Version Id
+             * Format: uuid
+             */
+            source_document_version_id: string;
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+            /** Title */
+            title: string;
+            /** Warnings */
+            warnings: {
+                [key: string]: unknown;
+            }[];
+        };
+        /** ReviewTemplateView */
+        ReviewTemplateView: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Created By */
+            created_by: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Items */
+            items: components["schemas"]["ReviewTemplateItemView"][];
+            /** Revision */
+            revision: number;
+            /**
+             * Site Id
+             * Format: uuid
+             */
+            site_id: string;
+            /**
+             * Source Document Version Id
+             * Format: uuid
+             */
+            source_document_version_id: string;
+            /** Structure */
+            structure: {
+                [key: string]: unknown;
+            };
+            /**
+             * Study Id
+             * Format: uuid
+             */
+            study_id: string;
+            /** Title */
+            title: string;
+            /** Warnings */
+            warnings: {
+                [key: string]: unknown;
+            }[];
         };
         /** RuleBranch */
         "RuleBranch-Input": {
@@ -5632,6 +6154,8 @@ export interface components {
              * @enum {string}
              */
             authentication_mode: "synthetic" | "oidc";
+            /** Platform Roles */
+            platform_roles: string[];
             /** Studies */
             studies: components["schemas"]["ScopeStudy"][];
         };
@@ -6090,6 +6614,28 @@ export interface components {
                 [key: string]: string;
             };
         };
+        /** UpdateMonitoringReviewItemCommand */
+        UpdateMonitoringReviewItemCommand: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Linked Comparison Id */
+            linked_comparison_id?: string | null;
+            /** Linked Issue Id */
+            linked_issue_id?: string | null;
+            /** Note */
+            note?: string | null;
+            /** Rule Version Ids */
+            rule_version_ids?: string[];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "not_checked" | "checked" | "needs_clarification" | "not_applicable" | "skipped";
+            /** Subject Id */
+            subject_id?: string | null;
+        };
         /** UpdateMonitoringScopeCommand */
         UpdateMonitoringScopeCommand: {
             /** Expected Revision */
@@ -6100,6 +6646,24 @@ export interface components {
             scope_note?: string | null;
             /** Status */
             status?: ("draft" | "in_progress" | "completed") | null;
+        };
+        /** UpdateSiteCommand */
+        UpdateSiteCommand: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Name */
+            name: string;
+        };
+        /** UpdateStudyCommand */
+        UpdateStudyCommand: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Idempotency Key */
+            idempotency_key: string;
+            /** Title */
+            title: string;
         };
         /** UploadResponse */
         UploadResponse: {
@@ -6314,6 +6878,13 @@ export interface components {
             window_end: string | null;
             /** Window Start */
             window_start: string | null;
+        };
+        /** VisitReviewBoardView */
+        VisitReviewBoardView: {
+            binding: components["schemas"]["ReviewBindingView"] | null;
+            /** Items */
+            items: components["schemas"]["MonitoringReviewItemView"][];
+            template: components["schemas"]["ReviewTemplateView"] | null;
         };
         /** WorkbenchView */
         WorkbenchView: {
@@ -6886,6 +7457,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CoverageView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    preview_review_template_api_v1_document_versions__version_id__review_template_preview_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                version_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewTemplatePreviewView"];
                 };
             };
             /** @description Validation Error */
@@ -7756,6 +8360,43 @@ export interface operations {
             };
         };
     };
+    update_monitoring_review_item_api_v1_monitoring_review_items__item_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                item_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateMonitoringReviewItemCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MonitoringReviewItemView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     handover_summary_api_v1_monitoring_visits__visit_id__handover_summary_get: {
         parameters: {
             query?: never;
@@ -7842,6 +8483,74 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["WorkbenchView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_monitoring_review_items_api_v1_monitoring_visits__visit_id__review_items_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                visit_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VisitReviewBoardView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    bind_review_template_api_v1_monitoring_visits__visit_id__review_template_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                visit_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BindReviewTemplateCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VisitReviewBoardView"];
                 };
             };
             /** @description Validation Error */
@@ -8217,6 +8926,73 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ReportSnapshotView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_review_templates_api_v1_review_templates_get: {
+        parameters: {
+            query: {
+                study_id: string;
+                site_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewTemplateView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_review_template_api_v1_review_templates_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateReviewTemplateCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewTemplateView"];
                 };
             };
             /** @description Validation Error */
@@ -8728,6 +9504,78 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["StageChecklistView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_study_api_v1_studies_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateStudyCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateStudyView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_study_api_v1_studies__study_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateStudyCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateStudyView"];
                 };
             };
             /** @description Validation Error */
@@ -9328,6 +10176,81 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SafetyAssessmentSummaryView"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_site_api_v1_studies__study_id__sites_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                study_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateSiteCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateSiteView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_site_api_v1_studies__study_id__sites__site_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-CSRF-Token"?: string | null;
+            };
+            path: {
+                study_id: string;
+                site_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateSiteCommand"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateSiteView"];
                 };
             };
             /** @description Validation Error */

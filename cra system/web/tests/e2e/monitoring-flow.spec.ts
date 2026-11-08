@@ -160,6 +160,42 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
   browser,
   request
 }) => {
+  await page.goto("/");
+  const initialLogin = page.getByRole("button", {
+    name: "进入合成工作台"
+  });
+  if (await initialLogin.isVisible().catch(() => false)) {
+    await initialLogin.click();
+  }
+  await expect(page.getByTestId("create-study-form")).toBeVisible();
+  await page.getByLabel("项目编号").fill("W12-E2E");
+  await page.getByLabel("项目名称").fill(
+    "W12 Synthetic End-to-End Study"
+  );
+  await page.getByRole("button", { name: "保存项目" }).click();
+  await expect(page.getByText("项目已保存")).toBeVisible();
+
+  const createSiteForm = page.getByTestId("create-site-form");
+  if (!(await createSiteForm.isVisible().catch(() => false))) {
+    await page.getByText("新建中心", { exact: true }).click();
+  }
+  await createSiteForm.getByLabel("中心编号").fill("E12A");
+  await createSiteForm
+    .getByLabel("中心名称")
+    .fill("Synthetic E2E Site A");
+  await createSiteForm.getByRole("button", { name: "保存中心" }).click();
+  await expect(page.getByText("中心已保存")).toBeVisible();
+
+  if (!(await createSiteForm.isVisible().catch(() => false))) {
+    await page.getByText("新建中心", { exact: true }).click();
+  }
+  await createSiteForm.getByLabel("中心编号").fill("E12B");
+  await createSiteForm
+    .getByLabel("中心名称")
+    .fill("Synthetic E2E Site B");
+  await createSiteForm.getByRole("button", { name: "保存中心" }).click();
+  await expect(page.getByText("中心已保存")).toBeVisible();
+
   const csrf = await loginApi(request);
   const scopesResponse = await request.get(`${API_BASE}/api/v1/me/scopes`);
   expect(scopesResponse.ok()).toBeTruthy();
@@ -392,8 +428,44 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
   if (await loginButton.isVisible().catch(() => false)) {
     await loginButton.click();
   }
-  await page.locator(".selector-panel select").nth(0).selectOption(study!.id);
-  await page.locator(".selector-panel select").nth(1).selectOption(siteA!.id);
+  await page.getByLabel("项目", { exact: true }).selectOption(study!.id);
+  await page.getByLabel("中心", { exact: true }).selectOption(siteA!.id);
+  await page.getByTestId("workspace-module-documents").click();
+  await page.getByLabel("资料名称").fill("Synthetic review checklist V1");
+  await page.getByLabel("资料类型").selectOption("template");
+  await page.getByLabel("业务用途").selectOption("template");
+  await page
+    .getByLabel("合成资料文件")
+    .setInputFiles({
+      name: "synthetic_monitoring_review_v1.docx",
+      mimeType:
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      buffer: artifact(
+        "tests/fixtures/reviews/artifacts/synthetic_monitoring_review_v1.docx"
+      )
+    });
+  await page.getByRole("button", { name: "上传并解析" }).click();
+  await expect(
+    page.getByRole("button", { name: /Synthetic review checklist V1/ })
+  ).toBeVisible();
+  await page.getByLabel("DOCX 模板").selectOption({
+    label: "Synthetic review checklist V1 · v1"
+  });
+  await page.getByRole("button", { name: "提取章节与问句" }).click();
+  await expect(
+    page.getByRole("heading", { name: "确认章节、问句与来源" })
+  ).toBeVisible();
+  await page
+    .getByLabel("配置名称")
+    .fill("Synthetic monitoring checklist config");
+  await page
+    .getByRole("button", { name: "保存并复用此核查配置" })
+    .click();
+  await expect(
+    page.getByText("模板核查项已集中确认")
+  ).toBeVisible();
+
+  await page.getByTestId("workspace-module-monitoring").click();
   await expect(page.getByRole("heading", { name: "从访前遗留开始，逐患者核查，最后生成报告" })).toBeVisible();
   const startVisit = page.getByTestId("start-monitoring-visit");
   await expect(startVisit).toBeEnabled();
@@ -432,6 +504,46 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
   ).toHaveCount(0);
 
   await openJourneyStage(page, "subject_review");
+  await expect(
+    page.getByRole("heading", { name: "按报告章节与问句记录实际核查" })
+  ).toBeVisible();
+  await page
+    .getByLabel("核查模板")
+    .selectOption({ index: 0 });
+  await page.getByRole("button", { name: "用于本次监查" }).click();
+  await expect(
+    page.getByRole("heading", { name: "1. 知情同意与受试者资格" })
+  ).toBeVisible();
+  const firstReviewItem = page.getByTestId("review-item-S01-Q01");
+  await firstReviewItem
+    .getByRole("button", { name: /S01-Q01/ })
+    .click();
+  await firstReviewItem
+    .getByLabel("核查状态")
+    .selectOption("needs_clarification");
+  await firstReviewItem
+    .getByLabel("CRA 核查记录")
+    .fill("知情同意日期需中心补充原始来源，当前不判正常。");
+  await firstReviewItem
+    .getByRole("button", { name: "从本项创建问题待办" })
+    .click();
+  await expect(
+    firstReviewItem.getByLabel("关联问题").locator("option").filter({
+      hasText: /E2E-/
+    })
+  ).toHaveCount(1);
+  await firstReviewItem
+    .getByRole("button", { name: "保存本项核查记录" })
+    .click();
+  await expect(
+    page.getByTestId("review-item-S01-Q01")
+  ).toContainText("待核实");
+  await firstReviewItem
+    .getByRole("button", { name: /S01-Q01/ })
+    .click();
+  await page
+    .getByText("展开患者上下文、EDC、原始文件、比较与安全记录")
+    .click();
   await expect(page.getByRole("heading", { name: "分层list、源文件与EDC在同一患者上下文接续" })).toBeVisible();
   await page.getByTestId("review-tab-edc").click();
   await expect(page.getByRole("heading", { name: "导出范围、映射与原始行" })).toBeVisible();
@@ -441,6 +553,7 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
   await expect(page.getByRole("heading", { name: "同一记录生成多份材料" })).toBeVisible();
   await page.getByRole("button", { name: "生成监查报告草稿" }).click();
   await expect(page.getByText("监查报告草稿已从同一问题")).toBeVisible();
+  await expect(page.getByText("模板核查回填")).toBeVisible();
   await page.getByLabel("CRA说明").fill("Synthetic E2E CRA summary.");
   await page.getByLabel("结论").fill("Only the documented synthetic scope is covered.");
   await page.getByRole("button", { name: "保存文案并标记可审阅" }).click();
@@ -460,9 +573,18 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
   await expect(
     page.locator(".carryover-summary").filter({ hasText: "CRA-SYN-101" })
   ).toBeVisible();
+  await openJourneyStage(page, "subject_review");
+  await page
+    .getByLabel("核查模板")
+    .selectOption({ index: 0 });
+  await page.getByRole("button", { name: "用于本次监查" }).click();
+  await expect(page.getByTestId("review-item-S01-Q01")).toContainText(
+    "未核查"
+  );
 
   await page.evaluate(() => window.localStorage.clear());
   await page.reload();
+  await page.getByTestId("workspace-module-monitoring").click();
   await expect(page.getByRole("heading", { name: "Synthetic second E2E visit" })).toBeVisible();
 
   const tablet = await browser.newContext({
@@ -477,13 +599,12 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
     await tabletLogin.click();
   }
   await tabletPage
-    .locator(".selector-panel select")
-    .nth(0)
+    .getByLabel("项目", { exact: true })
     .selectOption(study!.id);
   await tabletPage
-    .locator(".selector-panel select")
-    .nth(1)
+    .getByLabel("中心", { exact: true })
     .selectOption(siteA!.id);
+  await tabletPage.getByTestId("workspace-module-monitoring").click();
   await expect(
     tabletPage.getByRole("heading", { name: "Synthetic second E2E visit" })
   ).toBeVisible();
@@ -524,6 +645,9 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
     .toMatch(/^(succeeded|recognized)$/);
 
   await openJourneyStage(tabletPage, "subject_review");
+  await tabletPage
+    .getByText("展开患者上下文、EDC、原始文件、比较与安全记录")
+    .click();
   await tabletPage.getByTestId("review-tab-lab").click();
   await expect(
     tabletPage.getByRole("heading", { name: "读取、来源定位与集中复核" })

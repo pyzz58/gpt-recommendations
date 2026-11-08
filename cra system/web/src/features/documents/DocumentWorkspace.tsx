@@ -202,6 +202,7 @@ export function DocumentWorkspace({ studyId, siteId }: Props) {
       setActiveJob(await getJob(uploaded.job_id));
       await loadDocuments();
       setSelectedDocumentId(uploaded.document_id);
+      window.dispatchEvent(new Event("cra-document-updated"));
       formElement.reset();
     } catch (reason) {
       setError(

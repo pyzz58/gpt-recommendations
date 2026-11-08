@@ -69,6 +69,7 @@ class SyntheticIdentityProvider:
         self.available = settings.environment in {"synthetic", "test"}
         self._actor_id = settings.synthetic_actor_id
         self._tenant_id = settings.synthetic_tenant_id
+        self._platform_admin = settings.synthetic_platform_admin
         self._codec = SignedSessionCodec(
             settings.resolved_session_secret(),
             settings.session_max_age_seconds,
@@ -88,6 +89,11 @@ class SyntheticIdentityProvider:
             tenant_id=tenant_id or self._tenant_id,
             authentication_source="synthetic-server-session",
             mode="synthetic",
+            platform_roles=(
+                frozenset({"platform_admin"})
+                if self._platform_admin
+                else frozenset()
+            ),
         )
 
     def issue_session(self, identity: AuthenticatedIdentity) -> str:

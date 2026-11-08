@@ -530,6 +530,37 @@ export function ReportPreview({ studyId, siteId }: Props) {
               <p>{String(currentReport.content.scope_notice ?? "")}</p>
               <p>{String(currentReport.content.coverage_summary ?? "")}</p>
               <p>{String(currentReport.content.not_checked_summary ?? "")}</p>
+              {Array.isArray(currentReport.content.review_sections) &&
+                currentReport.content.review_sections.length > 0 && (
+                  <section className="source-reference report-review-backfill">
+                    <p className="eyebrow">模板核查回填</p>
+                    {(currentReport.content.review_sections as Array<{
+                      section_key: string;
+                      section_title: string;
+                      items: Array<{
+                        item_key: string;
+                        question: string;
+                        status: string;
+                        note: string;
+                        source_locator: string;
+                      }>;
+                    }>).map((section) => (
+                      <div key={section.section_key}>
+                        <strong>{section.section_title}</strong>
+                        <ul>
+                          {section.items.map((item) => (
+                            <li key={item.item_key}>
+                              <strong>{item.item_key}</strong>{" "}
+                              {item.question} · {item.status}
+                              {item.note ? ` · ${item.note}` : ""}
+                              <small>来源：{item.source_locator}</small>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </section>
+                )}
 
               <form className="report-text-form" onSubmit={(event) => void saveText(event)}>
                 <label>

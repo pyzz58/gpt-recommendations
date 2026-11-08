@@ -41,6 +41,10 @@ class Settings(BaseSettings):
     synthetic_tenant_id: str = Field(
         default="synthetic", alias="CRA_SYNTHETIC_TENANT_ID"
     )
+    synthetic_platform_admin: bool = Field(
+        default=False,
+        alias="CRA_SYNTHETIC_PLATFORM_ADMIN",
+    )
     oidc_issuer: str | None = Field(default=None, alias="CRA_OIDC_ISSUER")
     oidc_client_id: str | None = Field(
         default=None, alias="CRA_OIDC_CLIENT_ID"

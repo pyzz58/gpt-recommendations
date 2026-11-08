@@ -260,6 +260,129 @@ def test_second_site_identity_only_receives_its_own_site(
         ] == ["B01"]
 
 
+def test_synthetic_admin_creates_and_updates_blank_workspace(
+    settings, session_factory
+):
+    admin_settings = settings.model_copy(
+        update={"synthetic_platform_admin": True}
+    )
+    provider = SyntheticIdentityProvider(admin_settings)
+    with _client(
+        admin_settings, session_factory, provider
+    ) as client:
+        assert client.get("/api/v1/me/scopes").status_code == 401
+        assert (
+            client.post("/api/v1/auth/synthetic/session").status_code
+            == 200
+        )
+        csrf = client.cookies.get("cra_csrf")
+        assert csrf
+        headers = {"X-CSRF-Token": csrf}
+
+        empty = client.get("/api/v1/me/scopes")
+        assert empty.status_code == 200
+        assert empty.json()["platform_roles"] == ["platform_admin"]
+        assert empty.json()["studies"] == []
+
+        study = client.post(
+            "/api/v1/studies",
+            headers=headers,
+            json={
+                "expected_revision": 0,
+                "idempotency_key": "ux-study-one",
+                "code": "UX-001",
+                "title": "空白项目一",
+                "jurisdiction": "synthetic",
+            },
+        )
+        assert study.status_code == 201
+        study_id = study.json()["id"]
+
+        site = client.post(
+            f"/api/v1/studies/{study_id}/sites",
+            headers=headers,
+            json={
+                "expected_revision": 0,
+                "idempotency_key": "ux-site-a",
+                "code": "01",
+                "name": "中心一",
+            },
+        )
+        assert site.status_code == 201
+        assert site.json()["code"] == "01"
+
+        duplicate = client.post(
+            f"/api/v1/studies/{study_id}/sites",
+            headers=headers,
+            json={
+                "expected_revision": 0,
+                "idempotency_key": "ux-site-duplicate",
+                "code": "01",
+                "name": "重复中心编号",
+            },
+        )
+        assert duplicate.status_code == 409
+        assert duplicate.json()["error"]["code"] == "resource_already_exists"
+
+        second_study = client.post(
+            "/api/v1/studies",
+            headers=headers,
+            json={
+                "expected_revision": 0,
+                "idempotency_key": "ux-study-two",
+                "code": "UX-002",
+                "title": "空白项目二",
+                "jurisdiction": "synthetic",
+            },
+        )
+        assert second_study.status_code == 201
+        same_site_code = client.post(
+            f"/api/v1/studies/{second_study.json()['id']}/sites",
+            headers=headers,
+            json={
+                "expected_revision": 0,
+                "idempotency_key": "ux-site-b",
+                "code": "01",
+                "name": "项目二中心一",
+            },
+        )
+        assert same_site_code.status_code == 201
+
+        refreshed = client.get("/api/v1/me/scopes").json()
+        assert [item["code"] for item in refreshed["studies"]] == [
+            "UX-001",
+            "UX-002",
+        ]
+        assert [
+            site["code"] for site in refreshed["studies"][0]["sites"]
+        ] == ["01"]
+
+
+def test_non_admin_synthetic_identity_cannot_create_study(
+    settings, session_factory
+):
+    provider = SyntheticIdentityProvider(settings)
+    with _client(settings, session_factory, provider) as client:
+        assert (
+            client.post("/api/v1/auth/synthetic/session").status_code
+            == 200
+        )
+        csrf = client.cookies.get("cra_csrf")
+        response = client.post(
+            "/api/v1/studies",
+            headers={"X-CSRF-Token": csrf},
+            json={
+                "expected_revision": 0,
+                "idempotency_key": "ux-denied-study",
+                "code": "DENIED",
+                "title": "不应创建",
+                "jurisdiction": "synthetic",
+            },
+        )
+        assert response.status_code == 403
+        assert response.json()["error"]["code"] == "authorization_denied"
+
+
 def test_production_rejects_synthetic_identity_and_client_headers(
     session_factory,
 ):

@@ -98,8 +98,8 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
-      "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。",
+      "status": "in_progress",
+      "acceptance": "PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。本轮还须满足 UX-A01；UX-A02；UX-A03 的正常产品验收。",
       "requirement_ids": [
         "CRA-R002",
         "CRA-R036",
@@ -386,6 +386,18 @@
             "tested_commit": "7c369da552db7f11d8b794bd9edc19174f8aa6e9",
             "subject_digest": "3178b7953244d62d49a456ffc52365553013b5a3c3d22f18141f021fbde30a47"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W01",
+            "run_id": 42359819771,
+            "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
+            "subject_digest": "f251e4c797f6606de20bc03c4fbd8a9b0825c5822165d5d4d78877cde7895538"
+          }
         }
       ],
       "track": "v1a",
@@ -451,6 +463,11 @@
           "path": "tests/integration/test_governance.py",
           "kind": "test",
           "purpose": "真实PostgreSQL隔离与事务"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -464,12 +481,14 @@
         "实现旧revision冲突、幂等重放、不同输入复用同键的冲突以及失败回滚。",
         "在专属CI加入临时PostgreSQL和迁移/集成检查；真实数据库检查不能由SQLite代替。",
         "按plan/implementation.json建立cra-w01专属CI job与migrate/test步骤。实际通过后生成绑定源码/规范指纹和GitHub run的completion_evidence，不能用自报文字完成任务。",
-        "遵守复用清单：沿用SQLAlchemy/Alembic等已选基础组件，不整仓移植模板，不提前安装所有候选。锁文件与依赖台账区分研究HEAD和实际安装版本。"
+        "遵守复用清单：沿用SQLAlchemy/Alembic等已选基础组件，不整仓移植模板，不提前安装所有候选。锁文件与依赖台账区分研究HEAD和实际安装版本。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A01；UX-A02；UX-A03，逐批验证后继续下一批。"
       ],
       "done_when": [
         "两中心合成数据不能跨范围读取。",
         "重复命令不重复写入，旧版本不能覆盖新值。",
-        "失败事务无半完成业务或审计记录，CI可复现。"
+        "失败事务无半完成业务或审计记录，CI可复现。",
+        "UX-A01；UX-A02；UX-A03 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "不实现全部未来业务表、OCR或报告页面。",
@@ -536,8 +555,8 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
-      "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
+      "status": "in_progress",
+      "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。本轮还须满足 UX-A01；UX-A04；UX-A05 的正常产品验收。",
       "requirement_ids": [
         "CRA-R035",
         "CRA-R036",
@@ -911,6 +930,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "d1780ebd3213d513ec59830471625cf384b78cb7c3910f3c39c09bb2b19eba13"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W02",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "d1780ebd3213d513ec59830471625cf384b78cb7c3910f3c39c09bb2b19eba13"
+          }
         }
       ],
       "track": "v1a",
@@ -981,6 +1012,11 @@
           "path": "backend/cra_app/shared/output_contract.py",
           "kind": "code",
           "purpose": "共用输出范围、依据版本和事实/候选/用户确认类型"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -996,12 +1032,14 @@
         "增加typecheck/build/test脚本及CI，记录并锁定实际依赖版本。",
         "从实际API生成contracts/openapi.json及前端类型，增加api:check，后续接口变化同步生成，禁止维护两套手写类型。",
         "前端按AG Grid Community/React与React-PDF路线准备可复用边界，实际依赖在使用任务加入锁文件；不导入Enterprise，不以完整FastAPI模板覆盖当前SQLAlchemy/授权/证据设计。",
-        "保留iPad Safari、桌面浏览器、刷新和重新登录可用的服务端授权/CSRF边界；实际设备与弱网接续验收登记到W12，不在本任务伪装完成。"
+        "保留iPad Safari、桌面浏览器、刷新和重新登录可用的服务端授权/CSRF边界；实际设备与弱网接续验收登记到W12，不在本任务伪装完成。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A01；UX-A04；UX-A05，逐批验证后继续下一批。"
       ],
       "done_when": [
         "可选择授权项目/中心，刷新后上下文正确。",
         "模型/OCR未配置时显示不可用，不显示自动完成。",
-        "实际验证Codespaces启动，未运行的部分明确记录。"
+        "实际验证Codespaces启动，未运行的部分明确记录。",
+        "UX-A01；UX-A04；UX-A05 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "页面框架完成不代表受试者监查业务已完成。"
@@ -1093,8 +1131,8 @@
         "M02",
         "M12"
       ],
-      "status": "verified",
-      "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。",
+      "status": "in_progress",
+      "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。本轮还须满足 UX-A06 的正常产品验收。",
       "requirement_ids": [
         "CRA-R003",
         "CRA-R004",
@@ -1457,6 +1495,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "f29412fb6c68e99782b6f39e8dc93e7ed4b57a6b895e4f5e2e82eac93a7d3d29"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W03",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "f29412fb6c68e99782b6f39e8dc93e7ed4b57a6b895e4f5e2e82eac93a7d3d29"
+          }
         }
       ],
       "track": "v1a",
@@ -1537,6 +1587,11 @@
           "path": "web/src/components/SourcePdfViewer.tsx",
           "kind": "code",
           "purpose": "React-PDF源文件展示及授权/定位边界"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -1557,12 +1612,14 @@
         "核对Procrastinate所选发布版/驱动的入队事务能力；未经共享事务验证时使用业务写入+Outbox同事务，再relay入队并幂等处理。队列只传内部ID，worker重查授权和版本。",
         "以相同少量纯合成样本比较PaddleOCR结构管道与Docling候选；记录精确定位/表格/条件覆盖、模型许可、运行兼容和负担，选合适的一个，不默认双装。",
         "源PDF查看复用React-PDF并本地打包worker/字库，保留SourceRef页和坐标；不是用PDF查看器替代OCR或完整DOCX解析。",
-        "保留授权资料、有效版本和原文定位边界；跨设备检索、离线与同步冲突的实际验收登记到W12/W15，不另建脱离开放权限、患者与问题的知识平台。"
+        "保留授权资料、有效版本和原文定位边界；跨设备检索、离线与同步冲突的实际验收登记到W12/W15，不另建脱离开放权限、患者与问题的知识平台。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A06，逐批验证后继续下一批。"
       ],
       "done_when": [
         "脚注和加粗等有意义格式不丢失。",
         "解析失败、背景、未处理分别记录，不以条目多表示提取完整。",
-        "重试不重复建版本，越权资料不可读取。"
+        "重试不重复建版本，越权资料不可读取。",
+        "UX-A06 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "不把所有临床源文件纳入逐字段自动OCR。"
@@ -1635,8 +1692,8 @@
         "M03",
         "M12"
       ],
-      "status": "verified",
-      "acceptance": "从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。",
+      "status": "in_progress",
+      "acceptance": "从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。本轮还须满足 UX-A07 的正常产品验收。",
       "requirement_ids": [
         "CRA-R002",
         "CRA-R004",
@@ -2007,6 +2064,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "9d30a6d258814bba61f3d8b5826684693e985409f61a1d5026baf572f2a3cf95"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W04",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "9d30a6d258814bba61f3d8b5826684693e985409f61a1d5026baf572f2a3cf95"
+          }
         }
       ],
       "track": "v1a",
@@ -2072,6 +2141,11 @@
           "path": "migrations/versions/0003_rules_versions.py",
           "kind": "migration",
           "purpose": "规则快照、不可变版本、来源、关系、启用区间和提取覆盖"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -2093,7 +2167,8 @@
         "规则用途/安全维度使用显式、可确认的元数据，不依赖英文规则编号；普通中文要求至少保留为可复核候选和语义缺口。",
         "把规则用途和安全维度保存为显式元数据，并允许项目共享资料在项目默认或各中心独立采用日生效。",
         "普通中文要求即使超出有限AST，也保留为带原文、覆盖状态和具体语义缺口的可复核候选。",
-        "中心采用覆盖只限于同一Rule版本沿革；独立中心SOP即使复用rule_key也必须与项目规则共同参与，不能静默删除项目来源。"
+        "中心采用覆盖只限于同一Rule版本沿革；独立中心SOP即使复用rule_key也必须与项目规则共同参与，不能静默删除项目来源。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A07，逐批验证后继续下一批。"
       ],
       "done_when": [
         "摘要、完整条件和原文一致，用户修正保留历史。",
@@ -2102,7 +2177,8 @@
         "条件C走B、D走F且例外不丢；启用日当天采用新版本，历史事件依据不被覆盖。",
         "自然中文要求不会静默消失；可结构化部分进入条件AST，无法稳定结构化的部分保留analysis_required、原文和具体追问。",
         "同一共享项目方案可按中心不同启用日选择；普通中文要求不会静默变成非规则；unknown例外及单位条件保持unknown。",
-        "项目默认、同一共享规则的中心采用和独立中心同编号SOP均有真实PostgreSQL回归；独立SOP不能遮掉项目规则。"
+        "项目默认、同一共享规则的中心采用和独立中心同编号SOP均有真实PostgreSQL回归；独立SOP不能遮掉项目规则。",
+        "UX-A07 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "不硬编码真实方案数字或替项目组解释冲突。"
@@ -2179,8 +2255,8 @@
       "module_ids": [
         "M04"
       ],
-      "status": "verified",
-      "acceptance": "EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。",
+      "status": "in_progress",
+      "acceptance": "EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。本轮还须满足 UX-A08；UX-A09 的正常产品验收。",
       "requirement_ids": [
         "CRA-R010",
         "CRA-R011",
@@ -2568,6 +2644,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "e7c65560a96874cec3cef9c888bf5bdcced6c61726333ba0ca918cfb3564925e"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W05",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "e7c65560a96874cec3cef9c888bf5bdcced6c61726333ba0ca918cfb3564925e"
+          }
         }
       ],
       "track": "v1a",
@@ -2613,6 +2701,11 @@
           "path": "migrations/versions/0004_subjects_coverage.py",
           "kind": "migration",
           "purpose": "患者身份映射、不可变事实修订、访视要求、分类断点和局部核查决定"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -2630,7 +2723,8 @@
         "保存可恢复的跳过选择，输入变化仅提示可恢复，不自动取消；不用跳过产生待整改Issue。",
         "区分适用前提/触发和待核查的时间断言，继承上游unknown/conflict；自动窗口候选不写成CRA已确认。",
         "递归子清单继承全部祖先前提、例外和非日期分支条件；同窗口不同条件路径按路径身份分别保留，真正适用后超窗仍输出out_of_window。",
-        "RuleBranch按target_node_ids把选择条件传给实际目标；目标自身日期trigger作为待查义务保留，重复表达才去重，多入口采用OR可达语义。"
+        "RuleBranch按target_node_ids把选择条件传给实际目标；目标自身日期trigger作为待查义务保留，重复表达才去重，多入口采用OR可达语义。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A08；UX-A09，逐批验证后继续下一批。"
       ],
       "done_when": [
         "不同患者及类别断点不混用。",
@@ -2639,7 +2733,8 @@
         "缺输注日拒绝补充后时间窗路径停止，已具备身份的检验数值核对仍可运行；选择不被扩大到全部患者。",
         "前提false不生成窗口任务；前提/例外unknown保持unknown_applicability；未知实际日期不输出超窗；not_applicable路径仍可查看但不作为待办。",
         "父级false、父级例外true、祖先unknown和兄弟同窗路径均经实际API验证；门控通过但日期超窗仍保留偏离。",
-        "分支直接指向日期子项、经容器间接指向、分支false/unknown/true和真实超窗四项正向API通过；开放审核发现的工程门禁已接入next_task与task_evidence。"
+        "分支直接指向日期子项、经容器间接指向、分支false/unknown/true和真实超窗四项正向API通过；开放审核发现的工程门禁已接入next_task与task_evidence。",
+        "UX-A08；UX-A09 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "不把上传的局部资料称作完整病史。"
@@ -2707,8 +2802,8 @@
         "M05",
         "M06"
       ],
-      "status": "verified",
-      "acceptance": "上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。",
+      "status": "in_progress",
+      "acceptance": "上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。本轮还须满足 UX-A05；UX-A09；UX-A10 的正常产品验收。",
       "requirement_ids": [
         "CRA-R001",
         "CRA-R009",
@@ -3090,6 +3185,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "1bb74aab977c241210f8f9fd0d7f14c1d77342f6cecc72d30b5d8617fd4bcf07"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W06",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "1bb74aab977c241210f8f9fd0d7f14c1d77342f6cecc72d30b5d8617fd4bcf07"
+          }
         }
       ],
       "track": "v1a",
@@ -3155,6 +3262,11 @@
           "path": "migrations/versions/0005_issues_monitoring.py",
           "kind": "migration",
           "purpose": "Issue、分项Action、Query、遗留导入、监查访视和访前选择"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -3170,13 +3282,15 @@
         "本次开始展示完整遗留，单项可展开问题、位置、建议来源和已知进展；点击确认完成对应事项，访前勾选不删问题。",
         "接续新患者监查和范围简记；未完项保留，不发明全局审批锁或阻断紧急事项。",
         "复用W03解析历史DOCX报告/XLSX track或问题文字，预览整理、用户修正并确认导入，关联原编号/位置和幂等键，缺项不编造。",
-        "W06只通过M02公开来源端口展示上传目录的对照引用；M10状态功能到W10启用，不先行冒称完成。"
+        "W06只通过M02公开来源端口展示上传目录的对照引用；M10状态功能到W10启用，不先行冒称完成。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A05；UX-A09；UX-A10，逐批验证后继续下一批。"
       ],
       "done_when": [
         "PD上报已完成、数据更正仍待办可以同时呈现。",
         "没有预录CRC回复、附件、说明也能点击确认整改；若用户指出仍未改好则保留/重开相应事项。",
         "选2项后完整遗留清单不变，第三次跟进仍为同一问题编号。",
-        "从前次文件进入本次提醒和展开详情，重复导入不重复建问题；签发历史不变。"
+        "从前次文件进入本次提醒和展开详情，重复导入不重复建问题；签发历史不变。",
+        "UX-A05；UX-A09；UX-A10 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "本步保存选择和预览，最终模板化信件在W11完成。",
@@ -3245,8 +3359,8 @@
       "module_ids": [
         "M07"
       ],
-      "status": "verified",
-      "acceptance": "预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。",
+      "status": "in_progress",
+      "acceptance": "预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。本轮还须满足 UX-A08 的正常产品验收。",
       "requirement_ids": [
         "CRA-R013",
         "CRA-R014",
@@ -3603,6 +3717,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "08d36b0132d0059ac8faaaff79d80b44be9442e01ef298f70b98171920c12b76"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W07",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "08d36b0132d0059ac8faaaff79d80b44be9442e01ef298f70b98171920c12b76"
+          }
         }
       ],
       "track": "v1a",
@@ -3648,6 +3774,11 @@
           "path": "validation/W07_DEPENDENCIES.md",
           "kind": "document",
           "purpose": "openpyxl及AG Grid Community/React版本、许可和复用边界"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -3660,12 +3791,14 @@
         "复用已确认列映射，核实新患者/访视/重复实例歧义。",
         "事务保存不可变快照和范围，重复导入幂等，更正版另建快照。",
         "向M08提供标准检验记录，同时保留原值、单位、时间精度和原始定位。",
-        "导入预览复用AG Grid Community/React，数据与列映射由服务端保存；不依赖Enterprise Excel Export进行导入或track生成。"
+        "导入预览复用AG Grid Community/React，数据与列映射由服务端保存；不依赖Enterprise Excel Export进行导入或track生成。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A08，逐批验证后继续下一批。"
       ],
       "done_when": [
         "同日初检/复查不被合并。",
         "过滤导出不会产生虚假漏录结论。",
-        "标准字段可回到原Excel位置。"
+        "标准字段可回到原Excel位置。",
+        "UX-A08 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "不写回EDC，不扩展用药/样本自动核对。"
@@ -3723,8 +3856,8 @@
         "M08",
         "M12"
       ],
-      "status": "verified",
-      "acceptance": "支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。",
+      "status": "in_progress",
+      "acceptance": "支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。本轮还须满足 UX-A08；UX-A09 的正常产品验收。",
       "requirement_ids": [
         "CRA-R013",
         "CRA-R015",
@@ -4070,6 +4203,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "84d7498fd1ac81e3e0024d72b4e69b847292262d0711a77ccfcda17230ab140f"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W08",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "84d7498fd1ac81e3e0024d72b4e69b847292262d0711a77ccfcda17230ab140f"
+          }
         }
       ],
       "track": "v1a",
@@ -4140,6 +4285,11 @@
           "path": "backend/cra_app/providers/evaluate_labs.py",
           "kind": "code",
           "purpose": "实际文件识别/匹配/比较和人工负担评估入口"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -4162,7 +4312,8 @@
         "复用报告级身份/日期上下文；比较上下限、比较符、单位和报告元数据，不仅比较异常标志。",
         "检验上传走持久Job/Outbox和Processor worker，保存租约、尝试和可恢复失败状态。",
         "隔离OCR依赖使用完整锁文件与固定模型标识/哈希。",
-        "succeeded作业重复投递在provider前直接返回；公开retry区分活跃和过期租约，过期重排使用attempt/owner fencing防止旧结果迟到写入。"
+        "succeeded作业重复投递在provider前直接返回；公开retry区分活跃和过期租约，过期重排使用attempt/owner fencing防止旧结果迟到写入。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A08；UX-A09，逐批验证后继续下一批。"
       ],
       "done_when": [
         "初检、复查和修订不误配，多候选明确待核实。",
@@ -4173,7 +4324,8 @@
         "更正→单项确认、更正→批量确认、连续局部更正均保留当前有效值；原始识别历史不变。",
         "页眉身份/日期可供结果行复用；参考上下限本身不同即使标志相同也报告差异。",
         "上传请求快速返回job，worker中断/超时后同任务可恢复，撤权后不能继续读取。",
-        "完成态worker复投不调用provider、不改revision/候选/完成审计；过期租约可经公开API恢复，活跃租约受保护，旧attempt不覆盖新结果和CRA更正。"
+        "完成态worker复投不调用provider、不改revision/候选/完成审计；过期租约可经公开API恢复，活跃租约受保护，旧attempt不覆盖新结果和CRA更正。",
+        "UX-A08；UX-A09 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "不扩展用药/样本OCR；不宣称支持所有医院版式、模糊图像或最终医学安全判断。",
@@ -4249,8 +4401,8 @@
         "M09",
         "M12"
       ],
-      "status": "verified",
-      "acceptance": "基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。",
+      "status": "in_progress",
+      "acceptance": "基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。本轮还须满足 UX-A09；UX-A10 的正常产品验收。",
       "requirement_ids": [
         "CRA-R007",
         "CRA-R016",
@@ -4305,6 +4457,11 @@
           "path": "backend/cra_app/providers/evaluate_cases.py",
           "kind": "code",
           "purpose": "实际分析模型与独立预期的评估入口"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -4323,7 +4480,8 @@
         "安全事实按明确event_fact_id或事件repeat_instance范围选择，区分事件事实、相关历史和后来补充结论。",
         "读取研究配置法域并继承W04共同约束unknown/conflict；模型输入分类由受信环境和元数据决定。",
         "检验一致但异常保留为安全线索；字段跳过不重问，stale比较不得作为新事实。",
-        "模型解释使用独立持久运行、租约和重试；响应accepted只表示grounding通过，不自行升级临床能力。"
+        "模型解释使用独立持久运行、租约和重试；响应accepted只表示grounding通过，不自行升级临床能力。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A09；UX-A10，逐批验证后继续下一批。"
       ],
       "done_when": [
         "分析给出具体应核实的问题，而非泛泛问医学。",
@@ -4331,7 +4489,8 @@
         "模拟provider与真实provider验证分开，缺凭证明示能力缺口。",
         "同一受试者多个AE不混用；unknown例外不生成确定性候选。",
         "一致且异常、不一致、不可比较、跳过及stale分别处理；数据差异不直接认定AE。",
-        "模型运行可在worker恢复且模型/依赖/权重版本可复现；输出能力保持limited而非临床validated。"
+        "模型运行可在worker恢复且模型/依赖/权重版本可复现；输出能力保持limited而非临床validated。",
+        "UX-A09；UX-A10 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "不自动作最终医学判断或无依据的临床处置。"
@@ -4714,6 +4873,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "3262771a69b04b7141d1fb71f86d86e837e990abcac5f5a6b99f418159c2fa33"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W09",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "3262771a69b04b7141d1fb71f86d86e837e990abcac5f5a6b99f418159c2fa33"
+          }
         }
       ],
       "completion_evidence": {
@@ -4735,8 +4906,8 @@
         "M05",
         "M10"
       ],
-      "status": "verified",
-      "acceptance": "原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。",
+      "status": "in_progress",
+      "acceptance": "原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。本轮还须在模板驱动监查工作区中保持原有目录/复杂检验功能，并完成回归。",
       "requirement_ids": [
         "CRA-R001",
         "CRA-R003",
@@ -4801,13 +4972,15 @@
         "直接复用M02上传的原目录，提供reference_only对照和可选页/行/用户标注及简单状态；可识别部分再建立条目，不要求重录整本。",
         "显示上次缺件及新增变化，复用M06行动，不每次重复建问题。",
         "按项目资料配置启动/关闭要求，保存具体来源与缺口。",
-        "无遗留简述；有遗留直接交代前因后果、现状及继续工作，不新造审批链。"
+        "无遗留简述；有遗留直接交代前因后果、现状及继续工作，不新造审批链。",
+        "复用现有模块接入 PR #85 工作台，并保持本任务原有支持边界和来源约束。"
       ],
       "done_when": [
         "核实补齐后保留历史，下次不重录整个目录。",
         "启动/关闭采用项目要求，清单完成不等于中心获准关闭。",
         "交接简洁且后续事项清楚。",
-        "不先建全量结构目录也可对照原文件，W06已存问题接入后编号/状态不变。"
+        "不先建全量结构目录也可对照原文件，W06已存问题接入后编号/状态不变。",
+        "上游工作台补齐后，本任务原有消费者和反例回归继续通过。"
       ],
       "not_in_scope": [
         "不扩为eTMF替代产品或复杂中心运营平台。"
@@ -5110,6 +5283,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "9b9e5cee3e1593081dda861edca5674d6fe963a0c9a97e023cc797508e86cfd6"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "An upstream verified task was reopened for the PR #85 blank-project workbench implementation; this dependent task must be revalidated.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W10",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "9b9e5cee3e1593081dda861edca5674d6fe963a0c9a97e023cc797508e86cfd6"
+          }
         }
       ],
       "completion_evidence": {
@@ -5131,8 +5316,8 @@
       "module_ids": [
         "M11"
       ],
-      "status": "verified",
-      "acceptance": "模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。",
+      "status": "in_progress",
+      "acceptance": "模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。本轮还须满足 UX-A06；UX-A09；UX-A10 的正常产品验收。",
       "requirement_ids": [
         "CRA-R009",
         "CRA-R022",
@@ -5201,6 +5386,11 @@
           "path": "tests/fixtures/reports/artifacts/synthetic_track_template.xlsx",
           "kind": "test",
           "purpose": "可公开合成 Excel track 模板"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -5215,12 +5405,14 @@
         "同一记录分别生成访前选取、上次问题处理、本次发现、访后事项及track。",
         "校验报告措辞不超实际范围，未知不能润色为无异常；事实更正与文字修改分开。",
         "实现不可变快照及有记录的修订，新进展只进入后续材料。",
-        "真正生成DOCX/XLSX并核对内容、表格及中文排版，不只创建导出按钮。"
+        "真正生成DOCX/XLSX并核对内容、表格及中文排版，不只创建导出按钮。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A06；UX-A09；UX-A10，逐批验证后继续下一批。"
       ],
       "done_when": [
         "旧问题处理和新发现都按模板呈现，整改建议来源可回查。",
         "后续行动变化不改写签发报告。",
-        "文档和track字段一致且实际文件可打开。"
+        "文档和track字段一致且实际文件可打开。",
+        "UX-A06；UX-A09；UX-A10 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "不自动发信、签名、写回EDC，外部Excel双向同步未承诺。"
@@ -5457,6 +5649,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "3cf45e6c2ebda0a519bae3922245455dac48633615bb13578ffd59de4a39645b"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W11",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "3cf45e6c2ebda0a519bae3922245455dac48633615bb13578ffd59de4a39645b"
+          }
         }
       ],
       "evidence": [
@@ -5489,8 +5693,8 @@
       "module_ids": [
         "M05"
       ],
-      "status": "verified",
-      "acceptance": "模拟前次报告→访前信→到中心复核→新受试者核查→报告→下一次接续全部完成；用户只需临床操作。",
+      "status": "in_progress",
+      "acceptance": "模拟前次报告→访前信→到中心复核→新受试者核查→报告→下一次接续全部完成；用户只需临床操作。本轮还须满足 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 的正常产品验收。",
       "requirement_ids": [
         "CRA-R001",
         "CRA-R006",
@@ -5551,6 +5755,11 @@
           "path": "web/src/journey.css",
           "kind": "code",
           "purpose": "四阶段工作流样式"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -5563,14 +5772,16 @@
         "验证正常范围简记、低可信/异常集中复核、缺数据拒绝后仅跳过相关路径和主动恢复，不能以大量补录替代主流程。",
         "刷新、重新登录、切中心及重试后状态正确，紧急入口不被普通顺序挡住。",
         "普通界面使用临床工作语言，必要技术详情放到来源或诊断详情中。",
-        "串联iPad拍照/上传检验报告、电脑Excel核对和两端同一记录接续；弱网/中断恢复使用合成文件验证并说明离线边界。"
+        "串联iPad拍照/上传检验报告、电脑Excel核对和两端同一记录接续；弱网/中断恢复使用合成文件验证并说明离线边界。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10，逐批验证后继续下一批。"
       ],
       "done_when": [
         "重开系统仍能找到同一问题的处理历史。",
         "选2条保留全部问题、PD与更正分别完成、下次继续均在完整路径验证。",
         "四阶段共享事实而不是四套数据库。",
         "真实API端到端路径包含文件自动提取和Excel导入；provider真实验证缺口如实说明，mock成功不能代表识别性能。",
-        "iPad端上传/查看/确认与电脑端Excel核对可在同一记录接续；刷新、重登、中断重试和换设备不丢业务状态。"
+        "iPad端上传/查看/确认与电脑端Excel核对可在同一记录接续；刷新、重登、中断重试和换设备不丢业务状态。",
+        "UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "浏览器演示成功不能称真实临床用途已经验证。"
@@ -5803,6 +6014,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "2c1cdea98ac679eef272feeb7b3d77bf8f291c4713c63ec94fd2a6e6f41fb133"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W12",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "2c1cdea98ac679eef272feeb7b3d77bf8f291c4713c63ec94fd2a6e6f41fb133"
+          }
         }
       ],
       "completion_evidence": {
@@ -5831,8 +6054,8 @@
       "module_ids": [
         "M14"
       ],
-      "status": "verified",
-      "acceptance": "逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。",
+      "status": "in_progress",
+      "acceptance": "逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。本轮还须满足 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 的正常产品验收。",
       "requirement_ids": [
         "CRA-R035",
         "CRA-R037",
@@ -5877,6 +6100,11 @@
           "path": "tools/build_validation_report.py",
           "kind": "code",
           "purpose": "合成/获授权证据的去敏汇总，不虚构试用结果"
+        },
+        {
+          "path": "plan/WORKBENCH_USABILITY_20261108.md",
+          "kind": "document",
+          "purpose": "2026-11-08 approved blank-project workbench and two-visit acceptance input"
         }
       ],
       "contracts": [
@@ -5889,13 +6117,15 @@
         "检查权限、作业重试、历史、恢复及provider不可用路径。",
         "给出V1A能力与限制；缺模型、资料或授权时如实说明，不能宣布完整自动试用就绪。",
         "按用途记录错误后果、验证责任和能力暂停/恢复；发布验证职责不增加CRA每次监查审批。",
-        "区分离线汇总可完成与核心自动能力未达标，provider在W08/W09有明确验证落点，W15负责实际环境和获授权试用。"
+        "区分离线汇总可完成与核心自动能力未达标，provider在W08/W09有明确验证落点，W15负责实际环境和获授权试用。",
+        "按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10，逐批验证后继续下一批。"
       ],
       "done_when": [
         "每项宣称具备的能力有证据或标未验证。",
         "总时间有实测记录，不编造节时比例。",
         "试用范围、人工步骤和实质缺口清楚。",
-        "无实际识别证据的版本不得被称为实现核心减负；无法获得环境时如实列provider未验证和剩余工作。"
+        "无实际识别证据的版本不得被称为实现核心减负；无法获得环境时如实列provider未验证和剩余工作。",
+        "UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。"
       ],
       "not_in_scope": [
         "不以22项基础测试或单次成功代表整个系统成熟。"
@@ -6099,6 +6329,18 @@
             "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
             "subject_digest": "cb53477f5c5c81fbd556934a0b85efb934b74e938b83eb4691593aade4623868"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "PR #85 / ee11d6ead048751102d00f65b1c3747006771433 added the approved blank-project workbench layout, template-driven review and two-visit acceptance scope. This task is reopened for implementation and source-bound regression.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W13",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "cb53477f5c5c81fbd556934a0b85efb934b74e938b83eb4691593aade4623868"
+          }
         }
       ]
     },
@@ -6112,8 +6354,8 @@
         "M08",
         "M12"
       ],
-      "status": "verified",
-      "acceptance": "V1B在W08已有自动读取基础上扩展难版式/图像，沿用同一字段、匹配和比较；按关键错误与总负担实测决定支持范围。",
+      "status": "in_progress",
+      "acceptance": "V1B在W08已有自动读取基础上扩展难版式/图像，沿用同一字段、匹配和比较；按关键错误与总负担实测决定支持范围。本轮还须在模板驱动监查工作区中保持原有目录/复杂检验功能，并完成回归。",
       "requirement_ids": [
         "CRA-R013",
         "CRA-R015",
@@ -6177,12 +6419,14 @@
         "在W08已有adapter和SupportProfile上评估复杂版式、图像质量及更多格式，重新核对许可/成本/授权条件。",
         "保存图像位置、候选和识别状态，重点可复核小数点、单位、比较符和实例。",
         "按同一校验/集中复核策略进入原比对，少量失败可补录或按用户选择跳过相关路径。",
-        "更换provider不覆盖已确认事实；以字段错误及总复核时间评价。"
+        "更换provider不覆盖已确认事实；以字段错误及总复核时间评价。",
+        "复用现有模块接入 PR #85 工作台，并保持本任务原有支持边界和来源约束。"
       ],
       "done_when": [
         "识别确实进入原比对服务，不重复建立问题和报告状态。",
         "不支持格式明确提示，不预设未经验证的通用准确率。",
-        "人工确认和跳过路径保留，非检验源图不自动核对。"
+        "人工确认和跳过路径保留，非检验源图不自动核对。",
+        "上游工作台补齐后，本任务原有消费者和反例回归继续通过。"
       ],
       "not_in_scope": [
         "不后置第一次自动读取，不扩展用药或样本OCR，不重建核对/问题/报告系统。"
@@ -6328,6 +6572,18 @@
             "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132；cra-w14 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例、W12阶段竞态修复和证据步骤索引重试后的绑定源码上通过专属job；被测提交6967ecf41fb10f199dbc4401ca48c5f1d53d0c98。"
           ],
           "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W14",
+            "run_id": 42447288132,
+            "tested_commit": "6967ecf41fb10f199dbc4401ca48c5f1d53d0c98",
+            "subject_digest": "d8ee66ffb5b556257d7053d44e52aef7ebdafff653311918b8b228755968c368"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "An upstream verified task was reopened for the PR #85 blank-project workbench implementation; this dependent task must be revalidated.",
+          "previous_completion_evidence": {
             "kind": "github_actions",
             "profile_id": "CRA-W14",
             "run_id": 42447288132,

@@ -44,7 +44,7 @@ describe("workspace selection", () => {
     expect(selection).toEqual({ studyId: "study-a", siteId: "site-a" });
   });
 
-  it("returns no context when the actor has no authorized center", () => {
+  it("keeps a blank project selected so its first center can be created", () => {
     expect(
       resolveStoredSelection(
         [
@@ -55,6 +55,6 @@ describe("workspace selection", () => {
         ],
         null
       )
-    ).toBeNull();
+    ).toEqual({ studyId: "study-a", siteId: null });
   });
 });

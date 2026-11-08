@@ -204,6 +204,7 @@ export function Router() {
     <WorkspaceSelector
       scopes={screen.scopes}
       capabilities={screen.capabilities}
+      onReload={load}
       onLogout={signOut}
     />
   );

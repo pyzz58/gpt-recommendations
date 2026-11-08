@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W02。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -36,6 +36,7 @@
 | `backend/cra_app/providers/probe.py` | code | 仅合成资料的依赖/资源与候选输出探测入口 |
 | `backend/cra_app/documents/storage.py` | code | boto3私有文件薄适配，不暴露永久公开链接 |
 | `web/src/components/SourcePdfViewer.tsx` | code | React-PDF源文件展示及授权/定位边界 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -70,6 +71,7 @@
 10. 以相同少量纯合成样本比较PaddleOCR结构管道与Docling候选；记录精确定位/表格/条件覆盖、模型许可、运行兼容和负担，选合适的一个，不默认双装。
 11. 源PDF查看复用React-PDF并本地打包worker/字库，保留SourceRef页和坐标；不是用PDF查看器替代OCR或完整DOCX解析。
 12. 保留授权资料、有效版本和原文定位边界；跨设备检索、离线与同步冲突的实际验收登记到W12/W15，不另建脱离开放权限、患者与问题的知识平台。
+13. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A06，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -113,11 +115,12 @@ npm --prefix web test && npm --prefix web run typecheck && npm --prefix web run 
 
 ## 完成标准
 
-原工作包验收：DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。
+原工作包验收：DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。本轮还须满足 UX-A06 的正常产品验收。
 
 - 脚注和加粗等有意义格式不丢失。
 - 解析失败、背景、未处理分别记录，不以条目多表示提取完整。
 - 重试不重复建版本，越权资料不可读取。
+- UX-A06 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S02、CRA-S03、CRA-S04。局部测试通过不自动把全部场景标为verified。
 

@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W05。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -33,6 +33,7 @@
 | `backend/cra_app/issues/carryover_import.py` | code | 历史报告/track/文字自动整理与幂等关联 |
 | `tests/integration/test_carryover_import.py` | test | 前次资料进入本次遗留与重复导入 |
 | `migrations/versions/0005_issues_monitoring.py` | migration | Issue、分项Action、Query、遗留导入、监查访视和访前选择 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -62,6 +63,7 @@
 6. 接续新患者监查和范围简记；未完项保留，不发明全局审批锁或阻断紧急事项。
 7. 复用W03解析历史DOCX报告/XLSX track或问题文字，预览整理、用户修正并确认导入，关联原编号/位置和幂等键，缺项不编造。
 8. W06只通过M02公开来源端口展示上传目录的对照引用；M10状态功能到W10启用，不先行冒称完成。
+9. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A05；UX-A09；UX-A10，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -93,12 +95,13 @@ uv run --frozen pytest -q tests/integration/test_carryover_import.py
 
 ## 完成标准
 
-原工作包验收：上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。
+原工作包验收：上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。本轮还须满足 UX-A05；UX-A09；UX-A10 的正常产品验收。
 
 - PD上报已完成、数据更正仍待办可以同时呈现。
 - 没有预录CRC回复、附件、说明也能点击确认整改；若用户指出仍未改好则保留/重开相应事项。
 - 选2项后完整遗留清单不变，第三次跟进仍为同一问题编号。
 - 从前次文件进入本次提醒和展开详情，重复导入不重复建问题；签发历史不变。
+- UX-A05；UX-A09；UX-A10 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S10、CRA-S11、CRA-S14、CRA-S15、CRA-S16、CRA-S17、CRA-S27、CRA-S35、CRA-S40。局部测试通过不自动把全部场景标为verified。
 

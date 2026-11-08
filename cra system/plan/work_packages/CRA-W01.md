@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W00。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -33,6 +33,7 @@
 | `backend/cra_app/governance/service.py` | code | 授权与版本化命令 |
 | `deploy/compose.dev.yml` | config | 合成开发数据库 |
 | `tests/integration/test_governance.py` | test | 真实PostgreSQL隔离与事务 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -60,6 +61,7 @@
 5. 在专属CI加入临时PostgreSQL和迁移/集成检查；真实数据库检查不能由SQLite代替。
 6. 按plan/implementation.json建立cra-w01专属CI job与migrate/test步骤。实际通过后生成绑定源码/规范指纹和GitHub run的completion_evidence，不能用自报文字完成任务。
 7. 遵守复用清单：沿用SQLAlchemy/Alembic等已选基础组件，不整仓移植模板，不提前安装所有候选。锁文件与依赖台账区分研究HEAD和实际安装版本。
+8. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A01；UX-A02；UX-A03，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -97,11 +99,12 @@ uv run --frozen pytest -q tests/integration/test_governance.py
 
 ## 完成标准
 
-原工作包验收：PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。
+原工作包验收：PostgreSQL迁移、研究/中心授权、幂等写入、并发版本和审计事务通过跨范围及重复提交测试。本轮还须满足 UX-A01；UX-A02；UX-A03 的正常产品验收。
 
 - 两中心合成数据不能跨范围读取。
 - 重复命令不重复写入，旧版本不能覆盖新值。
 - 失败事务无半完成业务或审计记录，CI可复现。
+- UX-A01；UX-A02；UX-A03 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S01。局部测试通过不自动把全部场景标为verified。
 

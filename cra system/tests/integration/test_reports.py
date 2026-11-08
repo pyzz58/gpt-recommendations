@@ -42,6 +42,9 @@ pytestmark = pytest.mark.postgres
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "reports"
 ARTIFACTS = FIXTURES / "artifacts"
+REVIEW_ARTIFACTS = (
+    Path(__file__).resolve().parents[1] / "fixtures" / "reviews" / "artifacts"
+)
 
 
 def _database_url() -> str:
@@ -774,3 +777,96 @@ def test_report_routes_are_in_openapi(
     assert "/api/v1/reports/draft" in schema["paths"]
     assert "/api/v1/exports" in schema["paths"]
     assert "/api/v1/report-exports/{export_id}/content" in schema["paths"]
+
+
+def test_template_questions_drive_visit_review_and_report_backfill(
+    api: TestClient, services: dict
+):
+    output_template = _create_template(api, services, kind="report")
+    upload = _upload_template(
+        services,
+        key="review-v1",
+        filename="synthetic_monitoring_review_v1.docx",
+        content=(
+            REVIEW_ARTIFACTS / "synthetic_monitoring_review_v1.docx"
+        ).read_bytes(),
+    )
+    preview = api.post(
+        f"/api/v1/document-versions/{upload.document_version_id}/"
+        "review-template-preview",
+        headers=_headers(api),
+    )
+    assert preview.status_code == 200, preview.text
+    preview_body = preview.json()
+    assert len(preview_body["sections"]) == 3
+    assert len(preview_body["questions"]) == 7
+
+    created = api.post(
+        "/api/v1/review-templates",
+        headers=_headers(api),
+        json={
+            "expected_revision": 0,
+            "idempotency_key": "review-v1-config",
+            "source_document_version_id": str(upload.document_version_id),
+            "title": "合成中心监查核查 V1",
+            "items": preview_body["questions"],
+            "warnings": preview_body["warnings"],
+        },
+    )
+    assert created.status_code == 200, created.text
+    review_template = created.json()
+    assert len(review_template["items"]) == 7
+
+    visit = _create_visit(api, services)
+    board = api.post(
+        f"/api/v1/monitoring-visits/{visit['id']}/review-template",
+        headers=_headers(api),
+        json={
+            "expected_revision": 0,
+            "idempotency_key": "review-v1-bind",
+            "review_template_version_id": review_template["id"],
+        },
+    )
+    assert board.status_code == 200, board.text
+    board_body = board.json()
+    assert len(board_body["items"]) == 7
+    first = board_body["items"][0]
+    assert first["section_title"] == "1. 知情同意与受试者资格"
+    assert first["status"] == "not_checked"
+
+    recorded = api.patch(
+        f"/api/v1/monitoring-review-items/{first['id']}",
+        headers=_headers(api),
+        json={
+            "expected_revision": first["revision"],
+            "idempotency_key": "review-v1-first-record",
+            "status": "needs_clarification",
+            "note": "合成知情同意日期需要中心补充来源。",
+            "subject_id": None,
+            "rule_version_ids": [],
+            "linked_issue_id": None,
+            "linked_comparison_id": None,
+        },
+    )
+    assert recorded.status_code == 200, recorded.text
+    assert recorded.json()["status"] == "needs_clarification"
+    assert recorded.json()["history"][-1]["details"]["event"] == "updated"
+
+    draft = api.post(
+        "/api/v1/reports/draft",
+        headers=_headers(api),
+        json={
+            "expected_revision": 0,
+            "idempotency_key": "review-v1-report",
+            "monitoring_visit_id": visit["id"],
+            "template_version_id": output_template["id"],
+            "title": "模板核查回填报告",
+            "selected_issue_ids": [],
+        },
+    )
+    assert draft.status_code == 200, draft.text
+    content = draft.json()["content"]
+    assert content["review_sections"][0]["items"][0]["status"] == (
+        "needs_clarification"
+    )
+    assert "知情同意日期" in content["review_sections"][0]["items"][0]["note"]

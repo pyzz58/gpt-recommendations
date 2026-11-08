@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W05。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -29,6 +29,7 @@
 | `tests/integration/test_edc_import.py` | test | 多sheet、公式及导出范围 |
 | `migrations/versions/0006_edc_import.py` | migration | EDC预览、可复用映射、不可变快照、原始行和标准检验记录 |
 | `validation/W07_DEPENDENCIES.md` | document | openpyxl及AG Grid Community/React版本、许可和复用边界 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -55,6 +56,7 @@
 3. 事务保存不可变快照和范围，重复导入幂等，更正版另建快照。
 4. 向M08提供标准检验记录，同时保留原值、单位、时间精度和原始定位。
 5. 导入预览复用AG Grid Community/React，数据与列映射由服务端保存；不依赖Enterprise Excel Export进行导入或track生成。
+6. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A08，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -80,11 +82,12 @@ uv run --frozen pytest -q tests/integration/test_edc_import.py
 
 ## 完成标准
 
-原工作包验收：预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。
+原工作包验收：预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。本轮还须满足 UX-A08 的正常产品验收。
 
 - 同日初检/复查不被合并。
 - 过滤导出不会产生虚假漏录结论。
 - 标准字段可回到原Excel位置。
+- UX-A08 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S18、CRA-S19。局部测试通过不自动把全部场景标为verified。
 

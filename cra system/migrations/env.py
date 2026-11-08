@@ -18,6 +18,7 @@ from cra_app.edc_import import models as edc_import_models  # noqa: E402,F401
 from cra_app.issues import models as issue_models  # noqa: E402,F401
 from cra_app.laboratory import models as laboratory_models  # noqa: E402,F401
 from cra_app.platform import jobs as platform_jobs  # noqa: E402,F401
+from cra_app.monitoring import review_models as review_models  # noqa: E402,F401
 from cra_app.safety import models as safety_models  # noqa: E402,F401
 from cra_app.rules import models as rule_models  # noqa: E402,F401
 from cra_app.reports import models as report_models  # noqa: E402,F401

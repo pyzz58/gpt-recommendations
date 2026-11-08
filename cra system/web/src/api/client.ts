@@ -3,6 +3,10 @@ import type { components } from "./generated";
 export type CapabilityResponse =
   components["schemas"]["CapabilityResponse"];
 export type ScopeResponse = components["schemas"]["ScopeResponse"];
+export type GovernanceStudyView =
+  components["schemas"]["CreateStudyView"];
+export type GovernanceSiteView =
+  components["schemas"]["CreateSiteView"];
 export type SessionResponse = components["schemas"]["SessionView"];
 export type DocumentView = components["schemas"]["DocumentView"];
 export type DocumentVersionView = components["schemas"]["VersionView"];
@@ -88,6 +92,14 @@ export type ReportSnapshotView =
   components["schemas"]["ReportSnapshotView"];
 export type ReportExportView =
   components["schemas"]["ReportExportView"];
+export type ReviewTemplatePreviewView =
+  components["schemas"]["ReviewTemplatePreviewView"];
+export type ReviewTemplateView =
+  components["schemas"]["ReviewTemplateView"];
+export type VisitReviewBoardView =
+  components["schemas"]["VisitReviewBoardView"];
+export type MonitoringReviewItemView =
+  components["schemas"]["MonitoringReviewItemView"];
 
 type ErrorEnvelope = {
   error?: {
@@ -398,6 +410,113 @@ export function getTemplateVersions(
   );
 }
 
+export function previewReviewTemplate(
+  versionId: string
+): Promise<ReviewTemplatePreviewView> {
+  return request<ReviewTemplatePreviewView>(
+    `/api/v1/document-versions/${versionId}/review-template-preview`,
+    {
+      method: "POST",
+      headers: { "X-CSRF-Token": csrfToken() }
+    }
+  );
+}
+
+export function createReviewTemplate(values: {
+  sourceDocumentVersionId: string;
+  title: string;
+  items: ReviewTemplatePreviewView["questions"];
+  warnings: ReviewTemplatePreviewView["warnings"];
+  idempotencyKey: string;
+}): Promise<ReviewTemplateView> {
+  return request<ReviewTemplateView>("/api/v1/review-templates", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: values.idempotencyKey,
+      source_document_version_id: values.sourceDocumentVersionId,
+      title: values.title,
+      items: values.items,
+      warnings: values.warnings
+    })
+  });
+}
+
+export function getReviewTemplates(
+  studyId: string,
+  siteId: string
+): Promise<ReviewTemplateView[]> {
+  return request<ReviewTemplateView[]>(
+    `/api/v1/review-templates?study_id=${encodeURIComponent(studyId)}&site_id=${encodeURIComponent(siteId)}`
+  );
+}
+
+export function bindReviewTemplate(
+  visitId: string,
+  reviewTemplateVersionId: string
+): Promise<VisitReviewBoardView> {
+  return request<VisitReviewBoardView>(
+    `/api/v1/monitoring-visits/${visitId}/review-template`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: 0,
+        idempotency_key: crypto.randomUUID(),
+        review_template_version_id: reviewTemplateVersionId
+      })
+    }
+  );
+}
+
+export function getVisitReviewItems(
+  visitId: string
+): Promise<VisitReviewBoardView> {
+  return request<VisitReviewBoardView>(
+    `/api/v1/monitoring-visits/${visitId}/review-items`
+  );
+}
+
+export function updateMonitoringReviewItem(
+  item: MonitoringReviewItemView,
+  values: {
+    status: string;
+    note: string;
+    subjectId: string | null;
+    ruleVersionIds: string[];
+    linkedIssueId: string | null;
+    linkedComparisonId: string | null;
+  }
+): Promise<MonitoringReviewItemView> {
+  return request<MonitoringReviewItemView>(
+    `/api/v1/monitoring-review-items/${item.id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: item.revision,
+        idempotency_key: crypto.randomUUID(),
+        status: values.status,
+        note: values.note || null,
+        subject_id: values.subjectId,
+        rule_version_ids: values.ruleVersionIds,
+        linked_issue_id: values.linkedIssueId,
+        linked_comparison_id: values.linkedComparisonId
+      })
+    }
+  );
+}
+
 export function createTemplateVersion(values: {
   sourceDocumentVersionId: string;
   title: string;
@@ -591,6 +710,93 @@ export function recordReportEvent(
 
 export function getScopes(): Promise<ScopeResponse> {
   return request<ScopeResponse>("/api/v1/me/scopes");
+}
+
+export function createStudy(values: {
+  code: string;
+  title: string;
+  idempotencyKey: string;
+}): Promise<GovernanceStudyView> {
+  return request<GovernanceStudyView>("/api/v1/studies", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: 0,
+      idempotency_key: values.idempotencyKey,
+      code: values.code,
+      title: values.title,
+      jurisdiction: "synthetic"
+    })
+  });
+}
+
+export function updateStudy(
+  study: { id: string; revision: number },
+  title: string
+): Promise<GovernanceStudyView> {
+  return request<GovernanceStudyView>(`/api/v1/studies/${study.id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      expected_revision: study.revision,
+      idempotency_key: crypto.randomUUID(),
+      title
+    })
+  });
+}
+
+export function createSite(
+  studyId: string,
+  values: {
+    code: string;
+    name: string;
+    idempotencyKey: string;
+  }
+): Promise<GovernanceSiteView> {
+  return request<GovernanceSiteView>(
+    `/api/v1/studies/${studyId}/sites`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: 0,
+        idempotency_key: values.idempotencyKey,
+        code: values.code,
+        name: values.name
+      })
+    }
+  );
+}
+
+export function updateSite(
+  studyId: string,
+  site: { id: string; revision: number },
+  name: string
+): Promise<GovernanceSiteView> {
+  return request<GovernanceSiteView>(
+    `/api/v1/studies/${studyId}/sites/${site.id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken()
+      },
+      body: JSON.stringify({
+        expected_revision: site.revision,
+        idempotency_key: crypto.randomUUID(),
+        name
+      })
+    }
+  );
 }
 
 export function loginSynthetic(): Promise<SessionResponse> {

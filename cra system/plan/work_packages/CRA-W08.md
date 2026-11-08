@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W06、CRA-W07。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -34,6 +34,7 @@
 | `tests/integration/test_recognition.py` | test | 文件读取、关键错误、失败和跳过 |
 | `validation/LAB_AUTOMATION_SCOPE.md` | document | 支持格式、实际provider证据、人工负担与限制 |
 | `backend/cra_app/providers/evaluate_labs.py` | code | 实际文件识别/匹配/比较和人工负担评估入口 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -70,6 +71,7 @@
 12. 检验上传走持久Job/Outbox和Processor worker，保存租约、尝试和可恢复失败状态。
 13. 隔离OCR依赖使用完整锁文件与固定模型标识/哈希。
 14. succeeded作业重复投递在provider前直接返回；公开retry区分活跃和过期租约，过期重排使用attempt/owner fencing防止旧结果迟到写入。
+15. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A08；UX-A09，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -107,7 +109,7 @@ uv run --frozen python -m cra_app.providers.evaluate_labs --dataset tests/fixtur
 
 ## 完成标准
 
-原工作包验收：支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。
+原工作包验收：支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。本轮还须满足 UX-A08；UX-A09 的正常产品验收。
 
 - 初检、复查和修订不误配，多候选明确待核实。
 - 带比较符结果不被猜成精确值。
@@ -118,6 +120,7 @@ uv run --frozen python -m cra_app.providers.evaluate_labs --dataset tests/fixtur
 - 页眉身份/日期可供结果行复用；参考上下限本身不同即使标志相同也报告差异。
 - 上传请求快速返回job，worker中断/超时后同任务可恢复，撤权后不能继续读取。
 - 完成态worker复投不调用provider、不改revision/候选/完成审计；过期租约可经公开API恢复，活跃租约受保护，旧attempt不覆盖新结果和CRA更正。
+- UX-A08；UX-A09 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S13、CRA-S19、CRA-S20、CRA-S21、CRA-S22、CRA-S36、CRA-S39。局部测试通过不自动把全部场景标为verified。
 

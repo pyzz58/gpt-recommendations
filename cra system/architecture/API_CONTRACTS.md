@@ -254,3 +254,17 @@ Issue聚合状态只用于展示；Action分别保存`open/reported_done/complet
 | `POST /api/v1/monitoring-visits/{id}/stage` | expected_revision和幂等键绑定实际阶段切换；未完成遗留和unknown不因阶段推进改变 |
 
 阶段卡片区分`complete/attention/recorded/not_started`等事实状态；不把“已进入下一阶段”写成临床完成。每次阶段切换写AuditEvent，`global_lock_created=false`。页面复用M05/M06/M08/M10/M11组件，不维护第二套行动完成算法。
+
+## 18. 项目、中心与模板驱动核查入口
+
+| 接口 | 实现约束 |
+| --- | --- |
+| `POST /api/v1/studies`；`PATCH /api/v1/studies/{id}` | 仅受信任 `platform_admin` 可创建项目；标题更新保留revision、幂等和审计 |
+| `POST /api/v1/studies/{id}/sites`；`PATCH /api/v1/studies/{id}/sites/{site_id}` | 项目管理员或平台管理员建立/更新中心；同一项目中心编号唯一，不同项目可重复 |
+| `POST /api/v1/document-versions/{id}/review-template-preview` | 对template用途DOCX提取明确标题和问句，返回来源位置和无法稳定解析的覆盖警告 |
+| `POST /api/v1/review-templates`；`GET /api/v1/review-templates?study_id=&site_id=` | 集中确认并保存可复用章节/问句配置；下次监查复用，不重建或覆盖历史配置 |
+| `POST /api/v1/monitoring-visits/{id}/review-template` | 绑定本次监查与已确认模板，初始化实际核查项 |
+| `GET /api/v1/monitoring-visits/{id}/review-items` | 返回章节、问句、来源、条件/例外、状态、受试者、规则和关联Issue/比较 |
+| `PATCH /api/v1/monitoring-review-items/{id}` | expected_revision保存已核查/待核实/不适用/跳过及CRA记录；未知不写成正常 |
+
+本机合成环境可通过受控配置为合成管理员，但生产仍只信OIDC角色。项目切换后所有模块必须按新范围重新读取；模板候选不是Issue，报告回填读取同一核查记录，不复制第二套完成状态。

@@ -26,6 +26,7 @@ from cra_app.governance.service import (
 from cra_app.issues.models import Issue
 from cra_app.issues.service import IssueService, aggregate_action_status
 from cra_app.monitoring.service import MonitoringService
+from cra_app.monitoring.review_service import TemplateReviewService
 from cra_app.platform.jobs import digest_payload
 from cra_app.reports.docx_export import render_docx
 from cra_app.reports.models import (
@@ -210,6 +211,7 @@ class ReportService:
         rules: RuleService,
         safety: SafetyService,
         site_files: SiteFileService,
+        template_review: TemplateReviewService,
     ):
         self.session_factory = session_factory
         self.governance = governance or GovernanceService(session_factory)
@@ -220,6 +222,7 @@ class ReportService:
         self.rules = rules
         self.safety = safety
         self.site_files = site_files
+        self.template_review = template_review
 
     @staticmethod
     def _scope_fingerprint(
@@ -834,6 +837,24 @@ class ReportService:
         directory_refs = self.site_files.site_file_status(
             scope, visit.study_id, visit.site_id
         )
+        review_board = self.template_review.board(scope, visit.id)
+        review_sections = self.template_review.report_sections(scope, visit.id)
+        review_items = [
+            item
+            for section in review_sections
+            for item in section["items"]
+        ]
+        review_summary = (
+            "；".join(
+                f"{section['section_title']}："
+                + " ".join(
+                    f"{item['item_key']} {item['status']}"
+                    for item in section["items"]
+                )
+                for section in review_sections
+            )
+            or "未绑定报告模板核查项。"
+        )
         directory_summary = [
             {
                 "reference_id": str(item.reference.id),
@@ -931,6 +952,9 @@ class ReportService:
             "current_finding_count": str(len(current)),
             "selected_issue_count": str(len(letter_issues)),
             "coverage_summary": coverage_summary,
+            "review_summary": review_summary,
+            "review_sections": review_sections,
+            "review_items": review_items,
             "unknown_summary": unknown_summary,
             "not_checked_summary": not_checked_summary,
             "next_steps_summary": next_steps_summary,
@@ -974,6 +998,18 @@ class ReportService:
                 for item in directory_refs
             ],
             "selected_issue_ids": [str(item) for item in letter_ids],
+            "review_template": (
+                {
+                    "template_id": (
+                        str(review_board.template.id)
+                        if review_board.template
+                        else None
+                    ),
+                    "review_item_ids": [
+                        item["item_key"] for item in review_items
+                    ],
+                }
+            ),
         }
         return context, input_refs, unknowns, not_checked
 

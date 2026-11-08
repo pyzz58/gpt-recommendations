@@ -200,3 +200,15 @@ W12不新增业务表。`MonitoringVisit.stage/status/revision`作为导航状�
 - 目录缺件、阶段清单、报告草稿与不可变快照。
 
 阶段切换继续使用`monitoring_visits`显式revision、幂等和AuditEvent，不创建审批锁或第二份状态表。服务端visits列表使刷新、重新登录、换中心或清理localStorage后仍能找到原记录。聚合值可随原模块记录变化，历史报告/快照自身仍不可变。
+
+## 17. 空白项目模板驱动核查
+
+迁移`0012_template_review`增加：
+
+- `review_template_versions`：绑定M02 DOCX模板版本、项目/中心、提取结构、警告和集中配置修订。
+- `review_template_items`：稳定章节/问句键、章节与问句顺序、原文位置、报告回填位置及条件/例外候选。
+- `monitoring_review_bindings`：一次监查绑定一个已确认核查模板，避免每次重复配置。
+- `monitoring_review_items`：本次监查的实际核查状态、受试者、规则版本、关联Issue/比较、CRA记录及revision。
+- `monitoring_review_history`：核查记录变更的append-only历史和操作者/时间。
+
+模板项只是待核查问题，不自动成为Issue。模板更新形成新的M02版本和新配置；已签发报告仍保留旧模板/内容快照。核查状态与覆盖、Issue/Action、比较和报告状态分开保存，报告组合当前核查记录时增加明确的模板回填区。

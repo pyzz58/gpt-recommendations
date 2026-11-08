@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W12。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -28,6 +28,7 @@
 | `deploy/restore-check.md` | document | 恢复验证与缺口 |
 | `validation/USE_CASE_VALIDATION.md` | document | 按用途风险、独立样本、版本及暂停恢复策略 |
 | `tools/build_validation_report.py` | code | 合成/获授权证据的去敏汇总，不虚构试用结果 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -54,6 +55,7 @@
 4. 给出V1A能力与限制；缺模型、资料或授权时如实说明，不能宣布完整自动试用就绪。
 5. 按用途记录错误后果、验证责任和能力暂停/恢复；发布验证职责不增加CRA每次监查审批。
 6. 区分离线汇总可完成与核心自动能力未达标，provider在W08/W09有明确验证落点，W15负责实际环境和获授权试用。
+7. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -91,12 +93,13 @@ uv run --frozen python tools/build_validation_report.py --check
 
 ## 完成标准
 
-原工作包验收：逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。
+原工作包验收：逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。本轮还须满足 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 的正常产品验收。
 
 - 每项宣称具备的能力有证据或标未验证。
 - 总时间有实测记录，不编造节时比例。
 - 试用范围、人工步骤和实质缺口清楚。
 - 无实际识别证据的版本不得被称为实现核心减负；无法获得环境时如实列provider未验证和剩余工作。
+- UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S01、CRA-S02、CRA-S03、CRA-S04、CRA-S05、CRA-S06、CRA-S07、CRA-S08、CRA-S09、CRA-S10、CRA-S11、CRA-S12、CRA-S13、CRA-S14、CRA-S15、CRA-S16、CRA-S17、CRA-S18、CRA-S19、CRA-S20、CRA-S21、CRA-S22、CRA-S23、CRA-S24、CRA-S25、CRA-S26、CRA-S27、CRA-S28、CRA-S29、CRA-S30、CRA-S31、CRA-S32、CRA-S33、CRA-S34、CRA-S35、CRA-S36、CRA-S37、CRA-S38、CRA-S39、CRA-S40。局部测试通过不自动把全部场景标为verified。
 

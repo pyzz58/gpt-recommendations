@@ -59,3 +59,6 @@ def test_local_capabilities_match_declared_synthetic_provider_scope():
     assert "safety_analysis_model" in manifest["disabled_capabilities"]
     assert manifest["seeded_expectations"]["active_safety_rules"] == 9
     assert manifest["seeded_expectations"]["safety_question_count"] > 0
+    assert manifest["seeded_expectations"]["review_template_sections"] == 3
+    assert manifest["seeded_expectations"]["review_template_questions"] == 7
+    assert "template_driven_review" in manifest["enabled_capabilities"]

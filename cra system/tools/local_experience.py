@@ -145,6 +145,7 @@ def _database_env() -> dict[str, str]:
             "CRA_SESSION_COOKIE_SECURE": "false",
             "CRA_SYNTHETIC_ACTOR_ID": "synthetic-cra",
             "CRA_SYNTHETIC_TENANT_ID": "synthetic",
+            "CRA_SYNTHETIC_PLATFORM_ADMIN": "true",
             "CRA_PUBLIC_BASE_URL": WEB_URL,
             "CRA_STORAGE_BACKEND": "local",
             "CRA_PRIVATE_STORAGE_LOCAL_PATH": str(

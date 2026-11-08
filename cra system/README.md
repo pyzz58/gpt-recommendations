@@ -87,4 +87,6 @@ Git中的 `theory/requirements.json` 是开发可执行基线；Notion是本次�
 
 最新工程验证为[本机合成源文件/EDC/安全核查工作台、W12稳定性修复与最终证据审计CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/42447288132)。W01—W14已按源码绑定和任务专属CI完成；W12两轮监查端到端在阶段切换竞态修复后通过，W15仍为外部条件阻塞。真实设备/弱网、代表性完整自动检验评估、人工总耗时、获准生产部署和授权试用仍待后续验证。
 
+新版空白项目模板驱动工作台见[操作指南](synthetic_experience/WORKBENCH_USER_GUIDE.md)和[实际验收结果](validation/WORKBENCH_USABILITY_ACCEPTANCE.md)；旧完成证据保留在任务历史，W15边界不变。
+
 开源复用修订v0.5：[14项目核对与替代边界](architecture/REUSE_ASSESSMENT.md)，[可直接发给Codex的第一段](plan/CODEX_FIRST_MESSAGE.md)。依赖选择已同步到任务；尚未安装、集成或做临床性能验证。

@@ -11,6 +11,7 @@ import {
 import { DocumentWorkspace } from "../features/documents/DocumentWorkspace";
 import { CarryoverReview } from "../features/issues/CarryoverReview";
 import { StageChecklist } from "../features/monitoring/StageChecklist";
+import { TemplateReviewWorkspace } from "../features/monitoring/TemplateReviewWorkspace";
 import { ReportPreview } from "../features/reports/ReportPreview";
 import { RuleWorkspace } from "../features/rules/RuleWorkspace";
 import { DirectoryReview } from "../features/site-files/DirectoryReview";
@@ -305,7 +306,17 @@ export function MonitoringVisitPage({ studyId, siteId }: Props) {
         </>
       )}
       {activeStage === "subject_review" && (
-        <SubjectReviewPage studyId={studyId} siteId={siteId} />
+        <>
+          <TemplateReviewWorkspace
+            studyId={studyId}
+            siteId={siteId}
+            visitId={journey.visit.id}
+          />
+          <details className="technical-details subject-context-details">
+            <summary>展开患者上下文、EDC、原始文件、比较与安全记录</summary>
+            <SubjectReviewPage studyId={studyId} siteId={siteId} />
+          </details>
+        </>
       )}
       {activeStage === "closeout" && (
         <HandoverPage

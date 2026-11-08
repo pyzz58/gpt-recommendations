@@ -32,6 +32,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 type Props = {
   studyId: string;
   siteId: string;
+  onCompared?: (comparison: LabComparisonView) => void;
 };
 
 const MATCH_LABEL: Record<string, string> = {
@@ -63,7 +64,7 @@ function sourceBBox(field: LabComparisonFieldView): number[] | null {
   );
 }
 
-export function LabComparison({ studyId, siteId }: Props) {
+export function LabComparison({ studyId, siteId, onCompared }: Props) {
   const [reports, setReports] = useState<LabReportView[]>([]);
   const [snapshots, setSnapshots] = useState<EDCSnapshotSummaryView[]>([]);
   const [reportId, setReportId] = useState("");
@@ -137,6 +138,7 @@ export function LabComparison({ studyId, siteId }: Props) {
       });
       setComparison(next);
       setSelectedFields([]);
+      onCompared?.(next);
       setMessage(
         next.replayed
           ? "相同报告、快照和复核状态已复用原比较。"

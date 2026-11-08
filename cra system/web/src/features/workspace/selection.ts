@@ -2,7 +2,7 @@ import type { ScopeResponse } from "../../api/client";
 
 export type WorkspaceSelection = {
   studyId: string;
-  siteId: string;
+  siteId: string | null;
 };
 
 const STORAGE_KEY = "cra.workspace.selection.v1";
@@ -28,13 +28,19 @@ export function resolveStoredSelection(
     if (matchingSite) {
       return { studyId: study.id, siteId: matchingSite.id };
     }
+    if (study.sites.length === 0) {
+      return { studyId: study.id, siteId: null };
+    }
   }
 
-  const firstStudy = studies.find((study) => study.sites.length > 0);
+  const firstStudy = studies[0];
   if (!firstStudy) {
     return null;
   }
-  return { studyId: firstStudy.id, siteId: firstStudy.sites[0].id };
+  return {
+    studyId: firstStudy.id,
+    siteId: firstStudy.sites[0]?.id ?? null
+  };
 }
 
 export function readStoredSelection(): string | null {

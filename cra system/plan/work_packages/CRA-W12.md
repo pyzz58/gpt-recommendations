@@ -2,7 +2,7 @@
 
 本页由plan/tasks.json生成；目标文件和待实现命令是执行约定，不表示功能已经完成。
 
-状态：verified；分支路线：v1a。
+状态：in_progress；分支路线：v1a。
 前置：CRA-W08、CRA-W09、CRA-W10、CRA-W11。必须按实际verified状态核实。
 
 ## 临床工作目标
@@ -30,6 +30,7 @@ CRA能连续完成一次监查，并在下一次按原问题继续跟进。
 | `backend/cra_app/monitoring/journey.py` | code | 服务端四阶段旅程汇总 |
 | `tests/fixtures/w12/seed_e2e.py` | test | 真实浏览器专属合成授权底座 |
 | `web/src/journey.css` | code | 四阶段工作流样式 |
+| `plan/WORKBENCH_USABILITY_20261108.md` | document | 2026-11-08 approved blank-project workbench and two-visit acceptance input |
 
 以上是计划位置。落地时如需调整，更新同一tasks.json和相关契约，再生成本页；不能只保留一份过时路径说明。
 
@@ -56,6 +57,7 @@ CRA能连续完成一次监查，并在下一次按原问题继续跟进。
 4. 刷新、重新登录、切中心及重试后状态正确，紧急入口不被普通顺序挡住。
 5. 普通界面使用临床工作语言，必要技术详情放到来源或诊断详情中。
 6. 串联iPad拍照/上传检验报告、电脑Excel核对和两端同一记录接续；弱网/中断恢复使用合成文件验证并说明离线边界。
+7. 按 plan/WORKBENCH_USABILITY_20261108.md 复用现有领域服务，完成 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10，逐批验证后继续下一批。
 
 ## 验证命令
 
@@ -99,13 +101,14 @@ uv run --frozen pytest -q tests/integration/test_visit_continuity.py
 
 ## 完成标准
 
-原工作包验收：模拟前次报告→访前信→到中心复核→新受试者核查→报告→下一次接续全部完成；用户只需临床操作。
+原工作包验收：模拟前次报告→访前信→到中心复核→新受试者核查→报告→下一次接续全部完成；用户只需临床操作。本轮还须满足 UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 的正常产品验收。
 
 - 重开系统仍能找到同一问题的处理历史。
 - 选2条保留全部问题、PD与更正分别完成、下次继续均在完整路径验证。
 - 四阶段共享事实而不是四套数据库。
 - 真实API端到端路径包含文件自动提取和Excel导入；provider真实验证缺口如实说明，mock成功不能代表识别性能。
 - iPad端上传/查看/确认与电脑端Excel核对可在同一记录接续；刷新、重登、中断重试和换设备不丢业务状态。
+- UX-A01；UX-A02；UX-A03；UX-A04；UX-A05；UX-A06；UX-A07；UX-A08；UX-A09；UX-A10 在实际 API、PostgreSQL、worker 和浏览器路径中通过；从空白合成项目完成两次连续监查时不得依赖预置业务项目。
 
 关联完整场景：CRA-S09、CRA-S10、CRA-S11、CRA-S12、CRA-S13、CRA-S14、CRA-S21、CRA-S27、CRA-S28、CRA-S29、CRA-S35、CRA-S36、CRA-S39、CRA-S40。局部测试通过不自动把全部场景标为verified。
 
