@@ -10,6 +10,7 @@ import json
 import os
 import re
 import subprocess
+import time
 from pathlib import Path
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
@@ -190,6 +191,14 @@ def _normalise_job_log(value: str) -> str:
     return re.sub(r"\x1b\[[0-9;]*m", "", value)
 
 
+def _job_steps_pending(payload):
+    """GitHub can finish a run before its job step arrays are backfilled."""
+    return any(
+        job.get("status") == "completed" and not job.get("steps")
+        for job in payload.get("jobs", [])
+    )
+
+
 def remote_finding_errors(
     root, repository, get_json, get_text
 ):
@@ -364,9 +373,18 @@ def main():
         token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
         if token:
             headers["Authorization"] = "Bearer " + token
-        with urlopen(Request("https://api.github.com" + path, headers=headers), timeout=15) as response:
-            cache[path] = json.load(response)
-            return cache[path]
+        deadline = time.monotonic() + 600
+        while True:
+            with urlopen(Request("https://api.github.com" + path, headers=headers), timeout=15) as response:
+                value = json.load(response)
+            if not path.startswith("/repos/") or "/actions/runs/" not in path or "/jobs?" not in path:
+                break
+            if not _job_steps_pending(value) or time.monotonic() >= deadline:
+                break
+            print("waiting for GitHub Actions to expose completed job steps", flush=True)
+            time.sleep(20)
+        cache[path] = value
+        return cache[path]
     text_cache = {}
     def get_text(path):
         if path in text_cache:

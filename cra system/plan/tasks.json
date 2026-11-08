@@ -2131,7 +2131,7 @@
       "module_ids": [
         "M04"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。",
       "requirement_ids": [
         "CRA-R010",
@@ -2492,6 +2492,18 @@
             "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
             "subject_digest": "cc40b8e827d99e3ac2843507f5c2b84894b6fc85b8128b79291e4048a6e7faf4"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "The evidence verifier now waits for GitHub to backfill completed job steps; this bound source requires a fresh task-specific CI run.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W05",
+            "run_id": 42444079396,
+            "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
+            "subject_digest": "cc40b8e827d99e3ac2843507f5c2b84894b6fc85b8128b79291e4048a6e7faf4"
+          }
         }
       ],
       "track": "v1a",
@@ -2631,7 +2643,7 @@
         "M05",
         "M06"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。",
       "requirement_ids": [
         "CRA-R001",
@@ -2986,6 +2998,18 @@
             "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
             "subject_digest": "1bb74aab977c241210f8f9fd0d7f14c1d77342f6cecc72d30b5d8617fd4bcf07"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "An upstream evidence-tool source change requires revalidation, so this dependent task is temporarily in_progress.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W06",
+            "run_id": 42444079396,
+            "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
+            "subject_digest": "1bb74aab977c241210f8f9fd0d7f14c1d77342f6cecc72d30b5d8617fd4bcf07"
+          }
         }
       ],
       "track": "v1a",
@@ -3141,7 +3165,7 @@
       "module_ids": [
         "M07"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。",
       "requirement_ids": [
         "CRA-R013",
@@ -3471,6 +3495,18 @@
             "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
             "subject_digest": "08d36b0132d0059ac8faaaff79d80b44be9442e01ef298f70b98171920c12b76"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "An upstream evidence-tool source change requires revalidation, so this dependent task is temporarily in_progress.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W07",
+            "run_id": 42444079396,
+            "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
+            "subject_digest": "08d36b0132d0059ac8faaaff79d80b44be9442e01ef298f70b98171920c12b76"
+          }
         }
       ],
       "track": "v1a",
@@ -3591,7 +3627,7 @@
         "M08",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。",
       "requirement_ids": [
         "CRA-R013",
@@ -3910,6 +3946,18 @@
             "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
             "subject_digest": "84d7498fd1ac81e3e0024d72b4e69b847292262d0711a77ccfcda17230ab140f"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "An upstream evidence-tool source change requires revalidation, so this dependent task is temporarily in_progress.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W08",
+            "run_id": 42444079396,
+            "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
+            "subject_digest": "84d7498fd1ac81e3e0024d72b4e69b847292262d0711a77ccfcda17230ab140f"
+          }
         }
       ],
       "track": "v1a",
@@ -4089,7 +4137,7 @@
         "M09",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。",
       "requirement_ids": [
         "CRA-R007",
@@ -4526,6 +4574,18 @@
             "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
             "subject_digest": "3262771a69b04b7141d1fb71f86d86e837e990abcac5f5a6b99f418159c2fa33"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "An upstream evidence-tool source change requires revalidation, so this dependent task is temporarily in_progress.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W09",
+            "run_id": 42444079396,
+            "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
+            "subject_digest": "3262771a69b04b7141d1fb71f86d86e837e990abcac5f5a6b99f418159c2fa33"
+          }
         }
       ],
       "completion_evidence": {
@@ -4547,7 +4607,7 @@
         "M05",
         "M10"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。",
       "requirement_ids": [
         "CRA-R001",
@@ -4894,6 +4954,18 @@
             "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
             "subject_digest": "9b9e5cee3e1593081dda861edca5674d6fe963a0c9a97e023cc797508e86cfd6"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "An upstream evidence-tool source change requires revalidation, so this dependent task is temporarily in_progress.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W10",
+            "run_id": 42444079396,
+            "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
+            "subject_digest": "9b9e5cee3e1593081dda861edca5674d6fe963a0c9a97e023cc797508e86cfd6"
+          }
         }
       ],
       "completion_evidence": {
@@ -4915,7 +4987,7 @@
       "module_ids": [
         "M11"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。",
       "requirement_ids": [
         "CRA-R009",
@@ -5214,6 +5286,18 @@
             "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
             "subject_digest": "3cf45e6c2ebda0a519bae3922245455dac48633615bb13578ffd59de4a39645b"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "An upstream evidence-tool source change requires revalidation, so this dependent task is temporarily in_progress.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W11",
+            "run_id": 42444079396,
+            "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
+            "subject_digest": "3cf45e6c2ebda0a519bae3922245455dac48633615bb13578ffd59de4a39645b"
+          }
         }
       ],
       "evidence": [
@@ -5245,7 +5329,7 @@
       "module_ids": [
         "M05"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "模拟前次报告→访前信→到中心复核→新受试者核查→报告→下一次接续全部完成；用户只需临床操作。",
       "requirement_ids": [
         "CRA-R001",
@@ -5526,6 +5610,18 @@
             "GitHub Actions https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396；cra-w12 在本机合成核查工作台、EDC快照默认展示、Docling清晰图像OCR、安全规则示例和W12阶段竞态修复后的绑定源码上通过专属job；被测提交0107bff1782649033b1d8125a25c04ec4798241f。"
           ],
           "completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W12",
+            "run_id": 42444079396,
+            "tested_commit": "0107bff1782649033b1d8125a25c04ec4798241f",
+            "subject_digest": "2c1cdea98ac679eef272feeb7b3d77bf8f291c4713c63ec94fd2a6e6f41fb133"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "An upstream evidence-tool source change requires revalidation, so this dependent task is temporarily in_progress.",
+          "previous_completion_evidence": {
             "kind": "github_actions",
             "profile_id": "CRA-W12",
             "run_id": 42444079396,

@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from task_evidence import (
     _SafeLogRedirectHandler,
+    _job_steps_pending,
     record_errors,
     remote_errors,
     subject_digest,
@@ -143,6 +144,34 @@ class EvidenceTests(unittest.TestCase):
                 response["jobs"][0]["steps"][0]["conclusion"] = "skipped"
             return response
         self.assertTrue(any("missing/failed/skipped" in e for e in remote_errors("example/repo", self.task, self.profile, skipped)))
+
+    def test_completed_job_without_step_records_is_still_pending(self):
+        completed_without_steps = {
+            "jobs": [
+                {
+                    "status": "completed",
+                    "conclusion": "success",
+                    "steps": [],
+                }
+            ]
+        }
+        completed_with_steps = {
+            "jobs": [
+                {
+                    "status": "completed",
+                    "conclusion": "success",
+                    "steps": [
+                        {
+                            "name": "test",
+                            "status": "completed",
+                            "conclusion": "success",
+                        }
+                    ],
+                }
+            ]
+        }
+        self.assertTrue(_job_steps_pending(completed_without_steps))
+        self.assertFalse(_job_steps_pending(completed_with_steps))
 
     def test_bound_input_change_invalidates_evidence(self):
         (self.root / "fixtures").mkdir()

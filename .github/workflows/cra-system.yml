@@ -1025,44 +1025,6 @@ jobs:
         env:
           PYTHONPATH: backend
         run: python3 -m cra_core.demo
-      - name: Wait for sibling CI jobs and step evidence
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          for attempt in $(seq 1 72); do
-            jobs="$(
-              gh api \
-                "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs?per_page=100"
-            )"
-            sibling_total="$(
-              jq '[.jobs[] | select(.name != "baseline")] | length' \
-                <<<"$jobs"
-            )"
-            sibling_failed="$(
-              jq '[.jobs[]
-                | select(.name != "baseline")
-                | select(.conclusion != null and .conclusion != "success")
-              ] | length' <<<"$jobs"
-            )"
-            if [ "$sibling_failed" -gt 0 ]; then
-              echo "A sibling CI job failed before evidence verification."
-              exit 1
-            fi
-            sibling_pending="$(
-              jq '[.jobs[]
-                | select(.name != "baseline")
-                | select(.status != "completed" or (.steps | length) == 0)
-              ] | length' <<<"$jobs"
-            )"
-            if [ "$sibling_total" -gt 0 ] && [ "$sibling_pending" -eq 0 ]; then
-              echo "All sibling jobs and step records are available."
-              exit 0
-            fi
-            echo "Waiting for sibling evidence: $sibling_pending/$sibling_total pending (attempt $attempt)."
-            sleep 8
-          done
-          echo "Timed out waiting for sibling CI step evidence."
-          exit 1
       - name: Verify task-specific completion evidence
         env:
           GH_TOKEN: ${{ github.token }}
