@@ -1,16 +1,16 @@
 # AI Stewardship State: A Human-Executed, AI-Overseen Model of National Governance
 
-**Public discussion paper | Version 0.1 | 8 November 2026**
+**Public discussion paper | Version 0.2 | 8 November 2026**
 
 **Status:** Conceptual institutional proposal; **not** an implemented government, a validated AI capability, or a claim that current models can safely exercise sovereign authority.
 
-**Central proposition:** An AI head of state need not govern every administrative matter. Its most important hypothetical role is to **continually improve the people, institutions, incentives, resource allocations, and verification systems through which a state is governed**. Human experts and public institutions continue to develop and execute policy. The AI reviews exceptional decisions, maintains strategic coherence, and helps correct systemic failure.
+**Central proposition:** An AI head of state need not be a specialist in every domain or govern every administrative matter. It should help ensure **impartial senior appointments, integrity safeguards, expert cabinet deliberation, protected substantive dissent, independent verification, and evidence-grounded exceptional adjudication**, while continually improving the people, institutions, incentives, resource allocations, and assurance systems through which a state is governed. Human experts and public institutions continue to develop and execute policy. The AI reviews exceptional decisions, maintains strategic coherence, and helps correct systemic failure.
 
 This paper records a design hypothesis for critique, not a political endorsement of automated rule. Constitutional legitimacy, fundamental rights, independent adjudication, and public accountability remain prerequisites rather than optional performance metrics.
 
 ## Executive summary
 
-The proposal is intentionally narrower than an all-purpose “AI president”:
+The proposal is intentionally narrower than an all-purpose “AI president”. **A human expert cabinet debates and drafts policy; an AI secretary preserves the full deliberation; the central AI may propose alternatives for expert scrutiny and rule on exceptional disputes within lawful limits; even a lone reasoned objection must reach independent review.**
 
 1. **Strategic stewardship:** Review national direction and material deviations from approved priorities; do not personally write local sector plans.
 2. **Selective senior personnel management:** Focus on heads of ministries, provincial-level executives, their deputies, and a small set of unusually consequential posts—approximately *vice-ministerial level and above* in a Chinese administrative analogy. Do not construct a nationwide scoring database for civil servants.
@@ -18,7 +18,7 @@ The proposal is intentionally narrower than an all-purpose “AI president”:
 4. **Institutional redesign:** Reconsider structures, overlapping mandates, coordination mechanisms, or unrealistic strategies when repeated appointments fail.
 5. **Independent assurance:** Receive evidence from separate audit, inspection, and evaluation channels, potentially AI-assisted and human-executed, without controlling those channels.
 
-The suggested operating rule is **delegate by default; escalate exceptions; audit independently; redesign recurrent failure**.
+The suggested operating rule is **delegate by default; deliberate with full records; protect substantive dissent; escalate exceptions; audit independently; redesign recurrent failure**.
 
 ## 1. Problem statement and design boundaries
 
@@ -66,7 +66,68 @@ The independent audit channel must be separately governed and funded, capable of
 
 **Exception management:** Routine decisions stay at the lowest competent level. Escalation is triggered by defined risks: large fiscal exposure, cross-agency deadlock, strategic divergence, repeated failure, integrity concerns, or disputed senior appointments. Do not centralize every approval merely because AI inference is cheap.
 
-## 4. Senior talent: job-centered, not population-centered
+## 4. Expert cabinet, AI deliberation secretary, and substantive dissent protection (new in v0.2)
+
+### 4.1 The AI steward need not be a domain expert
+
+The proposal does **not** require an AI head of state to outperform economists, doctors, engineers, farmers, or diplomats in their specialties. Domain expertise belongs primarily to **selected human cabinet members and their professional teams**. The central AI's narrower role is to help safeguard fair appointments, conflicts-of-interest controls, the integrity of deliberation, and evidence-constrained exceptional adjudication.
+
+The cabinet analogy refers to functional separation between expert deliberation and final review; it does not transplant the historical Ming monarchy or suggest that Ming cabinet members were chosen through modern competitive expert screening.
+
+An AI adjudicator must be allowed to say **“neither proposal is ready.”** It may request experts to analyze options C and D, seek additional evidence, commission bounded pilots, defer a decision, or refer it to the legally competent body. Generating alternatives is not the same as independently validating their technical feasibility.
+
+### 4.2 Human expert cabinet
+
+A cabinet of suitably qualified senior personnel debates major cross-cutting proposals. Members and subordinate specialist committees originate and examine policy options, assumptions, implementation capacity, fiscal impacts, distributional harms, and legal requirements.
+
+The central AI examines **procedural fairness, evidence completeness, strategic coherence, conflicts of interest, and unresolved risks**. A majority position documents political or expert support; **headcount alone cannot prove that a proposition is true or that its harms are justified**.
+
+### 4.3 AI secretary for the full deliberation lifecycle
+
+An AI secretary assists throughout formally authorized deliberations. It should:
+
+1. **Preserve provenance:** agenda, materials, individual arguments, revisions, source identifiers, conflicts disclosures, attendance, votes, decisions, and signed time-stamped records.
+2. **Protect fidelity:** retain each side's original position alongside attributable summaries; contributors may correct transcription or interpretation, but history cannot be silently overwritten.
+3. **Identify gaps:** flag missing stakeholder perspectives, unsupported empirical assertions, unexamined alternatives, value disputes, and strategic inconsistencies.
+4. **Assign evidence requests:** refer questions to subordinate professional groups, sector authorities, or independent auditors; record how each request was answered and whether the evidence is disputed.
+5. **Respect rights and secrecy:** apply purpose limitation, role-based access, data minimization, legal retention rules, protection for whistleblowers, and appropriate public-facing summaries.
+
+The secretary is **not** the sovereign decision-maker and its summaries are never the sole basis for review. Original records and independently collected evidence must be accessible to authorized reviewers. Secretarial AI, central AI, and independent auditors should not be controlled through a single opaque chain.
+
+### 4.4 The substantive dissent principle
+
+**A material objection must reach the decision record regardless of the number of people who support it.**
+
+If any authorized cabinet member identifies a concrete concern involving evidence, legality, public harm, conflicts of interest, or an omitted group, the objection and source material must be preserved in full, referred for proportionate independent verification where warranted, and explicitly addressed in the final disposition. A chair or majority may not erase or summarize it into insignificance. Good-faith objections must not become grounds for retaliation.
+
+A 10–1 split in an eleven-member cabinet is **neither a command to approve the majority proposal nor proof that the dissenter is right**. It is a signal to evaluate *arguments, evidence, affected people, and legal boundaries* without treating numerical support as dispositive.
+
+Outside the cabinet, a legally protected escalation path should enable junior officials, technical employees, and affected people to bring serious corruption, falsification, or safety allegations to independent investigators without depending entirely on implicated superiors. The central AI need not directly manage those employees.
+
+### 4.5 Hypothetical test case: ten in favor, one opposed
+
+The following is a **fictional stress test**, drawing on the narrative image of a lone objector in the TV drama *Ming Dynasty in 1566*. It is **not** a claim that a fictional “destroying embankments and flooding farmland” plot is a verified historical act involving Hai Rui.
+
+- **Proposal:** ten cabinet members support a public-works plan expected to raise revenue, while one member objects that farmland loss could leave households without food or livelihood.
+- **Secretary:** preserves the fiscal case and the minority's original argument rather than reframing it as opposition to national development.
+- **Independent evidence:** relevant agencies, agricultural and hydrological experts, directly affected households, and auditors verify land loss, alternatives, compensation, benefits, and uncertainty.
+- **Additional options:** the central AI requests technically assessed alternatives—including phasing, different routes, mitigation, or no-build—rather than accepting a forced A/B ballot.
+- **Disposition:** within lawful authority, approve, conditionally approve, return for redesign, defer, or refer. Explain how dissent, legal constraints, affected groups, and uncertain evidence were evaluated.
+- **Follow-through:** independent monitors compare actual outcomes with claims and support appeal and correction.
+
+The principle is **not minority veto**. Rather, one substantiated warning can trigger an appropriately scaled evidence review even against overwhelming agreement.
+
+### 4.6 Three anti-capture guarantees for the AI itself
+
+1. **No secret rewriting of the rules:** appointment criteria, adjudication procedures, legal powers, and consequential model changes are authorized, versioned, tested independently, and disclosed to the extent compatible with law and security.
+2. **Unfiltered evidence channels:** protected minority opinions, independent auditors, and legally established whistleblower channels can submit material without majority control of its content.
+3. **Reviewable decisions:** preserve model and policy versions, evidence provenance, dissent and reasons; provide legally effective challenge, reversal, and remedy mechanisms.
+
+An AI that lacks human personal wealth or family ambitions is **not thereby impartial**. Vendor capture, curated data, prompt injection, correlated model errors, or controlled agendas may all bias outcomes. Independent safeguards, not a claim of machine virtue, must establish trustworthy procedure.
+
+---
+
+## 5. Senior talent: job-centered, not population-centered
 
 The operating unit is the **strategically important office**, not a comprehensive national “talent score”.
 
@@ -82,7 +143,7 @@ A poor result may signal an unsuitable appointee, an impossible mandate, inadequ
 
 **Anti-Goodhart design:** no single KPI controls promotion; reward verified long-term improvements, candor about problems, and timely correction. Protect legitimate dissent. Do not reward suppressing complaints or manipulating measurement windows.
 
-## 5. Context-specific regional targets: Shanghai versus Ningxia
+## 6. Context-specific regional targets: Shanghai versus Ningxia
 
 A uniform employment target applied to different regions can confuse structural opportunity with leadership quality. As an **illustration, not an empirical ranking**, Shanghai and Ningxia may have distinct industrial bases, demographic profiles, fiscal capacities, migration pressures, and feasible development trajectories.
 
@@ -97,7 +158,7 @@ The central AI should **not** decide that employment “counts 20%” in Ningxia
 
 **Crucial distinction:** difficult conditions can justify different evaluation targets, but not abandoning a region's residents or reducing their basic entitlements.
 
-## 6. Fiscal and organizational alignment
+## 7. Fiscal and organizational alignment
 
 Every major mandate should carry a consistent **task–resource–authority contract**:
 
@@ -115,7 +176,7 @@ The central AI compares contracts across ministries and regions to expose unfund
 
 Senior compensation and career incentives should encourage long-term public value and integrity without mechanically rewarding easily manipulated numerical targets. Independent disciplinary and judicial processes remain responsible for sanctions.
 
-## 7. Assurance and anti-corruption: evidence outside the reporting chain
+## 8. Assurance and anti-corruption: evidence outside the reporting chain
 
 **A department's self-report is not independent evidence.** Oversight should combine:
 
@@ -129,7 +190,7 @@ An assurance report must preserve source provenance, methodological limitations,
 
 The inspectors' mandate, financing, information security, and publication obligations should be protected from the central AI's unilateral modification. They must be able to investigate errors made by the AI itself.
 
-## 8. Model decision workflow
+## 9. Model decision workflow
 
 For an exceptional matter:
 
@@ -143,7 +204,7 @@ For an exceptional matter:
 
 For a regular matter, steps 3–4 may be replaced by proportional sampling and ex post review rather than mandatory central approval.
 
-## 9. Governance of the AI itself
+## 10. Governance of the AI itself
 
 This is the unresolved constitutional center of the proposal, not a footnote. A powerful appointment-and-budget review system can become an authoritarian bottleneck if one operator controls its model, data, rules, and audit function.
 
@@ -160,7 +221,7 @@ Minimum conditions for any legitimate trial:
 
 The key test is not whether the central AI seems benevolent, but whether society can **identify, contest, correct, and if necessary revoke** its actions.
 
-## 10. Technological status and evaluation design
+## 11. Technological status and evaluation design
 
 As of November 2026, modern foundation models can support document synthesis, anomaly triage, budgeting analysis, and structured comparison. This does **not** demonstrate dependable autonomous statecraft, valid causal attribution of a minister's contribution, robust resistance to strategic gaming, or lawful sovereign discretion. The proposal is a research hypothesis.
 
@@ -176,7 +237,7 @@ Possible metrics: decision traceability; audit false-positive rate; independent 
 
 **Stop conditions** should include systemic bias, unreviewable appointments, falsified provenance, capture of the auditors, significant rights violations, or inability to shut down/override the system.
 
-## 11. Research agenda / requests for public comment
+## 12. Research agenda / requests for public comment
 
 1. **Authority:** Should an AI's senior appointment role be binding, advisory, or a rebuttable presumption? What institution can veto it?
 2. **Attribution:** How can public-sector performance be assessed without confusing regional endowments with leadership competence?
@@ -186,6 +247,9 @@ Possible metrics: decision traceability; audit false-positive rate; independent 
 6. **Strategy:** Who democratically sets state goals and changes value priorities when social groups disagree?
 7. **Failure diagnosis:** What evidence distinguishes a poor leader, an under-resourced ministry, a broken institution, and an impossible national strategy?
 8. **Experiment design:** Which low-risk administrative domain would provide the most credible pilot?
+9. **Dissent rights:** What materiality threshold triggers independent verification of a lone cabinet member's objection without creating an indefinite obstruction right?
+10. **Deliberation records:** How should an AI secretary preserve fidelity and provenance while respecting confidentiality, personal privacy, and whistleblower safety?
+11. **Alternative generation:** When a cabinet supplies only A and B, what limits govern the central AI's authority to request expert testing of C and D?
 
 Comments are welcome from public administration, constitutional law, political science, AI safety, economics, auditing, and organizational design. Please identify whether a comment is **a value judgment, an empirical claim, a legal objection, or an engineering proposal**, and provide references where possible.
 
@@ -204,3 +268,8 @@ These sources support parts of the framing and safeguards; **none validates the 
 **Provenance:** This document is a structured synthesis of a 2026 conceptual conversation about AI-led meta-governance. It is **not** a tested prototype, a peer-reviewed study, or a statement of government policy.
 
 **Revision policy:** Preserve dissent, version the design, distinguish user-origin concepts from additions developed during editorial synthesis, and document evidence when revising technical or factual claims.
+
+## Version history
+
+- **v0.2 — 8 November 2026:** added human expert cabinet, AI secretary and end-to-end deliberation provenance; protected substantive minority dissent; non-binary alternative proposals, a fictional 10–1 test, independent data verification, and three anti-capture guarantees. The original senior appointment, fiscal, audit and institutional-design pillars remain.
+- **v0.1 — 8 November 2026:** initial public concept paper.
