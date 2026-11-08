@@ -3,11 +3,15 @@
 **A public, bilingual, versioned discussion space on AI-assisted national meta-governance.**
 
 **Status:** Research hypothesis / 研究性构想，**not an implemented system**.  
-**Version:** v0.1 · 2026-11-08
+**Version:** v0.2 · 2026-11-08
 
 > The proposed AI leader should not micromanage a country; it should examine whether the *people, organization, incentives, budgets, strategic objectives, and assurance systems* are fit for purpose.
 >
 > **AI 元首不包办治理，而是优化治理国家的人与组织。**
+>
+> **v0.2 / 新增：** human expert cabinet; AI secretary with full deliberation provenance; protection for a single substantiated dissenting voice; independent evidentiary review; central AI may propose C/D options for expert evaluation, not force a binary A/B vote.
+>
+> **精英内阁充分议事，AI 秘书全程留痕；一人提出有实质依据的异议，也必须进入最终裁决并可触发独立核验。**
 
 ## Read the paper / 阅读报告
 
@@ -29,6 +33,7 @@ Comments and criticisms in English or Chinese are welcome. The Issue is an ongoi
 | Fiscal alignment | Match tasks, resources, and legal authority | 确保任务、财政和权限匹配 |
 | Organizational learning | Diagnose leaders vs resources vs institutions vs strategy | 区分用人、资源、组织和战略问题 |
 | Assurance | Independent AI-assisted, human-executed verification | 独立 AI 审计 + 人类调查执行 |
+| Cabinet and dissent (v0.2) | Human expert deliberation, AI secretary, protected minority evidence, and non-binary review | 精英内阁、AI 秘书、少数意见保护及替代方案评估 |
 
 **Example:** Different regional conditions call for differentiated development goals. Human experts draft and debate them; the central AI checks strategic consistency, evidence and resource adequacy rather than personally selecting every local KPI.
 
