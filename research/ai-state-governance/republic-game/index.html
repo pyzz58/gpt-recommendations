@@ -268,7 +268,25 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
     outcome("启动独立的绩效与程序复核，并公布可公开结论","独立机构审查行动记录，明确人员与制度责任。","程序更透明，但会消耗审计资源；结果不保证立即改善全部问题。",{treasury:-3,integrity:3,trust:3},{trust:1},"审计有助区分专业失误、资源不足与不当行为。")
   ]};
  }
- function makeCard(desc){return desc.kind==="crisis"?crisisCard(desc.phase):desc.kind==="follow"?followCard(desc):domesticCard(desc.id);}
+ function reviewCard(){
+   const final=st.day>=12;
+   return {
+    kind:"review",key:final?"final-review":"budget-review",category:final?"国家监督 · 任期反馈":"组织治理 · 制度性复盘",
+    title:final?"阶段任期报告提交前的独立复核":"跨部门支出审查与重复审批",
+    speaker:final?"独立监察与公共代表联席小组":"行政组织改革委员会",
+    description:final?"十二日的裁决已留下不同的项目责任。代表机构要求把未结案案件与长期风险正式移交，不可简单以一个游戏分数宣布所有问题解决。":"多名部门负责人抱怨项目审批重复、行政成本较高；但财政审计指出部分相互制衡措施不能仅为了速度而撤销。",
+    dissent:final?"部分成员希望以多数意见立即结案，监督组认为必须公开未解决的风险和责任。":"有人要求合并所有审批职权，也有人提醒其中涉及应保持独立的审计职责。",
+    memo:"AI 秘书：需要区分可削减的行政重复与法定制衡；提出具体授权、责任及后续审查节点。",
+    audit:final?"独立复核发现部分事务仍在调查期，没有依据把它们直接宣布成功或失败。应保留必要的申诉权和责任移交。":"样本显示共享资料平台与统一采购流程可能降低成本，而关键监察权应由独立机构维持。",
+    choices:[
+     outcome("迅速合并审查机构，统一权力","行政流程立即简化，但监督权限也随之集中。","若缺乏后续制衡，类似问题可能重复出现。",{treasury:4,integrity:-4,trust:-3},{}),
+     outcome("简化重复流程，保留法定独立审计","行政团队按明确责任优化制度。","流程成本有机会逐步下降，同时保留复核渠道。",{treasury:1,integrity:2,trust:3},{}),
+     outcome("保持现状，不再要求组织改进","既有审批继续，责任边界没有进一步厘清。","长期重复办理造成额外成本。",{treasury:-2,trust:-2},{}),
+     outcome("由独立委员会限期复盘并公开可公开报告","机构梳理程序和遗留问题，明确需要继续研究的制度争议。","整改内容可供后续任期复核，不保证立即解决所有争议。",{treasury:-2,integrity:3,trust:4},{},"独立审计指出若干可以公开说明的程序性问题。")
+    ]
+   };
+  }
+  function makeCard(desc){return desc.kind==="crisis"?crisisCard(desc.phase):desc.kind==="follow"?followCard(desc):desc.kind==="review"?reviewCard():domesticCard(desc.id);}
  function startDay(){
  st.reports=[];st.issued=[];
  const due=st.followups.filter(x=>x.due<=st.day);
@@ -283,7 +301,7 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
  // Follow-ups have first claim to today's agenda, to prevent forgotten decisions.
  for(const f of due)st.queue.push({kind:"follow",origin:f.origin,choice:f.choice,day:f.day});
  while(st.queue.length<2 && st.deck.length)st.queue.push({kind:"domestic",id:st.deck.shift()});
- if(st.queue.length===0)st.queue.push({kind:"crisis",phase:3});
+ if(st.queue.length===0)st.queue.push({kind:"review"});
  st.slot=0;st.audited=false;
  renderMorning();
  }
@@ -342,13 +360,14 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
  // Process crisis delayed effects separately from domestic follow-up decisions.
  const impacts=st.followups.filter(x=>x.kind==="crisis-impact"&&x.due<=st.day);
  st.followups=st.followups.filter(x=>!(x.kind==="crisis-impact"&&x.due<=st.day));
+ const newReports=[];
  for(const f of impacts){
    change(f.late);
-   st.reports.push("【国际事件前案】"+crisisChoices[f.phase][f.choice].later);
+   newReports.push("【国际事件前案】"+crisisChoices[f.phase][f.choice].later);
  }
- // startDay will retain the preceding crisis reports and append any domestic follow-ups.
- const prior=st.reports.slice();startDay();
- st.reports=prior.concat(st.reports);
+ // Only reports newly due today are shown; prior days do not recur indefinitely.
+ startDay();
+ st.reports=newReports.concat(st.reports);
  renderMorning();
  }
  function finish(){
