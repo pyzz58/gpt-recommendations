@@ -105,6 +105,9 @@ web。只有 `/health/ready` 返回 HTTP 200 且 `status=ok` 才报告启动成�
 如果 `status` 显示 worker `unavailable`，先查看 `logs worker`。API 进程存在而
 worker 缺失不代表后台任务可执行，不能把“网页可打开”写成完整链 ready。
 启动脚本和 Compose healthcheck 均检查 `/health/ready`，不是只检查进程存活。
+`start` 在迁移或派发前检查API/web端口，端口已有其他服务时拒绝启动；
+`status` 也先要求本项目PID存在，避免把同一端口上其他项目的健康响应误记为
+本项目ready。
 
 ## Compose 使用与边界
 

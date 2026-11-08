@@ -244,6 +244,22 @@ wait_for_url() {
   return 1
 }
 
+port_is_available() {
+  local port="$1"
+  python3 - "$port" <<'PY'
+import socket
+import sys
+
+port = int(sys.argv[1])
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    try:
+        sock.bind(("127.0.0.1", port))
+    except OSError:
+        raise SystemExit(1)
+PY
+}
+
 rollback_started_services() {
   if [[ "${started_here}" -eq 1 ]]; then
     warn "startup failed; stopping processes started by this command"
@@ -471,6 +487,14 @@ start() {
       return 1
     fi
   done
+  if ! port_is_available "${api_port}"; then
+    printf 'API port %s is already in use\n' "${api_port}" >&2
+    return 1
+  fi
+  if ! port_is_available "${web_port}"; then
+    printf 'Web port %s is already in use\n' "${web_port}" >&2
+    return 1
+  fi
   started_here=1
   trap rollback_started_services EXIT INT TERM
   if [[ "${skip_bootstrap}" -eq 0 ]]; then
@@ -482,6 +506,10 @@ start() {
     --host 127.0.0.1 --port "${api_port}"
   if ! wait_for_url "API live endpoint" "${api_url}/health/live" 40; then
     fail "API did not become live"
+    return 1
+  fi
+  if ! read_managed_pid api >/dev/null; then
+    fail "API live response did not belong to a managed API process"
     return 1
   fi
   start_service worker "${project_root}/services/core" \
@@ -513,6 +541,10 @@ status() {
       printf 'process %-6s stopped\n' "${name}"
     fi
   done
+  if ! read_managed_pid api >/dev/null; then
+    printf 'API is not running under this runtime directory; refusing to query port %s\n' "${api_port}" >&2
+    return 1
+  fi
   curl -fsS --max-time 3 "${api_url}/health/live" |
     python3 -m json.tool
   local ready_json
