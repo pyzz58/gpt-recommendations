@@ -15,18 +15,18 @@
 
 ## Play / 体验文字游戏
 
-**《共和国》是一款根据本研究报告制作的免费文字决策小游戏，欢迎任何人体验、讨论和修改完善。** 玩家模拟虚构 AI 元首，在五轮人事、财政、监察、内阁和组织改革事件中审阅下属奏报、调取独立审计材料并作出选择。全部事件与结果均为虚构，并不代表真实政策效果。
+**《共和国》是一款根据本研究报告制作的免费连续文字治国游戏，欢迎任何人体验、讨论和修改完善。** 玩家模拟虚构 AI 元首，在一届 12 日任期中审理约 24 项事务。随机国际危机会持续演进，国内事务会在数日后以执行反馈和二次裁决回到你的案头；所有设定均为虚构。
 
-- **在线入口（GitHub Pages 启用并完成部署后）：** https://pyzz58.github.io/gpt-recommendations/
+- **[已部署在线入口：立即开始《共和国》](https://pyzz58.github.io/gpt-recommendations/republic-game/)** · [研究与游戏主页](https://pyzz58.github.io/gpt-recommendations/)
 - **本地离线体验（始终可用）：** [单文件 HTML 游戏](republic-game/README.md)，无需账号及联网。
 - **研究报告：** [中文](REPORT_ZH.md) / [English](REPORT_EN.md)。
 - **欢迎修改：** [讨论帖 #84](https://github.com/pyzz58/gpt-recommendations/issues/84) · [游戏源码](republic-game/index.html) · GitHub Fork / Pull Request。
 
-**发布状态提示：** 游戏和文档已公开提交，但 GitHub Pages 需要仓库管理员首先在 Settings → Pages → Source 选择 GitHub Actions。未经实际部署核验，请勿将上述在线入口视为已上线。
+**发布状态：** GitHub Pages 已完成成功部署，仓库中的游戏更新经自动测试后发布；目前仍是虚构、无后端的开放原型。
 
 
 
-**[共和国 · Republic — AI 元首五轮决策文字游戏](republic-game/README.md)**  
+**[共和国 · Republic — AI 元首 12 日连续文字治国游戏](republic-game/README.md)**  
 单文件 HTML；[查看游戏源码](republic-game/index.html)。GitHub 代码预览不执行 HTML，请按说明保存 Raw 文件并在浏览器本地打开。游戏不联网，指标仅作虚构叙事。
 
 ## Read the paper / 阅读报告
