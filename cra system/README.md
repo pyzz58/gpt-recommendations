@@ -20,7 +20,7 @@ W15已完成部署候选、容器冒烟、配置/恢复检查和反馈模板，�
 
 ## 完整技术实施入口
 
-先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01—W14已完成；W15部署候选在[CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771)完成镜像构建、迁移、容器启动和健康检查，但真实授权试用仍阻塞。V1A主线选择器为complete。
+先看[第一性原理复核](audit/FIRST_PRINCIPLES_REVIEW_V04.md)及[完整实施路径](plan/IMPLEMENTATION_PATH.md)，再读[技术总路线](architecture/IMPLEMENTATION_ROUTE.md)和当前任务卡。阶段/里程碑/CI要求来自plan/implementation.json，逐项交付来自tasks.json；不另建独立任务状态。W01—W14已完成；W15部署候选已完成镜像构建、迁移、容器启动和健康检查，但真实授权试用仍阻塞。V1A主线选择器为complete。
 
 ## 当前交付和实际状态
 
@@ -85,6 +85,6 @@ Git中的 `theory/requirements.json` 是开发可执行基线；Notion是本次�
 
 当前没有运行时Notion自动同步凭证或任务。仅修改Notion而未导入Git的内容，CI无法凭空发现；维护人必须先导入，或者后续实现只读差异导入。系统不会自动替人决定新架构或静默改写已签发报告。
 
-最新工程验证为[W15部署候选源码绑定CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771)。W01—W14已按源码绑定和任务专属CI完成；W15只完成隔离测试容器冒烟，仍为外部条件阻塞。真实设备/弱网、代表性完整自动检验评估、人工总耗时、获准生产部署和授权试用仍待后续验证。
+最新工程验证为[本机合成体验与W12稳定性修复CI](https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456)。W01—W14已按源码绑定和任务专属CI完成；W12两轮监查端到端在修复后通过，W15仍为外部条件阻塞。真实设备/弱网、代表性完整自动检验评估、人工总耗时、获准生产部署和授权试用仍待后续验证。
 
 开源复用修订v0.5：[14项目核对与替代边界](architecture/REUSE_ASSESSMENT.md)，[可直接发给Codex的第一段](plan/CODEX_FIRST_MESSAGE.md)。依赖选择已同步到任务；尚未安装、集成或做临床性能验证。

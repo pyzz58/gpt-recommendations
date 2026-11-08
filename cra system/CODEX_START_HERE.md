@@ -21,7 +21,7 @@ W12完成后已在[run 42354648562](https://github.com/pyzz58/gpt-recommendation
 
 ## 当前状态和第一步
 
-已完成CRA-W00技术基线和**CRA-W01至W14**。W15在[run 42359819771](https://github.com/pyzz58/gpt-recommendations/actions/runs/42359819771)通过部署候选CI，但授权试用记录明确为`BLOCKED`；V1A主线选择器为complete。
+已完成CRA-W00技术基线和**CRA-W01至W14**。本机合成体验与W12稳定性修复在[run 42438384456](https://github.com/pyzz58/gpt-recommendations/actions/runs/42438384456)通过全部源码绑定job；W15授权试用记录仍明确为`BLOCKED`；V1A主线选择器为complete。
 
 先运行只读选择器：
 
