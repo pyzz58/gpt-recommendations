@@ -13,7 +13,7 @@ function testRun(seedValue) {
   class Element {
     constructor(id="") { this.id=id;this.textContent="";this.hidden=false;this.disabled=false;this.className="";this.children=[];this.listeners={}; }
     addEventListener(name,handler) { this.listeners[name]=handler; }
-    click() { if(!this.disabled) assert(this.listeners.click, "Missing click handler for "+this.id)(); }
+    click() { if(!this.disabled) { assert(this.listeners.click, "Missing click handler for "+this.id); this.listeners.click(); } }
     appendChild(el) {this.children.push(el);}
     replaceChildren(...xs) {this.children=xs.slice();}
   }
