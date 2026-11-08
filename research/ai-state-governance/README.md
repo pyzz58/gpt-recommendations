@@ -3,13 +3,13 @@
 **A public, bilingual, versioned discussion space on AI-assisted national meta-governance.**
 
 **Status:** Research hypothesis / 研究性构想，**not an implemented system**.  
-**Version:** v0.5 · 2026-11-08
+**Version:** v0.6 · 2026-11-08
 
 > The proposed AI leader should not micromanage a country; it should examine whether the *people, organization, incentives, budgets, strategic objectives, and assurance systems* are fit for purpose.
 >
 > **AI 元首不包办治理，而是优化治理国家的人与组织。**
 >
-> **v0.5 / Current:** adds open application and independent nominations for critical senior offices; preregistered role requirements, independent selection panels, multichannel evidence, and audit of who was excluded. Expert cabinet deliberation, protected dissent, independent verification, and bounded AI adjudication remain central. All illustrations are independently constructed fictional administrative scenarios.
+> **v0.6 / Current:** maintains open appointments, independent audit, human expert cabinet deliberation and bounded AI adjudication, and links an expanded twelve-day interactive game with follow-up cases and an evolving fictional international crisis. All examples remain fictional.
 >
 > **精英内阁充分议事，AI 秘书全程留痕；一人提出有实质依据的异议，也必须进入最终裁决并可触发独立核验。**
 
