@@ -11,6 +11,9 @@ uv run --locked python -m intelligence --root /private/archive submit-step --rec
 uv run --locked python -m intelligence --root /private/archive decide-step --record decision.json --rights journal-rights.json
 uv run --locked python -m intelligence --root /private/archive current-decision W15 M01 TASK-W15
 uv run --locked python -m intelligence --root /private/archive operation-summary LOGICAL-OP-1
+uv run --locked python -m intelligence --root /private/archive weekly-claim --record weekly-run.json --rights journal-rights.json
+uv run --locked python -m intelligence --root /private/archive weekly-checkpoint --record weekly-checkpoint.json --rights journal-rights.json
+uv run --locked python -m intelligence --root /private/archive weekly-status WEEKLY-2026-W46 --rights journal-rights.json
 
 The schema command defaults to VersionSubmission. read-reference checks a
 committed owner/reference, exact target kind/body identity and declared purpose;
@@ -81,6 +84,18 @@ def main(argv=None) -> int:
         "task_object_id", help="Stable Task object ID used to isolate this decision chain")
     operation_summary = commands.add_parser("operation-summary")
     operation_summary.add_argument("idempotency_key")
+    weekly_claim = commands.add_parser(
+        "weekly-claim", help="Claim one durable weekly run identity")
+    weekly_claim.add_argument("--record", required=True, type=Path)
+    weekly_claim.add_argument("--rights", required=True, type=Path)
+    weekly_checkpoint = commands.add_parser(
+        "weekly-checkpoint", help="Append one exact weekly stage checkpoint")
+    weekly_checkpoint.add_argument("--record", required=True, type=Path)
+    weekly_checkpoint.add_argument("--rights", required=True, type=Path)
+    weekly_status = commands.add_parser(
+        "weekly-status", help="Read the latest weekly run and resume point")
+    weekly_status.add_argument("weekly_run_id")
+    weekly_status.add_argument("--rights", required=True, type=Path)
     commands.add_parser("rebuild-index")
     find = commands.add_parser("find")
     find.add_argument("title")
@@ -213,6 +228,39 @@ def main(argv=None) -> int:
                     checked_by="CLI query",checked_at=datetime.now(timezone.utc))
                 summary = OperationJournal(archive,rights).summary(args.idempotency_key)
                 print(json.dumps(asdict(summary), ensure_ascii=False, default=str))
+                return 0
+            elif args.command in (
+                    "weekly-claim", "weekly-checkpoint", "weekly-status"):
+                from .weekly import (
+                    WeeklyCheckpointRequest, WeeklyRunController,
+                    WeeklyRunRequest,
+                )
+                rights = RightsGrant.model_validate_json(
+                    args.rights.read_bytes())
+                controller = WeeklyRunController(archive, rights)
+                if args.command == "weekly-claim":
+                    stored, record = controller.claim(
+                        WeeklyRunRequest.model_validate_json(
+                            args.record.read_bytes()))
+                elif args.command == "weekly-checkpoint":
+                    stored, record = controller.checkpoint(
+                        WeeklyCheckpointRequest.model_validate_json(
+                            args.record.read_bytes()))
+                else:
+                    print(json.dumps(
+                        controller.resume_plan(args.weekly_run_id),
+                        ensure_ascii=False))
+                    return 0
+                print(json.dumps({
+                    "manifest_version_id": stored.submission.version_id,
+                    "state": record.state.value,
+                    "next_stage": (
+                        record.next_stage.value
+                        if record.next_stage else None),
+                    "checkpoints": len(record.checkpoints),
+                    "publication_authorized": False,
+                    "delivery_authorized": False,
+                }, ensure_ascii=False))
                 return 0
             elif args.command == "find":
                 result = {"navigation_only": True, "matches": archive.find(args.title)}

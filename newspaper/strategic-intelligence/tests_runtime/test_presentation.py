@@ -76,6 +76,9 @@ class EditionPresentationTests(unittest.TestCase):
             "ARTICLE-W32-MAIN",
             "# Bounded Commitment\n\n"
             "The commitment is documented, while execution remains unobserved.\n\n"
+            "## Decision boundary\n\n"
+            "### Observable condition\n\n"
+            "The condition remains bounded.\n\n"
             "DOI [10.1596/example](https://doi.org/10.1596/example); "
             "unsafe [executable](javascript:alert(1)).\n\n"
             "<script>alert('not executable')</script>")
@@ -451,6 +454,8 @@ class EditionPresentationTests(unittest.TestCase):
         html = Path(result.output_path).read_text(encoding="utf-8")
         self.assertIn("<!doctype html>", html)
         self.assertIn("Bounded Commitment", html)
+        self.assertIn("<h2>Decision boundary</h2>", html)
+        self.assertIn("<h3>Observable condition</h3>", html)
         self.assertIn("&lt;script&gt;alert", html)
         self.assertNotIn("<script>alert", html)
         self.assertIn(

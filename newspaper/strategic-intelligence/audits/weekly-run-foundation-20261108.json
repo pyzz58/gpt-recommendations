@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "record_id": "SI-WEEKLY-RUN-FOUNDATION-20261108-001",
+  "checked_at": "2026-11-08T21:22:00+13:00",
+  "branch": "codex/si-first-real-pilot-20261101",
+  "spec_sha256": "3c4b65df25c39b8628c23ee9d1aa73e657bc004aed48f747e770a14c51115f75",
+  "result": "DURABLE_WEEKLY_IDENTITY_AND_CHECKPOINTS_IMPLEMENTED_SCHEDULE_NOT_DEPLOYED",
+  "implemented": {
+    "storage": "Existing append-only Archive; no second database or task system",
+    "weekly_identity": "source week, cutoff, issue, Task and specification are fixed at claim time",
+    "atomic_claim": "Same run request is idempotent; a changed issue/window/Task under the same run ID is rejected",
+    "ordered_stages": ["SOURCE", "PREPARE", "DRAFT", "RESEARCH", "REVIEW", "REPAIR", "EDITION", "VERIFY", "DELIVERY"],
+    "checkpoints": "Exact stage, disposition, artifact versions, external operation IDs, note and next action are append-only",
+    "idempotency": "An exact checkpoint retry returns the same manifest instead of appending again",
+    "concurrency": "Expected-current manifest version prevents two runners from silently overwriting each other",
+    "resume": "weekly-status returns the latest durable manifest, next stage and prior checkpoint artifacts",
+    "stopped_states": "BLOCKED, FAILED and UNKNOWN retain the same stage as the resume point; no automatic broadening or blind retry",
+    "cli": ["weekly-claim", "weekly-checkpoint", "weekly-status"],
+    "tests": "tests_runtime/test_weekly.py"
+  },
+  "automated_by_program": [
+    "Weekly run identity and issue/window binding",
+    "Sequential stage checkpoints and exact artifact references",
+    "Idempotent retry and stale-writer conflict detection",
+    "Resume plan reconstruction from the Archive",
+    "Persistent status available to a new process"
+  ],
+  "still_manual_or_unimplemented": [
+    "GitHub Actions intelligence-weekly.yml does not exist and no real schedule has been enabled",
+    "Source feed/channel configuration and rights intake still require explicit inputs",
+    "The full SOURCE→RESEARCH→REVIEW→EDITION pipeline is not invoked by one automatic runner",
+    "Independent reviewer execution is not yet an admitted model operation inside the weekly run",
+    "GitHub-hosted private persistent storage, backup and independent watchdog are not configured",
+    "External delivery authorization and receipt handling remain separate and unauthorized"
+  ],
+  "boundaries": {
+    "content_approval": false,
+    "publication_authorized": false,
+    "delivery_authorized": false,
+    "schedule_verified": false,
+    "real_weekly_run_verified": false
+  },
+  "post_update_validation": {
+    "weekly_foundation_tests": {"count": 5, "result": "PASS"},
+    "runtime_tests": {"count": 321, "result": "PASS"},
+    "maintenance_tests": {"count": 56, "result": "PASS"},
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W47_work_plan_check": "PASS",
+    "json_and_diff_check": "PASS"
+  }
+}

@@ -224,7 +224,7 @@ def _title_and_body(text: str) -> tuple[str, str]:
     return match.group(1).strip(), body
 
 
-def _body_markup(text: str) -> Markup:
+def _body_markup(text: str, *, base_level: int = 2) -> Markup:
     """Render a deliberately small, escaped Markdown subset.
 
     Model output remains data. Raw HTML and unsupported Markdown stay readable
@@ -322,7 +322,7 @@ def _body_markup(text: str) -> Markup:
         if heading:
             flush_all()
             source_level = len(heading.group(1))
-            level = min(6, source_level + 1)
+            level = min(6, source_level + base_level - 1)
             blocks.append(
                 f"<h{level}>" + inline(heading.group(2).strip()) + f"</h{level}>")
             index += 1
@@ -551,7 +551,9 @@ class EditionPresentationController:
                 "entry_id": entry.entry_id,
                 "role": entry.role.value,
                 "title": title,
-                "body_html": _body_markup(main_text),
+                # The reviewed Article's H1 is emitted by the page template;
+                # its first Markdown section heading therefore becomes H2.
+                "body_html": _body_markup(main_text, base_level=1),
             })
             rendered.append(RenderedEditionEntry(
                 entry_id=entry.entry_id, role=entry.role,

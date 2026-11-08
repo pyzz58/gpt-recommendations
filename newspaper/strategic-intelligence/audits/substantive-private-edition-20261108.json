@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "record_id": "SI-SUBSTANTIVE-PRIVATE-EDITION-20261108-001",
+  "checked_at": "2026-11-08T21:22:00+13:00",
+  "branch": "codex/si-first-real-pilot-20261101",
+  "spec_sha256": "3c4b65df25c39b8628c23ee9d1aa73e657bc004aed48f747e770a14c51115f75",
+  "content_chain_spec_sha256": "77023b42be35085730f0d9f0012964f2563ba0d315d59a1a74253d841c1ac298",
+  "result": "PRIVATE_EDITION_SUBSTANTIVE_A_B1_B2_C_AND_ARTICLE_REVIEW_PASS",
+  "content_change": {
+    "superseded_reader_html": {
+      "path": "private:/si-first-real-pilot/第一份私人内参-20261108-v2.html",
+      "bytes": 3994,
+      "formal_article_version_id": "ARTICLE-SI-CBAM-FORMAL-20261107-v004",
+      "formal_article_bytes": 2209,
+      "formal_article_characters": 998,
+      "reason": "The formal chain had compressed the five pilot outputs into summary-level conclusions and omitted substantive A/B1/B2/C reader content."
+    },
+    "current_article": {
+      "version_id": "ARTICLE-SI-CBAM-FORMAL-20261107-v006",
+      "parent_version_id": "ARTICLE-SI-CBAM-FORMAL-20261107-v005",
+      "bytes": 29436,
+      "sha256": "e9e5cef7b13cef56892064a47ed55d227903b5b3b202504b4a0396c295048185",
+      "sections": {
+        "A_original_selection_and_chinese_support": "Retained and rebuilt from source sections and tables; includes direct readings, Chinese support, method limits, Table 8 and Post conflicts, and APEC measurement limits.",
+        "B1_adviser_analysis": "Retained with bounded judgment, actor conflict, buyer-versus-exporter mechanism, falsifiers and strategic limits.",
+        "B2_mechanism_teaching": "Retained with necessary concepts, two connected process stages, boundary examples, counterfactuals and transfer conditions.",
+        "C_conditional_reasoning": "Retained with four conditional paths, observable distinction signals, revision triggers and open questions."
+      }
+    },
+    "current_reader_html": {
+      "edition_version_id": "EDITION-77960387755750f5bf3e10494eef8ac9",
+      "previous_version_id": "EDITION-a84d8f678de52e626ee45b650983c96d",
+      "path": "private:/si-first-real-pilot/第一份私人内参-20261108-final.html",
+      "bytes": 32769,
+      "sha256": "3d261dfdd0aea58642592c81e72e13609c2839789021dbe0f1dcf9b75dccc515",
+      "mode": "0600",
+      "plain_text_path": "private:/si-first-real-pilot/第一份私人内参-20261108-final.txt",
+      "plain_text_bytes": 29305,
+      "plain_text_sha256": "6ad9476db0d382f71c1a94c895ffecc0576121fd4271d6699cc0dc097216df51"
+    }
+  },
+  "reader_character_counts_without_whitespace": {
+    "cover": 184,
+    "why_this_research": 504,
+    "A_original_selection_and_chinese_support": 3360,
+    "B1_adviser_analysis": 1707,
+    "B2_mechanism_teaching": 1820,
+    "C_conditional_reasoning": 1719,
+    "terms_and_sources": 894,
+    "total_cover_and_feature": 10319
+  },
+  "independent_reviews": {
+    "provider": "DeepSeek",
+    "requested_model": "deepseek-v4-pro",
+    "observed_model": "UNKNOWN_CLI_DID_NOT_RETURN_MODEL_ID",
+    "writer_model": "deepseek-flash",
+    "same_provider_as_writer": true,
+    "general_independent_L5_claimed": false,
+    "full_article_v005_review": {
+      "verdict": "PASS",
+      "minor_findings": 2,
+      "tokens_reported_by_cli": 105906,
+      "evidence": "private:/si-first-real-pilot/independent-review-v3/review-result-v003.json"
+    },
+    "affected_scope_article_v006_review": {
+      "verdict": "PASS",
+      "resolved_findings": ["F1", "F2"],
+      "new_critical_or_major_findings": 0,
+      "tokens_reported_by_cli": 40735,
+      "evidence": "private:/si-first-real-pilot/independent-review-delta-v006/review-delta-v006.json"
+    },
+    "full_rendered_edition_review": {
+      "verdict": "PASS",
+      "minor_findings": 1,
+      "tokens_reported_by_cli": 73352,
+      "finding": "Section headings jumped from h1 to h3 and the footer used h2.",
+      "evidence": "private:/si-first-real-pilot/independent-edition-review-v3/edition-review-v3.json"
+    },
+    "review_tokens_reported_total": 219993,
+    "monetary_cost": "UNKNOWN_PROVIDER_USAGE_NOT_RETURNED_BY_CLI",
+    "codex_review": {
+      "successful_review_call": false,
+      "reason": "No usable Codex model login was available to the isolated CLI after the magpie route returned 404.",
+      "monetary_cost": "NOT_INCURRED_NO_REVIEW_RESPONSE"
+    }
+  },
+  "formal_chain": {
+    "review_id": "REVIEW-SI-CBAM-MAIN-INDEPENDENT-V006-PASS",
+    "adoption_decision_version_id": "W31-REVIEW-DECISION-c908672273604b9cc216ae928b98d891",
+    "review_case_version_id": "REVIEW-CASE-1f8bb557594e895ed1821018c7417485",
+    "external_review_package_version_id": "EXTERNAL-REVIEW-SI-CBAM-V006-PASS",
+    "external_review_package_sha256": "86396119944460441da895f8c793a9217e1438cbd12236819e2d04449ff40569",
+    "cover_review_reused": "REVIEW-SI-CBAM-COVER-INDEPENDENT-V2-PASS",
+    "cover_review_reuse_reason": "The cover body did not change; the affected v006 edits were in the feature's source-evidence notes and did not change the cover summary."
+  },
+  "presentation_repair_after_full_edition_review": {
+    "finding_id": "F1",
+    "change": "Article body headings now map to h2 and subheadings to h3, preserving a continuous h1-h2-h3 outline.",
+    "affected_scope_only": true,
+    "content_changed": false,
+    "final_heading_counts": {"h1": 2, "h2": 7, "h3": 29, "h4": 0},
+    "validation": "lxml structure, title, cover/feature order, links, 0600 mode and content hash checked after rendering"
+  },
+  "source": {
+    "version_id": "DOC-WB-CBAM-11366-20260428-v004",
+    "bytes": 99024,
+    "sha256": "60067f3e9c49256fc23428300c1d394421a6dfd6fd396c726a2d27ab35d89276",
+    "title": "Even the Announcement Matters? The Effect of the Carbon Border Adjustment Mechanism on Exporter Behavior",
+    "authors": ["Uğur Aytun", "Gunhild Berg", "Seyit Mümin Cilasun", "Etkin Ozen"],
+    "doi": "10.1596/1813-9450-11366",
+    "license": "CC BY 3.0 IGO",
+    "redownloaded": false
+  },
+  "cost": {
+    "initial_five_deepseek_flash_calls_estimated_usd": "0.0676992",
+    "deepseek_review_calls": 3,
+    "deepseek_review_tokens_reported": 219993,
+    "deepseek_review_monetary_cost": "UNKNOWN",
+    "codex_review_monetary_cost": "NOT_INCURRED"
+  },
+  "post_update_validation": {
+    "runtime_tests": {"count": 321, "result": "PASS", "duration_seconds": 41.582},
+    "maintenance_tests": {"count": 56, "result": "PASS", "duration_seconds": 17.628},
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W28_W29_W30_W31_W32_W47_work_plan_checks": "PASS",
+    "json_and_diff_check": "PASS",
+    "final_edition_readback": "PASS"
+  },
+  "remaining_limitations": [
+    "The independent reviewer is a separate process using deepseek-v4-pro, but it shares the same provider as the deepseek-flash writer and does not establish general independent L5 capability.",
+    "No regression reproduction, customs microdata or buyer-supplier records were available.",
+    "Table 8 and Post inconsistencies remain unresolved in the source and are disclosed rather than repaired.",
+    "The edition still has content_review_required=true and full_edition_review_required=true at the interface level, with publication_authorized=false and delivery_authorized=false.",
+    "The user has not yet read the final edition, and this is not a complete weekly issue or the six-case G02 acceptance."
+  ]
+}
