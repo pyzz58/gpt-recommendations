@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>共和国｜AI 元首文字演示</title>
+<style>
+:root{color-scheme:light;--ink:#182331;--muted:#617082;--line:#dbe2e9;--cream:#f4f6f8;--paper:white;--navy:#12304b;--accent:#155b91;--good:#12634b;--bad:#a44131}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Noto Sans SC","PingFang SC",sans-serif}
+main{max-width:780px;margin:auto;padding:32px 18px 72px}
+header{border-radius:20px;background:var(--navy);color:white;padding:30px 28px}
+h1{font-size:34px;letter-spacing:.16em;margin:0}
+h2{font-size:21px;line-height:1.4;margin:0 0 14px}
+h3{margin:0 0 8px;font-size:16px}
+.subtitle{opacity:.82;margin:6px 0 0;font-size:14px}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;border-radius:999px;background:#e4edf5;color:#264d6e;padding:3px 11px;margin-bottom:12px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:16px;box-shadow:0 5px 18px #14243808}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.metric{padding:12px 8px;background:#f5f7fa;border-radius:12px;text-align:center}
+.metric span{font-size:12px;color:var(--muted);display:block}
+.metric strong{font-size:24px;display:block;line-height:1.3;font-variant-numeric:tabular-nums}
+p{margin:8px 0 14px}
+.report{background:#f5f7fa;border-left:3px solid #9cb4ca;padding:12px 15px;border-radius:7px}
+.audit{margin-top:12px;background:#f0f6f6;border-left:3px solid #63a59e;padding:12px 15px;border-radius:7px}
+.notice{font-size:13px;color:var(--muted)}
+.actions{display:grid;gap:9px;margin-top:18px}
+button{font:inherit;border:1px solid #b7c6d4;border-radius:11px;padding:12px 14px;text-align:left;background:white;color:var(--ink);cursor:pointer;transition:background .15s}
+button:hover{background:#eaf3f9}
+button:focus-visible{outline:3px solid #ffb84e;outline-offset:2px}
+button.primary{background:var(--navy);color:white;border-color:var(--navy);text-align:center;font-weight:700}
+button.primary:hover{background:#244966}
+button.secondary{background:#eef4f8;border-color:#aabfce;color:#17496a;font-weight:600}
+button:disabled{opacity:.55;cursor:default}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.muted{color:var(--muted);font-size:14px}
+.outcome{padding:14px 16px;background:#f4f8f4;border-radius:10px;border:1px solid #cfe2d2}
+.delta{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.delta span{padding:4px 9px;background:#edf2f6;border-radius:7px;font-size:13px;font-weight:700}
+.pos{color:var(--good)}.neg{color:var(--bad)}
+[hidden]{display:none!important}
+footer{text-align:center;margin-top:20px;font-size:12px;color:#718092}
+@media(max-width:480px){h1{font-size:29px}.panel{padding:17px}.metrics{gap:5px}.metric strong{font-size:20px}.metric span{font-size:11px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="pill" style="background:#dfeaf4;color:#173a57">交互式制度实验 · v0.1</div>
+  <h1>共和国</h1>
+  <p class="subtitle">你是 AI 元首。人类负责专业治理，你负责审议、任免监督与纠偏。</p>
+</header>
+<section class="panel">
+ <div class="row"><strong>国家运行指标</strong><span class="muted" id="turn">第 1 / 5 轮</span></div>
+ <div class="metrics" aria-label="国家治理指标">
+   <div class="metric"><span>民生</span><strong id="life">60</strong></div>
+   <div class="metric"><span>财政</span><strong id="budget">60</strong></div>
+   <div class="metric"><span>廉洁</span><strong id="integrity">60</strong></div>
+   <div class="metric"><span>制度信任</span><strong id="trust">60</strong></div>
+ </div>
+ <p class="notice">指标只为文字游戏服务，不是实际政策评分或因果预测。</p>
+</section>
+<section id="play" class="panel" aria-live="polite">
+ <div id="case-view">
+   <span class="pill" id="category">人事</span>
+   <h2 id="headline">加载中</h2>
+   <div class="report"><strong id="speaker"></strong><p id="brief"></p></div>
+   <p class="notice" id="secretary"></p>
+   <div id="audit" class="audit" hidden><strong>独立审计追加材料</strong><p id="audit-text"></p></div>
+   <div class="actions"><button id="audit-button" class="secondary" type="button">调取独立审计材料</button></div>
+   <h3 style="margin-top:20px">元首裁决</h3>
+   <div class="actions" id="choices"></div>
+ </div>
+ <div id="result-view" hidden>
+   <span class="pill">裁决已记录</span>
+   <h2 id="result-title"></h2>
+   <div class="outcome" id="result-body"></div>
+   <div class="delta" id="delta"></div>
+   <p id="followup" class="muted"></p>
+   <button id="next-button" class="primary" type="button">阅读下一份奏报</button>
+ </div>
+ <div id="ending-view" hidden>
+   <span class="pill">任期结束</span>
+   <h2 id="ending-title"></h2>
+   <p id="ending-text"></p>
+   <div id="history" class="report"></div>
+   <div class="actions">
+     <button id="restart" class="primary" type="button">重新治理共和国</button>
+   </div>
+ </div>
+</section>
+<footer>纯前端 · 离线可玩 · 无账号、无网络请求、无真实个人数据 · 虚构场景</footer>
+</main>
+<script>
+"use strict";
+(function () {
+  const keys=["life","budget","integrity","trust"];
+  const labels=["民生","财政","廉洁","制度信任"];
+  const scenarios=[
+    {cat:"高级任免",title:"空缺的公共应急局负责人",speaker:"人事委员会",
+     brief:"应急局负责人离任。组织提交一位资深候选人；公开竞聘中还有一位跨领域申请者。部门希望尽快任命，以免延误年度演练。",
+     secretary:"AI 秘书：一名委员担心组织推荐可能形成熟人优势；另一名委员担心公开竞聘拖慢工作。",
+     audit:"审计显示：两人履历均真实。组织推荐者管理经验丰富，但遴选标准在见到申请名单后曾变更；外部申请者具有独立核验的应急调拨记录，尚缺高层统筹演练证据。",
+     choices:[
+      {text:"立即任命组织推荐者，先保证效率",delta:[0,5,-8,-7],title:"任命迅速完成",body:"演练按时启动，但遴选规则变更引发异议，独立监察要求重新审查任命程序。",follow:"人事监察组建议：未来岗位标准必须在公布名单之前固定。"},
+      {text:"恢复预先规则，由独立委员会评估所有合格者",delta:[1,-3,7,9],title:"竞争程序重启",body:"岗位短期由副职代理。两名候选人接受同样的专业演练和利益冲突审查，遴选理由可复核。",follow:"代理负责人报告：训练有所延后，但组织信任正在恢复。"},
+      {text:"暂停任命，先要求部门完全自行协商",delta:[0,-2,1,-5],title:"争议暂时搁置",body:"避免了仓促任命，但缺乏程序期限，候选人及部门均无法判断何时能完成决定。",follow:"AI 秘书提醒：程序公平也包括合理期限。"}
+     ]},
+    {cat:"财政与地方治理",title:"两类地区争取交通预算",speaker:"财政与交通联合小组",
+     brief:"甲地区通勤密集、线路拥挤；乙地区人口分散、基础线路薄弱。地方负责人提出各自的交通投资计划，争取新增公共预算。",
+     secretary:"AI 秘书：双方采用不同的服务效果指标，不能只比较乘客总量。",
+     audit:"独立样本显示：甲地区高峰延误成本较高；乙地区部分居民无法到达基本医疗服务点。两地原计划的资金成本口径也不完全一致。",
+     choices:[
+      {text:"按照去年预算比例直接分配",delta:[-6,7,1,-5],title:"预算快速下达",body:"财政执行便利，但偏远地区的基本服务缺口没有得到充分解决。",follow:"公众服务部门要求下一轮加入服务可达性指标。"},
+      {text:"退回小组，要求核对服务底线和任务资源后再分配",delta:[8,-5,2,7],title:"采用分地区评估",body:"专业委员会重新论证预算，提出两地不同的公共服务目标，并安排独立追踪。",follow:"交通部门建议发布统一的数据定义与审计接口。"},
+      {text:"各给一半，无须继续争论",delta:[-2,-6,0,-3],title:"平均主义暂时平息分歧",body:"双方均获得资金，但未评估不同地区的建设成本和最紧迫的民生需求。",follow:"独立预算办公室提醒：形式均等未必等于实质公平。"}
+     ]},
+    {cat:"内阁重大决策",title:"全国数字公共服务平台",speaker:"国家数字服务内阁会议",
+     brief:"内阁大多数成员支持一次性上线统一身份核验平台，预计可节省行政成本。一名成员担心网络薄弱地区和部分残障人士可能被错误拒绝公共服务。",
+     secretary:"AI 秘书：已经完整记录少数异议；目前没有针对特殊人群的独立误拒率测试。",
+     audit:"独立技术小组证实：节省成本的估算合理，但无障碍用户的样本覆盖不足，线下替代服务尚未建立。该漏洞不证明项目应永久取消。",
+     choices:[
+      {text:"尊重多数票，立即全国上线",delta:[-10,8,0,-10],title:"上线迅速，申诉增加",body:"行政成本下降，但部分合法用户无法通过核验，引发服务中断和补救成本。",follow:"独立监察报告：多数支持不能代替事实核验。"},
+      {text:"要求分期试点、保留线下渠道，并补充独立测试",delta:[8,-4,3,10],title:"阶段性审查获通过",body:"上线速度放缓，但降低了误拒风险，也让不同意见得到实质回应。",follow:"内阁收到测试结果后，着手修订正式推广计划。"},
+      {text:"直接永久否决项目",delta:[0,-8,2,-4],title:"风险被禁止，收益也被放弃",body:"避免了近期部署风险，但失去了评估改善公共服务效率的机会。",follow:"专家委员会建议：应先比较可行替代方案，而非把所有问题变成二选一。"}
+     ]},
+    {cat:"独立监察",title:"公共能源采购出现异常",speaker:"独立审计院",
+     brief:"多份采购合同价格接近，部分投标人的联系方式相互关联。负责部门解释称供应链集中，要求继续按计划付款。",
+     secretary:"AI 秘书：检测到异常不等于证明腐败，且调查尚未完成。",
+     audit:"审计发现供应商间存在共享地址的记录，但暂未证实违法串标。部分货物确实急需；可以分批审验并采取临时利益回避措施。",
+     choices:[
+      {text:"认定负责人腐败，立即公开处罚",delta:[-2,-4,-10,-12],title:"过早认定责任",body:"未经完整调查的公开指控影响了正常供货，并损害了程序公信力。",follow:"司法机关提醒：调查、纪律与裁判应遵守不同的证明要求。"},
+      {text:"独立调查、实施风险隔离，必要采购继续受控进行",delta:[2,-4,10,9],title:"风险受到控制",body:"监察组保全证据并开展独立核查，关键供应维持最低保障，后续处理等待调查结论。",follow:"人事委员会更新了利益冲突申报与回避制度。"},
+      {text:"接受部门解释，不再查证",delta:[0,6,-11,-9],title:"采购照常进行",body:"短期工作不受影响，但合同中的潜在风险没有消除，监察体系受到质疑。",follow:"审计院要求保留再次调查的法定渠道。"}
+     ]},
+    {cat:"组织优化",title:"两个机构重复建设监管系统",speaker:"行政改革委员会",
+     brief:"两个部门分别建设相似的数据监管平台，重复采购和标准冲突已经持续两年。两位负责人都认为自己的机构不可撤并。",
+     secretary:"AI 秘书：既有负责人均把问题归因于对方；尚无跨部门成本与数据质量的联合评估。",
+     audit:"独立评估认为重复采购造成财政损耗，但部分职责需要相互制衡。全面合并可能消除必要的独立复核。",
+     choices:[
+      {text:"直接将两个机构完全合并",delta:[-3,8,-5,-4],title:"结构被迅速简化",body:"重复采购有所减少，但独立复核职责也被合并，新系统出现监督空白。",follow:"监察机构请求恢复最低限度的相互制衡。"},
+      {text:"统一数据标准和采购基础设施，保留独立监管职权",delta:[5,6,7,8],title:"制度重组完成",body:"两部门共用平台而分开履行监督职责，成本降低且关键制衡机制得到保留。",follow:"组织委员会提交下一轮可审查的绩效证据。"},
+      {text:"维持原组织不变，交两位负责人自行解决",delta:[-2,-9,0,-6],title:"结构性问题延续",body:"两个部门继续单独采购。即使人事轮换，职能重叠仍未得到解决。",follow:"财政部门指出：人员问题与制度问题必须分别诊断。"}
+     ]}
+  ];
+  let index=0,mode="case",audited=false,score={},history=[];
+  const el=id=>document.getElementById(id);
+  const clamp=n=>Math.max(0,Math.min(100,n));
+  function reset(){index=0;mode="case";audited=false;score={life:60,budget:60,integrity:60,trust:60};history=[];render();}
+  function renderScores(){keys.forEach(k=>el(k).textContent=score[k]);el("turn").textContent=mode==="end"?"五轮审议完成":"第 "+(index+1)+" / "+scenarios.length+" 轮";}
+  function render(){renderScores();el("case-view").hidden=mode!=="case";el("result-view").hidden=mode!=="result";el("ending-view").hidden=mode!=="end";if(mode!=="case")return;const s=scenarios[index];el("category").textContent=s.cat;el("headline").textContent=s.title;el("speaker").textContent=s.speaker+" 来报";el("brief").textContent=s.brief;el("secretary").textContent=s.secretary;el("audit").hidden=!audited;el("audit-text").textContent=audited?s.audit:"";el("audit-button").disabled=audited;el("audit-button").textContent=audited?"已调取独立审计材料":"调取独立审计材料（可选）";const div=el("choices");div.replaceChildren();s.choices.forEach((o,n)=>{let b=document.createElement("button");b.type="button";b.textContent=String.fromCharCode(65+n)+" · "+o.text;b.addEventListener("click",()=>choose(n));div.appendChild(b);});}
+  function choose(n){if(mode!=="case")return;let s=scenarios[index],c=s.choices[n],d=c.delta.slice();if(!audited)d[3]-=3;keys.forEach((k,i)=>score[k]=clamp(score[k]+d[i]));history.push({title:s.title,decision:c.text,audited:audited});mode="result";renderScores();el("case-view").hidden=true;el("ending-view").hidden=true;el("result-view").hidden=false;el("result-title").textContent=c.title;el("result-body").textContent=c.body;el("followup").textContent=c.follow+(!audited?"（未查看独立审计，制度信任额外 -3）":"");const bar=el("delta");bar.replaceChildren();d.forEach((x,i)=>{const span=document.createElement("span");span.className=x>=0?"pos":"neg";span.textContent=labels[i]+" "+(x>0?"+":"")+x;bar.appendChild(span);});el("next-button").textContent=index===scenarios.length-1?"查看共和国任期报告":"阅读下一份奏报";}
+  function next(){if(mode!=="result")return;index++;audited=false;if(index>=scenarios.length){mode="end";end();}else{mode="case";render();}}
+  function end(){renderScores();el("case-view").hidden=true;el("result-view").hidden=true;el("ending-view").hidden=false;const avg=Math.round(keys.reduce((sum,k)=>sum+score[k],0)/keys.length);const label=avg>=72?"制度运行较稳健":avg>=58?"共和国仍在磨合":"制度需要紧急纠偏";el("ending-title").textContent=label+" · 综合指标 "+avg;el("ending-text").textContent="五轮审议结束。四项指标只是规则化的游戏反馈，并非对现实政策的预测。请回顾你的选择：是否充分听取专业论证、保障少数异议，并让审计机构保持独立？";const h=el("history");h.replaceChildren();history.forEach((x,i)=>{let p=document.createElement("p");p.textContent=(i+1)+". "+x.title+" → "+x.decision+(x.audited?"（已查审计）":"（未查审计）");h.appendChild(p);});}
+  el("audit-button").addEventListener("click",()=>{audited=true;render();});
+  el("next-button").addEventListener("click",next);
+  el("restart").addEventListener("click",reset);
+  reset();
+})();
+</script>
+</body>
+</html>
