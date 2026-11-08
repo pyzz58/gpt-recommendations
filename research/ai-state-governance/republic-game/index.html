@@ -1,164 +1,384 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>共和国｜AI 元首文字演示</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="《共和国》：免费开放的AI元首文字治国游戏。每日内阁奏报、独立审计、国际突发事件、连续后果与任期复盘。">
+<title>共和国｜AI 元首文字治国</title>
 <style>
-:root{color-scheme:light;--ink:#182331;--muted:#617082;--line:#dbe2e9;--cream:#f4f6f8;--paper:white;--navy:#12304b;--accent:#155b91;--good:#12634b;--bad:#a44131}
+:root{color-scheme:light;--ink:#1d2b3a;--soft:#607184;--bg:#f2f5f8;--white:#fff;--line:#dbe3eb;--navy:#12334f;--blue:#185b87;--green:#176347;--red:#ac4336}
 *{box-sizing:border-box}
-body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Noto Sans SC","PingFang SC",sans-serif}
-main{max-width:780px;margin:auto;padding:32px 18px 72px}
-header{border-radius:20px;background:var(--navy);color:white;padding:30px 28px}
-h1{font-size:34px;letter-spacing:.16em;margin:0}
-h2{font-size:21px;line-height:1.4;margin:0 0 14px}
-h3{margin:0 0 8px;font-size:16px}
-.subtitle{opacity:.82;margin:6px 0 0;font-size:14px}
-.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;border-radius:999px;background:#e4edf5;color:#264d6e;padding:3px 11px;margin-bottom:12px}
-.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:16px;box-shadow:0 5px 18px #14243808}
-.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.metric{padding:12px 8px;background:#f5f7fa;border-radius:12px;text-align:center}
-.metric span{font-size:12px;color:var(--muted);display:block}
-.metric strong{font-size:24px;display:block;line-height:1.3;font-variant-numeric:tabular-nums}
-p{margin:8px 0 14px}
-.report{background:#f5f7fa;border-left:3px solid #9cb4ca;padding:12px 15px;border-radius:7px}
-.audit{margin-top:12px;background:#f0f6f6;border-left:3px solid #63a59e;padding:12px 15px;border-radius:7px}
-.notice{font-size:13px;color:var(--muted)}
-.actions{display:grid;gap:9px;margin-top:18px}
-button{font:inherit;border:1px solid #b7c6d4;border-radius:11px;padding:12px 14px;text-align:left;background:white;color:var(--ink);cursor:pointer;transition:background .15s}
-button:hover{background:#eaf3f9}
-button:focus-visible{outline:3px solid #ffb84e;outline-offset:2px}
-button.primary{background:var(--navy);color:white;border-color:var(--navy);text-align:center;font-weight:700}
-button.primary:hover{background:#244966}
-button.secondary{background:#eef4f8;border-color:#aabfce;color:#17496a;font-weight:600}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:820px;padding:24px 15px 68px;margin:auto}
+header{background:linear-gradient(120deg,#102c46,#235578);border-radius:19px;padding:26px;color:#fff}
+header h1{font-size:34px;letter-spacing:.14em;margin:1px 0}
+header p{margin:4px 0 15px;opacity:.9}
+nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12px}
+nav a{color:#deeffe}
+.section{background:var(--white);border:1px solid var(--line);border-radius:15px;padding:19px 21px;margin-top:14px;box-shadow:0 6px 22px #1b2c3805}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+h2{font-size:21px;margin:8px 0 12px;line-height:1.4}h3{font-size:16px;margin:12px 0 8px}
+p{margin:8px 0 11px}
+.muted{color:var(--soft);font-size:12px}
+.tag{display:inline-block;border-radius:50px;background:#e5eef6;color:#2b5678;font-weight:800;letter-spacing:.05em;font-size:11px;padding:4px 10px}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px}
+.metric{text-align:center;background:#f3f6fa;border-radius:10px;padding:9px 4px}
+.metric span{display:block;font-size:11px;color:var(--soft)}
+.metric b{display:block;font-size:23px;line-height:1.4;font-variant-numeric:tabular-nums}
+.notice{background:#f2f6f9;border-left:4px solid #90b0c8;border-radius:6px;padding:11px 13px;margin:11px 0}
+.audit{background:#f1f8f5;border-left-color:#75aa95}
+.dissent{background:#fff7ea;border-left-color:#d8a05e}
+.reply{background:#f7f4fc;border-left-color:#a28bc3}
+.news{border:1px solid #d4e3ef;border-radius:12px;padding:15px;background:#f7fbff}
+.choices{display:grid;gap:9px;margin-top:10px}
+button{background:#fff;border:1px solid #aebfd0;color:var(--ink);border-radius:11px;padding:12px 14px;font:inherit;text-align:left;cursor:pointer}
+button:hover{background:#edf5fa}
+button:focus-visible{outline:3px solid #e6a84b;outline-offset:2px}
 button:disabled{opacity:.55;cursor:default}
-.row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.muted{color:var(--muted);font-size:14px}
-.outcome{padding:14px 16px;background:#f4f8f4;border-radius:10px;border:1px solid #cfe2d2}
-.delta{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-.delta span{padding:4px 9px;background:#edf2f6;border-radius:7px;font-size:13px;font-weight:700}
-.pos{color:var(--good)}.neg{color:var(--bad)}
+button.primary{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:750;text-align:center}
+button.primary:hover{background:#265273}
+button.secondary{background:#edf5fa;color:#195581;border-color:#b1cad9;font-weight:700}
+.delta{display:flex;gap:7px;flex-wrap:wrap;margin:9px 0}
+.delta span{border-radius:7px;background:#eff3f6;padding:4px 9px;font-size:12px;font-weight:700}
+.pos{color:var(--green)}.neg{color:var(--red)}
+.timeline{display:grid;gap:10px}
+.bulletin{border-left:3px solid #8db6ce;padding:6px 11px}
+.empty{font-size:13px;color:var(--soft)}
+footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
 [hidden]{display:none!important}
-footer{text-align:center;margin-top:20px;font-size:12px;color:#718092}
-@media(max-width:480px){h1{font-size:29px}.panel{padding:17px}.metrics{gap:5px}.metric strong{font-size:20px}.metric span{font-size:11px}}
+@media(max-width:480px){header{padding:21px 18px}header h1{font-size:29px}.section{padding:15px}.metric b{font-size:20px}}
 </style>
 </head>
 <body>
 <main>
 <header>
-  <div class="pill" style="background:#dfeaf4;color:#173a57">交互式制度实验 · v0.1</div>
-  <h1>共和国</h1>
-  <p class="subtitle">你是 AI 元首。人类负责专业治理，你负责审议、任免监督与纠偏。</p>
-<p class="subtitle" style="margin-top:12px">本游戏根据《AI 元治理国家》研究报告推演；欢迎体验、讨论与修改完善。</p>
-<nav aria-label="报告及社区" style="margin-top:17px;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px"><a style="color:#d6ebff" href="https://github.com/pyzz58/gpt-recommendations/blob/main/research/ai-state-governance/REPORT_ZH.md">研究报告（中文）</a><a style="color:#d6ebff" href="https://github.com/pyzz58/gpt-recommendations/blob/main/research/ai-state-governance/REPORT_EN.md">English report</a><a style="color:#d6ebff" href="https://github.com/pyzz58/gpt-recommendations/issues/84">参与公开讨论 / 贡献</a></nav>
+ <span class="tag">公开互动思想实验 · v0.4</span>
+ <h1>共和国</h1>
+ <p>你担任 AI 元首。人类专家治理国家，你负责关键裁决、选贤任能、保证独立监察与制度纠错。</p>
+ <nav>
+  <a href="https://github.com/pyzz58/gpt-recommendations/blob/main/research/ai-state-governance/REPORT_ZH.md">研究报告</a>
+  <a href="https://github.com/pyzz58/gpt-recommendations/issues/84">公共讨论 / 修改建议</a>
+  <a href="https://github.com/pyzz58/gpt-recommendations/tree/main/research/ai-state-governance/republic-game">开源代码</a>
+ </nav>
 </header>
-<section class="panel">
- <div class="row"><strong>国家运行指标</strong><span class="muted" id="turn">第 1 / 5 轮</span></div>
- <div class="metrics" aria-label="国家治理指标">
-   <div class="metric"><span>民生</span><strong id="life">60</strong></div>
-   <div class="metric"><span>财政</span><strong id="budget">60</strong></div>
-   <div class="metric"><span>廉洁</span><strong id="integrity">60</strong></div>
-   <div class="metric"><span>制度信任</span><strong id="trust">60</strong></div>
+<section class="section" aria-label="国家指标">
+ <div class="row"><strong>共和国状态</strong><span id="clock" class="muted">建立执政档案</span></div>
+ <div class="metrics">
+  <div class="metric"><span>民生</span><b id="m-life">62</b></div>
+  <div class="metric"><span>财政</span><b id="m-treasury">64</b></div>
+  <div class="metric"><span>廉洁</span><b id="m-integrity">61</b></div>
+  <div class="metric"><span>制度信任</span><b id="m-trust">60</b></div>
  </div>
- <p class="notice">指标只为文字游戏服务，不是实际政策评分或因果预测。</p>
+ <p class="muted">指标是游戏化反馈，不是现实政策的可靠预测。审计需要成本，盲目批准和无限拖延也有代价。</p>
 </section>
-<section id="play" class="panel" aria-live="polite">
- <div id="case-view">
-   <span class="pill" id="category">人事</span>
-   <h2 id="headline">加载中</h2>
-   <div class="report"><strong id="speaker"></strong><p id="brief"></p></div>
-   <p class="notice" id="secretary"></p>
-   <div id="audit" class="audit" hidden><strong>独立审计追加材料</strong><p id="audit-text"></p></div>
-   <div class="actions"><button id="audit-button" class="secondary" type="button">调取独立审计材料</button></div>
-   <h3 style="margin-top:20px">元首裁决</h3>
-   <div class="actions" id="choices"></div>
+<section class="section" id="intro">
+ <div class="news">
+  <span class="tag">国际专线 · 本届随机开局</span>
+  <h2 id="world-name">正在组建内阁……</h2>
+  <p id="world-intro"></p>
+  <p class="muted" id="world-stakes"></p>
  </div>
- <div id="result-view" hidden>
-   <span class="pill">裁决已记录</span>
-   <h2 id="result-title"></h2>
-   <div class="outcome" id="result-body"></div>
-   <div class="delta" id="delta"></div>
-   <p id="followup" class="muted"></p>
-   <button id="next-button" class="primary" type="button">阅读下一份奏报</button>
- </div>
- <div id="ending-view" hidden>
-   <span class="pill">任期结束</span>
-   <h2 id="ending-title"></h2>
-   <p id="ending-text"></p>
-   <div id="history" class="report"></div>
-   <div class="actions">
-     <button id="restart" class="primary" type="button">重新治理共和国</button>
-   </div>
- </div>
+ <p><strong>游戏流程：</strong>共 12 个工作日，每天接收若干份奏报；不必亲自处理一切。你可以独立调取审计、退回专业部门、授予有限权限或作重大裁决。先前决策会在后续几日产生执行回报，部分事件将再次送审。</p>
+ <p class="muted">国际事件、国内事务顺序与后续分支会变化。离开页面后可在此浏览器恢复；不需注册、不联网。</p>
+ <div class="choices"><button class="primary" id="begin">开始共和国的第一天</button><button id="new-run" class="secondary">更换世界事件，重新开局</button></div>
 </section>
-<footer>纯前端 · 离线可玩 · 无账号、无网络请求、无真实个人数据 · 虚构场景</footer>
+<section class="section" id="briefing" hidden>
+ <span class="tag">每日晨会 · AI 议事秘书</span>
+ <h2 id="briefing-title"></h2>
+ <p id="briefing-main"></p>
+ <div id="reports" class="timeline"></div>
+ <p class="muted" id="briefing-count"></p>
+ <div class="choices"><button class="primary" id="enter-agenda">接见内阁，开始今日审议</button></div>
+</section>
+<section class="section" id="case-screen" hidden aria-live="polite">
+ <div class="row"><span class="tag" id="category">内阁议程</span><span id="case-position" class="muted"></span></div>
+ <h2 id="case-title"></h2>
+ <div class="notice"><strong id="speaker"></strong><p id="proposal"></p></div>
+ <div class="notice dissent"><strong>不同意见</strong><p id="objection"></p></div>
+ <div class="notice reply"><strong>AI 议事秘书提示</strong><p id="secretary"></p></div>
+ <div id="audit-evidence" class="notice audit" hidden><strong>独立监察补充证据</strong><p id="evidence"></p></div>
+ <div class="choices"><button id="audit-btn" class="secondary">要求独立调查（财政 −1）</button></div>
+ <h3>元首的裁决</h3>
+ <div class="choices" id="options"></div>
+ <p class="muted">只有查看独立证据，才可能解锁额外的替代方案。少数意见必须被记录，但不自动拥有否决权。</p>
+</section>
+<section class="section" id="decision-screen" hidden>
+ <span class="tag">裁决下达 · 部门开始执行</span>
+ <h2 id="decision-title"></h2>
+ <p class="notice" id="decision-immediate"></p>
+ <div class="delta" id="decision-deltas"></div>
+ <div class="notice reply"><strong>后续安排</strong><p id="decision-later"></p></div>
+ <p class="muted" id="decision-reminder"></p>
+ <div class="choices"><button class="primary" id="proceed">继续接收奏报</button></div>
+</section>
+<section class="section" id="evening" hidden>
+ <span class="tag">日终议事记录</span><h2 id="evening-title"></h2>
+ <div id="evening-logs" class="timeline"></div>
+ <p class="muted">今天的决定不会立即终结事件。你将在后续收到部门落实报告、审计异议或预算变化。</p>
+ <div class="choices"><button class="primary" id="next-day">结束今日，推进至下一工作日</button></div>
+</section>
+<section class="section" id="ending" hidden>
+ <span class="tag">本届任期 · 阶段性审查</span>
+ <h2 id="ending-title"></h2>
+ <p id="ending-body"></p>
+ <h3>关键国际事件推进记录</h3><div id="ending-crisis" class="timeline"></div>
+ <h3>其他制度事项摘要</h3><div id="ending-other" class="timeline"></div>
+ <p class="muted">十二日结束只是游戏篇章的结束。未结案事件不代表现实自动解决；这个游戏不能证明 AI 可以执政。</p>
+ <div class="choices"><button class="primary" id="again">开启另一届虚构共和国</button></div>
+</section>
+<footer>公开原创文字游戏 · 无广告及账号 · 不访问实时新闻 · 欢迎 Github Issue 与 Pull Request</footer>
 </main>
 <script>
 "use strict";
-(function () {
-  const keys=["life","budget","integrity","trust"];
-  const labels=["民生","财政","廉洁","制度信任"];
-  const scenarios=[
-    {cat:"高级任免",title:"空缺的公共应急局负责人",speaker:"人事委员会",
-     brief:"应急局负责人离任。组织提交一位资深候选人；公开竞聘中还有一位跨领域申请者。部门希望尽快任命，以免延误年度演练。",
-     secretary:"AI 秘书：一名委员担心组织推荐可能形成熟人优势；另一名委员担心公开竞聘拖慢工作。",
-     audit:"审计显示：两人履历均真实。组织推荐者管理经验丰富，但遴选标准在见到申请名单后曾变更；外部申请者具有独立核验的应急调拨记录，尚缺高层统筹演练证据。",
-     choices:[
-      {text:"立即任命组织推荐者，先保证效率",delta:[0,5,-8,-7],title:"任命迅速完成",body:"演练按时启动，但遴选规则变更引发异议，独立监察要求重新审查任命程序。",follow:"人事监察组建议：未来岗位标准必须在公布名单之前固定。"},
-      {text:"恢复预先规则，由独立委员会评估所有合格者",delta:[1,-3,7,9],title:"竞争程序重启",body:"岗位短期由副职代理。两名候选人接受同样的专业演练和利益冲突审查，遴选理由可复核。",follow:"代理负责人报告：训练有所延后，但组织信任正在恢复。"},
-      {text:"暂停任命，先要求部门完全自行协商",delta:[0,-2,1,-5],title:"争议暂时搁置",body:"避免了仓促任命，但缺乏程序期限，候选人及部门均无法判断何时能完成决定。",follow:"AI 秘书提醒：程序公平也包括合理期限。"}
-     ]},
-    {cat:"财政与地方治理",title:"两类地区争取交通预算",speaker:"财政与交通联合小组",
-     brief:"甲地区通勤密集、线路拥挤；乙地区人口分散、基础线路薄弱。地方负责人提出各自的交通投资计划，争取新增公共预算。",
-     secretary:"AI 秘书：双方采用不同的服务效果指标，不能只比较乘客总量。",
-     audit:"独立样本显示：甲地区高峰延误成本较高；乙地区部分居民无法到达基本医疗服务点。两地原计划的资金成本口径也不完全一致。",
-     choices:[
-      {text:"按照去年预算比例直接分配",delta:[-6,7,1,-5],title:"预算快速下达",body:"财政执行便利，但偏远地区的基本服务缺口没有得到充分解决。",follow:"公众服务部门要求下一轮加入服务可达性指标。"},
-      {text:"退回小组，要求核对服务底线和任务资源后再分配",delta:[8,-5,2,7],title:"采用分地区评估",body:"专业委员会重新论证预算，提出两地不同的公共服务目标，并安排独立追踪。",follow:"交通部门建议发布统一的数据定义与审计接口。"},
-      {text:"各给一半，无须继续争论",delta:[-2,-6,0,-3],title:"平均主义暂时平息分歧",body:"双方均获得资金，但未评估不同地区的建设成本和最紧迫的民生需求。",follow:"独立预算办公室提醒：形式均等未必等于实质公平。"}
-     ]},
-    {cat:"内阁重大决策",title:"全国数字公共服务平台",speaker:"国家数字服务内阁会议",
-     brief:"内阁大多数成员支持一次性上线统一身份核验平台，预计可节省行政成本。一名成员担心网络薄弱地区和部分残障人士可能被错误拒绝公共服务。",
-     secretary:"AI 秘书：已经完整记录少数异议；目前没有针对特殊人群的独立误拒率测试。",
-     audit:"独立技术小组证实：节省成本的估算合理，但无障碍用户的样本覆盖不足，线下替代服务尚未建立。该漏洞不证明项目应永久取消。",
-     choices:[
-      {text:"尊重多数票，立即全国上线",delta:[-10,8,0,-10],title:"上线迅速，申诉增加",body:"行政成本下降，但部分合法用户无法通过核验，引发服务中断和补救成本。",follow:"独立监察报告：多数支持不能代替事实核验。"},
-      {text:"要求分期试点、保留线下渠道，并补充独立测试",delta:[8,-4,3,10],title:"阶段性审查获通过",body:"上线速度放缓，但降低了误拒风险，也让不同意见得到实质回应。",follow:"内阁收到测试结果后，着手修订正式推广计划。"},
-      {text:"直接永久否决项目",delta:[0,-8,2,-4],title:"风险被禁止，收益也被放弃",body:"避免了近期部署风险，但失去了评估改善公共服务效率的机会。",follow:"专家委员会建议：应先比较可行替代方案，而非把所有问题变成二选一。"}
-     ]},
-    {cat:"独立监察",title:"公共能源采购出现异常",speaker:"独立审计院",
-     brief:"多份采购合同价格接近，部分投标人的联系方式相互关联。负责部门解释称供应链集中，要求继续按计划付款。",
-     secretary:"AI 秘书：检测到异常不等于证明腐败，且调查尚未完成。",
-     audit:"审计发现供应商间存在共享地址的记录，但暂未证实违法串标。部分货物确实急需；可以分批审验并采取临时利益回避措施。",
-     choices:[
-      {text:"认定负责人腐败，立即公开处罚",delta:[-2,-4,-10,-12],title:"过早认定责任",body:"未经完整调查的公开指控影响了正常供货，并损害了程序公信力。",follow:"司法机关提醒：调查、纪律与裁判应遵守不同的证明要求。"},
-      {text:"独立调查、实施风险隔离，必要采购继续受控进行",delta:[2,-4,10,9],title:"风险受到控制",body:"监察组保全证据并开展独立核查，关键供应维持最低保障，后续处理等待调查结论。",follow:"人事委员会更新了利益冲突申报与回避制度。"},
-      {text:"接受部门解释，不再查证",delta:[0,6,-11,-9],title:"采购照常进行",body:"短期工作不受影响，但合同中的潜在风险没有消除，监察体系受到质疑。",follow:"审计院要求保留再次调查的法定渠道。"}
-     ]},
-    {cat:"组织优化",title:"两个机构重复建设监管系统",speaker:"行政改革委员会",
-     brief:"两个部门分别建设相似的数据监管平台，重复采购和标准冲突已经持续两年。两位负责人都认为自己的机构不可撤并。",
-     secretary:"AI 秘书：既有负责人均把问题归因于对方；尚无跨部门成本与数据质量的联合评估。",
-     audit:"独立评估认为重复采购造成财政损耗，但部分职责需要相互制衡。全面合并可能消除必要的独立复核。",
-     choices:[
-      {text:"直接将两个机构完全合并",delta:[-3,8,-5,-4],title:"结构被迅速简化",body:"重复采购有所减少，但独立复核职责也被合并，新系统出现监督空白。",follow:"监察机构请求恢复最低限度的相互制衡。"},
-      {text:"统一数据标准和采购基础设施，保留独立监管职权",delta:[5,6,7,8],title:"制度重组完成",body:"两部门共用平台而分开履行监督职责，成本降低且关键制衡机制得到保留。",follow:"组织委员会提交下一轮可审查的绩效证据。"},
-      {text:"维持原组织不变，交两位负责人自行解决",delta:[-2,-9,0,-6],title:"结构性问题延续",body:"两个部门继续单独采购。即使人事轮换，职能重叠仍未得到解决。",follow:"财政部门指出：人员问题与制度问题必须分别诊断。"}
-     ]}
-  ];
-  let index=0,mode="case",audited=false,score={},history=[];
-  const el=id=>document.getElementById(id);
-  const clamp=n=>Math.max(0,Math.min(100,n));
-  function reset(){index=0;mode="case";audited=false;score={life:60,budget:60,integrity:60,trust:60};history=[];render();}
-  function renderScores(){keys.forEach(k=>el(k).textContent=score[k]);el("turn").textContent=mode==="end"?"五轮审议完成":"第 "+(index+1)+" / "+scenarios.length+" 轮";}
-  function render(){renderScores();el("case-view").hidden=mode!=="case";el("result-view").hidden=mode!=="result";el("ending-view").hidden=mode!=="end";if(mode!=="case")return;const s=scenarios[index];el("category").textContent=s.cat;el("headline").textContent=s.title;el("speaker").textContent=s.speaker+" 来报";el("brief").textContent=s.brief;el("secretary").textContent=s.secretary;el("audit").hidden=!audited;el("audit-text").textContent=audited?s.audit:"";el("audit-button").disabled=audited;el("audit-button").textContent=audited?"已调取独立审计材料":"调取独立审计材料（可选）";const div=el("choices");div.replaceChildren();s.choices.forEach((o,n)=>{let b=document.createElement("button");b.type="button";b.textContent=String.fromCharCode(65+n)+" · "+o.text;b.addEventListener("click",()=>choose(n));div.appendChild(b);});}
-  function choose(n){if(mode!=="case")return;let s=scenarios[index],c=s.choices[n],d=c.delta.slice();if(!audited)d[3]-=3;keys.forEach((k,i)=>score[k]=clamp(score[k]+d[i]));history.push({title:s.title,decision:c.text,audited:audited});mode="result";renderScores();el("case-view").hidden=true;el("ending-view").hidden=true;el("result-view").hidden=false;el("result-title").textContent=c.title;el("result-body").textContent=c.body;el("followup").textContent=c.follow+(!audited?"（未查看独立审计，制度信任额外 -3）":"");const bar=el("delta");bar.replaceChildren();d.forEach((x,i)=>{const span=document.createElement("span");span.className=x>=0?"pos":"neg";span.textContent=labels[i]+" "+(x>0?"+":"")+x;bar.appendChild(span);});el("next-button").textContent=index===scenarios.length-1?"查看共和国任期报告":"阅读下一份奏报";}
-  function next(){if(mode!=="result")return;index++;audited=false;if(index>=scenarios.length){mode="end";end();}else{mode="case";render();}}
-  function end(){renderScores();el("case-view").hidden=true;el("result-view").hidden=true;el("ending-view").hidden=false;const avg=Math.round(keys.reduce((sum,k)=>sum+score[k],0)/keys.length);const label=avg>=72?"制度运行较稳健":avg>=58?"共和国仍在磨合":"制度需要紧急纠偏";el("ending-title").textContent=label+" · 综合指标 "+avg;el("ending-text").textContent="五轮审议结束。四项指标只是规则化的游戏反馈，并非对现实政策的预测。请回顾你的选择：是否充分听取专业论证、保障少数异议，并让审计机构保持独立？";const h=el("history");h.replaceChildren();history.forEach((x,i)=>{let p=document.createElement("p");p.textContent=(i+1)+". "+x.title+" → "+x.decision+(x.audited?"（已查审计）":"（未查审计）");h.appendChild(p);});}
-  el("audit-button").addEventListener("click",()=>{audited=true;render();});
-  el("next-button").addEventListener("click",next);
-  el("restart").addEventListener("click",reset);
-  reset();
+(function(){
+ const $=id=>document.getElementById(id);
+ const labels={life:"民生",treasury:"财政",integrity:"廉洁",trust:"制度信任"};
+ const metricKeys=Object.keys(labels);
+ const clip=v=>Math.max(0,Math.min(100,v));
+ const outcome=(label,now,later,delta,late,detail)=>({label,now,later,delta,late,detail:detail||""});
+ const crisisSets=[
+ {id:"coldchain",title:"国际冷链枢纽中断",intro:"数条虚构国际运输走廊同时失去冷链能力。共和国的部分医院报告特殊药品配送延迟。国际卫生协调机制请求开展互援。",stakes:"药品不是已经全面断供：困难在于核实哪些机构真正急需、怎样防止抢购，以及如何避免紧急权力失去监督。",subject:"医院特殊药品",agency:"卫生与国际合作内阁",shock:{life:-5,treasury:-3,trust:-1},
+  alerts:["多地报送的药品库存口径不同，急救药品和常规备货被混在一起。","第一轮政策实施后，区域医院报告的真实到货量差异很大。","国际航运逐步恢复，但早期签约的价格与代理关系出现新争议。","危机接近结束，卫生部提请建立长期储备和风险预警体系。"],
+  dissent:["有委员担心立即大量采购会把有限资源给到没有最紧急需要的机构。","基层医院表示按规模分配忽略了专科患者的稀缺需求。","部分采购人员主张维持所有合同，法务团队担心过度解约的违约成本。","中央大型仓库可能有规模优势，但地方机构担心缺乏灵活性。"],
+  audits:["原始出入库样本显示部分小型专科机构存量较低；供应商报价可能受国际冷链成本影响，暂不能据此认定违法。","医院消耗量与床位数量并不严格一致；缺货风险集中于部分患者群体。","部分紧急合同存在程序缺口，尚无足以直接认定个人犯罪的材料。","分散储备与集中采购均有成本，历史演练无法支持单一储备模式对所有风险都有效。"]},
+ {id:"data",title:"跨洲数据链路发生级联故障",intro:"一条虚构的国际主干通信线路持续故障，国内数字公共服务系统发生身份验证错误，多个偏远地区居民无法办理紧急事务。",stakes:"影响的不只是平均可用率，而是合法居民能否及时获得公共服务，以及维修和隐私之间的平衡。",subject:"数字身份公共服务",agency:"数字服务与公共保障内阁",shock:{life:-4,treasury:-2,trust:-4},
+  alerts:["网络运营商称系统总体可用，但公共服务大厅出现排队和错误拒绝。","临时人工通道缓解了拥堵，同时带来身份冒用和隐私管理风险。","运营商提出长期集中平台合同，监察机构担心单一供应商被过度依赖。","跨国通信逐渐恢复，内阁需要决定离线备援和第三方审计制度。"],
+  dissent:["多数成员倾向先关闭线下柜台集中维修；有人担心弱势居民失去服务。","安全部门要求全面恢复严格核验，服务部门反对一刀切停用替代通道。","采购部门强调合约执行效率，审计部门建议增加供应商切换能力。","永久维持完整人工系统成本巨大，但全数字化也有失败风险。"],
+  audits:["抽样发现一些无障碍设备和低带宽地区失败率高于平均值；部分重要服务必须有替代渠道。","冒用风险主要集中在少数高金额申请，普通公共咨询不需同等强度认证。","合同中含高额迁移费；技术测评显示备援接口可行但需要专业团队验证。","分层服务、可切换供应商和明确的人工复核机制，比永远不下线任何系统更可持续。"]},
+ {id:"grain",title:"国际粮食运输成本急剧上涨",intro:"多个虚构贸易枢纽接连拥堵，粮食进口和国内干线运输价格波动。共和国的地方政府请求紧急预算，部分家庭开始减少基本消费。",stakes:"不同地区的存粮与收入情况不同。简单平均补贴可能不能保障最脆弱人群，也可能很快耗尽财政。",subject:"基本生活供应",agency:"财政、农业与民生联席内阁",shock:{life:-4,treasury:-5,trust:-2},
+  alerts:["地方政府同时请求增加粮食和物流支出，但申报数量相互矛盾。","各地开始执行价格与运输政策，一些地区供应改善，另一些地区出现新的转运瓶颈。","采购价格逐渐平稳，早期政策带来的财政成本和市场扭曲浮出水面。","内阁讨论是否建立长期储备、价格预警及地区差异化救助制度。"],
+  dissent:["一些委员主张平均拨款；地方审计指出需求差异可能被忽略。","有委员要求立即解除全部支持措施，基层代表担心困难家庭仍无保障。","供应商警告过度管制会减少长期投资，财政部门要求纠正浪费。","大规模常年补贴成本过高，但完全依赖市场也会留下应急漏洞。"],
+  audits:["公共仓储与零售样本显示短缺集中在若干偏远配送节点；申报库存存在重复统计。","普遍补贴的部分收益流向不急需者，精准支持则需要额外核验成本。","一部分价格异常可以由运输成本解释；个别采购项目需要独立调查。","分地区、按风险触发的储备和公共交通保障具有潜在价值，但运行成本不能忽略。"]},
+ {id:"energy",title:"国际能源供给突然紧张",intro:"虚构的国际能源通道出现连续中断，公共交通、电网备援与基本医疗设施的运行成本上涨。共和国的财政应急预算面临竞争。",stakes:"能源系统是技术问题，但决定资源先保谁、由谁审核和如何纠偏是制度问题。",subject:"关键公共设施能源保障",agency:"能源、交通与财政内阁",shock:{life:-3,treasury:-6,trust:-2},
+  alerts:["医院和公交系统各自申请燃料补贴，缺少统一的应急优先顺序。","紧急拨款开始发挥作用，但偏远设施和部分医院仍报供能不稳定。","新的应急合同已签订，合同透明度与供应商集中度出现争议。","危机缓解后，内阁讨论对储能、交通调整和长期供能保障的投资。"],
+  dissent:["能源部门要求集中裁决，地方负责人担心本地关键设施被忽视。","财政部门要求削减成本，公共服务部门报告部分替代计划不可行。","供应商要求签长期保障合同，监察提出竞争不足和合同锁定风险。","单一大型工程可能提升效率，也可能形成新的系统性故障点。"],
+  audits:["抽样显示部分预算项目重复；医院、供水等设施的真实停供风险并不相同。","高风险设施已经获得改善，但部分普通项目申报了缺乏证据的优先权。","紧急采购合同多为合法议价，少数关联交易需继续独立检查。","技术顾问建议多元备援，而不是把国家长期能源结构完全交给单个承包商。"]}
+ ];
+ const domestic=[
+  {id:"appointments",dept:"高级人事委员会",title:"关键公共机构负责人公开遴选",text:"组织推荐一位资深负责人；另一名跨行业申请者参加公开竞争，递交了可核验的工作成果。原评估标准曾在名单发布后调整。",against:"组织认为经验连续性重要；另一方指出提名渠道不应垄断竞聘资格。",audit:"两人履历均有真实证据，当前没有证据证明其中一人当然更适任；评估标准修改缺少程序说明。",
+   opts:[outcome("直接任命组织推荐者","部门立即进入交接；程序争议暂时没有解决。","数日后，外部申请者要求公开说明筛除依据。",{treasury:3,integrity:-4,trust:-5},{trust:-4,integrity:-2}),
+   outcome("按预先公布的标准重启独立竞争","临时副职代理；两名候选人均接受同质评估。","数日后，独立委员会给出完整岗位匹配意见，工作推进略有延迟。",{treasury:-3,integrity:3,trust:5},{life:2,trust:2}),
+   outcome("长期维持副职代理，不急于任命","避免当下争议，然而正式岗位仍空缺。","数日后，几项跨部门协调缺乏正式负责人。",{life:-2,treasury:1,trust:-3},{life:-3,trust:-3}),
+   outcome("先审查评估程序，再组织公开、限期的专业能力测试","审计和独立遴选同步进行，形成有时间限制的替代程序。","数日后，新的透明规则改善了竞争，但行政成本增加。",{treasury:-4,integrity:4,trust:4},{life:2,trust:3},"独立监察可核查评委与候选人的利益关联。")]},
+  {id:"schools",dept:"教育与公共服务委员会",title:"公共教育机会是否真的公平",text:"教育部门报告统一入学考试执行良好，偏远地区却反映实验课程与数字设备长期不足。预算部门认为考试公平已经足够。",against:"有人要求保持全国相同考试规则；教育评估组认为相同考试不能消除教学资源差距。",audit:"各地抽样成绩与家庭条件存在关联；偏远学校的优质师资供给较少，但不能仅凭单次测试判断学生潜能。",
+   opts:[outcome("只监督考试流程，不再投入教育资源","考场秩序稳定，预算保持。","随后地区申请差距扩大，优秀学生的长期上升机会仍不均。",{treasury:4,trust:-3},{life:-3,trust:-3}),
+   outcome("要求专业部门制定分地区资源补足计划","教育和财政团队提出分期师资与设备方案。","几周后，部分地区的课程开放程度提高，但预算压力显现。",{treasury:-4,life:2,trust:3},{life:3,treasury:-2}),
+   outcome("统一取消复杂考试，改由各校自行推荐","招生流程变化迅速，地方各校获得更大裁量权。","数日后，部分机构的推荐标准不透明，申诉增加。",{treasury:1,trust:-3,integrity:-3},{trust:-4}),
+   outcome("独立评估教育公平，并公开可比的机会指标","专业组区分考试诚信、资源差异与地区条件，提出透明纠偏程序。","后续审计发现部分资源错配，改革更精确，但调查有成本。",{treasury:-3,integrity:3,trust:4},{life:3,trust:2},"监察并不代替教师或地方教育部门制定具体课程。")]},
+  {id:"water",dept:"城市治理联席委员会",title:"跨地区饮用水设施更新",text:"两地供水设施老化，甲地区人口集中、收益测算较好，乙地区人口分散且管道维护成本更高。地方联合申请中央支持。",against:"财政团队主张投资回报优先；公共卫生专家强调安全饮水必须先满足法律底线。",audit:"独立抽检表明乙地区几处供水设施更紧急；甲地区项目能减少更多总体漏损。",
+   opts:[outcome("把资金全给人口集中的甲地区","主城区设施快速更新。","数周后，乙地区紧急事故迫使政府追加临时资金。",{life:0,treasury:2,trust:-3},{life:-5,treasury:-4}),
+   outcome("保障最低安全底线后，由专业机构分期投资","应急设施先修，长期项目重新排序。","数周后，供水风险下降，分期建设成本比最初预算略高。",{life:3,treasury:-4,trust:3},{life:3,treasury:-2}),
+   outcome("两地预算完全平分","表面公平，工程人员按各自方案开工。","后续评估发现分散地区的关键管网仍缺资金。",{treasury:-4},{life:-3,trust:-2}),
+   outcome("要求独立检测全部关键节点，并限定整改时限","抽检与优先修复同步进行。","后续比较显示资金投向更符合真实的风险分布。",{treasury:-4,integrity:2,trust:4},{life:4,trust:2},"供水合规性证据已由独立技术团队抽样。")]},
+  {id:"procurement",dept:"独立采购审计院",title:"全国医疗采购出现异常报价",text:"数家供应商的合同报价相近，且部分联系人重合。供应商称国际成本同步上涨。卫生机构要求保障连续供货。",against:"监察人员要求查清关联；采购部门强调目前没有确凿违法证据，全部停供会危及病人。",audit:"关联信息确实存在，但不能直接证明串标。价格波动有一部分来自物流，部分合同仍需补充原始材料。",
+   opts:[outcome("立即认定腐败并公开处罚","采购部门停止付款，舆论短时支持强硬措施。","数日后，缺货及程序申诉增加，真正的违法证据却尚未齐全。",{integrity:-5,trust:-5,life:-2},{life:-4,treasury:-3}),
+   outcome("独立调查并保障必要采购继续","审计保全证据，紧急药品按受控流程继续供应。","数日后，合同问题得到区分处理，涉事人员可依法申诉。",{treasury:-3,integrity:4,trust:3},{integrity:3,trust:3}),
+   outcome("完全接受部门解释，不再调查","采购暂时加快。","数日后，监察院又接到新的关联交易证据。",{treasury:3,integrity:-4,trust:-3},{integrity:-5,trust:-4}),
+   outcome("引入独立比价及利益回避，再决定合同处理","业务没有完全停摆；审核链条更加清晰。","后续合同审查成本增加，但部分价格异常得到解释和纠正。",{treasury:-4,integrity:5,trust:4},{treasury:1,integrity:2},"技术比价只能辅助证据审查，不能替代法律裁定。")]},
+  {id:"housing",dept:"住房与财政联席委员会",title:"经济适用住房的建设计划",text:"多个城市提出补贴建房。部分专家认为供应不足，另有城市已有空置房源；财政预算只足够支持一部分地区。",against:"住房部门希望统一指标，地方议员认为地区差异与通勤成本尚未得到反映。",audit:"城市样本显示：一部分地区住房紧缺，另一部分地区交通不便而非住房总量不足。",
+   opts:[outcome("统一补贴所有地区同样规模的新建项目","公共资金迅速拨出。","数周后，一些住宅区仍空置，核心通勤区租金却没有明显下降。",{treasury:-8,life:1},{treasury:-5,trust:-2}),
+   outcome("由地方专业组按需求与交通条件分别论证","各地获得不同预算条件，投资暂缓数日。","数周后，部分低成本改造和交通服务改善优于统一新建。",{treasury:-3,trust:3},{life:3,treasury:-2}),
+   outcome("暂停全部支持，等待市场自行调节","财政短期压力减轻。","数周后，部分紧缺地区的居住困难仍然存在。",{treasury:5,life:-3},{life:-3,trust:-3}),
+   outcome("公开关键需求证据并设置独立住房项目审查","审查组重新排列优先项目，居民可以反馈实际需求。","数周后，项目透明度有所改善，但审查和改造资金增加。",{treasury:-4,integrity:3,trust:3},{life:2,trust:2},"部分城市的实际住房供需与原先申报不一致。")]},
+  {id:"oversight",dept:"国家监察体系设计委员会",title:"独立审计机关申请扩大调查权",text:"监察机构建议直接读取所有部门全部业务数据库，以及时发现异常。数据保护委员会担心缺乏限制会造成滥用。",against:"强监管派认为越宽权限越能反腐；部分官员指出监督者也必须受监督。",audit:"有限目标的抽样审计已经能识别部分高风险异常；全量永久访问未被证明必要。",
+   opts:[outcome("给予审计机关无限制永久访问权","审计接口迅速搭建。","数日后，权限边界不清引发隐私与问责争议。",{integrity:1,trust:-5},{trust:-5,integrity:-2}),
+   outcome("按法定权限、用途和时限提供可复核数据","高风险部门优先接入受控数据接口。","数日后，部分问题得以查证，审计机关提出程序仍可简化。",{treasury:-3,integrity:4,trust:3},{integrity:2,trust:2}),
+   outcome("拒绝所有新增数据共享","隐私风险暂时受控。","数日后，审计机关难以及时核对跨部门风险。",{treasury:2,integrity:-3},{integrity:-3,trust:-2}),
+   outcome("设立外部监督委员会核查审计权限和重大访问","审计与数据保护机构分别保留申诉渠道。","数日后，重大调查仍能推进，但审批耗时增加。",{treasury:-4,integrity:4,trust:5},{integrity:2,trust:2},"独立审查须包括审计本身的越权风险。")]},
+  {id:"research",dept:"科技创新与财政委员会",title:"公共研究计划如何决定资源",text:"专业委员会申请建设大型共享研究设备，其他研究机构认为资金应支持小型分散团队。委员会内部意见接近对半。",against:"双方都提交了有根据的研究路线。多数表决可以表达取舍，却不能证明其中一项在科学上必然成功。",audit:"现有证据不足以预言哪条路线产生突破；但分期评估、开放使用及独立同行评审可减少锁定风险。",
+   opts:[outcome("全部资金投入大型设备","设备建设获得统一规模与管理。","后续出现部分团队使用门槛过高的问题。",{treasury:-8,life:1},{treasury:-4,trust:-1}),
+   outcome("分阶段投入并设置独立科学里程碑","不同团队获得有限验证资源。","数周后，数据更清楚，但建设周期延长。",{treasury:-5,trust:2},{treasury:-3,trust:2}),
+   outcome("完全搁置所有投资","财政暂不增加支出。","数周后，研究团队错过设备合作窗口。",{treasury:5,life:-2},{trust:-3}),
+   outcome("经专业评估后进行有限投票并公开少数意见","内阁按预定程序形成选择，保留反对研究者的证据档案。","数周后，研究仍有不确定性，但程序被普遍理解。",{treasury:-4,trust:4,integrity:2},{life:1,trust:1},"事实争议核清后，剩余价值取舍才适合表决。")]},
+  {id:"cyber",dept:"数字安全与公共服务联合机构",title:"公共服务网络安全事件",text:"某业务系统检测到异常登录，技术负责人请求断网排查；公共服务部门强调民生业务不能中断。",against:"安全团队建议全部关闭，服务团队要求保持运行；两边都缺少对居民影响的完整测量。",audit:"异常集中在单一身份接口。可以隔离相关服务、保留人工办理，并由独立小组核对攻击范围。",
+   opts:[outcome("全国停用所有公共业务系统","技术排查速度提高。","数日后，大量普通业务堆积，部分居民权益受到影响。",{life:-7,treasury:-2},{trust:-5,life:-3}),
+   outcome("隔离高风险接口，并保留人工民生通道","专业组执行分层修复。","数日后，大部分民生业务恢复，安全事故范围逐步查明。",{life:2,treasury:-3,trust:3},{life:3,trust:2}),
+   outcome("保持系统运行，不采取措施","短期办理不受影响。","数日后，异常请求范围扩大。",{treasury:2,integrity:-2},{life:-5,trust:-5}),
+   outcome("请独立安全团队核验根因并公布必要告知","系统分层修复，同时建立公开的事故反馈机制。","数日后，居民得到可查询的恢复时间，调查成本增加。",{treasury:-4,trust:4},{life:3,trust:2},"安全通报不得泄露尚未修复的可利用漏洞。")]},
+  {id:"transit",dept:"公共交通联席小组",title:"跨区域公共交通的绩效考核",text:"人口密集地区与偏远地区以同一客流指标考核。多位地方负责人认为统一指标让偏远地区的基本交通服务长期不受重视。",against:"财政部门支持统一口径方便审查，公共服务团队要求区分覆盖率与客流收益。",audit:"独立数据表明两地基线不同；偏远地区患者前往医院的可达性比总客流更加重要。",
+   opts:[outcome("继续统一考核，避免复杂规则","统计报表维持简洁。","下次考核时，偏远地区减少了低客流的必要线路。",{treasury:3,trust:-3},{life:-5,trust:-2}),
+   outcome("允许专业团队提出差异化指标并独立验证","地区计划被重新评估。","居民基本出行保障改善，但跨地区考核成本增加。",{treasury:-3,life:2,trust:3},{life:3,trust:2}),
+   outcome("撤销所有考核，让部门自己决定","地方自主权扩大。","下次审查时难以发现无效投资与服务不足。",{treasury:2,integrity:-2},{treasury:-4,trust:-2}),
+   outcome("要求先列出法定公共服务底线，再设计地区指标","部门明确不可突破的最低保障与可调整目标。","不同地区的考核争议降低，但仍需持续监测。",{treasury:-3,trust:4},{life:3,trust:2},"应对不同基线不能降低居民基本权利保障。")]}
+ ];
+ const crisisChoices=[
+ [
+ outcome("授权无限制紧急采购及行政集中处置","相关部门取得快速行动空间，资金大量划出。","紧急措施覆盖范围广，部分并不急需的项目占用资源。",{life:2,treasury:-8,integrity:-4},{life:-3,treasury:-5,trust:-4}),
+ outcome("批准限期分层授权，并要求专业组核实最紧急缺口","各主管部门获得有范围、有期限的应急权限。","最紧急的服务得到改善，但财务和专业部门要求追加预算。",{life:4,treasury:-5,integrity:2,trust:2},{life:2,treasury:-3,trust:1}),
+ outcome("不启动国家协调，由部门各自处理","中央预算暂未变化。","部门之间抢购资源、采用相互冲突的标准。",{treasury:3},{life:-5,trust:-4}),
+ outcome("成立跨部门应急协调组，先核实受影响人群并分批执行","小规模资源迅速投入最重要的环节，审计获得全程记录接口。","各部门共享原始数据、补救方案更明确，但调查与协调产生额外费用。",{life:4,treasury:-6,integrity:4,trust:3},{life:3,treasury:-3,trust:3},"额外选项：独立核查后，针对高风险群体提出替代执行路径。")
+ ],
+ [
+ outcome("立即扩大预算和紧急授权","主管部门迅速拿到追加资源。","部分紧急问题得到处理，但对延长授权的质疑增加。",{life:3,treasury:-8,trust:-2},{life:1,treasury:-4,integrity:-2}),
+ outcome("根据现场执行报告定向纠偏，保留申诉与临时保障","部门调整了实施细节，并保留受影响人员的纠错渠道。","新证据减少了资源错配，但一线机构负担有所增加。",{life:4,treasury:-4,trust:4},{life:2,treasury:-2,trust:3}),
+ outcome("宣布危机已控制，不再处理地方异议","行政程序迅速恢复常态。","部分局部缺口未得到纠正，公众对原报告的信任下降。",{treasury:3,trust:-2},{life:-4,trust:-4}),
+ outcome("委托独立团队公布可披露的分布数据并修订执行令","审计团队开始定期报告受影响群体与财政成本。","专业部门发现此前统计偏差，跨机构纠错流程逐渐形成。",{treasury:-5,integrity:4,trust:4},{life:3,trust:2},"额外选项：针对执行报告与独立现场样本不一致。")
+ ],
+ [
+ outcome("所有早期合同一律取消","财政快速停付争议项目。","部分合同遭到合法索赔，仍有必要的供应服务被切断。",{treasury:1,trust:-3},{life:-4,treasury:-6}),
+ outcome("按法律和证据分类审计合同，必要服务照常运行","审计、法务与业务部门分别承担职责。","部分浪费得到纠正，必要合同保留，独立核查仍有成本。",{treasury:-3,integrity:4,trust:4},{treasury:-2,integrity:2}),
+ outcome("忽略合同争议，避免影响合作伙伴","采购部门保持原计划。","不合理的长期义务仍在支出，公众质疑增加。",{treasury:-5,integrity:-3},{treasury:-5,trust:-4}),
+ outcome("先披露可公开的审计结果，再决定合同类别与后续监督","行政程序保留必要保密，监察资料可复核。","部分政策得到公众认可，争议合同仍须遵守法律程序。",{treasury:-4,integrity:5,trust:5},{treasury:-1,trust:3},"额外选项：审计确认可以合法公开非个人化合同资料。")
+ ],
+ [
+ outcome("建立单一巨型中央机构，全部相关权限集中","组织指挥链缩短，改革工程启动。","随后出现过度集中的监管风险，单一机构成本持续上升。",{treasury:-8,integrity:-4},{treasury:-4,trust:-3}),
+ outcome("建立跨部门预案、最小保障和独立定期演练","主管机构按职责推进各自专业能力建设。","危机应对更可预期，但保留备用资源需要常年支出。",{treasury:-5,integrity:3,trust:3},{life:3,treasury:-2,trust:2}),
+ outcome("宣布危机已经结束，撤销所有预备机制","财政停止新支出。","下一次国际市场小幅波动时，部门再次缺乏预先协调规则。",{treasury:4},{life:-4,trust:-3}),
+ outcome("设置分层储备、定期复核与可撤销授权制度","审计、业务部门、预算机构分别形成闭环。","制度有持续维护成本，但能依据证据调整而不固化紧急权力。",{treasury:-6,integrity:5,trust:5},{life:3,treasury:-2,trust:3},"额外选项：根据多次演练提出可纠错、可复核的组合机制。")
+ ]
+ ];
+ const phases=["紧急方案","执行偏差","问责与调整","长期制度"];
+ const dayPhases=[1,4,7,11];
+ let st=null;
+ const storeKey="republic-ai-presidency-0.4";
+ function save(){try{localStorage.setItem(storeKey,JSON.stringify(st));}catch(e){}}
+ function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+ function change(d){for(const k of metricKeys){st.score[k]=clip(st.score[k]+(d[k]||0));}}
+ function deltaHTML(target,d){const el=$(target);el.replaceChildren();for(const k of metricKeys){const n=d[k]||0;if(n===0)continue;const x=document.createElement("span");x.className=n>=0?"pos":"neg";x.textContent=labels[k]+" "+(n>0?"+":"")+n;el.appendChild(x);}}
+ function text(id,v){$(id).textContent=v;}
+ function show(view){for(const v of ["intro","briefing","case-screen","decision-screen","evening","ending"])$(v).hidden=v!==view;st.view=view;renderTop();save();}
+ function renderTop(){for(const k of metricKeys)text("m-"+k,st.score[k]);text("clock","第 "+st.day+" / 12 日 · "+(st.view==="case-screen"?"审议中":st.view==="ending"?"阶段结算":"国务日志"));}
+ function newGame(){
+ const world=Math.floor(Math.random()*crisisSets.length),deck=shuffle(domestic.map(x=>x.id));
+ st={v:4,day:1,world,score:{life:62,treasury:64,integrity:61,trust:60},deck,queue:[],slot:0,issued:[],followups:[],reports:[],log:[],crisisHistory:[],view:"intro",audited:false,crisisPolicies:[],totalAudits:0};
+ change(crisisSets[world].shock);renderIntro();
+ }
+ function renderIntro(){const w=crisisSets[st.world];text("world-name",w.title);text("world-intro",w.intro);text("world-stakes",w.stakes);show("intro");}
+ function crisisCard(phase){
+ const w=crisisSets[st.world],prev=st.crisisPolicies[phase-1],prior=prev===undefined?"":(
+   prev===0?"上阶段采取了广泛的紧急授权，短期执行较快，但预算与程序争议仍未结束。":
+   prev===1?"上阶段采用限期、分层的专业方案，已有局部改善，执行成本与现实困难开始出现。":
+   prev===2?"上阶段没有进行充分的中央协调，部分部门开始争夺资源，受影响群体提交了新的申诉。":
+   "上阶段根据独立证据调整了政策，改善了部分紧急问题，但新方案也产生额外执行责任。");
+ return {key:"crisis-"+phase,kind:"crisis",phase,category:"国际事件主线 · "+phases[phase],title:w.title+"｜"+phases[phase],speaker:w.agency,
+  description:(prior?prior+"\n\n":"")+w.alerts[phase]+" 内阁请求你在本阶段明确授权边界；你只审核制度与关键取舍，不直接替专业人员制定每个技术细节。",
+  dissent:w.dissent[phase],memo:"AI 秘书：本案与第 1 日国际事件持续关联。上次的决定已经改变本次的资源与证据条件；请检查授权期限、受影响人员及可复核的执行记录。",
+  audit:w.audits[phase],choices:crisisChoices[phase]};
+ }
+ function domesticCard(id){const d=domestic.find(x=>x.id===id);return {key:"domestic-"+id,kind:"domestic",origin:id,category:"国内制度事务",title:d.title,speaker:d.dept,description:d.text,dissent:d.against,memo:"AI 秘书：是否属于必须由元首处理的重大程序或资源争议？如需分配专业任务，应明确期限、证据与独立复核渠道。",audit:d.audit,choices:d.opts};}
+ function followCard(f){
+ const original=domestic.find(x=>x.id===f.origin);const action=original.opts[f.choice];
+ const text0="前次裁决：「"+action.label+"」。部门实际报告："+action.later+"。此前指标已受到后续影响；该事务仍需要决定结案程序。";
+ const audit="独立核查引用前次执行数据，发现部分结果与部长的乐观表述存在差别。并不能从结果单独推出主观舞弊，但可以明确后续责任与复核范围。";
+ return {key:"follow-"+f.origin+"-"+f.day,kind:"follow",origin:f.origin,category:"前案追踪 · 二次裁决",title:original.title+"｜执行回访",speaker:original.dept+"、独立审计秘书处",
+  description:text0,dissent:"部分人员主张尽快结案；另有委员认为，原决定产生的长期负担需要进一步核查。",memo:"AI 秘书：本次不是全新选择题。先前的批准已发生，无法凭一句“撤回”消除财政、人员和社会成本。",audit,
+  choices:[
+    outcome("保持原决定，但设置明确的复查日期","原部门继续执行，必须提交新的关键证据。","若后续指标改善，可结案；否则还需追加监督。",{treasury:1,trust:-1},{trust:-1}),
+    outcome("要求专业小组限期纠偏，重点保障受影响者","部门修改执行细节，向相关机构发出整改计划。","专业修正降低部分风险，但需要增加管理资源。",{life:2,treasury:-3,trust:2},{life:1}),
+    outcome("直接撤销原决定，不作后续交接","相关部门停止执行原指令，既有承诺尚未处理。","合同与服务移交未完成，可能扩大问题。",{treasury:-2,trust:-3},{life:-2,trust:-2}),
+    outcome("启动独立的绩效与程序复核，并公布可公开结论","独立机构审查行动记录，明确人员与制度责任。","程序更透明，但会消耗审计资源；结果不保证立即改善全部问题。",{treasury:-3,integrity:3,trust:3},{trust:1},"审计有助区分专业失误、资源不足与不当行为。")
+  ]};
+ }
+ function makeCard(desc){return desc.kind==="crisis"?crisisCard(desc.phase):desc.kind==="follow"?followCard(desc):domesticCard(desc.id);}
+ function startDay(){
+ st.reports=[];st.issued=[];
+ const due=st.followups.filter(x=>x.due<=st.day);
+ st.followups=st.followups.filter(x=>x.due>st.day);
+ for(const f of due){
+   change(f.late);
+   st.reports.push("【"+domestic.find(x=>x.id===f.origin).title+"】"+domestic.find(x=>x.id===f.origin).opts[f.choice].later);
+ }
+ st.queue=[];
+ const phase=dayPhases.indexOf(st.day);
+ if(phase!==-1)st.queue.push({kind:"crisis",phase});
+ // Follow-ups have first claim to today's agenda, to prevent forgotten decisions.
+ for(const f of due)st.queue.push({kind:"follow",origin:f.origin,choice:f.choice,day:f.day});
+ while(st.queue.length<2 && st.deck.length)st.queue.push({kind:"domestic",id:st.deck.shift()});
+ if(st.queue.length===0)st.queue.push({kind:"crisis",phase:3});
+ st.slot=0;st.audited=false;
+ renderMorning();
+ }
+ function renderMorning(){
+ text("briefing-title","第 "+st.day+" 日 · 总统内阁早间简报");
+ text("briefing-main",st.day===1?"你的制度不是万能解题器。请审阅人类专业部门的报告，并决定哪些问题需要独立证据、哪些可以授权执行。":"昨天的裁决已进入执行链条；并不是每件事都有结论，也不是每件事都值得最高机构亲自管理。");
+ const d=$("reports");d.replaceChildren();
+ const arr=st.reports.length?st.reports:["暂无前案到期报告。国际风险与国内事务仍在变化。"];
+ for(const s of arr){const p=document.createElement("p");p.className="bulletin";p.textContent=s;d.appendChild(p);}
+ text("briefing-count","今天待审议 "+st.queue.length+" 项；其中 "+st.queue.filter(x=>x.kind==="follow").length+" 项属于此前决策的后续案件。");
+ show("briefing");
+ }
+ function renderCard(){
+ const c=makeCard(st.queue[st.slot]);text("category",c.category);text("case-position","第 "+st.day+" 日 · "+(st.slot+1)+"/"+st.queue.length+" 项");
+ text("case-title",c.title);text("speaker",c.speaker+" 递交报告");text("proposal",c.description);text("objection",c.dissent);text("secretary",c.memo);
+ $("audit-evidence").hidden=!st.audited;text("evidence",st.audited?c.audit:"");$("audit-btn").disabled=st.audited;$("audit-btn").textContent=st.audited?"已收到监察材料（本轮审计费用已计）":"调取独立审计材料（财政 −1）";
+ const choices=$("options");choices.replaceChildren();c.choices.forEach((v,i)=>{if(i===3&&!st.audited)return;const b=document.createElement("button");b.type="button";b.textContent=(i+1)+" · "+v.label;b.addEventListener("click",()=>decide(i));choices.appendChild(b);});
+ show("case-screen");
+ }
+ function audit(){if(st.view!=="case-screen"||st.audited)return;st.audited=true;st.totalAudits++;change({treasury:-1});renderCard();}
+ function decide(i){
+ if(st.view!=="case-screen")return;const desc=st.queue[st.slot],c=makeCard(desc),choice=c.choices[i];
+ if(!choice||(i===3&&!st.audited))return;
+ change(choice.delta);
+ const d=st.day,entry={day:d,title:c.title,kind:desc.kind,option:choice.label,audited:st.audited};
+ st.log.push(entry);st.issued.push(entry);
+ if(desc.kind==="crisis"){st.crisisPolicies[desc.phase]=i;st.crisisHistory.push(entry);
+   // Crisis decisions have a genuine future consequence independent of subsequent choices.
+   const lateDay=Math.min(12,d+2),late=choice.late;
+   if(lateDay>d)st.followups.push({kind:"crisis-impact",due:lateDay,late,origin:"crisis",phase:desc.phase,choice:i});
+ }else if(desc.kind==="domestic"){
+   st.followups.push({kind:"follow",origin:desc.id,day:d,choice:i,due:Math.min(12,d+2),late:choice.late});
+ }else if(desc.kind==="follow"){ /* follow-up decision closes the case; no automatic infinite chain */ }
+ text("decision-title",choice.label);
+ text("decision-immediate",choice.now);deltaHTML("decision-deltas",choice.delta);
+ text("decision-later",choice.later);
+ text("decision-reminder",desc.kind==="crisis"?"这一决定将触发之后的国际事件阶段；两日后执行成本和结果会写入日报。":desc.kind==="domestic"?"该项事务已被列入数日后的追踪清单，到期将再作裁决。":"前案复核完成；记录已归档，结果仍会计入本届任期。");
+ st.audited=false;show("decision-screen");
+ }
+ function afterDecision(){
+ if(st.view!=="decision-screen")return;
+ st.slot++;
+ if(st.slot<st.queue.length)renderCard();
+ else renderEvening();
+ }
+ function renderEvening(){
+ text("evening-title","第 "+st.day+" 日 · 日终签发记录");
+ const el=$("evening-logs");el.replaceChildren();
+ for(const x of st.issued){const p=document.createElement("p");p.className="bulletin";p.textContent="「"+x.title+"」→ "+x.option+(x.audited?"（已调取监察证据）":"");el.appendChild(p);}
+ show("evening");
+ }
+ function nextDay(){
+ if(st.view!=="evening")return;
+ if(st.day>=12){finish();return;}
+ st.day++;
+ // Process crisis delayed effects separately from domestic follow-up decisions.
+ const impacts=st.followups.filter(x=>x.kind==="crisis-impact"&&x.due<=st.day);
+ st.followups=st.followups.filter(x=>!(x.kind==="crisis-impact"&&x.due<=st.day));
+ for(const f of impacts){
+   change(f.late);
+   st.reports.push("【国际事件前案】"+crisisChoices[f.phase][f.choice].later);
+ }
+ // startDay will retain the preceding crisis reports and append any domestic follow-ups.
+ const prior=st.reports.slice();startDay();
+ st.reports=prior.concat(st.reports);
+ renderMorning();
+ }
+ function finish(){
+ const pending=st.followups.filter(x=>x.kind!=="crisis-impact").length;
+ const avg=Math.round(metricKeys.reduce((a,k)=>a+st.score[k],0)/metricKeys.length);
+ text("ending-title",avg>=73?"任期阶段：制度取得部分成果":avg>=57?"任期阶段：改革与代价并存":"任期阶段：共和国面临治理压力");
+ text("ending-body","本届共和国运行十二个工作日，共作出 "+st.log.length+" 项裁决、发起 "+st.totalAudits+" 次独立核查。四项虚构指标均值 "+avg+"。仍有 "+pending+" 项未结案事务；任何分数都无法直接证明哪一种真实政体更有效。");
+ const ce=$("ending-crisis"),other=$("ending-other");ce.replaceChildren();other.replaceChildren();
+ for(const x of st.log){const p=document.createElement("p");p.className="bulletin";p.textContent="第 "+x.day+" 日 · "+x.title+" → "+x.option; (x.kind==="crisis"?ce:other).appendChild(p);}
+ show("ending");
+ }
+ function ready(){
+ if(!st||st.v!==4||!st.score||!crisisSets[st.world]){newGame();return;}
+ renderTop();
+ if(st.view==="intro")renderIntro();
+ else if(st.view==="briefing")renderMorning();
+ else if(st.view==="case-screen")renderCard();
+ else if(st.view==="evening")renderEvening();
+ else if(st.view==="ending")finish();
+ else if(st.view==="decision-screen"){ /* restore receipt in a safe way without reapplying decisions */ st.slot++;if(st.slot<st.queue.length)renderCard();else renderEvening(); }
+ }
+ $("begin").addEventListener("click",startDay);
+ $("new-run").addEventListener("click",newGame);
+ $("audit-btn").addEventListener("click",audit);
+ $("enter-agenda").addEventListener("click",renderCard);
+ $("proceed").addEventListener("click",afterDecision);
+ $("next-day").addEventListener("click",nextDay);
+ $("again").addEventListener("click",newGame);
+ try{const old=localStorage.getItem(storeKey);if(old)st=JSON.parse(old);}catch(e){}
+ ready();
 })();
 </script>
-</body>
-</html>
+</body></html>
