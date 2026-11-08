@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "mode": "mock",
+  "purpose": "Exercise model adapter contracts without a provider credential or network call.",
+  "scenarios": [
+    {
+      "id": "mock-smoke-basic",
+      "input": "请确认这是模拟链路，而不是科学结论。",
+      "expected_marker": "mock",
+      "expected_disclaimer_contains": "不代表真实模型"
+    },
+    {
+      "id": "mock-smoke-empty-science",
+      "input": "合成输入：没有任何证据支持一个治疗结论。",
+      "expected_marker": "mock",
+      "expected_disclaimer_contains": "科学判断"
+    }
+  ]
+}

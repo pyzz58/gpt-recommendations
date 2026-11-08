@@ -1,0 +1,102 @@
+{
+  "checks": {
+    "project_identity_matches": true,
+    "project_workspace_matches": true,
+    "local_api_http_200": true,
+    "snapshot_persisted": true,
+    "project_persisted": true,
+    "mode_live": true,
+    "adapter_pubmed_only": true,
+    "record_count_4": true,
+    "query_sha256_matches": true,
+    "result_sha256_matches": true,
+    "records_match_reread": true,
+    "created_at_same_instant": true,
+    "source_live_enabled": true,
+    "source_email_configured": true,
+    "api_key_not_used": true,
+    "max_results_5": true,
+    "timeout_20_seconds": true,
+    "network_allowlisted": true,
+    "model_mock_and_live_disabled": true,
+    "mail_mock_and_live_disabled": true
+  },
+  "project": {
+    "id": "5ce8e636-bc60-46e0-a44d-7d8e6c651011",
+    "workspace_id": "f3e1b71b-c994-4fda-bdd1-00ce723bdcd1",
+    "name": "W22来源检索 live 验收（合成）",
+    "status": "draft",
+    "stage": "draft"
+  },
+  "request": {
+    "started_at_utc_approximate": "2026-11-08T08:35:06Z",
+    "completed_at_utc_actual": "2026-11-08T21:35:08.704546+13:00",
+    "http_status": 200,
+    "upstream_stages": [
+      "esearch",
+      "efetch"
+    ],
+    "upstream_accepted_status_class": "2xx",
+    "upstream_request_count": 2,
+    "retry_count": 0,
+    "query": "(feline OR cats) AND (\"antibody-drug conjugate\" OR \"antibody-drug conjugates\")",
+    "date_from": "2020-01-01",
+    "date_to": "2026-11-08",
+    "result_limit": 5,
+    "timeout_seconds": 20
+  },
+  "snapshot": {
+    "id": "bc1a5e62-a302-46e9-bfa1-cfd8357e2e98",
+    "mode": "live",
+    "adapter_ids": [
+      "pubmed.eutils.v1"
+    ],
+    "record_count": 4,
+    "query_sha256": "d436874a4588d1e4c1e99492448cf7c35f840cf2f87dc1a2efef4f8ecc4bbdc8",
+    "result_sha256": "8cbd9e7e83d6ed0bdeb98e88450ccd5368affe289c7f113ad1a30c39b5ee82b4",
+    "reread_equal_except_timezone_representation": {
+      "snapshot_id": true,
+      "policy_id": true,
+      "query": true,
+      "adapter_ids": true,
+      "records": true,
+      "record_count": true,
+      "query_sha256": true,
+      "result_sha256": true,
+      "mode": true
+    },
+    "created_at_same_instant": true
+  },
+  "records": [
+    {
+      "pmid": "42655798",
+      "doi": "10.3390/vetsci13080778",
+      "publication_date": "2026-08-03",
+      "title": "Therapeutic Monoclonal Antibodies as Advanced Therapies for Companion Animals: Species Adaptation, Fc Biology, Clinical Translation, and Future Platforms."
+    },
+    {
+      "pmid": "41900948",
+      "doi": "10.3390/life16030430",
+      "publication_date": "2026-03-06",
+      "title": "Comparative Cancer Genetics and Veterinary Therapeutics in Dogs and Cats: A Species-Aware Framework for Comparative Oncology."
+    },
+    {
+      "pmid": "39262442",
+      "doi": "10.1093/abt/tbae014",
+      "publication_date": "2024-07-10",
+      "title": "First site-specific conjugation method for native goat IgG antibodies via glycan remodeling at the conserved Fc region."
+    },
+    {
+      "pmid": "33919468",
+      "doi": "10.3390/cancers13092007",
+      "publication_date": "2021-04-21",
+      "title": "HER2-Targeted Immunotherapy and Combined Protocols Showed Promising Antiproliferative Effects in Feline Mammary Carcinoma Cell-Based Models."
+    }
+  ],
+  "limitations": [
+    "Exact upstream HTTP status codes were not separately instrumented; both ESearch and EFetch were accepted through the adapter 2xx path.",
+    "Request started time is derived from the observed command duration; persisted snapshot creation time is exact.",
+    "A non-empty result proves EFetch completed; it does not prove scientific relevance, feline oncology applicability, fulltext access or study quality.",
+    "Model, email, human expert and real outsourcing validation remain not_run."
+  ]
+}

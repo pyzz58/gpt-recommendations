@@ -1,0 +1,65 @@
+{
+  "reviewed_source_commit": "4320e35bcd18ab8bb4a143853ed7bdce3267d4e7",
+  "method": "Extracted original AST functions with explicit session/provider doubles; not full application acceptance.",
+  "source_file_sha256": {
+    "services/core/src/medical_one_person/application/readiness.py": "ff5bcec4f6e5c6b3a132137389a27a9f96a80c89e51726ae4d58e3391331a2ba",
+    "services/core/src/medical_one_person/application/tasks.py": "c945c4d6743a51d46310c56e6b838a7d2c22504b2483df1f98e949733c1af81c",
+    "services/core/src/medical_one_person/worker/__main__.py": "51d29587667c7fb3bc215f53d040f41fd2ca59fe7ce2e867956a2e2c1e429fcf",
+    "services/core/src/medical_one_person/agents/runner.py": "099548d38291867d78a0a284d02140b6e3fc8f3ff049817d32ffc262956fdec0",
+    "services/core/src/medical_one_person/application/worker_loop.py": "7630f90f270c86b80c5132b02c7b6b6cdca6a4263b451ecde9dfe8b9fc9cbc64"
+  },
+  "observations": {
+    "audit_scope": {
+      "unrelated_target_allowed": true,
+      "unlinked_consumer_blocked": true,
+      "consumer_descendant_blocked": true,
+      "unrelated_task_allowed": true,
+      "explicit_upstream_descendant_blocked": true
+    },
+    "input_admission": {
+      "malformed_document_rejected": true,
+      "malformed_citation_rejected": true,
+      "malformed_claim_rejected": true,
+      "malformed_analysis_rejected": true,
+      "malformed_deliverable_rejected": true,
+      "malformed_decision_rejected": true,
+      "unknown_type_rejected": true,
+      "valid_current_document_resolved": true,
+      "trashed_document_rejected": true,
+      "trashed_citation_source_rejected": true,
+      "revoked_document_rejected": true,
+      "revoked_citation_source_rejected": true,
+      "quarantined_document_rejected": true,
+      "quarantined_citation_source_rejected": true,
+      "historical_document_rejected": true,
+      "invalid_citation_rejected": true,
+      "stale_claim_rejected": true,
+      "disputed_claim_rejected": true,
+      "failed_analysis_rejected": true
+    },
+    "worker_cli": {
+      "default_reaches_workspace_discovery": true
+    },
+    "semantic_identity": {
+      "lease_revision_keeps_identity": true,
+      "new_input_changes_identity": true,
+      "new_review_changes_identity": true
+    },
+    "single_settlement": {
+      "single_settlement": true,
+      "original_error_preserved": true,
+      "following_job_continues": true
+    },
+    "stale_start": {
+      "stale_start_rejected": false,
+      "fence_checks": 0,
+      "persisted_state": "running",
+      "ended_at_erased": true,
+      "stale_context_persisted": true,
+      "C01_reproduced": true
+    }
+  },
+  "findings": [
+    "C01 (P2): stale _start_run can reset a succeeded AgentRun"
+  ]
+}

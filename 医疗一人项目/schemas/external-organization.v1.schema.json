@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:external-organization:v1",
+  "$defs": {
+    "ProviderType": {
+      "enum": [
+        "cdmo",
+        "cro",
+        "smo",
+        "central_lab",
+        "testing_lab",
+        "sample_provider",
+        "prototype_provider",
+        "regulatory",
+        "ethics",
+        "other"
+      ],
+      "title": "ProviderType",
+      "type": "string"
+    },
+    "VerificationState": {
+      "enum": [
+        "candidate",
+        "contacted",
+        "verified",
+        "rejected"
+      ],
+      "title": "VerificationState",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "provider_type": {
+      "$ref": "#/$defs/ProviderType"
+    },
+    "capability_summary": {
+      "maxLength": 10000,
+      "minLength": 1,
+      "title": "Capability Summary",
+      "type": "string"
+    },
+    "source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20,
+      "title": "Source Refs",
+      "type": "array"
+    },
+    "verification_state": {
+      "$ref": "#/$defs/VerificationState",
+      "default": "candidate"
+    }
+  },
+  "required": [
+    "name",
+    "provider_type",
+    "capability_summary"
+  ],
+  "title": "OrganizationSpec",
+  "type": "object",
+  "description": "External provider candidate/verification contract."
+}

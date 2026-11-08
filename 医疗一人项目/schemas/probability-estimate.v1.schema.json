@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:probability-estimate:v1",
+  "additionalProperties": false,
+  "properties": {
+    "event": {
+      "minLength": 1,
+      "title": "Event",
+      "type": "string"
+    },
+    "conditions": {
+      "minLength": 1,
+      "title": "Conditions",
+      "type": "string"
+    },
+    "horizon": {
+      "minLength": 1,
+      "title": "Horizon",
+      "type": "string"
+    },
+    "success_criterion": {
+      "minLength": 1,
+      "title": "Success Criterion",
+      "type": "string"
+    },
+    "method": {
+      "enum": [
+        "empirical",
+        "validated_model",
+        "subjective_scenario",
+        "unknown"
+      ],
+      "title": "Method",
+      "type": "string"
+    },
+    "basis_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Basis Refs",
+      "type": "array"
+    },
+    "population_or_base_rate": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Population Or Base Rate"
+    },
+    "lower": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Lower"
+    },
+    "upper": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Upper"
+    },
+    "calibration_status": {
+      "enum": [
+        "calibrated",
+        "uncalibrated",
+        "not_applicable"
+      ],
+      "title": "Calibration Status",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Limitations",
+      "type": "array"
+    },
+    "unknown_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Unknown Reason"
+    }
+  },
+  "required": [
+    "event",
+    "conditions",
+    "horizon",
+    "success_criterion",
+    "method",
+    "basis_refs",
+    "population_or_base_rate",
+    "calibration_status",
+    "limitations"
+  ],
+  "title": "ProbabilityEstimate",
+  "type": "object",
+  "description": "Event-specific probability contract; unknown evidence must remain unknown."
+}

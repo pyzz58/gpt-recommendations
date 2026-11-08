@@ -1,0 +1,8 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running downgrade b7d1e4a9c260 -> a1c9e7f2d304, W22 external source snapshots
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade a1c9e7f2d304 -> b7d1e4a9c260, W22 external source snapshots
+b7d1e4a9c260
+85

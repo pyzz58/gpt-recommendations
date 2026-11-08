@@ -1,0 +1,14 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.14, pytest-9.2.0, pluggy-1.7.0 -- /Users/zz/Documents/ChatGPT/医疗项目/医疗一人项目/services/core/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/zz/Documents/ChatGPT/医疗项目/医疗一人项目/services/core
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 4 items
+
+tests/unit/test_w24_phase_validation.py::test_baseline_pilot_is_prepared_and_never_complete PASSED [ 25%]
+tests/unit/test_w24_phase_validation.py::test_real_evidence_levels_require_specific_references PASSED [ 50%]
+tests/unit/test_w24_phase_validation.py::test_not_applicable_requires_reason_and_duplicate_steps_fail PASSED [ 75%]
+tests/unit/test_w24_phase_validation.py::test_declared_complete_still_requires_human_confirmation PASSED [100%]
+
+============================== 4 passed in 0.03s ===============================

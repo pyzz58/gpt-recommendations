@@ -1,0 +1,1025 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "id": "ACC-W01-W04-FOUNDATION",
+      "requirements": [
+        "RQ-002",
+        "RQ-004",
+        "RQ-005",
+        "RQ-006",
+        "RQ-007",
+        "RQ-012",
+        "RQ-013",
+        "RQ-025",
+        "RQ-027",
+        "RQ-029",
+        "RQ-032"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-02",
+        "TR-03",
+        "TR-04",
+        "TR-05",
+        "TR-06",
+        "TR-07",
+        "TR-08",
+        "TR-10",
+        "TR-11",
+        "TR-12",
+        "TR-13",
+        "TR-14",
+        "TR-15",
+        "TR-16",
+        "TR-17",
+        "TR-18",
+        "TR-20",
+        "TR-21",
+        "TR-22",
+        "TR-23",
+        "TR-24",
+        "TR-25"
+      ],
+      "work_packages": [
+        "W01",
+        "W02",
+        "W03",
+        "W04"
+      ],
+      "acceptance_refs": [
+        "AT-002",
+        "AT-004",
+        "AT-005",
+        "AT-006",
+        "AT-007",
+        "AT-012",
+        "AT-013",
+        "AT-025",
+        "AT-027",
+        "AT-029",
+        "AT-032"
+      ],
+      "source_commit": "6e69daabc90b4cc347762cfd82a177fca281eb37",
+      "result": "passed",
+      "scope": "Local implementation and verification scope for W01–W04; not a real-world pilot.",
+      "commands": [
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen alembic upgrade head && uv run --frozen alembic downgrade a7c4e2f9b610 && uv run --frozen alembic upgrade head",
+          "mode": "real_postgresql",
+          "started_at": "2026-10-31T20:56:00Z",
+          "finished_at": "2026-10-31T20:58:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "b2e7d4a9c310",
+            "79 RLS policies"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test uv run --frozen pytest",
+          "mode": "mock_and_real_postgresql",
+          "started_at": "2026-10-31T20:58:00Z",
+          "finished_at": "2026-10-31T20:59:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "104 passed"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen ruff check . && uv run --frozen mypy src",
+          "mode": "static",
+          "started_at": "2026-10-31T20:59:00Z",
+          "finished_at": "2026-10-31T20:59:10Z",
+          "exit_code": 0,
+          "artifacts": [
+            "Ruff passed",
+            "mypy 109 source files"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "pnpm --dir apps/web lint && pnpm --dir apps/web typecheck && pnpm --dir apps/web build",
+          "mode": "frontend_build",
+          "started_at": "2026-10-31T20:59:10Z",
+          "finished_at": "2026-10-31T21:00:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "apps/web production build"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "python3 tools/check_traceability.py check && python3 tools/test_traceability.py",
+          "mode": "git_evidence_structure",
+          "started_at": "2026-10-31T21:00:00Z",
+          "finished_at": "2026-10-31T21:00:20Z",
+          "exit_code": 0,
+          "artifacts": [
+            "18 traceability tests passed"
+          ]
+        }
+      ],
+      "validation_levels": {
+        "mock": {
+          "status": "passed",
+          "evidence": [
+            "104 backend tests",
+            "Next.js lint/typecheck/build",
+            "18 traceability tests"
+          ]
+        },
+        "live": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "human_expert": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "real_outsourcing": {
+          "status": "not_run",
+          "evidence": []
+        }
+      },
+      "code_paths": [
+        {
+          "path": "package.json",
+          "sha256": "756782d8e51336c80b0fb5f15f45eca095ea94b7f592e65850df455dbac8de31"
+        },
+        {
+          "path": "Makefile",
+          "sha256": "fe8b8c9a0149e329e5427488fbb42f673ca5bc2535827c309e4c927c887827f5"
+        },
+        {
+          "path": "services/core/pyproject.toml",
+          "sha256": "e975398c983729b053e4c76ff75140f6425dc33b3a91598f73a478c4995684d6"
+        },
+        {
+          "path": "services/core/src/medical_one_person/infrastructure/tool_gateway.py",
+          "sha256": "a3c3806c4f8d80266ef46ab775cb62b253a44985d7e53f45567c181e6afaebdb"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/tasks.py",
+          "sha256": "05e252ab9db2559bc3d3dd187ba958ebef8fc70803b280d2a97fd5445747c8e2"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/scheduling.py",
+          "sha256": "b4680e535fb6124a3c9a0d1e08621d7d1b019073c37c3735af99beecd994ed6a"
+        },
+        {
+          "path": "services/core/migrations/versions/7994d0dd6e2c_w03_rls_tool_audit.py",
+          "sha256": "5747ff258dab0b586081ca7f7dd2e2d9597ffe07617d74f78790b1e6e5c2f237"
+        },
+        {
+          "path": "services/core/migrations/versions/c7296a4b69d8_w04_tasks_jobs_budgets.py",
+          "sha256": "45a867748eb84fd00de59e1fe786d9e8ff32a4e69125d895c2bac26e58d8d068"
+        },
+        {
+          "path": "services/core/tests/integration/test_w02_postgres.py",
+          "sha256": "2caba8193c260860614f82396494891dea934fa8477b23cf7e66ce5a9824342b"
+        },
+        {
+          "path": "services/core/tests/integration/test_w03_isolation.py",
+          "sha256": "b0aad8845875a73abd4416716b9a75137bf2e7fa5862ebe211c576b12681ea06"
+        },
+        {
+          "path": "services/core/tests/integration/test_w04_scheduling.py",
+          "sha256": "b0a35b417372fc02d2387923ef62b747a507718fdeb7eb1249aea96bdec59b17"
+        },
+        {
+          "path": "tools/check_traceability.py",
+          "sha256": "2ff62e15356a8b7108fec6edc6ae5130ce5f2e6d03beb0f863551e93d4b9f3e8"
+        },
+        {
+          "path": "tools/test_traceability.py",
+          "sha256": "0f496163cd7bcc05f38b181b728d0afd27a124de28f69000c4f630f934728b1f"
+        }
+      ],
+      "artifacts": [
+        "docs/w01-w18-delivery-status.md",
+        "docs/w01-w18-validation.md",
+        "docs/w01-handoff.md",
+        "docs/w02-handoff.md",
+        "docs/w03-handoff.md",
+        "docs/w04-handoff.md"
+      ],
+      "uncovered": [
+        "live models and real email",
+        "human expert and non-mock independent audit",
+        "real provider contact/signing/payment/execution",
+        "active database restore and off-site disaster recovery"
+      ]
+    },
+    {
+      "id": "ACC-W05-W08-AGENTS-KNOWLEDGE",
+      "requirements": [
+        "RQ-004",
+        "RQ-005",
+        "RQ-006",
+        "RQ-007",
+        "RQ-011",
+        "RQ-012",
+        "RQ-013",
+        "RQ-023",
+        "RQ-025",
+        "RQ-026",
+        "RQ-029",
+        "RQ-034"
+      ],
+      "technical_refs": [
+        "TR-02",
+        "TR-03",
+        "TR-04",
+        "TR-05",
+        "TR-06",
+        "TR-07",
+        "TR-08",
+        "TR-09",
+        "TR-10",
+        "TR-12",
+        "TR-13",
+        "TR-14",
+        "TR-15",
+        "TR-16",
+        "TR-17",
+        "TR-18",
+        "TR-19",
+        "TR-20",
+        "TR-21",
+        "TR-22",
+        "TR-23",
+        "TR-24",
+        "TR-25"
+      ],
+      "work_packages": [
+        "W05",
+        "W06",
+        "W07",
+        "W08"
+      ],
+      "acceptance_refs": [
+        "AT-004",
+        "AT-005",
+        "AT-006",
+        "AT-007",
+        "AT-011",
+        "AT-012",
+        "AT-013",
+        "AT-023",
+        "AT-025",
+        "AT-026",
+        "AT-029",
+        "AT-034"
+      ],
+      "source_commit": "6e69daabc90b4cc347762cfd82a177fca281eb37",
+      "result": "passed",
+      "scope": "Local implementation and verification scope for W05–W08; not a real-world pilot.",
+      "commands": [
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen alembic upgrade head && uv run --frozen alembic downgrade a7c4e2f9b610 && uv run --frozen alembic upgrade head",
+          "mode": "real_postgresql",
+          "started_at": "2026-10-31T20:56:00Z",
+          "finished_at": "2026-10-31T20:58:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "b2e7d4a9c310",
+            "79 RLS policies"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test uv run --frozen pytest",
+          "mode": "mock_and_real_postgresql",
+          "started_at": "2026-10-31T20:58:00Z",
+          "finished_at": "2026-10-31T20:59:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "104 passed"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen ruff check . && uv run --frozen mypy src",
+          "mode": "static",
+          "started_at": "2026-10-31T20:59:00Z",
+          "finished_at": "2026-10-31T20:59:10Z",
+          "exit_code": 0,
+          "artifacts": [
+            "Ruff passed",
+            "mypy 109 source files"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "pnpm --dir apps/web lint && pnpm --dir apps/web typecheck && pnpm --dir apps/web build",
+          "mode": "frontend_build",
+          "started_at": "2026-10-31T20:59:10Z",
+          "finished_at": "2026-10-31T21:00:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "apps/web production build"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "python3 tools/check_traceability.py check && python3 tools/test_traceability.py",
+          "mode": "git_evidence_structure",
+          "started_at": "2026-10-31T21:00:00Z",
+          "finished_at": "2026-10-31T21:00:20Z",
+          "exit_code": 0,
+          "artifacts": [
+            "18 traceability tests passed"
+          ]
+        }
+      ],
+      "validation_levels": {
+        "mock": {
+          "status": "passed",
+          "evidence": [
+            "104 backend tests",
+            "Next.js lint/typecheck/build",
+            "18 traceability tests"
+          ]
+        },
+        "live": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "human_expert": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "real_outsourcing": {
+          "status": "not_run",
+          "evidence": []
+        }
+      },
+      "code_paths": [
+        {
+          "path": "config/agents/roles.yaml",
+          "sha256": "8f425ab8598353fc4b10f890c96ded329925d7ab9be7a90831904539f62eac9d"
+        },
+        {
+          "path": "config/skills/catalog.yaml",
+          "sha256": "457a923abc60c37a4b671777c87216e7b6b0662ccf5620b4322f46fb23ab086d"
+        },
+        {
+          "path": "services/core/src/medical_one_person/agents/runner.py",
+          "sha256": "36f802aa137e75ca7318c90096bff5318fae4130ff775dc1d5cb97b027800e30"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/knowledge.py",
+          "sha256": "fea4e6accbca9d7eab536997f860a5cfda217b75c060c12456def4604eee5cd4"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/knowledge_ingestion.py",
+          "sha256": "bb240952fae95faf0c12f08c1f658c8d1f15933c350bd788b5e34979e4cc8c4f"
+        },
+        {
+          "path": "services/core/migrations/versions/bc959837d3ea_w08_knowledge_evidence_retrieval.py",
+          "sha256": "12cc5825c102f9ab455c265be260dd367fd8ee2f6909ae4d54d3cf81feda6615"
+        },
+        {
+          "path": "services/core/tests/integration/test_w05_agents.py",
+          "sha256": "4727365a5e9d4d3e0f4d64de9da0490b40eea45f63d1187e34590e63a44539e8"
+        },
+        {
+          "path": "services/core/tests/integration/test_w06_skill_runner.py",
+          "sha256": "3eee3f0a42f9550f0e5617732fb8fd16e5b422eb6afde967fb69e75937767f43"
+        },
+        {
+          "path": "services/core/tests/integration/test_w07_uploads.py",
+          "sha256": "8c6148c5e59bca8b1c436f8a32362af89577196c701e6656bb0b3f173444605f"
+        },
+        {
+          "path": "services/core/tests/integration/test_w08_retrieval.py",
+          "sha256": "9359d2dcebcbf4d9e69bc0ddf6540adedc24c84999da1f55e67774677ee9c63d"
+        }
+      ],
+      "artifacts": [
+        "docs/w01-w18-delivery-status.md",
+        "docs/w01-w18-validation.md",
+        "docs/w05-handoff.md",
+        "docs/w06-handoff.md",
+        "docs/w07-handoff.md",
+        "docs/w08-handoff.md"
+      ],
+      "uncovered": [
+        "live models and real email",
+        "human expert and non-mock independent audit",
+        "real provider contact/signing/payment/execution",
+        "active database restore and off-site disaster recovery"
+      ]
+    },
+    {
+      "id": "ACC-W09-W12-DECISION-WORKFLOWS",
+      "requirements": [
+        "RQ-003",
+        "RQ-007",
+        "RQ-008",
+        "RQ-009",
+        "RQ-010",
+        "RQ-018",
+        "RQ-021",
+        "RQ-022",
+        "RQ-028",
+        "RQ-029",
+        "RQ-031",
+        "RQ-034"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-02",
+        "TR-04",
+        "TR-05",
+        "TR-06",
+        "TR-07",
+        "TR-08",
+        "TR-09",
+        "TR-10",
+        "TR-11",
+        "TR-12",
+        "TR-13",
+        "TR-14",
+        "TR-15",
+        "TR-16",
+        "TR-17",
+        "TR-18",
+        "TR-19",
+        "TR-20",
+        "TR-21",
+        "TR-24",
+        "TR-25"
+      ],
+      "work_packages": [
+        "W09",
+        "W10",
+        "W11",
+        "W12"
+      ],
+      "acceptance_refs": [
+        "AT-003",
+        "AT-007",
+        "AT-008",
+        "AT-009",
+        "AT-010",
+        "AT-018",
+        "AT-021",
+        "AT-022",
+        "AT-028",
+        "AT-029",
+        "AT-031",
+        "AT-034"
+      ],
+      "source_commit": "6e69daabc90b4cc347762cfd82a177fca281eb37",
+      "result": "passed",
+      "scope": "Local implementation and verification scope for W09–W12; not a real-world pilot.",
+      "commands": [
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen alembic upgrade head && uv run --frozen alembic downgrade a7c4e2f9b610 && uv run --frozen alembic upgrade head",
+          "mode": "real_postgresql",
+          "started_at": "2026-10-31T20:56:00Z",
+          "finished_at": "2026-10-31T20:58:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "b2e7d4a9c310",
+            "79 RLS policies"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test uv run --frozen pytest",
+          "mode": "mock_and_real_postgresql",
+          "started_at": "2026-10-31T20:58:00Z",
+          "finished_at": "2026-10-31T20:59:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "104 passed"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen ruff check . && uv run --frozen mypy src",
+          "mode": "static",
+          "started_at": "2026-10-31T20:59:00Z",
+          "finished_at": "2026-10-31T20:59:10Z",
+          "exit_code": 0,
+          "artifacts": [
+            "Ruff passed",
+            "mypy 109 source files"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "pnpm --dir apps/web lint && pnpm --dir apps/web typecheck && pnpm --dir apps/web build",
+          "mode": "frontend_build",
+          "started_at": "2026-10-31T20:59:10Z",
+          "finished_at": "2026-10-31T21:00:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "apps/web production build"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "python3 tools/check_traceability.py check && python3 tools/test_traceability.py",
+          "mode": "git_evidence_structure",
+          "started_at": "2026-10-31T21:00:00Z",
+          "finished_at": "2026-10-31T21:00:20Z",
+          "exit_code": 0,
+          "artifacts": [
+            "18 traceability tests passed"
+          ]
+        }
+      ],
+      "validation_levels": {
+        "mock": {
+          "status": "passed",
+          "evidence": [
+            "104 backend tests",
+            "Next.js lint/typecheck/build",
+            "18 traceability tests"
+          ]
+        },
+        "live": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "human_expert": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "real_outsourcing": {
+          "status": "not_run",
+          "evidence": []
+        }
+      },
+      "code_paths": [
+        {
+          "path": "services/core/src/medical_one_person/application/opportunities.py",
+          "sha256": "a86d7d308d4fa21c93b403b3aa4f7ee02ff5cbbe102b035ac529e72799d49475"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/plans.py",
+          "sha256": "6b382ca500225b21b059f04f1a33436400cd76e2bf35f133bf5fbb240fc46117"
+        },
+        {
+          "path": "services/core/src/medical_one_person/api/workspace.py",
+          "sha256": "5c9ffcf722a9a2b3be371149187158cd556906f11571963a5e2c99d39519de64"
+        },
+        {
+          "path": "config/workflows/pet_repurposing.yaml",
+          "sha256": "4f3b535e6555cbb39d648e28aceed148d010b760fb47b35dadd908e48b806250"
+        },
+        {
+          "path": "config/workflows/ivd.yaml",
+          "sha256": "e28d1371dee21472a194ec4858e93f6c8390710e60b1e27dac4cf144de4933af"
+        },
+        {
+          "path": "config/workflows/device.yaml",
+          "sha256": "40798e6360d9071fbb3a1b82a740bb4cdd479d6460fb1b234bea9ceb21791cbf"
+        },
+        {
+          "path": "apps/web/src/app/projects/[id]/tasks/page.tsx",
+          "sha256": "c1983a04f07c2b7687ceca32792f8258cf233a33622530bf6835e228382bd1c2"
+        },
+        {
+          "path": "services/core/tests/integration/test_w09_opportunity_service.py",
+          "sha256": "9636d70aae7751cc99a3b4b5fdcc9496f35b7d3d5147fd3c7b483881de7366c3"
+        },
+        {
+          "path": "services/core/tests/integration/test_w10_ui_api.py",
+          "sha256": "ee0e1d46a357f307bf136d5b6feb83fcd07db8f29a7dcd01f56a055ebf3d0c3e"
+        },
+        {
+          "path": "services/core/tests/integration/test_w11_plans.py",
+          "sha256": "bfc79b37abe254faf46bed9087c006e873c39bd0655b9d07ade2eab5f1937787"
+        },
+        {
+          "path": "services/core/tests/integration/test_w12_workflow_service.py",
+          "sha256": "ce6d3996005604614122789ec1f75430897bdc959fa18bf30430d2e2e26f90d5"
+        }
+      ],
+      "artifacts": [
+        "docs/w01-w18-delivery-status.md",
+        "docs/w01-w18-validation.md",
+        "docs/w09-handoff.md",
+        "docs/w10-handoff.md",
+        "docs/w11-handoff.md",
+        "docs/w12-handoff.md"
+      ],
+      "uncovered": [
+        "live models and real email",
+        "human expert and non-mock independent audit",
+        "real provider contact/signing/payment/execution",
+        "active database restore and off-site disaster recovery"
+      ]
+    },
+    {
+      "id": "ACC-W13-W16-DATA-DOCS-EXTERNAL",
+      "requirements": [
+        "RQ-003",
+        "RQ-014",
+        "RQ-015",
+        "RQ-016",
+        "RQ-017",
+        "RQ-018",
+        "RQ-019",
+        "RQ-020",
+        "RQ-021",
+        "RQ-023",
+        "RQ-029"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-04",
+        "TR-05",
+        "TR-06",
+        "TR-08",
+        "TR-09",
+        "TR-10",
+        "TR-11",
+        "TR-12",
+        "TR-13",
+        "TR-14",
+        "TR-15",
+        "TR-16",
+        "TR-17",
+        "TR-18",
+        "TR-22"
+      ],
+      "work_packages": [
+        "W13",
+        "W14",
+        "W15",
+        "W16"
+      ],
+      "acceptance_refs": [
+        "AT-003",
+        "AT-014",
+        "AT-015",
+        "AT-016",
+        "AT-017",
+        "AT-018",
+        "AT-019",
+        "AT-020",
+        "AT-021",
+        "AT-023",
+        "AT-029"
+      ],
+      "source_commit": "6e69daabc90b4cc347762cfd82a177fca281eb37",
+      "result": "passed",
+      "scope": "Local implementation and verification scope for W13–W16; not a real-world pilot.",
+      "commands": [
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen alembic upgrade head && uv run --frozen alembic downgrade a7c4e2f9b610 && uv run --frozen alembic upgrade head",
+          "mode": "real_postgresql",
+          "started_at": "2026-10-31T20:56:00Z",
+          "finished_at": "2026-10-31T20:58:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "b2e7d4a9c310",
+            "79 RLS policies"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test uv run --frozen pytest",
+          "mode": "mock_and_real_postgresql",
+          "started_at": "2026-10-31T20:58:00Z",
+          "finished_at": "2026-10-31T20:59:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "104 passed"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen ruff check . && uv run --frozen mypy src",
+          "mode": "static",
+          "started_at": "2026-10-31T20:59:00Z",
+          "finished_at": "2026-10-31T20:59:10Z",
+          "exit_code": 0,
+          "artifacts": [
+            "Ruff passed",
+            "mypy 109 source files"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "pnpm --dir apps/web lint && pnpm --dir apps/web typecheck && pnpm --dir apps/web build",
+          "mode": "frontend_build",
+          "started_at": "2026-10-31T20:59:10Z",
+          "finished_at": "2026-10-31T21:00:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "apps/web production build"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "python3 tools/check_traceability.py check && python3 tools/test_traceability.py",
+          "mode": "git_evidence_structure",
+          "started_at": "2026-10-31T21:00:00Z",
+          "finished_at": "2026-10-31T21:00:20Z",
+          "exit_code": 0,
+          "artifacts": [
+            "18 traceability tests passed"
+          ]
+        }
+      ],
+      "validation_levels": {
+        "mock": {
+          "status": "passed",
+          "evidence": [
+            "104 backend tests",
+            "Next.js lint/typecheck/build",
+            "18 traceability tests"
+          ]
+        },
+        "live": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "human_expert": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "real_outsourcing": {
+          "status": "not_run",
+          "evidence": []
+        }
+      },
+      "code_paths": [
+        {
+          "path": "services/core/src/medical_one_person/application/datasets.py",
+          "sha256": "a68180b7576a63d50cdc6f9032fab25aee3cebc6f5416e4ccdb2a0f505de2c15"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/exports.py",
+          "sha256": "f5b7a460ad58b207aed56fc8ef9e9c657eff9a1a9e3528b03c505145c8d72602"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/mail.py",
+          "sha256": "4ef8376b6d320b6ce56e264cb02fae5e84e200453f3ead85ada3c90df690f0c4"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/external.py",
+          "sha256": "a249a95a0a7ae09dc6e6c5dcbdfb3669673b5056595f639cfe93c9cfac6a777f"
+        },
+        {
+          "path": "apps/web/src/app/projects/[id]/artifacts/page.tsx",
+          "sha256": "1290dfa64c5e149ae85545ad5a44d8a42321bc686b6f937ae7ca33792740d8a1"
+        },
+        {
+          "path": "apps/web/src/app/projects/[id]/mail/page.tsx",
+          "sha256": "07b01b7a3b3f155418bed892061b950eda7b32e83099fc3238ab9fdb589dde8c"
+        },
+        {
+          "path": "apps/web/src/app/projects/[id]/external/page.tsx",
+          "sha256": "2276152e43349dac748cd721c392e03ed38bb08e5a8114719ba32167f79b3df6"
+        },
+        {
+          "path": "services/core/tests/integration/test_w13_datasets.py",
+          "sha256": "70e18c87f59da532559abb6929abdb6e0b4155fcaa4b30729789afdf5a0d6a0e"
+        },
+        {
+          "path": "services/core/tests/integration/test_w14_export_api.py",
+          "sha256": "684be8cf58911132a76544f59c8d978b68f476d0a7c68a7e49651adb9ef7f0b6"
+        },
+        {
+          "path": "services/core/tests/integration/test_w15_mail_api.py",
+          "sha256": "acbb76ef3c619bf7a441a0c049e58c2061430cadaef8d4525fc39cda89e64011"
+        },
+        {
+          "path": "services/core/tests/integration/test_w16_external_api.py",
+          "sha256": "8c81dae9aac1addf9ee8fe7516efab432b1cfe68299515de743aa205ebdf6cd9"
+        }
+      ],
+      "artifacts": [
+        "docs/w01-w18-delivery-status.md",
+        "docs/w01-w18-validation.md",
+        "docs/w13-handoff.md",
+        "docs/w14-handoff.md",
+        "docs/w15-handoff.md",
+        "docs/w16-handoff.md",
+        "docs/w14-export-previews.png",
+        "docs/w15-mail-overview.png",
+        "docs/w16-external-overview.png"
+      ],
+      "uncovered": [
+        "live models and real email",
+        "human expert and non-mock independent audit",
+        "real provider contact/signing/payment/execution",
+        "active database restore and off-site disaster recovery"
+      ]
+    },
+    {
+      "id": "ACC-W17-W18-AUDIT-RECOVERY",
+      "requirements": [
+        "RQ-006",
+        "RQ-009",
+        "RQ-011",
+        "RQ-012",
+        "RQ-022",
+        "RQ-024",
+        "RQ-026",
+        "RQ-027",
+        "RQ-031",
+        "RQ-034"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-02",
+        "TR-03",
+        "TR-04",
+        "TR-05",
+        "TR-06",
+        "TR-07",
+        "TR-08",
+        "TR-09",
+        "TR-10",
+        "TR-11",
+        "TR-12",
+        "TR-13",
+        "TR-15",
+        "TR-16",
+        "TR-17",
+        "TR-18",
+        "TR-19",
+        "TR-20",
+        "TR-21",
+        "TR-23",
+        "TR-24",
+        "TR-25"
+      ],
+      "work_packages": [
+        "W17",
+        "W18"
+      ],
+      "acceptance_refs": [
+        "AT-006",
+        "AT-009",
+        "AT-011",
+        "AT-012",
+        "AT-022",
+        "AT-024",
+        "AT-026",
+        "AT-027",
+        "AT-031",
+        "AT-034"
+      ],
+      "source_commit": "6e69daabc90b4cc347762cfd82a177fca281eb37",
+      "result": "passed",
+      "scope": "Local implementation and verification scope for W17–W18; not a real-world pilot.",
+      "commands": [
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen alembic upgrade head && uv run --frozen alembic downgrade a7c4e2f9b610 && uv run --frozen alembic upgrade head",
+          "mode": "real_postgresql",
+          "started_at": "2026-10-31T20:56:00Z",
+          "finished_at": "2026-10-31T20:58:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "b2e7d4a9c310",
+            "79 RLS policies"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "MEDICAL_ONE_TEST_DATABASE_URL=postgresql+psycopg://postgres@127.0.0.1:55432/medical_one_test uv run --frozen pytest",
+          "mode": "mock_and_real_postgresql",
+          "started_at": "2026-10-31T20:58:00Z",
+          "finished_at": "2026-10-31T20:59:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "104 passed"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen ruff check . && uv run --frozen mypy src",
+          "mode": "static",
+          "started_at": "2026-10-31T20:59:00Z",
+          "finished_at": "2026-10-31T20:59:10Z",
+          "exit_code": 0,
+          "artifacts": [
+            "Ruff passed",
+            "mypy 109 source files"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "pnpm --dir apps/web lint && pnpm --dir apps/web typecheck && pnpm --dir apps/web build",
+          "mode": "frontend_build",
+          "started_at": "2026-10-31T20:59:10Z",
+          "finished_at": "2026-10-31T21:00:00Z",
+          "exit_code": 0,
+          "artifacts": [
+            "apps/web production build"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "python3 tools/check_traceability.py check && python3 tools/test_traceability.py",
+          "mode": "git_evidence_structure",
+          "started_at": "2026-10-31T21:00:00Z",
+          "finished_at": "2026-10-31T21:00:20Z",
+          "exit_code": 0,
+          "artifacts": [
+            "18 traceability tests passed"
+          ]
+        }
+      ],
+      "validation_levels": {
+        "mock": {
+          "status": "passed",
+          "evidence": [
+            "104 backend tests",
+            "Next.js lint/typecheck/build",
+            "18 traceability tests"
+          ]
+        },
+        "live": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "human_expert": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "real_outsourcing": {
+          "status": "not_run",
+          "evidence": []
+        }
+      },
+      "code_paths": [
+        {
+          "path": "services/core/src/medical_one_person/application/audits.py",
+          "sha256": "d32e717f33d9143edbc9900995a5124089f3871523ac86e8636d82b8ab8d547d"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/recovery.py",
+          "sha256": "904c0e923cedc01ac8731a45fb1e580f5ec402b566173e442a3cf283cc3b27ca"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/tasks.py",
+          "sha256": "05e252ab9db2559bc3d3dd187ba958ebef8fc70803b280d2a97fd5445747c8e2"
+        },
+        {
+          "path": "services/core/src/medical_one_person/application/scheduling.py",
+          "sha256": "b4680e535fb6124a3c9a0d1e08621d7d1b019073c37c3735af99beecd994ed6a"
+        },
+        {
+          "path": "services/core/migrations/versions/e9f6a3c2d140_w17_audit_reviews.py",
+          "sha256": "432d7619766145c80d249e25dc9189dfa8e7aafba8b492a2a90a96779d1d9166"
+        },
+        {
+          "path": "services/core/migrations/versions/a7c4e2f9b610_w18_recovery_and_backups.py",
+          "sha256": "70b6bba9926dc6dea61d400682bbdd882f2cb43590652ec9324c24148c4b61a8"
+        },
+        {
+          "path": "services/core/migrations/versions/b2e7d4a9c310_w19_task_input_validity.py",
+          "sha256": "8728551003964962d42bbb3c6a83177212d9b3d80f69b4d915ba7f3e6b69f8e1"
+        },
+        {
+          "path": "apps/web/src/app/projects/[id]/audits/page.tsx",
+          "sha256": "a80f3362404efe782ed663ec7780f9f579902b7c38885fa0a12785185b649b70"
+        },
+        {
+          "path": "apps/web/src/app/projects/[id]/recovery/page.tsx",
+          "sha256": "0f3376bae2aeddcc916262639ae140b645dfaef928f9b9a8895b3811a2f820c2"
+        },
+        {
+          "path": "services/core/tests/integration/test_w17_audit_service.py",
+          "sha256": "93e11689d296a2b93c71cef78bf7581f309696c43b6975a74cc59c3af0099426"
+        },
+        {
+          "path": "services/core/tests/integration/test_w18_recovery_service.py",
+          "sha256": "745fae72596cc9121108fa53a593f7ecfcb93b34fc6358a894839fad46e170f4"
+        }
+      ],
+      "artifacts": [
+        "docs/w01-w18-delivery-status.md",
+        "docs/w01-w18-validation.md",
+        "docs/w17-handoff.md",
+        "docs/w18-handoff.md",
+        "docs/w17-audit-overview.png",
+        "docs/w18-recovery-overview.png",
+        "docs/w18-recovery-backup.png"
+      ],
+      "uncovered": [
+        "live models and real email",
+        "human expert and non-mock independent audit",
+        "real provider contact/signing/payment/execution",
+        "active database restore and off-site disaster recovery"
+      ]
+    }
+  ]
+}

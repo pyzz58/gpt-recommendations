@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:mail-draft:v1",
+  "$defs": {
+    "MailAttachmentSource": {
+      "additionalProperties": false,
+      "properties": {
+        "source_type": {
+          "enum": [
+            "artifact_version",
+            "knowledge_version"
+          ],
+          "title": "Source Type",
+          "type": "string"
+        },
+        "source_id": {
+          "format": "uuid",
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_type",
+        "source_id"
+      ],
+      "title": "MailAttachmentSource",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "to_addresses": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 10,
+      "minItems": 1,
+      "title": "To Addresses",
+      "type": "array"
+    },
+    "cc_addresses": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 10,
+      "title": "Cc Addresses",
+      "type": "array"
+    },
+    "bcc_addresses": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 10,
+      "title": "Bcc Addresses",
+      "type": "array"
+    },
+    "subject": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Subject",
+      "type": "string"
+    },
+    "body_text": {
+      "maxLength": 50000,
+      "minLength": 1,
+      "title": "Body Text",
+      "type": "string"
+    },
+    "attachments": {
+      "items": {
+        "$ref": "#/$defs/MailAttachmentSource"
+      },
+      "maxItems": 10,
+      "title": "Attachments",
+      "type": "array"
+    },
+    "thread_id": {
+      "anyOf": [
+        {
+          "format": "uuid",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Thread Id"
+    }
+  },
+  "required": [
+    "to_addresses",
+    "subject",
+    "body_text"
+  ],
+  "title": "MailDraftSpec",
+  "type": "object",
+  "description": "Mail draft contract; saving a draft does not authorize sending."
+}

@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:statistical-plan:v1",
+  "$defs": {
+    "StatisticalMethod": {
+      "enum": [
+        "descriptive_continuous",
+        "two_group_mean_difference",
+        "proportion_wilson"
+      ],
+      "title": "StatisticalMethod",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "question": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Question",
+      "type": "string"
+    },
+    "endpoint_column": {
+      "minLength": 1,
+      "title": "Endpoint Column",
+      "type": "string"
+    },
+    "method": {
+      "$ref": "#/$defs/StatisticalMethod"
+    },
+    "group_column": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Group Column"
+    },
+    "analysis_set": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Analysis Set",
+      "type": "string"
+    },
+    "missing_policy": {
+      "default": "exclude_endpoint_missing",
+      "enum": [
+        "exclude_endpoint_missing",
+        "fail_if_missing"
+      ],
+      "title": "Missing Policy",
+      "type": "string"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Unit"
+    },
+    "alpha": {
+      "default": 0.05,
+      "exclusiveMaximum": 1,
+      "exclusiveMinimum": 0,
+      "title": "Alpha",
+      "type": "number"
+    },
+    "expected_groups": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Expected Groups",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Limitations",
+      "type": "array"
+    },
+    "exploratory": {
+      "default": false,
+      "title": "Exploratory",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "question",
+    "endpoint_column",
+    "method",
+    "analysis_set",
+    "limitations"
+  ],
+  "title": "StatisticalPlanSpec",
+  "type": "object",
+  "description": "Pre-specified deterministic statistical plan contract."
+}

@@ -1,0 +1,39 @@
+$ next build
+▲ Next.js 16.4.3 (Turbopack)
+✓ Running next.config.ts took 12ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 222ms
+  Running TypeScript ...
+  Finished TypeScript in 496ms ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/5) ...
+  Generating static pages using 9 workers (1/5) 
+  Generating static pages using 9 workers (2/5) 
+  Generating static pages using 9 workers (3/5) 
+✓ Generating static pages using 9 workers (5/5) in 57ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /projects
+├ ƒ /projects/[id]
+├ ƒ /projects/[id]/agents
+├ ƒ /projects/[id]/artifacts
+├ ƒ /projects/[id]/audits
+├ ƒ /projects/[id]/datasets
+├ ƒ /projects/[id]/external
+├ ƒ /projects/[id]/knowledge
+├ ƒ /projects/[id]/mail
+├ ƒ /projects/[id]/opportunities
+├ ƒ /projects/[id]/overview
+├ ƒ /projects/[id]/recovery
+├ ƒ /projects/[id]/tasks
+├ ƒ /projects/[id]/workflows
+└ ○ /settings
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

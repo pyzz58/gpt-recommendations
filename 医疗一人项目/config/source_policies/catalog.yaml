@@ -1,0 +1,62 @@
+schema_version: 1
+policies:
+  - policy_id: biomedical_primary.v1
+    description: 生物医学原始研究、系统综述、指南与合法全文优先。
+    general_web_search: false
+    preprint_policy: label_separately
+    fulltext_policy: original_or_authorized_copy
+    channels:
+      - channel_id: pubmed
+        host: pubmed.ncbi.nlm.nih.gov
+        source_kind: bibliographic_database
+        official: true
+      - channel_id: pmc
+        host: pmc.ncbi.nlm.nih.gov
+        source_kind: fulltext_archive
+        official: true
+      - channel_id: publisher
+        host: null
+        source_kind: publisher
+        official: false
+      - channel_id: biorxiv
+        host: www.biorxiv.org
+        source_kind: preprint
+        official: false
+  - policy_id: regulatory_official.v1
+    description: 仅接受目标市场监管与其他官方机构文件。
+    general_web_search: false
+    preprint_policy: prohibited
+    fulltext_policy: official_document
+    channels:
+      - channel_id: nmpa
+        host: www.nmpa.gov.cn
+        source_kind: regulator
+        official: true
+      - channel_id: fda
+        host: www.fda.gov
+        source_kind: regulator
+        official: true
+  - policy_id: patent_official.v1
+    description: 专利局原始著录、权利要求和法律状态。
+    general_web_search: false
+    preprint_policy: prohibited
+    fulltext_policy: official_record
+    channels:
+      - channel_id: cnipa
+        host: www.cnipa.gov.cn
+        source_kind: patent_office
+        official: true
+      - channel_id: uspto
+        host: patft.uspto.gov
+        source_kind: patent_office
+        official: true
+  - policy_id: project_private.v1
+    description: 仅读取当前项目获授权的本地原件与用户材料。
+    general_web_search: false
+    preprint_policy: label_separately
+    fulltext_policy: authorized_local_copy
+    channels:
+      - channel_id: project_library
+        host: null
+        source_kind: local_library
+        official: false

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:criterion-result:v1",
+  "$defs": {
+    "CriterionResultStatus": {
+      "enum": [
+        "met",
+        "unmet",
+        "unknown"
+      ],
+      "title": "CriterionResultStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "criterion_id": {
+      "minLength": 1,
+      "title": "Criterion Id",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/CriterionResultStatus"
+    },
+    "rationale": {
+      "maxLength": 10000,
+      "minLength": 1,
+      "title": "Rationale",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "criterion_id",
+    "status",
+    "rationale"
+  ],
+  "title": "CriterionResult",
+  "type": "object",
+  "description": "Structured stage-criterion record; object references do not prove scientific validity."
+}

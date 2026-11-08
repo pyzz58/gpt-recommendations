@@ -1,0 +1,181 @@
+schema_version: 1
+workflow_id: medical_device_v1
+version: 1
+track: device
+title: 医疗器械
+purpose: 从用户场景和预期用途出发，形成设计输入、风险、验证确认、评价和生产质量证据。
+applicability:
+  - 具有明确用户、使用环境、预期用途和产品功能
+  - 需要工程、人因、临床评价和质量体系共同组织
+non_goals:
+  - 原型存在不等于已完成验证或确认
+  - 模板不构成注册分类或安全有效结论
+stages:
+  - stage_id: user_need
+    sequence: 1
+    title: 用户场景、预期用途与需求
+    purpose: 定义使用者、患者/动物、环境、任务和现有替代方案。
+    required_roles: [A05, A11, A12, A17]
+    criteria:
+      - {id: intended_use_defined, kind: decision, description: 用户、环境、功能与预期用途明确, requires_refs: true}
+      - {id: user_need_evidence, kind: evidence, description: 需求有可追溯依据而非宣传, requires_refs: true}
+      - {id: use_risk_questions, kind: professional_judgment, description: 识别关键任务、误用和可用性问题, requires_refs: true}
+    required_inputs: [investment_brief, opportunity_card, source_cutoff]
+    required_outputs: [use_scenario, user_need, intended_use_statement, usability_questions]
+    review_policy: clinical_engineering_human_factors_review.v1
+    failure_routes:
+      use_scene_unclear: revise
+      no_user_value: stop
+    external_preconditions: []
+    theory_refs: [D-014, SEC:4.3, SEC:10.4]
+    plan_nodes:
+      - key: user_need
+        task_type: device.user_need
+        purpose: device-stage1-need
+        assignee_role: A05
+        goal: 界定用户、患者或动物、场景、现有路径和未满足需求。
+        input_refs: [workflow:medical_device_v1:user_need]
+        acceptance_policy: clinical_review.v1
+      - key: use_risk
+        task_type: device.use_risk
+        purpose: device-stage1-usability
+        assignee_role: A12
+        goal: 识别关键任务、环境和误用风险，明确尚未开展的人因验证。
+        input_refs: [workflow:medical_device_v1:user_need]
+        acceptance_policy: human_factors_review.v1
+        depends_on: [user_need]
+      - key: regulatory_scope
+        task_type: device.regulatory_scope
+        purpose: device-stage1-regulatory
+        assignee_role: A17
+        goal: 记录目标市场分类、功能和评价问题及核查日期要求。
+        input_refs: [workflow:medical_device_v1:user_need]
+        acceptance_policy: regulatory_review.v1
+        depends_on: [user_need]
+  - stage_id: design_and_risk
+    sequence: 2
+    title: 设计输入、工程风险与原型边界
+    purpose: 将需求转化为可验证要求，并明确原型和风险文件缺口。
+    required_roles: [A11, A12, A13, A18, A26]
+    criteria:
+      - {id: design_inputs_defined, kind: professional_judgment, description: 设计输入可测试且关联用户需求, requires_refs: true}
+      - {id: risk_file_outline, kind: professional_judgment, description: 关键危害、风险和验证问题明确, requires_refs: true}
+      - {id: ip_questions_recorded, kind: evidence, description: 权利来源与检索问题有依据或保留未知, requires_refs: true}
+    required_inputs: [stage1_output, design_input_candidate, risk_sources]
+    required_outputs: [design_inputs, risk_file_outline, prototype_scope, ip_questions]
+    review_policy: engineering_and_risk_review.v1
+    failure_routes:
+      critical_use_hazard: revise
+      engineering_infeasible: stop
+      ip_unclear: gather_evidence
+    external_preconditions: []
+    theory_refs: [D-015, SEC:4.3, SEC:10.4]
+    plan_nodes:
+      - key: design_inputs
+        task_type: device.design_inputs
+        purpose: device-stage2-design
+        assignee_role: A11
+        goal: 将用户需求映射为可验证的工程要求和关键风险。
+        input_refs: [workflow:medical_device_v1:design_and_risk]
+        acceptance_policy: engineering_review.v1
+      - key: verification_questions
+        task_type: device.verification_questions
+        purpose: device-stage2-verification
+        assignee_role: A13
+        goal: 形成原型验证、确认和停止条件，不能宣称已通过测试。
+        input_refs: [workflow:medical_device_v1:design_and_risk]
+        acceptance_policy: scientific_review.v1
+        depends_on: [design_inputs]
+      - key: ip_questions
+        task_type: ip.device_question
+        purpose: device-stage2-ip
+        assignee_role: A18
+        goal: 识别专利家族、权利要求和地域问题，不作自由实施结论。
+        input_refs: [workflow:medical_device_v1:design_and_risk]
+        acceptance_policy: ip_review.v1
+        depends_on: [design_inputs]
+  - stage_id: verification_plan
+    sequence: 3
+    title: 验证、确认与适用评价计划
+    purpose: 区分工程验证、人因确认、临床/性能评价和质量准备。
+    required_roles: [A11, A12, A13, A14, A17, A26]
+    criteria:
+      - {id: verification_matrix, kind: professional_judgment, description: 每项设计输入有验证方法和接受条件, requires_refs: true}
+      - {id: usability_plan, kind: professional_judgment, description: 人因任务与确认计划明确, requires_refs: true}
+      - {id: evaluation_path_question, kind: evidence, description: 适用临床评价或性能路径有市场来源和日期, requires_refs: true}
+    required_inputs: [stage2_output, design_requirements, regulatory_sources]
+    required_outputs: [verification_matrix, usability_plan, evaluation_plan, quality_ready_questions]
+    review_policy: engineering_human_factors_clinical_review.v1
+    failure_routes:
+      acceptance_undefined: revise
+      evaluation_path_unclear: gather_evidence
+    external_preconditions: []
+    theory_refs: [D-014, D-015, SEC:10.4]
+    plan_nodes:
+      - key: verification_matrix
+        task_type: device.verification_matrix
+        purpose: device-stage3-verification
+        assignee_role: A11
+        goal: 将设计输入映射到验证方法、样品和接受条件。
+        input_refs: [workflow:medical_device_v1:verification_plan]
+        acceptance_policy: engineering_review.v1
+      - key: usability_confirmation
+        task_type: device.usability_plan
+        purpose: device-stage3-usability
+        assignee_role: A12
+        goal: 定义使用者任务、环境和可用性确认方案。
+        input_refs: [workflow:medical_device_v1:verification_plan]
+        acceptance_policy: human_factors_review.v1
+      - key: evaluation_review
+        task_type: device.evaluation_review
+        purpose: device-stage3-evaluation
+        assignee_role: A13
+        goal: 审阅验证、适用评价与统计需求，保留不能确认的内容。
+        input_refs: [workflow:medical_device_v1:verification_plan]
+        acceptance_policy: independent_review.v1
+        depends_on: [verification_matrix, usability_confirmation]
+  - stage_id: external_verification
+    sequence: 4
+    title: 原型验证、外部评价与转移
+    purpose: 在原型、授权、机构和质量前置条件满足后进行验证和接收原始交付。
+    required_roles: [A20, A22, A25, A26]
+    criteria:
+      - {id: prototype_version_fixed, kind: evidence, description: 被测原型版本、配置和材料已固定, requires_refs: true}
+      - {id: external_scope_fixed, kind: decision, description: 验证、人因和评价范围与机构明确, requires_refs: true}
+      - {id: authorization_recorded, kind: decision, description: 预算、对象、样品和外部动作已授权, requires_refs: true}
+    required_inputs: [stage3_output, prototype_version, provider_scope, authorization]
+    required_outputs: [verification_records, evaluation_records, transfer_record, raw_delivery, acceptance_review]
+    review_policy: external_quality_and_independent_review.v1
+    failure_routes:
+      prototype_unavailable: wait
+      critical_test_failure: revise
+      unresolved_major_hazard: stop
+    external_preconditions:
+      - {id: prototype_and_materials, description: 物理原型、材料批次与配置已实际取得, provider_type: prototype_provider, evidence_type: prototype_receipt}
+      - {id: qualified_testing_site, description: 测试地点、能力与质量条件已核实, provider_type: testing_laboratory, evidence_type: provider_confirmation}
+      - {id: cost_and_authorization, description: 真实报价、合同、预算与执行授权完成, provider_type: provider_finance, evidence_type: quote_and_authorization}
+    theory_refs: [D-004, SEC:4.4, SEC:10.4]
+    plan_nodes:
+      - key: external_package
+        task_type: external.device_verification_scope
+        purpose: device-stage4-scope
+        assignee_role: A22
+        goal: 准备原型版本、验证、人因、交付和验收范围，不自行委托。
+        input_refs: [workflow:medical_device_v1:external_verification]
+        acceptance_policy: external_scope_review.v1
+      - key: cost_gate
+        task_type: budget.device_external_gate
+        purpose: device-stage4-budget
+        assignee_role: A20
+        goal: 核对原型、测试、复测和评价费用，区分报价、假设和未知。
+        input_refs: [workflow:medical_device_v1:external_verification]
+        acceptance_policy: financial_review.v1
+        depends_on: [external_package]
+      - key: external_audit
+        task_type: external.device_independent_review
+        purpose: device-stage4-audit
+        assignee_role: A26
+        goal: 独立检查原始记录、关键失败、风险和不可接收交付。
+        input_refs: [workflow:medical_device_v1:external_verification]
+        acceptance_policy: independent_review.v1
+        depends_on: [external_package, cost_gate]

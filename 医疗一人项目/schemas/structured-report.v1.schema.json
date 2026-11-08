@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:structured-report:v1",
+  "$defs": {
+    "ReportCalculation": {
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "enum": [
+            "descriptive_continuous",
+            "two_group_mean_difference",
+            "proportion_wilson"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "endpoint_column": {
+          "title": "Endpoint Column",
+          "type": "string"
+        },
+        "group_column": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Group Column"
+        },
+        "expected_groups": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expected Groups",
+          "type": "array"
+        },
+        "reported_value": {
+          "title": "Reported Value",
+          "type": "number"
+        },
+        "reported_n": {
+          "minimum": 1,
+          "title": "Reported N",
+          "type": "integer"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "method",
+        "endpoint_column",
+        "reported_value",
+        "reported_n"
+      ],
+      "title": "ReportCalculation",
+      "type": "object"
+    },
+    "ReportReview": {
+      "additionalProperties": false,
+      "properties": {
+        "review_id": {
+          "title": "Review Id",
+          "type": "string"
+        },
+        "reviewer_role": {
+          "enum": [
+            "A14",
+            "A25",
+            "A26"
+          ],
+          "title": "Reviewer Role",
+          "type": "string"
+        },
+        "decision": {
+          "const": "accepted",
+          "title": "Decision",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "reviewed_at": {
+          "format": "date-time",
+          "title": "Reviewed At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "review_id",
+        "reviewer_role",
+        "decision",
+        "summary",
+        "reviewed_at"
+      ],
+      "title": "ReportReview",
+      "type": "object"
+    },
+    "ReportSection": {
+      "additionalProperties": false,
+      "properties": {
+        "heading": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Heading",
+          "type": "string"
+        },
+        "paragraphs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Paragraphs",
+          "type": "array"
+        },
+        "bullets": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Bullets",
+          "type": "array"
+        }
+      },
+      "required": [
+        "heading"
+      ],
+      "title": "ReportSection",
+      "type": "object"
+    },
+    "ReportSource": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "project",
+            "dataset",
+            "dataset_version",
+            "statistical_plan",
+            "analysis_run",
+            "analysis_review",
+            "code"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "object_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Object Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        }
+      },
+      "required": [
+        "kind",
+        "object_id",
+        "label",
+        "version"
+      ],
+      "title": "ReportSource",
+      "type": "object"
+    },
+    "ReportTable": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "columns": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Columns",
+          "type": "array"
+        },
+        "rows": {
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "maxItems": 100,
+          "title": "Rows",
+          "type": "array"
+        }
+      },
+      "required": [
+        "title",
+        "columns"
+      ],
+      "title": "ReportTable",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "title": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "subtitle": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Subtitle",
+      "type": "string"
+    },
+    "data_origin": {
+      "enum": [
+        "synthetic",
+        "real",
+        "unknown"
+      ],
+      "title": "Data Origin",
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "mock",
+        "live"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "question": {
+      "title": "Question",
+      "type": "string"
+    },
+    "method": {
+      "title": "Method",
+      "type": "string"
+    },
+    "result_summary": {
+      "items": {
+        "maxItems": 2,
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "type": "array"
+      },
+      "title": "Result Summary",
+      "type": "array"
+    },
+    "chart": {
+      "additionalProperties": true,
+      "title": "Chart",
+      "type": "object"
+    },
+    "sections": {
+      "items": {
+        "$ref": "#/$defs/ReportSection"
+      },
+      "minItems": 1,
+      "title": "Sections",
+      "type": "array"
+    },
+    "tables": {
+      "items": {
+        "$ref": "#/$defs/ReportTable"
+      },
+      "minItems": 1,
+      "title": "Tables",
+      "type": "array"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/ReportSource"
+      },
+      "minItems": 1,
+      "title": "Sources",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Limitations",
+      "type": "array"
+    },
+    "review": {
+      "$ref": "#/$defs/ReportReview"
+    },
+    "calculation": {
+      "$ref": "#/$defs/ReportCalculation"
+    }
+  },
+  "required": [
+    "title",
+    "subtitle",
+    "data_origin",
+    "mode",
+    "created_at",
+    "question",
+    "method",
+    "result_summary",
+    "chart",
+    "sections",
+    "tables",
+    "sources",
+    "limitations",
+    "review",
+    "calculation"
+  ],
+  "title": "StructuredReport",
+  "type": "object",
+  "description": "Version-bound report content rendered into Office and PDF files."
+}

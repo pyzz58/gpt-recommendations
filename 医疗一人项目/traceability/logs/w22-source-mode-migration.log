@@ -1,0 +1,36 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 12ee06c30409, W02 projects sessions artifacts events
+INFO  [alembic.runtime.migration] Running upgrade 12ee06c30409 -> 7994d0dd6e2c, W03 RLS tool audit
+INFO  [alembic.runtime.migration] Running upgrade 7994d0dd6e2c -> c7296a4b69d8, W04 tasks jobs budgets
+INFO  [alembic.runtime.migration] Running upgrade c7296a4b69d8 -> 42dc5908196f, W05 agents runs
+INFO  [alembic.runtime.migration] Running upgrade 42dc5908196f -> 82cf6c84cb6d, W06 skill runs
+INFO  [alembic.runtime.migration] Running upgrade 82cf6c84cb6d -> 19cf9361adda, W07 knowledge uploads parsing
+INFO  [alembic.runtime.migration] Running upgrade 19cf9361adda -> bc959837d3ea, W08 knowledge evidence retrieval
+INFO  [alembic.runtime.migration] Running upgrade bc959837d3ea -> a823720b9684, W09 opportunities decisions
+INFO  [alembic.runtime.migration] Running upgrade a823720b9684 -> 9ff9aac51d3e, W11 plans dispatch reviews
+INFO  [alembic.runtime.migration] Running upgrade 9ff9aac51d3e -> 2fa7e200f2d9, W12 domain workflows assessments
+INFO  [alembic.runtime.migration] Running upgrade 2fa7e200f2d9 -> bee2b2f5fefa, W13 datasets statistics reviews
+INFO  [alembic.runtime.migration] Running upgrade bee2b2f5fefa -> 6a2d9c4e8b71, W14 artifact exports and validation
+INFO  [alembic.runtime.migration] Running upgrade 6a2d9c4e8b71 -> d4b8e7c9a321, W15 mock mail threads drafts authorized sending
+INFO  [alembic.runtime.migration] Running upgrade d4b8e7c9a321 -> b8c1e5f7a942, W16 experts engagements quotes contracts and external records
+INFO  [alembic.runtime.migration] Running upgrade b8c1e5f7a942 -> e9f6a3c2d140, W17 independent audit reviews and evaluation runs
+INFO  [alembic.runtime.migration] Running upgrade e9f6a3c2d140 -> a7c4e2f9b610, W18 knowledge recovery, index rebuild and encrypted backups
+INFO  [alembic.runtime.migration] Running upgrade a7c4e2f9b610 -> b2e7d4a9c310, Separate task lifecycle from input validity
+INFO  [alembic.runtime.migration] Running upgrade b2e7d4a9c310 -> c8f1a6d3e720, Link audit reviews to affected tasks
+INFO  [alembic.runtime.migration] Running upgrade c8f1a6d3e720 -> d9a7e3f1b420, W19 immutable policy bundles, impacts, and migration ledger
+INFO  [alembic.runtime.migration] Running upgrade d9a7e3f1b420 -> e3b8c4d5f601, W20 reliability correlation and regression ledger
+INFO  [alembic.runtime.migration] Running upgrade e3b8c4d5f601 -> f4a2c7d9e601, Versioned scientific feedback and bounded follow-up plans.
+INFO  [alembic.runtime.migration] Running upgrade f4a2c7d9e601 -> a1c9e7f2d304, W22 live adapter state
+INFO  [alembic.runtime.migration] Running upgrade a1c9e7f2d304 -> b7d1e4a9c260, W22 external source snapshots
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running downgrade b7d1e4a9c260 -> a1c9e7f2d304, W22 external source snapshots
+INFO  [alembic.runtime.migration] Running downgrade a1c9e7f2d304 -> f4a2c7d9e601, W22 live adapter state
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade f4a2c7d9e601 -> a1c9e7f2d304, W22 live adapter state
+INFO  [alembic.runtime.migration] Running upgrade a1c9e7f2d304 -> b7d1e4a9c260, W22 external source snapshots
+b7d1e4a9c260
+85
+external_source_snapshots
