@@ -1,7 +1,7 @@
 # CRA-W12 implementation record
 
 Status: verified.
-Date: 2026-11-07.
+Date: 2026-11-08.
 
 ## Delivered behavior
 
@@ -19,6 +19,13 @@ Date: 2026-11-07.
 - The browser journey covers previous XLSX track import, selection of two
   issues, carryover review, PD and correction completion, EDC import, safety
   analysis, report snapshot, track export and a second monitoring visit.
+- The subject review workbench keeps patient context, EDC data, original
+  laboratory files, source-to-EDC comparison and protocol/IB-based safety
+  review in one visible five-step rail.
+- Existing confirmed EDC snapshots are listed and opened by default, so a
+  seeded synthetic export does not require a special URL parameter.
+- Clear-image Docling OCR is enabled for the bundled synthetic PNG while the
+  analysis model remains disabled; manual review and `unknown` remain visible.
 - A tablet-sized browser context uploads a synthetic text-PDF laboratory
   report, views/confirms candidates and leaves the same record visible after
   desktop refresh.
@@ -43,24 +50,23 @@ over existing records and `MonitoringVisit` already owns stage/revision/status.
 
 - Temporary PostgreSQL 18.6.
 - `tests/integration/test_visit_continuity.py`: 1 passed.
-- Combined governance, rules, subjects, issues, carryover, EDC, laboratory,
-  recognition, safety, site-file, report, platform API and continuity suites:
-  87 passed.
+- `tests/acceptance/test_local_experience.py` and
+  `tests/acceptance/test_v1a.py`: 16 passed.
 - Playwright Chromium full journey: 1 passed. It uses real FastAPI,
   PostgreSQL, private local storage and the background worker, not page mocks.
-- Python unittest discovery: 51 passed.
-- Frontend: 17 passed; TypeScript and production build passed.
+- Frontend: 19 passed; TypeScript and production build passed.
 - Synthetic only; no real clinical material, external send or EDC write-back.
 
 ## Authoritative execution
 
 - Tested source commit:
-  `7c369da552db7f11d8b794bd9edc19174f8aa6e9`.
+  `0107bff1782649033b1d8125a25c04ec4798241f`.
 - GitHub Actions run:
-  https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562
+  https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396
 - `cra-w12` job: real PostgreSQL continuity test, Playwright full two-visit
-  journey, browser PDF upload/worker confirmation, OpenAPI drift check,
-  17 frontend tests, TypeScript and production build.
+  journey, automatic display of a confirmed EDC snapshot, browser PDF
+  upload/worker confirmation, OpenAPI drift check, 19 frontend tests,
+  TypeScript and production build.
 - The same successful run passed all W01-W11 jobs. Their source digests and
   completion evidence were rebound to this tested commit; previous evidence
   remains in `completion_history`.
@@ -74,8 +80,9 @@ over existing records and `MonitoringVisit` already owns stage/revision/status.
 - Tablet behavior is Chromium viewport/user-agent emulation. Physical iPad,
   camera, touch ergonomics and weak-network/offline behavior still require
   W15 authorized device testing.
-- The browser upload uses a synthetic text PDF. Clear PNG OCR and complex photo
-  formats remain limited by the validated W08/W14 provider scope.
+- The browser upload uses a synthetic text PDF. Clear PNG OCR is exercised in
+  the local synthetic experience, but arbitrary photographs, handwriting and
+  hospital layouts remain outside the validated scope.
 - Browser E2E proves orchestration and persistence, not clinical report quality
   or total workflow time savings.
 - There is no external message delivery, signature service, EDC write-back or

@@ -90,8 +90,8 @@ unit test passed; the manifest records the specific case used for each claim.
   separation, question topics and grounding. The model output remains a
   limited explanation candidate and cannot close an issue or make a medical
   determination.
-- Previous source-bound task execution is recorded in
-  [run 42354648562](https://github.com/pyzz58/gpt-recommendations/actions/runs/42354648562).
+- Current source-bound task execution is recorded in
+  [run 42444079396](https://github.com/pyzz58/gpt-recommendations/actions/runs/42444079396).
   W13 adds its own source-bound acceptance run before this work package can be
   marked verified.
 

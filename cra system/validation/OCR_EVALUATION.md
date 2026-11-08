@@ -79,8 +79,8 @@ Artifact execution was:
 - provider maximum RSS observations were approximately 4.5 GiB for the
   two-page scan and 3.7 GiB for JPEG on the local run.
 
-CI logs remain authoritative for the fresh Linux environment and will be
-recorded in W14 completion evidence.
+CI logs remain authoritative for the fresh Linux environment and are recorded
+in the W14 completion evidence.
 
 ## Regression boundaries
 
