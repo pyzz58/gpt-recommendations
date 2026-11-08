@@ -88,7 +88,15 @@ export function LabComparison({ studyId, siteId }: Props) {
     ]);
     setReports(next);
     setSnapshots(snapshotNext);
-    setReportId((current) => current || next[0]?.id || "");
+    setReportId(
+      (current) =>
+        current ||
+        next.find((item) =>
+          ["recognized", "partial"].includes(item.state)
+        )?.id ||
+        next[0]?.id ||
+        ""
+    );
     setSnapshotId(
       (current) => current || snapshotNext[0]?.id || ""
     );

@@ -536,7 +536,7 @@
         "M01",
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "在Codespaces启动React界面和FastAPI；私有端口，登录/选择项目/健康检查可用，生成依赖锁与软件清单。",
       "requirement_ids": [
         "CRA-R035",
@@ -867,6 +867,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "d8ca3daca10af1b8c2e7051474a57ea47c553f56cf115a5ea5bb17ebc4f02cab"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W02",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "e0ad1734f16992040d4955108b6c523035ef46d3d29ee93855faca4f7a57cf64"
+          }
         }
       ],
       "track": "v1a",
@@ -1049,7 +1061,7 @@
         "M02",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "DOCX/PDF/文字解析保留章节、表格、脚注、格式和处理覆盖；异步作业可重试，缺件可登记。",
       "requirement_ids": [
         "CRA-R003",
@@ -1369,6 +1381,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "dc7d3ba9396fcfc2a71433bf17c8c25ccf9348f4935ef18a185e49cc345b097f"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W03",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "c385b6349d54b7c3e8b68201f8fd35ee52329b05115a5d0cd273bb32ae0a79f9"
+          }
         }
       ],
       "track": "v1a",
@@ -1547,7 +1571,7 @@
         "M03",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "从模拟方案自动形成有出处的候选规则；用户确认增删；例外、且或、版本、冲突和修改轨迹可查看。",
       "requirement_ids": [
         "CRA-R002",
@@ -1875,6 +1899,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "5ae1d7a39098373ad32ccb285c70aa684ca74600ed0953c1625deab230036ce4"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W04",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "f4c412bbb056c6c0a6dbf4a4a1fd6e01ac827547e1cea7816ca35b2575b4a0ac"
+          }
         }
       ],
       "track": "v1a",
@@ -2047,7 +2083,7 @@
       "module_ids": [
         "M04"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "EDC/源信息或人工事实导入后可复用；按适用规则计算访视要求；不同资料类别断点分别恢复。",
       "requirement_ids": [
         "CRA-R010",
@@ -2380,6 +2416,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "c70c76ac62606648614fcbe0c0399e111c65f5efb4543d07db429c49b8c1a8ef"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W05",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "753ec8a8c7573ea3f72084c7eaea5400c0d9abe63a7f8af5a5103f8f4bb61b9d"
+          }
         }
       ],
       "track": "v1a",
@@ -2519,7 +2567,7 @@
         "M05",
         "M06"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "上次报告/track/文字整理为可展开遗留，本次开始提醒；CRA点击确认即可完成所选整改，保留历史和其他待办；Query期限有依据。",
       "requirement_ids": [
         "CRA-R001",
@@ -2846,6 +2894,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "275a0db8e32e83b45beaf45d9140b00c5128f00cbb605a9fa9a7441a827c9eee"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W06",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "205c5bb15b03d5212bcbc5980bf60775a7ef10b8fd3db3092104fb80b26b91c7"
+          }
         }
       ],
       "track": "v1a",
@@ -3001,7 +3061,7 @@
       "module_ids": [
         "M07"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "预览、列映射、实例和导出范围确认后导入；复导不复制；导出缺项不直接判漏录。",
       "requirement_ids": [
         "CRA-R013",
@@ -3303,6 +3363,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "04095293ea73563e9b81d720bb06280c90578323137466c9dceb0e517f752343"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W07",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "9b6ba789720e8ee95e9288de3c87ad2ffa4a9956129771a7ff95afd751f20347"
+          }
         }
       ],
       "track": "v1a",
@@ -3423,7 +3495,7 @@
         "M08",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "支持格式的检验源文件自动提取/定位后，与EDC Excel先匹配再核对；集中复核低可信、歧义和异常，少量失败才补录或跳过。",
       "requirement_ids": [
         "CRA-R013",
@@ -3714,6 +3786,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "519934d52adfc7ab36e19ca1f625dbbef4df95bb9ca4685697c129c11246a4bc"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W08",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "0c8dcc3325c18b4bc43f508e0a5754ab04018bc3a9b8d4942c8fbcb6f770a6d8"
+          }
         }
       ],
       "track": "v1a",
@@ -3893,7 +3977,7 @@
         "M09",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "基于事实和规则形成候选结论、缺口、针对性问题及证据；医学维度分开，紧急提示不被报告流程延误。",
       "requirement_ids": [
         "CRA-R007",
@@ -4302,6 +4386,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "e33941921ce7ec3d9a1bea58057e58db323a5935f81605be07614181bd64f828"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W09",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "84ec012f508a55d9a31316456adfef6c4ab6f869d221a0e18e0c46a3d366e191"
+          }
         }
       ],
       "completion_evidence": {
@@ -4323,7 +4419,7 @@
         "M05",
         "M10"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "原ISF/TMF目录可直接作为对照，附简要缺件与进展；结构化逐步建立，阶段和简洁交接复用原记录。",
       "requirement_ids": [
         "CRA-R001",
@@ -4642,6 +4738,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "1f6086a95cf353ecdf6ff943be1dbde6e84310649be4a8b5abce911508929bfd"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W10",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "1f6086a95cf353ecdf6ff943be1dbde6e84310649be4a8b5abce911508929bfd"
+          }
         }
       ],
       "completion_evidence": {
@@ -4663,7 +4771,7 @@
       "module_ids": [
         "M11"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "模板映射、旧问题与新发现分栏、选取式访视信、报告快照和track一致；草稿和实际提交分开。",
       "requirement_ids": [
         "CRA-R009",
@@ -4935,6 +5043,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "3cf45e6c2ebda0a519bae3922245455dac48633615bb13578ffd59de4a39645b"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W11",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "3cf45e6c2ebda0a519bae3922245455dac48633615bb13578ffd59de4a39645b"
+          }
         }
       ],
       "evidence": [
@@ -4965,7 +5085,7 @@
       "module_ids": [
         "M05"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "模拟前次报告→访前信→到中心复核→新受试者核查→报告→下一次接续全部完成；用户只需临床操作。",
       "requirement_ids": [
         "CRA-R001",
@@ -5225,6 +5345,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "6b60120ca545281d4a5f8b87f110d822bf10a202054700d735ab5311df87bfcf"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W12",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "0937423a014ac2a37fb18d5133eaf71f426e18facd26aa26117696800bb66c78"
+          }
         }
       ],
       "completion_evidence": {
@@ -5251,7 +5383,7 @@
       "module_ids": [
         "M14"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "逐能力给出40场景、独立样本/实际provider证据、关键错误、自动覆盖及人工负担和总耗时；未验证核心自动能力必须记录未达标，不能以人工版替代。",
       "requirement_ids": [
         "CRA-R035",
@@ -5463,6 +5595,18 @@
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
             "subject_digest": "b5d1856cdde94f4a04a0d38719383ce1eee71fbab766209b2990d8d0a4aa2210"
           }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W13",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
+            "subject_digest": "ed3f2f2f9e014c08d3f995621ad190d0e254a29d741f974f7536e0b79a7a876c"
+          }
         }
       ]
     },
@@ -5476,7 +5620,7 @@
         "M08",
         "M12"
       ],
-      "status": "verified",
+      "status": "in_progress",
       "acceptance": "V1B在W08已有自动读取基础上扩展难版式/图像，沿用同一字段、匹配和比较；按关键错误与总负担实测决定支持范围。",
       "requirement_ids": [
         "CRA-R013",
@@ -5640,6 +5784,18 @@
             "profile_id": "CRA-W14",
             "run_id": 42359819771,
             "tested_commit": "5002880736888e69035d0d62bf62fbb6415b113d",
+            "subject_digest": "f2517c34d433fff2f306a7ddd9000dc4b8771e247782905177f24dce964b2dab"
+          }
+        },
+        {
+          "recorded_status": "in_progress",
+          "recorded_at": "2026-11-08",
+          "reason": "Veeva-style local synthetic review workbench, OCR/safety demo seed, and W12 stage navigation stabilization changed shared web/tools sources; rerun the task-specific CI job before restoring verified.",
+          "previous_completion_evidence": {
+            "kind": "github_actions",
+            "profile_id": "CRA-W14",
+            "run_id": 42438384456,
+            "tested_commit": "cae99eda0f2b771f5092c698d69ee304aa41ae29",
             "subject_digest": "f2517c34d433fff2f306a7ddd9000dc4b8771e247782905177f24dce964b2dab"
           }
         }

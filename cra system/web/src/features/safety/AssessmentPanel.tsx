@@ -118,6 +118,9 @@ export function AssessmentPanel({ studyId, siteId }: Props) {
         selectedSubjectId
       );
       setAssessments(next);
+      if (!assessment && next[0]) {
+        applyAssessment(await getSafetyAssessment(next[0].id));
+      }
       if (assessment && !next.some((item) => item.id === assessment.id)) {
         setAssessment(null);
       }

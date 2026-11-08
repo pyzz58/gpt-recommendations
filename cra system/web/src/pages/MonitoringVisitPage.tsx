@@ -60,6 +60,7 @@ export function MonitoringVisitPage({ studyId, siteId }: Props) {
         return;
       }
       window.localStorage.setItem(visitKey(studyId, siteId), visit.id);
+      window.dispatchEvent(new Event("cra-monitoring-visit-updated"));
       setJourney(await getMonitoringJourney(visit.id));
     } catch (reason) {
       setError(errorMessage(reason));
@@ -90,6 +91,7 @@ export function MonitoringVisitPage({ studyId, siteId }: Props) {
         visitKey(studyId, siteId),
         workbench.visit.id
       );
+      window.dispatchEvent(new Event("cra-monitoring-visit-updated"));
       setJourney(await getMonitoringJourney(workbench.visit.id));
       setCreating(false);
       await load();
@@ -103,6 +105,7 @@ export function MonitoringVisitPage({ studyId, siteId }: Props) {
 
   async function openVisit(visitId: string) {
     window.localStorage.setItem(visitKey(studyId, siteId), visitId);
+    window.dispatchEvent(new Event("cra-monitoring-visit-updated"));
     setBusy(true);
     setError(null);
     try {
@@ -264,6 +267,8 @@ export function MonitoringVisitPage({ studyId, siteId }: Props) {
             type="button"
             className={stage.key === activeStage ? "active" : ""}
             onClick={() => void goStage(stage.key)}
+            disabled={busy}
+            aria-current={stage.key === activeStage ? "step" : undefined}
             data-testid={`stage-${stage.key}`}
           >
             <strong>{stage.label}</strong>

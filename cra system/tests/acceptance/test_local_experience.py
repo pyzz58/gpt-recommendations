@@ -15,6 +15,7 @@ def test_local_services_bind_loopback_and_keep_w15_blocked():
     assert local_experience.WEB_URL == "http://127.0.0.1:15173"
     assert local_experience.API_URL == "http://127.0.0.1:18000"
     assert local_experience.POSTGRES_PORT == 55432
+    assert local_experience._database_env()["CRA_OCR_PROVIDER"] == "docling"
     trial = (ROOT / "validation/AUTHORIZED_TRIAL.md").read_text(
         encoding="utf-8"
     )
@@ -43,7 +44,7 @@ def test_local_manifest_is_complete_and_pure_synthetic():
         assert (ROOT / item["path"]).is_file()
 
 
-def test_local_capabilities_do_not_claim_image_ocr_or_model():
+def test_local_capabilities_match_declared_synthetic_provider_scope():
     manifest = json.loads(
         (ROOT / "synthetic_experience/manifest.json").read_text(
             encoding="utf-8"
@@ -52,5 +53,9 @@ def test_local_capabilities_do_not_claim_image_ocr_or_model():
     assert "text_pdf_laboratory_reading" in manifest[
         "enabled_capabilities"
     ]
-    assert "image_ocr" in manifest["disabled_capabilities"]
+    assert "clear_image_laboratory_ocr" in manifest[
+        "enabled_capabilities"
+    ]
     assert "safety_analysis_model" in manifest["disabled_capabilities"]
+    assert manifest["seeded_expectations"]["active_safety_rules"] == 9
+    assert manifest["seeded_expectations"]["safety_question_count"] > 0

@@ -100,6 +100,15 @@ export function StageChecklist({ studyId, siteId }: Props) {
     void load();
   }, [load]);
 
+  useEffect(() => {
+    const refresh = () => {
+      void load();
+    };
+    window.addEventListener("cra-monitoring-visit-updated", refresh);
+    return () =>
+      window.removeEventListener("cra-monitoring-visit-updated", refresh);
+  }, [load]);
+
   async function createChecklist(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);

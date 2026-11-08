@@ -106,6 +106,17 @@ export function CarryoverReview({ studyId, siteId }: Props) {
       .finally(() => setBusy(false));
   }, [loadStoredVisit]);
 
+  useEffect(() => {
+    const refresh = () => {
+      void loadStoredVisit().catch((reason) =>
+        setError(errorMessage(reason))
+      );
+    };
+    window.addEventListener("cra-monitoring-visit-updated", refresh);
+    return () =>
+      window.removeEventListener("cra-monitoring-visit-updated", refresh);
+  }, [loadStoredVisit]);
+
   function remember(next: WorkbenchView) {
     setWorkbench(next);
     window.localStorage.setItem(

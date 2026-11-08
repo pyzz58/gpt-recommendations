@@ -154,7 +154,7 @@ def _database_env() -> dict[str, str]:
             "CRA_MODEL_PROVIDER": "disabled",
             "CRA_ANALYSIS_PROVIDER": "disabled",
             "CRA_ANALYSIS_DATA_CLASSIFICATION": "pure_synthetic",
-            "CRA_OCR_PROVIDER": "disabled",
+            "CRA_OCR_PROVIDER": "docling",
             "CRA_API_PROXY_TARGET": API_URL,
         }
     )

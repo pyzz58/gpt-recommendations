@@ -12,11 +12,13 @@ import {
   ApiError,
   type EDCMappingProfileView,
   type EDCPreviewView,
+  type EDCSnapshotSummaryView,
   type EDCSnapshotView,
   confirmEdcImport,
   getEdcMappings,
   getEdcPreview,
   getEdcSnapshot,
+  getEdcSnapshots,
   previewEdcImport
 } from "../../api/client";
 
@@ -140,6 +142,7 @@ function previewRows(preview: EDCPreviewView, sheetName: string): PreviewRow[] {
 
 export function ImportPreview({ studyId, siteId }: Props) {
   const [profiles, setProfiles] = useState<EDCMappingProfileView[]>([]);
+  const [snapshots, setSnapshots] = useState<EDCSnapshotSummaryView[]>([]);
   const [preview, setPreview] = useState<EDCPreviewView | null>(null);
   const [snapshot, setSnapshot] = useState<EDCSnapshotView | null>(null);
   const [mapping, setMapping] = useState<MappingDraft | null>(null);
@@ -156,9 +159,28 @@ export function ImportPreview({ studyId, siteId }: Props) {
     setProfiles(await getEdcMappings(studyId, siteId));
   }, [studyId, siteId]);
 
+  const loadSnapshots = useCallback(async () => {
+    const rows = await getEdcSnapshots(studyId, siteId);
+    setSnapshots(rows);
+    return rows;
+  }, [studyId, siteId]);
+
   useEffect(() => {
     loadProfiles().catch((reason) => setError(errorMessage(reason)));
-  }, [loadProfiles]);
+    const previewId = new URLSearchParams(window.location.search).get(
+      "edcPreview"
+    );
+    if (previewId) {
+      return;
+    }
+    loadSnapshots()
+      .then(async (rows) => {
+        if (rows[0]) {
+          setSnapshot(await getEdcSnapshot(rows[0].id));
+        }
+      })
+      .catch((reason) => setError(errorMessage(reason)));
+  }, [loadProfiles, loadSnapshots]);
 
   const adoptPreview = useCallback((next: EDCPreviewView) => {
     setPreview(next);
@@ -377,11 +399,28 @@ export function ImportPreview({ studyId, siteId }: Props) {
         snapshot_id: next.id
       });
       await loadProfiles();
+      await loadSnapshots();
       setMessage(
         next.replayed
           ? "相同文件、映射和导出范围已识别，未复制快照。"
           : `快照已保存：${next.row_count} 行、${next.record_count} 条标准检验记录。`
       );
+    } catch (reason) {
+      setError(errorMessage(reason));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function openSnapshot(snapshotId: string) {
+    if (!snapshotId) {
+      setSnapshot(null);
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    try {
+      setSnapshot(await getEdcSnapshot(snapshotId));
     } catch (reason) {
       setError(errorMessage(reason));
     } finally {
@@ -449,6 +488,31 @@ export function ImportPreview({ studyId, siteId }: Props) {
 
       {message && <div className="notice" role="status">{message}</div>}
       {error && <div className="notice notice-error" role="alert">{error}</div>}
+
+      {snapshots.length > 0 && (
+        <section className="source-reference edc-existing-snapshot">
+          <p className="eyebrow">已保存的合成 EDC 快照</p>
+          <label>
+            选择要核对的导出
+            <select
+              value={snapshot?.id ?? ""}
+              disabled={busy}
+              onChange={(event) => void openSnapshot(event.target.value)}
+            >
+              {snapshots.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {new Date(item.created_at).toLocaleString()} ·{" "}
+                  {item.record_count} 条记录 · {item.scope_status}
+                </option>
+              ))}
+            </select>
+          </label>
+          <p>
+            此步骤展示已确认的原始行和标准检验记录；再次上传可验证预览、
+            映射和快照重建流程。
+          </p>
+        </section>
+      )}
 
       <form className="edc-upload-form" onSubmit={(event) => void previewFile(event)}>
         <label>
@@ -728,7 +792,11 @@ export function ImportPreview({ studyId, siteId }: Props) {
       )}
 
       {snapshot && (
-        <section className="edc-snapshot" aria-labelledby="edc-snapshot-title">
+        <section
+          className="edc-snapshot"
+          aria-labelledby="edc-snapshot-title"
+          data-testid="edc-snapshot-records"
+        >
           <div className="applicable-heading">
             <div>
               <p className="eyebrow">不可变标准记录</p>

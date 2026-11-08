@@ -1,4 +1,9 @@
-import { expect, test, type APIRequestContext } from "@playwright/test";
+import {
+  expect,
+  test,
+  type APIRequestContext,
+  type Page
+} from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -10,6 +15,12 @@ type Scope = {
 
 const API_BASE = process.env.CRA_E2E_API_URL ?? "http://127.0.0.1:8000";
 const ROOT = resolve(process.cwd(), "..");
+
+async function openJourneyStage(page: Page, stage: string) {
+  const button = page.getByTestId(`stage-${stage}`);
+  await button.click();
+  await expect(button).toHaveClass(/active/);
+}
 
 function artifact(relative: string): Buffer {
   return readFileSync(resolve(ROOT, relative));
@@ -397,7 +408,7 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
   }
   await page.getByRole("button", { name: "保存访前选择" }).click();
   await expect(page.getByText("访前选择已保存")).toBeVisible();
-  await page.getByTestId("stage-carryover_review").click();
+  await openJourneyStage(page, "carryover_review");
 
   const urgentSummary = page.getByTestId("carryover-summary-E2E-URGENT");
   await urgentSummary.click();
@@ -420,12 +431,13 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
     page.locator(".carryover-summary").filter({ hasText: "E2E-URGENT" })
   ).toHaveCount(0);
 
-  await page.getByTestId("stage-subject_review").click();
+  await openJourneyStage(page, "subject_review");
   await expect(page.getByRole("heading", { name: "分层list、源文件与EDC在同一患者上下文接续" })).toBeVisible();
-  await page.getByRole("button", { name: "EDC检验快照" }).click();
+  await page.getByTestId("review-tab-edc").click();
   await expect(page.getByRole("heading", { name: "导出范围、映射与原始行" })).toBeVisible();
+  await expect(page.getByTestId("edc-snapshot-records")).toBeVisible();
 
-  await page.getByTestId("stage-handover").click();
+  await openJourneyStage(page, "handover");
   await expect(page.getByRole("heading", { name: "同一记录生成多份材料" })).toBeVisible();
   await page.getByRole("button", { name: "生成监查报告草稿" }).click();
   await expect(page.getByText("监查报告草稿已从同一问题")).toBeVisible();
@@ -444,7 +456,7 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
   await page.getByLabel("监查标题").fill("Synthetic second E2E visit");
   await page.getByRole("button", { name: "建立下一次监查" }).click();
   await expect(page.getByRole("heading", { name: "Synthetic second E2E visit" })).toBeVisible();
-  await page.getByTestId("stage-carryover_review").click();
+  await openJourneyStage(page, "carryover_review");
   await expect(
     page.locator(".carryover-summary").filter({ hasText: "CRA-SYN-101" })
   ).toBeVisible();
@@ -511,8 +523,8 @@ test("two monitoring cycles survive refresh, relogin and device change", async (
     }, { timeout: 60_000 })
     .toMatch(/^(succeeded|recognized)$/);
 
-  await tabletPage.getByTestId("stage-subject_review").click();
-  await tabletPage.getByRole("button", { name: "源检验读取" }).click();
+  await openJourneyStage(tabletPage, "subject_review");
+  await tabletPage.getByTestId("review-tab-lab").click();
   await expect(
     tabletPage.getByRole("heading", { name: "读取、来源定位与集中复核" })
   ).toBeVisible();

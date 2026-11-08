@@ -140,7 +140,9 @@ export function RecognitionReview({
     setReport((current) => {
       const resolved = current
         ? next.find((item) => item.id === current.id)
-        : next[0];
+        : next.find((item) =>
+            ["recognized", "partial"].includes(item.state)
+          ) ?? next[0];
       return resolved ?? null;
     });
     setSelectedId((current) => {
@@ -152,7 +154,11 @@ export function RecognitionReview({
       ) {
         return current;
       }
-      return next[0]?.observations[0]?.id ?? null;
+      const preferred =
+        next.find((item) =>
+          ["recognized", "partial"].includes(item.state)
+        ) ?? next[0];
+      return preferred?.observations[0]?.id ?? null;
     });
   }, [siteId, studyId]);
 

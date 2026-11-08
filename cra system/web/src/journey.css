@@ -86,6 +86,99 @@
   background: color-mix(in srgb, var(--panel) 78%, var(--accent) 10%);
 }
 
+.review-capability-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 1rem 0;
+}
+
+.review-capability-strip span {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--panel) 90%, white);
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.review-capability-strip strong {
+  color: var(--ink);
+}
+
+.review-workbench-shell {
+  display: grid;
+  grid-template-columns: minmax(210px, 250px) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.review-step-rail {
+  position: sticky;
+  top: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--panel) 91%, white);
+}
+
+.review-step-rail > div > p:last-child {
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.review-step-rail nav {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.review-step-rail button {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.2rem 0.55rem;
+  padding: 0.72rem;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.review-step-rail button:hover {
+  border-color: var(--line);
+}
+
+.review-step-rail button.active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--panel) 76%, var(--accent) 10%);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.review-step-rail button > span {
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.review-step-rail button small {
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.review-stage-canvas {
+  min-width: 0;
+}
+
+.review-stage-canvas > section,
+.review-stage-canvas > div {
+  margin-top: 0;
+}
+
 .journey-limitations {
   margin-top: 1rem;
 }
@@ -94,10 +187,27 @@
   .journey-stage-grid {
     grid-template-columns: repeat(2, minmax(150px, 1fr));
   }
+
+  .review-workbench-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .review-step-rail {
+    position: static;
+  }
+
+  .review-step-rail nav {
+    grid-template-columns: repeat(5, minmax(150px, 1fr));
+    overflow-x: auto;
+  }
 }
 
 @media (max-width: 620px) {
   .journey-stage-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-step-rail nav {
     grid-template-columns: 1fr;
   }
 }

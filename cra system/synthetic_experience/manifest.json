@@ -26,9 +26,9 @@
       "expected": "自动读取 5 行，保留页码、行和字段坐标"
     },
     {
-      "purpose": "laboratory_image_ocr_disabled",
-      "path": "tests/fixtures/documents/artifacts/synthetic_lab_report.png",
-      "expected": "原文件保留，状态为 provider_unavailable；不得声称 OCR 已运行"
+      "purpose": "laboratory_clear_image_ocr",
+      "path": "tests/fixtures/labs/artifacts/synthetic_lab_report_eval.png",
+      "expected": "清晰合成图像由Docling独立进程读取，保留候选和图像坐标；不覆盖原图"
     },
     {
       "purpose": "edc_export",
@@ -62,16 +62,21 @@
     ],
     "edc_snapshot_count": 1,
     "text_pdf_report_count": 1,
-    "image_report_state": "provider_unavailable"
+    "image_ocr_report_count": 1,
+    "image_report_state": "recognized",
+    "image_report_provider": "docling",
+    "active_safety_rules": 9,
+    "safety_assessment_status": "needs_clarification",
+    "safety_question_count": 8
   },
   "enabled_capabilities": [
     "text_pdf_laboratory_reading",
+    "clear_image_laboratory_ocr",
     "anchored_rule_candidate_review",
     "edc_excel_snapshot",
     "docx_xlsx_report_generation"
   ],
   "disabled_capabilities": [
-    "image_ocr",
     "safety_analysis_model",
     "external_send",
     "electronic_signature",

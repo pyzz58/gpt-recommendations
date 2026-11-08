@@ -103,7 +103,9 @@ class LocalSeed:
                 "deidentified_label": "合成受试者 A",
             },
         )
-        return _expect(response)
+        subject = _expect(response)
+        self.subject_id = subject["id"]
+        return subject
 
     def import_subject_facts(self) -> None:
         rows = [
@@ -382,14 +384,14 @@ class LocalSeed:
             if report["state"] != "pending":
                 break
             time.sleep(0.5)
-        png = FIXTURES / "documents/artifacts/synthetic_lab_report.png"
+        png = FIXTURES / "labs/artifacts/synthetic_lab_report_eval.png"
         image_report = _expect(
             self.client.post(
                 f"/api/v1/studies/{self.study_id}/lab-reports",
-                headers=self._headers("local-synthetic-lab-image-disabled"),
+                headers=self._headers("local-synthetic-lab-image-ocr"),
                 data={
                     "site_id": self.site_id,
-                    "title": "合成图像报告（OCR未启用）",
+                    "title": "合成清晰图像报告（Docling OCR）",
                     "version_label": "v1",
                 },
                 files={
@@ -398,7 +400,7 @@ class LocalSeed:
             ),
             {202},
         )
-        deadline = time.monotonic() + 20
+        deadline = time.monotonic() + 180
         while time.monotonic() < deadline:
             image_report = _expect(
                 self.client.get(
@@ -529,6 +531,128 @@ class LocalSeed:
             media_type="application/vnd.openxmlformats-officedocument."
             "wordprocessingml.document",
         )
+
+    def seed_safety_rules(self) -> dict[str, Any]:
+        rules_file = FIXTURES / "safety/rules.txt"
+        upload = self.upload_document(
+            key="local-synthetic-safety-rules",
+            file=rules_file,
+            title="合成方案/IB安全规则片段",
+            document_type="protocol",
+            purpose="rule",
+            media_type="text/plain",
+        )
+        version = self.wait_parsed(upload["document_version_id"])
+        if version["parse_status"] not in {"completed", "partial"}:
+            raise RuntimeError("synthetic safety rules could not be parsed")
+        extracted = _expect(
+            self.client.post(
+                f"/api/v1/document-versions/"
+                f"{upload['document_version_id']}/rule-candidates",
+                headers=self._headers(),
+                json={
+                    "expected_revision": 0,
+                    "idempotency_key": "local-synthetic-safety-extract",
+                },
+            ),
+            {200, 202},
+        )
+        rules = _expect(
+            self.client.get(
+                f"/api/v1/studies/{self.study_id}/rules",
+                params={"site_id": self.site_id},
+            )
+        )
+        if extracted["candidate_count"]:
+            for rule in rules:
+                current = rule["current_version"]
+                if current is None or rule["rule_key"] not in {
+                    "R-AE-COLLECTION-01",
+                    "R-AE-GRADE-01",
+                    "R-AE-SERIOUSNESS-01",
+                    "R-AE-RELATEDNESS-01",
+                    "R-AE-EXPECTEDNESS-01",
+                    "R-AESI-01",
+                    "R-DLT-01",
+                    "R-PD-01",
+                    "R-SAE-TIMELINESS-01",
+                }:
+                    continue
+                response = self.client.post(
+                    f"/api/v1/rules/{rule['id']}/confirmation",
+                    headers=self._headers(),
+                    json={
+                        "expected_revision": rule["revision"],
+                        "idempotency_key": (
+                            f"local-synthetic-safety-confirm-"
+                            f"{rule['rule_key']}"
+                        ),
+                        "base_version_id": current["id"],
+                        "reason": "CRA confirms the synthetic safety rule subset",
+                        "operations": [
+                            {
+                                "op": "edit_fields",
+                                "summary": current["summary"],
+                            }
+                        ],
+                    },
+                )
+                if response.status_code not in {200, 409}:
+                    _expect(response)
+        activation = self.client.post(
+            "/api/v1/version-activations",
+            headers=self._headers(),
+            json={
+                "expected_revision": 0,
+                "idempotency_key": "local-synthetic-safety-activate",
+                "document_version_id": upload["document_version_id"],
+                "site_id": self.site_id,
+                "starts_on": "2026-01-01",
+                "reason": "Pure synthetic local safety rule activation",
+            },
+        )
+        if activation.status_code not in {200, 409}:
+            _expect(activation)
+        return {
+            "document_version_id": upload["document_version_id"],
+            "rule_count": len(rules),
+            "candidate_count": extracted["candidate_count"],
+        }
+
+    def seed_safety_assessment(self) -> dict[str, Any]:
+        timeline = _expect(
+            self.client.get(
+                f"/api/v1/subjects/{self.subject_id}/timeline"
+            )
+        )
+        event_fact = next(
+            item for item in timeline if item["fact_key"] == "lab_hemoglobin"
+        )
+        return _expect(
+            self.client.post(
+                "/api/v1/safety-assessments",
+                headers=self._headers(),
+                json={
+                    "expected_revision": 0,
+                    "idempotency_key": "local-synthetic-safety-assessment",
+                    "study_id": self.study_id,
+                    "site_id": self.site_id,
+                    "subject_id": self.subject_id,
+                    "event_type": "laboratory_logic",
+                    "event_date": "2026-01-02",
+                    "event_fact_id": event_fact["id"],
+                    "requested_dimensions": [
+                        "grade",
+                        "seriousness",
+                        "reporting_timeliness",
+                    ],
+                    "note": (
+                        "Pure synthetic local laboratory safety review. "
+                        "Not a medical conclusion."
+                    ),
+                },
+            )
+        )
         self.upload_document(
             key="local-synthetic-rule-matrix",
             file=FIXTURES / "documents/artifacts/synthetic_rule_matrix_v2.docx",
@@ -539,7 +663,13 @@ class LocalSeed:
             "wordprocessingml.document",
         )
 
-    def summary(self, edc: dict[str, Any], labs: dict[str, Any]) -> dict[str, Any]:
+    def summary(
+        self,
+        edc: dict[str, Any],
+        labs: dict[str, Any],
+        safety_rules: dict[str, Any],
+        safety: dict[str, Any],
+    ) -> dict[str, Any]:
         issues = _expect(
             self.client.get(
                 f"/api/v1/studies/{self.study_id}/issues",
@@ -562,7 +692,20 @@ class LocalSeed:
             "image_report_expectation": {
                 "id": labs["image"]["id"],
                 "state": labs["image"]["state"],
+                "provider": labs["image"]["provider_name"],
+                "observations": labs["image"]["observations_count"],
                 "warning": labs["image"]["warnings"],
+            },
+            "safety_rules": safety_rules,
+            "safety_assessment": {
+                "id": safety["id"],
+                "event_type": safety["event_type"],
+                "status": safety["status"],
+                "dimensions": [
+                    item["dimension"] for item in safety["dimensions"]
+                ],
+                "questions": len(safety["questions"]),
+                "provider_status": safety["provider_status"],
             },
         }
 
@@ -573,12 +716,20 @@ def main() -> int:
     seed.seed_reference_documents()
     seed.ensure_subject()
     seed.import_subject_facts()
+    safety_rules = seed.seed_safety_rules()
+    safety = seed.seed_safety_assessment()
     seed.seed_carryover()
     seed.create_urgent_issue()
     edc = seed.seed_edc()
     labs = seed.seed_lab_reports()
     seed.seed_templates()
-    print(json.dumps(seed.summary(edc, labs), ensure_ascii=False, indent=2))
+    print(
+        json.dumps(
+            seed.summary(edc, labs, safety_rules, safety),
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
     return 0
 
 
