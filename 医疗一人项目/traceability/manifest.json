@@ -1462,9 +1462,9 @@
     }
   ],
   "theory_version": "V0.10",
-  "roadmap_version": "V1.28",
+  "roadmap_version": "V1.29",
   "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "9153e3ecb613766a16390a8653131b71dd4d8fdd69f03e7a808043b897064db8",
+  "roadmap_sha256": "6103eee3d1e7b66e1a825115c99a594a59490f748457600c6ebd7450d0d39d1e",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1576,8 +1576,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-08T03:38:50.300793+00:00",
-    "note": "W22 source snapshot execution mode correction: actual participant adapters, explicit mock/live, mixed-mode fail closed; no highest-thought change",
+    "at": "2026-11-08T08:40:50.045190+00:00",
+    "note": "W22 PubMed source live single authorized query passed; model and email remain not_run",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -3009,7 +3009,7 @@
         "RQ-033",
         "RQ-034"
       ],
-      "sha256": "3a166ed570f54f5bb8c26dffb18d47fdf284931213c497592ba4e33f0e967a96"
+      "sha256": "305edd5a7ed2982b58faf76b4ddb51b3a09268f4dd3cf6120715f30300888f45"
     },
     {
       "path": "docs/audits/pr81-closure-and-retrospective.md",
@@ -3240,7 +3240,7 @@
         "RQ-015",
         "RQ-031"
       ],
-      "sha256": "02983ddb13948fcf94623755d88cacf1282b2729368c2a58859dc1caf4ef3725"
+      "sha256": "908831042661098cb3e71861759db4c7bc160bcbb099297faf93f582c9cead42"
     },
     {
       "path": "docs/w22-offline-acceptance.md",

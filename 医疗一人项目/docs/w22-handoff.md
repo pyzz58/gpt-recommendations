@@ -5,8 +5,8 @@ TR-19、TR-24；W22；AT-015、AT-031。
 
 日期：2026-11-08（Pacific/Auckland）。
 
-状态：IN_PROGRESS。模型、SMTP和PubMed适配器代码及离线测试已完成；真实模型、
-真实检索渠道和真实邮箱均未连接，三类live验证分别保持`not_run`。
+状态：IN_PROGRESS。模型、SMTP和PubMed适配器代码及离线测试已完成；PubMed
+来源检索已完成一次受控live验收，真实模型和真实邮箱仍为`not_run`。
 
 新增Alembic迁移`a1c9e7f2d304`只扩展`mail_accounts.state`以允许
 `send_only`。downgrade把既有`send_only`保守映射为`connected`后再恢复旧
@@ -77,6 +77,11 @@ TR-19、TR-24；W22；AT-015、AT-031。
   请求的adapter具有不同模式，API在任何检索和数据库写入前返回409
   `SOURCE_EXECUTION_MODE_CONFLICT`；若没有adapter支持请求政策，返回503而不是
   伪造空结果或快照。
+- 2026-11-08已按项目所有者单次授权执行一条合成/公开检索：HTTP 200、4条
+  题录元数据、`mode=live`、adapter=`pubmed.eutils.v1`、快照
+  `bc1a5e62-a302-46e9-bfa1-cfd8357e2e98`；POST与GET重读的mode、adapter、
+  记录及query/result hash一致。ESearch与EFetch共2次上游请求，无重试。详见
+  [PubMed live验收](w22-pubmed-live-acceptance.md)。
 
 ## 配置
 
@@ -128,8 +133,9 @@ TR-19、TR-24；W22；AT-015、AT-031。
    费用、schema结果、错误及是否改变科学判断；不能证明科学可靠性。
 2. 邮箱：只向用户控制白名单地址发送一封受控测试邮件，验证原始收件、线程/
    Message-ID、失败或unknown核对；SMTP send-only仍不证明收件能力。
-3. 真实检索渠道、专业机构、付款、合同和实验均不属于适配器离线通过。
-   检索真实验收需另记查询、返回元数据、来源策略和全文可用边界。
+3. 来源检索已完成一次受控live查询，但只覆盖单查询、公开元数据、持久化和
+   重读；后续查询或扩额需要新的明确授权，且不自动增加模型/邮箱结论。
+4. 专业机构、付款、合同和实验均不属于来源适配器live通过。
 
 ## 已知限制
 
@@ -138,6 +144,8 @@ TR-19、TR-24；W22；AT-015、AT-031。
   真实连接前需选择并核验具体provider；
 - SMTP没有严格exactly-once，也没有收件/对账能力；
 - 真实模型科学质量、数据驻留、隐私、限流和成本仍需独立记录；
+- 来源live仅覆盖一次非空查询；精确上游HTTP状态码未单独记录，零结果备用
+  查询未触发，猫肿瘤适用性、全文可用性和文献质量仍未验证；
 - 可访问的本地`medical_one`和`medical_one_test`在本次核查时均无来源快照行，
   未发现可确认的错误历史快照；其他环境与生产环境未核查，不推断其不存在；
 - W24仍为PREPARED，本工作不扩大现实外联、采购或实验授权。

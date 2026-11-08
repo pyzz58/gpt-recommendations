@@ -715,10 +715,6 @@
           "sha256": "7c2c7c74733b7f007b2969480a443801774c26bf3eeb0ac0de05aadf857a31c4"
         },
         {
-          "path": "docs/w22-handoff.md",
-          "sha256": "02983ddb13948fcf94623755d88cacf1282b2729368c2a58859dc1caf4ef3725"
-        },
-        {
           "path": "services/core/src/medical_one_person/api/sources.py",
           "sha256": "b4ffeae3cb877f9cb689a116a2a688765838c1a44f980ee0e77a73da7b01c043"
         },
@@ -770,7 +766,7 @@
         "traceability/logs/w22-source-mode-web.log"
       ],
       "artifact_hashes": {
-        "docs/w22-handoff.md": "02983ddb13948fcf94623755d88cacf1282b2729368c2a58859dc1caf4ef3725",
+        "docs/w22-handoff.md": "908831042661098cb3e71861759db4c7bc160bcbb099297faf93f582c9cead42",
         "docs/w22-offline-acceptance.md": "01fb2e169c60b77c54672076527f0705a0771de459e8e82561ff81c4495e9332",
         "traceability/logs/w22-source-mode-deployment.log": "b6bd68204ab415e8cf7a5ecbc5e50ea9ef781bbecfb87916dba6f0a964c17fd1",
         "traceability/logs/w22-source-mode-migration.log": "c57e6bba10ce11bdb50234ecebbe771cc3b4a6e63f207f88c8fdcd574c855c0c",
@@ -786,7 +782,7 @@
       "uncovered": [
         "No real model provider credentials, model ID, approved rates, spending cap or connectivity test.",
         "No real SMTP account, from address, test recipient, credential or send authorization.",
-        "No NCBI allowlisted-network approval, real query or live PubMed response; metadata does not prove fulltext access or study validity.",
+        "The separate ACC-W22-PUBMED-LIVE record covers one authorized live PubMed metadata query; the W22 aggregate remains IN_PROGRESS because model and email live acceptance did not run.",
         "No live inbox receive: SMTP adapter is send-only and cannot reconcile sent-folder state.",
         "No proof of scientific quality, provider data policy compliance, rate-limit behavior or SMTP exactly-once delivery.",
         "No real expert, institution, contract, payment or experiment.",
@@ -807,6 +803,190 @@
       ],
       "source_tree_git_sha256": "c510e47158aca4085cc5dbc346e55b7ec2f23624fc3eea7e0bb44d1f1ba1bec7",
       "source_tree_worktree_sha256": "c510e47158aca4085cc5dbc346e55b7ec2f23624fc3eea7e0bb44d1f1ba1bec7"
+    },
+    {
+      "id": "ACC-W22-PUBMED-LIVE",
+      "requirements": [
+        "RQ-011",
+        "RQ-031"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-07",
+        "TR-08",
+        "TR-09",
+        "TR-10",
+        "TR-11",
+        "TR-15",
+        "TR-19",
+        "TR-24"
+      ],
+      "work_packages": [
+        "W07",
+        "W08",
+        "W17",
+        "W22"
+      ],
+      "acceptance_refs": [
+        "AT-011",
+        "AT-031"
+      ],
+      "source_commit": "12b7d76eb07882141e6fbf81fbb880e69aa20f18",
+      "result": "passed",
+      "scope": "W22 PubMed source live sub-acceptance: one owner-authorized production E-utilities query used an external 0600 config, returned four public metadata records through ESearch/EFetch, persisted one live project snapshot, and matched on GET reread and PostgreSQL. No model, SMTP, fulltext, private data or scientific-quality validation.",
+      "commands": [
+        {
+          "cwd": ".",
+          "command": "MEDICAL_ONE_CONFIG_FILE=<external-0600-config> ./scripts/medical-one.sh start; curl project-level POST /api/v1/projects/{project_id}/sources/search; ./scripts/medical-one.sh stop",
+          "mode": "live_network+real_postgresql",
+          "started_at": "2026-11-08T08:35:06+00:00",
+          "finished_at": "2026-11-08T08:35:08.704546+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w22-pubmed-live-post-response.json",
+            "traceability/logs/w22-pubmed-live-http-status.log",
+            "traceability/logs/w22-pubmed-live-project.json"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "curl project-level GET /api/v1/projects/{project_id}/sources/snapshots/{snapshot_id}",
+          "mode": "live_snapshot_reread",
+          "started_at": "2026-11-08T08:35:24+00:00",
+          "finished_at": "2026-11-08T08:35:24+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w22-pubmed-live-get-reread.json"
+          ]
+        },
+        {
+          "cwd": "services/core",
+          "command": "psql external-source-snapshot row check; uv run --frozen python sanitized POST/GET/DB verifier",
+          "mode": "real_postgresql+verification",
+          "started_at": "2026-11-08T08:36:30+00:00",
+          "finished_at": "2026-11-08T08:36:30+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w22-pubmed-live-db-row.tsv",
+            "traceability/logs/w22-pubmed-live-verification.json"
+          ]
+        },
+        {
+          "cwd": ".",
+          "command": "python3 tools/test_traceability.py; python3 tools/check_traceability.py check",
+          "mode": "traceability_selftest",
+          "started_at": "2026-11-08T08:38:00+00:00",
+          "finished_at": "2026-11-08T08:40:00+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w22-pubmed-live-trace-tests.log",
+            "traceability/logs/w22-pubmed-live-trace-check.log"
+          ]
+        }
+      ],
+      "validation_levels": {
+        "mock": {
+          "status": "passed",
+          "evidence": [
+            "docs/w22-offline-acceptance.md",
+            "traceability/logs/w22-source-mode-targeted.log",
+            "traceability/logs/w22-source-mode-pytest.log"
+          ]
+        },
+        "live": {
+          "status": "passed",
+          "evidence": [
+            "docs/w22-pubmed-live-acceptance.md",
+            "traceability/logs/w22-pubmed-live-verification.json",
+            "traceability/logs/w22-pubmed-live-post-response.json",
+            "traceability/logs/w22-pubmed-live-get-reread.json"
+          ]
+        },
+        "human_expert": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "real_outsourcing": {
+          "status": "not_applicable",
+          "evidence": []
+        }
+      },
+      "code_paths": [
+        {
+          "path": "config/source_policies/catalog.yaml",
+          "sha256": "96dc00ab14783591bc72cf8ee4820409f172b881dfb2b3ae4ad6ebf9fe273d36"
+        },
+        {
+          "path": "schemas/source-policy.v1.schema.json",
+          "sha256": "66208460e9920e25e2d9cc747cacf1601c92937ee6e5c62b9524dc3682d0f96e"
+        },
+        {
+          "path": "services/core/src/medical_one_person/infrastructure/sources/adapters.py",
+          "sha256": "b21a1b14d671238a2fe4290fc0fc8454714de5186ef713e72874ce488ffbe598"
+        },
+        {
+          "path": "services/core/src/medical_one_person/infrastructure/sources/pubmed_http.py",
+          "sha256": "fae20e1cb6a14edb024b8162a2899f5bde65c7129bb9667c8cc02d5783cf84b6"
+        },
+        {
+          "path": "services/core/src/medical_one_person/infrastructure/sources/factory.py",
+          "sha256": "a406684dd8dafad9b1a6e02ffd9757adf347be4eb041f4e421b21e3e176b657c"
+        },
+        {
+          "path": "services/core/src/medical_one_person/api/sources.py",
+          "sha256": "b4ffeae3cb877f9cb689a116a2a688765838c1a44f980ee0e77a73da7b01c043"
+        },
+        {
+          "path": "services/core/tests/unit/test_w22_pubmed_http.py",
+          "sha256": "dbe740e3c5f668b122bc063e46ff76b6f7ce4bfcda3291aeb3940981dd82a411"
+        },
+        {
+          "path": "services/core/tests/integration/test_w22_source_api.py",
+          "sha256": "4c05beb208f07d3620f99942148f00f5399eb27d69157036b4f512e921e731a8"
+        }
+      ],
+      "artifacts": [
+        "docs/w22-pubmed-live-acceptance.md",
+        "traceability/logs/w22-pubmed-live-db-row.tsv",
+        "traceability/logs/w22-pubmed-live-get-reread.json",
+        "traceability/logs/w22-pubmed-live-http-status.log",
+        "traceability/logs/w22-pubmed-live-post-response.json",
+        "traceability/logs/w22-pubmed-live-project.json",
+        "traceability/logs/w22-pubmed-live-trace-check.log",
+        "traceability/logs/w22-pubmed-live-trace-tests.log",
+        "traceability/logs/w22-pubmed-live-verification.json"
+      ],
+      "artifact_hashes": {
+        "docs/w22-pubmed-live-acceptance.md": "9e57245a2eae959655d471ad96490e8e5f15abf002fd747595cc292a42b1c08b",
+        "traceability/logs/w22-pubmed-live-db-row.tsv": "8874ae70c84478edec06609b0dde5b4d113da98c534a57bedb58928ff3e742d6",
+        "traceability/logs/w22-pubmed-live-get-reread.json": "bf9c97f4c3544d4d047374896980d7cec64854b4587195dfd589b946e87f16a6",
+        "traceability/logs/w22-pubmed-live-http-status.log": "4744e8044e2865b7c96168edf4743cc35663e92e96e78d28a66e1c014a8b4c07",
+        "traceability/logs/w22-pubmed-live-post-response.json": "ed420cfa947f23a54fca98dce5364fe3414b9b1a478af4f2f2bdfd6b47a809f7",
+        "traceability/logs/w22-pubmed-live-project.json": "8385857451ed627227cbb6e7487ccec5b51b2959c288aeab29db0399a2b01cca",
+        "traceability/logs/w22-pubmed-live-trace-check.log": "f95fbcc7d764bda6d81155b9833d555f840942357658dc5cf0fbcdbcc6c4bcf9",
+        "traceability/logs/w22-pubmed-live-trace-tests.log": "d6ebc1e6ddc05af0f5a4ceb2f36e99bf2d4065ab602256e2e8660da92c757a88",
+        "traceability/logs/w22-pubmed-live-verification.json": "ab7f34506aff2c5a457903de103eb21e0d691d0c08453f400794877938581c70"
+      },
+      "uncovered": [
+        "Exact upstream status codes for ESearch and EFetch were not separately persisted; both requests were accepted through the adapter 2xx path because four parsed records were returned.",
+        "Request start time is derived from observed command duration; snapshot completion time is exact and persisted in PostgreSQL.",
+        "Only one non-empty query ran; the authorized zero-result fallback was not needed.",
+        "No fulltext download, scientific quality assessment, feline oncology applicability or treatment conclusion.",
+        "No real model, SMTP, human expert or real outsourcing validation.",
+        "The contact address from the authorization was used without alteration; the owner should confirm whether its spelling is the intended address."
+      ],
+      "source_scope": [
+        "config/source_policies/catalog.yaml",
+        "schemas/source-policy.v1.schema.json",
+        "services/core/src/medical_one_person/infrastructure/sources/adapters.py",
+        "services/core/src/medical_one_person/infrastructure/sources/pubmed_http.py",
+        "services/core/src/medical_one_person/infrastructure/sources/factory.py",
+        "services/core/src/medical_one_person/api/sources.py",
+        "services/core/tests/unit/test_w22_pubmed_http.py",
+        "services/core/tests/integration/test_w22_source_api.py"
+      ],
+      "source_tree_git_sha256": "1c4e22f3b595f85eb97366c55050dc11dbb41a3d53b48904033c205ef8030936",
+      "source_tree_worktree_sha256": "1c4e22f3b595f85eb97366c55050dc11dbb41a3d53b48904033c205ef8030936"
     },
     {
       "id": "ACC-W24-READINESS-LEDGER",
@@ -986,7 +1166,7 @@
         "docs"
       ],
       "source_tree_git_sha256": "bdf7291c849ec310e8d32d6fb5343afd177107cba177a45f573088a33ff3dc5c",
-      "source_tree_worktree_sha256": "bdf7291c849ec310e8d32d6fb5343afd177107cba177a45f573088a33ff3dc5c"
+      "source_tree_worktree_sha256": "2b8726932da9a7a47a5a9b8d0e816b00f76290879c934e00bcef671f593d24f8"
     }
   ]
 }
