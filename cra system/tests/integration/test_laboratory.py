@@ -756,7 +756,11 @@ def test_comparison_is_idempotent_and_cross_site_is_denied(
     )
     assert second["id"] == first["id"]
     assert second["replayed"] is True
-    provider = SyntheticIdentityProvider(api.app.state.settings)
+    provider = SyntheticIdentityProvider(
+        api.app.state.settings.model_copy(
+            update={"synthetic_platform_admin": False}
+        )
+    )
     identity = provider.create_identity(actor_id="synthetic-cra-b")
     api.cookies.clear()
     api.cookies.set("cra_session", provider.issue_session(identity), path="/")
