@@ -158,6 +158,7 @@ class EvidenceTests(unittest.TestCase):
         completed_with_steps = {
             "jobs": [
                 {
+                    "name": "cra-w01",
                     "status": "completed",
                     "conclusion": "success",
                     "steps": [
@@ -172,6 +173,20 @@ class EvidenceTests(unittest.TestCase):
         }
         self.assertTrue(_job_steps_pending(completed_without_steps))
         self.assertFalse(_job_steps_pending(completed_with_steps))
+        required = {"cra-w01": {"test", "frontend"}}
+        self.assertTrue(
+            _job_steps_pending(completed_with_steps, required)
+        )
+        completed_with_steps["jobs"][0]["steps"].append(
+            {
+                "name": "frontend",
+                "status": "completed",
+                "conclusion": "success",
+            }
+        )
+        self.assertFalse(
+            _job_steps_pending(completed_with_steps, required)
+        )
 
     def test_bound_input_change_invalidates_evidence(self):
         (self.root / "fixtures").mkdir()

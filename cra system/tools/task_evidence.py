@@ -12,6 +12,7 @@ import re
 import subprocess
 import time
 from pathlib import Path
+from urllib.error import URLError
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from urllib.request import HTTPRedirectHandler, build_opener
@@ -191,12 +192,40 @@ def _normalise_job_log(value: str) -> str:
     return re.sub(r"\x1b\[[0-9;]*m", "", value)
 
 
-def _job_steps_pending(payload):
+def _job_steps_pending(payload, required_by_job=None):
     """GitHub can finish a run before its job step arrays are backfilled."""
-    return any(
-        job.get("status") == "completed" and not job.get("steps")
-        for job in payload.get("jobs", [])
-    )
+    jobs = payload.get("jobs", [])
+    if required_by_job is None:
+        return any(
+            job.get("status") == "completed" and not job.get("steps")
+            for job in jobs
+        )
+    jobs_by_name = {
+        job.get("name"): job
+        for job in jobs
+        if job.get("name")
+    }
+    for job_name, required_steps in required_by_job.items():
+        job = jobs_by_name.get(job_name)
+        if job is None or job.get("status") != "completed":
+            return True
+        if job.get("conclusion") != "success":
+            continue
+        steps_by_name = {
+            step.get("name"): step
+            for step in job.get("steps", [])
+            if step.get("name")
+        }
+        for step_name in required_steps:
+            step = steps_by_name.get(step_name)
+            if step is None:
+                return True
+            if (
+                step.get("status") != "completed"
+                or step.get("conclusion") != "success"
+            ):
+                return False
+    return False
 
 
 def remote_finding_errors(
@@ -365,6 +394,23 @@ def main():
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", args.repository):
         parser.error("repository must be owner/name")
+    root = Path(__file__).resolve().parents[1]
+    tasks = json.loads((root / "plan/tasks.json").read_text())["tasks"]
+    profiles = {
+        profile["task_id"]: profile
+        for profile in json.loads(
+            (root / "plan/implementation.json").read_text()
+        )["verification_profiles"]
+    }
+    required_by_run = {}
+    for task in tasks:
+        if task["status"] != "verified" or task["id"] == "CRA-W00":
+            continue
+        record = task["completion_evidence"]
+        profile = profiles[task["id"]]
+        required_by_run.setdefault(record["run_id"], {})[
+            profile["required_job"]
+        ] = set(profile["required_steps"])
     cache = {}
     def get_json(path):
         if path in cache:
@@ -375,11 +421,24 @@ def main():
             headers["Authorization"] = "Bearer " + token
         deadline = time.monotonic() + 600
         while True:
-            with urlopen(Request("https://api.github.com" + path, headers=headers), timeout=15) as response:
-                value = json.load(response)
-            if not path.startswith("/repos/") or "/actions/runs/" not in path or "/jobs?" not in path:
+            try:
+                with urlopen(Request("https://api.github.com" + path, headers=headers), timeout=30) as response:
+                    value = json.load(response)
+            except (TimeoutError, URLError) as exc:
+                if time.monotonic() >= deadline:
+                    raise
+                print(
+                    f"retrying GitHub actions evidence API after {type(exc).__name__}",
+                    flush=True,
+                )
+                time.sleep(10)
+                continue
+            run_match = re.search(r"/actions/runs/(\d+)/jobs", path)
+            if run_match is None:
                 break
-            if not _job_steps_pending(value) or time.monotonic() >= deadline:
+            run_id = int(run_match.group(1))
+            required = required_by_run.get(run_id)
+            if not _job_steps_pending(value, required) or time.monotonic() >= deadline:
                 break
             print("waiting for GitHub Actions to expose completed job steps", flush=True)
             time.sleep(20)
@@ -402,7 +461,7 @@ def main():
             return text_cache[path]
     try:
         errors, checked, findings_checked = verify(
-            Path(__file__).resolve().parents[1],
+            root,
             args.repository,
             get_json,
             get_text,
