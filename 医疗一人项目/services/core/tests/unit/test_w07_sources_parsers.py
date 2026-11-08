@@ -49,6 +49,9 @@ def test_source_router_labels_pubmed_records_and_rejects_general_web() -> None:
     records = router.search(request)
 
     assert len(records) == 1
+    outcome = router.search_with_metadata(request)
+    assert outcome.mode == "mock"
+    assert outcome.adapter_ids == ("pubmed.xml.v1",)
     assert records[0].pmid == "12345"
     assert records[0].preprint is True
     assert records[0].peer_reviewed is False

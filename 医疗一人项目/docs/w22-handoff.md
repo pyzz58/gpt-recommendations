@@ -3,10 +3,10 @@
 对应：RQ-015、RQ-031；TR-07、TR-09、TR-11、TR-13、TR-14、TR-16、
 TR-19、TR-24；W22；AT-015、AT-031。
 
-日期：2026-11-07（Pacific/Auckland）。
+日期：2026-11-08（Pacific/Auckland）。
 
-状态：IN_PROGRESS。模型与 SMTP 适配器代码和离线 transport 测试已完成；
-真实模型、真实检索渠道和真实邮箱均未连接，live 验证保持 `not_run`。
+状态：IN_PROGRESS。模型、SMTP和PubMed适配器代码及离线测试已完成；真实模型、
+真实检索渠道和真实邮箱均未连接，三类live验证分别保持`not_run`。
 
 新增Alembic迁移`a1c9e7f2d304`只扩展`mail_accounts.state`以允许
 `send_only`。downgrade把既有`send_only`保守映射为`connected`后再恢复旧
@@ -70,6 +70,13 @@ TR-19、TR-24；W22；AT-015、AT-031。
   `GET /sources/snapshots/{snapshot_id}` 返回同一快照ID、adapter和
   query/result hash。外部请求完成后若快照写入失败，接口失败且不声称已留档；
   该限制需在正式运行监控中处理。
+- 快照的`mode`来自本次实际参与检索的adapter执行模式，不由adapter是否存在
+  推断。本地缓存XML、fake adapter和注入fake transport的HTTP测试均为
+  `mock`；只有构造真实NCBI HTTP适配器的工厂路径标记为`live`。
+- 快照的`adapter_ids`只包含本次符合来源政策并实际调用的adapter。若命中同一
+  请求的adapter具有不同模式，API在任何检索和数据库写入前返回409
+  `SOURCE_EXECUTION_MODE_CONFLICT`；若没有adapter支持请求政策，返回503而不是
+  伪造空结果或快照。
 
 ## 配置
 
@@ -105,9 +112,11 @@ TR-19、TR-24；W22；AT-015、AT-031。
 - SMTP由假连接注入，覆盖MIME/附件、STARTTLS+登录、白名单、配置不全、
   5xx拒绝、网络丢失unknown和reconcile保持unknown；
 - PubMed由注入transport覆盖ESearch→EFetch、参数/日期、官方域名、结果上限、
-  预印本标签、非法ID和429，不访问NCBI；
-- 来源API由fake adapter覆盖项目会话、成功响应、未配置503、未知策略400、
-  限流429和项目隔离；
+  预印本标签、非法ID和429，不访问NCBI；测试transport显式标记为`mock`，
+  工厂构造的真实HTTP路径仅离线核查`live`标记，不执行请求；
+- 来源API由fake adapter和本地XML覆盖项目会话、成功响应、POST/GET/数据库的
+  mode与adapter一致性、未匹配adapter排除、未配置503、未知策略400、限流429、
+  混合模式409且零快照以及项目隔离；
 - MailService数据库回归验证unknown reconcile不新增attempt、不自动重发；
 - 现有科学反馈、W23 readiness/config和全部应用回归继续运行。
 
@@ -129,4 +138,6 @@ TR-19、TR-24；W22；AT-015、AT-031。
   真实连接前需选择并核验具体provider；
 - SMTP没有严格exactly-once，也没有收件/对账能力；
 - 真实模型科学质量、数据驻留、隐私、限流和成本仍需独立记录；
+- 可访问的本地`medical_one`和`medical_one_test`在本次核查时均无来源快照行，
+  未发现可确认的错误历史快照；其他环境与生产环境未核查，不推断其不存在；
 - W24仍为PREPARED，本工作不扩大现实外联、采购或实验授权。

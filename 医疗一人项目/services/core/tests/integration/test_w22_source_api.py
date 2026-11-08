@@ -13,7 +13,11 @@ from medical_one_person.config import Settings
 from medical_one_person.contracts import DependencyStatus
 from medical_one_person.domain.knowledge import SourceRecord, SourceSearchRequest
 from medical_one_person.infrastructure.db.models import ExternalSourceSnapshot
-from medical_one_person.infrastructure.sources import SourceRouter, load_source_policies
+from medical_one_person.infrastructure.sources import (
+    PubMedXmlAdapter,
+    SourceRouter,
+    load_source_policies,
+)
 from medical_one_person.infrastructure.sources.pubmed_http import SourceRetrievalRateLimited
 from medical_one_person.main import create_app
 
@@ -28,6 +32,7 @@ def test_source_search_operation_is_exported_in_openapi() -> None:
 
     assert operation["responses"]["200"]
     assert operation["responses"]["400"]
+    assert operation["responses"]["409"]
     assert operation["responses"]["429"]
     assert operation["responses"]["502"]
 
@@ -35,14 +40,15 @@ def test_source_search_operation_is_exported_in_openapi() -> None:
 class _FakeSourceAdapter:
     adapter_id = "fake-source.v1"
     policy_ids = frozenset({"biomedical_primary.v1"})
+    mode = "mock"
 
-    def __init__(self, mode: str = "ready") -> None:
-        self.mode = mode
+    def __init__(self, behavior: str = "ready") -> None:
+        self.behavior = behavior
         self.requests: list[SourceSearchRequest] = []
 
     def search(self, request: SourceSearchRequest) -> list[SourceRecord]:
         self.requests.append(request)
-        if self.mode == "rate_limited":
+        if self.behavior == "rate_limited":
             raise SourceRetrievalRateLimited("synthetic 429")
         return [
             SourceRecord(
@@ -64,11 +70,29 @@ class _FakeSourceAdapter:
         ]
 
 
-def _router(adapter: _FakeSourceAdapter | None) -> SourceRouter:
+class _UnmatchedSourceAdapter:
+    adapter_id = "unmatched-source.v1"
+    policy_ids = frozenset({"other_policy.v1"})
+    mode = "mock"
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def search(self, request: SourceSearchRequest) -> list[SourceRecord]:
+        self.calls += 1
+        return []
+
+
+class _LiveSourceAdapter(_FakeSourceAdapter):
+    adapter_id = "live-source.v1"
+    mode = "live"
+
+
+def _router(*adapters) -> SourceRouter:
     policies = load_source_policies(
         PROJECT_ROOT / "config/source_policies/catalog.yaml"
     )
-    return SourceRouter(policies, [adapter] if adapter else [])
+    return SourceRouter(policies, list(adapters))
 
 
 def _client(
@@ -119,7 +143,13 @@ def test_project_source_search_uses_injected_adapter_without_network(
     tmp_path: Path,
 ) -> None:
     adapter = _FakeSourceAdapter()
-    client = _client(session_factory, app_database_url, tmp_path, _router(adapter))
+    unmatched = _UnmatchedSourceAdapter()
+    client = _client(
+        session_factory,
+        app_database_url,
+        tmp_path,
+        _router(adapter, unmatched),
+    )
     project_id = _project(client)
 
     response = client.post(
@@ -135,6 +165,7 @@ def test_project_source_search_uses_injected_adapter_without_network(
     assert body["records"][0]["pmid"] == "123"
     assert body["record_count"] == 1
     assert body["adapter_ids"] == ["fake-source.v1"]
+    assert body["mode"] == "mock"
     assert len(body["query_sha256"]) == 64
     assert len(body["result_sha256"]) == 64
     assert adapter.requests[0].query == "synthetic feline evidence"
@@ -144,6 +175,8 @@ def test_project_source_search_uses_injected_adapter_without_network(
     )
     assert snapshot.status_code == 200
     assert snapshot.json()["records"] == body["records"]
+    assert snapshot.json()["mode"] == "mock"
+    assert snapshot.json()["adapter_ids"] == ["fake-source.v1"]
     with Session(bind=database) as session:
         row = session.scalar(
             select(ExternalSourceSnapshot).where(
@@ -153,6 +186,57 @@ def test_project_source_search_uses_injected_adapter_without_network(
         assert row is not None
         assert row.query == "synthetic feline evidence"
         assert row.record_count == 1
+        assert row.mode == "mock"
+        assert row.adapter_ids == ["fake-source.v1"]
+    assert unmatched.calls == 0
+
+
+def test_local_xml_source_snapshot_is_marked_offline(
+    session_factory,
+    database: Engine,
+    app_database_url: str,
+    tmp_path: Path,
+) -> None:
+    adapter = PubMedXmlAdapter(
+        b"""
+        <PubmedArticleSet><PubmedArticle>
+          <MedlineCitation>
+            <PMID>24680</PMID>
+            <Article>
+              <ArticleTitle>Local cached XML fixture</ArticleTitle>
+              <Abstract><AbstractText>Synthetic local XML metadata only.</AbstractText></Abstract>
+              <Journal><Title>Fixture Journal</Title></Journal>
+              <ArticleDate><Year>2026</Year><Month>11</Month><Day>1</Day></ArticleDate>
+              <PublicationTypeList>
+                <PublicationType>Journal Article</PublicationType>
+              </PublicationTypeList>
+            </Article>
+          </MedlineCitation>
+        </PubmedArticle></PubmedArticleSet>
+        """
+    )
+    client = _client(session_factory, app_database_url, tmp_path, _router(adapter))
+    project_id = _project(client)
+
+    response = client.post(
+        f"/api/v1/projects/{project_id}/sources/search",
+        json={"query": "local XML", "policy_id": "biomedical_primary.v1"},
+    )
+
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["mode"] == "mock"
+    assert body["adapter_ids"] == ["pubmed.xml.v1"]
+    assert body["records"][0]["pmid"] == "24680"
+    with Session(bind=database) as session:
+        row = session.scalar(
+            select(ExternalSourceSnapshot).where(
+                ExternalSourceSnapshot.id == body["snapshot_id"]
+            )
+        )
+        assert row is not None
+        assert row.mode == "mock"
+        assert row.adapter_ids == ["pubmed.xml.v1"]
 
 
 def test_source_search_fails_closed_without_adapter_and_unknown_policy(
@@ -160,7 +244,7 @@ def test_source_search_fails_closed_without_adapter_and_unknown_policy(
     app_database_url: str,
     tmp_path: Path,
 ) -> None:
-    unavailable = _client(session_factory, app_database_url, tmp_path, _router(None))
+    unavailable = _client(session_factory, app_database_url, tmp_path, _router())
     project_id = _project(unavailable)
     response = unavailable.post(
         f"/api/v1/projects/{project_id}/sources/search",
@@ -203,3 +287,59 @@ def test_source_api_maps_rate_limit_to_429(
 
     assert response.status_code == 429
     assert response.json()["detail"]["code"] == "SOURCE_RATE_LIMITED"
+
+
+def test_source_search_rejects_mixed_execution_modes_without_snapshot(
+    session_factory,
+    database: Engine,
+    app_database_url: str,
+    tmp_path: Path,
+) -> None:
+    mock_adapter = _FakeSourceAdapter()
+    live_adapter = _LiveSourceAdapter()
+    client = _client(
+        session_factory,
+        app_database_url,
+        tmp_path,
+        _router(mock_adapter, live_adapter),
+    )
+    project_id = _project(client)
+
+    response = client.post(
+        f"/api/v1/projects/{project_id}/sources/search",
+        json={"query": "mixed modes", "policy_id": "biomedical_primary.v1"},
+    )
+
+    assert response.status_code == 409
+    assert response.json()["detail"]["code"] == "SOURCE_EXECUTION_MODE_CONFLICT"
+    assert mock_adapter.requests == []
+    assert live_adapter.requests == []
+    with Session(bind=database) as session:
+        assert session.scalar(select(ExternalSourceSnapshot.id)) is None
+
+
+def test_unmatched_adapter_fails_closed_without_snapshot(
+    session_factory,
+    database: Engine,
+    app_database_url: str,
+    tmp_path: Path,
+) -> None:
+    adapter = _UnmatchedSourceAdapter()
+    client = _client(
+        session_factory,
+        app_database_url,
+        tmp_path,
+        _router(adapter),
+    )
+    project_id = _project(client)
+
+    response = client.post(
+        f"/api/v1/projects/{project_id}/sources/search",
+        json={"query": "unsupported policy", "policy_id": "biomedical_primary.v1"},
+    )
+
+    assert response.status_code == 503
+    assert response.json()["detail"]["code"] == "SOURCE_ADAPTER_UNAVAILABLE"
+    assert adapter.calls == 0
+    with Session(bind=database) as session:
+        assert session.scalar(select(ExternalSourceSnapshot.id)) is None

@@ -19,6 +19,7 @@ def build_source_adapters(settings: Settings) -> list[SourceAdapter]:
         return []
     return [
         PubMedHttpAdapter(
+            execution_mode="live",
             live_enabled=True,
             base_url=settings.source_pubmed_base_url or OFFICIAL_PUBMED_EUTILS_BASE,
             tool_name=settings.source_pubmed_tool,

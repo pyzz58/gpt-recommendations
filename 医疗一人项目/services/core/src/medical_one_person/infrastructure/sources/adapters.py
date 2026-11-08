@@ -1,11 +1,18 @@
 from __future__ import annotations
 
 import xml.etree.ElementTree as ET
+from dataclasses import dataclass
 from datetime import date
-from typing import Protocol
+from typing import Literal, Protocol
 from urllib.parse import urlparse
 
-from medical_one_person.domain.knowledge import SourcePolicy, SourceRecord, SourceSearchRequest
+from medical_one_person.domain.knowledge import (
+    SourcePolicy,
+    SourceRecord,
+    SourceSearchRequest,
+)
+
+SourceExecutionMode = Literal["mock", "live"]
 
 
 class SourceAdapter(Protocol):
@@ -15,7 +22,17 @@ class SourceAdapter(Protocol):
     @property
     def policy_ids(self) -> frozenset[str]: ...
 
+    @property
+    def mode(self) -> SourceExecutionMode: ...
+
     def search(self, request: SourceSearchRequest) -> list[SourceRecord]: ...
+
+
+@dataclass(frozen=True)
+class SourceSearchOutcome:
+    records: list[SourceRecord]
+    adapter_ids: tuple[str, ...]
+    mode: SourceExecutionMode
 
 
 class SourcePolicyViolation(ValueError):
@@ -26,11 +43,16 @@ class SourceUnavailableError(RuntimeError):
     pass
 
 
+class SourceExecutionModeConflict(SourceUnavailableError):
+    pass
+
+
 class PubMedXmlAdapter:
     """Parses cached PubMed XML; network fetching is intentionally separate."""
 
     adapter_id = "pubmed.xml.v1"
     policy_ids = frozenset({"biomedical_primary.v1"})
+    mode: SourceExecutionMode = "mock"
 
     def __init__(self, xml: bytes) -> None:
         self._xml = xml
@@ -99,27 +121,36 @@ class SourceRouter:
     def available(self) -> bool:
         return bool(self._adapters)
 
-    @property
-    def adapter_ids(self) -> tuple[str, ...]:
-        return tuple(sorted(adapter.adapter_id for adapter in self._adapters))
-
-    @property
-    def mode(self) -> str:
-        return "live" if self._adapters else "mock"
-
     def search(self, request: SourceSearchRequest) -> list[SourceRecord]:
+        return self.search_with_metadata(request).records
+
+    def search_with_metadata(self, request: SourceSearchRequest) -> SourceSearchOutcome:
         if not self._adapters:
-            raise SourceUnavailableError("No live scholarly source adapter is configured")
+            raise SourceUnavailableError("No scholarly source adapter is configured")
         policy = self._policies.get(request.policy_id)
         if policy is None:
             raise SourcePolicyViolation("Unknown source policy")
         if policy.general_web_search:
             raise SourcePolicyViolation("General web search must remain disabled")
+        adapters = [
+            adapter for adapter in self._adapters if request.policy_id in adapter.policy_ids
+        ]
+        if not adapters:
+            raise SourceUnavailableError(
+                f"No scholarly source adapter supports policy {request.policy_id}"
+            )
+        modes = {adapter.mode for adapter in adapters}
+        if len(modes) != 1:
+            adapter_modes = ", ".join(
+                f"{adapter.adapter_id}={adapter.mode}" for adapter in adapters
+            )
+            raise SourceExecutionModeConflict(
+                "Source adapters selected for one search use mixed execution modes: "
+                f"{adapter_modes}"
+            )
         allowed_hosts = {channel.host for channel in policy.channels if channel.host is not None}
         results: list[SourceRecord] = []
-        for adapter in self._adapters:
-            if request.policy_id not in adapter.policy_ids:
-                continue
+        for adapter in adapters:
             for record in adapter.search(request):
                 host = urlparse(record.source_url).hostname
                 if host is not None and host not in allowed_hosts:
@@ -129,7 +160,11 @@ class SourceRouter:
                 if record.preprint and policy.preprint_policy != "label_separately":
                     raise SourcePolicyViolation("Preprint is prohibited by the source policy")
                 results.append(record)
-        return results
+        return SourceSearchOutcome(
+            records=results,
+            adapter_ids=tuple(sorted(adapter.adapter_id for adapter in adapters)),
+            mode=next(iter(modes)),
+        )
 
 
 def _text(node: ET.Element | None) -> str | None:

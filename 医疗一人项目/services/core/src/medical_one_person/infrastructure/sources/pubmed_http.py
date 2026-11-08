@@ -7,7 +7,10 @@ from typing import Protocol
 from urllib.parse import urlencode, urlsplit
 
 from medical_one_person.domain.knowledge import SourceRecord, SourceSearchRequest
-from medical_one_person.infrastructure.sources.adapters import PubMedXmlAdapter
+from medical_one_person.infrastructure.sources.adapters import (
+    PubMedXmlAdapter,
+    SourceExecutionMode,
+)
 
 OFFICIAL_PUBMED_EUTILS_BASE = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
 
@@ -57,6 +60,7 @@ class PubMedHttpAdapter:
     def __init__(
         self,
         *,
+        execution_mode: SourceExecutionMode,
         live_enabled: bool,
         base_url: str = OFFICIAL_PUBMED_EUTILS_BASE,
         tool_name: str,
@@ -89,6 +93,7 @@ class PubMedHttpAdapter:
         self._timeout_seconds = timeout_seconds
         self._max_results = max_results
         self._transport = transport
+        self.mode = execution_mode
 
     def search(self, request: SourceSearchRequest) -> list[SourceRecord]:
         identifiers = self._search_identifiers(request)

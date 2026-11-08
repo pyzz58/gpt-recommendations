@@ -36,6 +36,7 @@ PUBMED_XML = b"""
 
 def adapter(transport) -> PubMedHttpAdapter:
     return PubMedHttpAdapter(
+        execution_mode="mock",
         live_enabled=True,
         tool_name="medical-one-test",
         contact_email="owner@example.test",
@@ -105,6 +106,7 @@ def test_pubmed_factory_requires_live_flag_allowlisted_network_and_identity() ->
     )
     assert len(live) == 1
     assert live[0].adapter_id == "pubmed.eutils.v1"
+    assert live[0].mode == "live"
 
 
 def test_pubmed_rate_limit_and_invalid_identifier_are_explicit() -> None:
@@ -123,6 +125,7 @@ def test_pubmed_rate_limit_and_invalid_identifier_are_explicit() -> None:
 def test_pubmed_adapter_rejects_non_official_host() -> None:
     with pytest.raises(ValueError, match="official HTTPS"):
         PubMedHttpAdapter(
+            execution_mode="live",
             live_enabled=True,
             base_url="https://example.com/entrez/eutils",
             tool_name="medical-one-test",

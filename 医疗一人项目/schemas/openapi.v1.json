@@ -1360,6 +1360,9 @@
           "400": {
             "description": "Unknown or prohibited source policy"
           },
+          "409": {
+            "description": "Selected scholarly source adapters use mixed execution modes"
+          },
           "429": {
             "description": "Upstream scholarly source rate limit"
           },
@@ -1367,7 +1370,7 @@
             "description": "Upstream scholarly source retrieval failure"
           },
           "503": {
-            "description": "No live scholarly source adapter configured"
+            "description": "No scholarly source adapter configured"
           },
           "422": {
             "description": "Validation Error",

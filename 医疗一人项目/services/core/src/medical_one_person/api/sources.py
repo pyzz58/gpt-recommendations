@@ -17,6 +17,7 @@ from medical_one_person.domain.knowledge import SourceRecord, SourceSearchReques
 from medical_one_person.infrastructure.db.context import set_rls_context
 from medical_one_person.infrastructure.db.models import ExternalSourceSnapshot
 from medical_one_person.infrastructure.sources.adapters import (
+    SourceExecutionModeConflict,
     SourcePolicyViolation,
     SourceRouter,
     SourceUnavailableError,
@@ -57,9 +58,10 @@ def build_source_search_router(
         response_model=SourceSearchView,
         responses={
             400: {"description": "Unknown or prohibited source policy"},
+            409: {"description": "Selected scholarly source adapters use mixed execution modes"},
             429: {"description": "Upstream scholarly source rate limit"},
             502: {"description": "Upstream scholarly source retrieval failure"},
-            503: {"description": "No live scholarly source adapter configured"},
+            503: {"description": "No scholarly source adapter configured"},
         },
     )
     def search_sources(
@@ -72,7 +74,15 @@ def build_source_search_router(
             project_id=project_id,
         )
         try:
-            records = source_router.search(spec)
+            outcome = source_router.search_with_metadata(spec)
+        except SourceExecutionModeConflict as exc:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail={
+                    "code": "SOURCE_EXECUTION_MODE_CONFLICT",
+                    "message": str(exc),
+                },
+            ) from exc
         except SourceUnavailableError as exc:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -105,6 +115,7 @@ def build_source_search_router(
                     "message": str(exc),
                 },
             ) from exc
+        records = outcome.records
         now = datetime.now(UTC)
         query_hash = _sha256(spec.model_dump(mode="json"))
         record_payload = [record.model_dump(mode="json") for record in records]
@@ -125,12 +136,12 @@ def build_source_search_router(
                     query=spec.query,
                     date_from=spec.date_from,
                     date_to=spec.date_to,
-                    adapter_ids=list(source_router.adapter_ids),
+                    adapter_ids=list(outcome.adapter_ids),
                     records=record_payload,
                     record_count=len(record_payload),
                     query_sha256=query_hash,
                     result_sha256=result_hash,
-                    mode=source_router.mode,
+                    mode=outcome.mode,
                     created_by_user_id=principal.user_id,
                     created_at=now,
                 )
@@ -139,12 +150,12 @@ def build_source_search_router(
             snapshot_id=snapshot_id,
             policy_id=spec.policy_id,
             query=spec.query,
-            adapter_ids=list(source_router.adapter_ids),
+            adapter_ids=list(outcome.adapter_ids),
             records=records,
             record_count=len(records),
             query_sha256=query_hash,
             result_sha256=result_hash,
-            mode=source_router.mode,
+            mode=outcome.mode,
             created_at=now,
         )
 
