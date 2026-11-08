@@ -581,12 +581,8 @@ class AdvisorController:
                 JudgmentStrength.LIMITATION_OR_UNKNOWN:
                     StepDisposition.LIMITED,
             }[request.judgment.strength])
-        previous_m10 = None
-        for record_id in reversed(snapshot.record_history_version_ids):
-            record = self.workflow.load_step_record(record_id)
-            if record.step is ResearchStep.M10:
-                previous_m10 = record.step_record_version_id
-                break
+        previous_m10 = self.workflow.latest_step_record_version(
+            request.dossier_id, ResearchStep.M10)
         try:
             snapshot_result = self.workflow.submit_step(ResearchStepSubmission(
                 step_record_id="ADVISOR-M10-" + _digest([

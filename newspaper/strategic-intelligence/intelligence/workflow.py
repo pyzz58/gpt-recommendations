@@ -808,3 +808,16 @@ class ResearchWorkflowController:
                 or stored.submission.created_at != record.created_at):
             raise WorkflowError("Research step record identity mismatch")
         return record
+
+    def latest_step_record_version(
+            self, dossier_id: str, step: ResearchStep) -> str | None:
+        """Return the newest append-ordered record for one dossier step."""
+        object_id = _object(
+            "RESEARCH-STEP-OBJECT-", canonical([dossier_id, step.value]))
+        latest = self.archive.latest(object_id)
+        if latest is None:
+            return None
+        record = self.load_step_record(latest.submission.version_id)
+        if record.dossier_id != dossier_id or record.step is not step:
+            raise WorkflowError("Latest research step identity mismatch")
+        return record.step_record_version_id

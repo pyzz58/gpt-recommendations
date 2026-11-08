@@ -76,6 +76,8 @@ class EditionPresentationTests(unittest.TestCase):
             "ARTICLE-W32-MAIN",
             "# Bounded Commitment\n\n"
             "The commitment is documented, while execution remains unobserved.\n\n"
+            "DOI [10.1596/example](https://doi.org/10.1596/example); "
+            "unsafe [executable](javascript:alert(1)).\n\n"
             "<script>alert('not executable')</script>")
         self.cover_article = self.article(
             "ARTICLE-W32-COVER",
@@ -451,6 +453,15 @@ class EditionPresentationTests(unittest.TestCase):
         self.assertIn("Bounded Commitment", html)
         self.assertIn("&lt;script&gt;alert", html)
         self.assertNotIn("<script>alert", html)
+        self.assertIn(
+            '<a href="https://doi.org/10.1596/example" '
+            'rel="noopener noreferrer">10.1596/example</a>',
+            html)
+        self.assertNotIn(
+            "[10.1596/example](https://doi.org/10.1596/example)", html)
+        self.assertIn(
+            "[executable](javascript:alert(1))", html)
+        self.assertNotIn('href="javascript:', html)
         self.assertIn("Owned source", html)
         record = self.controller.load_edition(result.edition_version_id)
         self.assertIs(record.content_review_required, True)

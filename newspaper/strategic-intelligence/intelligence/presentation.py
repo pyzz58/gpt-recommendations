@@ -227,16 +227,38 @@ def _title_and_body(text: str) -> tuple[str, str]:
 def _body_markup(text: str) -> Markup:
     """Render a deliberately small, escaped Markdown subset.
 
-    Model output remains data. No raw HTML, links or embedded content pass
-    through; unsupported Markdown stays readable as escaped text.
+    Model output remains data. Raw HTML and unsupported Markdown stay readable
+    as escaped text. Only explicit HTTPS Markdown links become safe anchors.
     """
-    def inline(value: str) -> str:
+    def plain_inline(value: str) -> str:
         escaped = html.escape(value, quote=True)
         escaped = re.sub(r"`([^`]+)`", r"<code>\1</code>", escaped)
         escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
         escaped = re.sub(
             r"(?<!\*)\*([^*\n]+)\*(?!\*)", r"<em>\1</em>", escaped)
         return escaped
+
+    def inline(value: str) -> str:
+        pieces: list[str] = []
+        position = 0
+        for match in re.finditer(
+                r"\[([^\]\n]+)\]\((https://[^)\s]+)\)", value):
+            pieces.append(plain_inline(value[position:match.start()]))
+            url = match.group(2)
+            parsed = urlparse(url)
+            if (parsed.scheme != "https"
+                    or not parsed.netloc
+                    or any(character.isspace() or ord(character) < 32
+                           for character in url)):
+                pieces.append(html.escape(match.group(0), quote=True))
+            else:
+                pieces.append(
+                    '<a href="' + html.escape(url, quote=True)
+                    + '" rel="noopener noreferrer">'
+                    + html.escape(match.group(1), quote=True) + "</a>")
+            position = match.end()
+        pieces.append(plain_inline(value[position:]))
+        return "".join(pieces)
 
     lines = text.splitlines()
     blocks: list[str] = []

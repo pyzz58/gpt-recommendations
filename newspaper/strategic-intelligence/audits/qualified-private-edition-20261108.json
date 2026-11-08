@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "record_id": "SI-QUALIFIED-PRIVATE-EDITION-20261108-002",
+  "checked_at": "2026-11-08T16:08:00+13:00",
+  "branch": "codex/si-first-real-pilot-20261101",
+  "result": "PRIVATE_EDITION_CREATED_ARTICLE_REVIEWS_PASS_RENDERING_CORRECTED",
+  "spec_sha256": "e19ed460555b48481309cd7442eddf1251299e2c94bb6e4383a99334647fde09",
+  "source": {
+    "source_version_id": "DOC-WB-CBAM-11366-20260428-v004",
+    "bytes": 99024,
+    "sha256": "60067f3e9c49256fc23428300c1d394421a6dfd6fd396c726a2d27ab35d89276",
+    "redownloaded": false,
+    "license": "CC BY 3.0 IGO"
+  },
+  "substantive_revision": {
+    "retained_claims": [
+      "CLAIM-WB-11366-EXPORTS",
+      "CLAIM-WB-11366-PRICES"
+    ],
+    "excluded_from_substantive_mechanism": [
+      "CLAIM-WB-11366-TABLE8-CONFLICT",
+      "CLAIM-WB-11366-POST-MONTHS"
+    ],
+    "table8_financing_direction_used": false,
+    "single_post_month_used": false,
+    "b1_output_version_id": "ADVISOR-OUTPUT-8d4e58809b3d1af748bd2ebbf426440a",
+    "m10_step_record_version_id": "RESEARCH-STEP-b7d415a5b52aa81e0a23da4b9cb41fe0",
+    "b2_output_version_id": "TEACHER-OUTPUT-8bf03e93d7c0824867d2fe41ba836fb3",
+    "m11_step_record_version_id": "RESEARCH-STEP-70c8921002d06480360f1d94041accab",
+    "c_output_version_id": "CONDITIONAL-OUTPUT-cf4127c04bf3de4ff47e0d3d29f66150",
+    "m12_step_record_version_id": "RESEARCH-STEP-131d49c0eab3496d167c5c27b2c63ee6",
+    "article_v003_version_id": "ARTICLE-SI-CBAM-FORMAL-20261107-v003",
+    "reviewed_article_v004_version_id": "ARTICLE-SI-CBAM-FORMAL-20261107-v004",
+    "reviewed_article_sha256": "d9a8cb023ebf3cb25b3e531f48bd02428491cf754ce4185002886d1b1abb4506"
+  },
+  "workflow_defect_fixed": {
+    "problem": "Revision lookup used lexicographically sorted record IDs rather than append order.",
+    "affected": [
+      "W28 previous M10 lookup",
+      "W29 previous M11 lookup",
+      "W30 previous M12 lookup"
+    ],
+    "fix": "Added ResearchWorkflowController.latest_step_record_version and switched all three controllers to it.",
+    "regression_test": "tests_runtime.test_workflow.test_latest_step_record_uses_append_order_not_lexicographic_id"
+  },
+  "independent_reviews": {
+    "process": "Fresh ephemeral Codex processes with no drafting conversation, Git history, prior audit or prior review input.",
+    "model_reported_by_cli": "gpt-6.1-sol",
+    "main_initial": {
+      "verdict": "PASS",
+      "source_and_article_hashes_matched": true,
+      "minor_findings": 2,
+      "token_usage_reported_by_cli": 39788
+    },
+    "cover_initial": {
+      "verdict": "PASS",
+      "source_and_cover_hashes_matched": true,
+      "minor_findings": 0,
+      "token_usage_reported_by_cli": 47799
+    },
+    "joint_after_update_check": {
+      "verdict_main": "PASS",
+      "verdict_cover": "PASS",
+      "source_and_article_hashes_matched": true,
+      "critical_or_major_findings": 0,
+      "minor_findings_main": 2,
+      "minor_findings_cover": 0,
+      "token_usage_reported_by_cli": 46959,
+      "used_for_formal_W31": true
+    },
+    "review_tokens_reported_total": 134546,
+    "monetary_bill": "UNKNOWN_NO_PROVIDER_BILL_RETURNED"
+  },
+  "formal_review_and_adoption": {
+    "update_check_version_id": "UPDATE-CHECK-1f5760e4922802b4d3af2429af531934",
+    "main_review_id": "REVIEW-SI-CBAM-MAIN-INDEPENDENT-V2-PASS",
+    "main_adoption_decision_version_id": "W31-REVIEW-DECISION-fe528ac69012709fd1ab73cc993f9578",
+    "cover_review_id": "REVIEW-SI-CBAM-COVER-INDEPENDENT-V2-PASS",
+    "cover_adoption_decision_version_id": "W31-REVIEW-DECISION-364bd77899b5548de76c74692d16596f",
+    "both_reviews_PASS": true,
+    "both_reviews_started_from_draft": false,
+    "both_reviews_prior_review_seen": false,
+    "both_W15_decisions_current": true
+  },
+  "edition": {
+    "edition_id": "EDITION-SI-CBAM-20261107",
+    "edition_version_id": "EDITION-ed7b084fda1868a69384ae24cceb5d7b",
+    "previous_version_id": "EDITION-8b110b3bd875e1766c4d5277ddfd2193",
+    "output": "private:/si-first-real-pilot/第一份私人内参-20261108-v2.html",
+    "bytes": 3994,
+    "sha256": "6004c9322960ea6bcd2817317ef4b22b1a2e2e72d04706422af3c245214fd118",
+    "mode": "0600",
+    "content_review_required": true,
+    "full_edition_review_required": true,
+    "publication_authorized": false,
+    "delivery_authorized": false
+  },
+  "presentation_repair": {
+    "superseded_edition_version_id": "EDITION-8b110b3bd875e1766c4d5277ddfd2193",
+    "superseded_output": "private:/si-first-real-pilot/第一份私人内参-20261108.html",
+    "superseded_bytes": 3957,
+    "superseded_sha256": "d99c79df2c8fd663839fe747e84a60f674e32be04b7b906c84a7131fa677a25f",
+    "confirmed_defect": "The reviewed Article's Markdown inline DOI link was rendered literally as [label](https://...), contradicting the earlier no-residual check.",
+    "fix": "The W32 safe Markdown subset now renders only explicit HTTPS inline links as escaped anchors with rel=noopener noreferrer; unsupported schemes and raw HTML remain escaped text.",
+    "regression": "tests_runtime.test_presentation.test_composes_reviewed_readable_edition_without_publication_authority",
+    "article_review_or_adoption_changed": false,
+    "post_review_treatment": "Non-semantic presentation repair checked under canonical section 13.7.2; this is not a new independent content review.",
+    "new_model_calls": 0
+  },
+  "cost": {
+    "additional_deepseek_calls": 0,
+    "deepseek_calls_total": 5,
+    "deepseek_estimated_cost_usd_total": "0.0676992",
+    "independent_review_token_usage_reported": 134546,
+    "independent_review_monetary_cost": "UNKNOWN"
+  },
+  "post_update_validation": {
+    "runtime_tests": {
+      "count": 316,
+      "result": "PASS",
+      "duration_seconds": 38.530
+    },
+    "maintenance_tests": {
+      "count": 56,
+      "result": "PASS",
+      "duration_seconds": 14.890
+    },
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W28_W29_W30_W31_W32_work_plan_checks": "PASS",
+    "json_and_diff_check": "PASS",
+    "final_spec_sha256": "e19ed460555b48481309cd7442eddf1251299e2c94bb6e4383a99334647fde09"
+  },
+  "remaining_limitations": [
+    "The source paper's Table 8 narrative conflict and Table 2/3 Post definition conflict remain unresolved at source; the article excludes them from the substantive mechanism rather than repairing the paper.",
+    "Independent reviews are isolated AI-agent reviews, not human domain-expert or independent L5 capability certification.",
+    "The final W32 record still requires whole-edition review because this interface does not convert article PASS decisions into full-edition acceptance.",
+    "The superseded private HTML v1 remains outside Git for history and must not be presented as the current readable edition.",
+    "No user reading or external publication/delivery has occurred.",
+    "W41, G01-G04 and full weekly/annual coverage remain unchanged."
+  ]
+}

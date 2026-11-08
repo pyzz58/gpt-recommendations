@@ -831,12 +831,8 @@ class ProspectiveController:
             StepDisposition.READY_FOR_NEXT
             if request.mode is ProspectiveMode.MULTI_PATH
             else StepDisposition.LIMITED)
-        previous_m12 = None
-        for record_id in reversed(snapshot.record_history_version_ids):
-            record = self.workflow.load_step_record(record_id)
-            if record.step is ResearchStep.M12:
-                previous_m12 = record.step_record_version_id
-                break
+        previous_m12 = self.workflow.latest_step_record_version(
+            request.dossier_id, ResearchStep.M12)
         try:
             snapshot_result = self.workflow.submit_step(ResearchStepSubmission(
                 step_record_id="CONDITIONAL-M12-" + _digest([

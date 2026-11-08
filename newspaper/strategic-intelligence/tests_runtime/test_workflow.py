@@ -278,6 +278,23 @@ class ResearchWorkflowTests(unittest.TestCase):
         self.assertEqual(values["completed_steps"], ["M01"])
         self.assertEqual(values["active_steps"][0][0], "M01")
 
+    def test_latest_step_record_uses_append_order_not_lexicographic_id(self):
+        first = self.submit(ResearchStep.M01)
+        first_record = self.step_records[ResearchStep.M01]
+        second = self.submit(
+            ResearchStep.M01,
+            previous=first_record,
+            artifact_suffix="revision-v002")
+        second_record = self.step_records[ResearchStep.M01]
+        self.assertNotEqual(second_record, first_record)
+        self.assertEqual(
+            self.controller.latest_step_record_version(
+                "DOSSIER-W27", ResearchStep.M01),
+            second_record)
+        self.assertEqual(
+            self.controller.current_snapshot("DOSSIER-W27")[0].submission.version_id,
+            second.submission.version_id)
+
     def test_wrong_artifact_revision_and_unconfigured_model_are_rejected(self):
         artifact = self.record(
             "BAD-W27-ART", "BAD-W27-ART-v001", ObjectKind.ARTICLE)

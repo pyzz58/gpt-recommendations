@@ -1083,12 +1083,8 @@ class TeacherController:
             StepDisposition.READY_FOR_NEXT
             if request.strength is TeachingStrength.BOUNDED_EXPLANATION
             else StepDisposition.LIMITED)
-        previous_m11 = None
-        for record_id in reversed(snapshot.record_history_version_ids):
-            record = self.workflow.load_step_record(record_id)
-            if record.step is ResearchStep.M11:
-                previous_m11 = record.step_record_version_id
-                break
+        previous_m11 = self.workflow.latest_step_record_version(
+            request.dossier_id, ResearchStep.M11)
         try:
             snapshot_result = self.workflow.submit_step(ResearchStepSubmission(
                 step_record_id="TEACHER-M11-" + _digest([
