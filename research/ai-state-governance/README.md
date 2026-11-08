@@ -13,6 +13,11 @@
 >
 > **精英内阁充分议事，AI 秘书全程留痕；一人提出有实质依据的异议，也必须进入最终裁决并可触发独立核验。**
 
+## Play / 体验文字游戏
+
+**[共和国 · Republic — AI 元首五轮决策文字游戏](republic-game/README.md)**  
+单文件 HTML；[查看游戏源码](republic-game/index.html)。GitHub 代码预览不执行 HTML，请按说明保存 Raw 文件并在浏览器本地打开。游戏不联网，指标仅作虚构叙事。
+
 ## Read the paper / 阅读报告
 
 - **[Full English discussion paper — REPORT_EN.md](REPORT_EN.md)**
