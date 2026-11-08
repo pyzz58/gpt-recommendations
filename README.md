@@ -16,6 +16,18 @@
 > 说明：本仓库只做「项目索引 + 研究笔记」，**不复制**任何第三方项目的完整源码。
 > 所有项目均保留原作者与原始 GitHub 地址，版权归原作者所有。
 
+## Featured interactive project / 公开互动项目：Republic (《共和国》)
+
+**[▶ Play Republic — free browser-based governance game](https://pyzz58.github.io/gpt-recommendations/republic-game/)**
+
+A **Chinese / English** interactive fiction game based on the open research paper *AI Stewardship State*: act as a fictional AI head of state, read reports from professional ministers, request independent audits, make difficult decisions, and face the consequences over a 12-day term. No account, advertising, paid API, or live personal data. Browser language is detected automatically, with a manual 中文 / English switch.
+
+**[Research paper (English)](research/ai-state-governance/REPORT_EN.md)** · **[研究报告（中文）](research/ai-state-governance/REPORT_ZH.md)** · **[Game source / 玩法与源码](research/ai-state-governance/republic-game/README.md)** · **[Discuss or contribute / 公开讨论 #84](https://github.com/pyzz58/gpt-recommendations/issues/84)**
+
+*This is fictional interactive research, not validated policy simulation, and not a claim that AI can govern a real country. Contributions and critical feedback are welcome.*
+
+---
+
 ## Featured field report (English)
 
 **[Trying to Replace the AI Assistant on a China-Market Samsung Galaxy S24](https://github.com/pyzz58/galaxy-s24-china-ai-assistant-experiment)** — Real-device Android 16 / One UI 8.5 experiment: Samsung/Bixby side-key routing, `power_button_long_press` values 101 versus 5, failed `VoiceInteractionSessionService` binding, and a **working `ACTION_ASSIST` Activity-based side-key launch**. Cloud Chinese speech recognition ultimately returned HTTP 401, so this is an **experimental engineering report, not a finished assistant**. Includes architecture diagram, sanitized logs, rollback guidance, and platform references.
