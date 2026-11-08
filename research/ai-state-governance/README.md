@@ -17,12 +17,13 @@
 
 **《共和国》是一款根据本研究报告制作的免费连续文字治国游戏，欢迎任何人体验、讨论和修改完善。** 玩家模拟虚构 AI 元首，在一届 12 日任期中审理约 24 项事务。随机国际危机会持续演进，国内事务会在数日后以执行反馈和二次裁决回到你的案头；所有设定均为虚构。
 
-- **[已部署在线入口：立即开始《共和国》](https://pyzz58.github.io/gpt-recommendations/republic-game/)** · [研究与游戏主页](https://pyzz58.github.io/gpt-recommendations/)
+- **[▶ Play Republic / 立即开始游戏](https://pyzz58.github.io/gpt-recommendations/republic-game/)** · [研究与游戏主页](https://pyzz58.github.io/gpt-recommendations/)
+- **Languages / 语言：** browser-language auto detection (简体中文 / English), manual switch, saved preference. Other browser languages currently fall back to English. Full English scenarios and decision outcomes are included.
 - **本地离线体验（始终可用）：** [单文件 HTML 游戏](republic-game/README.md)，无需账号及联网。
 - **研究报告：** [中文](REPORT_ZH.md) / [English](REPORT_EN.md)。
 - **欢迎修改：** [讨论帖 #84](https://github.com/pyzz58/gpt-recommendations/issues/84) · [游戏源码](republic-game/index.html) · GitHub Fork / Pull Request。
 
-**发布状态：** GitHub Pages 已完成成功部署，仓库中的游戏更新经自动测试后发布；目前仍是虚构、无后端的开放原型。
+**发布状态：** GitHub Pages 已成功部署；游戏更新需通过中文和英文双语言路径的自动测试。外部英文玩家无需安装翻译插件，目前仍是虚构、无后端的开放原型。
 
 
 
