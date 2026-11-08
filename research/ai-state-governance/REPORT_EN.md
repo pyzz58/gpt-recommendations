@@ -1,6 +1,6 @@
 # AI Stewardship State: A Human-Executed, AI-Overseen Model of National Governance
 
-**Public discussion paper | Version 0.3 | 8 November 2026**
+**Public discussion paper | Version 0.4 | 8 November 2026**
 
 **Status:** Conceptual institutional proposal; **not** an implemented government, a validated AI capability, or a claim that current models can safely exercise sovereign authority.
 
@@ -66,7 +66,7 @@ The independent audit channel must be separately governed and funded, capable of
 
 **Exception management:** Routine decisions stay at the lowest competent level. Escalation is triggered by defined risks: large fiscal exposure, cross-agency deadlock, strategic divergence, repeated failure, integrity concerns, or disputed senior appointments. Do not centralize every approval merely because AI inference is cheap.
 
-## 4. Expert cabinet, AI deliberation secretary, and substantive dissent protection (new in v0.2)
+## 4. Expert cabinet, AI deliberation secretary, and substantive dissent protection
 
 ### 4.1 The AI steward need not be a domain expert
 
@@ -142,6 +142,34 @@ A proposed process:
 A poor result may signal an unsuitable appointee, an impossible mandate, inadequate funding, or a defective organizational structure. The AI must test these competing explanations before recommending removal.
 
 **Anti-Goodhart design:** no single KPI controls promotion; reward verified long-term improvements, candor about problems, and timely correction. Protect legitimate dissent. Do not reward suppressing complaints or manipulating measurement windows.
+
+### 5.4 Open candidate pathways and independently audited selection (v0.4)
+
+**Objective:** qualified people who lack a powerful sponsor should still be able to compete for a small number of consequential senior offices. This is a vacancy-based system, **not** a perpetual nationwide index ranking individuals.
+
+**(1) Fair entry and development pathways.** Transparent, legally administered educational and civil-service entry systems can support access and baseline merit standards. Examinations assess some forms of knowledge and reasoning, but cannot by themselves establish ethics, leadership, or organizational judgment. The central AI reviews systemic fairness and escalated failures, rather than operating schools or ordinary recruitment.
+
+**(2) No monopoly on nominations.** For eligible senior vacancies, provide three distinct routes subject to law: organizational nominations, open self-application by qualified applicants, and professionally substantiated independent referrals. An incumbent superior's endorsement counts as evidence, but its absence is not an automatic disqualification.
+
+**(3) Criteria precede names.** Publish and version job-related eligibility, required competencies, governance responsibilities, conflicts-of-interest rules, and assessment methods before an applicant slate is assembled. An independently constituted selection panel with conflict declarations and recusals checks evidence and procedures.
+
+**(4) Multiple sources, no magic score.** Review independently verified accomplishments, relevant leadership episodes, peer and subordinate feedback, cross-agency collaboration, applicant statements, disciplinary findings where lawfully relevant, and structured decision exercises. Anonymize appropriate first-stage materials where feasible; subsequently conduct lawful identity and background verification. Relational popularity, rhetorical polish, and unquestioning agreement with superiors are not substitutes for role fitness. A proprietary composite model score should never be the sole appointment basis.
+
+**(5) Non-traditional routes without waived safeguards.** Applicants whose experience lies in smaller agencies, adjacent fields, or unconventional careers may compete if their capabilities meet defensible criteria. Where evidence is insufficient for a high-risk role, transparent staged responsibility or time-limited evaluations may offer additional evidence; this must not become an indefinite barrier to outsiders.
+
+**(6) Audit the excluded pool.** The AI reviews the lawful applicant funnel, documented screening reasons, sampled independent checks, and appeals—not just the final shortlist. It should flag arbitrary criteria, inconsistently applied evidence requirements, sponsor-based gatekeeping, and unexplained exclusion. It must not override genuine competency and legal requirements or misuse unrelated sensitive characteristics.
+
+**(7) Explain, challenge, learn.** Publish appropriate job-related rationales, allow independent procedural appeals, and preserve responsible human appointment authority under the legal framework. Post-appointment review can test whether selection criteria were predictive and whether complaints had merit, without building permanent dossiers on the entire civil service.
+
+**Evaluation questions:** How many qualified applicants were excluded for lack of sponsorship? Were assessment standards comparable across channels? Were contributions verified under different organizational conditions? Were adverse decisions appealable and rectified? Publish privacy-protective aggregates where feasible.
+
+#### Independently constructed fictional test: emergency logistics leadership
+
+A national emergency logistics service seeks a new chief executive. The conventional shortlist comprises senior leaders of large agencies. Another applicant with experience leading a mid-sized regional distribution network applies through the open process and submits independently verifiable evidence of inventory reliability, surge logistics, cost management, and coordinated disaster exercises.
+
+The selection panel must apply the same pre-registered job criteria across qualified applicants and may request structured risk-response scenarios and leadership assessments. The AI steward examines whether procedural barriers or selective evidence excluded a candidate and whether the final choice is justified by verifiable evidence. **The exercise does not presume that the unconventional applicant is superior or entitled to appointment.**
+
+Open access ensures a fair opportunity to demonstrate fitness—not a predetermined winner.
 
 ## 6. Context-specific service objectives: two fictional transport regions
 
@@ -248,6 +276,9 @@ Possible metrics: decision traceability; audit false-positive rate; independent 
 9. **Dissent rights:** What materiality threshold triggers independent verification of a lone cabinet member's objection without creating an indefinite obstruction right?
 10. **Deliberation records:** How should an AI secretary preserve fidelity and provenance while respecting confidentiality, personal privacy, and whistleblower safety?
 11. **Alternative generation:** When a cabinet supplies only A and B, what limits govern the central AI's authority to request expert testing of C and D?
+12. **Open candidacy:** How can independently verified applicants enter consideration without a superior's endorsement?
+13. **Favoritism resistance:** What evidence prevents nominations, colleague feedback, or promotion reviews from rewarding personal networks?
+14. **Non-traditional applicants:** What validation methods permit unconventional careers without lowering critical job requirements?
 
 Comments are welcome from public administration, constitutional law, political science, AI safety, economics, auditing, and organizational design. Please identify whether a comment is **a value judgment, an empirical claim, a legal objection, or an engineering proposal**, and provide references where possible.
 
@@ -268,6 +299,8 @@ These sources support parts of the framing and safeguards; **none validates the 
 **Revision policy:** Preserve dissent and substantive objections, version the design, distinguish proposals from evidence, and document support for revisions to empirical claims.
 
 ## Version history
+
+- **v0.4 — 8 November 2026:** added open candidacy, independent nominations, preregistered job criteria, multichannel evidence, procedural audits of excluded candidates, nontraditional career routes, appeal, and post-appointment learning; introduced an independently fictional emergency-logistics selection scenario.
 
 - **v0.3 — 8 November 2026:** replaced public illustrations with independently designed fictional digital-service and transport-service case studies; generalized senior-role definitions for use across jurisdictions.
 - **v0.2 — 8 November 2026:** added expert cabinet, AI secretary, substantive dissent review, alternative proposals, independent verification, and anti-capture guarantees.
