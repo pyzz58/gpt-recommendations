@@ -3,13 +3,13 @@
 **A public, bilingual, versioned discussion space on AI-assisted national meta-governance.**
 
 **Status:** Research hypothesis / 研究性构想，**not an implemented system**.  
-**Version:** v0.2 · 2026-11-08
+**Version:** v0.3 · 2026-11-08
 
 > The proposed AI leader should not micromanage a country; it should examine whether the *people, organization, incentives, budgets, strategic objectives, and assurance systems* are fit for purpose.
 >
 > **AI 元首不包办治理，而是优化治理国家的人与组织。**
 >
-> **v0.2 / 新增：** human expert cabinet; AI secretary with full deliberation provenance; protection for a single substantiated dissenting voice; independent evidentiary review; central AI may propose C/D options for expert evaluation, not force a binary A/B vote.
+> **v0.3 / Current:** expert cabinet deliberation; AI secretary with recorded evidence and dissent; independent verification; AI review may request additional options without replacing domain experts. The paper uses standalone fictional administrative case studies.
 >
 > **精英内阁充分议事，AI 秘书全程留痕；一人提出有实质依据的异议，也必须进入最终裁决并可触发独立核验。**
 
@@ -29,7 +29,7 @@ Comments and criticisms in English or Chinese are welcome. The Issue is an ongoi
 | Pillar | English | 中文 |
 |---|---|---|
 | Strategy | AI reviews direction and exceptional decisions | AI 审核战略及重大决策 |
-| Senior appointments | Focus on a limited set of top-level offices | 只重点管理副部级以上等关键岗位 |
+| Senior appointments | Focus on a limited set of strategically consequential senior offices | 重点管理极少数国家级或跨部门关键领导岗位 |
 | Fiscal alignment | Match tasks, resources, and legal authority | 确保任务、财政和权限匹配 |
 | Organizational learning | Diagnose leaders vs resources vs institutions vs strategy | 区分用人、资源、组织和战略问题 |
 | Assurance | Independent AI-assisted, human-executed verification | 独立 AI 审计 + 人类调查执行 |
