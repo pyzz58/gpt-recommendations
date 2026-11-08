@@ -51,38 +51,38 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
 <body>
 <main>
 <header>
- <span class="tag">公开互动思想实验 · v0.5</span>
- <h1>共和国</h1>
- <p>你担任 AI 元首。人类专家治理国家，你负责关键裁决、选贤任能、保证独立监察与制度纠错。</p>
+ <div class="row"><span class="tag" id="ui-version">公开互动思想实验 · v0.6</span><label style="font-size:13px" for="language-select"><span id="ui-language-label">语言</span> <select id="language-select" aria-label="Language / 语言" style="font:inherit;padding:4px 9px;border:1px solid #9bb5c8;border-radius:8px;background:#fff;color:#17334d"><option value="zh">中文</option><option value="en">English</option></select></label></div>
+ <h1 id="ui-brand">共和国</h1>
+ <p id="ui-tagline">你担任 AI 元首。人类专家治理国家，你负责关键裁决、选贤任能、保证独立监察与制度纠错。</p>
  <nav>
-  <a href="https://github.com/pyzz58/gpt-recommendations/blob/main/research/ai-state-governance/REPORT_ZH.md">研究报告</a>
-  <a href="https://github.com/pyzz58/gpt-recommendations/issues/84">公共讨论 / 修改建议</a>
-  <a href="https://github.com/pyzz58/gpt-recommendations/tree/main/research/ai-state-governance/republic-game">开源代码</a>
+  <a href="https://github.com/pyzz58/gpt-recommendations/blob/main/research/ai-state-governance/REPORT_ZH.md" id="ui-report-link">研究报告</a>
+  <a href="https://github.com/pyzz58/gpt-recommendations/issues/84" id="ui-discuss-link">公共讨论 / 修改建议</a>
+  <a href="https://github.com/pyzz58/gpt-recommendations/tree/main/research/ai-state-governance/republic-game" id="ui-source-link">开源代码</a>
  </nav>
 </header>
 <section class="section" aria-label="国家指标">
- <div class="row"><strong>共和国状态</strong><span id="clock" class="muted">建立执政档案</span></div>
+ <div class="row"><strong id="ui-state">共和国状态</strong><span id="clock" class="muted">建立执政档案</span></div>
  <div class="metrics">
-  <div class="metric"><span>民生</span><b id="m-life">62</b></div>
-  <div class="metric"><span>财政</span><b id="m-treasury">64</b></div>
-  <div class="metric"><span>廉洁</span><b id="m-integrity">61</b></div>
-  <div class="metric"><span>制度信任</span><b id="m-trust">60</b></div>
+  <div class="metric"><span id="ui-metric-life">民生</span><b id="m-life">62</b></div>
+  <div class="metric"><span id="ui-metric-treasury">财政</span><b id="m-treasury">64</b></div>
+  <div class="metric"><span id="ui-metric-integrity">廉洁</span><b id="m-integrity">61</b></div>
+  <div class="metric"><span id="ui-metric-trust">制度信任</span><b id="m-trust">60</b></div>
  </div>
- <p class="muted">指标是游戏化反馈，不是现实政策的可靠预测。审计需要成本，盲目批准和无限拖延也有代价。</p>
+ <p class="muted" id="ui-disclaimer">指标是游戏化反馈，不是现实政策的可靠预测。审计需要成本，盲目批准和无限拖延也有代价。</p>
 </section>
 <section class="section" id="intro">
  <div class="news">
-  <span class="tag">国际专线 · 本届随机开局</span>
+  <span class="tag" id="ui-intro-tag">国际专线 · 本届随机开局</span>
   <h2 id="world-name">正在组建内阁……</h2>
   <p id="world-intro"></p>
   <p class="muted" id="world-stakes"></p>
  </div>
- <p><strong>游戏流程：</strong>共 12 个工作日，每天接收若干份奏报；部门提出方案并负责执行。你可以调阅调查结果、退回议案、批准有限授权或处理重大争议。先前决策会在后续几日产生执行回报，部分事件将再次送审。</p>
- <p class="muted">国际事件、国内事务顺序与后续分支会变化。离开页面后可在此浏览器恢复；不需注册、不联网。</p>
+ <p id="ui-intro-rules"><strong>游戏流程：</strong>共 12 个工作日，每天接收若干份奏报；部门提出方案并负责执行。你可以调阅调查结果、退回议案、批准有限授权或处理重大争议。先前决策会在后续几日产生执行回报，部分事件将再次送审。</p>
+ <p class="muted" id="ui-intro-save">国际事件、国内事务顺序与后续分支会变化。离开页面后可在此浏览器恢复；不需注册、不联网。</p>
  <div class="choices"><button class="primary" id="begin">开始共和国的第一天</button><button id="new-run" class="secondary">更换世界事件，重新开局</button></div>
 </section>
 <section class="section" id="briefing" hidden>
- <span class="tag">总统府 · 每日晨报</span>
+ <span class="tag" id="ui-morning-tag">总统府 · 每日晨报</span>
  <h2 id="briefing-title"></h2>
  <p id="briefing-main"></p>
  <div id="reports" class="timeline"></div>
@@ -93,44 +93,106 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
  <div class="row"><span class="tag" id="category">内阁议程</span><span id="case-position" class="muted"></span></div>
  <h2 id="case-title"></h2>
  <div class="notice"><strong id="speaker"></strong><p id="proposal"></p></div>
- <div class="notice dissent"><strong>各方意见</strong><p id="objection"></p></div>
- <div class="notice reply"><strong>请您决定</strong><p id="secretary"></p></div>
- <div id="audit-evidence" class="notice audit" hidden><strong>监察院调查记录</strong><p id="evidence"></p></div>
+ <div class="notice dissent"><strong id="ui-views">各方意见</strong><p id="objection"></p></div>
+ <div class="notice reply"><strong id="ui-question">请您决定</strong><p id="secretary"></p></div>
+ <div id="audit-evidence" class="notice audit" hidden><strong id="ui-audit">监察院调查记录</strong><p id="evidence"></p></div>
  <div class="choices"><button id="audit-btn" class="secondary">要求独立调查（财政 −1）</button></div>
- <h3>元首的裁决</h3>
+ <h3 id="ui-ruling">元首的裁决</h3>
  <div class="choices" id="options"></div>
- <p class="muted">查阅独立调查后，有时可解锁新的处理方案。以下数字和情节均为虚构游戏设定。</p>
+ <p class="muted" id="ui-audit-hint">查阅独立调查后，有时可解锁新的处理方案。以下数字和情节均为虚构游戏设定。</p>
 </section>
 <section class="section" id="decision-screen" hidden>
- <span class="tag">裁决下达 · 部门开始执行</span>
+ <span class="tag" id="ui-decision-tag">裁决下达 · 部门开始执行</span>
  <h2 id="decision-title"></h2>
  <p class="notice" id="decision-immediate"></p>
  <div class="delta" id="decision-deltas"></div>
- <div class="notice reply"><strong>后续安排</strong><p id="decision-later"></p></div>
+ <div class="notice reply"><strong id="ui-follow-header">后续安排</strong><p id="decision-later"></p></div>
  <p class="muted" id="decision-reminder"></p>
  <div class="choices"><button class="primary" id="proceed">继续接收奏报</button></div>
 </section>
 <section class="section" id="evening" hidden>
- <span class="tag">日终议事记录</span><h2 id="evening-title"></h2>
+ <span class="tag" id="ui-evening-tag">日终议事记录</span><h2 id="evening-title"></h2>
  <div id="evening-logs" class="timeline"></div>
- <p class="muted">今天的决定不会立即终结事件。你将在后续收到部门落实报告、审计异议或预算变化。</p>
+ <p class="muted" id="ui-evening-note">今天的决定不会立即终结事件。你将在后续收到部门落实报告、审计异议或预算变化。</p>
  <div class="choices"><button class="primary" id="next-day">结束今日，推进至下一工作日</button></div>
 </section>
 <section class="section" id="ending" hidden>
- <span class="tag">本届任期 · 阶段性审查</span>
+ <span class="tag" id="ui-ending-tag">本届任期 · 阶段性审查</span>
  <h2 id="ending-title"></h2>
  <p id="ending-body"></p>
- <h3>关键国际事件推进记录</h3><div id="ending-crisis" class="timeline"></div>
- <h3>其他制度事项摘要</h3><div id="ending-other" class="timeline"></div>
- <p class="muted">十二日结束只是游戏篇章的结束。未结案事件不代表现实自动解决；这个游戏不能证明 AI 可以执政。</p>
+ <h3 id="ui-crisis-header">关键国际事件推进记录</h3><div id="ending-crisis" class="timeline"></div>
+ <h3 id="ui-other-header">其他制度事项摘要</h3><div id="ending-other" class="timeline"></div>
+ <p class="muted" id="ui-ending-note">十二日结束只是游戏篇章的结束。未结案事件不代表现实自动解决；这个游戏不能证明 AI 可以执政。</p>
  <div class="choices"><button class="primary" id="again">开启另一届虚构共和国</button></div>
 </section>
-<footer>公开原创文字游戏 · 无广告及账号 · 不访问实时新闻 · 欢迎 Github Issue 与 Pull Request</footer>
+<footer id="ui-footer">公开原创文字游戏 · 无广告及账号 · 不访问实时新闻 · 欢迎 Github Issue 与 Pull Request</footer>
 </main>
+<script src="./i18n-en.js"></script>
 <script>
 "use strict";
 (function(){
  const $=id=>document.getElementById(id);
+
+ const E=window.REPUBLIC_EN||null;
+ const langKey="republic-language";
+ let lang="zh";
+ try{
+   const saved=localStorage.getItem(langKey);
+   const locale=(typeof navigator==="object"&&(navigator.languages?.[0]||navigator.language))||"zh-CN";
+   lang=saved==="zh"||saved==="en"?saved:(/^zh(?:-|$)/i.test(locale)?"zh":"en");
+ }catch(e){lang="zh";}
+ const phrase=(zh,en)=>lang==="en"&&E?en:zh;
+ function interpolate(s,fields){return s.replace(/\{([a-z]+)\}/g,(_,k)=>String(fields[k]??""));}
+ function renderLanguageUI(){
+   if(document.documentElement)document.documentElement.lang=lang==="en"?"en":"zh-CN";
+   if(typeof document.title==="string")document.title=lang==="en"?"Republic | AI Head-of-State Text Game":"共和国｜AI 元首文字治国";
+   $("language-select").value=lang;
+   const ui=E?.ui||{};
+   const elements={
+    "ui-version":"gameVersion","ui-brand":"brand","ui-tagline":"tagline","ui-report-link":"reportLink",
+    "ui-discuss-link":"discussLink","ui-source-link":"sourceLink","ui-state":"state",
+    "ui-disclaimer":"disclaimer","ui-intro-tag":"introTag","ui-intro-rules":"introRules",
+    "ui-intro-save":"introSave","begin":"start","new-run":"restartIntro",
+    "ui-morning-tag":"morningTag","enter-agenda":"morningButton","ui-views":"positionsHeader",
+    "ui-question":"questionHeader","ui-audit":"auditHeader","ui-ruling":"decisionHeader",
+    "ui-audit-hint":"auditHint","ui-decision-tag":"decisionTag","ui-follow-header":"followHeader",
+    "proceed":"continue","ui-evening-tag":"eveningTag","ui-evening-note":"eveningNote",
+    "next-day":"nextDay","ui-ending-tag":"endingTag","ui-crisis-header":"crisisHeader",
+    "ui-other-header":"otherHeader","ui-ending-note":"endingNote","again":"again","ui-footer":"footer",
+    "ui-metric-life":"life","ui-metric-treasury":"treasury",
+    "ui-metric-integrity":"integrity","ui-metric-trust":"trust"
+   };
+   if(lang==="en"&&E){
+     for(const [id,key] of Object.entries(elements))$(id).textContent=ui[key];
+     $("ui-language-label").textContent="Language";
+   }else{
+     for(const [id,t] of Object.entries(chineseUI))$(id).textContent=t;
+     $("ui-language-label").textContent="语言";
+   }
+ }
+ const chineseUI=Object.fromEntries([
+  ["ui-version","公开互动思想实验 · v0.6"],["ui-brand","共和国"],
+  ["ui-tagline","你担任 AI 元首。人类专家治理国家，你负责关键裁决、选贤任能、保证独立监察与制度纠错。"],
+  ["ui-report-link","研究报告"],["ui-discuss-link","公共讨论 / 修改建议"],
+  ["ui-source-link","开源代码"],["ui-state","共和国状态"],
+  ["ui-disclaimer","指标是游戏化反馈，不是现实政策的可靠预测。审计需要成本，盲目批准和无限拖延也有代价。"],
+  ["ui-intro-tag","国际专线 · 本届随机开局"],
+  ["ui-intro-rules","游戏流程：共 12 个工作日，每天接收若干份奏报；专业部门提出方案并负责执行。你可要求调查、退回议案或处理重大争议，旧案会在几日后再次呈报。"],
+  ["ui-intro-save","国际事件、国内事务顺序与后续分支会变化。离开后可在本浏览器恢复；不需注册或联网。"],
+  ["begin","开始共和国的第一天"],["new-run","更换世界事件，重新开局"],
+  ["ui-morning-tag","总统府 · 每日晨报"],["enter-agenda","接见内阁，开始今日审议"],
+  ["ui-views","各方意见"],["ui-question","请您决定"],["ui-audit","监察院调查记录"],
+  ["ui-ruling","元首的裁决"],["ui-audit-hint","查阅独立调查后，有时可解锁新的处理方案。以下数字和情节均为虚构游戏设定。"],
+  ["ui-decision-tag","裁决下达 · 部门开始执行"],["ui-follow-header","后续安排"],
+  ["proceed","继续接收奏报"],["ui-evening-tag","日终议事记录"],
+  ["ui-evening-note","今天的决定不会立即终结事件。你将在后续收到部门落实报告、审计异议或预算变化。"],
+  ["next-day","结束今日，推进至下一工作日"],["ui-ending-tag","本届任期 · 阶段性审查"],
+  ["ui-crisis-header","关键国际事件推进记录"],["ui-other-header","其他制度事项摘要"],
+  ["ui-ending-note","十二日结束只是游戏篇章的结束。未结案事件不代表现实自动解决；游戏不能证明 AI 可以执政。"],
+  ["again","开启另一届虚构共和国"],
+  ["ui-footer","公开原创文字游戏 · 无广告及账号 · 不访问实时新闻 · 欢迎 GitHub Issue 与 Pull Request"],
+  ["ui-metric-life","民生"],["ui-metric-treasury","财政"],["ui-metric-integrity","廉洁"],["ui-metric-trust","制度信任"]
+ ]);
  const labels={life:"民生",treasury:"财政",integrity:"廉洁",trust:"制度信任"};
  const metricKeys=Object.keys(labels);
  const clip=v=>Math.max(0,Math.min(100,v));
@@ -234,16 +296,16 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
  function save(){try{localStorage.setItem(storeKey,JSON.stringify(st));}catch(e){}}
  function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
  function change(d){for(const k of metricKeys){st.score[k]=clip(st.score[k]+(d[k]||0));}}
- function deltaHTML(target,d){const el=$(target);el.replaceChildren();for(const k of metricKeys){const n=d[k]||0;if(n===0)continue;const x=document.createElement("span");x.className=n>=0?"pos":"neg";x.textContent=labels[k]+" "+(n>0?"+":"")+n;el.appendChild(x);}}
+ function deltaHTML(target,d){const el=$(target);el.replaceChildren();for(const k of metricKeys){const n=d[k]||0;if(n===0)continue;const x=document.createElement("span");x.className=n>=0?"pos":"neg";x.textContent=phrase(labels[k],E?.ui?.[k])+" "+(n>0?"+":"")+n;el.appendChild(x);}}
  function text(id,v){$(id).textContent=v;}
  function show(view){for(const v of ["intro","briefing","case-screen","decision-screen","evening","ending"])$(v).hidden=v!==view;st.view=view;renderTop();save();}
- function renderTop(){for(const k of metricKeys)text("m-"+k,st.score[k]);text("clock","第 "+st.day+" / 12 日 · "+(st.view==="case-screen"?"审议中":st.view==="ending"?"阶段结算":"国务日志"));}
+ function renderTop(){for(const k of metricKeys)text("m-"+k,st.score[k]);const name=st.view==="case-screen"?"case":st.view==="ending"?"end":"other";text("clock",phrase("第 "+st.day+" / 12 日 · "+(name==="case"?"审议中":name==="end"?"阶段结算":"国务日志"),interpolate(E?.common?.clock||"Day {day} of 12",{day:st.day,status:E?.common?.clockStatus[name]||""})));}
  function newGame(){
  const world=Math.floor(Math.random()*crisisSets.length),deck=shuffle(domestic.map(x=>x.id));
  st={v:4,day:1,world,score:{life:62,treasury:64,integrity:61,trust:60},deck,queue:[],slot:0,issued:[],followups:[],reports:[],log:[],crisisHistory:[],view:"intro",audited:false,crisisPolicies:[],totalAudits:0};
  change(crisisSets[world].shock);renderIntro();
  }
- function renderIntro(){const w=crisisSets[st.world];text("world-name",w.title);text("world-intro",w.intro);text("world-stakes",w.stakes);show("intro");}
+ function renderIntro(){const w=crisisSets[st.world],ew=E?.world[w.id];text("world-name",phrase(w.title,ew?.title));text("world-intro",phrase(w.intro,ew?.intro));text("world-stakes",phrase(w.stakes,ew?.stakes));show("intro");}
  function crisisCard(phase){
  const w=crisisSets[st.world],written=caseWriting.crisis[w.id][phase],prev=st.crisisPolicies[phase-1],prior=prev===undefined?"":(
    prev===0?"上阶段采取了广泛的紧急授权，短期执行较快，但预算与程序争议仍未结束。":
@@ -287,14 +349,52 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
     ]
    };
   }
-  function makeCard(desc){return desc.kind==="crisis"?crisisCard(desc.phase):desc.kind==="follow"?followCard(desc):desc.kind==="review"?reviewCard():domesticCard(desc.id);}
+ 
+ function translateCard(desc,c){
+   if(lang!=="en"||!E)return c;
+   const common=E.common;
+   const translateOptions=(base,translations)=>base.map((o,i)=>{
+     const t=translations?.[i];return t?{...o,label:t[0],now:t[1],later:t[2],detail:""}:o;
+   });
+   if(desc.kind==="crisis"){
+     const w=crisisSets[st.world],p=E.world[w.id],part=p.stages[desc.phase];
+     const prev=st.crisisPolicies[desc.phase-1];
+     const prior=prev===undefined?"":common.prior[prev]+"\n\n";
+     return {...c,category:common.categoryCrisis+common.phases[desc.phase],
+       title:p.title+" | "+common.phases[desc.phase],speaker:p.agency,
+       description:prior+part[0],dissent:part[1],audit:part[2],memo:part[3],
+       choices:translateOptions(c.choices,E.options.crisis[desc.phase])};
+   }
+   if(desc.kind==="domestic"){
+     const p=E.domestic[desc.id];return {...c,
+       category:common.categoryDomestic,title:p.title,speaker:p.agency,
+       description:p.report,dissent:p.views,audit:p.audit,memo:p.question,
+       choices:translateOptions(c.choices,E.options.domestic[desc.id])};
+   }
+   if(desc.kind==="follow"){
+     const p=E.domestic[desc.origin],prev=E.options.domestic[desc.origin][desc.choice],
+       description=common.followReportStart+prev[0]+common.followReportMiddle+prev[2]+".\n\n"+p.follow;
+     return {...c,category:common.categoryFollow,title:p.title+common.followTitle,
+       speaker:p.agency+common.followAgency,description,
+       dissent:common.followViews,memo:common.followQuestion,audit:common.followAudit,
+       choices:translateOptions(c.choices,E.options.follow)};
+   }
+   if(desc.kind==="review"){
+     const p=E.review[st.day>=12?"final":"normal"];
+     return {...c,category:p.category,title:p.title,speaker:p.agency,
+       description:p.report,dissent:p.views,memo:p.question,audit:p.audit,
+       choices:translateOptions(c.choices,E.options.review)};
+   }
+   return c;
+ }
+ function makeCard(desc){const c=desc.kind==="crisis"?crisisCard(desc.phase):desc.kind==="follow"?followCard(desc):desc.kind==="review"?reviewCard():domesticCard(desc.id);return translateCard(desc,c);}
  function startDay(){
  st.reports=[];st.issued=[];
  const due=st.followups.filter(x=>x.due<=st.day);
  st.followups=st.followups.filter(x=>x.due>st.day);
  for(const f of due){
    change(f.late);
-   st.reports.push("【"+domestic.find(x=>x.id===f.origin).title+"】"+domestic.find(x=>x.id===f.origin).opts[f.choice].later);
+   st.reports.push({type:"domestic",origin:f.origin,choice:f.choice});
  }
  st.queue=[];
  const phase=dayPhases.indexOf(st.day);
@@ -306,29 +406,56 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
  st.slot=0;st.audited=false;
  renderMorning();
  }
+
+ function reportString(s){
+   if(typeof s==="string")return s;
+   if(s.type==="crisis")return phrase("【国际事件前案】"+crisisChoices[s.phase][s.choice].later,
+       (E?.common?.crisisReportLabel||"CRISIS FOLLOW-UP · ")+E.options.crisis[s.phase][s.choice][2]);
+   if(s.type==="domestic"){
+     const d=domestic.find(x=>x.id===s.origin);
+     return phrase("【"+d.title+"】"+d.opts[s.choice].later,
+       (E?.common?.reportLabel||"REPORT · ")+E.domestic[s.origin].title+": "+E.options.domestic[s.origin][s.choice][2]);
+   }
+   return "";
+ }
+ function displayEntry(x){
+   if(lang!=="en"||!E||!x.desc||!Number.isInteger(x.choice))return {title:x.title,option:x.option};
+   const c=makeCard(x.desc);return {title:c.title,option:c.choices[x.choice]?.label||x.option};
+ }
  function renderMorning(){
- text("briefing-title","第 "+st.day+" 日 · 总统内阁早间简报");
- text("briefing-main",st.day===1?"秘书处今晨收到几份部门急报，按处理期限列出今日议程。请依次查看。":"秘书处已收到新请示与前案执行回报，今天需处理以下事项。");
+ text("briefing-title",phrase("第 "+st.day+" 日 · 总统内阁早间简报",interpolate(E?.common?.dayTitle||"Day {day}",{day:st.day})));
+ text("briefing-main",st.day===1?phrase("秘书处今晨收到几份部门急报，按处理期限列出今日议程。请依次查看。",E?.common?.morningFirst):phrase("秘书处已收到新请示与前案执行回报，今天需处理以下事项。",E?.common?.morningLater));
  const d=$("reports");d.replaceChildren();
- const arr=st.reports.length?st.reports:["暂无前案到期报告。国际风险与国内事务仍在变化。"];
- for(const s of arr){const p=document.createElement("p");p.className="bulletin";p.textContent=s;d.appendChild(p);}
- text("briefing-count","今天待审议 "+st.queue.length+" 项；其中 "+st.queue.filter(x=>x.kind==="follow").length+" 项属于此前决策的后续案件。");
+ const arr=st.reports.length?st.reports:[phrase("暂无前案到期报告。国际风险与国内事务仍在变化。",E?.common?.morningNone)];
+ for(const s of arr){const p=document.createElement("p");p.className="bulletin";p.textContent=reportString(s);d.appendChild(p);}
+ text("briefing-count",phrase("今天待审议 "+st.queue.length+" 项；其中 "+st.queue.filter(x=>x.kind==="follow").length+" 项属于此前决策的后续案件。",interpolate(E?.common?.agendaCount||"",{total:st.queue.length,follow:st.queue.filter(x=>x.kind==="follow").length})));
  show("briefing");
  }
  function renderCard(){
- const c=makeCard(st.queue[st.slot]);text("category",c.category);text("case-position","第 "+st.day+" 日 · "+(st.slot+1)+"/"+st.queue.length+" 项");
- text("case-title",c.title);text("speaker",c.speaker+" · 呈报");text("proposal",c.description);text("objection",c.dissent);text("secretary",c.memo);
- $("audit-evidence").hidden=!st.audited;text("evidence",st.audited?c.audit:"");$("audit-btn").disabled=st.audited;$("audit-btn").textContent=st.audited?"已收到监察材料（本轮审计费用已计）":"调取独立审计材料（财政 −1）";
+ const c=makeCard(st.queue[st.slot]);text("category",c.category);text("case-position",phrase("第 "+st.day+" 日 · "+(st.slot+1)+"/"+st.queue.length+" 项",interpolate(E?.common?.casePosition||"",{day:st.day,num:st.slot+1,total:st.queue.length})));
+ text("case-title",c.title);text("speaker",c.speaker+phrase(" · 呈报",E?.common?.caseSpeaker));text("proposal",c.description);text("objection",c.dissent);text("secretary",c.memo);
+ $("audit-evidence").hidden=!st.audited;text("evidence",st.audited?c.audit:"");$("audit-btn").disabled=st.audited;$("audit-btn").textContent=st.audited?phrase("已收到监察材料（本轮审计费用已计）",E?.ui?.auditedButton):phrase("调取独立审计材料（财政 −1）",E?.ui?.auditButton);
  const choices=$("options");choices.replaceChildren();c.choices.forEach((v,i)=>{if(i===3&&!st.audited)return;const b=document.createElement("button");b.type="button";b.textContent=(i+1)+" · "+v.label;b.addEventListener("click",()=>decide(i));choices.appendChild(b);});
  show("case-screen");
  }
  function audit(){if(st.view!=="case-screen"||st.audited)return;st.audited=true;st.totalAudits++;change({treasury:-1});renderCard();}
+
+ function renderDecisionReceipt(){
+   if(!st.lastDecision){afterDecision();return;}
+   const desc=st.lastDecision.desc,c=makeCard(desc),choice=c.choices[st.lastDecision.choice];
+   text("decision-title",choice.label);text("decision-immediate",choice.now);
+   deltaHTML("decision-deltas",choice.delta);text("decision-later",choice.later);
+   text("decision-reminder",phrase(
+     desc.kind==="crisis"?"这一决定将触发之后的国际事件阶段；两日后执行成本和结果会写入日报。":desc.kind==="domestic"?"该项事务已被列入数日后的追踪清单，到期将再作裁决。":"前案复核完成；记录已归档，结果仍会计入本届任期。",
+     E?.common?.decisionReminder?.[desc.kind==="crisis"?"crisis":desc.kind==="domestic"?"domestic":"follow"]));
+   show("decision-screen");
+ }
  function decide(i){
  if(st.view!=="case-screen")return;const desc=st.queue[st.slot],c=makeCard(desc),choice=c.choices[i];
  if(!choice||(i===3&&!st.audited))return;
  change(choice.delta);
  const d=st.day,entry={day:d,title:c.title,kind:desc.kind,option:choice.label,audited:st.audited};
- st.log.push(entry);st.issued.push(entry);
+ entry.desc={...desc};entry.choice=i;st.log.push(entry);st.issued.push(entry);
  if(desc.kind==="crisis"){st.crisisPolicies[desc.phase]=i;st.crisisHistory.push(entry);
    // Crisis decisions have a genuine future consequence independent of subsequent choices.
    const lateDay=Math.min(12,d+2),late=choice.late;
@@ -336,11 +463,7 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
  }else if(desc.kind==="domestic"){
    st.followups.push({kind:"follow",origin:desc.id,day:d,choice:i,due:Math.min(12,d+2),late:choice.late});
  }else if(desc.kind==="follow"){ /* follow-up decision closes the case; no automatic infinite chain */ }
- text("decision-title",choice.label);
- text("decision-immediate",choice.now);deltaHTML("decision-deltas",choice.delta);
- text("decision-later",choice.later);
- text("decision-reminder",desc.kind==="crisis"?"这一决定将触发之后的国际事件阶段；两日后执行成本和结果会写入日报。":desc.kind==="domestic"?"该项事务已被列入数日后的追踪清单，到期将再作裁决。":"前案复核完成；记录已归档，结果仍会计入本届任期。");
- st.audited=false;show("decision-screen");
+ st.lastDecision={desc:{...desc},choice:i};st.audited=false;renderDecisionReceipt();
  }
  function afterDecision(){
  if(st.view!=="decision-screen")return;
@@ -349,9 +472,9 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
  else renderEvening();
  }
  function renderEvening(){
- text("evening-title","第 "+st.day+" 日 · 日终签发记录");
+ text("evening-title",phrase("第 "+st.day+" 日 · 日终签发记录",interpolate(E?.common?.eveningTitle||"",{day:st.day})));
  const el=$("evening-logs");el.replaceChildren();
- for(const x of st.issued){const p=document.createElement("p");p.className="bulletin";p.textContent="「"+x.title+"」→ "+x.option+(x.audited?"（已调取监察证据）":"");el.appendChild(p);}
+ for(const x of st.issued){const p=document.createElement("p");p.className="bulletin";const shown=displayEntry(x);p.textContent=phrase("「"+x.title+"」→ "+x.option+(x.audited?"（已调取监察证据）":""),shown.title+" → "+shown.option+(x.audited?" (independent audit reviewed)":""));el.appendChild(p);}
  show("evening");
  }
  function nextDay(){
@@ -364,7 +487,7 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
  const newReports=[];
  for(const f of impacts){
    change(f.late);
-   newReports.push("【国际事件前案】"+crisisChoices[f.phase][f.choice].later);
+   newReports.push({type:"crisis",phase:f.phase,choice:f.choice});
  }
  // Only reports newly due today are shown; prior days do not recur indefinitely.
  startDay();
@@ -374,10 +497,10 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
  function finish(){
  const pending=st.followups.filter(x=>x.kind!=="crisis-impact").length;
  const avg=Math.round(metricKeys.reduce((a,k)=>a+st.score[k],0)/metricKeys.length);
- text("ending-title",avg>=73?"任期阶段：制度取得部分成果":avg>=57?"任期阶段：改革与代价并存":"任期阶段：共和国面临治理压力");
- text("ending-body","本届共和国运行十二个工作日，共作出 "+st.log.length+" 项裁决、发起 "+st.totalAudits+" 次独立核查。四项虚构指标均值 "+avg+"。仍有 "+pending+" 项未结案事务；任何分数都无法直接证明哪一种真实政体更有效。");
+ text("ending-title",phrase(avg>=73?"任期阶段：制度取得部分成果":avg>=57?"任期阶段：改革与代价并存":"任期阶段：共和国面临治理压力",E?.common?.endingTitles[avg>=73?0:avg>=57?1:2]));
+ text("ending-body",phrase("本届共和国运行十二个工作日，共作出 "+st.log.length+" 项裁决、发起 "+st.totalAudits+" 次独立核查。四项虚构指标均值 "+avg+"。仍有 "+pending+" 项未结案事务；任何分数都无法直接证明哪一种真实政体更有效。",interpolate(E?.common?.endingBody||"",{decisions:st.log.length,audits:st.totalAudits,avg,pending})));
  const ce=$("ending-crisis"),other=$("ending-other");ce.replaceChildren();other.replaceChildren();
- for(const x of st.log){const p=document.createElement("p");p.className="bulletin";p.textContent="第 "+x.day+" 日 · "+x.title+" → "+x.option; (x.kind==="crisis"?ce:other).appendChild(p);}
+ for(const x of st.log){const p=document.createElement("p");p.className="bulletin";const shown=displayEntry(x);p.textContent=phrase("第 "+x.day+" 日 · "+x.title+" → "+x.option,interpolate(E?.common?.timelineDay||"",{day:x.day})+shown.title+" → "+shown.option);(x.kind==="crisis"?ce:other).appendChild(p);}
  show("ending");
  }
  function ready(){
@@ -388,7 +511,7 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
  else if(st.view==="case-screen")renderCard();
  else if(st.view==="evening")renderEvening();
  else if(st.view==="ending")finish();
- else if(st.view==="decision-screen"){ /* restore receipt in a safe way without reapplying decisions */ st.slot++;if(st.slot<st.queue.length)renderCard();else renderEvening(); }
+ else if(st.view==="decision-screen")renderDecisionReceipt();
  }
  $("begin").addEventListener("click",startDay);
  $("new-run").addEventListener("click",newGame);
@@ -398,6 +521,15 @@ footer{font-size:12px;color:var(--soft);text-align:center;margin-top:23px}
  $("next-day").addEventListener("click",nextDay);
  $("again").addEventListener("click",newGame);
  try{const old=localStorage.getItem(storeKey);if(old)st=JSON.parse(old);}catch(e){}
+ $("language-select").addEventListener("change",()=>{
+   lang=$("language-select").value==="en"?"en":"zh";
+   try{localStorage.setItem(langKey,lang);}catch(e){}
+   renderLanguageUI();
+   if(st){if(st.view==="intro")renderIntro();else if(st.view==="briefing")renderMorning();
+    else if(st.view==="case-screen")renderCard();else if(st.view==="decision-screen")renderDecisionReceipt();
+    else if(st.view==="evening")renderEvening();else if(st.view==="ending")finish();}
+ });
+ renderLanguageUI();
  ready();
 })();
 </script>
