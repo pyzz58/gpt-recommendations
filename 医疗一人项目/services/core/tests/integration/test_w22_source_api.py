@@ -5,10 +5,14 @@ from datetime import date
 from pathlib import Path
 
 from fastapi.testclient import TestClient
+from sqlalchemy import select
+from sqlalchemy.engine import Engine
+from sqlalchemy.orm import Session
 
 from medical_one_person.config import Settings
 from medical_one_person.contracts import DependencyStatus
 from medical_one_person.domain.knowledge import SourceRecord, SourceSearchRequest
+from medical_one_person.infrastructure.db.models import ExternalSourceSnapshot
 from medical_one_person.infrastructure.sources import SourceRouter, load_source_policies
 from medical_one_person.infrastructure.sources.pubmed_http import SourceRetrievalRateLimited
 from medical_one_person.main import create_app
@@ -110,6 +114,7 @@ def _project(client: TestClient) -> str:
 
 def test_project_source_search_uses_injected_adapter_without_network(
     session_factory,
+    database: Engine,
     app_database_url: str,
     tmp_path: Path,
 ) -> None:
@@ -126,8 +131,28 @@ def test_project_source_search_uses_injected_adapter_without_network(
     )
 
     assert response.status_code == 200, response.text
-    assert response.json()[0]["pmid"] == "123"
+    body = response.json()
+    assert body["records"][0]["pmid"] == "123"
+    assert body["record_count"] == 1
+    assert body["adapter_ids"] == ["fake-source.v1"]
+    assert len(body["query_sha256"]) == 64
+    assert len(body["result_sha256"]) == 64
     assert adapter.requests[0].query == "synthetic feline evidence"
+
+    snapshot = client.get(
+        f"/api/v1/projects/{project_id}/sources/snapshots/{body['snapshot_id']}"
+    )
+    assert snapshot.status_code == 200
+    assert snapshot.json()["records"] == body["records"]
+    with Session(bind=database) as session:
+        row = session.scalar(
+            select(ExternalSourceSnapshot).where(
+                ExternalSourceSnapshot.id == body["snapshot_id"]
+            )
+        )
+        assert row is not None
+        assert row.query == "synthetic feline evidence"
+        assert row.record_count == 1
 
 
 def test_source_search_fails_closed_without_adapter_and_unknown_policy(

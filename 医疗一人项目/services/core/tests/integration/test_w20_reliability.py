@@ -274,5 +274,5 @@ def test_w20_reliability_table_uses_forced_rls(database: Engine) -> None:
                 """
             )
         ).one()
-    assert policies == 84
+    assert policies == 85
     assert table.relrowsecurity and table.relforcerowsecurity

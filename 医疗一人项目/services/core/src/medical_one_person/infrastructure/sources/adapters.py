@@ -99,6 +99,14 @@ class SourceRouter:
     def available(self) -> bool:
         return bool(self._adapters)
 
+    @property
+    def adapter_ids(self) -> tuple[str, ...]:
+        return tuple(sorted(adapter.adapter_id for adapter in self._adapters))
+
+    @property
+    def mode(self) -> str:
+        return "live" if self._adapters else "mock"
+
     def search(self, request: SourceSearchRequest) -> list[SourceRecord]:
         if not self._adapters:
             raise SourceUnavailableError("No live scholarly source adapter is configured")

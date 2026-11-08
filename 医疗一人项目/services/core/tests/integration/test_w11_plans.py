@@ -647,6 +647,6 @@ def test_w11_tables_are_forced_through_workspace_rls(database: Engine) -> None:
                 """
             )
         ).all()
-    assert policies == 84
+    assert policies == 85
     assert len(tables) == 3
     assert all(row.relrowsecurity and row.relforcerowsecurity for row in tables)

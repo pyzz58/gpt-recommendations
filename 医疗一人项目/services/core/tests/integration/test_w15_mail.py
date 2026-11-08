@@ -453,4 +453,4 @@ def test_w15_mail_tables_are_forced_through_rls(database: Engine) -> None:
         )
     assert len(tables) == 7
     assert all(row.relrowsecurity and row.relforcerowsecurity for row in tables)
-    assert policies == 84
+    assert policies == 85

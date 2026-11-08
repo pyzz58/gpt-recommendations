@@ -12,6 +12,10 @@ TR-19、TR-24；W22；AT-015、AT-031。
 `send_only`。downgrade把既有`send_only`保守映射为`connected`后再恢复旧
 约束，不删除账号行；该映射只用于回退兼容，不表示收件能力存在。
 
+新增迁移`b7d1e4a9c260`建立`external_source_snapshots`：保存项目、来源政策、
+查询、日期范围、adapter、完整元数据、query/result SHA-256和live/mock模式。
+表启用FORCE RLS，并纳入项目加密备份/隔离恢复。
+
 ## OpenAI-compatible 模型适配
 
 - 使用同一 `ModelProvider` 合同，不复制Agent流程或另建服务。
@@ -62,6 +66,10 @@ TR-19、TR-24；W22；AT-015、AT-031。
   返回502；空adapter不会伪装成“0条结果”；
 - API当前只返回元数据，不自动入库；真实检索以后仍须核对来源、全文状态和
   项目授权，不能把元数据响应当成科学证据。
+- 成功检索会在一个项目内不可变快照中保存完整结果；响应和
+  `GET /sources/snapshots/{snapshot_id}` 返回同一快照ID、adapter和
+  query/result hash。外部请求完成后若快照写入失败，接口失败且不声称已留档；
+  该限制需在正式运行监控中处理。
 
 ## 配置
 

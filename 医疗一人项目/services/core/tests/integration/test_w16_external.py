@@ -606,6 +606,6 @@ def test_w16_tables_are_forced_through_rls(database: Engine) -> None:
                 """
             )
         ).all()
-    assert policies == 84
+    assert policies == 85
     assert len(tables) == 9
     assert all(row.relrowsecurity and row.relforcerowsecurity for row in tables)

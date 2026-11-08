@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import logging
 from collections.abc import AsyncIterator, Callable
 from contextlib import asynccontextmanager
 from uuid import uuid4
@@ -65,6 +66,8 @@ from medical_one_person.infrastructure.sources import (
 )
 from medical_one_person.infrastructure.workflows import WorkflowRegistry
 from medical_one_person.providers import build_model_provider
+
+logger = logging.getLogger(__name__)
 
 
 def create_app(
@@ -211,6 +214,7 @@ def create_app(
         try:
             response = await call_next(request)
         except Exception:
+            logger.exception("Unhandled request error; request_id=%s", request_id)
             return JSONResponse(
                 status_code=500,
                 content={
@@ -289,6 +293,7 @@ def create_app(
     )
     app.include_router(
         build_source_search_router(
+            session_factory=session_factory,
             source_router=source_router,
             project_reader=WorkspaceReader(session_factory, roles),
             current_principal=current_principal,

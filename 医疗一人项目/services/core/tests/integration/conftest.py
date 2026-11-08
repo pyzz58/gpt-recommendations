@@ -106,6 +106,7 @@ def session_factory(app_database: Engine, database: Engine) -> Iterator[sessionm
                   evidence_links,
                   citations,
                   retrieval_snapshots,
+                  external_source_snapshots,
                   claim_versions,
                   claims,
                   source_reviews,

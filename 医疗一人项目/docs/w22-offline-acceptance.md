@@ -16,12 +16,12 @@ transport替身、假SMTP或配置构造称为live连接。
 - PubMed实时适配：官方E-utilities域名、ESearch→EFetch两阶段、查询/日期/
   结果数/tool/email/API key参数、预印本元数据和429/非法ID错误；
 - 项目级来源检索API：owner/workspace、成功fake响应、未配置503、未知策略400
-  与限流429；
+  与限流429；成功结果写入不可变项目快照，可按ID重读。
 - MailService：SMTP fake transport通过既有草稿/内容hash/一次性授权/
   幂等attempt/账本；unknown reconcile不新增attempt、不自动重发；
 - 新迁移`a1c9e7f2d304`允许`send_only`账号状态，downgrade保留账号行并保守
   映射为`connected`；
-- 完整应用回归、科学反馈、W23 readiness/配置和84条RLS策略继续通过。
+- 完整应用回归、科学反馈、W23 readiness/配置和85条RLS策略继续通过。
 
 ## 未覆盖
 

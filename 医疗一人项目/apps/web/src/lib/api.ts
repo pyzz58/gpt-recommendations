@@ -1230,6 +1230,19 @@ export type ExternalSourceRecord = {
   limitations: string[];
 };
 
+export type ExternalSourceSearch = {
+  snapshot_id: string;
+  policy_id: string;
+  query: string;
+  adapter_ids: string[];
+  records: ExternalSourceRecord[];
+  record_count: number;
+  query_sha256: string;
+  result_sha256: string;
+  mode: string;
+  created_at: string;
+};
+
 type UploadStatus = {
   session_id: string;
   filename: string;
@@ -2532,8 +2545,8 @@ export function searchExternalSources(
   projectId: string,
   query: string,
   policyId = "biomedical_primary.v1",
-): Promise<ExternalSourceRecord[]> {
-  return request<ExternalSourceRecord[]>(
+): Promise<ExternalSourceSearch> {
+  return request<ExternalSourceSearch>(
     `/api/v1/projects/${projectId}/sources/search`,
     {
       method: "POST",

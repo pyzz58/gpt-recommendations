@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import decimal
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any
 from uuid import UUID
 
@@ -9,6 +9,7 @@ from sqlalchemy import (
     BigInteger,
     Boolean,
     CheckConstraint,
+    Date,
     DateTime,
     ForeignKey,
     ForeignKeyConstraint,
@@ -3083,6 +3084,49 @@ class RetrievalSnapshot(Base):
     selected_content_hashes: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
     acl_revision: Mapped[int] = mapped_column(Integer, nullable=False)
     top_k: Mapped[int] = mapped_column(Integer, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+class ExternalSourceSnapshot(Base):
+    __tablename__ = "external_source_snapshots"
+    __table_args__ = (
+        UniqueConstraint("workspace_id", "project_id", "id"),
+        ForeignKeyConstraint(
+            ["workspace_id", "project_id"],
+            ["projects.workspace_id", "projects.id"],
+            name="external_source_snapshot_same_project",
+        ),
+        CheckConstraint("record_count >= 0", name="external_source_snapshot_count"),
+        CheckConstraint(
+            "query_sha256 ~ '^[0-9a-f]{64}$'",
+            name="external_source_snapshot_query_hash",
+        ),
+        CheckConstraint(
+            "result_sha256 ~ '^[0-9a-f]{64}$'",
+            name="external_source_snapshot_result_hash",
+        ),
+        CheckConstraint("mode IN ('mock', 'live')", name="external_source_snapshot_mode"),
+        Index("ix_external_source_snapshots_project_created", "project_id", "created_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True)
+    workspace_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
+    project_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), nullable=False)
+    policy_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    query: Mapped[str] = mapped_column(Text, nullable=False)
+    date_from: Mapped[date | None] = mapped_column(Date())
+    date_to: Mapped[date | None] = mapped_column(Date())
+    adapter_ids: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
+    records: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, nullable=False)
+    record_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    query_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+    result_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+    mode: Mapped[str] = mapped_column(String(10), nullable=False)
+    created_by_user_id: Mapped[UUID] = mapped_column(
+        PGUUID(as_uuid=True), ForeignKey("users.id"), nullable=False
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )

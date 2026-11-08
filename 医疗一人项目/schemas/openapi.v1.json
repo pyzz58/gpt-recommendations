@@ -1352,11 +1352,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SourceRecord"
-                  },
-                  "title": "Response Search Sources Api V1 Projects  Project Id  Sources Search Post"
+                  "$ref": "#/components/schemas/SourceSearchView"
                 }
               }
             }
@@ -1372,6 +1368,59 @@
           },
           "503": {
             "description": "No live scholarly source adapter configured"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/sources/snapshots/{snapshot_id}": {
+      "get": {
+        "tags": [
+          "sources"
+        ],
+        "summary": "Read Snapshot",
+        "operationId": "read_snapshot_api_v1_projects__project_id__sources_snapshots__snapshot_id__get",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "snapshot_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Snapshot Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceSearchView"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -14574,6 +14623,72 @@
           "policy_id"
         ],
         "title": "SourceSearchRequest"
+      },
+      "SourceSearchView": {
+        "properties": {
+          "snapshot_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Snapshot Id"
+          },
+          "policy_id": {
+            "type": "string",
+            "title": "Policy Id"
+          },
+          "query": {
+            "type": "string",
+            "title": "Query"
+          },
+          "adapter_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Adapter Ids"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/SourceRecord"
+            },
+            "type": "array",
+            "title": "Records"
+          },
+          "record_count": {
+            "type": "integer",
+            "title": "Record Count"
+          },
+          "query_sha256": {
+            "type": "string",
+            "title": "Query Sha256"
+          },
+          "result_sha256": {
+            "type": "string",
+            "title": "Result Sha256"
+          },
+          "mode": {
+            "type": "string",
+            "title": "Mode"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_id",
+          "policy_id",
+          "query",
+          "adapter_ids",
+          "records",
+          "record_count",
+          "query_sha256",
+          "result_sha256",
+          "mode",
+          "created_at"
+        ],
+        "title": "SourceSearchView"
       },
       "SourceTier": {
         "type": "string",

@@ -147,7 +147,7 @@ Compose 的命名卷、异地副本、密钥丢失恢复和真实主机故障仍
 - worker 心跳缺失和 provider未配置均返回 HTTP 503/`not_ready`；
 - `smoke` 后 API、worker、web 均停止，无测试进程残留；
 - 独立 PostgreSQL 17.6 完成 `f4a2c7d9e601 → b2e7d4a9c310 → f4a2c7d9e601`；
-- 全库 84 条 RLS 策略，应用角色迁移 head 与运行常量一致；
+- 全库 85 条 RLS 策略，应用角色迁移 head 与运行常量一致；
 - 应用测试、Ruff、mypy、Next.js lint/typecheck/build、追踪检查按最终源码提交
   另存于 `traceability/acceptance-records.json`。
 

@@ -15,6 +15,7 @@ import {
 } from "@/lib/api";
 import type {
   ExternalSourceRecord,
+  ExternalSourceSearch,
   KnowledgeDocumentDetail,
   KnowledgeDocumentSummary,
   KnowledgeSearch,
@@ -48,6 +49,8 @@ export default function KnowledgePage() {
     useState<KnowledgeDocumentDetail | null>(null);
   const [searchResult, setSearchResult] = useState<KnowledgeSearch | null>(null);
   const [externalSources, setExternalSources] = useState<ExternalSourceRecord[]>([]);
+  const [externalSnapshot, setExternalSnapshot] =
+    useState<ExternalSourceSearch | null>(null);
   const [externalQuery, setExternalQuery] = useState("");
   const [query, setQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -206,9 +209,12 @@ export default function KnowledgePage() {
     setSearchingExternal(true);
     setError("");
     try {
-      setExternalSources(
-        await searchExternalSources(projectId, externalQuery.trim()),
+      const result = await searchExternalSources(
+        projectId,
+        externalQuery.trim(),
       );
+      setExternalSnapshot(result);
+      setExternalSources(result.records);
     } catch (cause) {
       setExternalSources([]);
       setError(
@@ -432,6 +438,13 @@ export default function KnowledgePage() {
               {searchingExternal ? "检索中…" : "检索专业来源"}
             </button>
           </form>
+          {externalSnapshot && (
+            <small>
+              来源快照 {externalSnapshot.snapshot_id.slice(0, 12)} ·{" "}
+              {externalSnapshot.record_count} 条 · hash{" "}
+              {externalSnapshot.result_sha256.slice(0, 12)}
+            </small>
+          )}
           {externalSources.length > 0 && (
             <div className="searchResults">
               {externalSources.map((source) => (
