@@ -37,4 +37,4 @@ tests/integration/test_w15_mail.py::test_w15_mail_tables_are_forced_through_rls 
     from starlette.testclient import TestClient as TestClient  # noqa
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 24 passed, 1 warning in 2.10s =========================
+======================== 24 passed, 1 warning in 2.20s =========================

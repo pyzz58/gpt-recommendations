@@ -1,16 +1,16 @@
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
 INFO  [alembic.runtime.migration] Will assume transactional DDL.
 {"workspace_id": "f3e1b71b-c994-4fda-bdd1-00ce723bdcd1", "owner_user_id": "39b189af-0fec-47b1-98ce-b11c05462814", "mode": "local"}
-PASS: api started with PID 98579
+PASS: api started with PID 15215
 PASS: API live endpoint responded with HTTP 200
-PASS: worker started with PID 98603
-PASS: web started with PID 98618
+PASS: worker started with PID 15267
+PASS: web started with PID 15284
 PASS: API ready endpoint responded with HTTP 200
 PASS: Web page responded with HTTP 307
-Started: web=http://127.0.0.1:13000 api=http://127.0.0.1:18000 runtime=/tmp/medical-one-readiness.wT6kvn/state
-process api    running pid=98579 log=/tmp/medical-one-readiness.wT6kvn/state/logs/api.log
-process worker running pid=98603 log=/tmp/medical-one-readiness.wT6kvn/state/logs/worker.log
-process web    running pid=98618 log=/tmp/medical-one-readiness.wT6kvn/state/logs/web.log
+Started: web=http://127.0.0.1:13002 api=http://127.0.0.1:18002 runtime=/tmp/medical-one-readiness.wT6kvn/state
+process api    running pid=15215 log=/tmp/medical-one-readiness.wT6kvn/state/logs/api.log
+process worker running pid=15267 log=/tmp/medical-one-readiness.wT6kvn/state/logs/worker.log
+process web    running pid=15284 log=/tmp/medical-one-readiness.wT6kvn/state/logs/web.log
 {
     "status": "ok",
     "mode": "mock",
@@ -35,7 +35,7 @@ process web    running pid=98618 log=/tmp/medical-one-readiness.wT6kvn/state/log
         },
         "database": {
             "status": "ready",
-            "detail": "PostgreSQL connected at migration a1c9e7f2d304"
+            "detail": "PostgreSQL connected at migration b7d1e4a9c260"
         },
         "artifact_storage": {
             "status": "ready",
@@ -55,7 +55,7 @@ capabilities mode=mock
   agents: ready - 26 role contracts loaded; provider=fake-deterministic-v1
   artifact_storage: ready - 5 project storage roots are writable: artifacts, backups, knowledge-staging, restore-checks, runs
   audit_reviews: ready - Deterministic A25/A26 rule reviews, immutable input snapshots, blocking and synthetic evaluation are available; these are not human or non-mock independent-agent reviews
-  database: ready - PostgreSQL connected at migration a1c9e7f2d304
+  database: ready - PostgreSQL connected at migration b7d1e4a9c260
   datasets: ready - Immutable raw table versions, cleaning derivations, pre-specified deterministic analyses, charts and review records are implemented
   domain_workflows: ready - Pet repurposing, IVD and device workflow packages define stages, required roles, criteria, failure routes and external gates
   external_records: ready - Organizations, contacts, experts, engagement scopes, quotes, contract states, deliverables, professional records and explicit external authorizations are connected to project PostgreSQL state
