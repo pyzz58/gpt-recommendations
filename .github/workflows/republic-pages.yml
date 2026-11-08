@@ -1,0 +1,36 @@
+name: Republic – publish game and research landing
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/ai-state-governance/**'
+      - '.github/workflows/republic-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: republic-pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out files
+        uses: actions/checkout@v4
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload the Republic site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: research/ai-state-governance
+      - name: Deploy site
+        id: deployment
+        uses: actions/deploy-pages@v4
