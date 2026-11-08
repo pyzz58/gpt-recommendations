@@ -1,12 +1,26 @@
 # AI Stewardship State: A Human-Executed, AI-Overseen Model of National Governance
 
-**Public discussion paper | Version 0.4 | 8 November 2026**
+**Public discussion paper | Version 0.5 | 8 November 2026**
 
 **Status:** Conceptual institutional proposal; **not** an implemented government, a validated AI capability, or a claim that current models can safely exercise sovereign authority.
 
 **Central proposition:** An AI head of state need not be a specialist in every domain or govern every administrative matter. It should help ensure **impartial senior appointments, integrity safeguards, expert cabinet deliberation, protected substantive dissent, independent verification, and evidence-grounded exceptional adjudication**, while continually improving the people, institutions, incentives, resource allocations, and assurance systems through which a state is governed. Human experts and public institutions continue to develop and execute policy. The AI reviews exceptional decisions, maintains strategic coherence, and helps correct systemic failure.
 
 This paper records a design hypothesis for critique, not a political endorsement of automated rule. Constitutional legitimacy, fundamental rights, independent adjudication, and public accountability remain prerequisites rather than optional performance metrics.
+
+## Companion interactive demo: *Republic* — a short text-based decision game
+
+**[Research and game hub](README.md) · [How to play](republic-game/README.md) · [Public discussion](https://github.com/pyzz58/gpt-recommendations/issues/84)**
+
+*Republic* is an **original, fictional interactive text game derived from the institutional design hypotheses in this paper**. It is a lightweight way for readers to experience the proposed division of labor: **human specialists draft and execute proposals; independent auditors supply additional evidence; the AI steward handles a limited set of exceptional decisions and reviews follow-up reports**.
+
+The player acts as a hypothetical AI head of state through five short rounds involving senior appointments, regional resource allocation, cabinet deliberation, procurement oversight, and organizational redesign. Players may request independent audit evidence before choosing among three options per round. Four invented feedback indicators—public well-being, fiscal condition, integrity, and institutional trust—change to illustrate trade-offs. The HTML game is free, requires no registration or backend, and can be opened offline. A public browser URL depends on GitHub Pages being enabled; [offline instructions](republic-game/README.md) remain available.
+
+**Scope disclaimer:** This is a narrative *thought experiment*, not a model of any actual country or person, not validated policy forecasting, and not evidence that AI is capable of exercising sovereign authority. Results are defined by fictional game rules.
+
+**Community invitation:** Everyone is welcome to play, question assumptions, critique scenarios, and propose better rules in [public Issue #84](https://github.com/pyzz58/gpt-recommendations/issues/84). Contributors may inspect the [single-file game source](https://github.com/pyzz58/gpt-recommendations/blob/main/research/ai-state-governance/republic-game/index.html) and submit changes through GitHub Pull Requests. Please separate empirical claims from normative disagreements and purely narrative mechanics; substantive changes should include clear reasoning and maintain version history.
+
+---
 
 ## Executive summary
 
@@ -299,6 +313,8 @@ These sources support parts of the framing and safeguards; **none validates the 
 **Revision policy:** Preserve dissent and substantive objections, version the design, distinguish proposals from evidence, and document support for revisions to empirical claims.
 
 ## Version history
+
+- **v0.5 — 8 November 2026:** linked the original *Republic* text-game companion, clarified its hypothetical nature, and invited public play, critique, and GitHub contributions without changing the main institutional hypotheses.
 
 - **v0.4 — 8 November 2026:** added open candidacy, independent nominations, preregistered job criteria, multichannel evidence, procedural audits of excluded candidates, nontraditional career routes, appeal, and post-appointment learning; introduced an independently fictional emergency-logistics selection scenario.
 
