@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>共和国 · AI 元治理研究与文字游戏</title>
+<meta name="description" content="共和国是依据 AI 元治理研究报告设计的免费、虚构、可离线运行的文字决策游戏。欢迎体验、质疑和改进。">
+<style>
+:root{color-scheme:light;--fg:#183047;--sec:#62778b;--bg:#f4f6f8;--card:white;--stroke:#e1e7ee;--blue:#163d62}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font:16px/1.8 system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;color:var(--fg)}
+main{max-width:800px;margin:auto;padding:38px 20px 70px}
+.hero{padding:42px 32px;background:var(--blue);color:white;border-radius:22px}
+.hero h1{font-size:38px;letter-spacing:.14em;margin:8px 0}
+.hero p{opacity:.87;max-width:620px}
+.small{font-size:13px;opacity:.82}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.panel{border:1px solid var(--stroke);background:var(--card);padding:24px;border-radius:16px}
+.panel h2{margin:0;font-size:20px}
+.panel p{margin:9px 0 18px;color:var(--sec)}
+a.button{display:inline-block;text-decoration:none;background:var(--blue);color:white;border-radius:10px;padding:10px 18px;font-weight:700}
+a.button:hover{background:#295f88}
+a.link{color:#175d94;text-underline-offset:3px}
+.info{margin-top:15px;background:var(--card);padding:22px 25px;border:1px solid var(--stroke);border-radius:16px}
+ul{padding-left:24px}
+footer{font-size:12px;color:var(--sec);text-align:center;margin-top:20px}
+@media(max-width:580px){.grid{grid-template-columns:1fr}.hero{padding:32px 24px}.hero h1{font-size:32px}}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+<div class="small">公开制度研究 · 免费文字演示 · 纯虚构</div>
+<h1>共和国</h1>
+<p>AI 元首不亲自包办国家事务：由专业团队提出议案、独立审计补充证据，你负责关键人事、预算与重大事项的审核与纠偏。</p>
+<a class="button" style="background:white;color:#163d62" href="./republic-game/">▶ 开始游戏</a>
+<p class="small">5 轮决策 · 约 5 分钟 · 无注册 · 无数据上传 · 可在浏览器运行</p>
+</section>
+<div class="grid">
+<section class="panel">
+<h2>研究报告</h2>
+<p>这个小游戏根据《AI 元治理国家》研究草案设计，用于将抽象制度转化为可讨论的决策情景。游戏指标和后果只是叙事设定，不代表真实政策结论。</p>
+<p><a class="link" href="https://github.com/pyzz58/gpt-recommendations/blob/main/research/ai-state-governance/REPORT_ZH.md">阅读中文版研究报告</a></p>
+<a class="link" href="https://github.com/pyzz58/gpt-recommendations/blob/main/research/ai-state-governance/REPORT_EN.md">Read the English research paper</a>
+</section>
+<section class="panel">
+<h2>开放讨论与修改</h2>
+<p>欢迎所有人免费体验、指出制度漏洞、提出新事件或选择、提交改进建议。公开版本同时提供代码，欢迎 Fork、Issue 和 Pull Request。</p>
+<p><a class="link" href="https://github.com/pyzz58/gpt-recommendations/issues/84">加入 GitHub 讨论</a></p>
+<a class="link" href="https://github.com/pyzz58/gpt-recommendations/tree/main/research/ai-state-governance/republic-game">查看游戏源码与玩法</a>
+</section>
+</div>
+<section class="info">
+<strong>关于《共和国》</strong>
+<ul>
+<li>你扮演虚构的 AI 元首，并不直接扮演各个专业部门。</li>
+<li>每轮收到人类团队的报告，可以调取独立审计证据，再决定批准、退回或提出其他方案。</li>
+<li>五轮结束会得到一份虚构的任期报告；可以重玩，对比不同制度选择。</li>
+<li>这是交互式思想实验，不是政治宣传、真实国家模拟或 AI 治国能力的实证证据。</li>
+</ul>
+</section>
+<footer>AI Stewardship State · Republic v0.1 · 欢迎讨论与共同完善</footer>
+</main>
+</body>
+</html>
