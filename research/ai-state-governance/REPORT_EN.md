@@ -1,6 +1,6 @@
 # AI Stewardship State: A Human-Executed, AI-Overseen Model of National Governance
 
-**Public discussion paper | Version 0.5 | 8 November 2026**
+**Public discussion paper | Version 0.6 | 8 November 2026**
 
 **Status:** Conceptual institutional proposal; **not** an implemented government, a validated AI capability, or a claim that current models can safely exercise sovereign authority.
 
@@ -14,7 +14,7 @@ This paper records a design hypothesis for critique, not a political endorsement
 
 *Republic* is an **original, fictional interactive text game derived from the institutional design hypotheses in this paper**. It is a lightweight way for readers to experience the proposed division of labor: **human specialists draft and execute proposals; independent auditors supply additional evidence; the AI steward handles a limited set of exceptional decisions and reviews follow-up reports**.
 
-The player acts as a hypothetical AI head of state through five short rounds involving senior appointments, regional resource allocation, cabinet deliberation, procurement oversight, and organizational redesign. Players may request independent audit evidence before choosing among three options per round. Four invented feedback indicators—public well-being, fiscal condition, integrity, and institutional trust—change to illustrate trade-offs. The HTML game is free, requires no registration or backend, and can be opened offline. A public browser URL depends on GitHub Pages being enabled; [offline instructions](republic-game/README.md) remain available.
+The player acts as a hypothetical AI head of state over a fictional twelve-working-day term covering approximately twenty-four decisions across senior appointments, public budgets, cabinet deliberation, procurement oversight, and organizational redesign. Players can request independent audit evidence, which may unlock a fourth proposal. An original fictional international crisis progresses through four connected stages while domestic decisions generate delayed effects and follow-up hearings. Four invented feedback indicators—public well-being, fiscal condition, integrity, and institutional trust—change to illustrate trade-offs. The HTML game is free, requires no registration or backend, and can be opened offline. A public browser URL depends on GitHub Pages being enabled; [offline instructions](republic-game/README.md) remain available.
 
 **Scope disclaimer:** This is a narrative *thought experiment*, not a model of any actual country or person, not validated policy forecasting, and not evidence that AI is capable of exercising sovereign authority. Results are defined by fictional game rules.
 
@@ -313,6 +313,8 @@ These sources support parts of the framing and safeguards; **none validates the 
 **Revision policy:** Preserve dissent and substantive objections, version the design, distinguish proposals from evidence, and document support for revisions to empirical claims.
 
 ## Version history
+
+- **v0.6 — 8 November 2026:** updated companion game description to reflect the twelve-day serial cabinet simulator, random international crisis, delayed outcomes, independent audit, and recurring matters; no change to the paper's central institutional hypotheses.
 
 - **v0.5 — 8 November 2026:** linked the original *Republic* text-game companion, clarified its hypothetical nature, and invited public play, critique, and GitHub contributions without changing the main institutional hypotheses.
 
