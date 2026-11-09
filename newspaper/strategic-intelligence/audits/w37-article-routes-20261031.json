@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "record_id": "W37-ARTICLE-ROUTES-20261031-001",
+  "work_id": "W37",
+  "checked_at": "2026-10-31T23:50:00+13:00",
+  "reviewed_basis": {
+    "spec_sha256_at_start": "98814ddf580992c27cd255c4f5a008353124c582653568a936087c67acf659f6",
+    "fixture_scope": "OWNED_SYNTHETIC_LEGAL_MATERIAL"
+  },
+  "result": "IN_PROGRESS",
+  "implementation_changes": {
+    "article_route": "Added an append-only ArticleRoute record that binds the actual Article to current W23 COVER/admission, W26 optional source-selection material, exact Evidence, prior published Article or unpublished Dossier, and W34 correction case.",
+    "short_form_review": "Added a schema-v2 short-form independent Review and W15 path. It uses the same reviewer inquiries, author response, issue closure and adoption controls without inventing B1/B2/C records.",
+    "weekly_role": "W32 now requires a W23 placement for every non-cover entry. Only DEEP_THEME may occupy FEATURE; SOURCE_SELECTION/UPDATE_CORRECTION may occupy UPDATE. A short form cannot replace depth, and a deep Article cannot be relabelled as an update."
+  },
+  "positive_checks": {
+    "source_selection": "Actual W26 excerpt material, SourceMap-backed Evidence, W23 SOURCE_SELECTION COVER/admission, ArticleRoute, independent Review with one inquiry/closure, PASS and W15 READY.",
+    "initial_fact": "Verified fact/time/evidence/importance/unknowns/reopen conditions; no prior Article, Dossier or correction case is permitted.",
+    "follow_up": "One prior published Article or unpublished ResearchDossier is required; at least one route Evidence must be beyond the prior basis.",
+    "correction": "The exact old Article and current W34 correction case are required; the old excerpt must occur in both the old Article and the correction Article.",
+    "edition": "A single reviewed HTML edition combines one DEEP_THEME feature with INITIAL_FACT, FOLLOW_UP and CORRECTION update entries; every entry has its exact W23 placement and current W15 adoption."
+  },
+  "negative_checks": {
+    "relabel": "W23 article type and ArticleRoute short_form must agree.",
+    "invented_history": "INITIAL_FACT rejects prior Article/Dossier pointers.",
+    "repeat_as_follow_up": "FOLLOW_UP rejects Evidence already present in the prior Article/revision.",
+    "wrong_correction_quote": "CORRECTION rejects a quote absent from the old Article and correction Article.",
+    "edition_role": "A short form cannot replace the weekly depth feature, and a DEEP_THEME Article cannot be relabelled as UPDATE."
+  },
+  "test_scope": {
+    "w37_tests": 7,
+    "w31_tests": 17,
+    "w32_tests": 11,
+    "runtime_tests": 287,
+    "maintenance_tests": 52
+  },
+  "post_update_validation": {
+    "completed_at": "2026-10-31T23:57:02+13:00",
+    "final_spec_sha256": "6b7da8ea0804e5a5677c3f67beb9d674ae0b4e7a770a233e8fd32f475c15a0a0",
+    "code_sha256": {
+      "intelligence/article_route.py": "0729d594c098ae8b823e842942f8835f471d2cec802d8ea769ad3f1c940c2fdf",
+      "intelligence/editorial_review.py": "bfe813cf4b0ce2ee5e8b20d25ed8d2f46316f9adf4a64ab3e12c8c6a9d7356cb",
+      "intelligence/presentation.py": "fbe2c93f538bb648934ceb3133bb4cf3383521c6ebc93727199eeefd03e0d6a9",
+      "tests_runtime/test_article_route.py": "5bc3731819d5862ec146dd9da66aad44a54c3067a2080c57e79832034882f5b2"
+    },
+    "runtime_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 287,
+      "result": "PASS",
+      "duration_seconds": 31.507
+    },
+    "maintenance_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 52,
+      "result": "PASS",
+      "duration_seconds": 13.700
+    },
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W31_W32_W37_work_plan_check": "PASS",
+    "compileall_and_json": "PASS",
+    "diff_check": "PASS",
+    "controlled_binding_refresh": {
+      "technical_nodes": 21,
+      "work_packages_and_gates": 59,
+      "progress_and_evidence_preserved": true,
+      "reason": "The new W37 implementation/test files and technical implementation summaries changed the conservative managed-file and design binding contexts. All 21/59 bindings were explicitly reviewed; no progress or evidence was reset."
+    },
+    "final_work_states": {
+      "W12": "AWAITING_REVIEW",
+      "W13_to_W36": "IN_PROGRESS_WITH_W35_NOT_APPLICABLE",
+      "W37": "IN_PROGRESS",
+      "W38": "NOT_STARTED",
+      "G01_to_G04": "NOT_STARTED"
+    }
+  },
+  "limits": [
+    "All route content is an owned synthetic fixture, not a real frozen news case or user-approved sample.",
+    "Short-form Review is manually executed; admitted-model short-form review remains unimplemented.",
+    "No real W26 translation quality, independent L5 capability, user reading or full-edition visual review was performed.",
+    "W23/W24/W26/W31/W32/W34 and all formal prerequisites remain IN_PROGRESS or unaccepted.",
+    "W37 does not claim G02, publication, delivery or production readiness."
+  ]
+}

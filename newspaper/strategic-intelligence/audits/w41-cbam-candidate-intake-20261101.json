@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "record_id": "W41-CBAM-CANDIDATE-20261101-001",
+  "work_id": "W41",
+  "checked_at": "2026-11-01T17:07:20+13:00",
+  "source_commit": "edc48bbdea132f0547ed0686057d6551eb0e3eb1",
+  "reviewed_basis_spec_sha256": "9d7547bba072072920618ccf3f8b2341b10ce4d0bab9fc5a850e7d0905d9d069",
+  "case": {
+    "case_id": "C027",
+    "theme_id": "TH-SI-W41-CARBON-BORDER-001",
+    "title": "碳边境调节：欧盟让谁为钢铁的碳埋单",
+    "result": "CANDIDATE_NOT_ACCEPTED",
+    "private_package": {
+      "logical_ref": "private:/内参-private/w41-case-cbam-20261101.zip",
+      "bytes": 15224,
+      "sha256": "4735c884cedafaf63821b04ec85cd552f0503191970b7ccfb291c88c7cb4fe5a",
+      "manifest_verified": true,
+      "zip_integrity_verified": true
+    }
+  },
+  "evidence_mix": {
+    "official_current_rules": [
+      "European Commission CBAM definitive-regime page",
+      "European Commission CBAM legislation index",
+      "European Commission certificate-price method",
+      "European Commission implementation communication"
+    ],
+    "observed_firm_evidence": [
+      "World Bank Policy Research Working Paper 11366 on Turkish manufacturer responses to the July 2021 CBAM announcement"
+    ],
+    "model_results": [
+      "Horowitz, van de Ven and Holtz, Environmental Research Letters 21 034025 (2026), global steel scenarios"
+    ],
+    "exposure_method_note": [
+      "World Bank CBAM Exposure Indices Methodological Note (2025)"
+    ],
+    "rights_sources": [
+      "European Commission legal notice",
+      "World Bank item metadata/licence",
+      "Crossref IOP licence metadata"
+    ]
+  },
+  "coverage_check": {
+    "real_legal_primary_material": true,
+    "real_observed_empirical_material": true,
+    "model_and_observation_distinguished": true,
+    "non_financial": true,
+    "non_startup": true,
+    "non_us_china_major_theme": true,
+    "institution_before_after": true,
+    "stepwise_cross_domain_transmission": true,
+    "coherent_deep_draft": true
+  },
+  "readiness_check": {
+    "independent_content_review": false,
+    "independent_baseline_gain_review": false,
+    "user_reading": false,
+    "actual_2026_full_year_outcome": false,
+    "first_certificate_surrender_observed": false,
+    "countable_toward_six_real_cases": false
+  },
+  "why_not_counted": [
+    "The draft and evidence map were produced by the current executor; no independent L5 review exists.",
+    "The baseline-gain comparison is an executor self-assessment, not an independent or user-confirmed comparison.",
+    "The 2026 definitive regime is in force, but the first annual declaration and certificate surrender are due in 2027; no complete 2026 outcome is available.",
+    "The real empirical study concerns Turkish firms after the July 2021 announcement, not measured 2026 certificate-system outcomes.",
+    "The global steel numbers are model scenarios, not observed policy results."
+  ],
+  "actual_retrieval": {
+    "mode": "Public read-only HTTP retrieval and local synthesis",
+    "paid_api_calls": 0,
+    "model_api_calls": 0,
+    "external_delivery": false,
+    "known_failures": [
+      "EUR-Lex WAF challenge",
+      "European Council HTTP 403",
+      "Selected academic landing pages HTTP 403",
+      "One incorrect Commission URL guess returned page not found"
+    ]
+  },
+  "post_update_validation": {
+    "completed_at": "2026-11-01T17:08:00+13:00",
+    "final_spec_sha256": "8d2b75fe9b91550c6b1336993b39ddaf06780e535408faa2c399bd1e041f822f",
+    "runtime_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 301,
+      "result": "PASS",
+      "duration_seconds": 37.829
+    },
+    "maintenance_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 52,
+      "result": "PASS",
+      "duration_seconds": 17.066
+    },
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W41_work_plan_check": "PASS",
+    "json_and_diff_check": "PASS",
+    "private_manifest_and_zip_check": "PASS"
+  },
+  "work_state": {
+    "W41": "BLOCKED",
+    "candidate_count_added": 1,
+    "fully_verified_case_count": 0,
+    "remaining_six_case_shortfall": 5,
+    "G02": "NOT_STARTED",
+    "W42": "NOT_STARTED"
+  },
+  "limits": [
+    "This is genuine source research, not a synthetic fixture.",
+    "It improves W41's candidate pool but does not satisfy the independent-review or completed-outcome requirements.",
+    "No claim is made that CBAM has already delivered the modelled global emission reduction.",
+    "No claim is made that the European Commission, World Bank or IOP endorses this article.",
+    "No user reading, stage gate or publication authorization is inferred."
+  ]
+}

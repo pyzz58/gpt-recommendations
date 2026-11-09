@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "record_id": "W35-APPLICABILITY-20261031-001",
+  "work_id": "W35",
+  "checked_at": "2026-10-31T23:07:45+13:00",
+  "reviewed_basis": {
+    "spec_sha256": "379c3f0fc004f6be3b05c0b4107849e984e3ffbbb2c9de48e2c3033ee9c00e1f",
+    "spec_bytes": 1158776,
+    "section_24_6_1_sha256": "acf263ad807606ff1a139c086ee744cebbc5aa88c32cf6b882fdf7e4dc244a9f",
+    "section_24_6_1_chars": 3428
+  },
+  "result": "NOT_APPLICABLE",
+  "trigger_review": {
+    "scope": "All tracked source, specification, task-history summaries and audit records currently present in this repository; prior W14/W27 evidence was opened to distinguish preparation, source-byte limits and offline tests from actual model/task loading.",
+    "tracked_files_checked": 102,
+    "audit_json_files_checked": 35,
+    "real_model_or_research_runlog_with_context_receipt": false,
+    "actual_context_limit_observed": false,
+    "actual_truncation_in_required_task_input_observed": false,
+    "actual_missing_required_dependency_observed": false,
+    "actual_incomplete_output_observed": false,
+    "non_trigger_evidence": [
+      {
+        "ref": "audits/random-four-20261013.json",
+        "observed": "CBS source probe reported truncated=true at the source-probe response byte cap.",
+        "why_not_a_trigger": "This is an explicit source fetch/probe limit, not a model context limit, required task input truncation or incomplete research output."
+      },
+      {
+        "ref": "audits/w14-preparation-20261024.json",
+        "observed": "The canonical input was prepared in full at 1068903 bytes; provided_to_model=false and model_receive_scope=NOT_ATTEMPTED.",
+        "why_not_a_trigger": "Input size alone cannot prove overload, and no model received or reported a limit or truncation."
+      },
+      {
+        "ref": "audits/pr76-review-remediation-w27-20261031.json",
+        "observed": "W27 checkpoint, dependency and rebuild behavior was verified offline with no research model or supplier call.",
+        "why_not_a_trigger": "A successful/offline workflow test is neither a real blocked task nor autonomous proof that W35 is needed."
+      }
+    ]
+  },
+  "manual_locator": {
+    "anchor": "<a id=\"th-24-6-1\"></a>",
+    "anchor_count": 1,
+    "next_section_anchor": "<a id=\"tech-shared-25-1\"></a>",
+    "exact_section_range_chars": 3428,
+    "w35_machine_id_count": 1,
+    "checks": [
+      "The current specification hash and byte count were computed before locating the section.",
+      "Section 24.6.1 was extracted from its unique anchor to the next top-level stable anchor; required trigger, evidence, preparation/provision distinction and reconnect text were present exactly once.",
+      "The unique W35 machine-readable item was parsed with title, W14/W17 dependencies, T01/T13/R07 nodes and T01.L01/T13.L03/R07.F03 logic intact.",
+      "The W35 conditional text still requires a real recorded load/context blocker and forbids using W27 incompleteness itself as a trigger."
+    ],
+    "no_view_or_generator_created": true
+  },
+  "reconnect_procedure": [
+    "Re-read the current unique specification and verify its SHA-256 against the record used for the current task.",
+    "Locate section 24.6.1 by the unique th-24-6-1 anchor and read through the next top-level anchor; do not use a chat summary as the rule source.",
+    "Locate W35 by its single machine-readable id, then recover the current task/problem version, actual inputs and explicit dependencies rather than assuming prior state.",
+    "If no true blocker exists, continue with manual location and existing dossier records without inventing a task_view_id or splitter.",
+    "If a named task later records a real context limit, truncation, missing required dependency or incomplete output, reopen only the W35 local unblock branch; return to the same task without producing READY/PASS."
+  ],
+  "q_checks": {
+    "Q01": "PASS_APPLICABILITY_REVIEW: current specification, W35 card, conditional trigger and T01/T13/R07 binding were located and reviewed.",
+    "Q02": "SCOPE_ONLY: formal W14/W17 and G01-G04 acceptance remain pending; this record decides current applicability, not package acceptance.",
+    "Q03": "PASS_RECORDED_SCOPE: the required no-bottleneck deliverable is a documented NOT_APPLICABLE basis plus a verified manual locator method; no extractor or splitter was implemented.",
+    "Q04": "PASS_SCOPED_COUNTEREXAMPLE_REVIEW: source-byte truncation, canonical byte size and offline workflow status were rejected as sufficient triggers; a future named real blockage remains a valid reopen condition.",
+    "Q05": "PASS_REOPEN_BOUNDARY: future affected work must stop, acquire the missing current unit/dependency or resume manually; this record grants no completion or release.",
+    "Q06": "SCOPED_REVIEW: repository search, exact anchor/section hashing, unique W35 JSON parsing and maintenance regressions are the evidence; no model reception or semantic-capacity test was performed.",
+    "Q07": "RECORDED_SCOPE: no model API, paid resource, deployment, publication, external delivery or user-data transfer was used."
+  },
+  "post_update_validation": {
+    "completed_at": "2026-10-31T23:10:00+13:00",
+    "final_spec_bytes": 1160934,
+    "final_spec_sha256": "3d8a0959b3c81d4744160f8afd21ad5d979414ef7ba4b8c5e38fecdddedb79e4",
+    "section_24_6_1_unchanged_chars": 3428,
+    "section_24_6_1_unchanged_sha256": "acf263ad807606ff1a139c086ee744cebbc5aa88c32cf6b882fdf7e4dc244a9f",
+    "anchor_and_machine_entry_unique": true,
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W35_work_plan_check": "PASS",
+    "maintenance_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 52,
+      "result": "PASS",
+      "duration_seconds": 13.763
+    },
+    "runtime_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 276,
+      "result": "PASS",
+      "duration_seconds": 27.453
+    },
+    "compileall_and_json": "PASS",
+    "diff_check": "PASS",
+    "final_work_states": {
+      "W35": "NOT_APPLICABLE",
+      "G01": "NOT_STARTED"
+    },
+    "environment_retry": "The first runtime command used system python3 3.9 without project dependencies and failed imports. The same suite was then run under the locked Python 3.12.14 virtual environment and passed; this was a command-environment error, not a business-test result."
+  },
+  "new_business_code": false,
+  "task_view_or_splitter_created": false,
+  "limits": [
+    "NOT_APPLICABLE means W35 is unnecessary for the current evidence set, not that task views or splitting have been implemented or accepted.",
+    "The absence of a recorded blocker in available project records cannot prove that an unrecorded future run will also have no limit.",
+    "W14/W17 and all stage gates remain unaccepted; this record cannot be used as W36/R07 integration evidence.",
+    "No arbitrary-model context-capacity, semantic completeness or persistent crash-recovery claim is made."
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "record_id": "W28-ADVISER-AUDIT-20261031-001",
+  "checked_at": "2026-10-31T21:31:53+13:00",
+  "reviewed_parent": "2f745b6",
+  "spec_sha256": "f49633ac65b8e60e858b30c5bd6b321b594f90ed203444e3b0bf76945f5da7e2",
+  "implemented": {
+    "exact_b1_basis": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "Adviser output binds the exact current W27 dossier snapshot, current W16 ResearchRevision and current active M09 ResearchStepRecord",
+        "baseline must be a current Source, Document or SourceMaterial version in the exact research revision inputs; other object kinds and older versions are rejected",
+        "Claim, Evidence and W25 ClaimEvidenceAssessment versions must be current exact research-revision inputs; theme, specification, withdrawn bodies and stale M09/snapshot/revision are rejected",
+        "the listed W25 assessments must cover exactly the selected Claims and their Evidence union must equal the selected Evidence set; irrelevant or background-only records cannot ground B1",
+        "a bounded judgment requires at least one SUPPORTS assessment, while attention scope, conditions, unknowns and falsifiers remain explicit"
+      ]
+    },
+    "case_specific_gain": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "the original author/original explanation is represented separately from the journal contribution",
+        "before and after understanding must differ, and the case-specific gain cannot merely relabel either contribution",
+        "at least one actual gap in the baseline explanation is required",
+        "the gain record states how changed evidence would affect the judgment and carries its remaining limits"
+      ]
+    },
+    "bounded_decision_contract": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "a judgment explicitly distinguishes a specific action decision from no action decision",
+        "specific decisions need a decision maker, comparison basis and at least two unique complete options",
+        "each option records action, rationale, costs, beneficiaries, likely third-party response, adjustment/exit and observable effect",
+        "no-action judgment cannot carry invented options; role labels, self-scores and undeclared fields are rejected by strict contracts",
+        "BOUNDED_JUDGMENT submits READY_FOR_NEXT, CANDIDATE_EXPLANATION remains CANDIDATE, and LIMITATION_OR_UNKNOWN submits LIMITED rather than a content pass"
+      ]
+    },
+    "execution_identity": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "manual outputs cannot carry model admission, configuration, operation or domain identity",
+        "admitted-model output requires an active W19 ADVISER/given-material scope at output time",
+        "the actual M10 MODEL OperationRequest must bind every judgment input, match the exact configuration and use MODEL_PROCESS",
+        "the operation must have a successful OperationReceipt recorded before the Adviser output; the output references that exact operation",
+        "the artifact remains role=B1 with facts_verified=false, causal_support=false, content_review_required=true and publication_authorized=false"
+      ]
+    },
+    "m10_recovery_and_concurrency": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "combined output and M10 submission does not claim atomic adoption; an archive-only result after M10 failure is an unadopted deterministic attempt",
+        "an exact retry on the unchanged dossier basis reuses that attempt and completes M10, while a changed basis requires a new Adviser version/request",
+        "repeated completed requests return the existing admissible M10 result",
+        "current snapshots admit only the latest exact Adviser output and one matching artifact in the active M10",
+        "concurrent exact writers do not leave two active M10 records or overwrite a newer snapshot",
+        "upstream rework invalidates M10; a rebuilt B1 uses the prior M10 history record as parent and a new Adviser parent version"
+      ]
+    }
+  },
+  "regressions": {
+    "w28_tests": 13,
+    "runtime_tests": 199,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS",
+    "compileall_result": "PASS",
+    "spec_check": "PASS",
+    "technical_check_T06": "PASS",
+    "work_plan_check_G01_W27_W28_W29": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W28 card, T06.L01-L03, registered implementation and the cited B1 evidence/gain/decision theory boundaries were reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W27, W25, W19 and earlier packages remain IN_PROGRESS rather than ACCEPTED; only the authorized offline W28 interface scope was exercised",
+    "Q03": "PASS_OFFLINE: exact B1 judgment/gain contracts, decision contexts and M10 persistence are implemented in the shared Archive and W27 workflow",
+    "Q04": "PASS_OFFLINE: 13 W28 tests cover positive roundtrip, exact W25 relations, stale identities, withdrawal, malformed gain/judgment, action/no-action decisions, strength routing, model identity and receipt, recovery, concurrency and upstream rework",
+    "Q05": "PASS_LIMITED_RECOVERY: invalid or stale basis is rejected before M10; failed M10 remains unadopted and recoverable only by exact retry on the same basis; changed upstream basis requires a new version",
+    "Q06": "PASS_SCOPED_REVIEW: only owned synthetic contracts, dossiers, evidence relationships and operation receipts were used; no real B1 prose, independent content review or reader assessment was produced",
+    "Q07": "RECORDED_SCOPE: no real model, supplier/API, paid resource, deployment, publication, email or delivery was invoked; no real content or cost measurement exists"
+  },
+  "source_hashes": {
+    "intelligence/advisor.py": "c33589d8e71c8bf31cba966fadc99d85564324e7c14fb5c2c20affa29e3bf1ea",
+    "tests_runtime/test_advisor.py": "654e7a8b0fb7fcad281f00c27883f35e991bed3e72c30c67247a0e1d5ff4b0da",
+    "intelligence/contracts.py": "d3b2af7098a5752d327f407aa939906a371711d61767fbd666abf42c869f3f5f",
+    "intelligence/research.py": "e091655d59cacf9300bad4441454409ac2469f825533e5b02bdeab29174e9b7d",
+    "intelligence/evidence.py": "140258607105138fff04f127a6f7f31b707e964c7117ac63979182fcd862f7fa",
+    "intelligence/model_admission.py": "8c5d0122523bf1b05d5996cf48836e3efae437392a16b4a9c6d9ecbf45dc3c63",
+    "intelligence/operations.py": "a6e5416b604d38f9955762d03d82efd2b719417e7949702dd56285324a9fb7c6",
+    "intelligence/workflow.py": "3151dc0398016fd025f57eac60ddcea5b198befe4989184f5bd32ad21cdbcb46",
+    "CANONICAL_SYSTEM_SPEC_V5.md": "f49633ac65b8e60e858b30c5bd6b321b594f90ed203444e3b0bf76945f5da7e2"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "IN_PROGRESS",
+    "W21": "IN_PROGRESS",
+    "W22": "IN_PROGRESS",
+    "W23": "IN_PROGRESS",
+    "W24": "IN_PROGRESS",
+    "W25": "IN_PROGRESS",
+    "W26": "IN_PROGRESS",
+    "W27": "IN_PROGRESS",
+    "W28": "IN_PROGRESS",
+    "W29": "NOT_STARTED"
+  },
+  "limits": [
+    "No real research question, B1 research/writing content or case-specific editorial judgment was produced",
+    "Semantic quality, action realism, motive restraint and whether a claimed decision truly exists remain for real content and independent review",
+    "The W28 unit fixture constructs W25-compatible archived records directly; the production boundary still validates exact current types, identities and relations but does not replace the upstream W24/W25 provenance checks",
+    "Model tests use owned synthetic operation receipts and patched admission/config lookups; no real W19 model capability or provider call was exercised",
+    "Archive remains append-only and output+M10 are separate commits; an interrupted output is explicitly unadopted and recoverable by exact retry, not a single database transaction",
+    "W31 independent content review, adoption, publication, persistent checkpointer/production recovery and stage gates remain pending",
+    "Formal prerequisites and G01-G04 remain unaccepted; W28 is IN_PROGRESS, not ACCEPTED"
+  ]
+}

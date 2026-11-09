@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "record_id": "W41-SIX-CASE-READINESS-20261031-001",
+  "work_id": "W41",
+  "checked_at": "2026-11-01T13:26:56+13:00",
+  "reviewed_basis": {
+    "spec_sha256": "566a4dafca2389e09e7b7db349789d6d1341feacef59528c43755fe58f8004d2",
+    "scope": "Existing accepted phase-one packages, audit summaries and current work-state records; no new external research or synthetic case was counted."
+  },
+  "result": "BLOCKED",
+  "case_inventory": {
+    "deep_chain_candidates": 1,
+    "conditionally_countable_as_one": 1,
+    "fully_verified_w41_cases": 0,
+    "remaining_minimum_if_candidate_qualifies": 5,
+    "candidate": {
+      "case_id": "C004 / TH-SI-W42-POWER-001",
+      "title": "数据中心接网：承诺能说明什么，风险由谁承担",
+      "evidence": "W06-W11 form one real deep chain with M01-M12, B1/B2/C and a limited PASS Review; W12 places the same chain in the weekly edition.",
+      "not_yet_fully_eligible_because": "The review was performed by the same context-exposed executor rather than an independent reviewer, user reading is absent, important project/contract/cost facts remain unresolved, and the single case cannot satisfy cross-case coverage."
+    },
+    "excluded_from_six": [
+      "W02/W03 candidate topics were discovery and selection inputs, not six complete deep cases.",
+      "W05 INITIAL_FACT/SOURCE_SELECTION items were short materials, not six full A/B1/B2/C chains.",
+      "W36-W40 route and correction fixtures are owned synthetic tests.",
+      "W37/W38/W39/W40 synthetic tests cannot count toward the stage gate."
+    ]
+  },
+  "coverage_check": {
+    "six_real_deep_cases": false,
+    "non_financial_or_non_startup_or_non_us_china_case_confirmed": false,
+    "institution_before_after_change_confirmed": false,
+    "end_to_end_cross_domain_transmission_case_confirmed": false,
+    "per_case_independent_review_available": false,
+    "same_topic_real_baseline_and_gain_comparison_for_six_cases": false
+  },
+  "prerequisite_state": {
+    "W12": "AWAITING_REVIEW",
+    "G01": "NOT_STARTED",
+    "W36": "IN_PROGRESS",
+    "W37": "IN_PROGRESS",
+    "W38": "IN_PROGRESS",
+    "W39": "IN_PROGRESS",
+    "W40": "IN_PROGRESS",
+    "G02": "NOT_STARTED"
+  },
+  "q_checks": {
+    "Q01": "PASS_READINESS_SCOPE: reviewed the W41 card and actual W01-W12/W36-W40 evidence.",
+    "Q02": "BLOCKED: formal W36-W40 and G01 are not accepted; the required six real cases are absent.",
+    "Q03": "BLOCKED: no six-case inventory, six per-case A/B1/B2/C/Review packages or joint input record exists.",
+    "Q04": "BLOCKED: coverage categories and independent-review requirements cannot be exercised without the missing real cases.",
+    "Q05": "BLOCKED with actionable next inputs: acquire five more real cases and independent review; do not substitute synthetic fixtures.",
+    "Q06": "RECORDED_SCOPE: inventory is based on existing package/audit evidence only; no new content quality judgment was invented.",
+    "Q07": "RECORDED_SCOPE: no model API, paid source, deployment, external delivery or new research was invoked."
+  },
+  "blocked_reason": "W41 requires at least six real legal cross-domain deep cases with per-case A/B1/B2/C, independent Review, baseline/gain and investment evidence. Only one real deep-chain candidate is traceable, with important review and content limitations; five additional real cases and the coverage categories are absent. Formal W36-W40 and G01 are also not accepted.",
+  "required_next_inputs": [
+    "Five additional real deep cases, or an explicitly authorized real research plan that does not reuse synthetic fixtures.",
+    "For each case: rights-aware materials, dated sources, A/B1/B2/C applicability, actual independent Review, main investment/failure record and final version chain.",
+    "Coverage evidence for a non-financial/non-startup/non-US-China case, an institution before/after change and a step-by-step cross-domain transmission.",
+    "User-readable outputs and a bounded joint comparison against each case's real baseline."
+  ],
+  "post_update_validation": {
+    "completed_at": "2026-11-01T13:27:27+13:00",
+    "final_spec_sha256": "cb6ee4ffcf92e3d1b0e70081e50ec231636a4c37657a1d653e890243caf2789d",
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W41_work_plan_check": "PASS",
+    "maintenance_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 52,
+      "result": "PASS",
+      "duration_seconds": 12.900
+    },
+    "json_and_diff_check": "PASS",
+    "final_work_states": {
+      "W40": "IN_PROGRESS",
+      "W41": "BLOCKED",
+      "G02": "NOT_STARTED"
+    }
+  },
+  "limits": [
+    "BLOCKED is a factual readiness result, not a rejection of the code modules already implemented.",
+    "The W11 deep chain remains a candidate and is not promoted to W41 acceptance.",
+    "No synthetic test fixture is counted toward the six-case requirement."
+  ]
+}

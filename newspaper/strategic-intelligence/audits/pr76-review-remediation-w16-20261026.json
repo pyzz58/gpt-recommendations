@@ -1,0 +1,75 @@
+{
+  "record_id": "PR76-REMEDIATION-W16-20261026-001",
+  "checked_at": "2026-10-26T14:06:18+13:00",
+  "reviewed_parent": "51a545befca31b01bf320f0c91081dde4521a6bd",
+  "review_report_sha256": "a5367ab068c8b3f025a0f5b10b8ba8b8cc32af46d0736293f9ca3eafb49e4ab1",
+  "fixed_in_this_step": {
+    "F06_artifact_basis_and_compatibility": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-059",
+      "checks": [
+        "ResearchRevision schema 2 distinguishes question, evidence, knowledge cutoff and limitation inputs and spec identity",
+        "all revision inputs are critical unless the revision explicitly marks a changed input as non-critical",
+        "ArtifactLink schema 2 records actual non-revision references and must match the exact artifact reference set",
+        "a rebuilt artifact must reference its exact target revision and every declared target input",
+        "a relabelled artifact without compatibility fails before commit",
+        "an old artifact cannot be relabelled even when the target revision declares no inputs",
+        "critical added evidence or removed dependency cannot be accepted by a compatibility record",
+        "explicit compatibility requires an archived exact Review and accounts for every added/removed input",
+        "a non-critical unrelated material addition can be accepted while an old artifact retains the common input basis",
+        "is_current rechecks basis, link identity, compatibility and target revision"
+      ]
+    },
+    "F09_atomic_revision_and_commit": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-062",
+      "checks": [
+        "Archive.append accepts expected-current object/version conditions checked under BEGIN IMMEDIATE",
+        "ResearchCommit checks both expected current revision and previous commit against the same write transaction",
+        "a revision committed between external checks and commit append causes Conflict",
+        "failed guarded append leaves no new commit or body",
+        "competing commit writers preserve a single current commit"
+      ]
+    }
+  },
+  "regressions": {
+    "w16_tests": 9,
+    "runtime_tests": 99,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W16 card, T05/T01/T11 logic, §6, §8.2, §16.6.1, §18 and §19.2 reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W13, W15, W14, G01 and W12 remain unaccepted; only the authorized offline W16 boundary was checked",
+    "Q03": "PASS_OFFLINE: revision dependency fields, exact artifact basis, Review-backed compatibility and expected-current guarded append are implemented",
+    "Q04": "PASS_OFFLINE: rebuilt artifact, critical change, unrelated non-critical change, revision/commit interleave and stale commit writer covered",
+    "Q05": "PASS_LIMITED_RECOVERY: failed commit leaves prior revision/commit unchanged; rebuilding or a new explicit compatibility Review provides the recovery path",
+    "Q06": "PASS_SCOPED_REVIEW: independent report probes were reproduced before repair; positive, negative, compatibility and concurrency regressions now pass",
+    "Q07": "RECORDED_SCOPE: synthetic owned fixtures only; no real research content, model, provider, paid call, publication or delivery"
+  },
+  "source_hashes": {
+    "intelligence/research.py": "e091655d59cacf9300bad4441454409ac2469f825533e5b02bdeab29174e9b7d",
+    "intelligence/archive.py": "09dbb0a25c524429fd010ec6daa5bbf19ef36a0a3fc1940b1e188174a71dffd2",
+    "intelligence/contracts.py": "031857b9ee5c13a655c9ff1dae96a1a393b76ed1a02792bee2684729673a6211",
+    "tests_runtime/test_research.py": "4ed9d4a9037fcc6485b7fc3378877bb3726cbf5e0bc26e463328b23364910850"
+  },
+  "work_states": {
+    "W12": "AWAITING_REVIEW",
+    "G01": "NOT_STARTED",
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "RETURNED",
+    "W18": "NOT_STARTED"
+  },
+  "limits": [
+    "Compatibility Review identity and substantive correctness are not authenticated or judged",
+    "The decision that an input is non-critical remains an explicit reviewed declaration, not an automated semantic conclusion",
+    "No real W27-W32 research tasks, model content, cross-week evidence correction or production recovery was exercised",
+    "W13/W15 formal prerequisites, W12 user reading and stage gates remain pending",
+    "W17 F07/F08/F11 remain open",
+    "No real model, provider API, paid call, deployment, publication or delivery occurred"
+  ]
+}

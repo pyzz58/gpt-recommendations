@@ -1,0 +1,77 @@
+{
+  "record_id": "W22-COVERAGE-AUDIT-20261031-001",
+  "checked_at": "2026-10-31T19:46:32+13:00",
+  "reviewed_parent": "93b2b81aafa163fbe903c64279abeccb5d45ea15",
+  "implemented": {
+    "independent_reference_plan": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "reference plan has an explicit pre-fixed timestamp, candidate/selection-not-viewed flag, date window, channels, scope and references",
+        "a reference plan cannot be domain quota, candidate-derived or selection-derived",
+        "each reference item must originate from an independent external query",
+        "plan fixed time must precede every supplied CandidateIndex and EventClusterProposal",
+        "channel failures are retained separately and never interpreted as no important event"
+      ]
+    },
+    "coverage_comparison": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "exact event-key or explicit reviewed match maps reference items to candidate clusters",
+        "undiscovered, clustering/filter missed, editor discarded, material insufficient, immature and duplicate coverage are distinct results",
+        "covered selected and covered under another title have explicit positive outcomes",
+        "priority is retained for positive or undercovered reference items",
+        "full coverage can produce an audit with zero gaps"
+      ]
+    },
+    "scope_and_persistence": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "CoverageAudit always records global_recall_claim=false and a bounded scope statement",
+        "reference plan and audit persist as immutable shared Archive versions",
+        "roundtrip preserves the independent reference scope, comparisons and gaps",
+        "the audit is a follow-up interface for T02/T03 and never selects or publishes content"
+      ]
+    }
+  },
+  "regressions": {
+    "w22_tests": 5,
+    "runtime_tests": 134,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W22 card, T02.L03/T03.L03, §4.4, §5.5, §18 and §19.2 reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W20/W21 and earlier packages remain unaccepted; only authorized offline comparison scope was checked",
+    "Q03": "PASS_OFFLINE: fixed reference plan, scoped comparison, gap taxonomy and immutable persistence implemented",
+    "Q04": "PASS_OFFLINE: covered, missing, source outage, editorial discard, immature, material gap, cluster miss and duplicate coverage covered",
+    "Q05": "PASS_LIMITED_RECOVERY: route failures and unresolved references have explicit owners/actions; no zero-event inference",
+    "Q06": "PASS_SCOPED_REVIEW: owned synthetic references/candidates only; no real editorial or content judgment",
+    "Q07": "RECORDED_SCOPE: no real discovery run, model/API call, paid resource, publication or delivery"
+  },
+  "source_hashes": {
+    "intelligence/coverage.py": "8a8a6da07781d007a7d543b2b47bd93a50773de737f58511329e4b97597728b9",
+    "tests_runtime/test_coverage.py": "00d7630b1b4e240dc90a9309ceef0a9a1babd08871d3f9259d970158deb320e6",
+    "intelligence/contracts.py": "cd26db2a641c5f510b7885f1d1fa14218d1928d039b318ca95fa7006541e4525"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "IN_PROGRESS",
+    "W21": "IN_PROGRESS",
+    "W22": "IN_PROGRESS",
+    "W23": "NOT_STARTED"
+  },
+  "limits": [
+    "No real independent reference was queried or verified",
+    "Reference independence and completeness remain unproven beyond the declared scope",
+    "No global recall rate, zero-miss claim or full-edition coverage conclusion is made",
+    "W23 editorial decisions, W36/W41 full-flow checks, prior formal prerequisites and user reading remain pending",
+    "No paid API, deployment, publication or delivery occurred"
+  ]
+}

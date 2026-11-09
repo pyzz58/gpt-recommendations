@@ -1,0 +1,130 @@
+{
+  "record_id": "W29-TEACHER-AUDIT-20261031-001",
+  "checked_at": "2026-10-31T21:47:45+13:00",
+  "reviewed_parent": "32341b9",
+  "spec_sha256": "b4f4d15809df5c7930c346bdf40f7d9bb597c7a4062b3abd1f6160666ff2fa86",
+  "implemented": {
+    "early_b2_question": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "teaching binds the current active M02 record and requires its exact archived B2 question as the early question",
+        "the refined research question states why the selected material needs it, what relation it should explain and how it descends from the M02 question",
+        "M11 does not require M10, so B2 research can proceed before, after or interleaved with B1 rather than only as a final polish",
+        "current M09, current W16 revision and the exact dossier snapshot are required"
+      ]
+    },
+    "continuous_teaching": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "actual paragraphs are required for case context, necessary basis, process, boundary/counterexample, knowledge summary and transfer",
+        "paragraph order moves from the concrete case through basis and process to boundary, knowledge and transfer",
+        "at least two ordered process steps must connect conditions, actions, evidence and results; every PROCESS paragraph must participate, and process-step Evidence cannot exceed that paragraph's Evidence",
+        "example/calculation paragraphs require one matching demonstration with assumptions, steps, result and limits; calculations also require values/units and hypothetical values require an explicit label",
+        "transfer records shared relations, changed conditions, facts to recheck and what must not be assumed",
+        "a professional term must have a plain-language basis/process explanation before the named summary",
+        "Concept cards cannot replace the required teaching paragraphs; a necessary recap needs an actual RECAP paragraph"
+      ]
+    },
+    "knowledge_basis": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "Claim, Evidence and W25 assessment versions must be current exact research-revision inputs",
+        "W25 assessments cover exactly the taught Claims and their Evidence union equals the taught Evidence set; irrelevant or background-only records cannot ground B2",
+        "the proposition identifies one of the eight canonical knowledge types and states conditions, scope, unknowns and falsifiers",
+        "mechanical/empirical mechanism or pattern teaching requires MethodUse that is current in the dossier; Concept links must be current archived Concept versions in the exact revision",
+        "bounded teaching needs a supported Claim; partial/limitation teaching carries explicit limits and submits M11 as LIMITED"
+      ]
+    },
+    "b1_boundary": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "B1 is optional and can be omitted when B2 has an independently grounded knowledge question and sources",
+        "a supplied B1 source requires both the exact current active M10 and its exact AdvisorOutput version",
+        "the B1 output must share the dossier, revision, theme and specification",
+        "B2 knowledge gain cannot merely relabel the selected B1 case-specific or journal contribution"
+      ]
+    },
+    "execution_and_state": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "manual outputs cannot carry model admission, configuration, operation or domain identity",
+        "model output requires a current W19 TEACHER/given-material admission and an actual M11 MODEL OperationRequest containing every teaching input",
+        "the MODEL operation requires MODEL_PROCESS and a successful receipt recorded before the TeacherOutput; the output references the operation",
+        "BOUNDED_EXPLANATION submits READY_FOR_NEXT while partial/limitation teaching submits LIMITED",
+        "the output is fixed to role=B2 with facts_verified=false, causal_support=false, reader_mastery_measured=false, content_review_required=true and publication_authorized=false"
+      ]
+    },
+    "m11_recovery": {
+      "status": "VERIFIED_OFFLINE",
+      "checks": [
+        "a TeacherOutput appended before M11 failure is an unadopted deterministic attempt, not a workflow pass",
+        "exact retry on the same dossier basis reuses the output and completes M11; a changed basis requires a new TeacherOutput version",
+        "completed repeated requests return the current admissible M11 result",
+        "concurrent exact writers leave one active M11 and do not overwrite newer snapshots",
+        "upstream rework invalidates M11; rebuilding uses the prior M11 record as parent and a new TeacherOutput parent version"
+      ]
+    }
+  },
+  "regressions": {
+    "w29_tests": 17,
+    "runtime_tests": 216,
+    "maintenance_tests": 52,
+    "runtime_result": "PASS",
+    "maintenance_result": "PASS",
+    "compileall_result": "PASS",
+    "spec_check": "PASS",
+    "technical_check_T07": "PASS",
+    "work_plan_check_G01_W28_W29_W30": "PASS"
+  },
+  "q_checks": {
+    "Q01": "PASS: current W29 card, T07.L01-L03, registered implementation and sections 9.1/10.1-10.7/19.5.1 were reviewed",
+    "Q02": "FORMAL_PRECONDITION_PENDING: W27, W25, W19, W28 and earlier packages remain IN_PROGRESS rather than ACCEPTED; only the authorized offline W29 interface scope was exercised",
+    "Q03": "PASS_OFFLINE: exact B2 knowledge research, continuous paragraph/process/boundary/transfer contracts, optional Concept/B1 links and M11 persistence are implemented",
+    "Q04": "PASS_OFFLINE: 17 W29 tests cover complete roundtrip, M02 origin, stale identities, required paragraphs, process links and exact paragraph Evidence, demonstrations/units/hypothetical labels, transfer conditions, term order, Method/Concept versions, withdrawal, optional B1, strengths, model admission/receipt, recovery, concurrency and rework",
+    "Q05": "PASS_LIMITED_RECOVERY: insufficient or invalid teaching basis is rejected before M11; failed M11 remains unadopted and exact retry recovers; changed upstream basis requires a new version",
+    "Q06": "PASS_SCOPED_REVIEW: only owned synthetic contracts, teaching paragraphs, evidence relations and operation receipts were used; no real B2 text, independent teaching review or reader assessment was produced",
+    "Q07": "RECORDED_SCOPE: no real model, supplier/API, paid resource, deployment, publication, email or delivery was invoked; no reader effect, cost or real content quality was measured"
+  },
+  "source_hashes": {
+    "intelligence/teacher.py": "35363a04ce871932700a84312f344bc5a3b6685135010de418d6181bc43a607a",
+    "tests_runtime/test_teacher.py": "3d07bca15397f1f1398561802a2e0ccbeaf70a02a92846e686c999f3dad6d5cf",
+    "intelligence/contracts.py": "a6d8f944e6123e882c37579cfd376546ff4ebb0a5ea79ddd34654f2dbe8e3354",
+    "intelligence/advisor.py": "c33589d8e71c8bf31cba966fadc99d85564324e7c14fb5c2c20affa29e3bf1ea",
+    "intelligence/research.py": "e091655d59cacf9300bad4441454409ac2469f825533e5b02bdeab29174e9b7d",
+    "intelligence/evidence.py": "140258607105138fff04f127a6f7f31b707e964c7117ac63979182fcd862f7fa",
+    "intelligence/model_admission.py": "8c5d0122523bf1b05d5996cf48836e3efae437392a16b4a9c6d9ecbf45dc3c63",
+    "intelligence/operations.py": "a6e5416b604d38f9955762d03d82efd2b719417e7949702dd56285324a9fb7c6",
+    "intelligence/workflow.py": "3151dc0398016fd025f57eac60ddcea5b198befe4989184f5bd32ad21cdbcb46",
+    "CANONICAL_SYSTEM_SPEC_V5.md": "b4f4d15809df5c7930c346bdf40f7d9bb597c7a4062b3abd1f6160666ff2fa86"
+  },
+  "work_states": {
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "IN_PROGRESS",
+    "W16": "IN_PROGRESS",
+    "W17": "IN_PROGRESS",
+    "W18": "IN_PROGRESS",
+    "W19": "IN_PROGRESS",
+    "W20": "IN_PROGRESS",
+    "W21": "IN_PROGRESS",
+    "W22": "IN_PROGRESS",
+    "W23": "IN_PROGRESS",
+    "W24": "IN_PROGRESS",
+    "W25": "IN_PROGRESS",
+    "W26": "IN_PROGRESS",
+    "W27": "IN_PROGRESS",
+    "W28": "IN_PROGRESS",
+    "W29": "IN_PROGRESS",
+    "W30": "NOT_STARTED"
+  },
+  "limits": [
+    "No real knowledge research or reader-facing B2 teaching text was produced",
+    "Semantic clarity, prose continuity, correct discipline-specific terminology and whether the mechanism is useful for this case remain for real content and independent review",
+    "The W29 unit fixture constructs W25-compatible records directly; the controller validates current types, identities and relations but does not replace upstream W24/W25 provenance checks",
+    "Model tests use owned synthetic operation receipts and patched admission/config lookups; no real W19 teaching-model capability or provider call was exercised",
+    "Archive remains append-only and TeacherOutput+M11 are separate commits; an interrupted output is explicitly unadopted and recoverable only by exact retry",
+    "No reader mastery, comprehension or learning outcome is measured; Concept cards and links are research records, not reader-state records",
+    "W31 independent content review, adoption, publication, persistent checkpointer/production recovery and stage gates remain pending",
+    "Formal prerequisites and G01-G04 remain unaccepted; W29 is IN_PROGRESS, not ACCEPTED"
+  ]
+}

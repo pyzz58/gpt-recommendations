@@ -1,0 +1,112 @@
+{
+  "record_id": "PR76-REMEDIATION-STEP1-20261026-001",
+  "checked_at": "2026-10-26T13:33:39+13:00",
+  "reviewed_pr_head": "5908796e02618e0aff6d5f1231c67b34823320e1",
+  "review_report_sha256": "a5367ab068c8b3f025a0f5b10b8ba8b8cc32af46d0736293f9ca3eafb49e4ab1",
+  "independent_reproduction": {
+    "negative_cases": 13,
+    "negative_reproduced": 13,
+    "positive_controls": 2,
+    "positive_passed": 2,
+    "baseline_runtime_tests_before_fix": 85,
+    "baseline_maintenance_tests_before_fix": 52
+  },
+  "fixed_in_this_step": {
+    "F01_storage_admission_and_use": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-054",
+      "checks": [
+        "explicit DENIED storage permission is rejected before any body file or version exists",
+        "expired and condition-unconfirmed storage permissions are rejected before write",
+        "new schema-1 writes cannot bypass structured storage requirements",
+        "subsequent model reads require current storage permission and fail after storage expiry",
+        "old schema-1 body remains locally recoverable without widening new writes"
+      ]
+    },
+    "F02_content_selection_bytes": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-055",
+      "checks": [
+        "partial permission without an approved selection is rejected",
+        "approved separate MaterialSelection bytes are returned instead of the mixed original",
+        "selected version must reference its exact original",
+        "selected version must have independent full-content use and storage permission",
+        "byte-identical relabelling of the excluded full body is rejected",
+        "expected selected-body digest mismatch is detectable"
+      ]
+    },
+    "F10_private_export_permissions": {
+      "status": "VERIFIED_OFFLINE",
+      "issue_id": "NC-063",
+      "checks": [
+        "get and read-reference create new body exports with mode 0600 under umask 022",
+        "prepare output uses the same secure creation helper",
+        "O_EXCL and O_NOFOLLOW are used",
+        "existing files are not overwritten",
+        "repository paths and symlink aliases remain rejected"
+      ]
+    }
+  },
+  "current_verification": {
+    "runtime_tests": 89,
+    "runtime_result": "PASS",
+    "maintenance_tests": 52,
+    "maintenance_result": "PASS",
+    "canonical_projection": "PASS",
+    "technical_binding": "PASS_FOR_CURRENT_DESIGN_ONLY",
+    "work_plan_binding": "PASS_FOR_CURRENT_DESIGN_ONLY"
+  },
+  "q_checks": {
+    "W13": {
+      "Q01": "PASS: current §6/§16/§24/§26 definitions, T01/T04/T11 and W13 acceptance reviewed",
+      "Q02": "FORMAL_PRECONDITION_PENDING: G01/W12 are not accepted; only authorized offline boundary repair checked",
+      "Q03": "PASS_OFFLINE: storage admission, use-time storage recheck, MaterialSelection and private-write helper implemented",
+      "Q04": "PASS_OFFLINE: denied/expired/conditional writes, storage-expired reads, excluded-byte selection and direct 0600 output covered",
+      "Q05": "PASS_LIMITED_RECOVERY: failed body admission leaves no body/version; explicit selected material provides forward path; legacy v1 remains readable",
+      "Q06": "PASS_SCOPED_REVIEW: independent review findings were reproduced, then positive/negative regressions executed",
+      "Q07": "RECORDED_SCOPE: no real source/model/provider, paid call, publication or delivery; complete resource accounting unavailable"
+    },
+    "W14": {
+      "Q01": "PASS: current source/material separation and private-output contract reviewed",
+      "Q02": "FORMAL_PRECONDITION_PENDING: W13/W12/G01 remain unaccepted",
+      "Q03": "PASS_OFFLINE: prepare/get/read-reference share direct 0600 private file creation",
+      "Q04": "PASS_OFFLINE: umask 022, overwrite, symlink, repository and outside controls checked",
+      "Q05": "PASS_LIMITED_RECOVERY: failed creation removes partial file; existing files and original archive state remain untouched",
+      "Q06": "PASS_SCOPED_REVIEW: actual CLI modes and path behavior checked; no model reception/content review claimed",
+      "Q07": "RECORDED_SCOPE: synthetic fixtures only; no real deliverable, model, paid API or deployment"
+    }
+  },
+  "remaining_review_findings": {
+    "F03": "OPEN / NC-056 / W15 RETURNED",
+    "F04": "OPEN / NC-057 / W15 RETURNED",
+    "F05": "OPEN / NC-058 / W15 RETURNED",
+    "F06": "OPEN / NC-059 / W16 RETURNED",
+    "F07": "OPEN / NC-060 / W17 RETURNED",
+    "F08": "OPEN / NC-061 / W17 RETURNED",
+    "F09": "OPEN / NC-062 / W16 RETURNED",
+    "F11": "OPEN / NC-064 / W17 RETURNED"
+  },
+  "source_hashes": {
+    "intelligence/contracts.py": "c5694c4bac11e45da9b110aabd39dca2b6d37d26e1f98b28f09323485e144aee",
+    "intelligence/archive.py": "fc7d02d36477b5ed64027562ff5e14781abe508de24315a4b9fa2a49bd1db585",
+    "intelligence/__main__.py": "03d1684d0b7a7971e957416e353e50bb86aab094a5678872087e9a63d6fe5e23",
+    "tests_runtime/test_archive.py": "42e8d15bd8fe3aeeab7c8d77cc73480b4dd47374872e79509a77a1a2c56ecef9",
+    "tests_runtime/test_preparation.py": "83cee0b20b6b738c36f45ddf3bc0eba2059c0eb5e37676af4e91d09a60238629"
+  },
+  "work_states": {
+    "W12": "AWAITING_REVIEW",
+    "G01": "NOT_STARTED",
+    "W13": "IN_PROGRESS",
+    "W14": "IN_PROGRESS",
+    "W15": "RETURNED",
+    "W16": "RETURNED",
+    "W17": "RETURNED",
+    "W18": "NOT_STARTED"
+  },
+  "limits": [
+    "No real third-party permission or legal conclusion was assessed",
+    "No real model, provider API, paid call, deployment, publication or delivery occurred",
+    "W15-W17 remain defective until their own remediation packages are completed",
+    "Stage gates, user sample reading and production recovery remain unverified"
+  ]
+}

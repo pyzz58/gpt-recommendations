@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "record_id": "W38-SUPPLEMENT-ROUTE-20261031-001",
+  "work_id": "W38",
+  "checked_at": "2026-11-01T00:15:00+13:00",
+  "reviewed_basis": {
+    "spec_sha256_at_start": "6b7da8ea0804e5a5677c3f67beb9d674ae0b4e7a770a233e8fd32f475c15a0a0",
+    "fixture_scope": "OWNED_SYNTHETIC_LEGAL_MATERIAL"
+  },
+  "result": "IN_PROGRESS",
+  "implementation_changes": {
+    "supplement_route": "Added an append-only SupplementRoute binding a W25 request/result to the target Claim, pre-supplement assessment, base and continuation W16 revisions, base and continuation W27 Dossiers, and any required W23 S8 re-selection.",
+    "same_root_guard": "A STRENGTHENED outcome requires a stronger relation and at least one independent root absent from the prior assessment. Duplicate same-root evidence remains ineligible for a strength claim.",
+    "handoff": "The route records MAINTAINED, STRENGTHENED, WEAKENED, UNRESOLVED, PAUSE_SOURCE or RETURN_TO_T03_S8, preserves before/after relations and new evidence/root IDs, and never grants automatic strength or publication."
+  },
+  "positive_checks": {
+    "maintained": "New Evidence and the same bounded support relation are recorded as MAINTAINED, with downstream review recheck required.",
+    "strengthened": "A second independent root moves PARTIALLY_SUPPORTS to SUPPORTS, creates a new W16 revision and W27 Dossier, and still records automatic_strength_granted=false.",
+    "weakened": "New Evidence moves the relation to CONTRADICTS and routes to a bounded WEAKENED handoff.",
+    "unresolved": "No qualifying new evidence remains UNRESOLVED and requires a new trigger before retry.",
+    "source_unavailable": "Unavailable source stops the affected route with an explicit pause reason.",
+    "scope_change": "Object/scope change creates a new revision/Dossier and returns to a current descendant W23 S8 decision."
+  },
+  "negative_checks": {
+    "same_root": "A duplicate lineage root cannot be counted as strengthening.",
+    "retry": "No-new-evidence and source-unavailable routes require a new trigger; repeated searching is not treated as stronger support.",
+    "s8": "Changed object/scope without a new current W23 decision is rejected.",
+    "automatic_pass": "The route cannot create READY/PASS or publication authorization."
+  },
+  "test_scope": {
+    "w38_tests": 7,
+    "runtime_tests": 294,
+    "maintenance_tests": 52
+  },
+  "post_update_validation": {
+    "completed_at": "2026-11-01T00:06:22+13:00",
+    "final_spec_sha256": "64bce268dad3988ae2764595e320b1ff1060276c9adb9823e172483c61827be1",
+    "code_sha256": {
+      "intelligence/supplement_route.py": "b8fe9b1d3c1c965339da4b6b08b63a0e7490293d9b59d4f9884d2c0f26ee227a",
+      "intelligence/evidence.py": "140258607105138fff04f127a6f7f31b707e964c7117ac63979182fcd862f7fa",
+      "tests_runtime/test_supplement_route.py": "663de13004967b5fc5ef163c50c567a3f82a0f71048ba88887d887dc1fa85f7e"
+    },
+    "runtime_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 294,
+      "result": "PASS",
+      "duration_seconds": 31.422
+    },
+    "maintenance_tests": {
+      "runner": ".venv/bin/python (Python 3.12.14)",
+      "count": 52,
+      "result": "PASS",
+      "duration_seconds": 14.325
+    },
+    "document_sync_check": "PASS",
+    "technical_binding_check": "PASS",
+    "W38_work_plan_check": "PASS",
+    "compileall_and_json": "PASS",
+    "diff_check": "PASS",
+    "controlled_binding_refresh": {
+      "technical_nodes": 21,
+      "work_packages_and_gates": 59,
+      "progress_and_evidence_preserved": true,
+      "reason": "The new W38 implementation/test files and technical implementation summaries changed the conservative managed-file and design binding contexts. All 21/59 bindings were explicitly reviewed; no W/G progress or evidence was reset."
+    },
+    "final_work_states": {
+      "W12": "AWAITING_REVIEW",
+      "W13_to_W37": "IN_PROGRESS_WITH_W35_NOT_APPLICABLE",
+      "W38": "IN_PROGRESS",
+      "W39": "NOT_STARTED",
+      "G01_to_G04": "NOT_STARTED"
+    }
+  },
+  "limits": [
+    "The route and both Dossiers use owned synthetic material, not a real discovered gap or real acquired supplement.",
+    "Only the manual supplement method is accepted; GPT Researcher and local conditional adapters are not adopted or validated.",
+    "W16/W27 continuation is offline; persistent checkpoint and production failure recovery remain unverified.",
+    "W31 review rechecks are required by the route but no real independent content review was performed.",
+    "W23/W25/W27/W31 and all formal prerequisites remain IN_PROGRESS or unaccepted."
+  ]
+}

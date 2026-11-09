@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path, PurePosixPath
 import re
 import sys
@@ -14,6 +15,9 @@ SPEC = "CANONICAL_SYSTEM_SPEC_V5.md"
 OUTPUTS = ("README.md", "AGENTS.md", "runtime_contract.json", "问题.md",
            "technical_trace.json", "TECHNICAL_TRACE.md", "work_plan.json", "WORK_PLAN.md")
 ROOT = Path(__file__).resolve().parents[1]
+IGNORED_LOCAL_PARTS = frozenset({".venv", "__pycache__", ".pytest_cache",
+                                ".mypy_cache", ".ruff_cache", "htmlcov", "build", "dist"})
+IGNORED_LOCAL_FILES = frozenset({".coverage"})
 _trace_spec = importlib.util.spec_from_file_location("technical_trace", ROOT / "tools/technical_trace.py")
 trace = importlib.util.module_from_spec(_trace_spec)
 _trace_spec.loader.exec_module(trace)
@@ -99,20 +103,32 @@ def inventory_errors(root: Path, outputs: dict[str, bytes]) -> list[str]:
     c = json.loads(outputs[OUTPUTS[2]])
     allowed = {SPEC, *OUTPUTS, *c["manual_code_files"], *c["data_files"]}
     errors = []
-    for p in root.rglob("*"):
-        rel = p.relative_to(root).as_posix()
-        if p.is_symlink():
-            errors.append(f"Symlink is not a managed artifact: {rel}")
-            continue
-        if not p.is_file():
-            continue
-        if "__pycache__" in p.parts and p.suffix == ".pyc":
-            continue
-        if rel in allowed:
-            continue
-        if p.suffix == ".json" and any(rel.startswith(d + "/") for d in c["evidence_dirs"]):
-            continue
-        errors.append(f"Unregistered file; merge rules into {SPEC} or register necessary data/code: {rel}")
+    for current, dirs, files in os.walk(root, topdown=True, followlinks=False):
+        current_path = Path(current)
+        kept_dirs = []
+        for name in dirs:
+            p = current_path/name
+            if name in IGNORED_LOCAL_PARTS:
+                continue
+            rel = p.relative_to(root).as_posix()
+            if p.is_symlink():
+                errors.append(f"Symlink is not a managed artifact: {rel}")
+                continue
+            kept_dirs.append(name)
+        dirs[:] = kept_dirs
+        for name in files:
+            p = current_path/name
+            rel = p.relative_to(root).as_posix()
+            if name in IGNORED_LOCAL_FILES:
+                continue
+            if p.is_symlink():
+                errors.append(f"Symlink is not a managed artifact: {rel}")
+                continue
+            if rel in allowed:
+                continue
+            if p.suffix == ".json" and any(rel.startswith(d + "/") for d in c["evidence_dirs"]):
+                continue
+            errors.append(f"Unregistered file; merge rules into {SPEC} or register necessary data/code: {rel}")
     for rel in sorted(allowed - set(OUTPUTS)):
         if not (root / rel).is_file():
             errors.append(f"Missing registered file: {rel}")
