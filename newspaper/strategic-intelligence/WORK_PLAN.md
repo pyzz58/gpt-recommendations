@@ -8,7 +8,7 @@
 
 CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不表示已写代码、能力通过、阶段通过或获准运行**。
 
-当前规范SHA-256：`2495d1058a8c33e5d9f89e06be6a52628457a5b8c3e31a79ff0c75ad824f8669`。
+当前规范SHA-256：`3fa2fa90545d3c3b3e70031ab0fba4a38cce23706053c3a250a6ff36e6355f32`。
 
 清单需复核：无；仅限清单关联新鲜度。
 
@@ -622,7 +622,7 @@ CURRENT_BINDING只表示清单与当前理论/技术设计关联一致，**不�
 
 关联变化：本卡依据变化=False；待复核T/R=无；上游清单待复核=无。
 
-实际证据：[{"record_id": "W14-PREPARATION-20261024-001", "artifact_refs": ["intelligence/preparation.py", "intelligence/__main__.py", "pyproject.toml (optional workflow)", "uv.lock", ".github/workflows/strategic-intelligence-runtime.yml (repository root)"], "validation_refs": ["tests_runtime/test_preparation.py (14 actual passing W14 tests; 55 total runtime tests)", "audits/w14-preparation-20261024.json (actual private test copy: 4 owned files, 1 pointer, full current source, graph and CLI recheck)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w14-preparation-20261024"], "reviewer": "当前执行者实际代码/接口正反与真实文件检查；非模型接收/理解、内容批准、用户阅读或阶段门验收", "result": "AWAITING_REVIEW", "scope": "W13提交及CI通过后，按用户样刊后置/继续指令逐包准备W14；LangGraph原生节点共用既有维护/W13，完整当前原文基线与任务/实际材料分隔，缺口/过期/漏条款/伪回执/撤权重核和私有CLI已验。55项运行测试及实际四份自有文件/一来源定位接口衔接通过；未做选择性精简或模型容量/质量验证。W12/G01及W13正式前置未通过，整包不记ACCEPTED；W15采用决定尚未开始。"}]
+实际证据：[{"record_id": "W14-PREPARATION-20261024-001", "artifact_refs": ["intelligence/preparation.py", "intelligence/__main__.py", "pyproject.toml (optional workflow)", "uv.lock", ".github/workflows/strategic-intelligence-runtime.yml (repository root)"], "validation_refs": ["tests_runtime/test_preparation.py (14 actual passing W14 tests; 55 total runtime tests)", "audits/w14-preparation-20261024.json (actual private test copy: 4 owned files, 1 pointer, full current source, graph and CLI recheck)", "CANONICAL_SYSTEM_SPEC_V5.md#run-w14-preparation-20261024"], "reviewer": "当前执行者实际代码/接口正反与真实文件检查；非模型接收/理解、内容批准、用户阅读或阶段门验收", "result": "AWAITING_REVIEW", "scope": "W13提交及CI通过后，按用户样刊后置/继续指令逐包准备W14；LangGraph原生节点共用既有维护/W13，完整当前原文基线与任务/实际材料分隔，缺口/过期/漏条款/伪回执/撤权重核和私有CLI已验。55项运行测试及实际四份自有文件/一来源定位接口衔接通过；未做选择性精简或模型容量/质量验证。W12/G01及W13正式前置未通过，整包不记ACCEPTED；W15采用决定尚未开始。"}, {"record_id": "W14-TECHNICAL-REVIEW-20261025-001", "artifact_refs": ["intelligence/preparation.py", "intelligence/__main__.py", "tests_runtime/test_preparation.py"], "validation_refs": ["audits/w14-technical-review-20261025.json", "CANONICAL_SYSTEM_SPEC_V5.md#run-w14-technical-review-20261025"], "reviewer": "本次执行者Codex实际逐项技术复核；不冒称独立内容L5、用户阅读或阶段批准", "result": "AWAITING_REVIEW", "scope": "W14本卡及Q01—Q07逐项检查已执行：离线输入准备、正反/返工、实际仓库文件测试包装、W13共用和W15生产端合同检查通过；补两项回归，命令/结果及限制见审计。Q02正式前置W13及W12/G01未过，故整包仍待验，不记ACCEPTED；未运行W15消费者、模型或生产。"}]
 
 <a id="w15"></a>
 ## W15｜采用检查与权威决定接口

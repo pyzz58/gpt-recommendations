@@ -190,6 +190,32 @@ class PreparationTests(unittest.TestCase):
         self.assertTrue(repaired.input_complete)
         self.assertEqual(repaired.materials[0].retrieved.version.submission.version_id,'SOURCE-v001')
 
+    def test_task_specification_mismatch_stops_before_material_loading(self):
+        self.archive.append(self.version('OLD-TASK','OLD-TASK-v001',ObjectKind.TASK,
+            refs=(self.ref,),spec_sha256='f'*64),b'Explicit incompatible task fixture')
+        need=self.need.model_copy(update={'read':self.need.read.model_copy(update={
+            'owner_version_id':'OLD-TASK-v001'})})
+        request=self.request.model_copy(update={'task_version_id':'OLD-TASK-v001','materials':(need,)})
+        with patch.object(self.archive,'read_reference',wraps=self.archive.read_reference) as read:
+            result=self.prepare(request)
+        read.assert_not_called()
+        self.assertFalse(result.input_complete)
+        self.assertEqual(result.materials,())
+        self.assertEqual(result.gaps[0].code,'TASK_INPUT_INVALID')
+        self.assertEqual(result.handoff,'REPAIR_INPUTS')
+
+    def test_recheck_preserves_material_limits_and_cannot_invent_model_reception(self):
+        prepared=self.prepare()
+        original=prepared.model_dump_json()
+        item=prepared.materials[0]
+        altered=item.model_copy(update={'need':item.need.model_copy(update={'declared_limits':()})})
+        with self.assertRaises(PreparationError):
+            verify_prepared_task(prepared.model_copy(update={'materials':(altered,)}),self.archive,self.source)
+        with self.assertRaises(ValidationError):
+            verify_prepared_task(prepared.model_copy(update={'provided_to_model':True}),self.archive,self.source)
+        self.assertEqual(prepared.model_dump_json(),original)
+        self.assertTrue(verify_prepared_task(prepared,self.archive,self.source).input_complete)
+
     def test_cli_creates_private_bundle_rechecks_and_refuses_overwrite(self):
         request=self.base/'request.json';request.write_text(self.request.model_dump_json())
         bundle=self.base/'prepared.json'
