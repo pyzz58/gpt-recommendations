@@ -22,6 +22,12 @@ import role_schema_guard as schema_guard
 import director_department_command as director_command
 import director_visual_language as visual_language
 import director_artistic_methods as artistic_methods
+import director_action_rescue as action_rescue
+import director_creative_integration as creative_gates
+import director_episode_rhythm as rhythm_arc
+import director_provider_capabilities as video_capabilities
+import director_voice_picture_sync as voice_picture
+import director_screenplay_authority as story_authority
 
 CONTRACT_VERSION = "1.0"
 MAX_CONTEXT_CHARS = 220_000
@@ -440,10 +446,144 @@ def execution_output_schema(base, state, task_id, *, editorial_handoff=None):
     return schema
 
 
+def _director_provider_and_speech_custody(
+        base, state, task_id, provider_capability_plan, speech_picture_plan):
+    """One source-locked original-profession context, no new agents or API.
+
+    Neither an official model spec nor a planned subtitle can authenticate
+    the provider account, a native voice transcript, or an actual lip sync.
+    """
+    selected = None
+    speech = None
+    provider_mode = base.get("director_provider_capability_mode")
+    speech_mode = base.get("director_speech_picture_mode")
+    required_provider = {"kind": "director_model_channel_capability_required",
+                         "before_ai_technical": True}
+    required_speech = {"kind": "director_source_exact_speech_picture_required",
+                       "before_sound_and_edit": True}
+    if provider_mode is not None and provider_mode != required_provider:
+        raise ValueError("CREW_PROVIDER_CAPABILITY_MODE_INVALID")
+    if speech_mode is not None and speech_mode != required_speech:
+        raise ValueError("CREW_SPEECH_PICTURE_MODE_INVALID")
+    if provider_capability_plan is not None:
+        if task_id not in ("sound", "editing_animation",
+                           "ai_technical", "director_final"):
+            raise ValueError("CREW_PROVIDER_PLAN_WRONG_ROLE")
+        if provider_mode is None:
+            raise ValueError("CREW_PROVIDER_PLAN_REQUIRES_EXPLICIT_MODE")
+        if task_id in ("ai_technical", "director_final"):
+            selected = video_capabilities.crew_context(
+                base, state, provider_capability_plan, task_id)
+        else:
+            # Sound/edit can inspect native audio compatibility without
+            # receiving the whole vendor execution work order.
+            video_capabilities.validate(base, state, provider_capability_plan)
+    elif provider_mode is not None and task_id in ("ai_technical", "director_final"):
+        raise ValueError("CREW_NO_DIRECTOR_CHOSEN_PROVIDER_CHANNEL")
+    if speech_picture_plan is not None:
+        if task_id not in ("sound", "editing_animation", "ai_technical",
+                           "director_final"):
+            raise ValueError("CREW_SPEECH_PICTURE_PLAN_WRONG_ROLE")
+        if speech_mode is None:
+            raise ValueError("CREW_SPEECH_PICTURE_REQUIRES_EXPLICIT_MODE")
+        speech = voice_picture.build_role_context(
+            base, state, speech_picture_plan, task_id)
+    elif speech_mode is not None and task_id in (
+            "sound", "editing_animation", "ai_technical", "director_final"):
+        raise ValueError("CREW_DIRECTOR_SOURCE_EXACT_SPEECH_PLAN_REQUIRED")
+    if speech_picture_plan is not None and any(
+            cue["audio_implementation"] == "native_dialogue_candidate"
+            for cue in speech_picture_plan["audio"]):
+        if provider_capability_plan is None:
+            raise ValueError("CREW_NATIVE_SPEECH_NEEDS_REAL_CAPABILITY_SELECTION")
+    if provider_capability_plan is not None and speech_picture_plan is not None:
+        by_shot = {row["shot_id"]: row for row in provider_capability_plan["shots"]}
+        for cue in speech_picture_plan["audio"]:
+            if cue["audio_implementation"] == "native_dialogue_candidate":
+                for fragment in cue["picture_segments"]:
+                    video = by_shot[fragment["director_shot_id"]]
+                    if (video["preferred_route"] != "ai_video" or
+                            video["audio_route"] != "native_dialogue_candidate"):
+                        raise ValueError("CREW_NATIVE_DIALOGUE_WRONG_VIDEO_ROUTE")
+    return selected, speech
+
+
+def _director_rhythm_specialist_gate(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, rhythm_pre_plan, rhythm_post_plan):
+    """One director's optional sourced timing guidance, no second scheduler."""
+    setting = base.get("director_rhythm_mode")
+    desired = {"kind": "director_episode_rhythm_required",
+               "before_sound_and_edit": True}
+    if setting is not None and setting != desired:
+        raise ValueError("CREW_RHYTHM_MODE_INVALID")
+    required = setting is not None
+    if required and base.get("director_integrated_creative_mode") != creative_gates.MODE:
+        raise ValueError("CREW_RHYTHM_REQUIRES_SAME_DIRECTOR_INTEGRATION")
+    if rhythm_pre_plan is not None and task_id not in (
+            "sound", "editing_animation"):
+        raise ValueError("CREW_PRE_RHYTHM_ONLY_FOR_SOUND_AND_EDITOR")
+    if rhythm_post_plan is not None and task_id != "director_final":
+        raise ValueError("CREW_POST_RHYTHM_ONLY_FOR_DIRECTOR_FINAL")
+    if required and task_id in ("sound", "editing_animation"):
+        if rhythm_pre_plan is None:
+            raise ValueError("CREW_SOUND_EDIT_RHYTHM_REQUIRED")
+    if required and task_id == "director_final" and rhythm_post_plan is None:
+        raise ValueError("CREW_FINAL_RHYTHM_FROM_REAL_SOUND_EDIT_REQUIRED")
+    if rhythm_pre_plan is None:
+        return None
+    if department_command is None or audiovisual_plan is None:
+        raise ValueError("CREW_RHYTHM_REQUIRES_LOCKED_DIRECTOR_VISION")
+    return rhythm_arc.departmental_context(
+        base, state, department_command, audiovisual_plan,
+        rhythm_pre_plan, task_id,
+        artistic_method_plan=artistic_method_plan)
+
+
+def _director_final_creative_safeguard(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, holistic_post_critique,
+        action_rescue_post_plan, department_delivery_review,
+        artistic_arbitration_plan, visual_continuity_review,
+        rhythm_post_plan):
+    """One authoritative final director review; unchanged legacy routes."""
+    required = creative_gates.check_mode(base)
+    supplied = any(item is not None for item in (
+        holistic_post_critique, action_rescue_post_plan,
+        department_delivery_review, artistic_arbitration_plan,
+        visual_continuity_review, rhythm_post_plan))
+    if task_id != "director_final":
+        if supplied:
+            raise ValueError("CREW_POST_DIRECTOR_EVIDENCE_ONLY_FOR_FINAL")
+        return None
+    if required or supplied:
+        if department_command is None or audiovisual_plan is None:
+            raise ValueError("CREW_FINAL_DIRECTOR_MISSING_CREATIVE_LOCK")
+        if not required:
+            raise ValueError("CREW_FINAL_ART_GATE_REQUIRES_OPTIN")
+        return creative_gates.final_director_role_gate(
+            base, state, department_command, audiovisual_plan,
+            holistic_post_critique, action_rescue_post_plan,
+            department_delivery_review,
+            artistic_method_plan=artistic_method_plan,
+            arbitration_plan=artistic_arbitration_plan,
+            visual_continuity_review=visual_continuity_review,
+            rhythm_post_plan=rhythm_post_plan)
+    return None
+
+
 def build_role_messages(base, state, task_id, *, source_text=None,
                         editorial_handoff=None, reference_manifest=None,
                         department_command=None, audiovisual_plan=None,
-                        artistic_method_plan=None):
+                        artistic_method_plan=None, action_rescue_plan=None,
+                        holistic_critique=None,
+                        holistic_post_critique=None,
+                        action_rescue_post_plan=None,
+                        department_delivery_review=None,
+                        artistic_arbitration_plan=None,
+                        visual_continuity_review=None,
+                        rhythm_pre_plan=None, rhythm_post_plan=None,
+                        provider_capability_plan=None, speech_picture_plan=None):
     """Build private messages in memory; never return a public or saved artifact.
 
     For source-locked teams, include the FIRST real director/editor vision.
@@ -544,6 +684,65 @@ def build_role_messages(base, state, task_id, *, source_text=None,
             artistic_methods.departmental_context(
                 base, state, department_command, artistic_method_plan,
                 task_id))
+    rescue_mode = base.get("director_action_rescue_mode")
+    if rescue_mode is not None and rescue_mode != {
+            "kind": "director_action_rescue_required",
+            "before_specialists": True}:
+        raise ValueError("CREW_DIRECTOR_ACTION_RESCUE_MODE_INVALID")
+    if (rescue_mode is not None and task_id in director_command.DEPARTMENTS
+            and action_rescue_plan is None):
+        raise ValueError("CREW_DIRECTOR_ACTION_RESCUE_REQUIRED")
+    if action_rescue_plan is not None:
+        if (task_id not in director_command.DEPARTMENTS or
+                department_command is None or audiovisual_plan is None):
+            raise ValueError("CREW_ACTION_RESCUE_WRONG_STAGE")
+        request["director_action_rescue_and_artistic_tradeoffs"] = (
+            action_rescue.departmental_context(
+                base, state, department_command, audiovisual_plan,
+                action_rescue_plan, task_id,
+                artistic_method_plan=artistic_method_plan))
+    # QO-D10 + QO-D06 are ONE director's creative decisions. When opted in,
+    # both source-locked plans must agree and unresolved author/director flaws
+    # MUST be handled before any specialist model-facing request is built.
+    integrated_required = creative_gates.check_mode(base)
+    if (integrated_required and task_id in director_command.DEPARTMENTS and
+            (holistic_critique is None or action_rescue_plan is None)):
+        raise ValueError("CREW_INTEGRATED_DIRECTOR_CRITIQUE_AND_ACTION_REQUIRED")
+    if holistic_critique is not None:
+        if (task_id not in director_command.DEPARTMENTS or
+                department_command is None or audiovisual_plan is None or
+                action_rescue_plan is None):
+            raise ValueError("CREW_INTEGRATED_DIRECTOR_CONTEXT_INCOMPLETE")
+        request["same_director_integrated_art_and_shootability"] = (
+            creative_gates.departmental_context(
+                base, state, department_command, audiovisual_plan,
+                holistic_critique, action_rescue_plan, task_id,
+                artistic_method_plan=artistic_method_plan))
+    provider_choice, exact_speech = _director_provider_and_speech_custody(
+        base, state, task_id, provider_capability_plan, speech_picture_plan)
+    if provider_choice is not None:
+        request["director_model_channel_preflight_only"] = provider_choice
+    if exact_speech is not None:
+        request["director_exact_audio_picture_cue_work_order"] = exact_speech
+    rhythm_guidance = _director_rhythm_specialist_gate(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, rhythm_pre_plan, rhythm_post_plan)
+    if rhythm_guidance is not None:
+        request["one_director_source_locked_episode_rhythm"] = rhythm_guidance
+    final_creative_review = _director_final_creative_safeguard(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, holistic_post_critique,
+        action_rescue_post_plan, department_delivery_review,
+        artistic_arbitration_plan, visual_continuity_review,
+        rhythm_post_plan)
+    if final_creative_review is not None:
+        request["same_director_final_review_of_actual_crew_conflicts"] = (
+            final_creative_review)
+    # No creative role is permitted to silently replace the reviewed
+    # screenplay. This is a source-bound craft contract, not a second writer.
+    story_lock = story_authority.snapshot(base, state)
+    if story_lock is not None:
+        request["sole_reviewed_screenplay_story_authority"] = story_lock
     if reference_manifest is not None:
         # The manifest contains HASHES AND VERSIONS, never pictures, paths,
         # signed URLs, licences or purported human identity approval.
@@ -673,7 +872,15 @@ def build_role_messages(base, state, task_id, *, source_text=None,
 
 def validate_role_output(base, state, task_id, raw, *, source_text=None,
                          editorial_handoff=None, department_command=None,
-                         audiovisual_plan=None, artistic_method_plan=None):
+                         audiovisual_plan=None, artistic_method_plan=None,
+                         action_rescue_plan=None, holistic_critique=None,
+                         holistic_post_critique=None,
+                         action_rescue_post_plan=None,
+                         department_delivery_review=None,
+                         artistic_arbitration_plan=None,
+                         visual_continuity_review=None,
+                         rhythm_pre_plan=None, rhythm_post_plan=None,
+                         provider_capability_plan=None, speech_picture_plan=None):
     """Strict provider-agnostic parsing + specialist craft preflight.
 
     Return a new parsed object, never a fixed/normalized one. Refuse invalid
@@ -723,6 +930,48 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
             raise ValueError("CREW_ARTISTIC_METHOD_WRONG_STAGE")
         artistic_methods.validate(
             base, state, department_command, artistic_method_plan)
+    rescue_mode = base.get("director_action_rescue_mode")
+    if rescue_mode is not None and rescue_mode != {
+            "kind": "director_action_rescue_required",
+            "before_specialists": True}:
+        raise ValueError("CREW_DIRECTOR_ACTION_RESCUE_MODE_INVALID")
+    if (rescue_mode is not None and task_id in director_command.DEPARTMENTS
+            and action_rescue_plan is None):
+        raise ValueError("CREW_DIRECTOR_ACTION_RESCUE_REQUIRED")
+    if action_rescue_plan is not None:
+        if (task_id not in director_command.DEPARTMENTS or
+                department_command is None or audiovisual_plan is None):
+            raise ValueError("CREW_ACTION_RESCUE_WRONG_STAGE")
+        action_rescue.departmental_context(
+            base, state, department_command, audiovisual_plan,
+            action_rescue_plan, task_id,
+            artistic_method_plan=artistic_method_plan)
+    integrated_required = creative_gates.check_mode(base)
+    if (integrated_required and task_id in director_command.DEPARTMENTS and
+            (holistic_critique is None or action_rescue_plan is None)):
+        raise ValueError("CREW_INTEGRATED_DIRECTOR_CRITIQUE_AND_ACTION_REQUIRED")
+    if holistic_critique is not None:
+        if (task_id not in director_command.DEPARTMENTS or
+                department_command is None or audiovisual_plan is None or
+                action_rescue_plan is None):
+            raise ValueError("CREW_INTEGRATED_DIRECTOR_CONTEXT_INCOMPLETE")
+        # Recompute BEFORE accepting role output: an old director artistic
+        # review cannot be used to validate a new source or creative lock.
+        creative_gates.departmental_context(
+            base, state, department_command, audiovisual_plan,
+            holistic_critique, action_rescue_plan, task_id,
+            artistic_method_plan=artistic_method_plan)
+    _director_provider_and_speech_custody(
+        base, state, task_id, provider_capability_plan, speech_picture_plan)
+    _director_rhythm_specialist_gate(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, rhythm_pre_plan, rhythm_post_plan)
+    final_creative_review = _director_final_creative_safeguard(
+        base, state, task_id, department_command, audiovisual_plan,
+        artistic_method_plan, holistic_post_critique,
+        action_rescue_post_plan, department_delivery_review,
+        artistic_arbitration_plan, visual_continuity_review,
+        rhythm_post_plan)
     if task_id not in team.ready(state):
         raise ValueError("CREW_TASK_NOT_READY")
     payload = parse_strict_json(raw)
@@ -897,6 +1146,19 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
         execution_output_schema(base, state, task_id,
                                 editorial_handoff=editorial_handoff),
         payload)
+    if task_id == "ai_technical" and provider_capability_plan is not None:
+        video_capabilities.validate_technical_delivery(
+            base, state, provider_capability_plan, payload)
+    if task_id == "director_final" and provider_capability_plan is not None:
+        tech = state["tasks"]["ai_technical"]
+        if tech["status"] != "completed":
+            raise ValueError("CREW_DIRECTOR_FINAL_MISSING_REAL_AI_TECH_DELIVERY")
+        video_capabilities.validate_technical_delivery(
+            base, state, provider_capability_plan, tech["deliverable"])
+    # New QO-D01 guard: exact dialogue (including reblocked multi-beat
+    # sound cues) and no explicit source-override fields, not an aesthetic
+    # test of the narrative prose.
+    story_authority.validate_role(base, state, task_id, payload)
     # Re-run original ledger's source-aware safety gate for QA/director only.
     executor._enforce_base_audit(state, base, task_id, payload)
     if editorial_handoff is not None:
@@ -920,12 +1182,26 @@ def validate_role_output(base, state, task_id, raw, *, source_text=None,
                 if continuity_result["status"] == "blocked":
                     raise film_tracks.ContinuityError(
                         "CONTINUITY_CROSS_SHOT_STATE_UNRESOLVED")
+    if task_id == "director_final" and final_creative_review is not None:
+        decision = payload.get("director_decision", {})
+        if (isinstance(decision, dict) and
+                decision.get("decision") == "ready_for_user_review" and
+                not final_creative_review["ready_for_user_review_candidate_only"]):
+            raise ValueError("CREW_FINAL_UNRESOLVED_ARTISTIC_OR_DEPARTMENT_CONFLICT")
     return deepcopy(payload)
 
 
 def submit_role_output(base, state, task_id, raw, *, source_text=None,
                        editorial_handoff=None, department_command=None,
-                       audiovisual_plan=None, artistic_method_plan=None):
+                       audiovisual_plan=None, artistic_method_plan=None,
+                       action_rescue_plan=None, holistic_critique=None,
+                       holistic_post_critique=None,
+                       action_rescue_post_plan=None,
+                       department_delivery_review=None,
+                       artistic_arbitration_plan=None,
+                       visual_continuity_review=None,
+                       rhythm_pre_plan=None, rhythm_post_plan=None,
+                       provider_capability_plan=None, speech_picture_plan=None):
     """Offline transition from a *provided* strict JSON response to a new ledger.
 
     No model invocation; caller must arrange private transport separately.
@@ -935,5 +1211,16 @@ def submit_role_output(base, state, task_id, raw, *, source_text=None,
                                    editorial_handoff=editorial_handoff,
                                    department_command=department_command,
                                    audiovisual_plan=audiovisual_plan,
-                                   artistic_method_plan=artistic_method_plan)
+                                   artistic_method_plan=artistic_method_plan,
+                                   action_rescue_plan=action_rescue_plan,
+                                   holistic_critique=holistic_critique,
+                                   holistic_post_critique=holistic_post_critique,
+                                   action_rescue_post_plan=action_rescue_post_plan,
+                                   department_delivery_review=department_delivery_review,
+                                   artistic_arbitration_plan=artistic_arbitration_plan,
+                                   visual_continuity_review=visual_continuity_review,
+                                   rhythm_pre_plan=rhythm_pre_plan,
+                                   rhythm_post_plan=rhythm_post_plan,
+                                   provider_capability_plan=provider_capability_plan,
+                                   speech_picture_plan=speech_picture_plan)
     return team.submit(state, team.packet(state, task_id), payload)

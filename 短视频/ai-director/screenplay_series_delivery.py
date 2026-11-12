@@ -500,3 +500,25 @@ def episode_director_request(handoff, dossier, breakdown, packet, episode_id,
     }
     result["external_model_call_authorized"] = False
     return result
+
+
+def selected_director_cut_series_preview(
+        original_handoff, original_dossier, candidate_cuts, choice, *,
+        final_handoff, final_dossier, final_breakdown,
+        rewrite_mapping=None):
+    """QO-D13/D14: safely cross from accepted-for-planning director cut
+    alternatives through the ORIGINAL reviewed screenplay and into this
+    existing, source-bound per-episode crew flow.
+
+    The creative cut is ONLY a proposal until the real writer revision and
+    independent author/editorial review. New screenplay beats may merge or
+    split, but all original origin decisions must be accounted for. If new
+    episode timings drift from the chosen director cut, return a planning
+    preview with reconfirmation blockers, never pretend approval.
+    """
+    import director_cut_series_handoff as selected
+    return selected.series_from_selected_cut(
+        original_handoff, original_dossier, candidate_cuts, choice,
+        final_handoff=final_handoff, final_dossier=final_dossier,
+        final_breakdown=final_breakdown,
+        rewrite_mapping=rewrite_mapping)

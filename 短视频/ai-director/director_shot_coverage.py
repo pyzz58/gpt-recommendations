@@ -349,10 +349,27 @@ def reblock_episode(handoff, dossier, breakdown, packet, coverage):
             shot["speech_cue_refs"] = audio_bindings[row["shot_id"]]
             shot["subtitle_cue_refs"] = caption_bindings[row["shot_id"]]
             shot["requires_timed_cue_rendering"] = True
+        # A merged coverage shot is a NEW physical shot but never a
+        # replacement screenplay beat. Preserve the union of ALL cast, props
+        # and facts, not only the first beat's production inventory.
         shot["character_ids"] = list(dict.fromkeys(
             cid for bid in ids for cid in source_shots[bid]["character_ids"]))
+        shot["prop_ids"] = list(dict.fromkeys(
+            pid for bid in ids for pid in source_shots[bid].get("prop_ids", [])))
         shot["claim_ids"] = list(dict.fromkeys(
             cid for bid in ids for cid in source_shots[bid]["claim_ids"]))
+        speakers = {}
+        for bid in dict.fromkeys(ids):
+            for speaker, cid in source_shots[bid]["source_adaptation"].get(
+                    "speaker_character_ids", {}).items():
+                _need(speaker not in speakers or speakers[speaker] == cid,
+                      "COVERAGE_MERGED_SPEAKER_CHARACTER_ID_CONFLICT")
+                speakers[speaker] = cid
+        for bid in dict.fromkeys(ids):
+            for entry in by_beat[bid]["dialogue"]:
+                _need(entry["speaker"] in speakers and
+                      speakers[entry["speaker"]] in shot["character_ids"],
+                      "COVERAGE_MERGED_DIALOGUE_SPEAKER_UNBOUND")
         shot["action"]["action"] = row["observable_screen_event"]
         shot["camera"]["movement"] = row["framing_and_space"]
         shot["art"]["lighting"] = "待摄影美术依据导演镜头覆盖图制定具体光源，不表示已试拍"
@@ -365,6 +382,23 @@ def reblock_episode(handoff, dossier, breakdown, packet, coverage):
             "covered_beat_ids": list(dict.fromkeys(ids)),
             "coverage_source_spans": deepcopy(spans),
             "coverage_digest": proof["coverage_digest"],
+            # Keep every authored beat's provenance, instead of pretending
+            # the whole merged physical shot is only its first beat.
+            "covered_beat_source_records": [
+                {
+                    "beat_id": bid,
+                    "source_adaptation": deepcopy(
+                        source_shots[bid]["source_adaptation"]),
+                    "source_prop_ids": deepcopy(
+                        source_shots[bid].get("prop_ids", [])),
+                    "source_character_ids": deepcopy(
+                        source_shots[bid]["character_ids"]),
+                    "source_claim_ids": deepcopy(
+                        source_shots[bid]["claim_ids"]),
+                }
+                for bid in dict.fromkeys(ids)
+            ],
+            "speaker_character_ids": speakers,
             "dialogue": ([deepcopy(d) for bid in text_owners
                           for d in by_beat[bid]["dialogue"]]
                          if cue_timeline is None else
@@ -407,6 +441,37 @@ def reblock_episode(handoff, dossier, breakdown, packet, coverage):
     new_lines = [deepcopy(d) for shot in output
                  for d in shot["source_adaptation"]["dialogue"]]
     _need(original_lines == new_lines, "COVERAGE_DIALOGUE_DRIFT")
+    # Compare true screenplay-linked entities and facts, not just the text.
+    # Splits may repeat the same beat's visual inventory; order must still
+    # reproduce the original beat sequence exactly once when collapsed.
+    original_beat_shots = ep["authoritative_episode_base"]["shots"]
+    originals_by_beat = {
+        sh["source_adaptation"]["beat_id"]: sh for sh in original_beat_shots
+    }
+    seen = set()
+    for shot in output:
+        records = shot["source_adaptation"]["covered_beat_source_records"]
+        _need(shot["prop_ids"] == list(dict.fromkeys(
+            pid for record in records for pid in record["source_prop_ids"])),
+            "COVERAGE_PROPS_LOST_IN_MERGED_SHOT")
+        _need(shot["character_ids"] == list(dict.fromkeys(
+            cid for record in records for cid in record["source_character_ids"])),
+            "COVERAGE_CAST_LOST_IN_MERGED_SHOT")
+        _need(shot["claim_ids"] == list(dict.fromkeys(
+            cid for record in records for cid in record["source_claim_ids"])),
+            "COVERAGE_FACTS_LOST_IN_MERGED_SHOT")
+        for record in records:
+            bid = record["beat_id"]
+            old = originals_by_beat[bid]
+            _need(record["source_adaptation"] ==
+                  old["source_adaptation"] and
+                  record["source_character_ids"] == old["character_ids"] and
+                  record["source_prop_ids"] == old.get("prop_ids", []) and
+                  record["source_claim_ids"] == old["claim_ids"],
+                  "COVERAGE_ORIGINAL_BEAT_SOURCE_RECORD_TAMPERED")
+            seen.add(bid)
+    _need(seen == set(originals_by_beat),
+          "COVERAGE_UNACCOUNTED_SOURCE_BEAT_IN_REBLOCKED_SHOTS")
     base["director_shot_coverage_mode"] = {
         "kind": "director_authored_shots_from_screenplay_beats",
         "coverage_digest": proof["coverage_digest"],

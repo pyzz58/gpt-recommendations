@@ -1,3 +1,75 @@
+## QO-D04 × QO-D08｜模型版本/接入渠道能力 + 真实对白声画源锁（2026-10-22；暂不测试）
+
+本轮新增`director_provider_capabilities.py`和`director_voice_picture_sync.py`，严格保持**同一个总导演**负责创作取舍、原`ai_technical`负责生产可行性与原`sound/editing_animation`负责声音剪辑。第24号专业规范见`skills/24-director-model-capability-and-dialogue-visual-sync.md`。不另起技术调度器、音轨合成服务，不修改原有真实`seedance_adapter.py`、`video_workflow.py`、帧级工单、OTIO或收费视频网关。
+
+**D04**：`director_provider_capabilities.catalogue()`按指定渠道+具体model版本及证据URL登记能力，并由`registry_digest`锁定。现有volcengine/byteplus Seedance2.5 4–15秒竖屏720p仅是本仓库已实现的适配器保守子集；Google Gemini API Veo3.1 Preview采用官方4/6/8秒及高清/参考图要求8秒的条件；Runway4.5数据专指Cloudflare Workers AI渠道2–10秒，不能冒充Runway直连；尚缺可信渠道核查的Kling3、Seedance2.0等默认UNKNOWN并阻断生产方案。所有渠道仍需实际账号、地区、价格、额度、媒体、来源权单独认证。总导演选`shot_id`、不可牺牲的演员行为/原文事实与候选技术路线，程序核对源base/导演锁、shot原时长及渠道能力；超时/多镜头/参照能力未知不自动缩短或拍摄。原`ai_technical.generation.route`必须与总导演计划一致，不能静默技术降级。**本模块绝不直接发送API。**
+
+**D08**：严格复用原QO-D19`director_editor_cue_sheet`的源剧本每一cue（原speaker、对白/旁白文字、绝对时间和跨分镜picture_segments），将每段画面指明谁有口型权、哪位人物应保持不说话；反打镜画外声不得错误驱动反应者嘴型；旁白不要求演员对口型；字幕按原`text_exact`及剪辑秒数绑定。导演可选原生声音**候选**或后期配音，原生候选必须同时提供对应`ai_video`渠道的真实能力证据，禁止声音部门推测支持。媒体审看记录只是一份按cue填报的声明，**不读取媒体、不做ASR、不认证用户或口型，无任何自动发布或媒体通过的权限**。
+
+`agent_role_contracts.build_role_messages/validate_role_output/submit_role_output`已在原岗位入口增加两个**显式模式才生效**的可选参数`provider_capability_plan`/`speech_picture_plan`：D04针对AI技术及总导演（声音剪辑可参考原生对白支持性但不能操作视频API），D08针对声音、剪辑、AI技术和最终导演。旧项目没有对应`director_provider_capability_mode`/`director_speech_picture_mode`时保留旧合同；新模式缺真实专业输入则fail-closed。来源或注册表变更使旧计划失效，无收费、外发或真人许可自动生成。
+
+**质量状态**：QO-D04、QO-D08从`partially_addressed`更新为`in_progress`；本轮代码/规范/JSON/Markdown质量账位于Draft PR #67，用户持续要求**先不测试**，无新单元/CI、真实音视频/官方账号调用/付费Seedance任务、人工声画盲评与主分支合并。过去的合成测试成果不能当成此次音画艺术真实验收。
+
+---
+
+## QO-D01 × QO-D02｜正式剧本唯一剧情权威与导演镜头覆盖（2026-10-21；暂不测试）
+
+本轮静态代码审查发现**明确生产信息缺失**：原 `director_shot_coverage.reblock_episode` 支持一场多镜、一个节拍多镜和同场多beat合为一镜，但合镜仅汇总人物与claim，`prop_ids`和`source_adaptation.speaker_character_ids`仍停留在第一来源beat，第二个情节的道具及说话人身份可能丢失。已修复为合并**全部beat**的角色/道具/来源事实ID与speaker→稳定角色ID对应；同speaker发生不同角色绑定时拒绝。同时每个新物理shot新增`covered_beat_source_records`列出每原beat准确的来源对象、角色、道具、论点引用，重建十岗之前逐项核对旧原稿，旁白与对白仍逐字逐句按原顺序存在且只播放一次。不创建第二导演/第二分镜算法，跨场蒙太奇仍作为独立物理镜头的剪辑关系；合法有对白反打仍须原`director_speech_cues`精确逐句cue与后续媒体口型验证。
+
+新增 `director_screenplay_authority.py`（QO-D01）：`screenplay_handoff_mode`存在时，核验原编剧正式剧本SHA-256与原十岗ledger source及base digest，向**真实原十岗模型私有请求**注入source beat/人物道具事实/对白旁白摘要的只读剧情权威上下文；实际`agent_role_contracts.validate_role_output`对嵌套的显式剧情覆盖键（如`rewritten_dialogue`/`approved_story_changes`）拒绝，对声音专业`speech.dialogue`的speaker、每字原句、顺序逐项核验（支持同一原句拆成多个顺序不变cue），原`voiceover`仍由原校验代码负责。不使用简单关键词搜索导演的自由创作描述，不因没有原文学原词就禁止独创摄影与演员指导；**开放文字的隐性剧情变化不能通过哈希、schema自动完全识别，仍需编剧反审与总导演审片**。必须改原正式故事、事实、原台词则走QO-D12给编剧重写全稿并按作者审稿流程重新启动全pending专业团队，不得用“拍摄更容易”的借口直接改源。
+
+全面专业验收清单与权限表见`skills/23-one-screenplay-authority-and-director-shot-coverage.md`。QO-D01提升至`in_progress`，QO-D02保留`in_progress`，本轮两份JSON/Markdown质量账已同步。**用户持续要求先不测试**，没有主动触发单元/CI/真实媒体/收费模型/真人编剧审片，无主分支合并，全部代码仍位于统一Draft PR #67，绝不能宣称艺术通过或真实作者身份已认证。
+
+---
+
+## QO-D14→QO-D13｜长文案重大剪辑后的正式编剧交接与最终分集（2026-10-21，暂不测试）
+
+`director_creative_cut.py` 已具备**至少两种真实不同导演cut**、逐原剧本beat保留/压缩/删减、艺术损失与节奏方案及未派发编剧返修单；`screenplay_series_delivery.py` 已具备一份**审核后的正式剧本**完整分集、≤90秒各集与附加时间预算以及原十岗位专业团队。**不要重新制造压缩引擎、第二导演或第二编剧。** 本轮新增`director_cut_series_handoff.py`并由原`screenplay_series_delivery.selected_director_cut_series_preview`调用，填补从原导演选中的重大压缩cut→原编剧改成新完整版→经既有`screenplay_director_handoff`结构化审稿→新稿的正式分集和干净十岗位建立之间的最后版本交接。
+
+每个原beat都必须审计来源：retain须未变原动作/对白/旁白/时长；condense可合并但全部新beat有明确原始归属；omit不得暗中复活；不能凭空加入新角色/事实或改变旧导演选的故事顺序和集间断点。**短≠好**：新稿如经过编剧重写变成不同集数、分段或附加预算，须重新进行真正的导演cut选择。特别关键：若新稿集时长与原选中目标（例如3集各80秒）有任何偏差，虽然可能仍小于90秒，**必须暂缓任何新专业团队工作包**，要求总导演重新确认创作版本，不能警告后直接交给制作。经审稿且无偏差才用既有`series.build_per_episode_crew`启动全新pending十岗位，不迁移旧导演锁、媒体或作者授权。
+
+每集片头/回顾/桥/片尾与可选来源卡仍使用原`series_final_timeline.compile_final_timeline`独立核验；**来源卡只可不出现或精确1.8秒且为真正末页**，不允许导演草稿写1秒却拿1.8秒真实预算通过，也不允许90秒剧情外加片尾。所有来源哈希、各稿beat映射和真实审稿状态严格绑定，但审核表的格式完整≠真人作者身份/许可已认证。专业规范`skills/22-director-creative-cut-to-approved-series-handoff.md`列出长稿自然多集与重大压缩的两方案对照、出错阻断及人工审片验收。
+
+仅代码与规范、质量总账 JSON/Markdown 登记为`in_progress`；用户持续要求暂不测试，本轮无新单元/CI主动触发、无真实视频、无收费模型、无正式真人审批或主分支合并。所有旧有合成测试历史照实保留，不能充作这一轮实际艺术质量验收。
+
+---
+
+## QO-D03 × QO-D09：总导演整集声画节奏与观众注意力（2026-10-20；暂不测试）
+
+新增 `director_episode_rhythm.py`，并接入 `director_creative_integration` 以及现有 `agent_role_contracts` 的声音、剪辑和总导演最终回执校验。它仍是**同一总导演**对整部作品的时间、观众信息、情绪弧线、母题和声画对位的创作判断，而不是第二套专业剪辑/时间线引擎；既有 `director_montage_editor_conform`、`director_media_otio_export`、`director_editorial_montage` 和最后依据页预算保持唯一后期工程权威。
+
+每镜有锁定秒数内的具体注意力节拍，每一真实剪口**只做一次总导演取舍、两种剪法及其艺术成本**，详细到表演停顿、声音/沉默进入时刻、切点前后观众认知；不得机械“三秒一切”、擅改台词/事实、拉长或裁去原剧情。J/L-cut 与转场实际把柄未知时只能为候选，不能虚构音轨或片段已生成。若必须更改剧本结构或时间预算，只能通过QO-D12提出来源锁定、未派发的返工/编剧提案，不能直接更新旧base或旧视频工程。
+
+新base**显式**选择 `director_rhythm_mode={kind:'director_episode_rhythm_required',before_sound_and_edit:true}` 时还必须已启用 `director_integrated_creative_mode`；声音与剪辑部门缺 `rhythm_pre_plan`、且总导演自身计划存在明确应返工事项时不可派发；`director_final` 缺真实sound/edit交付之后形成的 `rhythm_post_plan` 不可进入完整终审。制作前版本不绑定正常后续专业交稿，制作后绑定真实声音/剪辑交付摘要和revision，严格禁止串稿。旧项目未显式启用不改变既有兼容性。
+
+**QO-D05/D07 同步更新**：第20号规范的同一总导演跨镜审查为一剪口一工作单、内含八项专业判断和两套影片手法；实体角色/道具缺事件track不构成“外观已验证”，同场摄影轴线和主光源明确变化须解释为有意断裂或返工。新的QO-D03/D09详尽规定见 `skills/21-director-whole-episode-attention-rhythm-and-sonic-arc.md`。这批都在 Draft PR #67；用户持续要求“先不测试”，本轮无新单元、媒体生成、付费API和真人盲审，不合并main。JSON及Markdown质量账状态均为`in_progress`。
+
+---
+
+## QO-D16｜同一总导演对真实专业冲突的艺术仲裁与终审阻断（2026-10-14，暂不测试）
+
+新增 `director_conflict_arbitration.py`，专门补上原 `director_delivery_review.py`（QO-D16）只会记录两专业冲突和一条 `director_resolution`、却无法真实比较摄影/表演/声音/剪辑方案及其艺术代价的问题。仲裁不是新导演Agent：必须先有**两个实际交稿的专业部门**和 QO-D16 当前版本的真正冲突记录，同时用 QO-D10 制作后全片艺术自评保护好的独特镜头，逐冲突公平解释双方专业依据、观众失去的叙事因果、两种不同视听路线上观众收益与艺术成本，并指定专业岗位修改、原导演锁稿修订、编剧故事返修或媒体待验之一。其引文必须存在于真正岗位交付的**文字值**中，不能仅凭 JSON 字段名冒充证据。
+
+仲裁只形成同版来源锁定、未发送的QO-D12修订提案。**仲裁写完不等于专业冲突消失**：专业岗位必须基于新版本返工、原QO-D16再次核对后方能取消冲突；涉及人物抉择/事实/原对白须交编剧及作者审查，导演不能以「技术降级」偷改原作。
+
+已接到实际的原10专业 `agent_role_contracts.build_role_messages`、`validate_role_output`、`submit_role_output` 的**严格模式 director_final**终审入口：必须有QO-D10 post审片、QO-D06 post实际动作风险复查、QO-D16实际岗位交付审查；确认有两部门冲突时还必须有完整艺术仲裁。缺任何必要审查不得进入最终导演正式请求；即使已有仲裁，只要实际冲突、待返工或未提交岗位还在，就不能接受终审的 `ready_for_user_review`。历史旧项目不启用该严格mode时原合约兼容。
+
+详尽职责、每项必备观众证据、两备选方案、归属权限与否定案例，见 `skills/19-director-cross-department-artistic-arbitration.md`；三模块统一制作约束见 `skills/18-director-integrated-creative-production-gates.md`。**本轮没有主动运行任何测试、真实AI视频、付费API或真人独立导演审查，未合并main。QO-D16仍只标 `in_progress`。**
+
+---
+## 总导演一体化创作闭环（QO-D10 / QO-D06 / QO-D12，2026-10-14；暂不测试）
+
+同一位总导演使用**三种不可互相替代的能力**：QO-D10 `director_whole_film_critique.py` 判断整部作品的主题、人物、情绪与视听表达是否值得执行，保护有因果理由的非套路创意；QO-D06 `director_action_rescue.py` 将真正需要观众看见的复杂表演与道具状态转换为两种时间完整且有艺术代价说明的专业制作路线；QO-D12 `director_revision_lineage.py` 保障作者、编剧、导演与演员/摄影/声音/剪辑/AI技术岗的修改权限、回滚影响与不同剧本版本隔离。**任何部门不得借技术降级悄悄删除人物抉择、原文台词、事实或因果。**
+
+融合入口 `director_creative_integration.py` 要求同一权威剧本、source/base digest、导演锁稿、制作会、视听方案、所选电影艺术方法和镜头ID完全一致。已修复 QO-D10 旧草稿的重要失效缺陷：**制作前审片不因专业部门正常交稿而过期**，制作后批判才绑定实际已提交部门的版本/摘要；与QO-D06的相同二阶段约束保持一致。真实专业消息构造 `agent_role_contracts.build_role_messages` 与收到结果时的 `validate_role_output` / `submit_role_output` 均可同时核验整片创作方案及动作设计。仅新base显式设置 `director_integrated_creative_mode={kind:'director_integrated_creative_review_required',before_specialists:true}` 才强制七下游部门完整遵循这两份艺术计划；原项目不改既有兼容性。**存在待编剧修稿、待导演艺术改稿或动作方案仍被结构性阻断时，不允许继续下发专业任务。**
+
+制作后由 `director_creative_integration.postproduction_assessment()` 综合 QO-D10 的真实岗位设计证据与 QO-D06 在实际演员/AI技术交稿上重算的离线动作风险，返回未派发的专业问题和艺术判断。`make_lineage_change_from_finding()` 只为一个具体导演问题生成版本锁定的 QO-D12 修改提议；需要总导演另行明确同剧本返工，涉及人物、事实、故事、对白必须给编剧全新完整剧本并通过原 `screenplay_director_handoff` 审稿，再开始**新**十岗位任务账本。旧素材只能列成人工复核候选，旧导演锁和审批不得迁移。原同导演 QO-D16 专业交付审核仍负责逐镜目标与精准返工，不创建第二导演或第二套任务权威。
+
+详尽、唯一的融合顺序见 `skills/18-director-integrated-creative-production-gates.md`，细分专业规范 `skills/15-director-whole-film-artistic-critique.md`、`skills/16-director-action-feasibility-and-creative-preservation.md`、`skills/17-director-screenwriter-revision-lineage.md`。此前各草稿 PR #62 / #65 / #66 **未合并main**，融合开发分支集中携带三版代码、原技能文档以及统一入口；不可将草稿视为主分支已实现。
+
+**当前验收纪律：** 用户明确“先不测试”，本轮仅开发及静态核对，不运行单元/媒体测试、不请求付费接口、不上传私人稿件，也不将draft代码合并入main。QO-D10/06/12只能记 `in_progress`，艺术质量、真片观众反应、Kdenlive桌面操作及模型实际复杂动作生成均不能据此声称完成。原十岗位与作者的权限保持唯一权威。
+
+---
 ## QO-D19 / QO-D09｜第五阶段：公开合成声轨、字幕的实际解码级时间验证（2026-10-14）
 
 总导演掌握剧本与声画思想的**源锁定指令**，不能把视频静音、没有真实台词、字幕错时的成品冒充通过验收。第四阶段 QO-D09 已使用原生OTIO读回和FFmpeg真实视频帧验收；第五阶段新增 `director_av_sync_smoke.py`、`tests/test_director_av_sync_smoke.py`，测试环境仅允许**公开合成视频+精确帧时间码的测试音调与字幕**：48kHz 16-bit 单声道 PCM 在每个已指定声音帧内必须有非零声能、所有间隔必须真正静音；FFmpeg/libass生成画面叠字并与声轨合成Matroska，解码后逐sample对比音轨、逐帧比较字幕显隐，任何偏离必须失败。
