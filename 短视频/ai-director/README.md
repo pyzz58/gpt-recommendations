@@ -1,3 +1,55 @@
+# AI 短视频导演系统
+
+**产品目的**：让不会自己组织影视制作的用户，从一篇文案得到一部可审阅、可返工的短视频。主线是：原文与约束入组 → 职业编剧改编与独立审稿 → 唯一总导演分集与视听设计 → 各专业岗位制作 → 第三方 AI 视频工具生成镜头 → 审片与局部返工 → 声音、字幕、图形与剪辑 → 最终交付。制作包、JSON 与提示词都是中间产物，不是最终作品。
+
+## 当前能力（2026-10-26）
+
+- 原文/长文入组、全文剧本改编、独立审稿、制作版锁定、编剧导演交接与导演自主分集。
+- 镜头覆盖、导演艺术方法、视听语言、部门详细工单、交付核对与定点返工。
+- 十阶段专业团队与独立 QA；离线协议/预算模拟与真实 HTTPS 入口分开。
+- 逐镜 v0.1/v0.2 结构校验、连续性契约、可拍性拆段、候选提示词与 HTML 预演。
+- 单镜视频 prepare/submit/query/download/review 接口；合成媒体、音轨、字幕、OTIO 的实际解码回归。
+- **尚未完成**：真实付费生成演员镜头的端到端验收、真实艺术审片、完整成片闭环、长期私有存储与账单核账（AUD-002/005/010 等仍开放）。
+
+## 当前阶段
+
+- 研发模式：**仅 GitHub 源码、公开虚构素材、隔离沙箱与既有 CI**；当前不部署、不同步、不操作用户 Mac。
+- 专业阶段：导演模块保留可复用基线，下一主线是 **QO-F01 表演与动作调度**（F01-00 至 F01-09，当前 `audit_pending`）。
+- 状态权威：`quality-optimization/QUALITY_ISSUES.json`（40 项，`complete=0`）与 `AUDIT_FINDINGS.json`（36 项，开放 P0 为 AUD-002）。README 与历史审计不替代 JSON 状态。
+- 真实付费生产：必须先满足私有存储、账单核验、逐次明确授权与费用上限；开发“继续”不等于付费许可。
+
+## 研发入口（隔离环境/CI，不是 Mac 部署教程）
+
+```bash
+cd 短视频/ai-director
+python3 -m unittest discover -s tests -v
+python3 quality-optimization/quality_registry.py --check-board
+python3 audit_registry.py --summary-out /tmp/ai-director-audit-summary.json
+python3 local_director.py doctor
+```
+
+依赖按 `requirements-schema.txt` 与 `requirements-media.txt` 在隔离环境安装；严格媒体回归还需要 FFmpeg、FFprobe 与 libass。缺少媒体依赖时只影响对应媒体专项，文字导演与离线预演仍可用。`doctor` 会按能力报告版本/缺少项，且不会显示密钥内容。
+
+## 规范索引
+
+- 产品目标：[PRODUCT_NORTH_STAR.md](PRODUCT_NORTH_STAR.md)
+- 研发边界：[AGENTS.md](AGENTS.md)、[GITHUB_ONLY_DEVELOPMENT.md](GITHUB_ONLY_DEVELOPMENT.md)
+- 专业方法：[skills/01-series.md](skills/01-series.md) 至 [skills/14-director-editorial-montage-and-time.md](skills/14-director-editorial-montage-and-time.md)
+- 质量总纲与看板：[quality-optimization/QUALITY_CHARTER.md](quality-optimization/QUALITY_CHARTER.md)、[QUALITY_ISSUES.json](quality-optimization/QUALITY_ISSUES.json)
+- 技术安全账：[AUDIT_FINDINGS.json](AUDIT_FINDINGS.json)、[DEEP_AUDIT_MASTER.md](DEEP_AUDIT_MASTER.md)
+- 下一阶段计划：[quality-optimization/QO-F01_ACTING_MODULE_PLAN_2026-10-22.md](quality-optimization/QO-F01_ACTING_MODULE_PLAN_2026-10-22.md)
+- 单镜制作：[SINGLE_SHOT_WORKFLOW.md](SINGLE_SHOT_WORKFLOW.md)、[SEEDANCE_API_AUDIT.md](SEEDANCE_API_AUDIT.md)
+
+## 当前边界
+
+- 仓库**尚未选择对外许可证**，保留所有权利；公开可见不等于授权复用，不得擅自添加 MIT/Apache 或其他许可证。
+- 不提交真实文案、`jobs/`、私人物料、密钥、签名 URL、账本或用户 Mac 路径。
+- 不调用付费模型、不重试未知扣费、不自动发布；真实媒体与人工审片缺失时保留阻塞，不把测试通过写成作品完成。
+
+---
+
+> 以下为 2026-10 起的质量阶段记录与历史审计证据，按时间保留；与上方当前规则冲突时，以 [AGENTS.md](AGENTS.md) 顶部当前生效规则和两个 JSON 账本为准。
+
 ## QO-D02｜总导演有权重构镜头，而非被编剧节拍数量锁死
 
 导演接收**已审定的制作版**完整剧本及各场详述，完成自主≤90秒分集后，必须先判断每个关键事件应如何被演员行动、摄影空间、声音/静默和剪辑承载。编剧 beat/段落是来源与戏剧事件，不等于导演必拍摄的 shot。新 [Skill12](skills/12-director-shot-coverage.md) 与 [director_shot_coverage.py](director_shot_coverage.py) 允许**同一个无台词beat→多镜**或**同场景相邻多个beat→一个导演镜头**，并逐镜写明观众状态变化、时码、实际动作与导演理由。每个 source_span 严格覆盖已审制作版且保留原对白/旁白/事实/时长；**镜头结构变化必须重启原十角色专业工单，不能让旧摄影/配音指令串进新镜头**。没有逐句 cue 的对白反打、多地点蒙太奇及真正专业盲评仍未完成，绝不能把此项宣布世界级艺术验收。文档：[QO-D02专业审计](quality-optimization/QO-D02_DIRECTOR_SHOT_COVERAGE_PROFESSIONAL_AUDIT.md)，质量追踪 QO-D02（in_progress）。
@@ -51,7 +103,7 @@
 - **总导演自主拆集**：先读完整剧本，可达十分钟或更长；自主按故事与情绪断点决定2集、3集或更多，**每集最多90秒**，算入所有片头/回顾/结尾/可选最后出处页。**导演拥有创意剪辑提案权**，可以将10分钟剧本实质压缩到例如3集，各节拍保留/浓缩/删除要说明利弊并由编剧审核生成新版本；**经审核的新制作剧本**里的节拍才必须在分集时恰好安排一次。导演不静默修改原作者台词/思想，镜头仍由导演设计。
 - **对应问题条目**：QO-W11、QO-D13；关于作品的情绪/思想余韵，继续在 QO-W03 中评审。整部电影原稿时长≠单集时长≠单次 AI 片段时长。
 
-# AI 短视频导演系统
+# 历史演进与质量阶段记录（2026-10 起）
 
 **输入文案，完成导演设计，通过第三方视频 API 制作镜头，经审片、逐镜返工和剪辑合成交付短视频。** 手动导出制作包保留为备用路径。
 

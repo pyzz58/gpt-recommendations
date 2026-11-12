@@ -10,11 +10,14 @@ import argparse
 import datetime as dt
 import hashlib
 import html
+import importlib.metadata
+import importlib.util
 import json
 import os
 from pathlib import Path
 import re
 import shutil
+import subprocess
 import sys
 import urllib.error
 import urllib.request
@@ -24,6 +27,7 @@ import director
 import director_v2 as v2
 import director_workbook as workbook
 import continuity_audit as continuity
+from closing_evidence_card import DURATION_S as EVIDENCE_CARD_SECONDS
 from llm_budget import BudgetSession, BudgetError, RetryableLLMError, peak_rates
 
 ROOT = Path(__file__).resolve().parent
@@ -86,6 +90,97 @@ def stamp():
     return dt.datetime.now().astimezone().isoformat(timespec="seconds")
 
 
+def _module_version(module_name, distribution_name=None):
+    if importlib.util.find_spec(module_name) is None:
+        return None
+    try:
+        return importlib.metadata.version(distribution_name or module_name)
+    except importlib.metadata.PackageNotFoundError:
+        return "installed (version unknown)"
+
+
+def _command_version(command):
+    executable = shutil.which(command)
+    if not executable:
+        return None
+    try:
+        result = subprocess.run(
+            [executable, "-version"], capture_output=True, text=True,
+            timeout=5, check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    output = (result.stdout or result.stderr or "").strip().splitlines()
+    return output[0] if output else "installed (version unknown)"
+
+
+def _ffmpeg_has_subtitle_filter():
+    executable = shutil.which("ffmpeg")
+    if not executable:
+        return False
+    try:
+        result = subprocess.run(
+            [executable, "-hide_banner", "-filters"],
+            capture_output=True, text=True, timeout=5, check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return False
+    filters = (result.stdout or "") + (result.stderr or "")
+    return " ass " in filters or " subtitles " in filters
+
+
+def doctor_report():
+    """Capability report. Never reads or prints the API key value."""
+    jsonschema_version = _module_version("jsonschema")
+    pillow_version = _module_version("PIL", "Pillow")
+    otio_version = _module_version("opentimelineio")
+    ffmpeg_version = _command_version("ffmpeg")
+    ffprobe_version = _command_version("ffprobe")
+    libass = _ffmpeg_has_subtitle_filter() if ffmpeg_version else False
+
+    def row(capability, stage, available, detail):
+        return {
+            "capability": capability,
+            "stage": stage,
+            "status": "可用" if available else "缺少",
+            "detail": detail,
+        }
+
+    return [
+        row("基础离线", "prepare / review / backup",
+            True, f"Python {sys.version.split()[0]}；不联网即可运行"),
+        row("模型输出 Schema", "LLM JSON 结构校验",
+            bool(jsonschema_version),
+            f"jsonschema {jsonschema_version}" if jsonschema_version
+            else "未安装 jsonschema；严格模型校验不可用"),
+        row("图片解码", "私有参考图校验",
+            bool(pillow_version),
+            f"Pillow {pillow_version}" if pillow_version
+            else "未安装 Pillow；私有参考图解码不可用"),
+        row("OTIO 交换", "时间线导出/读回",
+            bool(otio_version),
+            f"opentimelineio {otio_version}" if otio_version
+            else "未安装 opentimelineio；OTIO 交换不可用"),
+        row("媒体解码", "FFmpeg/FFprobe 合成媒体回归",
+            bool(ffmpeg_version and ffprobe_version),
+            f"{ffmpeg_version or 'ffmpeg 缺少'} / {ffprobe_version or 'ffprobe 缺少'}"),
+        row("字幕烧录", "libass 字幕合成",
+            bool(libass),
+            "FFmpeg 支持 ass/subtitles 滤镜" if libass
+            else "缺少 libass 字幕滤镜；严格字幕媒体回归不可用"),
+    ]
+
+
+def print_doctor(rows):
+    print("AI 导演运行自检（不联网、不读取密钥内容）")
+    for item in rows:
+        print(f"- {item['capability']}：{item['status']} — {item['detail']}（{item['stage']}）")
+    print("AI_API_KEY:", "已提供(不会显示)" if os.environ.get("AI_API_KEY")
+          else "未提供；可用 prepare 离线准备")
+    print("缺少媒体依赖只影响对应媒体专项；文字导演、校验与预演仍可离线运行。"
+          "严格媒体 CI 不应因缺 FFmpeg/FFprobe/libass 而静默跳过。")
+
+
 def warn_publishing(plan):
     """A link or DOI is not independent evidence of a claim being verified."""
     if plan.get("risk_domain") != "none":
@@ -103,14 +198,16 @@ def check_series(series):
     if not isinstance(series, dict):
         raise DirectorError("series.json 必须是 JSON 对象")
     ep = series.get("episodes")
-    if not isinstance(ep, list) or not 1 <= len(ep) <= 3:
-        raise DirectorError("本版必须规划 1–3 集；不能无限生成造成费用失控")
+    if not isinstance(ep, list) or len(ep) < 1:
+        raise DirectorError("series.json 至少需要一集；集数由导演按故事断点自主决定")
     required = ("title", "core_message", "narrative_arc", "content_focus", "target_seconds")
     for i, e in enumerate(ep, 1):
         if not isinstance(e, dict) or any(not e.get(k) for k in required):
             raise DirectorError(f"第{i}集缺少必要的标题、主旨、叙事、重点或目标时长")
-        if not isinstance(e["target_seconds"], (int, float)) or not 30 <= e["target_seconds"] <= 180:
-            raise DirectorError(f"第{i}集目标时长应为30–180秒")
+        if (not isinstance(e["target_seconds"], (int, float))
+                or isinstance(e["target_seconds"], bool)
+                or not 0 < e["target_seconds"] <= 90):
+            raise DirectorError(f"第{i}集目标时长必须大于0且最终成片不超过90秒（含片头、回顾、过渡、结尾）")
     cast = series.get("characters", [])
     if not isinstance(cast, list):
         raise DirectorError("characters必须为列表（没有出场角色也可以为空）")
@@ -150,8 +247,9 @@ def check_reference_card(plan):
     card = cards[-1]
     if len(cards) != 1 or plan["shots"][-1] is not card:
         raise DirectorError("研究出处必须仅有一张并且位于片尾")
-    if card.get("duration") != 5 or card.get("narration", ""):
-        raise DirectorError("研究出处卡固定5秒、无额外旁白")
+    if (abs(card.get("duration", 0) - EVIDENCE_CARD_SECONDS) > 1e-9
+            or card.get("narration", "")):
+        raise DirectorError(f"研究出处卡固定{EVIDENCE_CARD_SECONDS}秒、无额外旁白")
     ids = card.get("claim_ids", [])
     if not isinstance(ids, list) or len(ids) != len(set(ids)) or not 2 <= len(ids) <= 3:
         raise DirectorError("研究出处卡请选择2-3项不重复的研究")
@@ -253,8 +351,11 @@ def create_prepare(input_path, output_dir):
         "请先阅读这个目录上方的 AGENTS.md 和 skills/ 中的所有 Markdown。"
         "不要更改全局模型配置，不要调用收费视频/配音接口，不要向GitHub发布。\n\n"
         "请阅读 source.md，按以下阶段生成并保存文件，而不是只在聊天中回答：\n\n"
-        "1. series.json（1–3集结构、统一角色和 visual_bible；参考 skills/01-series.md）。\n"
-        "2. episodes/ep01/plan.json 等（每集 v0.1 结构、重点数据证据账本、可选5秒研究片尾卡）。\n"
+        "1. series.json（导演按故事与情绪断点自主决定集数，不以1–3集为上限；"
+        "每集最终成片含片头、回顾、过渡、结尾不超过90秒；统一角色和 visual_bible；"
+        "参考 skills/01-series.md）。\n"
+        "2. episodes/ep01/plan.json 等（每集 v0.1 结构、重点数据证据账本、"
+        "可选1.8秒研究片尾卡；片尾页计入该集90秒最终时长）。\n"
         "3. episodes/ep01/direction_v02.json 等（包含逐秒动作、运镜、灯光、场景、剪辑入出转场、"
         "动画图层和关键帧、准确对白/旁白、环境音与音效，完整导演层而非只有提示词）。\n"
         "4. 每一步对照 schemas 和原始示例检查，所有来源未经查证一律 needs_review。"
@@ -262,7 +363,8 @@ def create_prepare(input_path, output_dir):
         "5. 每完成一集就执行 python3 local_director.py review --job <当前任务目录>，"
         "检查错误并修复；最后给我打开 index.html。\n\n"
         "注意：source.md 是用户原文。不能伪造研究、论文DOI、人物参考图或已生成的视频。"
-        "单张研究出处卡5秒、2–3条最相关研究，其余放 description.md。\n",
+        "可选单张研究出处卡1.8秒（现行规则为1–2秒）、2–3条最相关研究，"
+        "其余放 description.md；没有真实来源就不生成出处卡。\n",
         encoding="utf-8")
     save(output / "status.json", {"created": stamp(), "mode": "codex_manual", "status": "prepared", "source_sha256": hashlib.sha256(source.encode()).hexdigest()})
     return output
@@ -270,11 +372,12 @@ def create_prepare(input_path, output_dir):
 
 def series_prompt(source):
     system = textfile(SKILLS / "01-series.md")
-    user = ("请把下面的中文长文案拆成有故事线的1至3集，不要机械按字数拆。"
+    user = ("请把下面的中文长文案按故事与情绪断点自主决定集数，不要机械按字数拆，"
+            "也不要把集数限制为1–3集；每集最终成片含片头、回顾、过渡、结尾不得超过90秒。"
             "输出 JSON：{\"series_title\":\"...\",\"characters\":[{\"id\":\"CH_MAIN\",\"description\":\"...\",\"wardrobe\":\"...\",\"identity_anchor\":\"需要制作参考图，尚未创建\"}],"
             "\"visual_bible\":{\"style\":\"...\",\"palette\":\"...\",\"lighting\":\"...\",\"typography\":\"...\",\"avoid\":\"...\"},"
             "\"episodes\":[{\"title\":\"...\",\"core_message\":\"...\",\"narrative_arc\":\"...\",\"content_focus\":\"...\",\"target_seconds\":75}]}. "
-            "如果文案不适合多集，可仅1集；研究不足不要伪造来源。\n\n原文：\n"+source)
+            "如果文案只适合一集，就只写一集；研究不足不要伪造来源。\n\n原文：\n"+source)
     return system, user
 
 
@@ -284,11 +387,13 @@ def episode_prompt(source, series, index):
     guidance += "\n必须沿用系列给定的人物ID、外形、衣服、visual_bible；没有角色不要强行造真人。"
     guidance += "\n物理连续性：书、手机及其他道具不得瞬移；每镜明确人物与关键道具起始位置、拿起/移动/放下动作、结束位置。严禁在短镜头中挤入过多动作。如需要机器可验证的完整连续性契约，请依据 CONTINUITY_QA.md 使用 continuity_contract(version=1, coverage=complete) 与每镜 props_before/after、actors_before/after、按order排序的 prop_moves/actor_moves；只有追踪全镜头和所有关键资产时才能声明 complete，否则保持普通动作描述交由人工复审，不要造假状态。授权事实未经核查时不能把检查标志设为 true。"
     user = ("完成系列第"+str(index+1)+"集的 v0.1 plan.json。必须完全满足 director.py 的结构。"
-            "首尾5秒研究卡仅当有2-3项真实可追溯研究时生成；purpose=sources, text_card, duration=5, narration为空, 使用claim_ids。"
+            "可选片尾研究卡仅当有2-3项真实可追溯研究时生成；purpose=sources, text_card, "
+            "duration=1.8（现行1–2秒规则；一张静态页，不滚动、无额外旁白）, narration为空, 使用claim_ids；"
+            "该页计入本集最终90秒上限。"
             "所有其余引用留在claims，医疗心理财经类一律 needs_review。"
             "如有片尾来源卡，还必须输出 references 列表，每项按claim_id绑定，包含author/year(整数)/journal/study_type/url/status=needs_review。"
             "只有实际提供的来源才允许引用，找不到原始研究时不生成片尾卡；即便有DOI也不能宣称事实已经核实。"
-            "旁白自然可读，时长与全镜头一致。最多3集但这次只写一集。\n"
+            "旁白自然可读，时长与全镜头一致。集数已由系列决定；本次只写这一集。\n"
             "本集要点："+json.dumps(spec, ensure_ascii=False)+"\n"
             "系列已固定人物和风格（必须逐字沿用人物 description）："+json.dumps({"characters":series["characters"],"visual_bible":series["visual_bible"]},ensure_ascii=False)+"\n"
             "原文：\n"+source)
@@ -314,7 +419,8 @@ def direction_prompt(base, series):
             "稳定道具ID、画面结果；遇到双手/多道具复杂运动，设计 split_stitch 或 fallback。"
             "不能让一只手在重叠时间做两项动作，也不要把静态/后期镜头强行改成视频模型。"
             "这些是核心导演创作任务，不可只生成视频Prompt；剪辑和音频事件时间点要可交付给后期。"
-            "单张来源卡5秒、无配音、静态图；必须在v0.2的plan里对应。"
+            "可选单张来源卡1.8秒（现行1–2秒规则）、无配音、静态图；必须在v0.2的plan里对应，"
+            "并计入该集90秒最终时长。"
             "reference_assets 未实际生成，列表为空，不许虚构存在文件。"
             "global_direction确保全年龄观众理解；qa.human_approved 一律false。"
             "输出基于此schema样板并补完所有字段：\n"+json.dumps(template,ensure_ascii=False)+"\n"
@@ -620,10 +726,8 @@ def main(argv=None):
             print(f"本地最坏情况费用预留估算: ¥{reserved:.4f} / 自设上限 ¥{ledger['cap_cny']:.4f}")
             print("这是本地保守估算，不是 DeepSeek 官方结算单；超时/失败也继续占预算。")
         elif args.command=="doctor":
-            print("Python:",sys.version.split()[0]," / 本地项目:",ROOT)
-            print("ChatGPT/GitHub运行依赖：无；创意阶段需要现有Codex+模型，或兼容的LLM API")
-            print("AI_API_KEY:","已提供(不会显示)" if os.environ.get("AI_API_KEY") else "未提供；可用prepare离线准备")
-            print("Web预演、校验与备份都能在无网络时运行；LLM云端生成需要模型可连接")
+            print("本地项目:", ROOT)
+            print_doctor(doctor_report())
         return 0
     except (DirectorError, BudgetError, RetryableLLMError, ValueError, OSError, json.JSONDecodeError, KeyError) as exc:
         print("ERROR:",exc,file=sys.stderr)

@@ -1,0 +1,119 @@
+{
+  "fixture_id": "F01-PUBLIC-LETTER-SUBTEXT-001",
+  "fictional": true,
+  "public_synthetic": true,
+  "source_note": "Public synthetic scene created only for the F01 acting baseline. It contains no user manuscript, real person, private job, or generated media.",
+  "scene": {
+    "location": "A plain dining table in a fictional apartment.",
+    "situation": "A mother asks whether her adult daughter is all right. The daughter is hiding a letter that would change the family's plans.",
+    "duration_s": 6
+  },
+  "given_circumstances": {
+    "who": "CH_DAUGHTER, an adult daughter who has just read the letter and wants to keep the household calm.",
+    "relationship": "Mother and daughter love each other, but the daughter expects the mother to panic if she learns the contents.",
+    "place_time": "Evening at the dining table; the mother is standing, the daughter is seated.",
+    "immediate_objective": "Get through the next minute without the mother seeing or reading the letter.",
+    "obstacle": "The mother is watching her closely and asking direct questions.",
+    "stakes": "If the letter is exposed now, the daughter loses control of when and how the family discusses it."
+  },
+  "dialogue": [
+    {
+      "speaker_id": "CH_MOTHER",
+      "text": "你到底怎么了？",
+      "from_s": 0.0,
+      "to_s": 2.0,
+      "kind": "onscreen_dialogue"
+    },
+    {
+      "speaker_id": "CH_DAUGHTER",
+      "text": "我没事。",
+      "from_s": 2.2,
+      "to_s": 3.2,
+      "kind": "onscreen_dialogue"
+    }
+  ],
+  "acting_deliverable": {
+    "staging": {
+      "blocking": "CH_DAUGHTER sits at the table; CH_MOTHER stands opposite her. The letter is in the daughter's lap, out of the mother's sight.",
+      "gaze": "The daughter looks at the mother while speaking, then briefly down at the letter.",
+      "spatial_constraints": [
+        "The letter starts in the daughter's lap.",
+        "The mother never crosses to the daughter's side of the table."
+      ]
+    },
+    "performance": {
+      "motivation": "想让母亲放心。",
+      "facial_microaction": "悲伤地看着母亲。",
+      "body_microaction": "自然地把信塞进袖口。",
+      "ending_pose": "坐着不动。"
+    },
+    "beats": [
+      {
+        "from_s": 0.0,
+        "to_s": 2.0,
+        "visible_change": "女儿低头。",
+        "performance": "悲伤。",
+        "camera": "fixed medium shot",
+        "sound": "room tone"
+      },
+      {
+        "from_s": 2.0,
+        "to_s": 3.2,
+        "visible_change": "女儿说我没事。",
+        "performance": "看着母亲。",
+        "camera": "fixed medium shot",
+        "sound": "dialogue"
+      },
+      {
+        "from_s": 3.2,
+        "to_s": 6.0,
+        "visible_change": "女儿把信藏起来。",
+        "performance": "自然地藏信。",
+        "camera": "fixed medium shot",
+        "sound": "paper rustle"
+      }
+    ],
+    "continuity": {
+      "start_state": "The letter is in the daughter's lap; the mother is standing.",
+      "end_state": "The letter is hidden; the mother has not seen it.",
+      "locked_entities": [
+        "CH_DAUGHTER",
+        "CH_MOTHER",
+        "the single letter"
+      ],
+      "reference_assets": []
+    },
+    "shootability": {
+      "mode": "single_take",
+      "action_units": [
+        {
+          "id": "A1",
+          "beat_index": 2,
+          "actor_id": "CH_DAUGHTER",
+          "hand": "none",
+          "prop_id": "PROP_LETTER",
+          "from_s": 3.2,
+          "to_s": 6.0,
+          "action": "hide the letter",
+          "visible_result": "the letter leaves the lap"
+        }
+      ],
+      "fallback": "If the hand action is unstable, cut to a close-up of the letter being covered by a napkin."
+    }
+  },
+  "professional_gap": {
+    "verdict": "The fixture satisfies the current structural acting fields but does not play the stated objective, obstacle, tactic, subtext, or reaction.",
+    "missing": [
+      "Explicit objective vs obstacle vs tactic distinction",
+      "A playable action that tries to keep the mother calm while concealing the letter",
+      "Subtext: the line says 'I am fine' while behavior says 'do not look closer'",
+      "A visible reaction to the mother's question, not a generic emotion label",
+      "Hand and prop ownership: which hand holds or moves the letter, and when",
+      "A measurable change between the first and last beat"
+    ],
+    "current_structural_evidence": "The current acting schema requires staging/performance/beats/continuity/shootability and nonempty strings, but the performance object has no objective, obstacle, tactic, subtext, or reaction fields.",
+    "root_cause": "The system validates field presence and physical shootability, while the acting review heuristic only checks that visible_change is nonempty. Neither layer asks whether the chosen action is causally connected to the character's objective and obstacle.",
+    "minimal_next_change": "Add a source-bound acting contract with objective/obstacle/tactic/subtext/reaction/relationship and hand/prop ownership, then reject generic emotion-only or 'naturally' performance descriptions in F01-02/F01-03.",
+    "not_claimed": "This fixture is not a real actor review, not a model test, and not evidence that the acting problem is solved."
+  }
+}

@@ -17,6 +17,7 @@ import re
 import sys
 
 from director import validate as validate_v1
+from closing_evidence_card import DURATION_S as EVIDENCE_CARD_SECONDS
 import reference_assets as refassets
 import production_gate
 
@@ -238,8 +239,10 @@ def validate(base, directions, assets=None, asset_root=None):
         for index, card in credits:
             if index != len(base["shots"]) - 1:
                 errors.append(f"{card['id']}: source credits must be final shot")
-            if card.get("duration") != 5:
-                errors.append(f"{card['id']}: source credit card must be 5 seconds")
+            if abs(card.get("duration", 0) - EVIDENCE_CARD_SECONDS) > 1e-9:
+                errors.append(
+                    f"{card['id']}: source credit card must be {EVIDENCE_CARD_SECONDS} seconds"
+                )
             if card.get("visual_type") != "text_card":
                 errors.append(f"{card['id']}: source card must be post-production text_card")
             ids = card.get("claim_ids", [])

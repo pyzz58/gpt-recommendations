@@ -842,15 +842,15 @@
       "beats": [
         {
           "from_s": 0,
-          "to_s": 0.2,
+          "to_s": 0.3,
           "visible_change": "一张完整引用卡直接切入，不逐条闪现以免阅读负担",
           "performance": "无真人",
           "camera": "fixed static card",
           "sound": "音乐由片尾自然延续，减小至不抢阅读"
         },
         {
-          "from_s": 0.2,
-          "to_s": 5,
+          "from_s": 0.3,
+          "to_s": 1.8,
           "visible_change": "三条核心出处始终完整可读，页脚『完整论文见视频简介』固定",
           "performance": "无真人",
           "camera": "fixed static card; no pan and zoom",

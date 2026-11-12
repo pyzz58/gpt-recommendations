@@ -6,9 +6,11 @@ from __future__ import annotations
 from datetime import datetime
 import html
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import os
 from pathlib import Path
 import re
 import sys
+import tempfile
 from urllib.parse import parse_qs, unquote, urlparse
 import webbrowser
 
@@ -32,6 +34,28 @@ def safe_job(text):
     if not re.fullmatch(r"[a-z0-9][a-z0-9_-]{1,40}", text):
         raise DirectorError("项目名请使用英文、数字、短横线或下划线（至少2个字符），例如 quit-smoking")
     return text
+
+
+def reserve_project_dir(jobs, slug):
+    """Atomically reserve one project directory; never share a slug in a race."""
+    jobs = Path(jobs)
+    jobs.mkdir(parents=True, exist_ok=True)
+    base = safe_job(slug)
+    candidate = jobs / base
+    try:
+        candidate.mkdir()
+        return candidate
+    except FileExistsError:
+        pass
+    stamp = datetime.now().strftime('%Y%m%d-%H%M%S')
+    for index in range(1, 1000):
+        candidate = jobs / f'{base}-{stamp}-{index}'
+        try:
+            candidate.mkdir()
+            return candidate
+        except FileExistsError:
+            continue
+    raise DirectorError("无法分配独立项目目录，请稍后重试")
 
 
 class App(BaseHTTPRequestHandler):
@@ -79,17 +103,25 @@ class App(BaseHTTPRequestHandler):
             article=fields.get('article',[''])[0]  # Preserve leading/trailing whitespace in original document
             if not article.strip() or len(article)>MAX_SOURCE_CHARS or len(article.encode("utf-8"))>MAX_SOURCE_BYTES:
                 raise DirectorError("请粘贴1–45000字符且UTF-8不超过250KB的正文")
-            project=JOBS/slug
-            if project.exists():
-                slug += '-'+datetime.now().strftime('%Y%m%d-%H%M%S')
-                project=JOBS/slug
             JOBS.mkdir(parents=True,exist_ok=True)
-            temp=JOBS / ('.incoming_'+slug+'.md')
+            fd, temp_name = tempfile.mkstemp(prefix='.incoming-', suffix='.md', dir=JOBS)
+            temp = Path(temp_name)
+            project = None
             try:
-                temp.write_text(article,encoding='utf-8')
+                with os.fdopen(fd, 'w', encoding='utf-8') as handle:
+                    handle.write(article)
+                    handle.flush()
+                    os.fsync(handle.fileno())
+                project = reserve_project_dir(JOBS, slug)
                 create_prepare(temp,project)
+            except Exception:
+                # A failed request must not leave a reusable half-created project.
+                if project is not None and project.exists() and not any(project.iterdir()):
+                    project.rmdir()
+                raise
             finally:
                 temp.unlink(missing_ok=True)
+            slug = project.name
             success=(f"<h1>文案已保存在本地</h1><p>项目：<b>{html.escape(slug)}</b></p>"
               "<p class='notice'>还没有自动生成导演镜头。现在请在你的Codex里让它读取以下任务文件，继续使用已经配置好的DeepSeek：</p>"
               f"<pre>{html.escape(str(project/'CODEX_TASK.md'))}</pre>"
