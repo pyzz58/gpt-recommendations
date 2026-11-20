@@ -766,8 +766,8 @@
         "traceability/logs/w22-source-mode-web.log"
       ],
       "artifact_hashes": {
-        "docs/w22-handoff.md": "908831042661098cb3e71861759db4c7bc160bcbb099297faf93f582c9cead42",
-        "docs/w22-offline-acceptance.md": "01fb2e169c60b77c54672076527f0705a0771de459e8e82561ff81c4495e9332",
+        "docs/w22-handoff.md": "52772a09a875788c00c6632a8afd8f9103baff45bc1a11cd47193c1fef34e804",
+        "docs/w22-offline-acceptance.md": "e333d9097ecb73448259dd4ad75ead6d96810c145284c5f1573804101497a790",
         "traceability/logs/w22-source-mode-deployment.log": "b6bd68204ab415e8cf7a5ecbc5e50ea9ef781bbecfb87916dba6f0a964c17fd1",
         "traceability/logs/w22-source-mode-migration.log": "c57e6bba10ce11bdb50234ecebbe771cc3b4a6e63f207f88c8fdcd574c855c0c",
         "traceability/logs/w22-source-mode-mypy.log": "45cd732b059538f71b7ce21bbf7979985ada6de5a5ca0cf10f66de2702e36c06",
@@ -957,7 +957,7 @@
         "traceability/logs/w22-pubmed-live-verification.json"
       ],
       "artifact_hashes": {
-        "docs/w22-pubmed-live-acceptance.md": "9e57245a2eae959655d471ad96490e8e5f15abf002fd747595cc292a42b1c08b",
+        "docs/w22-pubmed-live-acceptance.md": "2b35e041eff6a10500a79ffa0205b93c00b0af84105fcff6e9cb5e8f156c0a0c",
         "traceability/logs/w22-pubmed-live-db-row.tsv": "8874ae70c84478edec06609b0dde5b4d113da98c534a57bedb58928ff3e742d6",
         "traceability/logs/w22-pubmed-live-get-reread.json": "bf9c97f4c3544d4d047374896980d7cec64854b4587195dfd589b946e87f16a6",
         "traceability/logs/w22-pubmed-live-http-status.log": "4744e8044e2865b7c96168edf4743cc35663e92e96e78d28a66e1c014a8b4c07",
@@ -987,6 +987,114 @@
       ],
       "source_tree_git_sha256": "1c4e22f3b595f85eb97366c55050dc11dbb41a3d53b48904033c205ef8030936",
       "source_tree_worktree_sha256": "1c4e22f3b595f85eb97366c55050dc11dbb41a3d53b48904033c205ef8030936"
+    },
+    {
+      "id": "ACC-W22-MODEL-LIVE",
+      "requirements": [
+        "RQ-031"
+      ],
+      "technical_refs": [
+        "TR-01",
+        "TR-07",
+        "TR-08",
+        "TR-09",
+        "TR-11",
+        "TR-15",
+        "TR-19",
+        "TR-24"
+      ],
+      "work_packages": [
+        "W22"
+      ],
+      "acceptance_refs": [
+        "AT-031"
+      ],
+      "source_commit": "939e33f6f1f93eb1534e08f3dfd96ebad1259598",
+      "result": "failed",
+      "scope": "W22 one-shot DeepSeek model live sub-acceptance using the project OpenAI-compatible adapter, a synthetic AgentDelivery task, a USD 0.01 pre-call cap and exactly one network attempt. The provider returned HTTP 200 for deepseek-flash, but the adapter rejected the response because it was not valid JSON. Raw provider token usage and a rate-based cost estimate were recorded; schema validation did not start and no retry occurred.",
+      "commands": [
+        {
+          "cwd": "services/core",
+          "command": "uv run --frozen python - (one-shot W22 DeepSeek synthetic model smoke; local provider credential read in-process; single-call transport wrapper)",
+          "mode": "live_network+cost_gate+json_validation",
+          "started_at": "2026-11-20T23:03:21.229141+00:00",
+          "finished_at": "2026-11-20T23:03:24.964423+00:00",
+          "exit_code": 0,
+          "artifacts": [
+            "traceability/logs/w22-model-live-provider-usage.json",
+            "traceability/logs/w22-model-live-http-status.log",
+            "traceability/logs/w22-model-live-verification.json"
+          ]
+        }
+      ],
+      "validation_levels": {
+        "mock": {
+          "status": "passed",
+          "evidence": [
+            "docs/w22-offline-acceptance.md",
+            "traceability/logs/w22-source-mode-targeted.log"
+          ]
+        },
+        "live": {
+          "status": "failed",
+          "evidence": [
+            "docs/w22-model-live-acceptance.md",
+            "traceability/logs/w22-model-live-verification.json",
+            "traceability/logs/w22-model-live-provider-usage.json"
+          ]
+        },
+        "human_expert": {
+          "status": "not_run",
+          "evidence": []
+        },
+        "real_outsourcing": {
+          "status": "not_applicable",
+          "evidence": []
+        }
+      },
+      "code_paths": [
+        {
+          "path": "services/core/src/medical_one_person/providers/openai_compatible.py",
+          "sha256": "3a1039197827e1cab01e51f0dbbb2f62a4f52b2a49cc8176e1f5458fecad248d"
+        },
+        {
+          "path": "services/core/src/medical_one_person/providers/factory.py",
+          "sha256": "3a6acd9d5cf9a0d8369470e4127c304e2fea0d66656cd88b3647929d7184be41"
+        },
+        {
+          "path": "services/core/src/medical_one_person/providers/errors.py",
+          "sha256": "24f7cb373e43cc59f181c1e515b8de700871d4bc89cee3b6e7737c6f3edf339e"
+        },
+        {
+          "path": "services/core/src/medical_one_person/config.py",
+          "sha256": "f3014dd2a844d34951e6c059689514f530886f597ddee62d416dc35769cde832"
+        }
+      ],
+      "artifacts": [
+        "docs/w22-model-live-acceptance.md",
+        "traceability/logs/w22-model-live-http-status.log",
+        "traceability/logs/w22-model-live-provider-usage.json",
+        "traceability/logs/w22-model-live-verification.json"
+      ],
+      "artifact_hashes": {
+        "docs/w22-model-live-acceptance.md": "b782476f5fb2d854df8a10acde2144dfad4e94f476566db22bacb81bc9386d32",
+        "traceability/logs/w22-model-live-http-status.log": "fa3b362e492f329e5cc2dfac286d7163d5f8524b05aefb2b6f612039c09100bc",
+        "traceability/logs/w22-model-live-provider-usage.json": "c87d76339969b887b71b867bdb327c489422e8aab683b6b1205871f72b7fd096",
+        "traceability/logs/w22-model-live-verification.json": "12c7e503eb1c0b582b072d4606b34ce8b706784be1a1c0336baddee62260949f"
+      },
+      "uncovered": [
+        "The provider response body was rejected as non-JSON and was not retained, so the specific content field cannot be reconstructed from saved evidence.",
+        "Raw token usage is verified from the HTTP response; the USD cost is a conservative public-rate estimate, not an invoice or confirmed charge.",
+        "No retry or remediation run was performed. Changing thinking mode or output limits requires new explicit authorization.",
+        "A failed connectivity/JSON attempt does not validate structured delivery, scientific judgment, data policy, rate-limit behavior or W22 completion.",
+        "No SMTP, human expert, institution, purchase, contract, payment or experiment action ran."
+      ],
+      "source_scope": [
+        "services/core/src/medical_one_person/providers",
+        "services/core/src/medical_one_person/config.py"
+      ],
+      "source_tree_git_sha256": "028d781ed74e8f7694c73428908d9d78bb8be682b4591153276dca0d8828f57c",
+      "source_tree_worktree_sha256": "028d781ed74e8f7694c73428908d9d78bb8be682b4591153276dca0d8828f57c"
     },
     {
       "id": "ACC-W24-READINESS-LEDGER",
@@ -1166,7 +1274,7 @@
         "docs"
       ],
       "source_tree_git_sha256": "bdf7291c849ec310e8d32d6fb5343afd177107cba177a45f573088a33ff3dc5c",
-      "source_tree_worktree_sha256": "2b8726932da9a7a47a5a9b8d0e816b00f76290879c934e00bcef671f593d24f8"
+      "source_tree_worktree_sha256": "999240c94fb07bbffcbd878f29a08ed47019fd1d3e32d791bc7aa739f58c1211"
     }
   ]
 }

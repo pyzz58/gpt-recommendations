@@ -1,0 +1,53 @@
+{
+  "acceptance": "ACC-W22-MODEL-LIVE",
+  "result": "failed",
+  "started_at": "2026-11-20T23:03:21.229141+00:00",
+  "finished_at": "2026-11-20T23:03:24.964423+00:00",
+  "network_attempts": 1,
+  "single_attempt_enforced": true,
+  "provider_id": "openai-compatible.v1",
+  "url": "https://api.deepseek.com/chat/completions",
+  "model_requested": "deepseek-flash",
+  "response_model": "deepseek-flash",
+  "http_status": 200,
+  "request_sha256": "10bf44286cddee60fe620192bcf0213e74cbd070862dfbd019273115a31533d4",
+  "response_sha256": "d4fddf69c45d79d9b4b53c681014014a309666354fda677b24bd067142958f0b",
+  "pre_call_cost_upper_bound_usd": "0.0015603",
+  "per_call_cap_usd": "0.01",
+  "billing_window": "off_peak_weekend",
+  "rates_usd_per_million_tokens": {
+    "input_cache_miss": "0.15",
+    "output": "0.60"
+  },
+  "provider_usage_status": "verified_from_response",
+  "raw_provider_usage_artifact": "traceability/logs/w22-model-live-provider-usage.json",
+  "cost_estimate": {
+    "status": "estimated_from_reported_usage",
+    "input_tokens_charged_for_estimate": 1985,
+    "input_cost_usd": "0.00029775",
+    "output_tokens_charged_for_estimate": 512,
+    "output_cost_usd": "0.00030720",
+    "total_cost_usd": "0.00060495",
+    "cap_utilization_percent": "6.0495",
+    "note": "Conservative estimate charges all prompt tokens at the cache-miss rate. It is not a provider invoice."
+  },
+  "json_contract": {
+    "requested_schema": "agent_delivery.v1",
+    "overall_result": "failed",
+    "model_content_json_parse": "failed",
+    "provider_response_invalid": "Model provider response is not valid JSON",
+    "schema_validation_result": "not_run",
+    "schema_validation_reason": "The adapter raised before AgentDelivery received an output object.",
+    "adapter_finish_reason": null
+  },
+  "observation": {
+    "reported_reasoning_tokens": 512,
+    "reported_completion_tokens": 512,
+    "interpretation": "All reported completion tokens were classified as reasoning tokens. The complete provider response body was not retained after the adapter rejected it, so the specific content field cannot be reconstructed from saved evidence."
+  },
+  "rate_source": {
+    "url": "https://api-docs.deepseek.com/quick_start/pricing",
+    "checked_at": "2026-11-20T23:02:45+00:00",
+    "model_version": "DeepSeek-V4.1-Flash-1017"
+  }
+}

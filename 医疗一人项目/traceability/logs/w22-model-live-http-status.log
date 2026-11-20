@@ -1,0 +1,4 @@
+http_status=200
+network_attempts=1
+single_attempt_enforced=true
+adapter_result=ProviderResponseInvalid: Model provider response is not valid JSON

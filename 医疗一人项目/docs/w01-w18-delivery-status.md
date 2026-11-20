@@ -32,7 +32,8 @@
 
 ## 当前后续工作
 
-- W22：IN_PROGRESS。模型与SMTP适配器及离线测试已完成，真实模型/邮箱live未运行。
+- W22：IN_PROGRESS。模型与SMTP适配器及离线测试已完成；PubMed单次live通过，
+  DeepSeek模型一次live尝试因响应非JSON而失败；真实邮箱未运行。
 - W23：IMPLEMENTED，原生部署/启停/健康局部VERIFIED；Compose/容器未实跑。
 - W24：PREPARED。没有现实联系、授权、执行、原始交付或验收；见
   [W24试点档案](w24-pilot-charter.md)。

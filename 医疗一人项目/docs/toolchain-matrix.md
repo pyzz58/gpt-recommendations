@@ -40,10 +40,10 @@
 | 独立审计/评测 | Pydantic 2.14.2、PostgreSQL JSONB/SHA-256/RLS、Next.js | W17领域/服务/API/页面 | 三类目标快照、A25/A26规则、阻断/处置、7案合成评测、迁移往返与76条策略；非真人/非mock独立审查 |
 | 离线/恢复 | cryptography 46.0.3、scrypt、AES-256-GCM、PostgreSQL REPEATABLE READ/JSONB/RLS | W18领域/服务/API/页面 | 离线门、回收站、未引用索引重建、加密备份/隔离恢复、任务输入失效与79条策略；活动DB重放与异地恢复未验证 |
 | Docker / Compose | 未安装；W23文件已静态检查 | 本机命令检查 / `tools/check_deployment.py` | BLOCKED；运行资料、卷、路径、loopback端口结构通过静态检查，镜像构建和容器启动未执行 |
-| OpenAI-compatible适配 | Python 3.12 `urllib.request`；provider合同 | 本项目；具体provider待选 | W22离线transport成功/认证/限流/费用门测试；无真实请求 |
+| OpenAI-compatible适配 | Python 3.12 `urllib.request`；provider合同 | DeepSeek官方OpenAI兼容API | W22离线合同通过；`deepseek-flash`受控live一次返回HTTP 200但非有效JSON，schema验收失败，原始用量与估算费用已记录 |
 | SMTP send-only适配 | Python 3.12 `smtplib`/`email`；注入式transport | 本项目；具体邮箱待选 | W22离线MIME/STARTTLS/白名单/unknown测试；无真实连接、收件或发送 |
 | PubMed E-utilities适配 | Python 3.12 `urllib.request`、NCBI ESearch JSON/EFetch XML | NCBI官方服务；使用条款待live核验 | W22离线两阶段transport/参数/错误测试；默认关闭，无真实查询 |
-| 真实模型 | 未配置 | 无 | 不可用，不调用 |
+| 真实模型 | 本机DeepSeek凭据；按单次授权使用 | DeepSeek `deepseek-flash` | 一次live尝试失败；无重试，不能作为结构化输出或科学能力通过证据 |
 | 邮箱/外部机构 | 未配置/无授权 | 无 | 禁用，不发送 |
 
 ## 隔离结论

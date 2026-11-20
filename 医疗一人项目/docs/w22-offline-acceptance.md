@@ -4,7 +4,8 @@
 
 被测源码：以最终源码提交和`traceability/acceptance-records.json`为准。
 
-状态：适配器已实现，离线合同通过；真实检索、模型与邮箱分别`not_run`。
+状态：适配器已实现，离线合同通过。后续live状态分别见专项记录：
+PubMed来源检索通过；模型完成一次受控尝试但JSON验收失败；真实邮箱`not_run`。
 本文件不把transport替身、假SMTP、本地XML或配置构造称为live连接。
 
 ## 覆盖
@@ -29,7 +30,7 @@
 
 ## 未覆盖
 
-- 没有真实模型base URL、凭据、model ID、费率、额度或provider数据政策；
+- 本离线验收执行时尚无真实模型base URL、凭据、model ID、费率或额度；
 - 没有真实SMTP账号、凭据、发件地址、测试收件或发送授权；
 - 没有NCBI allowlisted网络授权、真实查询或返回结果；全文可用性和医学质量
   不能从元数据适配器通过推导；
