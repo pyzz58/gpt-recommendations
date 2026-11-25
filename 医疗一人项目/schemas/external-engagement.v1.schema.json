@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:external-engagement:v1",
+  "$defs": {
+    "EngagementScope": {
+      "additionalProperties": false,
+      "properties": {
+        "scientific_question": {
+          "maxLength": 5000,
+          "minLength": 1,
+          "title": "Scientific Question",
+          "type": "string"
+        },
+        "decision_impact": {
+          "maxLength": 5000,
+          "minLength": 1,
+          "title": "Decision Impact",
+          "type": "string"
+        },
+        "input_requirements": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Input Requirements",
+          "type": "array"
+        },
+        "deliverables": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Deliverables",
+          "type": "array"
+        },
+        "method_and_quality": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Method And Quality",
+          "type": "array"
+        },
+        "rights_and_confidentiality": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Rights And Confidentiality",
+          "type": "array"
+        },
+        "acceptance_responsibility": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Acceptance Responsibility",
+          "type": "string"
+        },
+        "target_start": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Start"
+        },
+        "target_end": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target End"
+        },
+        "budget_lower": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Budget Lower"
+        },
+        "budget_upper": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Budget Upper"
+        },
+        "currency": {
+          "default": "CNY",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scientific_question",
+        "decision_impact",
+        "input_requirements",
+        "deliverables",
+        "method_and_quality",
+        "rights_and_confidentiality",
+        "acceptance_responsibility"
+      ],
+      "title": "EngagementScope",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "organization_id": {
+      "format": "uuid",
+      "title": "Organization Id",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/EngagementScope"
+    }
+  },
+  "required": [
+    "organization_id",
+    "title",
+    "scope"
+  ],
+  "title": "EngagementSpec",
+  "type": "object",
+  "description": "External work package scope contract."
+}

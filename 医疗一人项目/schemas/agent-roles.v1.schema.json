@@ -1,0 +1,207 @@
+{
+  "$defs": {
+    "AcceptanceCaseConfig": {
+      "properties": {
+        "kind": {
+          "enum": [
+            "positive",
+            "missing_input",
+            "unauthorized"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "description"
+      ],
+      "title": "AcceptanceCaseConfig",
+      "type": "object"
+    },
+    "AgentRoleConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "role_id": {
+          "pattern": "^A\\d{2}$",
+          "title": "Role Id",
+          "type": "string"
+        },
+        "version": {
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "reports_to": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Reports To",
+          "type": "array"
+        },
+        "responsibilities": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Responsibilities",
+          "type": "array"
+        },
+        "not_responsibilities": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Not Responsibilities",
+          "type": "array"
+        },
+        "input_schema": {
+          "minLength": 1,
+          "title": "Input Schema",
+          "type": "string"
+        },
+        "output_schema": {
+          "const": "agent_delivery.v1",
+          "title": "Output Schema",
+          "type": "string"
+        },
+        "deliverable_types": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Deliverable Types",
+          "type": "array"
+        },
+        "source_policy": {
+          "minLength": 1,
+          "title": "Source Policy",
+          "type": "string"
+        },
+        "skills": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Skills",
+          "type": "array"
+        },
+        "tools_allow": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Tools Allow",
+          "type": "array"
+        },
+        "tools_deny": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Tools Deny",
+          "type": "array"
+        },
+        "memory_scope": {
+          "const": "project_and_role",
+          "title": "Memory Scope",
+          "type": "string"
+        },
+        "reviewers": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Reviewers",
+          "type": "array"
+        },
+        "model_profile": {
+          "minLength": 1,
+          "title": "Model Profile",
+          "type": "string"
+        },
+        "limits_profile": {
+          "minLength": 1,
+          "title": "Limits Profile",
+          "type": "string"
+        },
+        "theory_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Theory Refs",
+          "type": "array"
+        },
+        "independent_context": {
+          "title": "Independent Context",
+          "type": "boolean"
+        },
+        "acceptance_cases": {
+          "items": {
+            "$ref": "#/$defs/AcceptanceCaseConfig"
+          },
+          "minItems": 3,
+          "title": "Acceptance Cases",
+          "type": "array"
+        }
+      },
+      "required": [
+        "role_id",
+        "version",
+        "name",
+        "reports_to",
+        "responsibilities",
+        "not_responsibilities",
+        "input_schema",
+        "output_schema",
+        "deliverable_types",
+        "source_policy",
+        "skills",
+        "tools_allow",
+        "tools_deny",
+        "memory_scope",
+        "reviewers",
+        "model_profile",
+        "limits_profile",
+        "theory_refs",
+        "independent_context",
+        "acceptance_cases"
+      ],
+      "title": "AgentRoleConfig",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "roles": {
+      "items": {
+        "$ref": "#/$defs/AgentRoleConfig"
+      },
+      "title": "Roles",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "roles"
+  ],
+  "title": "AgentConfigCatalog",
+  "type": "object"
+}

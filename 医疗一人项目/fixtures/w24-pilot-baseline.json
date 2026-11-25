@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "pilot_id": "W24-PILOT-001",
+  "version": 1,
+  "candidate_defined": false,
+  "charter_ref": "docs/w24-pilot-charter.md",
+  "coverage": [
+    {"step": "investment_charter", "level": "designed", "owner_role": "A03", "gap": "具体候选、周期和外包预算尚未由发起人确定。"},
+    {"step": "source_review", "level": "designed", "owner_role": "A04", "gap": "尚未选择具体候选和资料截止日。"},
+    {"step": "unmet_need", "level": "designed", "owner_role": "A05", "gap": "没有具体目标物种/场景，未取得现实访谈。"},
+    {"step": "mechanism_translation", "level": "designed", "owner_role": "A06", "gap": "未选择候选，无法形成具体机制链。"},
+    {"step": "safety_cmc", "level": "designed", "owner_role": "A07", "gap": "没有具体药物、剂型或质量目标。"},
+    {"step": "study_design_statistics", "level": "designed", "owner_role": "A13", "gap": "没有候选研究问题、终点和样本计划。"},
+    {"step": "candidate_selection", "level": "designed", "owner_role": "A02", "gap": "发起人尚未做出具体方向选择。"},
+    {"step": "provider_matching", "level": "not_started", "owner_role": "A22", "gap": "未授权现实机构接触。"},
+    {"step": "quote_budget", "level": "not_started", "owner_role": "A20", "gap": "没有真实工作范围、报价或预算授权。"},
+    {"step": "rights_contract", "level": "not_started", "owner_role": "A19", "gap": "没有具体合同对象或法律审查。"},
+    {"step": "handoff_execution", "level": "not_started", "owner_role": "A03", "gap": "没有授权执行或真实交接回执。"},
+    {"step": "raw_delivery", "level": "not_started", "owner_role": "A22", "gap": "没有现实原始交付。"},
+    {"step": "cleaning_statistics", "level": "designed", "owner_role": "A15", "gap": "仅有合成演练，没有现实原始数据。"},
+    {"step": "independent_quality", "level": "designed", "owner_role": "A25", "gap": "无真人或非mock独立审查。"},
+    {"step": "reporting_decision", "level": "designed", "owner_role": "A02", "gap": "无真实证据进入发起人决定。"},
+    {"step": "archive_retrospective", "level": "designed", "owner_role": "A03", "gap": "无真实人工负担、成本或合作记录。"}
+  ]
+}

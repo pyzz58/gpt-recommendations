@@ -1,0 +1,32 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "numbers": {
+      "items": {
+        "type": "number"
+      },
+      "maxItems": 10000,
+      "minItems": 1,
+      "title": "Numbers",
+      "type": "array"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Unit"
+    }
+  },
+  "required": [
+    "numbers"
+  ],
+  "title": "NumericSummaryInput",
+  "type": "object"
+}

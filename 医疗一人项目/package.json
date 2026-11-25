@@ -1,0 +1,17 @@
+{
+  "name": "medical-one-person",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": "22.23.4",
+    "pnpm": "11.25.0"
+  },
+  "scripts": {
+    "dev:web": "pnpm --dir apps/web dev",
+    "build:web": "pnpm --dir apps/web build",
+    "lint:web": "pnpm --dir apps/web lint",
+    "typecheck:web": "pnpm --dir apps/web typecheck",
+    "test:web": "pnpm --dir apps/web check"
+  }
+}

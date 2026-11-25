@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:external-deliverable:v1",
+  "$defs": {
+    "DeliverableKind": {
+      "enum": [
+        "report",
+        "raw_data",
+        "prototype",
+        "service_record",
+        "approval_record"
+      ],
+      "title": "DeliverableKind",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "engagement_id": {
+      "format": "uuid",
+      "title": "Engagement Id",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/DeliverableKind"
+    },
+    "expected_items": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 50,
+      "minItems": 1,
+      "title": "Expected Items",
+      "type": "array"
+    },
+    "due_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Due At"
+    }
+  },
+  "required": [
+    "engagement_id",
+    "title",
+    "kind",
+    "expected_items"
+  ],
+  "title": "DeliverableSpec",
+  "type": "object",
+  "description": "Expected external deliverable and raw-data contract."
+}

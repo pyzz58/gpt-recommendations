@@ -1,0 +1,581 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:opportunity-card:v1",
+  "$defs": {
+    "CostEstimate": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "scope": {
+          "minLength": 1,
+          "title": "Scope",
+          "type": "string"
+        },
+        "stage": {
+          "minLength": 1,
+          "title": "Stage",
+          "type": "string"
+        },
+        "line_items": {
+          "items": {
+            "$ref": "#/$defs/CostLineItem"
+          },
+          "minItems": 1,
+          "title": "Line Items",
+          "type": "array"
+        },
+        "price_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Price Date"
+        },
+        "expiry": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Expiry"
+        },
+        "tax_shipping_assumption": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Tax Shipping Assumption"
+        },
+        "excluded_work": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Excluded Work",
+          "type": "array"
+        },
+        "contingency_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Contingency Basis"
+        },
+        "total_range": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          ],
+          "title": "Total Range",
+          "type": "array"
+        },
+        "unknown_items": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unknown Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "currency",
+        "scope",
+        "stage",
+        "line_items",
+        "price_date",
+        "expiry",
+        "tax_shipping_assumption",
+        "excluded_work",
+        "contingency_basis",
+        "total_range",
+        "unknown_items"
+      ],
+      "title": "CostEstimate",
+      "type": "object"
+    },
+    "CostLineItem": {
+      "additionalProperties": false,
+      "properties": {
+        "item": {
+          "minLength": 1,
+          "title": "Item",
+          "type": "string"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantity"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "unit_cost_lower": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit Cost Lower"
+        },
+        "unit_cost_upper": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit Cost Upper"
+        },
+        "source_type": {
+          "enum": [
+            "quote",
+            "published_price",
+            "historical",
+            "assumption",
+            "unknown"
+          ],
+          "title": "Source Type",
+          "type": "string"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Ref"
+        }
+      },
+      "required": [
+        "item",
+        "unit",
+        "source_type",
+        "source_ref"
+      ],
+      "title": "CostLineItem",
+      "type": "object"
+    },
+    "MechanismStep": {
+      "additionalProperties": false,
+      "properties": {
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "fact",
+            "inference",
+            "hypothesis"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "statement",
+        "status",
+        "evidence_refs"
+      ],
+      "title": "MechanismStep",
+      "type": "object"
+    },
+    "NextValidation": {
+      "additionalProperties": false,
+      "properties": {
+        "objective": {
+          "title": "Objective",
+          "type": "string"
+        },
+        "success_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Success Criteria",
+          "type": "array"
+        },
+        "stop_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Stop Criteria",
+          "type": "array"
+        },
+        "possible_outcomes": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Possible Outcomes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "objective",
+        "success_criteria",
+        "stop_criteria",
+        "possible_outcomes"
+      ],
+      "title": "NextValidation",
+      "type": "object"
+    },
+    "ProbabilityEstimate": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "minLength": 1,
+          "title": "Event",
+          "type": "string"
+        },
+        "conditions": {
+          "minLength": 1,
+          "title": "Conditions",
+          "type": "string"
+        },
+        "horizon": {
+          "minLength": 1,
+          "title": "Horizon",
+          "type": "string"
+        },
+        "success_criterion": {
+          "minLength": 1,
+          "title": "Success Criterion",
+          "type": "string"
+        },
+        "method": {
+          "enum": [
+            "empirical",
+            "validated_model",
+            "subjective_scenario",
+            "unknown"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "basis_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Basis Refs",
+          "type": "array"
+        },
+        "population_or_base_rate": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Population Or Base Rate"
+        },
+        "lower": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lower"
+        },
+        "upper": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Upper"
+        },
+        "calibration_status": {
+          "enum": [
+            "calibrated",
+            "uncalibrated",
+            "not_applicable"
+          ],
+          "title": "Calibration Status",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "unknown_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unknown Reason"
+        }
+      },
+      "required": [
+        "event",
+        "conditions",
+        "horizon",
+        "success_criterion",
+        "method",
+        "basis_refs",
+        "population_or_base_rate",
+        "calibration_status",
+        "limitations"
+      ],
+      "title": "ProbabilityEstimate",
+      "type": "object"
+    },
+    "Track": {
+      "enum": [
+        "pet_repurposing",
+        "ivd",
+        "device"
+      ],
+      "title": "Track",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "track": {
+      "$ref": "#/$defs/Track"
+    },
+    "proposed_use": {
+      "minLength": 1,
+      "title": "Proposed Use",
+      "type": "string"
+    },
+    "target_population_or_scene": {
+      "minLength": 1,
+      "title": "Target Population Or Scene",
+      "type": "string"
+    },
+    "need_evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Need Evidence Refs",
+      "type": "array"
+    },
+    "mechanism_steps": {
+      "items": {
+        "$ref": "#/$defs/MechanismStep"
+      },
+      "minItems": 1,
+      "title": "Mechanism Steps",
+      "type": "array"
+    },
+    "current_alternatives": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Current Alternatives",
+      "type": "array"
+    },
+    "proposed_advantage": {
+      "title": "Proposed Advantage",
+      "type": "string"
+    },
+    "comparison_metrics": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Comparison Metrics",
+      "type": "array"
+    },
+    "gaps": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Gaps",
+      "type": "object"
+    },
+    "next_validation": {
+      "$ref": "#/$defs/NextValidation"
+    },
+    "probabilities": {
+      "items": {
+        "$ref": "#/$defs/ProbabilityEstimate"
+      },
+      "minItems": 1,
+      "title": "Probabilities",
+      "type": "array"
+    },
+    "costs": {
+      "items": {
+        "$ref": "#/$defs/CostEstimate"
+      },
+      "minItems": 1,
+      "title": "Costs",
+      "type": "array"
+    },
+    "change_trigger": {
+      "minLength": 1,
+      "title": "Change Trigger",
+      "type": "string"
+    },
+    "professional_opinions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Professional Opinions",
+      "type": "object"
+    },
+    "review_findings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Review Findings",
+      "type": "array"
+    },
+    "evidence_cutoff": {
+      "format": "date-time",
+      "title": "Evidence Cutoff",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "title",
+    "track",
+    "proposed_use",
+    "target_population_or_scene",
+    "need_evidence_refs",
+    "mechanism_steps",
+    "current_alternatives",
+    "proposed_advantage",
+    "comparison_metrics",
+    "gaps",
+    "next_validation",
+    "probabilities",
+    "costs",
+    "change_trigger",
+    "professional_opinions",
+    "review_findings",
+    "evidence_cutoff",
+    "limitations"
+  ],
+  "title": "OpportunityCard",
+  "type": "object",
+  "description": "Opportunity comparison contract from TR-11; validation does not establish scientific validity."
+}

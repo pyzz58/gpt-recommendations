@@ -1,0 +1,314 @@
+schema_version: 1
+skills:
+  - skill_id: data.numeric_summary
+    version: 1
+    description: 对调用方提供的有限数值集合计算描述统计。
+    trigger: 数据已完成类型校验且用户需要基础描述统计。
+    input_schema: numeric_summary.input.v1
+    output_schema: numeric_summary.output.v1
+    theory_refs: [D-015, SEC:10]
+    required_tools: []
+    source_scopes: [task_input]
+    secret_scopes: []
+    network_policy: disabled
+    allowed_network_hosts: []
+    runtime_kind: builtin
+    runtime_image_digest: null
+    resource_limits:
+      cpu_count: 1
+      memory_mb: 256
+      timeout_seconds: 10
+      max_input_bytes: 1000000
+      max_output_bytes: 200000
+      max_processes: 16
+    side_effect_class: none
+    license_ref: project
+    validation_suite: skill.numeric_summary.v1
+    declared_status: ready
+    allowed_roles: [A14, A15]
+  - skill_id: artifact.hash
+    version: 1
+    description: 对合成或已授权文本计算SHA-256并返回大小与状态。
+    trigger: 产物需在进入下游前固定内容哈希。
+    input_schema: artifact_hash.input.v1
+    output_schema: artifact_hash.output.v1
+    theory_refs: [D-017, SEC:11.1]
+    required_tools: [artifact.write]
+    source_scopes: [task_input]
+    secret_scopes: []
+    network_policy: disabled
+    allowed_network_hosts: []
+    runtime_kind: builtin
+    runtime_image_digest: null
+    resource_limits:
+      cpu_count: 1
+      memory_mb: 256
+      timeout_seconds: 10
+      max_input_bytes: 2000000
+      max_output_bytes: 100000
+      max_processes: 16
+    side_effect_class: internal_write
+    license_ref: project
+    validation_suite: skill.artifact_hash.v1
+    declared_status: ready
+    allowed_roles: [A15, A24]
+  - skill_id: signal.verify
+    version: 1
+    description: 核查线索原文、发布日期与已知证据缺口。
+    trigger: 新新闻、论文或现实问题进入科学首席。
+    input_schema: signal_verification.input.v1
+    output_schema: signal_verification.output.v1
+    theory_refs: [D-018, SEC:7.6]
+    required_tools: [source.search, source.read, evidence.propose]
+    source_scopes: [project_private, approved_public]
+    secret_scopes: []
+    network_policy: allowlisted
+    allowed_network_hosts: [pubmed.ncbi.nlm.nih.gov, www.ebi.ac.uk]
+    runtime_kind: container
+    runtime_image_digest: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    resource_limits:
+      cpu_count: 1
+      memory_mb: 1024
+      timeout_seconds: 120
+      max_input_bytes: 5000000
+      max_output_bytes: 2000000
+      max_processes: 64
+    side_effect_class: none
+    license_ref: project
+    validation_suite: skill.signal_verify.v1
+    declared_status: dependency_missing
+    allowed_roles: [A04, A24]
+  - skill_id: literature.search
+    version: 1
+    description: 在核准专业来源中检索并保存检索日志。
+    trigger: 需要现有证据、负面研究或专业原始文献。
+    input_schema: literature_search.input.v1
+    output_schema: literature_search.output.v1
+    theory_refs: [D-018, SEC:11.3]
+    required_tools: [source.search, source.read, evidence.propose]
+    source_scopes: [approved_public, subscribed]
+    secret_scopes: []
+    network_policy: allowlisted
+    allowed_network_hosts: [pubmed.ncbi.nlm.nih.gov, www.ebi.ac.uk]
+    runtime_kind: container
+    runtime_image_digest: "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    resource_limits:
+      cpu_count: 1
+      memory_mb: 1536
+      timeout_seconds: 300
+      max_input_bytes: 5000000
+      max_output_bytes: 5000000
+      max_processes: 64
+    side_effect_class: internal_write
+    license_ref: project
+    validation_suite: skill.literature_search.v1
+    declared_status: dependency_missing
+    allowed_roles: [A04, A06, A26]
+  - skill_id: evidence.extract
+    version: 1
+    description: 从原始资料提取可定位断言与支持/反对关系。
+    trigger: 已取得有版本的原件或数据包。
+    input_schema: evidence_extraction.input.v1
+    output_schema: evidence_bundle.output.v1
+    theory_refs: [D-018, SEC:11.4]
+    required_tools: [artifact.read, evidence.propose]
+    source_scopes: [project_private, approved_public]
+    secret_scopes: []
+    network_policy: disabled
+    allowed_network_hosts: []
+    runtime_kind: disabled
+    runtime_image_digest: null
+    resource_limits:
+      cpu_count: 1
+      memory_mb: 1024
+      timeout_seconds: 180
+      max_input_bytes: 10000000
+      max_output_bytes: 5000000
+      max_processes: 32
+    side_effect_class: none
+    license_ref: project
+    validation_suite: skill.evidence_extract.v1
+    declared_status: dependency_missing
+    allowed_roles: [A04, A06, A08, A09, A10, A24]
+  - skill_id: evidence.audit
+    version: 1
+    description: 核对引文、数字、失败证据和外推边界。
+    trigger: 关键科学交付进入独立审核。
+    input_schema: evidence_audit.input.v1
+    output_schema: evidence_audit.output.v1
+    theory_refs: [D-008, SEC:7.4]
+    required_tools: [artifact.read, evidence.propose]
+    source_scopes: [project_private, approved_public]
+    secret_scopes: []
+    network_policy: disabled
+    allowed_network_hosts: []
+    runtime_kind: disabled
+    runtime_image_digest: null
+    resource_limits:
+      cpu_count: 1
+      memory_mb: 1024
+      timeout_seconds: 180
+      max_input_bytes: 10000000
+      max_output_bytes: 5000000
+      max_processes: 32
+    side_effect_class: none
+    license_ref: project
+    validation_suite: skill.evidence_audit.v1
+    declared_status: dependency_missing
+    allowed_roles: [A25, A26]
+  - skill_id: opportunity.compare
+    version: 1
+    description: 按硬约束和分维度证据比较候选方向。
+    trigger: 已完成跨专业初筛并准备用户选择。
+    input_schema: opportunity_comparison.input.v1
+    output_schema: opportunity_comparison.output.v1
+    theory_refs: [D-014, SEC:10.2]
+    required_tools: [artifact.read, evidence.propose]
+    source_scopes: [project_private]
+    secret_scopes: []
+    network_policy: disabled
+    allowed_network_hosts: []
+    runtime_kind: disabled
+    runtime_image_digest: null
+    resource_limits:
+      cpu_count: 1
+      memory_mb: 1024
+      timeout_seconds: 180
+      max_input_bytes: 5000000
+      max_output_bytes: 3000000
+      max_processes: 32
+    side_effect_class: none
+    license_ref: project
+    validation_suite: skill.opportunity_compare.v1
+    declared_status: planned
+    allowed_roles: [A01, A02, A21]
+  - skill_id: study.plan
+    version: 1
+    description: 形成可证伪问题、终点、对照与停止条件。
+    trigger: 候选方向已获用户选择。
+    input_schema: study_plan.input.v1
+    output_schema: study_plan.output.v1
+    theory_refs: [D-015, SEC:10]
+    required_tools: [artifact.read, evidence.propose]
+    source_scopes: [project_private]
+    secret_scopes: []
+    network_policy: disabled
+    allowed_network_hosts: []
+    runtime_kind: disabled
+    runtime_image_digest: null
+    resource_limits:
+      cpu_count: 1
+      memory_mb: 1024
+      timeout_seconds: 180
+      max_input_bytes: 5000000
+      max_output_bytes: 3000000
+      max_processes: 32
+    side_effect_class: none
+    license_ref: project
+    validation_suite: skill.study_plan.v1
+    declared_status: planned
+    allowed_roles: [A09, A13]
+  - skill_id: stats.analyze
+    version: 1
+    description: 依据预设方案分析数据并保留代码与不确定性。
+    trigger: 已接收版本化数据包和分析计划。
+    input_schema: stats_analysis.input.v1
+    output_schema: stats_analysis.output.v1
+    theory_refs: [D-015, SEC:10.1]
+    required_tools: [artifact.read, artifact.write]
+    source_scopes: [project_private]
+    secret_scopes: []
+    network_policy: disabled
+    allowed_network_hosts: []
+    runtime_kind: disabled
+    runtime_image_digest: null
+    resource_limits:
+      cpu_count: 2
+      memory_mb: 2048
+      timeout_seconds: 600
+      max_input_bytes: 50000000
+      max_output_bytes: 20000000
+      max_processes: 64
+    side_effect_class: internal_write
+    license_ref: project
+    validation_suite: skill.stats_analyze.v1
+    declared_status: dependency_missing
+    allowed_roles: [A14, A15]
+  - skill_id: stage.assess
+    version: 1
+    description: 依据预设条件给出继续、补证、暂停或停止建议。
+    trigger: 一个研究阶段达到复盘节点。
+    input_schema: stage_assessment.input.v1
+    output_schema: stage_assessment.output.v1
+    theory_refs: [D-022, SEC:7.7]
+    required_tools: [artifact.read, evidence.propose]
+    source_scopes: [project_private]
+    secret_scopes: []
+    network_policy: disabled
+    allowed_network_hosts: []
+    runtime_kind: disabled
+    runtime_image_digest: null
+    resource_limits:
+      cpu_count: 1
+      memory_mb: 1024
+      timeout_seconds: 120
+      max_input_bytes: 5000000
+      max_output_bytes: 2000000
+      max_processes: 32
+    side_effect_class: none
+    license_ref: project
+    validation_suite: skill.stage_assess.v1
+    declared_status: planned
+    allowed_roles: [A02]
+  - skill_id: office.docx
+    version: 1
+    description: 生成或编辑可编辑Word文档并执行渲染验收。
+    trigger: 研究材料需要可编辑Word交付。
+    input_schema: office_docx.input.v1
+    output_schema: office_docx.output.v1
+    theory_refs: [D-020, SEC:5.4]
+    required_tools: [artifact.read, artifact.write]
+    source_scopes: [project_private]
+    secret_scopes: []
+    network_policy: disabled
+    allowed_network_hosts: []
+    runtime_kind: container
+    runtime_image_digest: "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    resource_limits:
+      cpu_count: 1
+      memory_mb: 1024
+      timeout_seconds: 180
+      max_input_bytes: 20000000
+      max_output_bytes: 20000000
+      max_processes: 32
+    side_effect_class: internal_write
+    license_ref: python-docx-MIT-and-project-template
+    validation_suite: skill.office_docx.v1
+    declared_status: dependency_missing
+    allowed_roles: [A08, A19, A22]
+  - skill_id: mail.draft
+    version: 1
+    description: 生成专家邮件草稿，不发送邮件。
+    trigger: 已明确具体问题、联系人与授权范围。
+    input_schema: mail_draft.input.v1
+    output_schema: mail_draft.output.v1
+    theory_refs: [D-020, SEC:7.4]
+    required_tools: [mail.draft, artifact.read]
+    source_scopes: [project_private]
+    secret_scopes: []
+    network_policy: disabled
+    allowed_network_hosts: []
+    runtime_kind: disabled
+    runtime_image_digest: null
+    resource_limits:
+      cpu_count: 1
+      memory_mb: 512
+      timeout_seconds: 60
+      max_input_bytes: 5000000
+      max_output_bytes: 1000000
+      max_processes: 16
+    side_effect_class: none
+    license_ref: project
+    validation_suite: skill.mail_draft.v1
+    declared_status: dependency_missing
+    allowed_roles: [A23]

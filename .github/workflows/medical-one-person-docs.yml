@@ -27,6 +27,7 @@ jobs:
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5, inspected 2026-10-29
         with:
           persist-credentials: false
+          fetch-depth: 0
       - name: Check theory to engineering traceability
         run: python3 '医疗一人项目/tools/check_traceability.py' check
       - name: Test stale and missing mapping detection

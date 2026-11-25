@@ -1,0 +1,20 @@
+{
+  "source": "provider_response.usage",
+  "raw_provider_usage": {
+    "completion_tokens": 512,
+    "completion_tokens_details": {
+      "reasoning_tokens": 512
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1985,
+    "prompt_tokens": 1985,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 2497
+  },
+  "response_model": "deepseek-flash",
+  "http_status": 200,
+  "response_sha256": "d4fddf69c45d79d9b4b53c681014014a309666354fda677b24bd067142958f0b",
+  "note": "The nested raw_provider_usage object was copied without changing token values from the provider response usage field."
+}

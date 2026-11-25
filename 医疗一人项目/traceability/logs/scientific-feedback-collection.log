@@ -1,0 +1,52 @@
+tests/integration/test_scientific_feedback.py: 10
+tests/integration/test_w02_postgres.py: 5
+tests/integration/test_w03_isolation.py: 4
+tests/integration/test_w04_scheduling.py: 11
+tests/integration/test_w05_agents.py: 3
+tests/integration/test_w06_skill_runner.py: 3
+tests/integration/test_w07_uploads.py: 2
+tests/integration/test_w08_retrieval.py: 1
+tests/integration/test_w09_opportunity_service.py: 3
+tests/integration/test_w10_ui_api.py: 2
+tests/integration/test_w11_plan_api.py: 1
+tests/integration/test_w11_plans.py: 4
+tests/integration/test_w12_workflow_api.py: 1
+tests/integration/test_w12_workflow_service.py: 3
+tests/integration/test_w13_dataset_api.py: 1
+tests/integration/test_w13_datasets.py: 2
+tests/integration/test_w14_export_api.py: 2
+tests/integration/test_w15_mail.py: 4
+tests/integration/test_w15_mail_api.py: 1
+tests/integration/test_w16_external.py: 4
+tests/integration/test_w16_external_api.py: 1
+tests/integration/test_w17_audit_api.py: 1
+tests/integration/test_w17_audit_service.py: 4
+tests/integration/test_w18_recovery_api.py: 1
+tests/integration/test_w18_recovery_service.py: 3
+tests/integration/test_w19_policy_api.py: 1
+tests/integration/test_w19_policy_bundles.py: 5
+tests/integration/test_w20_reliability.py: 5
+tests/integration/test_w21_end_to_end.py: 2
+tests/test_config.py: 4
+tests/test_fixtures.py: 1
+tests/test_system.py: 6
+tests/unit/test_scientific_update.py: 3
+tests/unit/test_w03_run_workspace.py: 1
+tests/unit/test_w04_worker_identity.py: 1
+tests/unit/test_w05_agent_config.py: 3
+tests/unit/test_w06_skills.py: 4
+tests/unit/test_w07_sources_parsers.py: 3
+tests/unit/test_w09_opportunities.py: 4
+tests/unit/test_w11_plan_contract.py: 2
+tests/unit/test_w12_workflow_config.py: 1
+tests/unit/test_w13_tables.py: 3
+tests/unit/test_w14_exports.py: 3
+tests/unit/test_w15_mock_mail.py: 6
+tests/unit/test_w17_audits.py: 3
+
+=============================== warnings summary ===============================
+services/core/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /workspace/scratch/27c36cb5b91e/medical-feedback/医疗一人项目/services/core/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html

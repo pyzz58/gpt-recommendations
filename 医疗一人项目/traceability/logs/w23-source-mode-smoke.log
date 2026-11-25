@@ -1,0 +1,99 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 12ee06c30409, W02 projects sessions artifacts events
+INFO  [alembic.runtime.migration] Running upgrade 12ee06c30409 -> 7994d0dd6e2c, W03 RLS tool audit
+INFO  [alembic.runtime.migration] Running upgrade 7994d0dd6e2c -> c7296a4b69d8, W04 tasks jobs budgets
+INFO  [alembic.runtime.migration] Running upgrade c7296a4b69d8 -> 42dc5908196f, W05 agents runs
+INFO  [alembic.runtime.migration] Running upgrade 42dc5908196f -> 82cf6c84cb6d, W06 skill runs
+INFO  [alembic.runtime.migration] Running upgrade 82cf6c84cb6d -> 19cf9361adda, W07 knowledge uploads parsing
+INFO  [alembic.runtime.migration] Running upgrade 19cf9361adda -> bc959837d3ea, W08 knowledge evidence retrieval
+INFO  [alembic.runtime.migration] Running upgrade bc959837d3ea -> a823720b9684, W09 opportunities decisions
+INFO  [alembic.runtime.migration] Running upgrade a823720b9684 -> 9ff9aac51d3e, W11 plans dispatch reviews
+INFO  [alembic.runtime.migration] Running upgrade 9ff9aac51d3e -> 2fa7e200f2d9, W12 domain workflows assessments
+INFO  [alembic.runtime.migration] Running upgrade 2fa7e200f2d9 -> bee2b2f5fefa, W13 datasets statistics reviews
+INFO  [alembic.runtime.migration] Running upgrade bee2b2f5fefa -> 6a2d9c4e8b71, W14 artifact exports and validation
+INFO  [alembic.runtime.migration] Running upgrade 6a2d9c4e8b71 -> d4b8e7c9a321, W15 mock mail threads drafts authorized sending
+INFO  [alembic.runtime.migration] Running upgrade d4b8e7c9a321 -> b8c1e5f7a942, W16 experts engagements quotes contracts and external records
+INFO  [alembic.runtime.migration] Running upgrade b8c1e5f7a942 -> e9f6a3c2d140, W17 independent audit reviews and evaluation runs
+INFO  [alembic.runtime.migration] Running upgrade e9f6a3c2d140 -> a7c4e2f9b610, W18 knowledge recovery, index rebuild and encrypted backups
+INFO  [alembic.runtime.migration] Running upgrade a7c4e2f9b610 -> b2e7d4a9c310, Separate task lifecycle from input validity
+INFO  [alembic.runtime.migration] Running upgrade b2e7d4a9c310 -> c8f1a6d3e720, Link audit reviews to affected tasks
+INFO  [alembic.runtime.migration] Running upgrade c8f1a6d3e720 -> d9a7e3f1b420, W19 immutable policy bundles, impacts, and migration ledger
+INFO  [alembic.runtime.migration] Running upgrade d9a7e3f1b420 -> e3b8c4d5f601, W20 reliability correlation and regression ledger
+INFO  [alembic.runtime.migration] Running upgrade e3b8c4d5f601 -> f4a2c7d9e601, Versioned scientific feedback and bounded follow-up plans.
+INFO  [alembic.runtime.migration] Running upgrade f4a2c7d9e601 -> a1c9e7f2d304, W22 live adapter state
+INFO  [alembic.runtime.migration] Running upgrade a1c9e7f2d304 -> b7d1e4a9c260, W22 external source snapshots
+{"workspace_id": "158d74bb-5f91-4a3a-ba14-c0bd23376e2c", "owner_user_id": "d1050392-e7ce-4a8f-8e1a-14c1bd1f1466", "mode": "local"}
+PASS: api started with PID 51258
+PASS: API live endpoint responded with HTTP 200
+PASS: worker started with PID 51288
+PASS: web started with PID 51303
+PASS: API ready endpoint responded with HTTP 200
+PASS: Web page responded with HTTP 307
+Started: web=http://127.0.0.1:13555 api=http://127.0.0.1:18555 runtime=/tmp/medical-one-source-mode-smoke/runtime
+process api    running pid=51258 log=/tmp/medical-one-source-mode-smoke/runtime/logs/api.log
+process worker running pid=51288 log=/tmp/medical-one-source-mode-smoke/runtime/logs/worker.log
+process web    running pid=51303 log=/tmp/medical-one-source-mode-smoke/runtime/logs/web.log
+{
+    "status": "ok",
+    "mode": "mock",
+    "checks": {
+        "process": {
+            "status": "ready",
+            "detail": "API process is running"
+        }
+    }
+}
+{
+    "status": "ok",
+    "mode": "mock",
+    "checks": {
+        "process": {
+            "status": "ready",
+            "detail": "API process is running"
+        },
+        "provider": {
+            "status": "ready",
+            "detail": "Deterministic network-free adapter"
+        },
+        "database": {
+            "status": "ready",
+            "detail": "PostgreSQL connected at migration b7d1e4a9c260"
+        },
+        "artifact_storage": {
+            "status": "ready",
+            "detail": "5 project storage roots are writable: artifacts, backups, knowledge-staging, restore-checks, runs"
+        },
+        "queue": {
+            "status": "ready",
+            "detail": "Outbox and leased-job tables are available"
+        },
+        "worker": {
+            "status": "ready",
+            "detail": "1 mock worker heartbeat(s) are current"
+        }
+    }
+}
+capabilities mode=mock
+  agents: ready - 26 role contracts loaded; provider=fake-deterministic-v1
+  artifact_storage: ready - 5 project storage roots are writable: artifacts, backups, knowledge-staging, restore-checks, runs
+  audit_reviews: ready - Deterministic A25/A26 rule reviews, immutable input snapshots, blocking and synthetic evaluation are available; these are not human or non-mock independent-agent reviews
+  database: ready - PostgreSQL connected at migration b7d1e4a9c260
+  datasets: ready - Immutable raw table versions, cleaning derivations, pre-specified deterministic analyses, charts and review records are implemented
+  domain_workflows: ready - Pet repurposing, IVD and device workflow packages define stages, required roles, criteria, failure routes and external gates
+  external_records: ready - Organizations, contacts, experts, engagement scopes, quotes, contract states, deliverables, professional records and explicit external authorizations are connected to project PostgreSQL state
+  knowledge: ready - Project-scoped knowledge browsing, chunked upload, parsing, lexical search snapshots, citations and version impact are connected
+  network: ready - Offline mode blocks remote tools; local database, files, parsing, search and mock workflows remain available
+  opportunities: ready - Versioned opportunity cards, scientific briefs and owner-only selection contracts are connected to the opportunity browser
+  planning: ready - Versioned bounded DAGs, dispatch, mock execution, independent-profile review records, rework, pause/resume and iteration limits are implemented
+  project_interface: ready - Local HttpOnly session, project browser, task/agent scenes, knowledge upload and project event SSE are implemented
+  queue: ready - Outbox and leased-job tables are available
+  recovery: ready - Knowledge trash/restore, safe index rebuild for uncited versions, AES-256-GCM project backups and isolated restore verification are available; active database overwrite is not enabled
+  skills: ready - registry loaded: 2 ready, 10 unavailable
+  sources: not_checked - 4 professional source policies loaded; live scholarly adapters are not connected
+  tool_isolation: not_checked - Native authorization gateway/audit is available; container policy exists, but the runtime sandbox remains unverified
+  worker: ready - 1 mock worker heartbeat(s) are current
+PASS: web stopped
+PASS: worker stopped
+PASS: api stopped
+W23 smoke passed: local API, worker and web started, became ready and stopped.

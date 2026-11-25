@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:export-template-catalog:v1",
+  "$defs": {
+    "ExportFormat": {
+      "enum": [
+        "docx",
+        "pptx",
+        "xlsx",
+        "pdf"
+      ],
+      "title": "ExportFormat",
+      "type": "string"
+    },
+    "ExportTemplate": {
+      "additionalProperties": false,
+      "properties": {
+        "template_id": {
+          "pattern": "^[a-z][a-z0-9.-]{2,80}$",
+          "title": "Template Id",
+          "type": "string"
+        },
+        "version": {
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "format": {
+          "$ref": "#/$defs/ExportFormat"
+        },
+        "description": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "required_sections": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Required Sections",
+          "type": "array"
+        }
+      },
+      "required": [
+        "template_id",
+        "version",
+        "name",
+        "format",
+        "description",
+        "required_sections"
+      ],
+      "title": "ExportTemplate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "templates": {
+      "items": {
+        "$ref": "#/$defs/ExportTemplate"
+      },
+      "minItems": 4,
+      "title": "Templates",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "templates"
+  ],
+  "title": "ExportTemplateCatalog",
+  "type": "object",
+  "description": "Fixed-version export template catalog contract."
+}

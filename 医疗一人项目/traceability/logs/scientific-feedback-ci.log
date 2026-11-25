@@ -1,0 +1,150 @@
+##[group]Run uv run --project services/core --frozen pytest services/core/tests -q -ra
+2026-11-05T21:34:06.7215281Z uv run --project services/core --frozen pytest services/core/tests -q -ra
+2026-11-05T21:34:06.7268214Z shell: /usr/bin/bash -e {0}
+2026-11-05T21:34:06.7268506Z env:
+2026-11-05T21:34:06.7268935Z   MEDICAL_ONE_TEST_DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:5432/medical_one_test
+2026-11-05T21:34:06.7269768Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:34:06.7270224Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-11-05T21:34:06.7270667Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:34:06.7271063Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:34:06.7271478Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:34:06.7271868Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-11-05T21:34:06.7272244Z ##[endgroup]
+2026-11-05T21:35:00.1178101Z ........................................................s............... [ 52%]
+2026-11-05T21:35:17.1908121Z .................s.....................................s..........       [100%]
+2026-11-05T21:35:17.1909395Z =============================== warnings summary ===============================
+2026-11-05T21:35:17.1910483Z services/core/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+2026-11-05T21:35:17.1913404Z   /home/runner/work/gpt-recommendations/gpt-recommendations/医疗一人项目/services/core/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+2026-11-05T21:35:17.1915221Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-11-05T21:35:17.1916072Z 
+2026-11-05T21:35:17.1916498Z -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+2026-11-05T21:35:17.1917297Z =========================== short test summary info ============================
+2026-11-05T21:35:17.1918465Z SKIPPED [1] services/core/tests/integration/test_w14_export_api.py:32: LibreOffice and Poppler are required for W14 API acceptance
+2026-11-05T21:35:17.1920443Z SKIPPED [1] services/core/tests/integration/test_w21_end_to_end.py:591: LibreOffice and Poppler are required for W21 real-file verification
+2026-11-05T21:35:17.1921959Z SKIPPED [1] services/core/tests/unit/test_w14_exports.py:128: LibreOffice and Poppler are required for W14 file acceptance
+2026-11-05T21:35:18.3481328Z ##[group]Run uv run --project services/core --frozen ruff check services/core
+2026-11-05T21:35:18.3481889Z uv run --project services/core --frozen ruff check services/core
+2026-11-05T21:35:18.3482361Z uv run --project services/core --frozen mypy services/core/src
+2026-11-05T21:35:18.3534673Z shell: /usr/bin/bash -e {0}
+2026-11-05T21:35:18.3534948Z env:
+2026-11-05T21:35:18.3535378Z   MEDICAL_ONE_TEST_DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:5432/medical_one_test
+2026-11-05T21:35:18.3535942Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:18.3536410Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-11-05T21:35:18.3536855Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:18.3537243Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:18.3537631Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:18.3538070Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-11-05T21:35:18.3538400Z ##[endgroup]
+2026-11-05T21:35:18.4156381Z All checks passed!
+2026-11-05T21:35:30.4225434Z Success: no issues found in 119 source files
+2026-11-05T21:35:30.4645897Z ##[group]Run cd services/core
+2026-11-05T21:35:30.4646221Z cd services/core
+2026-11-05T21:35:30.4646511Z uv run --frozen alembic upgrade head
+2026-11-05T21:35:30.4646865Z uv run --frozen alembic downgrade b2e7d4a9c310
+2026-11-05T21:35:30.4647220Z uv run --frozen alembic upgrade head
+2026-11-05T21:35:30.4698061Z shell: /usr/bin/bash -e {0}
+2026-11-05T21:35:30.4698323Z env:
+2026-11-05T21:35:30.4698734Z   MEDICAL_ONE_TEST_DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:5432/medical_one_test
+2026-11-05T21:35:30.4699575Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:30.4700012Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-11-05T21:35:30.4700446Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:30.4700841Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:30.4701265Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:30.4701661Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-11-05T21:35:30.4702220Z   MEDICAL_ONE_MIGRATION_DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:5432/medical_one_test
+2026-11-05T21:35:30.4702708Z ##[endgroup]
+2026-11-05T21:35:31.5216380Z INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+2026-11-05T21:35:31.5217321Z INFO  [alembic.runtime.migration] Will assume transactional DDL.
+2026-11-05T21:35:32.7044250Z INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+2026-11-05T21:35:32.7044950Z INFO  [alembic.runtime.migration] Will assume transactional DDL.
+2026-11-05T21:35:32.7201575Z INFO  [alembic.runtime.migration] Running downgrade f4a2c7d9e601 -> e3b8c4d5f601, Versioned scientific feedback and bounded follow-up plans.
+2026-11-05T21:35:32.7327263Z INFO  [alembic.runtime.migration] Running downgrade e3b8c4d5f601 -> d9a7e3f1b420, W20 reliability correlation and regression ledger
+2026-11-05T21:35:32.7556208Z INFO  [alembic.runtime.migration] Running downgrade d9a7e3f1b420 -> c8f1a6d3e720, W19 immutable policy bundles, impacts, and migration ledger
+2026-11-05T21:35:32.8148202Z INFO  [alembic.runtime.migration] Running downgrade c8f1a6d3e720 -> b2e7d4a9c310, Link audit reviews to affected tasks
+2026-11-05T21:35:33.9913961Z INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+2026-11-05T21:35:33.9915102Z INFO  [alembic.runtime.migration] Will assume transactional DDL.
+2026-11-05T21:35:34.0064300Z INFO  [alembic.runtime.migration] Running upgrade b2e7d4a9c310 -> c8f1a6d3e720, Link audit reviews to affected tasks
+2026-11-05T21:35:34.0176240Z INFO  [alembic.runtime.migration] Running upgrade c8f1a6d3e720 -> d9a7e3f1b420, W19 immutable policy bundles, impacts, and migration ledger
+2026-11-05T21:35:34.0857361Z INFO  [alembic.runtime.migration] Running upgrade d9a7e3f1b420 -> e3b8c4d5f601, W20 reliability correlation and regression ledger
+2026-11-05T21:35:34.1130705Z INFO  [alembic.runtime.migration] Running upgrade e3b8c4d5f601 -> f4a2c7d9e601, Versioned scientific feedback and bounded follow-up plans.
+2026-11-05T21:35:34.3065294Z ##[group]Run pnpm --dir apps/web lint
+2026-11-05T21:35:34.3065658Z pnpm --dir apps/web lint
+2026-11-05T21:35:34.3065957Z pnpm --dir apps/web typecheck
+2026-11-05T21:35:34.3066249Z pnpm --dir apps/web build
+2026-11-05T21:35:34.3117354Z shell: /usr/bin/bash -e {0}
+2026-11-05T21:35:34.3117626Z env:
+2026-11-05T21:35:34.3118081Z   MEDICAL_ONE_TEST_DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:5432/medical_one_test
+2026-11-05T21:35:34.3118685Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:34.3119425Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-11-05T21:35:34.3119972Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:34.3120407Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:34.3120834Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:34.3121313Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-11-05T21:35:34.3121692Z ##[endgroup]
+2026-11-05T21:35:34.8330271Z $ eslint .
+2026-11-05T21:35:42.0549773Z $ next typegen && tsc --noEmit
+2026-11-05T21:35:42.4060448Z Generating route types...
+2026-11-05T21:35:42.4239463Z ✓ Types generated successfully
+2026-11-05T21:35:47.4746411Z $ next build
+2026-11-05T21:35:47.9070587Z ▲ Next.js 16.4.3 (Turbopack)
+2026-11-05T21:35:47.9414365Z ✓ Running next.config.ts took 34ms
+2026-11-05T21:35:47.9417313Z ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2026-11-05T21:35:47.9477848Z Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2026-11-05T21:35:47.9479606Z This information is used to shape Next.js' roadmap and prioritize features.
+2026-11-05T21:35:47.9481775Z You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-11-05T21:35:47.9483300Z https://nextjs.org/telemetry
+2026-11-05T21:35:47.9483960Z 
+2026-11-05T21:35:47.9963065Z 
+2026-11-05T21:35:48.0367357Z   Creating an optimized production build ...
+2026-11-05T21:35:52.1068741Z ✓ Compiled successfully in 4.1s
+2026-11-05T21:35:52.1218917Z   Running TypeScript ...
+2026-11-05T21:35:56.6279910Z   Finished TypeScript in 4.5s ...
+2026-11-05T21:35:56.6324314Z   Collecting page data using 3 workers ...
+2026-11-05T21:35:57.3640804Z   Generating static pages using 3 workers (0/5) ...
+2026-11-05T21:35:57.6057370Z   Generating static pages using 3 workers (1/5) 
+2026-11-05T21:35:57.6058347Z   Generating static pages using 3 workers (2/5) 
+2026-11-05T21:35:57.6096144Z   Generating static pages using 3 workers (3/5) 
+2026-11-05T21:35:57.6099969Z ✓ Generating static pages using 3 workers (5/5) in 247ms
+2026-11-05T21:35:57.6144783Z   Finalizing page optimization ...
+2026-11-05T21:35:57.9313376Z 
+2026-11-05T21:35:57.9335468Z Route (app)
+2026-11-05T21:35:57.9336346Z ┌ ○ /
+2026-11-05T21:35:57.9336801Z ├ ○ /_not-found
+2026-11-05T21:35:57.9337313Z ├ ○ /projects
+2026-11-05T21:35:57.9338179Z ├ ƒ /projects/[id]
+2026-11-05T21:35:57.9338697Z ├ ƒ /projects/[id]/agents
+2026-11-05T21:35:57.9339482Z ├ ƒ /projects/[id]/artifacts
+2026-11-05T21:35:57.9340067Z ├ ƒ /projects/[id]/audits
+2026-11-05T21:35:57.9340626Z ├ ƒ /projects/[id]/datasets
+2026-11-05T21:35:57.9341162Z ├ ƒ /projects/[id]/external
+2026-11-05T21:35:57.9341719Z ├ ƒ /projects/[id]/knowledge
+2026-11-05T21:35:57.9342303Z ├ ƒ /projects/[id]/mail
+2026-11-05T21:35:57.9342897Z ├ ƒ /projects/[id]/opportunities
+2026-11-05T21:35:57.9343476Z ├ ƒ /projects/[id]/overview
+2026-11-05T21:35:57.9343968Z ├ ƒ /projects/[id]/recovery
+2026-11-05T21:35:57.9344475Z ├ ƒ /projects/[id]/tasks
+2026-11-05T21:35:57.9344986Z ├ ƒ /projects/[id]/workflows
+2026-11-05T21:35:57.9345462Z └ ○ /settings
+2026-11-05T21:35:57.9345666Z 
+2026-11-05T21:35:57.9345704Z 
+2026-11-05T21:35:57.9346091Z ○  (Static)   prerendered as static content
+2026-11-05T21:35:57.9346843Z ƒ  (Dynamic)  server-rendered on demand
+2026-11-05T21:35:57.9347213Z 
+2026-11-05T21:35:58.0327578Z ##[group]Run python3 tools/test_traceability.py
+2026-11-05T21:35:58.0327999Z python3 tools/test_traceability.py
+2026-11-05T21:35:58.0379290Z shell: /usr/bin/bash -e {0}
+2026-11-05T21:35:58.0379662Z env:
+2026-11-05T21:35:58.0380100Z   MEDICAL_ONE_TEST_DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:5432/medical_one_test
+2026-11-05T21:35:58.0380683Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:58.0381167Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-11-05T21:35:58.0381618Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:58.0382027Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:58.0382438Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-11-05T21:35:58.0382841Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-11-05T21:35:58.0383180Z ##[endgroup]
+2026-11-05T21:36:17.3392469Z ......................
+2026-11-05T21:36:17.3393327Z ----------------------------------------------------------------------
+2026-11-05T21:36:17.3393861Z Ran 22 tests in 19.228s
+2026-11-05T21:36:17.3394055Z 
+2026-11-05T21:36:17.3394163Z OK
+2026-11-05T21:36:17.3608910Z 

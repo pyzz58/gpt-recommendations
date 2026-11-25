@@ -1,0 +1,118 @@
+{
+  "$defs": {
+    "SourceChannel": {
+      "additionalProperties": false,
+      "properties": {
+        "channel_id": {
+          "title": "Channel Id",
+          "type": "string"
+        },
+        "host": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Host"
+        },
+        "source_kind": {
+          "enum": [
+            "bibliographic_database",
+            "fulltext_archive",
+            "publisher",
+            "preprint",
+            "regulator",
+            "patent_office",
+            "local_library"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "official": {
+          "title": "Official",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "channel_id",
+        "host",
+        "source_kind",
+        "official"
+      ],
+      "title": "SourceChannel",
+      "type": "object"
+    },
+    "SourcePolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "policy_id": {
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "general_web_search": {
+          "const": false,
+          "title": "General Web Search",
+          "type": "boolean"
+        },
+        "preprint_policy": {
+          "enum": [
+            "label_separately",
+            "prohibited"
+          ],
+          "title": "Preprint Policy",
+          "type": "string"
+        },
+        "fulltext_policy": {
+          "title": "Fulltext Policy",
+          "type": "string"
+        },
+        "channels": {
+          "items": {
+            "$ref": "#/$defs/SourceChannel"
+          },
+          "minItems": 1,
+          "title": "Channels",
+          "type": "array"
+        }
+      },
+      "required": [
+        "policy_id",
+        "description",
+        "general_web_search",
+        "preprint_policy",
+        "fulltext_policy",
+        "channels"
+      ],
+      "title": "SourcePolicy",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "policies": {
+      "items": {
+        "$ref": "#/$defs/SourcePolicy"
+      },
+      "title": "Policies",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "policies"
+  ],
+  "title": "SourcePolicyCatalog",
+  "type": "object"
+}

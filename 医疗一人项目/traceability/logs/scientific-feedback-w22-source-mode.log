@@ -1,0 +1,23 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.14, pytest-9.2.0, pluggy-1.7.0 -- /Users/zz/Documents/ChatGPT/医疗项目/医疗一人项目/services/core/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/zz/Documents/ChatGPT/医疗项目/医疗一人项目/services/core
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 13 items
+
+tests/integration/test_scientific_feedback.py::test_reviewed_content_returns_to_chief_then_creates_bounded_followup PASSED [  7%]
+tests/integration/test_scientific_feedback.py::test_unknown_and_negative_results_close_without_unwanted_dispatch[wait] PASSED [ 15%]
+tests/integration/test_scientific_feedback.py::test_unknown_and_negative_results_close_without_unwanted_dispatch[pause] PASSED [ 23%]
+tests/integration/test_scientific_feedback.py::test_unknown_and_negative_results_close_without_unwanted_dispatch[stop] PASSED [ 30%]
+tests/integration/test_scientific_feedback.py::test_outside_scope_proposal_is_retained_but_never_dispatched PASSED [ 38%]
+tests/integration/test_scientific_feedback.py::test_accepting_chief_result_while_paused_does_not_restart_research PASSED [ 46%]
+tests/integration/test_scientific_feedback.py::test_unaccepted_or_foreign_delivery_cannot_enter_chief_context PASSED [ 53%]
+tests/integration/test_scientific_feedback.py::test_reviewed_delivery_is_rechecked_before_reuse[changed_output] PASSED [ 61%]
+tests/integration/test_scientific_feedback.py::test_reviewed_delivery_is_rechecked_before_reuse[stale_input] PASSED [ 69%]
+tests/integration/test_scientific_feedback.py::test_dense_dependency_graph_validates_shared_deliveries_once_per_traversal PASSED [ 76%]
+tests/unit/test_scientific_update.py::test_continuation_requires_a_plan_and_wait_retains_unknowns PASSED [ 84%]
+tests/unit/test_scientific_update.py::test_startup_schema_gate_matches_the_actual_migration_head PASSED [ 92%]
+tests/unit/test_scientific_update.py::test_host_integration_task_cannot_be_inserted_as_an_ordinary_node PASSED [100%]
+
+============================== 13 passed in 3.31s ==============================

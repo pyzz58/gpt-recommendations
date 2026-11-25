@@ -1,0 +1,487 @@
+{
+  "$defs": {
+    "EvidenceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "ref": {
+          "minLength": 1,
+          "title": "Ref",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "fixture",
+            "internal",
+            "external",
+            "data"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "locator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Locator"
+        }
+      },
+      "required": [
+        "ref",
+        "source_kind"
+      ],
+      "title": "EvidenceReference",
+      "type": "object"
+    },
+    "FactClaim": {
+      "additionalProperties": false,
+      "properties": {
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "supported",
+            "inferred",
+            "hypothesis",
+            "conflicting",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "source_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "statement",
+        "status",
+        "source_refs"
+      ],
+      "title": "FactClaim",
+      "type": "object"
+    },
+    "PlanNodeSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "task_type": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Task Type",
+          "type": "string"
+        },
+        "purpose": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Purpose",
+          "type": "string"
+        },
+        "assignee_role": {
+          "pattern": "^A(0[1-9]|1[0-9]|2[0-6])$",
+          "title": "Assignee Role",
+          "type": "string"
+        },
+        "role_version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Role Version",
+          "type": "string"
+        },
+        "input_version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Input Version",
+          "type": "string"
+        },
+        "input_refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Refs",
+          "type": "array"
+        },
+        "goal": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Goal",
+          "type": "string"
+        },
+        "deliverable_schema": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Deliverable Schema",
+          "type": "string"
+        },
+        "acceptance_policy": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Acceptance Policy",
+          "type": "string"
+        },
+        "mode": {
+          "const": "mock",
+          "default": "mock",
+          "title": "Mode",
+          "type": "string"
+        },
+        "max_attempts": {
+          "default": 3,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Max Attempts",
+          "type": "integer"
+        },
+        "depends_on": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        }
+      },
+      "required": [
+        "key",
+        "task_type",
+        "purpose",
+        "assignee_role",
+        "role_version",
+        "input_version",
+        "input_refs",
+        "goal",
+        "deliverable_schema",
+        "acceptance_policy"
+      ],
+      "title": "PlanNodeSpec",
+      "type": "object"
+    },
+    "PlanSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "objective": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Objective",
+          "type": "string"
+        },
+        "nodes": {
+          "items": {
+            "$ref": "#/$defs/PlanNodeSpec"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Nodes",
+          "type": "array"
+        },
+        "max_rework_rounds": {
+          "default": 3,
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Max Rework Rounds",
+          "type": "integer"
+        },
+        "scientific_feedback": {
+          "default": true,
+          "title": "Scientific Feedback",
+          "type": "boolean"
+        },
+        "max_followup_rounds": {
+          "default": 1,
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Max Followup Rounds",
+          "type": "integer"
+        },
+        "workflow_track": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Track"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "workflow_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Workflow Id"
+        },
+        "workflow_version": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Workflow Version"
+        },
+        "stage_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stage Id"
+        }
+      },
+      "required": [
+        "title",
+        "objective",
+        "nodes"
+      ],
+      "title": "PlanSpec",
+      "type": "object"
+    },
+    "ScientificUpdate": {
+      "additionalProperties": false,
+      "properties": {
+        "consumed_run_ids": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Consumed Run Ids",
+          "type": "array"
+        },
+        "answered_questions": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Answered Questions",
+          "type": "array"
+        },
+        "judgment_change": {
+          "minLength": 1,
+          "title": "Judgment Change",
+          "type": "string"
+        },
+        "remaining_unknowns": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Remaining Unknowns",
+          "type": "array"
+        },
+        "action": {
+          "enum": [
+            "continue",
+            "gather_evidence",
+            "revise",
+            "wait",
+            "pause",
+            "stop"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "next_plan": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PlanSpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "consumed_run_ids",
+        "answered_questions",
+        "judgment_change",
+        "remaining_unknowns",
+        "action",
+        "rationale"
+      ],
+      "title": "ScientificUpdate",
+      "type": "object"
+    },
+    "Track": {
+      "enum": [
+        "pet_repurposing",
+        "ivd",
+        "device"
+      ],
+      "title": "Track",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "agent_delivery.v1",
+      "default": "agent_delivery.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "mock",
+        "live"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "role_id": {
+      "pattern": "^A\\d{2}$",
+      "title": "Role Id",
+      "type": "string"
+    },
+    "role_version": {
+      "minimum": 1,
+      "title": "Role Version",
+      "type": "integer"
+    },
+    "project_id": {
+      "format": "uuid",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "task_id": {
+      "format": "uuid",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "delivery_type": {
+      "minLength": 1,
+      "title": "Delivery Type",
+      "type": "string"
+    },
+    "problem_statement": {
+      "minLength": 1,
+      "title": "Problem Statement",
+      "type": "string"
+    },
+    "facts": {
+      "items": {
+        "$ref": "#/$defs/FactClaim"
+      },
+      "title": "Facts",
+      "type": "array"
+    },
+    "analysis": {
+      "minLength": 1,
+      "title": "Analysis",
+      "type": "string"
+    },
+    "counterpoints": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Counterpoints",
+      "type": "array"
+    },
+    "unknowns": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Unknowns",
+      "type": "array"
+    },
+    "recommendation": {
+      "minLength": 1,
+      "title": "Recommendation",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "$ref": "#/$defs/EvidenceReference"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Limitations",
+      "type": "array"
+    },
+    "independent_review": {
+      "title": "Independent Review",
+      "type": "boolean"
+    },
+    "scientific_update": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ScientificUpdate"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "mode",
+    "role_id",
+    "role_version",
+    "project_id",
+    "task_id",
+    "delivery_type",
+    "problem_statement",
+    "facts",
+    "analysis",
+    "counterpoints",
+    "unknowns",
+    "recommendation",
+    "evidence_refs",
+    "limitations",
+    "independent_review"
+  ],
+  "title": "AgentDelivery",
+  "type": "object"
+}

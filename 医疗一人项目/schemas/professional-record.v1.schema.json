@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:professional-record:v1",
+  "$defs": {
+    "CommercialEvidenceType": {
+      "enum": [
+        "assumption",
+        "public_claim",
+        "verified_interview",
+        "market_report",
+        "unknown"
+      ],
+      "title": "CommercialEvidenceType",
+      "type": "string"
+    },
+    "FinancialEventType": {
+      "enum": [
+        "budget",
+        "commitment",
+        "payment",
+        "spend"
+      ],
+      "title": "FinancialEventType",
+      "type": "string"
+    },
+    "PatentStatus": {
+      "enum": [
+        "idea",
+        "search_only",
+        "provisional",
+        "pending",
+        "granted",
+        "rejected",
+        "expired",
+        "unknown"
+      ],
+      "title": "PatentStatus",
+      "type": "string"
+    },
+    "ProfessionalRecordKind": {
+      "enum": [
+        "regulatory",
+        "patent",
+        "financial",
+        "commercial"
+      ],
+      "title": "ProfessionalRecordKind",
+      "type": "string"
+    },
+    "ProfessionalRecordState": {
+      "enum": [
+        "draft",
+        "information_only",
+        "official_confirmed",
+        "disputed",
+        "expired"
+      ],
+      "title": "ProfessionalRecordState",
+      "type": "string"
+    },
+    "SourceTier": {
+      "enum": [
+        "official",
+        "primary_publication",
+        "vendor",
+        "user_statement",
+        "none"
+      ],
+      "title": "SourceTier",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "$ref": "#/$defs/ProfessionalRecordKind"
+    },
+    "state": {
+      "$ref": "#/$defs/ProfessionalRecordState",
+      "default": "draft"
+    },
+    "title": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "source_tier": {
+      "$ref": "#/$defs/SourceTier"
+    },
+    "source_title": {
+      "anyOf": [
+        {
+          "maxLength": 500,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Title"
+    },
+    "source_ref": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Ref"
+    },
+    "checked_at": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Checked At"
+    },
+    "market": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Market"
+    },
+    "product_scope": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Product Scope"
+    },
+    "jurisdiction": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Jurisdiction"
+    },
+    "patent_status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PatentStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "application_number": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Application Number"
+    },
+    "publication_number": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Publication Number"
+    },
+    "financial_event_type": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/FinancialEventType"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "amount": {
+      "anyOf": [
+        {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Amount"
+    },
+    "currency": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Z]{3}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Currency"
+    },
+    "commercial_evidence_type": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CommercialEvidenceType"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "facts": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Facts",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Limitations",
+      "type": "array"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "title": "Metadata",
+      "type": "object"
+    }
+  },
+  "required": [
+    "kind",
+    "title",
+    "source_tier"
+  ],
+  "title": "ProfessionalRecordSpec",
+  "type": "object",
+  "description": "Regulatory, patent, financial and commercial fact contract with source/date boundaries."
+}

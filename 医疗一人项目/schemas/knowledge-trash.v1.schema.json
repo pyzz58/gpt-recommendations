@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:knowledge-trash:v1",
+  "additionalProperties": false,
+  "properties": {
+    "reason": {
+      "maxLength": 5000,
+      "minLength": 3,
+      "title": "Reason",
+      "type": "string"
+    }
+  },
+  "required": [
+    "reason"
+  ],
+  "title": "TrashDocumentRequest",
+  "type": "object",
+  "description": "Explicit logical-delete request; the original remains recoverable."
+}

@@ -8,3 +8,15 @@ data/
 *.db
 __pycache__/
 .DS_Store
+node_modules/
+.next/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+dist/
+coverage/
+playwright-report/
+test-results/
+*.pyc
+*.tsbuildinfo

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:restore-check:v1",
+  "properties": {
+    "id": {
+      "format": "uuid",
+      "title": "Id",
+      "type": "string"
+    },
+    "backup_id": {
+      "format": "uuid",
+      "title": "Backup Id",
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "verified",
+        "failed"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "object_count": {
+      "title": "Object Count",
+      "type": "integer"
+    },
+    "table_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Table Counts",
+      "type": "object"
+    },
+    "detail": {
+      "additionalProperties": true,
+      "title": "Detail",
+      "type": "object"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "backup_id",
+    "state",
+    "object_count",
+    "table_counts",
+    "detail",
+    "created_at"
+  ],
+  "title": "RestoreCheckView",
+  "type": "object",
+  "description": "Isolated restore verification result; the active database is not overwritten."
+}

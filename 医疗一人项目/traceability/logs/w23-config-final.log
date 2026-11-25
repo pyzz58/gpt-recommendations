@@ -1,0 +1,25 @@
+{
+  "config_file": "/private/tmp/medical-one-readiness.wT6kvn/external/medical-one.env",
+  "config_file_exists": true,
+  "medical_one_api_port": "18000",
+  "medical_one_app_mode": "mock",
+  "medical_one_artifact_root": "/tmp/medical-one-readiness.wT6kvn/data/artifacts",
+  "medical_one_backup_root": "/tmp/medical-one-readiness.wT6kvn/data/backups",
+  "medical_one_cors_origins": "http://127.0.0.1:13000,http://localhost:13000",
+  "medical_one_database_url": "[redacted]",
+  "medical_one_environment": "development",
+  "medical_one_knowledge_staging_root": "/tmp/medical-one-readiness.wT6kvn/data/knowledge-staging",
+  "medical_one_migration_database_url": "[redacted]",
+  "medical_one_network_mode": "offline",
+  "medical_one_office_pdftoppm_path": "/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm",
+  "medical_one_office_pdf_font_path": "/Library/Fonts/Arial Unicode.ttf",
+  "medical_one_office_soffice_path": "/Users/zz/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice",
+  "medical_one_restore_root": "/tmp/medical-one-readiness.wT6kvn/data/restore-checks",
+  "medical_one_runtime_dir": "/tmp/medical-one-readiness.wT6kvn/state",
+  "medical_one_run_root": "/tmp/medical-one-readiness.wT6kvn/data/runs",
+  "medical_one_web_port": "13000",
+  "next_public_api_base_url": "http://127.0.0.1:18000"
+}
+api_url=http://127.0.0.1:18000
+web_url=http://127.0.0.1:13000
+runtime_dir=/tmp/medical-one-readiness.wT6kvn/state

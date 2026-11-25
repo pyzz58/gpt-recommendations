@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "name": "W17合成审计规则回归",
+  "cases": [
+    {
+      "case_id": "unreviewed-citation",
+      "reviewer_role": "A25",
+      "target_type": "claim_version",
+      "expected_codes": ["CITATION_UNREVIEWED"],
+      "packet": {
+        "statement": "合成药物可能降低犬疼痛评分。",
+        "status": "hypothesis",
+        "directness": "direct",
+        "species_or_population": "犬",
+        "sample_size": null,
+        "negative_evidence_checked": false,
+        "evidence": [{
+          "citation_id": "citation-unreviewed",
+          "excerpt": "犬模型疼痛评分下降",
+          "source_excerpt": "犬模型疼痛评分下降，但功能改善未观察到。",
+          "citation_sha256": "d7b815a2cd1b7474d77b169222aafa6c72b99de85f851977f57caf661d35bc18",
+          "citation_review_status": "unreviewed",
+          "source_evidence_status": "reviewed_for_scope",
+          "stance": "supports"
+        }]
+      }
+    },
+    {
+      "case_id": "stale-claim",
+      "reviewer_role": "A26",
+      "target_type": "claim_version",
+      "expected_codes": ["STALE_CLAIM_VERSION"],
+      "packet": {
+        "statement": "旧版合成结论。",
+        "status": "stale",
+        "directness": "unknown",
+        "species_or_population": "犬",
+        "sample_size": null,
+        "negative_evidence_checked": false,
+        "evidence": []
+      }
+    },
+    {
+      "case_id": "overclaim",
+      "reviewer_role": "A26",
+      "target_type": "claim_version",
+      "expected_codes": ["OVERCLAIM_WITHOUT_DIRECT_SUPPORT"],
+      "packet": {
+        "statement": "该合成药物已证明安全有效并获批。",
+        "status": "supported",
+        "directness": "inference",
+        "species_or_population": "人",
+        "sample_size": 12,
+        "negative_evidence_checked": true,
+        "evidence": [{
+          "citation_id": "citation-context",
+          "excerpt": "机制研究仅提示可能存在作用。",
+          "source_excerpt": "机制研究仅提示可能存在作用。",
+          "citation_sha256": "97ba91e41ad1083ebe395ac055e8ea6cc4d8e9e32e40722e4b0cae987086e001",
+          "citation_review_status": "verified",
+          "source_evidence_status": "reviewed_for_scope",
+          "stance": "context"
+        }]
+      }
+    },
+    {
+      "case_id": "negative-evidence-missing",
+      "reviewer_role": "A26",
+      "target_type": "claim_version",
+      "expected_codes": ["NEGATIVE_EVIDENCE_NOT_CHECKED"],
+      "packet": {
+        "statement": "合成药物降低了犬疼痛评分。",
+        "status": "supported",
+        "directness": "direct",
+        "species_or_population": "犬",
+        "sample_size": 24,
+        "negative_evidence_checked": false,
+        "evidence": [{
+          "citation_id": "citation-support",
+          "excerpt": "犬模型疼痛评分下降",
+          "source_excerpt": "犬模型疼痛评分下降。",
+          "citation_sha256": "d7b815a2cd1b7474d77b169222aafa6c72b99de85f851977f57caf661d35bc18",
+          "citation_review_status": "verified",
+          "source_evidence_status": "reviewed_for_scope",
+          "stance": "supports"
+        }]
+      }
+    },
+    {
+      "case_id": "analysis-hash-mismatch",
+      "reviewer_role": "A25",
+      "target_type": "analysis_run",
+      "expected_codes": ["ANALYSIS_HASH_MISMATCH"],
+      "packet": {
+        "method": "two_group_mean_difference",
+        "result": {"method": "two_group_mean_difference", "difference": -5},
+        "chart": {"kind": "group_means"},
+        "output_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "latest_review_decision": "accepted",
+        "limitations": ["合成数据"],
+        "exploratory": false
+      }
+    },
+    {
+      "case_id": "accepted-without-raw-original",
+      "reviewer_role": "A25",
+      "target_type": "external_deliverable",
+      "expected_codes": ["RAW_ORIGINAL_MISSING"],
+      "packet": {
+        "title": "声称已接受的原始数据",
+        "kind": "raw_data",
+        "state": "accepted",
+        "knowledge_version_id": null,
+        "manifest": {"content_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"},
+        "missing_items": [],
+        "reviewer_role": "A25",
+        "expected_items": ["原始数据文件"]
+      }
+    },
+    {
+      "case_id": "clean-claim",
+      "reviewer_role": "A25",
+      "target_type": "claim_version",
+      "expected_codes": [],
+      "packet": {
+        "statement": "合成药物可能降低犬疼痛评分。",
+        "status": "hypothesis",
+        "directness": "direct",
+        "species_or_population": "犬",
+        "sample_size": null,
+        "negative_evidence_checked": true,
+        "evidence": [{
+          "citation_id": "citation-clean",
+          "excerpt": "犬模型疼痛评分下降",
+          "source_excerpt": "犬模型疼痛评分下降。",
+          "citation_sha256": "d7b815a2cd1b7474d77b169222aafa6c72b99de85f851977f57caf661d35bc18",
+          "citation_review_status": "verified",
+          "source_evidence_status": "reviewed_for_scope",
+          "stance": "supports"
+        }]
+      }
+    }
+  ]
+}

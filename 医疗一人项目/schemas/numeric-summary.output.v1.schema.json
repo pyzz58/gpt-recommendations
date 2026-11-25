@@ -1,0 +1,54 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "count": {
+      "title": "Count",
+      "type": "integer"
+    },
+    "sum": {
+      "title": "Sum",
+      "type": "number"
+    },
+    "mean": {
+      "title": "Mean",
+      "type": "number"
+    },
+    "minimum": {
+      "title": "Minimum",
+      "type": "number"
+    },
+    "maximum": {
+      "title": "Maximum",
+      "type": "number"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Unit"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "count",
+    "sum",
+    "mean",
+    "minimum",
+    "maximum",
+    "unit",
+    "limitations"
+  ],
+  "title": "NumericSummaryOutput",
+  "type": "object"
+}

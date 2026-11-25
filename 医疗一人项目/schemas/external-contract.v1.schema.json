@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:external-contract:v1",
+  "additionalProperties": false,
+  "properties": {
+    "engagement_id": {
+      "format": "uuid",
+      "title": "Engagement Id",
+      "type": "string"
+    },
+    "quote_id": {
+      "anyOf": [
+        {
+          "format": "uuid",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Quote Id"
+    },
+    "title": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "terms_summary": {
+      "maxLength": 20000,
+      "minLength": 1,
+      "title": "Terms Summary",
+      "type": "string"
+    },
+    "document_version_id": {
+      "anyOf": [
+        {
+          "format": "uuid",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Document Version Id"
+    },
+    "state": {
+      "const": "draft",
+      "default": "draft",
+      "title": "State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "engagement_id",
+    "title",
+    "terms_summary"
+  ],
+  "title": "ContractSpec",
+  "type": "object",
+  "description": "Contract draft contract; drafting does not imply signature."
+}

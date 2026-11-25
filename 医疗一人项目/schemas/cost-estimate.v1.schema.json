@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:cost-estimate:v1",
+  "$defs": {
+    "CostLineItem": {
+      "additionalProperties": false,
+      "properties": {
+        "item": {
+          "minLength": 1,
+          "title": "Item",
+          "type": "string"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantity"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "unit_cost_lower": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit Cost Lower"
+        },
+        "unit_cost_upper": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit Cost Upper"
+        },
+        "source_type": {
+          "enum": [
+            "quote",
+            "published_price",
+            "historical",
+            "assumption",
+            "unknown"
+          ],
+          "title": "Source Type",
+          "type": "string"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Ref"
+        }
+      },
+      "required": [
+        "item",
+        "unit",
+        "source_type",
+        "source_ref"
+      ],
+      "title": "CostLineItem",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "currency": {
+      "pattern": "^[A-Z]{3}$",
+      "title": "Currency",
+      "type": "string"
+    },
+    "scope": {
+      "minLength": 1,
+      "title": "Scope",
+      "type": "string"
+    },
+    "stage": {
+      "minLength": 1,
+      "title": "Stage",
+      "type": "string"
+    },
+    "line_items": {
+      "items": {
+        "$ref": "#/$defs/CostLineItem"
+      },
+      "minItems": 1,
+      "title": "Line Items",
+      "type": "array"
+    },
+    "price_date": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Price Date"
+    },
+    "expiry": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Expiry"
+    },
+    "tax_shipping_assumption": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Tax Shipping Assumption"
+    },
+    "excluded_work": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Excluded Work",
+      "type": "array"
+    },
+    "contingency_basis": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Contingency Basis"
+    },
+    "total_range": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      ],
+      "title": "Total Range",
+      "type": "array"
+    },
+    "unknown_items": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unknown Items",
+      "type": "array"
+    }
+  },
+  "required": [
+    "currency",
+    "scope",
+    "stage",
+    "line_items",
+    "price_date",
+    "expiry",
+    "tax_shipping_assumption",
+    "excluded_work",
+    "contingency_basis",
+    "total_range",
+    "unknown_items"
+  ],
+  "title": "CostEstimate",
+  "type": "object",
+  "description": "Stage-specific cost contract; unknown costs cannot be represented as zero."
+}

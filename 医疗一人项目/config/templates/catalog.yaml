@@ -1,0 +1,26 @@
+schema_version: 1
+templates:
+  - template_id: research-report.docx
+    version: 1
+    name: 结构化研究报告
+    format: docx
+    description: 可编辑 Word 研究报告，包含问题、方法、结果、来源、限制与复核记录。
+    required_sections: [研究问题, 方法与来源, 结果, 复核与限制]
+  - template_id: research-brief.pptx
+    version: 1
+    name: 研究摘要演示
+    format: pptx
+    description: 16:9 可编辑摘要演示，固定页脚保留来源哈希和模拟/真实状态。
+    required_sections: [研究问题, 方法与来源, 结果, 复核与限制]
+  - template_id: analysis-workbook.xlsx
+    version: 1
+    name: 分析核对工作簿
+    format: xlsx
+    description: 包含分析数据、公式、重算缓存值、来源和导出核对的工作簿。
+    required_sections: [研究问题, 方法与来源, 结果, 复核与限制]
+  - template_id: research-report.pdf
+    version: 1
+    name: 研究报告 PDF
+    format: pdf
+    description: 带页码和来源的只读展示版本，内容来自同一结构化报告。
+    required_sections: [研究问题, 方法与来源, 结果, 复核与限制]

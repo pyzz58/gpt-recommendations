@@ -1,0 +1,32 @@
+{
+  "pilot_id": "W24-PILOT-001",
+  "version": 1,
+  "status": "prepared_no_real_evidence",
+  "candidate_defined": false,
+  "required_steps": 16,
+  "declared_steps": 16,
+  "real_evidence_steps": [],
+  "missing_steps": [],
+  "gaps": [
+    "archive_retrospective: 无真实人工负担、成本或合作记录。",
+    "candidate_selection: 发起人尚未做出具体方向选择。",
+    "cleaning_statistics: 仅有合成演练，没有现实原始数据。",
+    "handoff_execution: 没有授权执行或真实交接回执。",
+    "independent_quality: 无真人或非mock独立审查。",
+    "investment_charter: 具体候选、周期和外包预算尚未由发起人确定。",
+    "mechanism_translation: 未选择候选，无法形成具体机制链。",
+    "provider_matching: 未授权现实机构接触。",
+    "quote_budget: 没有真实工作范围、报价或预算授权。",
+    "raw_delivery: 没有现实原始交付。",
+    "reporting_decision: 无真实证据进入发起人决定。",
+    "rights_contract: 没有具体合同对象或法律审查。",
+    "safety_cmc: 没有具体药物、剂型或质量目标。",
+    "source_review: 尚未选择具体候选和资料截止日。",
+    "study_design_statistics: 没有候选研究问题、终点和样本计划。",
+    "unmet_need: 没有具体目标物种/场景，未取得现实访谈。"
+  ],
+  "declared_coverage_complete": false,
+  "phase_one_complete": false,
+  "human_confirmation_required": true,
+  "limitation": "This report validates declared structure and references only. It does not authenticate contacts, authorization, execution, delivery or acceptance, and never marks phase one complete automatically."
+}

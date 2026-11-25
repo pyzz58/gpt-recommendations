@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:scientific-brief:v1",
+  "$defs": {
+    "MechanismStep": {
+      "additionalProperties": false,
+      "properties": {
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "fact",
+            "inference",
+            "hypothesis"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "statement",
+        "status",
+        "evidence_refs"
+      ],
+      "title": "MechanismStep",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "problem_and_use": {
+      "minLength": 1,
+      "title": "Problem And Use",
+      "type": "string"
+    },
+    "facts": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Facts",
+      "type": "array"
+    },
+    "mechanism_chain": {
+      "items": {
+        "$ref": "#/$defs/MechanismStep"
+      },
+      "minItems": 1,
+      "title": "Mechanism Chain",
+      "type": "array"
+    },
+    "strongest_support": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Strongest Support",
+      "type": "array"
+    },
+    "strongest_counterevidence": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Strongest Counterevidence",
+      "type": "array"
+    },
+    "direct_and_extrapolated_evidence": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Direct And Extrapolated Evidence",
+      "type": "object"
+    },
+    "alternative_explanations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Alternative Explanations",
+      "type": "array"
+    },
+    "key_unknowns": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Key Unknowns",
+      "type": "array"
+    },
+    "proposed_verification": {
+      "minLength": 1,
+      "title": "Proposed Verification",
+      "type": "string"
+    },
+    "resources": {
+      "minLength": 1,
+      "title": "Resources",
+      "type": "string"
+    },
+    "falsification_conditions": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Falsification Conditions",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "problem_and_use",
+    "facts",
+    "mechanism_chain",
+    "strongest_support",
+    "strongest_counterevidence",
+    "direct_and_extrapolated_evidence",
+    "alternative_explanations",
+    "key_unknowns",
+    "proposed_verification",
+    "resources",
+    "falsification_conditions",
+    "limitations"
+  ],
+  "title": "ScientificBrief",
+  "type": "object",
+  "description": "Scientific brief contract from TR-11; synthetic examples are not evidence."
+}

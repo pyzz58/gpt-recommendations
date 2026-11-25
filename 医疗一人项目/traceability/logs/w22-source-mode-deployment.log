@@ -1,0 +1,1 @@
+PASS: deployment files contain the W23 runtime payload and loopback Compose structure; Docker execution is not implied.

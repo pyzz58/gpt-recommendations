@@ -1,0 +1,193 @@
+schema_version: 1
+workflow_id: pet_repurposing_v1
+version: 1
+track: pet_repurposing
+title: 宠物已有药物再利用
+purpose: 从目标物种需求出发，依次形成证据、转化/安全/药学缺口、可证伪研究和外部执行条件。
+applicability:
+  - 已有药物改变目标物种、适应证、剂量或制剂
+  - 需要比较目标动物直接证据与人用资料外推
+non_goals:
+  - 人用批准或安全资料不等于目标动物安全有效
+  - 模板存在不构成兽药注册、处方或市场授权
+stages:
+  - stage_id: species_scope
+    sequence: 1
+    title: 物种、适应证与未满足需求
+    purpose: 固定目标猫犬、疾病场景、使用者和拟议产品边界。
+    required_roles: [A05, A06, A17]
+    criteria:
+      - {id: target_species_defined, kind: decision, description: 明确目标物种与排除物种, requires_refs: true}
+      - {id: use_case_evidence, kind: evidence, description: 有可追溯的需求或临床路径依据, requires_refs: true}
+      - {id: market_question_recorded, kind: professional_judgment, description: 记录目标市场的注册问题及核查日期要求, requires_refs: true}
+    required_inputs: [investment_brief, opportunity_card, source_cutoff]
+    required_outputs: [target_species_and_indication, unmet_need_record, regulatory_question]
+    review_policy: scientific_and_regulatory_review.v1
+    failure_routes:
+      no_target_evidence: revise
+      unmet_need_not_supported: stop
+      regulatory_unknown: gather_evidence
+    external_preconditions: []
+    theory_refs: [D-003, SEC:4.3, SEC:10.4]
+    plan_nodes:
+      - key: veterinary_need
+        task_type: veterinary.unmet_need
+        purpose: pet-stage1-need
+        assignee_role: A05
+        goal: 明确目标猫犬、疾病场景、现有路径和未满足需求，区分事实与假设。
+        input_refs: [workflow:pet_repurposing_v1:species_scope]
+        acceptance_policy: clinical_and_scientific_review.v1
+      - key: translation_questions
+        task_type: pharmacology.translation_questions
+        purpose: pet-stage1-translation
+        assignee_role: A06
+        goal: 形成目标物种机制、暴露与效应关系的关键未知和验证问题。
+        input_refs: [workflow:pet_repurposing_v1:species_scope]
+        acceptance_policy: scientific_review.v1
+      - key: regulatory_scope
+        task_type: regulatory.scope_question
+        purpose: pet-stage1-regulatory
+        assignee_role: A17
+        goal: 按目标市场记录兽药分类问题、来源要求与待核实项，不给出法律保证。
+        input_refs: [workflow:pet_repurposing_v1:species_scope]
+        acceptance_policy: regulatory_review.v1
+        depends_on: [veterinary_need, translation_questions]
+  - stage_id: evidence_and_gap
+    sequence: 2
+    title: 已有证据、转化、安全与药学缺口
+    purpose: 评价直接证据、支持与反对证据、外推条件和阶段资源缺口。
+    required_roles: [A04, A06, A07, A08, A20, A26]
+    criteria:
+      - {id: original_sources_checked, kind: evidence, description: 关键事实已绑定原始来源与位置, requires_refs: true}
+      - {id: negative_evidence_reviewed, kind: evidence, description: 已主动检索失败、阴性和相反结果, requires_refs: true}
+      - {id: translational_gap_explicit, kind: professional_judgment, description: 直接显示目标物种外推、安全或质量缺口, requires_refs: true}
+      - {id: cost_assumptions_explicit, kind: professional_judgment, description: 未知成本未被写成零, requires_refs: true}
+    required_inputs: [stage1_output, verified_sources, cost_assumptions]
+    required_outputs: [evidence_gap_record, safety_gap_record, cmc_gap_record, counter_evidence]
+    review_policy: independent_scientific_audit.v1
+    failure_routes:
+      critical_counterevidence: revise
+      no_direct_translation: gather_evidence
+      unacceptable_safety_gap: stop
+    external_preconditions: []
+    theory_refs: [D-018, SEC:10.2, SEC:11.4]
+    plan_nodes:
+      - key: evidence_audit
+        task_type: evidence.pet_translation_pack
+        purpose: pet-stage2-evidence
+        assignee_role: A04
+        goal: 汇总高质量原始研究、阴性结果、目标物种直接性和外推限制。
+        input_refs: [workflow:pet_repurposing_v1:evidence_and_gap]
+        acceptance_policy: evidence_review.v1
+      - key: safety_cmc_gap
+        task_type: safety_and_cmc.gap_review
+        purpose: pet-stage2-gaps
+        assignee_role: A07
+        goal: 分列安全与药学制造缺口，所有主张附来源或保留未知。
+        input_refs: [workflow:pet_repurposing_v1:evidence_and_gap]
+        acceptance_policy: independent_review.v1
+      - key: budget_scenario
+        task_type: budget.pet_stage_estimate
+        purpose: pet-stage2-budget
+        assignee_role: A20
+        goal: 区分下一轮桌面核查、专家审阅和真实实验的未知或假设成本。
+        input_refs: [workflow:pet_repurposing_v1:evidence_and_gap]
+        acceptance_policy: financial_review.v1
+        depends_on: [evidence_audit]
+      - key: independent_audit
+        task_type: scientific.independent_audit
+        purpose: pet-stage2-audit
+        assignee_role: A26
+        goal: 搜索反证、替代解释和关键引文问题，不以一致意见代替验证。
+        input_refs: [workflow:pet_repurposing_v1:evidence_and_gap]
+        acceptance_policy: independent_review.v1
+        depends_on: [evidence_audit, safety_cmc_gap]
+  - stage_id: validation_design
+    sequence: 3
+    title: 目标产品特征与验证设计
+    purpose: 将尚存关键未知转化为可证伪、可停止且有资源边界的验证。
+    required_roles: [A08, A13, A14, A20, A26]
+    criteria:
+      - {id: target_profile_defined, kind: decision, description: 明确剂型、质量、剂量探索边界和拟议产品特征, requires_refs: true}
+      - {id: falsifiable_plan, kind: professional_judgment, description: 方案包含对照、终点、分析集、成功与停止条件, requires_refs: true}
+      - {id: statistical_review_complete, kind: review, description: 样本与分析方法理由已审阅, requires_refs: true}
+      - {id: validation_budget_bounded, kind: professional_judgment, description: 下一轮验证有范围估计和超范围升级条件, requires_refs: true}
+    required_inputs: [stage2_output, target_product_profile, candidate_study_design]
+    required_outputs: [target_product_profile, study_plan, statistical_plan, stop_rules, budget_envelope]
+    review_policy: scientific_statistical_quality_review.v1
+    failure_routes:
+      endpoint_not_measurable: revise
+      resources_exceeded: wait
+      safety_evidence_insufficient: stop
+    external_preconditions: []
+    theory_refs: [D-004, SEC:9, SEC:10.4]
+    plan_nodes:
+      - key: target_profile
+        task_type: pharmaceutical.target_profile
+        purpose: pet-stage3-profile
+        assignee_role: A08
+        goal: 形成剂型、关键质量属性、稳定性和制造验证问题。
+        input_refs: [workflow:pet_repurposing_v1:validation_design]
+        acceptance_policy: pharmaceutical_review.v1
+      - key: study_plan
+        task_type: research.pet_validation_plan
+        purpose: pet-stage3-study
+        assignee_role: A13
+        goal: 制定可证伪方案、对照、终点、停止条件和可能结果。
+        input_refs: [workflow:pet_repurposing_v1:validation_design]
+        acceptance_policy: statistical_review.v1
+        depends_on: [target_profile]
+      - key: statistical_design
+        task_type: statistics.validation_design
+        purpose: pet-stage3-statistics
+        assignee_role: A14
+        goal: 审阅样本、分析集、效应与不确定性，不允许事后挑选终点。
+        input_refs: [workflow:pet_repurposing_v1:validation_design]
+        acceptance_policy: statistical_review.v1
+        depends_on: [study_plan]
+  - stage_id: external_validation
+    sequence: 4
+    title: 外部验证与结果回流
+    purpose: 在范围、预算、权利和现实前置条件满足后开展外部工作并接收原始交付。
+    required_roles: [A20, A22, A25, A26]
+    criteria:
+      - {id: provider_scope_verified, kind: decision, description: 机构能力、工作范围与交付合同已核实, requires_refs: true}
+      - {id: authorization_recorded, kind: decision, description: 用户已授权预算、对象和动作范围, requires_refs: true}
+      - {id: acceptance_policy_defined, kind: review, description: 原始数据、缺件与验收规则明确, requires_refs: true}
+    required_inputs: [stage3_output, provider_scope, authorization, acceptance_policy]
+    required_outputs: [engagement_record, quote_or_assumption, transfer_record, raw_delivery, acceptance_review]
+    review_policy: external_execution_and_independent_review.v1
+    failure_routes:
+      missing_authorization: wait
+      provider_unavailable: wait
+      raw_delivery_incomplete: revise
+      critical_safety_failure: stop
+    external_preconditions:
+      - {id: qualified_provider, description: 已取得真实机构能力与范围材料, provider_type: CRO_CMO, evidence_type: provider_confirmation}
+      - {id: cost_and_terms, description: 已有真实报价、合同条款和付款授权, provider_type: provider_finance, evidence_type: quote_and_authorization}
+      - {id: execution_approval, description: 实验或研究所需批准与现实前置条件已核实, provider_type: regulatory_or_ethics, evidence_type: approval_record}
+    theory_refs: [D-004, SEC:4.4, SEC:10.4]
+    plan_nodes:
+      - key: provider_package
+        task_type: external.provider_scope
+        purpose: pet-stage4-provider
+        assignee_role: A22
+        goal: 准备范围、交付、原始数据和验收要求，不自行联系或委托。
+        input_refs: [workflow:pet_repurposing_v1:external_validation]
+        acceptance_policy: external_scope_review.v1
+      - key: budget_gate
+        task_type: budget.external_gate
+        purpose: pet-stage4-budget
+        assignee_role: A20
+        goal: 核对报价、币种、税务、有效期和已授权预算，未知不填零。
+        input_refs: [workflow:pet_repurposing_v1:external_validation]
+        acceptance_policy: financial_review.v1
+        depends_on: [provider_package]
+      - key: external_audit
+        task_type: external.independent_review
+        purpose: pet-stage4-audit
+        assignee_role: A26
+        goal: 独立审查外部工作包、原始交付、反证和不能接收的缺件。
+        input_refs: [workflow:pet_repurposing_v1:external_validation]
+        acceptance_policy: independent_review.v1
+        depends_on: [provider_package, budget_gate]

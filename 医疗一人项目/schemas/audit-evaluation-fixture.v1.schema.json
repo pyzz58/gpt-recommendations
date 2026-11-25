@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:audit-evaluation-fixture:v1",
+  "$defs": {
+    "AuditCase": {
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Case Id",
+          "type": "string"
+        },
+        "reviewer_role": {
+          "enum": [
+            "A25",
+            "A26"
+          ],
+          "title": "Reviewer Role",
+          "type": "string"
+        },
+        "target_type": {
+          "$ref": "#/$defs/AuditTargetType"
+        },
+        "expected_codes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expected Codes",
+          "type": "array"
+        },
+        "packet": {
+          "additionalProperties": true,
+          "title": "Packet",
+          "type": "object"
+        }
+      },
+      "required": [
+        "case_id",
+        "reviewer_role",
+        "target_type",
+        "expected_codes",
+        "packet"
+      ],
+      "title": "AuditCase",
+      "type": "object"
+    },
+    "AuditTargetType": {
+      "enum": [
+        "claim_version",
+        "analysis_run",
+        "external_deliverable"
+      ],
+      "title": "AuditTargetType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "cases": {
+      "items": {
+        "$ref": "#/$defs/AuditCase"
+      },
+      "minItems": 1,
+      "title": "Cases",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "name",
+    "cases"
+  ],
+  "title": "AuditEvaluationFixture",
+  "type": "object",
+  "description": "Synthetic deterministic audit regression fixture; passing cases does not certify medical or scientific capability."
+}

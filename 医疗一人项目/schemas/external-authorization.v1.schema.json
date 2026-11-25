@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:medical-one-person:external-authorization:v1",
+  "additionalProperties": false,
+  "properties": {
+    "engagement_id": {
+      "format": "uuid",
+      "title": "Engagement Id",
+      "type": "string"
+    },
+    "action_scope": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Action Scope",
+      "type": "string"
+    },
+    "amount_max": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "title": "Amount Max"
+    },
+    "currency": {
+      "pattern": "^[A-Z]{3}$",
+      "title": "Currency",
+      "type": "string"
+    },
+    "expires_at": {
+      "format": "date-time",
+      "title": "Expires At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "engagement_id",
+    "action_scope",
+    "amount_max",
+    "currency",
+    "expires_at"
+  ],
+  "title": "ExternalAuthorizationSpec",
+  "type": "object",
+  "description": "Time- and amount-bounded local external action authorization contract."
+}
