@@ -40,7 +40,7 @@
         "traceability/manifest.json"
       ],
       "implementation_status": "implemented",
-      "source_sha256": "6796a24c4d1d2dc2d5f6bd43621caef1df8f92ec46696cbc666fc0307df31ea0",
+      "source_sha256": "a27055a1a3582de689af0951930c382e132478518d0f190bfe126d67df23fcca",
       "implementation_paths": [
         "tools/check_traceability.py",
         "traceability/manifest.json",
@@ -275,7 +275,7 @@
         "apps/web/src/app/projects/[id]/audits/page.tsx"
       ],
       "implementation_status": "implemented",
-      "source_sha256": "bf3c471354460d5d66520409685ee487fb01bdf69a443f201dffcfcb201cc0d6"
+      "source_sha256": "1ea286ee2f0982dd0d393b03b62356401839ff28629ecc7a753cf78916888b2e"
     },
     {
       "id": "RQ-007",
@@ -512,7 +512,7 @@
         "services/core/tests/integration/test_w22_source_api.py"
       ],
       "implementation_status": "implemented",
-      "source_sha256": "84343c325be8fb3b97982afd1d33eeb7aa2570913db564616d803bcf099819b0"
+      "source_sha256": "520cb3406481c72446fea4b632cbbc780fefa3c127235dcd1d57ac69324bffc1"
     },
     {
       "id": "RQ-012",
@@ -657,7 +657,7 @@
         "docs/w15-handoff.md"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "8b38a7fe527c231974d42953c5f0168a25e34cfce80c8ce21d56eb945eac19b5",
+      "source_sha256": "70a1aa7e57f2d3c734bdf88d3bcf76ebda43173b1c6ff1788bda8db40aa9bc9c",
       "implementation_paths": [
         "services/core/src/medical_one_person/infrastructure/mail/smtp.py",
         "services/core/src/medical_one_person/infrastructure/mail/factory.py",
@@ -961,7 +961,7 @@
         "docs/w16-handoff.md"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "b28e9d8f9ca2d2a7cd84bf9d9f66d52616308ffa3b27364fc66f4ef3a43fb444"
+      "source_sha256": "5b7db50cc654a278e6779ac119c6f9ecc7b5ac2fdf32b0ab10dbdd3ae13773ae"
     },
     {
       "id": "RQ-024",
@@ -992,7 +992,7 @@
         "docs/w17-handoff.md"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "917108c3a04aec5f21f738d470e11431936ee547004009427c35d9d47e9cd3f9"
+      "source_sha256": "8ad3e778e679eb371358ffc9dca9cdaf4fd65cb483994059fc880affc9280022"
     },
     {
       "id": "RQ-025",
@@ -1090,7 +1090,7 @@
         "services/core/migrations/versions/c7296a4b69d8_w04_tasks_jobs_budgets.py"
       ],
       "implementation_status": "implemented",
-      "source_sha256": "145641c52e0e5aa3e0be46e7d0dc7c4ddb581d8c2b15c690efdadb137d8903ec",
+      "source_sha256": "00a2bf91d3ca0995c54ec04f79ac73680f371367d5889ae556f6e918e48dbcb3",
       "implementation_paths": [
         "services/core/src/medical_one_person/domain/reliability.py",
         "services/core/src/medical_one_person/application/reliability.py",
@@ -1185,7 +1185,7 @@
         "apps/web/src/app/projects/[id]/external/page.tsx"
       ],
       "implementation_status": "implemented",
-      "source_sha256": "a6f569eee21d7693def322c9b8ec51204693b60eb69d8a116cd14897feb3e30d",
+      "source_sha256": "e34bd44091eab6fd0c42fcdf5f2cb93f749d618bdc6d60c5b8f225b18f028031",
       "implementation_paths": [
         "docs/w21-end-to-end-report.md",
         "services/core/migrations/versions/e3b8c4d5f601_w20_reliability_regression.py",
@@ -1458,13 +1458,60 @@
         "docs/w18-handoff.md"
       ],
       "implementation_status": "in_progress",
-      "source_sha256": "9dcba219e342a846330c0616f7366940e73f5fe794c44e6e4b63ae58c84ddd0f"
+      "source_sha256": "be1d1dadbca69e1f77d24d100bdedffd6d3b8b581a434b5b1d3d988d5a0fe8c6"
+    },
+    {
+      "id": "RQ-035",
+      "title": "骨架试点关卡、证据适用性与系统修复闭环",
+      "source_refs": [
+        "D-032",
+        "SEC:7.4",
+        "SEC:10.5",
+        "SEC:11.4",
+        "SEC:19.1",
+        "SEC:16",
+        "SEC:17"
+      ],
+      "technical_refs": [
+        "TR-05",
+        "TR-09",
+        "TR-15",
+        "TR-19",
+        "TR-20",
+        "TR-22"
+      ],
+      "work_packages": [
+        "W11",
+        "W12",
+        "W15",
+        "W16",
+        "W17",
+        "W19",
+        "W24"
+      ],
+      "acceptance_refs": [
+        "AT-035"
+      ],
+      "planned_paths": [
+        "services/core/src/medical_one_person/application/plans.py",
+        "services/core/src/medical_one_person/application/workflows.py",
+        "services/core/src/medical_one_person/application/mail.py",
+        "services/core/src/medical_one_person/application/external.py",
+        "services/core/src/medical_one_person/application/audits.py",
+        "services/core/src/medical_one_person/application/policy_bundles.py",
+        "config/agents/roles.yaml",
+        "config/source_policies/catalog.yaml",
+        "docs/w24-readiness-ledger.md",
+        "docs/w24-gate-addendum-2026-11-25.md"
+      ],
+      "implementation_status": "planned",
+      "source_sha256": "eb13de36fefb4f7a2f57a48eb7f454e9bf6263b7210d9d122b194280c8b4b710"
     }
   ],
-  "theory_version": "V0.10",
-  "roadmap_version": "V1.30",
-  "theory_sha256": "f4a11cbad516d9529d2e4689047d5be9531d4fcc15867d23d2c44fca0eb0bd8f",
-  "roadmap_sha256": "37e0f8b828238b3e0562be6e1c0c37852f7c359716de1db69e1abdb41cc3c607",
+  "theory_version": "V0.11",
+  "roadmap_version": "V1.31",
+  "theory_sha256": "0b51619eec453be1b1a1672ec995ccbf18e7169180ac92fac0d227ab8131b47c",
+  "roadmap_sha256": "92afbfa8022ccdeb4bb5d96ce82aeec9b8688108d9cf4fa52f238e1910aac3a9",
   "source_snapshots": {
     "A01": "be8e0391c51d8b58b68595e4f7adbe35bac5764c7f18a61a50465cdc29c1a702",
     "A02": "4f68c00561dec1f0c4af4c06a99b636d2b53cca47cdd206298e7a9107212a6c6",
@@ -1523,17 +1570,19 @@
     "D-029": "1f465b7f09657ce31b196803d826acf826b5d57acc202ebf85ec411a797f212e",
     "D-030": "b421323fd1dc529fd7156b5f9274f6c0fa24a8908c6b3f091335fa3ae08c4cb3",
     "D-031": "e19fafc9f25cd62ecd9e1198ce955e5489b80fba7b3544fd2e135f7392c07139",
+    "D-032": "3d4c22efff2b147c08a9cdf177543eac91a0953b2c06f64313511f33891f075d",
     "SEC:1": "52e486d89ee01d3fbaa7ab6523701790d6521eb0ed0d4b938079630b0186d429",
-    "SEC:10": "ffbbb85feabab581eddd6981f9eebcddd3a4ee80f0e6a35eec7defb4942c4319",
+    "SEC:10": "4caee8c489e2f438d2dbceecbead92d446a213db5d40a40471331c671e086ec5",
     "SEC:10.1": "b7f0bfdb75b16ea23113b34fb6a81fb1cb51d83208bf3c01499468d731c960e6",
     "SEC:10.2": "cddc7d1745dca8b632358d8d12318ab818beec1eb04fa2f0b54325b43e0c1dcb",
     "SEC:10.3": "350f9d37ec1bac0249dfb6bd39ac0f096fbbf3ea6dfae074a406f75469c40331",
     "SEC:10.4": "d2ac26adf518077951a0979f34c9baeda9756b0b7716eb323418d9adbc2b7b85",
-    "SEC:11": "4b69f553de8811c6499aca21761eb7a226ec8965ad8191a6e660ac045999b21a",
+    "SEC:10.5": "a270a62a533951691552d827508a2d8512b3b6a0f2fc12a7f6420a0b25b2ca83",
+    "SEC:11": "32e3402f7fb1206dfb91ac2af4d3ce0b97e510335e08d97b894a9c0fc18f7307",
     "SEC:11.1": "9de1304d764cff1b144c533ca3ed90edd33b87c1fbeb4c3794120612efa50b5a",
     "SEC:11.2": "8cd41167da50422a1108e1aa2dddc9963bce9a412e3341ebb8c5fe58ef8b3571",
     "SEC:11.3": "ad540bc2eef2af648a67cc37082fbdf22606b33f31db3999c5c7b1963da8e0db",
-    "SEC:11.4": "c8811de2ab0e62462148e6ada4977259b3220df8295cec923437862edb37051c",
+    "SEC:11.4": "bb13c42d3e43d5f584dfe4d3589503a936e384c54c4ac032bede8baf2236388a",
     "SEC:11.5": "d5a49fffe64408a8c8b014bfa9eebb53c52591d9639fa0670da10d654e87887b",
     "SEC:12": "b3dae2aaee9061835a130037e69a5059af27b3057c344159bdf51a381827cbb2",
     "SEC:13": "6652bc09901a0d8c2f41e6c8b10b90a29152ab4cc47b16b6af32113b09e8bd89",
@@ -1543,13 +1592,14 @@
     "SEC:14.3": "b6db822470a775dd4638ec3afc851d1a5ab36ef44ff6610e24f649e18704b9f0",
     "SEC:14.4": "90e44adec37f0a10287927a8ab167bf2c133abff6f62307866d92fb1ffe9a3f6",
     "SEC:14.5": "a1e5d501dd05de3479e6dc576487d15ac65ff0393e3b8ca27d7c23f292491bdb",
-    "SEC:15": "98c94fcf63725ee95fd9810da2727fe9b2d7f3933ee5071647cbedb3c909a820",
-    "SEC:16": "9f6227eb98bd1eebc5f27aba11b6eb3cc76f600ff8e84312e3fa2639df27f812",
-    "SEC:17": "cddc96517598615329e9f4d21b636727445c0bb70dee72d5c22e325b16bf18e0",
+    "SEC:15": "00aac8c43c803ee162b12c96244b281a37508bc76f747c0c96212f64e22c6574",
+    "SEC:16": "db96674223be2de4f39693c6afbaf120674bbcd2fc17e8d7547129993dc16e54",
+    "SEC:17": "297a5f5724d39299998295ed7dbad0710a56a3482edb862bf665840fa679ffd8",
     "SEC:18": "1966fcb6011158392d5333e5e575a4afa056a1494b01ae0d047818604622c190",
-    "SEC:19": "67400437eb6df71fc6e14ab36ea4710240d99df5c1dd2e82b938050e8bb1c5a7",
+    "SEC:19": "f9a19f42a44c215923d77fb8597b9bdcb5c94760564af362f5ad1c51883ec47b",
+    "SEC:19.1": "6a19ffd4c4402a2283114a5320c6e14d434812aeb1182c8db5127b844186e0d7",
     "SEC:2": "5eb22249cfa663386cfe1f2597bb12a70ff9a6dc0cbcf13cea9ace3d7e9473d5",
-    "SEC:20": "243449fc74ce4af461983c85858f7e6243632979a5d187b7c687c3c02e87b5dc",
+    "SEC:20": "84d4182a5dba69426791bb6bade73a73dcc51c978bb5340979db17812287bbe0",
     "SEC:3": "1e5e735d84a3f6c2cb3d94f4d36853d010e75fa64f5781bc668e1412371981ee",
     "SEC:4": "cc6632d2b4f100a59fb85c92a6ebc0bfb75e7dad6b785e130be3b1236863baba",
     "SEC:4.1": "d5e130effdd09ce1dbfac7e64a1070f1360c2aa2e6ddee0442998b94c29c9857",
@@ -1564,11 +1614,11 @@
     "SEC:5.4": "56340844d3d684aff1bfdfd45052d08a9129a04d9c7e17691cf02edb16331b34",
     "SEC:5.5": "474200e6183241dadaff84696f667debc58049f9e22fa365f369734ccb7f9236",
     "SEC:6": "724995a27aee5fe2605a1e19d014f1f0fcadfb9bde6ea099f51280713a977c32",
-    "SEC:7": "c5ed6612914eb320c3c2be6ca117ff5db05efa301af59e7465ad70f4da8276d7",
+    "SEC:7": "30ef77b70ccf7078773343463c3e80209a23fdc146aa28a2ecf27f360e5e346e",
     "SEC:7.1": "0b1810176c2d472da56ac0b6125e26119a509df0c19b01313b45fbb9c167d273",
     "SEC:7.2": "1d7ced9488874cf35b648aaa9eb946e229b092f5dd5711ab0a7f88b284a73e0e",
     "SEC:7.3": "65931522fe34c22037453b8a8a17a0d7868a6d80894865e644de88b7e3c14404",
-    "SEC:7.4": "ac95ee2367364505f5a127dcc71d8410a052501e5674dab775a4d02cdc78eb7d",
+    "SEC:7.4": "148a9079fd8bf980488f4877d1f1b5a36699ffd8053df4322c44b7128e45b0cd",
     "SEC:7.5": "446b6832c5b92709788309fb95e33003fac46cac107d022c485048b684e4b11f",
     "SEC:7.6": "f95bb7d11ec7ce3519a0263323b8a461e3c4a5f837015bb286d5583f9526dc39",
     "SEC:7.7": "2ba8f1202b2c502c411e2f162324d1f0330190ad3fb14370612bb5b470f55452",
@@ -1576,8 +1626,8 @@
     "SEC:9": "fa4f5a5bc115eb1b6f60f5593432c2a557ae11400307fb9def5737e995b4d7d1"
   },
   "last_sync": {
-    "at": "2026-11-20T23:14:39.657001+00:00",
-    "note": "Restored 最高思想 V0.10 per current W22 scope; removed temporary D-032 documentation-only entry. Model acceptance remains recorded as failed evidence in technical W22/acceptance records. No architecture, scientific feedback or live capability claim changed.",
+    "at": "2026-11-25T11:11:00.462691+00:00",
+    "note": "按2026-11-25用户指令采纳Claude通用建议：同步思想V0.11/D-032/第7.4、10.5、11.4、19.1节、技术V1.31/TR-05/09/15/19/20/22、RQ-035/AT-035与新增W24关卡补充。科学和运营分工不变，反馈允许支持原决定，D1—D8仅为待核问题线索，规则与实现/测试/现实验证分开。SEC:7仅受7.4子节影响，其余角色与技能实现不变；历史W24档案和所有验收记录保持原件，后续新试点另建版本。既有代码与完成状态不变，新增条件为planned，本轮未执行应用验收。",
     "meaning": "Operator records semantic review; hashes only detect structural drift."
   },
   "supporting_artifacts": [
@@ -3405,6 +3455,13 @@
         "RQ-031"
       ],
       "sha256": "6ae02e853dedc346eb4e97bdd8dda3413475c5797b1aacfd9e5de8842e69e914"
+    },
+    {
+      "path": "docs/w24-gate-addendum-2026-11-25.md",
+      "requirement_ids": [
+        "RQ-035"
+      ],
+      "sha256": "fc8cb9bc7fbcf0fdaab645710e6a13e7a94a887747de3ce7ed4cfeaa1622ca00"
     }
   ]
 }
